@@ -9,7 +9,12 @@ class Exercise
   def self.all
     Dir.entries(DATA_DIR)
        .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !(entry == '.' || entry == '..') }
-       .map { |e| Exercise.new(e) }
+       .map { |entry| Exercise.new(entry) }
+  end
+
+  def self.find(name)
+    return nil unless File.directory? File.join(DATA_DIR, name)
+    Exercise.new(name)
   end
 
   # make the partial render

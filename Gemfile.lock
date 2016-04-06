@@ -39,6 +39,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.0.0)
+    bootstrap-generators (3.3.4)
+      railties (>= 3.1.0)
     builder (3.2.2)
     byebug (8.2.2)
     coffee-rails (4.1.1)
@@ -157,6 +159,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-generators (~> 3.3.4)
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)

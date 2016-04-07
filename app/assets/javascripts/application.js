@@ -13,9 +13,16 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require vendor
 //= require bootstrap
 //= require_self
 //= require_directory .
 //= require judge/utils.js
 //= require judge/diff.js
 //= require judge/feedbackTable.js
+
+$(function () {
+    if (!Modernizr.templatestrings) {
+        $(".messages").append("<div class='alert alert-warning'>Sorry, je browser lijkt niet alle nodige JavaScript features te ondersteunen. Met een recente versie van Google Chrome of Firefox zou alles moeten werken.</div>")
+    }
+});

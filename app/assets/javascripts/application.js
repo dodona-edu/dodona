@@ -14,4 +14,8 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap
-//= require_tree .
+//= require_self
+//= require_directory .
+//= require judge/utils.js
+//= require judge/diff.js
+//= require judge/feedbackTable.js

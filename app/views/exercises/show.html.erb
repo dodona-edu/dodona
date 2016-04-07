@@ -10,7 +10,7 @@
                         <span class="glyphicon glyphicon-play"></span>
                     </button>
                 </div>
-                <h3 class="panel-title"><strong><%= @exercise.name %></strong></h3>
+                <h3 class="panel-title"><strong>Oefening: <%= @exercise.name %></strong></h3>
             </div>
             <!-- editor body -->
             <div class="panel-body" id="editor-window">
@@ -54,6 +54,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_exercise_show("judge.test('echo(5);', 5);\njudge.test('echo(4);', 5);");
+    init_exercise_show("judge.test('echo(5);', 5);\njudge.test('echo(4);', 4);");
   });
 </script>

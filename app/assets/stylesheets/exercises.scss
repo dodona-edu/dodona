@@ -1,3 +1,79 @@
-// Place all the styles related to the exercises controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#editor-window {
+    padding: 0;
+}
+
+#editor-text {
+    font-family: monospace;
+    /* use monospace font in editor */
+    resize: none;
+    /* do not allow to resize text area */
+
+    /* following setting prevent border around text area */
+    border: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+#editor-menu {
+    margin-top: -6px;
+    margin-right: -11px;
+}
+
+/*
+ * FEEDBACK TABLE
+ */
+
+#feedback-table {
+    font-family: monospace;
+    /* use monospace font in feedback table */
+}
+
+#feedback-menu {
+    margin-top: -6px;
+    margin-right: -11px;
+}
+
+.dropdown-menu {
+    margin-top: 8px;
+}
+
+#feedback-menu .badge {
+    margin-right: 10px;
+    /* some extra margin to the right of feedback menu badges */
+}
+
+#feedback-loading {
+    display: none;
+    /* hide feedback loading icon on page load */
+}
+
+.feedback-row {
+    white-space: pre-wrap;
+    /* preserve white space in feedback rows */
+    word-break: break-all;
+    /* prevent wide table rows */
+    word-break: break-word;
+}
+
+.feedback-row.statement {
+    font-weight: bold;
+    /* use bold face for feedback statements */
+}
+
+.feedback-row .icon {
+    width: 10px;
+    /* use fixed width for icon in feedback rows */
+}
+
+.feedback-row .added {
+    color: rgb(0, 110, 0);
+    background-color: rgba(0, 255, 0, 0.2);
+}
+
+.feedback-row .removed {
+    color: rgb(180, 0, 0);
+    background-color: rgba(255, 0, 0, 0.2);
+}

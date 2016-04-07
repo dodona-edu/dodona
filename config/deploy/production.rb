@@ -31,7 +31,19 @@ server 'dodona.ugent.be', user: 'dodona', port: '4840', roles: %w{app db web}
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
+namespace :deploy do
 
+  before :publishing, :asset_stuff do
+    on roles :all do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'assets:nodigest'
+        end
+      end
+    end
+  end
+
+end
 
 # Custom SSH Options
 # ==================

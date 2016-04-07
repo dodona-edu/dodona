@@ -54,6 +54,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_exercise_show("judge.test('echo(5);', 5);\njudge.test('echo(4);', 4);");
+    init_exercise_show(`<%= raw(@exercise.tests) %>`);
   });
 </script>

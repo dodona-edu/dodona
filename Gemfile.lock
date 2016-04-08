@@ -39,6 +39,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.0.0)
+    autoprefixer-rails (6.3.6)
+      execjs
     builder (3.2.2)
     byebug (8.2.2)
     capistrano (3.4.0)
@@ -186,6 +188,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  autoprefixer-rails
   byebug
   capistrano-passenger
   capistrano-rails

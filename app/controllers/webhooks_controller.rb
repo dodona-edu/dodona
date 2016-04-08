@@ -1,4 +1,6 @@
 class WebhooksController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def update_exercises
     response = Exercise.refresh
     message = response[1]

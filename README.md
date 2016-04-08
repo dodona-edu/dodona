@@ -11,11 +11,18 @@
 ### 0.2
 * webhook om de oefeningen automatisch te updaten
 * de opgave wordt ook gerenderd vanaf de markdown source
+* betere layout
+* home page
 
 ### 0.3
 * UGent CAS login
-* opslaan van ingediende oefeningen
-* ingebruikname databank
+* databank
+* opslaan van oefeningen in de databank
+* status oefeningen
+
+### 0.4
+* bijhouden van ingediende oefeningen + status
+* JS editor?
 
 ### Later
 * nodejs tests

@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require vendor
-//= require bootstrap
 //= require_self
 //= require_directory .
 //= require judge/utils.js

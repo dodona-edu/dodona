@@ -11,6 +11,7 @@
 ### 0.2
 * webhook om de oefeningen automatisch te updaten
 * de opgave wordt ook gerenderd vanaf de markdown source
+* media (images)
 * betere layout
 * home page
 

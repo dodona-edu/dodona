@@ -22,6 +22,12 @@ class Exercise
     Exercise.new(name)
   end
 
+  def self.refresh
+    msg = `cd #{DATA_DIR} && git pull 2>&1`
+    status = $CHILD_STATUS.exitstatus
+    [status, msg]
+  end
+
   # make the partial render
   def to_partial_path
     'exercises/exercise'

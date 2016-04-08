@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   resources :exercises, only: [:index, :show]
 
+  # Webhooks
+  match '/webhooks/update_exercises', via: [:get, :post], :to => 'webhooks#update_exercises'
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   # Serve websocket cable requests in-process

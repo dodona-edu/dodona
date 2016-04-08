@@ -13,7 +13,7 @@ class Exercise
 
   def self.all
     Dir.entries(DATA_DIR)
-      .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !(entry == '.' || entry == '..') }
+      .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') }
       .map { |entry| Exercise.new(entry) }
   end
 

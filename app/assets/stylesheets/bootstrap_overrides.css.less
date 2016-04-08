@@ -1,0 +1,168 @@
+// Your custom LESS stylesheets goes here
+//
+// Since bootstrap was imported above you have access to its mixins which
+// you may use and inherit here
+//
+// If you'd like to override bootstrap's own variables, you can do so here as well
+// See http://getbootstrap.com/customize/#less-variables for their names and documentation
+//
+// Example:
+// @linkColor: #ff0000;
+//
+//
+// color overrides
+@hairlinegray: @black-divider;
+@brand-info: @info-500;
+@brand-primary: @accent-500;
+@brand-success: @success-500;
+@brand-danger: @danger-500;
+@brand-warning: @warning-500;
+@body-bg: @grey-50;
+@text-color: @black-text;
+@link-color: @accent-800;
+@code-color: @primary-800;
+@page-header-border-color: @black-divider;
+
+// other values
+@border-radius-base: 2px;
+
+// font stuff
+@font-family-sans-serif:  Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-size-base: 14px;
+@baseLineHeight: 24px;
+@line-height-base: 1.3846153846;
+@icon-font-path: "/assets/bootstrap/";
+h1, h2, h3, h4, h5 {
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    line-height: 48px;
+    margin: 0;
+}
+
+// alerts
+@state-info-bg: @brand-info;
+@state-info-border: @brand-info;
+@state-info-text: white;
+@state-danger-bg: @brand-danger;
+@state-danger-border: @brand-danger;
+@state-danger-text: white;
+@state-warning-bg: @brand-warning;
+@state-warning-border: @brand-warning;
+@state-warning-text: white;
+@state-success-bg: @brand-success;
+@state-success-border: @brand-success;
+@state-success-text: white;
+.alert {
+    .shadow-z2();
+}
+.alert-link {
+    color: white !important;
+}
+.alert button.close {
+    color: @white-secondary;
+    opacity: 1;
+    text-shadow: initial;
+}
+.alert button.close:hover {
+    color: @white-text;
+}
+
+// modals
+@modal-backdrop-bg: white;
+@modal-backdrop-opacity: 0.35;
+@modal-content-border-color: white;
+
+// popovers
+@popover-border-color: @grey-100;
+@popover-title-bg: @grey-100;
+.popover {
+    border-radius: 2px;
+    padding: 0px;
+    .shadow-z5();
+    z-index: 5;
+}
+.popover .popover-title {
+    border-radius: 2px 2px 0 0;
+    border: 0;
+}
+.popover-title {
+    font-weight: 700;
+}
+
+// buttons
+.btn {
+    .shadow-z1();
+}
+.btn:hover {
+    .shadow-z3();
+}
+.btn.btn-file,
+.btn.btn-file:hover,
+.btn.btn-link,
+.btn.btn-link:hover {
+    box-shadow: none;
+}
+.dropdown-menu {
+    .shadow-z5();
+}
+
+// tables
+.table {
+    margin-bottom: 0;
+}
+.table th {
+    position: relative;
+    vertical-align: bottom;
+    text-overflow: ellipsis;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0;
+    font-size: 12px;
+    color: rgba(0,0,0,.54);
+    padding-bottom: 8px;
+}
+
+// modals
+.modal-content {
+    border-radius: 2px;
+    .shadow-z5();
+}
+
+// Disable responsiveness
+.container {
+    max-width: none !important;
+    width: 940px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+// extra small input elements
+.input-xs {
+    height: 22px;
+    padding: 1px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+// panels
+.panel {
+    border: 0;
+    .shadow-z3();
+}
+
+// mark
+mark,
+.mark {
+  background-color: @primary-300;
+ }
+
+// fix position errors
+.tab-content {
+    position: relative;
+}
+
+.lead {
+    font-size: 18px;
+    margin-top: 5px;
+}

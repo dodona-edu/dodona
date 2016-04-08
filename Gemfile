@@ -29,6 +29,8 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'bootstrap-generators', '~> 3.3.4'
 
+gem 'kramdown'
+
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development

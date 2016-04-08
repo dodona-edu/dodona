@@ -1,5 +1,8 @@
 class Exercise
   DATA_DIR = Rails.root.join('data', 'exercises').freeze
+  TESTS_FILE = 'tests.js'.freeze
+  DESCRIPTION_FILE = 'NL.md'.freeze
+
   attr_accessor :name
 
   def initialize(name)
@@ -7,7 +10,12 @@ class Exercise
   end
 
   def tests
-    file = File.join(DATA_DIR, name, 'tests.js')
+    file = File.join(DATA_DIR, name, TESTS_FILE)
+    File.read(file) if FileTest.exists?(file)
+  end
+
+  def description
+    file = File.join(DATA_DIR, name, DESCRIPTION_FILE)
     File.read(file) if FileTest.exists?(file)
   end
 

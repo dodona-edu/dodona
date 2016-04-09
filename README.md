@@ -12,6 +12,7 @@
 * webhook om de oefeningen automatisch te updaten
 * de opgave wordt ook gerenderd vanaf de markdown source
 * media (images)
+* formules (mathjax)
 * betere layout
 * home page
 

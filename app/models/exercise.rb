@@ -2,6 +2,8 @@ class Exercise
   DATA_DIR = Rails.root.join('data', 'exercises').freeze
   TESTS_FILE = 'tests.js'.freeze
   DESCRIPTION_FILE = 'NL.md'.freeze
+  MEDIA_DIR = 'media'.freeze
+  PUBLIC_DIR = Rails.root.join('public', 'exercises').freeze
 
   attr_accessor :name
 
@@ -19,6 +21,15 @@ class Exercise
     File.read(file) if FileTest.exists?(file)
   end
 
+  def copy_media
+    media_src = File.join(DATA_DIR, name, MEDIA_DIR)
+    media_dst = File.join PUBLIC_DIR, name
+    if FileTest.exists? media_src
+      Dir.mkdir media_dst
+      FileUtils.cp_r media_src, media_dst
+    end
+  end
+
   def self.all
     Dir.entries(DATA_DIR)
       .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') }
@@ -33,6 +44,7 @@ class Exercise
   def self.refresh
     msg = `cd #{DATA_DIR} && git pull 2>&1`
     status = $CHILD_STATUS.exitstatus
+    Exercise.all.map(&:copy_media)
     [status, msg]
   end
 

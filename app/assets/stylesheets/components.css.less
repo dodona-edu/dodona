@@ -1,0 +1,221 @@
+// icon with gray circular background on hover
+.btn-icon {
+    border-radius: 50%;
+    transition-duration: 0.2s;
+    transition-property: background-color;
+}
+.btn-icon:hover {
+    background-color: rgba(158,158,158,.2);
+}
+
+// card
+.card {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    font-weight: 400;
+    overflow: hidden;
+    z-index: 1;
+    position: relative;
+    background: white;
+    border-radius: 2px;
+    transition: box-shadow 0.2s cubic-bezier(.4,0,.2,1);
+    .shadow-z2();
+    margin-bottom: 10px;
+}
+.card-media {
+    background-color: white;
+    background-repeat: repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+    background-origin: padding-box;
+    background-attachment: scroll;
+
+    // workaround for IE11 flexbox bug
+    min-height: 2px;
+}
+.card-media img,
+.card-media object {
+    width: 100%;
+}
+.card-title {
+    align-items: flex-start;
+    color: rgb(0,0,0);
+    display: block;
+    display: flex;
+    justify-content: stretch;
+    line-height: normal;
+    padding: 16px;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+.card-title.card-title-colored {
+    background-color: @accent-500;
+}
+.card-title.card-border {
+    border-bottom: 1px solid @black-divider;
+}
+.card-title-text {
+    color: inherit;
+    display: block;
+    display: flex;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: normal;
+    overflow: hidden;
+    margin: 0;
+}
+.card-title-colored .card-title-text {
+    color: @white-text;
+}
+.card-title-image {
+    background: rgba(0, 0, 0, 0.5);
+    color: @white-text;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    height: 61px;
+    margin-top: -61px;
+    z-index: 1;
+}
+.card-subtitle-text {
+    font-size: 14px;
+    color: @black-secondary;
+    margin: 0;
+    font-weight: normal;
+    line-height: 1.1;
+}
+.card-title-colored .card-subtitle-text {
+    color: @white-secondary;
+}
+.card-supporting-text {
+    color: @black-text;
+    font-size: 14px;
+    line-height: 18px;
+    overflow: hidden;
+    padding: 16px;
+}
+.card-actions {
+    font-size: 16px;
+    line-height: normal;
+    width: 100%;
+    background-color: transparent;
+    padding: 8px;
+    box-sizing: border-box;
+    text-align: right;
+}
+.card-supporting-text.card-border,
+.card-actions.card-border {
+    border-top: 1px solid @black-divider;
+}
+.card-expand {
+    flex-grow: 1;
+}
+.card_menu {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+}
+
+// card tabs
+.card-nav,
+.card-nav .card-supporting-text {
+    overflow: visible;
+}
+.card-nav .card-title {
+    padding-bottom: 0;
+    padding-top: 11px;
+}
+.card-title .nav-tabs {
+    border: none;
+    height: 50px;
+}
+.card-title .nav-tabs li {
+    height: 50px;
+    overflow: hidden;
+    margin-bottom: -5px;
+}
+.card-title .nav-tabs li a {
+    padding-bottom: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 10px;
+    height: 55px;
+    border: none;
+    border-bottom: 5px solid @primary-500;
+    color: white;
+    font-size: 18px;
+    .transition-duration(0.2s);
+    .transition-property('height');
+    .transition-timing-function(ease-out);
+}
+.card-title .nav-tabs li.active a,
+.card-title .nav-tabs li a:hover,
+.card-title .nav-tabs li a:focus {
+    border: none;
+    color: white;
+    border-bottom: 5px solid @primary-500;
+    background: inherit;
+    height: 50px;
+}
+.card-nav .btn-icon {
+    padding: 5px;
+    margin: -5px -5px -5px -2px;
+    cursor: pointer;
+}
+.card-nav .card-title .btn-icon:hover {
+    background-color: rgba(255,255,255,.3);
+}
+.card-nav .badge {
+    background-color: @primary-500;
+
+    //color: @accent-500;
+}
+
+// text button
+.btn-text {
+    background: 0 0;
+    border: none;
+    border-radius: 2px;
+    color: @accent-500;
+    display: block;
+    position: relative;
+    height: 36px;
+    min-width: 64px;
+    padding: 0 8px;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0;
+    overflow: hidden;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 36px;
+    vertical-align: middle;
+    transition: background-color 0.2s cubic-bezier(.4,0,.2,1);
+}
+.btn-text:hover {
+    text-decoration: none;
+    color: @accent-500;
+    background-color: rgba(158,158,158,.2);
+}
+
+// info modal
+.modal-info {
+    display: none !important;
+}
+.modal-info.in,
+.modal-info.out {
+    display: flex !important;
+    height: 100%;
+}
+.modal-info .modal-dialog {
+    margin: auto;
+    transform: none !important;
+    transition: none !important;
+}
+.modal-info .help-icon {
+    font-size: 50pt;
+    margin-bottom: -10px;
+}

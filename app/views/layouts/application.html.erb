@@ -19,37 +19,50 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <%= link_to "Dodona", root_path, class: "navbar-brand" %>
+  <div id="page-wrapper">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <%= link_to "Dodona", root_path, class: "navbar-brand" %>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><%= link_to("Oefeningen", exercises_path) %></li>
+          </ul>
+        </div>
       </div>
-      <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><%= link_to("Oefeningen", exercises_path) %></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <div class="container">
-    <div class="messages">
-      <% flash.each do |key, value| %>
-        <% unless value.nil? %>
-          <%= content_tag(:div, value, :class => "alert alert-info") if key == "notice" %>
-          <%= content_tag(:div, raw("<strong>Oh snap!</strong> ")+value, :class => "alert alert-danger") if key == "error" %>
-          <%= content_tag(:div, raw("<strong>Opgepast!</strong> ")+value, :class => "alert alert-warning") if key == "alert" %>
-          <%= content_tag(:div, value, :class => "alert alert-success") if key == "success" %>
+    </nav>
+    <div class="container main">
+      <div class="messages">
+        <% flash.each do |key, value| %>
+          <% unless value.nil? %>
+            <%= content_tag(:div, value, :class => "alert alert-info") if key == "notice" %>
+            <%= content_tag(:div, raw("<strong>Oh snap!</strong> ")+value, :class => "alert alert-danger") if key == "error" %>
+            <%= content_tag(:div, raw("<strong>Opgepast!</strong> ")+value, :class => "alert alert-warning") if key == "alert" %>
+            <%= content_tag(:div, value, :class => "alert alert-success") if key == "success" %>
+          <% end %>
         <% end %>
-      <% end %>
-    </div>
+      </div>
 
-    <%= yield %>
+      <%= yield %>
+    </div>
+    <footer class="footer">
+      <div class="footer-block">
+        &copy; <%= Date.today.year %> Universiteit Gent.
+      </div>
+      <div class='footer-spacer'></div>
+      <div class="footer-block">
+        <div class='footer-version'>
+          Dodona v0.2
+        </div>
+      </div>
+    </footer>
   </div>
 </body>
 </html>

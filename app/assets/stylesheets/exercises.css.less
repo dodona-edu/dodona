@@ -6,32 +6,19 @@
     height: 300px;
 }
 
-#editor-menu {
-    margin-top: -6px;
-    margin-right: -11px;
-}
-
 /*
  * FEEDBACK TABLE
  */
-
 #feedback-table {
     font-family: monospace;
     /* use monospace font in feedback table */
 }
-
-#feedback-menu {
-    margin-top: -6px;
-    margin-right: -11px;
+#feedback table {
+   margin-top: 12px;
 }
 
 .dropdown-menu {
     margin-top: 8px;
-}
-
-#feedback-menu .badge {
-    margin-right: 10px;
-    /* some extra margin to the right of feedback menu badges */
 }
 
 #feedback-loading {
@@ -47,6 +34,12 @@
     word-break: break-word;
 }
 
+.feedback-row.danger td{
+    background-color: @danger-100 !important;
+}
+.feedback-row.success td{
+    background-color: @success-100 !important;
+}
 .feedback-row.statement {
     font-weight: bold;
     /* use bold face for feedback statements */
@@ -58,11 +51,11 @@
 }
 
 .feedback-row .added {
-    color: rgb(0, 110, 0);
+    color: @success-500;
     background-color: rgba(0, 255, 0, 0.2);
 }
 
 .feedback-row .removed {
-    color: rgb(180, 0, 0);
+    color: @danger-500;
     background-color: rgba(255, 0, 0, 0.2);
 }

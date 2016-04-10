@@ -1,73 +1,61 @@
 <!-- opgave -->
 <div class="row">
-    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-        <div class="panel panel-primary">
-            <!-- opgave header -->
-            <div class="panel-heading">
-                <h3 class="panel-title"><strong>Opgave: <%= @exercise.name %></strong></h3>
-            </div>
-            <!-- opgave body -->
-            <div class="panel-body">
-                <%= markdown(@exercise.description) %>
-            </div>
-        </div>
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">Opgave</h2>
+      </div>
+      <div class="card-supporting-text">
+        <%= markdown(@exercise.description) %>
+      </div>
     </div>
+  </div>
 </div>
-
 <!-- editor -->
 <div class="row">
-    <div class="col-sm-1 hidden-xs"></div>
-    <div class="col-sm-10 col-xs-12">
-        <div class="panel panel-primary" id="editor">
-            <!-- editor header -->
-            <div class="panel-heading">
-                <div class="btn-group pull-right" id="editor-menu">
-                    <button class="btn btn-sm btn-primary" id="editor-process-btn">
-                        <span class="glyphicon glyphicon-play"></span>
-                    </button>
-                </div>
-                <h3 class="panel-title"><strong>Indienen</strong></h3>
-            </div>
-            <!-- editor body -->
-            <div class="panel-body" id="editor-window">
-                <div id="editor-text">// voeg hier je oplossing in
-</div>
-            </div>
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card card-nav">
+      <div class="card-title card-title-colored">
+        <div class="card-title-fab">
+          <button class="btn btn-primary btn-fab" id="editor-process-btn">
+            <span class="glyphicon glyphicon-play"></span>
+          </button>
         </div>
-    </div>
-    <div class="col-sm-1 hidden-xs"></div>
-</div>
-<!-- feedback table -->
-<div class="row">
-    <div class="col-sm-1 hidden-xs"></div>
-    <div class="col-sm-10 col-xs-12">
-        <div class="panel panel-primary" id="feedback">
-            <!-- feedback table header -->
-            <div class="panel-heading">
-                <strong>Feedback</strong>
-                <span class="whirl" id="feedback-loading"></span>
-                <div class="pull-right" id="feedback-menu">
-                    correct <span class="badge" id="tests-correct">0</span>
-                    verkeerd <span class="badge" id="tests-wrong">0</span>
-                    <div class="btn-group">
-                        <span class="dropdown">
-                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="feedback-menu-btn" data-toggle="dropdown" aria-expanded="true">
-                                <span class="glyphicon glyphicon-menu-hamburger"></span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="feedback-menu-btn">
-                                <li role="presentation" id="feedback-menu-toggle-correct"><a role="menuitem" tabindex="-1" href="#">hide correct</a></li>
-                            </ul>
-                        </span>
-                    </div>
-                </div>
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#code" data-toggle="tab">Code</a></li>
+          <li><a href="#feedback" data-toggle="tab">Feedback<span class="whirl" id="feedback-loading"></span></a></li>
+        </ul>
+      </div>
+      <div class="card-supporting-text">
+        <div class="tab-content">
+          <div class="tab-pane active" id="code">
+            <div id="editor-window">
+              <div id="editor-text"></div>
             </div>
-            <!-- feedback table body -->
+          </div>
+          <div class="tab-pane" id="feedback">
+            <div id="feedback-menu">
+              <div class="btn-group">
+                <span class="dropdown">
+                  <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="feedback-menu-btn" data-toggle="dropdown" aria-expanded="true">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="feedback-menu-btn">
+                    <li role="presentation" id="feedback-menu-toggle-correct"><a role="menuitem" tabindex="-1" href="#">hide correct</a></li>
+                  </ul>
+                </span>
+              </div>
+              correct <span class="badge" id="tests-correct">0</span>
+              verkeerd <span class="badge" id="tests-wrong">0</span><br>
+            </div>
             <table class="table table-condensed">
-                <tbody id="feedback-table"></tbody>
+              <tbody id="feedback-table"></tbody>
             </table>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="col-sm-1 hidden-xs"></div>
+  </div>
 </div>
 <script type="text/javascript">
   $(function () {

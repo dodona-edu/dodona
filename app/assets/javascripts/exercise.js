@@ -8,6 +8,7 @@ function init_exercise_show(tests) {
     });
     editor.getSession().setUseWrapMode(true);
     editor.$blockScrolling = Infinity; // disable warning
+    editor.insert("// voeg hier je oplossing in\n");
     editor.gotoLine(2);
     editor.focus();
 

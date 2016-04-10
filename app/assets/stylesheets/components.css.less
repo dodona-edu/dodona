@@ -50,7 +50,7 @@
     flex-direction: column;
 }
 .card-title.card-title-colored {
-    background-color: @accent-500;
+    background-color: @primary-500;
 }
 .card-title.card-border {
     border-bottom: 1px solid @black-divider;
@@ -140,7 +140,7 @@
     margin-right: 10px;
     height: 55px;
     border: none;
-    border-bottom: 5px solid @primary-500;
+    border-bottom: 5px solid @accent-500;
     color: white;
     font-size: 18px;
     .transition-duration(0.2s);
@@ -152,7 +152,7 @@
 .card-title .nav-tabs li a:focus {
     border: none;
     color: white;
-    border-bottom: 5px solid @primary-500;
+    border-bottom: 5px solid @accent-500;
     background: inherit;
     height: 50px;
 }
@@ -165,9 +165,16 @@
     background-color: rgba(255,255,255,.3);
 }
 .card-nav .badge {
-    background-color: @primary-500;
+    background-color: @accent-500;
 
     //color: @accent-500;
+}
+
+.card-title-fab {
+    position: absolute;
+    right: 24px;
+    top: 33px;
+    z-index: 10;
 }
 
 // text button
@@ -199,6 +206,19 @@
     text-decoration: none;
     color: @accent-500;
     background-color: rgba(158,158,158,.2);
+}
+
+.btn-fab {
+    border-radius: 50%;
+    height: 56px;
+    width: 56px;
+    font-size: 24px;
+    line-height: 1;
+    margin: auto;
+
+}
+.btn-fab .glyphicon.glyphicon-play {
+    margin-left: 3px;
 }
 
 // info modal

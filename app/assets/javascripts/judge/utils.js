@@ -51,8 +51,15 @@ function display(obj) {
         return '[' + str + ']';
     } else if (typeof obj === 'object') {
         // pretty print object
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) {
+        if (obj.hasOwnProperty !== undefined &&
+            typeof obj.hasOwnProperty === 'function') {
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    keys.push(key);
+                }
+            }
+        } else {
+            for (key in obj) {
                 keys.push(key);
             }
         }

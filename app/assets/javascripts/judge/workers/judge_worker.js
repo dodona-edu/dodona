@@ -340,23 +340,45 @@ function Judge(sourceCode, tests) {
             if (typeof obj2 !== 'object') {
                 return false;
             }
+            if (obj1.key !== undefined &&
+                obj2.key !== undefined &&
+                typeof obj1[key] === 'function' &&
+                typeof obj2[key] === 'function') {
 
-            // check if all keys of obj1 are in obj2 with the same value
-            for (key in obj1) {
-                if (obj1.hasOwnProperty(key) && !equals(obj1[key], obj2[key])) {
-                    return false;
+                // check if all keys of obj1 are in obj2 with the same value
+                for (key in obj1) {
+                    if (obj1.hasOwnProperty(key) && !equals(obj1[key], obj2[key])) {
+                        return false;
+                    }
                 }
-            }
 
-            // check if all keys of obj1 are in obj2 with the same value
-            for (key in obj2) {
-                if (obj2.hasOwnProperty(key) && !equals(obj1[key], obj2[key])) {
-                    return false;
+                // check if all keys of obj1 are in obj2 with the same value
+                for (key in obj2) {
+                    if (obj2.hasOwnProperty(key) && !equals(obj1[key], obj2[key])) {
+                        return false;
+                    }
                 }
-            }
 
-            // both objects are the same
-            return true;
+                // both objects are the same
+                return true;
+            } else {
+                // check if all keys of obj1 are in obj2 with the same value
+                for (key in obj1) {
+                    if (!equals(obj1[key], obj2[key])) {
+                        return false;
+                    }
+                }
+
+                // check if all keys of obj1 are in obj2 with the same value
+                for (key in obj2) {
+                    if (!equals(obj1[key], obj2[key])) {
+                        return false;
+                    }
+                }
+
+                // both objects are the same
+                return true;
+            }
         } else {
             // check if both objects are the same using the === operator
             return obj1 === obj2;
@@ -383,8 +405,15 @@ function display(obj) {
         return '[' + str + ']';
     } else if (typeof obj === 'object') {
         // pretty print object
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) {
+        if (obj.hasOwnProperty !== undefined &&
+            typeof obj.hasOwnProperty === 'function') {
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    keys.push(key);
+                }
+            }
+        } else {
+            for (key in obj) {
                 keys.push(key);
             }
         }

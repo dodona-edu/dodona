@@ -13,6 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+
+//= require ace-rails-ap
+//= require ace/mode-javascript
+//= require ace/ext-language_tools
+
 //= require vendor
 //= require_self
 //= require_directory .

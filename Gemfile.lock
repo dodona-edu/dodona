@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    ace-rails-ap (4.0.2)
     actioncable (5.0.0.beta3)
       actionpack (= 5.0.0.beta3)
       nio4r (~> 1.2)
@@ -188,6 +189,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ace-rails-ap
   autoprefixer-rails
   byebug
   capistrano-passenger

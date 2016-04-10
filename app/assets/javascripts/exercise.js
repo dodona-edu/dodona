@@ -1,4 +1,16 @@
 function init_exercise_show(tests) {
+    // init editor
+    var editor = ace.edit("editor-text");
+    editor.getSession().setMode("ace/mode/javascript");
+    editor.setOptions({
+        showPrintMargin: false,
+        enableBasicAutocompletion: true
+    });
+    editor.getSession().setUseWrapMode(true);
+    editor.$blockScrolling = Infinity; // disable warning
+    editor.gotoLine(2);
+    editor.focus();
+
     // create feedback table
     var feedbackTable = new FeedbackTable(tests);
 
@@ -6,7 +18,7 @@ function init_exercise_show(tests) {
     $("#editor-process-btn").click(function () {
         // test submitted source code
         feedbackTable.test({
-            "source": $("#editor-text").val()
+            "source": editor.getValue()
         });
     });
 

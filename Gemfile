@@ -31,6 +31,9 @@ gem 'jbuilder', '~> 2.0'
 gem 'kramdown'
 gem 'rouge'
 
+# code editor
+gem 'ace-rails-ap'
+
 # auto css prefixer
 gem 'autoprefixer-rails'
 

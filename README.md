@@ -13,8 +13,9 @@
 * de opgave wordt ook gerenderd vanaf de markdown source
 * media (images)
 * formules (mathjax)
-* betere layout
+* betere code editor (ace)
 * home page
+* betere layout
 
 ### 0.3
 * UGent CAS login

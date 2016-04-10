@@ -14,6 +14,7 @@ function init_exercise_show(tests) {
 
     // create feedback table
     var feedbackTable = new FeedbackTable(tests);
+    $("#feedback-loading").hide();
 
     // test source code if button is clicked on editor panel
     $("#editor-process-btn").click(function () {
@@ -21,7 +22,10 @@ function init_exercise_show(tests) {
         feedbackTable.test({
             "source": editor.getValue()
         });
+        $('#exercise-feedback-link').tab('show');
     });
+
+    MathJax.Hub.Typeset();
 
     // hide/show correct test cases if button is clicked in menu on feedback
     // panel

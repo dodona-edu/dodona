@@ -239,3 +239,18 @@
     font-size: 50pt;
     margin-bottom: -10px;
 }
+
+.spinner {
+    background-color: #DDD;
+    border-radius: 100%;
+    animation: scaleout 1.5s infinite ease-in-out;
+}
+@keyframes scaleout {
+    0% {
+        transform: scale(0.0);
+    }
+    100% {
+        transform: scale(1.0);
+        opacity: 0;
+    }
+}

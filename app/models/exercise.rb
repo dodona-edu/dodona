@@ -25,7 +25,7 @@ class Exercise
     media_src = File.join(DATA_DIR, name, MEDIA_DIR)
     media_dst = File.join PUBLIC_DIR, name
     if FileTest.exists? media_src
-      Dir.mkdir media_dst
+      Dir.mkdir media_dst unless FileTest.exists? media_dst
       FileUtils.cp_r media_src, media_dst
     end
   end

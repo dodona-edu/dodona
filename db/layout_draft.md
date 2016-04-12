@@ -23,38 +23,39 @@ Tabellen:
 Kolommen per tabel
 ------------------
 
-Cursus:
+#####Cursus:
    - cursus_id
    - beschrijving
    - start
    - stop
 
-CursusContest:
+#####CursusContest:
    - cursus_id
    - contestCode
    - minerva_code
 
-Studenten:
+#####Studenten:
    - studentennummer
    - familienaam
    - voornaam
    - emailadres
+   - nickname
 
-StudentContest:
+#####StudentContest:
    - contest_id
    - studentennummer
 
-Richtingen:
+#####Richtingen:
    - studentennummer
    - opleiding
    - datum
 
-SpojAccount:
+#####SpojAccount:
    - studentennummer
    - spojAccount
    - datum
 
-Oefening:
+#####Oefening:
    - progcode
    - reeks
    - directorynaam
@@ -62,19 +63,19 @@ Oefening:
    - titel_en
    - moeilijkheid
 
-Cursus_Oefening:
+#####Cursus_Oefening:
    - cursus_id
    - progcode
    - deadline
 
-Indiening:
+#####Indiening:
    - submission_id
    - studentennummer
    - progcode
    - resultaat
    - tijdstip
 
-Evaluatie:
+#####Evaluatie:
    - evaluatie_id
    - beschrijving
    - cursus_id
@@ -82,31 +83,31 @@ Evaluatie:
    - type (1/2, EX)
    - groep
 
- EvaluatieContest:
+#####EvaluatieContest:
    - evaluatie_id
    - contestCode
    - indianio_code
 
-Evaluatie_Oefening:
+#####Evaluatie_Oefening:
    - evaluatie_id
    - progcode
 
-Evaluatie_Studenten:
+#####Evaluatie_Studenten:
    - evaluatie_id
    - studentennummer
 
- Plagiaat:
+#####Plagiaat:
    - progcode
    - cluster
    - submission_id
 
- Rankings:
+#####Rankings:
    - cursus_id
    - studentennummer
    - type
    - value
 
- Punten:
+#####Punten:
    - evaluatie_id
    - studentennummer
    - vraag

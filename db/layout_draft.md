@@ -1,7 +1,7 @@
 Database Layout Draft (gebaseerd op spoj)
 =========================================
 
-Tabellen:
+Tabellen
 ---------
    - Cursus
    - CursusContest (voor het geval er meerdere contests bij dezelfde cursus horen COMPBIO <-> PYTHIA15)

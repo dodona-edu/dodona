@@ -19,13 +19,9 @@
 
 ### 0.3
 * UGent CAS login
-* databank
+* users in databank
 * opslaan van oefeningen in de databank
-* status oefeningen
-
-### 0.4
-* bijhouden van ingediende oefeningen + status
-* JS editor?
+* opslaan van submissions in de databank
 
 ### Later
 * nodejs tests

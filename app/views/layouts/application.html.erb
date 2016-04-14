@@ -45,6 +45,10 @@
           <ul class="nav navbar-nav">
             <li><%= link_to("Oefeningen", exercises_path) %></li>
           </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><%= link_to "Afmelden", destroy_user_session_path, :method => :delete %></li>
+            <li><%= link_to "Aanmelden", new_user_session_path %></li>
+          </ul>
         </div>
       </div>
     </nav>

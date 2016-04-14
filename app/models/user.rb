@@ -14,4 +14,5 @@
 #
 
 class User < ApplicationRecord
+  enum status: [:student, :teacher, :zeus]
 end

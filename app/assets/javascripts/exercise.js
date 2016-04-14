@@ -42,4 +42,6 @@ function init_exercise_show(tests) {
         $(this).dropdown('toggle');
         return false;
     });
+
+    init_lightboxes();
 }

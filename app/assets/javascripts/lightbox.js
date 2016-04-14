@@ -1,4 +1,4 @@
-$(function() {
+function init_lightboxes() {
     $("img[class=lightbox]").click(function() {
         var imagesrc = $(this).attr('src');
         var alttext = $(this).attr('alt')
@@ -12,4 +12,4 @@ $(function() {
             },
         });
     });
-});
+};

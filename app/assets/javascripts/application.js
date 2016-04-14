@@ -25,7 +25,6 @@
 //= require judge/diff.js
 //= require judge/feedbackTable.js
 
-//= require strip.pkgd.min.js
 //= require lightbox.js
 $(function () {
     if (!(Modernizr.templatestrings && Modernizr.webworkers)) {

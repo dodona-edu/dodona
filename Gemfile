@@ -37,6 +37,10 @@ gem 'ace-rails-ap'
 # auto css prefixer
 gem 'autoprefixer-rails'
 
+# cas authentication
+gem 'devise', '4.0.0.rc2'
+gem 'devise_cas_authenticatable'
+
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development

@@ -340,10 +340,10 @@ function Judge(sourceCode, tests) {
             if (typeof obj2 !== 'object') {
                 return false;
             }
-            if (obj1.key !== undefined &&
-                obj2.key !== undefined &&
-                typeof obj1[key] === 'function' &&
-                typeof obj2[key] === 'function') {
+            if (obj1.hasOwnProperty !== undefined &&
+                obj2.hasOwnProperty !== undefined &&
+                typeof obj1.hasOwnProperty === 'function' &&
+                typeof obj2.hasOwnProperty === 'function') {
 
                 // check if all keys of obj1 are in obj2 with the same value
                 for (key in obj1) {

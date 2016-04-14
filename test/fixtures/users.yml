@@ -8,7 +8,7 @@
 #  first_name :string(255)
 #  last_name  :string(255)
 #  email      :string(255)
-#  type       :integer          default("0")
+#  permission :integer          default("0")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

@@ -41,6 +41,9 @@ gem 'autoprefixer-rails'
 gem 'devise', '4.0.0.rc2'
 gem 'devise_cas_authenticatable'
 
+# db annotations
+gem 'annotate'
+
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development

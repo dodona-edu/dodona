@@ -12,6 +12,7 @@ Rails.application.config.assets.version = '1.0'
 
 Rails.application.config.assets.precompile += ['judge/workers/judge_worker.js']
 Rails.application.config.assets.nodigest = ['judge/workers/judge_worker.js', 'judge/diff.js']
+Rails.application.config.assets.nodigest_strip = ['close.png','close.svg','error.png','error.svg','next-faded.png','next-small-faded.png','next-small.png','next-small.svg','next.png','next.svg','previous-faded.png','previous-small-faded.png','previous-small.png','previous-small.svg','previous.png','previous.svg']
 Rails.application.config.assets.nodigest_fonts = ['glyphicons-halflings-regular.eot', 'glyphicons-halflings-regular.svg', 'glyphicons-halflings-regular.ttf', 'glyphicons-halflings-regular.woff', 'glyphicons-halflings-regular.woff2']
 
 Rails.application.config.assets.paths << "#{Rails.root}/vendor/assets/fonts"

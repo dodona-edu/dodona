@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20160414085323) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
-    t.integer  "type",       default: 0
+    t.integer  "permission", default: 0
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end

@@ -15,4 +15,6 @@
 
 class User < ApplicationRecord
   enum status: [:student, :teacher, :zeus]
+
+  devise :cas_authenticatable
 end

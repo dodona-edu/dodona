@@ -16,14 +16,14 @@ Tabellen
 
 Kolommen per tabel
 ------------------
-#####User:
+#####Users:
    - id
-   - studentennummer
-   - familienaam
-   - voornaam
-   - emailadres
-   - username
-   - type (student/teacher/zeus)
+   - username:string
+   - ugent_id:string
+   - first_name:string
+   - last_name:string
+   - email:string
+   - type:integer (student/teacher/zeus)
 
 #####Exercise:
    - id
@@ -43,7 +43,7 @@ Kolommen per tabel
    - series_id
    - end
    - harddeadline (true/false)
-   
+
 #####Course:
    - id
    - name

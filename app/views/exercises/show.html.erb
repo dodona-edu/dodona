@@ -60,6 +60,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_exercise_show(`<%= raw(@exercise.tests.gsub('\\', '\\\\\\\\')) %>`);
+    init_exercise_show(`<%= raw(@exercise.tests.gsub('\\', '\\\\\\\\').gsub("$","\\$").gsub("{","\\{")) %>`);
   });
 </script>

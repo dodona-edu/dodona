@@ -128,6 +128,8 @@ GEM
       mini_portile2 (~> 2.0.0.rc2)
     orm_adapter (0.5.0)
     puma (3.3.0)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     rack (2.0.0.alpha)
       json
     rack-test (0.6.3)
@@ -226,6 +228,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)
   puma
+  pundit
   rails (>= 5.0.0.beta3, < 5.1)
   rouge
   spring

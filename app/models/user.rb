@@ -22,6 +22,10 @@ class User < ApplicationRecord
     first_name + " " + last_name
   end
 
+  def admin?
+    teacher? or zeus?
+  end
+
   def cas_extra_attributes=(extra_attributes)
     extra_attributes.each do |name, value|
       case name.to_sym

@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '>= 5.0.0.beta3', '< 5.1'
 # Use mysql as the database for Active Record
@@ -40,6 +39,9 @@ gem 'autoprefixer-rails'
 # cas authentication
 gem 'devise', '4.0.0.rc2'
 gem 'devise_cas_authenticatable'
+
+# authorization
+gem 'pundit'
 
 # db annotations
 gem 'annotate'

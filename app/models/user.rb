@@ -18,6 +18,10 @@ class User < ApplicationRecord
 
   devise :cas_authenticatable
 
+  def full_name
+    first_name + " " + last_name
+  end
+
   def cas_extra_attributes=(extra_attributes)
     extra_attributes.each do |name, value|
       case name.to_sym

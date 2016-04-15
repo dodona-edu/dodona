@@ -1,0 +1,28 @@
+<%= form_for(user, :html => {:class => 'form-horizontal'}) do |f| %>
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "fout") %> verhinderden het opslaan:</h2>
+      <ul>
+        <% user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field form-group">
+    <%= f.label :username, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :username, class: "form-control" , disabled: true %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :first_name, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :first_name, class: "form-control" %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :last_name, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :last_name, class: "form-control" %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :email, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.email_field :email, class: "form-control" %></div>
+  </div>
+<% end %>

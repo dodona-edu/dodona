@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card exercise-description">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @user.full_name %></h2>
+        <div class="card-title-fab">
+          <%= link_to edit_user_path(@user), class: "btn btn-primary btn-fab" do %>
+            <span class="glyphicon glyphicon-pencil"></span>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-supporting-text">
+        <p>
+          <strong>Voornaam:</strong> <%= @user.first_name %>
+        </p>
+        <p>
+          <strong>Familienaam:</strong> <%= @user.last_name %>
+        </p>
+        <p>
+          <strong>Gebruikersnaam:</strong> <%= @user.username %>
+        </p>
+        <p>
+          <strong>email:</strong> <%= @user.email %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

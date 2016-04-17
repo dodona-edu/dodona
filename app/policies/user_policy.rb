@@ -6,6 +6,30 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index?
-    user.admin?
+    user && user.admin?
+  end
+
+  def show?
+    user && (user.admin? || user.id == record.id)
+  end
+
+  def new?
+    user && user.zeus?
+  end
+
+  def edit?
+    user && user.zeus?
+  end
+
+  def create?
+    user && user.zeus?
+  end
+
+  def update?
+    user && user.zeus?
+  end
+
+  def destroy?
+    user && user.zeus?
   end
 end

@@ -335,6 +335,8 @@ function Judge(sourceCode, tests) {
             return true;
         } else if (typeof obj1 === undefined) {
             return obj2 === undefined;
+        } else if (obj1 === null) {
+            return obj2 === null;
         } else if (typeof obj1 === 'object') {
             // check if second object is also an object
             if (typeof obj2 !== 'object') {

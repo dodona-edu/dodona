@@ -10,19 +10,23 @@
     </div>
   <% end %>
   <div class="field form-group">
-    <%= f.label :username, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :username, class: "form-control" , disabled: true %></div>
+    <%= f.label :username, "Gebruikersnaam", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :username, class: "form-control" , disabled: !current_user.zeus? %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :first_name, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :first_name, class: "form-control" %></div>
+    <%= f.label :first_name, "Voornaam", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :first_name, class: "form-control" , disabled: !current_user.zeus? %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :last_name, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :last_name, class: "form-control" %></div>
+    <%= f.label :last_name, "Familienaam", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :last_name, class: "form-control" , disabled: !current_user.zeus? %></div>
   </div>
   <div class="field form-group">
     <%= f.label :email, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.email_field :email, class: "form-control" %></div>
+    <div class="col-sm-4"><%= f.email_field :email, class: "form-control" , disabled: !current_user.zeus? %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :permission, "Type", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.select :permission, User.permissions.map { |key, value| [key.humanize, key] }, {}, { :class => 'form-control' } %></div>
   </div>
 <% end %>

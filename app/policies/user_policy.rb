@@ -18,7 +18,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def edit?
-    user && user.zeus?
+    user && user.admin?
   end
 
   def create?
@@ -26,10 +26,22 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user && user.zeus?
+    Rails.logger.debug "user" + user.permission
+      Rails.logger.debug "record" + record.permission
+    user && (user.zeus? || (user.teacher? && !record.zeus?))
   end
 
   def destroy?
     user && user.zeus?
+  end
+
+  def permitted_attributes
+    if user && user.zeus?
+      [:username, :ugent_id, :first_name, :last_name, :email, :permission]
+    elsif user && user.teacher?
+      [:permission]
+    else
+      []
+    end
   end
 end

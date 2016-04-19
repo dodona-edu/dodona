@@ -18,6 +18,7 @@
               <th>Gebruikersnaam</th>
               <th>Naam</th>
               <th>Email</th>
+              <th>Type</th>
               <th></th>
             </tr>
           </thead>
@@ -27,6 +28,7 @@
                 <td><%= link_to user.username, user %></td>
                 <td><%= user.full_name %> </td>
                 <td><%= user.email %> </td>
+                <td><%= user.permission %> </td>
                 <td class="actions">
                   <% if policy(user).edit? %>
                     <%= link_to edit_user_path(user), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>

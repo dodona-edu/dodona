@@ -127,7 +127,7 @@ FeedbackTable.method('test', function (args) {
     if (!!window.Worker) {
         try {
             // create a new JavaScript Judge
-            var judge = new Worker("/assets/judge/workers/judge_worker.js");
+            var judge = new Worker("/assets/judge/workers/judge_worker.js?1");
 
             // perform actions if test case has been evaluated
             judge.onmessage = function (e) {

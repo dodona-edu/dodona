@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :exercises, only: [:index, :show]
   resources :users
+  resources :tutor
 
   # Webhooks
   match '/webhooks/update_exercises', via: [:get, :post], :to => 'webhooks#update_exercises'

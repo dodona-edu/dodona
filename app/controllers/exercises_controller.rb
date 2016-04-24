@@ -4,9 +4,9 @@ class ExercisesController < ApplicationController
   end
 
   def show
-    @exercise = Exercise.find(params[:id])
+    @exercise = Exercise.find_by_name(params[:name])
     if @exercise.nil?
-      redirect_to exercises_path, alert: "Sorry, we kunnen de oefening #{params[:id]} niet vinden."
+      redirect_to exercises_path, alert: "Sorry, we kunnen de oefening #{params[:name]} niet vinden."
     end
   end
 end

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root 'pages#home'
 
-  resources :exercises, only: [:index, :show]
+  resources :exercises, only: [:index, :show], param: :name
   resources :users
 
   # Webhooks

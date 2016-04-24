@@ -39,9 +39,13 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    annotate (2.6.5)
+      activerecord (>= 2.3.0)
+      rake (>= 0.8.7)
     arel (7.0.0)
     autoprefixer-rails (6.3.6)
       execjs
+    bcrypt (3.1.11)
     builder (3.2.2)
     byebug (8.2.2)
     capistrano (3.4.0)
@@ -69,6 +73,15 @@ GEM
     commonjs (0.2.7)
     concurrent-ruby (1.0.1)
     debug_inspector (0.0.2)
+    devise (4.0.0.rc2)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0, < 5.1)
+      responders
+      warden (~> 1.2.3)
+    devise_cas_authenticatable (1.7.1)
+      devise (>= 1.2.0)
+      rubycas-client (>= 2.2.1)
     erubis (2.7.0)
     execjs (2.6.0)
     ffi (1.9.10)
@@ -113,7 +126,10 @@ GEM
     nio4r (1.2.1)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    orm_adapter (0.5.0)
     puma (3.3.0)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     rack (2.0.0.alpha)
       json
     rack-test (0.6.3)
@@ -149,7 +165,11 @@ GEM
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     ref (2.0.0)
+    responders (2.1.2)
+      railties (>= 4.2.0, < 5.1)
     rouge (1.10.1)
+    rubycas-client (2.3.9)
+      activesupport
     spring (1.6.4)
     spring-watcher-listen (2.0.0)
       listen (>= 2.7, < 4.0)
@@ -177,6 +197,8 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
+    warden (1.2.6)
+      rack (>= 1.0)
     web-console (3.1.1)
       activemodel (>= 4.2)
       debug_inspector
@@ -190,12 +212,15 @@ PLATFORMS
 
 DEPENDENCIES
   ace-rails-ap
+  annotate
   autoprefixer-rails
   byebug
   capistrano-passenger
   capistrano-rails
   capistrano-rvm
   coffee-rails (~> 4.1.0)
+  devise (= 4.0.0.rc2)
+  devise_cas_authenticatable
   jbuilder (~> 2.0)
   jquery-rails
   kramdown
@@ -203,6 +228,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)
   puma
+  pundit
   rails (>= 5.0.0.beta3, < 5.1)
   rouge
   spring

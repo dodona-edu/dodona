@@ -1,0 +1,34 @@
+<%= form_for(user, :html => {:class => 'form-horizontal'}) do |f| %>
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "fout") %> verhinderden het opslaan:</h2>
+      <ul>
+        <% user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field form-group">
+    <%= f.label :username, "Gebruikersnaam", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :username, class: "form-control" , disabled: !f.hasPermission?(:username) %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :first_name, "Voornaam", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :first_name, class: "form-control" , disabled: !f.hasPermission?(:first_name) %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :last_name, "Familienaam", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :last_name, class: "form-control" , disabled: !f.hasPermission?(:last_name) %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :email, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.email_field :email, class: "form-control" , disabled: !f.hasPermission?(:email) %></div>
+  </div>
+  <% if f.hasPermission?(:permission) %>
+    <div class="field form-group">
+      <%= f.label :permission, "Type", :class => "col-sm-2 control-label" %>
+      <div class="col-sm-4"><%= f.select :permission, editable_permissions.map { |key, value| [key.humanize, key] }, {}, { :class => 'form-control', disabled: !can_edit_permissions?(user) } %></div>
+    </div>
+  <% end %>
+<% end %>

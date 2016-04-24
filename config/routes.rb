@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
+  devise_for :users
   root 'pages#home'
 
   resources :exercises, only: [:index, :show]
+  resources :users
 
   # Webhooks
   match '/webhooks/update_exercises', via: [:get, :post], :to => 'webhooks#update_exercises'

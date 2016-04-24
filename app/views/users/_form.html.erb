@@ -14,6 +14,10 @@
     <div class="col-sm-4"><%= f.text_field :username, class: "form-control" , disabled: !f.hasPermission?(:username) %></div>
   </div>
   <div class="field form-group">
+    <%= f.label :ugent_id, "UGent ID", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :ugent_id, class: "form-control" , disabled: !f.hasPermission?(:ugent_id) %></div>
+  </div>
+  <div class="field form-group">
     <%= f.label :first_name, "Voornaam", :class => "col-sm-2 control-label" %>
     <div class="col-sm-4"><%= f.text_field :first_name, class: "form-control" , disabled: !f.hasPermission?(:first_name) %></div>
   </div>

@@ -35,6 +35,8 @@ class User < ApplicationRecord
         self.first_name = value
       when :surname
         self.last_name = value
+      when :ugentID
+        self.ugent_id = value
       end
     end
   end

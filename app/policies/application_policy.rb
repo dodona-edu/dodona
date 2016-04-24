@@ -11,7 +11,7 @@ class ApplicationPolicy
   end
 
   def show?
-    scope.where(:id => record.id).exists?
+    scope.where(id: record.id).exists?
   end
 
   def create?
@@ -36,6 +36,14 @@ class ApplicationPolicy
 
   def scope
     Pundit.policy_scope!(user, record.class)
+  end
+
+  def permits_attributes?(*attrs)
+    attrs.all? { |e| permitted_attributes.include?(e) }
+  end
+
+  def permits_attribute?(attr)
+    permits_attributes?(attr)
   end
 
   class Scope

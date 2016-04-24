@@ -26,8 +26,6 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    Rails.logger.debug "user" + user.permission
-      Rails.logger.debug "record" + record.permission
     user && (user.zeus? || (user.teacher? && !record.zeus?))
   end
 

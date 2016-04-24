@@ -1,0 +1,22 @@
+<%= form_for(exercise, :url => exercise_path(exercise.name), :html => {:class => 'form-horizontal'}) do |f| %>
+  <% if exercise.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(exercise.errors.count, "fout") %> verhinderden het opslaan:</h2>
+      <ul>
+        <% exercise.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field form-group">
+    <%= f.label :name, "Naam", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :name, class: "form-control" , disabled: !f.hasPermission?(:name) %></div>
+  </div>
+  <% if f.hasPermission?(:visibility) %>
+    <div class="field form-group">
+      <%= f.label :visibility, "Zichtbaarheid", :class => "col-sm-2 control-label" %>
+      <div class="col-sm-4"><%= f.select :visibility, Exercise.visibilities.map { |key, value| [key.humanize, key] }, {}, { :class => 'form-control', disabled: !f.hasPermission?(:visibility) } %></div>
+    </div>
+  <% end %>
+<% end %>

@@ -1,5 +1,5 @@
 class ExercisesController < ApplicationController
-  before_action :set_exercise, only: [:show]
+  before_action :set_exercise, only: [:show, :edit, :update]
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: "Sorry, we kunnen de oefening #{params[:name]} niet vinden."
@@ -11,6 +11,23 @@ class ExercisesController < ApplicationController
   end
 
   def show
+    flash.now[:notice] = 'Deze oefening is niet toegankelijk voor studenten.' if @exercise.closed?
+    flash.now[:notice] = 'Deze oefening is niet zichtbaar voor studenten.' if @exercise.hidden? && current_user && current_user.admin?
+  end
+
+  def edit
+  end
+
+  def update
+    respond_to do |format|
+      if @exercise.update(permitted_attributes(@exercise))
+        format.html { redirect_to exercise_path(@exercise.name), flash: { success: 'De oefening werd succesvol aangepast.' } }
+        format.json { render :show, status: :ok, location: @exercise }
+      else
+        format.html { render :edit }
+        format.json { render json: @exercise.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   private

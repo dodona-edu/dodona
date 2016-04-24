@@ -4,6 +4,13 @@
     <div class="card exercise-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @exercise.name.titleize %></h2>
+        <% if policy(@exercise).edit? %>
+          <div class="card-title-fab">
+            <%= link_to edit_exercise_path(@exercise.name), class: "btn btn-primary btn-fab" do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+            <% end %>
+          </div>
+        <% end %>
       </div>
       <div class="card-supporting-text">
         <%= markdown(@exercise.description) %>

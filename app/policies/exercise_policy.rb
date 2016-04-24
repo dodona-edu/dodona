@@ -16,4 +16,20 @@ class ExercisePolicy < ApplicationPolicy
   def show?
     !record.closed? || (user && user.admin?)
   end
+
+  def edit?
+    user && user.admin?
+  end
+
+  def update?
+    user && user.admin?
+  end
+
+  def permitted_attributes
+    if user && user.admin?
+      [:visibility]
+    else
+      []
+    end
+  end
 end

@@ -1,4 +1,4 @@
-function init_exercise_show(tests) {
+function init_exercise_show(exerciseId, loggedIn, tests) {
     var editor;
 
     function init() {
@@ -16,6 +16,9 @@ function init_exercise_show(tests) {
                 "source": editor.getValue()
             });
             $('#exercise-feedback-link').tab('show');
+            if (loggedIn) {
+                submitSolution(editor.getValue(), 42);
+            }
         });
 
         MathJax.Hub.Typeset();
@@ -66,6 +69,16 @@ function init_exercise_show(tests) {
                     maxHeight: 10
                 },
             });
+        });
+    }
+
+    function submitSolution(code, result) {
+        $.post("/submissions.json", {
+            submission: {
+                code: code,
+                result: result,
+                exercise_id: exerciseId
+            }
         });
     }
 

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   resources :exercises, only: [:index, :show, :edit, :update], param: :name
+  resources :submissions, only: [:index, :show, :create]
   resources :users
 
   # Webhooks

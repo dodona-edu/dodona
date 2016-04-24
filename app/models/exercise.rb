@@ -4,7 +4,7 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string(255)
-#  visibility :integer
+#  visibility :integer          default("0")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -17,6 +17,8 @@ class Exercise < ApplicationRecord
   PUBLIC_DIR = Rails.root.join('public', 'exercises').freeze
 
   enum visibility: [:open, :hidden, :closed]
+
+  has_many :submissions
 
   def tests
     file = File.join(DATA_DIR, name, TESTS_FILE)

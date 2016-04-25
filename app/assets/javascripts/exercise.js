@@ -14,13 +14,24 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         // test source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
             // test submitted source code
+            var source = editor.getValue();
             feedbackTable.test({
-                "source": editor.getValue()
+                "source": source
+            }).then(function (data) {
+                var result = "";
+                var status = "";
+                if (loggedIn) {
+                    if (data.status === "timeout") {
+                        status = "timeout";
+                        result = "timeout";
+                    } else {
+                        result = data.correct + " correct, " + data.wrong + " verkeerd";
+                        status = data.wrong === 0 ? "correct" : "wrong";
+                    }
+                    submitSolution(source, result, status);
+                }
             });
             $('#exercise-feedback-link').tab('show');
-            if (loggedIn) {
-                submitSolution(editor.getValue(), 42);
-            }
         });
 
         MathJax.Hub.Typeset();
@@ -28,13 +39,13 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         // hide/show correct test cases if button is clicked in menu on feedback
         // panel
         $("#feedback-menu-toggle-correct").click(function () {
-            if ($("a", this).html() === "hide correct") {
+            if ($("a", this).html() === "verberg correct") {
                 // hide correct test cases
-                $("a", this).html("show correct");
+                $("a", this).html("toon correct");
                 $(".AC").hide();
             } else {
                 // show correct test cases
-                $("a", this).html("hide correct");
+                $("a", this).html("verberg correct");
                 $(".AC").show();
             }
             $(this).dropdown('toggle');
@@ -74,11 +85,12 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         });
     }
 
-    function submitSolution(code, result) {
+    function submitSolution(code, result, status) {
         $.post("/submissions.json", {
             submission: {
                 code: code,
                 result: result,
+                status: status,
                 exercise_id: exerciseId
             }
         });

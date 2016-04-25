@@ -1,7 +1,13 @@
 class SubmissionPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope
+      if user && user.admin?
+        scope.all
+      elsif user
+        scope.of_user(user)
+      else
+        scope.none
+      end
     end
   end
 
@@ -18,6 +24,6 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    [:code, :result, :exercise_id]
+    [:code, :result, :status, :exercise_id]
   end
 end

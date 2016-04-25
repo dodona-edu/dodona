@@ -6,9 +6,10 @@
 #  exercise_id :integer
 #  user_id     :integer
 #  code        :text(65535)
-#  result      :integer          default("0")
+#  result      :text(65535)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  status      :integer
 #
 
 require 'test_helper'

@@ -12,13 +12,23 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         // test source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
             // test submitted source code
+            var source = editor.getValue();
             feedbackTable.test({
-                "source": editor.getValue()
+                "source": source
+            }).then(function (data) {
+                var result = "";
+                var status = "";
+                if (loggedIn) {
+                    if (data.status === "timeout") {
+                        status = "timeout";
+                    } else {
+                        result = data.correct + " correct, " + data.wrong + " wrong";
+                        status = data.wrong === 0 ? "correct" : "wrong";
+                    }
+                    submitSolution(source, result, status);
+                }
             });
             $('#exercise-feedback-link').tab('show');
-            if (loggedIn) {
-                submitSolution(editor.getValue(), 42);
-            }
         });
 
         MathJax.Hub.Typeset();
@@ -72,11 +82,11 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         });
     }
 
-    function submitSolution(code, result) {
+    function submitSolution(code, result, status) {
         $.post("/submissions.json", {
             submission: {
                 code: code,
-                result: result,
+                result: 0,
                 exercise_id: exerciseId
             }
         });

@@ -1,7 +1,13 @@
 class SubmissionPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope
+      if user && user.admin?
+        scope.all
+      elsif user
+        scope.of_user(user)
+      else
+        scope.none
+      end
     end
   end
 

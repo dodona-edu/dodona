@@ -18,7 +18,6 @@
     </div>
   </div>
 </div>
-<!-- editor -->
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card card-nav">
@@ -31,6 +30,7 @@
         <ul class="nav nav-tabs">
           <li class="active"><a href="#code" data-toggle="tab">Code</a></li>
           <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link'>Feedback</a></li>
+          <li><a href="#submissions" data-toggle="tab" id='exercise-submission-link'>Oplossingen</a></li>
           <div class="spinner" id="feedback-loading"></div>
         </ul>
       </div>
@@ -59,6 +59,29 @@
             <table class="table table-condensed">
               <tbody id="feedback-table"></tbody>
             </table>
+          </div>
+          <div class="tab-pane fade" id="submissions">
+            <% if !user_signed_in? %>
+              <div class="alert alert-info">Log in om je oplossingen op te slaan.</div>
+            <% elsif @submissions.length > 0 %>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <% if current_user.admin? %>
+                      <th>Gebruiker</th>
+                    <% end %>
+                    <th>Tijdstip</th>
+                    <th>Resultaat</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%= render @submissions %>
+                </tbody>
+              </table>
+            <% else %>
+              <div class="alert alert-info">Klik op de play-knop om je oplossing te testen en in te dienen.</div>
+            <% end %>
           </div>
         </div>
       </div>

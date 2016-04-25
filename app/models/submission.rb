@@ -14,4 +14,6 @@
 class Submission < ApplicationRecord
   belongs_to :exercise
   belongs_to :user
+
+  scope :of_user, ->(user) { where user_id: user.id }
 end

@@ -13,6 +13,7 @@ class ExercisesController < ApplicationController
   def show
     flash.now[:notice] = 'Deze oefening is niet toegankelijk voor studenten.' if @exercise.closed?
     flash.now[:notice] = 'Deze oefening is niet zichtbaar voor studenten.' if @exercise.hidden? && current_user && current_user.admin?
+    @submissions = policy_scope(@exercise.submissions)
   end
 
   def edit

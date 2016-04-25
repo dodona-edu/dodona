@@ -21,8 +21,9 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
                 if (loggedIn) {
                     if (data.status === "timeout") {
                         status = "timeout";
+                        result = "timeout";
                     } else {
-                        result = data.correct + " correct, " + data.wrong + " wrong";
+                        result = data.correct + " correct, " + data.wrong + " verkeerd";
                         status = data.wrong === 0 ? "correct" : "wrong";
                     }
                     submitSolution(source, result, status);
@@ -36,13 +37,13 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         // hide/show correct test cases if button is clicked in menu on feedback
         // panel
         $("#feedback-menu-toggle-correct").click(function () {
-            if ($("a", this).html() === "hide correct") {
+            if ($("a", this).html() === "verberg correct") {
                 // hide correct test cases
-                $("a", this).html("show correct");
+                $("a", this).html("toon correct");
                 $(".AC").hide();
             } else {
                 // show correct test cases
-                $("a", this).html("hide correct");
+                $("a", this).html("verberg correct");
                 $(".AC").show();
             }
             $(this).dropdown('toggle');
@@ -86,7 +87,8 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         $.post("/submissions.json", {
             submission: {
                 code: code,
-                result: 0,
+                result: result,
+                status: status,
                 exercise_id: exerciseId
             }
         });

@@ -13,6 +13,8 @@
 #
 
 class Submission < ApplicationRecord
+  enum status: [:unknown, :correct, :wrong, :timeout]
+
   belongs_to :exercise
   belongs_to :user
 

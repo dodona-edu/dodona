@@ -51,6 +51,9 @@ gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development
 gem 'capistrano-rvm', group: :development
 
+# i18n
+gem 'rails-i18n', '~> 5.0.0.beta3' # For 5.0.0.beta3
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

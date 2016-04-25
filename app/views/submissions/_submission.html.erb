@@ -5,7 +5,7 @@
     </td>
   <% end %>
   <td>
-    <span title="<%= submission.created_at.in_time_zone("CET").to_s(:long) %>"><%= time_ago_in_words submission.created_at %></span>
+    <span title="<%= submission.created_at.in_time_zone("CET").to_s(:long) %>"><%= time_ago_in_words submission.created_at %> geleden</span>
   </td>
   <td>
     <%= submission.result %>

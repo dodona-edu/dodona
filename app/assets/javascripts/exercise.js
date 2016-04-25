@@ -5,6 +5,8 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         initEditor();
         initLightboxes();
 
+        centerImagesAndTables();
+
         // create feedback table
         var feedbackTable = new FeedbackTable(tests);
         $("#feedback-loading").hide();
@@ -80,6 +82,11 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
                 exercise_id: exerciseId
             }
         });
+    }
+
+    function centerImagesAndTables() {
+        $(".exercise-description p > img").parent().wrapInner("<center></center>");
+        $(".exercise-description table").wrap("<center></center>");
     }
 
     init();

@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     authorize User
-    @users = User.all
+    @users = User.all.order(permission: :desc, username: :asc)
   end
 
   # GET /users/1

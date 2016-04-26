@@ -4,6 +4,10 @@ class SubmissionsController < ApplicationController
   def index
     authorize Submission
     @submissions = policy_scope(Submission)
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+      @submissions = @submissions.of_user(@user)
+    end
     if params[:exercise_name]
       @exercise = Exercise.find_by_name(params[:exercise_name])
       @submissions = @submissions.of_exercise(@exercise)

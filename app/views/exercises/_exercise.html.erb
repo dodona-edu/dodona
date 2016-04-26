@@ -1,3 +1,19 @@
-<li>
-  <%= link_to exercise.name.titleize, exercise_path(exercise.name) %>
-</li>
+<tr>
+  <td>
+    <%= link_to exercise.name.titleize, exercise_path(exercise.name) %>
+  </td>
+  <td>
+    <span title="zoveel studenten hebben deze oefening correct opgelost"><%= exercise.users_correct %>/<%= exercise.users_tried %></span>
+  </td>
+  <% if user_signed_in? %>
+  <td>
+    <% if :correct == exercise.status_for(current_user) %>
+      <%= link_to "correct", exercise.last_correct_submission(current_user) %>
+    <% elsif :wrong == exercise.status_for(current_user) %>
+      <%= link_to "verkeerd", exercise.last_submission(current_user) %>
+    <% else %>
+      niet opgelost
+    <% end %>
+  </td>
+  <% end %>
+</tr>

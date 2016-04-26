@@ -16,6 +16,8 @@
 class User < ApplicationRecord
   enum permission: [:student, :teacher, :zeus]
 
+  has_many :submissions
+
   devise :cas_authenticatable
 
   def full_name

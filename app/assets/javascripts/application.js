@@ -30,3 +30,16 @@ $(function () {
         $(".messages").append("<div class='alert alert-warning'>Sorry, je browser lijkt niet alle nodige JavaScript features te ondersteunen. Met een recente versie van Google Chrome of Firefox zou alles moeten werken.</div>")
     }
 });
+
+/**
+ * requestAnimationFrame shim
+ * source: http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+ */
+window.requestAnimFrame = (function () {
+    return  window.requestAnimationFrame       ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame    ||
+            function (callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+})();

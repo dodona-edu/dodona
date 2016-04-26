@@ -1,4 +1,4 @@
-function init_exercise_show(tests) {
+function init_exercise_show(exerciseId, loggedIn, tests) {
     var editor;
 
     function init() {
@@ -14,8 +14,22 @@ function init_exercise_show(tests) {
         // test source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
             // test submitted source code
+            var source = editor.getValue();
             feedbackTable.test({
-                "source": editor.getValue()
+                "source": source
+            }).then(function (data) {
+                var result = "";
+                var status = "";
+                if (loggedIn) {
+                    if (data.status === "timeout") {
+                        status = "timeout";
+                        result = "timeout";
+                    } else {
+                        result = data.correct + " correct, " + data.wrong + " verkeerd";
+                        status = data.wrong === 0 ? "correct" : "wrong";
+                    }
+                    submitSolution(source, result, status);
+                }
             });
             $('#exercise-feedback-link').tab('show');
         });
@@ -25,13 +39,13 @@ function init_exercise_show(tests) {
         // hide/show correct test cases if button is clicked in menu on feedback
         // panel
         $("#feedback-menu-toggle-correct").click(function () {
-            if ($("a", this).html() === "hide correct") {
+            if ($("a", this).html() === "verberg correct") {
                 // hide correct test cases
-                $("a", this).html("show correct");
+                $("a", this).html("toon correct");
                 $(".AC").hide();
             } else {
                 // show correct test cases
-                $("a", this).html("hide correct");
+                $("a", this).html("verberg correct");
                 $(".AC").show();
             }
             $(this).dropdown('toggle');
@@ -74,6 +88,23 @@ function init_exercise_show(tests) {
     function centerImagesAndTables() {
         $(".exercise-description p > img").parent().wrapInner("<center></center>");
         $(".exercise-description table").wrap("<center></center>");
+    }
+
+    function submitSolution(code, result, status) {
+        $.post("/submissions.json", {
+                submission: {
+                    code: code,
+                    result: result,
+                    status: status,
+                    exercise_id: exerciseId
+                }
+            }).done(function () {
+                showNotification("Oplossing opgeslagen");
+                $.get("submissions.js");
+            })
+            .fail(function () {
+                $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button><strong>Opgepast!</strong> Er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent.</div>').insertAfter("#feedback-menu").show("fast");
+            });
     }
 
     init();

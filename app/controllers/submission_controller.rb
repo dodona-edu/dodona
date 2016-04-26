@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :set_user, only: [:show]
+  before_action :set_submission, only: [:show]
 
   def index
     authorize Submission

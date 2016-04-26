@@ -85,13 +85,18 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
 
     function submitSolution(code, result, status) {
         $.post("/submissions.json", {
-            submission: {
-                code: code,
-                result: result,
-                status: status,
-                exercise_id: exerciseId
-            }
-        });
+                submission: {
+                    code: code,
+                    result: result,
+                    status: status,
+                    exercise_id: exerciseId
+                }
+            }).done(function () {
+                showNotification("Oplossing opgeslagen");
+            })
+            .fail(function () {
+                $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button><strong>Opgepast!</strong> Er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent.</div>').insertAfter("#feedback-menu").show("fast");
+            });
     }
 
     init();

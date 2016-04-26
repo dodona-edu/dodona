@@ -6,7 +6,9 @@ Rails.application.routes.draw do
     resources :submissions, only: [:index, :create]
   end
   resources :submissions, only: [:index, :show, :create]
-  resources :users
+  resources :users do
+    resources :submissions, only: [:index]
+  end
 
   # Webhooks
   match '/webhooks/update_exercises', via: [:get, :post], :to => 'webhooks#update_exercises'

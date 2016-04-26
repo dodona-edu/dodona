@@ -42,6 +42,9 @@
           <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               <li><%= link_to("Oefeningen", exercises_path) %></li>
+              <% if user_signed_in? %>
+                <li><%= link_to("Mijn oplossingen", submissions_path) %></li>
+              <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <% if user_signed_in? %>

@@ -85,20 +85,26 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         });
     }
 
-    function submitSolution(code, result, status) {
-        $.post("/submissions.json", {
-            submission: {
-                code: code,
-                result: result,
-                status: status,
-                exercise_id: exerciseId
-            }
-        });
-    }
-
     function centerImagesAndTables() {
         $(".exercise-description p > img").parent().wrapInner("<center></center>");
         $(".exercise-description table").wrap("<center></center>");
+    }
+
+    function submitSolution(code, result, status) {
+        $.post("/submissions.json", {
+                submission: {
+                    code: code,
+                    result: result,
+                    status: status,
+                    exercise_id: exerciseId
+                }
+            }).done(function () {
+                showNotification("Oplossing opgeslagen");
+                $.get("submissions.js");
+            })
+            .fail(function () {
+                $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button><strong>Opgepast!</strong> Er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer een begeleider.</div>').insertAfter("#feedback-menu").show("fast");
+            });
     }
 
     init();

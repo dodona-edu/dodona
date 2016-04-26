@@ -1,9 +1,13 @@
 class SubmissionsController < ApplicationController
-  before_action :set_user, only: [:show]
+  before_action :set_submission, only: [:show]
 
   def index
     authorize Submission
-    @submissions = Submission.all
+    @submissions = policy_scope(Submission)
+    if params[:exercise_name]
+      @exercise = Exercise.find_by_name(params[:exercise_name])
+      @submissions = @submissions.of_exercise(@exercise)
+    end
   end
 
   def show
@@ -14,10 +18,10 @@ class SubmissionsController < ApplicationController
     para = permitted_attributes(Submission)
     para[:user_id] = current_user.id
     @submission = Submission.new(para)
-    if @submission.save
-      render json: 'ok'
+    if Pundit.policy!(current_user, @submission.exercise).show? && @submission.save
+      render json: { status: 'ok' }
     else
-      render json: 'failed', status: :unprocessable_entity
+      render json: { status: 'failed' }, status: :unprocessable_entity
     end
   end
 

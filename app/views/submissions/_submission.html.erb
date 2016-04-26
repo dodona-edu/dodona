@@ -4,6 +4,11 @@
       <span title="<%= submission.user.full_name %>"><%= submission.user.username %></span>
     </td>
   <% end %>
+  <% if !exercise %>
+    <td>
+      <%= link_to submission.exercise.name.titleize, exercise_path(submission.exercise.name) %>
+    </td>
+  <% end %>
   <td>
     <span title="<%= submission.created_at.in_time_zone("CET").to_s(:long) %>"><%= time_ago_in_words submission.created_at %> geleden</span>
   </td>
@@ -13,5 +18,7 @@
   <td>
     <%= submission.result %>
   </td>
-  <td></td>
+  <td>
+    <%= link_to submission, title: "Oplossing bekijken" do %><span class="glyphicon glyphicon-share-alt"></span><% end %>
+  </td>
 </tr>

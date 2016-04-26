@@ -3,7 +3,11 @@ class SubmissionsController < ApplicationController
 
   def index
     authorize Submission
-    @submissions = Submission.all
+    @submissions = policy_scope(Submission)
+    if params[:exercise_name]
+      @exercise = Exercise.find_by_name(params[:exercise_name])
+      @submissions = @submissions.of_exercise(@exercise)
+    end
   end
 
   def show

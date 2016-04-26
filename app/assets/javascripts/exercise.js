@@ -93,6 +93,7 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
                 }
             }).done(function () {
                 showNotification("Oplossing opgeslagen");
+                $.get("submissions.js");
             })
             .fail(function () {
                 $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button><strong>Opgepast!</strong> Er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent.</div>').insertAfter("#feedback-menu").show("fast");

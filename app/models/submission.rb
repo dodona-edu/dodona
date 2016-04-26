@@ -20,4 +20,5 @@ class Submission < ApplicationRecord
 
   default_scope { order(created_at: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
+  scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
 end

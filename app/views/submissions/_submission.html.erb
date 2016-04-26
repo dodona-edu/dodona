@@ -6,7 +6,7 @@
   <% end %>
   <% if !exercise %>
     <td>
-      <%= submission.exercise.name %>
+      <%= link_to submission.exercise.name.titleize, exercise_path(submission.exercise.name) %>
     </td>
   <% end %>
   <td>

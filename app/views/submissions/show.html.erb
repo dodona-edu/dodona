@@ -5,6 +5,7 @@
         <h2 class="card-title-text">Oplossing <%= @submission.exercise.name %></h2>
       </div>
       <div class="card-supporting-text">
+        <b>Opgave:</b> <%= link_to @submission.exercise.name.titleize, exercise_path(@submission.exercise.name) %><br>
         <b>Ingediend:</b> <span title="<%= @submission.created_at.in_time_zone("CET").to_s(:long) %>"><%= time_ago_in_words @submission.created_at %> geleden</span></br>
         <b>Status:</b> <%= @submission.status %></br>
         <b>Resultaat:</b> <%= @submission.result %></br>

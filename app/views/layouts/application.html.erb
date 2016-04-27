@@ -61,8 +61,10 @@
                   <ul class="dropdown-menu">
                     <% if policy(User).index? %>
                       <li><%= link_to "Gebruikers", users_path %></li>
-                      <li role="separator" class="divider"></li>
+
                     <% end %>
+                    <li><%= link_to "Profiel", current_user %></li>
+                    <li role="separator" class="divider"></li>
                     <li><%= link_to "Afmelden", destroy_user_session_path, :method => :delete %></li>
                   </ul>
                 </li>

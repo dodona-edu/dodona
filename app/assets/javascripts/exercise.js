@@ -39,13 +39,13 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         // hide/show correct test cases if button is clicked in menu on feedback
         // panel
         $("#feedback-menu-toggle-correct").click(function () {
-            if ($("a", this).html() === "verberg correct") {
+            if ($("a", this).text() === "verberg correct") {
                 // hide correct test cases
-                $("a", this).html("toon correct");
+                $("a", this).text("toon correct");
                 $(".AC").hide();
             } else {
                 // show correct test cases
-                $("a", this).html("verberg correct");
+                $("a", this).text("verberg correct");
                 $(".AC").show();
             }
             $(this).dropdown('toggle');

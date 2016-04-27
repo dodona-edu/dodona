@@ -90,7 +90,7 @@ FeedbackTable.method('clear', function () {
     $("#tests-wrong").html(this.wrong);
 
     // initialize feedback menu
-    $("#feedback-menu-toggle-correct a").html('hide correct');
+    $("#feedback-menu-toggle-correct a").html('verberg correct');
 });
 
 // test submitted source code

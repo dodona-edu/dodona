@@ -26,6 +26,9 @@ gem 'jbuilder', '~> 2.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# pagination
+gem 'will_paginate'
+
 # markdown rendering and syntax highlighting
 gem 'kramdown'
 gem 'rouge'

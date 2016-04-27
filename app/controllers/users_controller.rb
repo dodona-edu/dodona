@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     authorize User
-    @users = User.all
+    @users = User.all.order(permission: :desc, username: :asc)
   end
 
   # GET /users/1
@@ -27,11 +27,11 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     authorize User
-    @user = User.new(user_params)
+    @user = User.new(permitted_attributes(User))
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user, flash: { success: 'De gebruiker werd succesvol aangepast.' } }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
+      if @user.update(permitted_attributes(@user))
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -70,10 +70,5 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find(params[:id])
     authorize @user
-  end
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def user_params
-    params.require(:user).permit(:username, :ugent_id, :first_name, :last_name, :email)
   end
 end

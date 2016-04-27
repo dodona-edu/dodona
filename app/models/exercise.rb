@@ -1,15 +1,24 @@
-class Exercise
+# == Schema Information
+#
+# Table name: exercises
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  visibility :integer          default("0")
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class Exercise < ApplicationRecord
   DATA_DIR = Rails.root.join('data', 'exercises').freeze
   TESTS_FILE = 'tests.js'.freeze
   DESCRIPTION_FILE = 'NL.md'.freeze
   MEDIA_DIR = 'media'.freeze
   PUBLIC_DIR = Rails.root.join('public', 'exercises').freeze
 
-  attr_accessor :name
+  enum visibility: [:open, :hidden, :closed]
 
-  def initialize(name)
-    @name = name
-  end
+  has_many :submissions
 
   def tests
     file = File.join(DATA_DIR, name, TESTS_FILE)
@@ -30,26 +39,43 @@ class Exercise
     end
   end
 
-  def self.all
-    Dir.entries(DATA_DIR)
-      .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') }
-      .map { |entry| Exercise.new(entry) }
+  def users_correct
+    submissions.where(status: :correct).distinct.count(:user_id)
   end
 
-  def self.find(name)
-    return nil unless File.directory? File.join(DATA_DIR, name)
-    Exercise.new(name)
+  def users_tried
+    submissions.all.distinct.count(:user_id)
+  end
+
+  def last_correct_submission(user)
+    submissions.of_user(user).where(status: :correct).limit(1).first
+  end
+
+  def last_submission(user)
+    submissions.of_user(user).limit(1).first
+  end
+
+  def status_for(user)
+    return :correct if submissions.of_user(user).where(status: :correct).count > 0
+    return :wrong if submissions.of_user(user).where(status: :wrong).count > 0
+    :unknown
   end
 
   def self.refresh
     msg = `cd #{DATA_DIR} && git pull 2>&1`
     status = $CHILD_STATUS.exitstatus
-    Exercise.all.map(&:copy_media)
+    Exercise.process_directories
     [status, msg]
   end
 
-  # make the partial render
-  def to_partial_path
-    'exercises/exercise'
+  def self.process_directories
+    Dir.entries(DATA_DIR)
+      .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') }
+      .each { |entry| Exercise.process_exercise_directory(entry) }
+  end
+
+  def self.process_exercise_directory(dir)
+    exercise = Exercise.find_by_name(dir) || Exercise.create(name: dir)
+    exercise.copy_media
   end
 end

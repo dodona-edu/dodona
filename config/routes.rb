@@ -2,8 +2,14 @@ Rails.application.routes.draw do
   devise_for :users
   root 'pages#home'
 
-  resources :exercises, only: [:index, :show]
-  resources :users
+  resources :exercises, only: [:index, :show, :edit, :update], param: :name do
+    resources :submissions, only: [:index, :create]
+  end
+  resources :submissions, only: [:index, :show, :create]
+  resources :users do
+    resources :submissions, only: [:index]
+  end
+
   resources :tutor
 
   # Webhooks

@@ -1,7 +1,9 @@
 // exercise
-.exercise-description img{
-    display: block;
-    margin: auto;
+.exercise-description img {
+    cursor: pointer;
+}
+.exercise-description .highlighter-rouge .err {
+    border: none;
 }
 
 // editor
@@ -18,8 +20,9 @@
     font-family: monospace;
     /* use monospace font in feedback table */
 }
-#feedback table {
-   margin-top: 12px;
+#feedback table,
+#feedback .alert {
+    margin-top: 12px;
 }
 .dropdown-menu {
     margin-top: 8px;
@@ -38,10 +41,10 @@
     /* prevent wide table rows */
     word-break: break-word;
 }
-.feedback-row.danger td{
+.feedback-row.danger td {
     background-color: @danger-100 !important;
 }
-.feedback-row.success td{
+.feedback-row.success td {
     background-color: @success-100 !important;
 }
 .feedback-row.statement {
@@ -59,4 +62,8 @@
 .feedback-row .removed {
     color: @danger-800;
     background-color: rgba(255, 0, 0, 0.2);
+}
+// white background for transparent images
+.strp-content-element {
+    background-color: #fff;
 }

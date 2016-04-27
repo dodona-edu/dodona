@@ -11,7 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414085323) do
+ActiveRecord::Schema.define(version: 20160425143502) do
+
+  create_table "exercises", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.integer  "visibility", default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "exercises", ["name"], name: "index_exercises_on_name", using: :btree
+
+  create_table "submissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "exercise_id"
+    t.integer  "user_id"
+    t.text     "code",        limit: 65535
+    t.text     "result",      limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "status"
+  end
+
+  add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
+  add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "username"
@@ -26,4 +48,6 @@ ActiveRecord::Schema.define(version: 20160414085323) do
 
   add_index "users", ["username"], name: "index_users_on_username", using: :btree
 
+  add_foreign_key "submissions", "exercises"
+  add_foreign_key "submissions", "users"
 end

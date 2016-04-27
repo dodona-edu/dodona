@@ -64,7 +64,7 @@ FeedbackTable.method('add', function (args) {
 
 // show error message in feedback table
 FeedbackTable.method('error', function (error) {
-	var feedbackTable = this;
+    var feedbackTable = this;
 
     // show error message
     feedbackTable.add({
@@ -96,107 +96,111 @@ FeedbackTable.method('clear', function () {
 // test submitted source code
 FeedbackTable.method('test', function (args) {
     var feedbackTable = this;
-    var source = args.source || '';
-    var currentStatement;
+    return new Promise(function (resolve, reject) {
+        var source = args.source || '';
+        var currentStatement;
 
-    // use timer to avoid infinite loops or source code executing too slow
-    var timer;
+        // use timer to avoid infinite loops or source code executing too slow
+        var timer;
 
-    // helper function to set custom timeout
-    function setCustomTimeout(ms) {
-        ms = ms || 10 * 1000; // default timeout after 10 seconds
+        // helper function to set custom timeout
+        function setCustomTimeout(ms) {
+            ms = ms || 10 * 1000; // default timeout after 10 seconds
 
-        // clear previous timer
-        clearTimeout(timer);
+            // clear previous timer
+            clearTimeout(timer);
 
-        // set new timeout to abort code execution after ms milliseconds
-        timer = setTimeout(function () {
-            // terminate the worker
-            judge.terminate();
+            // set new timeout to abort code execution after ms milliseconds
+            timer = setTimeout(function () {
+                // terminate the worker
+                judge.terminate();
 
-            // issue error message
-            feedbackTable.error("JudgeError: time limit exceeded");
-        }, ms);
+                // issue error message
+                feedbackTable.error("JudgeError: time limit exceeded");
+                resolve({status: "timeout"});
+            }, ms);
 
-    }
+        }
 
-    // clear the feedback table
-    feedbackTable.clear();
+        // clear the feedback table
+        feedbackTable.clear();
 
-    // evaluate the submitted source code
-    if (!!window.Worker) {
-        try {
-            // create a new JavaScript Judge
-            var judge = new Worker("/assets/judge/workers/judge_worker.js");
+        // evaluate the submitted source code
+        if (!!window.Worker) {
+            try {
+                // create a new JavaScript Judge
+                var judge = new Worker("/assets/judge/workers/judge_worker.js?1");
 
-            // perform actions if test case has been evaluated
-            judge.onmessage = function (e) {
-                // adjust judge based on incoming setting
-                if (e.data.type === "setting") {
-                    if (e.data.name === "timeout") {
-                        // set new timeout
-                        setCustomTimeout(e.data.value);
+                // perform actions if test case has been evaluated
+                judge.onmessage = function (e) {
+                    // adjust judge based on incoming setting
+                    if (e.data.type === "setting") {
+                        if (e.data.name === "timeout") {
+                            // set new timeout
+                            setCustomTimeout(e.data.value);
+                        }
+
+                        // stop further processing
+                        return;
                     }
 
-                    // stop further processing
-                    return;
-                }
+                    // translate messages from judge into feedback table rows
+                    e.data.rows.forEach(function (row) {
+                        feedbackTable.add(row);
+                    });
 
-                // translate messages from judge into feedback table rows
-                e.data.rows.forEach(function (row) {
-                    feedbackTable.add(row);
+                    // increment badge corresponding to outcome of evaluation
+                    if (e.data.eval == "AC") {
+                        feedbackTable.correct += (e.data.weight || 1);
+                        $("#tests-correct").html(feedbackTable.correct);
+                    } else {
+                        feedbackTable.wrong += (e.data.weight || 1);
+                        $("#tests-wrong").html(feedbackTable.wrong);
+                    }
+
+                    // check if additional results are expected
+                    if (e.data.done) {
+                        // hide loading icon
+                        $("#feedback-loading").hide();
+
+                        // terminate the worker
+                        judge.terminate();
+
+                        // clear the timer
+                        clearTimeout(timer);
+                        resolve({correct: feedbackTable.correct, wrong: feedbackTable.wrong, status: "done"});
+                    }
+                };
+
+                judge.onerror = function (e) {
+                    // show error message from Web Worker
+                    feedbackTable.error(e);
+                };
+
+                // show loading icon of feedback table
+                $("#feedback-loading").show();
+
+                // set default timeout
+                setCustomTimeout();
+
+                // execute source code and tests cases
+                judge.postMessage({
+                    "source": source,
+                    "tests": feedbackTable.tests
                 });
 
-                // increment badge corresponding to outcome of evaluation
-                if (e.data.eval == "AC") {
-                    feedbackTable.correct += (e.data.weight || 1);
-                    $("#tests-correct").html(feedbackTable.correct);
-                } else {
-                    feedbackTable.wrong += (e.data.weight || 1);
-                    $("#tests-wrong").html(feedbackTable.wrong);
-                }
-
-                // check if additional results are expected
-                if (e.data.done) {
-                    // hide loading icon
-                    $("#feedback-loading").hide();
-
-                    // terminate the worker
-                    judge.terminate();
-
-                    // clear the timer
-                    clearTimeout(timer);
-                }
-            };
-
-            judge.onerror = function (e) {
-                // show error message from Web Worker
-                feedbackTable.error(e);
-            };
-
-            // show loading icon of feedback table
-            $("#feedback-loading").show();
-
-            // set default timeout
-            setCustomTimeout();
-
-            // execute source code and tests cases
-            judge.postMessage({
-                "source": source,
-				"tests": this.tests
-            });
-
-        } catch (e) {
-            // show message about failing Web Workers
-            //
-            // NOTE: for testing purposes, activate running local web workers
-            // https://github.com/mrdoob/three.js/wiki/How-to-run-things-locally
-            feedbackTable.error(
-                e.name === "SecurityError" ? "JudgeError: local execution of Web Workers not supported" : displayError(e)
-            );
+            } catch (e) {
+                // show message about failing Web Workers
+                //
+                // NOTE: for testing purposes, activate running local web workers
+                // https://github.com/mrdoob/three.js/wiki/How-to-run-things-locally
+                feedbackTable.error(
+                    e.name === "SecurityError" ? "JudgeError: local execution of Web Workers not supported" : displayError(e)
+                );
+            }
+        } else {
+            // show message about non-supported Web Workers
+            feedbackTable.error("JudgeError: browser does not support Web Workers");
         }
-    } else {
-        // show message about non-supported Web Workers
-        feedbackTable.error("JudgeError: browser does not support Web Workers");
-    }
+    });
 });

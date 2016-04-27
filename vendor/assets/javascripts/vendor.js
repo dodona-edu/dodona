@@ -10,3 +10,5 @@
 //=require onlinepythontutor/jquery.simplemodal.js
 //=require onlinepythontutor/jquery.ba-bbq.min.js
 //=require onlinepythontutor/jquery-ui-1.8.24.custom.min
+// strip
+//=require strip/strip.pkgd.min.js

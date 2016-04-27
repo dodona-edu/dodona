@@ -16,6 +16,8 @@
 class User < ApplicationRecord
   enum permission: [:student, :teacher, :zeus]
 
+  has_many :submissions
+
   devise :cas_authenticatable
 
   def full_name
@@ -35,6 +37,8 @@ class User < ApplicationRecord
         self.first_name = value
       when :surname
         self.last_name = value
+      when :ugentID
+        self.ugent_id = value
       end
     end
   end

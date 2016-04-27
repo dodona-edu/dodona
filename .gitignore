@@ -21,3 +21,4 @@
 
 # Ignore media files
 /public/exercises
+/.project

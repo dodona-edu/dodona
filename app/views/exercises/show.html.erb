@@ -4,6 +4,13 @@
     <div class="card exercise-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @exercise.name.titleize %></h2>
+        <% if policy(@exercise).edit? %>
+          <div class="card-title-fab">
+            <%= link_to edit_exercise_path(@exercise.name), class: "btn btn-primary btn-fab" do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+            <% end %>
+          </div>
+        <% end %>
       </div>
       <div class="card-supporting-text">
         <%= markdown(@exercise.description) %>
@@ -11,7 +18,6 @@
     </div>
   </div>
 </div>
-<!-- editor -->
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card card-nav">
@@ -24,6 +30,7 @@
         <ul class="nav nav-tabs">
           <li class="active"><a href="#code" data-toggle="tab">Code</a></li>
           <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link'>Feedback</a></li>
+          <li><a href="#submissions" data-toggle="tab" id='exercise-submission-link'>Oplossingen</a></li>
           <div class="spinner" id="feedback-loading"></div>
         </ul>
       </div>
@@ -53,6 +60,17 @@
               <tbody id="feedback-table"></tbody>
             </table>
           </div>
+          <div class="tab-pane fade" id="submissions">
+            <% if !user_signed_in? %>
+              <div class="alert alert-info">Log in om je oplossingen op te slaan.</div>
+            <% elsif @submissions.length > 0 %>
+            <div id="submissions-table-wrapper">
+              <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>
+            </div>
+            <% else %>
+              <div class="alert alert-info">Klik op de play-knop om je oplossing te testen en in te dienen.</div>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
@@ -60,6 +78,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_exercise_show(`<%= raw(@exercise.tests.gsub('\\', '\\\\\\\\')) %>`);
+    init_exercise_show(<%= @exercise.id %>, <%= user_signed_in? %>, `<%= raw(@exercise.tests.gsub('\\', '\\\\\\\\').gsub("$","\\$").gsub("{","\\{")) %>`);
   });
 </script>

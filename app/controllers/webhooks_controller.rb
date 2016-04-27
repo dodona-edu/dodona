@@ -17,8 +17,4 @@ class WebhooksController < ApplicationController
     status = response[0] == 0 ? 200 : 500
     render plain: message, status: status
   end
-
-  def test_page
-    @title = 'webhook request'
-  end
 end

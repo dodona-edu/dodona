@@ -1,8 +1,11 @@
 <script>
 $(document).ready(function() {
-    
-    var codeTrace = JSON.parse('<%= `node --expose-debug-as=Debug ~/jslogger.js --jsondump=true #{@submission.sourceCode}`.strip.gsub!('\\n', '\\\\\\n').html_safe%>');
-
+    var codeTrace = JSON.parse('<%= `node --expose-debug-as=Debug ~/jslogger.js --jsondump=true #{@codefile}`
+      .strip
+      .gsub!('\\n', '\\\\\\n')
+      .gsub!("\"", "\\\"")
+      .gsub!("\'", "\\\\\'")
+      .html_safe%>');
     var visualizer = new ExecutionVisualizer('tutorelement', codeTrace,
                                                   {embeddedMode: false,
                                                    heightChangeCallback: redrawAllVisualizerArrows,

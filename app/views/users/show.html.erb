@@ -27,9 +27,11 @@
         <p>
           <strong>Email:</strong> <%= @user.email %>
         </p>
+        <% if current_user.admin? %>
         <p>
           <strong>Type:</strong> <%= @user.permission %>
         </p>
+        <% end %>
         <p>
           <strong>Oefeningen correct opgelost:</strong> <%= @user.correct_exercises %>
         </p>

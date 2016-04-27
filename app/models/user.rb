@@ -28,6 +28,10 @@ class User < ApplicationRecord
     teacher? or zeus?
   end
 
+  def correct_exercises
+    submissions.where(status: :correct).distinct.count(:exercise_id)
+  end
+
   def cas_extra_attributes=(extra_attributes)
     extra_attributes.each do |name, value|
       case name.to_sym

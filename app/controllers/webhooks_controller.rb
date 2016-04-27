@@ -9,7 +9,7 @@ class WebhooksController < ApplicationController
     #Build set with all exercises that need to be updated
     changed = Set.new
     for commit in commits
-        ['added', 'removed', 'modified'].each { |type| changed |= commit[type].map {|filename| filename.split('/')[0]}}
+        ['added', 'removed', 'modified'].each { |type| changed |= commit[type].map {|filename| filename.split('/').first}}
     end
 
     response = Exercise.refresh(changed)

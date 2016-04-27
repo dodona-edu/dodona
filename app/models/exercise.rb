@@ -61,16 +61,16 @@ class Exercise < ApplicationRecord
     :unknown
   end
 
-  def self.refresh
+  def self.refresh(changed)
     msg = `cd #{DATA_DIR} && git pull 2>&1`
     status = $CHILD_STATUS.exitstatus
-    Exercise.process_directories
+    Exercise.process_directories(changed)
     [status, msg]
   end
 
-  def self.process_directories
+  def self.process_directories(changed)
     Dir.entries(DATA_DIR)
-      .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') }
+      .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') && changed.include?(entry) }
       .each { |entry| Exercise.process_exercise_directory(entry) }
   end
 

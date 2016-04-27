@@ -30,6 +30,12 @@
         <p>
           <strong>Type:</strong> <%= @user.permission %>
         </p>
+        <p>
+          <strong>Oefeningen correct opgelost:</strong> <%= @user.correct_exercises %>
+        </p>
+        <p>
+          <strong>Oplossingen ingediend:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
+        </p>
       </div>
     </div>
   </div>

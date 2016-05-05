@@ -5,7 +5,13 @@ Rails.application.routes.draw do
   resources :exercises, only: [:index, :show, :edit, :update], param: :name do
     resources :submissions, only: [:index, :create]
   end
-  resources :submissions, only: [:index, :show, :create]
+
+  resources :submissions, only: [:index, :show, :create] do
+    member do
+      get 'download'
+    end
+  end
+
   resources :users do
     resources :submissions, only: [:index]
   end

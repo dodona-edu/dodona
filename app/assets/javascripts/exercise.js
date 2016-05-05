@@ -70,18 +70,27 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
 
     function initLightboxes() {
         initStrip();
-        $(".exercise-description img").click(function () {
+
+        var index = 1;
+        var images = [];
+        $(".exercise-description img").each(function() {
             var imagesrc = $(this).attr('src');
             var alttext = $(this).attr('alt');
             alttext = alttext ? alttext : imagesrc.split("/").pop();
-            Strip.show({
+            image_object = {
                 url: imagesrc,
-                caption: alttext,
-                options: {
-                    side: 'top',
-                    maxHeight: 10
-                },
-            });
+                caption: alttext
+            }
+            images.push(image_object)
+
+            $(this).data('image_index', index++)
+
+        });
+
+        $(".exercise-description img").click(function () {
+            Strip.show(images, {
+                side: 'top'
+            }, $(this).data('image_index'));
         });
     }
 

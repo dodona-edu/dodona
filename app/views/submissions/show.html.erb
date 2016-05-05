@@ -3,6 +3,11 @@
     <div class="card exercise-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">Oplossing <%= @submission.exercise.name %></h2>
+        <div class="card-title-fab">
+          <%= link_to download_submission_path(@submission), class: 'btn btn-primary btn-fab', download: '' do %>
+            <span class="glyphicon glyphicon-save"></span>
+          <% end %>
+        </div>
       </div>
       <div class="card-supporting-text">
         <% if current_user.admin? %>

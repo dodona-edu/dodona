@@ -19,6 +19,10 @@ class SubmissionPolicy < ApplicationPolicy
     user && ((user == record.user) || user.admin?)
   end
 
+  def download?
+    user && ((user == record.user) || user.admin?)
+  end
+
   def create?
     user
   end

@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :set_submission, only: [:show]
+  before_action :set_submission, only: [:show, :download]
 
   def index
     authorize Submission
@@ -28,6 +28,12 @@ class SubmissionsController < ApplicationController
     else
       render json: { status: 'failed' }, status: :unprocessable_entity
     end
+  end
+
+  def download
+    data = @submission.code
+    filename = @submission.exercise.name + '.js'
+    send_data data, type: 'application/octet-stream', filename: filename, disposition: 'attachment', :x_sendfile=>true
   end
 
   private

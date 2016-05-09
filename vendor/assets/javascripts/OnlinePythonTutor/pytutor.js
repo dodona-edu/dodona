@@ -632,13 +632,12 @@ ExecutionVisualizer.prototype.render = function() {
   }
 
   // enable left-right draggable pane resizer (originally from David Pritchard)
-  
   this.domRoot.find('#codeDisplayDiv').resizable({
     handles: "e", 
     minWidth: 100, //otherwise looks really goofy
     resize: function(event, ui) { // old name: syncStdoutWidth, now not appropriate
       // resize stdout box in unison
-      myViz.domRoot.find("#pyStdout").css("width", $(this).width() - 20);
+      myViz.domRoot.find("#pyStdout").css("width", $(this).width() - 20 /* wee tweaks */);
 
       myViz.domRoot.find("#codeDisplayDiv").css("height", "auto"); // redetermine height if necessary
       if (myViz.params.updateOutputCallback) // report size change
@@ -649,7 +648,6 @@ ExecutionVisualizer.prototype.render = function() {
     this.domRoot.find('#pyCodeOutputDiv')
       .css('max-height', this.params.codeDivHeight + 'px');
   }
-  
 
 
   // create a persistent globals frame
@@ -702,7 +700,6 @@ ExecutionVisualizer.prototype.render = function() {
 
   // set up slider after postprocessing curTrace
 
-  
   var sliderDiv = this.domRoot.find('#executionSlider');
   sliderDiv.slider({min: 0, max: this.curTrace.length - 1, step: 1});
   //disable keyboard actions on the slider itself (to prevent double-firing of events)

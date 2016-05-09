@@ -238,7 +238,7 @@ DEPENDENCIES
   mysql2 (>= 0.3.18, < 0.5)
   puma
   pundit
-  rails (>= 5.0.0.beta4, < 5.1)
+  rails (>= 5.0.0.rc1, < 5.1)
   rails-i18n (~> 5.0.0.beta3)
   rouge
   spring

@@ -32,8 +32,8 @@ class SubmissionsController < ApplicationController
 
   def download
     data = @submission.code
-    filename = @submission.exercise.name + '.js'
-    send_data data, type: 'application/octet-stream', filename: filename, disposition: 'attachment', :x_sendfile=>true
+    filename = @submission.exercise.name.tr(' ', '_') + '.js'
+    send_data data, type: 'application/octet-stream', filename: filename, disposition: 'attachment', x_sendfile: true
   end
 
   private

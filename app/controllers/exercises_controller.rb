@@ -1,5 +1,5 @@
 class ExercisesController < ApplicationController
-  before_action :set_exercise, only: [:show, :edit, :update]
+  before_action :set_exercise, only: [:show, :edit, :update, :users]
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: "Sorry, we kunnen de oefening #{params[:name]} niet vinden."
@@ -29,6 +29,10 @@ class ExercisesController < ApplicationController
         format.json { render json: @exercise.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def users
+    @users = User.all.order(last_name: :asc)
   end
 
   private

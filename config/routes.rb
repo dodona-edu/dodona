@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   resources :exercises, only: [:index, :show, :edit, :update], param: :name do
     resources :submissions, only: [:index, :create]
+    member do
+      get 'users' end
   end
 
   resources :submissions, only: [:index, :show, :create] do

@@ -9,6 +9,9 @@
 #  updated_at :datetime         not null
 #
 
+require 'action_view'
+include ActionView::Helpers::DateHelper
+
 class Exercise < ApplicationRecord
   DATA_DIR = Rails.root.join('data', 'exercises').freeze
   TESTS_FILE = 'tests.js'.freeze
@@ -61,6 +64,16 @@ class Exercise < ApplicationRecord
     :unknown
   end
 
+  def number_of_submissions_for(user)
+    submissions.of_user(user).count
+  end
+
+  def solving_speed_for(user)
+    subs = submissions.of_user(user)
+    return '' if subs.count < 2
+    distance_of_time_in_words(subs.first.created_at, subs.last.created_at)
+  end
+
   def self.refresh(changed)
     msg = `cd #{DATA_DIR} && git pull 2>&1`
     status = $CHILD_STATUS.exitstatus
@@ -70,7 +83,7 @@ class Exercise < ApplicationRecord
 
   def self.process_directories(changed)
     Dir.entries(DATA_DIR)
-      .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') && (changed.include?(entry) || changed.include?("UPDATE_ALL"))}
+      .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') && (changed.include?(entry) || changed.include?('UPDATE_ALL')) }
       .each { |entry| Exercise.process_exercise_directory(entry) }
   end
 

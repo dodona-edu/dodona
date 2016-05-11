@@ -25,6 +25,10 @@ class ExercisePolicy < ApplicationPolicy
     user && user.admin?
   end
 
+  def users?
+    user && user.admin?
+  end
+
   def permitted_attributes
     if user && user.admin?
       [:visibility]

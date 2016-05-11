@@ -84,7 +84,7 @@ GEM
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
-    devise_cas_authenticatable (1.8.0)
+    devise_cas_authenticatable (1.9.0)
       devise (>= 1.2.0)
       rubycas-client (>= 2.2.1)
     erubis (2.7.0)

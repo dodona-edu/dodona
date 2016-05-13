@@ -53,9 +53,8 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         });
 
         MathJax.Hub.Queue(function() {
-            elements = MathJax.Hub.getAllJax();
-            /* MathJax should be rerun/run */
-            if (elements.length !== 0 || $('span.MathJax').length === 0) {
+            /* MathJax has not been run yet*/
+            if ($('span.MathJax').length === 0) {
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
             }
         });

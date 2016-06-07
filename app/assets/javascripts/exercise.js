@@ -7,9 +7,11 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
 
         centerImagesAndTables();
 
+
         // create feedback table
         var feedbackTable = new FeedbackTable(tests);
         $("#feedback-loading").hide();
+
 
         // test source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
@@ -34,8 +36,6 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
             $('#exercise-feedback-link').tab('show');
         });
 
-        MathJax.Hub.Typeset();
-
         // hide/show correct test cases if button is clicked in menu on feedback
         // panel
         $("#feedback-menu-toggle-correct").click(function () {
@@ -50,6 +50,13 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
             }
             $(this).dropdown('toggle');
             return false;
+        });
+
+        MathJax.Hub.Queue(function() {
+            /* MathJax has not been run yet*/
+            if ($('span.MathJax').length === 0) {
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            }
         });
     }
 

@@ -23,9 +23,11 @@
     <div class="card card-nav">
       <div class="card-title card-title-colored">
         <div class="card-title-fab">
+          <% if user_signed_in? %>
           <button class="btn btn-primary btn-fab" id="editor-process-btn">
             <span class="glyphicon glyphicon-play"></span>
           </button>
+          <% end %>
         </div>
         <ul class="nav nav-tabs">
           <li class="active"><a href="#code" data-toggle="tab">Code</a></li>
@@ -37,11 +39,17 @@
       <div class="card-supporting-text">
         <div class="tab-content">
           <div class="tab-pane fade in active" id="code">
+            <% if !user_signed_in? %>
+              <div class="alert alert-info">Log in om je oplossingen te testen.</div>
+            <% end %>
             <div id="editor-window">
               <div id="editor-text"></div>
             </div>
           </div>
           <div class="tab-pane fade" id="feedback">
+          <% if !user_signed_in? %>
+            <div class="alert alert-info">Log in om je oplossingen te testen.</div>
+          <% end %>
             <div id="feedback-menu">
               <div class="btn-group">
                 <span class="dropdown">
@@ -62,7 +70,7 @@
           </div>
           <div class="tab-pane fade" id="submissions">
             <% if !user_signed_in? %>
-              <div class="alert alert-info">Log in om je oplossingen op te slaan.</div>
+              <div class="alert alert-info">Log in om je oplossingen te testen.</div>
             <% elsif @submissions.length > 0 %>
             <div id="submissions-table-wrapper">
               <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>

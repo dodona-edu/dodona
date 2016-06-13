@@ -79,7 +79,7 @@ function display(obj) {
                 repr.indexOf("'") === -1 &&
                 repr.slice(1, -1).indexOf('\\"') >= 0
             ) {
-                repr = "'{repr}'".format({
+                repr = "'{repr}'".dodonaFormat({
                     repr: repr.slice(1, -1).replace('\\"', '"', "g")
                 });
             }
@@ -114,7 +114,7 @@ function displayError(e, showLine) {
                 } else {
                     message = "{name}: {message}";
                 }
-                message = message.format({
+                message = message.dodonaFormat({
                     name: e.name,
                     message: e.message,
                     line: e.lineNumber

@@ -9,28 +9,28 @@ FeedbackTable.method('add', function (args) {
 
     // define row templates
     var row_base_template = '<tr class="feedback-row {type} {eval} {color}">{cols}</tr>';
-    var row_span_template = row_base_template.format({
+    var row_span_template = row_base_template.dodonaFormat({
         "cols": '<td colspan="2">{content}</td>'
     });
-    var row_icon_template = row_base_template.format({
+    var row_icon_template = row_base_template.dodonaFormat({
         "cols": '<td class="icon"><span class="glyphicon glyphicon-{icon}" style="color:{icon-color};"></span></td><td>{content}</td>'
     });
-    var row_statement = row_span_template.format({
+    var row_statement = row_span_template.dodonaFormat({
         "type": "statement",
         "content": '&#x25BA; {content}'
     });
-    var row_error = row_icon_template.format({
+    var row_error = row_icon_template.dodonaFormat({
         "type": "error",
         "color": "danger",
         "icon": "exclamation-sign",
         "icon-color": "red"
     });
-    var row_correct = row_icon_template.format({
+    var row_correct = row_icon_template.dodonaFormat({
         "type": "output",
         "icon": "ok",
         "icon-color": "green"
     });
-    var row_wrong = row_icon_template.format({
+    var row_wrong = row_icon_template.dodonaFormat({
         "type": "output",
         "icon": "remove",
         "icon-color": "red"
@@ -54,7 +54,7 @@ FeedbackTable.method('add', function (args) {
         "RE": "danger"
     };
 
-    $("#feedback-table").append(row[args.type || "error"].format({
+    $("#feedback-table").append(row[args.type || "error"].dodonaFormat({
         "eval": args.eval || "IE",
         "color": args.color || color[args.type] || color[args.eval] || "danger",
         "content": args.content || "JudgeError: unknown error"

@@ -24,7 +24,7 @@ dynamicMethodLoader.call(Function, 'method', dynamicMethodLoader);
 // {name} by the value mapped from "name" by the object that is passed as an
 // argument to the method; the placeholder is not replaced if the passed object
 // has not property "name"
-String.method('format', function (dict) {
+String.method('dodonaFormat', function (dict) {
     return this.replace(/{([^{}]*)}/g, function (match, naam) {
         var waarde = dict[naam];
         return waarde !== undefined ? waarde.toString() : match;

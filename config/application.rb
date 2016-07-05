@@ -16,7 +16,7 @@ module Dodona
 
     Rails.application.config.action_controller.default_url_options = { trailing_slash: true }
 
-    Rails.application.config.i18n.available_locales = ["nl"]
+    Rails.application.config.i18n.available_locales = %w(en nl)
     Rails.application.config.i18n.default_locale = :nl
   end
 end

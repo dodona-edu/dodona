@@ -17,5 +17,6 @@ nl:
         ugent_id: Studentennummer
         first_name: Voornaam
         last_name: Familienaam
+        name: Naam
         email: Email
         permission: Rechten

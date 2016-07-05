@@ -13,30 +13,30 @@
       </div>
       <div class="card-supporting-text">
         <p>
-          <strong>Voornaam:</strong> <%= @user.first_name %>
+          <strong><%= User.human_attribute_name("first_name") %>:</strong> <%= @user.first_name %>
         </p>
         <p>
-          <strong>Familienaam:</strong> <%= @user.last_name %>
+          <strong><%= User.human_attribute_name("last_name") %>:</strong> <%= @user.last_name %>
         </p>
         <p>
-          <strong>Gebruikersnaam:</strong> <%= @user.username %>
+          <strong><%= User.human_attribute_name("username") %>:</strong> <%= @user.username %>
         </p>
         <p>
-          <strong>UGentID:</strong> <%= @user.ugent_id %>
+          <strong><%= User.human_attribute_name("ugent_id") %>:</strong> <%= @user.ugent_id %>
         </p>
         <p>
-          <strong>Email:</strong> <%= @user.email %>
+          <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
         </p>
         <% if current_user.admin? %>
         <p>
-          <strong>Type:</strong> <%= @user.permission %>
+          <strong><%= User.human_attribute_name("permission") %>:</strong> <%= @user.permission %>
         </p>
         <% end %>
         <p>
-          <strong>Oefeningen correct opgelost:</strong> <%= @user.correct_exercises %>
+          <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
         </p>
         <p>
-          <strong>Oplossingen ingediend:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
+          <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
         </p>
       </div>
     </div>

@@ -7,3 +7,5 @@ en:
       profile: Profile
       log_in: Log in
       log_out: Log out
+  general:
+      are_you_sure: "Are you sure?"

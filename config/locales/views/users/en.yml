@@ -1,0 +1,9 @@
+en:
+  users:
+    index:
+      title: 'Users'
+    new:
+      title: "Add user"
+    show:
+      correctly_solved: "Exercises correctly solved"
+      solutions: "Number of submissions"

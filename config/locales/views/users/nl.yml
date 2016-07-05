@@ -1,0 +1,9 @@
+nl:
+  users:
+    index:
+      title: 'Gebruikers'
+    new:
+      title: "Gebruiker toevoegen"
+    show:
+      correctly_solved: "Oefeningen correct opgelost"
+      solutions: "Oplossingen ingediend"

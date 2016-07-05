@@ -1,0 +1,25 @@
+nl:
+  exercises:
+    exercise:
+      count_tooltip:
+        "zoveel studenten hebben deze oefening correct opgelost"
+      correct: "correct"
+      wrong: "verkeerd"
+      not_solved: "niet opgelost"
+    form:
+      edit_exercise: "Opgave aanpassen"
+      edit_tests: "Testen aanpassen"
+      open_on_github: "Open op GitHub"
+    index:
+      title: 'Oefeningen'
+      exercise: "Oefening"
+      status: "Status"
+    show:
+      code: "Code"
+      feedback: "Feedback"
+      solutions: "Oplossingen"
+      not_logged_in: "Log in om je oplossingen te testen."
+      hide_correct: "verberg correct"
+      correct: "correct"
+      wrong: "verkeerd"
+      hand_in_tooltip: "Klik op de play-knop om je oplossing te testen en in te dienen."

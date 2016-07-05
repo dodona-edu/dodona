@@ -1,0 +1,9 @@
+nl:
+  layout:
+    menu:
+      exercises: Oefeningen
+      my_submissions: Mijn oplossingen
+      users: Gebruikers
+      profile: Profiel
+      log_in: Aanmelden
+      log_out: Afmelden

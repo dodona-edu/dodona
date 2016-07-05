@@ -1,0 +1,21 @@
+en:
+  activerecord:
+    models:
+      exercise: Exercise
+      submission: Submission
+      user: Student
+    attributes:
+      exercise:
+        name: Title
+        visibility: Visibility
+      submission:
+        code: Code
+        result: Result
+        status: Status
+      user:
+        username: Username
+        ugent_id: Student id
+        first_name: First name
+        last_name: Last name
+        email: Email
+        permission: Permission

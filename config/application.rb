@@ -2,7 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-require "English"
+require 'English'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -18,5 +18,6 @@ module Dodona
 
     Rails.application.config.i18n.available_locales = %w(en nl)
     Rails.application.config.i18n.default_locale = :nl
+    Rails.application.config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
   end
 end

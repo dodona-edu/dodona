@@ -49,9 +49,9 @@
           </div>
           <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              <li><%= link_to("Oefeningen", exercises_path) %></li>
+              <li><%= link_to(I18n.t("layout.menu.exercises"), exercises_path) %></li>
               <% if user_signed_in? %>
-                <li><%= link_to("Mijn oplossingen", submissions_path) %></li>
+                <li><%= link_to(I18n.t("layout.menu.my_submissions"), submissions_path) %></li>
               <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -60,16 +60,16 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.full_name %> <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <% if policy(User).index? %>
-                      <li><%= link_to "Gebruikers", users_path %></li>
+                      <li><%= link_to I18n.t("layout.menu.users"), users_path %></li>
 
                     <% end %>
-                    <li><%= link_to "Profiel", current_user %></li>
+                    <li><%= link_to I18n.t("layout.menu.profile"), current_user %></li>
                     <li role="separator" class="divider"></li>
-                    <li><%= link_to "Afmelden", destroy_user_session_path, :method => :delete %></li>
+                    <li><%= link_to I18n.t("layout.menu.log_out"), destroy_user_session_path, :method => :delete %></li>
                   </ul>
                 </li>
               <% else %>
-                <li><%= link_to "Aanmelden", new_user_session_path %></li>
+                <li><%= link_to I18n.t("layout.menu.log_in"), new_user_session_path %></li>
               <% end %>
             </ul>
           </div>

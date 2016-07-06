@@ -1,0 +1,13 @@
+en:
+  layout:
+    menu:
+      exercises: Exercises
+      my_submissions: My submissions
+      users: Users
+      profile: Profile
+      log_in: Log in
+      log_out: Log out
+    footer:
+      ugent: Ghent University
+  general:
+      are_you_sure: "Are you sure?"

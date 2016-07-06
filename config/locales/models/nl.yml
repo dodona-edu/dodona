@@ -1,0 +1,22 @@
+nl:
+  activerecord:
+    models:
+      exercise: Oefening
+      submission: Oplossing
+      user: Student
+    attributes:
+      exercise:
+        name: Titel
+        visibility: Zichtbaarheid
+      submission:
+        code: Code
+        result: Resultaat
+        status: Status
+      user:
+        username: Gebruikersnaam
+        ugent_id: Studentennummer
+        first_name: Voornaam
+        last_name: Familienaam
+        name: Naam
+        email: Email
+        permission: Rechten

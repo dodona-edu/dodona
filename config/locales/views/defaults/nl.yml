@@ -1,0 +1,13 @@
+nl:
+  layout:
+    menu:
+      exercises: Oefeningen
+      my_submissions: Mijn oplossingen
+      users: Gebruikers
+      profile: Profiel
+      log_in: Aanmelden
+      log_out: Afmelden
+    footer:
+      ugent: Universiteit Gent
+  general:
+      are_you_sure: "Ben je zeker?"

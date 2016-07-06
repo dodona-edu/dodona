@@ -1,9 +1,9 @@
 nl:
   users:
     index:
-      title: 'Gebruikers'
+      title: Gebruikers
     new:
-      title: "Gebruiker toevoegen"
+      title: Gebruiker toevoegen
     show:
-      correctly_solved: "Oefeningen correct opgelost"
-      solutions: "Oplossingen ingediend"
+      correctly_solved: Oefeningen correct opgelost
+      solutions: Oplossingen ingediend

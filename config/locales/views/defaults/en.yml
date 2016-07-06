@@ -7,5 +7,7 @@ en:
       profile: Profile
       log_in: Log in
       log_out: Log out
+    footer:
+      ugent: Ghent University
   general:
       are_you_sure: "Are you sure?"

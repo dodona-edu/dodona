@@ -1,24 +1,24 @@
 nl:
   submissions:
     submission:
-      ago: "geleden"
-      view_solution: "Oplossing bekijken"
+      ago: geleden
+      view_solution: Oplossing bekijken
     submissions_table:
-      user: "Gebruiker"
-      exercise: "Oefening"
-      time: "Tijdstip"
-      status: "Status"
-      result: "Resultaat"
+      user: Gebruiker
+      exercise: Oefening
+      time: Tijdstip
+      status: Status
+      result: Resultaat
     index:
-      title: 'Oplossingen'
-      for: "voor"
-      from: "van"
+      title: Oplossingen
+      for: voor
+      from: van
     show:
-      submission: "Oplossing"
-      user: "Gebruiker"
-      exercise: "Opgave"
-      handed_in: "Ingediend"
-      ago: "geleden"
-      status: "Status"
-      result: "Resultaat"
-      code: "Code"
+      submission: Oplossing
+      user: Gebruiker
+      exercise: Opgave
+      handed_in: Ingediend
+      ago: geleden
+      status: Status
+      result: Resultaat
+      code: Code

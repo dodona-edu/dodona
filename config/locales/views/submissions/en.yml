@@ -1,24 +1,24 @@
 en:
   submissions:
     submission:
-      ago: "ago"
-      view_solution: "View solution"
+      ago: ago
+      view_solution: View solution
     submissions_table:
-      user: "User"
-      exercise: "Exercise"
-      time: "Time"
-      status: "Status"
-      result: "Result"
+      user: User
+      exercise: Exercise
+      time: Time
+      status: Status
+      result: Result
     index:
-      title: 'Submissions'
-      for: "for"
-      from: "from"
+      title: Submissions
+      for: for
+      from: from
     show:
-      submission: "Submission"
-      user: "User"
-      exercise: "Exercise"
-      handed_in: "Handed in"
-      ago: "ago"
-      status: "Status"
-      result: "Result"
-      code: "Code"
+      submission: Submission
+      user: User
+      exercise: Exercise
+      handed_in: Handed in
+      ago: ago
+      status: Status
+      result: Result
+      code: Code

@@ -1,25 +1,24 @@
 en:
   exercises:
     exercise:
-      count_tooltip:
-        "number of students that solved this exercise correctly"
-      correct: "correct"
-      wrong: "wrong"
-      not_solved: "not solved"
+      count_tooltip: number of students that solved this exercise correctly
+      correct: correct
+      wrong: wrong
+      not_solved: not solved
     form:
-      edit_exercise: "Edit exercise"
-      edit_tests: "Edit tests"
-      open_on_github: "Open on GitHub"
+      edit_exercise: Edit exercise
+      edit_tests: Edit tests
+      open_on_github: Open on GitHub
     index:
-      title: 'Exercises'
-      exercise: "Exercise"
-      status: "Status"
+      title: Exercises
+      exercise: Exercise
+      status: Status
     show:
-      code: "Code"
-      feedback: "Feedback"
-      solutions: "Solutions"
-      not_logged_in: "Log in to test your solution."
-      hide_correct: "hide correct"
-      correct: "correct"
-      wrong: "wrong"
-      hand_in_tooltip: "Click the play button to hand in and test your solution."
+      code: Code
+      feedback: Feedback
+      solutions: Solutions
+      not_logged_in: Log in to test your solution.
+      hide_correct: hide correct
+      correct: correct
+      wrong: wrong
+      hand_in_tooltip: Click the play button to hand in and test your solution.

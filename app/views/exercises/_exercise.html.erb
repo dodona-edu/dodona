@@ -3,16 +3,16 @@
     <%= link_to exercise.name.titleize, exercise_path(exercise.name) %>
   </td>
   <td>
-    <span title="zoveel studenten hebben deze oefening correct opgelost"><%= exercise.users_correct %>/<%= exercise.users_tried %></span>
+    <span title="<%= t ".count_tooltip" %>"><%= exercise.users_correct %>/<%= exercise.users_tried %></span>
   </td>
   <% if user_signed_in? %>
   <td>
     <% if :correct == exercise.status_for(current_user) %>
-      <%= link_to "correct", exercise.last_correct_submission(current_user) %>
+      <%= link_to t(".correct"), exercise.last_correct_submission(current_user) %>
     <% elsif :wrong == exercise.status_for(current_user) %>
-      <%= link_to "verkeerd", exercise.last_submission(current_user) %>
+      <%= link_to t(".wrong"), exercise.last_submission(current_user) %>
     <% else %>
-      niet opgelost
+      <%= t ".not_solved" %>
     <% end %>
   </td>
   <% end %>

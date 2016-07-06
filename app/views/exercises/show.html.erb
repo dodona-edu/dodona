@@ -30,9 +30,9 @@
           <% end %>
         </div>
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#code" data-toggle="tab">Code</a></li>
-          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link'>Feedback</a></li>
-          <li><a href="#submissions" data-toggle="tab" id='exercise-submission-link'>Oplossingen</a></li>
+          <li class="active"><a href="#code" data-toggle="tab"><%= t ".code"%></a></li>
+          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link'><%= t ".feedback"%></a></li>
+          <li><a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions"%></a></li>
           <div class="spinner" id="feedback-loading"></div>
         </ul>
       </div>
@@ -40,7 +40,7 @@
         <div class="tab-content">
           <div class="tab-pane fade in active" id="code">
             <% if !user_signed_in? %>
-              <div class="alert alert-info">Log in om je oplossingen te testen.</div>
+              <div class="alert alert-info"><%= t ".not_logged_in"%></div>
             <% end %>
             <div id="editor-window">
               <div id="editor-text"></div>
@@ -48,7 +48,7 @@
           </div>
           <div class="tab-pane fade" id="feedback">
           <% if !user_signed_in? %>
-            <div class="alert alert-info">Log in om je oplossingen te testen.</div>
+            <div class="alert alert-info"><%= t ".not_logged_in"%></div>
           <% end %>
             <div id="feedback-menu">
               <div class="btn-group">
@@ -57,12 +57,12 @@
                     <span class="glyphicon glyphicon-menu-hamburger"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="feedback-menu-btn">
-                    <li role="presentation" id="feedback-menu-toggle-correct"><a role="menuitem" tabindex="-1" href="#">verberg correct</a></li>
+                    <li role="presentation" id="feedback-menu-toggle-correct"><a role="menuitem" tabindex="-1" href="#"><%= t ".hide_correct"%></a></li>
                   </ul>
                 </span>
               </div>
-              correct <span class="badge" id="tests-correct">0</span>
-              verkeerd <span class="badge" id="tests-wrong">0</span><br>
+              <%= t ".correct"%> <span class="badge" id="tests-correct">0</span>
+              <%= t ".wrong"%> <span class="badge" id="tests-wrong">0</span><br>
             </div>
             <table class="table table-condensed">
               <tbody id="feedback-table"></tbody>
@@ -70,13 +70,13 @@
           </div>
           <div class="tab-pane fade" id="submissions">
             <% if !user_signed_in? %>
-              <div class="alert alert-info">Log in om je oplossingen te testen.</div>
+              <div class="alert alert-info"><%= t ".not_logged_in"%></div>
             <% elsif @submissions.length > 0 %>
             <div id="submissions-table-wrapper">
               <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>
             </div>
             <% else %>
-              <div class="alert alert-info">Klik op de play-knop om je oplossing te testen en in te dienen.</div>
+              <div class="alert alert-info"><%= t ".hand_in_tooltip"%></div>
             <% end %>
           </div>
         </div>

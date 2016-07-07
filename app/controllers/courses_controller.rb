@@ -4,6 +4,7 @@ class CoursesController < ApplicationController
   # GET /courses
   # GET /courses.json
   def index
+    authorize Course
     @courses = Course.all
   end
 
@@ -14,6 +15,7 @@ class CoursesController < ApplicationController
 
   # GET /courses/new
   def new
+    authorize Course
     @course = Course.new
   end
 
@@ -24,7 +26,8 @@ class CoursesController < ApplicationController
   # POST /courses
   # POST /courses.json
   def create
-    @course = Course.new(course_params)
+    authorize Course
+    @course = Course.new(permitted_attributes(Course))
 
     respond_to do |format|
       if @course.save
@@ -41,7 +44,7 @@ class CoursesController < ApplicationController
   # PATCH/PUT /courses/1.json
   def update
     respond_to do |format|
-      if @course.update(course_params)
+      if @course.update(permitted_attributes(Course))
         format.html { redirect_to @course, notice: 'Course was successfully updated.' }
         format.json { render :show, status: :ok, location: @course }
       else
@@ -66,10 +69,6 @@ class CoursesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_course
     @course = Course.find(params[:id])
-  end
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def course_params
-    params.require(:course).permit(:name, :year, :secret, :open)
+    authorize @course
   end
 end

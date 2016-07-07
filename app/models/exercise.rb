@@ -83,8 +83,8 @@ class Exercise < ApplicationRecord
 
   def self.process_directories(changed)
     Dir.entries(DATA_DIR)
-      .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') && (changed.include?(entry) || changed.include?('UPDATE_ALL')) }
-      .each { |entry| Exercise.process_exercise_directory(entry) }
+       .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') && (changed.include?(entry) || changed.include?('UPDATE_ALL')) }
+       .each { |entry| Exercise.process_exercise_directory(entry) }
   end
 
   def self.process_exercise_directory(dir)

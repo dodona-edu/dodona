@@ -4,17 +4,16 @@ class WebhooksController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def update_exercises
-
-    #Build set with all exercises that need to be updated
+    # Build set with all exercises that need to be updated
     changed = Set.new
     if params.key?('commits')
       commits = params['commits']
 
       for commit in commits
-          ['added', 'removed', 'modified'].each { |type| changed |= commit[type].map {|filename| filename.split('/').first}}
+        %w(added removed modified).each { |type| changed |= commit[type].map { |filename| filename.split('/').first } }
       end
     else
-      changed.add("UPDATE_ALL")
+      changed.add('UPDATE_ALL')
     end
 
     response = Exercise.refresh(changed)

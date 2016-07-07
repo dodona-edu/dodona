@@ -40,7 +40,7 @@ class ExercisesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_exercise
     @exercise = Exercise.find_by_name(params[:name])
-    fail ActiveRecord::RecordNotFound if @exercise.nil?
+    raise ActiveRecord::RecordNotFound if @exercise.nil?
     authorize @exercise
   end
 end

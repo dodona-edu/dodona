@@ -21,11 +21,11 @@ class User < ApplicationRecord
   devise :cas_authenticatable
 
   def full_name
-    first_name + " " + last_name
+    first_name + ' ' + last_name
   end
 
   def admin?
-    teacher? or zeus?
+    teacher? || zeus?
   end
 
   def correct_exercises

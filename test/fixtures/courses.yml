@@ -1,10 +1,12 @@
 # == Schema Information
 #
-# Table name: exercises
+# Table name: courses
 #
 #  id         :integer          not null, primary key
 #  name       :string(255)
-#  visibility :integer          default("open")
+#  year       :string(255)
+#  secret     :string(255)
+#  open       :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -13,8 +15,12 @@
 
 one:
   name: MyString
-  visibility: 1
+  year: MyString
+  secret: MyString
+  open: false
 
 two:
   name: MyString
-  visibility: 1
+  year: MyString
+  secret: MyString
+  open: false

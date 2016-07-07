@@ -4,7 +4,7 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string(255)
-#  visibility :integer          default("0")
+#  visibility :integer          default("open")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

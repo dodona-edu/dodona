@@ -1,18 +1,15 @@
 # == Schema Information
 #
-# Table name: exercises
+# Table name: courses
 #
 #  id         :integer          not null, primary key
 #  name       :string(255)
-#  visibility :integer          default("open")
+#  year       :string(255)
+#  secret     :string(255)
+#  open       :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
-require 'test_helper'
-
-class ExerciseTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class Course < ApplicationRecord
 end

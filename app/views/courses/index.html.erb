@@ -15,9 +15,9 @@
         <table class="table table-index table-resource">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Year</th>
-              <th>Users</th>
+              <th><%= Course.human_attribute_name("name") %></th>
+              <th><%= Course.human_attribute_name("year") %></th>
+              <th><%= t ".users" %></th>
               <th></th>
             </tr>
           </thead>

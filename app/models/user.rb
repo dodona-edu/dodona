@@ -17,6 +17,8 @@ class User < ApplicationRecord
   enum permission: [:student, :teacher, :zeus]
 
   has_many :submissions
+  has_many :course_memberships
+  has_many :courses, through: :course_memberships
 
   devise :cas_authenticatable
 

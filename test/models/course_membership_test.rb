@@ -1,17 +1,18 @@
 # == Schema Information
 #
-# Table name: exercises
+# Table name: course_memberships
 #
 #  id         :integer          not null, primary key
-#  name       :string(255)
-#  visibility :integer          default("open")
+#  course_id  :integer
+#  user_id    :integer
+#  status     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
 require 'test_helper'
 
-class ExerciseTest < ActiveSupport::TestCase
+class CourseMembershipTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

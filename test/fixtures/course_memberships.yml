@@ -1,10 +1,11 @@
 # == Schema Information
 #
-# Table name: exercises
+# Table name: course_memberships
 #
 #  id         :integer          not null, primary key
-#  name       :string(255)
-#  visibility :integer          default("open")
+#  course_id  :integer
+#  user_id    :integer
+#  status     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -12,9 +13,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  visibility: 1
+  course: 
+  user: 
+  status: 1
 
 two:
-  name: MyString
-  visibility: 1
+  course: 
+  user: 
+  status: 1

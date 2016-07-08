@@ -1,10 +1,15 @@
 en:
   activerecord:
     models:
+      course: Course
       exercise: Exercise
       submission: Submission
       user: Student
     attributes:
+      course:
+        name: Name
+        year: Academic year
+        secret: Secret
       exercise:
         name: Title
         visibility: Visibility

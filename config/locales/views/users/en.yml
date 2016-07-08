@@ -5,5 +5,7 @@ en:
     new:
       title: Add user
     show:
+      courses: Courses
+      no_courses: no courses found
       correctly_solved: Exercises correctly solved
       solutions: Number of submissions

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card exercise-description">
+    <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @user.full_name %></h2>
         <% if policy(@user).edit? %>
@@ -32,6 +32,18 @@
           <strong><%= User.human_attribute_name("permission") %>:</strong> <%= @user.permission %>
         </p>
         <% end %>
+        <p>
+          <strong><%= t ".courses" %>:</strong>
+          <% if @user.courses.empty? %>
+            <%= t ".no_courses" %>
+          <% else %>
+            <ul>
+            <% @user.courses.each do |course| %>
+              <li><%= link_to course.name, course %></li>
+            <% end %>
+            </ul>
+          <% end %>
+        </p>
         <p>
           <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
         </p>

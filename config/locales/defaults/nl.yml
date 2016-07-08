@@ -20,4 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 nl:
-  hello: "Hallo wereld"
+  controllers:
+    created: "%{model} werd succesvol aangemaakt."
+    updated: "%{model} werd succesvol aangepast."
+    destroyed: "%{model} werd succesvol verwijderd."

@@ -1,10 +1,15 @@
 nl:
   activerecord:
     models:
+      course: Cursus
       exercise: Oefening
       submission: Oplossing
       user: Student
     attributes:
+      course:
+        name: Naam
+        year: Academiejaar
+        secret: Secret
       exercise:
         name: Titel
         visibility: Zichtbaarheid

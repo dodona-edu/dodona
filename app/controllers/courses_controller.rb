@@ -31,6 +31,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
+        @course.users << current_user
         format.html { redirect_to @course, notice: 'Course was successfully created.' }
         format.json { render :show, status: :created, location: @course }
       else

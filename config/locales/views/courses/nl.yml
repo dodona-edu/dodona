@@ -7,5 +7,6 @@ nl:
       title: Cursus toevoegen
     show:
       course: Cursus
+      auto_subscribe_link: Inschrijvingslink
       not_a_member: Je bent niet ingeschreven voor deze cursus. Wil je je inschrijven?
       subscribe: inschrijven

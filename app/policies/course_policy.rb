@@ -41,6 +41,10 @@ class CoursePolicy < ApplicationPolicy
     user
   end
 
+  def subscribe_with_secret?
+    user
+  end
+
   def permitted_attributes
     if user && user.admin?
       [:name, :year]

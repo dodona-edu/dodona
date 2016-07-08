@@ -2,7 +2,7 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @course.name + " - " + @course.year %></h2>
+        <h2 class="card-title-text"><%= @course.name %></h2>
         <% if policy(@course).edit? %>
           <div class="card-title-fab">
             <%= link_to edit_course_path(@course), class: "btn btn-primary btn-fab" do %>
@@ -19,6 +19,11 @@
           <p>
             <strong><%= Course.human_attribute_name("year") %>:</strong> <%= @course.year %>
           </p>
+          <% if current_user && current_user.admin? %>
+          <p>
+            <strong><%= t ".auto_subscribe_link" %>:</strong> <%= request.protocol + request.host + subscribe_with_secret_course_path(@course.id, @course.secret) %>
+          </p>
+          <% end %>
         </div>
         <% if current_user && !current_user.member_of?(@course) %>
         <div class="col-sm-6 col-xs-12">

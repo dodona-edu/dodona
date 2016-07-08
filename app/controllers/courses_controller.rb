@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe]
+  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe, :subscribe_with_secret]
 
   # GET /courses
   # GET /courses.json
@@ -67,7 +67,6 @@ class CoursesController < ApplicationController
 
   def subscribe
     membership = CourseMembership.new(course: @course, user: current_user)
-
     respond_to do |format|
       if membership.save
         format.html { redirect_to @course, notice: 'Subscribed successfully' }
@@ -76,6 +75,18 @@ class CoursesController < ApplicationController
         format.html { redirect_to @course, alert: 'Subscription failed' }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def subscribe_with_secret
+    if !current_user
+      redirect_to(@course, notice: 'You need to be logged in to subscribe')
+    elsif params[:secret] != @course.secret
+      redirect_to(@course, alert: "The key didn't match")
+    elsif current_user.member_of?(@course)
+      redirect_to(@course)
+    else
+      subscribe
     end
   end
 

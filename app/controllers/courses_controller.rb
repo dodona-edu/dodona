@@ -32,7 +32,7 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @course.save
         @course.users << current_user
-        format.html { redirect_to @course, notice: 'Course was successfully created.' }
+        format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
         format.json { render :show, status: :created, location: @course }
       else
         format.html { render :new }
@@ -46,7 +46,7 @@ class CoursesController < ApplicationController
   def update
     respond_to do |format|
       if @course.update(permitted_attributes(Course))
-        format.html { redirect_to @course, notice: 'Course was successfully updated.' }
+        format.html { redirect_to @course, notice: I18n.t('controllers.updated', model: Course.model_name.human) }
         format.json { render :show, status: :ok, location: @course }
       else
         format.html { render :edit }
@@ -60,7 +60,7 @@ class CoursesController < ApplicationController
   def destroy
     @course.destroy
     respond_to do |format|
-      format.html { redirect_to courses_url, notice: 'Course was successfully destroyed.' }
+      format.html { redirect_to courses_url, notice: I18n.t('controllers.destroyed', model: Course.model_name.human) }
       format.json { head :no_content }
     end
   end
@@ -69,10 +69,10 @@ class CoursesController < ApplicationController
     membership = CourseMembership.new(course: @course, user: current_user)
     respond_to do |format|
       if membership.save
-        format.html { redirect_to @course, notice: 'Subscribed successfully' }
+        format.html { redirect_to @course, notice: I18n.t('courses.subscribe.subscribed_successfully') }
         format.json { render :show, status: :created, location: @course }
       else
-        format.html { redirect_to @course, alert: 'Subscription failed' }
+        format.html { redirect_to @course, alert: I18n.t('courses.subscribe.subscription_failed') }
         format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
@@ -80,9 +80,9 @@ class CoursesController < ApplicationController
 
   def subscribe_with_secret
     if !current_user
-      redirect_to(@course, notice: 'You need to be logged in to subscribe')
+      redirect_to(@course, notice: I18n.t('courses.subscribe.not_logged_in'))
     elsif params[:secret] != @course.secret
-      redirect_to(@course, alert: "The key didn't match")
+      redirect_to(@course, alert: I18n.t('courses.subscribe.key_mismatch'))
     elsif current_user.member_of?(@course)
       redirect_to(@course)
     else

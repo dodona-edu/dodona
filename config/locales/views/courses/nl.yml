@@ -10,3 +10,8 @@ nl:
       auto_subscribe_link: Inschrijvingslink
       not_a_member: Je bent niet ingeschreven voor deze cursus. Wil je je inschrijven?
       subscribe: inschrijven
+    subscribe:
+      subscribed_successfully: Inschrijving succesvol
+      subscription_failed: Inschrijven mislukt
+      not_logged_in: Je moet ingelogd zijn om je in te schrijven
+      key_mismatch: De sleutel kwam niet overeen

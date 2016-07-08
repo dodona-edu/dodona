@@ -22,7 +22,7 @@ class ExercisesController < ApplicationController
   def update
     respond_to do |format|
       if @exercise.update(permitted_attributes(@exercise))
-        format.html { redirect_to exercise_path(@exercise.name), flash: { success: 'De oefening werd succesvol aangepast.' } }
+        format.html { redirect_to exercise_path(@exercise.name), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else
         format.html { render :edit }

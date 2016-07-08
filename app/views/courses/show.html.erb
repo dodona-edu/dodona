@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card exercise-description">
+    <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @course.name + " - " + @course.year %></h2>
         <% if policy(@course).edit? %>
@@ -12,12 +12,26 @@
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <p>
-          <strong><%= Course.human_attribute_name("name") %>:</strong> <%= @course.name %>
-        </p>
-        <p>
-          <strong><%= Course.human_attribute_name("year") %>:</strong> <%= @course.year %>
-        </p>
+        <div class="col-sm-6 col-xs-12">
+          <p>
+            <strong><%= t ".course" %>:</strong> <%= @course.name %>
+          </p>
+          <p>
+            <strong><%= Course.human_attribute_name("year") %>:</strong> <%= @course.year %>
+          </p>
+        </div>
+        <% if current_user && !current_user.member_of?(@course) %>
+        <div class="col-sm-6 col-xs-12">
+          <div class="card">
+            <div class="card-supporting-text">
+              <p><%= t ".not_a_member" %></p>
+            </div>
+            <div class="card-actions card-border">
+              <%=link_to t(".subscribe"), subscribe_course_path(@course), method: :post, class: "btn-text" %>
+            </div>
+          </div>
+        </div>
+        <% end %>
       </div>
       <% if policy(@course).list_members? %>
         <div class="card-supporting-text card-border">

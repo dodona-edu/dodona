@@ -5,3 +5,7 @@ nl:
       users: Gebruikers
     new:
       title: Cursus toevoegen
+    show:
+      course: Cursus
+      not_a_member: Je bent niet ingeschreven voor deze cursus. Wil je je inschrijven?
+      subscribe: inschrijven

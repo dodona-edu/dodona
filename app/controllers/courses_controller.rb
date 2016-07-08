@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy]
+  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe]
 
   # GET /courses
   # GET /courses.json
@@ -61,6 +61,20 @@ class CoursesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to courses_url, notice: 'Course was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def subscribe
+    membership = CourseMembership.new(course: @course, user: current_user)
+
+    respond_to do |format|
+      if membership.save
+        format.html { redirect_to @course, notice: 'Subscribed successfully' }
+        format.json { render :show, status: :created, location: @course }
+      else
+        format.html { redirect_to @course, alert: 'Subscription failed' }
+        format.json { render json: @course.errors, status: :unprocessable_entity }
+      end
     end
   end
 

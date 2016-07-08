@@ -1,11 +1,15 @@
 Rails.application.routes.draw do
-  resources :courses
   devise_for :users
   root 'pages#home'
 
   get '/:locale' => 'pages#home'
 
   scope '(:locale)', locale: /en|nl/ do
+    resources :courses do
+      member do
+        post 'subscribe'
+      end
+    end
     resources :exercises, only: [:index, :show, :edit, :update], param: :name do
       resources :submissions, only: [:index, :create]
       member do

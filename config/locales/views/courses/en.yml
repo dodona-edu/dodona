@@ -5,3 +5,7 @@ en:
       users: Users
     new:
       title: Add course
+    show:
+      course: Course
+      not_a_member: You are not a member of this course. Do you wish to subscribe?
+      subscribe: subscribe

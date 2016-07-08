@@ -34,6 +34,10 @@ class User < ApplicationRecord
     submissions.where(status: :correct).distinct.count(:exercise_id)
   end
 
+  def member_of?(course)
+    courses.include? course
+  end
+
   def cas_extra_attributes=(extra_attributes)
     extra_attributes.each do |name, value|
       case name.to_sym

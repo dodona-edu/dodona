@@ -33,6 +33,18 @@
         </p>
         <% end %>
         <p>
+          <strong><%= t ".courses" %>:</strong>
+          <% if @user.courses.empty? %>
+            <%= t ".no_courses" %>
+          <% else %>
+            <ul>
+            <% @user.courses.each do |course| %>
+              <li><%= link_to course.name, course %></li>
+            <% end %>
+            </ul>
+          <% end %>
+        </p>
+        <p>
           <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
         </p>
         <p>

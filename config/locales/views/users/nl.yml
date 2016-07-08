@@ -5,5 +5,7 @@ nl:
     new:
       title: Gebruiker toevoegen
     show:
+      courses: Cursussen
+      no_courses: geen cursussen gevonden
       correctly_solved: Oefeningen correct opgelost
       solutions: Oplossingen ingediend

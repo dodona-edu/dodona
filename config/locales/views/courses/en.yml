@@ -3,3 +3,5 @@ en:
     index:
       title: Courses
       users: Users
+    new:
+      title: Add course

@@ -1,37 +1,20 @@
-<%= form_for(course) do |f| %>
+<%= form_for(course, :html => {:class => 'form-horizontal'}) do |f| %>
   <% if course.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(course.errors.count, "error") %> prohibited this course from being saved:</h2>
-
+      <h2><%= pluralize(course.errors.count, "fout") %> verhinderden het opslaan:</h2>
       <ul>
-      <% course.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% course.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+  <div class="field form-group">
+    <%= f.label :name, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :name, class: "form-control" %></div>
   </div>
-
-  <div class="field">
-    <%= f.label :year %>
-    <%= f.text_field :year %>
-  </div>
-
-  <div class="field">
-    <%= f.label :secret %>
-    <%= f.text_field :secret %>
-  </div>
-
-  <div class="field">
-    <%= f.label :open %>
-    <%= f.check_box :open %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
+  <div class="field form-group">
+    <%= f.label :year, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :year, class: "form-control" %></div>
   </div>
 <% end %>

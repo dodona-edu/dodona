@@ -3,3 +3,5 @@ nl:
     index:
       title: Cursussen
       users: Gebruikers
+    new:
+      title: Cursus toevoegen

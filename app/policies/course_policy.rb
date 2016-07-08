@@ -33,6 +33,10 @@ class CoursePolicy < ApplicationPolicy
     user && user.zeus?
   end
 
+  def list_members?
+    user && user.admin?
+  end
+
   def permitted_attributes
     if user && user.admin?
       [:name, :year]

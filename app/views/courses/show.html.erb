@@ -1,24 +1,46 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @course.name %>
-</p>
-
-<p>
-  <strong>Year:</strong>
-  <%= @course.year %>
-</p>
-
-<p>
-  <strong>Secret:</strong>
-  <%= @course.secret %>
-</p>
-
-<p>
-  <strong>Open:</strong>
-  <%= @course.open %>
-</p>
-
-<%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %>
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card exercise-description">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @course.name + " - " + @course.year %></h2>
+        <% if policy(@course).edit? %>
+          <div class="card-title-fab">
+            <%= link_to edit_course_path(@course), class: "btn btn-primary btn-fab" do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <p>
+          <strong><%= Course.human_attribute_name("name") %>:</strong> <%= @course.name %>
+        </p>
+        <p>
+          <strong><%= Course.human_attribute_name("year") %>:</strong> <%= @course.year %>
+        </p>
+      </div>
+      <% if policy(@course).list_members? %>
+        <div class="card-supporting-text card-border">
+          <table class="table table-index table-resource">
+            <thead>
+              <tr>
+                <th><%= User.human_attribute_name("username") %></th>
+                <th><%= User.human_attribute_name("name") %></th>
+                <th><%= User.human_attribute_name("email") %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @course.users.each do |user| %>
+                <tr>
+                  <td><%= link_to user.username, user %></td>
+                  <td><%= user.full_name %> </td>
+                  <td><%= user.email %> </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

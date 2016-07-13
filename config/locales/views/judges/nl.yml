@@ -1,5 +1,7 @@
 nl:
   judges:
+    form:
+      image-help: De naam van de docker image waarin de judge zal gestart worden. De image zal automatisch gedownload worden van docker hub.
     index:
       title: Judges
     new:

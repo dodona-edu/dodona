@@ -1,5 +1,7 @@
 en:
   judges:
+    form:
+      image-help: The name of the docker image in which the judge will be started. Will be fetched from docker hub automatically.
     index:
       title: Judges
     new:

@@ -3,6 +3,7 @@ en:
     models:
       course: Course
       exercise: Exercise
+      judge: Judge
       submission: Submission
       user: Student
     attributes:
@@ -13,6 +14,10 @@ en:
       exercise:
         name: Title
         visibility: Visibility
+      judge:
+        name: Name
+        image: Docker image
+        path: Path
       submission:
         code: Code
         result: Result

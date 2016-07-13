@@ -11,4 +11,7 @@
 #
 
 class Judge < ApplicationRecord
+  validates :name, presence: true, uniqueness: true
+  validates :image, presence: true
+  validates :path, presence: true
 end

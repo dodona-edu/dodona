@@ -1,0 +1,8 @@
+nl:
+  judges:
+    index:
+      title: Judges
+    new:
+      title: Judge toevoegen
+    show:
+      judge: Judge

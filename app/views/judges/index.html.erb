@@ -1,31 +1,45 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Judges</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Image</th>
-      <th>Path</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @judges.each do |judge| %>
-      <tr>
-        <td><%= judge.name %></td>
-        <td><%= judge.image %></td>
-        <td><%= judge.path %></td>
-        <td><%= link_to 'Show', judge %></td>
-        <td><%= link_to 'Edit', edit_judge_path(judge) %></td>
-        <td><%= link_to 'Destroy', judge, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Judge', new_judge_path %>
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+        <% if policy(Judge).new? %>
+          <div class="card-title-fab">
+            <%= link_to new_judge_path, class: "btn btn-primary btn-fab" do %>
+              <span class="glyphicon glyphicon-plus"></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <table class="table table-index table-resource">
+          <thead>
+            <tr>
+              <th><%= Judge.human_attribute_name("name") %></th>
+              <th><%= Judge.human_attribute_name("image") %></th>
+              <th><%= Judge.human_attribute_name("path") %></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @judges.each do |judge| %>
+              <tr>
+                <td><%= link_to judge.name, judge %></td>
+                <td><%= judge.image %> </td>
+                <td><%= judge.path %> </td>
+                <td class="actions">
+                  <% if policy(judge).edit? %>
+                    <%= link_to edit_judge_path(judge), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
+                  <% end %>
+                  <% if policy(judge).destroy? %>
+                    <%= link_to judge, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

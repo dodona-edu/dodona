@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :judges
   devise_for :users
   root 'pages#home'
 
@@ -12,12 +11,15 @@ Rails.application.routes.draw do
         get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: "subscribe_with_secret"
       end
     end
+
     resources :exercises, only: [:index, :show, :edit, :update], param: :name do
       resources :submissions, only: [:index, :create]
       member do
         get 'users'
       end
     end
+
+    resources :judges
 
     resources :submissions, only: [:index, :show, :create] do
       member do

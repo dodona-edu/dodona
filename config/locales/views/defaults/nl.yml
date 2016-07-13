@@ -13,3 +13,7 @@ nl:
       ugent: Universiteit Gent
   general:
       are_you_sure: "Ben je zeker?"
+  errors:
+    validation_erors:
+      one: 'één fout verhindert het opslaan:'
+      other: '%{count} fouten verhinderen het opslaan:'

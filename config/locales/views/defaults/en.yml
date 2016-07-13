@@ -12,4 +12,8 @@ en:
     footer:
       ugent: Ghent University
   general:
-      are_you_sure: "Are you sure?"
+    are_you_sure: "Are you sure?"
+  errors:
+    validation_erors:
+      one: 'one error prevents saving:'
+      other: '%{count} errors prevent saving:'

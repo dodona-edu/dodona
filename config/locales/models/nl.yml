@@ -3,6 +3,7 @@ nl:
     models:
       course: Cursus
       exercise: Oefening
+      judge: Judge
       submission: Oplossing
       user: Student
     attributes:
@@ -13,6 +14,10 @@ nl:
       exercise:
         name: Titel
         visibility: Zichtbaarheid
+      judge:
+        name: Naam
+        image: Docker image
+        path: Padnaam
       submission:
         code: Code
         result: Resultaat

@@ -31,7 +31,7 @@ class JudgesController < ApplicationController
 
     respond_to do |format|
       if @judge.save
-        format.html { redirect_to @judge, notice: 'Judge was successfully created.' }
+        format.html { redirect_to @judge, notice: I18n.t('controllers.created', model: Judge.model_name.human) }
         format.json { render :show, status: :created, location: @judge }
       else
         format.html { render :new }
@@ -45,7 +45,7 @@ class JudgesController < ApplicationController
   def update
     respond_to do |format|
       if @judge.update(permitted_attributes(Judge))
-        format.html { redirect_to @judge, notice: 'Judge was successfully updated.' }
+        format.html { redirect_to @judge, notice: I18n.t('controllers.updated', model: Judge.model_name.human) }
         format.json { render :show, status: :ok, location: @judge }
       else
         format.html { render :edit }
@@ -59,7 +59,7 @@ class JudgesController < ApplicationController
   def destroy
     @judge.destroy
     respond_to do |format|
-      format.html { redirect_to judges_url, notice: 'Judge was successfully destroyed.' }
+      format.html { redirect_to judges_url, notice: I18n.t('controllers.destroyed', model: Judge.model_name.human) }
       format.json { head :no_content }
     end
   end

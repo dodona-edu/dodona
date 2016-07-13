@@ -4,6 +4,7 @@ class JudgesController < ApplicationController
   # GET /judges
   # GET /judges.json
   def index
+    authorize Judge
     @judges = Judge.all
   end
 
@@ -14,6 +15,7 @@ class JudgesController < ApplicationController
 
   # GET /judges/new
   def new
+    authorize Judge
     @judge = Judge.new
   end
 
@@ -24,7 +26,8 @@ class JudgesController < ApplicationController
   # POST /judges
   # POST /judges.json
   def create
-    @judge = Judge.new(judge_params)
+    authorize Judge
+    @judge = Judge.new(permitted_attributes(Judge))
 
     respond_to do |format|
       if @judge.save
@@ -41,7 +44,7 @@ class JudgesController < ApplicationController
   # PATCH/PUT /judges/1.json
   def update
     respond_to do |format|
-      if @judge.update(judge_params)
+      if @judge.update(permitted_attributes(Judge))
         format.html { redirect_to @judge, notice: 'Judge was successfully updated.' }
         format.json { render :show, status: :ok, location: @judge }
       else
@@ -62,13 +65,10 @@ class JudgesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_judge
-      @judge = Judge.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def judge_params
-      params.require(:judge).permit(:name, :image, :path)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_judge
+    @judge = Judge.find(params[:id])
+    authorize @judge
+  end
 end

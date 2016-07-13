@@ -61,7 +61,12 @@
                   <ul class="dropdown-menu">
                     <% if policy(User).index? %>
                       <li><%= link_to t("layout.menu.users"), users_path %></li>
-
+                    <% end %>
+                    <% if policy(Course).index? %>
+                      <li><%= link_to t("layout.menu.courses"), courses_path %></li>
+                    <% end %>
+                    <% if policy(Judge).index? %>
+                      <li><%= link_to t("layout.menu.judges"), judges_path %></li>
                     <% end %>
                     <li><%= link_to t("layout.menu.profile"), current_user %></li>
                     <li role="separator" class="divider"></li>

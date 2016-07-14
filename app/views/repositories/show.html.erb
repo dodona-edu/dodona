@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @repository.name %>
+</p>
+
+<p>
+  <strong>Remote:</strong>
+  <%= @repository.remote %>
+</p>
+
+<p>
+  <strong>Path:</strong>
+  <%= @repository.path %>
+</p>
+
+<p>
+  <strong>Judge:</strong>
+  <%= @repository.judge %>
+</p>
+
+<%= link_to 'Edit', edit_repository_path(@repository) %> |
+<%= link_to 'Back', repositories_path %>

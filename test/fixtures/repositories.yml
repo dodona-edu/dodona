@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  remote: MyString
+  path: MyString
+  judge: one
+
+two:
+  name: MyString
+  remote: MyString
+  path: MyString
+  judge: two

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     end
 
     resources :judges
+    resources :repositories
 
     resources :submissions, only: [:index, :show, :create] do
       member do

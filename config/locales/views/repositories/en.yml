@@ -1,0 +1,8 @@
+en:
+  repositories:
+    index:
+      title: Repositories
+    new:
+      title: Add repository
+    show:
+      repository: Repository

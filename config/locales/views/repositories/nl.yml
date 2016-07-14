@@ -1,0 +1,8 @@
+nl:
+  repositories:
+    index:
+      title: Repositories
+    new:
+      title: Repository toevoegen
+    show:
+      repository: Repository

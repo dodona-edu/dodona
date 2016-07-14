@@ -4,6 +4,7 @@ class RepositoriesController < ApplicationController
   # GET /repositories
   # GET /repositories.json
   def index
+    authorize Repository
     @repositories = Repository.all
   end
 
@@ -14,6 +15,7 @@ class RepositoriesController < ApplicationController
 
   # GET /repositories/new
   def new
+    authorize Repository
     @repository = Repository.new
   end
 
@@ -24,7 +26,8 @@ class RepositoriesController < ApplicationController
   # POST /repositories
   # POST /repositories.json
   def create
-    @repository = Repository.new(repository_params)
+    authorize Repository
+    @repository = Repository.new(permitted_attributes(Repository))
 
     respond_to do |format|
       if @repository.save
@@ -41,7 +44,7 @@ class RepositoriesController < ApplicationController
   # PATCH/PUT /repositories/1.json
   def update
     respond_to do |format|
-      if @repository.update(repository_params)
+      if @repository.update(permitted_attributes(Repository))
         format.html { redirect_to @repository, notice: 'Repository was successfully updated.' }
         format.json { render :show, status: :ok, location: @repository }
       else
@@ -62,13 +65,10 @@ class RepositoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_repository
-      @repository = Repository.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def repository_params
-      params.require(:repository).permit(:name, :remote, :path, :judge_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_repository
+    @repository = Repository.find(params[:id])
+    authorize @repository
+  end
 end

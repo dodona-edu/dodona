@@ -1,24 +1,32 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @repository.name %>
-</p>
-
-<p>
-  <strong>Remote:</strong>
-  <%= @repository.remote %>
-</p>
-
-<p>
-  <strong>Path:</strong>
-  <%= @repository.path %>
-</p>
-
-<p>
-  <strong>Judge:</strong>
-  <%= @repository.judge %>
-</p>
-
-<%= link_to 'Edit', edit_repository_path(@repository) %> |
-<%= link_to 'Back', repositories_path %>
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @repository.name %></h2>
+        <% if policy(@repository).edit? %>
+          <div class="card-title-fab">
+            <%= link_to edit_repository_path(@repository), class: "btn btn-primary btn-fab" do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <div class="col-sm-6 col-xs-12">
+          <p>
+            <strong><%= t ".repository" %>:</strong> <%= @repository.name %>
+          </p>
+          <p>
+            <strong><%= Repository.human_attribute_name("remote") %>:</strong> <%= @repository.remote %>
+          </p>
+          <p>
+            <strong><%= Repository.human_attribute_name("path") %>:</strong> <%= @repository.path %>
+          </p>
+          <p>
+            <strong><%= Repository.human_attribute_name("judge") %>:</strong> <%= link_to @repository.judge.name, @repository.judge %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

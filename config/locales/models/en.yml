@@ -23,6 +23,7 @@ en:
         name: Name
         remote: Clone URL
         path: Path
+        judge: Default judge
       submission:
         code: Code
         result: Result

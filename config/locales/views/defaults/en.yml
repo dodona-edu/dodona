@@ -6,6 +6,7 @@ en:
       users: Users
       courses: Courses
       judges: Judges
+      repositories: Repositories
       profile: Profile
       log_in: Log in
       log_out: Log out

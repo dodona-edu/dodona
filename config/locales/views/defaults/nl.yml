@@ -6,6 +6,7 @@ nl:
       users: Gebruikers
       courses: Cursussen
       judges: Judges
+      repositories: Repository's
       profile: Profiel
       log_in: Aanmelden
       log_out: Afmelden

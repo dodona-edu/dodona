@@ -18,7 +18,7 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def edit?
-    user && user.admin?
+    user && user.zeus?
   end
 
   def create?
@@ -26,7 +26,7 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def update?
-    user && user.admin?
+    user && user.zeus?
   end
 
   def destroy?

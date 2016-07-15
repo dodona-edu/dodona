@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+        <% if policy(Repository).new? %>
+          <div class="card-title-fab">
+            <%= link_to new_repository_path, class: "btn btn-primary btn-fab" do %>
+              <span class="glyphicon glyphicon-plus"></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <table class="table table-index table-resource">
+          <thead>
+            <tr>
+              <th><%= Repository.human_attribute_name("name") %></th>
+              <th><%= Repository.human_attribute_name("remote") %></th>
+              <th><%= Repository.human_attribute_name("path") %></th>
+              <th><%= Repository.human_attribute_name("judge") %></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @repositories.each do |repository| %>
+              <tr>
+                <td><%= link_to repository.name, repository %></td>
+                <td><%= repository.remote %> </td>
+                <td><%= repository.path %> </td>
+                <td><%= link_to repository.judge.name, repository.judge %></td>
+                <td class="actions">
+                  <% if policy(repository).edit? %>
+                    <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
+                  <% end %>
+                  <% if policy(repository).destroy? %>
+                    <%= link_to repository, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

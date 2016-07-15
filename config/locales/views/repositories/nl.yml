@@ -1,0 +1,10 @@
+nl:
+  repositories:
+    form:
+      remote-help: De SSH clone URL van de repository. Dodona moet toegang hebben tot deze repository.
+    index:
+      title: Repositories
+    new:
+      title: Repository toevoegen
+    show:
+      repository: Repository

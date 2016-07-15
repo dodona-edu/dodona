@@ -11,7 +11,9 @@
 #
 
 class Judge < ApplicationRecord
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :image, presence: true
-  validates :path, presence: true
+  validates :path, presence: true, uniqueness: { case_sensitive: false }
+
+  has_many :repositories
 end

@@ -1,0 +1,29 @@
+<%= form_for(repository, :html => {:class => 'form-horizontal'}) do |f| %>
+  <% if repository.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= t( "errors.validation_erors", :count => repository.errors.count) %></h2>
+      <ul>
+        <% repository.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field form-group">
+    <%= f.label :name, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :name, class: "form-control" %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :remote, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :remote, class: "form-control", placeholder: "git@github.ugent.be/..." %></div>
+    <span class="help-block col-sm-offset-3 col-sm-4"><%= t ".remote-help" %></span>
+  </div>
+  <div class="field form-group">
+    <%= f.label :path, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :path, class: "form-control" %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :judge, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.select :judge_id, Judge.all.collect {|j| [ j.name, j.id ] }, {}, {class: "form-control"} %></div>
+  </div>
+<% end %>

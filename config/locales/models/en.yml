@@ -4,6 +4,7 @@ en:
       course: Course
       exercise: Exercise
       judge: Judge
+      repository: Repository
       submission: Submission
       user: Student
     attributes:
@@ -18,6 +19,11 @@ en:
         name: Name
         image: Docker image
         path: Path
+      repository:
+        name: Name
+        remote: Clone URL
+        path: Path
+        judge: Default judge
       submission:
         code: Code
         result: Result

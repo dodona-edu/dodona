@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160717135858) do
+ActiveRecord::Schema.define(version: 20160717140546) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -32,11 +32,17 @@ ActiveRecord::Schema.define(version: 20160717135858) do
   end
 
   create_table "exercises", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "name"
-    t.integer  "visibility", default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.index ["name"], name: "index_exercises_on_name", using: :btree
+    t.string   "name_nl"
+    t.string   "name_en"
+    t.integer  "visibility",    default: 0
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "path"
+    t.integer  "repository_id"
+    t.integer  "judge_id"
+    t.index ["judge_id"], name: "index_exercises_on_judge_id", using: :btree
+    t.index ["name_nl"], name: "index_exercises_on_name_nl", using: :btree
+    t.index ["repository_id"], name: "index_exercises_on_repository_id", using: :btree
   end
 
   create_table "judges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -83,6 +89,8 @@ ActiveRecord::Schema.define(version: 20160717135858) do
     t.index ["username"], name: "index_users_on_username", using: :btree
   end
 
+  add_foreign_key "exercises", "judges"
+  add_foreign_key "exercises", "repositories"
   add_foreign_key "repositories", "judges"
   add_foreign_key "submissions", "exercises"
   add_foreign_key "submissions", "users"

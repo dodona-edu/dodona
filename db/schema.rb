@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160714090038) do
+ActiveRecord::Schema.define(version: 20160717135858) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20160714090038) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id", using: :btree
+    t.index ["path"], name: "index_repositories_on_path", unique: true, using: :btree
   end
 
   create_table "submissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

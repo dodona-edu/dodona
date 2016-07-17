@@ -25,6 +25,8 @@ class Exercise < ApplicationRecord
 
   enum visibility: [:open, :hidden, :closed]
 
+  belongs_to :repository
+  belongs_to :judge
   has_many :submissions
 
   def tests

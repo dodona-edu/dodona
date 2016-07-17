@@ -24,6 +24,7 @@ class Repository < ApplicationRecord
   before_create :clone_repo
 
   belongs_to :judge
+  has_many :exercises
 
   def full_path
     File.join(EXERCISE_LOCATIONS, path)

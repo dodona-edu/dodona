@@ -16,4 +16,5 @@ class Judge < ApplicationRecord
   validates :path, presence: true, uniqueness: { case_sensitive: false }
 
   has_many :repositories
+  has_many :exercises
 end

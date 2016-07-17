@@ -17,7 +17,6 @@ require 'action_view'
 include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
-  DATA_DIR = Rails.root.join('data', 'exercises').freeze
   TESTS_FILE = 'tests.js'.freeze
   DESCRIPTION_FILE = 'NL.md'.freeze
   MEDIA_DIR = 'media'.freeze
@@ -29,18 +28,33 @@ class Exercise < ApplicationRecord
   belongs_to :judge
   has_many :submissions
 
+  validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
+  validates :repository_id, presence: true
+  validates :judge_id, presence: true
+
+  def full_path
+    File.join(repository.full_path, path)
+  end
+
+  def name
+    send("name_" + I18n.locale.to_s) || name_nl || name_en
+  end
+
+  # old
   def tests
     file = File.join(DATA_DIR, name, TESTS_FILE)
     File.read(file) if FileTest.exists?(file)
   end
 
+  # old
   def description
-    file = File.join(DATA_DIR, name, DESCRIPTION_FILE)
+    file = File.join(full_path, DESCRIPTION_FILE)
     File.read(file) if FileTest.exists?(file)
   end
 
+  # old
   def copy_media
-    media_src = File.join(DATA_DIR, name, MEDIA_DIR)
+    media_src = File.join(full_path, MEDIA_DIR)
     media_dst = File.join PUBLIC_DIR, name
     if FileTest.exists? media_src
       Dir.mkdir media_dst unless FileTest.exists? media_dst
@@ -48,38 +62,46 @@ class Exercise < ApplicationRecord
     end
   end
 
+  # old
   def users_correct
     submissions.where(status: :correct).distinct.count(:user_id)
   end
 
+  # old
   def users_tried
     submissions.all.distinct.count(:user_id)
   end
 
+  # old
   def last_correct_submission(user)
     submissions.of_user(user).where(status: :correct).limit(1).first
   end
 
+  # old
   def last_submission(user)
     submissions.of_user(user).limit(1).first
   end
 
+  # old
   def status_for(user)
     return :correct if submissions.of_user(user).where(status: :correct).count > 0
     return :wrong if submissions.of_user(user).where(status: :wrong).count > 0
     :unknown
   end
 
+  # old
   def number_of_submissions_for(user)
     submissions.of_user(user).count
   end
 
+  # old
   def solving_speed_for(user)
     subs = submissions.of_user(user)
     return '' if subs.count < 2
     distance_of_time_in_words(subs.first.created_at, subs.last.created_at)
   end
 
+  # old
   def self.refresh(changed)
     msg = `cd #{DATA_DIR} && git pull 2>&1`
     status = $CHILD_STATUS.exitstatus
@@ -87,12 +109,14 @@ class Exercise < ApplicationRecord
     [status, msg]
   end
 
+  # old
   def self.process_directories(changed)
     Dir.entries(DATA_DIR)
        .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') && (changed.include?(entry) || changed.include?('UPDATE_ALL')) }
        .each { |entry| Exercise.process_exercise_directory(entry) }
   end
 
+  # old
   def self.process_exercise_directory(dir)
     exercise = Exercise.find_by_name(dir) || Exercise.create(name: dir)
     exercise.copy_media

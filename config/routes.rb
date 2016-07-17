@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exercises, only: [:index, :show, :edit, :update], param: :name do
+    resources :exercises, only: [:index, :show, :edit, :update] do
       resources :submissions, only: [:index, :create]
       member do
         get 'users'

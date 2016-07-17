@@ -1,4 +1,4 @@
-<%= form_for(exercise, :url => exercise_path(exercise.name), :html => {:class => 'form-horizontal'}) do |f| %>
+<%= form_for(exercise, :url => exercise_path(exercise), :html => {:class => 'form-horizontal'}) do |f| %>
   <% if exercise.errors.any? %>
     <div id="error_explanation">
       <h2><%= t( "errors.validation_erors", :count => exercise.errors.count) %></h2>
@@ -21,10 +21,10 @@
   <% end %>
   <div class="field form-group">
     <label class="col-sm-2 control-label"><%= t ".edit_exercise" %></label>
-    <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.name}/NL.md" %></div>
+    <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.path}/NL.md" %></div>
   </div>
   <div class="field form-group">
     <label class="col-sm-2 control-label"><%= t ".edit_tests" %></label>
-    <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.name}/tests.js" %></div>
+    <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.path}/tests.js" %></div>
   </div>
 <% end %>

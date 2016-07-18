@@ -21,9 +21,6 @@
 //= require vendor
 //= require_self
 //= require_directory .
-//= require judge/utils.js
-//= require judge/diff.js
-//= require judge/feedbackTable.js
 
 $(function () {
     if (!(Modernizr.templatestrings && Modernizr.webworkers)) {

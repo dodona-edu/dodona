@@ -22,7 +22,6 @@ class Exercise < ApplicationRecord
   DESCRIPTION_DIR = 'descriptions'.freeze
 
   # old
-  TESTS_FILE = 'tests.js'.freeze
   MEDIA_DIR = 'media'.freeze
   PUBLIC_DIR = Rails.root.join('public', 'exercises').freeze
 
@@ -81,11 +80,6 @@ class Exercise < ApplicationRecord
     else
       return 'md'
     end
-  end
-
-  # old
-  def tests
-    ""
   end
 
   # old

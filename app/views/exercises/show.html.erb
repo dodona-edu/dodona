@@ -86,6 +86,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_exercise_show(<%= @exercise.id %>, <%= user_signed_in? %>, `<%= raw(@exercise.tests.gsub('\\', '\\\\\\\\').gsub("$","\\$").gsub("{","\\{")) %>`);
+    init_exercise_show(<%= @exercise.id %>, <%= user_signed_in? %>);
   });
 </script>

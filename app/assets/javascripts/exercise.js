@@ -1,4 +1,4 @@
-function init_exercise_show(exerciseId, loggedIn, tests) {
+function init_exercise_show(exerciseId, loggedIn) {
     var editor;
 
     function init() {
@@ -9,7 +9,6 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
 
 
         // create feedback table
-        var feedbackTable = new FeedbackTable(tests);
         $("#feedback-loading").hide();
 
 
@@ -17,39 +16,10 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
         $("#editor-process-btn").click(function () {
             // test submitted source code
             var source = editor.getValue();
-            feedbackTable.test({
-                "source": source
-            }).then(function (data) {
-                var result = "";
-                var status = "";
-                if (loggedIn) {
-                    if (data.status === "timeout") {
-                        status = "timeout";
-                        result = "timeout";
-                    } else {
-                        result = data.correct + " correct, " + data.wrong + " verkeerd";
-                        status = data.wrong === 0 ? "correct" : "wrong";
-                    }
-                    submitSolution(source, result, status);
-                }
-            });
-            $('#exercise-feedback-link').tab('show');
-        });
-
-        // hide/show correct test cases if button is clicked in menu on feedback
-        // panel
-        $("#feedback-menu-toggle-correct").click(function () {
-            if ($("a", this).text() === "verberg correct") {
-                // hide correct test cases
-                $("a", this).text("toon correct");
-                $(".AC").hide();
-            } else {
-                // show correct test cases
-                $("a", this).text("verberg correct");
-                $(".AC").show();
+            if (loggedIn) {
+                submitSolution(source, "", "");
             }
-            $(this).dropdown('toggle');
-            return false;
+            $('#exercise-feedback-link').tab('show');
         });
 
         MathJax.Hub.Queue(function() {

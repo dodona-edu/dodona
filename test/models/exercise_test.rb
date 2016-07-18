@@ -9,6 +9,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  path          :string(255)
+#  format        :string(255)
 #  repository_id :integer
 #  judge_id      :integer
 #

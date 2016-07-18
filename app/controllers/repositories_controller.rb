@@ -28,9 +28,11 @@ class RepositoriesController < ApplicationController
   def create
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
+    saved = @repository.save
+    Exercise.process_repository @repository
 
     respond_to do |format|
-      if @repository.save
+      if saved
         format.html { redirect_to @repository, notice: I18n.t('controllers.created', model: Repository.model_name.human) }
         format.json { render :show, status: :created, location: @repository }
       else

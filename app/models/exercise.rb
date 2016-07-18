@@ -17,6 +17,9 @@ require 'action_view'
 include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
+  CONFIG_FILE = 'config.json'.freeze
+
+  # old
   TESTS_FILE = 'tests.js'.freeze
   DESCRIPTION_FILE = 'NL.md'.freeze
   MEDIA_DIR = 'media'.freeze
@@ -37,7 +40,7 @@ class Exercise < ApplicationRecord
   end
 
   def name
-    send("name_" + I18n.locale.to_s) || name_nl || name_en
+    send('name_' + I18n.locale.to_s) || name_nl || name_en
   end
 
   # old
@@ -109,16 +112,36 @@ class Exercise < ApplicationRecord
     [status, msg]
   end
 
-  # old
-  def self.process_directories(changed)
-    Dir.entries(DATA_DIR)
-       .select { |entry| File.directory?(File.join(DATA_DIR, entry)) && !entry.start_with?('.') && (changed.include?(entry) || changed.include?('UPDATE_ALL')) }
-       .each { |entry| Exercise.process_exercise_directory(entry) }
+  def self.process_repository(repository)
+    Exercise.process_directory(repository, '/')
   end
 
-  # old
-  def self.process_exercise_directory(dir)
-    exercise = Exercise.find_by_name(dir) || Exercise.create(name: dir)
-    exercise.copy_media
+  def self.process_directory(repository, directory)
+    config_file = File.join(path, CONFIG_FILE)
+    puts "testing #{config_file}"
+    if File.file? config_file
+      config = JSON.parse(File.read(config_file))
+      Exercise.process_exercise(repository, directory, config)
+    else
+      Dir.entries(path)
+         .select { |entry| File.directory?(File.join(path, entry)) && !entry.start_with?('.') }
+         .each { |entry| Exercise.process_directory(repository, File.join(directory, entry)) }
+    end
+  end
+
+  def self.process_exercise(repository, directory, config)
+    ex = Exercise.where(path: directory, repository_id: repository.id).first
+    j = Judge.find_by_name(config['judge'])
+    j_id = j.nil? ? repository.judge_id : j.id
+
+    if ex.nil?
+      ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id)
+    end
+
+    ex.name_nl = config['names']['nl']
+    ex.name_en = config['names']['en']
+    ex.judge_id = j_id
+    ex.save
+    # do something with the media dir
   end
 end

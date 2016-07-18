@@ -30,6 +30,11 @@ class Repository < ApplicationRecord
     File.join(EXERCISE_LOCATIONS, path)
   end
 
+  def pull
+    _out, error, status = Open3.capture3('git pull', chdir: full_path)
+    [status.success?, error]
+  end
+
   def repo_is_accessible
     cmd = ['git', 'ls-remote', remote.shellescape]
     _out, error, status = Open3.capture3(*cmd)

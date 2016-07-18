@@ -2,16 +2,16 @@
 #
 # Table name: exercises
 #
-#  id            :integer          not null, primary key
-#  name_nl       :string(255)
-#  name_en       :string(255)
-#  visibility    :integer          default("open")
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  path          :string(255)
-#  format        :string(255)
-#  repository_id :integer
-#  judge_id      :integer
+#  id                 :integer          not null, primary key
+#  name_nl            :string(255)
+#  name_en            :string(255)
+#  visibility         :integer          default("open")
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  path               :string(255)
+#  description_format :string(255)
+#  repository_id      :integer
+#  judge_id           :integer
 #
 
 require 'action_view'
@@ -19,10 +19,10 @@ include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
+  DESCRIPTION_DIR = 'descriptions'.freeze
 
   # old
   TESTS_FILE = 'tests.js'.freeze
-  DESCRIPTION_FILE = 'NL.md'.freeze
   MEDIA_DIR = 'media'.freeze
   PUBLIC_DIR = Rails.root.join('public', 'exercises').freeze
 
@@ -44,16 +44,48 @@ class Exercise < ApplicationRecord
     send('name_' + I18n.locale.to_s) || name_nl || name_en
   end
 
-  # old
-  def tests
-    file = File.join(DATA_DIR, name, TESTS_FILE)
+  def description_localized(lang = I18n.locale.to_s)
+    file = File.join(full_path, DESCRIPTION_DIR, "description.#{lang}.#{description_format}")
     File.read(file) if FileTest.exists?(file)
   end
 
-  # old
+  def description_nl
+    description_localized('nl')
+  end
+
+  def description_en
+    description_localized('en')
+  end
+
   def description
-    file = File.join(full_path, DESCRIPTION_FILE)
-    File.read(file) if FileTest.exists?(file)
+    desc = description_localized || description_nl || description_en
+    if description_format == 'md'
+      markdown(desc)
+    else
+      desc.html_safe
+    end
+  end
+
+  def update_data(config, j_id)
+    self.name_nl = config['names']['nl']
+    self.name_en = config['names']['en']
+    self.judge_id = j_id if j_id
+    self.description_format = determine_format
+    save
+    # do something with the media dir
+  end
+
+  def determine_format
+    if ['description.nl.html', 'description.en.html'].any? { |f| FileTest.exists?(File.join(full_path, DESCRIPTION_DIR, f)) }
+      return 'html'
+    else
+      return 'md'
+    end
+  end
+
+  # old
+  def tests
+    ""
   end
 
   # old
@@ -66,39 +98,32 @@ class Exercise < ApplicationRecord
     end
   end
 
-  # old
   def users_correct
     submissions.where(status: :correct).distinct.count(:user_id)
   end
 
-  # old
   def users_tried
     submissions.all.distinct.count(:user_id)
   end
 
-  # old
   def last_correct_submission(user)
     submissions.of_user(user).where(status: :correct).limit(1).first
   end
 
-  # old
   def last_submission(user)
     submissions.of_user(user).limit(1).first
   end
 
-  # old
   def status_for(user)
     return :correct if submissions.of_user(user).where(status: :correct).count > 0
     return :wrong if submissions.of_user(user).where(status: :wrong).count > 0
     :unknown
   end
 
-  # old
   def number_of_submissions_for(user)
     submissions.of_user(user).count
   end
 
-  # old
   def solving_speed_for(user)
     subs = submissions.of_user(user)
     return '' if subs.count < 2
@@ -118,8 +143,8 @@ class Exercise < ApplicationRecord
   end
 
   def self.process_directory(repository, directory)
+    path = File.join(repository.full_path, directory)
     config_file = File.join(path, CONFIG_FILE)
-    puts "testing #{config_file}"
     if File.file? config_file
       config = JSON.parse(File.read(config_file))
       Exercise.process_exercise(repository, directory, config)
@@ -139,10 +164,6 @@ class Exercise < ApplicationRecord
       ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id)
     end
 
-    ex.name_nl = config['names']['nl']
-    ex.name_en = config['names']['en']
-    ex.judge_id = j_id
-    ex.save
-    # do something with the media dir
+    ex.update_data(config, j_id)
   end
 end

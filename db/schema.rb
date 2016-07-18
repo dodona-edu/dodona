@@ -34,11 +34,11 @@ ActiveRecord::Schema.define(version: 20160717140546) do
   create_table "exercises", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name_nl"
     t.string   "name_en"
-    t.integer  "visibility",    default: 0
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "visibility",         default: 0
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "path"
-    t.string   "format"
+    t.string   "description_format"
     t.integer  "repository_id"
     t.integer  "judge_id"
     t.index ["judge_id"], name: "index_exercises_on_judge_id", using: :btree

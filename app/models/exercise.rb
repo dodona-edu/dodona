@@ -136,6 +136,10 @@ class Exercise < ApplicationRecord
     Exercise.process_directory(repository, '/')
   end
 
+  def self.process_directories(repository, directories)
+    directories.each { |dir| Exercise.process_directory(repository, dir) }
+  end
+
   def self.process_directory(repository, directory)
     path = File.join(repository.full_path, directory)
     config_file = File.join(path, CONFIG_FILE)
@@ -159,5 +163,10 @@ class Exercise < ApplicationRecord
     end
 
     ex.update_data(config, j_id)
+  end
+
+  def self.exercise_directory?(path)
+    config_file = File.join(path, CONFIG_FILE)
+    File.file? config_file
   end
 end

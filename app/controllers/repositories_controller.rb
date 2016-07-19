@@ -70,19 +70,27 @@ class RepositoriesController < ApplicationController
   end
 
   def hook
-    # Build set with all exercises that need to be updated
-    #changed = Set.new
-    #if params.key?('commits')
-    #  commits = params['commits']
-
-    #  for commit in commits
-    #    %w(added removed modified).each { |type| changed |= commit[type].map { |filename| filename.split('/').first } }
-    #  end
-    #else
-    #  changed.add('UPDATE_ALL')
-    #end
-
     success, msg = @repository.pull
+    if success
+      if params.key?('commits')
+        exercises = Set.new
+        params['commits'].each do |commit|
+          %w(added removed modified).each do |type|
+            commit[type].each do |file|
+              dirs = file.split('/').reverse
+              path = dirs.pop
+              until Exercise.exercise_directory?(File.join(@repository.full_path, path)) || dirs.empty?
+                path = File.join(path, dirs.pop)
+              end
+              exercises.add(path) unless dirs.empty?
+            end
+          end
+        end
+        Exercise.process_directories exercises.to_a
+      else
+        Exercise.process_repository @repository
+      end
+    end
     status = success ? 200 : 500
     render plain: msg, status: status
   end

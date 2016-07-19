@@ -5,5 +5,5 @@ server 'naos.ugent.be', user: 'dodona', roles: [:web, :app, :db], ssh_options: {
   port: 4840
 }
 
-set :branch, 'develop'
+set :branch, 'feature/refactor-exercises'
 set :rails_env, :development

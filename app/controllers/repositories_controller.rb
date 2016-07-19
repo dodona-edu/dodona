@@ -32,7 +32,7 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
     saved = @repository.save
-    Exercise.process_repository @repository
+    Exercise.process_repository @repository if saved
 
     respond_to do |format|
       if saved

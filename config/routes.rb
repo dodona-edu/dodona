@@ -20,7 +20,11 @@ Rails.application.routes.draw do
     end
 
     resources :judges
-    resources :repositories
+    resources :repositories do
+      member do
+        match 'hook', via: [:get, :post], to: 'repositories#hook', as: "webhook"
+      end
+    end
 
     resources :submissions, only: [:index, :show, :create] do
       member do
@@ -32,9 +36,6 @@ Rails.application.routes.draw do
       resources :submissions, only: [:index]
     end
   end
-
-  # Webhooks
-  match '/webhooks/update_exercises', via: [:get, :post], to: 'webhooks#update_exercises'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 

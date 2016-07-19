@@ -8,3 +8,4 @@ en:
       title: Add repository
     show:
       repository: Repository
+      webhook: "Don't forget to trigger the webhook on each commit:"

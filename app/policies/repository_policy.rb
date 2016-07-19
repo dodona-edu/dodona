@@ -33,6 +33,10 @@ class RepositoryPolicy < ApplicationPolicy
     user && user.zeus?
   end
 
+  def hook?
+    true
+  end
+
   def permitted_attributes
     if user && user.admin?
       [:name, :remote, :path, :judge_id]

@@ -24,6 +24,7 @@ en:
         remote: Clone URL
         path: Path
         judge: Default judge
+        exercises: Exercises
       submission:
         code: Code
         result: Result

@@ -1,5 +1,8 @@
+require 'set'
+
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: [:show, :edit, :update, :destroy]
+  before_action :set_repository, only: [:show, :edit, :update, :destroy, :hook]
+  skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /repositories
   # GET /repositories.json
@@ -64,6 +67,24 @@ class RepositoriesController < ApplicationController
       format.html { redirect_to repositories_url, notice: I18n.t('controllers.destroyed', model: Repository.model_name.human) }
       format.json { head :no_content }
     end
+  end
+
+  def hook
+    # Build set with all exercises that need to be updated
+    #changed = Set.new
+    #if params.key?('commits')
+    #  commits = params['commits']
+
+    #  for commit in commits
+    #    %w(added removed modified).each { |type| changed |= commit[type].map { |filename| filename.split('/').first } }
+    #  end
+    #else
+    #  changed.add('UPDATE_ALL')
+    #end
+
+    success, msg = @repository.pull
+    status = success ? 200 : 500
+    render plain: msg, status: status
   end
 
   private

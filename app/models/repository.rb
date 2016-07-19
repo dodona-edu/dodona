@@ -31,7 +31,7 @@ class Repository < ApplicationRecord
   end
 
   def pull
-    _out, error, status = Open3.capture3('git pull', chdir: full_path)
+    _out, error, status = Open3.capture3('git pull -f', chdir: full_path)
     [status.success?, error]
   end
 

@@ -8,3 +8,4 @@ nl:
       title: Repository toevoegen
     show:
       repository: Repository
+      webhook: "Vergeet niet de webhook te triggeren bij elke commit:"

@@ -19,11 +19,12 @@ nl:
         name: Naam
         image: Docker image
         path: Padnaam
-        judge: Default judge
       repository:
         name: Naam
         remote: Clone URL
         path: Padnaam
+        judge: Default judge
+        exercises: Oefeningen
       submission:
         code: Code
         result: Resultaat

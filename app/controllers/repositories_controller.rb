@@ -86,7 +86,7 @@ class RepositoriesController < ApplicationController
             end
           end
         end
-        Exercise.process_directories exercises.to_a
+        Exercise.process_directories @repository, exercises.to_a
       else
         Exercise.process_repository @repository
       end

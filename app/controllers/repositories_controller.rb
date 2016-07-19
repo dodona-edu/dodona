@@ -78,7 +78,7 @@ class RepositoriesController < ApplicationController
           %w(added removed modified).each do |type|
             commit[type].each do |file|
               dirs = file.split('/').reverse
-              path = dirs.pop
+              path = '/' + dirs.pop
               until Exercise.exercise_directory?(File.join(@repository.full_path, path)) || dirs.empty?
                 path = File.join(path, dirs.pop)
               end

@@ -59,10 +59,10 @@ function init_exercise_show(exerciseId, loggedIn) {
             image_object = {
                 url: imagesrc,
                 caption: alttext
-            }
-            images.push(image_object)
+            };
+            images.push(image_object);
 
-            $(this).data('image_index', index++)
+            $(this).data('image_index', index++);
 
         });
 

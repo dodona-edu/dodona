@@ -60,7 +60,7 @@ class Exercise < ApplicationRecord
   def description
     desc = description_localized || description_nl || description_en
     desc = markdown(desc) if description_format == 'md'
-    # TODO do this for all descriptions
+    # TODO: do this for all descriptions
     desc.gsub('../media', 'media').html_safe
   end
 
@@ -69,8 +69,8 @@ class Exercise < ApplicationRecord
     self.name_en = config['names']['en']
     self.judge_id = j_id if j_id
     self.description_format = determine_format
+    self.visibility = Exercise.convert_visibility(config['visibility']) if config['visibility']
     save
-    # do something with the media dir
   end
 
   def determine_format
@@ -149,5 +149,11 @@ class Exercise < ApplicationRecord
   def self.exercise_directory?(path)
     config_file = File.join(path, CONFIG_FILE)
     File.file? config_file
+  end
+
+  def self.convert_visibility(visibility)
+    return 'open' if visibility == 'public'
+    return 'closed' if visibility == 'private'
+    visibility
   end
 end

@@ -35,6 +35,12 @@ class Repository < ApplicationRecord
     [status.success?, error]
   end
 
+  def commit(msg)
+    _out, error, status = Open3.capture3('git', 'commit', '--author="Dodona <dodona@ugent.be>"', '-am', msg, chdir: full_path)
+    _out, error, status = Open3.capture3('git push', chdir: full_path) if status.success?
+    [status.success?, error]
+  end
+
   def repo_is_accessible
     cmd = ['git', 'ls-remote', remote.shellescape]
     _out, error, status = Open3.capture3(*cmd)

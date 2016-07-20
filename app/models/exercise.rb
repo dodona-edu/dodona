@@ -32,6 +32,8 @@ class Exercise < ApplicationRecord
   validates :repository_id, presence: true
   validates :judge_id, presence: true
 
+  before_update :update_config
+
   def full_path
     File.join(repository.full_path, path)
   end
@@ -79,6 +81,21 @@ class Exercise < ApplicationRecord
     else
       return 'md'
     end
+  end
+
+  def config
+    JSON.parse(File.read(File.join(full_path, CONFIG_FILE)))
+  end
+
+  def store_config(config)
+    File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(config))
+    repository.commit "updated config for #{name}"
+  end
+
+  def update_config
+    c = config
+    c['visibility'] = visibility
+    store_config c
   end
 
   def users_correct

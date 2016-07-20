@@ -26,8 +26,13 @@
             <strong><%= Repository.human_attribute_name("judge") %>:</strong> <%= link_to @repository.judge.name, @repository.judge %>
           </p>
           <p>
-            <strong><%= Repository.human_attribute_name("exercises") %>:</strong> <%= @repository.exercises.count %>
+            <strong># <%= Repository.human_attribute_name("exercises") %>:</strong> <%= @repository.exercises.count %>
           </p>
+          <% if policy(@repository).reprocess? %>
+          <p>
+            <%= link_to t(".reprocess"), reprocess_repository_path(@repository) %>
+          </p>
+          <% end %>
         </div>
         <div class="col-sm-6 col-xs-12">
           <div class="card">

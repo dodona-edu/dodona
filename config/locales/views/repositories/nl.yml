@@ -9,3 +9,6 @@ nl:
     show:
       repository: Repository
       webhook: "Vergeet niet de webhook te triggeren bij elke commit:"
+      reprocess: Alle oefeningen herverwerken
+    reprocess:
+      done: Alle oefeningen in deze repository werden opnieuw verwerkt

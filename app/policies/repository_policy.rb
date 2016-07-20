@@ -37,6 +37,10 @@ class RepositoryPolicy < ApplicationPolicy
     true
   end
 
+  def reprocess?
+    user && user.admin?
+  end
+
   def permitted_attributes
     if user && user.admin?
       [:name, :remote, :path, :judge_id]

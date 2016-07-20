@@ -9,3 +9,6 @@ en:
     show:
       repository: Repository
       webhook: "Don't forget to trigger the webhook on each commit:"
+      reprocess: Reprocess all exercises
+    reprocess:
+      done: All exercises in this repository were reprocessed

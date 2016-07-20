@@ -1,7 +1,7 @@
 require 'set'
 
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: [:show, :edit, :update, :destroy, :hook]
+  before_action :set_repository, only: [:show, :edit, :update, :destroy, :hook, :reprocess]
   skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /repositories
@@ -93,6 +93,11 @@ class RepositoriesController < ApplicationController
     end
     status = success ? 200 : 500
     render plain: msg, status: status
+  end
+
+  def reprocess
+    Exercise.process_repository @repository
+    redirect_to(@repository, notice: I18n.t('repositories.reprocess.done'))
   end
 
   private

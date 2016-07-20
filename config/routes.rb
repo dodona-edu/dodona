@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :repositories do
       member do
         match 'hook', via: [:get, :post], to: 'repositories#hook', as: "webhook"
+        get 'reprocess'
       end
     end
 

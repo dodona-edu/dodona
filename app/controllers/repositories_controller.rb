@@ -75,7 +75,7 @@ class RepositoriesController < ApplicationController
       if params.key?('commits')
         exercises = Set.new
         params['commits'].each do |commit|
-          next if commit["author"]["name"] == "Dodona"
+          next if commit['author']['name'] == 'Dodona'
           %w(added removed modified).each do |type|
             commit[type].each do |file|
               dirs = file.split('/').reverse

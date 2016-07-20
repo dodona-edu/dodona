@@ -89,7 +89,11 @@ class Exercise < ApplicationRecord
 
   def store_config(config)
     File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(config))
-    repository.commit "updated config for #{name}"
+    success, error = repository.commit "updated config for #{name}"
+    if !success && error
+      errors.add(:base, "commiting changes failed: #{error}")
+      throw :abort
+    end
   end
 
   def update_config

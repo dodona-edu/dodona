@@ -36,7 +36,7 @@ class ExercisesController < ApplicationController
   end
 
   def media
-    send_file File.join(@exercise.full_path, "resources", "description", params[:media]), disposition: "inline"
+    send_file File.join(@exercise.media_path, params[:media]), disposition: 'inline'
   end
 
   private

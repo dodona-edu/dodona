@@ -20,10 +20,7 @@ include ActionView::Helpers::DateHelper
 class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
   DESCRIPTION_DIR = 'descriptions'.freeze
-
-  # old
-  MEDIA_DIR = 'media'.freeze
-  PUBLIC_DIR = Rails.root.join('public', 'exercises').freeze
+  MEDIA_DIR = 'resources/description'.freeze
 
   enum visibility: [:open, :hidden, :closed]
 
@@ -37,6 +34,10 @@ class Exercise < ApplicationRecord
 
   def full_path
     File.join(repository.full_path, path)
+  end
+
+  def media_path
+    File.join(full_path, MEDIA_DIR)
   end
 
   def name
@@ -58,11 +59,9 @@ class Exercise < ApplicationRecord
 
   def description
     desc = description_localized || description_nl || description_en
-    if description_format == 'md'
-      markdown(desc)
-    else
-      desc.html_safe
-    end
+    desc = markdown(desc) if description_format == 'md'
+    # TODO do this for all descriptions
+    desc.gsub('../media', 'media').html_safe
   end
 
   def update_data(config, j_id)
@@ -79,16 +78,6 @@ class Exercise < ApplicationRecord
       return 'html'
     else
       return 'md'
-    end
-  end
-
-  # old
-  def copy_media
-    media_src = File.join(full_path, MEDIA_DIR)
-    media_dst = File.join PUBLIC_DIR, name
-    if FileTest.exists? media_src
-      Dir.mkdir media_dst unless FileTest.exists? media_dst
-      FileUtils.cp_r media_src, media_dst
     end
   end
 
@@ -122,14 +111,6 @@ class Exercise < ApplicationRecord
     subs = submissions.of_user(user)
     return '' if subs.count < 2
     distance_of_time_in_words(subs.first.created_at, subs.last.created_at)
-  end
-
-  # old
-  def self.refresh(changed)
-    msg = `cd #{DATA_DIR} && git pull 2>&1`
-    status = $CHILD_STATUS.exitstatus
-    Exercise.process_directories(changed)
-    [status, msg]
   end
 
   def self.process_repository(repository)

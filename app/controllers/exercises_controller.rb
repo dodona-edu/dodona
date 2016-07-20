@@ -1,5 +1,5 @@
 class ExercisesController < ApplicationController
-  before_action :set_exercise, only: [:show, :edit, :update, :users]
+  before_action :set_exercise, only: [:show, :edit, :update, :users, :media]
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: "Sorry, we kunnen de oefening #{params[:name]} niet vinden."
@@ -33,6 +33,10 @@ class ExercisesController < ApplicationController
 
   def users
     @users = User.all.order(last_name: :asc)
+  end
+
+  def media
+    send_file File.join(@exercise.full_path, "resources", "description", params[:media]), disposition: "inline"
   end
 
   private

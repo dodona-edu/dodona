@@ -29,6 +29,10 @@ class ExercisePolicy < ApplicationPolicy
     user && user.admin?
   end
 
+  def media?
+    show?
+  end
+
   def permitted_attributes
     if user && user.admin?
       [:visibility]

@@ -7,10 +7,8 @@ function init_exercise_show(exerciseId, loggedIn) {
 
         centerImagesAndTables();
 
-
         // create feedback table
         $("#feedback-loading").hide();
-
 
         // test source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
@@ -22,6 +20,10 @@ function init_exercise_show(exerciseId, loggedIn) {
             $('#exercise-feedback-link').tab('show');
         });
 
+        // configure mathjax
+        MathJax.Hub.Config({
+          tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
         MathJax.Hub.Queue(function() {
             /* MathJax has not been run yet*/
             if ($('span.MathJax').length === 0) {

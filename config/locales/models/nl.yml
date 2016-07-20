@@ -13,7 +13,9 @@ nl:
         year: Academiejaar
         secret: Secret
       exercise:
-        name: Titel
+        name: Naam
+        name_nl: Naam Nederlands
+        name_en: Naam Engels
         visibility: Zichtbaarheid
       judge:
         name: Naam

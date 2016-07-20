@@ -90,7 +90,7 @@ class Exercise < ApplicationRecord
   def store_config(config)
     File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(config))
     success, error = repository.commit "updated config for #{name}"
-    if !success && error
+    unless success || error.empty?
       errors.add(:base, "commiting changes failed: #{error}")
       throw :abort
     end
@@ -99,6 +99,8 @@ class Exercise < ApplicationRecord
   def update_config
     c = config
     c['visibility'] = visibility
+    c['names']['nl'] = name_nl
+    c['names']['en'] = name_en
     store_config c
   end
 

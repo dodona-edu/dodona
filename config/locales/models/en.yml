@@ -13,7 +13,9 @@ en:
         year: Academic year
         secret: Secret
       exercise:
-        name: Title
+        name: Name
+        name_nl: Name Dutch
+        name_en: Name English
         visibility: Visibility
       judge:
         name: Name

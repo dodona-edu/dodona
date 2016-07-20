@@ -35,7 +35,7 @@ class ExercisePolicy < ApplicationPolicy
 
   def permitted_attributes
     if user && user.admin?
-      [:visibility]
+      [:visibility, :name_nl, :name_en]
     else
       []
     end

@@ -2,16 +2,17 @@
 #
 # Table name: exercises
 #
-#  id                 :integer          not null, primary key
-#  name_nl            :string(255)
-#  name_en            :string(255)
-#  visibility         :integer          default("open")
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  path               :string(255)
-#  description_format :string(255)
-#  repository_id      :integer
-#  judge_id           :integer
+#  id                   :integer          not null, primary key
+#  name_nl              :string(255)
+#  name_en              :string(255)
+#  visibility           :integer          default("open")
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  path                 :string(255)
+#  description_format   :string(255)
+#  programming_language :string(255)
+#  repository_id        :integer
+#  judge_id             :integer
 #
 
 require 'action_view'
@@ -163,7 +164,7 @@ class Exercise < ApplicationRecord
     j_id = j.nil? ? repository.judge_id : j.id
 
     if ex.nil?
-      ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id)
+      ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id, programming_language: 'python')
     end
 
     ex.update_data(config, j_id)

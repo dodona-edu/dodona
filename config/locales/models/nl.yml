@@ -13,17 +13,20 @@ nl:
         year: Academiejaar
         secret: Secret
       exercise:
-        name: Titel
+        name: Naam
+        name_nl: Naam Nederlands
+        name_en: Naam Engels
         visibility: Zichtbaarheid
       judge:
         name: Naam
         image: Docker image
         path: Padnaam
-        judge: Default judge
       repository:
         name: Naam
         remote: Clone URL
         path: Padnaam
+        judge: Default judge
+        exercises: Oefeningen
       submission:
         code: Code
         result: Resultaat

@@ -13,7 +13,9 @@ en:
         year: Academic year
         secret: Secret
       exercise:
-        name: Title
+        name: Name
+        name_nl: Name Dutch
+        name_en: Name English
         visibility: Visibility
       judge:
         name: Name
@@ -24,6 +26,7 @@ en:
         remote: Clone URL
         path: Path
         judge: Default judge
+        exercises: Exercises
       submission:
         code: Code
         result: Result

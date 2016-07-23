@@ -25,6 +25,25 @@
           <p>
             <strong><%= Repository.human_attribute_name("judge") %>:</strong> <%= link_to @repository.judge.name, @repository.judge %>
           </p>
+          <p>
+            <strong># <%= Repository.human_attribute_name("exercises") %>:</strong> <%= @repository.exercises.count %>
+          </p>
+          <% if policy(@repository).reprocess? %>
+          <p>
+            <%= link_to t(".reprocess"), reprocess_repository_path(@repository) %>
+          </p>
+          <% end %>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+          <div class="card">
+            <div class="card-title card-title-colored">
+              <h2 class="card-title-text">Webhook</h2>
+            </div>
+            <div class="card-supporting-text">
+              <p><%= t ".webhook" %></p>
+              <p><%= request.protocol + request.host + webhook_repository_path(@repository) %></p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

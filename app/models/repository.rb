@@ -24,9 +24,21 @@ class Repository < ApplicationRecord
   before_create :clone_repo
 
   belongs_to :judge
+  has_many :exercises
 
   def full_path
     File.join(EXERCISE_LOCATIONS, path)
+  end
+
+  def pull
+    _out, error, status = Open3.capture3('git pull -f', chdir: full_path)
+    [status.success?, error]
+  end
+
+  def commit(msg)
+    _out, error, status = Open3.capture3('git', 'commit', '--author="Dodona <dodona@ugent.be>"', '-am', msg, chdir: full_path)
+    _out, error, status = Open3.capture3('git push', chdir: full_path) if status.success?
+    [status.success?, error]
   end
 
   def repo_is_accessible

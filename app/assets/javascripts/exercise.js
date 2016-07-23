@@ -1,4 +1,4 @@
-function init_exercise_show(exerciseId, loggedIn, tests) {
+function init_exercise_show(exerciseId, loggedIn) {
     var editor;
 
     function init() {
@@ -7,51 +7,23 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
 
         centerImagesAndTables();
 
-
         // create feedback table
-        var feedbackTable = new FeedbackTable(tests);
         $("#feedback-loading").hide();
-
 
         // test source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
             // test submitted source code
             var source = editor.getValue();
-            feedbackTable.test({
-                "source": source
-            }).then(function (data) {
-                var result = "";
-                var status = "";
-                if (loggedIn) {
-                    if (data.status === "timeout") {
-                        status = "timeout";
-                        result = "timeout";
-                    } else {
-                        result = data.correct + " correct, " + data.wrong + " verkeerd";
-                        status = data.wrong === 0 ? "correct" : "wrong";
-                    }
-                    submitSolution(source, result, status);
-                }
-            });
+            if (loggedIn) {
+                submitSolution(source, "", "");
+            }
             $('#exercise-feedback-link').tab('show');
         });
 
-        // hide/show correct test cases if button is clicked in menu on feedback
-        // panel
-        $("#feedback-menu-toggle-correct").click(function () {
-            if ($("a", this).text() === "verberg correct") {
-                // hide correct test cases
-                $("a", this).text("toon correct");
-                $(".AC").hide();
-            } else {
-                // show correct test cases
-                $("a", this).text("verberg correct");
-                $(".AC").show();
-            }
-            $(this).dropdown('toggle');
-            return false;
+        // configure mathjax
+        MathJax.Hub.Config({
+          tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         });
-
         MathJax.Hub.Queue(function() {
             /* MathJax has not been run yet*/
             if ($('span.MathJax').length === 0) {
@@ -87,10 +59,10 @@ function init_exercise_show(exerciseId, loggedIn, tests) {
             image_object = {
                 url: imagesrc,
                 caption: alttext
-            }
-            images.push(image_object)
+            };
+            images.push(image_object);
 
-            $(this).data('image_index', index++)
+            $(this).data('image_index', index++);
 
         });
 

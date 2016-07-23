@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <%= link_to exercise.name.titleize, exercise_path(exercise.name) %>
+    <%= link_to exercise.name.titleize, exercise_path(exercise) %>
   </td>
   <td>
     <span title="<%= t ".count_tooltip" %>"><%= exercise.users_correct %>/<%= exercise.users_tried %></span>

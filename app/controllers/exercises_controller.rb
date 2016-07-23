@@ -1,5 +1,5 @@
 class ExercisesController < ApplicationController
-  before_action :set_exercise, only: [:show, :edit, :update, :users]
+  before_action :set_exercise, only: [:show, :edit, :update, :users, :media]
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: "Sorry, we kunnen de oefening #{params[:name]} niet vinden."
@@ -22,7 +22,7 @@ class ExercisesController < ApplicationController
   def update
     respond_to do |format|
       if @exercise.update(permitted_attributes(@exercise))
-        format.html { redirect_to exercise_path(@exercise.name), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
+        format.html { redirect_to exercise_path(@exercise), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else
         format.html { render :edit }
@@ -35,12 +35,15 @@ class ExercisesController < ApplicationController
     @users = User.all.order(last_name: :asc)
   end
 
+  def media
+    send_file File.join(@exercise.media_path, params[:media]), disposition: 'inline'
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_exercise
-    @exercise = Exercise.find_by_name(params[:name])
-    raise ActiveRecord::RecordNotFound if @exercise.nil?
+    @exercise = Exercise.find(params[:id])
     authorize @exercise
   end
 end

@@ -221,6 +221,7 @@ DEPENDENCIES
   ace-rails-ap
   annotate
   autoprefixer-rails
+  builder
   byebug
   capistrano-passenger
   capistrano-rails
@@ -249,4 +250,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.11.2
+   1.12.5

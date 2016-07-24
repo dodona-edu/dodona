@@ -33,6 +33,9 @@ gem 'will_paginate'
 gem 'kramdown'
 gem 'rouge', '1.10.1'
 
+# feedback table builder
+gem 'builder'
+
 # code editor
 gem 'ace-rails-ap'
 

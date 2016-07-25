@@ -87,6 +87,7 @@ GEM
     devise_cas_authenticatable (1.9.1)
       devise (>= 1.2.0)
       rubycas-client (>= 2.2.1)
+    diffy (3.1.0)
     erubis (2.7.0)
     execjs (2.7.0)
     ffi (1.9.12)
@@ -229,6 +230,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   devise (= 4.0.0.rc2)
   devise_cas_authenticatable
+  diffy
   jbuilder (~> 2.5)
   jquery-rails
   kramdown

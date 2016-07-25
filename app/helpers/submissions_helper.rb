@@ -33,12 +33,8 @@ module SubmissionsHelper
     def testcase(tc)
       @builder.div(class: 'testcase') do
         @builder.div(class: 'description') do
-          # if tc['accepted']
-          #  correct_icon
-          # else
-          #  wrong_icon
-          # end
-          testcase_icon
+          tc['accepted'] ? correct_icon : wrong_icon
+          @builder << ' '
           message(tc[:description]) if tc[:description]
         end
         tc[:tests].each { |t| test(t) } if tc[:tests]
@@ -52,6 +48,7 @@ module SubmissionsHelper
         end
         if t[:accepted]
           test_accepted(t)
+          #test_failed(t)
         else
           test_failed(t)
         end
@@ -60,19 +57,36 @@ module SubmissionsHelper
 
     def test_accepted(t)
       @builder.div(class: 'test-accepted') do
-        correct_icon
-        @builder.span(t[:expected], class: 'output')
+        # correct_icon
+        @builder.span(t[:generated], class: 'output')
       end
     end
 
     def test_failed(t)
-      @builder.p(class: 'expected') do
-        @builder.strong('expected: ')
-        @builder.span(t[:expected], class: 'output')
+      @builder.div do
+        diff(t)
       end
-      @builder.p(class: 'generated') do
-        @builder.strong('generated: ')
-        @builder.span(t[:generated], class: 'output')
+    end
+
+    def diff(t)
+      diff_unified(t)
+      @builder.br
+      diff_split(t)
+    end
+
+    def diff_unified(t)
+      @builder << Diffy::Diff.new(t[:generated], t[:expected]).to_s(:html)
+    end
+
+    def diff_split(t)
+      d = Diffy::SplitDiff.new(t[:generated], t[:expected], format: :html)
+      @builder.div(class: 'row') do
+        @builder.div(class: 'col-xs-6') do
+          @builder << d.left
+        end
+        @builder.div(class: 'col-xs-6') do
+          @builder << d.right
+        end
       end
     end
 

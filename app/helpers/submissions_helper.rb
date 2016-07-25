@@ -3,28 +3,30 @@ module SubmissionsHelper
     require 'builder'
 
     def initialize(submission)
-      @submission = JSON.parse(submission.result)
+      @submission = JSON.parse(submission.result, symbolize_names: true)
       @builder = Builder::XmlMarkup.new
     end
 
     def parse
       @builder.div(class: 'feedback-table') do
-        @builder.p(@submission['description'])
-        @submission['groups'].each { |t| tab(t) }
+        @builder.p(@submission[:description])
+        @submission[:groups].each { |t| tab(t) }
       end.html_safe
     end
 
     def tab(t)
       @builder.div(class: 'tab') do
-        @builder.div("I am a tab: #{t['description']}", class: 'description')
-        t['groups'].each { |g| group(g) }
+        @builder.div("I am a tab: #{t[:description]}", class: 'description')
+        t[:groups].each { |g| group(g) } if t[:groups]
       end
     end
 
     def group(g)
       @builder.div(class: 'group') do
-        @builder.div(g['description'], class: 'description')
-        g['groups'].each { |tc| testcase(tc) }
+        @builder.div(class: 'description') do
+          message(g[:description])
+        end if g[:description]
+        g[:groups].each { |tc| testcase(tc) }
       end
     end
 
@@ -37,16 +39,18 @@ module SubmissionsHelper
           #  wrong_icon
           # end
           testcase_icon
-          @builder.span(tc['description'])
+          message(tc[:description]) if tc[:description]
         end
-        tc['tests'].each { |t| test(t) } if tc['tests']
+        tc[:tests].each { |t| test(t) } if tc[:tests]
       end
     end
 
     def test(t)
       @builder.div(class: 'test') do
-        @builder.div(t['description'], class: 'description')
-        if t['accepted']
+        @builder.div(class: 'description') do
+          message(t[:description])
+        end
+        if t[:accepted]
           test_accepted(t)
         else
           test_failed(t)
@@ -54,21 +58,37 @@ module SubmissionsHelper
       end
     end
 
-    def test_accepted(_t)
+    def test_accepted(t)
       @builder.div(class: 'test-accepted') do
         correct_icon
-        @builder.span(t['expected'], class: 'output')
+        @builder.span(t[:expected], class: 'output')
       end
     end
 
     def test_failed(t)
       @builder.p(class: 'expected') do
         @builder.strong('expected: ')
-        @builder.span(t['expected'], class: 'output')
+        @builder.span(t[:expected], class: 'output')
       end
       @builder.p(class: 'generated') do
         @builder.strong('generated: ')
-        @builder.span(t['generated'], class: 'output')
+        @builder.span(t[:generated], class: 'output')
+      end
+    end
+
+    def message(m)
+      m = { format: 'plain', description: m } if m.is_a? String
+      case m[:format]
+      when 'plain'
+        @builder.text! m[:description]
+      when 'html'
+        @builder << m[:description]
+      when 'code'
+        @builder.span(class: 'code') do
+          @builder.text! m[:description]
+        end
+      else
+        @builder.text! m[:description]
       end
     end
 

@@ -10,13 +10,31 @@ module SubmissionsHelper
     def parse
       @builder.div(class: 'feedback-table') do
         @builder.p(@submission[:description])
-        @submission[:groups].each { |t| tab(t) }
+        tabs(@submission)
       end.html_safe
     end
 
-    def tab(t)
-      @builder.div(class: 'tab') do
-        @builder.div("I am a tab: #{t[:description]}", class: 'description')
+    def tabs(submission)
+      @builder.div(class: 'card card-nav') do
+        @builder.div(class: 'card-title card-title-colored') do
+          @builder.ul(class: 'nav nav-tabs') do
+            submission[:groups].each_with_index do |t, i|
+              @builder.li(class: ('active' if i == 0)) do
+                @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}", 'data-toggle': 'tab')
+              end
+            end
+          end
+        end
+        @builder.div(class: 'card-supporting-text') do
+          @builder.div(class: 'tab-content') do
+            @submission[:groups].each_with_index { |t, i| tab(t, i == 0) }
+          end
+        end
+      end
+    end
+
+    def tab(t, first = false)
+      @builder.div(class: "tab-pane #{'active' if first}", id: t[:description].parameterize) do
         t[:groups].each { |g| group(g) } if t[:groups]
       end
     end
@@ -33,7 +51,7 @@ module SubmissionsHelper
     def testcase(tc)
       @builder.div(class: 'testcase') do
         @builder.div(class: 'description') do
-          tc['accepted'] ? correct_icon : wrong_icon
+          tc[:accepted] ? correct_icon : wrong_icon
           @builder << ' '
           message(tc[:description]) if tc[:description]
         end
@@ -48,7 +66,6 @@ module SubmissionsHelper
         end
         if t[:accepted]
           test_accepted(t)
-          #test_failed(t)
         else
           test_failed(t)
         end
@@ -91,6 +108,7 @@ module SubmissionsHelper
     end
 
     def message(m)
+      return if m.nil?
       m = { format: 'plain', description: m } if m.is_a? String
       case m[:format]
       when 'plain'

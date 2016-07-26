@@ -1,4 +1,4 @@
-module SubmissionsHelper
+module FeedbackRenderer
   class FeedbackTableRenderer
     require 'builder'
 

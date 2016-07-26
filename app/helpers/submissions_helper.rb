@@ -86,9 +86,15 @@ module SubmissionsHelper
     end
 
     def diff(t)
-      diff_unified(t)
-      @builder.br
-      diff_split(t)
+      diff_heuristical(t)
+    end
+
+    def diff_heuristical(t)
+      if t[:expected].scan(/\n/).count > 2
+        diff_split(t)
+      else
+        diff_unified(t)
+      end
     end
 
     def diff_unified(t)

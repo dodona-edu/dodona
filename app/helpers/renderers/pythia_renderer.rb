@@ -13,13 +13,13 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def linting(lint_messages, code)
-    @builder.div do
-      @builder.ul do
-        lint_messages.each do |msg|
-          @builder.li(msg.to_s)
-        end
+    @builder.ul do
+      lint_messages.each do |msg|
+        @builder.li(msg.to_s)
       end
-      formatter = Rouge::Formatters::HTML.new
+    end
+    @builder.div(class: 'linter highlighter-rouge') do
+      formatter = Rouge::Formatters::HTML.new(line_numbers: true)
       lexer = Rouge::Lexers::Python.new
       @builder << formatter.format(lexer.lex(code))
     end

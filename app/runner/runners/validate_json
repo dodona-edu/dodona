@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+# usage: validate_json [-h] file.json schema.json
+
+import os
+import json
+import jsonschema
+import argparse
+
+# process command line arguments
+parser = argparse.ArgumentParser(description='Validate JSON file from given JSON Schema.')
+parser.add_argument('file', metavar='file.json')
+parser.add_argument('schema', metavar='schema.json')
+args = parser.parse_args()
+
+# extract file and schema from command line arguments
+output = args.file
+schema = args.schema
+
+# convert relative path to schema file to absolute path
+schema = os.path.abspath(schema) 
+
+# make resolver that resolves relative to the path of the schema file
+resolver = jsonschema.RefResolver(
+    'file:///' + '/'.join(os.path.dirname(schema).split(os.sep)) + '/', 
+    None
+)
+
+# validate the file
+jsonschema.validate(
+    json.load(open(output, 'r')),
+    json.load(open(schema, 'r')),
+    resolver=resolver
+)

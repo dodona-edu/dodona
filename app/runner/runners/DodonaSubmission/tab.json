@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-03/schema#",
+    "id-online": "http://dodona.ugent.be/schemas/1.0/DodonaSubmission/testgroup.json",
+    "title": "Tab",
+    "description": "Node at depth 1 in the test hierarchy that represents test cases grouped under the same tab.",
+    "type": "object",
+    "allOf": [
+        { "$ref": "../Submission/definitions.json#/TestGroupBase" },
+        {
+            "properties": {
+                "groups": {
+                    "description": "List of contexts.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "context.json#"
+                    }
+                }
+            }
+        }
+    ]
+}

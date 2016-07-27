@@ -11,10 +11,16 @@
 #
 
 class Judge < ApplicationRecord
+  JUDGE_LOCATIONS = Rails.root.join('data', 'judges')
+
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :image, presence: true
   validates :path, presence: true, uniqueness: { case_sensitive: false }
 
   has_many :repositories
   has_many :exercises
+
+  def full_path
+    File.join(JUDGE_LOCATIONS, path)
+  end
 end

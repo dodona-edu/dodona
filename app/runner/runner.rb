@@ -332,7 +332,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 		#TODO, get from environment variable? or hard code some values?
 		config_defaults_path = "app/runner/config.json"
 		config = JSON.parse(File.read(config_defaults_path))   # set default configuration
-		#updateConfig(config, @judge.config)                   # update with judge configuration
+		updateConfig(config, @judge.config)                   # update with judge configuration
 		updateConfig(config, @exercise.config['evaluation'])   # update with exercise configuration
 		updateConfig(config, submission)                       # update with submission-specific configuration
 

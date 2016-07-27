@@ -11,6 +11,7 @@
 #
 
 class Judge < ApplicationRecord
+  CONFIG_FILE = 'config.json'.freeze
   JUDGE_LOCATIONS = Rails.root.join('data', 'judges')
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
@@ -22,5 +23,9 @@ class Judge < ApplicationRecord
 
   def full_path
     File.join(JUDGE_LOCATIONS, path)
+  end
+
+  def config
+    JSON.parse(File.read(File.join(full_path, CONFIG_FILE)))
   end
 end

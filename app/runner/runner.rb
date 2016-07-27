@@ -322,7 +322,6 @@ class PythiaSubmissionRunner < SubmissionRunner
 		submission["programming_language"] = @submission.exercise.programming_language
 
 		# set natural language of submission
-		#submission["natural_language"] = @submission.natural_language	
 		submission["natural_language"] = I18n.locale.to_s		
 
 		# set links to resources in docker container needed for processing submission
@@ -331,9 +330,9 @@ class PythiaSubmissionRunner < SubmissionRunner
 
 		# compose submission configuration
 		#TODO, get from environment variable? or hard code some values?
-		config_defaults_path = "/home/harm/ugent/docker_tests/test8/config.json"
+		config_defaults_path = "app/runner/config.json"
 		config = JSON.parse(File.read(config_defaults_path))   # set default configuration
-		#updateConfig(config, @judge.config)                    # update with judge configuration
+		#updateConfig(config, @judge.config)                   # update with judge configuration
 		updateConfig(config, @exercise.config['evaluation'])   # update with exercise configuration
 		updateConfig(config, submission)                       # update with submission-specific configuration
 

@@ -20,8 +20,8 @@ include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
-  DESCRIPTION_DIR = 'descriptions'.freeze
-  MEDIA_DIR = 'resources/description'.freeze
+  DESCRIPTION_DIR = 'description'.freeze
+  MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
 
   enum visibility: [:open, :hidden, :closed]
 
@@ -63,13 +63,12 @@ class Exercise < ApplicationRecord
   def description
     desc = description_localized || description_nl || description_en
     desc = markdown(desc) if description_format == 'md'
-    # TODO: do this for all descriptions
-    desc.gsub('../media', 'media').html_safe
+    desc.html_safe
   end
 
   def update_data(config, j_id)
-    self.name_nl = config['names']['nl']
-    self.name_en = config['names']['en']
+    self.name_nl = config['description']['names']['nl']
+    self.name_en = config['description']['names']['en']
     self.judge_id = j_id if j_id
     self.description_format = determine_format
     self.visibility = Exercise.convert_visibility(config['visibility']) if config['visibility']
@@ -100,8 +99,8 @@ class Exercise < ApplicationRecord
   def update_config
     c = config
     c['visibility'] = visibility
-    c['names']['nl'] = name_nl
-    c['names']['en'] = name_en
+    c['description']['names']['nl'] = name_nl
+    c['description']['names']['en'] = name_en
     store_config c
   end
 
@@ -160,7 +159,7 @@ class Exercise < ApplicationRecord
 
   def self.process_exercise(repository, directory, config)
     ex = Exercise.where(path: directory, repository_id: repository.id).first
-    j = Judge.find_by_name(config['judge'])
+    j = Judge.find_by_name(config['evaluation']['handler'])
     j_id = j.nil? ? repository.judge_id : j.id
 
     if ex.nil?

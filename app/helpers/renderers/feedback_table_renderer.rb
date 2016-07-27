@@ -55,7 +55,7 @@ class FeedbackTableRenderer
   def testcase(tc)
     @builder.div(class: 'testcase') do
       @builder.div(class: 'description') do
-        tc[:accepted] ? correct_icon : wrong_icon
+        tc[:accepted] ? icon_correct : icon_wrong
         @builder << ' '
         message(tc[:description]) if tc[:description]
       end
@@ -78,7 +78,7 @@ class FeedbackTableRenderer
 
   def test_accepted(t)
     @builder.div(class: 'test-accepted') do
-      # correct_icon
+      # icon_correct
       @builder.span(t[:generated], class: 'output')
     end
   end
@@ -143,15 +143,27 @@ class FeedbackTableRenderer
     end
   end
 
-  def testcase_icon
+  def icon_testcase
     @builder.span("► ", class: 'testcase-icon')
   end
 
-  def correct_icon
+  def icon_correct
     @builder.span('', class: 'glyphicon glyphicon-ok')
   end
 
-  def wrong_icon
+  def icon_wrong
     @builder.span('', class: 'glyphicon glyphicon-remove')
   end
+
+  def icon_warning
+    @builder.span('', class: 'glyphicon glyphicon-exclamation-sign')
   end
+
+  def icon_error
+    @builder.span('', class: 'glyphicon glyphicon-remove-sign')
+  end
+
+  def icon_info
+    @builder.span('', class: 'glyphicon glyphicon-info-sign')
+  end
+end

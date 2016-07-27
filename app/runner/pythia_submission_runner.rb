@@ -142,7 +142,6 @@ class PythiaSubmissionRunner < SubmissionRunner
 		updateConfig(config, @exercise.config['evaluation'])   # update with exercise configuration
 		updateConfig(config, submission)                       # update with submission-specific configuration
 
-		puts config
 		# return the submission configuration
 		return config
 	end
@@ -230,8 +229,6 @@ class PythiaSubmissionRunner < SubmissionRunner
 			exit_status = status.termsig
 		end
 
-		puts exit_status
-
 		if exit_status != 0 then
 			# error handling in class Runner
 			result = handleError(exit_status, stderr)
@@ -284,9 +281,9 @@ class PythiaSubmissionRunner < SubmissionRunner
 	end
 
 	def finalize()
-		# TODO: process result of processing the submission (e.g. put result into database)
-
-		puts JSON.pretty_generate(@result)
+		# save the result
+		@submission.result = @result
+		@submission.save
 
 		# remove path on file system used as temporary working directory for processing the submission
 		if @path != nil then

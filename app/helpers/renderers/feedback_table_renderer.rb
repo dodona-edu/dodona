@@ -1,4 +1,5 @@
 class FeedbackTableRenderer
+  include ApplicationHelper
   require 'builder'
 
   def initialize(submission)
@@ -119,15 +120,24 @@ class FeedbackTableRenderer
   def message(m)
     return if m.nil?
     m = { format: 'plain', description: m } if m.is_a? String
-    case m[:format]
-    when 'plain'
+    if m[:format].in?(%w(plain text))
       @builder.text! m[:description]
-    when 'html'
+    elsif m[:format].in?(%w(html))
       @builder << m[:description]
-    when 'code'
+    elsif m[:format].in?(%w(markdown md))
+      @builder << markdown(m[:description])
+    elsif m[:format].in?(%w(code))
       @builder.span(class: 'code') do
         @builder.text! m[:description]
       end
+    elsif m[:format].in?(%w(python))
+      formatter = Rouge::Formatters::HTML.new(css_class: 'highlighter-rouge')
+      lexer = Rouge::Lexers::Python.new
+      @builder << formatter.format(lexer.lex(m[:description]))
+    elsif m[:format].in?(%w(js javascript Javascript JavaScript))
+      formatter = Rouge::Formatters::HTML.new(css_class: 'highlighter-rouge')
+      lexer = Rouge::Lexers::Javascript.new
+      @builder << formatter.format(lexer.lex(m[:description]))
     else
       @builder.text! m[:description]
     end

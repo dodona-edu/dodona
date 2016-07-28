@@ -31,6 +31,7 @@ nl:
         code: Code
         result: Resultaat
         status: Status
+        summary: Samenvatting
       user:
         username: Gebruikersnaam
         ugent_id: Studentennummer

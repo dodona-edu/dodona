@@ -36,6 +36,14 @@ class Submission < ApplicationRecord
     runner.run
   end
 
+  def result=(result)
+    self[:result] = ActiveSupport::Gzip.compress(result)
+  end
+
+  def result
+    ActiveSupport::Gzip.decompress(self[:result])
+  end
+
   def self.normalize_status(s)
     if s == 'correct answer'
       return 'correct'
@@ -47,4 +55,5 @@ class Submission < ApplicationRecord
       return 'unknown'
     end
   end
+  
 end

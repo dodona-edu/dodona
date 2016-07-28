@@ -243,7 +243,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 
   def finalize
     # save the result
-    @submission.result = @result
+    @submission.result = @result.to_json
     @submission.status = Submission.normalize_status(@result['status'])
     @submission.accepted = @result['accepted']
     @submission.summary = @result['description']

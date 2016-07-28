@@ -110,6 +110,10 @@ class PythiaSubmissionRunner < SubmissionRunner
   end
 
   def prepare
+  	# set the submission's status
+  	@submission.status = 'running'
+  	@submission.save
+
     # create path on file system used as temporary working directory for processing the submission
     @path = Dir.mktmpdir
 
@@ -189,17 +193,19 @@ class PythiaSubmissionRunner < SubmissionRunner
 
     if exit_status.nonzero?
       # error handling in class Runner
-      result = handleError(exit_status, stderr)
+      result = handle_error(exit_status, stderr)
     else
       # submission was processed succesfully (stdout contains description of result)
 
       result = JSON.parse(stdout)
 
-      if JSON::Validator.validate(@schema_path, result)
+      puts @schema_path
+
+      if JSON::Validator.validate(@schema_path.to_s, result)
         add_runtime_metrics(result)
       else
         result = ErrorBuilder.new
-                             .message_description(JSON::Validator.fully_validate(@schema_path, result).join("\n"))
+                             .message_description(JSON::Validator.fully_validate(@schema_path.to_s, result).join("\n"))
                              .build
       end
     end
@@ -238,9 +244,9 @@ class PythiaSubmissionRunner < SubmissionRunner
   def finalize
     # save the result
     @submission.result = @result
-    @submission.status = @result['status']
+    @submission.status = Submission.normalize_status(@result['status'])
     @submission.accepted = @result['accepted']
-    @submission.description = @result['description']
+    @submission.summary = @result['description']
     @submission.save
 
     # remove path on file system used as temporary working directory for processing the submission

@@ -89,7 +89,7 @@ class Exercise < ApplicationRecord
 
   def merged_config
     result = repository.config
-    Utils.updateConfig(result, config)
+    Utils.update_config(result, config)
     result
   end
 

@@ -15,7 +15,7 @@
 #
 
 class Submission < ApplicationRecord
-  enum status: [:unknown, :correct, :wrong, :timeout]
+  enum status: [:unknown, :correct, :wrong, :timeout, :running, :queued, :'runtime error', :'compilation error']
 
   belongs_to :exercise
   belongs_to :user
@@ -27,10 +27,24 @@ class Submission < ApplicationRecord
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
 
   def evaluate
-    self.status = 'running'
+    self.status = 'queued'
+    self.save
+
     runner = PythiaSubmissionRunner.new(self)
 
     # TODO; make delayed
     runner.run
+  end
+
+  def self.normalize_status(s)
+    if s == 'correct answer'
+      return 'correct'
+    elsif s == 'wrong answer'
+      return 'wrong'
+    elsif s.in?(statuses)
+      return s
+    else
+      return 'unknown'
+    end
   end
 end

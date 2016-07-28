@@ -12,6 +12,41 @@ class PythiaRenderer < FeedbackTableRenderer
     end
   end
 
+  def diff(t)
+    if t[:data][:diff]
+      pythia_diff(t[:data][:diff])
+    else
+      super
+    end
+  end
+
+  def test_accepted(t)
+    if t[:data][:diff]
+      @builder.div(class: 'test-accepted') do
+        diff(t)
+      end
+    else
+      super
+    end
+  end
+
+  ## custom methods
+
+  def pythia_diff(diff)
+    @builder.div(class: 'diff') do
+      @builder.ul do
+        diff.each do |diff_line|
+          if diff_line[4]
+            @builder << diff_line[2]
+          else
+            @builder << diff_line[2]
+            @builder << diff_line[3]
+          end
+        end
+      end
+    end
+  end
+
   def linting(lint_messages, code)
     @builder.div(class: 'linter') do
       @builder.ul(class: 'lint-errors') do

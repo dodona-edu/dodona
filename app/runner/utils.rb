@@ -1,6 +1,6 @@
 class Utils
 
-	def self.updateConfig(original, source)
+	def self.update_config(original, source)
 	
 		source.keys.each do |key|
 			value = source[key]

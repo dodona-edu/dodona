@@ -96,25 +96,25 @@ class SubmissionRunner < Runner
 		@error_handlers = {}
 
 		# container receives signal 9 from host when memory limit is exceeded
-		registerError('memory limit', ErrorIdentifier.new([1], ['got signal 9']), method(:handleMemoryExceeded))
+		register_error('memory limit', ErrorIdentifier.new([1], ['got signal 9']), method(:handle_memory_exceeded))
 
 		# default exit codes of the timeout command
-		registerError('time limit', ErrorIdentifier.new([9, 124, 137], []), method(:handleTimeout))
+		register_error('time limit', ErrorIdentifier.new([9, 124, 137], []), method(:handle_timeout))
 
 		# something else
-		registerError('internal error', ErrorIdentifier.new([], []), method(:handleUnknown))
+		register_error('internal error', ErrorIdentifier.new([], []), method(:handle_unknown))
 		
 	end
 
 	# registers a pair of error identifiers and error handlers with the same identifier string (name)
-	def registerError(name, identifier, handler)
+	def register_error(name, identifier, handler)
 		@error_identifiers[name] = identifier
 		@error_handlers[name] = handler
 	end
 
 	# uses the exitcode and stderr to recognize which error occured
 	# returns a string identifier of the error
-	def recognizeError(exitcode, stderr)
+	def recognize_error(exitcode, stderr)
 
 		@error_identifiers.keys.each do |key|
 			# loop over all the error identifiers
@@ -140,10 +140,10 @@ class SubmissionRunner < Runner
 	end
 
 	# uses the exitcode and stderr to generate output json
-	def handleError(exitcode, stderr)
+	def handle_error(exitcode, stderr)
 	
 		# figure out which error occured
-		error = recognizeError(exitcode, stderr)
+		error = recognize_error(exitcode, stderr)
 
 		# fetch the correct handler
 		handler = @error_handlers[error]
@@ -154,7 +154,7 @@ class SubmissionRunner < Runner
 	end
 
 	# adds the specific information to an output json for timeout errors
-	def handleTimeout(stderr)
+	def handle_timeout(stderr)
 	
 		ErrorBuilder.new()
 			.status("time limit exceeded")
@@ -165,7 +165,7 @@ class SubmissionRunner < Runner
 	end
 
 	# adds the specific information to an output json for memory limit errors
-	def handleMemoryExceeded(stderr)
+	def handle_memory_exceeded(stderr)
 	
 		ErrorBuilder.new()
 			.status("memory limit exceeded")
@@ -176,7 +176,7 @@ class SubmissionRunner < Runner
 	end
 
 	# adds the specific information to an output json for unknown/general errors
-	def handleUnknown(stderr)
+	def handle_unknown(stderr)
 	
 		ErrorBuilder.new()
 			.message_description(stderr)

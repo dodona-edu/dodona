@@ -27,7 +27,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 		@hidden_path = File.join("/mnt", SecureRandom.urlsafe_base64)
 		
 		# submission configuration (JSON)
-		@config = composeConfig()
+		@config = compose_config()
 		
 		# result of processing the submission (SPOJ)
 		@result = nil
@@ -38,12 +38,12 @@ class PythiaSubmissionRunner < SubmissionRunner
 
 	# calculates the difference between the biggest and smallest values
 	# in a log file
-	def loggedValueRange(path)
-		maxLoggedValue(path) - minLoggedValue(path)
+	def logged_value_range(path)
+		max_logged_value(path) - min_logged_value(path)
 	end
 
 	# extracts the smallest value from a log file
-	def minLoggedValue(path)
+	def min_logged_value(path)
 		m = nil
 
 		file = File.open(path).read
@@ -62,7 +62,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 	end
 
 	# extracts the biggest value from a log file
-	def maxLoggedValue(path)
+	def max_logged_value(path)
 		m = -1
 
 		file = File.open(path).read
@@ -81,7 +81,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 
 	# extracts the last timestamp from a log file
 	# TODO: cleaner way to get last line from file?
-	def lastTimeStamp(path)
+	def last_timestamp(path)
 		t = 0
 
 		file = File.open(path).read
@@ -95,7 +95,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 		t
 	end
 
-	def composeConfig()
+	def compose_config()
 		# set submission-specific configuration
 		submission = {}
 	
@@ -113,9 +113,9 @@ class PythiaSubmissionRunner < SubmissionRunner
 		#TODO, get from environment variable? or hard code some values?
 		config_defaults_path = "app/runner/config.json"
 		config = JSON.parse(File.read(config_defaults_path))   # set default configuration
-		Utils.updateConfig(config, @judge.config)                   # update with judge configuration
-		Utils.updateConfig(config, @exercise.config['evaluation'])   # update with exercise configuration
-		Utils.updateConfig(config, submission)                       # update with submission-specific configuration
+		Utils.update_config(config, @judge.config)                   # update with judge configuration
+		Utils.update_config(config, @exercise.config['evaluation'])   # update with exercise configuration
+		Utils.update_config(config, submission)                       # update with submission-specific configuration
 
 		# return the submission configuration
 		return config
@@ -213,7 +213,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 			result = JSON.parse(stdout)
 
 			if JSON::Validator.validate(@schema_path, result)
-				addRuntimeMetrics(result)
+				add_runtime_metrics(result)
 			else
 				result = ErrorBuilder.new()
 							.message_description(JSON::Validator.fully_validate(@schema_path, result).join("\n"))
@@ -226,7 +226,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 		
 	end
 
-	def addRuntimeMetrics(result)
+	def add_runtime_metrics(result)
 		metrics = result["runtime_metrics"]
 
 		if metrics == nil
@@ -234,21 +234,21 @@ class PythiaSubmissionRunner < SubmissionRunner
 		end
 
 		if not metrics.key?("wall_time")
-			value = lastTimeStamp(File.join(@path, 'resources', 'user_time.logs')) / 1000.0
+			value = last_timestamp(File.join(@path, 'resources', 'user_time.logs')) / 1000.0
 			metrics["wall_time"] = value
 
-			value = loggedValueRange(File.join(@path, 'resources', 'user_time.logs')) / 100.0
+			value = logged_value_range(File.join(@path, 'resources', 'user_time.logs')) / 100.0
 			metrics["user_time"] = value
 
-			value = loggedValueRange(File.join(@path, 'resources', 'system_time.logs')) / 100.0
+			value = logged_value_range(File.join(@path, 'resources', 'system_time.logs')) / 100.0
 			metrics["system_time"] = value
 		end
 
 		if not metrics.key?("peak_memory")
-			value = loggedValueRange(File.join(@path, 'resources', 'memory_usage.logs'))
+			value = logged_value_range(File.join(@path, 'resources', 'memory_usage.logs'))
 			metrics["peak_memory"] = value
 
-			value = loggedValueRange(File.join(@path, 'resources', 'anonymous_memory.logs'))
+			value = logged_value_range(File.join(@path, 'resources', 'anonymous_memory.logs'))
 			metrics["peak_anonymous_memory"] = value
 		end
 

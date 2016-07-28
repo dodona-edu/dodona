@@ -22,7 +22,7 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
 
-  def run
+  def evaluate
   	runner = PythiaSubmissionRunner.new(self)
 
   	#TODO; make delayed

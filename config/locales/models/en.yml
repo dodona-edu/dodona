@@ -31,6 +31,7 @@ en:
         code: Code
         result: Result
         status: Status
+        summary: Summary
       user:
         username: Username
         ugent_id: Student id

@@ -36,31 +36,6 @@ class PythiaSubmissionRunner < SubmissionRunner
 		@path = nil
 	end
 
-	# TODO: implement as utility function/method since Exercise and Judge classes need it as well
-	# 		rename to mergeHash? shouldn't use a specific name like updateConfig once it's a utility function
-	def updateConfig(original, source)
-	
-		source.keys.each do |key|
-			value = source[key]
-			if original.include?(key)
-				if value.class != original[key].class  
-					# merging in this case wouldn't make sense
-					raise 'merging incompatible hashes'
-				elsif value.class == Hash 
-					# hashes get merged recursively
-					updateConfig(original[key], value)
-				else
-					# other values get overwritten
-					original[key] = value
-				end
-			else
-				# original doesn't contain this key yet, merging is easy
-				original[key] = value
-			end
-		end
-		
-	end
-
 	# calculates the difference between the biggest and smallest values
 	# in a log file
 	def loggedValueRange(path)
@@ -138,9 +113,9 @@ class PythiaSubmissionRunner < SubmissionRunner
 		#TODO, get from environment variable? or hard code some values?
 		config_defaults_path = "app/runner/config.json"
 		config = JSON.parse(File.read(config_defaults_path))   # set default configuration
-		updateConfig(config, @judge.config)                   # update with judge configuration
-		updateConfig(config, @exercise.config['evaluation'])   # update with exercise configuration
-		updateConfig(config, submission)                       # update with submission-specific configuration
+		Utils.updateConfig(config, @judge.config)                   # update with judge configuration
+		Utils.updateConfig(config, @exercise.config['evaluation'])   # update with exercise configuration
+		Utils.updateConfig(config, submission)                       # update with submission-specific configuration
 
 		# return the submission configuration
 		return config

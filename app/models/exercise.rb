@@ -148,7 +148,9 @@ class Exercise < ApplicationRecord
     path = File.join(repository.full_path, directory)
     config_file = File.join(path, CONFIG_FILE)
     if File.file? config_file
-      config = JSON.parse(File.read(config_file))
+      config = repository.config
+      exercise_config = JSON.parse(File.read(config_file))
+      Utils.updateConfig(config, exercise_config)
       Exercise.process_exercise(repository, directory, config)
     else
       Dir.entries(path)
@@ -159,14 +161,18 @@ class Exercise < ApplicationRecord
 
   def self.process_exercise(repository, directory, config)
     ex = Exercise.where(path: directory, repository_id: repository.id).first
+    puts "exercise is #{ex}"
     j = Judge.find_by_name(config['evaluation']['handler'])
+    puts "judge is #{j}"
     j_id = j.nil? ? repository.judge_id : j.id
 
     if ex.nil?
       ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id, programming_language: 'python')
+      puts "exercise is #{ex}"
     end
 
     ex.update_data(config, j_id)
+    puts "exercise is #{ex}"
   end
 
   def self.exercise_directory?(path)

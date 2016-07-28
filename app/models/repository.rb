@@ -13,6 +13,7 @@
 require 'open3'
 
 class Repository < ApplicationRecord
+  CONFIG_FILE = 'config.json'.freeze
   EXERCISE_LOCATIONS = Rails.root.join('data', 'exercises').freeze
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
@@ -28,6 +29,10 @@ class Repository < ApplicationRecord
 
   def full_path
     File.join(EXERCISE_LOCATIONS, path)
+  end
+
+  def config
+    JSON.parse(File.read(File.join(full_path, CONFIG_FILE)))
   end
 
   def pull

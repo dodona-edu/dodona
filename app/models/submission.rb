@@ -18,11 +18,14 @@ class Submission < ApplicationRecord
   belongs_to :exercise
   belongs_to :user
 
+  after_create :evaluate
+
   default_scope { order(created_at: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
 
   def evaluate
+    self.status = 'running'
   	runner = PythiaSubmissionRunner.new(self)
 
   	#TODO; make delayed

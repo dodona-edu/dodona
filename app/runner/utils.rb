@@ -10,7 +10,7 @@ class Utils
 					raise 'merging incompatible hashes'
 				elsif value.class == Hash 
 					# hashes get merged recursively
-					updateConfig(original[key], value)
+					update_config(original[key], value)
 				else
 					# other values get overwritten
 					original[key] = value

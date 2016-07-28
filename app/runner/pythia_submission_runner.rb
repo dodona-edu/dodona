@@ -7,6 +7,7 @@ require 'tmpdir'          # temporary file support
 
 # runner that implements the Pythia workflow of handling submissions
 class PythiaSubmissionRunner < SubmissionRunner
+	DEFAULT_CONFIG_PATH = Rails.root.join('app/runner/config.json').freeze
 
 	def initialize(submission)
 		super()
@@ -14,7 +15,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 		# path to the dodona json schema, used to validate judge output
 		# overrides the definition from SubmissionRunner
 		#TODO: get path from environment variable?
-		@schema_path = 'public/schemas/DodonaSubmission/output.json'
+		@schema_path = Rails.root.join('public/schemas/DodonaSubmission/output.json')
 	
 		# definition of submission 
 		@submission = submission
@@ -80,19 +81,12 @@ class PythiaSubmissionRunner < SubmissionRunner
 	end
 
 	# extracts the last timestamp from a log file
-	# TODO: cleaner way to get last line from file?
 	def last_timestamp(path)
-		t = 0
+		line = IO.readlines(path).last(1)
 
-		file = File.open(path).read
+		split = line.split
 
-		file.each_line do |line|
-			# each log line has a time stamp and an actual value
-			split = line.split
-			t = split[0].to_i
-		end
-
-		t
+		split[0].to_i
 	end
 
 	def compose_config()
@@ -110,11 +104,9 @@ class PythiaSubmissionRunner < SubmissionRunner
 		submission["source"] = File.join(@hidden_path, "submission", "source.py")
 
 		# compose submission configuration
-		#TODO, get from environment variable? or hard code some values?
-		config_defaults_path = "app/runner/config.json"
-		config = JSON.parse(File.read(config_defaults_path))   # set default configuration
+		config = JSON.parse(File.read(DEFAULT_CONFIG_PATH))   # set default configuration
 		Utils.update_config(config, @judge.config)                   # update with judge configuration
-		Utils.update_config(config, @exercise.config['evaluation'])   # update with exercise configuration
+		Utils.update_config(config, @exercise.merged_config['evaluation'])   # update with exercise configuration
 		Utils.update_config(config, submission)                       # update with submission-specific configuration
 
 		# return the submission configuration
@@ -123,7 +115,6 @@ class PythiaSubmissionRunner < SubmissionRunner
 
 	def prepare()
 		# create path on file system used as temporary working directory for processing the submission
-		# TODO: decide where temporary directories should go on the Dodona server
 		@path = Dir.mktmpdir()
 
 		# put submission in working directory (subdirectory submission)
@@ -157,7 +148,6 @@ class PythiaSubmissionRunner < SubmissionRunner
 		memory_limit = @config["memory_limit"]
 
 		# process submission in docker container 
-		# TODO: somehow this creates a @path/source/resources/ directory (unwanted)
 		# TODO: set user with the --user option
 		# TODO: set the workdir with the -w option
 		stdout, stderr, status = Open3.capture3(
@@ -258,6 +248,9 @@ class PythiaSubmissionRunner < SubmissionRunner
 	def finalize()
 		# save the result
 		@submission.result = @result
+		@submission.status = @result['status']
+		@submission.accepted = @result['accepted']
+		@submission.description = @result['description']
 		@submission.save
 
 		# remove path on file system used as temporary working directory for processing the submission

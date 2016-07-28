@@ -87,6 +87,12 @@ class Exercise < ApplicationRecord
     JSON.parse(File.read(File.join(full_path, CONFIG_FILE)))
   end
 
+  def merged_config
+      result = repository.config
+      Utils.updateConfig(result, config)
+      result
+  end
+
   def store_config(config)
     File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(config))
     success, error = repository.commit "updated config for #{name}"
@@ -148,9 +154,7 @@ class Exercise < ApplicationRecord
     path = File.join(repository.full_path, directory)
     config_file = File.join(path, CONFIG_FILE)
     if File.file? config_file
-      config = repository.config
-      exercise_config = JSON.parse(File.read(config_file))
-      Utils.updateConfig(config, exercise_config)
+      config = JSON.parse(File.read(config_file))
       Exercise.process_exercise(repository, directory, config)
     else
       Dir.entries(path)
@@ -161,18 +165,14 @@ class Exercise < ApplicationRecord
 
   def self.process_exercise(repository, directory, config)
     ex = Exercise.where(path: directory, repository_id: repository.id).first
-    puts "exercise is #{ex}"
     j = Judge.find_by_name(config['evaluation']['handler'])
-    puts "judge is #{j}"
     j_id = j.nil? ? repository.judge_id : j.id
 
     if ex.nil?
       ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id, programming_language: 'python')
-      puts "exercise is #{ex}"
     end
 
     ex.update_data(config, j_id)
-    puts "exercise is #{ex}"
   end
 
   def self.exercise_directory?(path)

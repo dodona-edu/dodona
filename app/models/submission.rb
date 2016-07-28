@@ -26,9 +26,9 @@ class Submission < ApplicationRecord
 
   def evaluate
     self.status = 'running'
-  	runner = PythiaSubmissionRunner.new(self)
+    runner = PythiaSubmissionRunner.new(self)
 
-  	#TODO; make delayed
-  	runner.run
+    # TODO; make delayed
+    runner.run
   end
 end

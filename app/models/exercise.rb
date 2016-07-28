@@ -88,9 +88,9 @@ class Exercise < ApplicationRecord
   end
 
   def merged_config
-      result = repository.config
-      Utils.updateConfig(result, config)
-      result
+    result = repository.config
+    Utils.updateConfig(result, config)
+    result
   end
 
   def store_config(config)
@@ -127,8 +127,8 @@ class Exercise < ApplicationRecord
   end
 
   def status_for(user)
-    return :correct if submissions.of_user(user).where(status: :correct).count > 0
-    return :wrong if submissions.of_user(user).where(status: :wrong).count > 0
+    return :correct if submissions.of_user(user).where(status: :correct).count.positive?
+    return :wrong if submissions.of_user(user).where(status: :wrong).count.positive?
     :unknown
   end
 

@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     flash[:alert] = 'Sorry, je hebt niet genoeg rechten om deze pagina te bekijken.'
-    redirect_to(request.referrer || root_path)
+    redirect_to(request.referer || root_path)
   end
 
   def set_locale

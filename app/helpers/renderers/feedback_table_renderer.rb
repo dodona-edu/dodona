@@ -20,21 +20,21 @@ class FeedbackTableRenderer
         @builder.ul(class: 'nav nav-tabs') do
           submission[:groups].each_with_index do |t, i|
             @builder.li(class: ('active' if i == 0)) do
-              @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}", 'data-toggle': 'tab')
+              @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
             end
           end
         end
       end
       @builder.div(class: 'card-supporting-text') do
         @builder.div(class: 'tab-content') do
-          @submission[:groups].each_with_index { |t, i| tab(t, i == 0) }
+          @submission[:groups].each_with_index { |t, i| tab(t, i) }
         end
       end
     end
   end
 
-  def tab(t, first = false)
-    @builder.div(class: "tab-pane #{'active' if first}", id: t[:description].parameterize) do
+  def tab(t, i)
+    @builder.div(class: "tab-pane #{'active' if i == 0}", id: "#{t[:description].parameterize}-#{i}") do
       tab_content(t)
     end
   end

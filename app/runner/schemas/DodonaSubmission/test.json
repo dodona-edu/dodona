@@ -1,0 +1,5 @@
+{
+    "$schema": "http://json-schema.org/draft-03/schema#",
+    "id-online": "http://users.ugent.be/~pdawyndt/schemas/DodonaSubmission/test.json",
+    "$ref": "../Submission/test.json#"
+}

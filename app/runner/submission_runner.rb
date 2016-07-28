@@ -89,7 +89,7 @@ class SubmissionRunner < Runner
 
 		# path to the default submission json schema, used to validate judge output
 		#TODO: get path from environment variable?
-		@schema_path = 'app/runner/schemas/Submission/output.json'
+		@schema_path = 'public/schemas/Submission/output.json'
 
 		# fields to recognize and handle errors
 		@error_identifiers = {}

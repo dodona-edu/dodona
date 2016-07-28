@@ -1,18 +1,18 @@
 {
     "$schema": "http://json-schema.org/draft-03/schema#",
-    "id-online": "http://users.ugent.be/~pdawyndt/schemas/DodonaSubmission/testcase.json",
-    "title": "TestCase",
-    "description": "Node at depth 3 in the test hierarchy that provides an evaluation on tests.",
+    "id-online": "http://dodona.ugent.be/schemas/DodonaSubmission/submission.json",
+    "title": "Submission",
+    "description": "Root node of the test hierarchy that contains all tests of the submission.",
     "type": "object",
     "allOf": [
         { "$ref": "../Submission/definitions.json#/TestGroupBase" },
         {
             "properties": {
-                "tests": {
-                    "description": "List of tests.",
+                "groups": {
+                    "description": "List of tabs.",
                     "type": "array",
                     "items": {
-                        "$ref": "test.json#"
+                        "$ref": "tab.json#"
                     }
                 }
             }

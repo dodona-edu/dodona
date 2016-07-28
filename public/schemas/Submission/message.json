@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-03/schema#",
-    "id-online": "http://users.ugent.be/~pdawyndt/schemas/Submission/message.json",
+    "id-online": "http://dodona.ugent.be/schemas/Submission/message.json",
     "title": "Message",
     "description": "Feedback message without an evaluation status.",
     "type": "object",

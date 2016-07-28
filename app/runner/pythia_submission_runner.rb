@@ -14,7 +14,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 		# path to the dodona json schema, used to validate judge output
 		# overrides the definition from SubmissionRunner
 		#TODO: get path from environment variable?
-		@schema_path = 'app/runner/schemas/DodonaSubmission/output.json'
+		@schema_path = 'public/schemas/DodonaSubmission/output.json'
 	
 		# definition of submission 
 		@submission = submission

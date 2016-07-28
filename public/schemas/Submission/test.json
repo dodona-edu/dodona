@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-03/schema#",
-    "id-online": "http://users.ugent.be/~pdawyndt/schemas/Submission/test.json",
+    "id-online": "http://dodona.ugent.be/schemas/Submission/test.json",
     "title": "Test",
     "description": "Feedback message with an evaluation status (leaf in the test hierarchy).",
     "type": "object",

@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-03/schema#",
-    "id-online": "http://users.ugent.be/~pdawyndt/schemas/Submission/definitions.json",
+    "id-online": "http://dodona.ugent.be/schemas/Submission/definitions.json",
     "title": "definitions",
     "description": "Helper definitions for defining TestGroup, Test and Message schemas.",
     "Base": {

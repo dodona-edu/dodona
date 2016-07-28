@@ -23,4 +23,12 @@ class Submission < ApplicationRecord
   default_scope { order(created_at: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
+
+  def result=(result)
+    self[:result] = ActiveSupport::Gzip.compress(result)
+  end
+
+  def result
+    ActiveSupport::Gzip.decompress(self[:result])
+  end
 end

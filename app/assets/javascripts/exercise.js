@@ -22,12 +22,20 @@ function init_exercise_show(exerciseId, loggedIn) {
 
         // configure mathjax
         MathJax.Hub.Config({
-          tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+            tex2jax: {
+                inlineMath: [
+                    ['$$', '$$'],
+                    ['\\(', '\\)']
+                ],
+                displayMath: [
+                    ['\\[', '\\]']
+                ]
+            }
         });
-        MathJax.Hub.Queue(function() {
+        MathJax.Hub.Queue(function () {
             /* MathJax has not been run yet*/
             if ($('span.MathJax').length === 0) {
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
         });
     }
@@ -52,7 +60,7 @@ function init_exercise_show(exerciseId, loggedIn) {
 
         var index = 1;
         var images = [];
-        $(".exercise-description img").each(function() {
+        $(".exercise-description img").each(function () {
             var imagesrc = $(this).attr('src');
             var alttext = $(this).attr('alt');
             alttext = alttext ? alttext : imagesrc.split("/").pop();

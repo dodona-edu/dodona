@@ -1,2 +1,0 @@
-module JudgesHelper
-end

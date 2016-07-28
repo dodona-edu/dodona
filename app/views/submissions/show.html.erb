@@ -16,7 +16,8 @@
         <b><%= t ".exercise" %>:</b> <%= link_to @submission.exercise.name.titleize, exercise_path(@submission.exercise.name) %><br>
         <b><%= t ".handed_in" %>:</b> <span title="<%= @submission.created_at.in_time_zone("CET").to_s(:long) %>"><%= time_ago_in_words @submission.created_at %> <%= t ".ago" %></span></br>
         <b><%= t ".status" %>:</b> <%= @submission.status %></br>
-        <b><%= t ".result" %>:</b> <%= @submission.result %></br>
+        <b><%= t ".summary" %>:</b> <%= @submission.summary %></br>
+        <b><%= t ".result" %>:</b><br> <%= PythiaRenderer.new(@submission).parse %></br>
         <b><%= t ".code" %>:</b>
         <%= markdown("```javascript\n" + @submission.code + "\n```") %>
       </div>

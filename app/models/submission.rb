@@ -50,14 +50,9 @@ class Submission < ApplicationRecord
   end
 
   def self.normalize_status(s)
-    if s == 'correct answer'
-      return 'correct'
-    elsif s == 'wrong answer'
-      return 'wrong'
-    elsif s.in?(statuses)
-      return s
-    else
-      return 'unknown'
-    end
+    return 'correct' if s == 'correct answer'
+    return 'wrong' if s == 'wrong answer'
+    return s if s.in?(statuses)
+    'unknown'
   end
 end

@@ -180,8 +180,6 @@ class PythiaSubmissionRunner < SubmissionRunner
       stdin_data: @config.to_json
     )
 
-    exit_status = 0
-
     # TODO, stopsig and termsig aren't real exit statuses
     exit_status = if status.exited?
                     status.exitstatus

@@ -199,8 +199,6 @@ class PythiaSubmissionRunner < SubmissionRunner
 
       result = JSON.parse(stdout)
 
-      puts @schema_path
-
       if JSON::Validator.validate(@schema_path.to_s, result)
         add_runtime_metrics(result)
       else
@@ -249,8 +247,6 @@ class PythiaSubmissionRunner < SubmissionRunner
     @submission.summary = @result['description']
     @submission.save
 
-    puts @submission
-
     # remove path on file system used as temporary working directory for processing the submission
     unless @path.nil?
       FileUtils.remove_entry_secure(@path, verbose: true)
@@ -259,15 +255,6 @@ class PythiaSubmissionRunner < SubmissionRunner
   end
 
   def run
-    puts 'fuck'
-    puts 'fuck'
-    puts 'fuck'
-    puts 'fuck'
-    puts 'fuck'
-    puts 'fuck'
-    puts 'fuck'
-    puts 'fuck'
-    puts 'fuck'
     prepare
     execute
   rescue Exception => e

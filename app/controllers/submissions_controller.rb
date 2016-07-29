@@ -1,5 +1,6 @@
 class SubmissionsController < ApplicationController
   before_action :set_submission, only: [:show, :download]
+  skip_before_action :verify_authenticity_token, only: [:create]
 
   def index
     authorize Submission

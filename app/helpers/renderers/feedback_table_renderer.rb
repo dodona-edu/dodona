@@ -10,6 +10,9 @@ class FeedbackTableRenderer
   def parse
     @builder.div(class: 'feedback-table') do
       @builder.p(@submission[:description])
+      @submission[:messages].each do |message|
+        message(message)
+      end if @submission[:messages]
       tabs(@submission)
     end.html_safe
   end

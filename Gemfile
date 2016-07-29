@@ -28,6 +28,10 @@ gem 'jbuilder', '~> 2.5'
 
 # used to validate container responses
 gem 'json-schema'
+# delayed jobs
+gem 'delayed_job_active_record'
+# used to process the jobs
+gem 'daemons'
 
 # pagination
 gem 'will_paginate'

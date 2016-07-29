@@ -20,19 +20,26 @@ class Submission < ApplicationRecord
   belongs_to :exercise
   belongs_to :user
 
+  # docs say after_commit_create
   after_create :evaluate
 
   default_scope { order(created_at: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
 
+  # TODO; can delayed_jobs_active_records really only process active record methods?
+  # TODO; does delayed_jobs have some sort of method name caching? 
+  #       renaming these functions to enqueue/evaluate results in stack overflows? how even
   def evaluate
     self.status = 'queued'
     self.save
 
+    self.delay.pls
+  end
+
+  def pls
     runner = PythiaSubmissionRunner.new(self)
 
-    # TODO; make delayed
     runner.run
   end
 

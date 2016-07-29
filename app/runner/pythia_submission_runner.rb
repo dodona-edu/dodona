@@ -249,6 +249,8 @@ class PythiaSubmissionRunner < SubmissionRunner
     @submission.summary = @result['description']
     @submission.save
 
+    puts @submission
+
     # remove path on file system used as temporary working directory for processing the submission
     unless @path.nil?
       FileUtils.remove_entry_secure(@path, verbose: true)
@@ -257,6 +259,15 @@ class PythiaSubmissionRunner < SubmissionRunner
   end
 
   def run
+    puts 'fuck'
+    puts 'fuck'
+    puts 'fuck'
+    puts 'fuck'
+    puts 'fuck'
+    puts 'fuck'
+    puts 'fuck'
+    puts 'fuck'
+    puts 'fuck'
     prepare
     execute
   rescue Exception => e

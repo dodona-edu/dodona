@@ -78,7 +78,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 
   # extracts the last timestamp from a log file
   def last_timestamp(path)
-    line = IO.readlines(path).last(1)
+    line = IO.readlines(path).last
 
     split = line.split
 

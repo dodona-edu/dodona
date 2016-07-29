@@ -32,7 +32,12 @@ class Repository < ApplicationRecord
   end
 
   def config
-    JSON.parse(File.read(File.join(full_path, CONFIG_FILE)))
+    file = File.join(full_path, CONFIG_FILE)
+    if File.file? file
+      JSON.parse(File.read(file))
+    else
+      {}
+    end
   end
 
   def pull

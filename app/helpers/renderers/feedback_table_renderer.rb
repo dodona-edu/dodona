@@ -22,12 +22,12 @@ class FeedbackTableRenderer
             @builder.li(class: ('active' if i.zero?)) do
               @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
             end
-          end
+          end if submission[:groups]
         end
       end
       @builder.div(class: 'card-supporting-text') do
         @builder.div(class: 'tab-content') do
-          @submission[:groups].each_with_index { |t, i| tab(t, i) }
+          @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
         end
       end
     end
@@ -48,7 +48,7 @@ class FeedbackTableRenderer
       @builder.div(class: 'description') do
         message(g[:description])
       end if g[:description]
-      g[:groups].each { |tc| testcase(tc) }
+      g[:groups].each { |tc| testcase(tc) }  if g[:groups]
     end
   end
 

@@ -27,8 +27,8 @@ class SubmissionRunner < Runner
       @status = 'runtime error'
       @description = 'runtime error'
 
-      @message_permission = 'teacher'
-      @message_format = 'text'
+      @message_permission = 'zeus'
+      @message_format = 'code'
       @message_description = ''
     end
 

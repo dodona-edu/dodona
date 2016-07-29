@@ -110,9 +110,9 @@ class PythiaSubmissionRunner < SubmissionRunner
   end
 
   def prepare
-  	# set the submission's status
-  	@submission.status = 'running'
-  	@submission.save
+    # set the submission's status
+    @submission.status = 'running'
+    @submission.save
 
     # create path on file system used as temporary working directory for processing the submission
     @path = Dir.mktmpdir

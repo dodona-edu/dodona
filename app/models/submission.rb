@@ -20,7 +20,7 @@ class Submission < ApplicationRecord
   belongs_to :exercise
   belongs_to :user
 
-  # docs say after_commit_create
+  # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed
 
   default_scope { order(created_at: :desc) }
@@ -28,13 +28,11 @@ class Submission < ApplicationRecord
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
 
   # TODO; can delayed_jobs_active_records really only process active record methods?
-  # TODO; does delayed_jobs have some sort of method name caching? 
-  #       renaming these functions to enqueue/evaluate results in stack overflows? how even
   def evaluate_delayed
     self.status = 'queued'
-    self.save
+    save
 
-    self.delay.evaluate
+    delay.evaluate
   end
 
   def evaluate
@@ -62,5 +60,4 @@ class Submission < ApplicationRecord
       return 'unknown'
     end
   end
-  
 end

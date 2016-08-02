@@ -35,6 +35,8 @@ class PythiaSubmissionRunner < SubmissionRunner
 
     # path on file system used as temporary working directory for processing the submission
     @path = nil
+
+    @mac = RUBY_PLATFORM.include?('darwin')
   end
 
   # calculates the difference between the biggest and smallest values
@@ -115,7 +117,7 @@ class PythiaSubmissionRunner < SubmissionRunner
     @submission.save
 
     # create path on file system used as temporary working directory for processing the submission
-    @path = Dir.mktmpdir
+    @path = Dir.mktmpdir(nil, @mac ? '/tmp' : nil)
 
     # put submission in working directory (subdirectory submission)
     Dir.mkdir("#{@path}/submission/")
@@ -144,12 +146,15 @@ class PythiaSubmissionRunner < SubmissionRunner
     # fetch execution memory limit from submission configuration
     memory_limit = @config['memory_limit']
 
+    # mac support
+    timeout_command = @mac ? 'gtimeout' : 'timeout'
+
     # process submission in docker container
     # TODO: set user with the --user option
     # TODO: set the workdir with the -w option
     stdout, stderr, status = Open3.capture3(
       # set timeout
-      'timeout', '-k', time_limit.to_s, time_limit.to_s,
+      timeout_command, '-k', time_limit.to_s, time_limit.to_s,
       # start docker container
       'docker', 'run',
       # activate stdin

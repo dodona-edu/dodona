@@ -1,6 +1,6 @@
 class PythiaRenderer < FeedbackTableRenderer
-  def initialize(submission)
-    super(submission)
+  def initialize(submission, user)
+    super(submission, user)
     @code = submission.code
     @programming_language = submission.exercise.programming_language
   end

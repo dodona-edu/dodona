@@ -1,18 +1,18 @@
 class FeedbackTableRenderer
   include ApplicationHelper
+
   require 'builder'
 
-  def initialize(submission)
+  def initialize(submission, user)
     @submission = JSON.parse(submission.result, symbolize_names: true)
+    @current_user = user
     @builder = Builder::XmlMarkup.new
   end
 
   def parse
     @builder.div(class: 'feedback-table') do
       @builder.p(@submission[:description])
-      @submission[:messages].each do |message|
-        message(message)
-      end if @submission[:messages]
+      messages(@submission[:messages])
       tabs(@submission)
     end.html_safe
   end
@@ -43,6 +43,7 @@ class FeedbackTableRenderer
   end
 
   def tab_content(t)
+    messages(t[:messages])
     t[:groups].each { |g| group(g) } if t[:groups]
   end
 
@@ -51,7 +52,8 @@ class FeedbackTableRenderer
       @builder.div(class: 'description') do
         message(g[:description])
       end if g[:description]
-      g[:groups].each { |tc| testcase(tc) }  if g[:groups]
+      messages(g[:messages])
+      g[:groups].each { |tc| testcase(tc) } if g[:groups]
     end
   end
 
@@ -63,6 +65,7 @@ class FeedbackTableRenderer
         message(tc[:description]) if tc[:description]
       end
       tc[:tests].each { |t| test(t) } if tc[:tests]
+      messages(tc[:messages])
     end
   end
 
@@ -70,11 +73,21 @@ class FeedbackTableRenderer
     @builder.div(class: 'test') do
       @builder.div(class: 'description') do
         message(t[:description])
-      end
+      end if t[:description]
       if t[:accepted]
         test_accepted(t)
       else
         test_failed(t)
+      end
+      messages(t[:messages])
+    end
+  end
+
+  def messages(msgs)
+    return if msgs.nil?
+    @builder.div(class: 'messages') do
+      msgs.each do |msg|
+        message(msg)
       end
     end
   end
@@ -123,8 +136,8 @@ class FeedbackTableRenderer
   def message(m)
     return if m.nil?
     if m[:permission]
-      return if m[:permission] == "teacher" && !current_user.admin?
-      return if m[:permission] == "zeus" && !current_user.zeus?
+      return if m[:permission] == 'teacher' && !@current_user.admin?
+      return if m[:permission] == 'zeus' && !@current_user.zeus?
     end
 
     m = { format: 'plain', description: m } if m.is_a? String

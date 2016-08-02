@@ -15,14 +15,31 @@
 #
 
 class Submission < ApplicationRecord
-  enum status: [:unknown, :correct, :wrong, :timeout]
+  enum status: [:unknown, :correct, :wrong, :timeout, :running, :queued, :'runtime error', :'compilation error']
 
   belongs_to :exercise
   belongs_to :user
 
+  # docs say to use after_commit_create, doesn't even work
+  after_create :evaluate_delayed
+
   default_scope { order(created_at: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
+
+  # TODO; can delayed_jobs_active_records really only process active record methods?
+  def evaluate_delayed
+    self.status = 'queued'
+    save
+
+    delay.evaluate
+  end
+
+  def evaluate
+    runner = PythiaSubmissionRunner.new(self)
+
+    runner.run
+  end
 
   def result=(result)
     self[:result] = ActiveSupport::Gzip.compress(result)
@@ -30,5 +47,12 @@ class Submission < ApplicationRecord
 
   def result
     ActiveSupport::Gzip.decompress(self[:result])
+  end
+
+  def self.normalize_status(s)
+    return 'correct' if s == 'correct answer'
+    return 'wrong' if s == 'wrong answer'
+    return s if s.in?(statuses)
+    'unknown'
   end
 end

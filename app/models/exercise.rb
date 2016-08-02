@@ -87,6 +87,12 @@ class Exercise < ApplicationRecord
     JSON.parse(File.read(File.join(full_path, CONFIG_FILE)))
   end
 
+  def merged_config
+    result = repository.config
+    Utils.update_config(result, config)
+    result
+  end
+
   def store_config(config)
     File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(config))
     success, error = repository.commit "updated config for #{name}"
@@ -121,8 +127,8 @@ class Exercise < ApplicationRecord
   end
 
   def status_for(user)
-    return :correct if submissions.of_user(user).where(status: :correct).count > 0
-    return :wrong if submissions.of_user(user).where(status: :wrong).count > 0
+    return :correct if submissions.of_user(user).where(status: :correct).count.positive?
+    return :wrong if submissions.of_user(user).where(status: :wrong).count.positive?
     :unknown
   end
 

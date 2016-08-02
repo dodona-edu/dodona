@@ -19,7 +19,7 @@ class FeedbackTableRenderer
       @builder.div(class: 'card-title card-title-colored') do
         @builder.ul(class: 'nav nav-tabs') do
           submission[:groups].each_with_index do |t, i|
-            @builder.li(class: ('active' if i == 0)) do
+            @builder.li(class: ('active' if i.zero?)) do
               @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
             end
           end
@@ -34,7 +34,7 @@ class FeedbackTableRenderer
   end
 
   def tab(t, i)
-    @builder.div(class: "tab-pane #{'active' if i == 0}", id: "#{t[:description].parameterize}-#{i}") do
+    @builder.div(class: "tab-pane #{'active' if i.zero?}", id: "#{t[:description].parameterize}-#{i}") do
       tab_content(t)
     end
   end
@@ -144,7 +144,7 @@ class FeedbackTableRenderer
   end
 
   def icon_testcase
-    @builder.span("► ", class: 'testcase-icon')
+    @builder.span('► ', class: 'testcase-icon')
   end
 
   def icon_correct

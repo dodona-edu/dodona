@@ -19,6 +19,11 @@
     <%= submission.summary %>
   </td>
   <td>
-    <%= link_to submission, title: t(".view_solution"), 'data-remote' => !exercise.nil? do %><span class="glyphicon glyphicon-share-alt"></span><% end %>
+    <% if exercise.nil? %>
+      <%= link_to submission, title: t(".view_solution") do %><span class="glyphicon glyphicon-share-alt"></span><% end %>
+    <% else %>
+      <%= link_to submission, title: t(".view_solution"), 'data-remote' => true do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
+    <% end %>
+
   </td>
 </tr>

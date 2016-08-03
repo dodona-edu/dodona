@@ -34,6 +34,15 @@ nl:
         result: Resultaat
         status: Status
         summary: Samenvatting
+        statuses:
+          unknown: Onbekend
+          correct: Correct
+          wrong: Fout
+          timeout: Timeout
+          running: Aan het uitvoeren...
+          queued: In de wachtrij...
+          runtime error: Uitvoeringsfout
+          compilation error: Compilatiefout
       user:
         username: Gebruikersnaam
         ugent_id: Studentennummer

@@ -9,6 +9,7 @@ nl:
       time: Tijdstip
       status: Status
       result: Resultaat
+      summary: Samenvatting
     index:
       title: Oplossingen
       for: voor

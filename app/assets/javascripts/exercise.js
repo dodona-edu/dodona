@@ -7,17 +7,14 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
 
         centerImagesAndTables();
 
-        // create feedback table
-        $("#feedback-loading").hide();
-
-        // test source code if button is clicked on editor panel
+        // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
+            if (!loggedIn) return;
             // test submitted source code
             var source = editor.getValue();
-            if (loggedIn) {
-                submitSolution(source, "", "");
-            }
-            $('#exercise-feedback-link').tab('show');
+            submitSolution(source)
+                .done(submissionSuccessful)
+                .fail(submissionFailed);
         });
 
         // configure mathjax
@@ -85,21 +82,23 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         $(".exercise-description iframe").wrap("<center></center>");
     }
 
-    function submitSolution(code, result, status) {
-        $.post("/submissions.json", {
-                submission: {
-                    code: code,
-                    result: result,
-                    status: status,
-                    exercise_id: exerciseId
-                }
-            }).done(function () {
-                showNotification("Oplossing opgeslagen");
-                $.get("submissions.js");
-            })
-            .fail(function () {
-                $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button><strong>Opgepast!</strong> Er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent.</div>').insertAfter("#feedback-menu").show("fast");
-            });
+    function submitSolution(code) {
+        return $.post("/submissions.json", {
+            submission: {
+                code: code,
+                exercise_id: exerciseId
+            }
+        });
+    }
+
+    function submissionSuccessful() {
+        showNotification("Oplossing opgeslagen");
+        $.get("submissions.js");
+        $('#exercise-submission-link').tab('show');
+    }
+
+    function submissionFailed() {
+        $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button><strong>Opgepast!</strong> Er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent.</div>').insertBefore("#editor-window").show("fast");
     }
 
     init();

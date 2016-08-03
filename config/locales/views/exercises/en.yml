@@ -15,6 +15,7 @@ en:
       status: Status
     show:
       code: Code
+      handin: Hand in
       feedback: Feedback
       solutions: Solutions
       not_logged_in: Log in to test your solution.

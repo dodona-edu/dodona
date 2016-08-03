@@ -30,15 +30,14 @@
           <% end %>
         </div>
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#code" data-toggle="tab"><%= t ".code"%></a></li>
-          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link'><%= t ".feedback"%></a></li>
+          <li class="active"><a href="#handin" data-toggle="tab"><%= t ".handin"%></a></li>
           <li><a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions"%></a></li>
-          <div class="spinner" id="feedback-loading"></div>
+          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link'><%= t ".feedback"%></a></li>
         </ul>
       </div>
       <div class="card-supporting-text">
         <div class="tab-content">
-          <div class="tab-pane fade in active" id="code">
+          <div class="tab-pane fade in active" id="handin">
             <% if !user_signed_in? %>
               <div class="alert alert-info"><%= t ".not_logged_in"%></div>
             <% end %>
@@ -50,23 +49,6 @@
           <% if !user_signed_in? %>
             <div class="alert alert-info"><%= t ".not_logged_in"%></div>
           <% end %>
-            <div id="feedback-menu">
-              <div class="btn-group">
-                <span class="dropdown">
-                  <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="feedback-menu-btn" data-toggle="dropdown" aria-expanded="true">
-                    <span class="glyphicon glyphicon-menu-hamburger"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="feedback-menu-btn">
-                    <li role="presentation" id="feedback-menu-toggle-correct"><a role="menuitem" tabindex="-1" href="#"><%= t ".hide_correct"%></a></li>
-                  </ul>
-                </span>
-              </div>
-              <%= t ".correct"%> <span class="badge" id="tests-correct">0</span>
-              <%= t ".wrong"%> <span class="badge" id="tests-wrong">0</span><br>
-            </div>
-            <table class="table table-condensed">
-              <tbody id="feedback-table"></tbody>
-            </table>
           </div>
           <div class="tab-pane fade" id="submissions">
             <% if !user_signed_in? %>

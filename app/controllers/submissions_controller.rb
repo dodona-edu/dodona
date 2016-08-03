@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :set_submission, only: [:show, :download]
+  before_action :set_submission, only: [:show, :download, :evaluate]
   skip_before_action :verify_authenticity_token, only: [:create]
 
   def index
@@ -35,6 +35,11 @@ class SubmissionsController < ApplicationController
     data = @submission.code
     filename = @submission.exercise.name.tr(' ', '_') + '.js'
     send_data data, type: 'application/octet-stream', filename: filename, disposition: 'attachment', x_sendfile: true
+  end
+
+  def evaluate
+    @submission.evaluate_delayed
+    redirect_to(@submission)
   end
 
   private

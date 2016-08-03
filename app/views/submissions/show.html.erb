@@ -4,8 +4,15 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".submission" %> <%= @submission.exercise.name %></h2>
         <div class="card-title-fab">
-          <%= link_to download_submission_path(@submission), class: 'btn btn-primary btn-fab', target: "_blank", download: '' do %>
-            <span class="glyphicon glyphicon-save"></span>
+          <% if policy(@submission).evaluate? %>
+            <%= link_to evaluate_submission_path(@submission), class: 'btn btn-primary btn-fab', title: t('.reevaluate') do %>
+              <span class="glyphicon glyphicon-repeat"></span>
+            <% end %>
+          <% end %>
+          <% if policy(@submission).download? %>
+            <%= link_to download_submission_path(@submission), class: 'btn btn-primary btn-fab', title: 'Download', target: "_blank", download: '' do %>
+              <span class="glyphicon glyphicon-save"></span>
+            <% end %>
           <% end %>
         </div>
       </div>

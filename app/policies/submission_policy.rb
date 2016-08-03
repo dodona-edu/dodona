@@ -23,6 +23,10 @@ class SubmissionPolicy < ApplicationPolicy
     user && ((user == record.user) || user.admin?)
   end
 
+  def evaluate?
+    user && user.admin?
+  end
+
   def create?
     user
   end

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :submissions, only: [:index, :show, :create] do
       member do
         get 'download'
+        get 'evaluate'
       end
     end
 

@@ -45,11 +45,6 @@
               <div id="editor-text"></div>
             </div>
           </div>
-          <div class="tab-pane fade" id="feedback">
-          <% if !user_signed_in? %>
-            <div class="alert alert-info"><%= t ".not_logged_in"%></div>
-          <% end %>
-          </div>
           <div class="tab-pane fade" id="submissions">
             <% if !user_signed_in? %>
               <div class="alert alert-info"><%= t ".not_logged_in"%></div>
@@ -60,6 +55,12 @@
             <% else %>
               <div class="alert alert-info"><%= t ".hand_in_tooltip"%></div>
             <% end %>
+          </div>
+          <div class="tab-pane fade" id="feedback">
+            <% if !user_signed_in? %>
+              <div class="alert alert-info"><%= t ".not_logged_in"%></div>
+            <% end %>
+            <div id="submission-wrapper"></div>
           </div>
         </div>
       </div>

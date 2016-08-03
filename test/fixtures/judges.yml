@@ -8,6 +8,7 @@
 #  path       :string(255)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  renderer   :string(255)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

@@ -35,7 +35,7 @@ class JudgePolicy < ApplicationPolicy
 
   def permitted_attributes
     if user && user.admin?
-      [:name, :image, :path]
+      [:name, :image, :path, :renderer]
     else
       []
     end

@@ -3,6 +3,15 @@ class FeedbackTableRenderer
 
   require 'builder'
 
+  def self.inherited(cl)
+    @renderers ||= [FeedbackTableRenderer]
+    @renderers << cl
+  end
+
+  def self.renderers
+    @renderers
+  end
+
   def initialize(submission, user)
     @submission = JSON.parse(submission.result, symbolize_names: true)
     @current_user = user

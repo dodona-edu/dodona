@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
+    sign_in(User.find(1))
   end
 
   def default_url_options

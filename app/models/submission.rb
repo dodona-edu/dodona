@@ -19,6 +19,7 @@ class Submission < ApplicationRecord
 
   belongs_to :exercise
   belongs_to :user
+  has_one :judge, through: :exercise
 
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed

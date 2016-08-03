@@ -35,6 +35,9 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
         });
+
+        // export function
+        dodona.feedbackLoaded = feedbackLoaded;
     }
 
     function initEditor() {
@@ -89,6 +92,12 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
                 exercise_id: exerciseId
             }
         });
+    }
+
+    function feedbackLoaded() {
+        $('#feedback').css("display", "block");
+        $('#exercise-feedback-link').css("display", "block");
+        $('#exercise-feedback-link').tab('show');
     }
 
     function submissionSuccessful() {

@@ -92,13 +92,13 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
     }
 
     function submissionSuccessful() {
-        showNotification("Oplossing opgeslagen");
+        showNotification(I18n.t("js.submission-saved"));
         $.get("submissions.js");
         $('#exercise-submission-link').tab('show');
     }
 
     function submissionFailed() {
-        $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button><strong>Opgepast!</strong> Er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent.</div>').insertBefore("#editor-window").show("fast");
+        $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' + I18n.t("js.submission-failed") + '</div>').insertBefore("#editor-window").show("fast");
     }
 
     init();

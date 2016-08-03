@@ -1,4 +1,4 @@
-function init_exercise_show(exerciseId, loggedIn) {
+function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
     var editor;
 
     function init() {
@@ -43,15 +43,13 @@ function init_exercise_show(exerciseId, loggedIn) {
     function initEditor() {
         // init editor
         editor = ace.edit("editor-text");
-        editor.getSession().setMode("ace/mode/javascript");
+        editor.getSession().setMode("ace/mode/" + programmingLanguage);
         editor.setOptions({
             showPrintMargin: false,
             enableBasicAutocompletion: true
         });
         editor.getSession().setUseWrapMode(true);
         editor.$blockScrolling = Infinity; // disable warning
-        editor.setValue("// voeg hier je oplossing in\n");
-        editor.gotoLine(2);
         editor.focus();
     }
 

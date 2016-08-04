@@ -1,0 +1,11 @@
+
+<% if current_user.admin? %>
+<b><%= t ".user" %>:</b> <%= link_to submission.user.full_name + " - " + submission.user.username, user_path(submission.user) %><br>
+<% end %>
+<b><%= t ".exercise" %>:</b> <%= link_to submission.exercise.name.titleize, exercise_path(submission.exercise.name) %><br>
+<b><%= t ".handed_in" %>:</b> <span title="<%= submission.created_at.in_time_zone("CET").to_s(:long) %>"><%= time_ago_in_words submission.created_at %> <%= t ".ago" %></span></br>
+<b><%= t ".status" %>:</b> <%= submission.status %></br>
+<b><%= t ".summary" %>:</b> <%= submission.summary %></br>
+<b><%= t ".result" %>:</b><br> <%= submission.judge.renderer.new(submission, current_user).parse %></br>
+<b><%= t ".code" %>:</b>
+<%= markdown("```javascript\n" + submission.code + "\n```") %>

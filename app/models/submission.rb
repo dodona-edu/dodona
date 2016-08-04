@@ -30,8 +30,11 @@ class Submission < ApplicationRecord
 
   # TODO; can delayed_jobs_active_records really only process active record methods?
   def evaluate_delayed
-    self.status = 'queued'
-    save
+    self.update(
+      status: 'queued',
+      result: '',
+      summary: nil
+    )
 
     delay.evaluate
   end

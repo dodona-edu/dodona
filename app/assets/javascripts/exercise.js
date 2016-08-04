@@ -1,5 +1,6 @@
 function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
     var editor;
+    var lastSubmission;
 
     function init() {
         initEditor();
@@ -38,6 +39,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
 
         // export function
         dodona.feedbackLoaded = feedbackLoaded;
+        dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
     function initEditor() {
@@ -100,7 +102,22 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         $('#exercise-feedback-link').tab('show');
     }
 
-    function submissionSuccessful() {
+    function feedbackTableLoaded() {
+        if (lastSubmission) {
+            var status = $("#submission_" + lastSubmission).data("status");
+            if (status == "queued" || status == "running") {
+                setTimeout(function() {
+                    $.get("submissions.js");
+                }, 1000);
+            } else {
+                showNotification(I18n.t("js.submission-processed"));
+                lastSubmission = null;
+            }
+        }
+    }
+
+    function submissionSuccessful(data) {
+        lastSubmission = data.id;
         showNotification(I18n.t("js.submission-saved"));
         $.get("submissions.js");
         $('#exercise-submission-link').tab('show');

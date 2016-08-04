@@ -1,2 +1,4 @@
 $("#submission-wrapper").html("<%= escape_javascript(render partial: 'temp_submission_partial', locals: {submission: @submission}) %>");
-dodona.feedbackLoaded();
+if (dodona.feedbackLoaded) {
+    dodona.feedbackLoaded();
+}

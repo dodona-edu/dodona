@@ -50,15 +50,19 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def linting(lint_messages, code)
     @builder.div(class: 'linter') do
-      @builder.ul(class: 'lint-errors') do
-        lint_messages.each do |msg|
-          @builder.li(class: 'lint-msg', 'data-line': msg[:line], 'data-type': msg[:type], 'data-msg': msg[:description]) do
-            lint_icon(msg[:type])
-            @builder.text! "#{I18n.t('submissions.show.line')} #{msg[:line]}: #{msg[:description]}"
-          end
+      lint_messages(lint_messages)
+      source(code, lint_messages)
+    end
+  end
+
+  def lint_messages(messages)
+    @builder.ul(class: 'lint-errors') do
+      messages.each do |msg|
+        @builder.li(class: 'lint-msg') do
+          lint_icon(msg[:type])
+          @builder.text! "#{I18n.t('submissions.show.line')} #{msg[:line]}: #{msg[:description]}"
         end
       end
-      source(code, lint_messages)
     end
   end
 

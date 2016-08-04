@@ -97,8 +97,8 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
     }
 
     function feedbackLoaded() {
-        $('#feedback').css("display", "block");
-        $('#exercise-feedback-link').css("display", "block");
+        $('#feedback').removeClass("hidden");
+        $('#exercise-feedback-link').removeClass("hidden");
         $('#exercise-feedback-link').tab('show');
     }
 

@@ -36,7 +36,7 @@
         <ul class="nav nav-tabs">
           <li class="active"><a href="#handin" data-toggle="tab"><%= t ".handin"%></a></li>
           <li><a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions"%></a></li>
-          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link'><%= t ".feedback"%></a></li>
+          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link' class='hidden'><%= t ".feedback"%></a></li>
         </ul>
       </div>
       <div class="card-supporting-text">
@@ -60,7 +60,7 @@
               <div class="alert alert-info"><%= t ".hand_in_tooltip"%></div>
             <% end %>
           </div>
-          <div class="tab-pane fade" id="feedback">
+          <div class="tab-pane fade" id="feedback" class='hidden'>
             <% if !user_signed_in? %>
               <div class="alert alert-info"><%= t ".not_logged_in"%></div>
             <% end %>

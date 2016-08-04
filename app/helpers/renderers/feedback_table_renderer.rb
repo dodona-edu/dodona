@@ -20,7 +20,6 @@ class FeedbackTableRenderer
 
   def parse
     @builder.div(class: 'feedback-table') do
-      @builder.p(@submission[:description])
       messages(@submission[:messages])
       tabs(@submission)
     end.html_safe

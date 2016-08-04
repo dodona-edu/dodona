@@ -104,12 +104,16 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
 
     function feedbackTableLoaded() {
         if (lastSubmission) {
-            var status = $("#submission_" + lastSubmission).data("status");
+            var $submissionRow = $("#submission_" + lastSubmission);
+            var status = $submissionRow.data("status");
             if (status == "queued" || status == "running") {
                 setTimeout(function() {
                     $.get("submissions.js");
                 }, 1000);
             } else {
+                if($("#exercise-submission-link").parent().hasClass("active")) {
+                    $submissionRow.find(".load-submission").click();
+                }
                 showNotification(I18n.t("js.submission-processed"));
                 lastSubmission = null;
             }

@@ -2,6 +2,7 @@ class PythiaRenderer < FeedbackTableRenderer
   def initialize(submission)
     super(submission)
     @code = submission.code
+    @programming_language = submission.exercise.programming_language
   end
 
   def tab_content(t)
@@ -74,10 +75,9 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def source(code)
-    @builder.div(class: 'highlighter-rouge') do
-      formatter = Rouge::Formatters::HTML.new(line_numbers: true)
-      lexer = Rouge::Lexers::Python.new
-      @builder << formatter.format(lexer.lex(code))
+    @builder.div(id: 'editor-result') do
+      @builder.text! code
     end
+    @builder << "<script>loadResultEditor('#{@programming_language}')</script>"
   end
 end

@@ -78,6 +78,15 @@ class SubmissionRunner < Runner
     end
   end
 
+  def self.inherited(cl)
+    @runners ||= [SubmissionRunner]
+    @runners << cl
+  end
+
+  def self.runners
+    @runners
+  end
+
   def initialize
     # path to the default submission json schema, used to validate judge output
     # TODO: get path from environment variable?

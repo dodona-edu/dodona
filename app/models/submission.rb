@@ -37,7 +37,7 @@ class Submission < ApplicationRecord
   end
 
   def evaluate
-    runner = PythiaSubmissionRunner.new(self)
+    runner = judge.runner.new(self)
 
     runner.run
   end

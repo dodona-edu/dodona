@@ -2,6 +2,7 @@ class PythiaRenderer < FeedbackTableRenderer
   def initialize(submission)
     super(submission)
     @code = submission.code
+    @programming_language = submission.exercise.programming_language
   end
 
   def tab_content(t)
@@ -49,35 +50,51 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def linting(lint_messages, code)
     @builder.div(class: 'linter') do
-      @builder.ul(class: 'lint-errors') do
-        lint_messages.each do |msg|
-          @builder.li(class: 'lint-msg', 'data-line': msg[:line], 'data-type': msg[:type], 'data-msg': msg[:description]) do
-            lint_icon(msg[:type])
-            @builder.text! "#{I18n.t('submissions.show.line')} #{msg[:line]}: #{msg[:description]}"
-          end
+      lint_messages(lint_messages)
+      source(code, lint_messages)
+    end
+  end
+
+  def lint_messages(messages)
+    @builder.ul(class: 'lint-errors') do
+      messages.each do |msg|
+        @builder.li(class: 'lint-msg') do
+          lint_icon(msg[:type])
+          @builder.text! "#{I18n.t('submissions.show.line')} #{msg[:line]}: #{msg[:description]}"
         end
       end
-      source(code)
     end
   end
 
   def lint_icon(type)
+    send('icon_' + convert_lint_type(type))
+  end
+
+  def convert_lint_type(type)
     if type.in? %w(fatal error)
-      icon_error
+      'error'
     elsif type.in? ['warning']
-      icon_warning
+      'warning'
     elsif type.in? %w(refactor convention)
-      icon_info
+      'error'
     else
-      icon_warning
+      'warning'
     end
   end
 
-  def source(code)
-    @builder.div(class: 'highlighter-rouge') do
-      formatter = Rouge::Formatters::HTML.new(line_numbers: true)
-      lexer = Rouge::Lexers::Python.new
-      @builder << formatter.format(lexer.lex(code))
+  def convert_lint_message(message)
+    {
+      row: message[:line] - 1,
+      type: convert_lint_type(message[:type]),
+      text: message[:description]
+    }
+  end
+
+  def source(code, messages)
+    @builder.div(id: 'editor-result') do
+      @builder.text! code
     end
+    annotations = messages.map { |msg| convert_lint_message(msg) }
+    @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{annotations.to_json});});</script>"
   end
 end

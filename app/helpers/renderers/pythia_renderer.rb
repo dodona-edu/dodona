@@ -95,6 +95,6 @@ class PythiaRenderer < FeedbackTableRenderer
       @builder.text! code
     end
     annotations = messages.map { |msg| convert_lint_message(msg) }
-    @builder << "<script>loadResultEditor('#{@programming_language}', #{annotations.to_json})</script>"
+    @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{annotations.to_json});});</script>"
   end
 end

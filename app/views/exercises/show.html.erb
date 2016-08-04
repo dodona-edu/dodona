@@ -50,20 +50,17 @@
             </div>
           </div>
           <div class="tab-pane fade" id="submissions">
-            <% if !user_signed_in? %>
-              <div class="alert alert-info"><%= t ".not_logged_in"%></div>
-            <% elsif @submissions.length > 0 %>
             <div id="submissions-table-wrapper">
-              <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>
+              <% if !user_signed_in? %>
+                <div class="alert alert-info"><%= t ".not_logged_in"%></div>
+              <% elsif @submissions.length > 0 %>
+                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>
+              <% else %>
+                <div class="alert alert-info"><%= t ".hand_in_tooltip"%></div>
+              <% end %>
             </div>
-            <% else %>
-              <div class="alert alert-info"><%= t ".hand_in_tooltip"%></div>
-            <% end %>
           </div>
           <div class="tab-pane fade" id="feedback" class='hidden'>
-            <% if !user_signed_in? %>
-              <div class="alert alert-info"><%= t ".not_logged_in"%></div>
-            <% end %>
             <div id="submission-wrapper"></div>
           </div>
         </div>

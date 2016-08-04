@@ -112,6 +112,8 @@
     <script>
       ga('set',  'location', window.location.href.split('#')[0]);
       ga('send', 'pageview');
+      I18n = I18n || {};
+      I18n.locale = "<%= I18n.locale %>";
     </script>
   </body>
 </html>

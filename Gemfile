@@ -74,6 +74,7 @@ gem 'rails-i18n', '~> 5.0.0.beta3' # For 5.0.0.beta3
 
 # email exceptions
 gem 'exception_notification'
+gem 'slack-notifier'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

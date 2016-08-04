@@ -190,6 +190,7 @@ GEM
     rouge (1.10.1)
     rubycas-client (2.3.9)
       activesupport
+    slack-notifier (1.5.1)
     spring (1.7.2)
     spring-watcher-listen (2.0.0)
       listen (>= 2.7, < 4.0)
@@ -261,6 +262,7 @@ DEPENDENCIES
   rails (~> 5.0.0)
   rails-i18n (~> 5.0.0.beta3)
   rouge (= 1.10.1)
+  slack-notifier
   spring
   spring-watcher-listen (~> 2.0.0)
   therubyracer

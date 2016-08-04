@@ -93,7 +93,17 @@ Rails.application.configure do
                           email_prefix: '[Dodona] ',
                           sender_address: %("Dodona" <dodona@ugent.be>),
                           exception_recipients: %w(bart.mesuere@ugent.be)
+                        },
+                        slack: {
+                          webhook_url: 'https://hooks.slack.com/services/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',
+                          channel: '#dodona',
+                          username: 'Dodona-server'
+                          additional_parameters: {
+                            icon_url: 'http://dodona.ugent.be/icon.png',
+                            mrkdwn: true
+                          }
                         }
+
   config.action_mailer.delivery_method = :sendmail
   # Defaults to:
   # config.action_mailer.sendmail_settings = {

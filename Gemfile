@@ -28,10 +28,13 @@ gem 'jbuilder', '~> 2.5'
 
 # used to validate container responses
 gem 'json-schema'
+
 # delayed jobs
 gem 'delayed_job_active_record'
-# used to process the jobs
+# start workers in the background
 gem 'daemons'
+# start workers using capistrano
+gem 'capistrano3-delayed-job', '~> 1.0'
 
 # pagination
 gem 'will_paginate'

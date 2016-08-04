@@ -1,4 +1,4 @@
-function loadResultEditor(programmingLanguage) {
+function loadResultEditor(programmingLanguage, annotations) {
     var editor = ace.edit("editor-result");
     editor.getSession().setMode("ace/mode/" + programmingLanguage);
     editor.setOptions({
@@ -13,4 +13,7 @@ function loadResultEditor(programmingLanguage) {
     editor.commands.commmandKeyBinding={};
     editor.getSession().setUseWrapMode(true);
     editor.$blockScrolling = Infinity; // disable warning
+    if (annotations) {
+        editor.session.setAnnotations(annotations);
+    }
 }

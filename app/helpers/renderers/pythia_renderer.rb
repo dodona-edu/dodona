@@ -58,26 +58,39 @@ class PythiaRenderer < FeedbackTableRenderer
           end
         end
       end
-      source(code)
+      source(code, lint_messages)
     end
   end
 
   def lint_icon(type)
+    send('icon_' + convert_lint_type(type))
+  end
+
+  def convert_lint_type(type)
     if type.in? %w(fatal error)
-      icon_error
+      'error'
     elsif type.in? ['warning']
-      icon_warning
+      'warning'
     elsif type.in? %w(refactor convention)
-      icon_info
+      'error'
     else
-      icon_warning
+      'warning'
     end
   end
 
-  def source(code)
+  def convert_lint_message(message)
+    {
+      row: message[:line] - 1,
+      type: convert_lint_type(message[:type]),
+      text: message[:description]
+    }
+  end
+
+  def source(code, messages)
     @builder.div(id: 'editor-result') do
       @builder.text! code
     end
-    @builder << "<script>loadResultEditor('#{@programming_language}')</script>"
+    annotations = messages.map { |msg| convert_lint_message(msg) }
+    @builder << "<script>loadResultEditor('#{@programming_language}', #{annotations.to_json})</script>"
   end
 end

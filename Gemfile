@@ -71,6 +71,8 @@ gem 'capistrano3-delayed-job', '~> 1.0'
 
 # i18n
 gem 'rails-i18n', '~> 5.0.0.beta3' # For 5.0.0.beta3
+# use version from github for rails 5 support
+gem 'i18n-js', git: 'git://github.com/fnando/i18n-js.git'
 
 # email exceptions
 gem 'exception_notification'

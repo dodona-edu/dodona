@@ -9,6 +9,7 @@ en:
       time: Time
       status: Status
       result: Result
+      summary: Summary
     index:
       title: Submissions
       for: for

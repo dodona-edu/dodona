@@ -190,6 +190,13 @@ class FeedbackTableRenderer
     end
   end
 
+  def source(code, messages)
+    @builder.div(id: 'editor-result') do
+      @builder.text! code
+    end
+    @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
+  end
+
   def icon_testcase
     @builder.span('► ', class: 'testcase-icon')
   end
@@ -212,12 +219,5 @@ class FeedbackTableRenderer
 
   def icon_info
     @builder.span('', class: 'glyphicon glyphicon-info-sign')
-  end
-
-  def source(code, messages)
-    @builder.div(id: 'editor-result') do
-      @builder.text! code
-    end
-    @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
   end
 end

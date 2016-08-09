@@ -34,6 +34,16 @@ en:
         result: Result
         status: Status
         summary: Summary
+        statuses:
+          unknown: Unknown
+          correct: Correct
+          wrong: Wrong
+          timeout: Timeout
+          running: Running...
+          queued: Queued...
+          runtime error: Runtime error
+          compilation error: Compilation error
+          memory limit exceeded: Memory limit exceeded
       user:
         username: Username
         ugent_id: Student id

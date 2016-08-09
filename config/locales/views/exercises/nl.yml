@@ -16,6 +16,7 @@ nl:
       status: Status
     show:
       code: Code
+      handin: Indienen
       feedback: Feedback
       solutions: Oplossingen
       not_logged_in: Log in om je oplossingen te testen.

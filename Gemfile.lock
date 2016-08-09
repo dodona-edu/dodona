@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/fnando/i18n-js.git
+  revision: 63fa0a48aca8931e1cab21ef1b14b315db951409
+  specs:
+    i18n-js (3.0.0.rc13)
+      i18n (~> 0.6, >= 0.6.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -263,6 +270,7 @@ DEPENDENCIES
   devise_cas_authenticatable
   diffy
   exception_notification
+  i18n-js!
   jbuilder (~> 2.5)
   jquery-rails
   json-schema

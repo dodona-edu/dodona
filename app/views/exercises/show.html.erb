@@ -1,16 +1,20 @@
 <!-- opgave -->
 <div class="row">
+  <%= link_to '#submission-card', class: "btn btn-lg btn-down hidden-xs", title: t('.handin'), 'data-turbolinks' => false do %>
+    <span class='hidden-sm'><%= t('.handin') %></span><br>
+    <span class="glyphicon glyphicon-chevron-down"></span>
+  <% end %>
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card exercise-description">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @exercise.name.titleize %></h2>
-        <% if policy(@exercise).edit? %>
-          <div class="card-title-fab">
-            <%= link_to edit_exercise_path(@exercise), class: "btn btn-primary btn-fab" do %>
-              <span class="glyphicon glyphicon-pencil"></span>
-            <% end %>
-          </div>
-        <% end %>
+        <h2 class="card-title-text"><%= @exercise.name %></h2>
+          <% if policy(@exercise).edit? %>
+            <div class="card-title-fab">
+              <%= link_to edit_exercise_path(@exercise), class: "btn btn-primary btn-fab" do %>
+                <span class="glyphicon glyphicon-pencil"></span>
+              <% end %>
+            </div>
+          <% end %>
       </div>
       <div class="card-supporting-text">
         <%= @exercise.description %>
@@ -19,6 +23,7 @@
   </div>
 </div>
 <div class="row">
+  <a class="anchor" id="submission-card"></a>
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card card-nav">
       <div class="card-title card-title-colored">
@@ -30,15 +35,14 @@
           <% end %>
         </div>
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#code" data-toggle="tab"><%= t ".code"%></a></li>
-          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link'><%= t ".feedback"%></a></li>
+          <li class="active"><a href="#handin" data-toggle="tab"><%= t ".handin"%></a></li>
           <li><a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions"%></a></li>
-          <div class="spinner" id="feedback-loading"></div>
+          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link' class='hidden'><%= t ".feedback"%></a></li>
         </ul>
       </div>
       <div class="card-supporting-text">
         <div class="tab-content">
-          <div class="tab-pane fade in active" id="code">
+          <div class="tab-pane fade in active" id="handin">
             <% if !user_signed_in? %>
               <div class="alert alert-info"><%= t ".not_logged_in"%></div>
             <% end %>
@@ -46,38 +50,19 @@
               <div id="editor-text"></div>
             </div>
           </div>
-          <div class="tab-pane fade" id="feedback">
-          <% if !user_signed_in? %>
-            <div class="alert alert-info"><%= t ".not_logged_in"%></div>
-          <% end %>
-            <div id="feedback-menu">
-              <div class="btn-group">
-                <span class="dropdown">
-                  <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="feedback-menu-btn" data-toggle="dropdown" aria-expanded="true">
-                    <span class="glyphicon glyphicon-menu-hamburger"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="feedback-menu-btn">
-                    <li role="presentation" id="feedback-menu-toggle-correct"><a role="menuitem" tabindex="-1" href="#"><%= t ".hide_correct"%></a></li>
-                  </ul>
-                </span>
-              </div>
-              <%= t ".correct"%> <span class="badge" id="tests-correct">0</span>
-              <%= t ".wrong"%> <span class="badge" id="tests-wrong">0</span><br>
-            </div>
-            <table class="table table-condensed">
-              <tbody id="feedback-table"></tbody>
-            </table>
-          </div>
           <div class="tab-pane fade" id="submissions">
-            <% if !user_signed_in? %>
-              <div class="alert alert-info"><%= t ".not_logged_in"%></div>
-            <% elsif @submissions.length > 0 %>
             <div id="submissions-table-wrapper">
-              <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>
+              <% if !user_signed_in? %>
+                <div class="alert alert-info"><%= t ".not_logged_in"%></div>
+              <% elsif @submissions.length > 0 %>
+                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>
+              <% else %>
+                <div class="alert alert-info"><%= t ".hand_in_tooltip"%></div>
+              <% end %>
             </div>
-            <% else %>
-              <div class="alert alert-info"><%= t ".hand_in_tooltip"%></div>
-            <% end %>
+          </div>
+          <div class="tab-pane fade" id="feedback" class='hidden'>
+            <div id="submission-wrapper"></div>
           </div>
         </div>
       </div>
@@ -86,6 +71,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_exercise_show(<%= @exercise.id %>, <%= user_signed_in? %>);
+    init_exercise_show(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= user_signed_in? %>);
   });
 </script>

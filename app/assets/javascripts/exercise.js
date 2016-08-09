@@ -1,5 +1,6 @@
-function init_exercise_show(exerciseId, loggedIn) {
+function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
     var editor;
+    var lastSubmission;
 
     function init() {
         initEditor();
@@ -7,17 +8,14 @@ function init_exercise_show(exerciseId, loggedIn) {
 
         centerImagesAndTables();
 
-        // create feedback table
-        $("#feedback-loading").hide();
-
-        // test source code if button is clicked on editor panel
+        // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
+            if (!loggedIn) return;
             // test submitted source code
             var source = editor.getValue();
-            if (loggedIn) {
-                submitSolution(source, "", "");
-            }
-            $('#exercise-feedback-link').tab('show');
+            submitSolution(source)
+                .done(submissionSuccessful)
+                .fail(submissionFailed);
         });
 
         // configure mathjax
@@ -38,20 +36,22 @@ function init_exercise_show(exerciseId, loggedIn) {
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
         });
+
+        // export function
+        dodona.feedbackLoaded = feedbackLoaded;
+        dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
     function initEditor() {
         // init editor
         editor = ace.edit("editor-text");
-        editor.getSession().setMode("ace/mode/javascript");
+        editor.getSession().setMode("ace/mode/" + programmingLanguage);
         editor.setOptions({
             showPrintMargin: false,
             enableBasicAutocompletion: true
         });
         editor.getSession().setUseWrapMode(true);
         editor.$blockScrolling = Infinity; // disable warning
-        editor.setValue("// voeg hier je oplossing in\n");
-        editor.gotoLine(2);
         editor.focus();
     }
 
@@ -87,21 +87,48 @@ function init_exercise_show(exerciseId, loggedIn) {
         $(".exercise-description iframe").wrap("<center></center>");
     }
 
-    function submitSolution(code, result, status) {
-        $.post("/submissions.json", {
-                submission: {
-                    code: code,
-                    result: result,
-                    status: status,
-                    exercise_id: exerciseId
+    function submitSolution(code) {
+        return $.post("/submissions.json", {
+            submission: {
+                code: code,
+                exercise_id: exerciseId
+            }
+        });
+    }
+
+    function feedbackLoaded() {
+        $('#feedback').removeClass("hidden");
+        $('#exercise-feedback-link').removeClass("hidden");
+        $('#exercise-feedback-link').tab('show');
+    }
+
+    function feedbackTableLoaded() {
+        if (lastSubmission) {
+            var $submissionRow = $("#submission_" + lastSubmission);
+            var status = $submissionRow.data("status");
+            if (status == "queued" || status == "running") {
+                setTimeout(function() {
+                    $.get("submissions.js");
+                }, 1000);
+            } else {
+                if($("#exercise-submission-link").parent().hasClass("active")) {
+                    $submissionRow.find(".load-submission").click();
                 }
-            }).done(function () {
-                showNotification("Oplossing opgeslagen");
-                $.get("submissions.js");
-            })
-            .fail(function () {
-                $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button><strong>Opgepast!</strong> Er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent.</div>').insertAfter("#feedback-menu").show("fast");
-            });
+                showNotification(I18n.t("js.submission-processed"));
+                lastSubmission = null;
+            }
+        }
+    }
+
+    function submissionSuccessful(data) {
+        lastSubmission = data.id;
+        showNotification(I18n.t("js.submission-saved"));
+        $.get("submissions.js");
+        $('#exercise-submission-link').tab('show');
+    }
+
+    function submissionFailed() {
+        $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' + I18n.t("js.submission-failed") + '</div>').insertBefore("#editor-window").show("fast");
     }
 
     init();

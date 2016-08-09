@@ -19,5 +19,7 @@ module Dodona
     Rails.application.config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
     Rails.application.config.autoload_paths += Dir[Rails.root.join('app', 'helpers', 'renderers')]
+
+    Rails.application.config.middleware.use I18n::JS::Middleware
   end
 end

@@ -121,7 +121,8 @@ class FeedbackTableRenderer
   end
 
   def diff_heuristical(t)
-    if t[:expected].scan(/\n/).count > 2
+    output = (t[:expected] || '') + '\n' + (t[:generated] || '')
+    if output.split('\n').map(&:length).max < 55
       diff_split(t)
     else
       diff_unified(t)
@@ -135,10 +136,10 @@ class FeedbackTableRenderer
   def diff_split(t)
     d = Diffy::SplitDiff.new(t[:generated], t[:expected], format: :html)
     @builder.div(class: 'row') do
-      @builder.div(class: 'col-xs-6', title: I18n.t('submissions.show.generated')) do
+      @builder.div(class: 'col-sm-6 col-xs-12', title: I18n.t('submissions.show.generated')) do
         @builder << d.left
       end
-      @builder.div(class: 'col-xs-6', title: I18n.t('submissions.show.expected')) do
+      @builder.div(class: 'col-sm-6 col-xs-12', title: I18n.t('submissions.show.expected')) do
         @builder << d.right
       end
     end

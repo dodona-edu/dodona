@@ -53,7 +53,7 @@ class PythiaRenderer < FeedbackTableRenderer
   def linting(lint_messages, code)
     @builder.div(class: 'linter') do
       lint_messages(lint_messages)
-      source(code, lint_messages.map(&:convert_lint_message))
+      source(code, lint_messages.map { |m| convert_lint_message(m) })
     end
   end
 

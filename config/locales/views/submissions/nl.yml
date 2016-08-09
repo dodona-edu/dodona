@@ -23,4 +23,6 @@ nl:
       result: Resultaat
       code: Code
       line: Regel
-      reevaluate: 'Herevalueren'
+      reevaluate: Herevalueren
+      generated: gegenereerde uitvoer
+      expected: verwachte uitvoer

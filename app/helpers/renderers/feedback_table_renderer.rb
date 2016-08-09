@@ -81,7 +81,7 @@ class FeedbackTableRenderer
   end
 
   def test(t)
-    @builder.div(class: 'test') do
+    @builder.div(class: 'col-xs-12 test') do
       @builder.div(class: 'description') do
         message(t[:description])
       end if t[:description]
@@ -135,10 +135,10 @@ class FeedbackTableRenderer
   def diff_split(t)
     d = Diffy::SplitDiff.new(t[:generated], t[:expected], format: :html)
     @builder.div(class: 'row') do
-      @builder.div(class: 'col-xs-6') do
+      @builder.div(class: 'col-xs-6', title: I18n.t('submissions.show.generated')) do
         @builder << d.left
       end
-      @builder.div(class: 'col-xs-6') do
+      @builder.div(class: 'col-xs-6', title: I18n.t('submissions.show.expected')) do
         @builder << d.right
       end
     end

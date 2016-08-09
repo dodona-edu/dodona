@@ -23,4 +23,6 @@ en:
       result: Result
       code: Code
       line: Line
-      reevaluate: 'Re-evaluate'
+      reevaluate: Re-evaluate
+      generated: generated output
+      expected: expected output

@@ -43,6 +43,7 @@ en:
           queued: Queued...
           runtime error: Runtime error
           compilation error: Compilation error
+          memory limit exceeded: Memory limit exceeded
       user:
         username: Username
         ugent_id: Student id

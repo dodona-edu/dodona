@@ -43,6 +43,7 @@ nl:
           queued: In de wachtrij...
           runtime error: Uitvoeringsfout
           compilation error: Compilatiefout
+          memory limit exceeded: Geheugenlimiet overschreden
       user:
         username: Gebruikersnaam
         ugent_id: Studentennummer

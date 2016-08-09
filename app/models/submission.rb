@@ -15,7 +15,7 @@
 #
 
 class Submission < ApplicationRecord
-  enum status: [:unknown, :correct, :wrong, :timeout, :running, :queued, :'runtime error', :'compilation error']
+  enum status: [:unknown, :correct, :wrong, :timeout, :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded']
 
   belongs_to :exercise
   belongs_to :user

@@ -34,47 +34,46 @@ class Judge < ApplicationRecord
   end
 
   def renderer
-    klass = read_attribute(:renderer)
+    klass = self[:renderer]
     ActiveSupport::Inflector.constantize klass if klass
   end
 
   def renderer=(klass)
-    write_attribute :renderer, klass.to_s
+    self[:renderer] = klass.to_s
   end
 
   def renderer_is_renderer
     begin
       unless renderer <= FeedbackTableRenderer
-        errors.add(:renderer, "should be a subclass of FeedbackTableRenderer")
+        errors.add(:renderer, 'should be a subclass of FeedbackTableRenderer')
         return false
       end
     rescue
-      errors.add(:renderer, "should be a class in scope")
+      errors.add(:renderer, 'should be a class in scope')
       return false
     end
     true
   end
 
   def runner
-    klass = read_attribute(:runner)
+    klass = self[:runner]
     ActiveSupport::Inflector.constantize klass if klass
   end
 
   def runner=(klass)
-    write_attribute :runner, klass.to_s
+    self[:runner] = klass.to_s
   end
 
   def runner_is_runner
     begin
       unless runner <= SubmissionRunner
-        errors.add(:runner, "should be a subclass of SubmissionRunner")
+        errors.add(:runner, 'should be a subclass of SubmissionRunner')
         return false
       end
     rescue
-      errors.add(:runner, "should be a class in scope")
+      errors.add(:runner, 'should be a class in scope')
       return false
     end
     true
   end
-
 end

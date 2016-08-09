@@ -8,8 +8,8 @@ class FeedbackTableRenderer
     @renderers << cl
   end
 
-  def self.renderers
-    @renderers
+  class << self
+    attr_reader :renderers
   end
 
   def initialize(submission, user)
@@ -43,7 +43,7 @@ class FeedbackTableRenderer
             end
           end if submission[:groups]
           @builder.li(class: ('active' unless submission[:groups])) do
-            @builder.a(I18n.t('submissions.show.code'), href: "#code-tab", 'data-toggle': 'tab')
+            @builder.a(I18n.t('submissions.show.code'), href: '#code-tab', 'data-toggle': 'tab')
           end if show_code_tab
         end
       end

@@ -83,8 +83,8 @@ class SubmissionRunner < Runner
     @runners << cl
   end
 
-  def self.runners
-    @runners
+  class << self
+    attr_reader :runners
   end
 
   def initialize

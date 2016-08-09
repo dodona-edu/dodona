@@ -11,6 +11,3 @@
 <% unless submission.queued? or submission.running? %>
   <p><%= submission.judge.renderer.new(submission, current_user).parse %></p>
 <% end %>
-<p>
-  <%= markdown("```javascript\n" + submission.code + "\n```") %>
-</p>

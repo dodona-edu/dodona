@@ -16,6 +16,8 @@ class FeedbackTableRenderer
     @submission = JSON.parse(submission.result, symbolize_names: true)
     @current_user = user
     @builder = Builder::XmlMarkup.new
+    @code = submission.code
+    @programming_language = submission.exercise.programming_language
   end
 
   def parse
@@ -23,6 +25,10 @@ class FeedbackTableRenderer
       messages(@submission[:messages])
       tabs(@submission)
     end.html_safe
+  end
+
+  def show_code_tab(submission)
+    true
   end
 
   def tabs(submission)
@@ -34,11 +40,17 @@ class FeedbackTableRenderer
               @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
             end
           end if submission[:groups]
+          @builder.li do
+            @builder.a(I18n.t('submissions.show.code'), href: "#code-tab", 'data-toggle': 'tab')
+          end if show_code_tab(submission)
         end
       end
       @builder.div(class: 'card-supporting-text') do
         @builder.div(class: 'tab-content') do
           @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
+          @builder.div(class: 'tab-pane', id: 'code-tab') do
+            source(@code, []) if show_code_tab(submission)
+          end
         end
       end
     end
@@ -198,5 +210,12 @@ class FeedbackTableRenderer
 
   def icon_info
     @builder.span('', class: 'glyphicon glyphicon-info-sign')
+  end
+
+  def source(code, messages)
+    @builder.div(id: 'editor-result') do
+      @builder.text! code
+    end
+    @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
   end
 end

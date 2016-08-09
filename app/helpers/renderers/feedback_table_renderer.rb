@@ -22,12 +22,14 @@ class FeedbackTableRenderer
 
   def parse
     @builder.div(class: 'feedback-table') do
-      messages(@submission[:messages])
+      @builder.div(class: 'row') do
+        messages(@submission[:messages])
+      end
       tabs(@submission)
     end.html_safe
   end
 
-  def show_code_tab(submission)
+  def show_code_tab
     true
   end
 
@@ -40,17 +42,17 @@ class FeedbackTableRenderer
               @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
             end
           end if submission[:groups]
-          @builder.li do
+          @builder.li(class: ('active' unless submission[:groups])) do
             @builder.a(I18n.t('submissions.show.code'), href: "#code-tab", 'data-toggle': 'tab')
-          end if show_code_tab(submission)
+          end if show_code_tab
         end
       end
       @builder.div(class: 'card-supporting-text') do
         @builder.div(class: 'tab-content') do
           @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
-          @builder.div(class: 'tab-pane', id: 'code-tab') do
-            source(@code, []) if show_code_tab(submission)
-          end
+          @builder.div(class: "tab-pane #{'active' unless submission[:groups]}", id: 'code-tab') do
+            source(@code, [])
+          end if show_code_tab
         end
       end
     end

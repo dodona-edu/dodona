@@ -1,17 +1,36 @@
 class FeedbackTableRenderer
   include ApplicationHelper
+
   require 'builder'
 
-  def initialize(submission)
+  def self.inherited(cl)
+    @renderers ||= [FeedbackTableRenderer]
+    @renderers << cl
+  end
+
+  class << self
+    attr_reader :renderers
+  end
+
+  def initialize(submission, user)
     @submission = JSON.parse(submission.result, symbolize_names: true)
+    @current_user = user
     @builder = Builder::XmlMarkup.new
+    @code = submission.code
+    @programming_language = submission.exercise.programming_language
   end
 
   def parse
     @builder.div(class: 'feedback-table') do
-      @builder.p(@submission[:description])
+      @builder.div(class: 'row') do
+        messages(@submission[:messages])
+      end
       tabs(@submission)
     end.html_safe
+  end
+
+  def show_code_tab
+    true
   end
 
   def tabs(submission)
@@ -22,12 +41,18 @@ class FeedbackTableRenderer
             @builder.li(class: ('active' if i.zero?)) do
               @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
             end
-          end
+          end if submission[:groups]
+          @builder.li(class: ('active' unless submission[:groups])) do
+            @builder.a(I18n.t('submissions.show.code'), href: '#code-tab', 'data-toggle': 'tab')
+          end if show_code_tab
         end
       end
       @builder.div(class: 'card-supporting-text') do
         @builder.div(class: 'tab-content') do
-          @submission[:groups].each_with_index { |t, i| tab(t, i) }
+          @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
+          @builder.div(class: "tab-pane #{'active' unless submission[:groups]}", id: 'code-tab') do
+            source(@code, [])
+          end if show_code_tab
         end
       end
     end
@@ -40,38 +65,54 @@ class FeedbackTableRenderer
   end
 
   def tab_content(t)
-    t[:groups].each { |g| group(g) } if t[:groups]
+    messages(t[:messages])
+    @builder.div(class: 'groups') do
+      t[:groups].each { |g| group(g) } if t[:groups]
+    end
   end
 
   def group(g)
-    @builder.div(class: 'group') do
-      @builder.div(class: 'description') do
+    @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}") do
+      @builder.div(class: 'col-xs-12 description') do
         message(g[:description])
       end if g[:description]
-      g[:groups].each { |tc| testcase(tc) }
+      messages(g[:messages])
+      g[:groups].each { |tc| testcase(tc) } if g[:groups]
     end
   end
 
   def testcase(tc)
     @builder.div(class: 'testcase') do
-      @builder.div(class: 'description') do
-        tc[:accepted] ? icon_correct : icon_wrong
-        @builder << ' '
+      @builder.div(class: 'col-xs-12 description') do
+        @builder.div(class: 'indicator') do
+          tc[:accepted] ? icon_correct : icon_wrong
+        end
         message(tc[:description]) if tc[:description]
       end
       tc[:tests].each { |t| test(t) } if tc[:tests]
+      messages(tc[:messages])
     end
   end
 
   def test(t)
-    @builder.div(class: 'test') do
+    @builder.div(class: 'col-xs-12 test') do
       @builder.div(class: 'description') do
         message(t[:description])
-      end
+      end if t[:description]
       if t[:accepted]
         test_accepted(t)
       else
         test_failed(t)
+      end
+      messages(t[:messages])
+    end
+  end
+
+  def messages(msgs)
+    return if msgs.nil?
+    @builder.div(class: 'col-xs-12 messages') do
+      msgs.each do |msg|
+        message(msg)
       end
     end
   end
@@ -84,7 +125,7 @@ class FeedbackTableRenderer
   end
 
   def test_failed(t)
-    @builder.div do
+    @builder.div(class: 'test-accepted') do
       diff(t)
     end
   end
@@ -94,7 +135,8 @@ class FeedbackTableRenderer
   end
 
   def diff_heuristical(t)
-    if t[:expected].scan(/\n/).count > 2
+    output = (t[:expected] || '') + '\n' + (t[:generated] || '')
+    if output.split('\n').map(&:length).max < 55
       diff_split(t)
     else
       diff_unified(t)
@@ -108,10 +150,10 @@ class FeedbackTableRenderer
   def diff_split(t)
     d = Diffy::SplitDiff.new(t[:generated], t[:expected], format: :html)
     @builder.div(class: 'row') do
-      @builder.div(class: 'col-xs-6') do
+      @builder.div(class: 'col-sm-6 col-xs-12', title: I18n.t('submissions.show.generated')) do
         @builder << d.left
       end
-      @builder.div(class: 'col-xs-6') do
+      @builder.div(class: 'col-sm-6 col-xs-12', title: I18n.t('submissions.show.expected')) do
         @builder << d.right
       end
     end
@@ -119,6 +161,11 @@ class FeedbackTableRenderer
 
   def message(m)
     return if m.nil?
+    if m[:permission]
+      return if m[:permission] == 'teacher' && !@current_user.admin?
+      return if m[:permission] == 'zeus' && !@current_user.zeus?
+    end
+
     m = { format: 'plain', description: m } if m.is_a? String
     if m[:format].in?(%w(plain text))
       @builder.text! m[:description]
@@ -165,5 +212,12 @@ class FeedbackTableRenderer
 
   def icon_info
     @builder.span('', class: 'glyphicon glyphicon-info-sign')
+  end
+
+  def source(code, messages)
+    @builder.div(id: 'editor-result') do
+      @builder.text! code
+    end
+    @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
   end
 end

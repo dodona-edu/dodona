@@ -36,8 +36,6 @@ set :passenger_restart_with_touch, true
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-
-
 # Number of delayed_job workers
 # default value: 1
 # set :delayed_job_workers, 2

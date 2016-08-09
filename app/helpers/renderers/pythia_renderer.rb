@@ -1,8 +1,11 @@
 class PythiaRenderer < FeedbackTableRenderer
-  def initialize(submission)
-    super(submission)
-    @code = submission.code
-    @programming_language = submission.exercise.programming_language
+  def initialize(submission, user)
+    super(submission, user)
+  end
+
+  def show_code_tab
+    return true unless @submission[:groups]
+    !@submission[:groups].any? { |t| t[:data][:source_annotations] }
   end
 
   def tab_content(t)
@@ -38,10 +41,10 @@ class PythiaRenderer < FeedbackTableRenderer
       @builder.ul do
         diff.each do |diff_line|
           if diff_line[4]
-            @builder << diff_line[2]
+            @builder << (diff_line[2] || '')
           else
-            @builder << diff_line[2]
-            @builder << diff_line[3]
+            @builder << (diff_line[2] || '')
+            @builder << (diff_line[3] || '')
           end
         end
       end
@@ -51,7 +54,7 @@ class PythiaRenderer < FeedbackTableRenderer
   def linting(lint_messages, code)
     @builder.div(class: 'linter') do
       lint_messages(lint_messages)
-      source(code, lint_messages)
+      source(code, lint_messages.map { |m| convert_lint_message(m) })
     end
   end
 
@@ -88,13 +91,5 @@ class PythiaRenderer < FeedbackTableRenderer
       type: convert_lint_type(message[:type]),
       text: message[:description]
     }
-  end
-
-  def source(code, messages)
-    @builder.div(id: 'editor-result') do
-      @builder.text! code
-    end
-    annotations = messages.map { |msg| convert_lint_message(msg) }
-    @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{annotations.to_json});});</script>"
   end
 end

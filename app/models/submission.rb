@@ -15,10 +15,11 @@
 #
 
 class Submission < ApplicationRecord
-  enum status: [:unknown, :correct, :wrong, :timeout, :running, :queued, :'runtime error', :'compilation error']
+  enum status: [:unknown, :correct, :wrong, :timeout, :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded']
 
   belongs_to :exercise
   belongs_to :user
+  has_one :judge, through: :exercise
 
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed
@@ -29,14 +30,17 @@ class Submission < ApplicationRecord
 
   # TODO; can delayed_jobs_active_records really only process active record methods?
   def evaluate_delayed
-    self.status = 'queued'
-    save
+    update(
+      status: 'queued',
+      result: '',
+      summary: nil
+    )
 
     delay.evaluate
   end
 
   def evaluate
-    runner = PythiaSubmissionRunner.new(self)
+    runner = judge.runner.new(self)
 
     runner.run
   end

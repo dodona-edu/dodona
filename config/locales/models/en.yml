@@ -21,6 +21,8 @@ en:
         name: Name
         image: Docker image
         path: Path
+        renderer: Rendering class
+        runner: Submission executor
       repository:
         name: Name
         remote: Clone URL

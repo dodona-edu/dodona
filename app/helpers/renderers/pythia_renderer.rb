@@ -38,10 +38,10 @@ class PythiaRenderer < FeedbackTableRenderer
       @builder.ul do
         diff.each do |diff_line|
           if diff_line[4]
-            @builder << diff_line[2]
+            @builder << diff_line[2] || ''
           else
-            @builder << diff_line[2]
-            @builder << diff_line[3]
+            @builder << diff_line[2] || ''
+            @builder << diff_line[3] || ''
           end
         end
       end

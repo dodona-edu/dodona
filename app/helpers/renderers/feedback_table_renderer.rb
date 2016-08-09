@@ -52,12 +52,14 @@ class FeedbackTableRenderer
 
   def tab_content(t)
     messages(t[:messages])
-    t[:groups].each { |g| group(g) } if t[:groups]
+    @builder.div(class: 'groups') do
+      t[:groups].each { |g| group(g) } if t[:groups]
+    end
   end
 
   def group(g)
-    @builder.div(class: 'group') do
-      @builder.div(class: 'description') do
+    @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}") do
+      @builder.div(class: 'col-xs-12 description') do
         message(g[:description])
       end if g[:description]
       messages(g[:messages])
@@ -67,9 +69,10 @@ class FeedbackTableRenderer
 
   def testcase(tc)
     @builder.div(class: 'testcase') do
-      @builder.div(class: 'description') do
-        tc[:accepted] ? icon_correct : icon_wrong
-        @builder << ' '
+      @builder.div(class: 'col-xs-12 description') do
+        @builder.div(class: 'indicator') do
+          tc[:accepted] ? icon_correct : icon_wrong
+        end
         message(tc[:description]) if tc[:description]
       end
       tc[:tests].each { |t| test(t) } if tc[:tests]
@@ -93,7 +96,7 @@ class FeedbackTableRenderer
 
   def messages(msgs)
     return if msgs.nil?
-    @builder.div(class: 'messages') do
+    @builder.div(class: 'col-xs-12 messages') do
       msgs.each do |msg|
         message(msg)
       end
@@ -108,7 +111,7 @@ class FeedbackTableRenderer
   end
 
   def test_failed(t)
-    @builder.div do
+    @builder.div(class: 'test-accepted') do
       diff(t)
     end
   end

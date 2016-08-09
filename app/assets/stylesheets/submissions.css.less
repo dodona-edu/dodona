@@ -1,16 +1,52 @@
 .feedback-table {
     .description {
-        background-color: @grey-100;
+        background-color: @grey-300;
         pre {
             border: none;
         }
     }
+    .groups {
+        margin: 0px 15px;
+    }
     .group {
+        background-color: white;
         margin-bottom: 12px;
+        border-left: 4px solid gray;
+
+        &.correct {
+            border-left-color: @success-500;
+
+            .indicator {
+                color: @success-500;
+            }
+        }
+        &.wrong {
+            border-left-color: @danger-500;
+
+            .indicator {
+                color: @danger-500;
+            }
+        }
+    }
+    .testcase {
+        .indicator {
+            width: 15px;
+            height: 15px;
+            margin: 3px;
+            margin-right: -12px;
+            float: right;
+
+            span {
+                margin: auto;
+            }
+        }
+        & > div {
+            margin-bottom: 3px;
+        }
     }
     .test {
-        margin-top: 5px;
         margin-left: 12px;
+        margin-right: 12px;
         .output {
             font-family: @font-family-monospace;
             white-space: pre-wrap;
@@ -24,7 +60,6 @@
         overflow: auto;
     }
     .diff ul {
-        background: #fff;
         overflow: auto;
         font-size: 13px;
         list-style: none;

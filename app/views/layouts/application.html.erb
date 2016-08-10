@@ -84,7 +84,7 @@
         </div>
       </nav>
       <div class="container main">
-        <div class="messages">
+        <div class="page-messages">
           <% flash.each do |key, value| %>
             <% unless value.nil? %>
               <%= content_tag(:div, raw("<strong>Opgepast!</strong> ")+value, :class => "alert alert-info") if key == "notice" %>

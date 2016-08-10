@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @judge.name %></h2>
+        <% if policy(@judge).edit? %>
+          <div class="card-title-fab">
+            <%= link_to edit_judge_path(@judge), class: "btn btn-primary btn-fab" do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <div class="col-sm-6 col-xs-12">
+          <p>
+            <strong><%= t ".judge" %>:</strong> <%= @judge.name %>
+          </p>
+          <p>
+            <strong><%= Judge.human_attribute_name("image") %>:</strong> <%= @judge.image %>
+          </p>
+          <p>
+            <strong><%= Judge.human_attribute_name("path") %>:</strong> <%= @judge.path %>
+          </p>
+          <p>
+            <strong><%= Judge.human_attribute_name("renderer") %>:</strong> <%= @judge.renderer %>
+          </p>
+          <p>
+            <strong><%= Judge.human_attribute_name("runner") %>:</strong> <%= @judge.runner %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

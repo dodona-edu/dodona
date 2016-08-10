@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class UserPolicyTest < ActiveSupport::TestCase
-
   def test_scope
   end
 

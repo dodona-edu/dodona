@@ -14,6 +14,9 @@
 //= require jquery_ujs
 //= require turbolinks
 
+//= require i18n
+//= require i18n/translations
+
 //= require ace-rails-ap
 //= require ace/mode-javascript
 //= require ace/ext-language_tools
@@ -21,15 +24,8 @@
 //= require vendor
 //= require_self
 //= require_directory .
-//= require judge/utils.js
-//= require judge/diff.js
-//= require judge/feedbackTable.js
 
-$(function () {
-    if (!(Modernizr.templatestrings && Modernizr.webworkers)) {
-        $(".messages").append("<div class='alert alert-warning'>Sorry, je browser lijkt niet alle nodige JavaScript features te ondersteunen. Met een recente versie van Google Chrome of Firefox zou alles moeten werken.</div>")
-    }
-});
+var dodona = {};
 
 /**
  * requestAnimationFrame shim

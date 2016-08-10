@@ -2,24 +2,43 @@ Rails.application.routes.draw do
   devise_for :users
   root 'pages#home'
 
-  resources :exercises, only: [:index, :show, :edit, :update], param: :name do
-    resources :submissions, only: [:index, :create]
-    member do
-      get 'users' end
-  end
+  get '/:locale' => 'pages#home'
 
-  resources :submissions, only: [:index, :show, :create] do
-    member do
-      get 'download'
+  scope '(:locale)', locale: /en|nl/ do
+    resources :courses do
+      member do
+        post 'subscribe'
+        get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: "subscribe_with_secret"
+      end
+    end
+
+    resources :exercises, only: [:index, :show, :edit, :update] do
+      resources :submissions, only: [:index, :create]
+      member do
+        get 'users'
+        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }
+      end
+    end
+
+    resources :judges
+    resources :repositories do
+      member do
+        match 'hook', via: [:get, :post], to: 'repositories#hook', as: "webhook"
+        get 'reprocess'
+      end
+    end
+
+    resources :submissions, only: [:index, :show, :create] do
+      member do
+        get 'download'
+        get 'evaluate'
+      end
+    end
+
+    resources :users do
+      resources :submissions, only: [:index]
     end
   end
-
-  resources :users do
-    resources :submissions, only: [:index]
-  end
-
-  # Webhooks
-  match '/webhooks/update_exercises', via: [:get, :post], :to => 'webhooks#update_exercises'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 

@@ -8,28 +8,35 @@
 #  first_name :string(255)
 #  last_name  :string(255)
 #  email      :string(255)
-#  permission :integer          default("0")
+#  permission :integer          default("student")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  lang       :string(255)      default("nl")
 #
 
 class User < ApplicationRecord
   enum permission: [:student, :teacher, :zeus]
 
   has_many :submissions
+  has_many :course_memberships
+  has_many :courses, through: :course_memberships
 
   devise :cas_authenticatable
 
   def full_name
-    first_name + " " + last_name
+    first_name + ' ' + last_name
   end
 
   def admin?
-    teacher? or zeus?
+    teacher? || zeus?
   end
 
   def correct_exercises
     submissions.where(status: :correct).distinct.count(:exercise_id)
+  end
+
+  def member_of?(course)
+    courses.include? course
   end
 
   def cas_extra_attributes=(extra_attributes)

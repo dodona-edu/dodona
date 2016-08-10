@@ -1,0 +1,44 @@
+AllCops:
+  Include:
+    - ''
+  Exclude:
+    - 'db/schema.rb'
+    - 'config/routes.rb'
+    - 'db/migrate/**'
+  TargetRubyVersion: 2.3
+
+Rails:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Metrics/LineLength:
+  Enabled: false
+
+# disable for now
+# Lint/NestedMethodDefinition:
+#   Enabled: false
+# Style/ClassVars:
+#   Enabled: false
+Style/Documentation:
+  Enabled: false
+# Style/RescueModifier:
+#   Enabled: false
+# Style/AccessorMethodName:
+#   Enabled: false
+# Style/PredicateName:
+#   Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false

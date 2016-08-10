@@ -1,6 +1,6 @@
 module ApplicationHelper
   def markdown(source)
-    Kramdown::Document.new(source, input: 'GFM', syntax_highlighter: 'rouge', math_engine_opts: {preview: true}).to_html.html_safe
+    Kramdown::Document.new(source, input: 'GFM', syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe
   end
 
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
@@ -45,10 +45,9 @@ module ApplicationHelper
 
   def page_navigation_links(pages, remote = false)
     if remote
-      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: {:controller => "submissions", :action => "index", :format => "js"})
+      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { controller: 'submissions', action: 'index', format: 'js' })
     else
       will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: BootstrapLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe)
     end
-
   end
 end

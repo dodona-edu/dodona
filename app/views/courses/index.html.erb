@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+        <% if policy(Course).new? %>
+          <div class="card-title-fab">
+            <%= link_to new_course_path, class: "btn btn-primary btn-fab" do %>
+              <span class="glyphicon glyphicon-plus"></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <table class="table table-index table-resource">
+          <thead>
+            <tr>
+              <th><%= Course.human_attribute_name("name") %></th>
+              <th><%= Course.human_attribute_name("year") %></th>
+              <th><%= t ".users" %></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @courses.each do |course| %>
+              <tr>
+                <td><%= link_to course.name, course %></td>
+                <td><%= course.year %> </td>
+                <td><%= course.users.count %> </td>
+                <td class="actions">
+                  <% if policy(course).edit? %>
+                    <%= link_to edit_course_path(course), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
+                  <% end %>
+                  <% if policy(course).destroy? %>
+                    <%= link_to course, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

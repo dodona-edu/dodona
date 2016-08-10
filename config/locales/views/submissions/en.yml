@@ -1,0 +1,29 @@
+en:
+  submissions:
+    submission:
+      ago: ago
+      view_solution: View solution
+    submissions_table:
+      user: User
+      exercise: Exercise
+      time: Time
+      status: Status
+      result: Result
+      summary: Summary
+    index:
+      title: Submissions
+      for: for
+      from: from
+    show:
+      submission: Submission
+      user: User
+      exercise: Exercise
+      handed_in: Handed in
+      ago: ago
+      status: Status
+      result: Result
+      code: Code
+      line: Line
+      reevaluate: Re-evaluate
+      generated: generated output
+      expected: expected output

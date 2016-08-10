@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card exercise-description">
+    <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text">Gebruikers</h2>
+        <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(User).new? %>
           <div class="card-title-fab">
             <%= link_to new_user_path, class: "btn btn-primary btn-fab" do %>
@@ -15,10 +15,10 @@
         <table class="table table-index table-resource">
           <thead>
             <tr>
-              <th>Gebruikersnaam</th>
-              <th>Naam</th>
-              <th>Email</th>
-              <th>Type</th>
+              <th><%= User.human_attribute_name("username") %></th>
+              <th><%= User.human_attribute_name("name") %></th>
+              <th><%= User.human_attribute_name("email") %></th>
+              <th><%= User.human_attribute_name("permission") %></th>
               <th></th>
             </tr>
           </thead>
@@ -34,7 +34,7 @@
                     <%= link_to edit_user_path(user), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
                   <% end %>
                   <% if policy(user).destroy? %>
-                    <%= link_to user, method: :delete, data: { confirm: 'Ben je zeker?' }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
+                    <%= link_to user, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
                   <% end %>
                 </td>
               </tr>

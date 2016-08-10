@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,29 +10,97 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425143502) do
+ActiveRecord::Schema.define(version: 20160810112752) do
 
-  create_table "exercises", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "name"
-    t.integer  "visibility", default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+  create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "course_id"
+    t.integer  "user_id"
+    t.integer  "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_memberships_on_course_id", using: :btree
+    t.index ["user_id"], name: "index_course_memberships_on_user_id", using: :btree
   end
 
-  add_index "exercises", ["name"], name: "index_exercises_on_name", using: :btree
+  create_table "courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.string   "year"
+    t.string   "secret"
+    t.boolean  "open"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "delayed_jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "priority",                 default: 0, null: false
+    t.integer  "attempts",                 default: 0, null: false
+    t.text     "handler",    limit: 65535,             null: false
+    t.text     "last_error", limit: 65535
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+  end
+
+  create_table "exercises", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name_nl"
+    t.string   "name_en"
+    t.integer  "visibility",           default: 0
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "path"
+    t.string   "description_format"
+    t.string   "programming_language"
+    t.integer  "repository_id"
+    t.integer  "judge_id"
+    t.index ["judge_id"], name: "index_exercises_on_judge_id", using: :btree
+    t.index ["name_nl"], name: "index_exercises_on_name_nl", using: :btree
+    t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true, using: :btree
+    t.index ["programming_language"], name: "index_exercises_on_programming_language", using: :btree
+    t.index ["repository_id"], name: "index_exercises_on_repository_id", using: :btree
+  end
+
+  create_table "judges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.string   "image"
+    t.string   "path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "renderer",   null: false
+    t.string   "runner",     null: false
+    t.index ["name"], name: "index_judges_on_name", unique: true, using: :btree
+  end
+
+  create_table "repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.string   "remote"
+    t.string   "path"
+    t.integer  "judge_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["judge_id"], name: "index_repositories_on_judge_id", using: :btree
+    t.index ["path"], name: "index_repositories_on_path", unique: true, using: :btree
+  end
 
   create_table "submissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "exercise_id"
     t.integer  "user_id"
     t.text     "code",        limit: 65535
-    t.text     "result",      limit: 65535
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "summary"
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.integer  "status"
+    t.binary   "result",      limit: 16777215
+    t.boolean  "accepted",                     default: false
+    t.index ["accepted"], name: "index_submissions_on_accepted", using: :btree
+    t.index ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
+    t.index ["status"], name: "index_submissions_on_status", using: :btree
+    t.index ["user_id"], name: "index_submissions_on_user_id", using: :btree
   end
-
-  add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
-  add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "username"
@@ -42,12 +109,15 @@ ActiveRecord::Schema.define(version: 20160425143502) do
     t.string   "last_name"
     t.string   "email"
     t.integer  "permission", default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "lang",       default: "nl"
+    t.index ["username"], name: "index_users_on_username", using: :btree
   end
 
-  add_index "users", ["username"], name: "index_users_on_username", using: :btree
-
+  add_foreign_key "exercises", "judges"
+  add_foreign_key "exercises", "repositories"
+  add_foreign_key "repositories", "judges"
   add_foreign_key "submissions", "exercises"
   add_foreign_key "submissions", "users"
 end

@@ -1,15 +1,16 @@
 <table class="table">
   <thead>
     <tr>
+      <th></th>
       <% if current_user.admin? %>
-        <th>Gebruiker</th>
+        <th><%= t ".user" %></th>
       <% end %>
       <% if !exercise %>
-        <th>Oefening</th>
+        <th><%= t ".exercise" %></th>
       <% end %>
-      <th>Tijdstip</th>
-      <th>Status</th>
-      <th>Resultaat</th>
+      <th><%= t ".time" %></th>
+      <th><%= t ".status" %></th>
+      <th><%= t ".summary" %></th>
       <th></th>
     </tr>
   </thead>

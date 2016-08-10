@@ -1,7 +1,7 @@
-<%= form_for(exercise, :url => exercise_path(exercise.name), :html => {:class => 'form-horizontal'}) do |f| %>
+<%= form_for(exercise, :url => exercise_path(exercise), :html => {:class => 'form-horizontal'}) do |f| %>
   <% if exercise.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(exercise.errors.count, "fout") %> verhinderden het opslaan:</h2>
+      <h2><%= t( "errors.validation_erors", :count => exercise.errors.count) %></h2>
       <ul>
         <% exercise.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -10,21 +10,33 @@
     </div>
   <% end %>
   <div class="field form-group">
-    <%= f.label :name, "Naam", :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :name, class: "form-control" , disabled: !f.hasPermission?(:name) %></div>
+    <%= f.label :name_nl, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :name_nl, class: "form-control" , disabled: !f.hasPermission?(:name_nl) %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :name_en, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :name_en, class: "form-control" , disabled: !f.hasPermission?(:name_en) %></div>
   </div>
   <% if f.hasPermission?(:visibility) %>
     <div class="field form-group">
-      <%= f.label :visibility, "Zichtbaarheid", :class => "col-sm-2 control-label" %>
+      <%= f.label :visibility, :class => "col-sm-2 control-label" %>
       <div class="col-sm-4"><%= f.select :visibility, Exercise.visibilities.map { |key, value| [key.humanize, key] }, {}, { :class => 'form-control', disabled: !f.hasPermission?(:visibility) } %></div>
     </div>
   <% end %>
   <div class="field form-group">
-    <label class="col-sm-2 control-label">Opgave aanpassen</label>
-    <div class="col-sm-4 form-control-static"><%= link_to "Open op GitHub", "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.name}/NL.md" %></div>
+    <label class="col-sm-2 control-label"><%= Exercise.human_attribute_name("repository") %></label>
+    <div class="col-sm-4 form-control-static"><%= link_to exercise.repository.name, exercise.repository %></div>
   </div>
   <div class="field form-group">
-    <label class="col-sm-2 control-label">Testen aanpassen</label>
-    <div class="col-sm-4 form-control-static"><%= link_to "Open op GitHub", "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.name}/tests.js" %></div>
+    <label class="col-sm-2 control-label"><%= Exercise.human_attribute_name("judge") %></label>
+    <div class="col-sm-4 form-control-static"><%= link_to exercise.judge.name, exercise.judge %></div>
+  </div>
+  <div class="field form-group">
+    <label class="col-sm-2 control-label"><%= t ".edit_exercise" %></label>
+    <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.path}/NL.md" %></div>
+  </div>
+  <div class="field form-group">
+    <label class="col-sm-2 control-label"><%= t ".edit_tests" %></label>
+    <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.path}/tests.js" %></div>
   </div>
 <% end %>

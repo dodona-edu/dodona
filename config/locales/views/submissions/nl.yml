@@ -1,0 +1,29 @@
+nl:
+  submissions:
+    submission:
+      ago: geleden
+      view_solution: Oplossing bekijken
+    submissions_table:
+      user: Gebruiker
+      exercise: Oefening
+      time: Tijdstip
+      status: Status
+      result: Resultaat
+      summary: Samenvatting
+    index:
+      title: Oplossingen
+      for: voor
+      from: van
+    show:
+      submission: Oplossing
+      user: Gebruiker
+      exercise: Opgave
+      handed_in: Ingediend
+      ago: geleden
+      status: Status
+      result: Resultaat
+      code: Code
+      line: Regel
+      reevaluate: Herevalueren
+      generated: gegenereerde uitvoer
+      expected: verwachte uitvoer

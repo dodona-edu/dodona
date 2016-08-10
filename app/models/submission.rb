@@ -6,19 +6,57 @@
 #  exercise_id :integer
 #  user_id     :integer
 #  code        :text(65535)
-#  result      :text(65535)
+#  summary     :string(255)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :integer
+#  result      :binary(16777215)
+#  accepted    :boolean          default(FALSE)
 #
 
 class Submission < ApplicationRecord
-  enum status: [:unknown, :correct, :wrong, :timeout]
+  enum status: [:unknown, :correct, :wrong, :timeout, :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded']
 
   belongs_to :exercise
   belongs_to :user
+  has_one :judge, through: :exercise
+
+  # docs say to use after_commit_create, doesn't even work
+  after_create :evaluate_delayed
 
   default_scope { order(created_at: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
+
+  # TODO; can delayed_jobs_active_records really only process active record methods?
+  def evaluate_delayed
+    update(
+      status: 'queued',
+      result: '',
+      summary: nil
+    )
+
+    delay.evaluate
+  end
+
+  def evaluate
+    runner = judge.runner.new(self)
+
+    runner.run
+  end
+
+  def result=(result)
+    self[:result] = ActiveSupport::Gzip.compress(result)
+  end
+
+  def result
+    ActiveSupport::Gzip.decompress(self[:result])
+  end
+
+  def self.normalize_status(s)
+    return 'correct' if s == 'correct answer'
+    return 'wrong' if s == 'wrong answer'
+    return s if s.in?(statuses)
+    'unknown'
+  end
 end

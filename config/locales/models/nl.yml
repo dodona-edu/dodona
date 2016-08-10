@@ -1,0 +1,54 @@
+nl:
+  activerecord:
+    models:
+      course: Cursus
+      exercise: Oefening
+      judge: Judge
+      repository: Repository
+      submission: Oplossing
+      user: Student
+    attributes:
+      course:
+        name: Naam
+        year: Academiejaar
+        secret: Secret
+      exercise:
+        name: Naam
+        name_nl: Naam Nederlands
+        name_en: Naam Engels
+        visibility: Zichtbaarheid
+      judge:
+        name: Naam
+        image: Docker image
+        path: Padnaam
+        renderer: Renderklasse
+        runner: Uitvoerder
+      repository:
+        name: Naam
+        remote: Clone URL
+        path: Padnaam
+        judge: Default judge
+        exercises: Oefeningen
+      submission:
+        code: Code
+        result: Resultaat
+        status: Status
+        summary: Samenvatting
+        statuses:
+          unknown: Onbekend
+          correct: Correct
+          wrong: Fout
+          timeout: Timeout
+          running: Aan het uitvoeren...
+          queued: In de wachtrij...
+          runtime error: Uitvoeringsfout
+          compilation error: Compilatiefout
+          memory limit exceeded: Geheugenlimiet overschreden
+      user:
+        username: Gebruikersnaam
+        ugent_id: Studentennummer
+        first_name: Voornaam
+        last_name: Familienaam
+        name: Naam
+        email: Email
+        permission: Rechten

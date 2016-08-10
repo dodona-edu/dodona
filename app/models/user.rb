@@ -11,6 +11,7 @@
 #  permission :integer          default("student")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  lang       :string(255)      default("nl")
 #
 
 class User < ApplicationRecord

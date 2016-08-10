@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804075419) do
+ActiveRecord::Schema.define(version: 20160810112752) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -109,8 +109,9 @@ ActiveRecord::Schema.define(version: 20160804075419) do
     t.string   "last_name"
     t.string   "email"
     t.integer  "permission", default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "lang",       default: "nl"
     t.index ["username"], name: "index_users_on_username", using: :btree
   end
 

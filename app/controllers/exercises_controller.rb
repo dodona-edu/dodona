@@ -2,7 +2,7 @@ class ExercisesController < ApplicationController
   before_action :set_exercise, only: [:show, :edit, :update, :users, :media]
 
   rescue_from ActiveRecord::RecordNotFound do
-    redirect_to exercises_path, alert: "Sorry, we kunnen de oefening #{params[:name]} niet vinden."
+    redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')
   end
 
   def index
@@ -11,8 +11,8 @@ class ExercisesController < ApplicationController
   end
 
   def show
-    flash.now[:notice] = 'Deze oefening is niet toegankelijk voor studenten.' if @exercise.closed?
-    flash.now[:notice] = 'Deze oefening is niet zichtbaar voor studenten.' if @exercise.hidden? && current_user && current_user.admin?
+    flash.now[:notice] = I18n.t('exercises.show.not_accessible') if @exercise.closed?
+    flash.now[:notice] = I18n.t('exercises.show.not_visible') if @exercise.hidden? && current_user && current_user.admin?
     @submissions = policy_scope(@exercise.submissions).paginate(page: params[:page])
   end
 

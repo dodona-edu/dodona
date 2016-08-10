@@ -1,5 +1,12 @@
 nl:
   layout:
+    head:
+      description: Oefeningenwebsite voor de programmeervakken aan de UGent.
+    messages:
+      warning: Opgepast
+      danger: Oh nee
+      info: Ter info
+      success: Geweldig
     menu:
       exercises: Oefeningen
       my_submissions: Mijn oplossingen

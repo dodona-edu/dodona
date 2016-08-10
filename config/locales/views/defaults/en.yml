@@ -1,5 +1,12 @@
 en:
   layout:
+    head:
+      description: Exercises for the programming courses of Ghent University.
+    messages:
+      warning: Warning
+      danger: Oh snap
+      info: Heads up
+      success: Great
     menu:
       exercises: Exercises
       my_submissions: My submissions

@@ -44,7 +44,7 @@ class Exercise < ApplicationRecord
   end
 
   def name
-    send('name_' + I18n.locale.to_s) || name_nl || name_en
+    send('name_' + I18n.locale.to_s) || name_nl || name_en || 'n/a'
   end
 
   def description_localized(lang = I18n.locale.to_s)

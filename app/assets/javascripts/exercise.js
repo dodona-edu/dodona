@@ -83,8 +83,8 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
 
     function centerImagesAndTables() {
         $(".exercise-description p > img").parent().wrapInner("<center></center>");
-        $(".exercise-description table").wrap("<center></center>");
-        $(".exercise-description iframe").wrap("<center></center>");
+        $(".exercise-description > table").wrap("<center></center>");
+        $(".exercise-description > iframe").wrap("<center></center>");
     }
 
     function submitSolution(code) {

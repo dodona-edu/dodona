@@ -22,6 +22,7 @@ nl:
   general:
       are_you_sure: "Ben je zeker?"
   errors:
+    no_rights: Sorry, je hebt geen toegangsrechten tot deze pagina.
     validation_erors:
       one: 'één fout verhindert het opslaan:'
       other: '%{count} fouten verhinderen het opslaan:'

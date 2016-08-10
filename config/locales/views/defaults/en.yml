@@ -22,6 +22,7 @@ en:
   general:
     are_you_sure: "Are you sure?"
   errors:
+    no_rights: Sorry, you are not allowed to access this page.
     validation_erors:
       one: 'one error prevents saving:'
       other: '%{count} errors prevent saving:'

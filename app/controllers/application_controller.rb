@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   private
 
   def user_not_authorized
-    flash[:alert] = 'Sorry, je hebt niet genoeg rechten om deze pagina te bekijken.'
+    flash[:alert] = I18n.t('errors.no_rights')
     redirect_to(request.referer || root_path)
   end
 

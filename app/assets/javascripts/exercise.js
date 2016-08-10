@@ -60,8 +60,8 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
 
         var index = 1;
         var images = [];
-        $(".exercise-description img").each(function () {
-            var imagesrc = $(this).attr('src');
+        $(".exercise-description img, a.dodona-lightbox").each(function () {
+            var imagesrc = $(this).data('large') || $(this).attr('src') || $(this).attr('href');
             var altText = $(this).data("caption") || $(this).attr('alt') || imagesrc.split("/").pop();
             var image_object = {
                 url: imagesrc,
@@ -70,13 +70,13 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
             images.push(image_object);
 
             $(this).data('image_index', index++);
-
         });
 
-        $(".exercise-description img").click(function () {
+        $(".exercise-description img, a.dodona-lightbox").click(function () {
             Strip.show(images, {
                 side: 'top'
             }, $(this).data('image_index'));
+            return false;
         });
     }
 
@@ -106,11 +106,11 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
             var $submissionRow = $("#submission_" + lastSubmission);
             var status = $submissionRow.data("status");
             if (status == "queued" || status == "running") {
-                setTimeout(function() {
+                setTimeout(function () {
                     $.get("submissions.js");
                 }, 1000);
             } else {
-                if($("#exercise-submission-link").parent().hasClass("active")) {
+                if ($("#exercise-submission-link").parent().hasClass("active")) {
                     $submissionRow.find(".load-submission").click();
                 }
                 showNotification(I18n.t("js.submission-processed"));

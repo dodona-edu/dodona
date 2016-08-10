@@ -62,11 +62,10 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         var images = [];
         $(".exercise-description img").each(function () {
             var imagesrc = $(this).attr('src');
-            var alttext = $(this).attr('alt');
-            alttext = alttext ? alttext : imagesrc.split("/").pop();
-            image_object = {
+            var altText = $(this).data("caption") || $(this).attr('alt') || imagesrc.split("/").pop();
+            var image_object = {
                 url: imagesrc,
-                caption: alttext
+                caption: altText
             };
             images.push(image_object);
 

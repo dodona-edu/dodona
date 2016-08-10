@@ -24,21 +24,21 @@ Metrics/LineLength:
 #   Enabled: false
 # Style/ClassVars:
 #   Enabled: false
-# Style/Documentation:
-#   Enabled: false
+Style/Documentation:
+  Enabled: false
 # Style/RescueModifier:
 #   Enabled: false
 # Style/AccessorMethodName:
 #   Enabled: false
 # Style/PredicateName:
 #   Enabled: false
-# Metrics/AbcSize:
-#   Enabled: false
-# Metrics/ClassLength:
-#   Enabled: false
-# Metrics/MethodLength:
-#   Enabled: false
-# Metrics/PerceivedComplexity:
-#   Enabled: false
-# Metrics/CyclomaticComplexity:
-#   Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false

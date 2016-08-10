@@ -86,8 +86,6 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-
-
   config.middleware.use ExceptionNotification::Rack,
                         email: {
                           email_prefix: '[Dodona] ',
@@ -97,7 +95,7 @@ Rails.application.configure do
                         slack: {
                           webhook_url: 'https://hooks.slack.com/services/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',
                           channel: '#dodona',
-                          username: 'Dodona-server'
+                          username: 'Dodona-server',
                           additional_parameters: {
                             icon_url: 'http://dodona.ugent.be/icon.png',
                             mrkdwn: true

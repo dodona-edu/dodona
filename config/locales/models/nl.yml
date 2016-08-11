@@ -19,6 +19,7 @@ nl:
         visibility: Zichtbaarheid
       judge:
         name: Naam
+        remote: Clone URL
         image: Docker image
         path: Padnaam
         renderer: Renderklasse

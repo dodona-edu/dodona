@@ -20,7 +20,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :judges
+    resources :judges do
+      member do
+        match 'hook', via: [:get, :post], to: 'judges#hook', as: "webhook"
+      end
+    end
+
     resources :repositories do
       member do
         match 'hook', via: [:get, :post], to: 'repositories#hook', as: "webhook"

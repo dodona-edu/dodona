@@ -33,6 +33,10 @@ gem 'json-schema'
 gem 'delayed_job_active_record'
 # start workers in the background
 gem 'daemons'
+# dashboard
+gem 'sinatra', github: 'sinatra/sinatra'
+gem 'rack-protection', github: 'sinatra/rack-protection'
+gem 'delayed_job_web'
 
 # pagination
 gem 'will_paginate'

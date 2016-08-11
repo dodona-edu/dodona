@@ -7,7 +7,7 @@ class ExercisesController < ApplicationController
 
   def index
     authorize Exercise
-    @exercises = policy_scope(Exercise).sort_by(&:name)
+    @exercises = policy_scope(Exercise).order('name_' + I18n.locale.to_s).paginate(page: params[:page])
   end
 
   def show

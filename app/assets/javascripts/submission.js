@@ -9,7 +9,6 @@ function loadResultEditor(programmingLanguage, annotations) {
         highlightGutterLine: false
     });
     editor.renderer.$cursorLayer.element.style.opacity=0;
-    editor.textInput.getElement().disabled=true;
     editor.commands.commmandKeyBinding={};
     editor.getSession().setUseWrapMode(true);
     editor.$blockScrolling = Infinity; // disable warning

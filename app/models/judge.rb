@@ -14,14 +14,21 @@
 #
 
 class Judge < ApplicationRecord
+  include Gitable
+
   CONFIG_FILE = 'config.json'.freeze
   JUDGE_LOCATIONS = Rails.root.join('data', 'judges')
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :image, presence: true
+  validates :remote, presence: true
   validates :path, presence: true, uniqueness: { case_sensitive: false }
+
   validate :renderer_is_renderer
   validate :runner_is_runner
+  validate :repo_is_accessible, on: :create
+
+  before_create :clone_repo
 
   has_many :repositories
   has_many :exercises

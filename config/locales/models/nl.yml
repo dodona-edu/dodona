@@ -39,7 +39,7 @@ nl:
           unknown: Onbekend
           correct: Correct
           wrong: Fout
-          time limit exeeded: Timeout
+          time limit exceeded: Timeout
           running: Aan het uitvoeren...
           queued: In de wachtrij...
           runtime error: Uitvoeringsfout

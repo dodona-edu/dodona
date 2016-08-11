@@ -8,3 +8,4 @@ nl:
       title: Judge toevoegen
     show:
       judge: Judge
+      webhook: "Vergeet niet de webhook te triggeren bij elke commit:"

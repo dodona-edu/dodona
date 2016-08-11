@@ -8,3 +8,4 @@ en:
       title: Add judge
     show:
       judge: Judge
+      webhook: "Don't forget to trigger the webhook on each commit:"

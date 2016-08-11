@@ -32,6 +32,17 @@
             <strong><%= Judge.human_attribute_name("runner") %>:</strong> <%= @judge.runner %>
           </p>
         </div>
+        <div class="col-sm-6 col-xs-12">
+          <div class="card">
+            <div class="card-title card-title-colored">
+              <h2 class="card-title-text">Webhook</h2>
+            </div>
+            <div class="card-supporting-text">
+              <p><%= t ".webhook" %></p>
+              <p><%= request.protocol + request.host + webhook_judge_path(@judge) %></p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

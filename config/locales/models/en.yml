@@ -39,7 +39,7 @@ en:
           unknown: Unknown
           correct: Correct
           wrong: Wrong
-          timeout: Timeout
+          time limit exeeded: Timeout
           running: Running...
           queued: Queued...
           runtime error: Runtime error

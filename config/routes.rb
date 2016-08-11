@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   devise_for :users
   root 'pages#home'
 
+  match '/dj' => DelayedJobWeb, :anchor => false, via: [:get, :post]
+
   get '/:locale' => 'pages#home'
 
   scope '(:locale)', locale: /en|nl/ do

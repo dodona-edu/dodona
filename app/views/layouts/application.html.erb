@@ -71,6 +71,9 @@
                     <% if policy(Repository).index? %>
                       <li><%= link_to t("layout.menu.repositories"), repositories_path %></li>
                     <% end %>
+                    <% if current_user.zeus? %>
+                      <li><%= link_to "Job queue", "/dj/overview" %></li>
+                    <% end %>
                     <li><%= link_to t("layout.menu.profile"), current_user %></li>
                     <li role="separator" class="divider"></li>
                     <li><%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete %></li>

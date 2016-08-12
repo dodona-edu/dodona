@@ -32,7 +32,7 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def edit?
-    user
+    user && ((user == record.user) || user.admin?)
   end
 
   def permitted_attributes

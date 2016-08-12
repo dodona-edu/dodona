@@ -31,7 +31,7 @@ class SubmissionsController < ApplicationController
   end
 
   def edit
-    redirect_to exercise_url(@submission.exercise, edit_submission: @submission)
+    redirect_to exercise_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
   end
 
   def download

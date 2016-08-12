@@ -16,6 +16,7 @@ class ExercisesController < ApplicationController
     @submissions = policy_scope(@exercise.submissions).paginate(page: params[:page])
     if params[:edit_submission]
       @edit_submission = Submission.find(params[:edit_submission])
+      authorize @edit_submission, :edit?
     end
   end
 

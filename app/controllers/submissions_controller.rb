@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :set_submission, only: [:show, :download, :evaluate]
+  before_action :set_submission, only: [:show, :download, :evaluate, :edit]
   skip_before_action :verify_authenticity_token, only: [:create]
 
   def index
@@ -28,6 +28,10 @@ class SubmissionsController < ApplicationController
     else
       render json: { status: 'failed' }, status: :unprocessable_entity
     end
+  end
+
+  def edit
+    redirect_to exercise_url(@submission.exercise, edit_submission: @submission)
   end
 
   def download

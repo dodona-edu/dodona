@@ -82,7 +82,7 @@ class FeedbackTableRenderer
   end
 
   def testcase(tc)
-    @builder.div(class: 'testcase') do
+    @builder.div(class: "testcase #{tc[:accepted ? 'correct' : 'wrong']}") do
       @builder.div(class: 'col-xs-12 description') do
         @builder.div(class: 'indicator') do
           tc[:accepted] ? icon_correct : icon_wrong

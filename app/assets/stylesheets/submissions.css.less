@@ -15,17 +15,9 @@
 
         &.correct {
             border-left-color: @success-500;
-
-            .indicator {
-                color: @success-500;
-            }
         }
         &.wrong {
             border-left-color: @danger-500;
-
-            .indicator {
-                color: @danger-500;
-            }
         }
     }
     .testcase {
@@ -42,6 +34,17 @@
         }
         & > div {
             margin-bottom: 3px;
+        }
+
+        &.correct {
+            .indicator {
+                color: @success-500;
+            }
+        }
+        &.wrong {
+            .indicator {
+                color: @danger-500;
+            }
         }
     }
     .test {

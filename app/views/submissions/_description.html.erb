@@ -6,7 +6,7 @@
   <b><%= t "submissions.show.exercise" %>:</b> <%= link_to submission.exercise.name, exercise_path(submission.exercise) %><br />
   <b><%= t "submissions.show.handed_in" %>:</b> <span title="<%= submission.created_at.in_time_zone("CET").to_s(:long) %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span><br />
   <b><%= t "submissions.show.status" %>:</b> <%= Submission.human_enum_name(:status, submission.status) %><br />
-  <b><%= t "submissions.show.summary" %>:</b> <%= submission.summary or "N/A" %><br />
+  <b><%= t "submissions.submissions_table.summary" %>:</b> <%= submission.summary or "N/A" %><br />
 </p>
 <% unless submission.queued? or submission.running? %>
   <p><%= submission.judge.renderer.new(submission, current_user).parse %></p>

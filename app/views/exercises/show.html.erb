@@ -44,7 +44,7 @@
         <div class="tab-content">
           <div class="tab-pane fade in active" id="handin">
             <% if !user_signed_in? %>
-              <div class="alert alert-info"><%= t ".not_logged_in"%></div>
+              <div class="alert alert-info"><%= t ".not_logged_in_html", :url => new_user_session_path %></div>
             <% end %>
             <div id="editor-window">
               <div id="editor-text"></div>
@@ -53,7 +53,7 @@
           <div class="tab-pane fade" id="submissions">
             <div id="submissions-table-wrapper">
               <% if !user_signed_in? %>
-                <div class="alert alert-info"><%= t ".not_logged_in"%></div>
+                <div class="alert alert-info"><%= t ".not_logged_in_html", :url => new_user_session_path %></div>
               <% elsif @submissions.length > 0 %>
                 <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>
               <% else %>

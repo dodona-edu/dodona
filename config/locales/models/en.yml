@@ -45,6 +45,7 @@ en:
           runtime error: Runtime error
           compilation error: Compilation error
           memory limit exceeded: Memory limit exceeded
+          internal error: Internal error
       user:
         username: Username
         ugent_id: Student id

@@ -45,6 +45,7 @@ nl:
           runtime error: Uitvoeringsfout
           compilation error: Compilatiefout
           memory limit exceeded: Geheugenlimiet overschreden
+          internal error: Interne fout
       user:
         username: Gebruikersnaam
         ugent_id: Studentennummer

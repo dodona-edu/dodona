@@ -30,12 +30,6 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
                 ]
             }
         });
-        MathJax.Hub.Queue(function () {
-            /* MathJax has not been run yet*/
-            if ($('span.MathJax').length === 0) {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }
-        });
 
         // export function
         dodona.feedbackLoaded = feedbackLoaded;

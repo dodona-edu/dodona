@@ -1,10 +1,10 @@
 <!-- opgave -->
 <div class="row">
-  <%= link_to '#submission-card', class: "btn btn-lg btn-down hidden-xs", title: t('.handin') do %>
+  <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs", title: t('.handin') do %>
     <span class='hidden-sm'><%= t('.handin') %></span><br>
     <span class="glyphicon glyphicon-chevron-down"></span>
   <% end %>
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-sm-10 col-xs-12">
     <div class="card exercise-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @exercise.name %></h2>

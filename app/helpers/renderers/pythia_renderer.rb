@@ -63,8 +63,20 @@ class PythiaRenderer < FeedbackTableRenderer
       messages.each do |msg|
         @builder.li(class: 'lint-msg') do
           lint_icon(msg[:type])
-          @builder.text! "#{I18n.t('submissions.show.line')} #{msg[:line]}: #{msg[:description]}"
+          @builder.text! "#{I18n.t('submissions.show.line')} #{msg[:line]}: "
+          format_lint_message(msg[:description])
         end
+      end
+    end
+  end
+
+  def format_lint_message(message)
+    lines = message.split("\n")
+    @builder.text! lines[0]
+    if lines.length > 1
+      @builder.br
+      @builder.span(class: 'code') do
+        @builder.text! lines.drop(1).join("\n")
       end
     end
   end

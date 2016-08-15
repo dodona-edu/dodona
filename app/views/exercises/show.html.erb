@@ -32,10 +32,13 @@
           <button class="btn btn-primary btn-fab" id="editor-process-btn">
             <span class="glyphicon glyphicon-play"></span>
           </button>
+          <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
           <% end %>
         </div>
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#handin" data-toggle="tab"><%= t ".handin"%></a></li>
+          <li class="active"><a href="#handin" id="exercise-handin-link" data-toggle="tab"><%= t ".handin"%></a></li>
           <li><a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions"%></a></li>
           <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link' class='hidden'><%= t ".feedback"%></a></li>
         </ul>

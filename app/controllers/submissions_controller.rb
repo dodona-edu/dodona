@@ -31,7 +31,10 @@ class SubmissionsController < ApplicationController
   end
 
   def edit
-    redirect_to exercise_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+    respond_to do |format|
+      format.html { redirect_to exercise_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission) }
+      # format.js <-- for fancier reloads, which do not work yet
+    end
   end
 
   def download

@@ -3,6 +3,10 @@ module ApplicationHelper
     Kramdown::Document.new(source, input: 'GFM', syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe
   end
 
+  def escape_double_quotes(string)
+    string.gsub('"', '\"')
+  end
+
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
     protected
 

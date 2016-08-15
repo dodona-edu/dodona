@@ -7,6 +7,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         initLightboxes();
 
         centerImagesAndTables();
+        swapActionButtons();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
@@ -16,6 +17,11 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
             submitSolution(source)
                 .done(submissionSuccessful)
                 .fail(submissionFailed);
+        });
+
+        $("#exercise-handin-link").on('shown.bs.tab', function() {
+            // refresh editor after show
+            editor.resize(true);
         });
 
         // configure mathjax
@@ -34,6 +40,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         // export function
         dodona.feedbackLoaded = feedbackLoaded;
         dodona.feedbackTableLoaded = feedbackTableLoaded;
+        dodona.setEditorText = setEditorText;
     }
 
     function initEditor() {
@@ -47,6 +54,10 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         editor.getSession().setUseWrapMode(true);
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
+    }
+
+    function setEditorText(text) {
+        editor.setValue(text, 1);
     }
 
     function initLightboxes() {
@@ -80,6 +91,13 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         $(".exercise-description > iframe").wrap("<center></center>");
     }
 
+    function swapActionButtons() {
+        $("#exercise-handin-link").on("shown.bs.tab", function(e) { $("#editor-process-btn").removeClass("hidden-fab"); });
+        $("#exercise-handin-link").on("hide.bs.tab", function(e) { $("#editor-process-btn").addClass("hidden-fab"); });
+        $("#exercise-feedback-link").on("shown.bs.tab", function(e) { $("#submission-copy-btn").removeClass("hidden-fab"); });
+        $("#exercise-feedback-link").on("hide.bs.tab", function(e) { $("#submission-copy-btn").addClass("hidden-fab"); });
+    }
+
     function submitSolution(code) {
         return $.post("/submissions.json", {
             submission: {
@@ -89,10 +107,11 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         });
     }
 
-    function feedbackLoaded() {
+    function feedbackLoaded(edit_link) {
         $('#feedback').removeClass("hidden");
         $('#exercise-feedback-link').removeClass("hidden");
         $('#exercise-feedback-link').tab('show');
+        $('#submission-copy-btn').attr('href', edit_link);
     }
 
     function feedbackTableLoaded() {

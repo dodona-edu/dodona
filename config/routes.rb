@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   get '/precourse' => 'pages#precourse'
 
-  get '/:locale' => 'pages#home'
+  get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
     resources :courses do

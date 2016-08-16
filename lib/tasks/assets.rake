@@ -8,8 +8,11 @@ namespace :assets do
       FileUtils.copy_file(source, dest)
     end
     Rails.configuration.assets.nodigest_fonts.each do |asset|
-      source = File.join("vendor/assets/fonts/bootstrap", asset)
-      dest = File.join(assets_path, "bootstrap", asset)
+      source = File.join(Rails.root, "vendor/assets/fonts/bootstrap", asset)
+      dest = File.join(assets_path, asset)
+      Rails.logger.debug "***"
+      Rails.logger.debug dest
+      Rails.logger.debug assets_path
       FileUtils.copy_file(source, dest)
     end
   end

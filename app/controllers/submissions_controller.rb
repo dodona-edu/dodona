@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :set_submission, only: [:show, :download, :evaluate]
+  before_action :set_submission, only: [:show, :download, :evaluate, :edit]
   skip_before_action :verify_authenticity_token, only: [:create]
 
   def index
@@ -27,6 +27,13 @@ class SubmissionsController < ApplicationController
       render json: { status: 'ok', id: @submission.id }
     else
       render json: { status: 'failed' }, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    respond_to do |format|
+      format.html { redirect_to exercise_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission) }
+      # format.js <-- for fancier reloads, which do not work yet
     end
   end
 

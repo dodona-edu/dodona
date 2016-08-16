@@ -37,7 +37,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :submissions, only: [:index, :show, :create] do
+    resources :submissions, only: [:index, :show, :create, :edit] do
       member do
         get 'download'
         get 'evaluate'

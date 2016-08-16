@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   match '/dj' => DelayedJobWeb, :anchor => false, via: [:get, :post]
 
-  get '/precourse' => 'pages#precourse'
+  get '/precourse' => 'pages#precourse', as: "precourse"
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 

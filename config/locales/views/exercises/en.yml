@@ -18,7 +18,7 @@ en:
       handin: Hand in
       feedback: Feedback
       solutions: Submissions
-      not_logged_in: Log in to test your solution.
+      not_logged_in_html: <a href="%{url}">Sign in</a> to test your solution.
       hide_correct: hide correct
       correct: correct
       wrong: wrong

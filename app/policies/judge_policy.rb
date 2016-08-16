@@ -33,9 +33,13 @@ class JudgePolicy < ApplicationPolicy
     user && user.zeus?
   end
 
+  def hook?
+    true
+  end
+
   def permitted_attributes
     if user && user.admin?
-      [:name, :image, :path, :renderer, :runner]
+      [:name, :image, :path, :renderer, :runner, :remote]
     else
       []
     end

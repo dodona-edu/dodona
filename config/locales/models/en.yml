@@ -19,6 +19,7 @@ en:
         visibility: Visibility
       judge:
         name: Name
+        remote: Clone URL
         image: Docker image
         path: Path
         renderer: Rendering class
@@ -38,12 +39,13 @@ en:
           unknown: Unknown
           correct: Correct
           wrong: Wrong
-          timeout: Timeout
+          time limit exceeded: Timeout
           running: Running...
           queued: Queued...
           runtime error: Runtime error
           compilation error: Compilation error
           memory limit exceeded: Memory limit exceeded
+          internal error: Internal error
       user:
         username: Username
         ugent_id: Student id

@@ -12,13 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 
 //= require i18n
 //= require i18n/translations
 
 //= require ace-rails-ap
-//= require ace/mode-javascript
 //= require ace/ext-language_tools
 
 //= require vendor

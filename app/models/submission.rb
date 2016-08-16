@@ -15,7 +15,7 @@
 #
 
 class Submission < ApplicationRecord
-  enum status: [:unknown, :correct, :wrong, :timeout, :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded']
+  enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
 
   belongs_to :exercise
   belongs_to :user
@@ -37,6 +37,16 @@ class Submission < ApplicationRecord
     )
 
     delay.evaluate
+  end
+
+  def file_name
+    "#{exercise.name.tr(' ', '_')}_#{user.username}.#{file_extension}"
+  end
+
+  def file_extension
+    return 'py' if exercise.programming_language == 'python'
+    return 'js' if exercise.programming_language == 'JavaScript'
+    'txt'
   end
 
   def evaluate

@@ -152,6 +152,7 @@ class SubmissionRunner < Runner
     ErrorBuilder.new
                 .status('time limit exceeded')
                 .description('time limit exceeded')
+                .message_permission('student')
                 .message_description(stderr)
                 .build
   end
@@ -161,6 +162,7 @@ class SubmissionRunner < Runner
     ErrorBuilder.new
                 .status('memory limit exceeded')
                 .description('memory limit exceeded')
+                .message_permission('student')
                 .message_description(stderr)
                 .build
   end
@@ -168,6 +170,9 @@ class SubmissionRunner < Runner
   # adds the specific information to an output json for unknown/general errors
   def handle_unknown(stderr)
     ErrorBuilder.new
+                .status('internal error')
+                .description('internal error')
+                .message_permission('teacher')
                 .message_description(stderr)
                 .build
   end

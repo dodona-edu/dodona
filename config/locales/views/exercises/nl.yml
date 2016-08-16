@@ -19,7 +19,7 @@ nl:
       handin: Indienen
       feedback: Feedback
       solutions: Oplossingen
-      not_logged_in: Log in om je oplossingen te testen.
+      not_logged_in_html: <a href="%{url}">Log in</a> om je oplossingen te testen.
       hide_correct: verberg correct
       correct: correct
       wrong: verkeerd

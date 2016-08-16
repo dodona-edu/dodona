@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   devise_for :users
   root 'pages#home'
 
-  get '/:locale' => 'pages#home'
+  match '/dj' => DelayedJobWeb, :anchor => false, via: [:get, :post]
+
+  get '/precourse' => 'pages#precourse', as: "precourse"
+
+  get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
     resources :courses do
@@ -20,7 +24,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :judges
+    resources :judges do
+      member do
+        match 'hook', via: [:get, :post], to: 'judges#hook', as: "webhook"
+      end
+    end
+
     resources :repositories do
       member do
         match 'hook', via: [:get, :post], to: 'repositories#hook', as: "webhook"
@@ -28,7 +37,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :submissions, only: [:index, :show, :create] do
+    resources :submissions, only: [:index, :show, :create, :edit] do
       member do
         get 'download'
         get 'evaluate'

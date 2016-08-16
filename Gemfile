@@ -17,8 +17,6 @@ gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -33,6 +31,10 @@ gem 'json-schema'
 gem 'delayed_job_active_record'
 # start workers in the background
 gem 'daemons'
+# dashboard
+gem 'sinatra', github: 'sinatra/sinatra'
+gem 'rack-protection', github: 'sinatra/rack-protection'
+gem 'delayed_job_web'
 
 # pagination
 gem 'will_paginate'

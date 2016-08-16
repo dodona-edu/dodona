@@ -9,6 +9,11 @@
               <span class="glyphicon glyphicon-repeat"></span>
             <% end %>
           <% end %>
+          <% if policy(@submission).create? %>
+            <%= link_to edit_submission_path(@submission), class: 'btn btn-primary btn-fab', title: t('.edit') do %>
+              <span class="glyphicon glyphicon-edit"></span>
+            <% end %>
+          <% end %>
           <% if policy(@submission).download? %>
             <%= link_to download_submission_path(@submission), class: 'btn btn-primary btn-fab', title: 'Download', target: "_blank", download: '' do %>
               <span class="glyphicon glyphicon-save"></span>

@@ -1,5 +1,6 @@
 class JudgesController < ApplicationController
-  before_action :set_judge, only: [:show, :edit, :update, :destroy]
+  before_action :set_judge, only: [:show, :edit, :update, :destroy, :hook]
+  skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /judges
   # GET /judges.json
@@ -62,6 +63,12 @@ class JudgesController < ApplicationController
       format.html { redirect_to judges_url, notice: I18n.t('controllers.destroyed', model: Judge.model_name.human) }
       format.json { head :no_content }
     end
+  end
+
+  def hook
+    success, msg = @judge.pull
+    status = success ? 200 : 500
+    render plain: msg, status: status
   end
 
   private

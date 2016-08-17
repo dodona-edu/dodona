@@ -11,14 +11,12 @@ class SubmissionRunner
   # 'codes' is a list of possible exit codes that could come from this error
   # 'tokens' is a list of possible substrings that could occur in the stderr of the error
   class ErrorIdentifier
+    attr_reader :tokens, :codes
+
     def initialize(codes, tokens)
       @codes = codes
       @tokens = tokens
     end
-
-    attr_reader :tokens
-
-    attr_reader :codes
   end
 
   class ErrorBuilder

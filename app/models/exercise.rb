@@ -127,8 +127,8 @@ class Exercise < ApplicationRecord
   end
 
   def status_for(user)
-    return :correct if submissions.of_user(user).where(status: :correct).count.positive?
-    return :wrong if submissions.of_user(user).where(status: :wrong).count.positive?
+    return :correct if submissions.of_user(user).where(accepted: true).count.positive?
+    return :wrong if submissions.of_user(user).where(accepted: false).count.positive?
     :unknown
   end
 

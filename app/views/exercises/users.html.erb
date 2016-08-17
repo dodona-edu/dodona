@@ -8,6 +8,7 @@
         <table class="table table-index table-resource">
           <thead>
             <tr>
+              <th></th>
               <th><%= User.human_attribute_name("username") %></th>
               <th><%= User.human_attribute_name("name") %></th>
               <th><%= Submission.human_attribute_name("status") %></th>
@@ -18,6 +19,13 @@
           <tbody>
             <% @users.each do |user| %>
               <tr>
+                <td>
+                  <% if :correct == @exercise.status_for(user) %>
+                    <span class="glyphicon glyphicon-ok"></span>
+                  <% elsif :wrong == @exercise.status_for(user) %>
+                    <span class="glyphicon glyphicon-remove"></span>
+                  <% end %>
+                </td>
                 <td><%= link_to user.username, user %></td>
                 <td><%= user.full_name %></td>
                 <td>

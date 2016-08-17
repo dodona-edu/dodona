@@ -11,7 +11,7 @@
           <% if policy(@exercise).edit? %>
             <div class="card-title-fab">
               <%= link_to edit_exercise_path(@exercise), class: "btn btn-primary btn-fab" do %>
-                <span class="glyphicon glyphicon-edit"></span>
+                <span class="glyphicon glyphicon-pencil"></span>
               <% end %>
             </div>
           <% end %>
@@ -33,7 +33,7 @@
             <span class="glyphicon glyphicon-play"></span>
           </button>
           <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">
-            <span class="glyphicon glyphicon-pencil"></span>
+            <span class="glyphicon glyphicon-edit"></span>
           </a>
           <% end %>
         </div>

@@ -95,7 +95,7 @@ class PythiaSubmissionRunner < SubmissionRunner
     submission['programming_language'] = @submission.exercise.programming_language
 
     # set natural language of submission
-    submission['natural_language'] = I18n.locale.to_s
+    submission['natural_language'] = @submission.user.lang
 
     # set links to resources in docker container needed for processing submission
     submission['home'] = File.join(@hidden_path, 'resources', 'judge')

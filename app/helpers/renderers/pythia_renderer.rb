@@ -75,7 +75,7 @@ class PythiaRenderer < FeedbackTableRenderer
     @builder.text! lines[0]
     if lines.length > 1
       @builder.br
-      @builder.span(class: 'code') do
+      @builder.div(class: 'code') do
         @builder.text! lines.drop(1).join("\n")
       end
     end

@@ -6,7 +6,7 @@ require 'json-schema' # json schema validation, from json-schema gem
 require 'tmpdir' # temporary file support
 
 # base class for runners that handle Dodona submissions
-class SubmissionRunner < Runner
+class SubmissionRunner
   # ADT to store to recognize an error
   # 'codes' is a list of possible exit codes that could come from this error
   # 'tokens' is a list of possible substrings that could occur in the stderr of the error

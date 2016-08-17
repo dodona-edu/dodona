@@ -103,9 +103,9 @@ class PythiaSubmissionRunner < SubmissionRunner
 
     # compose submission configuration
     config = JSON.parse(File.read(DEFAULT_CONFIG_PATH)) # set default configuration
-    Utils.update_config(config, @judge.config) # update with judge configuration
-    Utils.update_config(config, @exercise.merged_config['evaluation']) # update with exercise configuration
-    Utils.update_config(config, submission) # update with submission-specific configuration
+    config.recursive_update(@judge.config) # update with judge configuration
+    config.recursive_update(@exercise.merged_config['evaluation']) # update with exercise configuration
+    config.recursive_update(submission) # update with submission-specific configuration
 
     # return the submission configuration
     config

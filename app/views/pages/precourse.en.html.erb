@@ -1,5 +1,19 @@
 
 <%= render 'layouts/card', card_title: 'Precouse 2016' do %>
 <p>Below you will find the exercises we will solve in the lectures of the 2016 Precollege Course.</p>
+<% @exercises.each do |title, (exercises, extra)| %>
+<h3><%= title %></h3>
+<ol>
+  <% exercises.map{|i| Exercise.find(i)}.each do |exercise| %>
+  <li><%= link_to exercise.name, exercise_path(exercise) %></li>
+  <% end %>
+</ol>
+<h4>Extra</h4>
+<ul>
+  <% extra.map{|i| Exercise.find(i)}.each do |exercise| %>
+  <li><%= link_to exercise.name, exercise_path(exercise) %></li>
+  <% end %>
+</ul>
+<% end %>
 <% end %>
 

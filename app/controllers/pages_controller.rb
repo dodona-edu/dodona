@@ -6,7 +6,7 @@ class PagesController < ApplicationController
   def precourse
     @title = 'Precourse'
     @exercises = {
-      'Lecture 1': [[53, 46, 52, 43, 25, 57], [45, 40, 37, 39]]
+      'Lecture 1': [[99, 94, 127, 139, 128, 104], [114, 138, 105, 97]]
     }
   end
 end

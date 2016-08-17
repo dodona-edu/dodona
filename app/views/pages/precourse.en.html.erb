@@ -1,6 +1,10 @@
 
 <%= render 'layouts/card', card_title: 'Precouse 2016' do %>
-<p>Below you will find the exercises we will solve in the lectures of the 2016 Precollege Course.</p>
+
+<p>Below you will find the exercises we will solve in the lectures of the 2016 Precollege Course. Installation instruction for the required tools can be found <a href="#instructions">at the bottom</a>.</p>
+
+<h2>Exercises</h2>
+
 <% @exercises.each do |title, (exercises, extra)| %>
 <h3><%= title %></h3>
 <ol>
@@ -15,5 +19,34 @@
   <% end %>
 </ul>
 <% end %>
-<% end %>
 
+<h2 id="instructions">Installation instructions</h2>
+
+<p>To help you with the Python exercises above, we advise using IPython. IPython (and Python) should be installed through <a>Anaconda</a> to avoid versioning problems. While you could follow the instructions given on the Anaconda site, we here provide an overview of the required commands and some explanation.</p>
+
+<ol>
+  <li>Start by surfing to <a href=www.continuum.io/downloads">the anaconda website</a> and downloading Anaconda for <em>Python 3.5</em>. Go through the setup for your platform (preferable add Anaconda to your PATH, which should be the default option).</li>
+  <li>Open the command prompt.<ul>
+      <li>On windows, type <code>super+r</code> (that's the Windows button on your keyboard combined with "r"), which should open a little prompt. Here, type <code>cmd</code> and hit Enter.</li>
+      <li>On Mac, your command prompt can be found in Applications -&gt; Utilities -&gt; Terminal</li>
+      <li>On other Linux', you probably know how to open a command prompt yourself</li>
+  </ul></li>
+  <li>In the command prompt, enter <code>conda --version</code> to verify your installation. This should result in output similar to <code>conda 4.1.11</code> (it's OK if the numer differs).</li>
+  <li>Next, update Anaconda by entering <code>conda update conda</code> Answer with <em>y</em> (yes) if the installer asks to proceed.
+  <li>With the newest version of Anaconda, we create a new Anaconda environment named precourse. We require the <em>IPython</em> package: <code>conda create --name precourse ipython</code>. Answer with <em>y</em> (yes) if the creator asks to proceed.</li>
+</ol>
+
+<p>The installation should now be complete. You can start IPython from now on by:</p>
+
+<ol>
+  <li>Opening the command prompt as described above.</li>
+  <li>Activation the environment you created earlier:<ul>
+    <li>On windows, with <code>activate precourse</code>.</li>
+    <li>On Mac or Linux', with <code>source activate precourse</code>.</li>
+  </ul></li>
+  <li>Entering <code>ipython</code>.</li>
+</ol>
+
+<p>You can always leave IPython by entering <code>exit()</code> into the prompt.</p>
+
+<% end %>

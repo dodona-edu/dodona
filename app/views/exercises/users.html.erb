@@ -2,17 +2,17 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text">Overzicht <%= @exercise.name.titleize %></h2>
+        <h2 class="card-title-text"><%= t ".overview" %> <%= @exercise.name %></h2>
       </div>
       <div class="card-supporting-text">
         <table class="table table-index table-resource">
           <thead>
             <tr>
-              <th>Gebruikersnaam</th>
-              <th>Naam</th>
-              <th>Status</th>
-              <th>Oplossingen</th>
-              <th>Tijd</th>
+              <th><%= User.human_attribute_name("username") %></th>
+              <th><%= User.human_attribute_name("name") %></th>
+              <th><%= Submission.human_attribute_name("status") %></th>
+              <th><%= t ".solutions" %></th>
+              <th><%= t ".speed" %></th>
             </tr>
           </thead>
           <tbody>
@@ -24,9 +24,9 @@
                   <% if :correct == @exercise.status_for(user) %>
                     <%= link_to "correct", @exercise.last_correct_submission(user) %>
                   <% elsif :wrong == @exercise.status_for(user) %>
-                    <%= link_to @exercise.last_submission(user).result, @exercise.last_submission(user) %>
+                    <%= link_to @exercise.last_submission(user).summary, @exercise.last_submission(user) %>
                   <% else %>
-                    niet opgelost
+                    <%= t ".not_solved" %>
                   <% end %>
                 </td>
                 <td><%= @exercise.number_of_submissions_for(user) %></td>

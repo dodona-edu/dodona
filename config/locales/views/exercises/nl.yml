@@ -27,3 +27,8 @@ nl:
       not_found: Sorry, we kunnen deze oefening niet vinden.
       not_accessible: Deze oefening is niet toegankelijk voor studenten.
       not_visible: Deze oefening is niet zichtbaar voor studenten.
+    users:
+      overview: Overzicht
+      solutions: Oplossingen
+      speed: Snelheid
+      not_solved: niet opgelost

@@ -5,7 +5,7 @@
 
 <h2>Exercises</h2>
 
-<% @exercises.each do |title, (exercises, extra)| %>
+<% @exercises.each do |title, exercises, extra| %>
 <h3><%= title %></h3>
 <ol>
   <% exercises.map{|i| Exercise.find(i)}.each do |exercise| %>

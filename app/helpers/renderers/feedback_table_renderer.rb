@@ -167,8 +167,11 @@ class FeedbackTableRenderer
       return if m[:permission] == 'teacher' && !@current_user.admin?
       return if m[:permission] == 'zeus' && !@current_user.zeus?
     end
-
     m = { format: 'plain', description: m } if m.is_a? String
+    output_message(m)
+  end
+
+  def output_message(m)
     if m[:format].in?(%w(plain text))
       @builder.text! m[:description]
     elsif m[:format].in?(%w(html))

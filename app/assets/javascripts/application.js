@@ -25,6 +25,18 @@
 
 var dodona = {};
 
+/*
+ * Function to delay some other function until it isn't
+ * called for "ms" ms
+ */
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
 /**
  * requestAnimationFrame shim
  * source: http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/

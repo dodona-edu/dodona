@@ -23,6 +23,9 @@ class User < ApplicationRecord
 
   devise :cas_authenticatable
 
+  scope :by_permission, -> (permission) { where(permission: permission) }
+  scope :by_name, -> (name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+
   def full_name
     first_name + ' ' + last_name
   end

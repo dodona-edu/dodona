@@ -134,6 +134,9 @@ GEM
     ffi (1.9.14)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    has_scope (0.7.0)
+      actionpack (>= 4.1, < 5.1)
+      activesupport (>= 4.1, < 5.1)
     i18n (0.7.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -292,6 +295,7 @@ DEPENDENCIES
   devise_cas_authenticatable
   diffy
   exception_notification
+  has_scope
   i18n-js!
   jbuilder (~> 2.5)
   jquery-rails

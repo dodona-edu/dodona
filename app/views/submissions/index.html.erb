@@ -12,6 +12,9 @@
         </h2>
       </div>
       <div class="card-supporting-text">
+        <% if current_user && current_user.admin? %>
+          <%= render partial: 'layouts/searchbar' %>
+        <% end %>
         <div id="submissions-table-wrapper">
           <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>
         </div>

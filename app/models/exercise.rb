@@ -35,6 +35,8 @@ class Exercise < ApplicationRecord
 
   before_update :update_config
 
+  scope :by_name, -> (name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+
   def full_path
     File.join(repository.full_path, path)
   end

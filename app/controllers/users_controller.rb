@@ -1,11 +1,14 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  has_scope :by_permission
+  has_scope :by_name, as: 'filter'
+
   # GET /users
   # GET /users.json
   def index
     authorize User
-    @users = User.all.order(permission: :desc, username: :asc)
+    @users = apply_scopes(User).all.order(permission: :desc, username: :asc)
   end
 
   # GET /users/1

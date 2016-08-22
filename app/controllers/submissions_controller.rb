@@ -2,9 +2,11 @@ class SubmissionsController < ApplicationController
   before_action :set_submission, only: [:show, :download, :evaluate, :edit]
   skip_before_action :verify_authenticity_token, only: [:create]
 
+  has_scope :by_filter, as: 'filter'
+
   def index
     authorize Submission
-    @submissions = policy_scope(Submission).paginate(page: params[:page])
+    @submissions = policy_scope(Submission).merge(apply_scopes(Submission).all).paginate(page: params[:page])
     if params[:user_id]
       @user = User.find(params[:user_id])
       @submissions = @submissions.of_user(@user)

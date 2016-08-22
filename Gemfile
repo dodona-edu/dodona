@@ -80,6 +80,9 @@ gem 'i18n-js', git: 'git://github.com/fnando/i18n-js.git'
 gem 'exception_notification'
 gem 'slack-notifier'
 
+# filtering
+gem 'has_scope'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

@@ -8,7 +8,7 @@ function init_user_index() {
     function initFilter() {
         $filter = $("#user-filter-name");
         $filter.keyup(function () {
-            delay(search, 500);
+            delay(search, 300);
         });
     }
 

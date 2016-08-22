@@ -19,61 +19,21 @@ class SubmissionRunner
     end
   end
 
-  class ErrorBuilder
-    def initialize
-      @accepted = false
-      @status = 'runtime error'
-      @description = 'runtime error'
+  def build_error status='runtime error', description='runtime error', messages=[], accepted=false
+    {
+      'accepted': accepted,
+      'status': status,
+      'description': description,
+      'messages': messages
+    }
+  end
 
-      @message_permission = 'zeus'
-      @message_format = 'code'
-      @message_description = ''
-    end
-
-    def build
-      message = {}
-      message['format'] = @message_format
-      message['description'] = @message_description
-      message['permission'] = @message_permission
-
-      result = {}
-      result['accepted'] = @accepted
-      result['status'] = @status
-      result['description'] = @description
-      result['messages'] = [message]
-
-      result
-    end
-
-    def accepted(a)
-      @accepted = a
-      self
-    end
-
-    def status(s)
-      @status = s
-      self
-    end
-
-    def description(d)
-      @description = d
-      self
-    end
-
-    def message_format(mf)
-      @message_format = mf
-      self
-    end
-
-    def message_description(md)
-      @message_description = md
-      self
-    end
-
-    def message_permission(mp)
-      @message_permission = mp
-      self
-    end
+  def build_message description='', permission='zeus', format='code'
+    {
+      'format': format,
+      'description': description,
+      'permission': permission
+    }
   end
 
   def self.inherited(cl)
@@ -147,31 +107,22 @@ class SubmissionRunner
 
   # adds the specific information to an output json for timeout errors
   def handle_timeout(stderr)
-    ErrorBuilder.new
-                .status('time limit exceeded')
-                .description('time limit exceeded')
-                .message_permission('student')
-                .message_description(stderr)
-                .build
+    build_error 'time limit exceeded', 'time limit exceeded', [
+      build_message stderr, 'student'
+    ]
   end
 
   # adds the specific information to an output json for memory limit errors
   def handle_memory_exceeded(stderr)
-    ErrorBuilder.new
-                .status('memory limit exceeded')
-                .description('memory limit exceeded')
-                .message_permission('student')
-                .message_description(stderr)
-                .build
+    build_error 'memory limit exceeded', 'memory limit exceeded', [
+      build_message stderr, 'student'
+    ]
   end
 
   # adds the specific information to an output json for unknown/general errors
   def handle_unknown(stderr)
-    ErrorBuilder.new
-                .status('internal error')
-                .description('internal error')
-                .message_permission('staff')
-                .message_description(stderr)
-                .build
+    build_error 'internal error', 'internal error', [
+      build_message stderr, 'staff'
+    ]
   end
 end

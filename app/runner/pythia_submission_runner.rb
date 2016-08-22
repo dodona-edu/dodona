@@ -205,12 +205,9 @@ class PythiaSubmissionRunner < SubmissionRunner
       if JSON::Validator.validate(@schema_path.to_s, result)
         add_runtime_metrics(result)
       else
-        result = ErrorBuilder.new
-                             .message_description(JSON::Validator.fully_validate(@schema_path.to_s, result).join("\n"))
-                             .status('internal error')
-                             .description('internal error')
-                             .message_permission('staff')
-                             .build
+        result = build_error 'internal error', 'internal error', [
+          build_message JSON::Validator.fully_validate(@schema_path.to_s, result).join("\n"), 'staff'
+        ]
       end
     end
 
@@ -264,12 +261,9 @@ class PythiaSubmissionRunner < SubmissionRunner
     prepare
     execute
   rescue Exception => e
-    @result = ErrorBuilder.new
-                          .message_description(e.message + "\n" + e.backtrace.inspect)
-                          .status('internal error')
-                          .description('internal error')
-                          .message_permission('staff')
-                          .build
+    @result = build_error 'internal error', 'internal error', [
+      build_message e.message + "\n" + e.backtrace.inspect, 'staff'
+    ]
   ensure
     finalize
   end

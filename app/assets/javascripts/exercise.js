@@ -145,31 +145,3 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
 
     init();
 }
-
-function init_exercise_index() {
-    var $filter;
-
-    function init() {
-        initFilter();
-    }
-
-    function initFilter() {
-        $filter = $("#exercise-filter-name");
-        $filter.keyup(function () {
-            delay(search, 300);
-        });
-    }
-
-    function search() {
-        $("#progress-filter").css("visibility", "visible");
-        $.get("", {
-            by_name: $filter.val(),
-            format: "js"
-        }, function (data) {
-            eval(data);
-            $("#progress-filter").css("visibility", "hidden");
-        });
-    }
-
-    init();
-}

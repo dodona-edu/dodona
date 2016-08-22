@@ -1,0 +1,15 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th><%= t ".exercise"%></th>
+      <th></th>
+      <% if user_signed_in? %>
+      <th><%= t ".status"%></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render exercises  %>
+  </tbody>
+</table>
+<center><%= page_navigation_links exercises, false %></center>

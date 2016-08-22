@@ -1,7 +1,7 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: [:show, :edit, :update, :users, :media]
 
-  has_scope :by_name
+  has_scope :by_name, as: 'filter'
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')

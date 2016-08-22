@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   has_scope :by_permission
-  has_scope :by_name
+  has_scope :by_name, as: 'filter'
 
   # GET /users
   # GET /users.json

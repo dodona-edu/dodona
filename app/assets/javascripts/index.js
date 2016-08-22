@@ -1,5 +1,5 @@
 function init_filter_index() {
-    var PARAM = "by_name";
+    var PARAM = "filter";
     var $filter;
 
     function init() {

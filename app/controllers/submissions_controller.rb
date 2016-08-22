@@ -2,7 +2,7 @@ class SubmissionsController < ApplicationController
   before_action :set_submission, only: [:show, :download, :evaluate, :edit]
   skip_before_action :verify_authenticity_token, only: [:create]
 
-  has_scope :by_filter, as: 'by_name'
+  has_scope :by_filter, as: 'filter'
 
   def index
     authorize Submission

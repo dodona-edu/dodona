@@ -5,22 +5,29 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
       </div>
       <div class="card-supporting-text">
-        <table class="table">
-          <thead>
-            <tr>
-              <th><%= t ".exercise"%></th>
-              <th></th>
-              <% if user_signed_in? %>
-              <th><%= t ".status"%></th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody>
-            <%= render @exercises  %>
-          </tbody>
-        </table>
-        <center><%= page_navigation_links @exercises, false %></center>
+        <div class='table-toolbar'>
+          <div class='table-toolbar-tools'>
+            <span class='glyphicon glyphicon-search'></span>
+            <form class='search'>
+              <input type='text' id='exercise-filter-name' placeholder='search' name='by_name'></input>
+              <div id="progress-filter" class="dodona-progress dodona-progress-indeterminate">
+                <div class="progressbar bar bar1" style="width: 0%;"></div>
+                <div class="bufferbar bar bar2" style="width: 100%;"></div>
+                <div class="auxbar bar bar3" style="width: 0%;"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div id="exercises-table-wrapper">
+          <%= render partial: 'exercises_table', locals: {exercises: @exercises}  %>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(function () {
+    init_exercise_index();
+  });
+</script>

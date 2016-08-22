@@ -1,4 +1,4 @@
-function init_filter_index(model) {
+function init_filter_index() {
     var $filter;
 
     function init() {
@@ -6,7 +6,7 @@ function init_filter_index(model) {
     }
 
     function initFilter() {
-        $filter = $("#" + model + "-filter-name");
+        $filter = $("#filter-query");
         $filter.keyup(function () {
             delay(search, 300);
         });

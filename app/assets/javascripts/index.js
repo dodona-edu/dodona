@@ -1,4 +1,5 @@
 function init_filter_index() {
+    var PARAM = "by_name";
     var $filter;
 
     function init() {
@@ -10,11 +11,18 @@ function init_filter_index() {
         $filter.keyup(function () {
             delay(search, 300);
         });
+        var param = getURLParameter(PARAM);
+        if (param !== "") {
+            $filter.val(param);
+        }
     }
 
     function search() {
+        var val = $filter.val();
+        var url = updateURLParameter(window.location.href, PARAM, val);
+        window.history.replaceState(null, "Dodona", url);
         $("#progress-filter").css("visibility", "visible");
-        $.get("", {
+        $.get(url, {
             by_name: $filter.val(),
             format: "js"
         }, function (data) {

@@ -12,12 +12,14 @@
   <li><%= link_to exercise.name, exercise_path(exercise) %> - <span title="<%= t "exercises.exercise.count_tooltip" %>"><%= exercise.users_correct %>/<%= exercise.users_tried %></span></li>
   <% end %>
 </ol>
+<% unless extra.empty? %>
 <h4>Extra</h4>
 <ul>
   <% extra.map{|i| Exercise.find(i)}.each do |exercise| %>
   <li><%= link_to exercise.name, exercise_path(exercise) %> - <span title="<%= t "exercises.exercise.count_tooltip" %>"><%= exercise.users_correct %>/<%= exercise.users_tried %></span></li>
   <% end %>
 </ul>
+<% end %>
 <% end %>
 
 <h2 id="instructions">Installation instructions</h2>

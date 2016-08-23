@@ -32,8 +32,10 @@ gem 'delayed_job_active_record'
 # start workers in the background
 gem 'daemons'
 # dashboard
-gem 'sinatra', github: 'sinatra/sinatra'
-gem 'rack-protection', github: 'sinatra/rack-protection'
+github 'sinatra/sinatra' do
+  gem 'sinatra'
+  gem 'rack-protection'
+end
 gem 'delayed_job_web'
 
 # pagination

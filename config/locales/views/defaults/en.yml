@@ -19,6 +19,8 @@ en:
       log_out: Log out
     footer:
       ugent: Ghent University
+    search:
+      search: search
   general:
     are_you_sure: "Are you sure?"
   errors:

@@ -19,6 +19,8 @@ nl:
       log_out: Afmelden
     footer:
       ugent: Universiteit Gent
+    search:
+      search: zoeken
   general:
       are_you_sure: "Ben je zeker?"
   errors:

@@ -47,9 +47,9 @@ module ApplicationHelper
       end
   end
 
-  def page_navigation_links(pages, remote = false)
+  def page_navigation_links(pages, remote = false, controller = '')
     if remote
-      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { controller: 'submissions', action: 'index', format: 'js' })
+      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { controller: controller, action: 'index', format: 'js' })
     else
       will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: BootstrapLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe)
     end

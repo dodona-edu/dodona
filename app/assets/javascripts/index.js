@@ -20,10 +20,10 @@ function init_filter_index() {
     function search() {
         var val = $filter.val();
         var url = updateURLParameter(window.location.href, PARAM, val);
+        url = updateURLParameter(url, "page", 1)
         window.history.replaceState(null, "Dodona", url);
         $("#progress-filter").css("visibility", "visible");
         $.get(url, {
-            by_name: $filter.val(),
             format: "js"
         }, function (data) {
             eval(data);

@@ -137,8 +137,8 @@ class FeedbackTableRenderer
   end
 
   def diff_heuristical(t)
-    output = (t[:expected] || '') + '\n' + (t[:generated] || '')
-    if output.split('\n').map(&:length).max < 55
+    output = (t[:expected] || '') + "\n" + (t[:generated] || '')
+    if output.split("\n").map(&:length).max < 55
       diff_split(t)
     else
       diff_unified(t)

@@ -25,7 +25,7 @@ class SubmissionRunner
     {
       'accepted': accepted,
       'status': status,
-      'description': description,
+      'description': I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
       'messages': messages
     }
   end

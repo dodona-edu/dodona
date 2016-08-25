@@ -31,7 +31,8 @@ class Exercise < ApplicationRecord
 
   validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
   validates :repository_id, presence: true
-  validates :judge_id, presence: true
+  validates :judge, presence: true
+  validates :repository, presence: true
 
   before_update :update_config
 

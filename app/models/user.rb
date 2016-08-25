@@ -15,13 +15,15 @@
 #
 
 class User < ApplicationRecord
-  enum permission: [:student, :teacher, :zeus]
+  enum permission: [:student, :staff, :zeus]
 
   has_many :submissions
   has_many :course_memberships
   has_many :courses, through: :course_memberships
 
   devise :cas_authenticatable
+
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
 
   scope :by_permission, -> (permission) { where(permission: permission) }
   scope :by_name, -> (name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
@@ -31,7 +33,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    teacher? || zeus?
+    staff? || zeus?
   end
 
   def correct_exercises

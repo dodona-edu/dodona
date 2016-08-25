@@ -21,6 +21,9 @@ class Submission < ApplicationRecord
   belongs_to :user
   has_one :judge, through: :exercise
 
+  validates :exercise, presence: true
+  validates :user, presence: true
+
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed
 

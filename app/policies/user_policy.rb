@@ -26,7 +26,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user && (user.zeus? || (user.teacher? && !record.zeus?))
+    user && (user.zeus? || (user.staff? && !record.zeus?))
   end
 
   def destroy?
@@ -36,7 +36,7 @@ class UserPolicy < ApplicationPolicy
   def permitted_attributes
     if user && user.zeus?
       [:username, :ugent_id, :first_name, :last_name, :email, :permission]
-    elsif user && user.teacher?
+    elsif user && user.staff?
       [:permission]
     else
       []

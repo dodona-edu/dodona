@@ -164,7 +164,7 @@ class FeedbackTableRenderer
   def message(m)
     return if m.nil?
     if m[:permission]
-      return if m[:permission] == 'teacher' && !@current_user.admin?
+      return if m[:permission] == 'staff' && !@current_user.admin?
       return if m[:permission] == 'zeus' && !@current_user.zeus?
     end
     m = { format: 'plain', description: m } if m.is_a? String

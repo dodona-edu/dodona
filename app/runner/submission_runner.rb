@@ -172,7 +172,7 @@ class SubmissionRunner < Runner
     ErrorBuilder.new
                 .status('internal error')
                 .description('internal error')
-                .message_permission('teacher')
+                .message_permission('staff')
                 .message_description(stderr)
                 .build
   end

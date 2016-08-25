@@ -209,7 +209,7 @@ class PythiaSubmissionRunner < SubmissionRunner
                              .message_description(JSON::Validator.fully_validate(@schema_path.to_s, result).join("\n"))
                              .status('internal error')
                              .description('internal error')
-                             .message_permission('teacher')
+                             .message_permission('staff')
                              .build
       end
     end
@@ -268,7 +268,7 @@ class PythiaSubmissionRunner < SubmissionRunner
                           .message_description(e.message + "\n" + e.backtrace.inspect)
                           .status('internal error')
                           .description('internal error')
-                          .message_permission('teacher')
+                          .message_permission('staff')
                           .build
   ensure
     finalize

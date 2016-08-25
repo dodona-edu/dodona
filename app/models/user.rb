@@ -15,7 +15,7 @@
 #
 
 class User < ApplicationRecord
-  enum permission: [:student, :teacher, :zeus]
+  enum permission: [:student, :staff, :zeus]
 
   has_many :submissions
   has_many :course_memberships
@@ -33,7 +33,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    teacher? || zeus?
+    staff? || zeus?
   end
 
   def correct_exercises

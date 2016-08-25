@@ -65,6 +65,7 @@ class FeedbackTableRenderer
   end
 
   def tab_content(t)
+    @diff_type = determine_tab_diff_type(t)
     messages(t[:messages])
     @builder.div(class: 'groups') do
       t[:groups].each { |g| group(g) } if t[:groups]
@@ -137,8 +138,7 @@ class FeedbackTableRenderer
   end
 
   def diff_heuristical(t)
-    output = (t[:expected] || '') + "\n" + (t[:generated] || '')
-    if output.split("\n").map(&:length).max < 55
+    if @diff_type == 'split'
       diff_split(t)
     else
       diff_unified(t)
@@ -200,6 +200,26 @@ class FeedbackTableRenderer
       @builder.text! code
     end
     @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
+  end
+
+  def determine_tab_diff_type(tab)
+    tab[:groups].each do |group|
+      group[:groups].each do |testcase|
+        testcase[:tests].each do |test|
+          return 'unified' if determine_diff_type(test) == 'unified'
+        end if testcase[:tests]
+      end if group[:groups]
+    end if tab[:groups]
+    'split'
+  end
+
+  def determine_diff_type(test)
+    output = (test[:expected] || '') + "\n" + (test[:generated] || '')
+    if output.split("\n").map(&:length).max < 55
+      'split'
+    else
+      'unified'
+    end
   end
 
   def icon_testcase

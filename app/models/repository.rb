@@ -21,6 +21,7 @@ class Repository < ApplicationRecord
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :remote, presence: true
   validates :path, presence: true, uniqueness: { case_sensitive: false }
+  validates :judge, presence: true
 
   validate :repo_is_accessible, on: :create
 

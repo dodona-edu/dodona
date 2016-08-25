@@ -7,28 +7,13 @@ require 'tmpdir' # temporary file support
 
 # runner that implements the Pythia workflow of handling submissions
 class PythiaSubmissionRunner < SubmissionRunner
-  DEFAULT_CONFIG_PATH = Rails.root.join('app/runner/config.json').freeze
+
+  def schema_path
+    Rails.root.join 'public/schemas/DodonaSubmission/output.json'
+  end
 
   def initialize(submission)
-    super()
-
-    # path to the dodona json schema, used to validate judge output
-    # overrides the definition from SubmissionRunner
-    # TODO: get path from environment variable?
-    @schema_path = Rails.root.join('public/schemas/DodonaSubmission/output.json')
-
-    # definition of submission
-    @submission = submission
-
-    # derive exercise and judge definitions from submission
-    @exercise = submission.exercise
-    @judge = @exercise.judge
-
-    # create name for hidden directory in docker container
-    @hidden_path = File.join('/mnt', SecureRandom.urlsafe_base64)
-
-    # submission configuration (JSON)
-    @config = compose_config
+    super(submission)
 
     # result of processing the submission (SPOJ)
     @result = nil
@@ -88,26 +73,14 @@ class PythiaSubmissionRunner < SubmissionRunner
   end
 
   def compose_config
-    # set submission-specific configuration
-    submission = {}
-
-    # set programming language of submission
-    submission['programming_language'] = @submission.exercise.programming_language
-
-    # set natural language of submission
-    submission['natural_language'] = @submission.user.lang
+    config = super
 
     # set links to resources in docker container needed for processing submission
-    submission['home'] = File.join(@hidden_path, 'resources', 'judge')
-    submission['source'] = File.join(@hidden_path, 'submission', 'source.py')
+    config.recursive_update({
+      'home': File.join(@hidden_path, 'resources', 'judge'),
+      'source': File.join(@hidden_path, 'submission', 'source.py')
+    })
 
-    # compose submission configuration
-    config = JSON.parse(File.read(DEFAULT_CONFIG_PATH)) # set default configuration
-    Utils.update_config(config, @judge.config) # update with judge configuration
-    Utils.update_config(config, @exercise.merged_config['evaluation']) # update with exercise configuration
-    Utils.update_config(config, submission) # update with submission-specific configuration
-
-    # return the submission configuration
     config
   end
 
@@ -202,15 +175,12 @@ class PythiaSubmissionRunner < SubmissionRunner
 
       result = JSON.parse(stdout)
 
-      if JSON::Validator.validate(@schema_path.to_s, result)
+      if JSON::Validator.validate(schema_path.to_s, result)
         add_runtime_metrics(result)
       else
-        result = ErrorBuilder.new
-                             .message_description(JSON::Validator.fully_validate(@schema_path.to_s, result).join("\n"))
-                             .status('internal error')
-                             .description('internal error')
-                             .message_permission('staff')
-                             .build
+        result = build_error 'internal error', 'internal error', [
+          build_message(JSON::Validator.fully_validate(schema_path.to_s, result).join("\n"), 'staff')
+        ]
       end
     end
 
@@ -264,12 +234,9 @@ class PythiaSubmissionRunner < SubmissionRunner
     prepare
     execute
   rescue Exception => e
-    @result = ErrorBuilder.new
-                          .message_description(e.message + "\n" + e.backtrace.inspect)
-                          .status('internal error')
-                          .description('internal error')
-                          .message_permission('staff')
-                          .build
+    @result = build_error 'internal error', 'internal error', [
+      build_message(e.message + "\n" + e.backtrace.inspect, 'staff')
+    ]
   ensure
     finalize
   end

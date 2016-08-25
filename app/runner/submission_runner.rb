@@ -6,76 +6,36 @@ require 'json-schema' # json schema validation, from json-schema gem
 require 'tmpdir' # temporary file support
 
 # base class for runners that handle Dodona submissions
-class SubmissionRunner < Runner
+class SubmissionRunner
+  DEFAULT_CONFIG_PATH = Rails.root.join('app/runner/config.json').freeze
+
   # ADT to store to recognize an error
   # 'codes' is a list of possible exit codes that could come from this error
   # 'tokens' is a list of possible substrings that could occur in the stderr of the error
   class ErrorIdentifier
+    attr_reader :tokens, :codes
+
     def initialize(codes, tokens)
       @codes = codes
       @tokens = tokens
     end
-
-    attr_reader :tokens
-
-    attr_reader :codes
   end
 
-  class ErrorBuilder
-    def initialize
-      @accepted = false
-      @status = 'runtime error'
-      @description = 'runtime error'
+  def build_error status='runtime error', description='runtime error', messages=[], accepted=false
+    {
+      'accepted': accepted,
+      'status': status,
+      'description': I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
+      'messages': messages
+    }
+  end
 
-      @message_permission = 'zeus'
-      @message_format = 'code'
-      @message_description = ''
-    end
-
-    def build
-      message = {}
-      message['format'] = @message_format
-      message['description'] = @message_description
-      message['permission'] = @message_permission
-
-      result = {}
-      result['accepted'] = @accepted
-      result['status'] = @status
-      result['description'] = @description
-      result['messages'] = [message]
-
-      result
-    end
-
-    def accepted(a)
-      @accepted = a
-      self
-    end
-
-    def status(s)
-      @status = s
-      self
-    end
-
-    def description(d)
-      @description = d
-      self
-    end
-
-    def message_format(mf)
-      @message_format = mf
-      self
-    end
-
-    def message_description(md)
-      @message_description = md
-      self
-    end
-
-    def message_permission(mp)
-      @message_permission = mp
-      self
-    end
+  def build_message description='', permission='zeus', format='code'
+    {
+      'format': format,
+      'description': description,
+      'permission': permission
+    }
   end
 
   def self.inherited(cl)
@@ -87,10 +47,12 @@ class SubmissionRunner < Runner
     attr_reader :runners
   end
 
-  def initialize
-    # path to the default submission json schema, used to validate judge output
-    # TODO: get path from environment variable?
-    @schema_path = 'public/schemas/Submission/output.json'
+  # path to the default submission json schema, used to validate judge output
+  def schema_path
+    Rails.root.join 'public/schemas/Submission/output.json'
+  end
+
+  def initialize(submission)
 
     # fields to recognize and handle errors
     @error_identifiers = {}
@@ -104,7 +66,40 @@ class SubmissionRunner < Runner
 
     # something else
     register_error('internal error', ErrorIdentifier.new([], []), method(:handle_unknown))
+
+    # definition of submission
+    @submission = submission
+
+    # derive exercise and judge definitions from submission
+    @exercise = submission.exercise
+    @judge = @exercise.judge
+
+    # create name for hidden directory in docker container
+    @hidden_path = File.join('/mnt', SecureRandom.urlsafe_base64)
+
+    # submission configuration (JSON)
+    @config = compose_config
   end
+
+  def compose_config
+    # set default configuration
+    config = JSON.parse(File.read(DEFAULT_CONFIG_PATH))
+
+    # update with judge configuration
+    config.recursive_update(@judge.config)
+
+    # update with exercise configuration
+    config.recursive_update(@exercise.merged_config['evaluation'])
+
+    # update with submission-specific configuration
+    config.recursive_update({
+      'programming_language': @submission.exercise.programming_language,
+      'natural_language': @submission.user.lang
+    })
+
+    config
+  end
+
 
   # registers a pair of error identifiers and error handlers with the same identifier string (name)
   def register_error(name, identifier, handler)
@@ -149,31 +144,22 @@ class SubmissionRunner < Runner
 
   # adds the specific information to an output json for timeout errors
   def handle_timeout(stderr)
-    ErrorBuilder.new
-                .status('time limit exceeded')
-                .description('time limit exceeded')
-                .message_permission('student')
-                .message_description(stderr)
-                .build
+    build_error 'time limit exceeded', 'time limit exceeded', [
+      build_message(stderr, 'student')
+    ]
   end
 
   # adds the specific information to an output json for memory limit errors
   def handle_memory_exceeded(stderr)
-    ErrorBuilder.new
-                .status('memory limit exceeded')
-                .description('memory limit exceeded')
-                .message_permission('student')
-                .message_description(stderr)
-                .build
+    build_error 'memory limit exceeded', 'memory limit exceeded', [
+      build_message(stderr, 'student')
+    ]
   end
 
   # adds the specific information to an output json for unknown/general errors
   def handle_unknown(stderr)
-    ErrorBuilder.new
-                .status('internal error')
-                .description('internal error')
-                .message_permission('staff')
-                .message_description(stderr)
-                .build
+    build_error 'internal error', 'internal error', [
+      build_message(stderr, 'staff')
+    ]
   end
 end

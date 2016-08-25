@@ -36,7 +36,7 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def output_message(m)
     if m[:format].in?(%w(traceback))
-      @builder.span(class: 'code wrong') do
+      @builder.div(class: 'code wrong') do
         @builder.text! m[:description]
       end
     else

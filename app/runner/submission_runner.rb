@@ -7,6 +7,8 @@ require 'tmpdir' # temporary file support
 
 # base class for runners that handle Dodona submissions
 class SubmissionRunner
+  DEFAULT_CONFIG_PATH = Rails.root.join('app/runner/config.json').freeze
+
   # ADT to store to recognize an error
   # 'codes' is a list of possible exit codes that could come from this error
   # 'tokens' is a list of possible substrings that could occur in the stderr of the error
@@ -45,10 +47,12 @@ class SubmissionRunner
     attr_reader :runners
   end
 
-  def initialize
-    # path to the default submission json schema, used to validate judge output
-    # TODO: get path from environment variable?
-    @schema_path = 'public/schemas/Submission/output.json'
+  # path to the default submission json schema, used to validate judge output
+  def schema_path
+    Rails.root.join 'public/schemas/Submission/output.json'
+  end
+
+  def initialize(submission)
 
     # fields to recognize and handle errors
     @error_identifiers = {}
@@ -62,7 +66,40 @@ class SubmissionRunner
 
     # something else
     register_error('internal error', ErrorIdentifier.new([], []), method(:handle_unknown))
+
+    # definition of submission
+    @submission = submission
+
+    # derive exercise and judge definitions from submission
+    @exercise = submission.exercise
+    @judge = @exercise.judge
+
+    # create name for hidden directory in docker container
+    @hidden_path = File.join('/mnt', SecureRandom.urlsafe_base64)
+
+    # submission configuration (JSON)
+    @config = compose_config
   end
+
+  def compose_config
+    # set default configuration
+    config = JSON.parse(File.read(DEFAULT_CONFIG_PATH))
+
+    # update with judge configuration
+    config.recursive_update(@judge.config)
+
+    # update with exercise configuration
+    config.recursive_update(@exercise.merged_config['evaluation'])
+
+    # update with submission-specific configuration
+    config.recursive_update({
+      'programming_language': @submission.exercise.programming_language,
+      'natural_language': @submission.user.lang
+    })
+
+    config
+  end
+
 
   # registers a pair of error identifiers and error handlers with the same identifier string (name)
   def register_error(name, identifier, handler)
@@ -108,21 +145,21 @@ class SubmissionRunner
   # adds the specific information to an output json for timeout errors
   def handle_timeout(stderr)
     build_error 'time limit exceeded', 'time limit exceeded', [
-      build_message stderr, 'student'
+      build_message(stderr, 'student')
     ]
   end
 
   # adds the specific information to an output json for memory limit errors
   def handle_memory_exceeded(stderr)
     build_error 'memory limit exceeded', 'memory limit exceeded', [
-      build_message stderr, 'student'
+      build_message(stderr, 'student')
     ]
   end
 
   # adds the specific information to an output json for unknown/general errors
   def handle_unknown(stderr)
     build_error 'internal error', 'internal error', [
-      build_message stderr, 'staff'
+      build_message(stderr, 'staff')
     ]
   end
 end

@@ -23,6 +23,8 @@ class User < ApplicationRecord
 
   devise :cas_authenticatable
 
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
+
   scope :by_permission, -> (permission) { where(permission: permission) }
   scope :by_name, -> (name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
 

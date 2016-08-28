@@ -19,9 +19,16 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
                 .fail(submissionFailed);
         });
 
+        $("#submission-copy-btn").click(function () {
+            var submissionSource = ace.edit("editor-result").getValue();
+            editor.setValue(submissionSource, 1);
+            $('#exercise-handin-link').tab('show');
+        });
+
         $("#exercise-handin-link").on('shown.bs.tab', function() {
             // refresh editor after show
             editor.resize(true);
+            editor.focus();
         });
 
         // configure mathjax
@@ -111,7 +118,6 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         $('#feedback').removeClass("hidden");
         $('#exercise-feedback-link').removeClass("hidden");
         $('#exercise-feedback-link').tab('show');
-        $('#submission-copy-btn').attr('href', edit_link);
     }
 
     function feedbackTableLoaded() {

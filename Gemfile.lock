@@ -179,6 +179,8 @@ GEM
       ast (~> 2.2)
     pkg-config (1.1.7)
     powerpack (0.1.1)
+    pretender (0.2.1)
+      actionpack
     puma (3.6.0)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
@@ -297,6 +299,7 @@ DEPENDENCIES
   less-rails
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)
+  pretender
   puma
   pundit
   rack-protection!

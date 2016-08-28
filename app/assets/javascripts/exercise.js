@@ -25,7 +25,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
             $('#exercise-handin-link').tab('show');
         });
 
-        $("#exercise-handin-link").on('shown.bs.tab', function() {
+        $("#exercise-handin-link").on('shown.bs.tab', function () {
             // refresh editor after show
             editor.resize(true);
             editor.focus();
@@ -94,10 +94,18 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
     }
 
     function swapActionButtons() {
-        $("#exercise-handin-link").on("shown.bs.tab", function(e) { $("#editor-process-btn").removeClass("hidden-fab"); });
-        $("#exercise-handin-link").on("hide.bs.tab", function(e) { $("#editor-process-btn").addClass("hidden-fab"); });
-        $("#exercise-feedback-link").on("shown.bs.tab", function(e) { $("#submission-copy-btn").removeClass("hidden-fab"); });
-        $("#exercise-feedback-link").on("hide.bs.tab", function(e) { $("#submission-copy-btn").addClass("hidden-fab"); });
+        $("#exercise-handin-link").on("shown.bs.tab", function (e) {
+            $("#editor-process-btn").removeClass("hidden-fab");
+        });
+        $("#exercise-handin-link").on("hide.bs.tab", function (e) {
+            $("#editor-process-btn").addClass("hidden-fab");
+        });
+        $("#exercise-feedback-link").on("shown.bs.tab", function (e) {
+            $("#submission-copy-btn").removeClass("hidden-fab");
+        });
+        $("#exercise-feedback-link").on("hide.bs.tab", function (e) {
+            $("#submission-copy-btn").addClass("hidden-fab");
+        });
     }
 
     function submitSolution(code) {

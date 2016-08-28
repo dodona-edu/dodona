@@ -33,6 +33,14 @@ class UserPolicy < ApplicationPolicy
     user && user.zeus?
   end
 
+  def impersonate?
+    user && (user.zeus? || (user.staff? && !record.zeus?))
+  end
+
+  def stop_impersonating?
+    true
+  end
+
   def permitted_attributes
     if user && user.zeus?
       [:username, :ugent_id, :first_name, :last_name, :email, :permission]

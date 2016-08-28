@@ -47,7 +47,6 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         // export function
         dodona.feedbackLoaded = feedbackLoaded;
         dodona.feedbackTableLoaded = feedbackTableLoaded;
-        dodona.setEditorText = setEditorText;
     }
 
     function initEditor() {
@@ -61,10 +60,6 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         editor.getSession().setUseWrapMode(true);
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
-    }
-
-    function setEditorText(text) {
-        editor.setValue(text, 1);
     }
 
     function initLightboxes() {
@@ -114,7 +109,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         });
     }
 
-    function feedbackLoaded(edit_link) {
+    function feedbackLoaded() {
         $('#feedback').removeClass("hidden");
         $('#exercise-feedback-link').removeClass("hidden");
         $('#exercise-feedback-link').tab('show');

@@ -35,7 +35,6 @@ class SubmissionsController < ApplicationController
   def edit
     respond_to do |format|
       format.html { redirect_to exercise_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission) }
-      # format.js <-- for fancier reloads, which do not work yet
     end
   end
 

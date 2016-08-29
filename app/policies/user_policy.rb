@@ -34,7 +34,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def impersonate?
-    user && (user.zeus? || (user.staff? && !record.zeus?))
+    return false unless user
+    return false if user == record
+    return true if user.zeus?
+    return true if user.staff? && record.student?
+    false
   end
 
   def stop_impersonating?

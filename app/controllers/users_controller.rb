@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :impersonate]
 
   has_scope :by_permission
   has_scope :by_name, as: 'filter'
@@ -65,6 +65,16 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url, notice: I18n.t('controllers.destroyed', model: User.model_name.human) }
       format.json { head :no_content }
     end
+  end
+
+  def impersonate
+    impersonate_user(@user)
+    redirect_to root_path
+  end
+
+  def stop_impersonating
+    stop_impersonating_user
+    redirect_to root_path
   end
 
   private

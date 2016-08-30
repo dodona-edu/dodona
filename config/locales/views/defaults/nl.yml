@@ -2,6 +2,11 @@ nl:
   layout:
     head:
       description: Oefeningenwebsite voor de programmeervakken aan de UGent.
+    impersonate:
+      impersonate: Account overnemen
+      impersonating_user: Je speelt momenteel
+      switch_back: Keer terug
+      your_account: naar jouw account.
     messages:
       warning: Opgepast
       danger: Oh nee

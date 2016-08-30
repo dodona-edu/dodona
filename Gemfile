@@ -64,6 +64,9 @@ gem 'devise_cas_authenticatable'
 # authorization
 gem 'pundit'
 
+# impersonate users
+gem 'pretender'
+
 # db annotations
 gem 'annotate'
 

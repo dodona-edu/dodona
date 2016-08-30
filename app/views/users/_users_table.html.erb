@@ -16,6 +16,9 @@
         <td><%= user.email %> </td>
         <td><%= user.permission %> </td>
         <td class="actions">
+          <% if policy(user).impersonate? %>
+            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %><span class="glyphicon glyphicon-user"></span><% end %>
+          <% end %>
           <% if policy(user).edit? %>
             <%= link_to edit_user_path(user), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
           <% end %>

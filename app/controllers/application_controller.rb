@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
+  impersonates :user
+
   private
 
   def user_not_authorized

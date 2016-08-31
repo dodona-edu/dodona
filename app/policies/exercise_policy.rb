@@ -4,7 +4,7 @@ class ExercisePolicy < ApplicationPolicy
       if user && user.admin?
         scope.all
       else
-        scope.where(visibility: :open)
+        scope.where(visibility: :open).where(status: :ok)
       end
     end
   end

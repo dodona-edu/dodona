@@ -25,7 +25,7 @@ class Exercise < ApplicationRecord
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
 
   enum visibility: [:open, :hidden, :closed]
-  enum status: [:ok, :invalid, :removed]
+  enum status: [:ok, :not_valid, :removed]
 
   belongs_to :repository
   belongs_to :judge

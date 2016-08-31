@@ -36,6 +36,7 @@ class Exercise < ApplicationRecord
   validates :judge, presence: true
   validates :repository, presence: true
 
+  before_save :check_validity
   before_update :update_config
 
   scope :by_name, -> (name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
@@ -111,6 +112,7 @@ class Exercise < ApplicationRecord
   end
 
   def update_config
+    return unless ok?
     c = config
     c['visibility'] = visibility
     c['description']['names']['nl'] = name_nl
@@ -150,6 +152,17 @@ class Exercise < ApplicationRecord
     distance_of_time_in_words(subs.first.created_at, subs.last.created_at)
   end
 
+  def check_validity
+    return if removed?
+    self.status = if !(name_nl || name_en)
+                    :not_valid
+                  elsif !(description_nl || description_en)
+                    :not_valid
+                  else
+                    :ok
+                  end
+  end
+
   def self.process_repository(repository)
     Exercise.process_directory(repository, '/')
   end
@@ -162,8 +175,10 @@ class Exercise < ApplicationRecord
     path = File.join(repository.full_path, directory)
     config_file = File.join(path, CONFIG_FILE)
     if File.file? config_file
-      config = JSON.parse(File.read(config_file))
-      Exercise.process_exercise(repository, directory, config)
+      begin
+        config = JSON.parse(File.read(config_file))
+        Exercise.process_exercise(repository, directory, config)
+      end
     else
       Dir.entries(path)
          .select { |entry| File.directory?(File.join(path, entry)) && !entry.start_with?('.') }
@@ -172,8 +187,8 @@ class Exercise < ApplicationRecord
   end
 
   def self.process_exercise(repository, directory, config)
-    ex = Exercise.where(path: directory, repository_id: repository.id).first
-    j = Judge.find_by_name(config['evaluation']['handler'])
+    ex = Exercise.find_by(path: directory, repository_id: repository.id)
+    j = Judge.find_by_name(config['evaluation']['handler']) if config['evaluation']
     j_id = j.nil? ? repository.judge_id : j.id
 
     if ex.nil?

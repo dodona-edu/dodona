@@ -39,6 +39,9 @@ class Exercise < ApplicationRecord
   before_update :update_config
 
   scope :by_name, -> (name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+  scope :by_status, -> (status) { where(status: status.in?(statuses) ? status : -1) }
+  scope :by_visibility, -> (visibility) { where(visibility: visibility.in?(visibilities) ? visibility : -1) }
+  scope :by_filter, -> (query) { by_name(query).or(by_status(query)).or(by_visibility(query)) }
 
   def full_path
     File.join(repository.full_path, path)

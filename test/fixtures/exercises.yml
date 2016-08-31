@@ -13,6 +13,7 @@
 #  programming_language :string(255)
 #  repository_id        :integer
 #  judge_id             :integer
+#  status               :integer          default(0)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

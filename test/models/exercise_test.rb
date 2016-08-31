@@ -13,6 +13,7 @@
 #  programming_language :string(255)
 #  repository_id        :integer
 #  judge_id             :integer
+#  status               :integer          default(0)
 #
 
 require 'test_helper'

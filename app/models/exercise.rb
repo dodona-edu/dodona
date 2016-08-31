@@ -13,6 +13,7 @@
 #  programming_language :string(255)
 #  repository_id        :integer
 #  judge_id             :integer
+#  status               :integer          default(0)
 #
 
 require 'action_view'
@@ -24,6 +25,7 @@ class Exercise < ApplicationRecord
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
 
   enum visibility: [:open, :hidden, :closed]
+  enum status: [:ok, :invalid, :removed]
 
   belongs_to :repository
   belongs_to :judge

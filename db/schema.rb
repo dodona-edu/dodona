@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160811155752) do
+ActiveRecord::Schema.define(version: 20160831084350) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -57,11 +57,14 @@ ActiveRecord::Schema.define(version: 20160811155752) do
     t.string   "programming_language"
     t.integer  "repository_id"
     t.integer  "judge_id"
+    t.integer  "status",               default: 0
     t.index ["judge_id"], name: "index_exercises_on_judge_id", using: :btree
     t.index ["name_nl"], name: "index_exercises_on_name_nl", using: :btree
     t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true, using: :btree
     t.index ["programming_language"], name: "index_exercises_on_programming_language", using: :btree
     t.index ["repository_id"], name: "index_exercises_on_repository_id", using: :btree
+    t.index ["status"], name: "index_exercises_on_status", using: :btree
+    t.index ["visibility"], name: "index_exercises_on_visibility", using: :btree
   end
 
   create_table "judges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

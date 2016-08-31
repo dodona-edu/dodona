@@ -1,4 +1,12 @@
 <tr>
+  <% if user_signed_in? && current_user.admin? %>
+    <td>
+      <%= raw "<span class='glyphicon glyphicon-eye-close'></span>" if exercise.hidden? %>
+      <%= raw "<span class='glyphicon glyphicon-ban-circle'></span>" if exercise.closed? %>
+      <%= raw "<span class='glyphicon glyphicon-trash'></span>" if exercise.removed? %>
+      <%= raw "<span class='glyphicon glyphicon-exclamation-sign'></span>" if exercise.not_valid? %>
+    </td>
+  <% end %>
   <td>
     <%= link_to exercise.name, exercise_path(exercise) %>
   </td>

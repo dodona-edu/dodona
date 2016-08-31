@@ -17,9 +17,9 @@ class ExercisePolicy < ApplicationPolicy
     return true  if user && user.admin?
     return false if record.closed?
     return true  if record.ok?
-    return false if !user
-    return true  if record.number_of_submissions_for(user) != 0
-    return false
+    return false unless user
+    return true  if record.number_of_submissions_for(user).nonzero?
+    false
   end
 
   def edit?
@@ -42,7 +42,7 @@ class ExercisePolicy < ApplicationPolicy
     return true  if user && user.admin?
     return false if record.closed?
     return true  if record.ok?
-    return false
+    false
   end
 
   def permitted_attributes

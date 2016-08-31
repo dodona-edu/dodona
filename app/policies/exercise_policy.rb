@@ -14,7 +14,12 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def show?
-    !record.closed? || (user && user.admin?)
+    return true  if user && user.admin?
+    return false if record.closed?
+    return true  if record.ok?
+    return false if !user
+    return true  if record.number_of_submissions_for(user) != 0
+    return false
   end
 
   def edit?
@@ -31,6 +36,13 @@ class ExercisePolicy < ApplicationPolicy
 
   def media?
     show?
+  end
+
+  def submit?
+    return true  if user && user.admin?
+    return false if record.closed?
+    return true  if record.ok?
+    return false
   end
 
   def permitted_attributes

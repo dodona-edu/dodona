@@ -25,7 +25,7 @@ class SubmissionsController < ApplicationController
     para = permitted_attributes(Submission)
     para[:user_id] = current_user.id
     @submission = Submission.new(para)
-    if Pundit.policy!(current_user, @submission.exercise).show? && @submission.save
+    if Pundit.policy!(current_user, @submission.exercise).submit? && @submission.save
       render json: { status: 'ok', id: @submission.id }
     else
       render json: { status: 'failed' }, status: :unprocessable_entity

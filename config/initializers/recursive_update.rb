@@ -1,7 +1,7 @@
 class Hash
   def recursive_update(other)
     other.each do |key, value|
-      if self.include?(key) && value.is_a?(Hash) && self[key].is_a?(Hash)
+      if include?(key) && value.is_a?(Hash) && self[key].is_a?(Hash)
         # hashes get merged recursively
         self[key].recursive_update(value)
       else

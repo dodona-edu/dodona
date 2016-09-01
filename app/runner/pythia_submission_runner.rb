@@ -7,7 +7,6 @@ require 'tmpdir' # temporary file support
 
 # runner that implements the Pythia workflow of handling submissions
 class PythiaSubmissionRunner < SubmissionRunner
-
   def schema_path
     Rails.root.join 'public/schemas/DodonaSubmission/output.json'
   end
@@ -76,10 +75,8 @@ class PythiaSubmissionRunner < SubmissionRunner
     config = super
 
     # set links to resources in docker container needed for processing submission
-    config.recursive_update({
-      'home': File.join(@hidden_path, 'resources', 'judge'),
-      'source': File.join(@hidden_path, 'submission', 'source.py')
-    })
+    config.recursive_update('home': File.join(@hidden_path, 'resources', 'judge'),
+                            'source': File.join(@hidden_path, 'submission', 'source.py'))
 
     config
   end

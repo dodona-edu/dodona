@@ -21,7 +21,7 @@ class SubmissionRunner
     end
   end
 
-  def build_error status='runtime error', description='runtime error', messages=[], accepted=false
+  def build_error(status = 'runtime error', description = 'runtime error', messages = [], accepted = false)
     {
       'accepted': accepted,
       'status': status,
@@ -30,7 +30,7 @@ class SubmissionRunner
     }
   end
 
-  def build_message description='', permission='zeus', format='code'
+  def build_message(description = '', permission = 'zeus', format = 'code')
     {
       'format': format,
       'description': description,
@@ -53,7 +53,6 @@ class SubmissionRunner
   end
 
   def initialize(submission)
-
     # fields to recognize and handle errors
     @error_identifiers = {}
     @error_handlers = {}
@@ -92,14 +91,11 @@ class SubmissionRunner
     config.recursive_update(@exercise.merged_config['evaluation'])
 
     # update with submission-specific configuration
-    config.recursive_update({
-      'programming_language': @submission.exercise.programming_language,
-      'natural_language': @submission.user.lang
-    })
+    config.recursive_update('programming_language': @submission.exercise.programming_language,
+                            'natural_language': @submission.user.lang)
 
     config
   end
-
 
   # registers a pair of error identifiers and error handlers with the same identifier string (name)
   def register_error(name, identifier, handler)

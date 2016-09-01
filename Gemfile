@@ -11,7 +11,7 @@ gem 'less-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
+# gem 'coffee-rails', '~> 4.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
 
@@ -58,7 +58,7 @@ gem 'ace-rails-ap'
 gem 'autoprefixer-rails'
 
 # cas authentication
-gem 'devise', '4.0.0.rc2'
+gem 'devise'
 gem 'devise_cas_authenticatable'
 
 # authorization
@@ -77,9 +77,8 @@ gem 'capistrano-rvm', group: :development
 gem 'capistrano3-delayed-job', '~> 1.0'
 
 # i18n
-gem 'rails-i18n', '~> 5.0.0.beta3' # For 5.0.0.beta3
-# use version from github for rails 5 support
-gem 'i18n-js', git: 'git://github.com/fnando/i18n-js.git'
+gem 'rails-i18n'
+gem 'i18n-js', '~> 3.0.0.rc14'
 
 # email exceptions
 gem 'exception_notification'

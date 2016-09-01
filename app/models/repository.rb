@@ -45,7 +45,9 @@ class Repository < ApplicationRecord
 
   def commit(msg)
     _out, error, status = Open3.capture3('git', 'commit', '--author="Dodona <dodona@ugent.be>"', '-am', msg, chdir: full_path)
-    _out, error, status = Open3.capture3('git push', chdir: full_path) if status.success?
+    if Rails.env.production?
+      _out, error, status = Open3.capture3('git push', chdir: full_path) if status.success?
+    end
     [status.success?, error]
   end
 end

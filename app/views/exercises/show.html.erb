@@ -1,9 +1,9 @@
-<!-- opgave -->
 <div class="row">
   <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs", title: t('.handin') do %>
     <span class='hidden-sm'><%= t('.handin') %></span><br>
     <span class="glyphicon glyphicon-chevron-down"></span>
   <% end %>
+
   <div class="col-sm-10 col-xs-12">
     <div class="card exercise-description">
       <div class="card-title card-title-colored">
@@ -17,7 +17,13 @@
           <% end %>
       </div>
       <div class="card-supporting-text">
-        <%= @exercise.description %>
+        <% if @exercise.removed? %>
+          <div class="alert alert-info"><%= t ".alert_removed" %></div>
+        <% elsif @exercise.not_valid? %>
+          <div class="alert alert-info"><%= t ".alert_not_valid" %></div>
+        <% else %>
+          <%= @exercise.description %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -28,18 +34,20 @@
     <div class="card card-nav">
       <div class="card-title card-title-colored">
         <div class="card-title-fab">
-          <% if user_signed_in? %>
-          <button class="btn btn-primary btn-fab" id="editor-process-btn">
-            <span class="glyphicon glyphicon-play"></span>
-          </button>
-          <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">
-            <span class="glyphicon glyphicon-edit"></span>
-          </a>
+          <% if policy(@exercise).submit? %>
+            <button class="btn btn-primary btn-fab" id="editor-process-btn">
+              <span class="glyphicon glyphicon-play"></span>
+            </button>
+            <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">
+              <span class="glyphicon glyphicon-edit"></span>
+            </a>
           <% end %>
         </div>
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#handin" id="exercise-handin-link" data-toggle="tab"><%= t ".handin"%></a></li>
-          <li><a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions"%></a></li>
+          <% if policy(@exercise).submit? || !user_signed_in? %>
+            <li class="active"><a href="#handin" id="exercise-handin-link" data-toggle="tab"><%= t ".handin"%></a></li>
+          <% end %>
+          <li class="<%='active' if !(policy(@exercise).submit? || !user_signed_in?) %>"><a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions"%></a></li>
           <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link' class='hidden'><%= t ".feedback"%></a></li>
         </ul>
       </div>
@@ -49,11 +57,13 @@
             <% if !user_signed_in? %>
               <div class="alert alert-info"><%= t ".not_logged_in_html", :url => new_user_session_path %></div>
             <% end %>
-            <div id="editor-window">
-              <div id="editor-text"><%= @edit_submission.try :code %></div>
-            </div>
+            <% if policy(@exercise).submit? || !user_signed_in? %>
+              <div id="editor-window">
+                <div id="editor-text"><%= @edit_submission.try :code %></div>
+              </div>
+            <% end %>
           </div>
-          <div class="tab-pane fade" id="submissions">
+          <div class="tab-pane fade <%='in active' if !(policy(@exercise).submit? || !user_signed_in?) %>" id="submissions">
             <div id="submissions-table-wrapper">
               <% if !user_signed_in? %>
                 <div class="alert alert-info"><%= t ".not_logged_in_html", :url => new_user_session_path %></div>
@@ -74,6 +84,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_exercise_show(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= user_signed_in? %>);
+    init_exercise_show(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>);
   });
 </script>

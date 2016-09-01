@@ -13,6 +13,7 @@
 #  programming_language :string(255)
 #  repository_id        :integer
 #  judge_id             :integer
+#  status               :integer          default(0)
 #
 
 require 'action_view'
@@ -24,6 +25,7 @@ class Exercise < ApplicationRecord
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
 
   enum visibility: [:open, :hidden, :closed]
+  enum status: [:ok, :not_valid, :removed]
 
   belongs_to :repository
   belongs_to :judge
@@ -34,9 +36,13 @@ class Exercise < ApplicationRecord
   validates :judge, presence: true
   validates :repository, presence: true
 
+  before_save :check_validity
   before_update :update_config
 
   scope :by_name, -> (name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+  scope :by_status, -> (status) { where(status: status.in?(statuses) ? status : -1) }
+  scope :by_visibility, -> (visibility) { where(visibility: visibility.in?(visibilities) ? visibility : -1) }
+  scope :by_filter, -> (query) { by_name(query).or(by_status(query)).or(by_visibility(query)) }
 
   def full_path
     File.join(repository.full_path, path)
@@ -47,7 +53,8 @@ class Exercise < ApplicationRecord
   end
 
   def name
-    send('name_' + I18n.locale.to_s) || name_nl || name_en || 'n/a'
+    name = send('name_' + I18n.locale.to_s) || name_nl || name_en
+    name.blank? ? path.split('/').last : name
   end
 
   def description_localized(lang = I18n.locale.to_s)
@@ -106,6 +113,7 @@ class Exercise < ApplicationRecord
   end
 
   def update_config
+    return unless ok?
     c = config
     c['visibility'] = visibility
     c['description']['names']['nl'] = name_nl
@@ -145,6 +153,17 @@ class Exercise < ApplicationRecord
     distance_of_time_in_words(subs.first.created_at, subs.last.created_at)
   end
 
+  def check_validity
+    return if removed?
+    self.status = if !(name_nl || name_en)
+                    :not_valid
+                  elsif !(description_nl || description_en)
+                    :not_valid
+                  else
+                    :ok
+                  end
+  end
+
   def self.process_repository(repository)
     Exercise.process_directory(repository, '/')
   end
@@ -154,31 +173,41 @@ class Exercise < ApplicationRecord
   end
 
   def self.process_directory(repository, directory)
-    path = File.join(repository.full_path, directory)
-    config_file = File.join(path, CONFIG_FILE)
-    if File.file? config_file
-      config = JSON.parse(File.read(config_file))
-      Exercise.process_exercise(repository, directory, config)
+    if Exercise.exercise_directory?(repository, directory)
+      Exercise.process_exercise(repository, directory)
     else
+      path = File.join(repository.full_path, directory)
       Dir.entries(path)
          .select { |entry| File.directory?(File.join(path, entry)) && !entry.start_with?('.') }
          .each { |entry| Exercise.process_directory(repository, File.join(directory, entry)) }
     end
   end
 
-  def self.process_exercise(repository, directory, config)
-    ex = Exercise.where(path: directory, repository_id: repository.id).first
-    j = Judge.find_by_name(config['evaluation']['handler'])
-    j_id = j.nil? ? repository.judge_id : j.id
+  def self.process_exercise(repository, directory)
+    config_file = File.join(repository.full_path, directory, CONFIG_FILE)
+    ex = Exercise.find_by(path: directory, repository_id: repository.id)
 
-    if ex.nil?
-      ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id, programming_language: 'python')
+    if ex && !File.file?(config_file)
+      ex.status = :removed
+    else
+      config = JSON.parse(File.read(config_file))
+      j = Judge.find_by_name(config['evaluation']['handler']) if config['evaluation']
+      j_id = j.nil? ? repository.judge_id : j.id
+
+      if ex.nil?
+        ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id, programming_language: 'python')
+      else
+        ex.status = :ok
+      end
+
+      ex.update_data(config, j_id)
     end
-
-    ex.update_data(config, j_id)
   end
 
-  def self.exercise_directory?(path)
+  def self.exercise_directory?(repository, path)
+    return true if Exercise.find_by(path: path, repository_id: repository.id)
+
+    path = File.join(repository.full_path, path)
     config_file = File.join(path, CONFIG_FILE)
     File.file? config_file
   end

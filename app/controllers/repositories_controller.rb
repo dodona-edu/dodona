@@ -80,7 +80,7 @@ class RepositoriesController < ApplicationController
             commit[type].each do |file|
               dirs = file.split('/').reverse
               path = '/' + dirs.pop
-              until Exercise.exercise_directory?(File.join(@repository.full_path, path)) || dirs.empty?
+              until Exercise.exercise_directory?(@repository, path) || dirs.empty?
                 path = File.join(path, dirs.pop)
               end
               exercises.add(path) unless dirs.empty?

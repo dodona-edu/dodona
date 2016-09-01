@@ -1,9 +1,11 @@
-function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
+function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorShown) {
     var editor;
     var lastSubmission;
 
     function init() {
-        initEditor();
+        if(editorShown) {
+            initEditor();
+        }
         initLightboxes();
 
         centerImagesAndTables();

@@ -4,7 +4,7 @@ class ExercisePolicy < ApplicationPolicy
       if user && user.admin?
         scope.all
       else
-        scope.where(visibility: :open)
+        scope.where(visibility: :open).where(status: :ok)
       end
     end
   end
@@ -14,7 +14,12 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def show?
-    !record.closed? || (user && user.admin?)
+    return true  if user && user.admin?
+    return false if record.closed?
+    return true  if record.ok?
+    return false unless user
+    return true  if record.number_of_submissions_for(user).nonzero?
+    false
   end
 
   def edit?
@@ -31,6 +36,13 @@ class ExercisePolicy < ApplicationPolicy
 
   def media?
     show?
+  end
+
+  def submit?
+    return true  if user && user.admin?
+    return false if record.closed?
+    return true  if record.ok?
+    false
   end
 
   def permitted_attributes

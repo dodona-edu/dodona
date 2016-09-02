@@ -52,7 +52,6 @@
               <% if user_signed_in? && current_user.admin? %>
                 <li><%= link_to(t("layout.menu.exercises"), exercises_path) %></li>
               <% end %>
-              <li><%= link_to('Precourse', precourse_path) %></li>
               <% if user_signed_in? %>
                 <li><%= link_to(t("layout.menu.my_submissions"), submissions_path) %></li>
               <% end %>

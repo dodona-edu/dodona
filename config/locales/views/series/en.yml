@@ -1,0 +1,8 @@
+en:
+  series:
+    index:
+      title: Series
+    new:
+      title: Add series
+    show:
+      series: Series

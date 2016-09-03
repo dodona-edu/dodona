@@ -1,0 +1,8 @@
+nl:
+  series:
+    index:
+      title: Reeksen
+    new:
+      title: Reeks toevoegen
+    show:
+      series: Reeks

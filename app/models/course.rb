@@ -14,7 +14,11 @@ require 'securerandom'
 
 class Course < ApplicationRecord
   has_many :course_memberships
+  has_many :series
   has_many :users, through: :course_memberships
+
+  validates :name, presence: true
+  validates :year, presence: true
 
   default_scope { order(year: :desc, name: :desc) }
 

@@ -13,5 +13,10 @@
 #
 
 class Series < ApplicationRecord
+  enum visibility: [:open, :hidden, :closed]
+
   belongs_to :course
+
+  validates :course, presence: true
+  validates :name, presence: true
 end

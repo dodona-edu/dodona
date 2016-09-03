@@ -4,6 +4,7 @@ class SeriesController < ApplicationController
   # GET /series
   # GET /series.json
   def index
+    authorize Series
     @series = Series.all
   end
 
@@ -14,6 +15,7 @@ class SeriesController < ApplicationController
 
   # GET /series/new
   def new
+    authorize Series
     @series = Series.new
   end
 
@@ -24,11 +26,12 @@ class SeriesController < ApplicationController
   # POST /series
   # POST /series.json
   def create
-    @series = Series.new(series_params)
+    authorize Series
+    @series = Series.new(permitted_attributes(Series))
 
     respond_to do |format|
       if @series.save
-        format.html { redirect_to @series, notice: 'Series was successfully created.' }
+        format.html { redirect_to @series, notice: I18n.t('controllers.created', model: Series.model_name.human) }
         format.json { render :show, status: :created, location: @series }
       else
         format.html { render :new }
@@ -41,8 +44,8 @@ class SeriesController < ApplicationController
   # PATCH/PUT /series/1.json
   def update
     respond_to do |format|
-      if @series.update(series_params)
-        format.html { redirect_to @series, notice: 'Series was successfully updated.' }
+      if @series.update(permitted_attributes(Series))
+        format.html { redirect_to @series, notice: I18n.t('controllers.updated', model: Series.model_name.human) }
         format.json { render :show, status: :ok, location: @series }
       else
         format.html { render :edit }
@@ -56,19 +59,16 @@ class SeriesController < ApplicationController
   def destroy
     @series.destroy
     respond_to do |format|
-      format.html { redirect_to series_index_url, notice: 'Series was successfully destroyed.' }
+      format.html { redirect_to series_url, notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_series
-      @series = Series.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def series_params
-      params.require(:series).permit(:course_id, :name, :description, :visibility, :order)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_series
+    @series = Series.find(params[:id])
+    authorize @series
+  end
 end

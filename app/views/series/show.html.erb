@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Course:</strong>
+  <%= @series.course %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @series.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @series.description %>
+</p>
+
+<p>
+  <strong>Visibility:</strong>
+  <%= @series.visibility %>
+</p>
+
+<p>
+  <strong>Order:</strong>
+  <%= @series.order %>
+</p>
+
+<%= link_to 'Edit', edit_series_path(@series) %> |
+<%= link_to 'Back', series_index_path %>

@@ -1,0 +1,29 @@
+# == Schema Information
+#
+# Table name: series
+#
+#  id          :integer          not null, primary key
+#  course_id   :integer
+#  name        :string(255)
+#  description :text(65535)
+#  visibility  :integer
+#  order       :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  course: one
+  name: MyString
+  description: MyText
+  visibility: 1
+  order: 1
+
+two:
+  course: two
+  name: MyString
+  description: MyText
+  visibility: 1
+  order: 1

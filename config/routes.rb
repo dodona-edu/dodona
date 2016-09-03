@@ -9,7 +9,10 @@ Rails.application.routes.draw do
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
+    resources :series
+
     resources :courses do
+      resources :series
       member do
         post 'subscribe'
         get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: "subscribe_with_secret"

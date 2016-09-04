@@ -17,7 +17,7 @@
             <strong><%= t ".series" %>:</strong> <%= @series.name %>
           </p>
           <p>
-            <strong><%= Series.human_attribute_name("course") %>:</strong> <%= "#{@series.course.name} (#{@series.course.year})" %>
+            <strong><%= Series.human_attribute_name("course") %>:</strong> <%= link_to "#{@series.course.name} (#{@series.course.year})", course_path(@series.course) %>
           </p>
           <p>
             <strong><%= Series.human_attribute_name("visibility") %>:</strong> <%= Series.human_enum_name(:visibility, @series.visibility) %>

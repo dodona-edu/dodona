@@ -31,7 +31,7 @@ class SeriesController < ApplicationController
 
     respond_to do |format|
       if @series.save
-        format.html { redirect_to @series, notice: I18n.t('controllers.created', model: Series.model_name.human) }
+        format.html { redirect_to @series.course, notice: I18n.t('controllers.created', model: Series.model_name.human) }
         format.json { render :show, status: :created, location: @series }
       else
         format.html { render :new }

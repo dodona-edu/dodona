@@ -1,4 +1,4 @@
-function init_filter_index() {
+function init_filter_index(baseUrl) {
     var PARAM = "filter";
     var $filter;
 
@@ -19,9 +19,11 @@ function init_filter_index() {
 
     function search() {
         var val = $filter.val();
-        var url = updateURLParameter(window.location.href, PARAM, val);
+        var url = updateURLParameter(getUrl(), PARAM, val);
         url = updateURLParameter(url, "page", 1)
-        window.history.replaceState(null, "Dodona", url);
+        if (!baseUrl) {
+            window.history.replaceState(null, "Dodona", url);
+        }
         $("#progress-filter").css("visibility", "visible");
         $.get(url, {
             format: "js"
@@ -29,6 +31,10 @@ function init_filter_index() {
             eval(data);
             $("#progress-filter").css("visibility", "hidden");
         });
+    }
+
+    function getUrl() {
+        return baseUrl || window.location.href;
     }
 
     init();

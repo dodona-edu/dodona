@@ -25,6 +25,7 @@
       <% if policy(@series).add_exercise? %>
         <div class="card-supporting-text card-border">
           <h4><%= t ".add_exercises" %></h4>
+          <%= render partial: 'layouts/searchbar', locals: {baseUrl: exercises_path(:series_id => @series.id)}  %>
           <div id="exercises-table-wrapper">
             <%= render partial: 'exercises/series_exercises_table', locals: {exercises: @exercises, series: @series}  %>
           </div>

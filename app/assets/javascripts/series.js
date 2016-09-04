@@ -8,6 +8,7 @@ function init_series_edit() {
 
     function initAddButtons() {
         $("a.add-exercise").click(function () {
+            $(this).remove();
             var exerciseId = $(this).data("exercise_id");
             var exerciseName = $(this).data("exercise_name")
             var seriesId = $(this).data("series_id");
@@ -27,7 +28,6 @@ function init_series_edit() {
     function exerciseAdded(name, id) {
         showNotification(I18n.t("js.exercise-added-success"));
         $(".series-exercise-list").append("<li>" + name + "</li>");
-        $(".pagination .active a").click();
     }
 
     function addingExerciseFailed(name, id) {

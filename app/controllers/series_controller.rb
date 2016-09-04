@@ -1,5 +1,5 @@
 class SeriesController < ApplicationController
-  before_action :set_series, only: [:show, :edit, :update, :destroy]
+  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise]
 
   # GET /series
   # GET /series.json
@@ -21,6 +21,7 @@ class SeriesController < ApplicationController
 
   # GET /series/1/edit
   def edit
+    @exercises = policy_scope(Exercise).order('name_' + I18n.locale.to_s).paginate(page: params[:page])
   end
 
   # POST /series
@@ -62,6 +63,12 @@ class SeriesController < ApplicationController
       format.html { redirect_to series_url, notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
       format.json { head :no_content }
     end
+  end
+
+  def add_exercise
+    @exercise = Exercise.find(params[:exercise_id])
+    membership = SeriesMembership.new(series: @series, exercise: @exercise)
+    membership.save
   end
 
   private

@@ -6,3 +6,6 @@ nl:
       title: Reeks toevoegen
     show:
       series: Reeks
+    edit:
+      add_exercises: Oefeningen toevoegen
+      exercises: Oefeningen

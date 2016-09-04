@@ -6,3 +6,6 @@ en:
       title: Add series
     show:
       series: Series
+    edit:
+      add_exercises: Add exercises
+      exercises: Exercises

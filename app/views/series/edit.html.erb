@@ -9,9 +9,32 @@
           </button>
         </div>
       </div>
-      <div class="card-supporting-text">
-        <%= render 'form', series: @series %>
+      <div class="card-supporting-text row">
+        <div class="col-xs-6">
+          <%= render 'form', series: @series %>
+        </div>
+        <div class="col-xs-6">
+          <h4><%= t ".exercises" %></h4>
+          <ul class="series-exercise-list">
+            <% @series.exercises.each do |exercise| %>
+              <li><%= link_to exercise.name, exercise %></li>
+            <% end %>
+          </ul>
+        </div>
       </div>
+      <% if policy(@series).add_exercise? %>
+        <div class="card-supporting-text card-border">
+          <h4><%= t ".add_exercises" %></h4>
+          <div id="exercises-table-wrapper">
+            <%= render partial: 'exercises/series_exercises_table', locals: {exercises: @exercises, series: @series}  %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(function () {
+    init_series_edit();
+  });
+</script>

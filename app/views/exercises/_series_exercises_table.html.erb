@@ -1,0 +1,30 @@
+<table class="table exercise-table">
+  <thead>
+    <tr>
+      <th class='status-icon'></th>
+      <th><%= t "exercises.index.exercise"%></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% exercises.each do |exercise| %>
+    <tr>
+      <td>
+        <%= raw "<span class='glyphicon glyphicon-eye-close'></span>" if exercise.hidden? %>
+        <%= raw "<span class='glyphicon glyphicon-ban-circle'></span>" if exercise.closed? %>
+        <%= raw "<span class='glyphicon glyphicon-trash'></span>" if exercise.removed? %>
+        <%= raw "<span class='glyphicon glyphicon-exclamation-sign'></span>" if exercise.not_valid? %>
+      </td>
+      <td>
+        <%= link_to exercise.name, exercise_path(exercise) %>
+      </td>
+      <td class="actions">
+        <% unless series.exercises.include? exercise %>
+          <a href="#" class="btn btn-sm btn-default add-exercise" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>"><span class="glyphicon glyphicon-plus"></span></a>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<center><%= page_navigation_links exercises, true, "exercises", {series_id: series.id} %></center>

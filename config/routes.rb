@@ -9,7 +9,11 @@ Rails.application.routes.draw do
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
-    resources :series
+    resources :series do
+      member do
+        post 'add_exercise'
+      end
+    end
 
     resources :courses do
       resources :series

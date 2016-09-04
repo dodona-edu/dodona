@@ -10,19 +10,19 @@
     </div>
   <% end %>
   <div class="field form-group">
-    <%= f.label :course, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.select :course_id, Course.all.collect {|c| [ c.year + " - " + c.name, c.id ] }, {selected: (series.course_id || params[:course_id])}, {class: "form-control"} %></div>
+    <%= f.label :course, :class => "col-sm-4 control-label" %>
+    <div class="col-sm-8"><%= f.select :course_id, Course.all.collect {|c| [ c.year + " - " + c.name, c.id ] }, {selected: (series.course_id || params[:course_id])}, {class: "form-control"} %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :name, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :name, class: "form-control" %></div>
+    <%= f.label :name, :class => "col-sm-4 control-label" %>
+    <div class="col-sm-8"><%= f.text_field :name, class: "form-control" %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :visibility, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.select :visibility, Series.visibilities.map { |key, value| [Series.human_enum_name(:visibility, key), key] }, {}, { :class => 'form-control' } %></div>
+    <%= f.label :visibility, :class => "col-sm-4 control-label" %>
+    <div class="col-sm-8"><%= f.select :visibility, Series.visibilities.map { |key, value| [Series.human_enum_name(:visibility, key), key] }, {}, { :class => 'form-control' } %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :description, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_area :description, class: "form-control" %></div>
+    <%= f.label :description, :class => "col-sm-4 control-label" %>
+    <div class="col-sm-8"><%= f.text_area :description, class: "form-control" %></div>
   </div>
 <% end %>

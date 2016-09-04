@@ -33,6 +33,10 @@ class SeriesPolicy < ApplicationPolicy
     user && user.admin?
   end
 
+  def add_exercise?
+    user && user.admin?
+  end
+
   def permitted_attributes
     if user && user.admin?
       [:name, :description, :course_id, :visibility, :order]

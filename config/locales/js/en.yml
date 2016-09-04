@@ -3,3 +3,5 @@ en:
     submission-saved: Submission saved
     submission-failed: "Oops, something went wrong while saving your solution. Reload this page, try again, or contact the teaching assistant."
     submission-processed: Evaluation finished
+    exercise-added-success: Exercise added
+    exercise-added-failed: Adding exercise failed

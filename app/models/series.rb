@@ -16,6 +16,8 @@ class Series < ApplicationRecord
   enum visibility: [:open, :hidden, :closed]
 
   belongs_to :course
+  has_many :series_memberships
+  has_many :exercises, through: :series_memberships
 
   validates :course, presence: true
   validates :name, presence: true

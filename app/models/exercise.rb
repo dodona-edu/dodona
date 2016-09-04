@@ -30,6 +30,8 @@ class Exercise < ApplicationRecord
   belongs_to :repository
   belongs_to :judge
   has_many :submissions
+  has_many :series_memberships
+  has_many :series, through: :series_memberships
 
   validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
   validates :repository_id, presence: true

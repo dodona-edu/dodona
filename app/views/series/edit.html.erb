@@ -14,7 +14,7 @@
           <%= render 'form', series: @series %>
         </div>
       </div>
-      <% if policy(@series).add_exercise? %>
+      <% if policy(@series).modify_exercises? %>
         <div class="card-supporting-text card-border row">
           <div class="col-xs-12 col-sm-6 col-sm-push-6">
             <h4><%= t ".exercises_in_series" %></h4>
@@ -22,7 +22,7 @@
               <% @series.exercises.each do |exercise| %>
                 <div class="col-xs-12 row exercise">
                   <div class='col-xs-10'><%= link_to exercise.name, exercise %></div>
-                  <div class='actions col-xs-2'><a href="#" class="btn btn-icon" data-exercise_id="<%= exercise.id %>" data-series_id="<%= @series.id %>"><span class='glyphicon glyphicon-trash'></span></a></div>
+                  <div class='actions col-xs-2'><a href="#" class="btn btn-icon remove-exercise" data-exercise_id="<%= exercise.id %>" data-series_id="<%= @series.id %>" data-exercise_name="<%= exercise.name %>"><span class='glyphicon glyphicon-trash'></span></a></div>
                 </div>
               <% end %>
             </div>

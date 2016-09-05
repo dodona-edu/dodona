@@ -5,3 +5,5 @@ nl:
     submission-processed: Evaluatie afgerond
     exercise-added-success: Oefening toegevoegd
     exercise-added-failed: Oefening toevoegen mislukt
+    exercise-removed-success: Oefening verwijderd
+    exercise-removed-failed: Oefening verwijderen mislukt

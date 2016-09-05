@@ -1,5 +1,5 @@
 class SeriesController < ApplicationController
-  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise]
+  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise]
 
   # GET /series
   # GET /series.json
@@ -67,8 +67,12 @@ class SeriesController < ApplicationController
 
   def add_exercise
     @exercise = Exercise.find(params[:exercise_id])
-    membership = SeriesMembership.new(series: @series, exercise: @exercise)
-    membership.save
+    SeriesMembership.create(series: @series, exercise: @exercise)
+  end
+
+  def remove_exercise
+    @exercise = Exercise.find(params[:exercise_id])
+    @series.exercises.delete(@exercise)
   end
 
   private

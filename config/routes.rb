@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :series do
       member do
         post 'add_exercise'
+        post 'remove_exercise'
       end
     end
 

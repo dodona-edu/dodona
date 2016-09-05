@@ -33,8 +33,16 @@ class SeriesPolicy < ApplicationPolicy
     user && user.admin?
   end
 
-  def add_exercise?
+  def modify_exercises?
     user && user.admin?
+  end
+
+  def add_exercise?
+    modify_exercises?
+  end
+
+  def remove_exercise?
+    modify_exercises?
   end
 
   def permitted_attributes

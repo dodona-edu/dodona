@@ -7,7 +7,15 @@
 }
 .series-exercise-list .exercise {
     height: 40px;
+    transition: opacity 0.5s ease-in-out;
 }
+.series-exercise-list .exercise.new {
+    opacity: 0;
+}
+.series-exercise-list .exercise.pending {
+    opacity: 0.5;
+}
+
 .series-exercise-list .exercise .actions {
     text-align: right;
 }

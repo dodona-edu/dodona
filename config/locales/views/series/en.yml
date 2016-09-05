@@ -9,3 +9,5 @@ en:
     edit:
       add_exercises: Add exercises
       exercises_in_series: Exercises in this series
+      add_exercise: add exercise
+      remove_exercise: remove exercise

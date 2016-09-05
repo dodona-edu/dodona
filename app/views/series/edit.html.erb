@@ -22,7 +22,11 @@
               <% @series.exercises.each do |exercise| %>
                 <div class="col-xs-12 row exercise">
                   <div class='col-xs-10'><%= link_to exercise.name, exercise %></div>
-                  <div class='actions col-xs-2'><a href="#" class="btn btn-icon remove-exercise" data-exercise_id="<%= exercise.id %>" data-series_id="<%= @series.id %>" data-exercise_name="<%= exercise.name %>"><span class='glyphicon glyphicon-trash'></span></a></div>
+                  <div class='actions col-xs-2'>
+                    <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-exercise_id="<%= exercise.id %>" data-series_id="<%= @series.id %>" data-exercise_name="<%= exercise.name %>">
+                      <span class='glyphicon glyphicon-trash'></span>
+                    </a>
+                  </div>
                 </div>
               <% end %>
             </div>

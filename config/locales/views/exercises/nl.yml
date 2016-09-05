@@ -14,6 +14,10 @@ nl:
       title: Oefeningen
       exercise: Oefening
       status: Status
+      closed: gesloten
+      hidden: verborgen
+      invalid: ongeldig
+      removed: verwijderd
     show:
       code: Code
       handin: Indienen

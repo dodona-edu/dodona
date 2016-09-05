@@ -9,3 +9,5 @@ nl:
     edit:
       add_exercises: Oefeningen toevoegen
       exercises_in_series: Oefeningen in deze reeks
+      add_exercise: oefening toevoegen
+      remove_exercise: oefening verwijderen

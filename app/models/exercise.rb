@@ -123,8 +123,12 @@ class Exercise < ApplicationRecord
     store_config c
   end
 
-  def users_correct
-    submissions.where(status: :correct).distinct.count(:user_id)
+  def users_correct(course = nil)
+    subs = submissions.where(status: :correct)
+    if course
+      subs = subs.in_course(course)
+    end
+    subs.distinct.count(:user_id)
   end
 
   def users_tried

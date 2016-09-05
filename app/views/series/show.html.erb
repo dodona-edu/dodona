@@ -25,6 +25,14 @@
           <p>
             <strong><%= Series.human_attribute_name("description") %>:</strong> <%= markdown(@series.description) %>
           </p>
+          <p>
+            <strong><%= t ".exercises" %>:</strong>
+            <ul>
+              <% @series.exercises.each do |exercise| %>
+                <li><%= link_to exercise.name, exercise %></li>
+              <% end %>
+            </ul>
+          </p>
         </div>
       </div>
     </div>

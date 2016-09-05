@@ -15,4 +15,4 @@
     <%= render exercises  %>
   </tbody>
 </table>
-<center><%= page_navigation_links exercises, true, "exercises" %></center>
+<center><%= page_navigation_links exercises, true, "exercises" if exercises.try(:total_pages) %></center>

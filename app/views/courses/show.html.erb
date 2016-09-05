@@ -50,9 +50,10 @@
             <% end %>
           </div>
         </div>
-        <% @course.series.each do |course| %>
-          <h4><%= course.name %></h4>
-          <p><%= markdown(course.description) %></p>
+        <% @course.series.each do |series| %>
+          <h4><%= series.name %></h4>
+          <p><%= markdown(series.description) %></p>
+          <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises}) if series.exercises.length > 0 %>
         <% end %>
       </div>
       <% if policy(@course).list_members? %>

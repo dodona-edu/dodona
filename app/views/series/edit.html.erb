@@ -10,24 +10,29 @@
         </div>
       </div>
       <div class="card-supporting-text row">
-        <div class="col-xs-6">
+        <div class="col-xs-12 col-sm-8">
           <%= render 'form', series: @series %>
-        </div>
-        <div class="col-xs-6">
-          <h4><%= t ".exercises" %></h4>
-          <ul class="series-exercise-list">
-            <% @series.exercises.each do |exercise| %>
-              <li><%= link_to exercise.name, exercise %></li>
-            <% end %>
-          </ul>
         </div>
       </div>
       <% if policy(@series).add_exercise? %>
-        <div class="card-supporting-text card-border">
-          <h4><%= t ".add_exercises" %></h4>
-          <%= render partial: 'layouts/searchbar', locals: {baseUrl: exercises_path(:series_id => @series.id)}  %>
-          <div id="exercises-table-wrapper">
-            <%= render partial: 'exercises/series_exercises_table', locals: {exercises: @exercises, series: @series}  %>
+        <div class="card-supporting-text card-border row">
+          <div class="col-xs-12 col-sm-6 col-sm-push-6">
+            <h4><%= t ".exercises_in_series" %></h4>
+            <div class="row series-exercise-list">
+              <% @series.exercises.each do |exercise| %>
+                <div class="col-xs-12 row exercise">
+                  <div class='col-xs-10'><%= link_to exercise.name, exercise %></div>
+                  <div class='actions col-xs-2'><a href="#" class="btn btn-icon" data-exercise_id="<%= exercise.id %>" data-series_id="<%= @series.id %>"><span class='glyphicon glyphicon-trash'></span></a></div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-sm-pull-6">
+            <h4><%= t ".add_exercises" %></h4>
+            <%= render partial: 'layouts/searchbar', locals: {baseUrl: exercises_path(:series_id => @series.id)}  %>
+            <div id="exercises-table-wrapper">
+              <%= render partial: 'exercises/series_exercises_table', locals: {exercises: @exercises, series: @series}  %>
+            </div>
           </div>
         </div>
       <% end %>

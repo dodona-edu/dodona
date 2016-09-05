@@ -1,11 +1,4 @@
 <table class="table exercise-table">
-  <thead>
-    <tr>
-      <th class='status-icon'></th>
-      <th><%= t "exercises.index.exercise"%></th>
-      <th></th>
-    </tr>
-  </thead>
   <tbody>
     <% exercises.each do |exercise| %>
     <tr>
@@ -18,7 +11,7 @@
       <td>
         <%= link_to exercise.name, exercise_path(exercise) %>
       </td>
-      <td class="actions">
+      <td class="add-exercise-action">
         <% unless series.exercises.include? exercise %>
           <a href="#" class="btn btn-sm btn-default add-exercise" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>"><span class="glyphicon glyphicon-plus"></span></a>
         <% end %>

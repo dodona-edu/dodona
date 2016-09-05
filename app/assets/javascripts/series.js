@@ -16,7 +16,7 @@ function init_series_edit() {
                     exercise_id: exerciseId
                 })
                 .done(function () {
-                    exerciseAdded(exerciseName, exerciseId);
+                    exerciseAdded(exerciseName, exerciseId, seriesId);
                 })
                 .fail(function () {
                     addingExerciseFailed(exerciseName, exerciseId);
@@ -25,9 +25,9 @@ function init_series_edit() {
         });
     }
 
-    function exerciseAdded(name, id) {
+    function exerciseAdded(name, id, seriesId) {
         showNotification(I18n.t("js.exercise-added-success"));
-        $(".series-exercise-list").append("<li>" + name + "</li>");
+        $(".series-exercise-list").append("<div class='col-xs-12 row exercise'><div class='col-xs-10'><a href='/exercises/" + id + "'>" + name + "</a></div><div class='actions col-xs-2'><a href='#' class='btn btn-icon' data-exercise_id='" + id + "' data-series_id='" + seriesId +"'><span class='glyphicon glyphicon-trash'></span></a></div></div>");
     }
 
     function addingExerciseFailed(name, id) {

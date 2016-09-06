@@ -4,7 +4,9 @@
       <%= render 'fab_button', form: 'new_course', icon: 'ok' %>
     <% end %>
     <%= render 'layouts/card', title: t('.title') do %>
-      <%= render 'form', course: @course %>
+      <div class="card-supporting-text">
+        <%= render 'form', course: @course %>
+      </div>
     <% end %>
   </div>
 </div>

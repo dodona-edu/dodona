@@ -4,7 +4,9 @@
       <%= render 'fab_button', form: "edit_exercise_#{@exercise.id}", icon: 'ok' %>
     <% end %>
     <%= render 'layouts/card', title: @exercise.name do %>
-      <%= render 'form', exercise: @exercise %>
+      <div class="card-supporting-text">
+        <%= render 'form', exercise: @exercise %>
+      </div>
     <% end %>
   </div>
 </div>

@@ -1,5 +1,5 @@
 class SeriesController < ApplicationController
-  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise]
+  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise, :reorder_exercises]
 
   # GET /series
   # GET /series.json
@@ -74,6 +74,14 @@ class SeriesController < ApplicationController
   def remove_exercise
     @exercise = Exercise.find(params[:exercise_id])
     @series.exercises.delete(@exercise)
+  end
+
+  def reorder_exercises
+    order = JSON.parse(params[:order])
+    @series.series_memberships.each do |membership|
+      rank = order.find_index(membership.exercise_id) || 999
+      membership.update(order: rank)
+    end
   end
 
   private

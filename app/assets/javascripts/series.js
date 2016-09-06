@@ -3,6 +3,7 @@ function init_series_edit() {
     function init() {
         initAddButtons();
         initRemoveButtons();
+        initDragAndDrop();
         // export function
         dodona.seriesEditExercisesLoaded = initAddButtons;
     }
@@ -12,7 +13,7 @@ function init_series_edit() {
             var exerciseId = $(this).data("exercise_id");
             var exerciseName = $(this).data("exercise_name");
             var seriesId = $(this).data("series_id");
-            var $row = $("<div class='col-xs-12 row exercise new'><div class='col-xs-10'><a href='/exercises/" + exerciseId + "'>" + exerciseName + "</a></div><div class='actions col-xs-2'><a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><span class='glyphicon glyphicon-trash'></span></a></div></div>");
+            var $row = $("<div class='col-xs-12 row exercise new'><div class='col-xs-1 drag-handle'><span class='glyphicon glyphicon-align-justify'></span></div><div class='col-xs-9'><a href='/exercises/" + exerciseId + "'>" + exerciseName + "</a></div><div class='actions col-xs-2'><a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><span class='glyphicon glyphicon-trash'></span></a></div></div>");
             $(".series-exercise-list").append($row);
             $row.css("opacity"); // trigger paint
             $row.removeClass("new").addClass("pending");
@@ -32,6 +33,22 @@ function init_series_edit() {
 
     function initRemoveButtons() {
         $("a.remove-exercise").click(removeExercise);
+    }
+
+    function initDragAndDrop() {
+        dragula([$(".series-exercise-list").get(0)], {
+            moves: function (el, source, handle, sibling) {
+                return $(handle).hasClass("drag-handle") || $(handle).parents('.drag-handle').length;
+            }
+        }).on("drop", function () {
+            var seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
+            var order = $(".series-exercise-list a.remove-exercise").map(function () {
+                return $(this).data("exercise_id");
+            }).get();
+            $.post("/series/" + seriesId + "/reorder_exercises.js", {
+                order: JSON.stringify(order)
+            });
+        });
     }
 
     function removeExercise() {

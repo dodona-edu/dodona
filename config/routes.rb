@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       member do
         post 'add_exercise'
         post 'remove_exercise'
+        post 'reorder_exercises'
       end
     end
 

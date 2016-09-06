@@ -51,6 +51,10 @@ class SeriesPolicy < ApplicationPolicy
     modify_exercises?
   end
 
+  def reorder_exercises?
+    modify_exercises?
+  end
+
   def permitted_attributes
     if user && user.admin?
       [:name, :description, :course_id, :visibility, :order]

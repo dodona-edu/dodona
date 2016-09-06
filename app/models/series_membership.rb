@@ -14,5 +14,7 @@ class SeriesMembership < ApplicationRecord
   belongs_to :series
   belongs_to :exercise
 
+  default_scope { order(order: :asc) }
+
   validates :series_id, uniqueness: { scope: :exercise_id }
 end

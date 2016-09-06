@@ -12,6 +12,7 @@ nl:
       subscribe: inschrijven
       exercise_series: Oefeningenreeksen
       users: Gebruikers
+      series_not_visible: Deze reeks is niet zichtbaar voor studenten!
     subscribe:
       subscribed_successfully: Inschrijving succesvol
       subscription_failed: Inschrijven mislukt

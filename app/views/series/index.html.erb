@@ -24,7 +24,7 @@
             <% @series.each do |series| %>
               <tr>
                 <td><%= link_to series.name, series %></td>
-                <td><%= series.course.name %> </td>
+                <td><%= "#{series.course.name} (#{series.course.year})" %> </td>
                 <td class="actions">
                   <% if policy(series).edit? %>
                     <%= link_to edit_series_path(series), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>

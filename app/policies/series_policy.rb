@@ -1,7 +1,11 @@
 class SeriesPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope
+      if user && user.admin?
+        scope.all
+      else
+        scope.where(visibility: :open)
+      end
     end
   end
 
@@ -10,7 +14,9 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    return true if user && user.admin?
+    return true if record.open?
+    return false
   end
 
   def new?

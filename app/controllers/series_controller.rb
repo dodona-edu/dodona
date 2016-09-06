@@ -5,7 +5,7 @@ class SeriesController < ApplicationController
   # GET /series.json
   def index
     authorize Series
-    @series = Series.all
+    @series = policy_scope(Series)
   end
 
   # GET /series/1

@@ -11,6 +11,7 @@ class SeriesController < ApplicationController
   # GET /series/1
   # GET /series/1.json
   def show
+    @course = @series.course
   end
 
   # GET /series/new

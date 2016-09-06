@@ -12,7 +12,10 @@
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <div class="col-sm-6 col-xs-12">
+        <% if current_user && current_user.admin? && !@series.open?%>
+          <div class="alert alert-info"><%= t "courses.show.series_not_visible" %></div>
+        <% end %>
+        <div class="col-xs-12">
           <p>
             <strong><%= t ".series" %>:</strong> <%= @series.name %>
           </p>
@@ -27,11 +30,7 @@
           </p>
           <p>
             <strong><%= t ".exercises" %>:</strong>
-            <ul>
-              <% @series.exercises.each do |exercise| %>
-                <li><%= link_to exercise.name, exercise %></li>
-              <% end %>
-            </ul>
+            <%= render(partial: "exercises/exercises_table", locals: {exercises: @series.exercises}) if @series.exercises.length > 0 %>
           </p>
         </div>
       </div>

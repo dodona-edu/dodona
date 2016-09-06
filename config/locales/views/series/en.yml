@@ -1,5 +1,7 @@
 en:
   series:
+    form:
+      description-help: A description is optional. Markdown formatting can be used.
     index:
       title: Series
     new:

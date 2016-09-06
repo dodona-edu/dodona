@@ -1,5 +1,7 @@
 nl:
   series:
+    form:
+      description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
     index:
       title: Reeksen
     new:

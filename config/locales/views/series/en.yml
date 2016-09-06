@@ -8,6 +8,7 @@ en:
       series: Series
       exercises: Exercises
     edit:
+      title: Edit series
       add_exercises: Add exercises
       exercises_in_series: Exercises in this series
       add_exercise: add exercise

@@ -51,8 +51,18 @@
           </div>
         </div>
         <% @course.series.each do |series| %>
-          <h4><%= series.name %></h4>
-          <p><%= markdown(series.description) %></p>
+          <div class="card-subtitle">
+            <h4><%= series.name %></h4>
+            <div class="flex-spacer"></div>
+            <div class="card-subtitle-actions">
+              <% if policy(series).edit? %>
+                <%= link_to edit_series_path(series), title: t("series.edit.title") do %>
+                  <span class='glyphicon glyphicon-pencil pull-right'></span>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          <%= markdown(series.description) %>
           <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises}) if series.exercises.length > 0 %>
         <% end %>
       </div>

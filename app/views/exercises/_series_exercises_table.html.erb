@@ -9,11 +9,11 @@
         <%= raw "<span class='glyphicon glyphicon-exclamation-sign' title='#{t("exercises.index.invalid")}'></span>" if exercise.not_valid? %>
       </td>
       <td>
-        <%= link_to exercise.name, exercise_path(exercise) %>
+        <%= link_to exercise.name, exercise_path(exercise), target: "_blank" %>
       </td>
       <td class="add-exercise-action">
         <% unless series.exercises.include? exercise %>
-          <a href="#" class="btn btn-icon add-exercise" title="<%= t "series.edit.add_exercise" %>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>"><span class="glyphicon glyphicon-plus"></span></a>
+          <a href="#" class="btn btn-icon add-exercise" title="<%= t "series.edit.add_exercise"%>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>"><span class="glyphicon glyphicon-plus"></span></a>
         <% end %>
       </td>
     </tr>

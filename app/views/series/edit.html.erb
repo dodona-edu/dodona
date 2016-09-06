@@ -24,7 +24,7 @@
                   <div class='col-xs-1 drag-handle'>
                     <span class='glyphicon glyphicon-align-justify'></span>
                   </div>
-                  <div class='col-xs-9'><%= link_to exercise.name, exercise %></div>
+                  <div class='col-xs-9'><%= link_to exercise.name, exercise, target: "_blank" %></div>
                   <div class='actions col-xs-2'>
                     <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-exercise_id="<%= exercise.id %>" data-series_id="<%= @series.id %>" data-exercise_name="<%= exercise.name %>">
                       <span class='glyphicon glyphicon-trash'></span>

@@ -5,9 +5,7 @@
         <h2 class="card-title-text"><%= @repository.name %></h2>
         <% if policy(@repository).edit? %>
           <div class="card-title-fab">
-            <%= link_to edit_repository_path(@repository), class: "btn btn-primary btn-fab" do %>
-              <span class="glyphicon glyphicon-pencil"></span>
-            <% end %>
+            <%= render 'fab_link', url: edit_repository_path(@repository), icon: 'pencil' %>
           </div>
         <% end %>
       </div>

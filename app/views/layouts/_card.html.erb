@@ -1,9 +1,11 @@
 <div class="card">
   <div class="card-title card-title-colored">
     <h2 class="card-title-text"><%= title %></h2>
-    <div class="card-title-fab">
-      <%= yield :fab %>
-    </div>
+    <% if content_for? :fab %>
+      <div class="card-title-fab">
+        <%= yield :fab %>
+      </div>
+    <% end %>
   </div>
   <div class="card-supporting-text">
     <%= yield %>

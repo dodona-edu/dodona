@@ -3,11 +3,7 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".title" %></h2>
-        <div class="card-title-fab">
-          <button type="submit" class="btn btn-primary btn-fab" form="new_repository">
-            <span class="glyphicon glyphicon-ok"></span>
-          </button>
-        </div>
+        <%= render 'fab_button', form: 'new_repository', icon: 'ok' %>
       </div>
       <div class="card-supporting-text">
         <%= render 'form', repository: @repository %>

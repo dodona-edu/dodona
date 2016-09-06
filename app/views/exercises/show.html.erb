@@ -10,9 +10,7 @@
         <h2 class="card-title-text"><%= @exercise.name %></h2>
           <% if policy(@exercise).edit? %>
             <div class="card-title-fab">
-              <%= link_to edit_exercise_path(@exercise), class: "btn btn-primary btn-fab" do %>
-                <span class="glyphicon glyphicon-pencil"></span>
-              <% end %>
+              <%= render 'fab_link', url: edit_exercise_path(@exercise), icon: 'pencil' %>
             </div>
           <% end %>
       </div>

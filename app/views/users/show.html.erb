@@ -5,9 +5,7 @@
         <h2 class="card-title-text"><%= @user.full_name %></h2>
         <% if policy(@user).edit? %>
           <div class="card-title-fab">
-            <%= link_to edit_user_path(@user), class: "btn btn-primary btn-fab" do %>
-              <span class="glyphicon glyphicon-pencil"></span>
-            <% end %>
+            <%= render 'fab_link', url: edit_user_path(@user), icon: 'pencil' %>
           </div>
         <% end %>
       </div>

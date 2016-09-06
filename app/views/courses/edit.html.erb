@@ -1,17 +1,10 @@
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @course.name %></h2>
-        <div class="card-title-fab">
-          <button type="submit" class="btn btn-primary btn-fab" form="edit_course_<%= @course.id %>">
-            <span class="glyphicon glyphicon-ok"></span>
-          </button>
-        </div>
-      </div>
-      <div class="card-supporting-text">
-        <%= render 'form', course: @course %>
-      </div>
-    </div>
+    <% content_for :fab do %>
+      <%= render 'fab_button', form: "edit_course_#{@course.id}", icon: 'ok' %>
+    <% end %>
+    <%= render 'layouts/card', title: @course.name do %>
+      <%= render 'form', course: @course %>
+    <% end %>
   </div>
 </div>

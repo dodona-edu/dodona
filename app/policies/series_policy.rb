@@ -10,7 +10,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def index?
-    user && user.admin?
+    user && user.zeus?
   end
 
   def show?

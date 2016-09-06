@@ -33,7 +33,7 @@ class SeriesController < ApplicationController
 
     respond_to do |format|
       if @series.save
-        format.html { redirect_to @series.course, notice: I18n.t('controllers.created', model: Series.model_name.human) }
+        format.html { redirect_to edit_series_path(@series), notice: I18n.t('controllers.created', model: Series.model_name.human) }
         format.json { render :show, status: :created, location: @series }
       else
         format.html { render :new }
@@ -47,7 +47,7 @@ class SeriesController < ApplicationController
   def update
     respond_to do |format|
       if @series.update(permitted_attributes(Series))
-        format.html { redirect_to @series, notice: I18n.t('controllers.updated', model: Series.model_name.human) }
+        format.html { redirect_to @series.course, notice: I18n.t('controllers.updated', model: Series.model_name.human) }
         format.json { render :show, status: :ok, location: @series }
       else
         format.html { render :edit }

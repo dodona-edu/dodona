@@ -15,12 +15,21 @@
   </td>
   <% if user_signed_in? %>
   <td>
+    <% not_solved = false %>
     <% if :correct == exercise.status_for(current_user) %>
       <%= link_to t(".correct"), exercise.last_correct_submission(current_user) %>
     <% elsif :wrong == exercise.status_for(current_user) %>
       <%= link_to t(".wrong"), exercise.last_submission(current_user) %>
     <% else %>
       <%= t ".not_solved" %>
+      <% not_solved = true %>
+    <% end %>
+  </td>
+  <td>
+    <% unless not_solved %>
+      <%= link_to exercise_submissions_path(exercise), title: t("layout.menu.my_submissions"), class: "btn btn-icon" do %>
+        <span class='glyphicon glyphicon-inbox'></span>
+      <% end %>
     <% end %>
   </td>
   <% end %>

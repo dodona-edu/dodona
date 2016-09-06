@@ -52,6 +52,7 @@
         </div>
         <% policy_scope(@course.series).each do |series| %>
           <div class="card-subtitle">
+            <a class="anchor" id="series-<%= series.name.parameterize %>"></a>
             <h4><%= series.name %></h4>
             <div class="flex-spacer"></div>
             <div class="card-subtitle-actions">

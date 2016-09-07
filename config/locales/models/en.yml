@@ -18,6 +18,10 @@ en:
         name_nl: Name Dutch
         name_en: Name English
         visibility: Visibility
+        visibilities:
+          open: Open
+          hidden: Hidden
+          closed: Closed
       judge:
         name: Name
         remote: Clone URL

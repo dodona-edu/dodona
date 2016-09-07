@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160811155752) do
+ActiveRecord::Schema.define(version: 20160904140744) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -57,11 +57,14 @@ ActiveRecord::Schema.define(version: 20160811155752) do
     t.string   "programming_language"
     t.integer  "repository_id"
     t.integer  "judge_id"
+    t.integer  "status",               default: 0
     t.index ["judge_id"], name: "index_exercises_on_judge_id", using: :btree
     t.index ["name_nl"], name: "index_exercises_on_name_nl", using: :btree
     t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true, using: :btree
     t.index ["programming_language"], name: "index_exercises_on_programming_language", using: :btree
     t.index ["repository_id"], name: "index_exercises_on_repository_id", using: :btree
+    t.index ["status"], name: "index_exercises_on_status", using: :btree
+    t.index ["visibility"], name: "index_exercises_on_visibility", using: :btree
   end
 
   create_table "judges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -85,6 +88,29 @@ ActiveRecord::Schema.define(version: 20160811155752) do
     t.datetime "updated_at", null: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id", using: :btree
     t.index ["path"], name: "index_repositories_on_path", unique: true, using: :btree
+  end
+
+  create_table "series", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "course_id"
+    t.string   "name"
+    t.text     "description", limit: 65535
+    t.integer  "visibility"
+    t.integer  "order"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["course_id"], name: "index_series_on_course_id", using: :btree
+    t.index ["name"], name: "index_series_on_name", using: :btree
+    t.index ["visibility"], name: "index_series_on_visibility", using: :btree
+  end
+
+  create_table "series_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "series_id"
+    t.integer  "exercise_id"
+    t.integer  "order", default: 999
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["exercise_id"], name: "index_series_memberships_on_exercise_id", using: :btree
+    t.index ["series_id"], name: "index_series_memberships_on_series_id", using: :btree
   end
 
   create_table "submissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -119,6 +145,9 @@ ActiveRecord::Schema.define(version: 20160811155752) do
   add_foreign_key "exercises", "judges"
   add_foreign_key "exercises", "repositories"
   add_foreign_key "repositories", "judges"
+  add_foreign_key "series", "courses"
+  add_foreign_key "series_memberships", "exercises"
+  add_foreign_key "series_memberships", "series"
   add_foreign_key "submissions", "exercises"
   add_foreign_key "submissions", "users"
 end

@@ -20,7 +20,7 @@
   <% if f.hasPermission?(:visibility) %>
     <div class="field form-group">
       <%= f.label :visibility, :class => "col-sm-2 control-label" %>
-      <div class="col-sm-4"><%= f.select :visibility, Exercise.visibilities.map { |key, value| [key.humanize, key] }, {}, { :class => 'form-control', disabled: !f.hasPermission?(:visibility) } %></div>
+      <div class="col-sm-4"><%= f.select :visibility, Exercise.visibilities.map { |key, value| [Exercise.human_enum_name(:visibility, key), key] }, {}, { :class => 'form-control', disabled: !f.hasPermission?(:visibility) } %></div>
     </div>
   <% end %>
   <div class="field form-group">

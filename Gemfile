@@ -32,8 +32,10 @@ gem 'delayed_job_active_record'
 # start workers in the background
 gem 'daemons'
 # dashboard
-gem 'sinatra', github: 'sinatra/sinatra'
-gem 'rack-protection', github: 'sinatra/rack-protection'
+github 'sinatra/sinatra' do
+  gem 'sinatra'
+  gem 'rack-protection'
+end
 gem 'delayed_job_web'
 
 # pagination
@@ -56,11 +58,14 @@ gem 'ace-rails-ap'
 gem 'autoprefixer-rails'
 
 # cas authentication
-gem 'devise', '4.0.0.rc2'
+gem 'devise'
 gem 'devise_cas_authenticatable'
 
 # authorization
 gem 'pundit'
+
+# impersonate users
+gem 'pretender'
 
 # db annotations
 gem 'annotate'
@@ -72,13 +77,15 @@ gem 'capistrano-rvm', group: :development
 gem 'capistrano3-delayed-job', '~> 1.0'
 
 # i18n
-gem 'rails-i18n', '~> 5.0.0.beta3' # For 5.0.0.beta3
-# use version from github for rails 5 support
-gem 'i18n-js', git: 'git://github.com/fnando/i18n-js.git'
+gem 'rails-i18n'
+gem 'i18n-js', '~> 3.0.0.rc14'
 
 # email exceptions
 gem 'exception_notification'
 gem 'slack-notifier'
+
+# filtering
+gem 'has_scope'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

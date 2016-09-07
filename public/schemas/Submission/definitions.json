@@ -65,7 +65,7 @@
             "permission": {
                 "description": "Configuration of users that can access this object (visible to all by default).",
                 "type": "string",
-                "enum": ["student", "teacher", "zeus", "admin"]
+                "enum": ["student", "staff", "zeus", "admin"]
             }
         }
     },

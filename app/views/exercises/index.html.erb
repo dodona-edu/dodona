@@ -5,21 +5,10 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
       </div>
       <div class="card-supporting-text">
-        <table class="table">
-          <thead>
-            <tr>
-              <th><%= t ".exercise"%></th>
-              <th></th>
-              <% if user_signed_in? %>
-              <th><%= t ".status"%></th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody>
-            <%= render @exercises  %>
-          </tbody>
-        </table>
-        <center><%= page_navigation_links @exercises, false %></center>
+        <%= render partial: 'layouts/searchbar' %>
+        <div id="exercises-table-wrapper">
+          <%= render partial: 'exercises_table', locals: {exercises: @exercises}  %>
+        </div>
       </div>
     </div>
   </div>

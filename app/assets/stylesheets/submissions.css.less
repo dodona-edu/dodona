@@ -127,4 +127,23 @@
         margin-right: 12px;
         vertical-align: text-top;
     }
+    .lint-errors .code {
+        margin-left: 30px;
+    }
+    .code.wrong {
+        background: #fee;
+        color: #b00;
+    }
+    .code.correct {
+        background: #dfd;
+        color: #080;
+    }
+}
+
+#editor-result .ace_content {
+    background-color: @grey-100;
+    cursor: default;
+}
+.ace_gutter-cell {
+    background-position: 2px top !important;
 }

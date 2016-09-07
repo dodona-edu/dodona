@@ -1,0 +1,31 @@
+// Place all the styles related to the Series controller here.
+// They will automatically be included in application.css.
+// You can use Less here: http://lesscss.org/
+
+.add-exercise-action {
+    width: 25px;
+}
+.series-exercise-list .exercise {
+    height: 40px;
+    transition: opacity 0.5s ease-in-out;
+}
+.series-exercise-list .exercise.new {
+    opacity: 0;
+}
+.series-exercise-list .exercise.pending {
+    opacity: 0.5;
+}
+
+.exercise.gu-mirror .actions,
+.series-exercise-list .exercise .actions {
+    text-align: right;
+}
+.exercise .drag-handle {
+    color: @black-disabled;
+}
+.exercise .drag-handle .glyphicon {
+    cursor: grab;
+}
+.exercise.gu-mirror .drag-handle .glyphicon {
+    cursor: grabbing;
+}

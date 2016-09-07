@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @series.name %></h2>
+        <% if policy(@series).edit? %>
+          <div class="card-title-fab">
+            <%= link_to edit_series_path(@series), class: "btn btn-primary btn-fab" do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <% if current_user && current_user.admin? && !@series.open?%>
+          <div class="alert alert-info"><%= t "courses.show.series_not_visible" %></div>
+        <% end %>
+        <div class="col-xs-12">
+          <p>
+            <strong><%= t ".series" %>:</strong> <%= @series.name %>
+          </p>
+          <p>
+            <strong><%= Series.human_attribute_name("course") %>:</strong> <%= link_to "#{@series.course.name} (#{@series.course.year})", course_path(@series.course) %>
+          </p>
+          <p>
+            <strong><%= Series.human_attribute_name("visibility") %>:</strong> <%= Series.human_enum_name(:visibility, @series.visibility) %>
+          </p>
+          <p>
+            <strong><%= Series.human_attribute_name("description") %>:</strong> <%= markdown(@series.description) %>
+          </p>
+          <p>
+            <strong><%= t ".exercises" %>:</strong>
+            <%= render(partial: "exercises/exercises_table", locals: {exercises: @series.exercises}) if @series.exercises.length > 0 %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

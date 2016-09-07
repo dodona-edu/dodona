@@ -5,6 +5,7 @@ nl:
       exercise: Oefening
       judge: Judge
       repository: Repository
+      series: Reeks
       submission: Oplossing
       user: Student
     attributes:
@@ -30,6 +31,16 @@ nl:
         path: Padnaam
         judge: Default judge
         exercises: Oefeningen
+      series:
+        course: Cursus
+        name: Naam
+        description: Beschrijving
+        visibility: Zichtbaarheid
+        order: Volgorde
+        visibilities:
+          open: Open
+          hidden: Verborgen
+          closed: Gesloten
       submission:
         code: Code
         result: Resultaat

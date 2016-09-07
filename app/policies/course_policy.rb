@@ -45,6 +45,10 @@ class CoursePolicy < ApplicationPolicy
     user
   end
 
+  def add_series?
+    user && user.admin?
+  end
+
   def permitted_attributes
     if user && user.admin?
       [:name, :year]

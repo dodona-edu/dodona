@@ -2,6 +2,11 @@ en:
   layout:
     head:
       description: Exercises for the programming courses of Ghent University.
+    impersonate:
+      impersonate: Impersonate
+      impersonating_user: You are currently impersonating
+      switch_back: Switch back
+      your_account: to your account.
     messages:
       warning: Warning
       danger: Oh snap
@@ -19,6 +24,8 @@ en:
       log_out: Log out
     footer:
       ugent: Ghent University
+    search:
+      search: search
   general:
     are_you_sure: "Are you sure?"
   errors:

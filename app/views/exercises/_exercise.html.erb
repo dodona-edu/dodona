@@ -1,18 +1,35 @@
 <tr>
+  <% if user_signed_in? && current_user.admin? %>
+    <td>
+      <%= raw "<span class='glyphicon glyphicon-eye-close' title='#{t("exercises.index.hidden")}'></span>" if exercise.hidden? %>
+      <%= raw "<span class='glyphicon glyphicon-ban-circle' title='#{t("exercises.index.closed")}'></span>" if exercise.closed? %>
+      <%= raw "<span class='glyphicon glyphicon-trash' title='#{t("exercises.index.removed")}'></span>" if exercise.removed? %>
+      <%= raw "<span class='glyphicon glyphicon-exclamation-sign' title='#{t("exercises.index.invalid")}'></span>" if exercise.not_valid? %>
+    </td>
+  <% end %>
   <td>
     <%= link_to exercise.name, exercise_path(exercise) %>
   </td>
   <td>
-    <span title="<%= t ".count_tooltip" %>"><%= exercise.users_correct %>/<%= exercise.users_tried %></span>
+    <span title="<%= t ".count_tooltip" %>"><%= exercise.users_correct(@course) %>/<%= @course.nil? ? exercise.users_tried : @course.users.count %></span>
   </td>
   <% if user_signed_in? %>
   <td>
+    <% not_solved = false %>
     <% if :correct == exercise.status_for(current_user) %>
       <%= link_to t(".correct"), exercise.last_correct_submission(current_user) %>
     <% elsif :wrong == exercise.status_for(current_user) %>
       <%= link_to t(".wrong"), exercise.last_submission(current_user) %>
     <% else %>
       <%= t ".not_solved" %>
+      <% not_solved = true %>
+    <% end %>
+  </td>
+  <td>
+    <% unless not_solved %>
+      <%= link_to exercise_submissions_path(exercise), title: t("layout.menu.my_submissions"), class: "btn btn-icon" do %>
+        <span class='glyphicon glyphicon-chevron-right'></span>
+      <% end %>
     <% end %>
   </td>
   <% end %>

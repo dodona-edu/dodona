@@ -1,9 +1,11 @@
-function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
+function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorShown) {
     var editor;
     var lastSubmission;
 
     function init() {
-        initEditor();
+        if(editorShown) {
+            initEditor();
+        }
         initLightboxes();
 
         centerImagesAndTables();
@@ -19,9 +21,16 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
                 .fail(submissionFailed);
         });
 
-        $("#exercise-handin-link").on('shown.bs.tab', function() {
+        $("#submission-copy-btn").click(function () {
+            var submissionSource = ace.edit("editor-result").getValue();
+            editor.setValue(submissionSource, 1);
+            $('#exercise-handin-link').tab('show');
+        });
+
+        $("#exercise-handin-link").on('shown.bs.tab', function () {
             // refresh editor after show
             editor.resize(true);
+            editor.focus();
         });
 
         // configure mathjax
@@ -40,7 +49,6 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         // export function
         dodona.feedbackLoaded = feedbackLoaded;
         dodona.feedbackTableLoaded = feedbackTableLoaded;
-        dodona.setEditorText = setEditorText;
     }
 
     function initEditor() {
@@ -54,10 +62,6 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         editor.getSession().setUseWrapMode(true);
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
-    }
-
-    function setEditorText(text) {
-        editor.setValue(text, 1);
     }
 
     function initLightboxes() {
@@ -92,10 +96,18 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
     }
 
     function swapActionButtons() {
-        $("#exercise-handin-link").on("shown.bs.tab", function(e) { $("#editor-process-btn").removeClass("hidden-fab"); });
-        $("#exercise-handin-link").on("hide.bs.tab", function(e) { $("#editor-process-btn").addClass("hidden-fab"); });
-        $("#exercise-feedback-link").on("shown.bs.tab", function(e) { $("#submission-copy-btn").removeClass("hidden-fab"); });
-        $("#exercise-feedback-link").on("hide.bs.tab", function(e) { $("#submission-copy-btn").addClass("hidden-fab"); });
+        $("#exercise-handin-link").on("shown.bs.tab", function (e) {
+            $("#editor-process-btn").removeClass("hidden-fab");
+        });
+        $("#exercise-handin-link").on("hide.bs.tab", function (e) {
+            $("#editor-process-btn").addClass("hidden-fab");
+        });
+        $("#exercise-feedback-link").on("shown.bs.tab", function (e) {
+            $("#submission-copy-btn").removeClass("hidden-fab");
+        });
+        $("#exercise-feedback-link").on("hide.bs.tab", function (e) {
+            $("#submission-copy-btn").addClass("hidden-fab");
+        });
     }
 
     function submitSolution(code) {
@@ -107,11 +119,10 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn) {
         });
     }
 
-    function feedbackLoaded(edit_link) {
+    function feedbackLoaded() {
         $('#feedback').removeClass("hidden");
         $('#exercise-feedback-link').removeClass("hidden");
         $('#exercise-feedback-link').tab('show');
-        $('#submission-copy-btn').attr('href', edit_link);
     }
 
     function feedbackTableLoaded() {

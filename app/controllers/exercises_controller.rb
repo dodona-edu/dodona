@@ -1,5 +1,8 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: [:show, :edit, :update, :users, :media]
+  skip_before_action :verify_authenticity_token, only: [:media]
+
+  has_scope :by_filter, as: 'filter'
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')
@@ -7,7 +10,10 @@ class ExercisesController < ApplicationController
 
   def index
     authorize Exercise
-    @exercises = policy_scope(Exercise).order('name_' + I18n.locale.to_s).paginate(page: params[:page])
+    @exercises = policy_scope(Exercise).merge(apply_scopes(Exercise).all).order('name_' + I18n.locale.to_s).paginate(page: params[:page])
+    if params[:series_id]
+      @series = Series.find(params[:series_id])
+    end
   end
 
   def show

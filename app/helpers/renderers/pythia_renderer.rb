@@ -34,6 +34,16 @@ class PythiaRenderer < FeedbackTableRenderer
     end
   end
 
+  def output_message(m)
+    if m[:format].in?(%w(traceback))
+      @builder.div(class: 'code wrong') do
+        @builder.text! m[:description]
+      end
+    else
+      super(m)
+    end
+  end
+
   ## custom methods
 
   def pythia_diff(diff)
@@ -75,7 +85,7 @@ class PythiaRenderer < FeedbackTableRenderer
     @builder.text! lines[0]
     if lines.length > 1
       @builder.br
-      @builder.span(class: 'code') do
+      @builder.div(class: 'code') do
         @builder.text! lines.drop(1).join("\n")
       end
     end

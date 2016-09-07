@@ -5,6 +5,7 @@ en:
       exercise: Exercise
       judge: Judge
       repository: Repository
+      series: Series
       submission: Submission
       user: Student
     attributes:
@@ -30,6 +31,16 @@ en:
         path: Path
         judge: Default judge
         exercises: Exercises
+      series:
+        course: Course
+        name: Name
+        description: Description
+        visibility: Visibility
+        order: Order
+        visibilities:
+          open: Open
+          hidden: Hidden
+          closed: Closed
       submission:
         code: Code
         result: Result

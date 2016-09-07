@@ -2,9 +2,11 @@ class SubmissionsController < ApplicationController
   before_action :set_submission, only: [:show, :download, :evaluate, :edit]
   skip_before_action :verify_authenticity_token, only: [:create]
 
+  has_scope :by_filter, as: 'filter'
+
   def index
     authorize Submission
-    @submissions = policy_scope(Submission).paginate(page: params[:page])
+    @submissions = policy_scope(Submission).merge(apply_scopes(Submission).all).paginate(page: params[:page])
     if params[:user_id]
       @user = User.find(params[:user_id])
       @submissions = @submissions.of_user(@user)
@@ -23,7 +25,7 @@ class SubmissionsController < ApplicationController
     para = permitted_attributes(Submission)
     para[:user_id] = current_user.id
     @submission = Submission.new(para)
-    if Pundit.policy!(current_user, @submission.exercise).show? && @submission.save
+    if Pundit.policy!(current_user, @submission.exercise).submit? && @submission.save
       render json: { status: 'ok', id: @submission.id }
     else
       render json: { status: 'failed' }, status: :unprocessable_entity
@@ -33,7 +35,6 @@ class SubmissionsController < ApplicationController
   def edit
     respond_to do |format|
       format.html { redirect_to exercise_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission) }
-      # format.js <-- for fancier reloads, which do not work yet
     end
   end
 

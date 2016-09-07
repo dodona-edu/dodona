@@ -21,12 +21,21 @@ class Submission < ApplicationRecord
   belongs_to :user
   has_one :judge, through: :exercise
 
+  validates :exercise, presence: true
+  validates :user, presence: true
+
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed
 
   default_scope { order(created_at: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
+  scope :in_course, ->(course) { joins('LEFT JOIN course_memberships ON submissions.user_id = course_memberships.user_id').where('course_memberships.course_id = ?', course.id) }
+
+  scope :by_exercise_name, -> (name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+  scope :by_status, -> (status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
+  scope :by_username, -> (username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
+  scope :by_filter, -> (query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
 
   # TODO; can delayed_jobs_active_records really only process active record methods?
   def evaluate_delayed

@@ -12,35 +12,10 @@
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <table class="table table-index table-resource">
-          <thead>
-            <tr>
-              <th><%= User.human_attribute_name("username") %></th>
-              <th><%= User.human_attribute_name("name") %></th>
-              <th><%= User.human_attribute_name("email") %></th>
-              <th><%= User.human_attribute_name("permission") %></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @users.each do |user| %>
-              <tr>
-                <td><%= link_to user.username, user %></td>
-                <td><%= user.full_name %> </td>
-                <td><%= user.email %> </td>
-                <td><%= user.permission %> </td>
-                <td class="actions">
-                  <% if policy(user).edit? %>
-                    <%= link_to edit_user_path(user), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
-                  <% end %>
-                  <% if policy(user).destroy? %>
-                    <%= link_to user, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+        <%= render partial: 'layouts/searchbar' %>
+        <div id="users-table-wrapper">
+          <%= render partial: 'users_table', locals: {users: @users}  %>
+        </div>
       </div>
     </div>
   </div>

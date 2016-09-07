@@ -106,6 +106,13 @@
               <%= content_tag(:div, raw("<strong>#{t("layout.messages.success")}!</strong> ")+value, :class => "alert alert-success") if key == "success" %>
             <% end %>
           <% end %>
+          <% if user_signed_in? && current_user != true_user %>
+            <div class='alert alert-info'>
+              <%= t("layout.impersonate.impersonating_user")%>
+              <%= link_to(current_user.full_name, current_user) %>!
+              <%= link_to(t("layout.impersonate.switch_back"), stop_impersonating_users_path) + " " +  t("layout.impersonate.your_account")%>
+            </div>
+          <% end %>
         </div>
         <%= yield %>
       </div>
@@ -117,7 +124,7 @@
         <div class='footer-spacer'></div>
         <div class="footer-block">
           <div class='footer-version'>
-            Dodona v0.6.1
+            Dodona v0.7
         </div>
         </div>
       </footer>

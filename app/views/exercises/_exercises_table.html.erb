@@ -5,14 +5,15 @@
         <th class='status-icon'></th>
       <% end %>
       <th><%= t "exercises.index.exercise"%></th>
-      <th></th>
+      <th class='count'></th>
       <% if user_signed_in? %>
-        <th><%= t "exercises.index.status"%></th>
+        <th class='status'><%= t "exercises.index.status"%></th>
       <% end %>
+      <th class='status-icon'></th>
     </tr>
   </thead>
   <tbody>
-    <%= render exercises  %>
+    <%= render(exercises) %>
   </tbody>
 </table>
-<center><%= page_navigation_links exercises, true, "exercises" %></center>
+<center><%= page_navigation_links exercises, true, "exercises" if exercises.try(:total_pages) %></center>

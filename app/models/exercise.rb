@@ -13,7 +13,7 @@
 #  programming_language :string(255)
 #  repository_id        :integer
 #  judge_id             :integer
-#  status               :integer          default(0)
+#  status               :integer          default("ok")
 #
 
 require 'action_view'
@@ -30,6 +30,8 @@ class Exercise < ApplicationRecord
   belongs_to :repository
   belongs_to :judge
   has_many :submissions
+  has_many :series_memberships
+  has_many :series, through: :series_memberships
 
   validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
   validates :repository_id, presence: true
@@ -121,8 +123,12 @@ class Exercise < ApplicationRecord
     store_config c
   end
 
-  def users_correct
-    submissions.where(status: :correct).distinct.count(:user_id)
+  def users_correct(course = nil)
+    subs = submissions.where(status: :correct)
+    if course
+      subs = subs.in_course(course)
+    end
+    subs.distinct.count(:user_id)
   end
 
   def users_tried

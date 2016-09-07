@@ -13,6 +13,10 @@ en:
       title: Exercises
       exercise: Exercise
       status: Status
+      closed: closed
+      hidden: hidden
+      invalid: invalid
+      removed: removed
     show:
       code: Code
       handin: Hand in

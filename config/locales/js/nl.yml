@@ -3,3 +3,7 @@ nl:
     submission-saved: Oplossing opgeslagen
     submission-failed: "Oeps, er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent."
     submission-processed: Evaluatie afgerond
+    exercise-added-success: Oefening toegevoegd
+    exercise-added-failed: Oefening toevoegen mislukt
+    exercise-removed-success: Oefening verwijderd
+    exercise-removed-failed: Oefening verwijderen mislukt

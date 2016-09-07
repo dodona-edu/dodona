@@ -13,6 +13,7 @@ en:
       exercise_series: Exercise series
       users: Users
       series_not_visible: This series is not visible for students!
+      series: series
     subscribe:
       subscribed_successfully: Subscribed successfully
       subscription_failed: Subscription failed

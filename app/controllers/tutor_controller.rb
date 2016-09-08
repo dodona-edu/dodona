@@ -17,7 +17,17 @@ class TutorController < ApplicationController
             f.write("\n")
             f.write("echo('I am Dieter')")
             f.close
-            @codefile = file
+
+            codefile = file
+            @json_traceback = `node --expose-debug-as=Debug ~/jslogger.js --jsondump=true #{codefile}`
+              .strip
+              .gsub!('\\n', '\\\\\\n')
+              .gsub!("\"", "\\\"")
+              .gsub!("\'", "\\\\\'")
+              .html_safe
+
+            @json_traceback = ('"' + @json_traceback + '"').html_safe
+
             render layout: false
             File.delete(file)
         end

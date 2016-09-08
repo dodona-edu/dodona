@@ -1,4 +1,5 @@
 <% if defined?(@fullscreen) %>
+
     <html>
     <head>
       <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -7,12 +8,7 @@
       <% if defined?(@fullscreen) %>
         <script>
         $(document).ready(function() {
-            var codeTrace = JSON.parse('<%= `node --expose-debug-as=Debug ~/jslogger.js --jsondump=true #{@codefile}`
-              .strip
-              .gsub!('\\n', '\\\\\\n')
-              .gsub!("\"", "\\\"")
-              .gsub!("\'", "\\\\\'")
-              .html_safe%>');
+            var codeTrace = JSON.parse(<%= @json_traceback %>);
             var visualizer = new ExecutionVisualizer('tutorelement', codeTrace,
                                                           {embeddedMode: false,
                                                            heightChangeCallback: redrawAllVisualizerArrows,
@@ -35,7 +31,9 @@
         <div id="tutorelement" style="overflow-x: scroll;"></div>
     </body>
     </html>
+
   <% else %>
+
     <div class="row">
       <div id="loading" class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">Loading</div>
       <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
@@ -48,4 +46,5 @@
         $("#loading").remove()
       }
     </script>
+    
   <% end %>

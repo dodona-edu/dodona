@@ -7,6 +7,16 @@
       <%= raw "<span class='glyphicon glyphicon-exclamation-sign' title='#{t("exercises.index.invalid")}'></span>" if exercise.not_valid? %>
     </td>
   <% end %>
+  <% if user_signed_in? && !current_user.admin? %>
+    <td>
+      <% if :correct == exercise.status_for(current_user) %>
+        <span class="glyphicon glyphicon-ok colored-correct"></span>
+      <% end %>
+      <% if :wrong == exercise.status_for(current_user) %>
+        <span class="glyphicon glyphicon-remove colored-wrong"></span>
+      <% end %>
+    </td>
+  <% end %>
   <td>
     <%= link_to exercise.name, exercise_path(exercise) %>
   </td>

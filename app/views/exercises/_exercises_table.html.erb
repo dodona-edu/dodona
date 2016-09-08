@@ -1,15 +1,15 @@
 <table class="table exercise-table">
   <thead>
     <tr>
-      <% if user_signed_in? && current_user.admin? %>
+      <% if user_signed_in? %>
         <th class='status-icon'></th>
       <% end %>
       <th><%= t "exercises.index.exercise"%></th>
       <th class='count'></th>
       <% if user_signed_in? %>
         <th class='status'><%= t "exercises.index.status"%></th>
+        <th class='status-icon'></th>
       <% end %>
-      <th class='status-icon'></th>
     </tr>
   </thead>
   <tbody>

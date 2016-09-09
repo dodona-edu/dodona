@@ -1,50 +1,29 @@
-<% if defined?(@fullscreen) %>
+<html>
+  <head>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
-    <html>
-    <head>
-      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+      <script>
+      $(document).ready(function() {
+          var codeTrace = JSON.parse(<%= @json_traceback %>);
+          var visualizer = new ExecutionVisualizer('tutorelement', codeTrace,
+                                                        {embeddedMode: false,
+                                                         heightChangeCallback: redrawAllVisualizerArrows,
+                                                         editCodeBaseURL: ''});
 
-      <% if defined?(@fullscreen) %>
-        <script>
-        $(document).ready(function() {
-            var codeTrace = JSON.parse(<%= @json_traceback %>);
-            var visualizer = new ExecutionVisualizer('tutorelement', codeTrace,
-                                                          {embeddedMode: false,
-                                                           heightChangeCallback: redrawAllVisualizerArrows,
-                                                           editCodeBaseURL: ''});
-
-            function redrawAllVisualizerArrows() {
-                if (visualizer) visualizer.redrawConnectors();
-            }
-            // Call redrawConnectors() on all visualizers whenever the window is resized,
-            // since HTML elements might have moved during a resize. The SVG arrows rendered
-            // by jsPlumb don't automatically get re-drawn in their new positions unless
-            // redrawConnectors() is called.
-            $(window).resize(redrawAllVisualizerArrows);
-            $('#tutorelement').scroll(redrawAllVisualizerArrows);
-        });
-        </script>
-      <% end %>
-    </head>
-    <body>
-        <div id="tutorelement" style="overflow-x: scroll;"></div>
-    </body>
-    </html>
-
-  <% else %>
-
-    <div class="row">
-      <div id="loading" class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">Loading</div>
-      <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
-          <iframe src="?fullscreen" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this)"></iframe>
-      </div>
-    </div>
-    <script language="javascript" type="text/javascript">
-      function resizeIframe(obj) {
-        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-        $("#loading").remove()
-      }
-    </script>
-    
-  <% end %>
+          function redrawAllVisualizerArrows() {
+              if (visualizer) visualizer.redrawConnectors();
+          }
+          // Call redrawConnectors() on all visualizers whenever the window is resized,
+          // since HTML elements might have moved during a resize. The SVG arrows rendered
+          // by jsPlumb don't automatically get re-drawn in their new positions unless
+          // redrawConnectors() is called.
+          $(window).resize(redrawAllVisualizerArrows);
+          $('#tutorelement').scroll(redrawAllVisualizerArrows);
+      });
+      </script>
+  </head>
+  <body>
+      <div id="tutorelement" style="overflow-x: scroll;"></div>
+  </body>
+  </html>

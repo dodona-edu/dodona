@@ -5,9 +5,7 @@
         <h2 class="card-title-text"><%= @series.name %></h2>
         <% if policy(@series).edit? %>
           <div class="card-title-fab">
-            <%= link_to edit_series_path(@series), class: "btn btn-primary btn-fab" do %>
-              <span class="glyphicon glyphicon-pencil"></span>
-            <% end %>
+            <%= render 'fab_link', url: edit_series_path(@series), icon: 'pencil' %>
           </div>
         <% end %>
       </div>

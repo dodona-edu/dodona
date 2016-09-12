@@ -3,7 +3,9 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @user.full_name %></h2>
-        <%= render 'fab_button', form: "edit_user_#{@user.id}", icon: 'ok' %>
+        <div class="card-title-fab">
+          <%= render 'fab_button', form: "edit_user_#{@user.id}", icon: 'ok' %>
+        </div>
       </div>
       <div class="card-supporting-text">
         <%= render 'form', user: @user %>

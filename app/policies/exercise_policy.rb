@@ -22,8 +22,8 @@ class ExercisePolicy < ApplicationPolicy
     false
   end
 
-  def show_hidden_without_token?
-    show? && user && user.admin?
+  def access_hidden_without_token?
+    user && user.admin?
   end
 
   def edit?

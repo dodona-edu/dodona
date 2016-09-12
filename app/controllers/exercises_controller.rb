@@ -1,6 +1,7 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: [:show, :edit, :update, :users, :media]
   skip_before_action :verify_authenticity_token, only: [:media]
+  before_action :save_token, only: [:show]
 
   has_scope :by_filter, as: 'filter'
 
@@ -18,8 +19,8 @@ class ExercisesController < ApplicationController
 
   def show
     # Check token for hidden exercises
-    if @exercise.hidden? && @exercise.exercise_token.token != params[:token]
-      authorize @exercise, :show_hidden_without_token?
+    if @exercise.hidden? && !@exercise.hidden_token_in?(session[:tokens])
+      authorize @exercise, :access_hidden_without_token?
     end
 
     flash.now[:notice] = I18n.t('exercises.show.not_accessible') if @exercise.closed?
@@ -67,5 +68,12 @@ class ExercisesController < ApplicationController
   def set_exercise
     @exercise = Exercise.find(params[:id])
     authorize @exercise
+  end
+
+  def save_token
+    if params.has_key?(:token)
+      session[:tokens] ||= []
+      session[:tokens] << params[:token]
+    end
   end
 end

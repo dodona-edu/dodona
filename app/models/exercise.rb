@@ -182,6 +182,10 @@ class Exercise < ApplicationRecord
                   end
   end
 
+  def hidden_token_in?(set)
+    set.include? exercise_token.token
+  end
+
   def self.process_repository(repository)
     Exercise.process_directory(repository, '/')
   end

@@ -29,7 +29,7 @@ en:
       hand_in_tooltip: Click the play button to hand in and test your solution.
       not_found: Sorry, we can't find this exercise.
       not_accessible: This exercise isn't accessible for students.
-      not_visible: This exercise isn't visible for students.
+      not_visible: "This exercise isn't visible for students. Shareable link: %{link}."
       alert_not_valid: There's something wrong with this exercise. You can't hand in solutions for the moment, but can still see your old submissions.
       alert_removed: This exercise is no longer available, but can still see your old submissions.
     users:

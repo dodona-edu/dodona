@@ -1,0 +1,18 @@
+# == Schema Information
+#
+# Table name: exercise_tokens
+#
+#  id          :integer          not null, primary key
+#  token       :string(255)
+#  exercise_id :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  token: 
+
+two:
+  token: 

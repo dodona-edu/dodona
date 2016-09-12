@@ -17,8 +17,18 @@ class ExercisesController < ApplicationController
   end
 
   def show
+    # Check token for hidden exercises
+    if @exercise.hidden? && @exercise.exercise_token.token != params[:token]
+      authorize @exercise, :show_hidden_without_token?
+    end
+
     flash.now[:notice] = I18n.t('exercises.show.not_accessible') if @exercise.closed?
-    flash.now[:notice] = I18n.t('exercises.show.not_visible') if @exercise.hidden? && current_user && current_user.admin?
+    if @exercise.hidden? && current_user && current_user.admin?
+      url = exercise_url(@exercise, token: @exercise.exercise_token.token)
+      path = exercise_path(@exercise, token: @exercise.exercise_token.token)
+      link = view_context.link_to url, path
+      flash.now[:notice] = I18n.t('exercises.show.not_visible', link: link).html_safe
+    end
     @submissions = policy_scope(@exercise.submissions).paginate(page: params[:page])
     if params[:edit_submission]
       @edit_submission = Submission.find(params[:edit_submission])
@@ -32,6 +42,8 @@ class ExercisesController < ApplicationController
   def update
     respond_to do |format|
       if @exercise.update(permitted_attributes(@exercise))
+        puts "HEY HEY HEY"
+        puts @exercise.inspect
         format.html { redirect_to exercise_path(@exercise), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else

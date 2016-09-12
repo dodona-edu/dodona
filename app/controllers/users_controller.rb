@@ -1,11 +1,14 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :impersonate]
+
+  has_scope :by_permission
+  has_scope :by_name, as: 'filter'
 
   # GET /users
   # GET /users.json
   def index
     authorize User
-    @users = User.all.order(permission: :desc, username: :asc)
+    @users = apply_scopes(User).all.order(permission: :desc, username: :asc)
   end
 
   # GET /users/1
@@ -31,7 +34,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, flash: { success: 'De gebruiker werd succesvol aangepast.' } }
+        format.html { redirect_to @user, flash: { success: I18n.t('controllers.created', model: User.model_name.human) } }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -45,7 +48,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(permitted_attributes(@user))
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user, notice: I18n.t('controllers.updated', model: User.model_name.human) }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -59,9 +62,19 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to users_url, notice: I18n.t('controllers.destroyed', model: User.model_name.human) }
       format.json { head :no_content }
     end
+  end
+
+  def impersonate
+    impersonate_user(@user)
+    redirect_to root_path
+  end
+
+  def stop_impersonating
+    stop_impersonating_user
+    redirect_to root_path
   end
 
   private

@@ -1,0 +1,35 @@
+en:
+  layout:
+    head:
+      description: Exercises for the programming courses of Ghent University.
+    impersonate:
+      impersonate: Impersonate
+      impersonating_user: You are currently impersonating
+      switch_back: Switch back
+      your_account: to your account.
+    messages:
+      warning: Warning
+      danger: Oh snap
+      info: Heads up
+      success: Great
+    menu:
+      exercises: Exercises
+      my_submissions: My submissions
+      users: Users
+      courses: Courses
+      judges: Judges
+      repositories: Repositories
+      profile: Profile
+      log_in: Sign in
+      log_out: Log out
+    footer:
+      ugent: Ghent University
+    search:
+      search: search
+  general:
+    are_you_sure: "Are you sure?"
+  errors:
+    no_rights: Sorry, you are not allowed to access this page.
+    validation_erors:
+      one: 'one error prevents saving:'
+      other: '%{count} errors prevent saving:'

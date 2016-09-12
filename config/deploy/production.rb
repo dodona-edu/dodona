@@ -3,11 +3,11 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-server 'dodona.ugent.be', user: 'dodona', port: '4840', roles: %w{app db web}
+server 'naos.ugent.be', user: 'dodona', port: '4840', roles: %w(app db web)
+set :branch, 'develop'
+
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
-
-
 
 # role-based syntax
 # ==================
@@ -21,8 +21,6 @@ server 'dodona.ugent.be', user: 'dodona', port: '4840', roles: %w{app db web}
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
-
-
 # Configuration
 # =============
 # You can set any configuration variable like in config/deploy.rb
@@ -32,7 +30,6 @@ server 'dodona.ugent.be', user: 'dodona', port: '4840', roles: %w{app db web}
 # Feel free to add new variables to customise your setup.
 
 namespace :deploy do
-
   before :publishing, :asset_stuff do
     on roles :all do
       within release_path do
@@ -42,7 +39,6 @@ namespace :deploy do
       end
     end
   end
-
 end
 
 # Custom SSH Options

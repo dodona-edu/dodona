@@ -1,0 +1,5 @@
+{
+    "$schema": "http://json-schema.org/draft-03/schema#",
+    "id-online": "http://dodona.ugent.be/schemas/Submission/output.json",
+    "$ref": "testgroup.json#"
+}

@@ -19,11 +19,23 @@ class SubmissionPolicy < ApplicationPolicy
     user && ((user == record.user) || user.admin?)
   end
 
+  def download?
+    user && ((user == record.user) || user.admin?)
+  end
+
+  def evaluate?
+    user && user.admin?
+  end
+
   def create?
     user
   end
 
+  def edit?
+    user && ((user == record.user) || user.admin?)
+  end
+
   def permitted_attributes
-    [:code, :result, :status, :exercise_id]
+    [:code, :exercise_id]
   end
 end

@@ -4,6 +4,9 @@ require 'capistrano/setup'
 # Include default deployment tasks
 require 'capistrano/deploy'
 
+# Include the delayed job worker tasks
+require 'capistrano/delayed_job'
+
 # Include tasks from other gems included in your Gemfile
 #
 # For documentation on these, see for example:

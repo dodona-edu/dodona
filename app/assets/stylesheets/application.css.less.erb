@@ -1,0 +1,22 @@
+@import "variables.css.less";
+@import "mixins.css.less";
+@import "vendor.less";
+@import "bootstrap_overrides.css.less";
+@import "components.css.less";
+@import "layout.css.less";
+@import "pages.css.less";
+@import "resources.css.less";
+@import "exercises.css.less";
+@import "series.css.less";
+@import "submissions.css.less";
+
+<% if Rails.env.development? %>
+    @import "development.css.less";
+<% end %>
+
+
+@import "rouge.css.less";
+
+.field_with_errors input {
+    border-color: @danger-800;
+}

@@ -1,0 +1,35 @@
+nl:
+  layout:
+    head:
+      description: Oefeningenwebsite voor de programmeervakken aan de UGent.
+    impersonate:
+      impersonate: Account overnemen
+      impersonating_user: Je speelt momenteel
+      switch_back: Keer terug
+      your_account: naar jouw account.
+    messages:
+      warning: Opgepast
+      danger: Oh nee
+      info: Ter info
+      success: Geweldig
+    menu:
+      exercises: Oefeningen
+      my_submissions: Mijn oplossingen
+      users: Gebruikers
+      courses: Cursussen
+      judges: Judges
+      repositories: Repository's
+      profile: Profiel
+      log_in: Aanmelden
+      log_out: Afmelden
+    footer:
+      ugent: Universiteit Gent
+    search:
+      search: zoeken
+  general:
+      are_you_sure: "Ben je zeker?"
+  errors:
+    no_rights: Sorry, je hebt geen toegangsrechten tot deze pagina.
+    validation_erors:
+      one: 'één fout verhindert het opslaan:'
+      other: '%{count} fouten verhinderen het opslaan:'

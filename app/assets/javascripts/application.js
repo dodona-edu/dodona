@@ -12,34 +12,84 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
+
+//= require i18n
+//= require i18n/translations
 
 //= require ace-rails-ap
-//= require ace/mode-javascript
 //= require ace/ext-language_tools
 
 //= require vendor
 //= require_self
 //= require_directory .
-//= require judge/utils.js
-//= require judge/diff.js
-//= require judge/feedbackTable.js
 
-$(function () {
-    if (!(Modernizr.templatestrings && Modernizr.webworkers)) {
-        $(".messages").append("<div class='alert alert-warning'>Sorry, je browser lijkt niet alle nodige JavaScript features te ondersteunen. Met een recente versie van Google Chrome of Firefox zou alles moeten werken.</div>")
+var dodona = {};
+
+/*
+ * Function to delay some other function until it isn't
+ * called for "ms" ms
+ */
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
+var updateURLParameter = function updateURLParameter(url, param, paramVal) {
+    var TheAnchor = null;
+    var newAdditionalURL = "";
+    var tempArray = url.split("?");
+    var baseURL = tempArray[0];
+    var additionalURL = tempArray[1];
+    var temp = "";
+
+    if (additionalURL) {
+        var tmpAnchor = additionalURL.split("#");
+        var TheParams = tmpAnchor[0];
+        TheAnchor = tmpAnchor[1];
+        if (TheAnchor)
+            additionalURL = TheParams;
+        tempArray = additionalURL.split("&");
+        for (i = 0; i < tempArray.length; i++) {
+            if (tempArray[i].split('=')[0] != param) {
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }
+    } else {
+        var tmpAnchor = baseURL.split("#");
+        var TheParams = tmpAnchor[0];
+        TheAnchor = tmpAnchor[1];
+
+        if (TheParams)
+            baseURL = TheParams;
     }
-});
+    if (TheAnchor)
+        paramVal += "#" + TheAnchor;
+    var rows_txt = temp + "" + param + "=" + paramVal;
+    return baseURL + "?" + newAdditionalURL + rows_txt;
+};
+function getURLParameter(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 /**
  * requestAnimationFrame shim
  * source: http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
  */
 window.requestAnimFrame = (function () {
-    return  window.requestAnimationFrame       ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame    ||
-            function (callback) {
-                window.setTimeout(callback, 1000 / 60);
-            };
+    return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        function (callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
 })();

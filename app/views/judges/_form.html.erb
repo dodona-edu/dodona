@@ -1,0 +1,37 @@
+<%= form_for(judge, :html => {:class => 'form-horizontal'}) do |f| %>
+  <% if judge.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= t( "errors.validation_erors", :count => judge.errors.count) %></h2>
+      <ul>
+        <% judge.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field form-group">
+    <%= f.label :name, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :name, class: "form-control" %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :image, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :image, class: "form-control" %></div>
+    <span class="help-block col-sm-offset-3 col-sm-4"><%= t ".image-help" %></span>
+  </div>
+  <div class="field form-group">
+    <%= f.label :remote, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :remote, class: "form-control" %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :path, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :path, class: "form-control" %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :renderer, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.select :renderer, FeedbackTableRenderer.renderers.map {|r| r.to_s }, {}, { class: "form-control" } %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :runner, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.select :runner, SubmissionRunner.runners.map {|r| r.to_s }, {}, { class: "form-control" } %></div>
+  </div>
+<% end %>

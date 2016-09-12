@@ -1,6 +1,3 @@
-// web workers and template strings
-//= require modernizr/modernizr.min.js
-
 // bootstrap
 //=require bootstrap/bootstrap.min.js
 
@@ -12,3 +9,6 @@
 //=require onlinepythontutor/jquery-ui-1.8.24.custom.min
 // strip
 //=require strip/strip.pkgd.min.js
+
+// dragula
+//= require dragula/dragula.min.js

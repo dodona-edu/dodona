@@ -1,9 +1,46 @@
+// exercise table
+.exercise-table .status-icon {
+    width: 36px;
+}
+.exercise-table .status {
+    width: 120px;
+}
+.exercise-table .count {
+    width: 55px;
+}
+
 // exercise
+.exercise-description .card-supporting-text {
+    margin-top: 15px;
+}
 .exercise-description img {
     cursor: pointer;
 }
 .exercise-description .highlighter-rouge .err {
     border: none;
+}
+
+.dodona-centered-group {
+    text-align: center;
+    margin-bottom: 12px;
+}
+.dodona-centered-group > table {
+    display: inline-table;
+    width: auto;
+    vertical-align: top;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+center img,
+.dodona-centered-group > img {
+    vertical-align: top;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+// fab
+.hidden-fab {
+    display: none;
 }
 
 // editor
@@ -16,24 +53,6 @@
 }
 
 // feedback table
-#feedback-table {
-    font-family: monospace;
-    /* use monospace font in feedback table */
-}
-#feedback table,
-#feedback .alert {
-    margin-top: 12px;
-}
-.dropdown-menu {
-    margin-top: 8px;
-}
-#feedback-loading {
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    position: relative;
-    top: 12px;
-}
 .feedback-row {
     white-space: pre-wrap;
     /* preserve white space in feedback rows */
@@ -66,4 +85,13 @@
 // white background for transparent images
 .strp-content-element {
     background-color: #fff;
+}
+.btn-down {
+    text-transform: lowercase;
+    box-shadow: none;
+    color: @black-disabled;
+}
+.btn-down:hover {
+    box-shadow: none;
+    color: @black-secondary;
 }

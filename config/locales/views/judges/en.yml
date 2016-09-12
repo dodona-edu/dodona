@@ -1,0 +1,11 @@
+en:
+  judges:
+    form:
+      image-help: The name of the docker image in which the judge will be started. Will be fetched from docker hub automatically.
+    index:
+      title: Judges
+    new:
+      title: Add judge
+    show:
+      judge: Judge
+      webhook: "Don't forget to trigger the webhook on each commit:"

@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     end
 
     resources :submissions do
-      resources :tutor, only:[:show]
+      resources :tutor, only:[:index]
     end
 
     resources :exercises, only: [:index, :show, :edit, :update] do

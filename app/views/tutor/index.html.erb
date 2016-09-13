@@ -5,6 +5,7 @@
 
       <script>
       $(document).ready(function() {
+
           $.ajax({
               type: 'POST',
               url: 'http://localhost:8080/cgi-bin/build_trace.py',
@@ -19,6 +20,7 @@
           })
 
           //var codeTrace = JSON.parse(<%= @json_traceback %>);
+
           var createTutor = function(codeTrace) {
             var visualizer = new ExecutionVisualizer('tutorelement', codeTrace,
                                                           {embeddedMode: false,
@@ -35,6 +37,7 @@
             $(window).resize(redrawAllVisualizerArrows);
             $('#tutorelement').scroll(redrawAllVisualizerArrows);
           }
+
       });
       </script>
   </head>

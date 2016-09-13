@@ -9,7 +9,7 @@
               type: 'POST',
               url: 'http://localhost:8080/cgi-bin/build_trace.py',
               dataType: 'json',
-              data: {username: 'dieter'},
+              data: {code: <%= @tutor_code %>, input: <%= @tutor_input %>},
               success: function(data) {
                   createTutor(data)
               },

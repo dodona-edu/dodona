@@ -183,7 +183,7 @@ class Exercise < ApplicationRecord
   end
 
   def hidden_token_in?(set)
-    set.include? exercise_token.token
+    set.include? exercise_token.token if set
   end
 
   def self.process_repository(repository)

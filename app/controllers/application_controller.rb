@@ -6,9 +6,19 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  before_filter :store_current_location, unless: :devise_controller?
+
   before_action :set_locale
 
   impersonates :user
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(:user) || root_path
+  end
+
+  def after_sign_out_path_for(resource)
+    stored_location_for(:user) || root_path
+  end
 
   private
 
@@ -24,5 +34,9 @@ class ApplicationController < ActionController::Base
 
   def default_url_options
     { locale: I18n.locale, trailing_slash: true }
+  end
+
+  def store_current_location
+    store_location_for(:user, request.url)
   end
 end

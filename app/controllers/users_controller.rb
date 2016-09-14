@@ -74,7 +74,7 @@ class UsersController < ApplicationController
 
   def stop_impersonating
     stop_impersonating_user
-    redirect_to root_path
+    redirect_to :back
   end
 
   private

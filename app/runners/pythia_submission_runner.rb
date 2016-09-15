@@ -75,8 +75,8 @@ class PythiaSubmissionRunner < SubmissionRunner
     config = super
 
     # set links to resources in docker container needed for processing submission
-    config.recursive_update('home': File.join(@hidden_path, 'resources', 'judge'),
-                            'source': File.join(@hidden_path, 'submission', 'source.py'))
+    config.recursive_update('home' => File.join(@hidden_path, 'resources', 'judge'),
+                            'source' => File.join(@hidden_path, 'submission', 'source.py'))
 
     config
   end

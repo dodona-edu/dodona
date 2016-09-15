@@ -23,18 +23,18 @@ class SubmissionRunner
 
   def build_error(status = 'runtime error', description = 'runtime error', messages = [], accepted = false)
     {
-      'accepted': accepted,
-      'status': status,
-      'description': I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
-      'messages': messages
+      'accepted' => accepted,
+      'status' => status,
+      'description' => I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
+      'messages' => messages
     }
   end
 
   def build_message(description = '', permission = 'zeus', format = 'code')
     {
-      'format': format,
-      'description': description,
-      'permission': permission
+      'format' => format,
+      'description' => description,
+      'permission' => permission
     }
   end
 
@@ -91,8 +91,8 @@ class SubmissionRunner
     config.recursive_update(@exercise.merged_config['evaluation'])
 
     # update with submission-specific configuration
-    config.recursive_update('programming_language': @submission.exercise.programming_language,
-                            'natural_language': @submission.user.lang)
+    config.recursive_update('programming_language' => @submission.exercise.programming_language,
+                            'natural_language' => @submission.user.lang)
 
     config
   end

@@ -49,6 +49,7 @@ test:
 #
 production:
   <<: *default
+  host: lethe.ugent.be
   database: dodona
   username: dodona
   password: dodona

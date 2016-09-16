@@ -23,54 +23,6 @@ class PythiaSubmissionRunner < SubmissionRunner
     @mac = RUBY_PLATFORM.include?('darwin')
   end
 
-  # calculates the difference between the biggest and smallest values
-  # in a log file
-  def logged_value_range(path)
-    max_logged_value(path) - min_logged_value(path)
-  end
-
-  # extracts the smallest value from a log file
-  def min_logged_value(path)
-    m = nil
-
-    file = File.open(path).read
-
-    file.each_line do |line|
-      # each log line has a time stamp an actual value
-      split = line.split
-      value = split[1].to_i
-
-      m = value if m.nil? || value < m
-    end
-
-    m
-  end
-
-  # extracts the biggest value from a log file
-  def max_logged_value(path)
-    m = -1
-
-    file = File.open(path).read
-
-    file.each_line do |line|
-      # each log line has a time stamp and an actual value
-      split = line.split
-      value = split[1].to_i
-      m = value if value > m
-    end
-
-    m
-  end
-
-  # extracts the last timestamp from a log file
-  def last_timestamp(path)
-    line = IO.readlines(path).last
-
-    split = line.split
-
-    split[0].to_i
-  end
-
   def compose_config
     config = super
 

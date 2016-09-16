@@ -38,6 +38,7 @@ class Exercise < ApplicationRecord
   validates :judge, presence: true
   validates :repository, presence: true
 
+  before_create :generate_id
   before_save :check_validity
   before_update :update_config
 
@@ -222,5 +223,14 @@ class Exercise < ApplicationRecord
     return 'open' if visibility == 'public'
     return 'closed' if visibility == 'private'
     visibility
+  end
+
+  private
+
+  def generate_id
+    begin
+      new = SecureRandom.random_number(2147483646)
+    end until Exercise.find_by_id(new).nil?
+    self.id = new
   end
 end

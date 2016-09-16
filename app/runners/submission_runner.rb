@@ -7,7 +7,7 @@ require 'tmpdir' # temporary file support
 
 # base class for runners that handle Dodona submissions
 class SubmissionRunner
-  DEFAULT_CONFIG_PATH = Rails.root.join('app/runner/config.json').freeze
+  DEFAULT_CONFIG_PATH = Rails.root.join('app/runners/config.json').freeze
 
   # ADT to store to recognize an error
   # 'codes' is a list of possible exit codes that could come from this error

@@ -30,7 +30,7 @@ nl:
       hand_in_tooltip: Klik op de play-knop om je oplossing te testen en in te dienen.
       not_found: Sorry, we kunnen deze oefening niet vinden.
       not_accessible: Deze oefening is niet toegankelijk voor studenten.
-      not_visible: Deze oefening is niet zichtbaar voor studenten.
+      not_visible: "Deze oefening is niet zichtbaar voor studenten. Deel ze via: %{link}."
       alert_not_valid: Er is iets fout met deze oefening. Je kan momenteel niet indienen, maar je kan wel je oude oplossingen bekijken.
       alert_removed: Deze oefening is niet meer beschikbaar, maar je kan nog steeds je oude oplossingen bekijken.
     users:

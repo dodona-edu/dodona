@@ -22,6 +22,10 @@ class ExercisePolicy < ApplicationPolicy
     false
   end
 
+  def access_hidden_without_token?
+    user && user.admin?
+  end
+
   def edit?
     user && user.admin?
   end

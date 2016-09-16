@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160904140744) do
+ActiveRecord::Schema.define(version: 20160912081748) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -44,6 +44,14 @@ ActiveRecord::Schema.define(version: 20160904140744) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+  end
+
+  create_table "exercise_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "token"
+    t.integer  "exercise_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["exercise_id"], name: "index_exercise_tokens_on_exercise_id", using: :btree
   end
 
   create_table "exercises", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -106,9 +114,9 @@ ActiveRecord::Schema.define(version: 20160904140744) do
   create_table "series_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "series_id"
     t.integer  "exercise_id"
-    t.integer  "order", default: 999
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "order",       default: 999
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.index ["exercise_id"], name: "index_series_memberships_on_exercise_id", using: :btree
     t.index ["series_id"], name: "index_series_memberships_on_series_id", using: :btree
   end
@@ -142,6 +150,7 @@ ActiveRecord::Schema.define(version: 20160904140744) do
     t.index ["username"], name: "index_users_on_username", using: :btree
   end
 
+  add_foreign_key "exercise_tokens", "exercises"
   add_foreign_key "exercises", "judges"
   add_foreign_key "exercises", "repositories"
   add_foreign_key "repositories", "judges"

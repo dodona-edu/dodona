@@ -25,6 +25,9 @@ class SubmissionsController < ApplicationController
     para = permitted_attributes(Submission)
     para[:user_id] = current_user.id
     @submission = Submission.new(para)
+    if @submission.exercise.hidden? && !@submission.exercise.hidden_token_in?(session[:tokens])
+      authorize @submission.exercise, :access_hidden_without_token?
+    end
     if Pundit.policy!(current_user, @submission.exercise).submit? && @submission.save
       render json: { status: 'ok', id: @submission.id }
     else

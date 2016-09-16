@@ -32,6 +32,7 @@ class Exercise < ApplicationRecord
   has_many :submissions
   has_many :series_memberships
   has_many :series, through: :series_memberships
+  has_one :exercise_token
 
   validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
   validates :repository_id, presence: true
@@ -86,6 +87,17 @@ class Exercise < ApplicationRecord
     self.description_format = determine_format
     self.visibility = Exercise.convert_visibility(config['visibility']) if config['visibility']
     save
+  end
+
+  def visibility=(visibility)
+    if visibility == 'hidden'
+      if !hidden?
+        create_exercise_token!
+      end
+    else
+      exercise_token.try :delete
+    end
+    super(visibility)
   end
 
   def determine_format
@@ -169,6 +181,10 @@ class Exercise < ApplicationRecord
                   else
                     :ok
                   end
+  end
+
+  def hidden_token_in?(set)
+    set.include? exercise_token.token if set
   end
 
   def self.process_repository(repository)

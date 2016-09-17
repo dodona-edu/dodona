@@ -16,7 +16,7 @@
           <%= render partial: 'layouts/searchbar' %>
         <% end %>
         <div id="submissions-table-wrapper">
-          <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise}  %>
+          <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise, remote_links: false}  %>
         </div>
       </div>
     </div>

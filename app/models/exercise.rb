@@ -79,6 +79,10 @@ class Exercise < ApplicationRecord
     desc.html_safe
   end
 
+  def github_url
+    repository.remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '') + '/tree/master' + path
+  end
+
   def update_data(config, j_id)
     self.name_nl = config['description']['names']['nl']
     self.name_en = config['description']['names']['en']

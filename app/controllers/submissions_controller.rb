@@ -11,6 +11,10 @@ class SubmissionsController < ApplicationController
       @user = User.find(params[:user_id])
       @submissions = @submissions.of_user(@user)
     end
+    if params[:course_id]
+      @course = User.find(params[:course_id])
+      @submissions = @submissions.in_course(@course)
+    end
     if params[:exercise_id]
       @exercise = Exercise.find(params[:exercise_id])
       @submissions = @submissions.of_exercise(@exercise)

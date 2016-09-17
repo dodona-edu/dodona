@@ -36,7 +36,7 @@
     <% end %>
   </td>
   <td>
-    <% unless not_solved %>
+    <% if !not_solved || current_user.admin? %>
       <%= link_to exercise_submissions_path(exercise), title: t("layout.menu.my_submissions"), class: "btn btn-icon" do %>
         <span class='glyphicon glyphicon-chevron-right'></span>
       <% end %>

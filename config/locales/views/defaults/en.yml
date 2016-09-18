@@ -12,6 +12,7 @@ en:
       danger: Oh snap
       info: Heads up
       success: Great
+      no_username: Your account has no username associated with it. If you already obtained a Ghent University account, please contact a teaching assistant as soon as possible.
     menu:
       exercises: Exercises
       my_submissions: My submissions

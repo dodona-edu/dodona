@@ -11,7 +11,7 @@
   <% end %>
   <div class="field form-group">
     <%= f.label :course, :class => "col-sm-4 control-label" %>
-    <div class="col-sm-8"><%= f.select :course_id, Course.all.collect {|c| [ c.year + " - " + c.name, c.id ] }, {selected: (series.course_id || params[:course_id])}, {class: "form-control"} %></div>
+    <div class="col-sm-8"><%= f.select :course_id, Course.all.collect {|c| [ c.formatted_year + " - " + c.name, c.id ] }, {selected: (series.course_id || params[:course_id])}, {class: "form-control"} %></div>
   </div>
   <div class="field form-group">
     <%= f.label :name, :class => "col-sm-4 control-label" %>

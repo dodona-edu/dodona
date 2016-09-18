@@ -23,7 +23,7 @@
             <% @courses.each do |course| %>
               <tr>
                 <td><%= link_to course.name, course %></td>
-                <td><%= course.year %> </td>
+                <td><%= course.formatted_year %> </td>
                 <td><%= course.users.count %> </td>
                 <td class="actions">
                   <% if policy(course).edit? %>

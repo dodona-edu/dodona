@@ -26,6 +26,10 @@ class Course < ApplicationRecord
 
   before_create :generate_secret
 
+  def formatted_year
+    year.sub(/ ?- ?/, '–')
+  end
+
   def generate_secret
     self.secret = SecureRandom.urlsafe_base64(5)
   end

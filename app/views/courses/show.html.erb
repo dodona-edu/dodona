@@ -83,7 +83,12 @@
             <tbody>
               <% @course.users.each do |user| %>
                 <tr>
-                  <td><%= link_to user.username, user %></td>
+                  <td>
+                    <%= link_to user.short_name, user %>
+                    <% if user.username.blank? %>
+                      <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <% end %>
+                  </td>
                   <td><%= user.full_name %> </td>
                   <td><%= user.email %> </td>
                 </tr>

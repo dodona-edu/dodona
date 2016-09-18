@@ -9,45 +9,52 @@
           </div>
         <% end %>
       </div>
-      <div class="card-supporting-text">
-        <p>
-          <strong><%= User.human_attribute_name("first_name") %>:</strong> <%= @user.first_name %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("last_name") %>:</strong> <%= @user.last_name %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("username") %>:</strong> <%= @user.username %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("ugent_id") %>:</strong> <%= @user.ugent_id %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
-        </p>
-        <% if current_user.admin? %>
-        <p>
-          <strong><%= User.human_attribute_name("permission") %>:</strong> <%= @user.permission %>
-        </p>
-        <% end %>
-        <p>
-          <strong><%= t ".courses" %>:</strong>
-          <% if @user.courses.empty? %>
-            <%= t ".no_courses" %>
-          <% else %>
-            <ul>
-            <% @user.courses.each do |course| %>
-              <li><%= link_to course.name, course %></li>
-            <% end %>
-            </ul>
+      <div class="card-supporting-text row">
+        <div class='col-xs-8'>
+          <p>
+            <strong><%= User.human_attribute_name("first_name") %>:</strong> <%= @user.first_name %>
+          </p>
+          <p>
+            <strong><%= User.human_attribute_name("last_name") %>:</strong> <%= @user.last_name %>
+          </p>
+          <p>
+            <strong><%= User.human_attribute_name("username") %>:</strong> <%= @user.username %>
+          </p>
+          <p>
+            <strong><%= User.human_attribute_name("ugent_id") %>:</strong> <%= @user.ugent_id %>
+          </p>
+          <p>
+            <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
+          </p>
+          <% if current_user.admin? %>
+          <p>
+            <strong><%= User.human_attribute_name("permission") %>:</strong> <%= @user.permission %>
+          </p>
           <% end %>
-        </p>
-        <p>
-          <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
-        </p>
-        <p>
-          <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
-        </p>
+          <p>
+            <strong><%= t ".courses" %>:</strong>
+            <% if @user.courses.empty? %>
+              <%= t ".no_courses" %>
+            <% else %>
+              <ul>
+              <% @user.courses.each do |course| %>
+                <li><%= link_to course.name, course %></li>
+              <% end %>
+              </ul>
+            <% end %>
+          </p>
+          <p>
+            <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
+          </p>
+          <p>
+            <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
+          </p>
+        </div>
+        <% if policy(@user).photo?%>
+          <div class='col-xs-4'>
+            <img src='<%= photo_user_path(@user) %>' alt='avatar' class="img-responsive">
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

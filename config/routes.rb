@@ -56,6 +56,7 @@ Rails.application.routes.draw do
       get 'stop_impersonating', on: :collection
       member do
         get 'impersonate'
+        get 'photo'
       end
     end
   end

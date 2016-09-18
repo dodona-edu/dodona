@@ -33,6 +33,10 @@ class UserPolicy < ApplicationPolicy
     user && user.zeus?
   end
 
+  def photo?
+    user && user.admin?
+  end
+
   def impersonate?
     return false unless user
     return false if user == record

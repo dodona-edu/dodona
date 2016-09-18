@@ -15,6 +15,8 @@
 #
 
 class User < ApplicationRecord
+  PHOTOS_LOCATION = Rails.root.join('data', 'user_photos').freeze
+
   enum permission: [:student, :staff, :zeus]
 
   has_many :submissions
@@ -34,6 +36,11 @@ class User < ApplicationRecord
 
   def admin?
     staff? || zeus?
+  end
+
+  def photo
+    photo = PHOTOS_LOCATION.join(ugent_id + '.jpg')
+    photo if File.file? photo
   end
 
   def correct_exercises
@@ -57,5 +64,9 @@ class User < ApplicationRecord
         self.ugent_id = value
       end
     end
+  end
+
+  def self.default_photo
+    Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
   end
 end

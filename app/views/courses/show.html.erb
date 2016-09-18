@@ -14,23 +14,25 @@
           </div>
         <% end %>
       </div>
-      <div class="card-supporting-text row">
-        <div class="col-sm-<%= (current_user && !current_user.member_of?(@course)) ? '6' : '12' %> col-xs-12">
-          <%= markdown(@course.description) %>
-        </div>
-        <% if current_user && !current_user.member_of?(@course) %>
-        <div class="col-sm-6 col-xs-12">
-          <div class="card">
-            <div class="card-supporting-text">
-              <p><%= t ".not_a_member" %></p>
-            </div>
-            <div class="card-actions card-border">
-              <%=link_to t(".subscribe"), subscribe_course_path(@course), method: :post, class: "btn-text" %>
+      <% if !@course.description.blank? || (current_user && !current_user.member_of?(@course)) %>
+        <div class="card-supporting-text row">
+          <div class="col-sm-<%= (current_user && !current_user.member_of?(@course)) ? '6' : '12' %> col-xs-12">
+            <%= markdown(@course.description) %>
+          </div>
+          <% if current_user && !current_user.member_of?(@course) %>
+          <div class="col-sm-6 col-xs-12">
+            <div class="card">
+              <div class="card-supporting-text">
+                <p><%= t ".not_a_member" %></p>
+              </div>
+              <div class="card-actions card-border">
+                <%=link_to t(".subscribe"), subscribe_course_path(@course), method: :post, class: "btn-text" %>
+              </div>
             </div>
           </div>
-        </div>
         <% end %>
       </div>
+      <% end %>
       <div class="card-supporting-text card-border">
         <div class="card-subtitle">
           <a class="anchor" id="series"></a>

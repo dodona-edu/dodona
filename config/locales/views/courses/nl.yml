@@ -2,6 +2,7 @@ nl:
   courses:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
+      year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
     index:
       title: Cursussen
       users: Gebruikers

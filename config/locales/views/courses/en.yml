@@ -2,6 +2,7 @@ en:
   courses:
     form:
       description-help: A description is optional. Markdown formatting can be used.
+      year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
     index:
       title: Courses
       users: Users

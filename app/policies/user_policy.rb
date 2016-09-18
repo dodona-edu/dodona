@@ -49,6 +49,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def token_sign_in?
+    true
+  end
+
   def permitted_attributes
     if user && user.zeus?
       [:username, :ugent_id, :first_name, :last_name, :email, :permission]

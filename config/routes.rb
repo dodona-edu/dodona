@@ -57,6 +57,7 @@ Rails.application.routes.draw do
       member do
         get 'impersonate'
         get 'photo'
+        get 'token/:token', to: 'users#token_sign_in'
       end
     end
   end

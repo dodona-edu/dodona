@@ -6,17 +6,17 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_filter :store_current_location, unless: :devise_controller?
+  before_action :store_current_location, unless: :devise_controller?
 
   before_action :set_locale
 
   impersonates :user
 
-  def after_sign_in_path_for(resource)
+  def after_sign_in_path_for(_resource)
     stored_location_for(:user) || root_path
   end
 
-  def after_sign_out_path_for(resource)
+  def after_sign_out_path_for(_resource)
     stored_location_for(:user) || root_path
   end
 

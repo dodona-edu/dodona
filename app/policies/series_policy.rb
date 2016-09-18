@@ -16,7 +16,7 @@ class SeriesPolicy < ApplicationPolicy
   def show?
     return true if user && user.admin?
     return true if record.open?
-    return false
+    false
   end
 
   def new?

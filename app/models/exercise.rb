@@ -130,9 +130,7 @@ class Exercise < ApplicationRecord
 
   def users_correct(course = nil)
     subs = submissions.where(status: :correct)
-    if course
-      subs = subs.in_course(course)
-    end
+    subs = subs.in_course(course) if course
     subs.distinct.count(:user_id)
   end
 
@@ -233,7 +231,7 @@ class Exercise < ApplicationRecord
 
   def generate_id
     begin
-      new = SecureRandom.random_number(2147483646)
+      new = SecureRandom.random_number(2_147_483_646)
     end until Exercise.find_by_id(new).nil?
     self.id = new
   end

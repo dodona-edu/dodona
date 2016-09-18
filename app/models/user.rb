@@ -15,6 +15,8 @@
 #  token      :string(255)
 #
 
+require 'securerandom'
+
 class User < ApplicationRecord
   PHOTOS_LOCATION = Rails.root.join('data', 'user_photos').freeze
 
@@ -26,13 +28,19 @@ class User < ApplicationRecord
 
   devise :cas_authenticatable
 
-  validates :username, presence: true, uniqueness: { case_sensitive: false }
+  validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
+
+  before_save :check_token
 
   scope :by_permission, -> (permission) { where(permission: permission) }
   scope :by_name, -> (name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
 
   def full_name
     first_name + ' ' + last_name
+  end
+
+  def short_name
+    username.blank? ? first_name : username
   end
 
   def admin?
@@ -69,5 +77,20 @@ class User < ApplicationRecord
 
   def self.default_photo
     Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
+  end
+
+  private
+
+  def check_token
+    if username.blank?
+      token = ''
+      loop do
+        token = SecureRandom.urlsafe_base64(16)
+        break if User.find_by_token(token).nil?
+      end
+      self.token = token
+    else
+      self.token = nil
+    end
   end
 end

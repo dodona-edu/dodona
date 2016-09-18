@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160904140744) do
+ActiveRecord::Schema.define(version: 20160918075334) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -27,8 +27,9 @@ ActiveRecord::Schema.define(version: 20160904140744) do
     t.string   "year"
     t.string   "secret"
     t.boolean  "open"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.text     "description", limit: 65535
   end
 
   create_table "delayed_jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -106,9 +107,9 @@ ActiveRecord::Schema.define(version: 20160904140744) do
   create_table "series_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "series_id"
     t.integer  "exercise_id"
-    t.integer  "order", default: 999
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "order",       default: 999
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.index ["exercise_id"], name: "index_series_memberships_on_exercise_id", using: :btree
     t.index ["series_id"], name: "index_series_memberships_on_series_id", using: :btree
   end

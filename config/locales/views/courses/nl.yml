@@ -1,5 +1,8 @@
 nl:
   courses:
+    form:
+      description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
+      year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
     index:
       title: Cursussen
       users: Gebruikers
@@ -7,7 +10,7 @@ nl:
       title: Cursus toevoegen
     show:
       course: Cursus
-      auto_subscribe_link: Inschrijvingslink
+      auto_subscribe_link: Automatische inschrijvingslink
       not_a_member: Je bent niet ingeschreven voor deze cursus. Wil je je inschrijven?
       subscribe: inschrijven
       exercise_series: Oefeningenreeksen

@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
 
-  before_save :check_token
+  before_save :set_token
 
   scope :by_permission, -> (permission) { where(permission: permission) }
   scope :by_name, -> (name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
@@ -81,16 +81,7 @@ class User < ApplicationRecord
 
   private
 
-  def check_token
-    if username.blank?
-      token = ''
-      loop do
-        token = SecureRandom.urlsafe_base64(16)
-        break if User.find_by_token(token).nil?
-      end
-      self.token = token
-    else
-      self.token = nil
-    end
+  def set_token
+    self.token = (SecureRandom.urlsafe_base64(16) if username.blank?)
   end
 end

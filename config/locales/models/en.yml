@@ -12,6 +12,7 @@ en:
       course:
         name: Name
         year: Academic year
+        description: Description
         secret: Secret
       exercise:
         name: Name

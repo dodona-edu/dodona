@@ -1,5 +1,7 @@
 en:
   courses:
+    form:
+      description-help: A description is optional. Markdown formatting can be used.
     index:
       title: Courses
       users: Users

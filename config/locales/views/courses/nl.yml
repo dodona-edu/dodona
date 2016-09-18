@@ -1,5 +1,7 @@
 nl:
   courses:
+    form:
+      description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
     index:
       title: Cursussen
       users: Gebruikers

@@ -12,6 +12,7 @@ nl:
       course:
         name: Naam
         year: Academiejaar
+        description: Beschrijving
         secret: Secret
       exercise:
         name: Naam

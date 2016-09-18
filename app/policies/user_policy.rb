@@ -14,15 +14,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def new?
-    user && user.zeus?
-  end
-
-  def edit?
     user && user.admin?
   end
 
+  def edit?
+    user && (user.zeus? || (user.staff? && !record.zeus?))
+  end
+
   def create?
-    user && user.zeus?
+    user && user.admin?
   end
 
   def update?

@@ -10,6 +10,19 @@
         <% end %>
       </div>
       <div class="card-supporting-text row">
+        <div class='col-xs-8 col-xs-offset-2'>
+          <% unless @user.token.blank? %>
+            <div class="card">
+              <div class="card-title card-title-colored">
+                <h2 class="card-title-text"><%= t ".sign_in" %></h2>
+              </div>
+              <div class="card-supporting-text">
+                <p><%= t ".token_sign_in" %></p>
+                <p><%= token_sign_in_user_url(@user, @user.token) %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
         <div class='col-xs-8'>
           <p>
             <strong><%= User.human_attribute_name("first_name") %>:</strong> <%= @user.first_name %>
@@ -50,11 +63,11 @@
             <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
           </p>
         </div>
-        <% if policy(@user).photo?%>
-          <div class='col-xs-4'>
+        <div class='col-xs-4'>
+          <% if policy(@user).photo?%>
             <img src='<%= photo_user_path(@user) %>' alt='avatar' class="img-responsive">
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

@@ -10,29 +10,30 @@
     </div>
   <% end %>
   <div class="field form-group">
-    <%= f.label :username, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :username, class: "form-control" , disabled: !f.hasPermission?(:username) %></div>
+    <%= f.label :username, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.text_field :username, class: "form-control" , disabled: !f.hasPermission?(:username) %></div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".username-help" %></span>
   </div>
   <div class="field form-group">
-    <%= f.label :ugent_id, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :ugent_id, class: "form-control" , disabled: !f.hasPermission?(:ugent_id) %></div>
+    <%= f.label :ugent_id, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.text_field :ugent_id, class: "form-control" , disabled: !f.hasPermission?(:ugent_id) %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :first_name, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :first_name, class: "form-control" , disabled: !f.hasPermission?(:first_name) %></div>
+    <%= f.label :first_name, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.text_field :first_name, class: "form-control" , disabled: !f.hasPermission?(:first_name) %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :last_name, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :last_name, class: "form-control" , disabled: !f.hasPermission?(:last_name) %></div>
+    <%= f.label :last_name, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.text_field :last_name, class: "form-control" , disabled: !f.hasPermission?(:last_name) %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :email, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.email_field :email, class: "form-control" , disabled: !f.hasPermission?(:email) %></div>
+    <%= f.label :email, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.email_field :email, class: "form-control" , disabled: !f.hasPermission?(:email) %></div>
   </div>
   <% if f.hasPermission?(:permission) %>
     <div class="field form-group">
-      <%= f.label :permission, :class => "col-sm-2 control-label" %>
-      <div class="col-sm-4"><%= f.select :permission, editable_permissions.map { |key, value| [key.humanize, key] }, {}, { :class => 'form-control', disabled: !can_edit_permissions?(user) } %></div>
+      <%= f.label :permission, :class => "col-sm-3 control-label" %>
+      <div class="col-sm-6"><%= f.select :permission, editable_permissions.map { |key, value| [key.humanize, key] }, {}, { :class => 'form-control', disabled: !can_edit_permissions?(user) } %></div>
     </div>
   <% end %>
 <% end %>

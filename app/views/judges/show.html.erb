@@ -37,7 +37,7 @@
             </div>
             <div class="card-supporting-text">
               <p><%= t ".webhook" %></p>
-              <p><%= request.protocol + request.host + webhook_judge_path(@judge) %></p>
+              <p><%= webhook_judge_url(@judge) %></p>
             </div>
           </div>
         </div>

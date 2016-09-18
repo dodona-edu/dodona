@@ -12,6 +12,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  lang       :string(255)      default("nl")
+#  token      :string(255)
 #
 
 class User < ApplicationRecord

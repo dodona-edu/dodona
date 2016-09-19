@@ -62,6 +62,7 @@ class User < ApplicationRecord
   end
 
   def cas_extra_attributes=(extra_attributes)
+    Rails.logger.debug(extra_attributes)
     extra_attributes.each do |name, value|
       case name.to_sym
       when :mail

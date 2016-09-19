@@ -57,7 +57,7 @@ class SeriesPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user && user.admin?
-      [:name, :description, :course_id, :visibility, :order]
+      [:name, :description, :course_id, :visibility, :order, :deadline]
     else
       []
     end

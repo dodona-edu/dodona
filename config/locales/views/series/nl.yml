@@ -2,6 +2,7 @@ nl:
   series:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
+      deadline-help: Een deadline instellen is optioneel.
     index:
       title: Reeksen
     new:

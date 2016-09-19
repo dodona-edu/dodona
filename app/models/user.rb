@@ -53,6 +53,10 @@ class User < ApplicationRecord
     photo if File.file? photo
   end
 
+  def time_zone
+    'Brussels'
+  end
+
   def correct_exercises
     submissions.where(status: :correct).distinct.count(:exercise_id)
   end

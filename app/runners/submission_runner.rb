@@ -78,23 +78,14 @@ class SubmissionRunner
 
     # submission configuration (JSON)
     @config = compose_config
-  end
 
-  def compose_config
-    # set default configuration
-    config = JSON.parse(File.read(DEFAULT_CONFIG_PATH))
+    # result of processing the submission (SPOJ)
+    @result = nil
 
-    # update with judge configuration
-    config.recursive_update(@judge.config)
+    # path on file system used as temporary working directory for processing the submission
+    @path = nil
 
-    # update with exercise configuration
-    config.recursive_update(@exercise.merged_config['evaluation'])
-
-    # update with submission-specific configuration
-    config.recursive_update('programming_language' => @submission.exercise.programming_language,
-                            'natural_language' => @submission.user.lang)
-
-    config
+    @mac = RUBY_PLATFORM.include?('darwin')
   end
 
   # registers a pair of error identifiers and error handlers with the same identifier string (name)
@@ -159,6 +150,28 @@ class SubmissionRunner
     ]
   end
 
+  def compose_config
+    # set default configuration
+    config = JSON.parse(File.read(DEFAULT_CONFIG_PATH))
+
+    # update with judge configuration
+    config.recursive_update(@judge.config)
+
+    # update with exercise configuration
+    config.recursive_update(@exercise.merged_config['evaluation'])
+
+    # update with submission-specific configuration
+    config.recursive_update('programming_language' => @submission.exercise.programming_language,
+                            'natural_language' => @submission.user.lang)
+
+    # update with links to resources in docker container needed for processing submission
+    config.recursive_update('resources' => File.join(@hidden_path, 'resources', 'judge'),
+                            'source' => File.join(@hidden_path, 'submission', 'source'),
+                            'judge' => File.join(@hidden_path, 'judge'))
+
+    config
+  end
+
   def prepare
     # set the submission's status
     @submission.status = 'running'
@@ -168,13 +181,13 @@ class SubmissionRunner
     @path = Dir.mktmpdir(nil, @mac ? '/tmp' : nil)
 
     # put submission in working directory (subdirectory submission)
-    Dir.mkdir("#{@path}/submission/")
-    open("#{@path}/submission/source.py", 'w') do |file|
+    Dir.mkdir(File.join(@path, 'submission'))
+    open(File.join(@path, 'submission', 'source'), 'w') do |file|
       file.write(@submission.code)
     end
 
     # put submission resources in working directory (subdirectory resources)
-    Dir.mkdir("#{@path}/resources/")
+    Dir.mkdir(File.join(@path, 'resources'))
     src = File.join(@exercise.path, 'evaluation', 'media')
     if File.directory?(src)
       dest = File.join(File.join(@path, 'resources'))
@@ -182,9 +195,8 @@ class SubmissionRunner
     end
 
     # otherwise docker will make these as root
-    # TODO: can we fix this?
-    Dir.mkdir("#{@path}/submission/judge/")
-    Dir.mkdir("#{@path}/submission/resources")
+    Dir.mkdir(File.join(@path, 'submission', 'judge'))
+    Dir.mkdir(File.join(@path, 'submission', 'resources'))
   end
 
   def execute

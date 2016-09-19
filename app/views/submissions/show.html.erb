@@ -25,5 +25,11 @@
         <%= render partial: 'description', locals: { submission: @submission } %>
       </div>
     </div>
+    <div id="tutorelement" style="overflow-x: scroll;"></div>
   </div>
 </div>
+
+<script>
+  var code = "<%= escapeCode(@submission.code) %>"
+  initTutor(code)
+</script>

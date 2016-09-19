@@ -44,6 +44,13 @@ class PythiaRenderer < FeedbackTableRenderer
     end
   end
 
+  def group(g)
+    @builder.div(class: "tutorlink", "data-statements": "#{g[:data][:statements]}", "data-stdin": "#{g[:data][:stdin]}") do 
+      @builder.text("link")
+    end
+    super
+  end
+
   ## custom methods
 
   def pythia_diff(diff)

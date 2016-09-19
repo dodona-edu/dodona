@@ -12,6 +12,7 @@ nl:
       danger: Oh nee
       info: Ter info
       success: Geweldig
+      no_username: Je account heeft geen gebruikersnaam. Als je ondertussen een UGent account hebt, contacteer dan zo snel mogelijk een assistent.
     menu:
       exercises: Oefeningen
       my_submissions: Mijn oplossingen

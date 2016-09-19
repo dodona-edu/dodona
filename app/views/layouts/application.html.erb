@@ -50,6 +50,11 @@
               <%= link_to(t("layout.impersonate.switch_back"), stop_impersonating_users_path) + " " +  t("layout.impersonate.your_account")%>
             </div>
           <% end %>
+          <% if user_signed_in? && current_user.username.blank? %>
+            <div class='alert alert-warning'>
+              <strong><%= t("layout.messages.warning") %></strong> <%= t("layout.messages.no_username") %>
+            </div>
+          <% end %>
         </div>
         <%= yield %>
       </div>

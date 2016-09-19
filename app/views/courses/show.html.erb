@@ -70,7 +70,7 @@
         <div class="card-supporting-text card-border">
           <h3><%= t ".users" %></h3>
           <p>
-            <strong><%= t ".auto_subscribe_link" %>:</strong> <%= request.protocol + request.host + subscribe_with_secret_course_path(@course.id, @course.secret) %>
+            <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %>
           </p>
           <table class="table table-index table-resource">
             <thead>
@@ -83,7 +83,12 @@
             <tbody>
               <% @course.users.each do |user| %>
                 <tr>
-                  <td><%= link_to user.username, user %></td>
+                  <td>
+                    <%= link_to user.short_name, user %>
+                    <% if user.username.blank? %>
+                      <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <% end %>
+                  </td>
                   <td><%= user.full_name %> </td>
                   <td><%= user.email %> </td>
                 </tr>

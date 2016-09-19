@@ -1,5 +1,7 @@
 en:
   users:
+    form:
+      username-help: Creating an account without a username will result in the generation of a sign in token. Afterwards, a username can be added.
     index:
       title: Users
     new:
@@ -9,3 +11,5 @@ en:
       no_courses: no courses found
       correctly_solved: Exercises correctly solved
       solutions: Number of submissions
+      sign_in: Sign in
+      token_sign_in: 'This user has no username and can only sign in using this link:'

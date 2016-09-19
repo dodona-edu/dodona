@@ -1,5 +1,7 @@
 nl:
   users:
+    form:
+      username-help: Als je een account aanmaakt zonder gebruikersnaam, dan zal er een inlog token gegenereerd worden. Later kan dan een gebruikersnaam toegevoegd worden.
     index:
       title: Gebruikers
     new:
@@ -9,3 +11,5 @@ nl:
       no_courses: geen cursussen gevonden
       correctly_solved: Oefeningen correct opgelost
       solutions: Oplossingen ingediend
+      sign_in: Inloggen
+      token_sign_in: 'Deze gebruiker heeft geen gebruikersnaam en kan enkel inloggen via deze link:'

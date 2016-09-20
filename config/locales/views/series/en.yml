@@ -16,3 +16,5 @@ en:
       exercises_in_series: Exercises in this series
       add_exercise: add exercise
       remove_exercise: remove exercise
+    deadline:
+      ago: ago

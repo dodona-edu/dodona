@@ -3,6 +3,46 @@ class PythiaRenderer < FeedbackTableRenderer
     super(submission, user)
   end
 
+  def parse
+
+    #Initialize tutor javascript
+    @builder.script do
+      escaped = @code.strip
+          .gsub("\\n", "\\\n")
+          .gsub("\n", "\\n")
+          .gsub("\"", "\\\"")
+          .html_safe
+      javascript = """
+$(function() {
+  var code = \"#{escaped}\"
+  init_pythia_submission_show(code)
+});
+      """
+      @builder << javascript
+    end
+
+    #Tutor HTML
+    @builder.div(id: "tutor") do
+      @builder.div(id: "info-modal", class: "modal fade modal-info", "data-backdrop": false, tabindex: -1) do
+        @builder.div(class: "modal-dialog tutor") do
+          @builder.div(class: "modal-content") do
+            @builder.div(class: "modal-header") do
+              @builder.button(type: "button", class: "close", "data-dismiss": "modal", "aria-label": "Close") do
+                @builder.span("aria-hidden": true) do
+                  @builder << "&times;"
+                end
+              end
+              @builder.h4(class: "modal-title")
+            end
+            @builder.div(class: "modal-body")
+          end
+        end
+      end
+    end
+
+    super
+  end
+
   def show_code_tab
     return true unless @submission[:groups]
     !@submission[:groups].any? { |t| t[:data][:source_annotations] }

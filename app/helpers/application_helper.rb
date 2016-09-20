@@ -7,14 +7,6 @@ module ApplicationHelper
     string.gsub('"', '\"')
   end
 
-  def escapeCode(string)
-      string.strip
-            .gsub("\\n", "\\\n")
-            .gsub("\n", "\\n")
-            .gsub("\"", "\\\"")
-            .html_safe
-  end
-
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
     protected
 

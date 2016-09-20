@@ -71,7 +71,7 @@
             <div class="alert alert-info"><%= t ".series_not_visible" %></div>
           <% end %>
           <%= markdown(series.description) %>
-          <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises}) if series.exercises.length > 0 %>
+          <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises, series: series}) if series.exercises.length > 0 %>
         <% end %>
       </div>
       <% if policy(@course).list_members? %>

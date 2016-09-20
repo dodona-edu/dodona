@@ -138,15 +138,30 @@ class Exercise < ApplicationRecord
     submissions.all.distinct.count(:user_id)
   end
 
-  def last_correct_submission(user)
-    submissions.of_user(user).where(status: :correct).limit(1).first
+  def last_correct_submission(user, deadline = nil)
+    s = submissions.of_user(user).where(status: :correct)
+    s = s.before_deadline(deadline) if deadline
+    s.limit(1).first
   end
 
   def last_submission(user)
     submissions.of_user(user).limit(1).first
   end
 
-  def status_for(user)
+  def status_for(user, deadline = nil)
+    if deadline
+      status_with_deadline_for(user, deadline)
+    else
+      status_without_deadline_for(user)
+    end
+  end
+
+  def status_with_deadline_for(user, deadline)
+    return :correct if submissions.of_user(user).where(accepted: true).before_deadline(deadline).count.positive?
+    :deadline_missed
+  end
+
+  def status_without_deadline_for(user)
     return :correct if submissions.of_user(user).where(accepted: true).count.positive?
     return :wrong if submissions.of_user(user).where(accepted: false).count.positive?
     :unknown

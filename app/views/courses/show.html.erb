@@ -49,7 +49,15 @@
         <% policy_scope(@course.series).each do |series| %>
           <div class="card-subtitle">
             <a class="anchor" id="series-<%= series.name.parameterize %>"></a>
-            <h4><%= series.name %></h4>
+            <h4><%= series.name %>
+              <% if series.deadline? %>
+                <% if series.deadline > Time.now %>
+                  <%= "<small class='deadline-ok' title='deadline in #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
+                <% else %>
+                  <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
+                <% end %>
+              <% end %>
+            </h4>
             <div class="flex-spacer"></div>
             <div class="card-subtitle-actions">
               <% if policy(series).edit? %>
@@ -63,7 +71,7 @@
             <div class="alert alert-info"><%= t ".series_not_visible" %></div>
           <% end %>
           <%= markdown(series.description) %>
-          <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises}) if series.exercises.length > 0 %>
+          <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises, series: series}) if series.exercises.length > 0 %>
         <% end %>
       </div>
       <% if policy(@course).list_members? %>

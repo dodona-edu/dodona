@@ -18,6 +18,19 @@
     <div class="col-sm-8"><%= f.text_field :name, class: "form-control" %></div>
   </div>
   <div class="field form-group">
+    <%= f.label :deadline, :class => "col-sm-4 control-label" %>
+    <div class='col-sm-8'>
+      <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>
+        <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" data-toggle><span class='glyphicon glyphicon-calendar'></span></button>
+          <button class="btn btn-default" type="button" data-clear><span class='glyphicon glyphicon-remove'></span></button>
+        </span>
+      </div>
+    </div>
+    <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".deadline-help" %></span>
+  </div>
+  <div class="field form-group">
     <%= f.label :visibility, :class => "col-sm-4 control-label" %>
     <div class="col-sm-8"><%= f.select :visibility, Series.visibilities.map { |key, value| [Series.human_enum_name(:visibility, key), key] }, {}, { :class => 'form-control' } %></div>
   </div>
@@ -27,3 +40,8 @@
     <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".description-help" %></span>
   </div>
 <% end %>
+<script type="text/javascript">
+  $(function () {
+    init_series_form();
+  });
+</script>

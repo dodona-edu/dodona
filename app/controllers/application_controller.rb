@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
+  around_action :user_time_zone, if: :current_user
+
   impersonates :user
 
   def after_sign_in_path_for(_resource)
@@ -38,5 +40,9 @@ class ApplicationController < ActionController::Base
 
   def store_current_location
     store_location_for(:user, request.url)
+  end
+
+  def user_time_zone(&block)
+    Time.use_zone(current_user.time_zone, &block)
   end
 end

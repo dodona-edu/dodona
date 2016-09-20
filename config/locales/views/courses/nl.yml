@@ -17,6 +17,7 @@ nl:
       users: Gebruikers
       series_not_visible: Deze reeks is niet zichtbaar voor studenten!
       series: reeksen
+      missed_deadline: deadline gemist
     subscribe:
       subscribed_successfully: Inschrijving succesvol
       subscription_failed: Inschrijven mislukt

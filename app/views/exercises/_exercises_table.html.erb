@@ -1,9 +1,7 @@
 <table class="table exercise-table">
   <thead>
     <tr>
-      <% if user_signed_in? %>
-        <th class='status-icon'></th>
-      <% end %>
+      <th class='status-icon'></th>
       <th><%= t "exercises.index.exercise"%></th>
       <th class='count'></th>
       <% if user_signed_in? %>
@@ -13,7 +11,9 @@
     </tr>
   </thead>
   <tbody>
-    <%= render(exercises) %>
+    <% exercises.each do |ex| %>
+      <%= render(partial: 'exercises/exercise', locals: {exercise: ex, series: local_assigns.fetch(:series, nil)}) %>
+    <% end %>
   </tbody>
 </table>
 <center><%= page_navigation_links exercises, true, "exercises" if exercises.try(:total_pages) %></center>

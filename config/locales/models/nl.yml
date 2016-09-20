@@ -42,6 +42,7 @@ nl:
         description: Beschrijving
         visibility: Zichtbaarheid
         order: Volgorde
+        deadline: Deadline
         visibilities:
           open: Open
           hidden: Verborgen

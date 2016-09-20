@@ -42,6 +42,7 @@ en:
         description: Description
         visibility: Visibility
         order: Order
+        deadline: Deadline
         visibilities:
           open: Open
           hidden: Hidden

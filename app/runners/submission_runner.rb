@@ -188,12 +188,14 @@ class SubmissionRunner
     end
 
     # put submission resources in working directory
-    dockerworkdir = File.join(@path, 'workdir')
+    workdir = File.join(@path, 'workdir')
     Dir.mkdir(workdir)
     src = File.join(@exercise.path, 'workdir')
     if File.directory?(src)
       FileUtils.cp_r(src, workdir)
     end
+
+    Dir.mkdir(File.join(@path, "logs"))
   end
 
   def execute
@@ -226,6 +228,8 @@ class SubmissionRunner
       '-v', "#{@exercise.full_path}/evaluation:#{@hidden_path}/resources:ro",
       # mount judge definition in hidden directory (read-only)
       '-v', "#{@judge.full_path}:#{@hidden_path}/judge:ro",
+      # mount logging directory in hidden directory
+      '-v', "#{@path}/logs:#{@hidden_path}/logs",
       # evalution directory is read/write and seeded with copies
       '-v', "#{@path}/workdir:/home/runner/workdir",
       # image used to launch docker container
@@ -236,6 +240,8 @@ class SubmissionRunner
       '/main.sh',
       # $1: script that starts processing the submission in the docker container
       "#{@hidden_path}/judge/run",
+      # $2: directory for logging output
+      "#{@hidden_path}/logs",
       stdin_data: @config.to_json
     )
 

@@ -85,10 +85,16 @@ $(function() {
   end
 
   def group(g)
-    @builder.div(class: "tutorlink", "data-statements": "#{g[:data][:statements]}", "data-stdin": "#{g[:data][:stdin]}") do 
-      @builder.text("link")
+    @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}") do
+      @builder.div(class: "tutorlink", "data-statements": "#{g[:data][:statements]}", "data-stdin": "#{g[:data][:stdin]}") do 
+        @builder.span(class: "glyphicon glyphicon-chevron-right")
+      end
+      @builder.div(class: 'col-xs-12 description') do
+        message(g[:description])
+      end if g[:description]
+      messages(g[:messages])
+      g[:groups].each { |tc| testcase(tc) } if g[:groups]
     end
-    super
   end
 
   ## custom methods

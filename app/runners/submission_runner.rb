@@ -165,9 +165,10 @@ class SubmissionRunner
                             'natural_language' => @submission.user.lang)
 
     # update with links to resources in docker container needed for processing submission
-    config.recursive_update('resources' => File.join(@hidden_path, 'resources', 'judge'),
-                            'source' => File.join(@hidden_path, 'submission', 'source'),
-                            'judge' => File.join(@hidden_path, 'judge'))
+    config.recursive_update('resources' => File.join(@hidden_path, 'resources'),
+                            'source'    => File.join(@hidden_path, 'submission', 'source'),
+                            'judge'     => File.join(@hidden_path, 'judge'),
+                            'workdir'   => '/home/runner/workdir')
 
     config
   end
@@ -180,23 +181,21 @@ class SubmissionRunner
     # create path on file system used as temporary working directory for processing the submission
     @path = Dir.mktmpdir(nil, @mac ? '/tmp' : nil)
 
-    # put submission in working directory (subdirectory submission)
+    # put submission in the submission dir
     Dir.mkdir(File.join(@path, 'submission'))
     open(File.join(@path, 'submission', 'source'), 'w') do |file|
       file.write(@submission.code)
     end
 
-    # put submission resources in working directory (subdirectory resources)
-    Dir.mkdir(File.join(@path, 'resources'))
-    src = File.join(@exercise.path, 'evaluation', 'media')
+    # put submission resources in working directory
+    workdir = File.join(@path, 'workdir')
+    Dir.mkdir(workdir)
+    src = File.join(@exercise.path, 'workdir')
     if File.directory?(src)
-      dest = File.join(File.join(@path, 'resources'))
-      FileUtils.cp_r(src, dest)
+      FileUtils.cp_r(src, workdir)
     end
 
-    # otherwise docker will make these as root
-    Dir.mkdir(File.join(@path, 'submission', 'judge'))
-    Dir.mkdir(File.join(@path, 'submission', 'resources'))
+    Dir.mkdir(File.join(@path, "logs"))
   end
 
   def execute
@@ -223,15 +222,16 @@ class SubmissionRunner
       '--rm',
       # 'memory limit', physical mapped and swap memory?
       '--memory', "#{memory_limit}B",
-      # mount submission as a hidden directory
-      # DONE: made read-only in entry point of docker container
-      '-v', "#{@path}/submission:#{@hidden_path}/submission",
+      # mount submission as a hidden directory (read-only)
+      '-v', "#{@path}/submission:#{@hidden_path}/submission:ro",
       # mount judge resources in hidden directory (read-only)
-      '-v', "#{@exercise.full_path}/evaluation:#{@hidden_path}/resources/judge:ro",
+      '-v', "#{@exercise.full_path}/evaluation:#{@hidden_path}/resources:ro",
       # mount judge definition in hidden directory (read-only)
       '-v', "#{@judge.full_path}:#{@hidden_path}/judge:ro",
-      # create runner home directory as read/write
-      '-v', "#{@path}/resources:/home/runner",
+      # mount logging directory in hidden directory
+      '-v', "#{@path}/logs:#{@hidden_path}/logs",
+      # evalution directory is read/write and seeded with copies
+      '-v', "#{@path}/workdir:/home/runner/workdir",
       # image used to launch docker container
       @judge.image.to_s,
       # initialization script of docker container (so-called entry point of docker container)
@@ -239,9 +239,9 @@ class SubmissionRunner
       # TODO: rename this into something more meaningful (suggestion: launch_runner)
       '/main.sh',
       # $1: script that starts processing the submission in the docker container
-      "#{@hidden_path}/judge/run.sh",
-      # $2: hidden path
-      @hidden_path.to_s,
+      "#{@hidden_path}/judge/run",
+      # $2: directory for logging output
+      "#{@hidden_path}/logs",
       stdin_data: @config.to_json
     )
 

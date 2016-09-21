@@ -22,7 +22,7 @@ class Course < ApplicationRecord
   validates :name, presence: true
   validates :year, presence: true
 
-  default_scope { order(year: :desc, name: :desc) }
+  default_scope { order(year: :desc, name: :asc) }
 
   before_create :generate_secret
 

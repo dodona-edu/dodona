@@ -16,11 +16,13 @@ en:
     menu:
       exercises: Exercises
       my_submissions: My submissions
+      all_submissions: All submissions
       users: Users
       courses: Courses
       judges: Judges
       repositories: Repositories
       profile: Profile
+      my_courses: My courses
       log_in: Sign in
       log_out: Log out
     footer:

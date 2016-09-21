@@ -6,7 +6,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def index?
-    user && user.admin?
+    user
   end
 
   def show?

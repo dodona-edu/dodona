@@ -61,6 +61,11 @@ class User < ApplicationRecord
     submissions.where(status: :correct).distinct.count(:exercise_id)
   end
 
+  def header_courses
+    return nil if courses.empty?
+    courses.group_by(&:year).first.second[0..2]
+  end
+
   def member_of?(course)
     courses.include? course
   end

@@ -16,11 +16,13 @@ nl:
     menu:
       exercises: Oefeningen
       my_submissions: Mijn oplossingen
+      all_submissions: Alle oplossingen
       users: Gebruikers
       courses: Cursussen
       judges: Judges
       repositories: Repository's
       profile: Profiel
+      my_courses: Mijn vakken
       log_in: Aanmelden
       log_out: Afmelden
     footer:

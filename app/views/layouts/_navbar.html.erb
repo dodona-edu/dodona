@@ -14,12 +14,6 @@
         <% unless user_signed_in? %>
           <li><%= link_to(t("layout.menu.exercises"), exercises_path) %></li>
         <% else %>
-          <% if !current_user.admin? %>
-            <li><%= link_to(t("layout.menu.my_submissions"), submissions_path) %></li>
-          <% end %>
-          <% if current_user.admin? %>
-            <li><%= link_to(t("layout.menu.all_submissions"), submissions_path) %></li>
-          <% end %>
           <% if current_user.courses.empty? %>
             <li><%= link_to t("layout.menu.courses"), courses_path %></li>
           <% else %>
@@ -61,6 +55,12 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.full_name %> <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><%= link_to t("layout.menu.profile"), current_user %></li>
+              <% if !current_user.admin? %>
+                <li><%= link_to(t("layout.menu.my_submissions"), submissions_path) %></li>
+              <% end %>
+              <% if current_user.admin? %>
+                <li><%= link_to(t("layout.menu.all_submissions"), submissions_path) %></li>
+              <% end %>
               <% unless current_user.courses.empty? %>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header"><%= t "layout.menu.my_courses" %></li>

@@ -86,8 +86,8 @@ $(function() {
 
   def group(g)
     @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}") do
-      @builder.a(href: "javascript:void(0)", class: "tutorlink", "data-statements": "#{g[:data][:statements]}", "data-stdin": "#{g[:data][:stdin]}") do 
-        @builder.span(class: "glyphicon glyphicon-chevron-right")
+      @builder.a(href: "#", class: "tutorlink", "data-statements": "#{g[:data][:statements]}", "data-stdin": "#{g[:data][:stdin]}") do 
+        @builder.span(class: "glyphicon glyphicon-expand")
       end
       @builder.div(class: 'col-xs-12 description') do
         message(g[:description])

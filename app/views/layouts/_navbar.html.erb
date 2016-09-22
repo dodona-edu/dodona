@@ -26,7 +26,7 @@
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
           <% if current_user.admin? %>
-          <li class="dropdown">
+          <li class="dropdown hidden-sm">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <% if policy(Exercise).index? %>
@@ -60,6 +60,28 @@
               <% end %>
               <% if current_user.admin? %>
                 <li><%= link_to(t("layout.menu.all_submissions"), submissions_path) %></li>
+              <% end %>
+              <% if current_user.admin? %>
+                <li role="separator" class="divider visible-sm-block"></li>
+                <li class="dropdown-header visible-sm-block">Admin</li>
+                <% if policy(Exercise).index? %>
+                  <li class='visible-sm-block'><%= link_to t("layout.menu.exercises"), exercises_path %></li>
+                <% end %>
+                <% if policy(User).index? %>
+                  <li class='visible-sm-block'><%= link_to t("layout.menu.users"), users_path %></li>
+                <% end %>
+                <% if policy(Course).index? %>
+                  <li class='visible-sm-block'><%= link_to t("layout.menu.courses"), courses_path %></li>
+                <% end %>
+                <% if policy(Judge).index? %>
+                  <li class='visible-sm-block'><%= link_to t("layout.menu.judges"), judges_path %></li>
+                <% end %>
+                <% if policy(Repository).index? %>
+                  <li class='visible-sm-block'><%= link_to t("layout.menu.repositories"), repositories_path %></li>
+                <% end %>
+                <% if current_user.zeus? %>
+                  <li class='visible-sm-block'><%= link_to "Job queue", "/dj/overview" %></li>
+                <% end %>
               <% end %>
               <% unless current_user.courses.empty? %>
                 <li role="separator" class="divider"></li>

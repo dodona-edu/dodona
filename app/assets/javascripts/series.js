@@ -1,4 +1,4 @@
-function init_series_edit() {
+/*function init_series_edit() {
 
     function init() {
         initAddButtons();
@@ -97,7 +97,7 @@ function init_series_edit() {
     }
 
     init();
-}
+}*/
 function init_series_form() {
 
     function init() {
@@ -116,7 +116,7 @@ function init_series_form() {
 
             Flatpickr.l10n.firstDayOfWeek = 1;
 
-            Flatpickr.l10n.ordinal = nth => {
+            Flatpickr.l10n.ordinal = function (nth) {
                 if (nth === 1 || nth === 8 || nth >= 20) {
                     return "ste";
                 }

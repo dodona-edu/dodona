@@ -20,22 +20,33 @@
     border: none;
 }
 
-.dodona-centered-group {
-    text-align: center;
-    margin-bottom: 12px;
+.exercise-description .dodona-centered-group {
+    margin: 0 0 9.5px;
 }
-.dodona-centered-group > table {
-    display: inline-table;
+.exercise-description .dodona-centered-group img {
+    margin-left: 0px;
+    margin-right: 0px;
+    vertical-align: middle;
+}
+.exercise-description .dodona-centered-group table {
     width: auto;
-    vertical-align: top;
-    margin-left: 12px;
-    margin-right: 12px;
+    display: inline-table;
+    vertical-align: middle;
 }
-center img,
-.dodona-centered-group > img {
+.exercise-description .dodona-centered-group table th,
+.exercise-description .dodona-centered-group table td {
+    text-align: left;
+}
+.exercise-description .dodona-centered-group img + img,
+.exercise-description .dodona-centered-group img + table,
+.exercise-description .dodona-centered-group table + img,
+.exercise-description .dodona-centered-group table + table {
+    margin-left: 16px;
+}
+center img {
     vertical-align: top;
-    margin-left: 12px;
-    margin-right: 12px;
+    margin-left: 16px;
+    margin-right: 16px;
 }
 
 // fab

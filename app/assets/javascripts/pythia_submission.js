@@ -7,6 +7,7 @@ function init_pythia_submission_show(submissionCode) {
           var stdin = $(this).attr('data-stdin').slice(0, -1);
           var statements = $(this).attr('data-statements')
           loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')))
+          return false;
         })
       })
     };

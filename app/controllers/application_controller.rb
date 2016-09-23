@@ -25,8 +25,12 @@ class ApplicationController < ActionController::Base
   private
 
   def user_not_authorized
-    flash[:alert] = I18n.t('errors.no_rights')
-    redirect_to(request.referer || root_path)
+    if current_user.nil?
+      redirect_to new_user_session_path
+    else
+      flash[:alert] = I18n.t('errors.no_rights')
+      redirect_to(request.referer || root_path)
+    end
   end
 
   def set_locale

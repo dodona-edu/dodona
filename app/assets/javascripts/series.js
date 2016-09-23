@@ -1,4 +1,4 @@
-/*function init_series_edit() {
+function init_series_edit() {
 
     function init() {
         initAddButtons();
@@ -97,7 +97,7 @@
     }
 
     init();
-}*/
+}
 function init_series_form() {
 
     function init() {

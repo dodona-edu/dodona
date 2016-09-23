@@ -4,9 +4,7 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @user.full_name %></h2>
         <div class="card-title-fab">
-          <button type="submit" class="btn btn-primary btn-fab" form="edit_user_<%= @user.id %>">
-            <span class="glyphicon glyphicon-ok"></span>
-          </button>
+          <%= render 'fab_button', form: "edit_user_#{@user.id}", icon: 'ok' %>
         </div>
       </div>
       <div class="card-supporting-text">

@@ -12,12 +12,17 @@ nl:
       course:
         name: Naam
         year: Academiejaar
+        description: Beschrijving
         secret: Secret
       exercise:
         name: Naam
         name_nl: Naam Nederlands
         name_en: Naam Engels
         visibility: Zichtbaarheid
+        visibilities:
+          open: Open
+          hidden: Verborgen
+          closed: Gesloten
       judge:
         name: Naam
         remote: Clone URL
@@ -37,6 +42,7 @@ nl:
         description: Beschrijving
         visibility: Zichtbaarheid
         order: Volgorde
+        deadline: Deadline
         visibilities:
           open: Open
           hidden: Verborgen

@@ -5,9 +5,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(Judge).new? %>
           <div class="card-title-fab">
-            <%= link_to new_judge_path, class: "btn btn-primary btn-fab" do %>
-              <span class="glyphicon glyphicon-plus"></span>
-            <% end %>
+            <%= render 'fab_link', url: new_judge_path, icon: 'plus' %>
           </div>
         <% end %>
       </div>

@@ -113,7 +113,7 @@ class FeedbackTableRenderer
     return if msgs.nil?
     @builder.div(class: 'col-xs-12 messages') do
       msgs.each do |msg|
-        @builder.p(class: 'message') do
+        @builder.div(class: 'message') do
           message(msg)
         end
       end
@@ -163,11 +163,11 @@ class FeedbackTableRenderer
 
   def message(m)
     return if m.nil?
+    m = { format: 'plain', description: m } if m.is_a? String
     if m[:permission]
       return if m[:permission] == 'staff' && !@current_user.admin?
       return if m[:permission] == 'zeus' && !@current_user.zeus?
     end
-    m = { format: 'plain', description: m } if m.is_a? String
     output_message(m)
   end
 

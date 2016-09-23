@@ -7,7 +7,6 @@ en:
       not_solved: not solved
     form:
       edit_exercise: Edit exercise
-      edit_tests: Edit tests
       open_on_github: Open on GitHub
     index:
       title: Exercises

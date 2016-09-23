@@ -6,23 +6,47 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  before_action :store_current_location, unless: :devise_controller?
+
   before_action :set_locale
 
+  around_action :user_time_zone, if: :current_user
+
   impersonates :user
+
+  def after_sign_in_path_for(_resource)
+    stored_location_for(:user) || root_path
+  end
+
+  def after_sign_out_path_for(_resource)
+    stored_location_for(:user) || root_path
+  end
 
   private
 
   def user_not_authorized
-    flash[:alert] = I18n.t('errors.no_rights')
-    redirect_to(request.referer || root_path)
+    if current_user.nil?
+      redirect_to new_user_session_path
+    else
+      flash[:alert] = I18n.t('errors.no_rights')
+      redirect_to(request.referer || root_path)
+    end
   end
 
   def set_locale
-    I18n.locale = params[:locale] || (current_user && current_user.lang) || 'en' || I18n.default_locale
+    I18n.locale = params[:locale] || (current_user && current_user.lang) || I18n.default_locale
     current_user.update(lang: I18n.locale.to_s) if current_user
   end
 
   def default_url_options
     { locale: I18n.locale, trailing_slash: true }
+  end
+
+  def store_current_location
+    store_location_for(:user, request.url)
+  end
+
+  def user_time_zone(&block)
+    Time.use_zone(current_user.time_zone, &block)
   end
 end

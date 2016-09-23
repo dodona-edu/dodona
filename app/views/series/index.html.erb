@@ -5,9 +5,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(Series).new? %>
           <div class="card-title-fab">
-            <%= link_to new_series_path, class: "btn btn-primary btn-fab" do %>
-              <span class="glyphicon glyphicon-plus"></span>
-            <% end %>
+            <%= render 'fab_link', url: new_series_path, icon: 'plus' %>
           </div>
         <% end %>
       </div>
@@ -24,7 +22,7 @@
             <% @series.each do |series| %>
               <tr>
                 <td><%= link_to series.name, series %></td>
-                <td><%= "#{series.course.name} (#{series.course.year})" %> </td>
+                <td><%= "#{series.course.name} (#{series.course.formatted_year})" %> </td>
                 <td class="actions">
                   <% if policy(series).edit? %>
                     <%= link_to edit_series_path(series), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>

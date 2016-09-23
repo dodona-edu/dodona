@@ -12,14 +12,17 @@ nl:
       danger: Oh nee
       info: Ter info
       success: Geweldig
+      no_username: Je account heeft geen gebruikersnaam. Als je ondertussen een UGent account hebt, contacteer dan zo snel mogelijk een assistent.
     menu:
       exercises: Oefeningen
       my_submissions: Mijn oplossingen
+      all_submissions: Alle oplossingen
       users: Gebruikers
       courses: Cursussen
       judges: Judges
       repositories: Repository's
       profile: Profiel
+      my_courses: Mijn vakken
       log_in: Aanmelden
       log_out: Afmelden
     footer:

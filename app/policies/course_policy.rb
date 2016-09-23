@@ -6,7 +6,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def index?
-    user && user.admin?
+    user
   end
 
   def show?
@@ -51,7 +51,7 @@ class CoursePolicy < ApplicationPolicy
 
   def permitted_attributes
     if user && user.admin?
-      [:name, :year]
+      [:name, :year, :description]
     else
       []
     end

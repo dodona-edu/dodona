@@ -38,6 +38,7 @@ class Exercise < ApplicationRecord
   validates :judge, presence: true
   validates :repository, presence: true
 
+  before_create :generate_id
   before_save :check_validity
   before_update :update_config
 
@@ -76,6 +77,10 @@ class Exercise < ApplicationRecord
     desc = description_localized || description_nl || description_en
     desc = markdown(desc) if description_format == 'md'
     desc.html_safe
+  end
+
+  def github_url
+    repository.remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '') + '/tree/master' + path
   end
 
   def update_data(config, j_id)
@@ -125,9 +130,7 @@ class Exercise < ApplicationRecord
 
   def users_correct(course = nil)
     subs = submissions.where(status: :correct)
-    if course
-      subs = subs.in_course(course)
-    end
+    subs = subs.in_course(course) if course
     subs.distinct.count(:user_id)
   end
 
@@ -135,15 +138,30 @@ class Exercise < ApplicationRecord
     submissions.all.distinct.count(:user_id)
   end
 
-  def last_correct_submission(user)
-    submissions.of_user(user).where(status: :correct).limit(1).first
+  def last_correct_submission(user, deadline = nil)
+    s = submissions.of_user(user).where(status: :correct)
+    s = s.before_deadline(deadline) if deadline
+    s.limit(1).first
   end
 
   def last_submission(user)
     submissions.of_user(user).limit(1).first
   end
 
-  def status_for(user)
+  def status_for(user, deadline = nil)
+    if deadline
+      status_with_deadline_for(user, deadline)
+    else
+      status_without_deadline_for(user)
+    end
+  end
+
+  def status_with_deadline_for(user, deadline)
+    return :correct if submissions.of_user(user).where(accepted: true).before_deadline(deadline).count.positive?
+    :deadline_missed
+  end
+
+  def status_without_deadline_for(user)
     return :correct if submissions.of_user(user).where(accepted: true).count.positive?
     return :wrong if submissions.of_user(user).where(accepted: false).count.positive?
     :unknown
@@ -222,5 +240,14 @@ class Exercise < ApplicationRecord
     return 'open' if visibility == 'public'
     return 'closed' if visibility == 'private'
     visibility
+  end
+
+  private
+
+  def generate_id
+    begin
+      new = SecureRandom.random_number(2_147_483_646)
+    end until Exercise.find_by_id(new).nil?
+    self.id = new
   end
 end

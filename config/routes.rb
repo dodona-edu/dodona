@@ -4,8 +4,6 @@ Rails.application.routes.draw do
 
   match '/dj' => DelayedJobWeb, :anchor => false, via: [:get, :post]
 
-  get '/precourse' => 'pages#precourse', as: "precourse"
-
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
@@ -58,6 +56,8 @@ Rails.application.routes.draw do
       get 'stop_impersonating', on: :collection
       member do
         get 'impersonate'
+        get 'photo'
+        get 'token/:token', to: 'users#token_sign_in', as: 'token_sign_in'
       end
     end
   end

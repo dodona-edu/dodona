@@ -16,7 +16,7 @@ class SeriesPolicy < ApplicationPolicy
   def show?
     return true if user && user.admin?
     return true if record.open?
-    return false
+    false
   end
 
   def new?
@@ -57,7 +57,7 @@ class SeriesPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user && user.admin?
-      [:name, :description, :course_id, :visibility, :order]
+      [:name, :description, :course_id, :visibility, :order, :deadline]
     else
       []
     end

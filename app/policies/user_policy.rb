@@ -6,7 +6,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index?
-    user && user.admin?
+    user&.admin?
   end
 
   def show?
@@ -14,7 +14,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def new?
-    user && user.admin?
+    user&.admin?
   end
 
   def edit?
@@ -22,7 +22,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    user && user.admin?
+    user&.admin?
   end
 
   def update?
@@ -30,11 +30,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user && user.zeus?
+    user&.zeus?
   end
 
   def photo?
-    user && user.admin?
+    user&.admin?
   end
 
   def impersonate?
@@ -54,9 +54,9 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if user && user.zeus?
+    if user&.zeus?
       [:username, :ugent_id, :first_name, :last_name, :email, :permission]
-    elsif user && user.staff?
+    elsif user&.staff?
       [:permission]
     else
       []

@@ -191,11 +191,9 @@ class SubmissionRunner
     workdir = File.join(@path, 'workdir')
     Dir.mkdir(workdir)
     src = File.join(@exercise.path, 'workdir')
-    if File.directory?(src)
-      FileUtils.cp_r(src, workdir)
-    end
+    FileUtils.cp_r(src, workdir) if File.directory?(src)
 
-    Dir.mkdir(File.join(@path, "logs"))
+    Dir.mkdir(File.join(@path, 'logs'))
   end
 
   def execute

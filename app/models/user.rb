@@ -84,6 +84,7 @@ class User < ApplicationRecord
         self.ugent_id = value
       end
     end
+    self.ugent_id = extra_attributes['ugentStudentID'] if extra_attributes.key?('ugentStudentID') && !extra_attributes['ugentStudentID'].blank?
   end
 
   def self.default_photo

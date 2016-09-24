@@ -11,7 +11,7 @@ GIT
       tilt (~> 2.0)
 
 GIT
-  remote: git@github.com:bmesuere/rubycas-client.git
+  remote: https://github.com/bmesuere/rubycas-client.git
   revision: 7e102b4a0a910ab000058268c0b1f27ece9c9070
   specs:
     rubycas-client (2.3.10.rc1)

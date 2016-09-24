@@ -52,7 +52,7 @@
             <h4><%= series.name %>
               <% if series.deadline? %>
                 <% if series.deadline > Time.now %>
-                  <%= "<small class='deadline-ok' title='deadline in #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
+                  <%= "<small class='deadline-ok' title='deadline #{t ".deadline_in"} #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
                 <% else %>
                   <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
                 <% end %>

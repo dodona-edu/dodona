@@ -80,29 +80,10 @@
           <p>
             <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %>
           </p>
-          <table class="table table-index table-resource">
-            <thead>
-              <tr>
-                <th><%= User.human_attribute_name("username") %></th>
-                <th><%= User.human_attribute_name("name") %></th>
-                <th><%= User.human_attribute_name("email") %></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @course.users.each do |user| %>
-                <tr>
-                  <td>
-                    <%= link_to user.short_name, user %>
-                    <% if user.username.blank? %>
-                      <span class="glyphicon glyphicon-exclamation-sign"></span>
-                    <% end %>
-                  </td>
-                  <td><%= user.full_name %> </td>
-                  <td><%= user.email %> </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+          <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(course_id: @course.id)}) %>
+          <div id="users-table-wrapper">
+            <%= render partial: 'users/users_table', locals: {users: @course.users}  %>
+          </div>
         </div>
       <% end %>
     </div>

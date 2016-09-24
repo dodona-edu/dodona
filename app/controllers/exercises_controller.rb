@@ -12,6 +12,7 @@ class ExercisesController < ApplicationController
     authorize Exercise
     @exercises = policy_scope(Exercise).merge(apply_scopes(Exercise).all).order('name_' + I18n.locale.to_s).paginate(page: params[:page])
     @series = Series.find(params[:series_id]) if params[:series_id]
+    @title = I18n.t('exercises.index.title')
   end
 
   def show
@@ -22,9 +23,11 @@ class ExercisesController < ApplicationController
       @edit_submission = Submission.find(params[:edit_submission])
       authorize @edit_submission, :edit?
     end
+    @title = @exercise.name
   end
 
   def edit
+    @title = @exercise.name
   end
 
   def update

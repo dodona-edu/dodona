@@ -6,23 +6,27 @@ class SeriesController < ApplicationController
   def index
     authorize Series
     @series = policy_scope(Series)
+    @title = I18n.t('series.index.title')
   end
 
   # GET /series/1
   # GET /series/1.json
   def show
     @course = @series.course
+    @title = @series.name
   end
 
   # GET /series/new
   def new
     authorize Series
     @series = Series.new
+    @title = I18n.t('series.new.title')
   end
 
   # GET /series/1/edit
   def edit
     @exercises = policy_scope(Exercise).order('name_' + I18n.locale.to_s).paginate(page: params[:page])
+    @title = @series.name
   end
 
   # POST /series

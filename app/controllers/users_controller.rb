@@ -14,21 +14,25 @@ class UsersController < ApplicationController
       @users = @users.in_course(@course)
     end
     @users = @users.order(permission: :desc, username: :asc)
+    @title = I18n.t('users.index.title')
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    @title = @user.full_name
   end
 
   # GET /users/new
   def new
     authorize User
     @user = User.new
+    @title = I18n.t('users.new.title')
   end
 
   # GET /users/1/edit
   def edit
+    @title = @user.full_name
   end
 
   # POST /users

@@ -9,21 +9,25 @@ class RepositoriesController < ApplicationController
   def index
     authorize Repository
     @repositories = Repository.all
+    @title = I18n.t('repositories.index.title')
   end
 
   # GET /repositories/1
   # GET /repositories/1.json
   def show
+    @title = @repository.name
   end
 
   # GET /repositories/new
   def new
     authorize Repository
     @repository = Repository.new
+    @title = I18n.t('repositories.new.title')
   end
 
   # GET /repositories/1/edit
   def edit
+    @title = @repository.name
   end
 
   # POST /repositories

@@ -7,21 +7,25 @@ class JudgesController < ApplicationController
   def index
     authorize Judge
     @judges = Judge.all
+    @title = I18n.t('judges.index.title')
   end
 
   # GET /judges/1
   # GET /judges/1.json
   def show
+    @title = @judge.name
   end
 
   # GET /judges/new
   def new
     authorize Judge
     @judge = Judge.new
+    @title = I18n.t('judges.new.title')
   end
 
   # GET /judges/1/edit
   def edit
+    @title = @judge.name
   end
 
   # POST /judges

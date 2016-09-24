@@ -10,6 +10,13 @@ GIT
       rack-protection (= 2.0.0.beta2)
       tilt (~> 2.0)
 
+GIT
+  remote: git@github.com:bmesuere/rubycas-client.git
+  revision: 7e102b4a0a910ab000058268c0b1f27ece9c9070
+  specs:
+    rubycas-client (2.3.10.rc1)
+      activesupport
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -224,8 +231,6 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
-    rubycas-client (2.3.9)
-      activesupport
     slack-notifier (1.5.1)
     spring (1.7.2)
     spring-watcher-listen (2.0.0)
@@ -302,6 +307,7 @@ DEPENDENCIES
   rails-i18n
   rouge (= 1.10.1)
   rubocop
+  rubycas-client!
   sinatra!
   slack-notifier
   spring

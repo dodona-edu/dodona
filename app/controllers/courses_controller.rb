@@ -11,6 +11,7 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
+    @users = @course.users.order(permission: :desc, username: :asc)
   end
 
   # GET /courses/new

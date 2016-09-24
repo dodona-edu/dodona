@@ -82,7 +82,7 @@
           </p>
           <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(course_id: @course.id)}) %>
           <div id="users-table-wrapper">
-            <%= render partial: 'users/users_table', locals: {users: @course.users}  %>
+            <%= render partial: 'users/users_table', locals: {users: @users}  %>
           </div>
         </div>
       <% end %>

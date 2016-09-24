@@ -17,7 +17,7 @@ module Gitable
   end
 
   def clone_repo
-    cmd = ['git', 'clone', remote.shellescape, full_path]
+    cmd = ['git', 'clone', '--depth', '1', remote.shellescape, full_path]
     _out, error, status = Open3.capture3(*cmd)
     unless status.success?
       errors.add(:base, "cloning failed: #{error}")

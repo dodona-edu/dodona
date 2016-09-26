@@ -80,9 +80,8 @@
           <p>
             <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %>
           </p>
-          <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(course_id: @course.id)}) %>
+          <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(course_id: @course.id), eager: true}) %>
           <div id="users-table-wrapper">
-            <%= render partial: 'users/users_table', locals: {users: @users}  %>
           </div>
         </div>
       <% end %>

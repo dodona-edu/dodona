@@ -102,6 +102,14 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         $("#exercise-handin-link").on("hide.bs.tab", function (e) {
             $("#editor-process-btn").addClass("hidden-fab");
         });
+        $("#exercise-submission-link").on("shown.bs.tab", function (e) {
+            if(lastSubmission) {
+                $("#editor-process-btn").removeClass("hidden-fab");
+            }
+        });
+        $("#exercise-submission-link").on("hide.bs.tab", function (e) {
+            $("#editor-process-btn").addClass("hidden-fab");
+        });
         $("#exercise-feedback-link").on("shown.bs.tab", function (e) {
             $("#submission-copy-btn").removeClass("hidden-fab");
         });
@@ -138,10 +146,21 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
                 if ($("#exercise-submission-link").parent().hasClass("active")) {
                     $submissionRow.find(".load-submission").click();
                 }
+                enableSubmitButton();
                 showNotification(I18n.t("js.submission-processed"));
                 lastSubmission = null;
             }
         }
+    }
+
+    function enableSubmitButton() {
+        $("#editor-process-btn").prop("disabled", false);
+        $("#editor-process-btn .glyphicon").removeClass("glyphicon-hourglass").addClass("glyphicon-play");
+    }
+
+    function disableSubmitButton() {
+        $("#editor-process-btn").prop("disabled", true);
+        $("#editor-process-btn .glyphicon").removeClass("glyphicon-play").addClass("glyphicon-hourglass");
     }
 
     function submissionSuccessful(data) {
@@ -149,6 +168,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         showNotification(I18n.t("js.submission-saved"));
         $.get("submissions.js");
         $('#exercise-submission-link').tab('show');
+        disableSubmitButton();
     }
 
     function submissionFailed() {

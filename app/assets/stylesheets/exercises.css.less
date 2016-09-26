@@ -54,6 +54,16 @@ center img {
 .hidden-fab {
     display: none;
 }
+#editor-process-btn.busy .glyphicon{
+    animation-name: spin;
+    animation-duration: 800ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(359deg);}
+}
 
 // editor
 #editor-window {

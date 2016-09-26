@@ -57,7 +57,7 @@
             <% end %>
             <% if policy(@exercise).submit? || !user_signed_in? %>
               <div id="editor-window">
-                <div id="editor-text"><%= @edit_submission.try :code %></div>
+                <div id="editor-text"><%= @edit_submission.try(:code) || @exercise.boilerplate %></div>
               </div>
             <% end %>
           </div>

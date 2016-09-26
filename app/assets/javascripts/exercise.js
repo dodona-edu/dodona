@@ -150,12 +150,12 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
     }
 
     function enableSubmitButton() {
-        $("#editor-process-btn").prop("disabled", false);
+        $("#editor-process-btn").prop("disabled", false).removeClass("busy");
         $("#editor-process-btn .glyphicon").removeClass("glyphicon-hourglass").addClass("glyphicon-play");
     }
 
     function disableSubmitButton() {
-        $("#editor-process-btn").prop("disabled", true);
+        $("#editor-process-btn").prop("disabled", true).addClass("busy");
         $("#editor-process-btn .glyphicon").removeClass("glyphicon-play").addClass("glyphicon-hourglass");
     }
 

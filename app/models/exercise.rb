@@ -23,6 +23,7 @@ class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
+  CODEFRAME_DIR = 'codeframe'.freeze
 
   enum visibility: [:open, :hidden, :closed]
   enum status: [:ok, :not_valid, :removed]
@@ -77,6 +78,15 @@ class Exercise < ApplicationRecord
     desc = description_localized || description_nl || description_en
     desc = markdown(desc) if description_format == 'md'
     desc.html_safe
+  end
+
+  def codeframe_localized(lang = I18n.locale.to_s)
+    file = File.join(full_path, CODEFRAME_DIR, "codeframe.#{lang}")
+    File.read(file).strip if FileTest.exists?(file)
+  end
+
+  def codeframe
+    codeframe_localized || codeframe_localized('nl') || codeframe_localized('en')
   end
 
   def github_url

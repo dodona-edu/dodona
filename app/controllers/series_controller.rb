@@ -25,7 +25,6 @@ class SeriesController < ApplicationController
 
   # GET /series/1/edit
   def edit
-    @exercises = policy_scope(Exercise).order('name_' + I18n.locale.to_s).paginate(page: params[:page])
     @title = @series.name
   end
 

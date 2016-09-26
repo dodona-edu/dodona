@@ -8,12 +8,11 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     authorize User
-    @users = apply_scopes(User).all
+    @users = apply_scopes(User).all.order(permission: :desc, username: :asc).paginate(page: params[:page])
     if params[:course_id]
       @course = Course.find(params[:course_id])
       @users = @users.in_course(@course)
     end
-    @users = @users.order(permission: :desc, username: :asc)
     @title = I18n.t('users.index.title')
   end
 

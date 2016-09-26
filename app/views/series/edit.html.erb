@@ -34,9 +34,8 @@
           </div>
           <div class="col-xs-12 col-sm-6 col-sm-pull-6">
             <h4><%= t ".add_exercises" %></h4>
-            <%= render partial: 'layouts/searchbar', locals: {baseUrl: exercises_path(:series_id => @series.id)}  %>
+            <%= render partial: 'layouts/searchbar', locals: { baseUrl: exercises_path(:series_id => @series.id), eager: true }  %>
             <div id="exercises-table-wrapper">
-              <%= render partial: 'exercises/series_exercises_table', locals: {exercises: @exercises, series: @series}  %>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :impersonate]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :impersonate, :photo, :token_sign_in]
 
   has_scope :by_permission
   has_scope :by_name, as: 'filter'
@@ -67,13 +67,25 @@ class UsersController < ApplicationController
     end
   end
 
+  def photo
+    file = @user.photo || User.default_photo
+    send_file file, disposition: 'inline'
+  end
+
   def impersonate
     impersonate_user(@user)
     redirect_to root_path
   end
 
   def stop_impersonating
+    authorize User
     stop_impersonating_user
+    redirect_to :back
+  end
+
+  def token_sign_in
+    token = params[:token]
+    sign_in(@user) if !token.blank? && token == @user.token
     redirect_to root_path
   end
 

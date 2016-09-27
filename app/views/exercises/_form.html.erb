@@ -33,10 +33,7 @@
   </div>
   <div class="field form-group">
     <label class="col-sm-2 control-label"><%= t ".edit_exercise" %></label>
-    <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.path}/NL.md" %></div>
+    <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), @exercise.github_url, target: '_blank' %></div>
   </div>
-  <div class="field form-group">
-    <label class="col-sm-2 control-label"><%= t ".edit_tests" %></label>
-    <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), "https://github.ugent.be/Scriptingtalen/dodona-exercises/edit/master/#{@exercise.path}/tests.js" %></div>
   </div>
 <% end %>

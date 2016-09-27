@@ -8,7 +8,6 @@ nl:
       not_solved: niet opgelost
     form:
       edit_exercise: Opgave aanpassen
-      edit_tests: Testen aanpassen
       open_on_github: Open op GitHub
     index:
       title: Oefeningen

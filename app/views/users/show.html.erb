@@ -5,51 +5,69 @@
         <h2 class="card-title-text"><%= @user.full_name %></h2>
         <% if policy(@user).edit? %>
           <div class="card-title-fab">
-            <%= link_to edit_user_path(@user), class: "btn btn-primary btn-fab" do %>
-              <span class="glyphicon glyphicon-pencil"></span>
-            <% end %>
+            <%= render 'fab_link', url: edit_user_path(@user), icon: 'pencil' %>
           </div>
         <% end %>
       </div>
-      <div class="card-supporting-text">
-        <p>
-          <strong><%= User.human_attribute_name("first_name") %>:</strong> <%= @user.first_name %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("last_name") %>:</strong> <%= @user.last_name %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("username") %>:</strong> <%= @user.username %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("ugent_id") %>:</strong> <%= @user.ugent_id %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
-        </p>
-        <% if current_user.admin? %>
-        <p>
-          <strong><%= User.human_attribute_name("permission") %>:</strong> <%= @user.permission %>
-        </p>
-        <% end %>
-        <p>
-          <strong><%= t ".courses" %>:</strong>
-          <% if @user.courses.empty? %>
-            <%= t ".no_courses" %>
-          <% else %>
-            <ul>
-            <% @user.courses.each do |course| %>
-              <li><%= link_to course.name, course %></li>
-            <% end %>
-            </ul>
+      <div class="card-supporting-text row">
+        <div class='col-xs-8 col-xs-offset-2'>
+          <% unless @user.token.blank? %>
+            <div class="card">
+              <div class="card-title card-title-colored">
+                <h2 class="card-title-text"><%= t ".sign_in" %></h2>
+              </div>
+              <div class="card-supporting-text">
+                <p><%= t ".token_sign_in" %></p>
+                <p><%= token_sign_in_user_url(@user, @user.token) %></p>
+              </div>
+            </div>
           <% end %>
-        </p>
-        <p>
-          <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
-        </p>
-        <p>
-          <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
-        </p>
+        </div>
+        <div class='col-xs-8'>
+          <p>
+            <strong><%= User.human_attribute_name("first_name") %>:</strong> <%= @user.first_name %>
+          </p>
+          <p>
+            <strong><%= User.human_attribute_name("last_name") %>:</strong> <%= @user.last_name %>
+          </p>
+          <p>
+            <strong><%= User.human_attribute_name("username") %>:</strong> <%= @user.username %>
+          </p>
+          <p>
+            <strong><%= User.human_attribute_name("ugent_id") %>:</strong> <%= @user.ugent_id %>
+          </p>
+          <p>
+            <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
+          </p>
+          <% if current_user.admin? %>
+          <p>
+            <strong><%= User.human_attribute_name("permission") %>:</strong> <%= @user.permission %>
+          </p>
+          <% end %>
+          <p>
+            <strong><%= t ".courses" %>:</strong>
+            <% if @user.courses.empty? %>
+              <%= t ".no_courses" %>
+            <% else %>
+              <ul>
+              <% @user.courses.each do |course| %>
+                <li><%= link_to course.name, course %></li>
+              <% end %>
+              </ul>
+            <% end %>
+          </p>
+          <p>
+            <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
+          </p>
+          <p>
+            <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
+          </p>
+        </div>
+        <div class='col-xs-4'>
+          <% if policy(@user).photo?%>
+            <img src='<%= photo_user_path(@user) %>' alt='avatar' class="img-responsive">
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

@@ -60,6 +60,8 @@ Rails.application.routes.draw do
       get 'stop_impersonating', on: :collection
       member do
         get 'impersonate'
+        get 'photo'
+        get 'token/:token', to: 'users#token_sign_in', as: 'token_sign_in'
       end
     end
   end

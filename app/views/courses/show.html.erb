@@ -7,42 +7,32 @@
   <div class="col-sm-10 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @course.name %></h2>
+        <h2 class="card-title-text"><%= @course.name %> (<%= @course.formatted_year %>)</h2>
         <% if policy(@course).edit? %>
           <div class="card-title-fab">
-            <%= link_to edit_course_path(@course), class: "btn btn-primary btn-fab" do %>
-              <span class="glyphicon glyphicon-pencil"></span>
-            <% end %>
+            <%= render 'fab_link', url: edit_course_path(@course), icon: 'pencil' %>
           </div>
         <% end %>
       </div>
-      <div class="card-supporting-text row">
-        <div class="col-sm-6 col-xs-12">
-          <p>
-            <strong><%= t ".course" %>:</strong> <%= @course.name %>
-          </p>
-          <p>
-            <strong><%= Course.human_attribute_name("year") %>:</strong> <%= @course.year %>
-          </p>
-          <% if current_user && current_user.admin? %>
-          <p>
-            <strong><%= t ".auto_subscribe_link" %>:</strong> <%= request.protocol + request.host + subscribe_with_secret_course_path(@course.id, @course.secret) %>
-          </p>
-          <% end %>
-        </div>
-        <% if current_user && !current_user.member_of?(@course) %>
-        <div class="col-sm-6 col-xs-12">
-          <div class="card">
-            <div class="card-supporting-text">
-              <p><%= t ".not_a_member" %></p>
-            </div>
-            <div class="card-actions card-border">
-              <%=link_to t(".subscribe"), subscribe_course_path(@course), method: :post, class: "btn-text" %>
+      <% if !@course.description.blank? || (current_user && !current_user.member_of?(@course)) %>
+        <div class="card-supporting-text row">
+          <div class="col-sm-<%= (current_user && !current_user.member_of?(@course)) ? '6' : '12' %> col-xs-12">
+            <%= markdown(@course.description) %>
+          </div>
+          <% if current_user && !current_user.member_of?(@course) %>
+          <div class="col-sm-6 col-xs-12">
+            <div class="card">
+              <div class="card-supporting-text">
+                <p><%= t ".not_a_member" %></p>
+              </div>
+              <div class="card-actions card-border">
+                <%=link_to t(".subscribe"), subscribe_course_path(@course), method: :post, class: "btn-text" %>
+              </div>
             </div>
           </div>
-        </div>
         <% end %>
       </div>
+      <% end %>
       <div class="card-supporting-text card-border">
         <div class="card-subtitle">
           <a class="anchor" id="series"></a>
@@ -59,7 +49,15 @@
         <% policy_scope(@course.series).each do |series| %>
           <div class="card-subtitle">
             <a class="anchor" id="series-<%= series.name.parameterize %>"></a>
-            <h4><%= series.name %></h4>
+            <h4><%= series.name %>
+              <% if series.deadline? %>
+                <% if series.deadline > Time.now %>
+                  <%= "<small class='deadline-ok' title='deadline in #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
+                <% else %>
+                  <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
+                <% end %>
+              <% end %>
+            </h4>
             <div class="flex-spacer"></div>
             <div class="card-subtitle-actions">
               <% if policy(series).edit? %>
@@ -73,12 +71,15 @@
             <div class="alert alert-info"><%= t ".series_not_visible" %></div>
           <% end %>
           <%= markdown(series.description) %>
-          <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises}) if series.exercises.length > 0 %>
+          <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises, series: series}) if series.exercises.length > 0 %>
         <% end %>
       </div>
       <% if policy(@course).list_members? %>
         <div class="card-supporting-text card-border">
           <h3><%= t ".users" %></h3>
+          <p>
+            <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %>
+          </p>
           <table class="table table-index table-resource">
             <thead>
               <tr>
@@ -90,7 +91,12 @@
             <tbody>
               <% @course.users.each do |user| %>
                 <tr>
-                  <td><%= link_to user.username, user %></td>
+                  <td>
+                    <%= link_to user.short_name, user %>
+                    <% if user.username.blank? %>
+                      <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <% end %>
+                  </td>
                   <td><%= user.full_name %> </td>
                   <td><%= user.email %> </td>
                 </tr>

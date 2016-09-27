@@ -1,22 +1,20 @@
 <tr>
-  <% if user_signed_in? && current_user.admin? %>
-    <td>
+  <td>
+    <% if user_signed_in? && current_user.admin? %>
       <%= raw "<span class='glyphicon glyphicon-eye-close' title='#{t("exercises.index.hidden")}'></span>" if exercise.hidden? %>
       <%= raw "<span class='glyphicon glyphicon-ban-circle' title='#{t("exercises.index.closed")}'></span>" if exercise.closed? %>
       <%= raw "<span class='glyphicon glyphicon-trash' title='#{t("exercises.index.removed")}'></span>" if exercise.removed? %>
       <%= raw "<span class='glyphicon glyphicon-exclamation-sign' title='#{t("exercises.index.invalid")}'></span>" if exercise.not_valid? %>
-    </td>
-  <% end %>
-  <% if user_signed_in? && !current_user.admin? %>
-    <td>
+    <% end %>
+    <% if user_signed_in? && !current_user.admin? %>
       <% if :correct == exercise.status_for(current_user) %>
-        <span class="glyphicon glyphicon-ok colored-correct"></span>
+        <span class="glyphicon glyphicon-ok <%= exercise.status_for(current_user, series.try(:deadline)) == :correct ? 'colored-correct' : 'colored-wrong' %>"></span>
       <% end %>
       <% if :wrong == exercise.status_for(current_user) %>
         <span class="glyphicon glyphicon-remove colored-wrong"></span>
       <% end %>
-    </td>
-  <% end %>
+    <% end %>
+  </td>
   <td>
     <%= link_to exercise.name, exercise_path(exercise) %>
   </td>
@@ -24,23 +22,29 @@
     <span title="<%= t ".count_tooltip" %>"><%= exercise.users_correct(@course) %>/<%= @course.nil? ? exercise.users_tried : @course.users.count %></span>
   </td>
   <% if user_signed_in? %>
-  <td>
-    <% not_solved = false %>
-    <% if :correct == exercise.status_for(current_user) %>
-      <%= link_to t(".correct"), exercise.last_correct_submission(current_user) %>
-    <% elsif :wrong == exercise.status_for(current_user) %>
-      <%= link_to t(".wrong"), exercise.last_submission(current_user) %>
-    <% else %>
-      <%= t ".not_solved" %>
-      <% not_solved = true %>
-    <% end %>
-  </td>
-  <td>
-    <% unless not_solved %>
-      <%= link_to exercise_submissions_path(exercise), title: t("layout.menu.my_submissions"), class: "btn btn-icon" do %>
-        <span class='glyphicon glyphicon-chevron-right'></span>
+    <td>
+      <% if series && series.deadline? && series.deadline < Time.now %>
+        <% if :correct == exercise.status_for(current_user, series.deadline) %>
+          <%= link_to t(".correct"), exercise.last_correct_submission(current_user, series.deadline), class: 'deadline-ok' %>
+        <% else %>
+          <span class='deadline-passed'><%= t "courses.show.missed_deadline" %></span>
+        <% end %>
+      <% else %>
+        <% if :correct == exercise.status_for(current_user) %>
+          <%= link_to t(".correct"), exercise.last_correct_submission(current_user) %>
+        <% elsif :wrong == exercise.status_for(current_user) %>
+          <%= link_to t(".wrong"), exercise.last_submission(current_user) %>
+        <% else %>
+          <%= t ".not_solved" %>
+        <% end %>
       <% end %>
-    <% end %>
-  </td>
+    </td>
+    <td>
+      <% if exercise.number_of_submissions_for(current_user).positive? || current_user.admin? %>
+        <%= link_to exercise_submissions_path(exercise, course_id: @course.try(:id)), title: t("layout.menu.my_submissions"), class: "btn btn-icon" do %>
+          <span class='glyphicon glyphicon-chevron-right'></span>
+        <% end %>
+      <% end %>
+    </td>
   <% end %>
 </tr>

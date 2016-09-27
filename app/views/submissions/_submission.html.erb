@@ -21,7 +21,7 @@
     </td>
   <% end %>
   <td>
-    <span title="<%= l submission.created_at.in_time_zone("CET"), format: :long %>"><%= time_ago_in_words submission.created_at %> <%= t ".ago" %></span>
+    <span title="<%= l submission.created_at, format: :long %>"><%= time_ago_in_words submission.created_at %> <%= t ".ago" %></span>
   </td>
   <td>
     <%= Submission.human_enum_name(:status, submission.status) %>
@@ -30,10 +30,10 @@
     <%= submission.summary %>
   </td>
   <td>
-    <% if exercise.nil? %>
-      <%= link_to submission, class: "load-submission", title: t(".view_solution") do %><span class="glyphicon glyphicon-share-alt"></span><% end %>
-    <% else %>
+    <% if remote_links %>
       <%= link_to submission, class: "load-submission", title: t(".view_solution"), 'data-remote' => true do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
+    <% else %>
+      <%= link_to submission, class: "load-submission", title: t(".view_solution") do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
     <% end %>
 
   </td>

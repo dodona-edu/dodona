@@ -10,11 +10,17 @@
     </div>
   <% end %>
   <div class="field form-group">
-    <%= f.label :name, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :name, class: "form-control" %></div>
+    <%= f.label :name, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :year, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :year, class: "form-control" %></div>
+    <%= f.label :year, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.text_field :year, class: "form-control" %></div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".year-help" %></span>
+  </div>
+  <div class="field form-group">
+    <%= f.label :description, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>
   </div>
 <% end %>

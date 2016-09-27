@@ -3,8 +3,12 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-server 'naos.ugent.be', user: 'dodona', port: '4840', roles: %w(app db web)
+server 'dodona.ugent.be', user: 'dodona', port: '4840', roles: %w(app web db worker)
+#server 'sisyphus.ugent.be', user: 'dodona', port: '4840', roles: %w(app worker)
+
 set :branch, 'develop'
+
+set :delayed_job_workers, 5
 
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
@@ -31,7 +35,7 @@ set :branch, 'develop'
 
 namespace :deploy do
   before :publishing, :asset_stuff do
-    on roles :all do
+    on roles :web do
       within release_path do
         with rails_env: fetch(:rails_env) do
           execute :rake, 'assets:nodigest'

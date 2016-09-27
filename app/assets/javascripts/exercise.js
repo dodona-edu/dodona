@@ -126,6 +126,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
     }
 
     function feedbackTableLoaded() {
+        $("a.load-submission").attr("data-remote", "true");
         if (lastSubmission) {
             var $submissionRow = $("#submission_" + lastSubmission);
             var status = $submissionRow.data("status");

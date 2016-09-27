@@ -52,7 +52,7 @@
             <h4><%= series.name %>
               <% if series.deadline? %>
                 <% if series.deadline > Time.now %>
-                  <%= "<small class='deadline-ok' title='deadline in #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
+                  <%= "<small class='deadline-ok' title='deadline #{t ".deadline_in"} #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
                 <% else %>
                   <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
                 <% end %>
@@ -80,29 +80,9 @@
           <p>
             <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %>
           </p>
-          <table class="table table-index table-resource">
-            <thead>
-              <tr>
-                <th><%= User.human_attribute_name("username") %></th>
-                <th><%= User.human_attribute_name("name") %></th>
-                <th><%= User.human_attribute_name("email") %></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @course.users.each do |user| %>
-                <tr>
-                  <td>
-                    <%= link_to user.short_name, user %>
-                    <% if user.username.blank? %>
-                      <span class="glyphicon glyphicon-exclamation-sign"></span>
-                    <% end %>
-                  </td>
-                  <td><%= user.full_name %> </td>
-                  <td><%= user.email %> </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+          <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(course_id: @course.id), eager: true}) %>
+          <div id="users-table-wrapper">
+          </div>
         </div>
       <% end %>
     </div>

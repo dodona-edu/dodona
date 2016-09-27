@@ -1,9 +1,12 @@
-function init_filter_index(baseUrl) {
+function init_filter_index(baseUrl, eager) {
     var PARAM = "filter";
     var $filter;
 
     function init() {
         initFilter();
+        if (eager) {
+            search();
+        }
     }
 
     function initFilter() {

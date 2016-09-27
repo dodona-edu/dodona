@@ -8,22 +8,30 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     authorize User
-    @users = apply_scopes(User).all.order(permission: :desc, username: :asc)
+    @users = apply_scopes(User).all.order(permission: :desc, username: :asc).paginate(page: params[:page])
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+      @users = @users.in_course(@course)
+    end
+    @title = I18n.t('users.index.title')
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    @title = @user.full_name
   end
 
   # GET /users/new
   def new
     authorize User
     @user = User.new
+    @title = I18n.t('users.new.title')
   end
 
   # GET /users/1/edit
   def edit
+    @title = @user.full_name
   end
 
   # POST /users

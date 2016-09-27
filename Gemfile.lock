@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/sinatra/sinatra.git
-  revision: 1b0edc0aeaaf4839cadfcec1b21da86e6af1d4c0
+  revision: af6dad2a6c31e31617712b15f455b2a3d3eb1c06
   specs:
     rack-protection (2.0.0.beta2)
       rack
@@ -10,10 +10,17 @@ GIT
       rack-protection (= 2.0.0.beta2)
       tilt (~> 2.0)
 
+GIT
+  remote: https://github.com/bmesuere/rubycas-client.git
+  revision: 7e102b4a0a910ab000058268c0b1f27ece9c9070
+  specs:
+    rubycas-client (2.3.10.rc1)
+      activesupport
+
 GEM
   remote: https://rubygems.org/
   specs:
-    ace-rails-ap (4.1.0)
+    ace-rails-ap (4.1.1)
     actioncable (5.0.0.1)
       actionpack (= 5.0.0.1)
       nio4r (~> 1.2)
@@ -52,14 +59,14 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.3.8)
-    airbrussh (1.1.0)
+    airbrussh (1.1.1)
       sshkit (>= 1.6.1, != 1.7.0)
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
-    arel (7.1.1)
+    arel (7.1.2)
     ast (2.3.0)
-    autoprefixer-rails (6.4.0.3)
+    autoprefixer-rails (6.4.1.1)
       execjs
     bcrypt (3.1.11)
     builder (3.2.2)
@@ -76,7 +83,7 @@ GEM
     capistrano-harrow (0.5.3)
     capistrano-passenger (0.2.0)
       capistrano (~> 3.0)
-    capistrano-rails (1.1.7)
+    capistrano-rails (1.1.8)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     capistrano-rvm (0.1.2)
@@ -104,7 +111,7 @@ GEM
       activerecord (> 3.0.0)
       delayed_job (> 2.0.3)
       sinatra (>= 1.4.4)
-    devise (4.0.0.rc2)
+    devise (4.2.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
@@ -170,7 +177,7 @@ GEM
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     orm_adapter (0.5.0)
-    parser (2.3.1.2)
+    parser (2.3.1.4)
       ast (~> 2.2)
     pkg-config (1.1.7)
     powerpack (0.1.1)
@@ -199,7 +206,7 @@ GEM
       nokogiri (~> 1.6.0)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rails-i18n (5.0.0)
+    rails-i18n (5.0.1)
       i18n (~> 0.7)
       railties (~> 5.0)
     railties (5.0.0.1)
@@ -209,7 +216,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rainbow (2.1.0)
-    rake (11.2.2)
+    rake (11.3.0)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
@@ -217,15 +224,13 @@ GEM
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
     rouge (1.10.1)
-    rubocop (0.42.0)
+    rubocop (0.43.0)
       parser (>= 2.3.1.1, < 3.0)
       powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
-    rubycas-client (2.3.9)
-      activesupport
     slack-notifier (1.5.1)
     spring (1.7.2)
     spring-watcher-listen (2.0.0)
@@ -234,11 +239,11 @@ GEM
     sprockets (3.7.0)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-rails (3.1.1)
+    sprockets-rails (3.2.0)
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sshkit (1.11.2)
+    sshkit (1.11.3)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     therubyracer (0.12.2)
@@ -251,7 +256,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.2)
       execjs (>= 0.3.0, < 3)
-    unicode-display_width (1.1.0)
+    unicode-display_width (1.1.1)
     warden (1.2.6)
       rack (>= 1.0)
     web-console (3.3.1)
@@ -262,7 +267,7 @@ GEM
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    will_paginate (3.1.0)
+    will_paginate (3.1.3)
 
 PLATFORMS
   ruby
@@ -302,6 +307,7 @@ DEPENDENCIES
   rails-i18n
   rouge (= 1.10.1)
   rubocop
+  rubycas-client!
   sinatra!
   slack-notifier
   spring

@@ -14,27 +14,27 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def new?
-    user && user.admin?
+    user&.admin?
   end
 
   def edit?
-    user && user.admin?
+    user&.admin?
   end
 
   def create?
-    user && user.admin?
+    user&.admin?
   end
 
   def update?
-    user && user.admin?
+    user&.admin?
   end
 
   def destroy?
-    user && user.zeus?
+    user&.zeus?
   end
 
   def list_members?
-    user && user.admin?
+    user&.admin?
   end
 
   def subscribe?
@@ -46,11 +46,11 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def add_series?
-    user && user.admin?
+    user&.admin?
   end
 
   def permitted_attributes
-    if user && user.admin?
+    if user&.admin?
       [:name, :year, :description]
     else
       []

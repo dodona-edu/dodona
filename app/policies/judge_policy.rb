@@ -6,31 +6,31 @@ class JudgePolicy < ApplicationPolicy
   end
 
   def index?
-    user && user.admin?
+    user&.admin?
   end
 
   def show?
-    user && user.admin?
+    user&.admin?
   end
 
   def new?
-    user && user.admin?
+    user&.admin?
   end
 
   def edit?
-    user && user.admin?
+    user&.admin?
   end
 
   def create?
-    user && user.admin?
+    user&.admin?
   end
 
   def update?
-    user && user.admin?
+    user&.admin?
   end
 
   def destroy?
-    user && user.zeus?
+    user&.zeus?
   end
 
   def hook?
@@ -38,7 +38,7 @@ class JudgePolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if user && user.admin?
+    if user&.admin?
       [:name, :image, :path, :renderer, :runner, :remote]
     else
       []

@@ -6,21 +6,25 @@ class CoursesController < ApplicationController
   def index
     authorize Course
     @courses = Course.all
+    @title = I18n.t('courses.index.title')
   end
 
   # GET /courses/1
   # GET /courses/1.json
   def show
+    @title = @course.name
   end
 
   # GET /courses/new
   def new
     authorize Course
     @course = Course.new
+    @title = I18n.t('courses.new.title')
   end
 
   # GET /courses/1/edit
   def edit
+    @title = @course.name
   end
 
   # POST /courses

@@ -4,9 +4,10 @@ function init_pythia_submission_show(submissionCode) {
     function init() {
       $(".tutorlink").each(function() {
         $(this).click(function() {
-          var stdin = $(this).attr('data-stdin').slice(0, -1);
-          var statements = $(this).attr('data-statements')
-          loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')))
+          var element = $(this).parents(".group")
+          var stdin = element.attr('data-stdin').slice(0, -1);
+          var statements = element.attr('data-statements')
+          loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')));
           return false;
         })
       })

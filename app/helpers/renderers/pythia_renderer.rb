@@ -85,15 +85,28 @@ $(function() {
   end
 
   def group(g)
-    @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}") do
-      @builder.a(href: "#", class: "tutorlink", "data-statements": "#{g[:data][:statements]}", "data-stdin": "#{g[:data][:stdin]}") do 
-        @builder.span(class: "glyphicon glyphicon-expand")
-      end
+    @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}", "data-statements": "#{g[:data][:statements]}", "data-stdin": "#{g[:data][:stdin]}") do
       @builder.div(class: 'col-xs-12 description') do
         message(g[:description])
       end if g[:description]
       messages(g[:messages])
       g[:groups].each { |tc| testcase(tc) } if g[:groups]
+    end
+  end
+
+  def testcase(tc)
+    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
+      @builder.div(class: 'col-xs-12 description') do
+        @builder.div(class: 'indicator') do
+          @builder.a(href: "#", class: "tutorlink") do 
+            @builder.span(class: "glyphicon glyphicon-expand")
+          end
+          tc[:accepted] ? icon_correct : icon_wrong
+        end
+        message(tc[:description]) if tc[:description]
+      end
+      tc[:tests].each { |t| test(t) } if tc[:tests]
+      messages(tc[:messages])
     end
   end
 

@@ -14,6 +14,6 @@
 
 <script type="text/javascript">
   $(function () {
-    init_filter_index("<%=local_assigns.fetch :baseUrl, "" %>");
+    init_filter_index("<%=local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>);
   });
 </script>

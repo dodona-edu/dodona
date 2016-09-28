@@ -6,9 +6,9 @@
 server 'dodona.ugent.be', user: 'dodona', port: '4840', roles: %w(app web db)
 server 'sisyphus.ugent.be', user: 'dodona', port: '4840', roles: %w(app worker)
 
-set :branch, 'production'
+set :branch, 'master'
 
-set :delayed_job_workers, 3
+set :delayed_job_workers, 6
 
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}

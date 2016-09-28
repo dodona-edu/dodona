@@ -19,6 +19,7 @@ class SubmissionsController < ApplicationController
       @exercise = Exercise.find(params[:exercise_id])
       @submissions = @submissions.of_exercise(@exercise)
     end
+    @title = I18n.t('submissions.index.title')
   end
 
   def show

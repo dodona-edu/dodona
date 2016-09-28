@@ -35,6 +35,8 @@ class User < ApplicationRecord
   scope :by_permission, -> (permission) { where(permission: permission) }
   scope :by_name, -> (name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
 
+  scope :in_course, -> (course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
+
   def full_name
     name = first_name + ' ' + last_name
     name.blank? ? 'n/a' : name
@@ -49,7 +51,7 @@ class User < ApplicationRecord
   end
 
   def photo
-    photo = PHOTOS_LOCATION.join(ugent_id + '.jpg')
+    photo = PHOTOS_LOCATION.join((ugent_id || '') + '.jpg')
     photo if File.file? photo
   end
 
@@ -84,6 +86,7 @@ class User < ApplicationRecord
         self.ugent_id = value
       end
     end
+    self.ugent_id = extra_attributes['ugentStudentID'] if extra_attributes.key?('ugentStudentID') && !extra_attributes['ugentStudentID'].blank?
   end
 
   def self.default_photo

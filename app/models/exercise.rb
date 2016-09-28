@@ -23,6 +23,7 @@ class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
+  BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
   enum visibility: [:open, :hidden, :closed]
   enum status: [:ok, :not_valid, :removed]
@@ -77,6 +78,28 @@ class Exercise < ApplicationRecord
     desc = description_localized || description_nl || description_en
     desc = markdown(desc) if description_format == 'md'
     desc.html_safe
+  end
+
+  def boilerplate_localized(lang = I18n.locale.to_s)
+    ext = lang ? ".#{lang}" : ''
+    file = File.join(full_path, BOILERPLATE_DIR, "boilerplate#{ext}")
+    File.read(file).strip if FileTest.exists?(file)
+  end
+
+  def boilerplate_default
+    boilerplate_localized(nil)
+  end
+
+  def boilerplate_nl
+    boilerplate_localized('nl')
+  end
+
+  def boilerplate_en
+    boilerplate_localized('en')
+  end
+
+  def boilerplate
+    boilerplate_localized || boilerplate_default || boilerplate_nl || boilerplate_en
   end
 
   def github_url

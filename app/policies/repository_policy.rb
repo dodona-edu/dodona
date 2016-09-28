@@ -6,31 +6,31 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def index?
-    user && user.admin?
+    user&.admin?
   end
 
   def show?
-    user && user.admin?
+    user&.admin?
   end
 
   def new?
-    user && user.admin?
+    user&.admin?
   end
 
   def edit?
-    user && user.zeus?
+    user&.zeus?
   end
 
   def create?
-    user && user.admin?
+    user&.admin?
   end
 
   def update?
-    user && user.zeus?
+    user&.zeus?
   end
 
   def destroy?
-    user && user.zeus?
+    user&.zeus?
   end
 
   def hook?
@@ -38,11 +38,11 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def reprocess?
-    user && user.admin?
+    user&.admin?
   end
 
   def permitted_attributes
-    if user && user.admin?
+    if user&.admin?
       [:name, :remote, :path, :judge_id]
     else
       []

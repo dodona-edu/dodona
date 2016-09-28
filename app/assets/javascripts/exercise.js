@@ -30,7 +30,6 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         $("#exercise-handin-link").on('shown.bs.tab', function () {
             // refresh editor after show
             editor.resize(true);
-            editor.focus();
         });
 
         // configure mathjax
@@ -62,6 +61,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         editor.getSession().setUseWrapMode(true);
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
+        editor.on("focus", enableSubmitButton);
     }
 
     function initLightboxes() {
@@ -96,17 +96,21 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
     }
 
     function swapActionButtons() {
-        $("#exercise-handin-link").on("shown.bs.tab", function (e) {
+        $("#exercise-handin-link").on("show.bs.tab", function (e) {
+            $("#submission-copy-btn").addClass("hidden-fab");
             $("#editor-process-btn").removeClass("hidden-fab");
         });
-        $("#exercise-handin-link").on("hide.bs.tab", function (e) {
-            $("#editor-process-btn").addClass("hidden-fab");
-        });
-        $("#exercise-feedback-link").on("shown.bs.tab", function (e) {
-            $("#submission-copy-btn").removeClass("hidden-fab");
-        });
-        $("#exercise-feedback-link").on("hide.bs.tab", function (e) {
+        $("#exercise-submission-link").on("show.bs.tab", function (e) {
             $("#submission-copy-btn").addClass("hidden-fab");
+            if(lastSubmission) {
+                $("#editor-process-btn").removeClass("hidden-fab");
+            } else {
+                $("#editor-process-btn").addClass("hidden-fab");
+            }
+        });
+        $("#exercise-feedback-link").on("show.bs.tab", function (e) {
+            $("#editor-process-btn").addClass("hidden-fab");
+            $("#submission-copy-btn").removeClass("hidden-fab");
         });
     }
 
@@ -138,10 +142,21 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
                 if ($("#exercise-submission-link").parent().hasClass("active")) {
                     $submissionRow.find(".load-submission").click();
                 }
+                setTimeout(enableSubmitButton, 100);
                 showNotification(I18n.t("js.submission-processed"));
                 lastSubmission = null;
             }
         }
+    }
+
+    function enableSubmitButton() {
+        $("#editor-process-btn").prop("disabled", false).removeClass("busy");
+        $("#editor-process-btn .glyphicon").removeClass("glyphicon-hourglass").addClass("glyphicon-play");
+    }
+
+    function disableSubmitButton() {
+        $("#editor-process-btn").prop("disabled", true).addClass("busy");
+        $("#editor-process-btn .glyphicon").removeClass("glyphicon-play").addClass("glyphicon-hourglass");
     }
 
     function submissionSuccessful(data) {
@@ -149,6 +164,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         showNotification(I18n.t("js.submission-saved"));
         $.get("submissions.js");
         $('#exercise-submission-link').tab('show');
+        disableSubmitButton();
     }
 
     function submissionFailed() {

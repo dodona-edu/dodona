@@ -18,6 +18,7 @@ en:
       series_not_visible: This series is not visible for students!
       series: series
       missed_deadline: missed deadline
+      deadline_in: in
     subscribe:
       subscribed_successfully: Subscribed successfully
       subscription_failed: Subscription failed

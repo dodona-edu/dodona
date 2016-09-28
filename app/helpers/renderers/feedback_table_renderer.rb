@@ -37,11 +37,11 @@ class FeedbackTableRenderer
     @builder.div(class: 'card card-nav') do
       @builder.div(class: 'card-title card-title-colored') do
         @builder.ul(class: 'nav nav-tabs') do
-          submission[:groups].each_with_index do |t, i|
+          submission[:groups]&.each_with_index do |t, i|
             @builder.li(class: ('active' if i.zero?)) do
               @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
             end
-          end if submission[:groups]
+          end
           @builder.li(class: ('active' unless submission[:groups])) do
             @builder.a(I18n.t('submissions.show.code'), href: '#code-tab', 'data-toggle': 'tab')
           end if show_code_tab
@@ -68,7 +68,7 @@ class FeedbackTableRenderer
     @diff_type = determine_tab_diff_type(t)
     messages(t[:messages])
     @builder.div(class: 'groups') do
-      t[:groups].each { |g| group(g) } if t[:groups]
+      t[:groups]&.each { |g| group(g) }
     end
   end
 
@@ -78,7 +78,7 @@ class FeedbackTableRenderer
         message(g[:description])
       end if g[:description]
       messages(g[:messages])
-      g[:groups].each { |tc| testcase(tc) } if g[:groups]
+      g[:groups]&.each { |tc| testcase(tc) }
     end
   end
 
@@ -90,7 +90,7 @@ class FeedbackTableRenderer
         end
         message(tc[:description]) if tc[:description]
       end
-      tc[:tests].each { |t| test(t) } if tc[:tests]
+      tc[:tests]&.each { |t| test(t) }
       messages(tc[:messages])
     end
   end
@@ -203,13 +203,13 @@ class FeedbackTableRenderer
   end
 
   def determine_tab_diff_type(tab)
-    tab[:groups].each do |group|
-      group[:groups].each do |testcase|
-        testcase[:tests].each do |test|
+    tab[:groups]&.each do |group|
+      group[:groups]&.each do |testcase|
+        testcase[:tests]&.each do |test|
           return 'unified' if determine_diff_type(test) == 'unified'
-        end if testcase[:tests]
-      end if group[:groups]
-    end if tab[:groups]
+        end
+      end
+    end
     'split'
   end
 

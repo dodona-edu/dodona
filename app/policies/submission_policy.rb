@@ -1,7 +1,7 @@
 class SubmissionPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user && user.admin?
+      if user&.admin?
         scope.all
       elsif user
         scope.of_user(user)
@@ -24,7 +24,7 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def evaluate?
-    user && user.admin?
+    user&.admin?
   end
 
   def create?

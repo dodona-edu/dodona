@@ -37,7 +37,7 @@ function init_pythia_submission_show(submissionCode) {
 
         $.ajax({
               type: 'POST',
-              url: '/tutor/cgi-bin/build_trace.py',
+              url: 'http://localhost:8080/cgi-bin/build_trace.py',
               dataType: 'json',
               data: {code: source_code, input: stdin},
               success: function(data) {
@@ -49,23 +49,11 @@ function init_pythia_submission_show(submissionCode) {
           })
 
           var createTutor = function(codeTrace) {
-            showInfoModal("Python Tutor", '<div id="tutorelement"></div>', undefined)
+            showInfoModal("Python Tutor", '<iframe id="tutorviz" height="600px" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>')
+            //showInfoModal("Python Tutor", '<div id="tutorelement"></div>', undefined)
 
             $("#tutor #info-modal").on("shown.bs.modal", function(e) {
-              var visualizer = new ExecutionVisualizer('tutorelement', codeTrace,
-                                                            {embeddedMode: false,
-                                                             heightChangeCallback: redrawAllVisualizerArrows,
-                                                             editCodeBaseURL: ''});
-
-              function redrawAllVisualizerArrows() {
-                  if (visualizer) visualizer.redrawConnectors();
-              }
-              // Call redrawConnectors() on all visualizers whenever the window is resized,
-              // since HTML elements might have moved during a resize. The SVG arrows rendered
-              // by jsPlumb don't automatically get re-drawn in their new positions unless
-              // redrawConnectors() is called.
-              $(window).resize(redrawAllVisualizerArrows);
-              $('#tutorelement').scroll(redrawAllVisualizerArrows);
+              $("#tutorviz")[0].contentWindow.load(codeTrace);
             });
           }
     }

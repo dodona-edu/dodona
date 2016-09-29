@@ -51,7 +51,7 @@ class User < ApplicationRecord
   end
 
   def photo
-    photo = PHOTOS_LOCATION.join(ugent_id + '.jpg')
+    photo = PHOTOS_LOCATION.join((ugent_id || '') + '.jpg')
     photo if File.file? photo
   end
 

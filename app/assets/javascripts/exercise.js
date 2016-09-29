@@ -30,7 +30,6 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         $("#exercise-handin-link").on('shown.bs.tab', function () {
             // refresh editor after show
             editor.resize(true);
-            editor.focus();
         });
 
         // configure mathjax
@@ -62,6 +61,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         editor.getSession().setUseWrapMode(true);
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
+        editor.on("focus", enableSubmitButton);
     }
 
     function initLightboxes() {

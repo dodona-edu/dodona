@@ -49,7 +49,7 @@ function init_pythia_submission_show(submissionCode) {
           });
 
           var createTutor = function(codeTrace) {
-            showInfoModal("Python Tutor", '<iframe id="tutorviz" height="600px" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');
+            showInfoModal("Python Tutor", '<iframe id="tutorviz" height="400px" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');
 
             $("#tutor #info-modal").on("shown.bs.modal", function(e) {
               $("#tutorviz").get(0).contentWindow.load(codeTrace);

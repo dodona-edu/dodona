@@ -23,10 +23,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :submissions do
-      resources :tutor, only:[:index]
-    end
-
     resources :exercises, only: [:index, :show, :edit, :update] do
       resources :submissions, only: [:index, :create]
       member do

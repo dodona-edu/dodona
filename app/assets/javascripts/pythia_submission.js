@@ -49,10 +49,10 @@ function init_pythia_submission_show(submissionCode) {
           });
 
           var createTutor = function(codeTrace) {
-            showInfoModal("Python Tutor",'<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-danger active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading</div></div></div>');
+            showInfoModal("Python Tutor",'<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading</div></div></div>');
 
             $("#tutor #info-modal").on("shown.bs.modal", function(e) {
-              $("#tutorcontent").html('<iframe id="tutorviz" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');
+              $("#tutorcontent").html('<iframe id="tutorviz" width="100%" height="450px" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');
               $('#tutorviz').load(function() {
                 $("#tutorviz").get(0).contentWindow.load(codeTrace);
               });

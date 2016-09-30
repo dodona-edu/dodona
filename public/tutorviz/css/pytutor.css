@@ -64,7 +64,7 @@ div.ExecutionVisualizer div#codeDisplayDiv {
 
 div.ExecutionVisualizer div#pyCodeOutputDiv {
   /*max-width: 550px;*/
-  max-height: 460px;
+  max-height: 350px;
   /*max-height: 620px;*/
   overflow: auto;
   /*margin-bottom: 4px;*/

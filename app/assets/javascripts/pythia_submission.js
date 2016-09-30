@@ -37,7 +37,7 @@ function init_pythia_submission_show(submissionCode) {
 
         $.ajax({
               type: 'POST',
-              url: '/tutor/cgi-bin/build_trace.py',
+              url: 'http://localhost:8080/cgi-bin/build_trace.py',
               dataType: 'json',
               data: {code: source_code, input: stdin},
               success: function(data) {
@@ -49,10 +49,14 @@ function init_pythia_submission_show(submissionCode) {
           });
 
           var createTutor = function(codeTrace) {
-            showInfoModal("Python Tutor", '<iframe id="tutorviz" height="400px" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');
+            showInfoModal("Python Tutor",'<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-danger active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading</div></div></div>');
 
             $("#tutor #info-modal").on("shown.bs.modal", function(e) {
-              $("#tutorviz").get(0).contentWindow.load(codeTrace);
+              $("#tutorcontent").html('<iframe id="tutorviz" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');
+              $('#tutorviz').load(function() {
+                $("#tutorviz").get(0).contentWindow.load(codeTrace);
+              });
+
             });
           }
     }

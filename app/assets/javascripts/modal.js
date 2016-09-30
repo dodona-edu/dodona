@@ -5,7 +5,7 @@ function showInfoModal(title, content, options) {
     }
     $("#info-modal .modal-title")
         .empty()
-        .append(title)
+        .append(title);
 
     $("#info-modal .modal-body")
         .empty()

@@ -21,6 +21,7 @@ include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
+  DIRCONFIG_FILE = 'directory_config.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
@@ -126,21 +127,17 @@ class Exercise < ApplicationRecord
   end
 
   def config
-    JSON.parse(File.read(File.join(full_path, CONFIG_FILE)))
+    Exercise.read_config(full_path)
   end
 
-  def merged_config
-    result = repository.config
-    result.recursive_update(config)
-    result
-  end
-
-  def store_config(config)
-    File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(config))
-    success, error = repository.commit "updated config for #{name}"
-    unless success || error.empty?
-      errors.add(:base, "commiting changes failed: #{error}")
-      throw :abort
+  def store_config(new_config)
+    unless new_config == config
+      File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(new_config))
+      success, error = repository.commit "updated config for #{name}"
+      unless success || error.empty?
+        errors.add(:base, "commiting changes failed: #{error}")
+        throw :abort
+      end
     end
   end
 
@@ -235,18 +232,24 @@ class Exercise < ApplicationRecord
   end
 
   def self.process_exercise(repository, directory)
-    config_file = File.join(repository.full_path, directory, CONFIG_FILE)
     ex = Exercise.find_by(path: directory, repository_id: repository.id)
 
-    if ex && !File.file?(config_file)
+    if ex && !File.file?(ex.config_file)
       ex.status = :removed
     else
-      config = JSON.parse(File.read(config_file))
-      j = Judge.find_by_name(config['evaluation']['handler']) if config['evaluation']
-      j_id = j.nil? ? repository.judge_id : j.id
-
       if ex.nil?
-        ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id, programming_language: 'python')
+        full_exercise_path = File.join(repository.full_path, directory)
+        config = Exercise.merged_config(repository.full_path, full_exercise_path)
+
+        j = Judge.find_by_name(config['evaluation']['handler']) if config['evaluation']
+        j_id = j.nil? ? repository.judge_id : j.id
+
+        ex = Exercise.create(
+          path: directory,
+          repository_id: repository.id,
+          judge_id: j_id,
+          programming_language: config['programming_language']
+        )
       else
         ex.status = :ok
       end
@@ -276,5 +279,29 @@ class Exercise < ApplicationRecord
       new = SecureRandom.random_number(2_147_483_646)
     end until Exercise.find_by_id(new).nil?
     self.id = new
+  end
+
+  def self.read_config(path)
+    Exercise.read_config_file(path, CONFIG_FILE)
+  end
+
+  def self.read_dirconfig(path)
+    Exercise.read_config_file(path, DIRCONFIG_FILE)
+  end
+
+  def self.read_config_file(path, file)
+    file = File.join(path, file)
+    if File.file?(file)
+      JSON.parse(File.read(file))
+    end
+  end
+
+  def self.merged_config(full_repository_path, subpath)
+    return unless subpath.start_with? full_repository_path
+    config = if subpath == full_repository_path
+               then Hash.new
+               else Exercise.merged_config(full_repository_path, File.dirname(subpath))
+             end
+    config.recursive_update(Exercise.read_dirconfig(path))
   end
 end

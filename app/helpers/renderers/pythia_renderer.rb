@@ -13,6 +13,7 @@ class PythiaRenderer < FeedbackTableRenderer
           .html_safe
       javascript = """
       $(function() {
+        $(\"#tutor\").appendTo(\"body\");
         var code = \"#{escaped}\"
         init_pythia_submission_show(code)
       });
@@ -25,18 +26,21 @@ class PythiaRenderer < FeedbackTableRenderer
     tutor_init()
     #Tutor HTML
     @builder.div(id: "tutor") do
-      @builder.div(id: "info-modal", class: "modal fade modal-info", "data-backdrop": false, tabindex: -1) do
+      @builder.div(id: "info-modal", class: "modal fade modal-fullscreen modal-info", "data-backdrop": true, tabindex: -1) do
         @builder.div(class: "modal-dialog tutor") do
           @builder.div(class: "modal-content") do
             @builder.div(class: "modal-header") do
-              @builder.button(type: "button", class: "close", "data-dismiss": "modal", "aria-label": "Close") do
-                @builder.span("aria-hidden": true) do
-                  @builder << "&times;"
+              @builder.div(class: "icons") do
+                @builder.button(type: "button", class: "btn btn-link btn-xs") do
+                  @builder.span(class: "glyphicon glyphicon-fullscreen", "aria-hidden": true)
+                end
+                @builder.button(type: "button", class: "btn btn-link btn-xs", "data-dismiss": "modal", "aria-label": "Close") do
+                   @builder.span(class: "glyphicon glyphicon-remove", "aria-hidden": true)
                 end
               end
               @builder.h4(class: "modal-title")
             end
-            @builder.div(class: "modal-body")
+            @builder.div(class: "modal-body") do end
           end
         end
       end

@@ -189,7 +189,11 @@ class SubmissionRunner
 
     # put submission resources in working directory
     src = File.join(@exercise.full_path, 'workdir')
-    FileUtils.cp_r(src, @path) if File.directory?(src)
+    if File.directory?(src)
+      FileUtils.cp_r(src, @path)
+    else
+      Dir.mkdir(File.join(@path, 'workdir'))
+    end
 
     Dir.mkdir(File.join(@path, 'logs'))
   end

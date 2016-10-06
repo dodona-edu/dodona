@@ -31,7 +31,7 @@ class PythiaRenderer < FeedbackTableRenderer
           @builder.div(class: "modal-content") do
             @builder.div(class: "modal-header") do
               @builder.div(class: "icons") do
-                @builder.button(type: "button", class: "btn btn-link btn-xs") do
+                @builder.button(type: "button", class: "btn btn-link btn-xs fullscreen") do
                   @builder.span(class: "glyphicon glyphicon-fullscreen", "aria-hidden": true)
                 end
                 @builder.button(type: "button", class: "btn btn-link btn-xs", "data-dismiss": "modal", "aria-label": "Close") do

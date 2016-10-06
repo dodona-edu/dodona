@@ -11,13 +11,13 @@ class PythiaRenderer < FeedbackTableRenderer
           .gsub("\n", "\\n")
           .gsub("\"", "\\\"")
           .html_safe
-      javascript = """
+      javascript = "
       $(function() {
         $(\"#tutor\").appendTo(\"body\");
         var code = \"#{escaped}\"
         init_pythia_submission_show(code)
       });
-            """
+            "
             @builder << javascript
     end
   end
@@ -91,28 +91,22 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def group(g)
-    @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}", "data-statements": "#{g[:data][:statements]}", "data-stdin": "#{g[:data][:stdin]}") do
-      @builder.div(class: 'col-xs-12 description') do
-        message(g[:description])
-      end if g[:description]
-      messages(g[:messages])
-      g[:groups].each { |tc| testcase(tc) } if g[:groups]
+    if g.key?(:data)
+      @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}", "data-statements": "#{g[:data][:statements]}", "data-stdin": "#{g[:data][:stdin]}") do
+        @builder.div(class: 'col-xs-12 description') do
+          message(g[:description])
+        end if g[:description]
+        messages(g[:messages])
+        g[:groups].each { |tc| testcase(tc) } if g[:groups]
+      end
+    else
+      super(g)
     end
   end
 
-  def testcase(tc)
-    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
-      @builder.div(class: 'col-xs-12 description') do
-        @builder.div(class: 'indicator') do
-          @builder.a(href: "#", class: "tutorlink") do 
-            @builder.span(class: "glyphicon glyphicon-expand")
-          end
-          tc[:accepted] ? icon_correct : icon_wrong
-        end
-        message(tc[:description]) if tc[:description]
-      end
-      tc[:tests].each { |t| test(t) } if tc[:tests]
-      messages(tc[:messages])
+  def testcase_icons(tc)
+    @builder.a(href: "#", class: "tutorlink") do 
+      @builder.span(class: "glyphicon glyphicon-expand")
     end
   end
 

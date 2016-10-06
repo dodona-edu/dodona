@@ -9,16 +9,7 @@ function init_pythia_submission_show(submissionCode) {
             loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')));
             return false;
         });
-        /*
-        $('#tutor .fullscreen').click(function() {
-            console.log('going fullscreen');
-            return false;
-        });*/
     }
-    /*
-    function tutor_fullscreen() {
-        $("#tutorcontent").requestFullScreen();
-    }*/
 
     function loadTutor(studentCode, statements, stdin) {
         var lines = studentCode.split('\n');
@@ -46,7 +37,7 @@ function init_pythia_submission_show(submissionCode) {
 
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:8080/cgi-bin/build_trace.py',
+            url: '/tutor/cgi-bin/build_trace.py',
             dataType: 'json',
             data: {
                 code: source_code,

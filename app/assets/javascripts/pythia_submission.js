@@ -2,12 +2,32 @@ function init_pythia_submission_show(submissionCode) {
     var vars;
 
     function init() {
-        $('.tutorlink').click(function () {
+        
+        //add disabled to tutorlinks that are not valid
+        $('.tutorlink').each(function() {
+            var $element = $(this).parents(".group");
+            if ($element.data('statements') === undefined && $element.data('stdin') == undefined) {
+                $(this).addClass('disabled');
+            }
+        });
+
+        $('.tutorlink').not('.disabled').click(function () {
             var $element = $(this).parents(".group");
             var stdin = $element.data('stdin').slice(0, -1);
             var statements = $element.data('statements');
             loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')));
             return false;
+        });
+
+
+        $('#tutor .fullscreen').click(function() {
+            return false; /* Disabled for now */
+            var elem = document.getElementById("tutor");
+            if (fullScreenApi.isFullScreen()) {
+                fullScreenApi.cancelFullScreen(elem);
+            } else {
+                fullScreenApi.requestFullScreen(elem);
+            }
         });
     }
 

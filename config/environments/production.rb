@@ -90,7 +90,7 @@ Rails.application.configure do
                         email: {
                           email_prefix: '[Dodona] ',
                           sender_address: %("Dodona" <dodona@ugent.be>),
-                          exception_recipients: %w(bart.mesuere@ugent.be)
+                          exception_recipients: %w(dodona@ugent.be)
                         },
                         slack: {
                           webhook_url: 'https://hooks.slack.com/services/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',

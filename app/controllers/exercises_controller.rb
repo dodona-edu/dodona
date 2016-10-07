@@ -11,7 +11,14 @@ class ExercisesController < ApplicationController
   def index
     authorize Exercise
     @exercises = policy_scope(Exercise).merge(apply_scopes(Exercise).all).order('name_' + I18n.locale.to_s).paginate(page: params[:page])
-    @series = Series.find(params[:series_id]) if params[:series_id]
+
+    if params[:repository_id]
+      @repository = Repository.find(params[:repository_id])
+      @exercises = @exercises.in_repository(@repository)
+    end
+    if params[:series_id]
+      @series = Series.find(params[:series_id])
+    end
     @title = I18n.t('exercises.index.title')
   end
 

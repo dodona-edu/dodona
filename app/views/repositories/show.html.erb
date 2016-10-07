@@ -44,6 +44,12 @@
           </div>
         </div>
       </div>
+      <div class="card-supporting-text card-border">
+        <h3><%= t ".exercises" %></h3>
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: exercises_path(repository_id: @repository.id), eager: true}) %>
+        <div id="exercises-table-wrapper">
+        </div>
+      </div>
     </div>
   </div>
 </div>

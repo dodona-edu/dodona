@@ -21,7 +21,7 @@
     </td>
   <% end %>
   <td>
-    <span title="<%= l submission.created_at, format: :long %>"><%= time_ago_in_words submission.created_at %> <%= t ".ago" %></span>
+    <span title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at, include_seconds: true %> <%= t ".ago" %></span>
   </td>
   <td>
     <%= Submission.human_enum_name(:status, submission.status) %>

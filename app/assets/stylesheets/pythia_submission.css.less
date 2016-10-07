@@ -42,7 +42,25 @@ a.tutorlink.disabled {
     visibility: hidden;
 }
 
-/* Set visibility of fullscreen icon hidden for now */
-#tutor .fullscreen {
-    visibility: hidden;
+/* Fulscreen css */
+
+#tutor.fullscreen .modal-dialog.tutor{
+    position: fixed;
+    height: 100%;
+    width: 100%;
 }
+
+#tutor.fullscreen .modal-dialog.tutor .modal-content, .modal-body {
+    width: 100%;
+    height: 100%;
+}
+
+#tutor.fullscreen #tutorcontent {
+    height: 100%;
+}
+
+
+/* Set visibility of fullscreen icon hidden for now */
+/*#tutor .fullscreen {
+    visibility: hidden;
+}*/

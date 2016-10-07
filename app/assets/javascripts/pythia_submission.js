@@ -19,16 +19,30 @@ function init_pythia_submission_show(submissionCode) {
             return false;
         });
 
+        $(document).bind(fullScreenApi.fullScreenEventName, resizeFullScreen);
+        $('#tutor #fullscreen-button').click(function() {
 
-        $('#tutor .fullscreen').click(function() {
-            return false; /* Disabled for now */
-            var elem = document.getElementById("tutor");
+            var $tutor = $("#tutor")
+            var elem = $tutor.get(0);
             if (fullScreenApi.isFullScreen()) {
                 fullScreenApi.cancelFullScreen(elem);
             } else {
                 fullScreenApi.requestFullScreen(elem);
             }
+
         });
+    }
+
+    function resizeFullScreen() {
+        var $tutor = $("#tutor")
+        if (!fullScreenApi.isFullScreen()) {
+            $tutor.removeClass("fullscreen");
+            var content = $("#tutorviz").get(0).contentWindow;
+            $("#tutorviz").height(content.document.body.scrollHeight);
+        } else {
+            $tutor.addClass("fullscreen")
+            $("#tutorviz").height("100%");
+        }
     }
 
     function loadTutor(studentCode, statements, stdin) {
@@ -82,6 +96,14 @@ function init_pythia_submission_show(submissionCode) {
                     $("#tutorviz").height(content.document.body.scrollHeight);
                 });
 
+            });
+
+            $("#tutor #info-modal").on('hidden.bs.modal', function () {
+                if (fullScreenApi.isFullScreen()) {
+                    var $tutor = $("#tutor")
+                    var elem = $tutor.get(0);
+                    fullScreenApi.cancelFullScreen(elem);
+                }
             });
         };
     }

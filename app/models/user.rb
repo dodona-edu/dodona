@@ -60,7 +60,11 @@ class User < ApplicationRecord
   end
 
   def correct_exercises
-    submissions.where(status: :correct).distinct.count(:exercise_id)
+    submissions.select('distinct exercise_id').where(status: :correct).count
+  end
+
+  def unfinished_exercises
+    submissions.select('distinct exercise_id').count - correct_exercises
   end
 
   def header_courses

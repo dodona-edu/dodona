@@ -60,6 +60,9 @@
             <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
           </p>
           <p>
+            <strong><%= t ".unfinished" %>:</strong> <%= @user.unfinished_exercises %>
+          </p>
+          <p>
             <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
           </p>
         </div>

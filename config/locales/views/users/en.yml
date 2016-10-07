@@ -9,7 +9,8 @@ en:
     show:
       courses: Courses
       no_courses: no courses found
-      correctly_solved: Exercises correctly solved
+      correctly_solved: Correct exercises
+      unfinished: Unfinished exercises
       solutions: Number of submissions
       sign_in: Sign in
       token_sign_in: 'This user has no username and can only sign in using this link:'

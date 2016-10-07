@@ -19,7 +19,7 @@
     <%= link_to exercise.name, exercise_path(exercise) %>
   </td>
   <td>
-    <span title="<%= t ".count_tooltip" %>"><%= exercise.users_correct(@course) %>/<%= @course.nil? ? exercise.users_tried : @course.users.count %></span>
+    <span title="<%= t ".count_tooltip" %>"><%= exercise.users_correct(@course) %>/<%= exercise.users_tried(@course) %></span>
   </td>
   <% if user_signed_in? %>
     <td>

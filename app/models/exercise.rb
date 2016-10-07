@@ -157,8 +157,10 @@ class Exercise < ApplicationRecord
     subs.distinct.count(:user_id)
   end
 
-  def users_tried
-    submissions.all.distinct.count(:user_id)
+  def users_tried(course = nil)
+    subs = submissions.all
+    subs = subs.in_course(course) if course
+    subs.distinct.count(:user_id)
   end
 
   def last_correct_submission(user, deadline = nil)

@@ -248,8 +248,6 @@ class SubmissionRunner
     # TODO, stopsig and termsig aren't real exit statuses
     exit_status = if status.exited?
                     status.exitstatus
-                  elsif wait_thr.value.stopped?
-                    status.stopsig
                   else
                     status.termsig
                   end

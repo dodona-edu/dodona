@@ -12,7 +12,7 @@
   </td>
   <% if current_user.admin? %>
     <td>
-      <%= link_to submission.user.username, user_submissions_path(submission.user), title: submission.user.full_name %>
+      <%= link_to submission.user.short_name, user_submissions_path(submission.user), title: submission.user.full_name %>
     </td>
   <% end %>
   <% if !exercise %>

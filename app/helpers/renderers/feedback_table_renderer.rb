@@ -39,7 +39,7 @@ class FeedbackTableRenderer
         @builder.ul(class: 'nav nav-tabs') do
           submission[:groups]&.each_with_index do |t, i|
             @builder.li(class: ('active' if i.zero?)) do
-              @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
+              @builder.a((t[:description] || 'test').titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
             end
           end
           @builder.li(class: ('active' unless submission[:groups])) do

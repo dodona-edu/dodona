@@ -115,6 +115,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
     }
 
     function submitSolution(code) {
+        ga('send', 'pageview');
         return $.post("/submissions.json", {
             submission: {
                 code: code,
@@ -124,6 +125,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
     }
 
     function feedbackLoaded() {
+        ga('send', 'pageview');
         $('#feedback').removeClass("hidden");
         $('#exercise-feedback-link').removeClass("hidden");
         $('#exercise-feedback-link').tab('show');
@@ -136,6 +138,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
             var status = $submissionRow.data("status");
             if (status == "queued" || status == "running") {
                 setTimeout(function () {
+                    ga('send', 'pageview');
                     $.get("submissions.js");
                 }, 1000);
             } else {
@@ -162,6 +165,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
     function submissionSuccessful(data) {
         lastSubmission = data.id;
         showNotification(I18n.t("js.submission-saved"));
+        ga('send', 'pageview');
         $.get("submissions.js");
         $('#exercise-submission-link').tab('show');
         disableSubmitButton();

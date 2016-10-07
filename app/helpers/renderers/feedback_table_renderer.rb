@@ -22,7 +22,7 @@ class FeedbackTableRenderer
 
   def parse
     @builder.div(class: 'feedback-table') do
-      @builder.div(class: 'row') do
+      @builder.div(class: 'row feedback-table-messages') do
         messages(@submission[:messages])
       end
       tabs(@submission)

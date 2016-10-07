@@ -4,6 +4,7 @@ nl:
       username-help: Als je een account aanmaakt zonder gebruikersnaam, dan zal er een inlog token gegenereerd worden. Later kan dan een gebruikersnaam toegevoegd worden.
     index:
       title: Gebruikers
+      progress: Voortgang
     new:
       title: Gebruiker toevoegen
     show:

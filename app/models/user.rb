@@ -59,12 +59,16 @@ class User < ApplicationRecord
     'Brussels'
   end
 
+  def attempted_exercises
+    submissions.select('distinct exercise_id').count
+  end
+
   def correct_exercises
     submissions.select('distinct exercise_id').where(status: :correct).count
   end
 
   def unfinished_exercises
-    submissions.select('distinct exercise_id').count - correct_exercises
+    attempted_exercises - correct_exercises
   end
 
   def header_courses

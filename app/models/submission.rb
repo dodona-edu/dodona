@@ -27,7 +27,7 @@ class Submission < ApplicationRecord
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed
 
-  default_scope { order(created_at: :desc) }
+  default_scope { order(id: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }

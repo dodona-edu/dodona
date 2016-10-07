@@ -1,3 +1,4 @@
+/* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip, showNotification */
 function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorShown) {
     var editor;
     var lastSubmission;

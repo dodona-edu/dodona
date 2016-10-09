@@ -37,8 +37,7 @@ function init_pythia_submission_show(submissionCode) {
         var $tutor = $("#tutor")
         if (!fullScreenApi.isFullScreen()) {
             $tutor.removeClass("fullscreen");
-            var content = $("#tutorviz").get(0).contentWindow;
-            $("#tutorviz").height(content.document.body.scrollHeight);
+            $("#tutorviz").height($("#tutorviz").data("standardheight"));
         } else {
             $tutor.addClass("fullscreen")
             $("#tutorviz").height("100%");
@@ -93,7 +92,8 @@ function init_pythia_submission_show(submissionCode) {
                 $('#tutorviz').load(function () {
                     var content = $("#tutorviz").get(0).contentWindow;
                     content.load(codeTrace);
-                    $("#tutorviz").height(content.document.body.scrollHeight);
+                    $("#tutorviz").data("standardheight", content.document.body.scrollHeight)
+                    $("#tutorviz").height($("#tutorviz").data("standardheight"));
                 });
 
             });

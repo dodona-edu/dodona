@@ -73,7 +73,7 @@ class PythiaRenderer < FeedbackTableRenderer
   ## custom methods
 
   def tab_count(t)
-    if t[:data] && t[:data][:source_annotations]
+    if t[:data] && t[:data][:source_annotations] && !t[:data][:source_annotations].empty?
       t[:data][:source_annotations].length.to_s
     else
       ''

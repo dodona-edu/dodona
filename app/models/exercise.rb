@@ -262,34 +262,12 @@ class Exercise < ApplicationRecord
     visibility
   end
 
-  private
-
-  def generate_id
-    begin
-      new = SecureRandom.random_number(2_147_483_646)
-    end until Exercise.find_by_id(new).nil?
-    self.id = new
-  end
-
-  private_class_method def self.read_config(path)
-    Exercise.read_config_file(path, CONFIG_FILE)
-  end
-
-  private_class_method def self.read_dirconfig(path)
-    Exercise.read_config_file(path, DIRCONFIG_FILE)
-  end
-
-  private_class_method def self.read_config_file(path, file)
-    file = File.join(path, file)
-    JSON.parse(File.read(file)) if File.file?(file)
-  end
-
-  private_class_method def self.merged_config(full_repository_path, full_exercise_path)
+  def self.merged_config(full_repository_path, full_exercise_path)
     dirconfig = Exercise.dirconfig(full_repository_path, File.dirname(full_exercise_path))
     dirconfig.recursive_update(Exercise.read_config(full_exercise_path))
   end
 
-  private_class_method def self.dirconfig(full_repository_path, subpath)
+  def self.dirconfig(full_repository_path, subpath)
     return unless subpath.start_with? full_repository_path
     config = if subpath == full_repository_path
              then {}
@@ -298,11 +276,33 @@ class Exercise < ApplicationRecord
     config.recursive_update(Exercise.read_dirconfig(subpath))
   end
 
-  private_class_method def self.determine_format(full_exercise_path)
+  def self.read_config(path)
+    Exercise.read_config_file(path, CONFIG_FILE)
+  end
+
+  def self.read_dirconfig(path)
+    Exercise.read_config_file(path, DIRCONFIG_FILE)
+  end
+
+  def self.read_config_file(path, file)
+    file = File.join(path, file)
+    JSON.parse(File.read(file)) if File.file?(file)
+  end
+
+  def self.determine_format(full_exercise_path)
     if !Dir.glob(File.join(full_exercise_path, DESCRIPTION_DIR, 'description.*.html')).empty?
       'html'
     else
       'md'
     end
+  end
+
+  private
+
+  def generate_id
+    begin
+      new = SecureRandom.random_number(2_147_483_646)
+    end until Exercise.find_by_id(new).nil?
+    self.id = new
   end
 end

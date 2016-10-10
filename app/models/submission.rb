@@ -38,15 +38,22 @@ class Submission < ApplicationRecord
   scope :by_username, -> (username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
   scope :by_filter, -> (query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
 
-  # TODO; can delayed_jobs_active_records really only process active record methods?
-  def evaluate_delayed
+  def evaluate_delayed(priority = :normal)
+    p_value = if priority == :high
+                -10
+              elsif priority == :low
+                10
+              else
+                0
+              end
+
     update(
       status: 'queued',
       result: '',
       summary: nil
     )
 
-    delay.evaluate
+    delay(priority: p_value).evaluate
   end
 
   def file_name

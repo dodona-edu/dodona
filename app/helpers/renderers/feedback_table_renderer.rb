@@ -22,7 +22,7 @@ class FeedbackTableRenderer
 
   def parse
     @builder.div(class: 'feedback-table') do
-      @builder.div(class: 'row') do
+      @builder.div(class: 'row feedback-table-messages') do
         messages(@submission[:messages])
       end
       tabs(@submission)
@@ -39,7 +39,12 @@ class FeedbackTableRenderer
         @builder.ul(class: 'nav nav-tabs') do
           submission[:groups]&.each_with_index do |t, i|
             @builder.li(class: ('active' if i.zero?)) do
-              @builder.a(t[:description].titleize, href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab')
+              @builder.a(href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab') do
+                @builder.text!((t[:description] || 'test').titleize + ' ')
+                @builder.span(class: 'badge') do
+                  @builder << tab_count(t)
+                end
+              end
             end
           end
           @builder.li(class: ('active' unless submission[:groups])) do
@@ -56,6 +61,10 @@ class FeedbackTableRenderer
         end
       end
     end
+  end
+
+  def tab_count(_t)
+    ''
   end
 
   def tab(t, i)
@@ -82,10 +91,14 @@ class FeedbackTableRenderer
     end
   end
 
+  def testcase_icons(tc)
+  end
+
   def testcase(tc)
     @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
       @builder.div(class: 'col-xs-12 description') do
         @builder.div(class: 'indicator') do
+          testcase_icons(tc)
           tc[:accepted] ? icon_correct : icon_wrong
         end
         message(tc[:description]) if tc[:description]

@@ -1,10 +1,11 @@
 <table class="table table-index table-resource">
   <thead>
     <tr>
+      <th class='status-icon'></th>
       <th><%= User.human_attribute_name("username") %></th>
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
-      <th><%= User.human_attribute_name("permission") %></th>
+      <th class='text-right'><%= t("users.index.progress") %></th>
       <th></th>
     </tr>
   </thead>
@@ -12,14 +13,22 @@
     <% users.each do |user| %>
       <tr>
         <td>
-          <%= link_to user.short_name, user %>
+          <% if user.zeus? %>
+            <span class="glyphicon glyphicon-king" title='zeus'></span>
+          <% end %>
+          <% if user.staff? %>
+            <span class="glyphicon glyphicon-queen" title='staff'></span>
+          <% end %>
           <% if user.username.blank? %>
             <span class="glyphicon glyphicon-exclamation-sign"></span>
           <% end %>
         </td>
-        <td><%= user.full_name %> </td>
-        <td><%= user.email %> </td>
-        <td><%= user.permission %> </td>
+        <td>
+          <%= link_to user.short_name, user %>
+        </td>
+        <td><%= user.full_name %></td>
+        <td><%= user.email %></td>
+        <td class='text-right'><%= user.correct_exercises %>/<%= user.attempted_exercises %></td>
         <td class="actions">
           <% if policy(user).impersonate? %>
             <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %><span class="glyphicon glyphicon-user"></span><% end %>

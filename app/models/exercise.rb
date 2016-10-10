@@ -43,6 +43,8 @@ class Exercise < ApplicationRecord
   before_save :check_validity
   before_update :update_config
 
+  scope :in_repository, -> (repository) { where repository_id: repository.id }
+
   scope :by_name, -> (name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_status, -> (status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_visibility, -> (visibility) { where(visibility: visibility.in?(visibilities) ? visibility : -1) }
@@ -157,8 +159,10 @@ class Exercise < ApplicationRecord
     subs.distinct.count(:user_id)
   end
 
-  def users_tried
-    submissions.all.distinct.count(:user_id)
+  def users_tried(course = nil)
+    subs = submissions.all
+    subs = subs.in_course(course) if course
+    subs.distinct.count(:user_id)
   end
 
   def last_correct_submission(user, deadline = nil)

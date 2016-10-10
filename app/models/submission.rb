@@ -27,7 +27,7 @@ class Submission < ApplicationRecord
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed
 
-  default_scope { order(created_at: :desc) }
+  default_scope { order(id: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }
@@ -38,15 +38,22 @@ class Submission < ApplicationRecord
   scope :by_username, -> (username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
   scope :by_filter, -> (query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
 
-  # TODO; can delayed_jobs_active_records really only process active record methods?
-  def evaluate_delayed
+  def evaluate_delayed(priority = :normal)
+    p_value = if priority == :high
+                -10
+              elsif priority == :low
+                10
+              else
+                0
+              end
+
     update(
       status: 'queued',
       result: '',
       summary: nil
     )
 
-    delay.evaluate
+    delay(priority: p_value).evaluate
   end
 
   def file_name

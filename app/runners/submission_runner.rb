@@ -58,10 +58,10 @@ class SubmissionRunner
     @error_handlers = {}
 
     # container receives signal 9 from host when memory limit is exceeded
-    register_error('memory limit', ErrorIdentifier.new([1], ['got signal 9']), method(:handle_memory_exceeded))
+    register_error('memory limit', ErrorIdentifier.new([1, 137], ['got signal 9']), method(:handle_memory_exceeded))
 
     # default exit codes of the timeout command
-    register_error('time limit', ErrorIdentifier.new([9, 124, 137], []), method(:handle_timeout))
+    register_error('time limit', ErrorIdentifier.new([9, 124], []), method(:handle_timeout))
 
     # something else
     register_error('internal error', ErrorIdentifier.new([], []), method(:handle_unknown))
@@ -248,8 +248,6 @@ class SubmissionRunner
     # TODO, stopsig and termsig aren't real exit statuses
     exit_status = if status.exited?
                     status.exitstatus
-                  elsif wait_thr.value.stopped?
-                    status.stopsig
                   else
                     status.termsig
                   end

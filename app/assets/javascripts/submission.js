@@ -1,3 +1,4 @@
+/* globals ace */
 function loadResultEditor(programmingLanguage, annotations) {
     var editor = ace.edit("editor-result");
     editor.getSession().setMode("ace/mode/" + programmingLanguage);

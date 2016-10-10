@@ -1,3 +1,4 @@
+/* globals delay, getURLParameter, updateURLParameter */
 function init_filter_index(baseUrl, eager) {
     var PARAM = "filter";
     var $filter;
@@ -23,7 +24,7 @@ function init_filter_index(baseUrl, eager) {
     function search() {
         var val = $filter.val();
         var url = updateURLParameter(getUrl(), PARAM, val);
-        url = updateURLParameter(url, "page", 1)
+        url = updateURLParameter(url, "page", 1);
         if (!baseUrl) {
             window.history.replaceState(null, "Dodona", url);
         }

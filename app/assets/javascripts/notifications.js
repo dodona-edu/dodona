@@ -1,3 +1,4 @@
+/* globals requestAnimFrame */
 /**
  * Shows a notification in the bottom left corner
  *
@@ -9,7 +10,7 @@
  * @return <Notification> $notification
  */
 function showNotification(content, properties) {
-    var properties = properties || {}
+    var properties = properties || {};
     var autoHide = properties.autoHide === undefined ? true : properties.autoHide;
     var loading = properties.loading === undefined ? false : properties.loading;
 

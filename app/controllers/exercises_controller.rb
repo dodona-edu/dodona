@@ -11,6 +11,11 @@ class ExercisesController < ApplicationController
   def index
     authorize Exercise
     @exercises = policy_scope(Exercise).merge(apply_scopes(Exercise).all).order('name_' + I18n.locale.to_s).paginate(page: params[:page])
+
+    if params[:repository_id]
+      @repository = Repository.find(params[:repository_id])
+      @exercises = @exercises.in_repository(@repository)
+    end
     @series = Series.find(params[:series_id]) if params[:series_id]
     @title = I18n.t('exercises.index.title')
   end
@@ -47,7 +52,9 @@ class ExercisesController < ApplicationController
   end
 
   def media
-    send_file File.join(@exercise.media_path, params[:media]), disposition: 'inline'
+    file = File.join(@exercise.media_path, params[:media])
+    raise ActionController::RoutingError, 'Not Found' unless File.exist? file
+    send_file file, disposition: 'inline'
   end
 
   private

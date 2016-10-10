@@ -27,3 +27,6 @@
     </div>
   </div>
 </div>
+<% if @submission.queued? || @submission.running? %>
+<script>setTimeout(function () { location.reload(1); }, 3000);</script>
+<% end %>

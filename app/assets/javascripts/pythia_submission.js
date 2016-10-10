@@ -9,11 +9,11 @@ function init_pythia_submission_show(submissionCode) {
         $('.tutorlink').each(function () {
             var $group = $(this).parents(".group");
             if (!($group.data('statements') || $group.data('stdin'))) {
-                $(this).addClass('disabled');
+                $(this).remove();
             }
         });
 
-        $('.tutorlink').not('.disabled').click(function () {
+        $('.tutorlink').click(function () {
             var $group = $(this).parents(".group");
             var stdin = $group.data('stdin').slice(0, -1);
             var statements = $group.data('statements');
@@ -56,7 +56,6 @@ function init_pythia_submission_show(submissionCode) {
             if (remove && !(lines[i].match(/\s+.*/g))) {
                 remove = false;
             }
-
             if (lines[i].match(/if\s+__name__\s*==\s*(['"])__main__\s*\1:\s*/g)) {
                 remove = true;
             }
@@ -85,7 +84,7 @@ function init_pythia_submission_show(submissionCode) {
         });
 
         var createTutor = function (codeTrace) {
-            showInfoModal("Python Tutor", '<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading</div></div></div>');
+            showInfoModal("Python Tutor", '<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>');
 
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html('<iframe id="tutorviz" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');

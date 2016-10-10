@@ -94,7 +94,7 @@ class FeedbackTableRenderer
         end
         message(tc[:description]) if tc[:description]
       end
-      tc[:tests].each { |t| test(t) } if tc[:tests]
+      tc[:tests]&.each { |t| test(t) }
       messages(tc[:messages])
     end
   end

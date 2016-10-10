@@ -54,6 +54,11 @@ class PythiaRenderer < FeedbackTableRenderer
       @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}",
                    "data-statements": (g[:data][:statements]).to_s,
                    "data-stdin": (g[:data][:stdin]).to_s) do
+        @builder.div(class: 'tutor-strip tutorlink') do
+          @builder.div(class: 'tutor-strip-icon') do
+            @builder.span(class: 'glyphicon glyphicon-expand')
+          end
+        end
         @builder.div(class: 'col-xs-12 description') do
           message(g[:description])
         end if g[:description]
@@ -62,12 +67,6 @@ class PythiaRenderer < FeedbackTableRenderer
       end
     else
       super(g)
-    end
-  end
-
-  def testcase_icons(_tc)
-    @builder.a(href: '#', class: 'tutorlink') do
-      @builder.span(class: 'glyphicon glyphicon-expand')
     end
   end
 
@@ -94,10 +93,10 @@ class PythiaRenderer < FeedbackTableRenderer
             @builder.div(class: 'modal-header') do
               @builder.div(class: 'icons') do
                 @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-xs') do
-                  @builder.span(class: 'glyphicon glyphicon-fullscreen', "aria-hidden": true)
+                  @builder.span(class: 'glyphicon glyphicon-fullscreen')
                 end
-                @builder.button(type: 'button', class: 'btn btn-link btn-xs', "data-dismiss": 'modal', "aria-label": 'Close') do
-                  @builder.span(class: 'glyphicon glyphicon-remove', "aria-hidden": true)
+                @builder.button(type: 'button', class: 'btn btn-link btn-xs', "data-dismiss": 'modal') do
+                  @builder.span(class: 'glyphicon glyphicon-remove')
                 end
               end
               @builder.h4(class: 'modal-title')

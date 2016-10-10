@@ -54,7 +54,7 @@ class PythiaRenderer < FeedbackTableRenderer
       @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}",
                    "data-statements": (g[:data][:statements]).to_s,
                    "data-stdin": (g[:data][:stdin]).to_s) do
-        @builder.div(class: 'tutor-strip tutorlink') do
+        @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
           @builder.div(class: 'tutor-strip-icon') do
             @builder.span(class: 'glyphicon glyphicon-expand')
           end

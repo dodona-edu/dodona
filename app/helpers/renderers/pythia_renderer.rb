@@ -3,6 +3,11 @@ class PythiaRenderer < FeedbackTableRenderer
     super(submission, user)
   end
 
+  def parse
+    tutor_init
+    super
+  end
+
   def show_code_tab
     return true unless @submission[:groups]
     !@submission[:groups].any? { |t| t[:data][:source_annotations] }
@@ -44,7 +49,64 @@ class PythiaRenderer < FeedbackTableRenderer
     end
   end
 
+  def group(g)
+    if g.key?(:data)
+      @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}",
+                   "data-statements": (g[:data][:statements]).to_s,
+                   "data-stdin": (g[:data][:stdin]).to_s) do
+        @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
+          @builder.div(class: 'tutor-strip-icon') do
+            @builder.span(class: 'glyphicon glyphicon-expand')
+          end
+        end
+        @builder.div(class: 'col-xs-12 description') do
+          message(g[:description])
+        end if g[:description]
+        messages(g[:messages])
+        g[:groups]&.each { |tc| testcase(tc) }
+      end
+    else
+      super(g)
+    end
+  end
+
   ## custom methods
+
+  def tutor_init
+    # Initialize tutor javascript
+    @builder.script do
+      escaped = @code.strip
+                     .gsub('\\n', "\\\n")
+                     .gsub("\n", '\\n')
+                     .gsub('"', '\\"')
+      @builder << '$(function() {'
+      @builder << "$('#tutor').appendTo('body');"
+      @builder << "var code = \"#{escaped}\";"
+      @builder << 'init_pythia_submission_show(code);});'
+    end
+
+    # Tutor HTML
+    @builder.div(id: 'tutor') do
+      @builder.div(id: 'info-modal', class: 'modal fade modal-info', "data-backdrop": true, tabindex: -1) do
+        @builder.div(class: 'modal-dialog tutor') do
+          @builder.div(class: 'modal-content') do
+            @builder.div(class: 'modal-header') do
+              @builder.div(class: 'icons') do
+                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-xs') do
+                  @builder.span(class: 'glyphicon glyphicon-fullscreen')
+                end
+                @builder.button(type: 'button', class: 'btn btn-link btn-xs', "data-dismiss": 'modal') do
+                  @builder.span(class: 'glyphicon glyphicon-remove')
+                end
+              end
+              @builder.h4(class: 'modal-title')
+            end
+            @builder.div(class: 'modal-body') {}
+          end
+        end
+      end
+    end
+  end
 
   def pythia_diff(diff)
     @builder.div(class: 'diff') do

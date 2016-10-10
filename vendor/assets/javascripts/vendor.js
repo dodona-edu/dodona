@@ -1,6 +1,5 @@
 // bootstrap
 //=require bootstrap/bootstrap.min.js
-
 // flatpickr
 //=require flatpickr/flatpickr.min.js
 

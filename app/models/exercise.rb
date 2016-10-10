@@ -113,18 +113,17 @@ class Exercise < ApplicationRecord
     Exercise.read_config(full_path)
   end
 
-  def has_config_file?
+  def config_file?
     File.file?(File.join(full_path, CONFIG_FILE))
   end
 
   def store_config(new_config)
-    unless new_config == config
-      File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(new_config))
-      success, error = repository.commit "updated config for #{name}"
-      unless success || error.empty?
-        errors.add(:base, "commiting changes failed: #{error}")
-        throw :abort
-      end
+    return if new_config == config
+    File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(new_config))
+    success, error = repository.commit "updated config for #{name}"
+    unless success || error.empty?
+      errors.add(:base, "commiting changes failed: #{error}")
+      throw :abort
     end
   end
 
@@ -224,11 +223,11 @@ class Exercise < ApplicationRecord
     if ex.nil?
       ex = Exercise.new(
         path: directory,
-        repository_id: repository.id,
+        repository_id: repository.id
       )
     end
 
-    if !ex.has_config_file?
+    if !ex.config_file?
       ex.status = :removed
     else
       full_exercise_path = File.join(repository.full_path, directory)
@@ -272,41 +271,38 @@ class Exercise < ApplicationRecord
     self.id = new
   end
 
-  def self.read_config(path)
+  private_class_method def self.read_config(path)
     Exercise.read_config_file(path, CONFIG_FILE)
   end
 
-  def self.read_dirconfig(path)
+  private_class_method def self.read_dirconfig(path)
     Exercise.read_config_file(path, DIRCONFIG_FILE)
   end
 
-  def self.read_config_file(path, file)
+  private_class_method def self.read_config_file(path, file)
     file = File.join(path, file)
-    if File.file?(file)
-      JSON.parse(File.read(file))
-    end
+    JSON.parse(File.read(file)) if File.file?(file)
   end
 
-  def self.merged_config(full_repository_path, full_exercise_path)
+  private_class_method def self.merged_config(full_repository_path, full_exercise_path)
     dirconfig = Exercise.dirconfig(full_repository_path, File.dirname(full_exercise_path))
     dirconfig.recursive_update(Exercise.read_config(full_exercise_path))
   end
 
-  def self.dirconfig(full_repository_path, subpath)
+  private_class_method def self.dirconfig(full_repository_path, subpath)
     return unless subpath.start_with? full_repository_path
     config = if subpath == full_repository_path
-               then Hash.new
-               else Exercise.dirconfig(full_repository_path, File.dirname(subpath))
+             then {}
+             else Exercise.dirconfig(full_repository_path, File.dirname(subpath))
              end
     config.recursive_update(Exercise.read_dirconfig(subpath))
   end
 
-  def self.determine_format(full_exercise_path)
+  private_class_method def self.determine_format(full_exercise_path)
     if !Dir.glob(File.join(full_exercise_path, DESCRIPTION_DIR, 'description.*.html')).empty?
-      return 'html'
+      'html'
     else
-      return 'md'
+      'md'
     end
   end
-
 end

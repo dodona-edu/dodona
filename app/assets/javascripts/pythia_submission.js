@@ -1,45 +1,47 @@
 function init_pythia_submission_show(submissionCode) {
-    var vars;
-
     function init() {
-        
+        initTutorLinks();
+        initFullScreen();
+    }
+
+    function initTutorLinks() {
         //add disabled to tutorlinks that are not valid
-        $('.tutorlink').each(function() {
-            var $element = $(this).parents(".group");
-            if ($element.data('statements') === undefined && $element.data('stdin') == undefined) {
+        $('.tutorlink').each(function () {
+            var $group = $(this).parents(".group");
+            if (!($group.data('statements') || $group.data('stdin'))) {
                 $(this).addClass('disabled');
             }
         });
 
         $('.tutorlink').not('.disabled').click(function () {
-            var $element = $(this).parents(".group");
-            var stdin = $element.data('stdin').slice(0, -1);
-            var statements = $element.data('statements');
+            var $group = $(this).parents(".group");
+            var stdin = $group.data('stdin').slice(0, -1);
+            var statements = $group.data('statements');
             loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')));
             return false;
         });
+    }
 
+    function initFullScreen() {
         $(document).bind(fullScreenApi.fullScreenEventName, resizeFullScreen);
-        $('#tutor #fullscreen-button').click(function() {
 
-            var $tutor = $("#tutor")
-            var elem = $tutor.get(0);
+        $('#tutor #fullscreen-button').click(function () {
+            var elem = $("#tutor").get(0);
             if (fullScreenApi.isFullScreen()) {
                 fullScreenApi.cancelFullScreen(elem);
             } else {
                 fullScreenApi.requestFullScreen(elem);
             }
-
         });
     }
 
     function resizeFullScreen() {
-        var $tutor = $("#tutor")
+        var $tutor = $("#tutor");
         if (!fullScreenApi.isFullScreen()) {
             $tutor.removeClass("fullscreen");
             $("#tutorviz").height($("#tutorviz").data("standardheight"));
         } else {
-            $tutor.addClass("fullscreen")
+            $tutor.addClass("fullscreen");
             $("#tutorviz").height("100%");
         }
     }
@@ -65,9 +67,7 @@ function init_pythia_submission_show(submissionCode) {
         }
 
         source_array.push(statements);
-
         var source_code = source_array.join('\n');
-
         $.ajax({
             type: 'POST',
             url: '/tutor/cgi-bin/build_trace.py',
@@ -86,13 +86,13 @@ function init_pythia_submission_show(submissionCode) {
 
         var createTutor = function (codeTrace) {
             showInfoModal("Python Tutor", '<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading</div></div></div>');
-            
+
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html('<iframe id="tutorviz" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');
                 $('#tutorviz').load(function () {
                     var content = $("#tutorviz").get(0).contentWindow;
                     content.load(codeTrace);
-                    $("#tutorviz").data("standardheight", content.document.body.scrollHeight)
+                    $("#tutorviz").data("standardheight", content.document.body.scrollHeight);
                     $("#tutorviz").height($("#tutorviz").data("standardheight"));
                 });
 
@@ -100,7 +100,7 @@ function init_pythia_submission_show(submissionCode) {
 
             $("#tutor #info-modal").on('hidden.bs.modal', function () {
                 if (fullScreenApi.isFullScreen()) {
-                    var $tutor = $("#tutor")
+                    var $tutor = $("#tutor");
                     var elem = $tutor.get(0);
                     fullScreenApi.cancelFullScreen(elem);
                 }

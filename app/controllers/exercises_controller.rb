@@ -16,9 +16,7 @@ class ExercisesController < ApplicationController
       @repository = Repository.find(params[:repository_id])
       @exercises = @exercises.in_repository(@repository)
     end
-    if params[:series_id]
-      @series = Series.find(params[:series_id])
-    end
+    @series = Series.find(params[:series_id]) if params[:series_id]
     @title = I18n.t('exercises.index.title')
   end
 
@@ -54,7 +52,9 @@ class ExercisesController < ApplicationController
   end
 
   def media
-    send_file File.join(@exercise.media_path, params[:media]), disposition: 'inline'
+    file = File.join(@exercise.media_path, params[:media])
+    raise ActionController::RoutingError, 'Not Found' unless File.exist? file
+    send_file file, disposition: 'inline'
   end
 
   private

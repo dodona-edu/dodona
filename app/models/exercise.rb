@@ -109,25 +109,12 @@ class Exercise < ApplicationRecord
     repository.remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '') + '/tree/master' + path
   end
 
-  def update_data(config, j_id)
-    self.name_nl = config['description']['names']['nl']
-    self.name_en = config['description']['names']['en']
-    self.judge_id = j_id if j_id
-    self.description_format = determine_format
-    self.visibility = Exercise.convert_visibility(config['visibility']) if config['visibility']
-    save
-  end
-
-  def determine_format
-    if ['description.nl.html', 'description.en.html'].any? { |f| FileTest.exists?(File.join(full_path, DESCRIPTION_DIR, f)) }
-      return 'html'
-    else
-      return 'md'
-    end
-  end
-
   def config
     Exercise.read_config(full_path)
+  end
+
+  def has_config_file?
+    File.file?(File.join(full_path, CONFIG_FILE))
   end
 
   def store_config(new_config)
@@ -234,28 +221,32 @@ class Exercise < ApplicationRecord
   def self.process_exercise(repository, directory)
     ex = Exercise.find_by(path: directory, repository_id: repository.id)
 
-    if ex && !File.file?(ex.config_file)
+    if ex.nil?
+      ex = Exercise.new(
+        path: directory,
+        repository_id: repository.id,
+      )
+    end
+
+    if !ex.has_config_file?
       ex.status = :removed
     else
-      if ex.nil?
-        full_exercise_path = File.join(repository.full_path, directory)
-        config = Exercise.merged_config(repository.full_path, full_exercise_path)
+      full_exercise_path = File.join(repository.full_path, directory)
+      config = Exercise.merged_config(repository.full_path, full_exercise_path)
 
-        j = Judge.find_by_name(config['evaluation']['handler']) if config['evaluation']
-        j_id = j.nil? ? repository.judge_id : j.id
+      j = Judge.find_by_name(config['evaluation']['handler']) if config['evaluation']
+      j_id = j.nil? ? repository.judge_id : j.id
 
-        ex = Exercise.create(
-          path: directory,
-          repository_id: repository.id,
-          judge_id: j_id,
-          programming_language: config['programming_language']
-        )
-      else
-        ex.status = :ok
-      end
-
-      ex.update_data(config, j_id)
+      ex.judge_id = j_id
+      ex.programming_language = config['programming_language'],
+      ex.name_nl = config['description']['names']['nl'],
+      ex.name_en = config['description']['names']['en'],
+      ex.description_format = Exercise.determine_format(full_exercise_path),
+      ex.visibility = Exercise.convert_visibility(config['visibility'])
+      ex.status = :ok
     end
+
+    ex.save
   end
 
   def self.exercise_directory?(repository, path)
@@ -296,12 +287,26 @@ class Exercise < ApplicationRecord
     end
   end
 
-  def self.merged_config(full_repository_path, subpath)
+  def self.merged_config(full_repository_path, full_exercise_path)
+    dirconfig = Exercise.dirconfig(full_repository_path, full_exercise_path)
+    dirconfig.recursive_update(Exercise.read_config(full_exercise_path))
+  end
+
+  def self.dirconfig(full_repository_path, subpath)
     return unless subpath.start_with? full_repository_path
     config = if subpath == full_repository_path
                then Hash.new
-               else Exercise.merged_config(full_repository_path, File.dirname(subpath))
+               else Exercise.dirconfig(full_repository_path, File.dirname(subpath))
              end
-    config.recursive_update(Exercise.read_dirconfig(path))
+    config.recursive_update(Exercise.read_dirconfig(subpath))
   end
+
+  def self.determine_format(full_exercise_path)
+    if !Dir.glob(File.join(full_exercise_path, DESCRIPTION_DIR, 'description.*.html')).empty?
+      return 'html'
+    else
+      return 'md'
+    end
+  end
+
 end

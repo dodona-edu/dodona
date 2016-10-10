@@ -21,7 +21,7 @@ include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
-  DIRCONFIG_FILE = 'directory_config.json'.freeze
+  DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
@@ -238,10 +238,10 @@ class Exercise < ApplicationRecord
       j_id = j.nil? ? repository.judge_id : j.id
 
       ex.judge_id = j_id
-      ex.programming_language = config['programming_language'],
-      ex.name_nl = config['description']['names']['nl'],
-      ex.name_en = config['description']['names']['en'],
-      ex.description_format = Exercise.determine_format(full_exercise_path),
+      ex.programming_language = config['programming_language']
+      ex.name_nl = config['description']['names']['nl']
+      ex.name_en = config['description']['names']['en']
+      ex.description_format = Exercise.determine_format(full_exercise_path)
       ex.visibility = Exercise.convert_visibility(config['visibility'])
       ex.status = :ok
     end
@@ -288,7 +288,7 @@ class Exercise < ApplicationRecord
   end
 
   def self.merged_config(full_repository_path, full_exercise_path)
-    dirconfig = Exercise.dirconfig(full_repository_path, full_exercise_path)
+    dirconfig = Exercise.dirconfig(full_repository_path, File.dirname(full_exercise_path))
     dirconfig.recursive_update(Exercise.read_config(full_exercise_path))
   end
 

@@ -39,7 +39,7 @@ class FeedbackTableRenderer
         @builder.ul(class: 'nav nav-tabs') do
           submission[:groups]&.each_with_index do |t, i|
             @builder.li(class: ('active' if i.zero?)) do
-              @builder.a(href: "##{t[:description].parameterize}-#{i}", 'data-toggle': 'tab') do
+              @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
                 @builder.text!((t[:description] || 'test').titleize + ' ')
                 @builder.span(class: 'badge') do
                   @builder << tab_count(t)
@@ -68,7 +68,7 @@ class FeedbackTableRenderer
   end
 
   def tab(t, i)
-    @builder.div(class: "tab-pane #{'active' if i.zero?}", id: "#{t[:description].parameterize}-#{i}") do
+    @builder.div(class: "tab-pane #{'active' if i.zero?}", id: "#{(t[:description] || 'test').parameterize}-#{i}") do
       tab_content(t)
     end
   end

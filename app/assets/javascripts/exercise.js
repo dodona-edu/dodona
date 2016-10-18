@@ -17,6 +17,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
             if (!loggedIn) return;
             // test submitted source code
             var source = editor.getValue();
+            disableSubmitButton();
             submitSolution(source)
                 .done(submissionSuccessful)
                 .fail(submissionFailed);
@@ -169,11 +170,11 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         ga('send', 'pageview');
         $.get("submissions.js");
         $('#exercise-submission-link').tab('show');
-        disableSubmitButton();
     }
 
     function submissionFailed() {
         $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' + I18n.t("js.submission-failed") + '</div>').insertBefore("#editor-window").show("fast");
+        enableSubmitButton();
     }
 
     init();

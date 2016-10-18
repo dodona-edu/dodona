@@ -58,10 +58,10 @@ class SubmissionRunner
     @error_handlers = {}
 
     # container receives signal 9 from host when memory limit is exceeded
-    register_error('memory limit', ErrorIdentifier.new([1, 137], ['got signal 9']), method(:handle_memory_exceeded))
+    register_error('memory limit', ErrorIdentifier.new([1], ['got signal 9']), method(:handle_memory_exceeded))
 
     # default exit codes of the timeout command
-    register_error('time limit', ErrorIdentifier.new([9, 124], []), method(:handle_timeout))
+    register_error('time limit', ErrorIdentifier.new([9, 124, 137], []), method(:handle_timeout))
 
     # something else
     register_error('internal error', ErrorIdentifier.new([], []), method(:handle_unknown))
@@ -132,14 +132,14 @@ class SubmissionRunner
   # adds the specific information to an output json for timeout errors
   def handle_timeout(stderr)
     build_error 'time limit exceeded', 'time limit exceeded', [
-      build_message(stderr, 'student')
+      build_message(stderr, 'staff')
     ]
   end
 
   # adds the specific information to an output json for memory limit errors
   def handle_memory_exceeded(stderr)
     build_error 'memory limit exceeded', 'memory limit exceeded', [
-      build_message(stderr, 'student')
+      build_message(stderr, 'staff')
     ]
   end
 

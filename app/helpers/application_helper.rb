@@ -1,7 +1,7 @@
 module ApplicationHelper
   def markdown(source)
     source ||= ''
-    Kramdown::Document.new(source, input: 'GFM', syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe
+    Kramdown::Document.new(source, input: 'GFM', hard_wrap: false, syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe
   end
 
   def escape_double_quotes(string)

@@ -21,6 +21,7 @@ include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
+  DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
@@ -108,35 +109,17 @@ class Exercise < ApplicationRecord
     repository.remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '') + '/tree/master' + path
   end
 
-  def update_data(config, j_id)
-    self.name_nl = config['description']['names']['nl']
-    self.name_en = config['description']['names']['en']
-    self.judge_id = j_id if j_id
-    self.description_format = determine_format
-    self.visibility = Exercise.convert_visibility(config['visibility']) if config['visibility']
-    save
-  end
-
-  def determine_format
-    if ['description.nl.html', 'description.en.html'].any? { |f| FileTest.exists?(File.join(full_path, DESCRIPTION_DIR, f)) }
-      return 'html'
-    else
-      return 'md'
-    end
-  end
-
   def config
-    JSON.parse(File.read(File.join(full_path, CONFIG_FILE)))
+    Exercise.read_config(full_path)
   end
 
-  def merged_config
-    result = repository.config
-    result.recursive_update(config)
-    result
+  def config_file?
+    File.file?(File.join(full_path, CONFIG_FILE))
   end
 
-  def store_config(config)
-    File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(config))
+  def store_config(new_config)
+    return if new_config == config
+    File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(new_config))
     success, error = repository.commit "updated config for #{name}"
     unless success || error.empty?
       errors.add(:base, "commiting changes failed: #{error}")
@@ -235,24 +218,34 @@ class Exercise < ApplicationRecord
   end
 
   def self.process_exercise(repository, directory)
-    config_file = File.join(repository.full_path, directory, CONFIG_FILE)
     ex = Exercise.find_by(path: directory, repository_id: repository.id)
 
-    if ex && !File.file?(config_file)
+    if ex.nil?
+      ex = Exercise.new(
+        path: directory,
+        repository_id: repository.id
+      )
+    end
+
+    if !ex.config_file?
       ex.status = :removed
     else
-      config = JSON.parse(File.read(config_file))
+      full_exercise_path = File.join(repository.full_path, directory)
+      config = Exercise.merged_config(repository.full_path, full_exercise_path)
+
       j = Judge.find_by_name(config['evaluation']['handler']) if config['evaluation']
       j_id = j.nil? ? repository.judge_id : j.id
 
-      if ex.nil?
-        ex = Exercise.create(path: directory, repository_id: repository.id, judge_id: j_id, programming_language: 'python')
-      else
-        ex.status = :ok
-      end
-
-      ex.update_data(config, j_id)
+      ex.judge_id = j_id
+      ex.programming_language = config['programming_language']
+      ex.name_nl = config['description']['names']['nl']
+      ex.name_en = config['description']['names']['en']
+      ex.description_format = Exercise.determine_format(full_exercise_path)
+      ex.visibility = Exercise.convert_visibility(config['visibility'])
+      ex.status = :ok
     end
+
+    ex.save
   end
 
   def self.exercise_directory?(repository, path)
@@ -267,6 +260,41 @@ class Exercise < ApplicationRecord
     return 'open' if visibility == 'public'
     return 'closed' if visibility == 'private'
     visibility
+  end
+
+  def self.merged_config(full_repository_path, full_exercise_path)
+    dirconfig = Exercise.dirconfig(full_repository_path, File.dirname(full_exercise_path))
+    dirconfig.recursive_update(Exercise.read_config(full_exercise_path))
+  end
+
+  def self.dirconfig(full_repository_path, subpath)
+    return unless subpath.start_with? full_repository_path
+    config = if subpath == full_repository_path
+             then {}
+             else Exercise.dirconfig(full_repository_path, File.dirname(subpath))
+             end
+    config.recursive_update(Exercise.read_dirconfig(subpath))
+  end
+
+  def self.read_config(path)
+    Exercise.read_config_file(path, CONFIG_FILE)
+  end
+
+  def self.read_dirconfig(path)
+    Exercise.read_config_file(path, DIRCONFIG_FILE)
+  end
+
+  def self.read_config_file(path, file)
+    file = File.join(path, file)
+    JSON.parse(File.read(file)) if File.file?(file)
+  end
+
+  def self.determine_format(full_exercise_path)
+    if !Dir.glob(File.join(full_exercise_path, DESCRIPTION_DIR, 'description.*.html')).empty?
+      'html'
+    else
+      'md'
+    end
   end
 
   private

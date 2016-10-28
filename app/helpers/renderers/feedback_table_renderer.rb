@@ -40,7 +40,7 @@ class FeedbackTableRenderer
           submission[:groups]&.each_with_index do |t, i|
             @builder.li(class: ('active' if i.zero?)) do
               @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
-                @builder.text!((t[:description] || 'Test') + ' ')
+                @builder.text!((t[:description] || 'Test').upcase_first + ' ')
                 @builder.span(class: 'badge') do
                   @builder << tab_count(t)
                 end
@@ -64,10 +64,10 @@ class FeedbackTableRenderer
   end
 
   def tab_count(t)
-    '' if t[:badgeCount].nil?
-    '' if t[:badgeCount].zero?
-    '' if t[:badgeCount] == '0'
-    t[:badgeCount]
+    return '' if t[:badgeCount].nil?
+    return '' if t[:badgeCount].zero?
+    return '' if t[:badgeCount] == '0'
+    t[:badgeCount].to_s
   end
 
   def tab(t, i)

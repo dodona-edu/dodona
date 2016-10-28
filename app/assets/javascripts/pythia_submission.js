@@ -1,7 +1,11 @@
 function init_pythia_submission_show(submissionCode) {
     function init() {
         initTutorLinks();
-        initFullScreen();
+        if( $('.tutormodal').length == 1) {
+            initFullScreen();
+        } else {
+            $('.tutormodal:last').remove();
+        }
     }
 
     function initTutorLinks() {

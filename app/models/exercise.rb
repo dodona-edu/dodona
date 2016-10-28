@@ -113,6 +113,16 @@ class Exercise < ApplicationRecord
     Exercise.read_config(full_path)
   end
 
+  def file_name
+    "#{name.parameterize}.#{file_extension}"
+  end
+
+  def file_extension
+    return 'py' if programming_language == 'python'
+    return 'js' if programming_language == 'JavaScript'
+    'txt'
+  end
+
   def config_file?
     File.file?(File.join(full_path, CONFIG_FILE))
   end
@@ -148,14 +158,25 @@ class Exercise < ApplicationRecord
     subs.distinct.count(:user_id)
   end
 
+  def best_last_submission(user, deadline = nil)
+    status = status_for(user, deadline)
+    if status == :correct
+      last_correct_submission(user, deadline)
+    else
+      last_submission(user, deadline)
+    end
+  end
+
   def last_correct_submission(user, deadline = nil)
     s = submissions.of_user(user).where(status: :correct)
     s = s.before_deadline(deadline) if deadline
     s.limit(1).first
   end
 
-  def last_submission(user)
-    submissions.of_user(user).limit(1).first
+  def last_submission(user, deadline = nil)
+    s = submissions.of_user(user)
+    s = s.before_deadline(deadline) if deadline
+    s.limit(1).first
   end
 
   def status_for(user, deadline = nil)

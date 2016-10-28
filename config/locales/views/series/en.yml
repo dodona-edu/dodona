@@ -10,6 +10,7 @@ en:
     show:
       series: Series
       exercises: Exercises
+      download_solutions: Download solutions
     edit:
       title: Edit series
       add_exercises: Add exercises

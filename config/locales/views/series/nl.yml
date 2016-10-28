@@ -10,6 +10,7 @@ nl:
     show:
       series: Reeks
       exercises: Oefeningen
+      download_solutions: Oplossingen downloaden
     edit:
       title: Reeks bewerken
       add_exercises: Oefeningen toevoegen

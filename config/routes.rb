@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         post 'add_exercise'
         post 'remove_exercise'
         post 'reorder_exercises'
+        get 'download_solutions'
       end
     end
 

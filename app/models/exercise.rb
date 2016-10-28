@@ -113,6 +113,10 @@ class Exercise < ApplicationRecord
     Exercise.read_config(full_path)
   end
 
+  def merged_config
+    Exercise.merged_config(repository.full_path, full_path)
+  end
+
   def config_file?
     File.file?(File.join(full_path, CONFIG_FILE))
   end

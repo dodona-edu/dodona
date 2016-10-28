@@ -28,7 +28,9 @@
         </td>
         <td><%= user.full_name %></td>
         <td><%= user.email %></td>
-        <td class='text-right'><%= user.correct_exercises %>/<%= user.attempted_exercises %></td>
+        <td class='text-right'>
+          <%= link_to "#{user.correct_exercises}/#{user.attempted_exercises}", user_submissions_path(user) %>
+        </td>
         <td class="actions">
           <% if policy(user).impersonate? %>
             <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %><span class="glyphicon glyphicon-user"></span><% end %>

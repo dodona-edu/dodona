@@ -38,7 +38,7 @@ class User < ApplicationRecord
   scope :in_course, -> (course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
 
   def full_name
-    name = first_name + ' ' + last_name
+    name = (first_name || '') + ' ' + (last_name || '')
     name.blank? ? 'n/a' : name
   end
 

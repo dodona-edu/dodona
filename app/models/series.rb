@@ -28,4 +28,18 @@ class Series < ApplicationRecord
   def deadline?
     !deadline.blank?
   end
+
+  def zip_solutions(user)
+    filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
+    stringio = Zip::OutputStream.write_buffer do |zio|
+      exercises.each do |ex|
+        submission = ex.best_last_submission(user, deadline)
+        zio.put_next_entry(ex.file_name)
+        zio.write submission&.code
+      end
+    end
+    stringio.rewind
+    zip_data = stringio.sysread
+    { filename: filename, data: zip_data }
+  end
 end

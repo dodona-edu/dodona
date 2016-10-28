@@ -88,6 +88,9 @@ gem 'slack-notifier'
 # filtering
 gem 'has_scope'
 
+# generating zip files
+gem 'rubyzip'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

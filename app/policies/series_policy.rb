@@ -39,6 +39,10 @@ class SeriesPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def download_solutions?
+    user && show?
+  end
+
   def modify_exercises?
     user&.admin?
   end

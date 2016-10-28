@@ -1,5 +1,6 @@
+require 'zip'
 class SeriesController < ApplicationController
-  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise, :reorder_exercises]
+  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise, :reorder_exercises, :download_solutions]
 
   # GET /series
   # GET /series.json
@@ -67,6 +68,11 @@ class SeriesController < ApplicationController
       format.html { redirect_to series_url, notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
       format.json { head :no_content }
     end
+  end
+
+  def download_solutions
+    zip = @series.zip_solutions(current_user)
+    send_data(zip[:data], type: 'application/zip', filename: zip[:filename], disposition: 'attachment', x_sendfile: true)
   end
 
   def add_exercise

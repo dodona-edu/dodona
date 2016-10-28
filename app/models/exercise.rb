@@ -258,7 +258,7 @@ class Exercise < ApplicationRecord
       full_exercise_path = File.join(repository.full_path, directory)
       config = Exercise.merged_config(repository.full_path, full_exercise_path)
 
-      j = Judge.find_by_name(config['evaluation']['handler']) if config['evaluation']
+      j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
       j_id = j.nil? ? repository.judge_id : j.id
 
       ex.judge_id = j_id
@@ -327,7 +327,7 @@ class Exercise < ApplicationRecord
   def generate_id
     begin
       new = SecureRandom.random_number(2_147_483_646)
-    end until Exercise.find_by_id(new).nil?
+    end until Exercise.find_by(id: new).nil?
     self.id = new
   end
 end

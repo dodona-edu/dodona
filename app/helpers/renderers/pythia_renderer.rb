@@ -94,7 +94,7 @@ class PythiaRenderer < FeedbackTableRenderer
     end
 
     # Tutor HTML
-    @builder.div(id: 'tutor', class: "tutormodal") do
+    @builder.div(id: 'tutor', class: 'tutormodal') do
       @builder.div(id: 'info-modal', class: 'modal fade modal-info', "data-backdrop": true, tabindex: -1) do
         @builder.div(class: 'modal-dialog tutor') do
           @builder.div(class: 'modal-content') do

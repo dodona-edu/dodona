@@ -37,4 +37,10 @@ class SeriesMembership < ApplicationRecord
     end
     users_attempted
   end
+
+  def invalidate_stats_cache
+    self.users_correct = nil
+    self.users_attempted = nil
+    save
+  end
 end

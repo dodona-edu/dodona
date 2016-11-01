@@ -15,4 +15,10 @@ class CourseMembership < ApplicationRecord
   belongs_to :user
 
   validates :course_id, uniqueness: { scope: :user_id }
+
+  after_create :invalidate_stats_cache
+
+  def invalidate_stats_cache
+    SeriesMembership.where(series_id: course.series).find_each(&:invalidate_stats_cache)
+  end
 end

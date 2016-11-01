@@ -26,6 +26,7 @@ class Submission < ApplicationRecord
 
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed
+  after_update :invalidate_stats_cache
 
   default_scope { order(id: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
@@ -75,5 +76,10 @@ class Submission < ApplicationRecord
     return 'wrong' if s == 'wrong answer'
     return s if s.in?(statuses)
     'unknown'
+  end
+
+  def invalidate_stats_cache
+    # could be more fine grained by also filtering on series_id but makes the invalidation a lot slower
+    SeriesMembership.where(exercise_id: exercise_id).find_each(&:invalidate_stats_cache)
   end
 end

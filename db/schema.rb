@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160919143805) do
+ActiveRecord::Schema.define(version: 20161101115843) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -109,9 +109,11 @@ ActiveRecord::Schema.define(version: 20160919143805) do
   create_table "series_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "series_id"
     t.integer  "exercise_id"
-    t.integer  "order",       default: 999
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "order",           default: 999
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "users_correct"
+    t.integer  "users_attempted"
     t.index ["exercise_id"], name: "index_series_memberships_on_exercise_id", using: :btree
     t.index ["series_id"], name: "index_series_memberships_on_series_id", using: :btree
   end

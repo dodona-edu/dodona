@@ -19,7 +19,12 @@
     <%= link_to exercise.name, exercise_path(exercise) %>
   </td>
   <td class='text-right'>
-    <span title="<%= t ".count_tooltip" %>"><%= exercise.users_correct(@course) %>/<%= exercise.users_tried(@course) %></span>
+    <% if @course.nil? %>
+      <span title="<%= t ".count_tooltip" %>"><%= exercise.users_correct %>/<%= exercise.users_tried %></span>
+    <% else %>
+      <% membership = SeriesMembership.find_by(series_id: series.id, exercise_id: exercise.id) %>
+      <span title="<%= t ".count_tooltip" %>"><%= membership.cached_users_correct %>/<%= membership.cached_users_tried %></span>
+    <% end %>
   </td>
   <% if user_signed_in? %>
     <td>

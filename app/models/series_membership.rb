@@ -16,7 +16,25 @@ class SeriesMembership < ApplicationRecord
   belongs_to :series
   belongs_to :exercise
 
+  delegate :course, to: :series
+
   default_scope { order(order: :asc) }
 
   validates :series_id, uniqueness: { scope: :exercise_id }
+
+  def cached_users_correct
+    if users_correct.nil?
+      self.users_correct = exercise.users_correct(course)
+      save
+    end
+    users_correct
+  end
+
+  def cached_users_tried
+    if users_attempted.nil?
+      self.users_attempted = exercise.users_tried(course)
+      save
+    end
+    users_attempted
+  end
 end

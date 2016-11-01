@@ -18,6 +18,8 @@ Style/ClassAndModuleChildren:
   Enabled: false
 Metrics/LineLength:
   Enabled: false
+Rails/OutputSafety:
+  Enabled: false
 
 # disable for now
 # Lint/NestedMethodDefinition:
@@ -37,6 +39,8 @@ Metrics/AbcSize:
 Metrics/ClassLength:
   Enabled: false
 Metrics/MethodLength:
+  Enabled: false
+Metrics/BlockLength:
   Enabled: false
 Metrics/PerceivedComplexity:
   Enabled: false

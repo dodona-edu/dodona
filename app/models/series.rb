@@ -11,6 +11,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  deadline    :datetime
+#  token       :string(255)
 #
 
 class Series < ApplicationRecord
@@ -23,9 +24,35 @@ class Series < ApplicationRecord
   validates :course, presence: true
   validates :name, presence: true
 
+  before_save :set_token
+
   default_scope { order(created_at: :desc) }
 
   def deadline?
     !deadline.blank?
+  end
+
+  def zip_solutions(user)
+    filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
+    stringio = Zip::OutputStream.write_buffer do |zio|
+      exercises.each do |ex|
+        submission = ex.best_last_submission(user, deadline)
+        zio.put_next_entry(ex.file_name)
+        zio.write submission&.code
+      end
+    end
+    stringio.rewind
+    zip_data = stringio.sysread
+    { filename: filename, data: zip_data }
+  end
+
+  private
+
+  def set_token
+    if !hidden?
+      self.token = nil
+    elsif token.blank?
+      self.token = SecureRandom.urlsafe_base64(6)
+    end
   end
 end

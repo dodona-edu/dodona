@@ -12,6 +12,8 @@ Rails.application.routes.draw do
         post 'add_exercise'
         post 'remove_exercise'
         post 'reorder_exercises'
+        get 'download_solutions'
+        get 'token/:token', to: 'series#token_show', as: 'token_show'
       end
     end
 
@@ -19,6 +21,7 @@ Rails.application.routes.draw do
       resources :series
       member do
         post 'subscribe'
+        get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: "subscribe_with_secret"
       end
     end
@@ -27,7 +30,7 @@ Rails.application.routes.draw do
       resources :submissions, only: [:index, :create]
       member do
         get 'users'
-        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }
+        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: "media"
       end
     end
 
@@ -48,6 +51,7 @@ Rails.application.routes.draw do
       member do
         get 'download'
         get 'evaluate'
+        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }
       end
     end
 

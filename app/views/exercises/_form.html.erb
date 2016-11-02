@@ -11,16 +11,16 @@
   <% end %>
   <div class="field form-group">
     <%= f.label :name_nl, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :name_nl, class: "form-control" , disabled: !f.hasPermission?(:name_nl) %></div>
+    <div class="col-sm-4"><%= f.text_field :name_nl, class: "form-control" , disabled: !f.permission?(:name_nl) %></div>
   </div>
   <div class="field form-group">
     <%= f.label :name_en, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :name_en, class: "form-control" , disabled: !f.hasPermission?(:name_en) %></div>
+    <div class="col-sm-4"><%= f.text_field :name_en, class: "form-control" , disabled: !f.permission?(:name_en) %></div>
   </div>
-  <% if f.hasPermission?(:visibility) %>
+  <% if f.permission?(:visibility) %>
     <div class="field form-group">
       <%= f.label :visibility, :class => "col-sm-2 control-label" %>
-      <div class="col-sm-4"><%= f.select :visibility, Exercise.visibilities.map { |key, value| [Exercise.human_enum_name(:visibility, key), key] }, {}, { :class => 'form-control', disabled: !f.hasPermission?(:visibility) } %></div>
+      <div class="col-sm-4"><%= f.select :visibility, Exercise.visibilities.map { |key, value| [Exercise.human_enum_name(:visibility, key), key] }, {}, { :class => 'form-control', disabled: !f.permission?(:visibility) } %></div>
     </div>
   <% end %>
   <div class="field form-group">

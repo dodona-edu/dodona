@@ -67,6 +67,9 @@
           </p>
         </div>
         <div class='col-xs-4'>
+          <% if policy(@user).impersonate? %>
+            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %><span class="glyphicon glyphicon-user"></span> <%= t("layout.impersonate.impersonate") %><% end %>
+          <% end %>
           <% if policy(@user).photo?%>
             <img src='<%= photo_user_path(@user) %>' alt='avatar' class="img-responsive">
           <% end %>

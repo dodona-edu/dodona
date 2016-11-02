@@ -15,12 +15,13 @@ nl:
       subscribe: inschrijven
       exercise_series: Oefeningenreeksen
       users: Gebruikers
-      series_not_visible: Deze reeks is niet zichtbaar voor studenten!
       series: reeksen
-      missed_deadline: deadline gemist
-      deadline_in: binnen
+      subscribed_users: Ingeschreven gebruikers
+      download_scoresheet: Scoresheet downloaden
     subscribe:
       subscribed_successfully: Inschrijving succesvol
       subscription_failed: Inschrijven mislukt
       not_logged_in: Je moet ingelogd zijn om je in te schrijven
       key_mismatch: De sleutel kwam niet overeen
+    scoresheet:
+      explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"

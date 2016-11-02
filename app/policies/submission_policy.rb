@@ -35,6 +35,10 @@ class SubmissionPolicy < ApplicationPolicy
     user && ((user == record.user) || user.admin?)
   end
 
+  def media?
+    show?
+  end
+
   def permitted_attributes
     [:code, :exercise_id]
   end

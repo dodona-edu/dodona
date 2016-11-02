@@ -33,6 +33,15 @@
         <% end %>
       </div>
       <% end %>
+      <% if current_user&.admin? %>
+        <div class="card-supporting-text card-border">
+          <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %><br>
+          <strong><%= t ".subscribed_users" %>:</strong> <%= @course.users.count %><br>
+          <% if policy(@course).scoresheet? %>
+            <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text pull-right' %>
+          <% end %>
+        </div>
+      <% end %>
       <div class="card-supporting-text card-border">
         <div class="card-subtitle">
           <a class="anchor" id="series"></a>
@@ -47,39 +56,12 @@
           </div>
         </div>
         <% policy_scope(@course.series).each do |series| %>
-          <div class="card-subtitle">
-            <a class="anchor" id="series-<%= series.name.parameterize %>"></a>
-            <h4><%= series.name %>
-              <% if series.deadline? %>
-                <% if series.deadline > Time.now %>
-                  <%= "<small class='deadline-ok' title='deadline #{t ".deadline_in"} #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
-                <% else %>
-                  <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
-                <% end %>
-              <% end %>
-            </h4>
-            <div class="flex-spacer"></div>
-            <div class="card-subtitle-actions">
-              <% if policy(series).edit? %>
-                <%= link_to edit_series_path(series), title: t("series.edit.title") do %>
-                  <span class='glyphicon glyphicon-pencil pull-right'></span>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-          <% if current_user && current_user.admin? && !series.open?%>
-            <div class="alert alert-info"><%= t ".series_not_visible" %></div>
-          <% end %>
-          <%= markdown(series.description) %>
-          <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises, series: series}) if series.exercises.length > 0 %>
+          <%= render(partial: 'series/series', locals: {series: series}) %>
         <% end %>
       </div>
       <% if policy(@course).list_members? %>
         <div class="card-supporting-text card-border">
           <h3><%= t ".users" %></h3>
-          <p>
-            <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %>
-          </p>
           <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(course_id: @course.id), eager: true}) %>
           <div id="users-table-wrapper">
           </div>

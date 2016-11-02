@@ -38,7 +38,7 @@ class User < ApplicationRecord
   scope :in_course, -> (course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
 
   def full_name
-    name = first_name + ' ' + last_name
+    name = (first_name || '') + ' ' + (last_name || '')
     name.blank? ? 'n/a' : name
   end
 
@@ -104,6 +104,10 @@ class User < ApplicationRecord
   private
 
   def set_token
-    self.token = (SecureRandom.urlsafe_base64(16) if username.blank?)
+    if !username.blank?
+      self.token = nil
+    elsif token.blank?
+      self.token = SecureRandom.urlsafe_base64(16)
+    end
   end
 end

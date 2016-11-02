@@ -1,4 +1,7 @@
 class PythiaRenderer < FeedbackTableRenderer
+
+  include ActionView::Helpers::JavaScriptHelper
+
   def initialize(submission, user)
     super(submission, user)
   end
@@ -72,21 +75,10 @@ class PythiaRenderer < FeedbackTableRenderer
 
   ## custom methods
 
-  def tab_count(t)
-    if t[:data] && t[:data][:source_annotations] && !t[:data][:source_annotations].empty?
-      t[:data][:source_annotations].length.to_s
-    else
-      ''
-    end
-  end
-
   def tutor_init
     # Initialize tutor javascript
     @builder.script do
-      escaped = @code.strip
-                     .gsub('\\n', "\\\n")
-                     .gsub("\n", '\\n')
-                     .gsub('"', '\\"')
+      escaped = escape_javascript(@code.strip)
       @builder << '$(function() {'
       @builder << "$('#tutor').appendTo('body');"
       @builder << "var code = \"#{escaped}\";"
@@ -94,7 +86,7 @@ class PythiaRenderer < FeedbackTableRenderer
     end
 
     # Tutor HTML
-    @builder.div(id: 'tutor') do
+    @builder.div(id: 'tutor', class: 'tutormodal') do
       @builder.div(id: 'info-modal', class: 'modal fade modal-info', "data-backdrop": true, tabindex: -1) do
         @builder.div(class: 'modal-dialog tutor') do
           @builder.div(class: 'modal-content') do

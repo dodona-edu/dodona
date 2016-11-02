@@ -38,7 +38,8 @@ class Course < ApplicationRecord
   def scoresheet(options = {})
     sorted_series = series.reverse
     CSV.generate(options) do |csv|
-      csv << ['First name', 'Last name', 'Username', 'Email'].concat(sorted_series.map(&:name))
+      csv << [I18n.t('courses.scoresheet.explanation')]
+      csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')].concat(sorted_series.map(&:name))
       csv << ['Maximum', '', '', ''].concat(sorted_series.map { |s| s.exercises.count })
       users.each do |user|
         row = [user.first_name, user.last_name, user.username, user.email]

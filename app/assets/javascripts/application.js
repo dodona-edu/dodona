@@ -99,3 +99,12 @@ window.requestAnimFrame = (function () {
             window.setTimeout(callback, 1000 / 60);
         };
 })();
+
+/*
+ * Logs data to Google Analytics
+ */
+function logToGoogle(category, action, label, value) {
+    if (typeof(ga) !== "undefined") {
+        ga('send', 'event', category, action, label, value);
+    }
+}

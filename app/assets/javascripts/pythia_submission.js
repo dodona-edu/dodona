@@ -18,6 +18,7 @@ function init_pythia_submission_show(submissionCode) {
         });
 
         $('.tutorlink').click(function () {
+            logToGoogle("tutor", "start", document.title);
             var $group = $(this).parents(".group");
             var stdin = $group.data('stdin').slice(0, -1);
             var statements = $group.data('statements');

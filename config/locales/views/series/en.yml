@@ -2,6 +2,7 @@ en:
   series:
     form:
       description-help: A description is optional. Markdown formatting can be used.
+      visibility-help: A hidden series is not shown on the course page and is only accessible using the token link.
       deadline-help: Setting a deadline is optional.
     index:
       title: Series

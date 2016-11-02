@@ -2,6 +2,7 @@ nl:
   series:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
+      visibility-help: Een verborgen reeks wordt niet op de vakpagina getoond en is enkel toegankelijk via de token link.
       deadline-help: Een deadline instellen is optioneel.
     index:
       title: Reeksen
@@ -11,6 +12,10 @@ nl:
       series: Reeks
       exercises: Oefeningen
       download_solutions: Oplossingen downloaden
+      series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de url met het correcte token!
+      series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
+      missed_deadline: deadline gemist
+      deadline_in: binnen
     edit:
       title: Reeks bewerken
       add_exercises: Oefeningen toevoegen

@@ -47,47 +47,7 @@
           </div>
         </div>
         <% policy_scope(@course.series).each do |series| %>
-          <div class="card-subtitle">
-            <a class="anchor" id="series-<%= series.name.parameterize %>"></a>
-            <h4><%= series.name %>
-              <% if series.deadline? %>
-                <% if series.deadline > Time.now %>
-                  <%= "<small class='deadline-ok' title='deadline #{t ".deadline_in"} #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
-                <% else %>
-                  <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
-                <% end %>
-              <% end %>
-            </h4>
-            <div class="flex-spacer"></div>
-            <div class="card-subtitle-actions">
-              <div class="btn-group">
-                <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
-                  <span class='glyphicon glyphicon-option-vertical'></span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                  <% if policy(series).edit? %>
-                    <li>
-                      <%= link_to edit_series_path(series) do %>
-                        <span class='glyphicon glyphicon-pencil'></span> <%= t("series.edit.title") %>
-                      <% end %>
-                    </li>
-                  <% end %>
-                  <% if policy(series).download_solutions? %>
-                    <li>
-                      <%= link_to download_solutions_series_path(series) do %>
-                        <span class='glyphicon glyphicon-download-alt'></span> <%= t("series.show.download_solutions") %>
-                      <% end %>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <% if current_user && current_user.admin? && !series.open?%>
-            <div class="alert alert-info"><%= t ".series_not_visible" %></div>
-          <% end %>
-          <%= markdown(series.description) %>
-          <%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises, series: series}) if series.exercises.length > 0 %>
+          <%= render(partial: 'series/series', locals: {series: series}) %>
         <% end %>
       </div>
       <% if policy(@course).list_members? %>

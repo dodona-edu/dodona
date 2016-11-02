@@ -13,6 +13,7 @@
 #
 
 require 'securerandom'
+require 'csv'
 
 class Course < ApplicationRecord
   has_many :course_memberships
@@ -32,5 +33,20 @@ class Course < ApplicationRecord
 
   def generate_secret
     self.secret = SecureRandom.urlsafe_base64(5)
+  end
+
+  def scoresheet(options = {})
+    sorted_series = series.reverse
+    CSV.generate(options) do |csv|
+      csv << ['First name', 'Last name', 'Username', 'Email'].concat(sorted_series.map(&:name))
+      csv << ['Maximum', '', '', ''].concat(sorted_series.map { |s| s.exercises.count })
+      users.each do |user|
+        row = [user.first_name, user.last_name, user.username, user.email]
+        sorted_series.each do |s|
+          row << s.exercises.map { |ex| ex.status_for(user, s.deadline) }.count(:correct)
+        end
+        csv << row
+      end
+    end
   end
 end

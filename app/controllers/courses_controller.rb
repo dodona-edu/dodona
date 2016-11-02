@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe, :subscribe_with_secret]
+  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe, :subscribe_with_secret, :scoresheet]
 
   # GET /courses
   # GET /courses.json
@@ -92,6 +92,12 @@ class CoursesController < ApplicationController
     else
       subscribe
     end
+  end
+
+  def scoresheet
+    sheet = @course.scoresheet
+    filename = @course.name.parameterize + '.csv'
+    send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
   end
 
   private

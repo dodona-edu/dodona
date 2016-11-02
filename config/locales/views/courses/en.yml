@@ -16,8 +16,12 @@ en:
       exercise_series: Exercise series
       users: Users
       series: series
+      subscribed_users: Subscribed users
+      download_scoresheet: Download scoresheet
     subscribe:
       subscribed_successfully: Subscribed successfully
       subscription_failed: Subscription failed
       not_logged_in: You need to be logged in to subscribe
       key_mismatch: "The key didn't match"
+    scoresheet:
+      explanation: "Showing the number of correctly solved exercises before the deadline"

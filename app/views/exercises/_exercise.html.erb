@@ -32,7 +32,7 @@
         <% if :correct == exercise.status_for(current_user, series.deadline) %>
           <%= link_to t(".correct"), exercise.last_correct_submission(current_user, series.deadline), class: 'deadline-ok' %>
         <% else %>
-          <span class='deadline-passed'><%= t "courses.show.missed_deadline" %></span>
+          <span class='deadline-passed'><%= t "series.show.missed_deadline" %></span>
         <% end %>
       <% else %>
         <% if :correct == exercise.status_for(current_user) %>

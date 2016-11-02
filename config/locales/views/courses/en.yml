@@ -16,6 +16,8 @@ en:
       exercise_series: Exercise series
       users: Users
       series: series
+      subscribed_users: Subscribed users
+      download_scoresheet: Download scoresheet
     subscribe:
       subscribed_successfully: Subscribed successfully
       subscription_failed: Subscription failed

@@ -33,6 +33,15 @@
         <% end %>
       </div>
       <% end %>
+      <% if current_user&.admin? %>
+        <div class="card-supporting-text card-border">
+          <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %><br>
+          <strong><%= t ".subscribed_users" %>:</strong> <%= @course.users.count %><br>
+          <% if policy(@course).scoresheet? %>
+            <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text pull-right' %>
+          <% end %>
+        </div>
+      <% end %>
       <div class="card-supporting-text card-border">
         <div class="card-subtitle">
           <a class="anchor" id="series"></a>
@@ -53,9 +62,6 @@
       <% if policy(@course).list_members? %>
         <div class="card-supporting-text card-border">
           <h3><%= t ".users" %></h3>
-          <p>
-            <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %>
-          </p>
           <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(course_id: @course.id), eager: true}) %>
           <div id="users-table-wrapper">
           </div>

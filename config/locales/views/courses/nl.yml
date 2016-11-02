@@ -16,6 +16,8 @@ nl:
       exercise_series: Oefeningenreeksen
       users: Gebruikers
       series: reeksen
+      subscribed_users: Ingeschreven gebruikers
+      download_scoresheet: Scoresheet downloaden
     subscribe:
       subscribed_successfully: Inschrijving succesvol
       subscription_failed: Inschrijven mislukt

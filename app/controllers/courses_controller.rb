@@ -96,7 +96,7 @@ class CoursesController < ApplicationController
 
   def scoresheet
     sheet = @course.scoresheet
-    filename = @course.name.parameterize + '.csv'
+    filename = "scoresheet-#{@course.name.parameterize}.csv"
     send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
   end
 

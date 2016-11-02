@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       resources :submissions, only: [:index, :create]
       member do
         get 'users'
-        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }
+        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: "media"
       end
     end
 
@@ -49,6 +49,7 @@ Rails.application.routes.draw do
       member do
         get 'download'
         get 'evaluate'
+        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }
       end
     end
 

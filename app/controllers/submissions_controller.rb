@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :set_submission, only: [:show, :download, :evaluate, :edit]
+  before_action :set_submission, only: [:show, :download, :evaluate, :edit, :media]
   skip_before_action :verify_authenticity_token, only: [:create]
 
   has_scope :by_filter, as: 'filter'
@@ -53,6 +53,10 @@ class SubmissionsController < ApplicationController
   def evaluate
     @submission.evaluate_delayed
     redirect_to(@submission)
+  end
+
+  def media
+    redirect_to media_exercise_url(@submission.exercise, params[:media])
   end
 
   private

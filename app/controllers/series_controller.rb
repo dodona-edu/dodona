@@ -1,6 +1,6 @@
 require 'zip'
 class SeriesController < ApplicationController
-  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise, :reorder_exercises, :download_solutions]
+  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise, :reorder_exercises, :download_solutions, :token_show]
 
   # GET /series
   # GET /series.json
@@ -15,6 +15,14 @@ class SeriesController < ApplicationController
   def show
     @course = @series.course
     @title = @series.name
+  end
+
+  def token_show
+    raise Pundit::NotAuthorizedError if @series.token != params[:token]
+
+    @course = @series.course
+    @title = @series.name
+    render "show"
   end
 
   # GET /series/new

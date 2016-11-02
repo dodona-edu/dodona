@@ -19,6 +19,12 @@ class SeriesPolicy < ApplicationPolicy
     false
   end
 
+  def token_show?
+    return true if user&.admin?
+    return true unless record.closed?
+    false
+  end
+
   def new?
     user&.admin?
   end
@@ -40,7 +46,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def download_solutions?
-    user && show?
+    user && token_show?
   end
 
   def modify_exercises?

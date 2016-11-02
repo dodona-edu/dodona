@@ -11,6 +11,10 @@ nl:
       series: Reeks
       exercises: Oefeningen
       download_solutions: Oplossingen downloaden
+      series_not_visible: Deze reeks is enkel zichtbaar voor student via de url met het correcte token!
+      series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
+      missed_deadline: deadline gemist
+      deadline_in: binnen
     edit:
       title: Reeks bewerken
       add_exercises: Oefeningen toevoegen

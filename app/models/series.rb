@@ -11,6 +11,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  deadline    :datetime
+#  token       :string(255)
 #
 
 class Series < ApplicationRecord

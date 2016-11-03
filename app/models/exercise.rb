@@ -197,8 +197,9 @@ class Exercise < ApplicationRecord
   end
 
   def status_without_deadline_for(user)
-    return :correct if submissions.of_user(user).where(accepted: true).count.positive?
-    return :wrong if submissions.of_user(user).where(accepted: false).count.positive?
+    subs = submissions.of_user(user).group(:accepted).except(:order).count
+    return :correct if subs[true].to_i.positive?
+    return :wrong if subs[false].to_i.positive?
     :unknown
   end
 

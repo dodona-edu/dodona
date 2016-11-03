@@ -1,3 +1,13 @@
+<%
+if user_signed_in?
+  exercise_status_with_deadline = exercise.status_for(current_user, series.try(:deadline))
+  exercise_status_without_deadline = if exercise_status_with_deadline == :correct || series.try(:deadline).nil?
+    exercise_status_with_deadline
+  else
+    exercise.status_for(current_user)
+  end
+end
+%>
 <tr>
   <td>
     <% if user_signed_in? && current_user.admin? %>
@@ -7,10 +17,9 @@
       <%= raw "<span class='glyphicon glyphicon-exclamation-sign' title='#{t("exercises.index.invalid")}'></span>" if exercise.not_valid? %>
     <% end %>
     <% if user_signed_in? && !current_user.admin? %>
-      <% if :correct == exercise.status_for(current_user) %>
-        <span class="glyphicon glyphicon-ok <%= exercise.status_for(current_user, series.try(:deadline)) == :correct ? 'colored-correct' : 'colored-wrong' %>"></span>
-      <% end %>
-      <% if :wrong == exercise.status_for(current_user) %>
+      <% if exercise_status_without_deadline == :correct %>
+        <span class="glyphicon glyphicon-ok <%= exercise_status_with_deadline == :correct ? 'colored-correct' : 'colored-wrong' %>"></span>
+      <% elsif exercise_status_without_deadline == :wrong %>
         <span class="glyphicon glyphicon-remove colored-wrong"></span>
       <% end %>
     <% end %>
@@ -29,15 +38,15 @@
   <% if user_signed_in? %>
     <td>
       <% if series && series.deadline? && series.deadline < Time.now %>
-        <% if :correct == exercise.status_for(current_user, series.deadline) %>
+        <% if :correct == exercise_status_with_deadline %>
           <%= link_to t(".correct"), exercise.last_correct_submission(current_user, series.deadline), class: 'deadline-ok' %>
         <% else %>
           <span class='deadline-passed'><%= t "series.show.missed_deadline" %></span>
         <% end %>
       <% else %>
-        <% if :correct == exercise.status_for(current_user) %>
+        <% if :correct == exercise_status_without_deadline %>
           <%= link_to t(".correct"), exercise.last_correct_submission(current_user) %>
-        <% elsif :wrong == exercise.status_for(current_user) %>
+        <% elsif :wrong == exercise_status_without_deadline %>
           <%= link_to t(".wrong"), exercise.last_submission(current_user) %>
         <% else %>
           <%= t ".not_solved" %>

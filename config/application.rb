@@ -23,5 +23,7 @@ module Dodona
     Rails.application.config.autoload_paths += Dir[Rails.root.join('app', 'helpers', 'renderers')]
 
     Rails.application.config.middleware.use I18n::JS::Middleware
+
+    Rails.application.config.skylight.environments += ['development']
   end
 end

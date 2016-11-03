@@ -5,7 +5,7 @@ server 'naos.ugent.be', user: 'dodona', roles: [:web, :app, :db, :worker], ssh_o
   port: 4840
 }
 
-set :branch, 'develop'
+set :branch, 'feature/course-performance'
 set :rails_env, :development
 
 set :delayed_job_workers, 3

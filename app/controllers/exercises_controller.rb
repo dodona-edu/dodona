@@ -1,5 +1,6 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: [:show, :edit, :update, :users, :media]
+  before_action :ensure_trailing_slash, only: :show
   skip_before_action :verify_authenticity_token, only: [:media]
 
   has_scope :by_filter, as: 'filter'

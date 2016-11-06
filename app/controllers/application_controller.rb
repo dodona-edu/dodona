@@ -42,6 +42,14 @@ class ApplicationController < ActionController::Base
     { locale: I18n.locale, trailing_slash: true }
   end
 
+  def ensure_trailing_slash
+    redirect_to url_for(trailing_slash: true), status: 301 unless trailing_slash?
+  end
+
+  def trailing_slash?
+    request.env['REQUEST_URI'].match(/[^\?]+/).to_s.last == '/'
+  end
+
   def store_current_location
     store_location_for(:user, request.url)
   end

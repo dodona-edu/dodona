@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161103195326) do
+ActiveRecord::Schema.define(version: 20161105124855) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20161103195326) do
     t.boolean  "accepted",                     default: false
     t.index ["accepted"], name: "index_submissions_on_accepted", using: :btree
     t.index ["exercise_id", "user_id", "accepted", "created_at"], name: "ex_us_ac_cr_index", using: :btree
+    t.index ["exercise_id", "user_id", "status", "created_at"], name: "ex_us_st_cr_index", using: :btree
     t.index ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
     t.index ["status"], name: "index_submissions_on_status", using: :btree
     t.index ["user_id"], name: "index_submissions_on_user_id", using: :btree

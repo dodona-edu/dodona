@@ -1,6 +1,7 @@
 function init_pythia_submission_show(submissionCode) {
     function init() {
         initTutorLinks();
+        initFileViewers();
         if( $('.tutormodal').length == 1) {
             initFullScreen();
         } else {
@@ -25,6 +26,32 @@ function init_pythia_submission_show(submissionCode) {
             loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')));
             return false;
         });
+    }
+
+    function initFileViewers() {
+        /* this code can be removed is the output already contains links */
+        $(".testcase.contains-file").each(function () {
+            var $tc = $(this);
+            var fileData = $tc.data("files");
+            for(var fileName in fileData) {
+                $tc.html($tc.html().replace(fileName, '<a href="#" class="file-link">' + fileName + '</a>'));
+            }
+        });
+        /* end of code to be removed */
+        $("a.file-link").click(function () {
+            var fileName = $(this).text();
+            var $tc = $(this).parents(".testcase.contains-file");
+            if($tc.length === 0) return;
+            var file = $tc.data("files")[fileName];
+            if (file.location === "inline") {
+                showFile(fileName, file.content);
+            }
+            return false;
+        });
+    }
+
+    function showFile(name, content) {
+        showInfoModal(name, "<div class='code'>" + content + "</div>");
     }
 
     function initFullScreen() {

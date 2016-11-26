@@ -230,8 +230,6 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
     rubyzip (1.2.0)
-    skylight (1.0.0)
-      activesupport (>= 3.0.0)
     slack-notifier (1.5.1)
     spring (2.0.0)
       activesupport (>= 4.2)
@@ -312,7 +310,6 @@ DEPENDENCIES
   rubycas-client!
   rubyzip
   sinatra!
-  skylight
   slack-notifier
   spring
   spring-watcher-listen (~> 2.0.0)
@@ -323,4 +320,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.13.6
+   1.12.5

@@ -73,6 +73,14 @@ class PythiaRenderer < FeedbackTableRenderer
     end
   end
 
+  def testcase(tc)
+    return super(tc) unless tc[:data] && tc[:data][:files]
+    jsonfiles = tc[:data][:files].to_json
+    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", "data-files": jsonfiles) do
+      testcase_content(tc)
+    end
+  end
+
   ## custom methods
 
   def tutor_init

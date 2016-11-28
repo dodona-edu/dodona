@@ -116,7 +116,7 @@ function init_pythia_submission_show(submissionCode) {
         });
 
         var createTutor = function (codeTrace) {
-            showInfoModal("Python Tutor", '<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>');
+            showInfoModal("Python Tutor", '<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>', options = {'allowFullscreen': true});
 
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html('<iframe id="tutorviz" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');

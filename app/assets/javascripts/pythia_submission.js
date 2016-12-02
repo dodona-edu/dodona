@@ -34,15 +34,22 @@ function init_pythia_submission_show(submissionCode) {
             var $tc = $(this).parents(".testcase.contains-file");
             if($tc.length === 0) return;
             var file = $tc.data("files")[fileName];
+            console.log(file);
             if (file.location === "inline") {
-                showFile(fileName, file.content);
+                showInlineFile(fileName, file.content);
+            } else if (file.location === "href") {
+                showRealFile(fileName, file.content);
             }
             return false;
         });
     }
 
-    function showFile(name, content) {
+    function showInlineFile(name, content) {
         showInfoModal(name, "<div class='code'>" + content + "</div>");
+    }
+
+    function showRealFile(name, path) {
+        showInfoModal(name, "<iframe class='code file' src='" + path + "'></iframe>");
     }
 
     function initFullScreen() {

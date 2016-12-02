@@ -34,7 +34,6 @@ function init_pythia_submission_show(submissionCode) {
             var $tc = $(this).parents(".testcase.contains-file");
             if($tc.length === 0) return;
             var file = $tc.data("files")[fileName];
-            console.log(file);
             if (file.location === "inline") {
                 showInlineFile(fileName, file.content);
             } else if (file.location === "href") {
@@ -49,7 +48,12 @@ function init_pythia_submission_show(submissionCode) {
     }
 
     function showRealFile(name, path) {
-        showInfoModal(name, "<iframe class='code file' src='" + path + "'></iframe>");
+        var random = Math.floor((Math.random() * 10000) + 1);
+        showInfoModal(name, "<div class='code' id='file-" + random + "'>Loading...</div>");
+        $.get(path, function(data) {
+            console.log(data);
+            $("#file-" + random).html(data);
+        });
     }
 
     function initFullScreen() {

@@ -1,6 +1,7 @@
 function init_pythia_submission_show(submissionCode) {
     function init() {
         initTutorLinks();
+        initFileViewers();
         if( $('.tutormodal').length == 1) {
             initFullScreen();
         } else {
@@ -24,6 +25,34 @@ function init_pythia_submission_show(submissionCode) {
             var statements = $group.data('statements');
             loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')));
             return false;
+        });
+    }
+
+    function initFileViewers() {
+        $("a.file-link").click(function () {
+            var fileName = $(this).text();
+            var $tc = $(this).parents(".testcase.contains-file");
+            if($tc.length === 0) return;
+            var file = $tc.data("files")[fileName];
+            if (file.location === "inline") {
+                showInlineFile(fileName, file.content);
+            } else if (file.location === "href") {
+                showRealFile(fileName, file.content);
+            }
+            return false;
+        });
+    }
+
+    function showInlineFile(name, content) {
+        showInfoModal(name, "<div class='code'>" + content + "</div>");
+    }
+
+    function showRealFile(name, path) {
+        var random = Math.floor((Math.random() * 10000) + 1);
+        showInfoModal(name, "<div class='code' id='file-" + random + "'>Loading...</div>");
+        $.get(path, function(data) {
+            console.log(data);
+            $("#file-" + random).html(data);
         });
     }
 
@@ -89,7 +118,7 @@ function init_pythia_submission_show(submissionCode) {
         });
 
         var createTutor = function (codeTrace) {
-            showInfoModal("Python Tutor", '<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>');
+            showInfoModal("Python Tutor", '<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>', options = {'allowFullscreen': true});
 
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html('<iframe id="tutorviz" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');

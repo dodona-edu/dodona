@@ -99,16 +99,20 @@ class FeedbackTableRenderer
 
   def testcase(tc)
     @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
-      @builder.div(class: 'col-xs-12 description') do
-        @builder.div(class: 'indicator') do
-          testcase_icons(tc)
-          tc[:accepted] ? icon_correct : icon_wrong
-        end
-        message(tc[:description]) if tc[:description]
-      end
-      tc[:tests]&.each { |t| test(t) }
-      messages(tc[:messages])
+      testcase_content(tc)
     end
+  end
+
+  def testcase_content(tc)
+    @builder.div(class: 'col-xs-12 description') do
+      @builder.div(class: 'indicator') do
+        testcase_icons(tc)
+        tc[:accepted] ? icon_correct : icon_wrong
+      end
+      message(tc[:description]) if tc[:description]
+    end
+    tc[:tests]&.each { |t| test(t) }
+    messages(tc[:messages])
   end
 
   def test(t)

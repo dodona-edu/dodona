@@ -192,13 +192,14 @@ class Exercise < ApplicationRecord
   end
 
   def status_with_deadline_for(user, deadline)
-    return :correct if submissions.of_user(user).where(accepted: true).before_deadline(deadline).exists?
+    return :correct if submissions.of_user(user).where(accepted: true).before_deadline(deadline).count.positive?
     :deadline_missed
   end
 
   def status_without_deadline_for(user)
-    return :correct if submissions.of_user(user).where(accepted: true).exists?
-    return :wrong if submissions.of_user(user).where(accepted: false).exists?
+    subs = submissions.of_user(user).group(:accepted).except(:order).count
+    return :correct if subs[true].to_i.positive?
+    return :wrong if subs[false].to_i.positive?
     :unknown
   end
 

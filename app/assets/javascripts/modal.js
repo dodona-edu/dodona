@@ -1,7 +1,9 @@
 function showInfoModal(title, content, options) {
     var options = options || {};
-    if (options.wide) {
-        $("#info-modal .modal-dialog").addClass("modal-lg");
+    if (options.allowFullscreen) {
+        $("#info-modal .modal-header #fullscreen-button").css('display', 'inline');
+    } else {
+        $("#info-modal .modal-header #fullscreen-button").css('display', 'none');
     }
     $("#info-modal .modal-title")
         .empty()

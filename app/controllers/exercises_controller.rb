@@ -54,7 +54,7 @@ class ExercisesController < ApplicationController
 
   def media
     file = File.join(@exercise.media_path, params[:media])
-    raise ActionController::RoutingError, 'Not Found' unless File.exist? file
+    raise ActionController::RoutingError, 'Not Found' unless File.file? file
     send_file file, disposition: 'inline'
   end
 

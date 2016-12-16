@@ -74,7 +74,7 @@ class RepositoriesController < ApplicationController
   end
 
   def hook
-    success, msg = @repository.pull
+    success, msg = @repository.reset
     if success
       if params.key?('commits')
         exercises = Set.new

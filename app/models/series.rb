@@ -38,7 +38,7 @@ class Series < ApplicationRecord
     filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
     stringio = Zip::OutputStream.write_buffer do |zio|
       info = CSV.generate(force_quotes: true) do |csv|
-        csv << ["filename", "status", "submission_id", "name"]
+        csv << %w(filename status submission_id name)
         exercises.each do |ex|
           submission = ex.best_last_submission(user, deadline)
           # write the submission
@@ -49,7 +49,7 @@ class Series < ApplicationRecord
         end
       end
       if with_info
-        zio.put_next_entry("info.csv")
+        zio.put_next_entry('info.csv')
         zio.write info
       end
     end

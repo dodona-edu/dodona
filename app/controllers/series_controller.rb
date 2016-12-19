@@ -22,7 +22,7 @@ class SeriesController < ApplicationController
 
     @course = @series.course
     @title = @series.name
-    render "show"
+    render 'show'
   end
 
   # GET /series/new

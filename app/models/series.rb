@@ -14,6 +14,8 @@
 #  token       :string(255)
 #
 
+require 'csv'
+
 class Series < ApplicationRecord
   enum visibility: [:open, :hidden, :closed]
 
@@ -32,13 +34,23 @@ class Series < ApplicationRecord
     !deadline.blank?
   end
 
-  def zip_solutions(user)
+  def zip_solutions(user, with_info: false)
     filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
     stringio = Zip::OutputStream.write_buffer do |zio|
-      exercises.each do |ex|
-        submission = ex.best_last_submission(user, deadline)
-        zio.put_next_entry(ex.file_name)
-        zio.write submission&.code
+      info = CSV.generate(force_quotes: true) do |csv|
+        csv << ["filename", "status", "submission_id", "name"]
+        exercises.each do |ex|
+          submission = ex.best_last_submission(user, deadline)
+          # write the submission
+          zio.put_next_entry(ex.file_name)
+          zio.write submission&.code
+          # write some extra information to the csv
+          csv << [ex.file_name, submission&.status, submission&.id, ex.name]
+        end
+      end
+      if with_info
+        zio.put_next_entry("info.csv")
+        zio.write info
       end
     end
     stringio.rewind

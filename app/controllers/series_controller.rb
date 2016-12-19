@@ -79,7 +79,7 @@ class SeriesController < ApplicationController
   end
 
   def download_solutions
-    zip = @series.zip_solutions(current_user)
+    zip = @series.zip_solutions(current_user, with_info: current_user.admin? || true_user.admin?)
     send_data(zip[:data], type: 'application/zip', filename: zip[:filename], disposition: 'attachment', x_sendfile: true)
   end
 

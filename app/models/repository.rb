@@ -51,7 +51,7 @@ class Repository < ApplicationRecord
     if File.basename(changed_file) == Exercise.DIRCONFIG_FILE
       exercises_below(File.dirname(changed_file))
     else
-      [exercise_containing(changed_file)].reject { |ex| ex.nil?}
+      [exercise_containing(changed_file)].reject { |ex| ex.nil? }
     end
   end
 
@@ -96,9 +96,8 @@ class Repository < ApplicationRecord
       config = Exercise.merged_config(full_path, full_exercise_path)
 
       j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
-      j_id = j.nil? ? judge_id : j.id
 
-      ex.judge_id = j_id
+      ex.judge_id = j&.id || judge_id
       ex.programming_language = config['programming_language']
       ex.name_nl = config['description']['names']['nl']
       ex.name_en = config['description']['names']['en']

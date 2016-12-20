@@ -81,24 +81,4 @@ class Repository < ApplicationRecord
     config_file = File.join(path, Exercise.CONFIG_FILE)
     File.file? config_file
   end
-
-  def process_exercises
-    process_directory(repository, '/')
-  end
-
-  def self.process_directories(repository, directories)
-    directories.each { |dir| Exercise.process_directory(repository, dir) }
-  end
-
-  def self.process_directory(repository, directory)
-    if Exercise.exercise_directory?(repository, directory)
-      Exercise.process_exercise(repository, directory)
-    else
-      path = File.join(repository.full_path, directory)
-      Dir.entries(path)
-         .select { |entry| File.directory?(File.join(path, entry)) && !entry.start_with?('.') }
-         .each { |entry| Exercise.process_directory(repository, File.join(directory, entry)) }
-    end
-  end
-
 end

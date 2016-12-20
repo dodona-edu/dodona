@@ -84,7 +84,7 @@ class RepositoriesController < ApplicationController
           .uniq
       else
         @repository.exercise_dirs
-      end.each { |dir| Exercise.process_exercise(@repository, dir) }
+      end.each { |dir| @repository.process_exercise(dir) }
     end
     status = success ? 200 : 500
     render plain: msg, status: status

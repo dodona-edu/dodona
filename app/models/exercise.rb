@@ -224,37 +224,6 @@ class Exercise < ApplicationRecord
                   end
   end
 
-  def self.process_exercise(repository, directory)
-    ex = Exercise.find_by(path: directory, repository_id: repository.id)
-
-    if ex.nil?
-      ex = Exercise.new(
-        path: directory,
-        repository_id: repository.id
-      )
-    end
-
-    if !ex.config_file?
-      ex.status = :removed
-    else
-      full_exercise_path = File.join(repository.full_path, directory)
-      config = Exercise.merged_config(repository.full_path, full_exercise_path)
-
-      j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
-      j_id = j.nil? ? repository.judge_id : j.id
-
-      ex.judge_id = j_id
-      ex.programming_language = config['programming_language']
-      ex.name_nl = config['description']['names']['nl']
-      ex.name_en = config['description']['names']['en']
-      ex.description_format = Exercise.determine_format(full_exercise_path)
-      ex.visibility = Exercise.convert_visibility(config['visibility'])
-      ex.status = :ok
-    end
-
-    ex.save
-  end
-
   def self.convert_visibility(visibility)
     return 'open' if visibility == 'public'
     return 'closed' if visibility == 'private'

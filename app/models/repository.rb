@@ -56,7 +56,7 @@ class Repository < ApplicationRecord
   end
 
   def exercise_dirs_below(directory)
-    if Exercise.exercise_directory?(directory)
+    if exercise_directory?(directory)
       directory
     else
       Dir.entries(path)
@@ -80,5 +80,33 @@ class Repository < ApplicationRecord
     path = File.join(full_path, path)
     config_file = File.join(path, Exercise.CONFIG_FILE)
     File.file? config_file
+  end
+
+  def process_exercise(directory)
+    ex = Exercise.find_by(path: directory, repository_id: id)
+
+    if ex.nil?
+      ex = Exercise.new(path: directory, repository_id: id)
+    end
+
+    if !ex.config_file?
+      ex.status = :removed
+    else
+      full_exercise_path = File.join(full_path, directory)
+      config = Exercise.merged_config(full_path, full_exercise_path)
+
+      j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
+      j_id = j.nil? ? judge_id : j.id
+
+      ex.judge_id = j_id
+      ex.programming_language = config['programming_language']
+      ex.name_nl = config['description']['names']['nl']
+      ex.name_en = config['description']['names']['en']
+      ex.description_format = Exercise.determine_format(full_exercise_path)
+      ex.visibility = Exercise.convert_visibility(config['visibility'])
+      ex.status = :ok
+    end
+
+    ex.save
   end
 end

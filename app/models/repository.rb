@@ -59,11 +59,11 @@ class Repository < ApplicationRecord
     if exercise_directory?(directory)
       directory
     else
-      Dir.entries(path)
+      Dir.entries(directory)
          .reject   { |entry| entry.start_with?('.') }
          .map      { |entry| File.join(directory, entry) }
          .select   { |entry| File.directory?(entry) }
-         .flat_map { |entry| exercises_below(entry) }
+         .flat_map { |entry| exercise_dirs_below(entry) }
     end
   end
 
@@ -77,9 +77,8 @@ class Repository < ApplicationRecord
   def exercise_directory?(path)
     return true if Exercise.find_by(path: path, repository_id: id)
 
-    path = File.join(full_path, path)
-    config_file = File.join(path, Exercise.CONFIG_FILE)
-    File.file? config_file
+    path = File.expand_path(path, full_path)
+    Exercise.config_file? path
   end
 
   def process_exercise(directory)
@@ -92,7 +91,7 @@ class Repository < ApplicationRecord
     if !ex.config_file?
       ex.status = :removed
     else
-      full_exercise_path = File.join(full_path, directory)
+      full_exercise_path = File.expand_path(directory, full_path)
       config = Exercise.merged_config(full_path, full_exercise_path)
 
       j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']

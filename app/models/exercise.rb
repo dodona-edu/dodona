@@ -128,7 +128,11 @@ class Exercise < ApplicationRecord
   end
 
   def config_file?
-    File.file?(File.join(full_path, CONFIG_FILE))
+    Exercise.config_file? full_path
+  end
+
+  def self.config_file?(directory)
+    File.file?(File.join(directory, CONFIG_FILE))
   end
 
   def store_config(new_config)

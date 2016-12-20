@@ -224,25 +224,6 @@ class Exercise < ApplicationRecord
                   end
   end
 
-  def self.process_repository(repository)
-    Exercise.process_directory(repository, '/')
-  end
-
-  def self.process_directories(repository, directories)
-    directories.each { |dir| Exercise.process_directory(repository, dir) }
-  end
-
-  def self.process_directory(repository, directory)
-    if Exercise.exercise_directory?(repository, directory)
-      Exercise.process_exercise(repository, directory)
-    else
-      path = File.join(repository.full_path, directory)
-      Dir.entries(path)
-         .select { |entry| File.directory?(File.join(path, entry)) && !entry.start_with?('.') }
-         .each { |entry| Exercise.process_directory(repository, File.join(directory, entry)) }
-    end
-  end
-
   def self.process_exercise(repository, directory)
     ex = Exercise.find_by(path: directory, repository_id: repository.id)
 
@@ -272,14 +253,6 @@ class Exercise < ApplicationRecord
     end
 
     ex.save
-  end
-
-  def self.exercise_directory?(repository, path)
-    return true if Exercise.find_by(path: path, repository_id: repository.id)
-
-    path = File.join(repository.full_path, path)
-    config_file = File.join(path, CONFIG_FILE)
-    File.file? config_file
   end
 
   def self.convert_visibility(visibility)

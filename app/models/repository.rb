@@ -40,4 +40,65 @@ class Repository < ApplicationRecord
     end
     [status.success?, error]
   end
+
+  def exercise_dirs
+    exercise_dirs_below(full_path)
+  end
+
+  def affected_exercise_dirs(changed_file)
+    changed_file = File.expand_path(changed_file, full_path)
+    [] unless changed_file.include? full_path # not in this repo
+    if File.basename(changed_file) == Exercise.DIRCONFIG_FILE
+      exercises_below(File.dirname(changed_file))
+    else
+      [exercise_containing(changed_file)].reject { |ex| ex.nil?}
+    end
+  end
+
+  def exercise_dirs_below(directory)
+    if Exercise.exercise_directory?(directory)
+      directory
+    else
+      Dir.entries(path)
+         .reject   { |entry| entry.start_with?('.') }
+         .map      { |entry| File.join(directory, entry) }
+         .select   { |entry| File.directory?(entry) }
+         .flat_map { |entry| exercises_below(entry) }
+    end
+  end
+
+  def exercise_dir_containing(file)
+    until exercise_directory?(file) || file == full_path
+      file = File.dirname(file)
+    end
+    file unless file == full_path
+  end
+
+  def exercise_directory?(path)
+    return true if Exercise.find_by(path: path, repository_id: id)
+
+    path = File.join(full_path, path)
+    config_file = File.join(path, Exercise.CONFIG_FILE)
+    File.file? config_file
+  end
+
+  def process_exercises
+    process_directory(repository, '/')
+  end
+
+  def self.process_directories(repository, directories)
+    directories.each { |dir| Exercise.process_directory(repository, dir) }
+  end
+
+  def self.process_directory(repository, directory)
+    if Exercise.exercise_directory?(repository, directory)
+      Exercise.process_exercise(repository, directory)
+    else
+      path = File.join(repository.full_path, directory)
+      Dir.entries(path)
+         .select { |entry| File.directory?(File.join(path, entry)) && !entry.start_with?('.') }
+         .each { |entry| Exercise.process_directory(repository, File.join(directory, entry)) }
+    end
+  end
+
 end

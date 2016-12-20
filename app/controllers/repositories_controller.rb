@@ -77,24 +77,14 @@ class RepositoriesController < ApplicationController
     success, msg = @repository.reset
     if success
       if params.key?('commits')
-        exercises = Set.new
-        params['commits'].each do |commit|
-          next if commit['author']['name'] == 'Dodona'
-          %w(added removed modified).each do |type|
-            commit[type].each do |file|
-              dirs = file.split('/').reverse
-              path = '/' + dirs.pop
-              until Exercise.exercise_directory?(@repository, path) || dirs.empty?
-                path = File.join(path, dirs.pop)
-              end
-              exercises.add(path) unless dirs.empty?
-            end
-          end
-        end
-        Exercise.process_directories @repository, exercises.to_a
+        params['commits']
+          .reject    { |commit|    commit['author']['name'] == 'Dodona'}
+          .flat_map  { |commit|    %w(added removed modified).map {|type| commit[type]}}
+          .flat_map  { |file|      @repository.affected_exercises(file) }
+          .uniq
       else
-        Exercise.process_repository @repository
-      end
+        @repository.exercise_dirs
+      end.each { |dir| Exercise.process_exercise(@repository, dir) }
     end
     status = success ? 200 : 500
     render plain: msg, status: status

@@ -51,7 +51,7 @@ class Repository < ApplicationRecord
     [] unless changed_file.start_with? full_path
     changed_file = changed_file[full_path.size..-1]
 
-    if File.basename(changed_file) == Exercise.DIRCONFIG_FILE
+    if Exercise.dirconfig_file? changed_file
       exercises_below(File.dirname(changed_file))
     else
       [exercise_containing(changed_file)].reject { |ex| ex.nil? }

@@ -135,6 +135,10 @@ class Exercise < ApplicationRecord
     File.file?(File.join(directory, CONFIG_FILE))
   end
 
+  def self.dirconfig_file?(file)
+    File.basename(file) == DIRCONFIG_FILE
+  end
+
   def store_config(new_config)
     return if new_config == config
     File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(new_config))

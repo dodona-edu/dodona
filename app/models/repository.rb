@@ -42,43 +42,20 @@ class Repository < ApplicationRecord
   end
 
   def exercise_dirs
-    exercise_dirs_below(full_path)
+    exercise_dirs_below('.')
   end
 
   def affected_exercise_dirs(changed_file)
+    # we ensure the file is in the repo, and make it relative
     changed_file = File.expand_path(changed_file, full_path)
-    [] unless changed_file.include? full_path # not in this repo
+    [] unless changed_file.start_with? full_path
+    changed_file = changed_file[full_path.size..-1]
+
     if File.basename(changed_file) == Exercise.DIRCONFIG_FILE
       exercises_below(File.dirname(changed_file))
     else
       [exercise_containing(changed_file)].reject { |ex| ex.nil? }
     end
-  end
-
-  def exercise_dirs_below(directory)
-    if exercise_directory?(directory)
-      directory
-    else
-      Dir.entries(directory)
-         .reject   { |entry| entry.start_with?('.') }
-         .map      { |entry| File.join(directory, entry) }
-         .select   { |entry| File.directory?(entry) }
-         .flat_map { |entry| exercise_dirs_below(entry) }
-    end
-  end
-
-  def exercise_dir_containing(file)
-    until exercise_directory?(file) || file == full_path
-      file = File.dirname(file)
-    end
-    file unless file == full_path
-  end
-
-  def exercise_directory?(path)
-    return true if Exercise.find_by(path: path, repository_id: id)
-
-    path = File.expand_path(path, full_path)
-    Exercise.config_file? path
   end
 
   def process_exercises
@@ -87,6 +64,10 @@ class Repository < ApplicationRecord
 
   def process_exercise(directory)
     ex = Exercise.find_by(path: directory, repository_id: id)
+
+    if ex.nil? # FIXME remove when no more exercises have fake absolute paths
+      ex = Exercise.new(path: '/' + directory, repository_id: id)
+    end
 
     if ex.nil?
       ex = Exercise.new(path: directory, repository_id: id)
@@ -111,4 +92,33 @@ class Repository < ApplicationRecord
 
     ex.save
   end
+
+  private
+
+  def exercise_dirs_below(directory)
+    if exercise_directory?(directory)
+      directory
+    else
+      Dir.entries(File.expand_path(directory, full_path))
+         .reject   { |entry| entry.start_with?('.') }
+         .map      { |entry| File.join(directory, entry) }
+         .select   { |entry| File.directory?(entry) }
+         .flat_map { |entry| exercise_dirs_below(entry) }
+    end
+  end
+
+  def exercise_dir_containing(file)
+    until exercise_directory?(file) || file == '.'
+      file = File.dirname(file)
+    end
+    file unless file == '.'
+  end
+
+  def exercise_directory?(file)
+    return true if Exercise.find_by(path: file, repository_id: id)
+
+    file = File.expand_path(file, full_path)
+    Exercise.config_file? file
+  end
+
 end

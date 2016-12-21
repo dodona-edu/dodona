@@ -80,7 +80,7 @@ class RepositoriesController < ApplicationController
         params['commits']
           .reject    { |commit|    commit['author']['name'] == 'Dodona'}
           .flat_map  { |commit|    %w(added removed modified).map {|type| commit[type]}}
-          .flat_map  { |file|      @repository.affected_exercises(file) }
+          .flat_map  { |file|      @repository.affected_exercise_dirs(file) }
           .uniq
       else
         @repository.exercise_dirs

@@ -81,6 +81,10 @@ class Repository < ApplicationRecord
     Exercise.config_file? path
   end
 
+  def process_exercises
+    exercise_dirs.each { |dir| process_exercise(dir) }
+  end
+
   def process_exercise(directory)
     ex = Exercise.find_by(path: directory, repository_id: id)
 

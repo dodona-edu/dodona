@@ -36,7 +36,7 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
     saved = @repository.save
-    Exercise.process_repository @repository if saved
+    @repository.process_exercises if saved
 
     respond_to do |format|
       if saved
@@ -91,7 +91,7 @@ class RepositoriesController < ApplicationController
   end
 
   def reprocess
-    Exercise.process_repository @repository
+    @repository.process_exercises
     redirect_to(@repository, notice: I18n.t('repositories.reprocess.done'))
   end
 

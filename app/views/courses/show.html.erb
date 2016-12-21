@@ -55,8 +55,13 @@
             <% end %>
           </div>
         </div>
-        <% policy_scope(@course.series).each do |series| %>
-          <%= render(partial: 'series/series', locals: {series: series}) %>
+        <div id="series-listing">
+          <% @series.each do |series| %>
+            <%= render(partial: 'series/series', locals: {series: series}) %>
+          <% end %>
+        </div>
+        <% if @total_series > @series.length %>
+          <div class="text-center"><button class='btn btn-text load-more-series'><%= t("series.index.load_more") %></button></div>
         <% end %>
       </div>
       <% if policy(@course).list_members? %>
@@ -70,3 +75,8 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(function () {
+    init_course_show(<%= @series.length %>, <%= @total_series %>);
+  });
+</script>

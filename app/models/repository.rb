@@ -11,6 +11,7 @@
 #  updated_at :datetime         not null
 #
 require 'open3'
+require 'pathname'
 
 class Repository < ApplicationRecord
   include Gitable
@@ -30,7 +31,7 @@ class Repository < ApplicationRecord
   has_many :exercises
 
   def full_path
-    File.join(EXERCISE_LOCATIONS, path)
+    Pathname.new File.join(EXERCISE_LOCATIONS, path)
   end
 
   def commit(msg)
@@ -42,18 +43,16 @@ class Repository < ApplicationRecord
   end
 
   def exercise_dirs
-    exercise_dirs_below('.')
+    exercise_dirs_below(full_path)
   end
 
   def affected_exercise_dirs(changed_file)
-    # we ensure the file is in the repo, and make it relative
-    changed_file = File.expand_path(changed_file, full_path)
-    [] unless changed_file.start_with? full_path
-    changed_file = changed_file[full_path.size..-1]
-    changed_file = changed_file[1..-1] if changed_file.start_with?('/')
+    changed_file = Pathname.new(changed_file)
+    return if changed_file.absolute?
+    changed_file = changed_file.expand_path(full_path)
 
     if Exercise.dirconfig_file? changed_file
-      exercise_dirs_below(File.dirname(changed_file))
+      exercise_dirs_below(changed_file.dirname)
     else
       [exercise_dir_containing(changed_file)].reject { |ex| ex.nil? }
     end
@@ -64,21 +63,22 @@ class Repository < ApplicationRecord
   end
 
   def process_exercise(directory)
-    ex = Exercise.find_by(path: directory, repository_id: id)
+    absolute = directory.to_path
+    relative = directory.relative_path_from(full_path).cleanpath.to_path
+    ex = Exercise.find_by(path: relative, repository_id: id)
 
     if ex.nil? # FIXME remove when no more exercises have fake absolute paths
-      ex = Exercise.find_by(path: '/' + directory, repository_id: id)
+      ex = Exercise.find_by(path: '/' + relative, repository_id: id)
     end
 
     if ex.nil?
-      ex = Exercise.new(path: directory, repository_id: id)
+      ex = Exercise.new(path: relative, repository_id: id)
     end
 
     if !ex.config_file?
       ex.status = :removed
     else
-      full_exercise_path = File.expand_path(directory, full_path)
-      config = Exercise.merged_config(full_path, full_exercise_path)
+      config = Exercise.merged_config(full_path.to_path, absolute)
 
       j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
 
@@ -86,7 +86,7 @@ class Repository < ApplicationRecord
       ex.programming_language = config['programming_language']
       ex.name_nl = config['description']['names']['nl']
       ex.name_en = config['description']['names']['en']
-      ex.description_format = Exercise.determine_format(full_exercise_path)
+      ex.description_format = Exercise.determine_format(absolute)
       ex.visibility = Exercise.convert_visibility(config['visibility'])
       ex.status = :ok
     end
@@ -98,28 +98,28 @@ class Repository < ApplicationRecord
 
   def exercise_dirs_below(directory)
     if exercise_directory?(directory)
-      directory
+      directory.cleanpath
     else
-      Dir.entries(File.expand_path(directory, full_path))
-         .reject   { |entry| entry.start_with?('.') }
-         .map      { |entry| File.join(directory, entry) }
-         .select   { |entry| File.directory?(File.expand_path(entry, full_path)) }
+      directory.expand_path(full_path).entries
+         .reject   { |entry| entry.basename.to_path.start_with?('.') }
+         .map      { |entry| entry.expand_path(directory) }
+         .select   { |entry| entry.directory? }
          .flat_map { |entry| exercise_dirs_below(entry) }
     end
   end
 
   def exercise_dir_containing(file)
-    until exercise_directory?(file) || file == '.'
-      file = File.dirname(file)
+    until exercise_directory?(file) || file == full_path
+      file = file.dirname
     end
-    file unless file == '.'
+    file unless file == full_path
   end
 
   def exercise_directory?(file)
-    return true if Exercise.find_by(path: file, repository_id: id)
+    file = file.cleanpath
+    return true if Exercise.find_by(path: file.to_path, repository_id: id)
 
-    file = File.expand_path(file, full_path)
-    Exercise.config_file? file
+    Exercise.config_file? file.expand_path(full_path)
   end
 
 end

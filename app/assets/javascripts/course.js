@@ -15,6 +15,7 @@ function init_course_show(seriesShown, seriesTotal, autoLoad) {
     function loadMoreSeries() {
         loading = true;
         autoLoad = true;
+        $(".load-more-series").button('loading');
         $.get("?format=js&offset=" + seriesShown)
         .done(function () {
             seriesShown += perBatch;
@@ -24,10 +25,10 @@ function init_course_show(seriesShown, seriesTotal, autoLoad) {
         })
         .always(function () {
             loading = false;
+            $(".load-more-series").button('reset');
         });
     }
 
-    // TODO: throttle this
     function scroll() {
         if (loading) { return; }
         if (seriesShown >= seriesTotal) { return; }

@@ -61,7 +61,7 @@
           <% end %>
         </div>
         <% if @total_series > @series.length %>
-          <div class="text-center"><button class='btn btn-text load-more-series'><%= t("series.index.load_more") %></button></div>
+          <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
         <% end %>
       </div>
       <% if policy(@course).list_members? %>

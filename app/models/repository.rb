@@ -50,11 +50,12 @@ class Repository < ApplicationRecord
     changed_file = File.expand_path(changed_file, full_path)
     [] unless changed_file.start_with? full_path
     changed_file = changed_file[full_path.size..-1]
+    changed_file = changed_file[1..-1] if changed_file.start_with?('/')
 
     if Exercise.dirconfig_file? changed_file
-      exercises_below(File.dirname(changed_file))
+      exercise_dirs_below(File.dirname(changed_file))
     else
-      [exercise_containing(changed_file)].reject { |ex| ex.nil? }
+      [exercise_dir_containing(changed_file)].reject { |ex| ex.nil? }
     end
   end
 
@@ -102,7 +103,7 @@ class Repository < ApplicationRecord
       Dir.entries(File.expand_path(directory, full_path))
          .reject   { |entry| entry.start_with?('.') }
          .map      { |entry| File.join(directory, entry) }
-         .select   { |entry| File.directory?(entry) }
+         .select   { |entry| File.directory?(File.expand_path(entry, full_path)) }
          .flat_map { |entry| exercise_dirs_below(entry) }
     end
   end

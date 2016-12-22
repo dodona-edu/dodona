@@ -67,7 +67,7 @@ class Repository < ApplicationRecord
     ex = Exercise.find_by(path: directory, repository_id: id)
 
     if ex.nil? # FIXME remove when no more exercises have fake absolute paths
-      ex = Exercise.new(path: '/' + directory, repository_id: id)
+      ex = Exercise.find_by(path: '/' + directory, repository_id: id)
     end
 
     if ex.nil?

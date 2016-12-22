@@ -76,7 +76,7 @@ class RepositoriesController < ApplicationController
   def hook
     success, msg = @repository.reset
     if success
-      if params.key?('commits')
+      if params.key?('commits') && !params["forced"]
         params['commits']
           .reject    { |commit|    commit['author']['name'] == 'Dodona'}
           .flat_map  { |commit|    %w(added removed modified).flat_map {|type| commit[type]}}

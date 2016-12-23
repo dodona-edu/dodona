@@ -6,6 +6,8 @@ nl:
       deadline-help: Een deadline instellen is optioneel.
     index:
       title: Reeksen
+      load_more: Meer reeksen laden
+      loading_more: Reeksen worden geladen...
     new:
       title: Reeks toevoegen
     show:

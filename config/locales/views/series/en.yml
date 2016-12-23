@@ -6,6 +6,8 @@ en:
       deadline-help: Setting a deadline is optional.
     index:
       title: Series
+      load_more: Load more series
+      loading_more: Loading more series...
     new:
       title: Add series
     show:

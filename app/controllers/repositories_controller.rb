@@ -76,10 +76,10 @@ class RepositoriesController < ApplicationController
   def hook
     success, msg = @repository.reset
     if success
-      if params.key?('commits') && !params["forced"]
+      if params.key?('commits') && !params['forced']
         params['commits']
-          .reject    { |commit|    commit['author']['name'] == 'Dodona'}
-          .flat_map  { |commit|    %w(added removed modified).flat_map {|type| commit[type]}}
+          .reject    { |commit|    commit['author']['name'] == 'Dodona' }
+          .flat_map  { |commit|    %w(added removed modified).flat_map { |type| commit[type] } }
           .flat_map  { |file|      @repository.affected_exercise_dirs(file) }
           .uniq
       else

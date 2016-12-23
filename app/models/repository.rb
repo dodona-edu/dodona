@@ -54,7 +54,7 @@ class Repository < ApplicationRecord
     if Exercise.dirconfig_file? changed_file
       exercise_dirs_below(changed_file.dirname)
     else
-      [exercise_dir_containing(changed_file)].reject { |ex| ex.nil? }
+      [exercise_dir_containing(changed_file)].reject(&:nil?)
     end
   end
 
@@ -67,13 +67,9 @@ class Repository < ApplicationRecord
     relative = directory.relative_path_from(full_path).cleanpath.to_path
     ex = Exercise.find_by(path: relative, repository_id: id)
 
-    if ex.nil? # FIXME remove when no more exercises have fake absolute paths
-      ex = Exercise.find_by(path: '/' + relative, repository_id: id)
-    end
+    ex = Exercise.find_by(path: '/' + relative, repository_id: id) if ex.nil? # FIXME: remove when no more exercises have fake absolute paths
 
-    if ex.nil?
-      ex = Exercise.new(path: relative, repository_id: id)
-    end
+    ex = Exercise.new(path: relative, repository_id: id) if ex.nil?
 
     if !ex.config_file?
       ex.status = :removed
@@ -101,17 +97,15 @@ class Repository < ApplicationRecord
       directory.cleanpath
     else
       directory.expand_path(full_path).entries
-         .reject   { |entry| entry.basename.to_path.start_with?('.') }
-         .map      { |entry| entry.expand_path(directory) }
-         .select   { |entry| entry.directory? }
-         .flat_map { |entry| exercise_dirs_below(entry) }
+               .reject   { |entry| entry.basename.to_path.start_with?('.') }
+               .map      { |entry| entry.expand_path(directory) }
+               .select(&:directory?)
+               .flat_map { |entry| exercise_dirs_below(entry) }
     end
   end
 
   def exercise_dir_containing(file)
-    until exercise_directory?(file) || file == full_path
-      file = file.dirname
-    end
+    file = file.dirname until exercise_directory?(file) || file == full_path
     file unless file == full_path
   end
 
@@ -121,5 +115,4 @@ class Repository < ApplicationRecord
 
     Exercise.config_file? file.expand_path(full_path)
   end
-
 end

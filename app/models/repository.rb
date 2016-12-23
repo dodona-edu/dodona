@@ -11,6 +11,7 @@
 #  updated_at :datetime         not null
 #
 require 'open3'
+require 'pathname'
 
 class Repository < ApplicationRecord
   include Gitable
@@ -30,7 +31,7 @@ class Repository < ApplicationRecord
   has_many :exercises
 
   def full_path
-    File.join(EXERCISE_LOCATIONS, path)
+    Pathname.new File.join(EXERCISE_LOCATIONS, path)
   end
 
   def commit(msg)
@@ -39,5 +40,79 @@ class Repository < ApplicationRecord
       _out, error, status = Open3.capture3('git push', chdir: full_path) if status.success?
     end
     [status.success?, error]
+  end
+
+  def exercise_dirs
+    exercise_dirs_below(full_path)
+  end
+
+  def affected_exercise_dirs(changed_file)
+    changed_file = Pathname.new(changed_file)
+    return if changed_file.absolute?
+    changed_file = changed_file.expand_path(full_path)
+
+    if Exercise.dirconfig_file? changed_file
+      exercise_dirs_below(changed_file.dirname)
+    else
+      [exercise_dir_containing(changed_file)].reject(&:nil?)
+    end
+  end
+
+  def process_exercises
+    exercise_dirs.each { |dir| process_exercise(dir) }
+  end
+
+  def process_exercise(directory)
+    absolute = directory.to_path
+    relative = directory.relative_path_from(full_path).cleanpath.to_path
+    ex = Exercise.find_by(path: relative, repository_id: id)
+
+    ex = Exercise.find_by(path: '/' + relative, repository_id: id) if ex.nil? # FIXME: remove when no more exercises have fake absolute paths
+
+    ex = Exercise.new(path: relative, repository_id: id) if ex.nil?
+
+    if !ex.config_file?
+      ex.status = :removed
+    else
+      config = Exercise.merged_config(full_path.to_path, absolute)
+
+      j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
+
+      ex.judge_id = j&.id || judge_id
+      ex.programming_language = config['programming_language']
+      ex.name_nl = config['description']['names']['nl']
+      ex.name_en = config['description']['names']['en']
+      ex.description_format = Exercise.determine_format(absolute)
+      ex.visibility = Exercise.convert_visibility(config['visibility'])
+      ex.status = :ok
+    end
+
+    ex.save
+  end
+
+  private
+
+  def exercise_dirs_below(directory)
+    if exercise_directory?(directory)
+      directory.cleanpath
+    else
+      directory.expand_path(full_path).entries
+               .reject   { |entry| entry.basename.to_path.start_with?('.') }
+               .map      { |entry| entry.expand_path(directory) }
+               .select(&:directory?)
+               .flat_map { |entry| exercise_dirs_below(entry) }
+    end
+  end
+
+  def exercise_dir_containing(file)
+    file = file.dirname until exercise_directory?(file) || file == full_path
+    file unless file == full_path
+  end
+
+  def exercise_directory?(file)
+    file = file.cleanpath
+    return true if Exercise.find_by(path: file.to_path, repository_id: id)
+
+    Exercise.config_file? file.expand_path(full_path)
   end
 end

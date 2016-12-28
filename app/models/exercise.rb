@@ -128,7 +128,15 @@ class Exercise < ApplicationRecord
   end
 
   def config_file?
-    File.file?(File.join(full_path, CONFIG_FILE))
+    Exercise.config_file? full_path
+  end
+
+  def self.config_file?(directory)
+    File.file?(File.join(directory, CONFIG_FILE))
+  end
+
+  def self.dirconfig_file?(file)
+    File.basename(file) == DIRCONFIG_FILE
   end
 
   def store_config(new_config)
@@ -222,64 +230,6 @@ class Exercise < ApplicationRecord
                   else
                     :ok
                   end
-  end
-
-  def self.process_repository(repository)
-    Exercise.process_directory(repository, '/')
-  end
-
-  def self.process_directories(repository, directories)
-    directories.each { |dir| Exercise.process_directory(repository, dir) }
-  end
-
-  def self.process_directory(repository, directory)
-    if Exercise.exercise_directory?(repository, directory)
-      Exercise.process_exercise(repository, directory)
-    else
-      path = File.join(repository.full_path, directory)
-      Dir.entries(path)
-         .select { |entry| File.directory?(File.join(path, entry)) && !entry.start_with?('.') }
-         .each { |entry| Exercise.process_directory(repository, File.join(directory, entry)) }
-    end
-  end
-
-  def self.process_exercise(repository, directory)
-    ex = Exercise.find_by(path: directory, repository_id: repository.id)
-
-    if ex.nil?
-      ex = Exercise.new(
-        path: directory,
-        repository_id: repository.id
-      )
-    end
-
-    if !ex.config_file?
-      ex.status = :removed
-    else
-      full_exercise_path = File.join(repository.full_path, directory)
-      config = Exercise.merged_config(repository.full_path, full_exercise_path)
-
-      j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
-      j_id = j.nil? ? repository.judge_id : j.id
-
-      ex.judge_id = j_id
-      ex.programming_language = config['programming_language']
-      ex.name_nl = config['description']['names']['nl']
-      ex.name_en = config['description']['names']['en']
-      ex.description_format = Exercise.determine_format(full_exercise_path)
-      ex.visibility = Exercise.convert_visibility(config['visibility'])
-      ex.status = :ok
-    end
-
-    ex.save
-  end
-
-  def self.exercise_directory?(repository, path)
-    return true if Exercise.find_by(path: path, repository_id: repository.id)
-
-    path = File.join(repository.full_path, path)
-    config_file = File.join(path, CONFIG_FILE)
-    File.file? config_file
   end
 
   def self.convert_visibility(visibility)

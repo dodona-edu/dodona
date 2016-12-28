@@ -120,6 +120,10 @@ class Exercise < ApplicationRecord
   def file_extension
     return 'py' if programming_language == 'python'
     return 'js' if programming_language == 'JavaScript'
+    return 'hs' if programming_language == 'haskell'
+    return 'sh' if programming_language == 'bash'
+    return 'sh' if programming_language == 'shell'
+    return 'sh' if programming_language == 'sh'
     'txt'
   end
 

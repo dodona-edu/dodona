@@ -172,8 +172,17 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         $('#exercise-submission-link').tab('show');
     }
 
-    function submissionFailed() {
-        $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' + I18n.t("js.submission-failed") + '</div>').insertBefore("#editor-window").show("fast");
+    function submissionFailed(request) {
+        var message = I18n.t("js.submission-failed");
+        if (request.status === 422) {
+            try {
+                var response = JSON.parse(request.responseText);
+                if (response.errors.code[0] === "emoji found") {
+                    message = I18n.t("js.submission-emoji");
+                }
+            } catch(e) {}
+        }
+        $('<div style="display:none" class="alert alert-danger alert-dismissible"> <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' + message + '</div>').insertBefore("#editor-window").show("fast");
         enableSubmitButton();
     }
 

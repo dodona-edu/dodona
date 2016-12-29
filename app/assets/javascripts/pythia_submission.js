@@ -49,9 +49,13 @@ function init_pythia_submission_show(submissionCode) {
 
     function showRealFile(name, path) {
         var random = Math.floor((Math.random() * 10000) + 1);
-        showInfoModal(name, "<div class='code' id='file-" + random + "'>Loading...</div>");
+        showInfoModal(name + " <a href='" + path + "' title='Download' download><span class='glyphicon glyphicon-download-alt'></span></a>", "<div class='code' id='file-" + random + "'>Loading...</div>");
         $.get(path, function(data) {
-            console.log(data);
+            var lines = data.split("\n");
+            var maxLines = 200;
+            if (lines.length > maxLines) {
+                data = lines.slice(0, maxLines).join("\n") + "\n...";
+            }
             $("#file-" + random).html(data);
         });
     }

@@ -1,5 +1,4 @@
 class PythiaRenderer < FeedbackTableRenderer
-
   include ActionView::Helpers::JavaScriptHelper
 
   def initialize(submission, user)

@@ -196,8 +196,16 @@ class SubmissionRunner
     end
 
     # ensure directories exist before mounting
-    Dir.mkdir(File.join(@path, 'logs'))                     rescue "existed"
-    Dir.mkdir(File.join(@exercise.full_path, 'evaluation')) rescue "existed"
+    begin
+      Dir.mkdir(File.join(@path, 'logs'))
+    rescue
+      'existed'
+    end
+    begin
+      Dir.mkdir(File.join(@exercise.full_path, 'evaluation'))
+    rescue
+      'existed'
+    end
   end
 
   def execute

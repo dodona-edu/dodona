@@ -24,6 +24,8 @@ class Submission < ApplicationRecord
   validates :exercise, presence: true
   validates :user, presence: true
 
+  validate :code_cannot_contain_emoji, on: :create
+
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed
   after_update :invalidate_stats_cache
@@ -69,6 +71,11 @@ class Submission < ApplicationRecord
 
   def result
     ActiveSupport::Gzip.decompress(self[:result])
+  end
+
+  def code_cannot_contain_emoji
+    no_emoji_found = code.chars.all? { |c| c.bytes.length < 4 }
+    errors.add(:code, 'emoji found') unless no_emoji_found
   end
 
   def self.normalize_status(s)

@@ -36,7 +36,7 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
     saved = @repository.save
-    Exercise.process_repository @repository if saved
+    @repository.process_exercises if saved
 
     respond_to do |format|
       if saved
@@ -74,34 +74,24 @@ class RepositoriesController < ApplicationController
   end
 
   def hook
-    success, msg = @repository.pull
+    success, msg = @repository.reset
     if success
-      if params.key?('commits')
-        exercises = Set.new
-        params['commits'].each do |commit|
-          next if commit['author']['name'] == 'Dodona'
-          %w(added removed modified).each do |type|
-            commit[type].each do |file|
-              dirs = file.split('/').reverse
-              path = '/' + dirs.pop
-              until Exercise.exercise_directory?(@repository, path) || dirs.empty?
-                path = File.join(path, dirs.pop)
-              end
-              exercises.add(path) unless dirs.empty?
-            end
-          end
-        end
-        Exercise.process_directories @repository, exercises.to_a
+      if params.key?('commits') && !params['forced']
+        params['commits']
+          .reject    { |commit|    commit['author']['name'] == 'Dodona' }
+          .flat_map  { |commit|    %w(added removed modified).flat_map { |type| commit[type] } }
+          .flat_map  { |file|      @repository.affected_exercise_dirs(file) }
+          .uniq
       else
-        Exercise.process_repository @repository
-      end
+        @repository.exercise_dirs
+      end.each { |dir| @repository.process_exercise(dir) }
     end
     status = success ? 200 : 500
     render plain: msg, status: status
   end
 
   def reprocess
-    Exercise.process_repository @repository
+    @repository.process_exercises
     redirect_to(@repository, notice: I18n.t('repositories.reprocess.done'))
   end
 

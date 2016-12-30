@@ -145,7 +145,7 @@ class Exercise < ApplicationRecord
   end
 
   def self.config_file?(directory)
-    config_file.file?
+    (directory + CONFIG_FILE).file?
   end
 
   def self.dirconfig_file?(file)

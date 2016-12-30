@@ -74,7 +74,7 @@ class Repository < ApplicationRecord
     if !ex.config_file?
       ex.status = :removed
     else
-      config = Exercise.merged_config(full_path.to_path, absolute)
+      config = ex.merged_config
 
       j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
 

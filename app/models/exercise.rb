@@ -128,7 +128,7 @@ class Exercise < ApplicationRecord
   end
 
   def merged_config
-    Exercise.merged_config(repository.full_path, full_path)
+    Exercise.merged_config(repository.full_path.to_path, full_path)
   end
 
   def config_file?

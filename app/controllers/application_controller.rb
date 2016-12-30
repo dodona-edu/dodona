@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
 
   around_action :user_time_zone, if: :current_user
 
+  skip_before_action :verify_authenticity_token, if: :js_request?
+
   impersonates :user
 
   def after_sign_in_path_for(_resource)
@@ -20,6 +22,12 @@ class ApplicationController < ActionController::Base
 
   def after_sign_out_path_for(_resource)
     stored_location_for(:user) || root_path
+  end
+
+  protected
+
+  def js_request?
+    request.format.js?
   end
 
   private

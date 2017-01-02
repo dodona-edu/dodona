@@ -135,7 +135,7 @@ class Exercise < ApplicationRecord
   def merged_config
     merged_config = Hash.new
     full_path.relative_path_from(repository.full_path).ascend do |subdir|
-      merged_config.recursive_update(Exercise.read_dirconfig(subdir))
+      merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path + subdir))
     end
     merged_config.recursive_update(config)
   end

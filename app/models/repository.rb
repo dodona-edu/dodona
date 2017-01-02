@@ -63,7 +63,6 @@ class Repository < ApplicationRecord
   end
 
   def process_exercise(directory)
-    absolute = directory.to_path
     relative = directory.relative_path_from(full_path).cleanpath.to_path
     ex = Exercise.find_by(path: relative, repository_id: id)
 
@@ -82,7 +81,7 @@ class Repository < ApplicationRecord
       ex.programming_language = config['programming_language']
       ex.name_nl = config['description']['names']['nl']
       ex.name_en = config['description']['names']['en']
-      ex.description_format = Exercise.determine_format(absolute)
+      ex.description_format = Exercise.determine_format(directory)
       ex.visibility = Exercise.convert_visibility(config['visibility'])
       ex.status = :ok
     end

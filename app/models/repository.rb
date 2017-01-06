@@ -95,7 +95,7 @@ class Repository < ApplicationRecord
     if exercise_directory?(directory)
       directory.cleanpath
     else
-      directory.expand_path(full_path).entries
+      directory.entries
                .reject   { |entry| entry.basename.to_path.start_with?('.') }
                .map      { |entry| entry.expand_path(directory) }
                .select(&:directory?)
@@ -109,7 +109,7 @@ class Repository < ApplicationRecord
   end
 
   def exercise_directory?(file)
-    file = file.cleanpath
+    file = file.cleanpath.relative_path_from(full_path)
     return true if Exercise.find_by(path: file.to_path, repository_id: id)
 
     Exercise.config_file? file.expand_path(full_path)

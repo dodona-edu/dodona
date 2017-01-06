@@ -137,6 +137,7 @@ class Exercise < ApplicationRecord
     full_path.relative_path_from(repository.full_path).ascend do |subdir|
       merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path + subdir))
     end
+    merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path))
     merged_config.recursive_update(config)
   end
 

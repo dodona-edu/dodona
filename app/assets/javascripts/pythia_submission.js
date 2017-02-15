@@ -29,7 +29,7 @@ function init_pythia_submission_show(submissionCode) {
             $group.find('.contains-file').each(function(){
                 content = JSON.parse($(this).attr('data-files'));
                 $.each(content, function(key, value) {
-                    files[value['location']][value['name']] = value['content']
+                    files[value['location']][value['name']] = value['content'];
                 });
             });
 

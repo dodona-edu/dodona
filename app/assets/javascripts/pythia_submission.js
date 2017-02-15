@@ -19,22 +19,21 @@ function init_pythia_submission_show(submissionCode) {
         });
 
         $('.tutorlink').click(function () {
-            //logToGoogle("tutor", "start", document.title);
+            logToGoogle("tutor", "start", document.title);
+            var exercise_id = $(".feedback-table").data("exercise_id");
             var $group = $(this).parents(".group");
             var stdin = $group.data('stdin').slice(0, -1);
             var statements = $group.data('statements');
-
             var files = {'inline': {}, 'href': {}};
 
             $group.find('.contains-file').each(function(){
                 content = JSON.parse($(this).attr('data-files'));
                 $.each(content, function(key, value) {
-                    console.log(location);
                     files[value['location']][value['name']] = value['content']
                 });
             });
 
-            loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')), JSON.stringify(files['inline']), JSON.stringify(files['href']));
+            loadTutor(exercise_id, submissionCode, statements, JSON.stringify(stdin.split('\n')), JSON.stringify(files['inline']), JSON.stringify(files['href']));
             return false;
         });
     }
@@ -110,7 +109,7 @@ function init_pythia_submission_show(submissionCode) {
         }
     }
 
-    function loadTutor(studentCode, statements, stdin, inlineFiles, hrefFiles) {
+    function loadTutor(exercise_id, studentCode, statements, stdin, inlineFiles, hrefFiles) {
         var lines = studentCode.split('\n');
         //find and remove main
         var i = 0;
@@ -128,14 +127,14 @@ function init_pythia_submission_show(submissionCode) {
             }
             i += 1;
         }
-
         source_array.push(statements);
         var source_code = source_array.join('\n');
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:8080/cgi-bin/build_trace.py',
+            url: '/tutor/cgi-bin/build_trace.py',
             dataType: 'json',
             data: {
+                exercise_id: exercise_id,
                 code: source_code,
                 input: stdin,
                 inlineFiles: inlineFiles,

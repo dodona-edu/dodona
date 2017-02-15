@@ -1,3 +1,4 @@
+/* globals dodona, showNotification, dragula, I18n, Flatpickr */
 function init_series_edit() {
 
     function init() {
@@ -102,7 +103,7 @@ function init_series_form() {
 
     function init() {
         if (I18n.locale === "nl") {
-            Flatpickr = Flatpickr||{l10n: {}};
+            Flatpickr = Flatpickr || {l10n: {}};
 
             Flatpickr.l10n.weekdays = {
                 shorthand: ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],

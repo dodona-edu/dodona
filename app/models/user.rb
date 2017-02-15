@@ -38,7 +38,7 @@ class User < ApplicationRecord
   scope :in_course, -> (course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
 
   def full_name
-    name = first_name + ' ' + last_name
+    name = (first_name || '') + ' ' + (last_name || '')
     name.blank? ? 'n/a' : name
   end
 
@@ -59,8 +59,16 @@ class User < ApplicationRecord
     'Brussels'
   end
 
+  def attempted_exercises
+    submissions.select('distinct exercise_id').count
+  end
+
   def correct_exercises
-    submissions.where(status: :correct).distinct.count(:exercise_id)
+    submissions.select('distinct exercise_id').where(status: :correct).count
+  end
+
+  def unfinished_exercises
+    attempted_exercises - correct_exercises
   end
 
   def header_courses
@@ -96,6 +104,10 @@ class User < ApplicationRecord
   private
 
   def set_token
-    self.token = (SecureRandom.urlsafe_base64(16) if username.blank?)
+    if !username.blank?
+      self.token = nil
+    elsif token.blank?
+      self.token = SecureRandom.urlsafe_base64(16)
+    end
   end
 end

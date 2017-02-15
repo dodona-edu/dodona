@@ -44,13 +44,15 @@ var updateURLParameter = function updateURLParameter(url, param, paramVal) {
     var baseURL = tempArray[0];
     var additionalURL = tempArray[1];
     var temp = "";
+    var i;
 
     if (additionalURL) {
         var tmpAnchor = additionalURL.split("#");
         var TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
-        if (TheAnchor)
+        if (TheAnchor) {
             additionalURL = TheParams;
+        }
         tempArray = additionalURL.split("&");
         for (i = 0; i < tempArray.length; i++) {
             if (tempArray[i].split('=')[0] != param) {
@@ -63,16 +65,20 @@ var updateURLParameter = function updateURLParameter(url, param, paramVal) {
         var TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
 
-        if (TheParams)
+        if (TheParams) {
             baseURL = TheParams;
+        }
     }
-    if (TheAnchor)
+    if (TheAnchor) {
         paramVal += "#" + TheAnchor;
+    }
     var rows_txt = temp + "" + param + "=" + paramVal;
     return baseURL + "?" + newAdditionalURL + rows_txt;
 };
 function getURLParameter(name, url) {
-    if (!url) url = window.location.href;
+    if (!url) {
+        url = window.location.href;
+    }
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
@@ -93,3 +99,12 @@ window.requestAnimFrame = (function () {
             window.setTimeout(callback, 1000 / 60);
         };
 })();
+
+/*
+ * Logs data to Google Analytics
+ */
+function logToGoogle(category, action, label, value) {
+    if (typeof(ga) !== "undefined") {
+        ga('send', 'event', category, action, label, value);
+    }
+}

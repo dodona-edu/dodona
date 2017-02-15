@@ -4,12 +4,14 @@ nl:
       username-help: Als je een account aanmaakt zonder gebruikersnaam, dan zal er een inlog token gegenereerd worden. Later kan dan een gebruikersnaam toegevoegd worden.
     index:
       title: Gebruikers
+      progress: Voortgang
     new:
       title: Gebruiker toevoegen
     show:
       courses: Cursussen
       no_courses: geen cursussen gevonden
-      correctly_solved: Oefeningen correct opgelost
+      correctly_solved: Correcte oefeningen
+      unfinished: Onafgewerkte oefeningen
       solutions: Oplossingen ingediend
       sign_in: Inloggen
       token_sign_in: 'Deze gebruiker heeft geen gebruikersnaam en kan enkel inloggen via deze link:'

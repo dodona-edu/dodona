@@ -54,10 +54,8 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if user&.zeus?
+    if user&.admin?
       [:username, :ugent_id, :first_name, :last_name, :email, :permission]
-    elsif user&.staff?
-      [:permission]
     else
       []
     end

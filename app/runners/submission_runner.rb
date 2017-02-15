@@ -132,14 +132,14 @@ class SubmissionRunner
   # adds the specific information to an output json for timeout errors
   def handle_timeout(stderr)
     build_error 'time limit exceeded', 'time limit exceeded', [
-      build_message(stderr, 'student')
+      build_message(stderr, 'staff')
     ]
   end
 
   # adds the specific information to an output json for memory limit errors
   def handle_memory_exceeded(stderr)
     build_error 'memory limit exceeded', 'memory limit exceeded', [
-      build_message(stderr, 'student')
+      build_message(stderr, 'staff')
     ]
   end
 
@@ -188,12 +188,16 @@ class SubmissionRunner
     end
 
     # put submission resources in working directory
-    workdir = File.join(@path, 'workdir')
-    Dir.mkdir(workdir)
-    src = File.join(@exercise.path, 'workdir')
-    FileUtils.cp_r(src, workdir) if File.directory?(src)
+    src = File.join(@exercise.full_path, 'workdir')
+    if File.directory?(src)
+      FileUtils.cp_r(src, @path)
+    else
+      Dir.mkdir(File.join(@path, 'workdir'))
+    end
 
-    Dir.mkdir(File.join(@path, 'logs'))
+    # ensure directories exist before mounting
+    Dir.mkdir(File.join(@path, 'logs'))                     rescue "existed"
+    Dir.mkdir(File.join(@exercise.full_path, 'evaluation')) rescue "existed"
   end
 
   def execute
@@ -246,8 +250,6 @@ class SubmissionRunner
     # TODO, stopsig and termsig aren't real exit statuses
     exit_status = if status.exited?
                     status.exitstatus
-                  elsif wait_thr.value.stopped?
-                    status.stopsig
                   else
                     status.termsig
                   end

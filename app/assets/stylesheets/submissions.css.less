@@ -12,6 +12,7 @@
         background-color: white;
         margin-bottom: 12px;
         border-left: 4px solid gray;
+        position: relative;
 
         &.correct {
             border-left-color: @success-500;
@@ -22,7 +23,7 @@
     }
     .testcase {
         .indicator {
-            width: 40px;
+            width: 15px;
             height: 15px;
             margin: 3px;
             margin-right: -12px;
@@ -55,6 +56,7 @@
     }
     .code {
         font-family: @font-family-monospace;
+        font-size: 13px;
         white-space: pre-wrap;
     }
     .diff ul {
@@ -137,6 +139,9 @@
     .code.correct {
         background: #dfd;
         color: #080;
+    }
+    .feedback-table-messages {
+        margin-bottom: 9.5px;
     }
 }
 

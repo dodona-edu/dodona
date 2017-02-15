@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_action :store_current_location, unless: :devise_controller?
+  before_action :store_current_location, unless: :devise_controller?, except: [:media]
 
   before_action :set_locale
 
@@ -40,6 +40,14 @@ class ApplicationController < ActionController::Base
 
   def default_url_options
     { locale: I18n.locale, trailing_slash: true }
+  end
+
+  def ensure_trailing_slash
+    redirect_to url_for(trailing_slash: true), status: 301 unless trailing_slash?
+  end
+
+  def trailing_slash?
+    request.env['REQUEST_URI'].match(/[^\?]+/).to_s.last == '/'
   end
 
   def store_current_location

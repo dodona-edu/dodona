@@ -20,6 +20,9 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 nl:
+  time:
+    formats:
+      submission: '%d %B %Y %H:%M:%S'
   controllers:
     created: "%{model} werd succesvol aangemaakt."
     updated: "%{model} werd succesvol aangepast."

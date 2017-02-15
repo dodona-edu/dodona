@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :set_submission, only: [:show, :download, :evaluate, :edit]
+  before_action :set_submission, only: [:show, :download, :evaluate, :edit, :media]
   skip_before_action :verify_authenticity_token, only: [:create]
 
   has_scope :by_filter, as: 'filter'
@@ -29,6 +29,7 @@ class SubmissionsController < ApplicationController
     authorize Submission
     para = permitted_attributes(Submission)
     para[:user_id] = current_user.id
+    para[:code].gsub!(/\r\n?/, "\n")
     @submission = Submission.new(para)
     if Pundit.policy!(current_user, @submission.exercise).submit? && @submission.save
       render json: { status: 'ok', id: @submission.id }
@@ -45,13 +46,17 @@ class SubmissionsController < ApplicationController
 
   def download
     data = @submission.code
-    filename = @submission.file_name
+    filename = @submission.exercise.file_name
     send_data data, type: 'application/octet-stream', filename: filename, disposition: 'attachment', x_sendfile: true
   end
 
   def evaluate
     @submission.evaluate_delayed
     redirect_to(@submission)
+  end
+
+  def media
+    redirect_to media_exercise_url(@submission.exercise, params[:media])
   end
 
   private

@@ -45,6 +45,10 @@ class CoursePolicy < ApplicationPolicy
     user
   end
 
+  def scoresheet?
+    user&.admin?
+  end
+
   def add_series?
     user&.admin?
   end

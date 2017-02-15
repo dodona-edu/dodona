@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160919143805) do
+ActiveRecord::Schema.define(version: 20161105124855) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -100,19 +100,24 @@ ActiveRecord::Schema.define(version: 20160919143805) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.datetime "deadline"
+    t.string   "token"
     t.index ["course_id"], name: "index_series_on_course_id", using: :btree
     t.index ["deadline"], name: "index_series_on_deadline", using: :btree
     t.index ["name"], name: "index_series_on_name", using: :btree
+    t.index ["token"], name: "index_series_on_token", using: :btree
     t.index ["visibility"], name: "index_series_on_visibility", using: :btree
   end
 
   create_table "series_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "series_id"
     t.integer  "exercise_id"
-    t.integer  "order",       default: 999
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "order",           default: 999
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "users_correct"
+    t.integer  "users_attempted"
     t.index ["exercise_id"], name: "index_series_memberships_on_exercise_id", using: :btree
+    t.index ["series_id", "exercise_id"], name: "index_series_memberships_on_series_id_and_exercise_id", using: :btree
     t.index ["series_id"], name: "index_series_memberships_on_series_id", using: :btree
   end
 
@@ -127,6 +132,8 @@ ActiveRecord::Schema.define(version: 20160919143805) do
     t.binary   "result",      limit: 16777215
     t.boolean  "accepted",                     default: false
     t.index ["accepted"], name: "index_submissions_on_accepted", using: :btree
+    t.index ["exercise_id", "user_id", "accepted", "created_at"], name: "ex_us_ac_cr_index", using: :btree
+    t.index ["exercise_id", "user_id", "status", "created_at"], name: "ex_us_st_cr_index", using: :btree
     t.index ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
     t.index ["status"], name: "index_submissions_on_status", using: :btree
     t.index ["user_id"], name: "index_submissions_on_user_id", using: :btree

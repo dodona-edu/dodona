@@ -1,17 +1,101 @@
 function init_pythia_submission_show(submissionCode) {
-    var vars;
-
     function init() {
+        initTutorLinks();
+        initFileViewers();
+        if( $('.tutormodal').length == 1) {
+            initFullScreen();
+        } else {
+            $('.tutormodal:last').remove();
+        }
+    }
+
+    function initTutorLinks() {
+        //add disabled to tutorlinks that are not valid
+        $('.tutorlink').each(function () {
+            var $group = $(this).parents(".group");
+            if (!($group.data('statements') || $group.data('stdin'))) {
+                $(this).remove();
+            }
+        });
+
         $('.tutorlink').click(function () {
-            var $element = $(this).parents(".group");
-            var stdin = $element.data('stdin').slice(0, -1);
-            var statements = $element.data('statements');
-            loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')));
+            //logToGoogle("tutor", "start", document.title);
+            var $group = $(this).parents(".group");
+            var stdin = $group.data('stdin').slice(0, -1);
+            var statements = $group.data('statements');
+
+            var files = {'inline': {}, 'href': {}};
+
+            $group.find('.contains-file').each(function(){
+                content = JSON.parse($(this).attr('data-files'));
+                $.each(content, function(key, value) {
+                    console.log(location);
+                    files[value['location']][value['name']] = value['content']
+                });
+            });
+
+            loadTutor(submissionCode, statements, JSON.stringify(stdin.split('\n')), JSON.stringify(files['inline']), JSON.stringify(files['href']));
             return false;
         });
     }
 
-    function loadTutor(studentCode, statements, stdin) {
+    function initFileViewers() {
+        $("a.file-link").click(function () {
+            var fileName = $(this).text();
+            var $tc = $(this).parents(".testcase.contains-file");
+            if($tc.length === 0) return;
+            var file = $tc.data("files")[fileName];
+            if (file.location === "inline") {
+                showInlineFile(fileName, file.content);
+            } else if (file.location === "href") {
+                showRealFile(fileName, file.content);
+            }
+            return false;
+        });
+    }
+
+    function showInlineFile(name, content) {
+        showInfoModal(name, "<div class='code'>" + content + "</div>");
+    }
+
+    function showRealFile(name, path) {
+        var random = Math.floor((Math.random() * 10000) + 1);
+        showInfoModal(name + " <a href='" + path + "' title='Download' download><span class='glyphicon glyphicon-download-alt'></span></a>", "<div class='code' id='file-" + random + "'>Loading...</div>");
+        $.get(path, function(data) {
+            var lines = data.split("\n");
+            var maxLines = 200;
+            if (lines.length > maxLines) {
+                data = lines.slice(0, maxLines).join("\n") + "\n...";
+            }
+            $("#file-" + random).html(data);
+        });
+    }
+
+    function initFullScreen() {
+        $(document).bind(fullScreenApi.fullScreenEventName, resizeFullScreen);
+
+        $('#tutor #fullscreen-button').click(function () {
+            var elem = $("#tutor").get(0);
+            if (fullScreenApi.isFullScreen()) {
+                fullScreenApi.cancelFullScreen(elem);
+            } else {
+                fullScreenApi.requestFullScreen(elem);
+            }
+        });
+    }
+
+    function resizeFullScreen() {
+        var $tutor = $("#tutor");
+        if (!fullScreenApi.isFullScreen()) {
+            $tutor.removeClass("fullscreen");
+            $("#tutorviz").height($("#tutorviz").data("standardheight"));
+        } else {
+            $tutor.addClass("fullscreen");
+            $("#tutorviz").height("100%");
+        }
+    }
+
+    function loadTutor(studentCode, statements, stdin, inlineFiles, hrefFiles) {
         var lines = studentCode.split('\n');
         //find and remove main
         var i = 0;
@@ -21,7 +105,6 @@ function init_pythia_submission_show(submissionCode) {
             if (remove && !(lines[i].match(/\s+.*/g))) {
                 remove = false;
             }
-
             if (lines[i].match(/if\s+__name__\s*==\s*(['"])__main__\s*\1:\s*/g)) {
                 remove = true;
             }
@@ -32,16 +115,16 @@ function init_pythia_submission_show(submissionCode) {
         }
 
         source_array.push(statements);
-
         var source_code = source_array.join('\n');
-
         $.ajax({
             type: 'POST',
-            url: '/tutor/cgi-bin/build_trace.py',
+            url: 'http://localhost:8080/cgi-bin/build_trace.py',
             dataType: 'json',
             data: {
                 code: source_code,
-                input: stdin
+                input: stdin,
+                inlineFiles: inlineFiles,
+                hrefFiles: hrefFiles,
             },
             success: function (data) {
                 createTutor(data);
@@ -52,16 +135,25 @@ function init_pythia_submission_show(submissionCode) {
         });
 
         var createTutor = function (codeTrace) {
-            showInfoModal("Python Tutor", '<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading</div></div></div>');
-            
+            showInfoModal("Python Tutor", '<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>', options = {'allowFullscreen': true});
+
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html('<iframe id="tutorviz" width="100%" frameBorder="0" src="/tutorviz/tutorviz.html"></iframe>');
                 $('#tutorviz').load(function () {
                     var content = $("#tutorviz").get(0).contentWindow;
                     content.load(codeTrace);
-                    $("#tutorviz").height(content.document.body.scrollHeight);
+                    $("#tutorviz").data("standardheight", content.document.body.scrollHeight);
+                    $("#tutorviz").height($("#tutorviz").data("standardheight"));
                 });
 
+            });
+
+            $("#tutor #info-modal").on('hidden.bs.modal', function () {
+                if (fullScreenApi.isFullScreen()) {
+                    var $tutor = $("#tutor");
+                    var elem = $tutor.get(0);
+                    fullScreenApi.cancelFullScreen(elem);
+                }
             });
         };
     }

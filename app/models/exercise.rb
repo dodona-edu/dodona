@@ -16,6 +16,7 @@
 #  status               :integer          default("ok")
 #
 
+require 'pathname'
 require 'action_view'
 include ActionView::Helpers::DateHelper
 
@@ -52,11 +53,15 @@ class Exercise < ApplicationRecord
   scope :by_filter, -> (query) { by_name(query).or(by_status(query)).or(by_visibility(query)) }
 
   def full_path
-    File.join(repository.full_path, path)
+    Pathname.new File.join(repository.full_path, path)
   end
 
   def media_path
-    File.join(full_path, MEDIA_DIR)
+    full_path + MEDIA_DIR
+  end
+
+  def config_file
+    full_path + CONFIG_FILE
   end
 
   def name
@@ -65,8 +70,8 @@ class Exercise < ApplicationRecord
   end
 
   def description_localized(lang = I18n.locale.to_s)
-    file = File.join(full_path, DESCRIPTION_DIR, "description.#{lang}.#{description_format}")
-    File.read(file) if FileTest.exists?(file)
+    file = full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
+    file.read if file.exist?
   end
 
   def description_nl
@@ -85,8 +90,8 @@ class Exercise < ApplicationRecord
 
   def boilerplate_localized(lang = I18n.locale.to_s)
     ext = lang ? ".#{lang}" : ''
-    file = File.join(full_path, BOILERPLATE_DIR, "boilerplate#{ext}")
-    File.read(file).strip if FileTest.exists?(file)
+    file = full_path + BOILERPLATE_DIR + "boilerplate#{ext}"
+    file.read.strip if file.exist?
   end
 
   def boilerplate_default
@@ -110,7 +115,7 @@ class Exercise < ApplicationRecord
   end
 
   def config
-    Exercise.read_config(full_path)
+    Exercise.read_config_file(config_file)
   end
 
   def file_name
@@ -120,20 +125,37 @@ class Exercise < ApplicationRecord
   def file_extension
     return 'py' if programming_language == 'python'
     return 'js' if programming_language == 'JavaScript'
+    return 'hs' if programming_language == 'haskell'
+    return 'sh' if programming_language == 'bash'
+    return 'sh' if programming_language == 'shell'
+    return 'sh' if programming_language == 'sh'
     'txt'
   end
 
   def merged_config
-    Exercise.merged_config(repository.full_path, full_path)
+    merged_config = Hash.new
+    full_path.relative_path_from(repository.full_path).ascend do |subdir|
+      merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path + subdir))
+    end
+    merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path))
+    merged_config.recursive_update(config)
   end
 
   def config_file?
-    File.file?(File.join(full_path, CONFIG_FILE))
+    Exercise.config_file? full_path
+  end
+
+  def self.config_file?(directory)
+    (directory + CONFIG_FILE).file?
+  end
+
+  def self.dirconfig_file?(file)
+    file.basename.to_s == DIRCONFIG_FILE
   end
 
   def store_config(new_config)
     return if new_config == config
-    File.write(File.join(full_path, CONFIG_FILE), JSON.pretty_generate(new_config))
+    config_file.write(JSON.pretty_generate(new_config))
     success, error = repository.commit "updated config for #{name}"
     unless success || error.empty?
       errors.add(:base, "commiting changes failed: #{error}")
@@ -224,99 +246,14 @@ class Exercise < ApplicationRecord
                   end
   end
 
-  def self.process_repository(repository)
-    Exercise.process_directory(repository, '/')
-  end
-
-  def self.process_directories(repository, directories)
-    directories.each { |dir| Exercise.process_directory(repository, dir) }
-  end
-
-  def self.process_directory(repository, directory)
-    if Exercise.exercise_directory?(repository, directory)
-      Exercise.process_exercise(repository, directory)
-    else
-      path = File.join(repository.full_path, directory)
-      Dir.entries(path)
-         .select { |entry| File.directory?(File.join(path, entry)) && !entry.start_with?('.') }
-         .each { |entry| Exercise.process_directory(repository, File.join(directory, entry)) }
-    end
-  end
-
-  def self.process_exercise(repository, directory)
-    ex = Exercise.find_by(path: directory, repository_id: repository.id)
-
-    if ex.nil?
-      ex = Exercise.new(
-        path: directory,
-        repository_id: repository.id
-      )
-    end
-
-    if !ex.config_file?
-      ex.status = :removed
-    else
-      full_exercise_path = File.join(repository.full_path, directory)
-      config = Exercise.merged_config(repository.full_path, full_exercise_path)
-
-      j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
-      j_id = j.nil? ? repository.judge_id : j.id
-
-      ex.judge_id = j_id
-      ex.programming_language = config['programming_language']
-      ex.name_nl = config['description']['names']['nl']
-      ex.name_en = config['description']['names']['en']
-      ex.description_format = Exercise.determine_format(full_exercise_path)
-      ex.visibility = Exercise.convert_visibility(config['visibility'])
-      ex.status = :ok
-    end
-
-    ex.save
-  end
-
-  def self.exercise_directory?(repository, path)
-    return true if Exercise.find_by(path: path, repository_id: repository.id)
-
-    path = File.join(repository.full_path, path)
-    config_file = File.join(path, CONFIG_FILE)
-    File.file? config_file
-  end
-
   def self.convert_visibility(visibility)
     return 'open' if visibility == 'public'
     return 'closed' if visibility == 'private'
     visibility
   end
 
-  def self.merged_config(full_repository_path, full_exercise_path)
-    dirconfig = Exercise.dirconfig(full_repository_path, File.dirname(full_exercise_path))
-    dirconfig.recursive_update(Exercise.read_config(full_exercise_path))
-  end
-
-  def self.dirconfig(full_repository_path, subpath)
-    return unless subpath.start_with? full_repository_path
-    config = if subpath == full_repository_path
-             then {}
-             else Exercise.dirconfig(full_repository_path, File.dirname(subpath))
-             end
-    config.recursive_update(Exercise.read_dirconfig(subpath))
-  end
-
-  def self.read_config(path)
-    Exercise.read_config_file(path, CONFIG_FILE)
-  end
-
-  def self.read_dirconfig(path)
-    Exercise.read_config_file(path, DIRCONFIG_FILE)
-  end
-
-  def self.read_config_file(path, file)
-    file = File.join(path, file)
-    JSON.parse(File.read(file)) if File.file?(file)
-  end
-
   def self.determine_format(full_exercise_path)
-    if !Dir.glob(File.join(full_exercise_path, DESCRIPTION_DIR, 'description.*.html')).empty?
+    if !Dir.glob(full_exercise_path + DESCRIPTION_DIR + 'description.*.html').empty?
       'html'
     else
       'md'
@@ -324,6 +261,14 @@ class Exercise < ApplicationRecord
   end
 
   private
+
+  def self.read_config_file(file)
+    JSON.parse(file.read) if file.file?
+  end
+
+  def self.read_dirconfig(path)
+    Exercise.read_config_file(path + DIRCONFIG_FILE)
+  end
 
   def generate_id
     begin

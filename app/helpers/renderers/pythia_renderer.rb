@@ -1,5 +1,4 @@
 class PythiaRenderer < FeedbackTableRenderer
-
   include ActionView::Helpers::JavaScriptHelper
 
   def initialize(submission, user)
@@ -70,6 +69,14 @@ class PythiaRenderer < FeedbackTableRenderer
       end
     else
       super(g)
+    end
+  end
+
+  def testcase(tc)
+    return super(tc) unless tc[:data] && tc[:data][:files]
+    jsonfiles = tc[:data][:files].to_json
+    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", "data-files": jsonfiles) do
+      testcase_content(tc)
     end
   end
 

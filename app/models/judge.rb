@@ -34,7 +34,7 @@ class Judge < ApplicationRecord
   has_many :exercises
 
   def full_path
-    File.join(JUDGE_LOCATIONS, path)
+    Pathname.new File.join(JUDGE_LOCATIONS, path)
   end
 
   def config

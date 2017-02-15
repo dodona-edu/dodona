@@ -70,7 +70,7 @@ class JudgesController < ApplicationController
   end
 
   def hook
-    success, msg = @judge.pull
+    success, msg = @judge.reset
     status = success ? 200 : 500
     render plain: msg, status: status
   end

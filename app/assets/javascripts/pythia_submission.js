@@ -54,6 +54,21 @@ function init_pythia_submission_show(submissionCode) {
         });
     }
 
+    function initFileViewers() {
+        $("a.file-link").click(function () {
+            var fileName = $(this).text();
+            var $tc = $(this).parents(".testcase.contains-file");
+            if($tc.length === 0) return;
+            var file = $tc.data("files")[fileName];
+            if (file.location === "inline") {
+                showInlineFile(fileName, file.content);
+            } else if (file.location === "href") {
+                showRealFile(fileName, file.content);
+            }
+            return false;
+        });
+    }
+
     function showInlineFile(name, content) {
         showInfoModal(name, "<div class='code'>" + content + "</div>");
     }

@@ -65,9 +65,6 @@ class Repository < ApplicationRecord
   def process_exercise(directory)
     relative = directory.relative_path_from(full_path).cleanpath.to_path
     ex = Exercise.find_by(path: relative, repository_id: id)
-
-    ex = Exercise.find_by(path: '/' + relative, repository_id: id) if ex.nil? # FIXME: remove when no more exercises have fake absolute paths
-
     ex = Exercise.new(path: relative, repository_id: id) if ex.nil?
 
     if !ex.config_file?

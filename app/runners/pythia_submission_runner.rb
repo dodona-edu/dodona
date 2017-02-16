@@ -16,7 +16,7 @@ class PythiaSubmissionRunner < SubmissionRunner
 
     metrics = {} if metrics.nil?
 
-    unless true
+    unless metrics.key?('wall_time')
       value = last_timestamp(File.join(@path, 'logs', 'user_time.logs')) / 1000.0
       metrics['wall_time'] = value
 
@@ -27,7 +27,7 @@ class PythiaSubmissionRunner < SubmissionRunner
       metrics['system_time'] = value
     end
 
-    unless true
+    unless metrics.key?('peak_memory')
       value = logged_value_range(File.join(@path, 'logs', 'memory_usage.logs'))
       metrics['peak_memory'] = value
 

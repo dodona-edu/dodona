@@ -66,7 +66,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def overview?
-    user&.admin?
+    user&.zeus?
   end
 
   def permitted_attributes

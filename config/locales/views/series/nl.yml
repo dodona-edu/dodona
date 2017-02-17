@@ -27,3 +27,6 @@ nl:
       remove_exercise: oefening verwijderen
     deadline:
       ago: geleden
+    overview:
+        user: Gebruiker
+        slow_loading: Deze pagina vereist significant rekenwerk om te tonen, vermijd het herladen ervan.

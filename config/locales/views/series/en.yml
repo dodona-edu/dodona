@@ -27,3 +27,6 @@ en:
       remove_exercise: remove exercise
     deadline:
       ago: ago
+    overview:
+        user: User
+        slow_loading: Rendering this page requires significant calculations. Kindly avoid refreshing.

@@ -18,7 +18,7 @@ nl:
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
       missed_deadline: deadline gemist
       deadline_in: binnen
-      calculate_overview: Bereken overzicht
+      series_scoresheet: Oplossingsoverzicht
     edit:
       title: Reeks bewerken
       add_exercises: Oefeningen toevoegen
@@ -27,6 +27,6 @@ nl:
       remove_exercise: oefening verwijderen
     deadline:
       ago: geleden
-    overview:
+    scoresheet:
         user: Gebruiker
         slow_loading: Deze pagina vereist significant rekenwerk om te tonen, vermijd het herladen ervan.

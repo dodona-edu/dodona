@@ -1,5 +1,5 @@
 <tr id="submission_<%= submission.id %>" data-status="<%= submission.status %>">
-  <td><%= submission.status_icon %></td>
+  <td><%= submission_status_icon(submission) %></td>
   <% if current_user.admin? %>
     <td>
       <%= link_to submission.user.short_name, user_submissions_path(submission.user), title: submission.user.full_name %>

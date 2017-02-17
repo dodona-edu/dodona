@@ -24,7 +24,7 @@
                 <td><%= link_to student.short_name, user_submissions_path(student), title: student.full_name %></td>
                 <% @exercises.each do |exercise| %>
                   <% submission = exercise.last_submission(student, @series.deadline) %>
-                  <td class="status-icon"><%= submission&.status_icon %></td>
+                  <td class="status-icon"><%= submission_status_icon(submission) %></td>
                   <td><%= link_to Submission.human_enum_name(:status, submission.status), submission if submission.present? %></td>
                 <% end %>
               </tr>

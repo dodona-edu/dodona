@@ -37,10 +37,10 @@
             <% end %>
           </li>
         <% end %>
-        <% if policy(series).overview? %>
+        <% if policy(series).scoresheet? %>
           <li>
-            <%= link_to overview_series_path(series) do %>
-              <span class='glyphicon glyphicon-th-list'></span> <%= t("series.show.calculate_overview") %>
+            <%= link_to scoresheet_series_path(series) do %>
+              <span class='glyphicon glyphicon-th-list'></span> <%= t("series.show.series_scoresheet") %>
             <% end %>
           </li>
         <% end %>

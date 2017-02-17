@@ -65,7 +65,7 @@ class SeriesPolicy < ApplicationPolicy
     modify_exercises?
   end
 
-  def overview?
+  def scoresheet?
     user&.zeus?
   end
 

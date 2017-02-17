@@ -89,4 +89,16 @@ class Submission < ApplicationRecord
     # could be more fine grained by also filtering on series_id but makes the invalidation a lot slower
     SeriesMembership.where(exercise_id: exercise_id).find_each(&:invalidate_stats_cache)
   end
+
+  def status_icon
+    if queued? || running?
+      '<span class="glyphicon glyphicon-hourglass"></span>'
+    elsif unknown?
+      '<span class="glyphicon glyphicon-alert colored-warning"></span>'
+    elsif accepted
+      '<span class="glyphicon glyphicon-ok colored-correct"></span>'
+    else
+      '<span class="glyphicon glyphicon-remove colored-wrong"></span>'
+    end.html_safe
+  end
 end

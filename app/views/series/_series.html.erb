@@ -37,6 +37,13 @@
             <% end %>
           </li>
         <% end %>
+        <% if policy(series).overview? %>
+          <li>
+            <%= link_to overview_series_path(series) do %>
+              <span class='glyphicon glyphicon-th-list'></span> <%= t("series.show.calculate_overview") %>
+            <% end %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>

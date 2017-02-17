@@ -65,6 +65,10 @@ class SeriesPolicy < ApplicationPolicy
     modify_exercises?
   end
 
+  def overview?
+    user&.admin?
+  end
+
   def permitted_attributes
     if user&.admin?
       [:name, :description, :course_id, :visibility, :order, :deadline]

@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">
+          <%= "#{@series.name} (#{@course.name})" %>
+        </h2>
+      </div>
+      <div class="card-supporting-text">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><%= t ".user" %></th>
+              <% @exercises.each do |exercise| %>
+                <th></th>
+                <th><%= exercise.name %></th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @course.users.each do |student| %>
+              <tr>
+                <td><%= link_to student.short_name, user_submissions_path(student), title: student.full_name %></td>
+                <% @exercises.each do |exercise| %>
+                  <% submission = exercise.last_submission(student, @series.deadline) %>
+                  <td class="status-icon"><%= submission&.status_icon %></td>
+                  <td><%= link_to Submission.human_enum_name(:status, submission.status), submission if submission.present? %></td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

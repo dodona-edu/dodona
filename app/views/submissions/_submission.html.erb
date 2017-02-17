@@ -1,15 +1,5 @@
 <tr id="submission_<%= submission.id %>" data-status="<%= submission.status %>">
-  <td>
-    <% if submission.queued? || submission.running? %>
-      <span class="glyphicon glyphicon-hourglass"></span>
-    <% elsif submission.unknown? %>
-      <span class="glyphicon glyphicon-alert colored-warning"></span>
-    <% elsif submission.accepted %>
-      <span class="glyphicon glyphicon-ok colored-correct"></span>
-    <% else %>
-      <span class="glyphicon glyphicon-remove colored-wrong"></span>
-    <% end %>
-  </td>
+  <td><%= submission.status_icon %></td>
   <% if current_user.admin? %>
     <td>
       <%= link_to submission.user.short_name, user_submissions_path(submission.user), title: submission.user.full_name %>

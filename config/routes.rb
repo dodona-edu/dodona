@@ -14,7 +14,7 @@ Rails.application.routes.draw do
         post 'reorder_exercises'
         get 'download_solutions'
         get 'token/:token', to: 'series#token_show', as: 'token_show'
-        get 'overview'
+        get 'scoresheet'
       end
     end
 

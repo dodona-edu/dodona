@@ -121,7 +121,7 @@ function init_pythia_submission_show(submissionCode) {
 
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:8080/cgi-bin/build_trace.py',
+            url: '/tutor/cgi-bin/build_trace.py',
             dataType: 'json',
             data: {
                 exercise_id: exercise_id,

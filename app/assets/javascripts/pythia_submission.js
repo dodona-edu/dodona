@@ -27,13 +27,16 @@ function init_pythia_submission_show(submissionCode) {
             var files = {'inline': {}, 'href': {}};
 
             $group.find('.contains-file').each(function(){
-                content = JSON.parse($(this).attr('data-files'));
-                $.each(content, function(key, value) {
+                content = $(this).data('files');
+
+                for (var key in content) {
+                    var value = content[key];
                     files[value['location']][value['name']] = value['content'];
-                });
+                }
+
             });
 
-            loadTutor(exercise_id, submissionCode, statements, JSON.stringify(stdin.split('\n')), JSON.stringify(files['inline']), JSON.stringify(files['href']));
+            loadTutor(exercise_id, submissionCode, statements, stdin, files['inline'], files['href']);
             return false;
         });
     }
@@ -113,17 +116,19 @@ function init_pythia_submission_show(submissionCode) {
             i += 1;
         }
         source_array.push(statements);
+
         var source_code = source_array.join('\n');
+
         $.ajax({
             type: 'POST',
-            url: '/tutor/cgi-bin/build_trace.py',
+            url: 'http://localhost:8080/cgi-bin/build_trace.py',
             dataType: 'json',
             data: {
                 exercise_id: exercise_id,
                 code: source_code,
-                input: stdin,
-                inlineFiles: inlineFiles,
-                hrefFiles: hrefFiles,
+                input: JSON.stringify(stdin.split('\n')),
+                inlineFiles: JSON.stringify(inlineFiles),
+                hrefFiles: JSON.stringify(hrefFiles),
             },
             success: function (data) {
                 createTutor(data);

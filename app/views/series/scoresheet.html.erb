@@ -7,14 +7,12 @@
         </h2>
       </div>
       <div class="card-supporting-text">
-        <div class="alert alert-info"><%= t ".slow_loading" %></div>
         <table class="table">
           <thead>
             <tr>
               <th><%= t ".user" %></th>
               <% @exercises.each do |exercise| %>
                 <th class="status-icon-header"><%= exercise.name %></th>
-                <!-- <th colspan="2"><%= exercise.name %></th> -->
               <% end %>
             </tr>
           </thead>

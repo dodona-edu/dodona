@@ -13,8 +13,8 @@
             <tr>
               <th><%= t ".user" %></th>
               <% @exercises.each do |exercise| %>
-                <th></th>
-                <th><%= exercise.name %></th>
+                <th class="status-icon-header"><%= exercise.name %></th>
+                <!-- <th colspan="2"><%= exercise.name %></th> -->
               <% end %>
             </tr>
           </thead>
@@ -24,8 +24,11 @@
                 <td><%= link_to student.short_name, user_submissions_path(student), title: student.full_name %></td>
                 <% @exercises.each do |exercise| %>
                   <% submission = exercise.last_submission(student, @series.deadline) %>
-                  <td class="status-icon"><%= submission_status_icon(submission) %></td>
-                  <td><%= link_to Submission.human_enum_name(:status, submission.status), submission if submission.present? %></td>
+                  <td class="status-icon">
+                    <% if submission.present? %>
+                      <%= link_to submission_status_icon(submission), submission, title: Submission.human_enum_name(:status, submission.status) %>
+                    <% end %>
+                  </td>
                 <% end %>
               </tr>
             <% end %>

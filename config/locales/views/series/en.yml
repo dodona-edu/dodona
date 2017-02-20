@@ -30,3 +30,4 @@ en:
     scoresheet:
         user: User
         slow_loading: Rendering this page requires significant calculations. Kindly avoid refreshing.
+        missing: No submission

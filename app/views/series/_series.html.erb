@@ -37,6 +37,13 @@
             <% end %>
           </li>
         <% end %>
+        <% if policy(series).scoresheet? %>
+          <li>
+            <%= link_to scoresheet_series_path(series) do %>
+              <span class='glyphicon glyphicon-th-list'></span> <%= t("series.show.series_scoresheet") %>
+            <% end %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>

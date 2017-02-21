@@ -1,6 +1,6 @@
 require 'zip'
 class SeriesController < ApplicationController
-  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise, :reorder_exercises, :download_solutions, :token_show]
+  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise, :reorder_exercises, :download_solutions, :token_show, :scoresheet]
 
   # GET /series
   # GET /series.json
@@ -99,6 +99,12 @@ class SeriesController < ApplicationController
       rank = order.find_index(membership.exercise_id) || 999
       membership.update(order: rank)
     end
+  end
+
+  def scoresheet
+    @course = @series.course
+    @title = @series.name
+    @exercises = @series.exercises
   end
 
   private

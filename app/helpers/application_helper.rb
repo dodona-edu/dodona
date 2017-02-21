@@ -8,6 +8,20 @@ module ApplicationHelper
     string.gsub('"', '\"')
   end
 
+  def submission_status_icon submission
+    if submission.nil?
+      '<span class="glyphicon glyphicon-minus colored-wrong"></span>'
+    elsif submission.queued? || submission.running?
+      '<span class="glyphicon glyphicon-hourglass"></span>'
+    elsif submission.unknown?
+      '<span class="glyphicon glyphicon-alert colored-warning"></span>'
+    elsif submission.accepted
+      '<span class="glyphicon glyphicon-ok colored-correct"></span>'
+    else
+      '<span class="glyphicon glyphicon-remove colored-wrong"></span>'
+    end.html_safe
+  end
+
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
     protected
 

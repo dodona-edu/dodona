@@ -1,9 +1,10 @@
-require 'json'            # JSON support
-require 'open3'           # process management
-require 'fileutils'       # file system utilities
-require 'securerandom'    # random string generators (supports URL safety)
+require 'json'        # JSON support
+require 'fileutils'   # file system utilities
+require 'securerandom'# random string generators (supports URL safety)
 require 'json-schema' # json schema validation, from json-schema gem
-require 'tmpdir' # temporary file support
+require 'tmpdir'      # temporary file support
+require 'docker'      # docker client
+require 'timeout'     # to kill the docker after a certain time
 
 # base class for runners that handle Dodona submissions
 class SubmissionRunner
@@ -78,9 +79,6 @@ class SubmissionRunner
 
     # submission configuration (JSON)
     @config = compose_config
-
-    # result of processing the submission (SPOJ)
-    @result = nil
 
     # path on file system used as temporary working directory for processing the submission
     @path = nil
@@ -215,83 +213,81 @@ class SubmissionRunner
     # fetch execution memory limit from submission configuration
     memory_limit = @config['memory_limit']
 
-    # mac support
-    timeout_command = @mac ? 'gtimeout' : 'timeout'
-
     # process submission in docker container
     # TODO: set user with the --user option
     # TODO: set the workdir with the -w option
-    stdout, stderr, status = Open3.capture3(
-      # set timeout
-      timeout_command, '-k', time_limit.to_s, time_limit.to_s,
-      # start docker container
-      'docker', 'run',
-      # activate stdin
-      '-i',
-      # remove dead container
-      '--rm',
-      # 'memory limit', physical mapped and swap memory?
-      '--memory', "#{memory_limit}B",
-      # mount submission as a hidden directory (read-only)
-      '-v', "#{@path}/submission:#{@hidden_path}/submission:ro",
-      # mount judge resources in hidden directory (read-only)
-      '-v', "#{@exercise.full_path}/evaluation:#{@hidden_path}/resources:ro",
-      # mount judge definition in hidden directory (read-only)
-      '-v', "#{@judge.full_path}:#{@hidden_path}/judge:ro",
-      # mount logging directory in hidden directory
-      '-v', "#{@path}/logs:#{@hidden_path}/logs",
-      # evalution directory is read/write and seeded with copies
-      '-v', "#{@path}/workdir:/home/runner/workdir",
-      # image used to launch docker container
-      @judge.image.to_s,
-      # initialization script of docker container (so-called entry point of docker container)
-      # TODO: move entry point to docker container definition
-      # TODO: rename this into something more meaningful (suggestion: launch_runner)
-      '/main.sh',
-      # $1: script that starts processing the submission in the docker container
-      "#{@hidden_path}/judge/run",
-      # $2: directory for logging output
-      "#{@hidden_path}/logs",
-      stdin_data: @config.to_json
-    )
-
-    # TODO, stopsig and termsig aren't real exit statuses
-    exit_status = if status.exited?
-                    status.exitstatus
-                  else
-                    status.termsig
-                  end
-
-    if exit_status.nonzero?
-      # error handling in class Runner
-      result = handle_error(exit_status, stderr)
-    else
-      # submission was processed succesfully (stdout contains description of result)
-
-      result = JSON.parse(stdout)
-
-      if JSON::Validator.validate(schema_path.to_s, result)
-        add_runtime_metrics(result)
-      else
-        result = build_error 'internal error', 'internal error', [
-          build_message(JSON::Validator.fully_validate(schema_path.to_s, result).join("\n"), 'staff')
-        ]
-      end
+    begin
+      container = Docker::Container.create(
+        # TODO: move entry point to docker container definition
+        Cmd: ['/main.sh',
+              # judge entry point
+              "#{@hidden_path}/judge/run",
+              # directory for logging output
+              "#{@hidden_path}/logs"],
+        Image: @judge.image.to_s,
+        name: "dodona-#{@submission.id}", # assuming unique during execution
+        OpenStdin: true,
+        StdinOnce: true, # closes stdin after first disconnect
+        HostConfig: {
+          Memory: memory_limit,
+          MemorySwap: memory_limit, # memory including swap
+          Binds: [
+            # mount submission as a hidden directory (read-only)
+            "#{@path}/submission:#{@hidden_path}/submission:ro",
+            # mount judge resources in hidden directory (read-only)
+            "#{@exercise.full_path}/evaluation:#{@hidden_path}/resources:ro",
+            # mount judge definition in hidden directory (read-only)
+            "#{@judge.full_path}:#{@hidden_path}/judge:ro",
+            # mount logging directory in hidden directory
+            "#{@path}/logs:#{@hidden_path}/logs",
+            # evalution directory is read/write and seeded with copies
+            "#{@path}/workdir:/home/runner/workdir",
+          ]
+        }
+      )
+    rescue Exception => e
+      return handle_unknown("Error creating docker: #{e}")
     end
 
-    # set result of processing the submission
-    @result = result
+    begin
+      stdout, stderr, exit_status = Timeout.timeout(time_limit) do
+        stdout, stderr = container.tap(&:start).attach(
+          stdin: StringIO.new(@config.to_json),
+          stdout: true,
+          stderr: true,
+        )
+        [stdout, stderr, container.wait(time_limit)['StatusCode']]
+      end
+      container.delete
+      if exit_status.nonzero?
+        handle_error(exit_status, stderr.join)
+      else
+        # submission was processed succesfully (stdout contains description of result)
+        result = JSON.parse(stdout.join)
+        if JSON::Validator.validate(schema_path.to_s, result)
+          add_runtime_metrics(result)
+          result
+        else
+          build_error 'internal error', 'internal error', [
+            build_message(JSON::Validator.fully_validate(schema_path.to_s, result).join("\n"), 'staff')
+          ]
+        end
+      end
+    rescue Timeout::Error
+      container.delete(force: true)
+      handle_timeout('Docker container exceeded time limit.')
+    end
   end
 
   def add_runtime_metrics(result)
   end
 
-  def finalize
+  def finalize(result)
     # save the result
-    @submission.result = @result.to_json
-    @submission.status = Submission.normalize_status(@result['status'])
-    @submission.accepted = @result['accepted']
-    @submission.summary = @result['description']
+    @submission.result = result.to_json
+    @submission.status = Submission.normalize_status(result['status'])
+    @submission.accepted = result['accepted']
+    @submission.summary = result['description']
     @submission.save
 
     # remove path on file system used as temporary working directory for processing the submission
@@ -303,13 +299,14 @@ class SubmissionRunner
 
   def run
     prepare
-    execute
+    result = execute
   rescue Exception => e
-    @result = build_error 'internal error', 'internal error', [
+    result = build_error 'internal error', 'internal error', [
       build_message(e.message + "\n" + e.backtrace.inspect, 'staff')
     ]
   ensure
-    finalize
+    finalize(result)
+    result
   end
 
   # calculates the difference between the biggest and smallest values

@@ -228,7 +228,7 @@ class SubmissionRunner
         name: "dodona-#{@submission.id}", # assuming unique during execution
         OpenStdin: true,
         StdinOnce: true, # closes stdin after first disconnect
-        NetworkDisabled: true,
+        NetworkDisabled: @config['network_disabled'],
         HostConfig: {
           Memory: memory_limit,
           MemorySwap: memory_limit, # memory including swap

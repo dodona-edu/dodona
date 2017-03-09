@@ -1,10 +1,10 @@
 <%
 if user_signed_in?
-  exercise_status_with_deadline = exercise.status_for(current_user, series.try(:deadline))
-  exercise_status_without_deadline = if exercise_status_with_deadline == :correct || series.try(:deadline).nil?
-    exercise_status_with_deadline
+  accepted_before_deadline = exercise.accepted_for(current_user, series.try(:deadline))
+  accepted_without_deadline = if series.try(:deadline).nil?
+    accepted_before_deadline
   else
-    exercise.status_for(current_user)
+    exercise.accepted_for(current_user)
   end
 end
 %>
@@ -17,9 +17,9 @@ end
       <%= raw "<span class='glyphicon glyphicon-exclamation-sign' title='#{t("exercises.index.invalid")}'></span>" if exercise.not_valid? %>
     <% end %>
     <% if user_signed_in? && !current_user.admin? %>
-      <% if exercise_status_without_deadline == :correct %>
-        <span class="glyphicon glyphicon-ok <%= exercise_status_with_deadline == :correct ? 'colored-correct' : 'colored-wrong' %>"></span>
-      <% elsif exercise_status_without_deadline == :wrong %>
+      <% if accepted_without_deadline == true %>
+        <span class="glyphicon glyphicon-ok <%= accepted_before_deadline ? 'colored-correct' : 'colored-wrong' %>"></span>
+      <% elsif accepted_without_deadline == false %>
         <span class="glyphicon glyphicon-remove colored-wrong"></span>
       <% end %>
     <% end %>
@@ -37,17 +37,22 @@ end
   </td>
   <% if user_signed_in? %>
     <td>
-      <% if series && series.deadline? && series.deadline < Time.now %>
-        <% if :correct == exercise_status_with_deadline %>
-          <%= link_to t(".correct"), exercise.last_correct_submission(current_user, series.deadline), class: 'deadline-ok' %>
+      <% if series && series.deadline? && series.deadline < Time.now # deadline passed %>
+        <% if accepted_before_deadline %>
+          <%= link_to t(".correct"), exercise.last_submission(current_user, series.deadline), class: 'deadline-ok' %>
         <% else %>
           <span class='deadline-passed'><%= t "series.show.missed_deadline" %></span>
         <% end %>
-      <% else %>
-        <% if :correct == exercise_status_without_deadline %>
-          <%= link_to t(".correct"), exercise.last_correct_submission(current_user) %>
-        <% elsif :wrong == exercise_status_without_deadline %>
+      <% else # no or future deadline %>
+        <% if accepted_without_deadline == true %>
+          <%= link_to t(".correct"), exercise.last_submission(current_user) %>
+        <% elsif accepted_without_deadline == false %>
           <%= link_to t(".wrong"), exercise.last_submission(current_user) %>
+          <% if !exercise.best_is_last_submission?(current_user) %>
+            <%= link_to exercise.best_submission(current_user), title: t("series.show.best_is_not_last"), class: "btn btn-icon" do %>
+              <span class='glyphicon glyphicon-exclamation-sign colored-warning'></span>
+            <% end %>
+          <% end %>
         <% else %>
           <%= t ".not_solved" %>
         <% end %>

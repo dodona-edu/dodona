@@ -18,21 +18,23 @@
           </thead>
           <tbody>
             <% @users.each do |user| %>
+              <% last_submission = @exercise.last_submission(user) %>
+              <% accepted = last_submission.try(:accepted) %>
               <tr>
                 <td>
-                  <% if :correct == @exercise.status_for(user) %>
+                  <% if accepted == true %>
                     <span class="glyphicon glyphicon-ok"></span>
-                  <% elsif :wrong == @exercise.status_for(user) %>
+                  <% elsif accepted == false %>
                     <span class="glyphicon glyphicon-remove"></span>
                   <% end %>
                 </td>
                 <td><%= link_to user.username, user %></td>
                 <td><%= user.full_name %></td>
                 <td>
-                  <% if :correct == @exercise.status_for(user) %>
-                    <%= link_to "correct", @exercise.last_correct_submission(user) %>
-                  <% elsif :wrong == @exercise.status_for(user) %>
-                    <%= link_to @exercise.last_submission(user).summary, @exercise.last_submission(user) %>
+                  <% if accepted == true %>
+                    <%= link_to "correct", last_submission %>
+                  <% elsif accepted == false %>
+                    <%= link_to last_submission.summary, last_submission %>
                   <% else %>
                     <%= t ".not_solved" %>
                   <% end %>

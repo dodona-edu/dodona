@@ -185,7 +185,9 @@ class Exercise < ApplicationRecord
   end
 
   def best_is_last_submission?(user, deadline = nil)
-    best_submission(user, deadline) == last_submission(user, deadline)
+    last_correct = last_correct_submission(user, deadline)
+    return true if last_correct.nil?
+    last_correct == last_submission(user, deadline)
   end
 
   def best_submission(user, deadline = nil)

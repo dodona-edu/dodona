@@ -17,11 +17,12 @@ class FeedbackTableRenderer
     @current_user = user
     @builder = Builder::XmlMarkup.new
     @code = submission.code
+    @exercise_id = submission.exercise_id
     @programming_language = submission.exercise.programming_language
   end
 
   def parse
-    @builder.div(class: 'feedback-table') do
+    @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
       @builder.div(class: 'row feedback-table-messages') do
         messages(@submission[:messages])
       end

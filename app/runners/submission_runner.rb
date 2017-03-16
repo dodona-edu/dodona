@@ -1,10 +1,10 @@
-require 'json'        # JSON support
-require 'fileutils'   # file system utilities
-require 'securerandom'# random string generators (supports URL safety)
-require 'json-schema' # json schema validation, from json-schema gem
-require 'tmpdir'      # temporary file support
-require 'docker'      # docker client
-require 'timeout'     # to kill the docker after a certain time
+require 'json'         # JSON support
+require 'fileutils'    # file system utilities
+require 'securerandom' # random string generators (supports URL safety)
+require 'json-schema'  # json schema validation, from json-schema gem
+require 'tmpdir'       # temporary file support
+require 'docker'       # docker client
+require 'timeout'      # to kill the docker after a certain time
 
 # base class for runners that handle Dodona submissions
 class SubmissionRunner

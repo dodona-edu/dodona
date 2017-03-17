@@ -30,7 +30,6 @@ Rails.application.routes.draw do
     resources :exercises, only: [:index, :show, :edit, :update] do
       resources :submissions, only: [:index, :create]
       member do
-        get 'users'
         get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: "media"
       end
     end

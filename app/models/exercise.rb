@@ -214,12 +214,6 @@ class Exercise < ApplicationRecord
     submissions.of_user(user).count
   end
 
-  def solving_speed_for(user)
-    subs = submissions.of_user(user)
-    return '' if subs.count < 2
-    distance_of_time_in_words(subs.first.created_at, subs.last.created_at)
-  end
-
   def check_validity
     return if removed?
     self.status = if !(name_nl || name_en)

@@ -48,10 +48,6 @@ class ExercisesController < ApplicationController
     end
   end
 
-  def users
-    @users = User.all.order(last_name: :asc)
-  end
-
   def media
     file = File.join(@exercise.media_path, params[:media])
     raise ActionController::RoutingError, 'Not Found' unless File.file? file

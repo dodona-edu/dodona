@@ -20,7 +20,7 @@ class Series < ApplicationRecord
   enum visibility: [:open, :hidden, :closed]
 
   belongs_to :course
-  has_many :series_memberships
+  has_many :series_memberships, dependent: :destroy
   has_many :exercises, through: :series_memberships
 
   validates :course, presence: true
@@ -40,7 +40,7 @@ class Series < ApplicationRecord
       info = CSV.generate(force_quotes: true) do |csv|
         csv << %w(filename status submission_id name)
         exercises.each do |ex|
-          submission = ex.best_last_submission(user, deadline)
+          submission = ex.last_submission(user, deadline)
           # write the submission
           zio.put_next_entry(ex.file_name)
           zio.write submission&.code

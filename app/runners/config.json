@@ -1,4 +1,5 @@
 {
 "memory_limit": 100000000,
-"time_limit": 42
+"time_limit": 42,
+"network_disabled": true
 }

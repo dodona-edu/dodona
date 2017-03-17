@@ -23,6 +23,13 @@
             <% end %>
           </li>
         <% end %>
+        <% if policy(series).destroy? %>
+          <li>
+            <%= link_to series_path(series), method: :delete, data: { confirm: t("series.delete.confirm") } do %>
+              <span class='glyphicon glyphicon-trash'></span> <%= t("series.delete.title") %>
+            <% end %>
+          </li>
+        <% end %>
         <% if policy(series).edit? && series.hidden? %>
           <li>
             <%= link_to token_show_series_path(series, series.token) do %>

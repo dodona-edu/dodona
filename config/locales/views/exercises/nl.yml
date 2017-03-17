@@ -31,8 +31,3 @@ nl:
       not_visible: Deze oefening is niet zichtbaar voor studenten.
       alert_not_valid: Er is iets fout met deze oefening. Je kan momenteel niet indienen, maar je kan wel je oude oplossingen bekijken.
       alert_removed: Deze oefening is niet meer beschikbaar, maar je kan nog steeds je oude oplossingen bekijken.
-    users:
-      overview: Overzicht
-      solutions: Oplossingen
-      speed: Snelheid
-      not_solved: niet opgelost

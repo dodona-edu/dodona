@@ -26,6 +26,9 @@ nl:
       exercises_in_series: Oefeningen in deze reeks
       add_exercise: oefening toevoegen
       remove_exercise: oefening verwijderen
+    delete:
+      title: Verwijder reeks
+      confirm: Bent u zeker dat u deze reeks wilt verwijderen?
     deadline:
       ago: geleden
     scoresheet:

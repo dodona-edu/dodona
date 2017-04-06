@@ -29,6 +29,7 @@ class Series < ApplicationRecord
   before_save :set_token
 
   default_scope { order(created_at: :desc) }
+  scope :in_teachers, ->(user) { joins('LEFT JOIN course_memberships ON series.course_id = course_memberships.course_id').where('course_memberships.status = 1 AND course_memberships.user_id = ?', user.id) }
 
   def deadline?
     !deadline.blank?
@@ -56,6 +57,10 @@ class Series < ApplicationRecord
     stringio.rewind
     zip_data = stringio.sysread
     { filename: filename, data: zip_data }
+  end
+
+  def is_teacher?(user)
+    course.is_teacher?(user)
   end
 
   private

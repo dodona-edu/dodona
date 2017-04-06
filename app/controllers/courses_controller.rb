@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe, :subscribe_with_secret, :scoresheet]
+  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe, :subscribe_with_secret, :scoresheet, :toggle_teacher]
 
   # GET /courses
   # GET /courses.json
@@ -39,7 +39,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        @course.users << current_user
+        CourseMembership.new(user: current_user, course: @course, status: 1).save
         format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
         format.json { render :show, status: :created, location: @course }
       else
@@ -102,6 +102,28 @@ class CoursesController < ApplicationController
     sheet = @course.scoresheet
     filename = "scoresheet-#{@course.name.parameterize}.csv"
     send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
+  end
+
+  def toggle_teacher
+    user = User.find(params[:user_id])
+    if @course.is_teacher?(user)
+      remove_teacher(user)
+    else
+      add_teacher(user)
+    end
+    head :ok
+  end
+
+  def add_teacher(user)
+    entry = CourseMembership.where(course_id: @course.id, user: user.id).first()
+    entry.status = 1
+    entry.save
+  end
+
+  def remove_teacher(user)
+    entry = CourseMembership.where(course_id: @course.id, user: user.id).first()
+    entry.status = nil
+    entry.save
   end
 
   private

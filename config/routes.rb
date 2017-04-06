@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :series
       member do
         post 'subscribe'
+        post 'toggle_teacher'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: "subscribe_with_secret"
       end

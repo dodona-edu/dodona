@@ -1,4 +1,5 @@
 class CoursePolicy < ApplicationPolicy
+
   class Scope < Scope
     def resolve
       scope
@@ -18,7 +19,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def edit?
-    user&.admin?
+    user&.zeus? or record.is_teacher?(user)
   end
 
   def create?
@@ -26,7 +27,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def update?
-    user&.admin?
+    user&.zeus? or record.is_teacher?(user)
   end
 
   def destroy?
@@ -34,7 +35,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def list_members?
-    user&.admin?
+    user&.zeus? or record.is_teacher?(user)
   end
 
   def subscribe?
@@ -46,11 +47,15 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def scoresheet?
-    user&.admin?
+    user&.zeus? or record.is_teacher?(user)
   end
 
   def add_series?
-    user&.admin?
+    user&.zeus? or record.is_teacher?(user)
+  end
+
+  def toggle_teacher?
+    user&.zeus? or record.is_teacher?(user)
   end
 
   def permitted_attributes

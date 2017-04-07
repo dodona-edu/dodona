@@ -19,7 +19,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def edit?
-    user&.zeus? or record.is_teacher?(user)
+    record.teacher?(user)
   end
 
   def create?
@@ -27,7 +27,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def update?
-    user&.zeus? or record.is_teacher?(user)
+    record.teacher?(user)
   end
 
   def destroy?
@@ -35,7 +35,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def list_members?
-    user&.zeus? or record.is_teacher?(user)
+    record.teacher?(user)
   end
 
   def subscribe?
@@ -47,15 +47,15 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def scoresheet?
-    user&.zeus? or record.is_teacher?(user)
+    record.teacher?(user)
   end
 
   def add_series?
-    user&.zeus? or record.is_teacher?(user)
+    record.teacher?(user)
   end
 
   def toggle_teacher?
-    user&.zeus? or record.is_teacher?(user)
+    record.teacher?(user)
   end
 
   def permitted_attributes

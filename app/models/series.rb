@@ -59,8 +59,8 @@ class Series < ApplicationRecord
     { filename: filename, data: zip_data }
   end
 
-  def is_teacher?(user)
-    course.is_teacher?(user)
+  def teacher?(user)
+    course.teacher?(user)
   end
 
   private

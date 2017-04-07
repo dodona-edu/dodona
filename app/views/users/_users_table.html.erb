@@ -16,7 +16,7 @@
           <% if user.zeus? %>
             <span class="glyphicon glyphicon-king" title='zeus'></span>
           <% end %>
-          <% if user.staff? and not defined?(@course)%>
+          <% if user.staff? %>
             <span class="glyphicon glyphicon-queen" title='staff'></span>
           <% end %>
           <% if user.username.blank? %>
@@ -39,7 +39,7 @@
             <%= link_to edit_user_path(user), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
           <% end %>
           <% if defined?(@course) and policy(@course).toggle_teacher? and user.admin?%>
-           <%= link_to toggle_teacher_course_path(@course, :user_id => user.id), method: :post, :class => "toggleTeacher btn btn-sm #{user.teacher_of?(@course) ? 'btn-success' : 'btn-default'}", :remote => true do %><span class="glyphicon glyphicon-queen"></span><% end %>
+           <%= link_to toggle_teacher_course_path(@course, :user_id => user.id), method: :post, :class => "toggleTeacher btn btn-sm btn-default #{'disabled' if not user.teaches?(@course)}", :remote => true do %><span class="glyphicon glyphicon-education"></span><% end %>
           <% end %>
           <% if policy(user).destroy? %>
             <%= link_to user, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>

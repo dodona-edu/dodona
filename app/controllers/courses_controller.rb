@@ -106,7 +106,7 @@ class CoursesController < ApplicationController
 
   def toggle_teacher
     user = User.find(params[:user_id])
-    if @course.is_teacher?(user)
+    if @course.teacher?(user)
       remove_teacher(user)
     else
       add_teacher(user)
@@ -116,8 +116,7 @@ class CoursesController < ApplicationController
 
   def add_teacher(user)
     entry = CourseMembership.where(course_id: @course.id, user: user.id).first()
-    entry.status = 1
-    entry.save
+    entry.update(status: 1)
   end
 
   def remove_teacher(user)

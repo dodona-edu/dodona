@@ -4,7 +4,7 @@ class SeriesPolicy < ApplicationPolicy
       if user&.zeus?
         scope.all
       elsif user&.admin?
-        scope.in_teachers(user)
+        scope.in_teachers(user) or scope.where(visibility: :open)
       else
         scope.where(visibility: :open)
       end
@@ -28,23 +28,23 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def new?
-    user&.zeus? or record.is_teacher?(user)
+    record.in_teachers(user)
   end
 
   def edit?
-    user&.zeus? or record.is_teacher?(user)
+    record.teacher?(user)
   end
 
   def create?
-    user&.zeus? or record.is_teacher?(user)
+    record.in_teachers(user)
   end
 
   def update?
-    user&.zeus? or record.is_teacher?(user)
+    record.teacher?(user)
   end
 
   def destroy?
-    user&.zeus? or record.is_teacher?(user)
+    record.teacher?(user)
   end
 
   def download_solutions?
@@ -52,7 +52,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def modify_exercises?
-    user&.zeus? or record.is_teacher?(user)
+   record.teacher?(user)
   end
 
   def add_exercise?

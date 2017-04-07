@@ -20,7 +20,7 @@
           </thead>
           <tbody>
             <% @series.each do |series| %>
-              <% if policy(series).edit? %>
+              <% if policy(series).show? %>
                 <tr>
                   <td><%= link_to series.name, series %></td>
                   <td><%= "#{series.course.name} (#{series.course.formatted_year})" %> </td>

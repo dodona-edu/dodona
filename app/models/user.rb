@@ -80,8 +80,8 @@ class User < ApplicationRecord
     courses.include? course
   end
 
-  def teacher_of?(course)
-    course.is_teacher?(self)
+  def teaches?(course)
+    course.teacher?(self)
   end
 
   def cas_extra_attributes=(extra_attributes)

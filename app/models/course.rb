@@ -54,7 +54,7 @@ class Course < ApplicationRecord
     end
   end
 
-  def is_teacher?(user)
-    course_memberships.where(status: 1).collect(&:user).any?{|u| u.id == user.id}
+  def teacher?(user)
+    course_memberships.where(status: 1).collect(&:user).any?{|u| u.id == user.id} or user.zeus?
   end
 end

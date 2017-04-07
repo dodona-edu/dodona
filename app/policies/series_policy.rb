@@ -56,15 +56,15 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def add_exercise?
-    user&.zeus? or record.is_teacher?(user)
+    modify_exercises?
   end
 
   def remove_exercise?
-    user&.zeus? or record.is_teacher?(user)
+    modify_exercises?
   end
 
   def reorder_exercises?
-    user&.zeus? or record.is_teacher?(user)
+    modify_exercises?
   end
 
   def scoresheet?

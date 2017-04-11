@@ -91,6 +91,9 @@ gem 'has_scope'
 # generating zip files
 gem 'rubyzip'
 
+# add request server timings to the devtools
+gem 'rails_server_timings'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -112,4 +115,3 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # interfacing with docker
 gem 'docker-api'
-

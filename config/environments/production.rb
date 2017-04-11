@@ -86,6 +86,9 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Do not add server timings in production
+  config.server_timings.enabled = false
+
   config.middleware.use ExceptionNotification::Rack,
                         email: {
                           email_prefix: '[Dodona] ',

@@ -121,12 +121,8 @@ class PythiaRenderer < FeedbackTableRenderer
     @builder.div(class: 'diff') do
       @builder.ul do
         diff.each do |diff_line|
-          if diff_line[4]
-            @builder << (diff_line[2] || '')
-          else
-            @builder << (diff_line[2] || '')
-            @builder << (diff_line[3] || '')
-          end
+          @builder << (diff_line[2] || '')
+          @builder << (diff_line[3] || '') unless diff_line[4]
         end
       end
     end
@@ -154,11 +150,10 @@ class PythiaRenderer < FeedbackTableRenderer
   def format_lint_message(message)
     lines = message.split("\n")
     @builder.text! lines[0]
-    if lines.length > 1
-      @builder.br
-      @builder.div(class: 'code') do
-        @builder.text! lines.drop(1).join("\n")
-      end
+    return unless lines.length > 1
+    @builder.br
+    @builder.div(class: 'code') do
+      @builder.text! lines.drop(1).join("\n")
     end
   end
 

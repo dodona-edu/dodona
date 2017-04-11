@@ -12,7 +12,7 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def show_code_tab
     return true unless @submission[:groups]
-    !@submission[:groups].any? { |t| t[:data][:source_annotations] }
+    @submission[:groups].none? { |t| t[:data][:source_annotations] }
   end
 
   def tab_content(t)
@@ -42,7 +42,7 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def output_message(m)
-    if m[:format].in?(%w(traceback))
+    if m[:format].in?(%w[traceback])
       @builder.div(class: 'code wrong') do
         @builder.text! m[:description]
       end
@@ -61,9 +61,11 @@ class PythiaRenderer < FeedbackTableRenderer
             @builder.span(class: 'glyphicon glyphicon-expand')
           end
         end
-        @builder.div(class: 'col-xs-12 description') do
-          message(g[:description])
-        end if g[:description]
+        if g[:description]
+          @builder.div(class: 'col-xs-12 description') do
+            message(g[:description])
+          end
+        end
         messages(g[:messages])
         g[:groups]&.each { |tc| testcase(tc) }
       end
@@ -165,11 +167,11 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def convert_lint_type(type)
-    if type.in? %w(fatal error)
+    if type.in? %w[fatal error]
       'error'
     elsif type.in? ['warning']
       'warning'
-    elsif type.in? %w(refactor convention)
+    elsif type.in? %w[refactor convention]
       'error'
     else
       'warning'

@@ -68,7 +68,7 @@ Rails.application.configure do
                         email: {
                           email_prefix: '[Dodona-dev] ',
                           sender_address: %("Dodona" <dodona@ugent.be>),
-                          exception_recipients: %w(dodona@ugent.be)
+                          exception_recipients: %w[dodona@ugent.be]
                         }
   config.action_mailer.delivery_method = :sendmail
   # Defaults to:

@@ -1,1 +1,1 @@
-json.partial! "series/series", series: @series
+json.partial! 'series/series', series: @series

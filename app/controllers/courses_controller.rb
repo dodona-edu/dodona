@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe, :subscribe_with_secret, :scoresheet]
+  before_action :set_course, only: %i[show edit update destroy subscribe subscribe_with_secret scoresheet]
 
   # GET /courses
   # GET /courses.json

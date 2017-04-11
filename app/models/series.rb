@@ -17,7 +17,7 @@
 require 'csv'
 
 class Series < ApplicationRecord
-  enum visibility: [:open, :hidden, :closed]
+  enum visibility: %i[open hidden closed]
 
   belongs_to :course
   has_many :series_memberships, dependent: :destroy
@@ -31,14 +31,14 @@ class Series < ApplicationRecord
   default_scope { order(created_at: :desc) }
 
   def deadline?
-    !deadline.blank?
+    deadline.present?
   end
 
   def zip_solutions(user, with_info: false)
     filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
     stringio = Zip::OutputStream.write_buffer do |zio|
       info = CSV.generate(force_quotes: true) do |csv|
-        csv << %w(filename status submission_id name)
+        csv << %w[filename status submission_id name]
         exercises.each do |ex|
           submission = ex.last_submission(user, deadline)
           # write the submission

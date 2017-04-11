@@ -16,7 +16,7 @@ module Dodona
 
     Rails.application.config.time_zone = 'Brussels'
 
-    Rails.application.config.i18n.available_locales = %w(en nl)
+    Rails.application.config.i18n.available_locales = %w[en nl]
     Rails.application.config.i18n.default_locale = :nl
     Rails.application.config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 

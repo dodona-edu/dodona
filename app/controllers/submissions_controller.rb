@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :set_submission, only: [:show, :download, :evaluate, :edit, :media]
+  before_action :set_submission, only: %i[show download evaluate edit media]
   skip_before_action :verify_authenticity_token, only: [:create]
 
   has_scope :by_filter, as: 'filter'
@@ -22,8 +22,7 @@ class SubmissionsController < ApplicationController
     @title = I18n.t('submissions.index.title')
   end
 
-  def show
-  end
+  def show; end
 
   def create
     authorize Submission

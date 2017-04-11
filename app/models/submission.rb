@@ -36,10 +36,10 @@ class Submission < ApplicationRecord
   scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }
   scope :in_course, ->(course) { joins('LEFT JOIN course_memberships ON submissions.user_id = course_memberships.user_id').where('course_memberships.course_id = ?', course.id) }
 
-  scope :by_exercise_name, -> (name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
-  scope :by_status, -> (status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
-  scope :by_username, -> (username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
-  scope :by_filter, -> (query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
+  scope :by_exercise_name, ->(name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+  scope :by_status, ->(status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
+  scope :by_username, ->(username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
+  scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
 
   def evaluate_delayed(priority = :normal)
     p_value = if priority == :high

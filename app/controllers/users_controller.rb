@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :impersonate, :photo, :token_sign_in]
+  before_action :set_user, only: %i[show edit update destroy impersonate photo token_sign_in]
 
   has_scope :by_permission
   has_scope :by_name, as: 'filter'
@@ -93,7 +93,7 @@ class UsersController < ApplicationController
 
   def token_sign_in
     token = params[:token]
-    sign_in(@user) if !token.blank? && token == @user.token
+    sign_in(@user) if token.present? && token == @user.token
     redirect_to root_path
   end
 

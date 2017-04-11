@@ -40,6 +40,6 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    [:code, :exercise_id]
+    %i[code exercise_id]
   end
 end

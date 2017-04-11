@@ -8,7 +8,7 @@ module ApplicationHelper
     string.gsub('"', '\"')
   end
 
-  def submission_status_icon submission
+  def submission_status_icon(submission)
     if submission.nil?
       '<span class="glyphicon glyphicon-minus colored-wrong"></span>'
     elsif submission.queued? || submission.running?

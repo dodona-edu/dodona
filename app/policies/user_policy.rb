@@ -55,7 +55,7 @@ class UserPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.admin?
-      [:username, :ugent_id, :first_name, :last_name, :email, :permission]
+      %i[username ugent_id first_name last_name email permission]
     else
       []
     end

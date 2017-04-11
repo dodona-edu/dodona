@@ -1,6 +1,6 @@
 require 'zip'
 class SeriesController < ApplicationController
-  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise, :reorder_exercises, :download_solutions, :token_show, :scoresheet]
+  before_action :set_series, only: %i[show edit update destroy add_exercise remove_exercise reorder_exercises download_solutions token_show scoresheet]
 
   # GET /series
   # GET /series.json

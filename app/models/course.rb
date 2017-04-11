@@ -24,6 +24,8 @@ class Course < ApplicationRecord
   validates :year, presence: true
 
   default_scope { order(year: :desc, name: :asc) }
+  scope :in_teachers, ->(user) { joins('LEFT JOIN course_memberships ON courses.id = course_memberships.course_id').where('course_memberships.status = 1 AND course_memberships.user_id = ?', user.id) }
+
 
   before_create :generate_secret
 
@@ -50,5 +52,9 @@ class Course < ApplicationRecord
         csv << row
       end
     end
+  end
+
+  def is_teacher?(user)
+    course_memberships.where(status: 1).collect(&:user).any?{|u| u.id == user.id}
   end
 end

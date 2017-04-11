@@ -80,6 +80,10 @@ class User < ApplicationRecord
     courses.include? course
   end
 
+  def teacher_of?(course)
+    course.is_teacher?(self)
+  end
+
   def cas_extra_attributes=(extra_attributes)
     Rails.logger.debug(extra_attributes)
     extra_attributes.each do |name, value|

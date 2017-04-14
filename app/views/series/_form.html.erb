@@ -28,7 +28,7 @@
         </span>
       </div>
     </div>
-    <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".deadline-help" %></span>
+    <span class="help-block col-sm-offset-4 col-sm-8"><%= t(".deadline-help", time_zone: current_user.time_zone) %></span>
   </div>
   <div class="field form-group">
     <%= f.label :visibility, :class => "col-sm-4 control-label" %>

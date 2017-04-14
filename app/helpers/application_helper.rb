@@ -9,17 +9,18 @@ module ApplicationHelper
   end
 
   def submission_status_icon(submission)
-    if submission.nil?
-      '<span class="glyphicon glyphicon-minus colored-wrong"></span>'
-    elsif submission.queued? || submission.running?
-      '<span class="glyphicon glyphicon-hourglass"></span>'
-    elsif submission.unknown?
-      '<span class="glyphicon glyphicon-alert colored-warning"></span>'
-    elsif submission.accepted
-      '<span class="glyphicon glyphicon-ok colored-correct"></span>'
-    else
-      '<span class="glyphicon glyphicon-remove colored-wrong"></span>'
-    end.html_safe
+    icon, color = {
+      nil                     => ['minus',     'wrong'],
+      'correct'               => ['ok',        'correct'],
+      'wrong'                 => ['remove',    'wrong'],
+      'time limit exceeded'   => ['hourglass', 'wrong'],
+      'running'               => ['refresh',   'default'],
+      'queued'                => ['refresh',   'default'],
+      'runtime error'         => ['remove',    'wrong'],
+      'compilation error'     => ['flash',     'wrong'],
+      'memory limit exceeded' => ['hdd',       'wrong']
+    }[submission&.status] ||    ['alert',     'warning']
+    "<span class=\"glyphicon glyphicon-#{icon} colored-#{color}\"></span>".html_safe
   end
 
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer

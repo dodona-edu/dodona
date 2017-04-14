@@ -32,6 +32,7 @@ class User < ApplicationRecord
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
 
   before_save :set_token
+  before_save :set_time_zone
 
   scope :by_permission, ->(permission) { where(permission: permission) }
   scope :by_name, ->(name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
@@ -106,5 +107,9 @@ class User < ApplicationRecord
     elsif token.blank?
       self.token = SecureRandom.urlsafe_base64(16)
     end
+  end
+
+  def set_time_zone
+    self.time_zone = 'Seoul' if email =~ /ghent.ac.kr$/
   end
 end

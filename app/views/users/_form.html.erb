@@ -34,6 +34,10 @@
     <%= f.label :email, :class => "col-sm-4 control-label" %>
     <div class="col-sm-8"><%= f.email_field :email, class: "form-control" , disabled: !f.permission?(:email) %></div>
   </div>
+  <div class="field form-group">
+    <%= f.label :time_zone, :class => "col-sm-4 control-label" %>
+    <div class="col-sm-8"><%= f.time_zone_select(:time_zone, [ ActiveSupport::TimeZone['Brussels'], ActiveSupport::TimeZone['Seoul'] ], {}, {class: "form-control" , disabled: !f.permission?(:time_zone)}) %></div>
+  </div>
   <% if f.permission?(:permission) %>
     <div class="field form-group">
       <%= f.label :permission, :class => "col-sm-4 control-label" %>

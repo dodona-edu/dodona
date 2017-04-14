@@ -70,4 +70,5 @@ en:
         last_name: Last name
         name: Name
         email: Email
+        time_zone: Time zone
         permission: Permission

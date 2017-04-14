@@ -5,12 +5,10 @@
 #  id          :integer          not null, primary key
 #  exercise_id :integer
 #  user_id     :integer
-#  code        :text(65535)
 #  summary     :string(255)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :integer
-#  result      :binary(16777215)
 #  accepted    :boolean          default(FALSE)
 #
 
@@ -20,6 +18,9 @@ class Submission < ApplicationRecord
   belongs_to :exercise
   belongs_to :user
   has_one :judge, through: :exercise
+  has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
+
+  delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
 
   validates :exercise, presence: true
   validates :user, presence: true
@@ -40,6 +41,11 @@ class Submission < ApplicationRecord
   scope :by_status, ->(status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
   scope :by_username, ->(username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
   scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
+
+  def initialize(params)
+    super
+    self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
+  end
 
   def evaluate_delayed(priority = :normal)
     p_value = if priority == :high
@@ -63,14 +69,6 @@ class Submission < ApplicationRecord
     runner = judge.runner.new(self)
 
     runner.run
-  end
-
-  def result=(result)
-    self[:result] = ActiveSupport::Gzip.compress(result)
-  end
-
-  def result
-    ActiveSupport::Gzip.decompress(self[:result])
   end
 
   def code_cannot_contain_emoji

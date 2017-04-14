@@ -108,3 +108,9 @@ function logToGoogle(category, action, label, value) {
         ga('send', 'event', category, action, label, value);
     }
 }
+
+function checkTimeZone(offset) {
+    if(offset !== new Date().getTimezoneOffset()) {
+        $("#time-zone-warning").removeClass('hidden');
+    }
+}

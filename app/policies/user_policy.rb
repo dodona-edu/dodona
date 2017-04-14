@@ -18,7 +18,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def edit?
-    user && (user.zeus? || (user.staff? && !record.zeus?))
+    return false unless user
+    return true if user == record
+    return true if user.zeus?
+    return true if user.staff? && !record.zeus?
+    false
   end
 
   def create?

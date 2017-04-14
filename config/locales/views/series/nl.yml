@@ -3,7 +3,7 @@ nl:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       visibility-help: Een verborgen reeks wordt niet op de vakpagina getoond en is enkel toegankelijk via de token link.
-      deadline-help: Een deadline instellen is optioneel.
+      deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
     index:
       title: Reeksen
       load_more: Meer reeksen laden

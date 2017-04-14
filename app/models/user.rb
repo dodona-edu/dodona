@@ -13,6 +13,7 @@
 #  updated_at :datetime         not null
 #  lang       :string(255)      default("nl")
 #  token      :string(255)
+#  time_zone  :string(255)      default("Brussels")
 #
 
 require 'securerandom'
@@ -53,10 +54,6 @@ class User < ApplicationRecord
   def photo
     photo = PHOTOS_LOCATION.join((ugent_id || '') + '.jpg')
     photo if File.file? photo
-  end
-
-  def time_zone
-    'Brussels'
   end
 
   def attempted_exercises

@@ -10,14 +10,14 @@ module ApplicationHelper
 
   def submission_status_icon(submission)
     icon, color = {
-      nil                     => %w[minus wrong],
+      nil                     => %w[minus default],
       'correct'               => %w[ok correct],
       'wrong'                 => %w[remove wrong],
-      'time limit exceeded'   => %w[hourglass wrong],
-      'running'               => %w[refresh default],
-      'queued'                => %w[refresh default],
-      'runtime error'         => %w[remove wrong],
-      'compilation error'     => %w[flash wrong],
+      'time limit exceeded'   => %w[time wrong],
+      'running'               => %w[hourglass default],
+      'queued'                => %w[hourglass default],
+      'runtime error'         => %w[flash wrong],
+      'compilation error'     => %w[wrench wrong],
       'memory limit exceeded' => %w[hdd wrong]
     }[submission&.status] ||     %w[alert warning]
     "<span class=\"glyphicon glyphicon-#{icon} colored-#{color}\"></span>".html_safe

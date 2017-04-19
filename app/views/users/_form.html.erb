@@ -1,5 +1,5 @@
 <div class="col-md-6 col-md-push-6">
-  <%= render partial: "token_explanation" %>
+  <%= render partial: "token_explanation" if current_user.admin? %>
 </div>
 <div class="col-md-6 col-md-pull-6">
 <%= form_for(user, :html => {:class => 'form-horizontal'}) do |f| %>
@@ -16,7 +16,7 @@
   <div class="field form-group">
     <%= f.label :username, :class => "col-sm-4 control-label" %>
     <div class="col-sm-8"><%= f.text_field :username, class: "form-control" , disabled: !f.permission?(:username) %></div>
-    <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".username-help" %></span>
+    <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".username-help" if current_user.admin? %></span>
   </div>
   <div class="field form-group">
     <%= f.label :ugent_id, :class => "col-sm-4 control-label" %>
@@ -33,6 +33,10 @@
   <div class="field form-group">
     <%= f.label :email, :class => "col-sm-4 control-label" %>
     <div class="col-sm-8"><%= f.email_field :email, class: "form-control" , disabled: !f.permission?(:email) %></div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :time_zone, :class => "col-sm-4 control-label" %>
+    <div class="col-sm-8"><%= f.time_zone_select(:time_zone, [ ActiveSupport::TimeZone['Brussels'], ActiveSupport::TimeZone['Seoul'] ], {}, {class: "form-control" , disabled: !f.permission?(:time_zone)}) %></div>
   </div>
   <% if f.permission?(:permission) %>
     <div class="field form-group">

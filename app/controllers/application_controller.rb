@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
 
   around_action :user_time_zone, if: :current_user
 
+  before_action :set_time_zone_offset
+
   skip_before_action :verify_authenticity_token, if: :js_request?
 
   impersonates :user
@@ -68,5 +70,9 @@ class ApplicationController < ActionController::Base
 
   def user_time_zone(&block)
     Time.use_zone(current_user.time_zone, &block)
+  end
+
+  def set_time_zone_offset
+    @time_zone_offset = Time.zone.now.utc_offset / -60
   end
 end

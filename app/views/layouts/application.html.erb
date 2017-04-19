@@ -43,6 +43,11 @@
               <%= content_tag(:div, raw("<strong>#{t("layout.messages.success")}!</strong> ")+value, :class => "alert alert-success") if key == "success" %>
             <% end %>
           <% end %>
+          <% if user_signed_in? %>
+            <div class='alert alert-warning hidden' id="time-zone-warning">
+              <strong><%= t("layout.messages.warning") %></strong> <%= t("layout.messages.time_zone_html", time_zone: current_user.time_zone, profile_edit: edit_user_path(current_user)) %>
+            </div>
+          <% end %>
           <% if user_signed_in? && current_user != true_user %>
             <div class='alert alert-info'>
               <%= t("layout.impersonate.impersonating_user")%>
@@ -64,6 +69,7 @@
     <script>
       I18n = I18n || {};
       I18n.locale = "<%= I18n.locale %>";
+      checkTimeZone(<%= @time_zone_offset %>);
     </script>
   </body>
 </html>

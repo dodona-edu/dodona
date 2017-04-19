@@ -8,12 +8,13 @@
 
 set -o pipefail -e
 
-mount /mnt
+mount /mnt/backup
+trap 'umount /mnt/backup' EXIT
 
 user="dodona"
 db="dodona"
 
-dumpdir="/mnt/$(date +"%Y-%m-%d %H:%M:%S")"
+dumpdir="/mnt/backup/$(date +"%Y-%m-%d %H:%M:%S")"
 mkdir "$dumpdir"
 
 echo -n "DB password: "
@@ -29,7 +30,5 @@ for t in $(mysql -NBA -u "$user" -p"$pass" -D "$db" -e 'show tables'); do
     mysqldump -u "$user" -p"$pass" "$db" "$t" | gzip > "$dumpdir/$t.sql"
     tbl_count=$(( tbl_count + 1 ))
 done
-
-umount /mnt
 
 echo "$tbl_count tables dumped from database '$db' into $dumpdir"

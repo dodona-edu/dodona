@@ -27,6 +27,7 @@ class FeedbackTableRenderer
         messages(@submission[:messages])
       end
       tabs(@submission)
+      init_js
     end.html_safe
   end
 
@@ -228,6 +229,12 @@ class FeedbackTableRenderer
       @builder.text! code
     end
     @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
+  end
+
+  def init_js
+    @builder.script do
+      @builder << 'init_submission_show();'
+    end
   end
 
   def determine_tab_diff_type(tab)

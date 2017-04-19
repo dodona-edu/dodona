@@ -434,3 +434,47 @@ a.anchor {
         width: 0%
     }
 }
+
+// callouts, taken from the bootstrap docs
+/* Common styles for all types */
+.callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+.callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    line-height: 1.1;
+}
+.callout p:last-child {
+    margin-bottom: 0;
+}
+.callout code {
+    border-radius: 3px;
+}
+/* Tighten up space between multiple callouts */
+.callout + .callout {
+    margin-top: -5px;
+}
+/* Variations */
+.callout-danger {
+    border-left-color: @danger-500;
+}
+.callout-danger h4 {
+    color: @danger-500;
+}
+.callout-warning {
+    border-left-color: @warning-500;
+}
+.callout-warning h4 {
+    color: @warning-500;
+}
+.callout-info {
+    border-left-color: @info-500;
+}
+.callout-info h4 {
+    color: @info-500;
+}

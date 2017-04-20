@@ -9,12 +9,15 @@ function init_submission_show() {
             var tab = $(this).data("tab") || "code";
             var element = $(this).data("element");
             var line = $(this).data("line");
+
+            $(".tab-link-marker").removeClass("tab-link-marker");
             $(".feedback-table .nav-tabs > li a").filter(function () {
                 return $(this).attr("href").indexOf("#" + tab) === 0;
             }).tab('show');
-            if (element) {
+            if (element !== undefined) {
                 $("#element").addClass("tab-link-marker");
-            } else {
+            }
+            if (line !== undefined) {
                 var Range = ace.require('ace/range').Range;
                 var editor = ace.edit("editor-result");
                 editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line");

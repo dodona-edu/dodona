@@ -66,7 +66,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def scoresheet?
-    user&.zeus?
+    user&.admin?
   end
 
   def permitted_attributes

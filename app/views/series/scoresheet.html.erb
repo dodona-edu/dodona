@@ -7,10 +7,10 @@
         </h2>
       </div>
       <div class="card-supporting-text">
-        <table class="table">
+        <table class="table scoresheet-table">
           <thead>
             <tr>
-              <th><%= t ".user" %></th>
+              <th></th>
               <% @exercises.each do |exercise| %>
                 <th class="status-icon-header"><%= exercise.name %></th>
               <% end %>

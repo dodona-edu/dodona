@@ -1,18 +1,25 @@
 /* globals ace */
 function init_submission_show() {
     function init() {
-        initCodeLinks();
+        initTabLinks();
     }
 
-    function initCodeLinks() {
-        $("span.source-link").click(function () {
+    function initTabLinks() {
+        $("a.tab-link").click(function () {
+            var tab = $(this).data("tab") || "code";
+            var element = $(this).data("element");
             var line = $(this).data("line");
-            var Range = ace.require('ace/range').Range
             $(".feedback-table .nav-tabs > li a").filter(function () {
-                return $(this).attr("href").indexOf("#code") == 0;
+                return $(this).attr("href").indexOf("#" + tab) === 0;
             }).tab('show');
-            var editor = ace.edit("editor-result");
-            editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line line-marker", "line");
+            if (element) {
+                $("#element").addClass("tab-link-marker");
+            } else {
+                var Range = ace.require('ace/range').Range;
+                var editor = ace.edit("editor-result");
+                editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line");
+            }
+            return false;
         });
     }
 

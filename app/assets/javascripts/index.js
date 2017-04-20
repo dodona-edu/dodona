@@ -1,10 +1,13 @@
 /* globals delay, getURLParameter, updateURLParameter */
-function init_filter_index(baseUrl, eager) {
+function init_filter_index(baseUrl, eager, actions) {
     var PARAM = "filter";
     var $filter;
 
     function init() {
         initFilter();
+        if (actions) {
+            initActions();
+        }
         if (eager) {
             search();
         }
@@ -19,6 +22,14 @@ function init_filter_index(baseUrl, eager) {
         if (param !== "") {
             $filter.val(param);
         }
+    }
+
+    function initActions() {
+        var $actions = $(".table-toolbar-tools .actions");
+        $actions.removeClass("hidden");
+        actions.forEach(function (action) {
+            $actions.find("ul").append("<li><a href='" + action.action + "'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a></li>");
+        });
     }
 
     function search() {

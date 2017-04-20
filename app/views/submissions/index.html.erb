@@ -13,7 +13,7 @@
       </div>
       <div class="card-supporting-text">
         <% if current_user && current_user.admin? %>
-          <%= render partial: 'layouts/searchbar' %>
+          <%= render partial: 'layouts/searchbar', locals: {actions: [{icon: 'repeat', text: 'Rejudge submissions', action: '/'}]} %>
         <% end %>
         <div id="submissions-table-wrapper">
           <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise, remote_links: false}  %>

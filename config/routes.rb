@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     end
 
     resources :submissions, only: [:index, :show, :create, :edit] do
+      post 'mass_rejudge', on: :collection
       member do
         get 'download'
         get 'evaluate'

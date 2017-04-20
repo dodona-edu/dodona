@@ -28,7 +28,20 @@ function init_filter_index(baseUrl, eager, actions) {
         var $actions = $(".table-toolbar-tools .actions");
         $actions.removeClass("hidden");
         actions.forEach(function (action) {
-            $actions.find("ul").append("<li><a href='" + action.action + "'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a></li>");
+            var $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");
+            $link.appendTo($actions.find("ul"));
+            $link.wrap("<li></li>");
+            $link.click(function () {
+                var val = $filter.val();
+                var url = updateURLParameter(action.action, PARAM, val);
+                $.post(url, {
+                    format: "js"
+                }, function (data) {
+                    showNotification(data.message);
+                    search();
+                });
+                return false;
+            });
         });
     }
 

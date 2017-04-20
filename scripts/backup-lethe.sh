@@ -17,9 +17,7 @@ db="dodona"
 dumpdir="/mnt/backup/$(date +"%Y-%m-%d %H:%M:%S")"
 mkdir "$dumpdir"
 
-echo -n "DB password: "
-read -s pass
-echo
+pass="$(cat $(dirname $0)/pass)"
 
 echo "Dumping tables into separate SQL command files for database '$db' into $dumpdir"
 

@@ -50,8 +50,8 @@ class SubmissionsController < ApplicationController
 
   def mass_rejudge
     authorize Submission
-    @submissions.each{ |s| s.evaluate_delayed(:low) }
-    render json: { status: 'ok', message: "Rejudging " + @submissions.length.to_s + " submission(s)"}
+    @submissions.each { |s| s.evaluate_delayed(:low) }
+    render json: { status: 'ok', message: I18n.t('submissions.index.reevaluating_submissions', count: @submissions.length) }
   end
 
   private

@@ -16,12 +16,8 @@ module Gitable
     [status.success?, error]
   end
 
-  def remote_to_pathname
-    remote.split('/')[-1].shellescape
-  end
-
   def clone_repo
-    self.path = remote_to_pathname
+    self.path = remote.split('/')[-1].shellescape
     begin
       full_path.mkdir
     rescue Errno::EEXIST

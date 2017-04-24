@@ -14,6 +14,10 @@ en:
       title: Submissions
       for: for
       from: from
+      reevaluate_submissions: Re-evaluate submissions
+      reevaluating_submissions:
+        one: Re-evaluating 1 submission
+        other: "Re-evaluating %{count} submissions"
     show:
       submission: Submission
       user: User

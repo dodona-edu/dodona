@@ -14,6 +14,10 @@ nl:
       title: Oplossingen
       for: voor
       from: van
+      reevaluate_submissions: Oplossingen herevalueren
+      reevaluating_submissions:
+        one: 1 oplossing wordt geherevalueerd
+        other: "%{count} oplossingen worden geherevalueerd"
     show:
       submission: Oplossing
       user: Gebruiker

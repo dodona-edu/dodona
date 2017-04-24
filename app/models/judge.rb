@@ -22,7 +22,6 @@ class Judge < ApplicationRecord
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :image, presence: true
   validates :remote, presence: true
-  validates :path, presence: true, uniqueness: { case_sensitive: false }
 
   validate :renderer_is_renderer
   validate :runner_is_runner

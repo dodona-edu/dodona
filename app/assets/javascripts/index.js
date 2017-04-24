@@ -1,4 +1,4 @@
-/* globals delay, getURLParameter, updateURLParameter */
+/* globals delay, getURLParameter, updateURLParameter, confirm, showNotification */
 function init_filter_index(baseUrl, eager, actions) {
     var PARAM = "filter";
     var $filter;

@@ -32,14 +32,16 @@ function init_filter_index(baseUrl, eager, actions) {
             $link.appendTo($actions.find("ul"));
             $link.wrap("<li></li>");
             $link.click(function () {
-                var val = $filter.val();
-                var url = updateURLParameter(action.action, PARAM, val);
-                $.post(url, {
-                    format: "js"
-                }, function (data) {
-                    showNotification(data.message);
-                    search();
-                });
+                if (confirm(action.confirm)) {
+                    var val = $filter.val();
+                    var url = updateURLParameter(action.action, PARAM, val);
+                    $.post(url, {
+                        format: "js"
+                    }, function (data) {
+                        showNotification(data.message);
+                        search();
+                    });
+                }
                 return false;
             });
         });

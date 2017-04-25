@@ -13,7 +13,7 @@
       </div>
       <div class="card-supporting-text">
         <% if current_user && current_user.admin? %>
-          <%= render partial: 'layouts/searchbar', locals: {actions: [{icon: 'repeat', text: t(".reevaluate_submissions"), confirm: t(".confirm_reevaluate_submissions"), action: mass_rejudge_submissions_path(user_id: @user&.id, exercise_id: @exercise&.id, couse_id: @course&.id)}]} %>
+          <%= render partial: 'layouts/searchbar', locals: {actions: [{icon: 'repeat', text: t(".reevaluate_submissions"), confirm: t(".confirm_reevaluate_submissions"), action: mass_rejudge_submissions_path(user_id: @user&.id, exercise_id: @exercise&.id, course_id: @course&.id)}]} %>
         <% end %>
         <div id="submissions-table-wrapper">
           <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise, remote_links: false}  %>

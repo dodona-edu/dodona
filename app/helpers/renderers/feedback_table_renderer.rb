@@ -249,7 +249,7 @@ class FeedbackTableRenderer
   end
 
   def determine_diff_type(test)
-    output = (test[:expected] || '') + "\n" + (test[:generated] || '')
+    output = (test[:expected].to_s || '') + "\n" + (test[:generated].to_s || '')
     if output.split("\n", -1).map(&:length).max < 55
       'split'
     else

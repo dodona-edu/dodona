@@ -1,5 +1,107 @@
 {
-    "$schema": "http://json-schema.org/draft-03/schema#",
-    "id-online": "http://dodona.ugent.be/schemas/Submission/output.json",
-    "$ref": "testgroup.json#"
+  "$ref": "#/definitions/feedback",
+  "definitions": {
+    "feedback": {
+      "type": "object",
+      "required": ["accepted", "status"],
+      "properties": {
+        "accepted":    { "$ref": "#/definitions/accepted" },
+        "status":      { "$ref": "#/definitions/status" },
+        "description": { "$ref": "#/definitions/description" },
+        "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } },
+        "groups":      { "type": "array", "items": { "$ref": "#/definitions/tab" } }
+      }
+    },
+    "tab": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "description": { "$ref": "#/definitions/description" },
+        "badgeCount":  { "$ref": "#/definitions/badgeCount" },
+        "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } },
+        "groups":      { "type": "array", "items": { "$ref": "#/definitions/context" } }
+      }
+    },
+    "context": {
+      "type": "object",
+      "required": ["accepted"],
+      "properties": {
+        "accepted":    { "$ref": "#/definitions/accepted" },
+        "description": { "$ref": "#/definitions/message" },
+        "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } },
+        "groups":      { "type": "array", "items": { "$ref": "#/definitions/testcase" } }
+      }
+    },
+    "testcase": {
+      "type": "object",
+      "required": ["accepted"],
+      "properties": {
+        "accepted":    { "$ref": "#/definitions/accepted" },
+        "description": { "$ref": "#/definitions/message" },
+        "tests":       { "type": "array", "items": { "$ref": "#/definitions/test" } },
+        "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } }
+      }
+    },
+    "test": {
+      "type": "object",
+      "required": ["accepted"],
+      "properties": {
+        "accepted":    { "$ref": "#/definitions/accepted" },
+        "description": { "$ref": "#/definitions/message" },
+        "generated":   { "type": "string" },
+        "expected":    { "type": "string" },
+        "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } }
+      }
+    },
+    "message": {
+      "type": ["string", "object"],
+      "required": ["format", "description"],
+      "properties": {
+        "format":      { "$ref": "#/definitions/format" },
+        "description": { "$ref": "#/definitions/description" },
+        "permission":  { "$ref": "#/definitions/permission" }
+      }
+    },
+    "format": {
+      "type": "string",
+      "enum": [
+        "plain",
+        "html",
+        "markdown",
+        "code",
+        "python",
+        "javascript"
+      ]
+    },
+    "permission": {
+      "type": "string",
+      "enum": [
+        "student",
+        "staff",
+        "zeus"
+      ]
+    },
+    "badgeCount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "compilation error",
+        "runtime error",
+        "memory limit exceeded",
+        "time limit exceeded",
+        "wrong",
+        "correct",
+        "internal error"
+      ]
+    },
+    "accepted": {
+      "type": "boolean"
+    }
+  }
 }

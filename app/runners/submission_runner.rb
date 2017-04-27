@@ -264,13 +264,14 @@ class SubmissionRunner
         handle_error(exit_status, stderr.join)
       else
         # submission was processed succesfully (stdout contains description of result)
-        result = JSON.parse(stdout.join)
-        if JSON::Validator.validate(schema_path.to_s, result)
+        output = stdout.join
+        if JSON::Validator.validate(schema_path.to_s, output)
+          result = JSON.parse(output)
           add_runtime_metrics(result)
           result
         else
           build_error 'internal error', 'internal error', [
-            build_message(JSON::Validator.fully_validate(schema_path.to_s, result).join("\n"), 'staff')
+            build_message(JSON::Validator.fully_validate(schema_path.to_s, output).join("\n"), 'staff')
           ]
         end
       end

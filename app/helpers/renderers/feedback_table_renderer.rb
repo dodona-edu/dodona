@@ -211,16 +211,12 @@ class FeedbackTableRenderer
       @builder.span(class: 'code') do
         @builder.text! m[:description]
       end
-    elsif m[:format].in?(%w[python])
-      formatter = Rouge::Formatters::HTML.new(css_class: 'highlighter-rouge')
-      lexer = Rouge::Lexers::Python.new
-      @builder << formatter.format(lexer.lex(m[:description]))
-    elsif m[:format].in?(%w[js javascript Javascript JavaScript])
-      formatter = Rouge::Formatters::HTML.new(css_class: 'highlighter-rouge')
-      lexer = Rouge::Lexers::Javascript.new
-      @builder << formatter.format(lexer.lex(m[:description]))
     else
-      @builder.text! m[:description]
+      @builder.span(class: 'code highlighter-rouge') do
+        formatter = Rouge::Formatters::HTML.new(wrap: false)
+        lexer = (Rouge::Lexer.find(m[:format].downcase) || Rouge::Lexers::PlainText).new
+        @builder << formatter.format(lexer.lex(m[:description]))
+      end
     end
   end
 

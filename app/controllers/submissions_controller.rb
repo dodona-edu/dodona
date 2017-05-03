@@ -69,8 +69,12 @@ class SubmissionsController < ApplicationController
       @submissions = @submissions.of_user(@user)
     end
     if params[:course_id]
-      @course = User.find(params[:course_id])
+      @course = Course.find(params[:course_id])
       @submissions = @submissions.in_course(@course)
+    end
+    if params[:series_id]
+      @series = Series.find(params[:series_id])
+      @submissions = @submissions.in_series(@series)
     end
     if params[:exercise_id]
       @exercise = Exercise.find(params[:exercise_id])

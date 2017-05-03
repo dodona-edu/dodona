@@ -23,10 +23,6 @@
     <div class="col-sm-4"><%= f.text_field :remote, class: "form-control" %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :path, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :path, class: "form-control" %></div>
-  </div>
-  <div class="field form-group">
     <%= f.label :renderer, :class => "col-sm-3 control-label" %>
     <div class="col-sm-4"><%= f.select :renderer, FeedbackTableRenderer.renderers.map {|r| r.to_s }, {}, { class: "form-control" } %></div>
   </div>

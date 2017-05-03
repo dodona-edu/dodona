@@ -15,7 +15,9 @@
             <tr>
               <th><%= Repository.human_attribute_name("name") %></th>
               <th><%= Repository.human_attribute_name("remote") %></th>
+              <% if policy(User).server_access? %>
               <th><%= Repository.human_attribute_name("path") %></th>
+              <% end %>
               <th><%= Repository.human_attribute_name("judge") %></th>
               <th></th>
             </tr>
@@ -25,7 +27,9 @@
               <tr>
                 <td><%= link_to repository.name, repository %></td>
                 <td><%= repository.remote %> </td>
+                <% if policy(User).server_access? %>
                 <td><%= repository.path %> </td>
+                <% end %>
                 <td><%= link_to repository.judge.name, repository.judge %></td>
                 <td class="actions">
                   <% if policy(repository).edit? %>

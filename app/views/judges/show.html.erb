@@ -20,9 +20,11 @@
           <p>
             <strong><%= Judge.human_attribute_name("remote") %>:</strong> <%= @judge.remote %>
           </p>
+          <% if policy(User).server_access? %>
           <p>
             <strong><%= Judge.human_attribute_name("path") %>:</strong> <%= @judge.path %>
           </p>
+          <% end %>
           <p>
             <strong><%= Judge.human_attribute_name("renderer") %>:</strong> <%= @judge.renderer %>
           </p>

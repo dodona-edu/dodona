@@ -77,6 +77,10 @@ class Submission < ApplicationRecord
     errors.add(:code, 'emoji found') unless no_emoji_found
   end
 
+  def self.rejudge(submissions, priority = :low)
+    submissions.each { |s| s.evaluate_delayed(priority) }
+  end
+
   def self.normalize_status(s)
     return 'correct' if s == 'correct answer'
     return 'wrong' if s == 'wrong answer'

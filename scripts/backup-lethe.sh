@@ -14,28 +14,28 @@ trap 'popd && umount /mnt/backup' EXIT
 # ============================================================
 # rotate previous backups
 
-calls="$([ -f calls ] && cat calls)"
+calls="$([ -f calls ] && cat calls || true)"
 calls="$((calls + 1))"
 calls="$((calls % 28))"
 echo "$calls" > calls
 
 if (( calls % 14 == 0 )); then
-    [ -e 28-days-ago ] && rm -rf 28-days-ago
-    [ -e 14-days-ago ] && mv 14-days-ago 28-days-ago
-    [ -e 07-days-ago ] && mv 07-days-ago 14-days-ago
+    [ -e 28-days-ago ] && rm -rf 28-days-ago         || true
+    [ -e 14-days-ago ] && mv 14-days-ago 28-days-ago || true
+    [ -e 07-days-ago ] && mv 07-days-ago 14-days-ago || true
 fi
 
 if (( calls % 7 == 0 )); then
-    [ -e 07-days-ago ] && rm -rf 07-days-ago
-    [ -e 06-days-ago ] && mv 06-days-ago 07-days-ago
+    [ -e 07-days-ago ] && rm -rf 07-days-ago         || true
+    [ -e 06-days-ago ] && mv 06-days-ago 07-days-ago || true
 fi
 
-[ -e 06-days-ago ] && rm -rf 06-days-ago
-[ -e 05-days-ago ] && mv 05-days-ago 06-days-ago
-[ -e 04-days-ago ] && mv 04-days-ago 05-days-ago
-[ -e 03-days-ago ] && mv 03-days-ago 04-days-ago
-[ -e 02-days-ago ] && mv 02-days-ago 03-days-ago
-[ -e 01-days-ago ] && mv 01-days-ago 02-days-ago
+[ -e 06-days-ago ] && rm -rf 06-days-ago         || true
+[ -e 05-days-ago ] && mv 05-days-ago 06-days-ago || true
+[ -e 04-days-ago ] && mv 04-days-ago 05-days-ago || true
+[ -e 03-days-ago ] && mv 03-days-ago 04-days-ago || true
+[ -e 02-days-ago ] && mv 02-days-ago 03-days-ago || true
+[ -e 01-days-ago ] && mv 01-days-ago 02-days-ago || true
 
 # ============================================================
 # create new backup

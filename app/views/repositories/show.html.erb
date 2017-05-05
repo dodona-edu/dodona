@@ -17,9 +17,11 @@
           <p>
             <strong><%= Repository.human_attribute_name("remote") %>:</strong> <%= @repository.remote %>
           </p>
+          <% if policy(User).server_access? %>
           <p>
             <strong><%= Repository.human_attribute_name("path") %>:</strong> <%= @repository.path %>
           </p>
+          <% end %>
           <p>
             <strong><%= Repository.human_attribute_name("judge") %>:</strong> <%= link_to @repository.judge.name, @repository.judge %>
           </p>

@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @user.full_name %></h2>
+      </div>
+      <div class="card-supporting-text">
+        <p>
+          <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
+        </p>
+        <p>
+          <strong><%= t ".unfinished" %>:</strong> <%= @user.unfinished_exercises %>
+        </p>
+        <p>
+          <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
+        </p>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".recent-exercises" %></h2>
+      </div>
+      <div class="card-supporting-text">
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".pending-deadlines" %></h2>
+      </div>
+      <div class="card-supporting-text">
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <div class="card home-courses-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".courses" %></h2>
+      </div>
+      <div class="card-supporting-text">
+        <% if @user.courses.empty? %>
+          Currently not subscribed to any courses.
+        <% else %>
+          <table class="table">
+            <tbody>
+              <% @user.courses.each do |course| %>
+                <tr>
+                  <td><%= link_to course.name, course %></td>
+                  <td class="text-right"><%= course.formatted_year %> </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% end %>
+      </div>
+      <div class="card-actions card-border">
+        <%=link_to "more courses", courses_path, class: "btn-text" %>
+      </div>
+    </div>
+  </div>
+</div>

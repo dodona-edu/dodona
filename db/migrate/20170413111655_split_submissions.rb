@@ -7,8 +7,8 @@ class SplitSubmissions < ActiveRecord::Migration[5.0]
 
     execute "INSERT INTO submission_details (id, code, result) SELECT id, code, result FROM submissions;"
 
-    remove_column :submissions, :code
     remove_column :submissions, :result
+    remove_column :submissions, :code
   end
 
   def self.down

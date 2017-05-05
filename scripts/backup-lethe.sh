@@ -56,10 +56,10 @@ tbl_count=0
 
 for t in $(mysql -NBA -u "$user" -p"$pass" -D "$db" -e 'show tables'); do
     echo "DUMPING TABLE: $db.$t"
-    mysqldump --skip-extended-insert -u "$user" -p"$pass" "$db" "$t" | gzip > "01-days-ago/$t.sql"
+    mysqldump --skip-extended-insert -u "$user" -p"$pass" "$db" "$t" | gzip > "01-days-ago/$t.sql.gz"
     tbl_count=$(( tbl_count + 1 ))
 done
 
-echo "$tbl_count tables dumped from database '$db' into $dumpdir"
+echo "$tbl_count tables dumped from database '$db'"
 
 echo "[$(date)] Finished dodona backup"

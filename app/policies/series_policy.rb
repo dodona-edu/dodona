@@ -69,6 +69,10 @@ class SeriesPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def mass_rejudge?
+    user&.admin?
+  end
+
   def permitted_attributes
     if user&.admin?
       %i[name description course_id visibility order deadline]

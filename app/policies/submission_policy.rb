@@ -35,6 +35,10 @@ class SubmissionPolicy < ApplicationPolicy
     user && ((user == record.user) || user.admin?)
   end
 
+  def mass_rejudge?
+    user&.admin?
+  end
+
   def media?
     show?
   end

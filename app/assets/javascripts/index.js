@@ -1,10 +1,13 @@
-/* globals delay, getURLParameter, updateURLParameter */
-function init_filter_index(baseUrl, eager) {
+/* globals delay, getURLParameter, updateURLParameter, confirm, showNotification */
+function init_filter_index(baseUrl, eager, actions) {
     var PARAM = "filter";
     var $filter;
 
     function init() {
         initFilter();
+        if (actions) {
+            initActions();
+        }
         if (eager) {
             search();
         }
@@ -19,6 +22,29 @@ function init_filter_index(baseUrl, eager) {
         if (param !== "") {
             $filter.val(param);
         }
+    }
+
+    function initActions() {
+        var $actions = $(".table-toolbar-tools .actions");
+        $actions.removeClass("hidden");
+        actions.forEach(function (action) {
+            var $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");
+            $link.appendTo($actions.find("ul"));
+            $link.wrap("<li></li>");
+            $link.click(function () {
+                if (confirm(action.confirm)) {
+                    var val = $filter.val();
+                    var url = updateURLParameter(action.action, PARAM, val);
+                    $.post(url, {
+                        format: "js"
+                    }, function (data) {
+                        showNotification(data.message);
+                        search();
+                    });
+                }
+                return false;
+            });
+        });
     }
 
     function search() {

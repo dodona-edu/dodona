@@ -20,25 +20,56 @@
 </div>
 <div class="row">
   <div class="col-xs-12 col-sm-6 col-lg-4">
-    <div class="card">
+    <div class="card home-summary-card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".recent-exercises" %></h2>
       </div>
       <div class="card-supporting-text">
+        <% if @user.submissions.empty? %>
+          No submissions available.
+        <% else %>
+          <table class="table">
+            <tbody>
+              <% @user.recent_exercises.each do |exercise| %>
+                <% submission = exercise.last_submission(@user) %>
+                <tr>
+                  <td><%= submission_status_icon(submission) %></td>
+                  <td><%= link_to submission.exercise.name, submission_path(submission) %></td>
+                  <td><%= link_to exercise_submissions_path(submission.exercise), class: 'btn btn-icon' do %><span class="glyphicon glyphicon-chevron-right"></span><% end %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% end %>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-sm-6 col-lg-4">
-    <div class="card">
+    <div class="card home-summary-card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".pending-deadlines" %></h2>
       </div>
       <div class="card-supporting-text">
+        <% pending = @user.pending_series %>
+        <% if pending.empty? %>
+          No pending deadlines.
+        <% else %>
+          <table class="table">
+            <tbody>
+              <% pending.each do |series| %>
+                <tr>
+                  <td><%= link_to "#{series.name} (#{series.course.name})", series %></td>
+                  <td><span title="<%= l series.deadline, format: :long %>"><span class='glyphicon glyphicon-time'></span></span> <%= t "series.show.deadline_in" %> <%= time_ago_in_words series.deadline %></span></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% end %>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-sm-6 col-lg-4">
-    <div class="card home-courses-card">
+    <div class="card home-summary-card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".courses" %></h2>
       </div>
@@ -51,7 +82,7 @@
               <% @user.courses.each do |course| %>
                 <tr>
                   <td><%= link_to course.name, course %></td>
-                  <td class="text-right"><%= course.formatted_year %> </td>
+                  <td><%= course.formatted_year %> </td>
                 </tr>
               <% end %>
             </tbody>

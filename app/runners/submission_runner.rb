@@ -50,7 +50,7 @@ class SubmissionRunner
 
   # path to the default submission json schema, used to validate judge output
   def schema_path
-    Rails.root.join 'public/schemas/Submission/output.json'
+    Rails.root.join 'public/schemas/judge_output.json'
   end
 
   def initialize(submission)

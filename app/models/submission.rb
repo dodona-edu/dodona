@@ -5,12 +5,10 @@
 #  id          :integer          not null, primary key
 #  exercise_id :integer
 #  user_id     :integer
-#  code        :text(65535)
 #  summary     :string(255)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :integer
-#  result      :binary(16777215)
 #  accepted    :boolean          default(FALSE)
 #
 
@@ -20,6 +18,9 @@ class Submission < ApplicationRecord
   belongs_to :exercise
   belongs_to :user
   has_one :judge, through: :exercise
+  has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
+
+  delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
 
   validates :exercise, presence: true
   validates :user, presence: true
@@ -34,12 +35,18 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }
-  scope :in_course, ->(course) { joins('LEFT JOIN course_memberships ON submissions.user_id = course_memberships.user_id').where('course_memberships.course_id = ?', course.id) }
+  scope :in_course, ->(course) { joins(exercise: :series).where(series: { course_id: course.id }) }
+  scope :in_series, ->(series) { joins(exercise: :series_memberships).where(series_memberships: { series_id: series.id }) }
 
-  scope :by_exercise_name, -> (name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
-  scope :by_status, -> (status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
-  scope :by_username, -> (username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
-  scope :by_filter, -> (query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
+  scope :by_exercise_name, ->(name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+  scope :by_status, ->(status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
+  scope :by_username, ->(username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
+  scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
+
+  def initialize(params)
+    super
+    self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
+  end
 
   def evaluate_delayed(priority = :normal)
     p_value = if priority == :high
@@ -65,17 +72,13 @@ class Submission < ApplicationRecord
     runner.run
   end
 
-  def result=(result)
-    self[:result] = ActiveSupport::Gzip.compress(result)
-  end
-
-  def result
-    ActiveSupport::Gzip.decompress(self[:result])
-  end
-
   def code_cannot_contain_emoji
     no_emoji_found = code.chars.all? { |c| c.bytes.length < 4 }
     errors.add(:code, 'emoji found') unless no_emoji_found
+  end
+
+  def self.rejudge(submissions, priority = :low)
+    submissions.each { |s| s.evaluate_delayed(priority) }
   end
 
   def self.normalize_status(s)

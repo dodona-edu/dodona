@@ -27,6 +27,7 @@ class FeedbackTableRenderer
         messages(@submission[:messages])
       end
       tabs(@submission)
+      init_js
     end.html_safe
   end
 
@@ -48,17 +49,21 @@ class FeedbackTableRenderer
               end
             end
           end
-          @builder.li(class: ('active' unless submission[:groups])) do
-            @builder.a(I18n.t('submissions.show.code'), href: '#code-tab', 'data-toggle': 'tab')
-          end if show_code_tab
+          if show_code_tab
+            @builder.li(class: ('active' unless submission[:groups])) do
+              @builder.a(I18n.t('submissions.show.code'), href: '#code-tab', 'data-toggle': 'tab')
+            end
+          end
         end
       end
       @builder.div(class: 'card-supporting-text') do
         @builder.div(class: 'tab-content') do
           @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
-          @builder.div(class: "tab-pane #{'active' unless submission[:groups]}", id: 'code-tab') do
-            source(@code, [])
-          end if show_code_tab
+          if show_code_tab
+            @builder.div(class: "tab-pane #{'active' unless submission[:groups]}", id: 'code-tab') do
+              source(@code, [])
+            end
+          end
         end
       end
     end
@@ -87,16 +92,17 @@ class FeedbackTableRenderer
 
   def group(g)
     @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}") do
-      @builder.div(class: 'col-xs-12 description') do
-        message(g[:description])
-      end if g[:description]
+      if g[:description]
+        @builder.div(class: 'col-xs-12 description') do
+          message(g[:description])
+        end
+      end
       messages(g[:messages])
       g[:groups]&.each { |tc| testcase(tc) }
     end
   end
 
-  def testcase_icons(tc)
-  end
+  def testcase_icons(tc); end
 
   def testcase(tc)
     @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
@@ -118,9 +124,11 @@ class FeedbackTableRenderer
 
   def test(t)
     @builder.div(class: 'col-xs-12 test') do
-      @builder.div(class: 'description') do
-        message(t[:description])
-      end if t[:description]
+      if t[:description]
+        @builder.div(class: 'description') do
+          message(t[:description])
+        end
+      end
       if t[:accepted]
         test_accepted(t)
       else
@@ -193,26 +201,22 @@ class FeedbackTableRenderer
   end
 
   def output_message(m)
-    if m[:format].in?(%w(plain text))
+    if m[:format].in?(%w[plain text])
       @builder.text! m[:description]
-    elsif m[:format].in?(%w(html))
+    elsif m[:format].in?(%w[html])
       @builder << m[:description]
-    elsif m[:format].in?(%w(markdown md))
+    elsif m[:format].in?(%w[markdown md])
       @builder << markdown(m[:description])
-    elsif m[:format].in?(%w(code))
+    elsif m[:format].in?(%w[code])
       @builder.span(class: 'code') do
         @builder.text! m[:description]
       end
-    elsif m[:format].in?(%w(python))
-      formatter = Rouge::Formatters::HTML.new(css_class: 'highlighter-rouge')
-      lexer = Rouge::Lexers::Python.new
-      @builder << formatter.format(lexer.lex(m[:description]))
-    elsif m[:format].in?(%w(js javascript Javascript JavaScript))
-      formatter = Rouge::Formatters::HTML.new(css_class: 'highlighter-rouge')
-      lexer = Rouge::Lexers::Javascript.new
-      @builder << formatter.format(lexer.lex(m[:description]))
     else
-      @builder.text! m[:description]
+      @builder.span(class: 'code highlighter-rouge') do
+        formatter = Rouge::Formatters::HTML.new(wrap: false)
+        lexer = (Rouge::Lexer.find(m[:format].downcase) || Rouge::Lexers::PlainText).new
+        @builder << formatter.format(lexer.lex(m[:description]))
+      end
     end
   end
 
@@ -221,6 +225,12 @@ class FeedbackTableRenderer
       @builder.text! code
     end
     @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
+  end
+
+  def init_js
+    @builder.script do
+      @builder << 'init_submission_show();'
+    end
   end
 
   def determine_tab_diff_type(tab)

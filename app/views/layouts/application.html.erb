@@ -14,6 +14,7 @@
     <link rel="apple-touch-icon-precomposed" href="/logo.png" />
     <link rel="shortcut icon" sizes="192x192" href="/icon.png">
     <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.json">
     <title>Dodona<%= " - #{@title}" if @title %></title>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
     <%= stylesheet_link_tag    'application', media: 'all' %>
@@ -43,6 +44,11 @@
               <%= content_tag(:div, raw("<strong>#{t("layout.messages.success")}!</strong> ")+value, :class => "alert alert-success") if key == "success" %>
             <% end %>
           <% end %>
+          <% if user_signed_in? %>
+            <div class='alert alert-warning hidden' id="time-zone-warning">
+              <strong><%= t("layout.messages.warning") %></strong> <%= t("layout.messages.time_zone_html", time_zone: current_user.time_zone, profile_edit: edit_user_path(current_user)) %>
+            </div>
+          <% end %>
           <% if user_signed_in? && current_user != true_user %>
             <div class='alert alert-info'>
               <%= t("layout.impersonate.impersonating_user")%>
@@ -64,6 +70,7 @@
     <script>
       I18n = I18n || {};
       I18n.locale = "<%= I18n.locale %>";
+      checkTimeZone(<%= @time_zone_offset %>);
     </script>
   </body>
 </html>

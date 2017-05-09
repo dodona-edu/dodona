@@ -17,12 +17,19 @@ module Gitable
   end
 
   def clone_repo
+    self.path = remote.split('/')[-1].shellescape
+    begin
+      full_path.mkdir
+    rescue Errno::EEXIST
+      self.path += '_'
+      retry
+    end
     cmd = ['git', 'clone', '--depth', '1', remote.shellescape, full_path.to_path]
     _out, error, status = Open3.capture3(*cmd)
-    unless status.success?
-      errors.add(:base, "cloning failed: #{error}")
-      throw :abort
-    end
+    return if status.success?
+
+    errors.add(:base, "cloning failed: #{error}")
+    throw :abort
   end
 
   def repo_is_accessible

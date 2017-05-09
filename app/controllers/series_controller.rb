@@ -1,6 +1,6 @@
 require 'zip'
 class SeriesController < ApplicationController
-  before_action :set_series, only: [:show, :edit, :update, :destroy, :add_exercise, :remove_exercise, :reorder_exercises, :download_solutions, :token_show, :scoresheet]
+  before_action :set_series, only: %i[show edit update destroy add_exercise remove_exercise reorder_exercises download_solutions token_show scoresheet mass_rejudge]
 
   # GET /series
   # GET /series.json
@@ -59,7 +59,7 @@ class SeriesController < ApplicationController
   def update
     respond_to do |format|
       if @series.update(permitted_attributes(Series))
-        format.html { redirect_to course_path(@series.course, anchor: "series-#{@series.name.parameterize}"), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
+        format.html { redirect_to course_path(@series.course, all: true, anchor: "series-#{@series.name.parameterize}"), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
         format.json { render :show, status: :ok, location: @series }
       else
         format.html { render :edit }
@@ -106,6 +106,11 @@ class SeriesController < ApplicationController
     @course = @series.course
     @title = @series.name
     @exercises = @series.exercises
+  end
+
+  def mass_rejudge
+    @submissions = Submission.in_series(@series)
+    Submission.rejudge(@submissions)
   end
 
   private

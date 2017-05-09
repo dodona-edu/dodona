@@ -33,8 +33,8 @@ gem 'delayed_job_active_record'
 gem 'daemons'
 # dashboard
 github 'sinatra/sinatra' do
-  gem 'sinatra'
   gem 'rack-protection'
+  gem 'sinatra'
 end
 gem 'delayed_job_web'
 
@@ -72,14 +72,14 @@ gem 'pretender'
 gem 'annotate'
 
 # Use Capistrano for deployment
-gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development
+gem 'capistrano-rails', group: :development
 gem 'capistrano-rvm', group: :development
 gem 'capistrano3-delayed-job', '~> 1.0'
 
 # i18n
-gem 'rails-i18n'
 gem 'i18n-js', '~> 3.0.0.rc14'
+gem 'rails-i18n'
 
 # email exceptions
 gem 'exception_notification'
@@ -91,6 +91,9 @@ gem 'has_scope'
 # generating zip files
 gem 'rubyzip'
 
+# add request server timings to the devtools
+gem 'rails_server_timings'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -98,18 +101,17 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 3.0'
   gem 'listen', '~> 3.0.5'
+  gem 'web-console', '~> 3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'rb-readline' # require for irb
+  gem 'rubocop'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rubocop'
-  gem 'rb-readline' # require for irb
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
 gem 'docker-api'
-

@@ -55,7 +55,7 @@ class CoursePolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.admin?
-      [:name, :year, :description]
+      %i[name year description]
     else
       []
     end

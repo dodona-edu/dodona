@@ -43,7 +43,7 @@ class RepositoryPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.admin?
-      [:name, :remote, :path, :judge_id]
+      %i[name remote judge_id]
     else
       []
     end

@@ -86,11 +86,14 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Do not add server timings in production
+  config.server_timings.enabled = false
+
   config.middleware.use ExceptionNotification::Rack,
                         email: {
                           email_prefix: '[Dodona] ',
                           sender_address: %("Dodona" <dodona@ugent.be>),
-                          exception_recipients: %w(dodona@ugent.be)
+                          exception_recipients: %w[dodona@ugent.be]
                         },
                         slack: {
                           webhook_url: 'https://hooks.slack.com/services/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',

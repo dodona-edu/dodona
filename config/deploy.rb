@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.6.1'
+lock '3.8.0'
 
 set :application, 'dodona'
 set :repo_url, 'git@github.ugent.be:dodona/dodona.git'

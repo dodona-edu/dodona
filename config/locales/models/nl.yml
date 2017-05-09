@@ -70,4 +70,5 @@ nl:
         last_name: Familienaam
         name: Naam
         email: Email
+        time_zone: Tijdzone
         permission: Rechten

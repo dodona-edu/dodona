@@ -66,12 +66,16 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def scoresheet?
-    user&.zeus?
+    user&.admin?
+  end
+
+  def mass_rejudge?
+    user&.admin?
   end
 
   def permitted_attributes
     if user&.admin?
-      [:name, :description, :course_id, :visibility, :order, :deadline]
+      %i[name description course_id visibility order deadline]
     else
       []
     end

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         post 'add_exercise'
         post 'remove_exercise'
         post 'reorder_exercises'
+        post 'mass_rejudge'
         get 'download_solutions'
         get 'token/:token', to: 'series#token_show', as: 'token_show'
         get 'scoresheet'
@@ -48,6 +49,7 @@ Rails.application.routes.draw do
     end
 
     resources :submissions, only: [:index, :show, :create, :edit] do
+      post 'mass_rejudge', on: :collection
       member do
         get 'download'
         get 'evaluate'

@@ -13,6 +13,7 @@
 #  updated_at :datetime         not null
 #  lang       :string(255)      default("nl")
 #  token      :string(255)
+#  time_zone  :string(255)      default("Brussels")
 #
 
 require 'securerandom'
@@ -20,7 +21,7 @@ require 'securerandom'
 class User < ApplicationRecord
   PHOTOS_LOCATION = Rails.root.join('data', 'user_photos').freeze
 
-  enum permission: [:student, :staff, :zeus]
+  enum permission: %i[student staff zeus]
 
   has_many :submissions
   has_many :course_memberships
@@ -31,11 +32,12 @@ class User < ApplicationRecord
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
 
   before_save :set_token
+  before_save :set_time_zone
 
-  scope :by_permission, -> (permission) { where(permission: permission) }
-  scope :by_name, -> (name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+  scope :by_permission, ->(permission) { where(permission: permission) }
+  scope :by_name, ->(name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
 
-  scope :in_course, -> (course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
+  scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
 
   def full_name
     name = (first_name || '') + ' ' + (last_name || '')
@@ -53,10 +55,6 @@ class User < ApplicationRecord
   def photo
     photo = PHOTOS_LOCATION.join((ugent_id || '') + '.jpg')
     photo if File.file? photo
-  end
-
-  def time_zone
-    'Brussels'
   end
 
   def attempted_exercises
@@ -94,7 +92,7 @@ class User < ApplicationRecord
         self.ugent_id = value
       end
     end
-    self.ugent_id = extra_attributes['ugentStudentID'] if extra_attributes.key?('ugentStudentID') && !extra_attributes['ugentStudentID'].blank?
+    self.ugent_id = extra_attributes['ugentStudentID'] if extra_attributes.key?('ugentStudentID') && extra_attributes['ugentStudentID'].present?
   end
 
   def self.default_photo
@@ -104,10 +102,14 @@ class User < ApplicationRecord
   private
 
   def set_token
-    if !username.blank?
+    if username.present?
       self.token = nil
     elsif token.blank?
       self.token = SecureRandom.urlsafe_base64(16)
     end
+  end
+
+  def set_time_zone
+    self.time_zone = 'Seoul' if email =~ /ghent.ac.kr$/
   end
 end

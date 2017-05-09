@@ -25,7 +25,7 @@ end
     <% end %>
   </td>
   <td>
-    <%= link_to exercise.name, exercise_path(exercise) %>
+    <%= link_to exercise.name, @course.nil? ? exercise_path(exercise) : course_exercise_path(@course, exercise) %>
   </td>
   <td class='text-right'>
     <% if @course.nil? %>

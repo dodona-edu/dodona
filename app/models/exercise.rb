@@ -27,8 +27,8 @@ class Exercise < ApplicationRecord
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
-  enum visibility: [:open, :hidden, :closed]
-  enum status: [:ok, :not_valid, :removed]
+  enum visibility: %i[open hidden closed]
+  enum status: %i[ok not_valid removed]
 
   belongs_to :repository
   belongs_to :judge
@@ -45,12 +45,12 @@ class Exercise < ApplicationRecord
   before_save :check_validity
   before_update :update_config
 
-  scope :in_repository, -> (repository) { where repository_id: repository.id }
+  scope :in_repository, ->(repository) { where repository_id: repository.id }
 
-  scope :by_name, -> (name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
-  scope :by_status, -> (status) { where(status: status.in?(statuses) ? status : -1) }
-  scope :by_visibility, -> (visibility) { where(visibility: visibility.in?(visibilities) ? visibility : -1) }
-  scope :by_filter, -> (query) { by_name(query).or(by_status(query)).or(by_visibility(query)) }
+  scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+  scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
+  scope :by_visibility, ->(visibility) { where(visibility: visibility.in?(visibilities) ? visibility : -1) }
+  scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_visibility(query)) }
 
   def full_path
     Pathname.new File.join(repository.full_path, path)
@@ -133,7 +133,7 @@ class Exercise < ApplicationRecord
   end
 
   def merged_config
-    merged_config = Hash.new
+    merged_config = {}
     full_path.relative_path_from(repository.full_path).ascend do |subdir|
       merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path + subdir))
     end
@@ -255,5 +255,4 @@ class Exercise < ApplicationRecord
     end until Exercise.find_by(id: new).nil?
     self.id = new
   end
-
 end

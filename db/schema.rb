@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161105124855) do
+ActiveRecord::Schema.define(version: 20170414114206) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -121,16 +121,19 @@ ActiveRecord::Schema.define(version: 20161105124855) do
     t.index ["series_id"], name: "index_series_memberships_on_series_id", using: :btree
   end
 
+  create_table "submission_details", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text   "code",   limit: 65535
+    t.binary "result", limit: 16777215
+  end
+
   create_table "submissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "exercise_id"
     t.integer  "user_id"
-    t.text     "code",        limit: 65535
     t.string   "summary"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "status"
-    t.binary   "result",      limit: 16777215
-    t.boolean  "accepted",                     default: false
+    t.boolean  "accepted",    default: false
     t.index ["accepted"], name: "index_submissions_on_accepted", using: :btree
     t.index ["exercise_id", "user_id", "accepted", "created_at"], name: "ex_us_ac_cr_index", using: :btree
     t.index ["exercise_id", "user_id", "status", "created_at"], name: "ex_us_st_cr_index", using: :btree
@@ -146,10 +149,11 @@ ActiveRecord::Schema.define(version: 20161105124855) do
     t.string   "last_name"
     t.string   "email"
     t.integer  "permission", default: 0
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.string   "lang",       default: "nl"
     t.string   "token"
+    t.string   "time_zone",  default: "Brussels"
     t.index ["token"], name: "index_users_on_token", using: :btree
     t.index ["username"], name: "index_users_on_username", using: :btree
   end

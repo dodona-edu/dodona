@@ -13,6 +13,7 @@
 #  updated_at :datetime         not null
 #  lang       :string(255)      default("nl")
 #  token      :string(255)
+#  time_zone  :string(255)      default("Brussels")
 #
 
 require 'test_helper'

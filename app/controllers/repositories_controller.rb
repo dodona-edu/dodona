@@ -1,7 +1,7 @@
 require 'set'
 
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: [:show, :edit, :update, :destroy, :hook, :reprocess]
+  before_action :set_repository, only: %i[show edit update destroy hook reprocess]
   skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /repositories
@@ -79,7 +79,7 @@ class RepositoriesController < ApplicationController
       if params.key?('commits') && !params['forced']
         params['commits']
           .reject    { |commit|    commit['author']['name'] == 'Dodona' }
-          .flat_map  { |commit|    %w(added removed modified).flat_map { |type| commit[type] } }
+          .flat_map  { |commit|    %w[added removed modified].flat_map { |type| commit[type] } }
           .flat_map  { |file|      @repository.affected_exercise_dirs(file) }
           .uniq
       else

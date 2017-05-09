@@ -228,7 +228,7 @@ class SubmissionRunner
         name: "dodona-#{@submission.id}", # assuming unique during execution
         OpenStdin: true,
         StdinOnce: true, # closes stdin after first disconnect
-        NetworkDisabled: @config['network_disabled'],
+        NetworkDisabled: !@config['network_enabled'],
         HostConfig: {
           Memory: memory_limit,
           MemorySwap: memory_limit, # memory including swap
@@ -242,7 +242,7 @@ class SubmissionRunner
             # mount logging directory in hidden directory
             "#{@path}/logs:#{@hidden_path}/logs",
             # evalution directory is read/write and seeded with copies
-            "#{@path}/workdir:/home/runner/workdir",
+            "#{@path}/workdir:/home/runner/workdir"
           ]
         }
       )
@@ -255,7 +255,7 @@ class SubmissionRunner
         stdout, stderr = container.tap(&:start).attach(
           stdin: StringIO.new(@config.to_json),
           stdout: true,
-          stderr: true,
+          stderr: true
         )
         [stdout, stderr, container.wait(time_limit)['StatusCode']]
       end
@@ -280,8 +280,7 @@ class SubmissionRunner
     end
   end
 
-  def add_runtime_metrics(result)
-  end
+  def add_runtime_metrics(result); end
 
   def finalize(result)
     # save the result

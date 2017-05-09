@@ -19,10 +19,6 @@
     <span class="help-block col-sm-offset-3 col-sm-4"><%= t ".remote-help" %></span>
   </div>
   <div class="field form-group">
-    <%= f.label :path, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :path, class: "form-control" %></div>
-  </div>
-  <div class="field form-group">
     <%= f.label :judge, :class => "col-sm-3 control-label" %>
     <div class="col-sm-4"><%= f.select :judge_id, Judge.all.collect {|j| [ j.name, j.id ] }, {}, {class: "form-control"} %></div>
   </div>

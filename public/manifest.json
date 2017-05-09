@@ -1,0 +1,13 @@
+{
+  "name": "Dodona",
+  "short_name": "Dodona",
+  "start_url": ".",
+  "display": "browser",
+  "background_color": "#fff",
+  "theme_color": "#009688",
+  "icons": [{
+    "src": "icon.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }]
+}

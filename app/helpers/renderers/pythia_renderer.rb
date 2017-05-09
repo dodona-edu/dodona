@@ -12,7 +12,7 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def show_code_tab
     return true unless @submission[:groups]
-    !@submission[:groups].any? { |t| t[:data][:source_annotations] }
+    @submission[:groups].none? { |t| t[:data][:source_annotations] }
   end
 
   def tab_content(t)
@@ -42,7 +42,7 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def output_message(m)
-    if m[:format].in?(%w(traceback))
+    if m[:format].in?(%w[traceback])
       @builder.div(class: 'code wrong') do
         @builder.text! m[:description]
       end
@@ -61,9 +61,11 @@ class PythiaRenderer < FeedbackTableRenderer
             @builder.span(class: 'glyphicon glyphicon-expand')
           end
         end
-        @builder.div(class: 'col-xs-12 description') do
-          message(g[:description])
-        end if g[:description]
+        if g[:description]
+          @builder.div(class: 'col-xs-12 description') do
+            message(g[:description])
+          end
+        end
         messages(g[:messages])
         g[:groups]&.each { |tc| testcase(tc) }
       end
@@ -119,12 +121,8 @@ class PythiaRenderer < FeedbackTableRenderer
     @builder.div(class: 'diff') do
       @builder.ul do
         diff.each do |diff_line|
-          if diff_line[4]
-            @builder << (diff_line[2] || '')
-          else
-            @builder << (diff_line[2] || '')
-            @builder << (diff_line[3] || '')
-          end
+          @builder << (diff_line[2] || '')
+          @builder << (diff_line[3] || '') unless diff_line[4]
         end
       end
     end
@@ -152,11 +150,10 @@ class PythiaRenderer < FeedbackTableRenderer
   def format_lint_message(message)
     lines = message.split("\n")
     @builder.text! lines[0]
-    if lines.length > 1
-      @builder.br
-      @builder.div(class: 'code') do
-        @builder.text! lines.drop(1).join("\n")
-      end
+    return unless lines.length > 1
+    @builder.br
+    @builder.div(class: 'code') do
+      @builder.text! lines.drop(1).join("\n")
     end
   end
 
@@ -165,11 +162,11 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def convert_lint_type(type)
-    if type.in? %w(fatal error)
+    if type.in? %w[fatal error]
       'error'
     elsif type.in? ['warning']
       'warning'
-    elsif type.in? %w(refactor convention)
+    elsif type.in? %w[refactor convention]
       'error'
     else
       'warning'

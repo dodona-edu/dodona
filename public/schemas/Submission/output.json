@@ -95,8 +95,8 @@
         "runtime error",
         "memory limit exceeded",
         "time limit exceeded",
-        "wrong",
-        "correct",
+        "wrong", "wrong answer",
+        "correct", "correct answer",
         "internal error"
       ]
     },

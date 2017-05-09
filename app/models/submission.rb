@@ -10,6 +10,7 @@
 #  updated_at  :datetime         not null
 #  status      :integer
 #  accepted    :boolean          default(FALSE)
+#  course_id   :integer
 #
 
 class Submission < ApplicationRecord
@@ -17,6 +18,7 @@ class Submission < ApplicationRecord
 
   belongs_to :exercise
   belongs_to :user
+  belongs_to :course
   has_one :judge, through: :exercise
   has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
 

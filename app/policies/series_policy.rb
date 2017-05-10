@@ -28,23 +28,23 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def new?
-    record.in_teachers(user)
+    record.in_teachers(user) or user&.zeus?
   end
 
   def edit?
-    record.teacher?(user)
+    record.teacher?(user) or user&.zeus?
   end
 
   def create?
-    record.in_teachers(user)
+    record.in_teachers(user) or user&.zeus?
   end
 
   def update?
-    record.teacher?(user)
+    record.teacher?(user) or user&.zeus?
   end
 
   def destroy?
-    record.teacher?(user)
+    record.teacher?(user) or user&.zeus?
   end
 
   def download_solutions?
@@ -52,7 +52,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def modify_exercises?
-   record.teacher?(user)
+   record.teacher?(user) or user&.zeus?
   end
 
   def add_exercise?

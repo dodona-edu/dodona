@@ -38,8 +38,17 @@
           <% if policy(user).edit? %>
             <%= link_to edit_user_path(user), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
           <% end %>
-          <% if defined?(@course) and policy(@course).toggle_teacher? and user.admin?%>
-           <%= link_to toggle_teacher_course_path(@course, :user_id => user.id), method: :post, :class => "toggleTeacher btn btn-sm btn-default #{'disabled' if not user.teaches?(@course)}", :remote => true do %><span class="glyphicon glyphicon-education"></span><% end %>
+
+          <% if defined?(@course) and policy(@course).add_teacher? and user.admin?%>
+            <% if user.teaches?(@course) %>
+              <%= link_to remove_teacher_course_path(@course, :user_id => user.id), data: { confirm: t("general.are_you_sure") }, method: :post, :class => "toggleTeacher btn btn-sm btn-default", :remote => true do %>
+              <span class="glyphicon glyphicon-education"></span>
+              <% end %>
+            <% else %>
+              <%= link_to add_teacher_course_path(@course, :user_id => user.id), method: :post, :class => "toggleTeacher btn btn-sm btn-default", :remote => true do %>
+                <span class="glyphicon glyphicon-education"></span>
+              <% end %>
+            <% end %>
           <% end %>
           <% if policy(user).destroy? %>
             <%= link_to user, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>

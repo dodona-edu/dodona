@@ -70,7 +70,7 @@
     },
     "format": {
       "type": "string",
-      "description": "Either 'plain', 'html' (formatted), 'markdown' (formatted), 'code' or any programming language (highlighted)."
+      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'code' or any programming language (highlighted)."
     },
     "permission": {
       "type": "string",

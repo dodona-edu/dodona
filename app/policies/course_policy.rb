@@ -35,7 +35,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def list_members?
-    record.teacher?(user)
+    record.teacher?(user) or user.zeus?
   end
 
   def subscribe?
@@ -54,8 +54,12 @@ class CoursePolicy < ApplicationPolicy
     record.teacher?(user)
   end
 
-  def toggle_teacher?
-    record.teacher?(user)
+  def add_teacher?
+    record.teacher?(user) or user.zeus?
+  end
+
+  def remove_teacher?
+    record.teacher?(user) or user.zeus?
   end
 
   def permitted_attributes

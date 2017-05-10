@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe, :subscribe_with_secret, :scoresheet, :toggle_teacher]
+  before_action :set_course, only: [:show, :edit, :update, :destroy, :subscribe, :subscribe_with_secret, :scoresheet, :add_teacher, :remove_teacher]
 
   # GET /courses
   # GET /courses.json
@@ -104,25 +104,19 @@ class CoursesController < ApplicationController
     send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
   end
 
-  def toggle_teacher
+  def add_teacher
     user = User.find(params[:user_id])
-    if @course.teacher?(user)
-      remove_teacher(user)
-    else
-      add_teacher(user)
-    end
+    entry = CourseMembership.where(course_id: @course.id, user: user.id).first()
+    entry.update(status: 1)
     head :ok
   end
 
-  def add_teacher(user)
-    entry = CourseMembership.where(course_id: @course.id, user: user.id).first()
-    entry.update(status: 1)
-  end
-
-  def remove_teacher(user)
+  def remove_teacher
+    user = User.find(params[:user_id])
     entry = CourseMembership.where(course_id: @course.id, user: user.id).first()
     entry.status = nil
     entry.save
+    head :ok
   end
 
   private

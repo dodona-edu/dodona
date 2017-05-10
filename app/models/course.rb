@@ -155,4 +155,10 @@ class Course < ApplicationRecord
       end
     end
   end
+
+  def pending_series
+    series.select {|s| s.deadline? and s.deadline > Time.now }
+          .select {|s| s.exercises.any? {|e| !e.accepted_for(self) } }
+  end
+
 end

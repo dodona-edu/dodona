@@ -5,7 +5,7 @@
 #  id         :integer          not null, primary key
 #  course_id  :integer
 #  user_id    :integer
-#  status     :integer
+#  permission     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -13,6 +13,8 @@
 class CourseMembership < ApplicationRecord
   belongs_to :course
   belongs_to :user
+
+  enum status: [:member, :teacher]
 
   validates :course_id, uniqueness: { scope: :user_id }
 

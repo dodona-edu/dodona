@@ -20,13 +20,12 @@ class Course < ApplicationRecord
   has_many :series
   has_many :users, through: :course_memberships
 
+  #has_many :teachers, -> {where course_memberships: {:status => :teacher}} , :through => :course_memberships, :class_name => :user
+  has_many :teachers, -> {where course_memberships: {:status => :teacher}}, through: :course_memberships, :source => :user
   validates :name, presence: true
   validates :year, presence: true
 
   default_scope { order(year: :desc, name: :asc) }
-  scope :in_teachers, ->(user) { joins('LEFT JOIN course_memberships ON courses.id = course_memberships.course_id').where('course_memberships.status = 1 AND course_memberships.user_id = ?', user.id) }
-
-
   before_create :generate_secret
 
   def formatted_year
@@ -55,6 +54,6 @@ class Course < ApplicationRecord
   end
 
   def teacher?(user)
-    course_memberships.where(status: 1).collect(&:user).any?{|u| u.id == user.id}
+    self.teachers.exists?(user)
   end
 end

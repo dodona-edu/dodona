@@ -107,15 +107,14 @@ class CoursesController < ApplicationController
   def add_teacher
     user = User.find(params[:user_id])
     entry = CourseMembership.where(course_id: @course.id, user: user.id).first()
-    entry.update(status: 1)
+    entry.update(status: :teacher)
     head :ok
   end
 
   def remove_teacher
     user = User.find(params[:user_id])
     entry = CourseMembership.where(course_id: @course.id, user: user.id).first()
-    entry.status = nil
-    entry.save
+    entry.update(status: :member)
     head :ok
   end
 

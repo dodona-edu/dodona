@@ -40,14 +40,11 @@
           <% end %>
 
           <% if defined?(@course) and policy(@course).add_teacher? and user.admin?%>
-            <% if user.teaches?(@course) %>
-              <%= link_to remove_teacher_course_path(@course, :user_id => user.id), data: { confirm: t("general.are_you_sure") }, method: :post, :class => "toggleTeacher btn btn-sm btn-default", :remote => true do %>
+            <%= link_to remove_teacher_course_path(@course, :user_id => user.id), data: { confirm: t("general.are_you_sure") }, method: :post, :class => "btn btn-sm btn-default toggleTeacher on #{'hidden' if not user.teaches?(@course)}", :remote => true do %>
+            <span class="glyphicon glyphicon-education"></span>
+            <% end %>
+            <%= link_to add_teacher_course_path(@course, :user_id => user.id), method: :post, :class => "toggleTeacher btn btn-sm btn-default #{'hidden' if user.teaches?(@course)}", :remote => true do %>
               <span class="glyphicon glyphicon-education"></span>
-              <% end %>
-            <% else %>
-              <%= link_to add_teacher_course_path(@course, :user_id => user.id), method: :post, :class => "toggleTeacher btn btn-sm btn-default", :remote => true do %>
-                <span class="glyphicon glyphicon-education"></span>
-              <% end %>
             <% end %>
           <% end %>
           <% if policy(user).destroy? %>

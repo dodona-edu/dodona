@@ -1,10 +1,10 @@
 <%
 if user_signed_in?
-  accepted_before_deadline = exercise.accepted_for(current_user, series.try(:deadline))
+  accepted_before_deadline = exercise.accepted_for(current_user, series.try(:deadline), @course)
   accepted_without_deadline = if series.try(:deadline).nil?
     accepted_before_deadline
   else
-    exercise.accepted_for(current_user)
+    exercise.accepted_for(current_user, nil, @course)
   end
 end
 %>
@@ -39,17 +39,17 @@ end
     <td>
       <% if series && series.deadline? && series.deadline < Time.now # deadline passed %>
         <% if accepted_before_deadline %>
-          <%= link_to t(".correct"), exercise.last_submission(current_user, series.deadline), class: 'deadline-ok' %>
+          <%= link_to t(".correct"), exercise.last_submission(current_user, series.deadline, @course), class: 'deadline-ok' %>
         <% else %>
           <span class='deadline-passed'><%= t "series.show.missed_deadline" %></span>
         <% end %>
       <% else # no or future deadline %>
         <% if accepted_without_deadline == true %>
-          <%= link_to t(".correct"), exercise.last_submission(current_user) %>
+          <%= link_to t(".correct"), exercise.last_submission(current_user, nil, @course) %>
         <% elsif accepted_without_deadline == false %>
-          <%= link_to t(".wrong"), exercise.last_submission(current_user) %>
-          <% if !exercise.best_is_last_submission?(current_user) %>
-            <%= link_to exercise.best_submission(current_user), title: t("series.show.best_is_not_last"), class: "btn btn-icon" do %>
+          <%= link_to t(".wrong"), exercise.last_submission(current_user, nil, @course) %>
+          <% if !exercise.best_is_last_submission?(current_user, nil, @course) %>
+            <%= link_to exercise.best_submission(current_user, nil, @course), title: t("series.show.best_is_not_last"), class: "btn btn-icon" do %>
               <span class='glyphicon glyphicon-exclamation-sign colored-warning'></span>
             <% end %>
           <% end %>

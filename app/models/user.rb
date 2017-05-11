@@ -74,9 +74,7 @@ class User < ApplicationRecord
   end
 
   def pending_series
-    courses.map {|c| c.series }.flatten
-           .select {|s| s.deadline? and s.deadline > Time.now }
-           .select {|s| s.exercises.any? {|e| !e.accepted_for(self) } }
+    courses.map {|c| c.pending_series }.flatten
   end
 
   def header_courses

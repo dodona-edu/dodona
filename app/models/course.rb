@@ -46,7 +46,7 @@ class Course < ApplicationRecord
       sorted_users.each do |user|
         row = [user.first_name, user.last_name, user.username, user.email]
         sorted_series.each do |s|
-          row << s.exercises.map { |ex| ex.accepted_for(user, s.deadline) }.count(true)
+          row << s.exercises.map { |ex| ex.accepted_for(user, s.deadline, self) }.count(true)
         end
         csv << row
       end

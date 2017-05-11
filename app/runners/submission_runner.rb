@@ -10,36 +10,6 @@ require 'timeout'      # to kill the docker after a certain time
 class SubmissionRunner
   DEFAULT_CONFIG_PATH = Rails.root.join('app/runners/config.json').freeze
 
-  # ADT to store to recognize an error
-  # 'codes' is a list of possible exit codes that could come from this error
-  # 'tokens' is a list of possible substrings that could occur in the stderr of the error
-  class ErrorIdentifier
-    attr_reader :tokens, :codes
-
-    def initialize(codes, tokens)
-      @codes = codes
-      @tokens = tokens
-    end
-  end
-
-  def build_error(status = 'runtime error', description = 'runtime error', messages = [], accepted = false)
-    {
-      'accepted' => accepted,
-      'status' => status,
-      'description' => I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
-      'messages' => messages
-    }
-  end
-
-  def build_message(description = '', permission = 'zeus', format = 'code')
-    {
-      'format' => format,
-      'description' => description,
-      'permission' => permission
-    }
-  end
-
-  @runners = [SubmissionRunner]
   def self.inherited(cl)
     @runners << cl
   end
@@ -54,19 +24,6 @@ class SubmissionRunner
   end
 
   def initialize(submission)
-    # fields to recognize and handle errors
-    @error_identifiers = {}
-    @error_handlers = {}
-
-    # container receives signal 9 from host when memory limit is exceeded
-    register_error('memory limit', ErrorIdentifier.new([1], ['got signal 9']), method(:handle_memory_exceeded))
-
-    # default exit codes of the timeout command
-    register_error('time limit', ErrorIdentifier.new([9, 124, 137], []), method(:handle_timeout))
-
-    # something else
-    register_error('internal error', ErrorIdentifier.new([], []), method(:handle_unknown))
-
     # definition of submission
     @submission = submission
 
@@ -84,68 +41,6 @@ class SubmissionRunner
     @path = nil
 
     @mac = RUBY_PLATFORM.include?('darwin')
-  end
-
-  # registers a pair of error identifiers and error handlers with the same identifier string (name)
-  def register_error(name, identifier, handler)
-    @error_identifiers[name] = identifier
-    @error_handlers[name] = handler
-  end
-
-  # uses the exitcode and stderr to recognize which error occured
-  # returns a string identifier of the error
-  def recognize_error(exitcode, stderr)
-    @error_identifiers.keys.each do |key|
-      # loop over all the error identifiers
-      identifier = @error_identifiers[key]
-      codes = identifier.codes
-      tokens = identifier.tokens
-
-      # the process's exit code must be in the error identifier's list
-      next unless codes.include?(exitcode)
-
-      # if the token list is empty, the exit code is enough
-      # if not, one token must match the process's stderr
-      if tokens.empty? || tokens.any? { |token| stderr.include?(token) }
-        return key
-      end
-    end
-
-    # this is some serious error
-    'internal error'
-  end
-
-  # uses the exitcode and stderr to generate output json
-  def handle_error(exitcode, stderr)
-    # figure out which error occured
-    error = recognize_error(exitcode, stderr)
-
-    # fetch the correct handler
-    handler = @error_handlers[error]
-
-    # let the handler fill in the blanks
-    handler.call(stderr)
-  end
-
-  # adds the specific information to an output json for timeout errors
-  def handle_timeout(stderr)
-    build_error 'time limit exceeded', 'time limit exceeded', [
-      build_message(stderr, 'staff')
-    ]
-  end
-
-  # adds the specific information to an output json for memory limit errors
-  def handle_memory_exceeded(stderr)
-    build_error 'memory limit exceeded', 'memory limit exceeded', [
-      build_message(stderr, 'staff')
-    ]
-  end
-
-  # adds the specific information to an output json for unknown/general errors
-  def handle_unknown(stderr)
-    build_error 'internal error', 'internal error', [
-      build_message(stderr, 'staff')
-    ]
   end
 
   def compose_config
@@ -247,10 +142,14 @@ class SubmissionRunner
         }
       )
     rescue Exception => e
-      return handle_unknown("Error creating docker: #{e}")
+      return build_error 'internal error', 'internal error', [
+        build_message("Error creating docker: #{e}", 'staff', 'plain'),
+        build_message(e.backtrace.join("\n"), 'staff')
+      ]
     end
 
     begin
+      # run the container with a timeout.
       stdout, stderr, exit_status = Timeout.timeout(time_limit) do
         stdout, stderr = container.tap(&:start).attach(
           stdin: StringIO.new(@config.to_json),
@@ -260,24 +159,28 @@ class SubmissionRunner
         [stdout, stderr, container.wait(time_limit)['StatusCode']]
       end
       container.delete
+
+      # handling judge output
       if exit_status.nonzero?
-        handle_error(exit_status, stderr.join)
+        build_error 'internal error', 'internal error', [
+          build_message("Judge exited with status code #{exit_status}:", 'staff', 'plain'),
+          build_message(stderr.join, 'staff')
+        ]
+      elsif not JSON::Validator.validate(schema_path.to_s, stdout.join)
+        build_error 'internal error', 'internal error', [
+          build_message("Judge output is not a valid json:", 'staff', 'plain'),
+          build_message(JSON::Validator.fully_validate(schema_path.to_s, stdout.join).join("\n"), 'staff'),
+        ]
       else
-        # submission was processed succesfully (stdout contains description of result)
-        output = stdout.join
-        if JSON::Validator.validate(schema_path.to_s, output)
-          result = JSON.parse(output)
-          add_runtime_metrics(result)
-          result
-        else
-          build_error 'internal error', 'internal error', [
-            build_message(JSON::Validator.fully_validate(schema_path.to_s, output).join("\n"), 'staff')
-          ]
-        end
+        result = JSON.parse(stdout.join)
+        add_runtime_metrics(result)
+        result
       end
     rescue Timeout::Error
       container.delete(force: true)
-      handle_timeout('Docker container exceeded time limit.')
+      build_error 'time limit exceeded', 'time limit exceeded', [
+        build_message('Docker container exceeded time limit.', 'staff', 'plain')
+      ]
     end
   end
 
@@ -310,51 +213,26 @@ class SubmissionRunner
     result
   end
 
-  # calculates the difference between the biggest and smallest values
-  # in a log file
-  def logged_value_range(path)
-    max_logged_value(path) - min_logged_value(path)
+  private
+
+  # ============================================================
+  # json building helpers
+
+  def build_error(status = 'internal error', description = 'internal error', messages = [])
+    {
+      'accepted' => false,
+      'status' => status,
+      'description' => I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
+      'messages' => messages
+    }
   end
 
-  # extracts the smallest value from a log file
-  def min_logged_value(path)
-    m = nil
-
-    file = File.open(path).read
-
-    file.each_line do |line|
-      # each log line has a time stamp an actual value
-      split = line.split
-      value = split[1].to_i
-
-      m = value if m.nil? || value < m
-    end
-
-    m
+  def build_message(description = '', permission = 'zeus', format = 'code')
+    {
+      'format' => format,
+      'description' => description,
+      'permission' => permission
+    }
   end
 
-  # extracts the biggest value from a log file
-  def max_logged_value(path)
-    m = -1
-
-    file = File.open(path).read
-
-    file.each_line do |line|
-      # each log line has a time stamp and an actual value
-      split = line.split
-      value = split[1].to_i
-      m = value if value > m
-    end
-
-    m
-  end
-
-  # extracts the last timestamp from a log file
-  def last_timestamp(path)
-    line = IO.readlines(path).last
-
-    split = line.split
-
-    split[0].to_i
-  end
 end

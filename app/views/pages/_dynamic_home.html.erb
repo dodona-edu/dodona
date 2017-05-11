@@ -24,7 +24,7 @@
         <% if @user.submissions.empty? %>
           No submissions available.
         <% else %>
-          <table class="table">
+          <table class="table no-head">
             <tbody>
               <% @user.recent_exercises.each do |exercise| %>
                 <% submission = exercise.last_submission(@user) %>
@@ -48,7 +48,7 @@
         <% if pending.empty? %>
           No pending deadlines.
         <% else %>
-          <table class="table">
+          <table class="table no-head">
             <tbody>
               <% pending.each do |series| %>
                 <tr>
@@ -70,16 +70,26 @@
           <h3 class="card-subtitle-text"><%= course.year %></h3>
         </div>
         <div class="card-supporting-text">
-          <% pending = course.pending_series %>
-          <% if pending.empty? %>
-            No pending deadlines.
+          <% if course.incomplete_series.empty? %>
+            No unsolved series.
           <% else %>
-            <table class="table">
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th>Series</th>
+                  <th>Solved</th>
+                </tr>
+              </thead>
               <tbody>
-                <% pending.each do |series| %>
+                <% course.incomplete_series.each do |series| %>
                   <tr>
-                    <td><%= link_to series.name, series %></td>
-                    <td><span title="<%= l series.deadline, format: :long %>"><span class='glyphicon glyphicon-time'></span></span> <%= t "series.show.deadline_in" %> <%= time_ago_in_words series.deadline %></span></td>
+                    <td>
+                      <%= link_to series.name, series %>
+                      <% if series.deadline? %>
+                        <span title="<%= l series.deadline, format: :long %>" class="text-muted"><span class='glyphicon glyphicon-time'></span> <%= t "series.show.deadline_in" %> <%= time_ago_in_words series.deadline %></span>
+                    <% end %>
+                    </td>
+                    <td><%= series.solved_exercises(@user).count %>/<%= series.exercises.count %></td>
                   </tr>
                 <% end %>
               </tbody>

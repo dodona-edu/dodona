@@ -34,6 +34,14 @@ class Series < ApplicationRecord
     deadline.present?
   end
 
+  def pending?
+    deadline? and deadline > Time.now
+  end
+
+  def completed?(user)
+    exercises.all? {|e| e.accepted_for(user) }
+  end
+
   def zip_solutions(user, with_info: false)
     filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
     stringio = Zip::OutputStream.write_buffer do |zio|

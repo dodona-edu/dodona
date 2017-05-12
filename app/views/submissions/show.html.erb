@@ -2,7 +2,7 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t ".submission" %> <%= @submission.exercise.name %></h2>
+        <h2 class="card-title-text"><%= t ".submission" %> <%= @submission.exercise.name %><%= " - #{@submission.course.name}" unless @submission.course.nil? %></h2>
         <div class="card-title-fab">
           <% if policy(@submission).evaluate? %>
             <%= link_to evaluate_submission_path(@submission), class: 'btn btn-primary btn-fab', title: t('.reevaluate') do %>

@@ -23,6 +23,7 @@ en:
       submission: Submission
       user: User
       exercise: Exercise
+      course: Course
       handed_in: Handed in
       ago: ago
       status: Status

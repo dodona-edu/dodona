@@ -59,7 +59,7 @@ end
       <% end %>
     </td>
     <td>
-      <% if exercise.number_of_submissions_for(current_user).positive? || current_user.admin? %>
+      <% if exercise.number_of_submissions_for(current_user, @course).positive? || current_user.admin? %>
         <%= link_to exercise_submissions_path(exercise, course_id: @course.try(:id)), title: t("layout.menu.my_submissions"), class: "btn btn-icon" do %>
           <span class='glyphicon glyphicon-chevron-right'></span>
         <% end %>

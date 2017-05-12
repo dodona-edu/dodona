@@ -212,8 +212,10 @@ class Exercise < ApplicationRecord
     last_submission(user, deadline, course).try(:accepted)
   end
 
-  def number_of_submissions_for(user)
-    submissions.of_user(user).count
+  def number_of_submissions_for(user, course = nil)
+    s = submissions.of_user(user)
+    s = s.in_course(course) if course
+    s.count
   end
 
   def check_validity

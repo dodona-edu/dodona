@@ -25,7 +25,9 @@ class ExercisesController < ApplicationController
     flash.now[:notice] = I18n.t('exercises.show.not_accessible') if @exercise.closed?
     flash.now[:notice] = I18n.t('exercises.show.not_visible') if @exercise.hidden? && current_user && current_user.admin?
     @course = Course.find_by(id: params[:course_id])
-    @submissions = policy_scope(@exercise.submissions.in_course(@course)).paginate(page: params[:page])
+    @submissions = @exercise.submissions
+    @submissions = @submissions.in_course(@course) unless @course.nil?
+    @submissions = policy_scope(@submissions).paginate(page: params[:page])
     if params[:edit_submission]
       @edit_submission = Submission.find(params[:edit_submission])
       authorize @edit_submission, :edit?

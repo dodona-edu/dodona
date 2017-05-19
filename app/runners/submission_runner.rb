@@ -5,6 +5,7 @@ require 'json-schema'  # json schema validation, from json-schema gem
 require 'tmpdir'       # temporary file support
 require 'docker'       # docker client
 require 'timeout'      # to kill the docker after a certain time
+require 'pathname'     # better than File
 
 # base class for runners that handle Dodona submissions
 class SubmissionRunner
@@ -33,13 +34,12 @@ class SubmissionRunner
     @judge = @exercise.judge
 
     # create name for hidden directory in docker container
-    @hidden_path = File.join('/mnt', SecureRandom.urlsafe_base64)
+    @mountsrc = nil # created when running
+    @mountdst = Pathname.new("/mnt")
+    @hidden_path = SecureRandom.urlsafe_base64
 
     # submission configuration (JSON)
     @config = compose_config
-
-    # path on file system used as temporary working directory for processing the submission
-    @path = nil
 
     @mac = RUBY_PLATFORM.include?('darwin')
   end
@@ -59,12 +59,20 @@ class SubmissionRunner
                             'natural_language' => @submission.user.lang)
 
     # update with links to resources in docker container needed for processing submission
-    config.recursive_update('resources' => File.join(@hidden_path, 'resources'),
-                            'source'    => File.join(@hidden_path, 'submission', 'source'),
-                            'judge'     => File.join(@hidden_path, 'judge'),
+    config.recursive_update('resources' => (@mountdst + @hidden_path + 'resources').to_path,
+                            'source'    => (@mountdst + @hidden_path + 'submission' + 'source').to_path,
+                            'judge'     => (@mountdst + @hidden_path + 'judge').to_path,
                             'workdir'   => '/home/runner/workdir')
 
     config
+  end
+
+  def copy_or_create(from, to)
+    if from.directory?
+      FileUtils.cp_r(from, to)
+    else
+      to.mkdir
+    end
   end
 
   def prepare
@@ -73,33 +81,22 @@ class SubmissionRunner
     @submission.save
 
     # create path on file system used as temporary working directory for processing the submission
-    @path = Dir.mktmpdir(nil, @mac ? '/tmp' : nil)
+    @mountsrc = Pathname.new Dir.mktmpdir(nil, @mac ? '/tmp' : nil)
 
     # put submission in the submission dir
-    Dir.mkdir(File.join(@path, 'submission'))
-    open(File.join(@path, 'submission', 'source'), 'w') do |file|
+    (@mountsrc + @hidden_path).mkdir
+    (@mountsrc + @hidden_path + 'submission').mkdir
+    (@mountsrc + @hidden_path + 'submission' + 'source').open('w') do |file|
       file.write(@submission.code)
     end
 
-    # put submission resources in working directory
-    src = File.join(@exercise.full_path, 'workdir')
-    if File.directory?(src)
-      FileUtils.cp_r(src, @path)
-    else
-      Dir.mkdir(File.join(@path, 'workdir'))
-    end
+    # put workdir, evaluation and judge directories in working directory
+    copy_or_create(@exercise.full_path + 'workdir', @mountsrc + 'workdir')
+    copy_or_create(@exercise.full_path + 'evaluation', @mountsrc + @hidden_path + 'resources')
+    copy_or_create(@judge.full_path, @mountsrc + @hidden_path + 'judge')
 
-    # ensure directories exist before mounting
-    begin
-      Dir.mkdir(File.join(@path, 'logs'))
-    rescue
-      'existed'
-    end
-    begin
-      Dir.mkdir(File.join(@exercise.full_path, 'evaluation'))
-    rescue
-      'existed'
-    end
+    # ensure logs directory exist before mounting
+    begin (@mountsrc + @hidden_path + 'logs').mkdir rescue Errno::EEXIST end
   end
 
   def execute
@@ -117,9 +114,9 @@ class SubmissionRunner
         # TODO: move entry point to docker container definition
         Cmd: ['/main.sh',
               # judge entry point
-              "#{@hidden_path}/judge/run",
+              (@mountdst + @hidden_path + 'judge' + 'run').to_path,
               # directory for logging output
-              "#{@hidden_path}/logs"],
+              (@mountdst + @hidden_path + 'logs').to_path],
         Image: @judge.image.to_s,
         name: "dodona-#{@submission.id}", # assuming unique during execution
         OpenStdin: true,
@@ -128,18 +125,8 @@ class SubmissionRunner
         HostConfig: {
           Memory: memory_limit,
           MemorySwap: memory_limit, # memory including swap
-          Binds: [
-            # mount submission as a hidden directory (read-only)
-            "#{@path}/submission:#{@hidden_path}/submission:ro",
-            # mount judge resources in hidden directory (read-only)
-            "#{@exercise.full_path}/evaluation:#{@hidden_path}/resources:ro",
-            # mount judge definition in hidden directory (read-only)
-            "#{@judge.full_path}:#{@hidden_path}/judge:ro",
-            # mount logging directory in hidden directory
-            "#{@path}/logs:#{@hidden_path}/logs",
-            # evalution directory is read/write and seeded with copies
-            "#{@path}/workdir:/home/runner/workdir"
-          ]
+          Binds: ["#{@mountsrc}:#{@mountdst}",
+                  "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
         }
       )
     rescue Exception => e
@@ -164,8 +151,11 @@ class SubmissionRunner
       # handling judge output
       if exit_status.nonzero?
         build_error 'internal error', 'internal error', [
-          build_message("Judge exited with status code #{exit_status}:", 'staff', 'plain'),
-          build_message(stderr.join, 'staff')
+          build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
+          build_message("Standard Error:", 'staff', 'plain'),
+          build_message(stderr.join, 'staff'),
+          build_message("Standard Output:", 'staff', 'plain'),
+          build_message(stdout.join, 'staff'),
         ]
       elsif not JSON::Validator.validate(schema_path.to_s, stdout.join)
         build_error 'internal error', 'internal error', [

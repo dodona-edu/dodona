@@ -144,7 +144,7 @@ class SubmissionRunner
           stdout: true,
           stderr: true
         )
-        [stdout, stderr, container.wait(time_limit)['StatusCode']]
+        [stdout.join, stderr.join, container.wait(time_limit)['StatusCode']]
       end
       container.delete
 
@@ -153,17 +153,17 @@ class SubmissionRunner
         build_error 'internal error', 'internal error', [
           build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
           build_message("Standard Error:", 'staff', 'plain'),
-          build_message(stderr.join, 'staff'),
+          build_message(stderr, 'staff'),
           build_message("Standard Output:", 'staff', 'plain'),
-          build_message(stdout.join, 'staff'),
+          build_message(stdout, 'staff'),
         ]
-      elsif not JSON::Validator.validate(schema_path.to_s, stdout.join)
+      elsif not JSON::Validator.validate(schema_path.to_s, stdout)
         build_error 'internal error', 'internal error', [
           build_message("Judge output is not a valid json:", 'staff', 'plain'),
-          build_message(JSON::Validator.fully_validate(schema_path.to_s, stdout.join).join("\n"), 'staff'),
+          build_message(JSON::Validator.fully_validate(schema_path.to_s, stdout).join("\n"), 'staff'),
         ]
       else
-        result = JSON.parse(stdout.join)
+        result = JSON.parse(stdout)
         add_runtime_metrics(result)
         result
       end

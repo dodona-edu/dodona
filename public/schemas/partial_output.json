@@ -1,0 +1,191 @@
+{
+  "$ref": "#/definitions/update",
+  "definitions": {
+    "update": {
+      "oneOf": [
+          { "$ref": "#/definitions/focus" },
+          { "$ref": "#/definitions/new-tab" },
+          { "$ref": "#/definitions/new-context" },
+          { "$ref": "#/definitions/new-testcase" },
+          { "$ref": "#/definitions/new-test" },
+
+          { "$ref": "#/definitions/append-message" },
+          { "$ref": "#/definitions/set-status" },
+          { "$ref": "#/definitions/set-description" },
+          { "$ref": "#/definitions/set-accepted" },
+          { "$ref": "#/definitions/set-badgecount" },
+          { "$ref": "#/definitions/increment-badgecount" },
+          { "$ref": "#/definitions/set-expected" },
+          { "$ref": "#/definitions/set-generated" }
+      ]
+    },
+    "focus": {
+        "type": "object",
+        "description": "Move the focus to the specified location.",
+        "required": ["command"],
+        "properties": {
+            "command":  { "enum": ["focus"] },
+            "tab":      { "$ref": "#/definitions/index" },
+            "context":  { "$ref": "#/definitions/index" },
+            "testcase": { "$ref": "#/definitions/index" },
+            "test":     { "$ref": "#/definitions/index" }
+        }
+    },
+    "new-tab": {
+        "type": "object",
+        "description": "Open a new tab after the current tab (or as last tab if the root is focussed) and focus it.",
+        "required": ["command"],
+        "properties": {
+            "command": { "enum": ["new-tab"] }
+        }
+    },
+    "new-context": {
+        "type": "object",
+        "description": "Open a new context after the current context (or in the current tab) and focus it.",
+        "required": ["command"],
+        "properties": {
+            "command": { "enum": ["new-context"] }
+        }
+    },
+    "new-testcase": {
+        "type": "object",
+        "description": "Open a new testcase after the current testcase (or in the current context) and focus it.",
+        "required": ["command"],
+        "properties": {
+            "command": { "enum": ["new-testcase"] }
+        }
+    },
+    "new-test": {
+        "type": "object",
+        "description": "Open a new test after the current test (or in the current testcase) and focus it.",
+        "required": ["command"],
+        "properties": {
+            "command": { "enum": ["new-test"] }
+        }
+    },
+
+    "append-message": {
+        "type": "object",
+        "description": "Append a message to the first ancestor or the focussed item able to carry messages. Focus is on the new message.",
+        "required": ["command", "message"],
+        "properties": {
+            "command": { "enum": ["append-message"] },
+            "message": { "$ref": "#/definitions/message" }
+        }
+    },
+    "set-status": {
+        "type": "object",
+        "description": "Set the status of the current object.",
+        "required": ["command", "status"],
+        "properties": {
+            "command": { "enum": ["set-status"] },
+            "status":  { "$ref": "#/definitions/status" }
+        }
+    },
+    "set-description": {
+        "type": "object",
+        "description": "Set the description of the current object.",
+        "required": ["command", "description"],
+        "properties": {
+            "command": { "enum": ["set-description"] },
+            "description":  { "$ref": "#/definitions/description" }
+        }
+    },
+    "set-accepted": {
+        "type": "object",
+        "description": "Set the correctness of the current object.",
+        "required": ["command", "accepted"],
+        "properties": {
+            "command": { "enum": ["set-accepted"] },
+            "accepted":  { "$ref": "#/definitions/accepted" }
+        }
+    },
+    "set-badgecount": {
+        "type": "object",
+        "description": "Set the badgecount of the current tab.",
+        "required": ["command", "badgecount"],
+        "properties": {
+            "command": { "enum": ["set-badgecount"] },
+            "badgecount":  { "$ref": "#/definitions/badgecount" }
+        }
+    },
+    "increment-badgecount": {
+        "type": "object",
+        "description": "Increment the badgecount of the current tab.",
+        "required": ["command"],
+        "properties": {
+            "command": { "enum": ["increment-badgecount"] }
+        }
+    },
+    "set-expected": {
+        "type": "object",
+        "description": "Set the expected value of the current test.",
+        "required": ["command", "expected"],
+        "properties": {
+            "command": { "enum": ["set-expected"] },
+            "expected":  { "type": "string" }
+        }
+    },
+    "set-generated": {
+        "type": "object",
+        "description": "Set the generated value of the current test.",
+        "required": ["command", "generated"],
+        "properties": {
+            "command": { "enum": ["set-generated"] },
+            "generated":  { "type": "string" }
+        }
+    },
+
+    "message": {
+      "type": ["string", "object"],
+      "description": "Possibly formatted string as a message to (some) users.",
+      "required": ["format", "description"],
+      "properties": {
+        "format":      { "$ref": "#/definitions/format" },
+        "description": { "$ref": "#/definitions/description" },
+        "permission":  { "$ref": "#/definitions/permission" }
+      }
+    },
+    "format": {
+      "type": "string",
+      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'code' or any programming language (highlighted)."
+    },
+    "permission": {
+      "type": "string",
+      "description": "To which level of user this message is visible.",
+      "enum": [
+        "student",
+        "staff",
+        "zeus"
+      ]
+    },
+    "badgeCount": {
+      "type": "number",
+      "description": "Indicates the number of issues in this tab",
+      "minimum": 0
+    },
+    "index": {
+      "type": "number",
+      "description": "Index in a list.",
+      "minimum": 0
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "compilation error",
+        "runtime error",
+        "memory limit exceeded",
+        "time limit exceeded",
+        "wrong", "wrong answer",
+        "correct", "correct answer",
+        "internal error"
+      ]
+    },
+    "accepted": {
+      "type": "boolean"
+    }
+  }
+}

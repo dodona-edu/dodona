@@ -1,7 +1,6 @@
 require 'json'         # JSON support
 require 'fileutils'    # file system utilities
 require 'securerandom' # random string generators (supports URL safety)
-require 'json-schema'  # json schema validation, from json-schema gem
 require 'tmpdir'       # temporary file support
 require 'docker'       # docker client
 require 'timeout'      # to kill the docker after a certain time
@@ -18,11 +17,6 @@ class SubmissionRunner
 
   class << self
     attr_reader :runners
-  end
-
-  # path to the default submission json schema, used to validate judge output
-  def schema_path
-    Rails.root.join 'public/schemas/judge_output.json'
   end
 
   def initialize(submission)
@@ -150,22 +144,22 @@ class SubmissionRunner
 
       # handling judge output
       if exit_status.nonzero?
-        build_error 'internal error', 'internal error', [
+        return build_error 'internal error', 'internal error', [
           build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
           build_message("Standard Error:", 'staff', 'plain'),
           build_message(stderr, 'staff'),
           build_message("Standard Output:", 'staff', 'plain'),
           build_message(stdout, 'staff'),
         ]
-      elsif not JSON::Validator.validate(schema_path.to_s, stdout)
+      end
+
+      begin
+        ResultConstructor.new.feed(stdout).result
+      rescue ResultConstructorError => e
         build_error 'internal error', 'internal error', [
-          build_message("Judge output is not a valid json:", 'staff', 'plain'),
-          build_message(JSON::Validator.fully_validate(schema_path.to_s, stdout).join("\n"), 'staff'),
+          build_message(e.title, 'staff', 'plain'),
+          build_message(e.description, 'staff'),
         ]
-      else
-        result = JSON.parse(stdout)
-        add_runtime_metrics(result)
-        result
       end
     rescue Timeout::Error
       container.delete(force: true)

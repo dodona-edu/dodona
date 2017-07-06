@@ -152,18 +152,18 @@ class SubmissionRunner
         ]
       end
 
-      begin
-        ResultConstructor.new.feed(stdout).result
-      rescue ResultConstructorError => e
-        build_error 'internal error', 'internal error', [
-          build_message(e.title, 'staff', 'plain'),
-          build_message(e.description, 'staff'),
-        ]
-      end
+      rc = ResultConstructor.new
+      rc.feed(stdout)
+      rc.result
     rescue Timeout::Error
       container.delete(force: true)
       build_error 'time limit exceeded', 'time limit exceeded', [
         build_message('Docker container exceeded time limit.', 'staff', 'plain')
+      ]
+    rescue ResultConstructorError => e
+      build_error 'internal error', 'internal error', [
+        build_message(e.title, 'staff', 'plain'),
+        build_message(e.description, 'staff'),
       ]
     end
   end
@@ -173,9 +173,9 @@ class SubmissionRunner
   def finalize(result)
     # save the result
     @submission.result = result.to_json
-    @submission.status = Submission.normalize_status(result['status'])
-    @submission.accepted = result['accepted']
-    @submission.summary = result['description']
+    @submission.status = Submission.normalize_status(result[:status])
+    @submission.accepted = result[:accepted]
+    @submission.summary = result[:description]
     @submission.save
 
     # remove path on file system used as temporary working directory for processing the submission
@@ -204,18 +204,18 @@ class SubmissionRunner
 
   def build_error(status = 'internal error', description = 'internal error', messages = [])
     {
-      'accepted' => false,
-      'status' => status,
-      'description' => I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
-      'messages' => messages
+      accepted: false,
+      status: status,
+      description: I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
+      messages: messages
     }
   end
 
   def build_message(description = '', permission = 'zeus', format = 'code')
     {
-      'format' => format,
-      'description' => description,
-      'permission' => permission
+      format: format,
+      description: description,
+      permission: permission
     }
   end
 

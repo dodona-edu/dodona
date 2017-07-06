@@ -2,30 +2,30 @@
 # runner that implements the Pythia workflow of handling submissions
 class PythiaSubmissionRunner < SubmissionRunner
   def add_runtime_metrics(result)
-    metrics = result['runtime_metrics']
+    metrics = result[:runtime_metrics]
 
     metrics = {} if metrics.nil?
 
-    unless metrics.key?('wall_time')
+    unless metrics.key?(:wall_time)
       value = last_timestamp(@mountsrc + @hidden_path + 'logs' + 'user_time.logs') / 1000.0
-      metrics['wall_time'] = value
+      metrics[:wall_time] = value
 
       value = logged_value_range(@mountsrc + @hidden_path + 'logs' + 'user_time.logs') / 100.0
-      metrics['user_time'] = value
+      metrics[:user_time] = value
 
       value = logged_value_range(@mountsrc + @hidden_path + 'logs' + 'system_time.logs') / 100.0
-      metrics['system_time'] = value
+      metrics[:system_time] = value
     end
 
-    unless metrics.key?('peak_memory')
+    unless metrics.key?(:peak_memory)
       value = logged_value_range(@mountsrc + @hidden_path + 'logs' + 'memory_usage.logs')
-      metrics['peak_memory'] = value
+      metrics[:peak_memory] = value
 
       value = logged_value_range(@mountsrc + @hidden_path + 'logs' + 'anonymous_memory.logs')
-      metrics['peak_anonymous_memory'] = value
+      metrics[:peak_anonymous_memory] = value
     end
 
-    result['runtime_metrics'] = metrics
+    result[:runtime_metrics] = metrics
   end
 
   # calculates the difference between the biggest and smallest values

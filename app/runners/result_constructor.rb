@@ -26,10 +26,10 @@ class ResultConstructor
 
   def feed(judge_output)
     split_jsons(judge_output).each do |json|
-      if JSON::Validator.validate(FULL_SCHEMA, json)
-        @result = json
-      elsif JSON::Validator.validate(PART_SCHEMA, json)
+      if JSON::Validator.validate(PART_SCHEMA, json)
         update(json)
+      elsif JSON::Validator.validate(FULL_SCHEMA, json)
+        @result = json
       else
         throw ResultConstructorError.new(
           "Judge output is not a valid json",
@@ -101,32 +101,12 @@ class ResultConstructor
     messages << message if message.present?
   end
 
-  def set_status(status: nil)
-    current_item[:status] = status
-  end
-
-  def set_description(description: nil)
-    current_item[:description] = description
-  end
-
-  def set_accepted(accepted: nil)
-    current_item[:accepted] = accepted
-  end
-
-  def set_badgecount(badgecount: nil)
-    current_item[:badgecount] = badgecount
+  def set_properties(properties)
+    current_item.update(properties)
   end
 
   def increment_badgecount
     current_item[:badgecount] += 1
-  end
-
-  def set_expected(expected: nil)
-    current_item[:expected] = expected
-  end
-
-  def set_generated(generated: nil)
-    current_item[:generated] = generated
   end
 
   private

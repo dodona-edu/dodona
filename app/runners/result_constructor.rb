@@ -134,7 +134,7 @@ class ResultConstructor
   def split_jsons(string)
     parse_exception = nil
     jsons = [""]
-    string.split(/(?<=})(?={)/).each do |new|
+    string.split(/(?<=})\s*(?={)/).each do |new|
       jsons.last << new
       begin
         jsons[-1] = JSON.parse(jsons.last, symbolize_names: true)

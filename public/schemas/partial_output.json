@@ -10,13 +10,8 @@
           { "$ref": "#/definitions/new-test" },
 
           { "$ref": "#/definitions/append-message" },
-          { "$ref": "#/definitions/set-status" },
-          { "$ref": "#/definitions/set-description" },
-          { "$ref": "#/definitions/set-accepted" },
-          { "$ref": "#/definitions/set-badgecount" },
-          { "$ref": "#/definitions/increment-badgecount" },
-          { "$ref": "#/definitions/set-expected" },
-          { "$ref": "#/definitions/set-generated" }
+          { "$ref": "#/definitions/set-properties" },
+          { "$ref": "#/definitions/increment-badgecount" }
       ]
     },
     "focus": {
@@ -73,40 +68,18 @@
             "message": { "$ref": "#/definitions/message" }
         }
     },
-    "set-status": {
+    "set-properties": {
         "type": "object",
-        "description": "Set the status of the current object.",
-        "required": ["command", "status"],
+        "description": "Set properties of the current object.",
+        "required": ["command"],
         "properties": {
-            "command": { "enum": ["set-status"] },
-            "status":  { "$ref": "#/definitions/status" }
-        }
-    },
-    "set-description": {
-        "type": "object",
-        "description": "Set the description of the current object.",
-        "required": ["command", "description"],
-        "properties": {
-            "command": { "enum": ["set-description"] },
-            "description":  { "$ref": "#/definitions/description" }
-        }
-    },
-    "set-accepted": {
-        "type": "object",
-        "description": "Set the correctness of the current object.",
-        "required": ["command", "accepted"],
-        "properties": {
-            "command": { "enum": ["set-accepted"] },
-            "accepted":  { "$ref": "#/definitions/accepted" }
-        }
-    },
-    "set-badgecount": {
-        "type": "object",
-        "description": "Set the badgecount of the current tab.",
-        "required": ["command", "badgecount"],
-        "properties": {
-            "command": { "enum": ["set-badgecount"] },
-            "badgecount":  { "$ref": "#/definitions/badgecount" }
+            "command":     { "enum": ["set-properties"] },
+            "status":      { "$ref": "#/definitions/status" },
+            "description": { "$ref": "#/definitions/description" },
+            "accepted":    { "$ref": "#/definitions/accepted" },
+            "badgecount":  { "$ref": "#/definitions/badgecount" },
+            "expected":    { "type": "string" },
+            "generated":   { "type": "string" }
         }
     },
     "increment-badgecount": {
@@ -115,24 +88,6 @@
         "required": ["command"],
         "properties": {
             "command": { "enum": ["increment-badgecount"] }
-        }
-    },
-    "set-expected": {
-        "type": "object",
-        "description": "Set the expected value of the current test.",
-        "required": ["command", "expected"],
-        "properties": {
-            "command": { "enum": ["set-expected"] },
-            "expected":  { "type": "string" }
-        }
-    },
-    "set-generated": {
-        "type": "object",
-        "description": "Set the generated value of the current test.",
-        "required": ["command", "generated"],
-        "properties": {
-            "command": { "enum": ["set-generated"] },
-            "generated":  { "type": "string" }
         }
     },
 

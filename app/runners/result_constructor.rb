@@ -31,7 +31,7 @@ class ResultConstructor
       elsif JSON::Validator.validate(FULL_SCHEMA, json)
         @result = json
       else
-        throw ResultConstructorError.new(
+        raise ResultConstructorError.new(
           "Judge output is not a valid json",
           judge_output
         )
@@ -125,7 +125,7 @@ class ResultConstructor
       end
     end
     if parse_exception.present?
-      throw ResultConstructorError.new(parse_exception.message, string)
+      raise ResultConstructorError.new("Failed to parse the following JSON", string)
     else
       jsons[0...-1]
     end

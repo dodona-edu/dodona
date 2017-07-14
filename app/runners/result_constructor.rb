@@ -48,7 +48,7 @@ class ResultConstructor
     end
   end
 
-  def focus(focus)
+  def focus(focus={})
     if focus.empty?
       @focus = []
     else

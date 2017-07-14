@@ -130,42 +130,51 @@ class SubmissionRunner
       ]
     end
 
-    begin
-      # run the container with a timeout.
-      stdout, stderr, exit_status = Timeout.timeout(time_limit) do
-        stdout, stderr = container.tap(&:start).attach(
-          stdin: StringIO.new(@config.to_json),
-          stdout: true,
-          stderr: true
-        )
-        [stdout.join, stderr.join, container.wait(time_limit)['StatusCode']]
-      end
-      container.delete
+    # run the container with a timeout.
+    timer = Thread.new { sleep time_limit ; container.stop }
+    outlines, errlines = container.tap(&:start).attach(
+      stdin: StringIO.new(@config.to_json),
+      stdout: true,
+      stderr: true
+    )
+    timer.kill
+    timer.join
 
-      # handling judge output
-      if exit_status.nonzero?
-        return build_error 'internal error', 'internal error', [
+    stdout = outlines.join
+    stderr = errlines.join
+    exit_status = container.wait(1)['StatusCode']
+    container.delete
+
+    # handling judge output
+    if exit_status.nonzero? && exit_status != 143
+      return build_error 'internal error', 'internal error', [
+        build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
+        build_message("Standard Error:", 'staff', 'plain'),
+        build_message(stderr, 'staff'),
+        build_message("Standard Output:", 'staff', 'plain'),
+        build_message(stdout, 'staff'),
+      ]
+    end
+
+    begin
+      rc = ResultConstructor.new
+      rc.feed(stdout)
+      rc.result
+    rescue ResultConstructorError => e
+      if exit_status == 143
+        build_error 'time limit exceeded', 'time limit exceeded', [
           build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
           build_message("Standard Error:", 'staff', 'plain'),
           build_message(stderr, 'staff'),
           build_message("Standard Output:", 'staff', 'plain'),
           build_message(stdout, 'staff'),
         ]
+      else
+        build_error 'internal error', 'internal error', [
+          build_message(e.title, 'staff', 'plain'),
+          build_message(e.description, 'staff'),
+        ]
       end
-
-      rc = ResultConstructor.new
-      rc.feed(stdout)
-      rc.result
-    rescue Timeout::Error
-      container.delete(force: true)
-      build_error 'time limit exceeded', 'time limit exceeded', [
-        build_message('Docker container exceeded time limit.', 'staff', 'plain')
-      ]
-    rescue ResultConstructorError => e
-      build_error 'internal error', 'internal error', [
-        build_message(e.title, 'staff', 'plain'),
-        build_message(e.description, 'staff'),
-      ]
     end
   end
 

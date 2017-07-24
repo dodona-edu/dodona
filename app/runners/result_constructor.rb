@@ -75,16 +75,6 @@ class ResultConstructor
   def new_testcase; new(:testcase); end
   def new_test; new(:test); end
 
-  # return the current focussed item
-  def current_item
-    subresult = @result
-    @focus.each_with_index do |index, level|
-      collection = subresult[GATHER[LEVELSA[level]]] ||= []
-      subresult  = collection[index]                 ||= {}
-    end
-    subresult
-  end
-
   def append_message(message: nil)
     messages = current_item[:messages] ||= []
     messages << message if message.present?
@@ -112,6 +102,16 @@ class ResultConstructor
         @focus[level] ||= 0
       end
     end
+  end
+
+  # return the current focussed item
+  def current_item
+    subresult = @result
+    @focus.each_with_index do |index, level|
+      collection = subresult[GATHER[LEVELSA[level]]] ||= []
+      subresult  = collection[index]                 ||= {}
+    end
+    subresult
   end
 
   # used by new tab, ...

@@ -4,6 +4,8 @@
     "update": {
       "oneOf": [
           { "$ref": "#/definitions/focus" },
+          { "$ref": "#/definitions/push-focus" },
+          { "$ref": "#/definitions/pop-focus" },
           { "$ref": "#/definitions/new-tab" },
           { "$ref": "#/definitions/new-context" },
           { "$ref": "#/definitions/new-testcase" },
@@ -26,12 +28,29 @@
             "test":     { "$ref": "#/definitions/index" }
         }
     },
-    "new-tab": {
+    "push-focus": {
         "type": "object",
-        "description": "Open a new tab after the current tab (or as last tab if the root is focussed) and focus it.",
+        "description": "Save the current focus on a stack.",
         "required": ["command"],
         "properties": {
-            "command": { "enum": ["new-tab"] }
+            "command": { "enum": ["push-focus"] }
+        }
+    },
+    "pop-focus": {
+        "type": "object",
+        "description": "Pop the last saved focus from a stack and use it.",
+        "required": ["command"],
+        "properties": {
+            "command": { "enum": ["pop-focus"] }
+        }
+    },
+    "focus-relative": {
+        "type": "object",
+        "description": "Move the focus to the relative level closer to root.",
+        "required": ["command", "level"],
+        "properties": {
+            "command":  { "enum": ["focus"] },
+            "level":    { "enum": ["root", "tab", "context", "testcase", "test"] }
         }
     },
     "new-context": {

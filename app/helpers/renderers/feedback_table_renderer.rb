@@ -3,8 +3,8 @@ class FeedbackTableRenderer
 
   require 'builder'
 
+  @renderers = [FeedbackTableRenderer]
   def self.inherited(cl)
-    @renderers ||= [FeedbackTableRenderer]
     @renderers << cl
   end
 

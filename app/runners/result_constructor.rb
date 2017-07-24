@@ -22,6 +22,7 @@ class ResultConstructor
   def initialize
     @result = Hash.new
     @focus = []
+    @stack = []
   end
 
   def feed(judge_output)
@@ -39,14 +40,7 @@ class ResultConstructor
     end
   end
 
-  def update(json)
-    command = json.delete(:command).gsub('-', '_')
-    if json.empty?
-      send command
-    else
-      send command, json
-    end
-  end
+  # below are the methods open to partial updates
 
   def focus(focus={})
     if focus.empty?
@@ -61,24 +55,19 @@ class ResultConstructor
     end
   end
 
-  # returns the list and index for the given level
-  def current(what)
-    subresult = @result
-    LEVELSA.each_with_index do |key, level|
-      collection = subresult[GATHER[key]]          ||= []
-      subresult  = collection[@focus[level] || 0] ||= {}
-      if key == what
-        return [collection, @focus[level]]
-      else
-        @focus[level] ||= 0
-      end
-    end
+  def push_focus
+    @stack << @focus.dup
   end
 
-  def new(what)
-    tabs, index = current(what)
-    @focus.slice!(LEVELSH[what], @focus.length)
-    @focus[LEVELSH[what]] = if index.nil? then 0 else index + 1 end
+  def pop_focus
+    @focus = @stack.pop
+  end
+
+  def focus_relative(level: nil)
+    level = level.to_sym
+    until @focus.empty? || level == LEVELSA[@focus.length - 1]
+      @focus.pop
+    end
   end
 
   def new_tab; new(:tab); end
@@ -111,6 +100,27 @@ class ResultConstructor
 
   private
 
+  # returns the list and index for the given level
+  def current(what)
+    subresult = @result
+    LEVELSA.each_with_index do |key, level|
+      collection = subresult[GATHER[key]]          ||= []
+      subresult  = collection[@focus[level] || 0]  ||= {}
+      if key == what
+        return [collection, @focus[level]]
+      else
+        @focus[level] ||= 0
+      end
+    end
+  end
+
+  # used by new tab, ...
+  def new(what)
+    tabs, index = current(what)
+    @focus.slice!(LEVELSH[what], @focus.length)
+    @focus[LEVELSH[what]] = if index.nil? then 0 else index + 1 end
+  end
+
   def split_jsons(string)
     parse_exception = nil
     jsons = [""]
@@ -128,6 +138,16 @@ class ResultConstructor
       raise ResultConstructorError.new("Failed to parse the following JSON", string)
     else
       jsons[0...-1]
+    end
+  end
+
+  # apply a partial update
+  def update(json)
+    command = json.delete(:command).gsub('-', '_')
+    if json.empty?
+      send command
+    else
+      send command, json
     end
   end
 

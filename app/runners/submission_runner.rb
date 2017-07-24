@@ -39,8 +39,8 @@ class SubmissionRunner
     }
   end
 
+  @runners = [SubmissionRunner]
   def self.inherited(cl)
-    @runners ||= [SubmissionRunner]
     @runners << cl
   end
 

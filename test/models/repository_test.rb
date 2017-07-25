@@ -14,7 +14,7 @@
 require 'test_helper'
 
 class RepositoryTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'factory' do
+    create :repository, :git_stubbed
+  end
 end

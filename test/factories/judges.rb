@@ -1,5 +1,3 @@
-require 'helpers/stub_helper'
-using StubHelper
 
 FactoryGirl.define do
   factory :judge do

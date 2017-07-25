@@ -1,4 +1,5 @@
 require 'helpers/stub_helper'
+using StubHelper
 
 FactoryGirl.define do
   factory :judge do
@@ -12,7 +13,7 @@ FactoryGirl.define do
 
     trait :git_stubbed do
       after :build do |judge|
-        StubHelper.stub_git(judge)
+        stub_git(judge)
       end
     end
   end

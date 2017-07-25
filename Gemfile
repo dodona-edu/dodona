@@ -95,6 +95,11 @@ gem 'rubyzip'
 gem 'rails_server_timings'
 
 group :development, :test do
+  # Use mocha for stubbing and mocking
+  gem 'mocha'
+  # Factory girl for factories
+  gem 'factory_girl'
+  gem 'factory_girl_rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 end

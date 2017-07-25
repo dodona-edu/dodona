@@ -8,7 +8,7 @@
 
 zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus
 
-staff = User.create username: 'staff', first_name: 'Stijn', last_name: 'Taff', email: 'staff.coppens@ugent.be', permission: :staff
+staff = User.create username: 'staff', first_name: 'Stijn', last_name: 'Taff', email: 'stijn.taff@ugent.be', permission: :staff
 
 student = User.create username: 'rbmaerte', first_name: 'Rien', last_name: 'Maertens', email: 'rien.maertens@ugent.be', permission: :student
 
@@ -17,12 +17,23 @@ testcourse = Course.create description: 'This is a test course.', name: 'Test Co
 # Add student to course
 student.courses << testcourse
 
-judge = Judge.create name: 'Testjudge', image: 'dodona-anaconda3.dockerfile', remote: 'git@github.ugent.be:dodona/docker-images.git', renderer: FeedbackTableRenderer,
-  runner: SubmissionRunner
+pythia_judge = Judge.create name: 'pythia', image: 'dodona-anaconda3', remote: 'git@github.ugent.be:dodona/judge-pythia.git', renderer: PythiaRenderer, runner: SubmissionRunner
 
-repo = Repository.create name: 'Testrepo', remote: '../test-exercises', judge: judge
+=begin
+Other judhes
+biopythia-judge = Judge.create name: 'biopythia', image: 'dodona-biopythia', remote: 'git@github.ugent.be:dodona/judge-biopythia.git', renderer: PythiaRenderer
 
+prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.ugent.be:dodona/judge-prolog.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.ugent.be:dodona/judge-bash.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+junit-judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.ugent.be:dodona/judge-junit.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+javascript-judge = Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.ugent.be:dodona/dodona-javascript.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+=end
 
+exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
+exercise_repo.process_exercises
 
+# Add exercices to test course
+series1 = Series.create name: 'Reeks 1', course: testcourse
+series1.exercises << exercise_repo.exercises
 
 

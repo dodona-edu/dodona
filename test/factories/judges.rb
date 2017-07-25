@@ -1,4 +1,3 @@
-require 'mocha/mini_test'
 
 FactoryGirl.define do
   factory :judge do

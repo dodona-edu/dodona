@@ -16,7 +16,7 @@
 require 'test_helper'
 
 class JudgeTest < ActiveSupport::TestCase
-  test "blub" do
+  test 'factory' do
     create(:judge, :git_stubbed)
   end
 end

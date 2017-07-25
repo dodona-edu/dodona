@@ -15,7 +15,7 @@
 require 'test_helper'
 
 class CourseTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'factory' do
+    create :course
+  end
 end

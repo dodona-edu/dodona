@@ -1,15 +1,18 @@
-require 'mocha/mini_test'
+require 'helpers/stub_helper'
 
 FactoryGirl.define do
   factory :judge do
     name 'pythia'
-    image 'lol'
-    path 'kek'
+    image 'dodona-anconda3'
+    path 'placeholder'
+    remote 'placeholder'
+
+    renderer FeedbackTableRenderer
+    runner SubmissionRunner
 
     trait :git_stubbed do
       after :build do |judge|
-        judge.stubs(:repo_is_accessible).returns(true)
-        judge.stubs(:clone_repo)
+        StubHelper.stub_git(judge)
       end
     end
   end

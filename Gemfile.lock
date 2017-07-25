@@ -130,6 +130,11 @@ GEM
       activesupport (>= 4.0, < 6)
     excon (0.55.0)
     execjs (2.7.0)
+    factory_girl (4.8.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.8.0)
+      factory_girl (~> 4.8.0)
+      railties (>= 3.0.0)
     ffi (1.9.18)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
@@ -165,12 +170,15 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
+    metaclass (0.0.4)
     method_source (0.8.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
+    mocha (1.2.1)
+      metaclass (~> 0.0.1)
     multi_json (1.12.1)
     mustermann (1.0.0)
     mysql2 (0.4.5)
@@ -300,6 +308,8 @@ DEPENDENCIES
   diffy
   docker-api
   exception_notification
+  factory_girl
+  factory_girl_rails
   has_scope
   i18n-js (~> 3.0.0.rc14)
   jbuilder (~> 2.5)
@@ -308,6 +318,7 @@ DEPENDENCIES
   kramdown
   less-rails
   listen (~> 3.0.5)
+  mocha
   mysql2 (>= 0.3.18, < 0.5)
   pretender
   puma

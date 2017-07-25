@@ -16,7 +16,8 @@
 require 'test_helper'
 
 class JudgeTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "blub" do
+    judge = build(:judge, :git_stubbed)
+    judge.save
+  end
 end

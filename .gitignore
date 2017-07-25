@@ -22,3 +22,6 @@
 # Ignore media files
 /public/exercises
 /.project
+
+# Ignore generated entity-relationship diagram (rails-erd gem)
+erd.pdf

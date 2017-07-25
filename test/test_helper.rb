@@ -1,7 +1,10 @@
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
+require 'faker'
 require 'rails/test_help'
 require 'mocha/mini_test'
+require 'helpers/stub_helper'
+using StubHelper
 
 # Always generate the same testdata
 Faker::Config.random = Random.new(42)

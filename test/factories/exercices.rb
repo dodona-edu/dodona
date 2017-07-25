@@ -1,2 +1,0 @@
-FactoryGirl.define do
-end

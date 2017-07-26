@@ -8,6 +8,9 @@ require 'rails/test_help'
 require 'mocha/mini_test'
 require 'helpers/stub_helper'
 
+# automatically set locale for all routes
+require 'minitest/utils/rails/locale'
+
 # Always generate the same testdata
 Faker::Config.random = Random.new(42)
 

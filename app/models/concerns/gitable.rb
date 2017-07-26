@@ -19,7 +19,7 @@ module Gitable
   def clone_repo
     self.path = remote.split('/')[-1].shellescape
     begin
-      full_path.mkdir
+      full_path.mkpath
     rescue Errno::EEXIST
       self.path += '_'
       retry

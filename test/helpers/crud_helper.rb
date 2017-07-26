@@ -1,13 +1,5 @@
 module CRUDHelper
 
-  def self.model_name
-    model.to_s.downcase
-  end
-
-  def model
-    self.class.model
-  end
-
   def model_name
     model.to_s.downcase
   end
@@ -41,10 +33,18 @@ end
 
 
 module CRUDTest
-  def crud_tests(model)
+  def test_crud_actions(model, attrs: nil)
     model_name = model.to_s.downcase
 
     include(CRUDHelper)
+
+    define_method(:model) do
+      model
+    end
+
+    define_method(:allowed_attrs) do
+      attrs
+    end
 
     test 'should get index' do
       get polymorphic_url(model)

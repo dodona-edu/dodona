@@ -6,7 +6,9 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'faker'
 require 'rails/test_help'
 require 'mocha/mini_test'
+
 require 'helpers/stub_helper'
+require 'helpers/crud_helper'
 
 # automatically set locale for all routes
 require 'minitest/utils/rails/locale'

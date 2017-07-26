@@ -1,12 +1,26 @@
 require 'test_helper'
 
+require 'helpers/crud_helper'
+
 class JudgesControllerTest < ActionDispatch::IntegrationTest
   JUDGE_ATTRS = %i[name image renderer runner remote]
+  extend CRUDTest
 
   setup do
-    sign_in create(:user, permission: :zeus)
     stub_git(Judge.any_instance)
     @judge = create :judge
+    sign_in create(:user, permission: :zeus)
+  end
+
+  crud_tests Judge
+
+
+  def allowed_attrs
+    %i[name image renderer runner remote]
+  end
+
+  def model
+    Judge
   end
 
   test 'should get index' do
@@ -17,22 +31,6 @@ class JudgesControllerTest < ActionDispatch::IntegrationTest
   test 'should get new' do
     get new_judge_url
     assert_response :success
-  end
-
-  test 'should create judge' do
-    attrs = attributes_for(:judge).slice(*JUDGE_ATTRS)
-    assert_difference(-> { Judge.count }) do
-      post judges_url,
-           params: {
-             judge: attrs
-           }
-    end
-
-    judge = Judge.last
-    attrs.each do |attr, value|
-      assert_equal value, judge.send(attr)
-    end
-    assert_redirected_to judge_url(judge)
   end
 
   test 'should show judge' do
@@ -46,16 +44,10 @@ class JudgesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update judge' do
-    attrs = attributes_for(:judge).slice(*JUDGE_ATTRS)
-    patch judge_url(@judge),
-          params: {
-            judge: attrs
-          }
-    assert_redirected_to judge_url(@judge)
-
-    @judge.reload
-    attrs.each do |attr, value|
-      assert_equal value, @judge.send(attr)
+    produces_object_with_attributes do |attrs|
+      patch judge_url(@judge), model_params(attrs)
+      assert_redirected_to judge_url(@judge)
+      @judge.reload
     end
   end
 

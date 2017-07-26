@@ -4,7 +4,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   USER_ATTRS = %i[username ugent_id first_name last_name email permission time_zone].freeze
 
   setup do
-    @user = create(:user, permission: :zeus)
+    @user = create(:zeus)
     sign_in @user
   end
 

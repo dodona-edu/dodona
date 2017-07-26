@@ -10,5 +10,5 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions Exercise,
                     attrs: %i[visibility name_nl name_en],
-                    actions: %i[index show edit update]
+                    except: %i[destroy create]
 end

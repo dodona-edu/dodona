@@ -6,13 +6,5 @@ FactoryGirl.define do
     ugent_id Faker::Number.number(8).to_s
     email { "#{first_name}.#{last_name}@UGent.BE" }
     permission :student
-
-    transient do
-      course_count 1
-    end
-
-    after(:create) do |user, evaluator|
-      create_list(:course, evaluator.course_count, user: user)
-    end
   end
 end

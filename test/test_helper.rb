@@ -4,7 +4,6 @@ require 'faker'
 require 'rails/test_help'
 require 'mocha/mini_test'
 require 'helpers/stub_helper'
-using StubHelper
 
 # Always generate the same testdata
 Faker::Config.random = Random.new(42)
@@ -15,4 +14,5 @@ class ActiveSupport::TestCase
   # fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  include StubHelper
 end

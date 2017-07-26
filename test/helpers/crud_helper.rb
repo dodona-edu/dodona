@@ -44,8 +44,8 @@ module CRUDHelper
   end
 
   def should_create
-    assert_difference(-> { model.count }, +1) do
-      post polymorphic_url(model), model_params(generate_attrs)
+    assert_difference("#{model}.count", +1) do
+      post polymorphic_url(model), params: model_params(generate_attrs)
     end
   end
 
@@ -72,7 +72,7 @@ module CRUDHelper
   end
 
   def should_destroy
-    assert_difference(-> { model.count }, -1) do
+    assert_difference("#{model}.count", -1) do
       delete polymorphic_url(@instance)
     end
 

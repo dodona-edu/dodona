@@ -25,3 +25,6 @@
 
 # Ignore generated entity-relationship diagram (rails-erd gem)
 erd.pdf
+
+# Ignore coverage reports
+coverage

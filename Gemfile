@@ -108,6 +108,11 @@ group :development, :test do
   gem 'byebug'
 end
 
+group :test do
+  # for measuring coverage
+  gem 'simplecov', :require => false
+end
+
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.0.5'

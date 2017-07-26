@@ -19,7 +19,7 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'factory' do
+    create :user
+  end
 end

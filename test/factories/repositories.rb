@@ -1,8 +1,11 @@
+require File.dirname(__FILE__) + '/../helpers/stub_helper.rb'
+using StubHelper
 
 FactoryGirl.define do
   factory :repository do
-    name 'my_repo'
-    remote 'placeholder'
+    name { Faker::Lorem.unique.word }
+    path { "#{name}.git" }
+    remote { "git@github.ugent.be:dodona/#{name}.git" }
     association :judge, factory: [:judge, :git_stubbed]
 
     trait :git_stubbed do

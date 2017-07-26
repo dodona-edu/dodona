@@ -1,10 +1,12 @@
+require File.dirname(__FILE__) + '/../helpers/stub_helper.rb'
+using StubHelper
 
 FactoryGirl.define do
   factory :judge do
-    name 'pythia'
-    image 'dodona-anconda3'
-    path 'placeholder'
-    remote 'placeholder'
+    name { |n| "python-#{n}" }
+    image { |n| "dodona-python#{n}" }
+    path { |n| "python-#{n}.git" }
+    remote { |n| "git@github.ugent.be:dodona/judge-python#{n}.git" }
 
     renderer FeedbackTableRenderer
     runner SubmissionRunner

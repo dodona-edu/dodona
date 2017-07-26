@@ -15,3 +15,7 @@ class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
   include StubHelper
 end
+
+class ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+end

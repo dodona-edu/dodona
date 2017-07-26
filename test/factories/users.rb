@@ -7,4 +7,12 @@ FactoryGirl.define do
     email { "#{first_name}.#{last_name}@UGent.BE".downcase }
     permission "student"
   end
+
+  factory :zeus, parent: :user do
+    permission :zeus
+  end
+
+  factory :staff, parent: :user do
+    permission :staff
+  end
 end

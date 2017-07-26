@@ -19,11 +19,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should create user' do
+    attrs = attributes_for(:user).slice(*USER_ATTRS)
     assert_difference('User.count') do
-      post users_url, params: { user: attributes_for(:user).slice(*USER_ATTRS) }
+      post users_url, params: { user: attrs }
     end
 
+    user = User.last
     assert_redirected_to user_path(User.last)
+    attrs.each do |attr, value|
+      assert_equal value, user.send(attr)
+    end
   end
 
   test 'should show user' do
@@ -37,8 +42,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update user' do
-    patch user_url(@user), params: { user: attributes_for(:user).slice(*USER_ATTRS) }
+    attrs = attributes_for(:user).slice(*USER_ATTRS)
+    patch user_url(@user), params: { user: attrs }
     assert_redirected_to user_path(@user)
+
+    @user.reload
+    attrs.each do |attr, value|
+      assert_equal value, @user.send(attr)
+    end
   end
 
   test 'should destroy user' do

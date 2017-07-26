@@ -1,13 +1,15 @@
 require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
+  USER_ATTRS = %i[username ugent_id first_name last_name email permission time_zone].freeze
+
   setup do
     @user = create(:user, permission: :zeus)
     sign_in @user
   end
 
   test 'should get index' do
-    get users_url(:nl)
+    get users_url
     assert_response :success
   end
 
@@ -18,7 +20,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create user' do
     assert_difference('User.count') do
-      post users_url, params: { user: {} }
+      post users_url, params: { user: attributes_for(:user).slice(*USER_ATTRS) }
     end
 
     assert_redirected_to user_path(User.last)
@@ -35,7 +37,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update user' do
-    patch user_url(@user), params: { user: {} }
+    patch user_url(@user), params: { user: attributes_for(:user).slice(*USER_ATTRS) }
     assert_redirected_to user_path(@user)
   end
 

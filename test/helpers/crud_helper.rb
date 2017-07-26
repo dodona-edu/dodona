@@ -26,7 +26,7 @@ module CRUDHelper
 
   # generates attributes from the model factory, then checks whether
   # given block produces an object that has these attributes set.
-  def produces_object_with_attributes
+  def assert_produces_object_with_attributes
     attrs = attributes_for(model_sym).slice(*allowed_attrs)
     obj = yield attrs
     check_attrs(attrs, obj)
@@ -46,13 +46,37 @@ module CRUDTest
 
     include(CRUDHelper)
 
+    test 'should get index' do
+      get polymorphic_url(model)
+      assert_response :success
+    end
+
+    test 'should get new' do
+      get new_polymorphic_url(model)
+      assert_response :success
+    end
+
     test "should create #{model_name}" do
-      produces_object_with_attributes do |attrs|
+      assert_produces_object_with_attributes do |attrs|
         assert_difference(-> { model.count }, +1) do
           post polymorphic_url(model), model_params(attrs)
         end
         model.last
       end
     end
+
+    test "should show #{model_name}" do
+      get polymorphic_url(@instance)
+      assert_response :success
+    end
+
+    test "should update #{model_name}" do
+      assert_produces_object_with_attributes do |attrs|
+        patch polymorphic_url(@instance), model_params(attrs)
+        assert_redirected_to polymorphic_url(@instance)
+        @instance.reload
+      end
+    end
+
   end
 end

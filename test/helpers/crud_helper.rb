@@ -18,7 +18,7 @@ module CRUDHelper
   # generates attributes from the model factory, then checks whether
   # given block produces an object that has these attributes set.
   def assert_produces_object_with_attributes
-    attrs = attributes_for(model_sym).slice(*allowed_attrs)
+    attrs = build(model_sym).attributes.symbolize_keys.slice(*allowed_attrs)
     obj = yield attrs
     check_attrs(attrs, obj)
   end

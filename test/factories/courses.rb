@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :course do
-    name { Faker::Hacker.adjective.titlecase }
+    name { "#{Faker::Hacker.adjective.titlecase} Programming" }
     description { Faker::Hacker.say_something_smart }
     open true
 

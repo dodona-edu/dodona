@@ -8,7 +8,7 @@ class JudgesControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     stub_git(Judge.any_instance)
-    @judge = create :judge
+    @instance = create :judge
     sign_in create(:zeus)
   end
 
@@ -22,35 +22,6 @@ class JudgesControllerTest < ActionDispatch::IntegrationTest
   def model
     Judge
   end
-
-  test 'should get index' do
-    get judges_url
-    assert_response :success
-  end
-
-  test 'should get new' do
-    get new_judge_url
-    assert_response :success
-  end
-
-  test 'should show judge' do
-    get judge_url(@judge)
-    assert_response :success
-  end
-
-  test 'should get edit' do
-    get edit_judge_url @judge
-    assert_response :success
-  end
-
-  test 'should update judge' do
-    produces_object_with_attributes do |attrs|
-      patch judge_url(@judge), model_params(attrs)
-      assert_redirected_to judge_url(@judge)
-      @judge.reload
-    end
-  end
-
 
   test 'should destroy judge' do
     assert_difference(-> { Judge.count }, -1) do

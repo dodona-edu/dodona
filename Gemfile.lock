@@ -121,6 +121,7 @@ GEM
       devise (>= 1.2.0)
       rubycas-client (>= 2.2.1)
     diffy (3.2.0)
+    docile (1.1.5)
     docker-api (1.33.6)
       excon (>= 0.38.0)
       json
@@ -253,6 +254,11 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
     rubyzip (1.2.1)
+    simplecov (0.14.1)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.1)
     slack-notifier (2.2.2)
     spring (2.0.2)
       activesupport (>= 4.2)
@@ -339,6 +345,7 @@ DEPENDENCIES
   rubocop
   rubycas-client!
   rubyzip
+  simplecov
   sinatra!
   slack-notifier
   spring

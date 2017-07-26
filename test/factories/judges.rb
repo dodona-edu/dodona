@@ -3,10 +3,10 @@ using StubHelper
 
 FactoryGirl.define do
   factory :judge do
-    name { |n| "python-#{n}" }
-    image { |n| "dodona-python#{n}" }
-    path { |n| "python-#{n}.git" }
-    remote { |n| "git@github.ugent.be:dodona/judge-python#{n}.git" }
+    sequence(:name) { |n| "python-#{n}" }
+    sequence(:image) { |n| "dodona-python#{n}" }
+    sequence(:path) { |n| "python-#{n}.git" }
+    sequence(:remote) { |n| "git@github.ugent.be:dodona/judge-python#{n}.git" }
 
     renderer FeedbackTableRenderer
     runner SubmissionRunner

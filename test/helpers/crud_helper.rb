@@ -28,6 +28,51 @@ module CRUDHelper
       assert_equal value, obj.send(attr)
     end
   end
+
+  def should_get_index
+    get polymorphic_url(model)
+    assert_response :success
+  end
+
+  def should_get_new
+    get new_polymorphic_url(model)
+    assert_response :success
+  end
+
+  def should_create
+    assert_produces_object_with_attributes do |attr_hash|
+      assert_difference(-> { model.count }, +1) do
+        post polymorphic_url(model), model_params(attr_hash)
+      end
+      model.last
+    end
+  end
+
+  def should_show
+    get polymorphic_url(@instance)
+    assert_response :success
+  end
+
+  def should_get_edit
+    get edit_polymorphic_url(@instance)
+    assert_response :success
+  end
+
+  def should_update
+    assert_produces_object_with_attributes do |attr_hash|
+      patch polymorphic_url(@instance), model_params(attr_hash)
+      assert_redirected_to polymorphic_url(@instance)
+      @instance.reload
+    end
+  end
+
+  def should_destroy
+    assert_difference(-> { model.count }, -1) do
+      delete polymorphic_url(@instance)
+    end
+
+    assert_redirected_to polymorphic_url(model)
+  end
 end
 
 module CRUDTest
@@ -50,49 +95,24 @@ module CRUDTest
       attrs
     end
 
-    test 'should get index' do
-      get polymorphic_url(model)
-      assert_response :success
-    end
-
-    test 'should get new' do
-      get new_polymorphic_url(model)
-      assert_response :success
-    end
-
-    test "should show #{model_name}" do
-      get polymorphic_url(@instance)
-      assert_response :success
-    end
-
-    test "should get edit #{model_name}" do
-      get edit_polymorphic_url(@instance)
-      assert_response :success
-    end
-
-    test "should create #{model_name}" do
-      assert_produces_object_with_attributes do |attr_hash|
-        assert_difference(-> { model.count }, +1) do
-          post polymorphic_url(model), model_params(attr_hash)
-        end
-        model.order(:created_at).last
+    # define appropriate tests
+    actions.each do |action|
+      case action
+      when :index
+        test('should get index') { should_get_index }
+      when :new
+        test('should get new') { should_get_new }
+      when :create
+        test("should create #{model_name}") { should_create }
+      when :show
+        test("should show #{model_name}") { should_show }
+      when :edit
+        test("should get edit #{model_name}") { should_get_edit }
+      when :update
+        test("should update #{model_name}") { should_update }
+      when :destroy
+        test("should destroy #{model_name}") { should_destroy }
       end
-    end
-
-    test "should update #{model_name}" do
-      assert_produces_object_with_attributes do |attr_hash|
-        patch polymorphic_url(@instance), model_params(attr_hash)
-        assert_redirected_to polymorphic_url(@instance)
-        @instance.reload
-      end
-    end
-
-    test "should destroy #{model_name}" do
-      assert_difference(-> { model.count }, -1) do
-        delete polymorphic_url(@instance)
-      end
-
-      assert_redirected_to polymorphic_url(model)
     end
   end
 end

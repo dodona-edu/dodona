@@ -31,8 +31,14 @@ module CRUDHelper
 end
 
 module CRUDTest
-  def test_crud_actions(model, attrs: nil)
+  def test_crud_actions(model, options = {})
     model_name = model.to_s.downcase
+
+    attrs = options[:attrs] || {}
+
+    actions = options[:only] || %i[index show create edit destroy]
+    except = options[:except] || []
+    actions -= except
 
     include(CRUDHelper)
 

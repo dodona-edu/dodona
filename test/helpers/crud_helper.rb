@@ -1,5 +1,4 @@
 module CRUDHelper
-
   def model_name
     model.to_s.downcase
   end
@@ -30,7 +29,6 @@ module CRUDHelper
     end
   end
 end
-
 
 module CRUDTest
   def test_crud_actions(model, attrs: nil)
@@ -67,17 +65,17 @@ module CRUDTest
     end
 
     test "should create #{model_name}" do
-      assert_produces_object_with_attributes do |attrs|
+      assert_produces_object_with_attributes do |attr_hash|
         assert_difference(-> { model.count }, +1) do
-          post polymorphic_url(model), model_params(attrs)
+          post polymorphic_url(model), model_params(attr_hash)
         end
-        model.last
+        model.order(:created_at).last
       end
     end
 
     test "should update #{model_name}" do
-      assert_produces_object_with_attributes do |attrs|
-        patch polymorphic_url(@instance), model_params(attrs)
+      assert_produces_object_with_attributes do |attr_hash|
+        patch polymorphic_url(@instance), model_params(attr_hash)
         assert_redirected_to polymorphic_url(@instance)
         @instance.reload
       end

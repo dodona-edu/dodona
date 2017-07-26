@@ -15,10 +15,14 @@ module CRUDHelper
     }
   end
 
+  def generate_attrs
+    build(model_sym).attributes.symbolize_keys!.slice(*allowed_attrs)
+  end
+
   # generates attributes from the model factory, then checks whether
   # given block produces an object that has these attributes set.
   def assert_produces_object_with_attributes
-    attrs = build(model_sym).attributes.symbolize_keys.slice(*allowed_attrs)
+    attrs = generate_attrs
     obj = yield attrs
     check_attrs(attrs, obj)
   end
@@ -40,12 +44,13 @@ module CRUDHelper
   end
 
   def should_create
-    assert_produces_object_with_attributes do |attr_hash|
-      assert_difference(-> { model.count }, +1) do
-        post polymorphic_url(model), model_params(attr_hash)
-      end
-      model.last
+    assert_difference(-> { model.count }, +1) do
+      post polymorphic_url(model), model_params(generate_attrs)
     end
+  end
+
+  def should_set_attributes_on_create
+    # TODO
   end
 
   def should_show

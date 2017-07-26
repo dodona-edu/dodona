@@ -56,6 +56,16 @@ module CRUDTest
       assert_response :success
     end
 
+    test "should show #{model_name}" do
+      get polymorphic_url(@instance)
+      assert_response :success
+    end
+
+    test "should get edit #{model_name}" do
+      get edit_polymorphic_url(@instance)
+      assert_response :success
+    end
+
     test "should create #{model_name}" do
       assert_produces_object_with_attributes do |attrs|
         assert_difference(-> { model.count }, +1) do
@@ -63,11 +73,6 @@ module CRUDTest
         end
         model.last
       end
-    end
-
-    test "should show #{model_name}" do
-      get polymorphic_url(@instance)
-      assert_response :success
     end
 
     test "should update #{model_name}" do
@@ -78,5 +83,12 @@ module CRUDTest
       end
     end
 
+    test "should destroy #{model_name}" do
+      assert_difference(-> { model.count }, -1) do
+        delete polymorphic_url(@instance)
+      end
+
+      assert_redirected_to polymorphic_url(model)
+    end
   end
 end

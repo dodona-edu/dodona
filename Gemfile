@@ -101,6 +101,9 @@ group :development, :test do
   gem 'factory_girl'
   gem 'factory_girl_rails'
 
+  # I18N default locale & better test reporter
+  gem 'minitest-utils'
+
   # Generate 'random' values like usernames, emails, ...
   gem 'faker', '~> 1.8'
 

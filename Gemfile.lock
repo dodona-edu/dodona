@@ -180,6 +180,8 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.2.0)
     minitest (5.10.3)
+    minitest-utils (0.3.1)
+      minitest
     mocha (1.2.1)
       metaclass (~> 0.0.1)
     multi_json (1.12.1)
@@ -331,6 +333,7 @@ DEPENDENCIES
   kramdown
   less-rails
   listen (~> 3.0.5)
+  minitest-utils
   mocha
   mysql2 (>= 0.3.18, < 0.5)
   pretender
@@ -357,4 +360,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.13.7
+   1.14.5

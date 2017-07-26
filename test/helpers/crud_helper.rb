@@ -54,5 +54,23 @@ module CRUDTest
         model.last
       end
     end
+
+    test "should update #{model_name}" do
+      produces_object_with_attributes do |attrs|
+        patch polymorphic_url(@instance), model_params(attrs)
+        assert_redirected_to polymorphic_url(@instance)
+        @instance.reload
+      end
+    end
+
+    test "should destroy #{model_name}" do
+      assert_difference(-> { model.count }, -1) do
+        delete polymorphic_url(@instance)
+      end
+
+      assert_redirected_to polymorphic_url(model)
+    end
+
+
   end
 end

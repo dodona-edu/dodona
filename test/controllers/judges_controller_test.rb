@@ -1,7 +1,5 @@
 require 'test_helper'
 
-require 'helpers/crud_helper'
-
 class JudgesControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 

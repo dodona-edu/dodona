@@ -2,7 +2,8 @@ require 'test_helper'
 
 class CoursesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @course = courses(:one)
+    @course = create(:course)
+    sign_in create(:zeus)
   end
 
   test 'should get index' do

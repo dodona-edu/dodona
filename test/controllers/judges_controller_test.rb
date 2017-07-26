@@ -9,7 +9,7 @@ class JudgesControllerTest < ActionDispatch::IntegrationTest
   setup do
     stub_git(Judge.any_instance)
     @judge = create :judge
-    sign_in create(:user, permission: :zeus)
+    sign_in create(:zeus)
   end
 
   crud_tests Judge

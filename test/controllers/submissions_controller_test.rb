@@ -8,5 +8,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions Submission, attrs: %i[code exercise]
+  test_crud_actions Submission,
+                    attrs: %i[code exercise],
+                    only: %i[index show create edit]
 end

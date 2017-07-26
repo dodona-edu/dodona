@@ -4,7 +4,7 @@ class JudgesControllerTest < ActionDispatch::IntegrationTest
   JUDGE_ATTRS = %i[name image renderer runner remote]
 
   setup do
-    sign_in create(:user, permission: :zeus)
+    sign_in create(:zeus)
     stub_git(Judge.any_instance)
     @judge = create :judge
   end

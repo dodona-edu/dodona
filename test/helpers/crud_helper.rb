@@ -9,14 +9,12 @@ module CRUDHelper
 
   def model_params(attrs)
     {
-      params: {
-        model_sym => attrs
-      }
+      model_sym => attrs
     }
   end
 
   def generate_attrs
-    build(model_sym).attributes.symbolize_keys!.slice(*allowed_attrs)
+    build(model_sym).attributes.symbolize_keys.slice(*allowed_attrs)
   end
 
   # generates attributes from the model factory, then checks whether

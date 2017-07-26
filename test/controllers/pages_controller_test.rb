@@ -1,7 +1,8 @@
 require 'test_helper'
 
-class WelcomeControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
+class PagesControllerTest < ActionDispatch::IntegrationTest
+  test 'should get homepage ' do
+    get root_url
+    assert_response :success
+  end
 end

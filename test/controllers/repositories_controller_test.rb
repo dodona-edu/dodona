@@ -14,6 +14,6 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should process exercises on create' do
     Repository.any_instance.expects(:process_exercises)
-    post_create
+    create_request_expect
   end
 end

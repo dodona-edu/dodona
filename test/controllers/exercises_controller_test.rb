@@ -12,7 +12,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
                     attrs: %i[visibility name_nl name_en],
                     only: %i[index edit update]
 
-  test "should show exercise" do
+  test 'should show exercise' do
     get exercise_url(@instance).concat('/')
     assert_response :success
   end

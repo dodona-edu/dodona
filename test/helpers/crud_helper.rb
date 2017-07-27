@@ -14,7 +14,8 @@ module CRUDHelper
   end
 
   def last_created
-    model.order(id: :asc).last
+    # Oh rails
+    model.reorder(id: :asc).last
   end
 
   # Generates a hash which maps attribute names on valid

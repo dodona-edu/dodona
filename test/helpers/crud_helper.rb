@@ -90,7 +90,7 @@ module CRUDTest
 
     attrs = options[:attrs] || {}
 
-    actions = options[:only] || %i[index show create edit destroy]
+    actions = options[:only] || %i[index new create show edit update destroy]
     except = options[:except] || []
     actions -= except
 
@@ -103,6 +103,7 @@ module CRUDTest
     define_method(:allowed_attrs) do
       attrs
     end
+     p actions
 
     # define appropriate tests
     actions.each do |action|

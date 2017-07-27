@@ -11,4 +11,9 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test_crud_actions Repository, attrs: %i[name remote judge_id]
+
+  test 'should process exercises on create' do
+    Repository.any_instance.expects(:process_exercises)
+    post_create
+  end
 end

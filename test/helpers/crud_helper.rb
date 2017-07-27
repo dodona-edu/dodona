@@ -46,9 +46,14 @@ module CRUDHelper
     assert_response :success
   end
 
+  def post_create(attrs: nil)
+    attrs ||= generate_attrs
+    post polymorphic_url(model), params: model_params(attrs)
+  end
+
   def should_create
     assert_difference("#{model}.count", +1) do
-      post polymorphic_url(model), params: model_params(generate_attrs)
+      post_create
     end
   end
 

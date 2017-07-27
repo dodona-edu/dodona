@@ -1,4 +1,5 @@
 module CRUDHelper
+
   def model_name
     model.to_s.downcase
   end
@@ -13,11 +14,13 @@ module CRUDHelper
     }
   end
 
+  # Generates a hash which maps attribute names on valid
+  # attribute values using the model's factory.
   def generate_attrs
     build(model_sym).attributes.symbolize_keys.slice(*allowed_attrs)
   end
 
-  # generates attributes from the model factory, then checks whether
+  # Generates attributes from the model factory, then checks whether
   # given block produces an object that has these attributes set.
   def assert_produces_object_with_attributes
     attrs = generate_attrs
@@ -25,9 +28,11 @@ module CRUDHelper
     check_attrs(attrs, obj)
   end
 
-  def check_attrs(attrs, obj)
-    attrs.each do |attr, value|
-      assert_equal value, obj.send(attr)
+  # Checks wether the attributes of the given object are equal
+  # to the values of the given attr_hash
+  def check_attrs(attr_hash, obj)
+    attr_hash.each do |attr_name, value|
+      assert_equal value, obj.send(attr_name)
     end
   end
 

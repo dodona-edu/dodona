@@ -2,10 +2,10 @@
 FactoryGirl.define do
   factory :submission do
     status :correct
-    summary "Correct answer"
+    summary 'Correct answer'
     accepted true
 
-    code ''
+    code { Faker::Lorem.paragraph }
     result 'ok'
 
     user

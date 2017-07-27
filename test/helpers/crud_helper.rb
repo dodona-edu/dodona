@@ -16,7 +16,8 @@ module CRUDHelper
   # Generates a hash which maps attribute names on valid
   # attribute values using the model's factory.
   def generate_attrs
-    build(model_sym).attributes.symbolize_keys.slice(*allowed_attrs)
+    instance = build(model_sym)
+    Hash[allowed_attrs.map { |attr| [attr, instance.send(attr)] }]
   end
 
   # Generates attributes from the model factory, then checks whether

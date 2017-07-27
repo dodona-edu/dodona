@@ -9,6 +9,6 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test_crud_actions Submission,
-                    attrs: %i[code exercise],
+                    attrs: %i[code exercise_id],
                     only: %i[index show create]
 end

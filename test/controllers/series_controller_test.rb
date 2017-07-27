@@ -10,6 +10,8 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
+  test_crud_actions except: %i[create_redirect update_redirect destroy_redirect]
+
   test 'create series should redirect to edit' do
     instance = create_request_expect
     assert_redirected_to edit_series_url(instance)
@@ -26,5 +28,9 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to course_url(course)
   end
 
-  test_crud_actions except: %i[create_redirect update_redirect destroy_redirect]
+  test 'should download solutions' do
+    @series = create(:series, :with_submissions)
+    get download_solutions_series_path(@series)
+    assert_response :success
+  end
 end

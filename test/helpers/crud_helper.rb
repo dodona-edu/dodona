@@ -103,7 +103,6 @@ module CRUDTest
     define_method(:allowed_attrs) do
       attrs
     end
-     p actions
 
     # define appropriate tests
     actions.each do |action|

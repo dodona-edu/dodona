@@ -138,12 +138,27 @@ module CRUDHelper
 end
 
 module CRUDTest
+  # Tests crud (create, read, update, delete) methods for rails controllers.
   def test_crud_actions(model, options = {})
     model_name = model.to_s.downcase
 
     attrs = options[:attrs] || {}
 
     actions = options[:only] || %i[index new create show edit update destroy]
+
+    subactions = []
+    actions.each do |action|
+      case action
+      when :create
+        subactions << :create_redirect
+      when :update
+        subactions << :update_redirect
+      when :destroy
+        subactions << :destroy_redirect
+      end
+    end
+    actions += subactions
+
     except = options[:except] || []
     actions -= except
 
@@ -157,39 +172,59 @@ module CRUDTest
       attrs
     end
 
-    # define appropriate tests
+    # This hash maps the action symbol on an array
+    # which has the test message as first item and a lambda with what to
+    # test as the second item.
+    # == Example:
+    #  index:
+    #    ["should get #{model_name} index",
+    #     -> { should_get_index }],
+    #
+    # # Is equivalent to
+    #
+    # if actions.include?(:index) do
+    #   test "should get #{model_name} index" do
+    #     should_get_index
+    #   end
+    # end
+    #
+    action_hash = {
+      index:
+        ["should get #{model_name} index",
+         -> { should_get_index }],
+      new:
+        ["should get new #{model_name}",
+         -> { should_get_new }],
+      create:
+        ["create #{model_name} should set attributes",
+         -> { should_set_attributes_on_create }],
+      create_redirect:
+        ["create #{model_name} should redirect",
+         -> { should_redirect_on_create }],
+      show:
+        ["should show #{model_name}",
+         -> { should_show }],
+      edit:
+        ["should get edit #{model_name}",
+         -> { should_get_edit }],
+      update:
+        ["update #{model_name} should set attributes",
+         -> { should_set_attributes_on_update }],
+      update_redirect:
+        ["update #{model_name} should redirect",
+         -> { should_redirect_on_update }],
+      destroy:
+        ["should destroy #{model_name}",
+         -> { should_destroy }],
+      destroy_redirect:
+        ["destroy #{model_name} should redirect",
+         -> { should_redirect_on_destroy }]
+    }
+
+    # Actually map actions on the tests
     actions.each do |action|
-      case action
-      when :index
-        test('should get index') { should_get_index }
-      when :new
-        test('should get new') { should_get_new }
-      when :create
-        test("create #{model.name} should redirect") do
-          should_redirect_on_create
-        end
-        test("create #{model.name} should set attributes") do
-          should_set_attributes_on_create
-        end
-      when :show
-        test("should show #{model_name}") { should_show }
-      when :edit
-        test("should get edit #{model_name}") { should_get_edit }
-      when :update
-        test("update #{model.name} should redirect") do
-          should_redirect_on_update
-        end
-        test("update #{model.name} should set attributes") do
-          should_set_attributes_on_update
-        end
-      when :destroy
-        test("should destroy #{model.name}") do
-          should_destroy
-        end
-        test("destroy #{model.name} should redirect") do
-          should_redirect_on_destroy
-        end
-      end
+      msg, fun = action_hash[action]
+      test(msg, &fun)
     end
   end
 end

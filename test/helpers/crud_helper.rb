@@ -105,12 +105,16 @@ module CRUDHelper
   def update_request(attr_hash: nil)
     attr_hash ||= generate_attr_hash
     patch polymorphic_url(@instance), params: model_params(attr_hash)
+  end
+
+  def update_request_expect(attr_hash: nil)
+    update_request attr_hash: attr_hash
     @instance.reload
   end
 
   def should_set_attributes_on_update
     assert_produces_object_with_attributes do |attr_hash|
-      update_request attr_hash: attr_hash
+      update_request_expect attr_hash: attr_hash
     end
   end
 

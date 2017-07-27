@@ -22,6 +22,6 @@ This is optional, but needed to actually evaluate exercises.
 
 1. Install and start `docker`.
 2. Clone the [docker-images repository](https://github.ugent.be/dodona/docker-images).
-3. Build a docker image. The `build.sh` scripts builds all images. But with the initial data, only `dodona-anaconda3` is needed. You can build this image with `docker build --pull --force-rm -t "dodona-anaconda3" "dodona-anaconda3.docker"`.
+3. Build a docker image. The `build.sh` scripts builds all images. But with the initial data, only `dodona-anaconda3` is needed. You can build this image with `docker build --pull --force-rm -t "dodona-anaconda3" -f "dodona-anaconda3.dockerfile" .`.
 4. Start the delayed_job runner with `bin/delayed_job start` to process the submission queue.
 

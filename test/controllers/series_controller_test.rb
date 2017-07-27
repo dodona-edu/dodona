@@ -29,8 +29,14 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should download solutions' do
-    @series = create(:series, :with_submissions)
-    get download_solutions_series_path(@series)
+    series = create(:series, :with_submissions)
+    get download_solutions_series_path(series)
+    assert_response :success
+  end
+
+  test 'should generate score sheet' do
+    series = create(:series, :with_submissions)
+    get scoresheet_series_path(series)
     assert_response :success
   end
 end

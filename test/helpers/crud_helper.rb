@@ -14,8 +14,13 @@ module CRUDHelper
   end
 
   def last_created
-    # Oh rails
-    model.reorder(id: :asc).last
+    # make sure all default scope options are undone, so that we actually get
+    # the last record.
+    # This method of course still relies on id's not being subject to fuckery.
+    model
+      .unscope(*ActiveRecord::QueryMethods::VALID_UNSCOPING_VALUES)
+      .order(id: :asc)
+      .last
   end
 
   # Generates a hash which maps attribute names on valid

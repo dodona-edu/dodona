@@ -31,9 +31,21 @@ module CRUDHelper
   # Checks wether the attributes of the given object are equal
   # to the values of the given attr_hash
   def check_attrs(attr_hash, obj)
+    not_equal = []
     attr_hash.each do |attr_name, value|
-      assert_equal value, obj.send(attr_name)
+      actual = obj.send(attr_name)
+      next if value == actual
+      not_equal << <<~MSG
+        Attribute #{attr_name}
+          Expected: \"#{value}\"
+          Actual:   \"#{actual}"
+      MSG
     end
+    assert not_equal.empty?,
+           <<~MSG
+             The following attributtes are not equal:
+             #{not_equal.join "\n"}
+           MSG
   end
 
   def should_get_index

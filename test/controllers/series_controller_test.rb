@@ -3,6 +3,8 @@ require 'test_helper'
 class SeriesControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
+  crud_helpers Series, attrs: %i[name description course_id visibility order deadline]
+
   setup do
     @instance = create(:series)
     sign_in create(:zeus)
@@ -24,6 +26,5 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to course_url(course)
   end
 
-  crud_helpers Series, attrs: %i[name description course_id visibility order deadline]
   test_crud_actions except: %i[create_redirect update_redirect destroy_redirect]
 end

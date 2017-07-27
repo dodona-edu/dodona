@@ -8,5 +8,6 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions Series, attrs: %i[name description course_id visibility order deadline]
+  crud_helpers Series, attrs: %i[name description course_id visibility order deadline]
+  test_crud_actions
 end

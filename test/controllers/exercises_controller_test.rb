@@ -8,9 +8,8 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions Exercise,
-                    attrs: %i[visibility name_nl name_en],
-                    only: %i[index edit update]
+  crud_helpers Exercise, attrs: %i[visibility name_nl name_en]
+  test_crud_actions only: %i[index edit update]
 
   test 'should show exercise' do
     get exercise_url(@instance).concat('/')

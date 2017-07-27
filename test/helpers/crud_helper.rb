@@ -138,14 +138,36 @@ module CRUDHelper
 end
 
 module CRUDTest
+  def crud_helpers(model, attrs: [])
+    include(CRUDHelper)
+
+    @model = model
+
+    define_method(:model) do
+      model
+    end
+
+    define_method(:allowed_attrs) do
+      attrs
+    end
+  end
+
   # Tests crud (create, read, update, delete) methods for rails controllers.
-  def test_crud_actions(model, options = {})
-    model_name = model.to_s.downcase
+  #
+  # Possible actions: index, show new, edit. create, create_redirect, update,
+  # update_redirect, delete, delete_redirect
+  #
+  # Possible options:
+  # only: %i[index new]   #=> only tests the 'index' and 'new' actions
+  # except:  %[index new] #=> test all the actions EXCEPT 'index' and 'new'
+  #
+  # The *_redirect actions test redirections. You can only specify then within
+  # the :except option (so you can test for non-default redirection behaviour).
+  def test_crud_actions(options = {})
+    model_name = @model.to_s.downcase
 
-    attrs = options[:attrs] || {}
-
+    # Process options hash
     actions = options[:only] || %i[index new create show edit update destroy]
-
     subactions = []
     actions.each do |action|
       case action
@@ -158,19 +180,8 @@ module CRUDTest
       end
     end
     actions += subactions
-
     except = options[:except] || []
     actions -= except
-
-    include(CRUDHelper)
-
-    define_method(:model) do
-      model
-    end
-
-    define_method(:allowed_attrs) do
-      attrs
-    end
 
     # This hash maps the action symbol on an array
     # which has the test message as first item and a lambda with what to

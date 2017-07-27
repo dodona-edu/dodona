@@ -8,5 +8,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_in @instance
   end
 
-  test_crud_actions User, attrs: %i[username ugent_id first_name last_name email permission time_zone]
+  crud_helpers User, attrs: %i[username ugent_id first_name last_name email permission time_zone]
+  test_crud_actions
 end

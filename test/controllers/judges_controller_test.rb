@@ -9,5 +9,6 @@ class JudgesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions Judge, attrs: %i[name image renderer runner remote]
+  crud_helpers Judge, attrs: %i[name image renderer runner remote]
+  test_crud_actions only: %i[new create index]
 end

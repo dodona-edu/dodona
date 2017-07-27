@@ -9,5 +9,6 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions Course, attrs: %i[name year description]
+  crud_helpers Course, attrs: %i[name year description]
+  test_crud_actions
 end

@@ -13,6 +13,10 @@ module CRUDHelper
     }
   end
 
+  def last_created
+    model.order(id: :asc).last
+  end
+
   # Generates a hash which maps attribute names on valid
   # attribute values using the model's factory.
   def generate_attr_hash
@@ -79,7 +83,7 @@ module CRUDHelper
     assert_difference("#{model}.count", +1, "#{model} was not created") do
       create_request attr_hash: attr_hash
     end
-    model.order(:id).last
+    last_created
   end
 
   # Creates a new model (optionally with the given attributes
@@ -97,7 +101,7 @@ module CRUDHelper
 
   def should_redirect_on_create
     create_request_expect
-    assert_redirected_to polymorphic_url(model.last)
+    assert_redirected_to polymorphic_url(last_created)
   end
 
   # Update

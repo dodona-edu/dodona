@@ -1,5 +1,4 @@
 module CRUDHelper
-
   def model_name
     model.to_s.downcase
   end
@@ -73,7 +72,7 @@ module CRUDHelper
 
   def should_update
     assert_produces_object_with_attributes do |attr_hash|
-      patch polymorphic_url(@instance), model_params(attr_hash)
+      patch polymorphic_url(@instance), params: model_params(attr_hash)
       @instance.reload
     end
   end

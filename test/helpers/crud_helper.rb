@@ -15,7 +15,7 @@ module CRUDHelper
 
   # Generates a hash which maps attribute names on valid
   # attribute values using the model's factory.
-  def generate_attrs
+  def generate_attr_hash
     instance = build(model_sym)
     Hash[allowed_attrs.map { |attr| [attr, instance.send(attr)] }]
   end
@@ -23,7 +23,7 @@ module CRUDHelper
   # Generates attributes from the model factory, then checks whether
   # given block produces an object that has these attributes set.
   def assert_produces_object_with_attributes
-    attrs = generate_attrs
+    attrs = generate_attr_hash
     obj = yield attrs
     check_attrs(attrs, obj)
   end
@@ -48,6 +48,13 @@ module CRUDHelper
            MSG
   end
 
+  # Read (show, index, new, edit)
+
+  def should_show
+    get polymorphic_url(@instance)
+    assert_response :success
+  end
+
   def should_get_index
     get polymorphic_url(model)
     assert_response :success
@@ -58,42 +65,75 @@ module CRUDHelper
     assert_response :success
   end
 
-  def post_create(attrs: nil)
-    attrs ||= generate_attrs
-    post polymorphic_url(model), params: model_params(attrs)
-  end
-
-  def should_create
-    assert_difference("#{model}.count", +1) do
-      post_create
-    end
-  end
-
-  def should_set_attributes_on_create
-    # TODO
-  end
-
-  def should_show
-    get polymorphic_url(@instance)
-    assert_response :success
-  end
-
   def should_get_edit
     get edit_polymorphic_url(@instance)
     assert_response :success
   end
 
-  def should_update
-    assert_produces_object_with_attributes do |attr_hash|
-      patch polymorphic_url(@instance), params: model_params(attr_hash)
-      @instance.reload
+  # Create
+
+  # Creates a new model (optionally with the given attributes,
+  # otherwise the attributes are generated) and assert that model.count
+  # is increased by one.
+  def create_request_expect(attr_hash: nil)
+    assert_difference("#{model}.count", +1, "#{model} was not created") do
+      create_request attr_hash: attr_hash
     end
+    model.order(:id).last
+  end
+
+  # Creates a new model (optionally with the given attributes
+  # otherwise the attributes are generated).
+  def create_request(attr_hash: nil)
+    attr_hash ||= generate_attr_hash
+    post polymorphic_url(model), params: model_params(attr_hash)
+  end
+
+  def should_set_attributes_on_create
+    assert_produces_object_with_attributes do |attr_hash|
+      create_request_expect attr_hash: attr_hash
+    end
+  end
+
+  def should_redirect_on_create
+    create_request_expect
+    assert_redirected_to polymorphic_url(model.last)
+  end
+
+  # Update
+
+  def update_request(attr_hash: nil)
+    attr_hash ||= generate_attr_hash
+    patch polymorphic_url(@instance), params: model_params(attr_hash)
+    @instance.reload
+  end
+
+  def should_set_attributes_on_update
+    assert_produces_object_with_attributes do |attr_hash|
+      update_request attr_hash: attr_hash
+    end
+  end
+
+  def should_redirect_on_update
+    update_request
+    assert_redirected_to polymorphic_url(@instance)
+  end
+
+  # Destroy
+
+  def destroy_request
+    delete polymorphic_url(@instance)
   end
 
   def should_destroy
     assert_difference("#{model}.count", -1) do
-      delete polymorphic_url(@instance)
+      destroy_request
     end
+  end
+
+  def should_redirect_on_destroy
+    destroy_request
+    assert_redirected_to polymorphic_url(model)
   end
 end
 
@@ -125,15 +165,30 @@ module CRUDTest
       when :new
         test('should get new') { should_get_new }
       when :create
-        test("should create #{model_name}") { should_create }
+        test("create #{model.name} should redirect") do
+          should_redirect_on_create
+        end
+        test("create #{model.name} should set attributes") do
+          should_set_attributes_on_create
+        end
       when :show
         test("should show #{model_name}") { should_show }
       when :edit
         test("should get edit #{model_name}") { should_get_edit }
       when :update
-        test("should update #{model_name}") { should_update }
+        test("update #{model.name} should redirect") do
+          should_redirect_on_update
+        end
+        test("update #{model.name} should set attributes") do
+          should_set_attributes_on_update
+        end
       when :destroy
-        test("should destroy #{model_name}") { should_destroy }
+        test("should destroy #{model.name}") do
+          should_destroy
+        end
+        test("destroy #{model.name} should redirect") do
+          should_redirect_on_destroy
+        end
       end
     end
   end

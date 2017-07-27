@@ -39,4 +39,12 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     get scoresheet_series_path(series)
     assert_response :success
   end
+
+  test 'should mass rejudge' do
+    series = create(:series, :with_submissions)
+    assert_difference('Delayed::Job.count', Submission.in_series(series).count) do
+      post mass_rejudge_series_path(series), params: { format: 'application/javascript' }
+    end
+    assert_response :success
+  end
 end

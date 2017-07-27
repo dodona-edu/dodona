@@ -10,7 +10,8 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions Repository, attrs: %i[name remote judge_id]
+  crud_helpers Repository, attrs: %i[name remote judge_id]
+  test_crud_actions
 
   test 'should process exercises on create' do
     Repository.any_instance.expects(:process_exercises)

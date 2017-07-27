@@ -138,16 +138,10 @@ module CRUDHelper
 end
 
 module CRUDTest
-  def test_crud_actions(model, options = {})
-    model_name = model.to_s.downcase
-
-    attrs = options[:attrs] || {}
-
-    actions = options[:only] || %i[index new create show edit update destroy]
-    except = options[:except] || []
-    actions -= except
-
+  def crud_helpers(model, attrs: [])
     include(CRUDHelper)
+
+    @model = model
 
     define_method(:model) do
       model
@@ -156,6 +150,14 @@ module CRUDTest
     define_method(:allowed_attrs) do
       attrs
     end
+  end
+
+  def test_crud_actions(options = {})
+    model_name = @model.to_s.downcase
+
+    actions = options[:only] || %i[index new create show edit update destroy]
+    except = options[:except] || []
+    actions -= except
 
     # define appropriate tests
     actions.each do |action|

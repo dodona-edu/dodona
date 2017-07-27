@@ -8,6 +8,6 @@ FactoryGirl.define do
     sequence(:path) { |n| "exercise#{n}" }
 
     association :repository, factory: [:repository, :git_stubbed]
-    association :judge, factory: [:judge, :git_stubbed]
+    judge { repository.judge }
   end
 end

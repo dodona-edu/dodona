@@ -64,7 +64,6 @@ module CRUDHelper
   def should_update
     assert_produces_object_with_attributes do |attr_hash|
       patch polymorphic_url(@instance), model_params(attr_hash)
-      assert_redirected_to polymorphic_url(@instance)
       @instance.reload
     end
   end
@@ -73,8 +72,6 @@ module CRUDHelper
     assert_difference("#{model}.count", -1) do
       delete polymorphic_url(@instance)
     end
-
-    assert_redirected_to polymorphic_url(model)
   end
 end
 

@@ -88,7 +88,7 @@ class UsersController < ApplicationController
   def stop_impersonating
     authorize User
     stop_impersonating_user
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def token_sign_in

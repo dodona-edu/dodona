@@ -53,7 +53,7 @@ Rails.application.routes.draw do
       member do
         get 'download'
         get 'evaluate'
-        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }
+        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }, as: 'media'
       end
     end
 

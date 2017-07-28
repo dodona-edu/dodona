@@ -22,4 +22,72 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     create_request_expect
     assert_response :success
   end
+
+  test 'should get submission edit page' do
+    get edit_submission_path(@instance)
+    assert_redirected_to exercise_url(
+                           @instance.exercise,
+                           anchor: 'submission-card',
+                           edit_submission: @instance
+                         )
+  end
+
+  test 'should download submission code' do
+    get download_submission_path(@instance)
+    assert_response :success
+  end
+
+  test 'should evaluate submission' do
+    assert_difference('Delayed::Job.count', +1) do
+      get evaluate_submission_path(@instance)
+      assert_redirected_to @instance
+    end
+  end
+
+  test 'submission media should redirect to exercise media' do
+    get media_submission_path(@instance, 'dank_meme.jpg')
+    assert_redirected_to media_exercise_path(@instance.exercise, 'dank_meme.jpg')
+  end
+
+  def rejudge_submissions(**params)
+    post mass_rejudge_submissions_path, params: params
+    assert_response :success
+  end
+
+  test 'should rejudge all submissions' do
+    create(:series, :with_submissions)
+    assert_jobs_enqueued(Submission.count) do
+      rejudge_submissions
+    end
+  end
+
+  test 'should rejudge user submissions' do
+    series = create(:series, :with_submissions)
+    user = User.in_course(series.course).sample
+    assert_jobs_enqueued(user.submissions.count) do
+      rejudge_submissions user_id: user.id
+    end
+  end
+
+  test 'should rejudge course submissions' do
+    series = create(:series, :with_submissions)
+    assert_jobs_enqueued(Submission.in_course(series.course).count) do
+      rejudge_submissions course_id: series.course.id
+    end
+  end
+
+  test 'should rejudge series submissions' do
+    series = create(:series, :with_submissions)
+    assert_jobs_enqueued(Submission.in_series(series).count) do
+      rejudge_submissions series_id: series.id
+    end
+  end
+
+  test 'should rejudge exercise submissions' do
+    series = create(:series, :with_submissions)
+    exercise = series.exercises.sample
+    assert_jobs_enqueued(exercise.submissions.count) do
+      rejudge_submissions exercise_id: exercise.id
+    end
+  end
 end

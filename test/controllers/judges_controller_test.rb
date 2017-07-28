@@ -11,5 +11,5 @@ class JudgesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions only: %i[new create index]
+  test_crud_actions
 end

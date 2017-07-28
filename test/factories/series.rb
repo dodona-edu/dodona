@@ -6,6 +6,10 @@ FactoryGirl.define do
     deadline Time.zone.today + 1.day
     course
 
+    trait :hidden do
+      visibility :hidden
+    end
+
     trait :with_submissions do
       after :create do |series|
         repositories = create_list(:repository, 2, :git_stubbed)

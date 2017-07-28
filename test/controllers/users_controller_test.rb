@@ -50,4 +50,21 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get users_url(course_id: course.id)
     assert_response :success
   end
+
+  test 'normal user should not be allowed to view other user profile' do
+    sign_out :user
+    sign_in create(:user)
+
+    get user_url(@instance)
+
+    assert_redirected_to root_path
+    assert_equal flash[:alert], I18n.t('errors.no_rights')
+  end
+
+  test 'not logged in should be redirected to login page hwn unauthorized' do
+    sign_out :user
+    get user_url(@instance)
+
+    assert_redirected_to new_user_session_path
+  end
 end

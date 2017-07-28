@@ -42,10 +42,10 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should mass rejudge' do
     series = create(:series, :with_submissions)
-    assert_difference('Delayed::Job.count', Submission.in_series(series).count) do
+    assert_jobs_enqueued(Submission.in_series(series).count) do
       post mass_rejudge_series_path(series), params: { format: 'application/javascript' }
+      assert_response :success
     end
-    assert_response :success
   end
 
   test 'should get series by token' do

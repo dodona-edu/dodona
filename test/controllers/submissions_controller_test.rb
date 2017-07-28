@@ -13,7 +13,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   test_crud_actions only: %i[index show create], except: %i[create_redirect]
 
   test 'should add submissions to delayed_job queue' do
-    assert_difference('Delayed::Job.count', +1) do
+    assert_jobs_enqueued(1) do
       create_request
     end
   end

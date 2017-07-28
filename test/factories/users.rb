@@ -5,7 +5,7 @@ FactoryGirl.define do
     username { Faker::Internet.unique.user_name(5..8) }
     ugent_id Faker::Number.number(8).to_s
     email { "#{first_name}.#{last_name}@UGent.BE".downcase }
-    permission "student"
+    permission 'student'
   end
 
   factory :zeus, parent: :user do
@@ -14,9 +14,5 @@ FactoryGirl.define do
 
   factory :staff, parent: :user do
     permission :staff
-  end
-
-  factory :user_with_token, parent: :user do
-    username nil
   end
 end

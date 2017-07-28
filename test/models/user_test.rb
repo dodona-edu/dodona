@@ -19,7 +19,35 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  test 'factory' do
+  test 'factory should create user' do
     create :user
   end
+
+  test 'user without username should have token' do
+    user = create :user, username: nil
+    assert_not_nil user.token
+  end
+
+  test 'user with username should not have a token' do
+    user = create :user
+    assert_nil user.token
+  end
+
+  test 'user timezone should be set' do
+    user_brussels = create :user
+    assert_equal user_brussels.time_zone, 'Brussels'
+
+    user_korea = create :user, email: 'hupseflupse@ghent.ac.kr'
+    assert_equal user_korea.time_zone, 'Seoul'
+  end
+
+  test 'header courses for user' do
+    user = create :user, courses: []
+    assert_nil user.header_courses
+
+    user.courses << create_list(:course, 5)
+    header = user.header_courses
+    assert_equal header.length, 3
+  end
+
 end

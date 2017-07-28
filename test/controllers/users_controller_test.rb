@@ -48,6 +48,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'user index with course_id should be ok' do
     course = create(:course)
     get users_url(course_id: course.id)
-    assert_resonse :success
+    assert_response :success
   end
 end

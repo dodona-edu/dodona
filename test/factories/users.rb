@@ -15,4 +15,8 @@ FactoryGirl.define do
   factory :staff, parent: :user do
     permission :staff
   end
+
+  factory :user_with_token, parent: :user do
+    username nil
+  end
 end

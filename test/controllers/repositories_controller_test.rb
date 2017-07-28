@@ -18,4 +18,10 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     Repository.any_instance.expects(:process_exercises)
     create_request_expect
   end
+
+  test 'should reprocess exercises' do
+    Repository.any_instance.expects(:process_exercises)
+    get reprocess_repository_path(@instance)
+    assert_redirected_to(@instance)
+  end
 end

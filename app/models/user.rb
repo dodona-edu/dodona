@@ -45,7 +45,7 @@ class User < ApplicationRecord
   end
 
   def short_name
-    username.blank? ? first_name : username
+    first_string_present username, first_name, full_name
   end
 
   def admin?

@@ -19,6 +19,7 @@
 require 'securerandom'
 
 class User < ApplicationRecord
+  include StringHelper
   PHOTOS_LOCATION = Rails.root.join('data', 'user_photos').freeze
 
   enum permission: %i[student staff zeus]
@@ -41,7 +42,7 @@ class User < ApplicationRecord
 
   def full_name
     name = (first_name || '') + ' ' + (last_name || '')
-    name.blank? ? 'n/a' : name
+    first_string_present name, 'n/a'
   end
 
   def short_name

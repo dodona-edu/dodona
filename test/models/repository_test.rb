@@ -50,31 +50,31 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 1, @repository.exercises.count
   end
 
-  test 'should set judge' do
+  test 'should set exercise judge' do
     assert_equal @pythia, @echo.judge
   end
 
-  test 'should set programming language' do
+  test 'should set exercise programming language' do
     assert_equal 'python', @echo.programming_language
   end
 
-  test 'should set name_nl' do
+  test 'should set exercise name_nl' do
     assert_equal 'Weergalm', @echo.name_nl
   end
 
-  test 'should set name_en' do
+  test 'should set exercise name_en' do
     assert_equal 'Imitation', @echo.name_en
   end
 
-  test 'should set description_format' do
+  test 'should set exercise description_format' do
     assert_equal 'html', @echo.description_format
   end
 
-  test 'should set visibility' do
+  test 'should set exercise visibility' do
     assert_equal 'open', @echo.visibility
   end
 
-  test 'should set status' do
+  test 'should set exercise status' do
     assert_equal 'ok', @echo.status
   end
 end

@@ -23,6 +23,15 @@ module ApplicationHelper
     "<span class=\"glyphicon glyphicon-#{icon} colored-#{color}\"></span>".html_safe
   end
 
+  # returns the first string argument that is not nil or blank
+  # if nothing is satisfying, returns 'n/a'
+  def first_string_present(*args)
+    args.each do |arg|
+      return arg unless arg.nil? || arg.blank?
+    end
+    'n/a'
+  end
+
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
     protected
 

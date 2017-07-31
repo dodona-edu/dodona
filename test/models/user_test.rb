@@ -23,6 +23,7 @@ class UserTest < ActiveSupport::TestCase
     create :user
   end
 
+<<<<<<< HEAD
   test 'user without username should have token' do
     user = create :user, username: nil
     assert_not_nil user.token
@@ -50,4 +51,17 @@ class UserTest < ActiveSupport::TestCase
     assert_equal header.length, 3
   end
 
+  test 'cas_extra_attributes should be set' do
+    user = create(:user)
+    attrs = {
+      mail: 'mertens.ron@gmail.com',
+      givenname: 'Ron',
+      surname: 'Mertens',
+      ugentID: 23_456_789
+    }
+    user.cas_extra_attribtues = attrs
+    attrs.each do |attr_name, value|
+      assert_equals value, user.send(attr_name)
+    end
+  end
 end

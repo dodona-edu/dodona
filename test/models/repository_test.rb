@@ -17,4 +17,64 @@ class RepositoryTest < ActiveSupport::TestCase
   test 'factory' do
     create :repository, :git_stubbed
   end
+
+  test 'should not be saved when remote is not valid' do
+    assert_raises(ActiveRecord::RecordInvalid) do
+      create :repository, remote: 'foo@bar.baz'
+    end
+  end
+end
+
+class EchoRepositoryTest < ActiveSupport::TestCase
+  def setup
+    @pythia = create :judge, :git_stubbed, name: 'pythia'
+    @remote = local_remote('exercises/echo')
+    @repository = create :repository, remote: @remote.path
+    @repository.process_exercises
+    @echo = @repository.exercises.first
+  end
+
+  def teardown
+    @remote.remove
+  end
+
+  test 'should clone on create' do
+    assert_not @repository.path.nil?
+    assert File.exist?(@repository.full_path),
+           'path does not exist'
+    assert File.exist?(File.join(@repository.full_path, '.git')),
+           'is not a git repository'
+  end
+
+  test 'should process exercises' do
+    assert_equal 1, @repository.exercises.count
+  end
+
+  test 'should set judge' do
+    assert_equal @pythia, @echo.judge
+  end
+
+  test 'should set programming language' do
+    assert_equal 'python', @echo.programming_language
+  end
+
+  test 'should set name_nl' do
+    assert_equal 'Weergalm', @echo.name_nl
+  end
+
+  test 'should set name_en' do
+    assert_equal 'Imitation', @echo.name_en
+  end
+
+  test 'should set description_format' do
+    assert_equal 'html', @echo.description_format
+  end
+
+  test 'should set visibility' do
+    assert_equal 'open', @echo.visibility
+  end
+
+  test 'should set status' do
+    assert_equal 'ok', @echo.status
+  end
 end

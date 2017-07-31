@@ -4,11 +4,12 @@ using StubHelper
 FactoryGirl.define do
   factory :repository do
     name { Faker::Lorem.unique.word }
-    path { "#{name}.git" }
     remote { "git@github.ugent.be:dodona/#{name}.git" }
     association :judge, factory: [:judge, :git_stubbed]
 
     trait :git_stubbed do
+      path { "#{name}.git" }
+
       after :build do |repository|
         stub_git(repository)
       end

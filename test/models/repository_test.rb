@@ -12,6 +12,7 @@
 #
 
 require 'test_helper'
+require 'fileutils'
 
 class RepositoryTest < ActiveSupport::TestCase
   test 'factory' do
@@ -36,6 +37,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
 
   def teardown
     @remote.remove
+    FileUtils.rmtree @repository.full_path if File.exist?(@repository.full_path)
   end
 
   test 'should clone on create' do

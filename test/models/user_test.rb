@@ -114,4 +114,51 @@ class UserTest < ActiveSupport::TestCase
     user.last_name = nil
     assert_equal 'n/a', user.short_name
   end
+
+  test 'user member_off should tell whether he is in a course or not' do
+    user1 = create(:user)
+    user2 = create(:user)
+
+    course1 = create(:course)
+    course2 = create(:course)
+
+    user1.courses << course1
+    user2.courses << course2
+
+    assert user1.member_of? course1
+    assert user2.member_of? course2
+    assert_not user1.member_of? course2
+    assert_not user2.member_of? course1
+  end
+
+  def assert_user_exercises(user, attempted, correct, unfinished)
+    assert_equal attempted, user.attempted_exercises, 'wrong amount of attempted exercises'
+    assert_equal correct, user.correct_exercises, 'wrong amount of correct exercises'
+    assert_equal unfinished, user.unfinished_exercises, 'wrong amount of unfinished exercises'
+  end
+
+  test 'user should have correct number of attemted, unfinished and correct exercises' do
+    user = create :user
+    exercise1 = create :exercise
+    exercise2 = create :exercise
+    exercise3 = create :exercise
+    create :exercise
+
+    assert_user_exercises user, 0, 0, 0
+
+    create :wrong_submission, user: user, exercise: exercise1
+    create :wrong_submission, user: user, exercise: exercise1
+    create :wrong_submission, user: user, exercise: exercise1
+    assert_user_exercises user, 1, 0, 1
+
+    create :correct_submission, user: user, exercise: exercise1
+    create :correct_submission, user: user, exercise: exercise1
+    assert_user_exercises user, 1, 1, 0
+
+    create :correct_submission, user: user, exercise: exercise2
+    assert_user_exercises user, 2, 2, 0
+
+    create :wrong_submission, user: user, exercise: exercise3
+    assert_user_exercises user, 3, 2, 1
+  end
 end

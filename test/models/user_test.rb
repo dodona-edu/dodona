@@ -20,7 +20,7 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   test 'factory should create user' do
-    create :user
+    assert_not_nil create(:user)
   end
 
   test 'user without username should have token' do

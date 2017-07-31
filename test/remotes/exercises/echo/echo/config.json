@@ -1,0 +1,21 @@
+{
+  "visibility": "open",
+  "description": {
+    "handler": "default",
+    "difficulty": 0.5,
+    "names": {
+      "en": "Imitation",
+      "nl": "Weergalm"
+    }
+  },
+  "submission": {
+    "handler": "default"
+  },
+  "evaluation": {
+    "handler": "pythia",
+    "pythia_judge": "output",
+    "time_limit": 15,
+    "memory_limit": 500000000
+  },
+  "programming_language": "python"
+}

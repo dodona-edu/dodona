@@ -79,4 +79,39 @@ class UserTest < ActiveSupport::TestCase
       assert_equal value, user.send(attr_name)
     end
   end
+
+  test 'only zeus and staff should be admin' do
+    assert create(:zeus).admin?
+    assert create(:staff).admin?
+    assert_not create(:user).admin?
+  end
+
+  test 'full name should be n/a when blank' do
+    user = create(:user, first_name: nil, last_name: nil)
+    assert_equal 'n/a', user.full_name
+
+    user.first_name = ' '
+    assert_equal 'n/a', user.full_name
+
+    user.last_name = "\t"
+    assert_equal 'n/a', user.full_name
+
+    user.first_name = 'herp'
+    user.last_name = 'derp'
+    assert_equal 'herp derp', user.full_name
+  end
+
+  test 'short name should not be nil' do
+    user = create(:user)
+    assert_equal user.username, user.short_name
+
+    user.username = nil
+    assert_equal user.first_name, user.short_name
+
+    user.first_name = nil
+    assert_equal ' ' + user.last_name, user.short_name
+
+    user.last_name = nil
+    assert_equal 'n/a', user.short_name
+  end
 end

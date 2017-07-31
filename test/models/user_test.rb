@@ -51,16 +51,32 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'cas_extra_attributes should be set' do
-    user = create(:user)
+    user = create(:user,
+                  email: nil,
+                  first_name: nil,
+                  last_name: nil,
+                  ugent_id: nil)
+
     attrs = {
       mail: 'mertens.ron@gmail.com',
       givenname: 'Ron',
       surname: 'Mertens',
-      ugentID: 23_456_789
+      ugentID: '23456789'
     }
-    user.cas_extra_attribtues = attrs
-    attrs.each do |attr_name, value|
-      assert_equals value, user.send(attr_name)
+
+    user.cas_extra_attributes = attrs
+
+    real_attr_names = {
+      mail: :email,
+      givenname: :first_name,
+      surname: :last_name,
+      ugentID: :ugent_id
+    }
+
+    attrs
+      .transform_keys { |key| real_attr_names[key] }
+      .each do |attr_name, value|
+      assert_equal value, user.send(attr_name)
     end
   end
 end

@@ -22,4 +22,18 @@ class UserTest < ActiveSupport::TestCase
   test 'factory' do
     create :user
   end
+
+  test 'cas_extra_attributes should be set' do
+    user = create(:user)
+    attrs = {
+      mail: 'mertens.ron@gmail.com',
+      givenname: 'Ron',
+      surname: 'Mertens',
+      ugentID: 23_456_789
+    }
+    user.cas_extra_attribtues = attrs
+    attrs.each do |attr_name, value|
+      assert_equals value, user.send(attr_name)
+    end
+  end
 end

@@ -79,4 +79,15 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   test 'should set exercise status' do
     assert_equal 'ok', @echo.status
   end
+
+  test 'should push commits to remote' do
+    # ensure we push to the repository
+    Rails.env.stubs(:production?).returns(true)
+    assert_difference('@remote.commit_count', 1) do
+      File.open(@echo.config_file, 'w') do |f|
+        f.write('FUCK THE SYSTEM!!1! ANARCHY!!!!')
+      end
+      @repository.commit 'vandalize echo config'
+    end
+  end
 end

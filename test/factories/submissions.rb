@@ -5,7 +5,7 @@ FactoryGirl.define do
     accepted true
 
     code { Faker::Lorem.paragraph }
-    result 'ok'
+    result '{}'
 
     user
     exercise

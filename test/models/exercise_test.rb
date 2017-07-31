@@ -22,4 +22,20 @@ class ExerciseTest < ActiveSupport::TestCase
   test 'factory' do
     create :exercise
   end
+
+  test 'exercise name should respect locale and not be nil' do
+    exercise = create :exercise
+    I18n.with_locale :en do
+      assert_equal exercise.name_en, exercise.name
+    end
+    I18n.with_locale :nl do
+      assert_equal exercise.name_nl, exercise.name
+
+      exercise.name_nl = nil
+      assert_equal exercise.name_en, exercise.name
+
+      exercise.name_en = nil
+      assert_equal exercise.path.split('/').last, exercise.name
+    end
+  end
 end

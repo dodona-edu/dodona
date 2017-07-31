@@ -41,12 +41,17 @@ class TempRepository
     commit 'setup'
   end
 
+  def commit_count(rev: 'HEAD')
+    git('rev-list', '--count', rev).to_i
+  end
+
   def copy_dir(src_path)
     FileUtils.cp_r Dir[src_path + '/*'], @path
   end
 
   def git_init
     git 'init'
+    git 'config', '--local', 'receive.denyCurrentBranch', 'updateInstead'
   end
 
   def commit(message)
@@ -55,8 +60,9 @@ class TempRepository
   end
 
   def git(*command)
-    _out, error, status = Open3.capture3('git', *command, chdir: @path)
-    [status.success?, error]
+    out, error, status = Open3.capture3('git', *command, chdir: @path)
+    raise error unless status.success?
+    out
   end
 
   def remove

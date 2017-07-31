@@ -21,6 +21,8 @@ require 'action_view'
 include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
+  include StringHelper
+
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
@@ -65,8 +67,10 @@ class Exercise < ApplicationRecord
   end
 
   def name
-    name = send('name_' + I18n.locale.to_s) || name_nl || name_en
-    name.blank? ? path.split('/').last : name
+    first_string_present send('name_' + I18n.locale.to_s),
+                         name_nl,
+                         name_en,
+                         path.split('/').last
   end
 
   def description_localized(lang = I18n.locale.to_s)

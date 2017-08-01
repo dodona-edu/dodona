@@ -67,7 +67,6 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 0, e.users_tried(course1)
     assert_equal 0, e.users_tried(course2)
 
-    # this line fails, but should be fixed in PR #416
     create :submission, user: users_c1[0], course: course1, exercise: e
 
     assert_equal 1, e.users_tried
@@ -122,12 +121,10 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 0, e.users_correct(course1)
     assert_equal 0, e.users_correct(course2)
 
-    # this line fails, but should be fixed in PR #416
     create :wrong_submission, user: user_c1, course: course1, exercise: e
     assert_equal 0, e.users_correct
     assert_equal 0, e.users_correct(course1)
     assert_equal 0, e.users_correct(course2)
-
 
     create :correct_submission, user: user_c1, course: course1, exercise: e
     assert_equal 1, e.users_correct
@@ -139,20 +136,20 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 1, e.users_correct(course1)
     assert_equal 0, e.users_correct(course2)
 
-    create :correct_submission, user: user_c2, course: course1, exercise: e
+    create :correct_submission, user: user_c2, course: course2, exercise: e
     assert_equal 2, e.users_correct
     assert_equal 1, e.users_correct(course1)
     assert_equal 1, e.users_correct(course2)
 
-    create :wrong_submission, user: user_all, course: course2, exercise: e
+    create :wrong_submission, user: user_all, exercise: e
     assert_equal 2, e.users_correct
     assert_equal 1, e.users_correct(course1)
     assert_equal 1, e.users_correct(course2)
 
-    create :correct_submission, user: user_all, course: course1, exercise: e
+    create :correct_submission, user: user_all, exercise: e
     assert_equal 3, e.users_correct
-    assert_equal 2, e.users_correct(course1)
-    assert_equal 2, e.users_correct(course2)
+    assert_equal 1, e.users_correct(course1)
+    assert_equal 1, e.users_correct(course2)
   end
 
   test 'last submission' do

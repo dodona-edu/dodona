@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170414114206) do
+ActiveRecord::Schema.define(version: 20170509185106) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
@@ -134,7 +134,9 @@ ActiveRecord::Schema.define(version: 20170414114206) do
     t.datetime "updated_at",                  null: false
     t.integer  "status"
     t.boolean  "accepted",    default: false
+    t.integer  "course_id"
     t.index ["accepted"], name: "index_submissions_on_accepted", using: :btree
+    t.index ["course_id"], name: "index_submissions_on_course_id", using: :btree
     t.index ["exercise_id", "user_id", "accepted", "created_at"], name: "ex_us_ac_cr_index", using: :btree
     t.index ["exercise_id", "user_id", "status", "created_at"], name: "ex_us_st_cr_index", using: :btree
     t.index ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
@@ -164,6 +166,7 @@ ActiveRecord::Schema.define(version: 20170414114206) do
   add_foreign_key "series", "courses"
   add_foreign_key "series_memberships", "exercises"
   add_foreign_key "series_memberships", "series"
+  add_foreign_key "submissions", "courses"
   add_foreign_key "submissions", "exercises"
   add_foreign_key "submissions", "users"
 end

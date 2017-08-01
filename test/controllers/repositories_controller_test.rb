@@ -48,12 +48,12 @@ class WebhookControllerTest < ActionDispatch::IntegrationTest
     FileUtils.rmtree @repository.full_path if File.exist?(@repository.full_path)
   end
 
-  test 'should update exercises without commit info' do
+  test 'webhook without commit info should update exercises' do
     post webhook_repository_path(@repository)
     assert_equal 'closed', find_echo.visibility
   end
 
-  test 'should update exercises with commit info' do
+  test 'webhook with commit info should update exercises' do
     commit_info = [
       {
         message: 'make echo private',

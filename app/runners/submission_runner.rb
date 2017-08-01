@@ -157,7 +157,7 @@ class SubmissionRunner
 
     begin
       rc = ResultConstructor.new
-      rc.feed(stdout)
+      rc.feed(stdout.force_encoding "utf-8")
       rc.result
     rescue ResultConstructorError => e
       if exit_status == 143

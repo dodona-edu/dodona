@@ -80,6 +80,7 @@ class RepositoriesController < ApplicationController
         params['commits']
           .reject    { |commit|    commit['author']['name'] == 'Dodona' }
           .flat_map  { |commit|    %w[added removed modified].flat_map { |type| commit[type] } }
+          .compact # remove nil entries - should not be needed anymore in rails 5
           .flat_map  { |file|      @repository.affected_exercise_dirs(file) }
           .uniq
       else

@@ -53,6 +53,14 @@
             "level":    { "enum": ["root", "tab", "context", "testcase", "test"] }
         }
     },
+    "new-tab": {
+        "type": "object",
+        "description": "Open a new tab after the current tab (or as last tab if the root is focussed) and focus it.",
+        "required": ["command"],
+        "properties": {
+            "command": { "enum": ["new-tab"] }
+        }
+    },
     "new-context": {
         "type": "object",
         "description": "Open a new context after the current context (or in the current tab) and focus it.",

@@ -26,10 +26,11 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 end
 
-class WebhookControllerTest < ActionDispatch::IntegrationTest
+class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
   # TODO: get rid of this duplication (models/repository_test.rb)
-  def setup
+  setup do
     @remote = local_remote('exercises/echo')
+
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
 
@@ -43,9 +44,9 @@ class WebhookControllerTest < ActionDispatch::IntegrationTest
     @repository.exercises.find_by(path: 'echo')
   end
 
-  def teardown
+  teardown do
     @remote.remove
-    FileUtils.rmtree @repository.full_path if File.exist?(@repository.full_path)
+    @repository.git_repository.remove
   end
 
   test 'webhook without commit info should update exercises' do

@@ -10,7 +10,8 @@ require 'mocha/mini_test'
 require 'helpers/stub_helper'
 require 'helpers/delayed_job_helper'
 require 'helpers/crud_helper'
-require 'helpers/repository_helper'
+require 'helpers/git_helper'
+require 'helpers/remote_helper'
 
 # automatically set locale for all routes
 require 'minitest/utils/rails/locale'
@@ -22,7 +23,7 @@ class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
   include StubHelper
   include DelayedJobHelper
-  include RepositoryHelper
+  include RemoteHelper
 end
 
 class ActionDispatch::IntegrationTest

@@ -25,3 +25,51 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to(@instance)
   end
 end
+
+class WebhookControllerTest < ActionDispatch::IntegrationTest
+  # TODO: get rid of this duplication (models/repository_test.rb)
+  def setup
+    @remote = local_remote('exercises/echo')
+    @repository = create :repository, remote: @remote.path
+    @repository.process_exercises
+
+    # update remote
+    @remote.update_json('echo/config.json', 'make echo private') do |config|
+      config.update 'visibility' => 'closed'
+    end
+  end
+
+  def find_echo
+    @repository.exercises.find_by(path: 'echo')
+  end
+
+  def teardown
+    @remote.remove
+    FileUtils.rmtree @repository.full_path if File.exist?(@repository.full_path)
+  end
+
+  test 'should update exercises without commit info' do
+    post webhook_repository_path(@repository)
+    assert_equal 'closed', find_echo.visibility
+  end
+
+  test 'should update exercises with commit info' do
+    commit_info = [
+      {
+        message: 'make echo private',
+        author: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        added: [],
+        removed: [],
+        modified: [
+          'echo/config.json'
+        ]
+      }
+    ]
+    post webhook_repository_path(@repository), params: { commits: commit_info }
+    assert_equal 'closed', find_echo.visibility
+  end
+end

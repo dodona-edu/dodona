@@ -4,13 +4,6 @@ require 'fileutils'
 module RepositoryHelper
   REMOTES_LOCATION = Rails.root.join('test', 'remotes')
 
-  def with_local_remote(name)
-    repo = local_remote(name)
-    res = yield repo
-    repo.remove
-    res
-  end
-
   def local_remote(name)
     mk_temp_repository File.join(REMOTES_LOCATION, name)
   end
@@ -25,12 +18,6 @@ end
 class TempRepository
   attr_reader :path
 
-  def self.mirror_path(path)
-    repo = TempRepository.new
-    repo.init_from(path)
-    repo
-  end
-
   def initialize
     @path = Dir.mktmpdir
   end
@@ -43,6 +30,23 @@ class TempRepository
 
   def commit_count(rev: 'HEAD')
     git('rev-list', '--count', rev).to_i
+  end
+
+  def update_json(rel_path, msg = nil)
+    update_file(rel_path, msg) do |json|
+      res = yield JSON.parse(json)
+      JSON.pretty_generate(res)
+    end
+  end
+
+  def update_file(rel_path, msg = nil)
+    File.open(File.join(@path, rel_path), 'r+') do |f|
+      contents = f.read
+      f.seek(0, IO::SEEK_SET)
+      f.write(yield contents)
+    end
+    msg ||= "update #{rel_path}"
+    commit msg
   end
 
   def copy_dir(src_path)

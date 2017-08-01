@@ -137,12 +137,12 @@ class Exercise < ApplicationRecord
   end
 
   def merged_config
-    merged_config = {}
-    full_path.relative_path_from(repository.full_path).ascend do |subdir|
-      merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path + subdir))
-    end
-    merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path))
-    merged_config.recursive_update(config)
+    Pathname.new(path).parent.ascend          # all parent directories
+            .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+            .compact                          # remove nil entries
+            .reverse                          # order least -> most important
+            .push(config)                     # add exercise config file
+            .reduce(&:deep_merge)             # reduce into single hash
   end
 
   def config_file?
@@ -253,8 +253,9 @@ class Exercise < ApplicationRecord
     JSON.parse(file.read) if file.file?
   end
 
-  def self.read_dirconfig(path)
-    Exercise.read_config_file(path + DIRCONFIG_FILE)
+  #takes a relative path
+  def read_dirconfig(subdir)
+    Exercise.read_config_file(repository.full_path + subdir + DIRCONFIG_FILE)
   end
 
   def generate_id

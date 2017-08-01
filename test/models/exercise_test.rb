@@ -19,7 +19,6 @@
 require 'test_helper'
 
 class ExerciseTest < ActiveSupport::TestCase
-
   setup do
     @date = DateTime.new(1302, 7, 11, 13, 37, 42)
     @user = create :user
@@ -68,13 +67,14 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 0, e.users_tried(course1)
     assert_equal 0, e.users_tried(course2)
 
-    create :submission, user: users_c1[0], exercise: e
+    # this line fails, but should be fixed in PR #416
+    create :submission, user: users_c1[0], course: course1, exercise: e
 
     assert_equal 1, e.users_tried
     assert_equal 1, e.users_tried(course1)
     assert_equal 0, e.users_tried(course2)
 
-    create :submission, user: users_c2[0], exercise: e
+    create :submission, user: users_c2[0], course: course2, exercise: e
 
     assert_equal 2, e.users_tried
     assert_equal 1, e.users_tried(course1)
@@ -83,28 +83,76 @@ class ExerciseTest < ActiveSupport::TestCase
     create :submission, user: users_all[0], exercise: e
 
     assert_equal 3, e.users_tried
-    assert_equal 2, e.users_tried(course1)
-    assert_equal 2, e.users_tried(course2)
+    assert_equal 1, e.users_tried(course1)
+    assert_equal 1, e.users_tried(course2)
 
     users_c1.each do |user|
-      create :submission, user: user, exercise: e
+      create :submission, user: user, course: course1, exercise: e
     end
     assert_equal 7, e.users_tried
-    assert_equal 6, e.users_tried(course1)
-    assert_equal 2, e.users_tried(course2)
+    assert_equal 5, e.users_tried(course1)
+    assert_equal 1, e.users_tried(course2)
 
     users_c2.each do |user|
-      create :submission, user: user, exercise: e
+      create :submission, user: user, course: course2, exercise: e
     end
     assert_equal 11, e.users_tried
-    assert_equal 6, e.users_tried(course1)
-    assert_equal 6, e.users_tried(course2)
+    assert_equal 5, e.users_tried(course1)
+    assert_equal 5, e.users_tried(course2)
     users_all.each do |user|
       create :submission, user: user, exercise: e
     end
     assert_equal 15, e.users_tried
-    assert_equal 10, e.users_tried(course1)
-    assert_equal 10, e.users_tried(course2)
+    assert_equal 5, e.users_tried(course1)
+    assert_equal 5, e.users_tried(course2)
+  end
+
+  test 'users correct' do
+    e = create :exercise
+    course1 = create :course
+    create :series, course: course1, exercises: [e]
+    course2 = create :course
+    create :series, course: course2, exercises: [e]
+
+    user_c1 = create :user, courses: [course1]
+    user_c2 = create :user, courses: [course2]
+    user_all = create :user, courses: [course1, course2]
+
+    assert_equal 0, e.users_correct
+    assert_equal 0, e.users_correct(course1)
+    assert_equal 0, e.users_correct(course2)
+
+    # this line fails, but should be fixed in PR #416
+    create :wrong_submission, user: user_c1, course: course1, exercise: e
+    assert_equal 0, e.users_correct
+    assert_equal 0, e.users_correct(course1)
+    assert_equal 0, e.users_correct(course2)
+
+
+    create :correct_submission, user: user_c1, course: course1, exercise: e
+    assert_equal 1, e.users_correct
+    assert_equal 1, e.users_correct(course1)
+    assert_equal 0, e.users_correct(course2)
+
+    create :wrong_submission, user: user_c2, course: course2, exercise: e
+    assert_equal 1, e.users_correct
+    assert_equal 1, e.users_correct(course1)
+    assert_equal 0, e.users_correct(course2)
+
+    create :correct_submission, user: user_c2, course: course1, exercise: e
+    assert_equal 2, e.users_correct
+    assert_equal 1, e.users_correct(course1)
+    assert_equal 1, e.users_correct(course2)
+
+    create :wrong_submission, user: user_all, course: course2, exercise: e
+    assert_equal 2, e.users_correct
+    assert_equal 1, e.users_correct(course1)
+    assert_equal 1, e.users_correct(course2)
+
+    create :correct_submission, user: user_all, course: course1, exercise: e
+    assert_equal 3, e.users_correct
+    assert_equal 2, e.users_correct(course1)
+    assert_equal 2, e.users_correct(course2)
   end
 
   test 'last submission' do

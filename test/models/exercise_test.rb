@@ -23,3 +23,53 @@ class ExerciseTest < ActiveSupport::TestCase
     create :exercise
   end
 end
+
+class ExerciseRemoteTest < ActiveSupport::TestCase
+  setup do
+    @remote = local_remote('exercises/echo')
+    @repository = create :repository, remote: @remote.path
+    @repository.process_exercises
+    @exercise = @repository.exercises.first
+
+    # allow pushing
+    Rails.env.stubs(:production?).returns(true)
+  end
+
+  teardown do
+    @remote.remove
+    @repository.git_repository.remove
+  end
+
+  def config
+    JSON.parse(File.read(@exercise.config_file))
+  end
+
+  test 'should update visibility in config file' do
+    @exercise.update visibility: 'hidden'
+    assert_equal 'hidden', config['visibility']
+  end
+
+  test 'should update name_nl in config file' do
+    @exercise.update name_nl: 'Echo'
+    assert_equal 'Echo', config['description']['names']['nl']
+  end
+
+  test 'should update name_en in config file' do
+    @exercise.update name_en: 'Echo'
+    assert_equal 'Echo', config['description']['names']['en']
+  end
+
+  test 'should push to remote' do
+    assert_difference('@remote.commit_count', 1) do
+      @exercise.update visibility: 'hidden'
+    end
+  end
+
+  test 'should push changes' do
+    @exercise.update visibility: 'hidden'
+    config = JSON.parse(
+      File.read(File.join(@remote.path, @exercise.path, 'config.json'))
+    )
+    assert_equal 'hidden', config['visibility']
+  end
+end

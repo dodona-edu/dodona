@@ -103,7 +103,7 @@
         "properties": {
             "command":     { "enum": ["set-properties"] },
             "status":      { "$ref": "#/definitions/status" },
-            "description": { "$ref": "#/definitions/description" },
+            "description": { "$ref": "#/definitions/message" },
             "accepted":    { "$ref": "#/definitions/accepted" },
             "badgecount":  { "$ref": "#/definitions/badgecount" },
             "expected":    { "type": "string" },

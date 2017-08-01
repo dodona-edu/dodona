@@ -37,7 +37,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
 
   def teardown
     @remote.remove
-    FileUtils.rmtree @repository.full_path if File.exist?(@repository.full_path)
+    @repository.git_repository.remove
   end
 
   test 'should clone on create' do

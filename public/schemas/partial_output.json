@@ -6,6 +6,7 @@
           { "$ref": "#/definitions/focus" },
           { "$ref": "#/definitions/push-focus" },
           { "$ref": "#/definitions/pop-focus" },
+          { "$ref": "#/definitions/focus-relative" },
           { "$ref": "#/definitions/new-tab" },
           { "$ref": "#/definitions/new-context" },
           { "$ref": "#/definitions/new-testcase" },
@@ -49,7 +50,7 @@
         "description": "Move the focus to the relative level closer to root.",
         "required": ["command", "level"],
         "properties": {
-            "command":  { "enum": ["focus"] },
+            "command":  { "enum": ["focus-relative"] },
             "level":    { "enum": ["root", "tab", "context", "testcase", "test"] }
         }
     },

@@ -73,3 +73,34 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     assert_equal 'hidden', config['visibility']
   end
 end
+
+# multiple layers of configurations; tests merging.
+class LasagneTest < ActiveSupport::TestCase
+  setup do
+    @judge = create :judge, :git_stubbed, name: 'Iona Nikitchenko'
+    @remote = local_remote('exercises/lasagna')
+    @repository = create :repository, remote: @remote.path
+    @repository.process_exercises
+    @exercise = @repository.exercises.first
+  end
+
+  teardown do
+    @remote.remove
+    @repository.git_repository.remove
+  end
+
+  # set top level, overridden by exercise
+  test 'should set judge' do
+    assert_equal @judge, @exercise.judge
+  end
+
+  # set at top level, overridden by series, overridden by exercise
+  test 'should set programming language' do
+    assert_equal 'python', @exercise.programming_language
+  end
+
+  # set at top level, overridden by series
+  test 'should set visibility' do
+    assert_equal 'open', @exercise.visibility
+  end
+end

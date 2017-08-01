@@ -10,6 +10,7 @@
 #  updated_at  :datetime         not null
 #  status      :integer
 #  accepted    :boolean          default(FALSE)
+#  course_id   :integer
 #
 
 class Submission < ApplicationRecord
@@ -17,6 +18,7 @@ class Submission < ApplicationRecord
 
   belongs_to :exercise
   belongs_to :user
+  belongs_to :course
   has_one :judge, through: :exercise
   has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
 
@@ -35,7 +37,7 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }
-  scope :in_course, ->(course) { joins(exercise: :series).where(series: { course_id: course.id }) }
+  scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { joins(exercise: :series_memberships).where(series_memberships: { series_id: series.id }) }
 
   scope :by_exercise_name, ->(name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }

@@ -161,18 +161,4 @@ class UserTest < ActiveSupport::TestCase
     create :wrong_submission, user: user, exercise: exercise3
     assert_user_exercises user, 3, 2, 1
   end
-
-  test 'cas_extra_attributes should be set' do
-    user = create(:user)
-    attrs = {
-      mail: 'mertens.ron@gmail.com',
-      givenname: 'Ron',
-      surname: 'Mertens',
-      ugentID: 23_456_789
-    }
-    user.cas_extra_attribtues = attrs
-    attrs.each do |attr_name, value|
-      assert_equals value, user.send(attr_name)
-    end
-  end
 end

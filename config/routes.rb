@@ -7,6 +7,17 @@ Rails.application.routes.draw do
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
+
+    concern :mediable do
+      member do
+        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: "media"
+      end
+    end
+
+    concern :submitable do
+      resources :submissions, only: [:index, :create]
+    end
+
     resources :series do
       member do
         post 'add_exercise'
@@ -21,6 +32,7 @@ Rails.application.routes.draw do
 
     resources :courses do
       resources :series
+      resources :exercises, only: [:show], concerns: [:mediable, :submitable]
       member do
         post 'subscribe'
         get 'scoresheet'
@@ -28,12 +40,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exercises, only: [:index, :show, :edit, :update] do
-      resources :submissions, only: [:index, :create]
-      member do
-        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: "media"
-      end
-    end
+    resources :exercises, only: [:index, :show, :edit, :update], concerns: [:mediable, :submitable]
 
     resources :judges do
       member do
@@ -48,12 +55,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :submissions, only: [:index, :show, :create, :edit] do
+    resources :submissions, only: [:index, :show, :create, :edit], concerns: :mediable do
       post 'mass_rejudge', on: :collection
       member do
         get 'download'
         get 'evaluate'
-        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }, as: 'media'
+        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }
       end
     end
 

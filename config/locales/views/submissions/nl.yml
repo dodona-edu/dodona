@@ -23,6 +23,7 @@ nl:
       submission: Oplossing
       user: Gebruiker
       exercise: Opgave
+      course: Cursus
       handed_in: Ingediend
       ago: geleden
       status: Status

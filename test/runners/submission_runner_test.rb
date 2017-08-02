@@ -17,9 +17,8 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                          exercise: @exercise
   end
 
-  def with_docker_stub(params)
-    Docker::Container.stubs(:create).returns(docker_mock(**params))
-    yield
+  def stub_docker(params)
+    Docker::Container.stubs(:create).returns(docker_mock(params))
   end
 
   def docker_mock(**params)

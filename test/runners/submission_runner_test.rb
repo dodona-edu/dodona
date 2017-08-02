@@ -17,7 +17,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                          exercise: @exercise
   end
 
-  def stub_docker(params)
+  def stub_docker(**params)
     Docker::Container.stubs(:create).returns(docker_mock(params))
   end
 
@@ -42,6 +42,13 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
   test 'submission evaluation should start docker container' do
     Docker::Container.expects(:create).once.returns(docker_mock)
+    @submission.evaluate
+  end
+
+  test 'docker container should be deleted after use' do
+    docker = docker_mock
+    docker.expects(:delete)
+    Docker::Container.stubs(:create).returns(docker)
     @submission.evaluate
   end
 end

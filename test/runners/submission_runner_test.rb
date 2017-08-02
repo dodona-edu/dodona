@@ -17,12 +17,10 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                          exercise: @exercise
   end
 
-  def stub_docker_with(obj)
+  def evaluate_with_stubbed_docker(obj = nil, **kwargs)
+    obj = docker_mock(kwargs) unless obj
     Docker::Container.stubs(:create).returns(obj)
-  end
-
-  def stub_docker(**params)
-    stub_docker_with(docker_mock(params))
+    @submission.evaluate
   end
 
   def docker_mock(**params)
@@ -50,35 +48,30 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   end
 
   test 'correct submission should be accepted' do
-    stub_docker
-    @submission.evaluate
+    evaluate_with_stubbed_docker
     assert @submission.accepted
   end
 
   test 'correct submission should be correct' do
-    stub_docker
-    @submission.evaluate
+    evaluate_with_stubbed_docker
     assert_equal 'correct', @submission.status
   end
 
   test 'docker container should be deleted after use' do
     docker = docker_mock
     docker.expects(:delete)
-    stub_docker_with(docker)
-    @submission.evaluate
+    evaluate_with_stubbed_docker(docker)
   end
 
   test 'malformed json should result in internal error' do
     docker = docker_mock
     docker.stubs(:attach).returns([['DIKKE TAARTEN'], ['']])
-    stub_docker_with(docker)
-    result = @submission.evaluate
+    result = evaluate_with_stubbed_docker(docker)
     assert_equal 'internal error', result['status']
   end
 
   test 'non-zero status code should result in internal error' do
-    stub_docker status_code: 1
-    result = @submission.evaluate
+    result = evaluate_with_stubbed_docker status_code: 1
     assert_equal 'internal error', result['status']
   end
 end

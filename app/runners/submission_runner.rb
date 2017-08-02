@@ -9,6 +9,7 @@ require 'pathname'     # better than File
 class SubmissionRunner
   DEFAULT_CONFIG_PATH = Rails.root.join('app/runners/config.json').freeze
 
+  @runners = [SubmissionRunner]
   def self.inherited(cl)
     @runners << cl
   end
@@ -155,7 +156,7 @@ class SubmissionRunner
     end
 
     begin
-      rc = ResultConstructor.new
+      rc = ResultConstructor.new @submission.user.lang
       rc.feed(stdout.force_encoding "utf-8")
       rc.result
     rescue ResultConstructor::ResultConstructorError => e

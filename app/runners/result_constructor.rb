@@ -38,11 +38,18 @@ class ResultConstructor
   end
 
   def result
-    if @level.nil?
-      @result
-    else
-      # unclosed judgement. timeout?
-    end
+    # unclosed judgement. timeout?
+    status = { enum: 'time limit exceeded',
+               human: 'Tijdslimiet overschreden' }
+    close_test(generated: '',
+               accepted: false,
+               status: status) if @level == :test
+    close_testcase(accepted: false) if @level == :testcase
+    close_context(accepted: false) if @level == :context
+    close_tab(badgeCount: @tab[:badgeCount] || 1) if @level == :tab
+    close_judgement(accepted: false,
+                    status: status) if @level == :judgement
+    @result
   end
 
   # below are the methods open to partial updates
@@ -55,17 +62,18 @@ class ResultConstructor
     @judgement[:status] = "correct"
   end
 
-  def start_tab(title: nil)
+  def start_tab(title: nil, hidden: nil)
     check_level(:judgement, "tab started")
     @tab = Hash.new
     @tab[:description] = title
+    @hiddentab = hidden || false
     @level = :tab
   end
 
   def start_context(description: nil)
     check_level(:tab, "context started")
     @context = Hash.new
-    @context[:description] = description if description.present?
+    @context[:description] = description unless description.nil?
     @context[:accepted] = true
     @level = :context
   end
@@ -81,25 +89,28 @@ class ResultConstructor
   def start_test(description: nil, expected: nil)
     check_level(:testcase, "test started")
     @test = Hash.new
-    @test[:description] = description if description.present?
+    @test[:description] = description unless description.nil?
     @test[:expected] = expected
     @level = :test
   end
 
   def append_message(message: nil)
     messages = current_item[:messages] ||= []
-    messages << message if message.present?
+    messages << message unless message.nil?
   end
 
   def close_test(generated: nil, accepted: nil, status: nil)
     check_level(:test, "test closed")
     @test[:generated] = generated
-    status = Submission::normalize_status(status)
+    status[:enum] = Submission::normalize_status(status[:enum])
     @test[:accepted] = if accepted.nil?
-                       then status == 'correct'
+                       then status[:enum] == 'correct'
                        else accepted
                        end
-    @judgement[:status] = worsen(@judgement[:status], status)
+    if worse?(@judgement[:status], status[:enum])
+      @judgement[:status] = status[:enum]
+      @judgement[:description] = status[:human]
+    end
     @testcase[:accepted] &&= @test[:accepted]
     (@testcase[:tests] ||= []) << @test
     @test = nil
@@ -108,7 +119,7 @@ class ResultConstructor
 
   def close_testcase(accepted: nil)
     check_level(:testcase, "testcase closed")
-    @testcase[:accepted] = accepted if accepted.present?
+    @testcase[:accepted] = accepted unless accepted.nil?
     @context[:accepted] &&= @testcase[:accepted]
     (@context[:groups] ||= []) << @testcase
     @testcase = nil
@@ -117,8 +128,9 @@ class ResultConstructor
 
   def close_context(accepted: nil)
     check_level(:context, "context closed")
-    @context[:accepted] = accepted if accepted.present?
+    @context[:accepted] = accepted unless accepted.nil?
     @judgement[:accepted] &&= @context[:accepted]
+    @hiddentab &&= @context[:accepted]
     (@tab[:groups] ||= []) << @context
     @context = nil
     @level = :tab
@@ -126,18 +138,17 @@ class ResultConstructor
 
   def close_tab(badgeCount: nil)
     check_level(:tab, "tab closed")
-    @tab[:badgeCount] = badgeCount if badgeCount.present?
-    (@judgement[:groups] ||= []) << @tab
+    @tab[:badgeCount] = badgeCount unless badgeCount.nil?
+    (@judgement[:groups] ||= []) << @tab unless @hiddentab
     @tab = nil
     @level = :judgement
   end
 
   def close_judgement(accepted: nil, status: nil)
-    if @level != :judgement
-      raise ResultConstructorError.new "Judgement closed during level #{@level.to_s}"
-    end
-    @judgement[:accepted] = accepted if accepted.present?
-    @judgement[:status] = status if status.present?
+    check_level(:judgement, "judgement closed")
+    @judgement[:accepted] = accepted unless accepted.nil?
+    @judgement[:status] = status[:enum] unless status.nil?
+    @judgement[:description] = status[:human] unless status.nil?
     @result = @judgement
     @judgement = nil
     @level = nil
@@ -182,17 +193,18 @@ class ResultConstructor
   end
 
   EVILNESS = [
-    "internal error",
-    "compilation error",
-    "runtime error",
-    "wrong",
-    "correct"
+    'correct',
+    'wrong',
+    'runtime error',
+    'compilation error',
+    'time limit exceeded',
+    'internal error',
   ].each_with_index.reduce(Hash.new) do |memo,pair|
     memo.merge(pair[0] => pair[1])
   end
 
-  def worsen(current, new)
-    [current, new].min_by { |e| EVILNESS[e] }
+  def worse?(current, new)
+    EVILNESS[new] > EVILNESS[current]
   end
 
   def current_item

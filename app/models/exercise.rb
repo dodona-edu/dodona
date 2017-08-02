@@ -137,10 +137,9 @@ class Exercise < ApplicationRecord
   end
 
   def merged_config
-    Pathname.new(path).parent.ascend          # all parent directories
+    Pathname.new(path).parent.descend         # all parent directories
             .map { |dir| read_dirconfig dir } # try reading their dirconfigs
             .compact                          # remove nil entries
-            .reverse                          # order least -> most important
             .push(config)                     # add exercise config file
             .reduce(&:deep_merge)             # reduce into single hash
   end

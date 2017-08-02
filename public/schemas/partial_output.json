@@ -3,119 +3,119 @@
   "definitions": {
     "update": {
       "oneOf": [
-          { "$ref": "#/definitions/focus" },
-          { "$ref": "#/definitions/push-focus" },
-          { "$ref": "#/definitions/pop-focus" },
-          { "$ref": "#/definitions/focus-relative" },
-          { "$ref": "#/definitions/new-tab" },
-          { "$ref": "#/definitions/new-context" },
-          { "$ref": "#/definitions/new-testcase" },
-          { "$ref": "#/definitions/new-test" },
-
+          { "$ref": "#/definitions/start-judgement" },
+          { "$ref": "#/definitions/start-tab" },
+          { "$ref": "#/definitions/start-context" },
+          { "$ref": "#/definitions/start-testcase" },
+          { "$ref": "#/definitions/start-test" },
           { "$ref": "#/definitions/append-message" },
-          { "$ref": "#/definitions/set-properties" },
-          { "$ref": "#/definitions/increment-badgecount" }
+          { "$ref": "#/definitions/close-test" },
+          { "$ref": "#/definitions/close-testcase" },
+          { "$ref": "#/definitions/close-context" },
+          { "$ref": "#/definitions/close-tab" },
+          { "$ref": "#/definitions/close-judgement" }
       ]
     },
-    "focus": {
+    "start-judgement": {
         "type": "object",
-        "description": "Move the focus to the specified location.",
+        "description": "Start on a new judgement.",
         "required": ["command"],
         "properties": {
-            "command":  { "enum": ["focus"] },
-            "tab":      { "$ref": "#/definitions/index" },
-            "context":  { "$ref": "#/definitions/index" },
-            "testcase": { "$ref": "#/definitions/index" },
-            "test":     { "$ref": "#/definitions/index" }
+            "command": { "enum": ["start-judgement"] }
         }
     },
-    "push-focus": {
+    "start-tab": {
         "type": "object",
-        "description": "Save the current focus on a stack.",
+        "description": "Start on a new tab with given title.",
+        "required": ["command", "title"],
+        "properties": {
+            "command": { "enum": ["start-tab"] },
+            "title":   { "type": "string" }
+        }
+    },
+    "start-context": {
+        "type": "object",
+        "description": "Start on a new context.",
         "required": ["command"],
         "properties": {
-            "command": { "enum": ["push-focus"] }
+            "command":     { "enum": ["start-context"] },
+            "description": { "$ref": "#/definitions/message" }
         }
     },
-    "pop-focus": {
+    "start-testcase": {
         "type": "object",
-        "description": "Pop the last saved focus from a stack and use it.",
-        "required": ["command"],
+        "description": "Start on a new testcase with given description",
+        "required": ["command", "description"],
         "properties": {
-            "command": { "enum": ["pop-focus"] }
+            "command":     { "enum": ["start-testcase"] },
+            "description": { "$ref": "#/definitions/message" }
         }
     },
-    "focus-relative": {
+    "start-test": {
         "type": "object",
-        "description": "Move the focus to the relative level closer to root.",
-        "required": ["command", "level"],
+        "description": "Start on a new test with given expected answer.",
+        "required": ["command", "expected"],
         "properties": {
-            "command":  { "enum": ["focus-relative"] },
-            "level":    { "enum": ["root", "tab", "context", "testcase", "test"] }
+            "command":     { "enum": ["start-test"] },
+            "expected":    { "type": "string" },
+            "description": { "$ref": "#/definitions/message" }
         }
     },
-    "new-tab": {
-        "type": "object",
-        "description": "Open a new tab after the current tab (or as last tab if the root is focussed) and focus it.",
-        "required": ["command"],
-        "properties": {
-            "command": { "enum": ["new-tab"] }
-        }
-    },
-    "new-context": {
-        "type": "object",
-        "description": "Open a new context after the current context (or in the current tab) and focus it.",
-        "required": ["command"],
-        "properties": {
-            "command": { "enum": ["new-context"] }
-        }
-    },
-    "new-testcase": {
-        "type": "object",
-        "description": "Open a new testcase after the current testcase (or in the current context) and focus it.",
-        "required": ["command"],
-        "properties": {
-            "command": { "enum": ["new-testcase"] }
-        }
-    },
-    "new-test": {
-        "type": "object",
-        "description": "Open a new test after the current test (or in the current testcase) and focus it.",
-        "required": ["command"],
-        "properties": {
-            "command": { "enum": ["new-test"] }
-        }
-    },
-
     "append-message": {
         "type": "object",
-        "description": "Append a message to the first ancestor or the focussed item able to carry messages. Focus is on the new message.",
+        "description": "Append a message to the open object.",
         "required": ["command", "message"],
         "properties": {
             "command": { "enum": ["append-message"] },
             "message": { "$ref": "#/definitions/message" }
         }
     },
-    "set-properties": {
+    "close-test": {
         "type": "object",
-        "description": "Set properties of the current object.",
-        "required": ["command"],
+        "description": "Close the current test. Accepted iff status is correct, but you can overwrite this.",
+        "required": ["command", "status", "generated"],
         "properties": {
-            "command":     { "enum": ["set-properties"] },
-            "status":      { "$ref": "#/definitions/status" },
-            "description": { "$ref": "#/definitions/message" },
-            "accepted":    { "$ref": "#/definitions/accepted" },
-            "badgecount":  { "$ref": "#/definitions/badgecount" },
-            "expected":    { "type": "string" },
-            "generated":   { "type": "string" }
+            "command":   { "enum": ["close-test"] },
+            "generated": { "type": "string" },
+            "accepted":  { "type": "boolean" },
+            "status":    { "$ref": "#/definitions/status" }
         }
     },
-    "increment-badgecount": {
+    "close-testcase": {
         "type": "object",
-        "description": "Increment the badgecount of the current tab.",
+        "description": "Close the current testcase. Accepted iff all tests are accepted, but you can overwrite this.",
         "required": ["command"],
         "properties": {
-            "command": { "enum": ["increment-badgecount"] }
+            "command":  { "enum": ["close-context"] },
+            "accepted": { "type": "boolean" }
+        }
+    },
+    "close-context": {
+        "type": "object",
+        "description": "Close the current context. Accepted iff all testcases are accepted, but you can overwrite this.",
+        "required": ["command"],
+        "properties": {
+            "command":  { "enum": ["close-context"] },
+            "accepted": { "type": "boolean" }
+        }
+    },
+    "close-tab": {
+        "type": "object",
+        "description": "Close the current tab. Badgecount is the number of not-accepted tests, but you can overwrite this.",
+        "required": ["command"],
+        "properties": {
+            "command":    { "enum": ["close-tab"] },
+            "badgeCount": { "$ref": "#/definitions/badgeCount" }
+        }
+    },
+    "close-judgement": {
+        "type": "object",
+        "description": "Close the current judgement. Accepted iff all contexts are accepted, status is the worst (highest in description) of all tests, but you can overwrite this.",
+        "required": ["command"],
+        "properties": {
+            "command":  { "enum": ["close-judgement"] },
+            "accepted": { "type": "boolean" },
+            "status":   { "$ref": "#/definitions/status" }
         }
     },
 
@@ -158,17 +158,12 @@
     "status": {
       "type": "string",
       "enum": [
+        "internal error",
         "compilation error",
         "runtime error",
-        "memory limit exceeded",
-        "time limit exceeded",
         "wrong", "wrong answer",
-        "correct", "correct answer",
-        "internal error"
+        "correct", "correct answer"
       ]
-    },
-    "accepted": {
-      "type": "boolean"
     }
   }
 }

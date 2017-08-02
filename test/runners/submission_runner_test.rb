@@ -112,5 +112,11 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     assert_equal "Error creating docker: #{exception}",
                  internal_error_message
     assert_not @submission.accepted
+
+  test 'random errors should be caught' do
+    docker = docker_mock
+    docker.stubs(:start).raises('DE HAVENVAKBOND STAAKT!!1!')
+    evaluate_with_stubbed_docker(docker)
+    assert_equal 'internal error', @exercise.status
   end
 end

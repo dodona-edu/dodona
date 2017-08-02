@@ -159,7 +159,7 @@ class SubmissionRunner
       rc = ResultConstructor.new
       rc.feed(stdout.force_encoding "utf-8")
       rc.result
-    rescue ResultConstructorError => e
+    rescue ResultConstructor::ResultConstructorError => e
       if exit_status == 143
         build_error 'time limit exceeded', 'time limit exceeded', [
           build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),

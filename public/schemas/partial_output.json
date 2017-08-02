@@ -26,11 +26,12 @@
     },
     "start-tab": {
         "type": "object",
-        "description": "Start on a new tab with given title.",
+        "description": "Start on a new tab with given title. Hidden if all contexts are accepted iff hidden.",
         "required": ["command", "title"],
         "properties": {
             "command": { "enum": ["start-tab"] },
-            "title":   { "type": "string" }
+            "title":   { "type": "string" },
+            "hidden":  { "type": "boolean" }
         }
     },
     "start-context": {
@@ -86,7 +87,7 @@
         "description": "Close the current testcase. Accepted iff all tests are accepted, but you can overwrite this.",
         "required": ["command"],
         "properties": {
-            "command":  { "enum": ["close-context"] },
+            "command":  { "enum": ["close-testcase"] },
             "accepted": { "type": "boolean" }
         }
     },
@@ -110,7 +111,7 @@
     },
     "close-judgement": {
         "type": "object",
-        "description": "Close the current judgement. Accepted iff all contexts are accepted, status is the worst (highest in description) of all tests, but you can overwrite this.",
+        "description": "Close the current judgement. Accepted iff all contexts are accepted, status is the worst (highest in description) of all tests, summary is the last of all tests, but you can overwrite this.",
         "required": ["command"],
         "properties": {
             "command":  { "enum": ["close-judgement"] },
@@ -156,6 +157,15 @@
       "type": "string"
     },
     "status": {
+      "type": "object",
+      "description": "Describes the outcome of the judgement.",
+      "required": ["enum"],
+      "properties": {
+        "enum":  { "$ref": "#/definitions/status-enum" },
+        "human": { "type": "string" }
+      }
+    },
+    "status-enum": {
       "type": "string",
       "enum": [
         "internal error",

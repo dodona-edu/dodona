@@ -179,14 +179,7 @@ class SubmissionRunner
 
   def add_runtime_metrics(result); end
 
-  def finalize(result)
-    # save the result
-    @submission.result = result.to_json
-    @submission.status = Submission.normalize_status(result[:status])
-    @submission.accepted = result[:accepted]
-    @submission.summary = result[:description]
-    @submission.save
-
+  def finalize
     # remove path on file system used as temporary working directory for processing the submission
     unless @path.nil?
       FileUtils.remove_entry_secure(@path, verbose: true)
@@ -202,7 +195,7 @@ class SubmissionRunner
       build_message(e.message + "\n" + e.backtrace.inspect, 'staff')
     ]
   ensure
-    finalize(result)
+    finalize
     result
   end
 

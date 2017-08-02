@@ -19,6 +19,8 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                          exercise: @exercise
   end
 
+  STRIKE_ERROR = 'DE HAVENVAKBOND STAAKT!!1!'.freeze
+
   def evaluate_with_stubbed_docker(obj = nil, **kwargs)
     obj = docker_mock(kwargs) unless obj
     Docker::Container.stubs(:create).returns(obj)
@@ -102,21 +104,22 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   end
 
   test 'error in docker creation should result in internal error' do
-    exception = Exception.new 'DE HAVENVAKBOND STAAKT!!1!'
-    Docker::Container.stubs(:create).raises(exception)
+    Docker::Container.stubs(:create).raises(STRIKE_ERROR)
 
     @submission.evaluate
     assert_not_nil @submission.result
     assert_equal 'internal error', @submission.status
-    assert_equal I18n.t('activerecord.attributes.submission.statuses.internal error'), @submission.summary
-    assert_equal "Error creating docker: #{exception}",
-                 internal_error_message
+    assert_equal I18n.t('activerecord.attributes.submission.statuses.internal error'),
+                 @submission.summary
+    assert_equal "Error creating docker: #{STRIKE_ERROR}", internal_error_message
     assert_not @submission.accepted
+  end
 
   test 'random errors should be caught' do
     docker = docker_mock
-    docker.stubs(:start).raises('DE HAVENVAKBOND STAAKT!!1!')
+    docker.stubs(:start).raises(STRIKE_ERROR)
     evaluate_with_stubbed_docker(docker)
-    assert_equal 'internal error', @exercise.status
+    assert_equal 'internal error', @submission.status
+    assert internal_error_message.include? STRIKE_ERROR
   end
 end

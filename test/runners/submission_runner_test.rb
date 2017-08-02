@@ -1,4 +1,5 @@
 
+require 'json'
 require 'test_helper'
 require 'timeout'
 
@@ -76,7 +77,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     assert_equal 'internal error', result['status']
   end
 
-  test 'timeout should exceeded time limit' do
+  test 'timeout should result in time limit exceeded' do
     Timeout.stubs(:timeout).raises(Timeout::Error)
     evaluate_with_stubbed_docker
     assert_not_nil @submission.result
@@ -85,11 +86,31 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     assert_not @submission.accepted
   end
 
-  test 'submission with memory limit exceeded' do
+  def internal_error_message
+    result = JSON.parse(@submission.result)
+    messages = result['messages']
+    assert_equal 1, messages.count
+    messages[0]['description']
+  end
+
+  test 'submissions eating RAM should result in memory limit exceeded' do
     evaluate_with_stubbed_docker status_code: 1, err: 'got signal 9'
     assert_not_nil @submission.result
     assert_equal 'memory limit exceeded', @submission.status
     assert_equal I18n.t('activerecord.attributes.submission.statuses.memory limit exceeded'), @submission.summary
+    assert_not @submission.accepted
+  end
+
+  test 'error in docker creation should result in internal error' do
+    exception = Exception.new 'DE HAVENVAKBOND STAAKT!!1!'
+    Docker::Container.stubs(:create).raises(exception)
+
+    @submission.evaluate
+    assert_not_nil @submission.result
+    assert_equal 'internal error', @submission.status
+    assert_equal I18n.t('activerecord.attributes.submission.statuses.internal error'), @submission.summary
+    assert_equal "Error creating docker: #{exception}",
+                 internal_error_message
     assert_not @submission.accepted
   end
 end

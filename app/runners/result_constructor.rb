@@ -17,7 +17,8 @@ class ResultConstructor
   LEVELSH = { judgement: 0, tab: 1, context: 2, testcase: 3, test: 4 }
   GATHER = { tab: :groups, context: :groups, testcase: :groups, test: :tests }
 
-  def initialize
+  def initialize(locale)
+    @locale = locale
     @level = nil
     @result = Hash.new
   end
@@ -40,7 +41,8 @@ class ResultConstructor
   def result
     # unclosed judgement. timeout?
     status = { enum: 'time limit exceeded',
-               human: 'Tijdslimiet overschreden' }
+               human: I18n.t("activerecord.attributes.submission.statuses.time limit exceeded",
+                             locale: @locale) }
     close_test(generated: '',
                accepted: false,
                status: status) if @level == :test
@@ -60,6 +62,8 @@ class ResultConstructor
     @judgement = Hash.new
     @judgement[:accepted] = true
     @judgement[:status] = "correct"
+    @judgement[:description] = I18n.t("activerecord.attributes.submission.statuses.correct",
+                                      locale: @locale)
   end
 
   def start_tab(title: nil, hidden: nil)

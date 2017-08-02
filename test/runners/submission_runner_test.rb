@@ -49,10 +49,36 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     @submission.evaluate
   end
 
+  test 'correct submission should be accepted' do
+    stub_docker
+    @submission.evaluate
+    assert @submission.accepted
+  end
+
+  test 'correct submission should be correct' do
+    stub_docker
+    @submission.evaluate
+    assert_equal 'correct', @submission.status
+  end
+
   test 'docker container should be deleted after use' do
     docker = docker_mock
     docker.expects(:delete)
     stub_docker_with(docker)
     @submission.evaluate
+  end
+
+  test 'malformed json should result in internal error' do
+    docker = docker_mock
+    docker.stubs(:attach).returns([['DIKKE TAARTEN'], ['']])
+    stub_docker_with(docker)
+    result = @submission.evaluate
+    assert_equal 'internal error', result['status']
+  end
+
+  test 'non-zero status code should result in internal error' do
+    stub_docker status_code: 1
+    result = @submission.evaluate
+    assert_equal 'internal error', result['status']
   end
 end

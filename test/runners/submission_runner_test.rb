@@ -39,7 +39,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     obj = mock
     obj.stubs(:start)
     obj.stubs(:delete)
-    obj.stubs(:attach).returns([[params[:output]], [params[:err]]])
+    obj.stubs(:attach).returns([[params[:output].to_json], [params[:err]]])
     obj.stubs(:wait).returns('StatusCode' => params[:status_code])
     obj
   end

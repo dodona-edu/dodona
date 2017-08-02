@@ -78,7 +78,18 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
   test 'timeout should exceeded time limit' do
     Timeout.stubs(:timeout).raises(Timeout::Error)
-    result = evaluate_with_stubbed_docker
-    assert_equal 'time limit exceeded', result['status']
+    evaluate_with_stubbed_docker
+    assert_not_nil @submission.result
+    assert_equal 'time limit exceeded', @submission.status
+    assert_equal I18n.t('activerecord.attributes.submission.statuses.time limit exceeded'), @submission.summary
+    assert_not @submission.accepted
+  end
+
+  test 'submission with memory limit exceeded' do
+    evaluate_with_stubbed_docker status_code: 1, err: 'got signal 9'
+    assert_not_nil @submission.result
+    assert_equal 'memory limit exceeded', @submission.status
+    assert_equal I18n.t('activerecord.attributes.submission.statuses.memory limit exceeded'), @submission.summary
+    assert_not @submission.accepted
   end
 end

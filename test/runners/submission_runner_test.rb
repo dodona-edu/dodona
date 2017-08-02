@@ -46,19 +46,54 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     obj
   end
 
+  def assert_submission(status: nil, summary: nil, message_includes: nil, accepted: true)
+    assert_not_nil @submission.result
+    assert_equal status, @submission.status
+    summary ||= I18n.t("activerecord.attributes.submission.statuses.#{status}")
+    assert_equal summary, @submission.summary
+    if message_includes
+      result = JSON.parse(@submission.result)
+      messages = result['messages']
+      assert_equal 1, messages.count
+      assert messages[0]['description'].include?(message_includes)
+    end
+
+    assert_equal accepted, @submission.accepted
+  end
+
   test 'submission evaluation should start docker container' do
     Docker::Container.expects(:create).once
     @submission.evaluate
   end
 
-  test 'correct submission should be accepted' do
-    evaluate_with_stubbed_docker
-    assert @submission.accepted
+  test 'correct submission should be accepted and correct' do
+    summary = 'Wow. Such code. Many variables.'
+    evaluate_with_stubbed_docker output: {
+      accepted: true,
+      status: 'correct',
+      description: summary
+    }
+    assert_submission status: 'correct', summary: summary, accepted: true
   end
 
-  test 'correct submission should be correct' do
-    evaluate_with_stubbed_docker
-    assert_equal 'correct', @submission.status
+  test 'compilation error should not be accepted' do
+    summary = 'Something something lifetimes.'
+    evaluate_with_stubbed_docker output: {
+      accepted: false,
+      status: 'compilation error',
+      description: summary
+    }
+    assert_submission status: 'compilation error', summary: summary, accepted: false
+  end
+
+  test 'runtime error should not be accepted' do
+    summary = 'Could not compile exe.java'
+    evaluate_with_stubbed_docker output: {
+      accepted: false,
+      status: 'runtime error',
+      description: summary
+    }
+    assert_submission status: 'runtime error', summary: summary, accepted: false
   end
 
   test 'docker container should be deleted after use' do
@@ -69,57 +104,55 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
   test 'malformed json should result in internal error' do
     docker = docker_mock
-    docker.stubs(:attach).returns([['DIKKE TAARTEN'], ['']])
-    result = evaluate_with_stubbed_docker(docker)
-    assert_equal 'internal error', result['status']
+    docker.stubs(:attach).returns([['DIKKE TAARTEN!!1!'], ['']])
+    evaluate_with_stubbed_docker(docker)
+
+    assert_submission status: 'internal error',
+                      message_includes: 'json',
+                      accepted: false
   end
 
   test 'non-zero status code should result in internal error' do
-    result = evaluate_with_stubbed_docker status_code: 1
-    assert_equal 'internal error', result['status']
+    evaluate_with_stubbed_docker status_code: 1,
+                                 err: STRIKE_ERROR
+
+    assert_submission status: 'internal error',
+                      message_includes: STRIKE_ERROR,
+                      accepted: false
   end
 
   test 'timeout should result in time limit exceeded' do
     Timeout.stubs(:timeout).raises(Timeout::Error)
     evaluate_with_stubbed_docker
-    assert_not_nil @submission.result
-    assert_equal 'time limit exceeded', @submission.status
-    assert_equal I18n.t('activerecord.attributes.submission.statuses.time limit exceeded'), @submission.summary
-    assert_not @submission.accepted
-  end
 
-  def internal_error_message
-    result = JSON.parse(@submission.result)
-    messages = result['messages']
-    assert_equal 1, messages.count
-    messages[0]['description']
+    assert_submission status: 'time limit exceeded',
+                      accepted: false
   end
 
   test 'submissions eating RAM should result in memory limit exceeded' do
     evaluate_with_stubbed_docker status_code: 1, err: 'got signal 9'
-    assert_not_nil @submission.result
-    assert_equal 'memory limit exceeded', @submission.status
-    assert_equal I18n.t('activerecord.attributes.submission.statuses.memory limit exceeded'), @submission.summary
-    assert_not @submission.accepted
+
+    assert_submission status: 'memory limit exceeded',
+                      accepted: false
   end
 
   test 'error in docker creation should result in internal error' do
     Docker::Container.stubs(:create).raises(STRIKE_ERROR)
 
     @submission.evaluate
-    assert_not_nil @submission.result
-    assert_equal 'internal error', @submission.status
-    assert_equal I18n.t('activerecord.attributes.submission.statuses.internal error'),
-                 @submission.summary
-    assert_equal "Error creating docker: #{STRIKE_ERROR}", internal_error_message
-    assert_not @submission.accepted
+
+    assert_submission status: 'internal error',
+                      message_includes: "Error creating docker: #{STRIKE_ERROR}",
+                      accepted: false
   end
 
   test 'random errors should be caught' do
     docker = docker_mock
     docker.stubs(:start).raises(STRIKE_ERROR)
     evaluate_with_stubbed_docker(docker)
-    assert_equal 'internal error', @submission.status
-    assert internal_error_message.include? STRIKE_ERROR
+
+    assert_submission status: 'internal error',
+                      message_includes: STRIKE_ERROR,
+                      accepted: false
   end
 end

@@ -1,5 +1,6 @@
 
 require 'test_helper'
+require 'timeout'
 
 class SubmissionRunnerTest < ActiveSupport::TestCase
   setup do
@@ -73,5 +74,11 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   test 'non-zero status code should result in internal error' do
     result = evaluate_with_stubbed_docker status_code: 1
     assert_equal 'internal error', result['status']
+  end
+
+  test 'timeout should exceeded time limit' do
+    Timeout.stubs(:timeout).raises(Timeout::Error)
+    result = evaluate_with_stubbed_docker
+    assert_equal 'time limit exceeded', result['status']
   end
 end

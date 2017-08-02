@@ -11,28 +11,38 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     @exercise = create :exercise,
                        series: [@series],
                        repository: @repository
+    @submission = create :submission,
+                         user: @user,
+                         course: @course,
+                         exercise: @exercise
   end
 
-  def docker_mock(out, err, status_code)
+  def with_docker_stub(params)
+    Docker::Container.stubs(:create).returns(docker_mock(**params))
+    yield
+  end
+
+  def docker_mock(**params)
+    default_params = {
+      status_code: 0,
+      output: {
+        accepted: true,
+        status: 'correct'
+      }
+    }
+
+    params = default_params.merge(params)
+
     obj = mock
     obj.stubs(:start)
     obj.stubs(:delete)
-    obj.stubs(:attach).returns([out, err])
-    obj.stubs(:wait).returns('StatusCode' => status_code)
+    obj.stubs(:attach).returns([[params[:output]], [params[:err]]])
+    obj.stubs(:wait).returns('StatusCode' => params[:status_code])
     obj
   end
 
   test 'submission evaluation should start docker container' do
-    submission = create :submission,
-                        user: @user,
-                        course: @course,
-                        exercise: @exercise
-
-    json = {
-      accepted: true,
-      status: :correct
-    }.to_json
-    Docker::Container.expects(:create).once.returns(docker_mock([json], '', 0))
-    submission.evaluate
+    Docker::Container.expects(:create).once.returns(docker_mock)
+    @submission.evaluate
   end
 end

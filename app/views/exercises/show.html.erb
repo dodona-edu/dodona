@@ -1,5 +1,5 @@
 <div class="row">
-  <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs", title: t('.handin') do %>
+  <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>
     <span class='hidden-sm'><%= t('.handin') %></span><br>
     <span class="glyphicon glyphicon-chevron-down"></span>
   <% end %>
@@ -26,7 +26,7 @@
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row hidden-print">
   <a class="anchor" id="submission-card"></a>
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card card-nav">

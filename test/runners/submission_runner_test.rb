@@ -39,24 +39,34 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
     params = default_params.merge(params)
 
+    stdout = if params[:output].is_a?(Hash)
+               params[:output].to_json
+             else
+               params[:output].to_s
+             end
+
     obj = mock
     obj.stubs(:start)
     obj.stubs(:delete)
-    obj.stubs(:attach).returns([[params[:output].to_json], [params[:err]]])
+    obj.stubs(:attach).returns([[stdout], [params[:err]]])
     obj.stubs(:wait).returns('StatusCode' => params[:status_code])
     obj
   end
 
   def assert_submission(status: nil, summary: nil, message_includes: nil, accepted: true)
-    assert_not_nil @submission.result
-    assert_equal status, @submission.status
+    assert_not_nil @submission.result, "There should always be a result"
+    assert_equal status, @submission.status, "Wrong submission status"
     summary ||= I18n.t("activerecord.attributes.submission.statuses.#{status}")
-    assert_equal summary, @submission.summary
+    assert_equal summary, @submission.summary, "Wrong submission summary"
     if message_includes
       result = JSON.parse(@submission.result)
       messages = result['messages']
-      assert_equal 1, messages.count
-      assert messages[0]['description'].include?(message_includes)
+      message_contents = messages.map { |m| m['description'] }
+      included = message_contents.any? { |m| m.include?(message_includes) }
+      assert included,
+             "Expected to find the text \n\"#{message_includes}\"\n" \
+             "In one of the following messages of result:\n" \
+             "#{message_contents}"
     end
 
     assert_equal accepted, @submission.accepted
@@ -104,12 +114,17 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   end
 
   test 'malformed json should result in internal error' do
-    docker = docker_mock
-    docker.stubs(:attach).returns([['DIKKE TAARTEN!!1!'], ['']])
-    evaluate_with_stubbed_docker(docker)
+    evaluate_with_stubbed_docker output: 'DIKKE TAARTEN!!1!'
 
     assert_submission status: 'internal error',
-                      message_includes: 'json',
+                      message_includes: 'Failed to parse the following JSON',
+                      accepted: false
+  end
+
+  test 'no output should result in internal error' do
+    evaluate_with_stubbed_docker output: nil
+    assert_submission status: 'internal error',
+                      message_includes: 'No judge output',
                       accepted: false
   end
 
@@ -122,10 +137,15 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                       accepted: false
   end
 
-  test 'timeout should result in time limit exceeded' do
-    Timeout.stubs(:timeout).raises(Timeout::Error)
-    evaluate_with_stubbed_docker
+  test 'timeout without output should result in time limit exceeded' do
+    evaluate_with_stubbed_docker output: nil, status_code: 143
+    assert_submission status: 'time limit exceeded',
+                      accepted: false
+  end
 
+  test 'timeout with broken output should result in time limit exceeded' do
+    evaluate_with_stubbed_docker output: '{ status: "Aarhhg...',
+                                 status_code: 143
     assert_submission status: 'time limit exceeded',
                       accepted: false
   end

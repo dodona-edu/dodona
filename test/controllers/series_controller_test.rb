@@ -34,7 +34,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should generate score sheet' do
+  test 'should generate scoresheet' do
     series = create(:series, :with_submissions)
     get scoresheet_series_path(series)
     assert_response :success
@@ -52,6 +52,12 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     course = create(:series, :hidden)
     get token_show_series_path(course, course.token)
     assert_response :success
+  end
+
+  test 'should not get series with wrong token' do
+    course = create(:series, :hidden)
+    get token_show_series_path(course, 'hunter2')
+    assert_redirected_to :root_path
   end
 
   test 'should add exercise to series' do

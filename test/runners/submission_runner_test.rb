@@ -11,6 +11,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     @user = create :user, courses: [@course]
     @series = create :series, course: @course
     @exercise = create :exercise,
+                       :config_stubbed,
                        series: [@series],
                        repository: @repository
     @submission = create :submission,

@@ -56,3 +56,49 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 end
+
+class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
+
+  setup do
+    # stub file access
+    Exercise.any_instance.stubs(:description_localized).returns("it's something")
+    @user = create :user
+    sign_in @user
+  end
+
+  def show_exercise
+    get exercise_path(@instance).concat('/')
+  end
+
+  test 'user should be able to see exercise' do
+    @instance = create :exercise
+    show_exercise
+    assert_response :success
+  end
+
+  test 'user should not be able to see closed exercise' do
+    @instance = create :exercise, visibility: 'closed'
+    show_exercise
+    assert_redirected_to root_url
+  end
+
+  test 'user should not be able to see invalid exercise' do
+    @instance = create :exercise, :nameless
+    show_exercise
+    assert_redirected_to root_url
+  end
+
+  test 'user should be able to see invalid execrise when he has submissions' do
+    @instance = create :exercise, :nameless
+    create :submission, exercise: @instance, user: @user
+    show_exercise
+    assert_response :success
+  end
+
+  test 'admin should be able to see invalid execrise' do
+    sign_in create(:staff)
+    @instance = create :exercise, :nameless
+    show_exercise
+    assert_response :success
+  end
+end

@@ -15,6 +15,7 @@ FactoryGirl.define do
 
       after :build do |judge|
         stub_git(judge)
+        judge.stubs(:config).returns({})
       end
     end
   end

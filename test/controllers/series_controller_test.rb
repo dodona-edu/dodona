@@ -57,7 +57,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   test 'should not get series with wrong token' do
     course = create(:series, :hidden)
     get token_show_series_path(course, 'hunter2')
-    assert_redirected_to :root_path
+    assert_redirected_to :root
   end
 
   test 'should add exercise to series' do

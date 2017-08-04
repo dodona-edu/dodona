@@ -104,16 +104,16 @@ group :development, :test do
   # I18N default locale & better test reporter
   gem 'minitest-utils'
 
-  # Generate 'random' values like usernames, emails, ...
-  gem 'faker', '~> 1.8'
-
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 end
 
 group :test do
   # for measuring coverage
-  gem 'simplecov', :require => false
+  gem 'simplecov', require: false
+
+  # Generate 'random' values like usernames, emails, ...
+  gem 'faker', '~> 1.8'
 end
 
 group :development do

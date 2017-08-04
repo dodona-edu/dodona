@@ -2,65 +2,26 @@
   @page {
     size: A4;
   }
-  html, body {
-        overflow: visible;
-        height: 99%;
+
+  // Hide footer
+  .footer {
+    display: none;
   }
 
-  // Fix footer on last page alone
-  .card {
-      margin-bottom: 0;
+  // Make font size a little bit bigger
+  .card-supporting-text {
+    font-size: 16px;
   }
-  .container.main {
-      padding-bottom: 0;
-  }
-  footer.footer {
-      position: static;
-      padding: 0 32px 0 32px;
-      page-break-before: avoid;
-      height: auto;
+  .card-title-text {
+    font-size: 30px;
   }
 
-  /**
-   * Initialiazing a `footnotes` counter on the wrapper
-   */
-  .container.main {
-    counter-reset: footnotes;
-  }
-
-  /**
-   * Inline footnotes references
-   * 1. Increment the counter at each new reference
-   * 2. Reset link styles to make it appear like regular text
-   */
+  // Underline links
   a {
-    counter-increment: footnotes; /* 1 */
-    text-decoration: none; /* 2 */
-    color: inherit; /* 2 */
-    cursor: default; /* 2 */
-    outline: none; /* 2 */
+    text-decoration: underline;
   }
-
-  /**
-   * Actual numbered references
-   * 1. Display the current state of the counter (e.g. `[1]`)
-   * 2. Align text as superscript
-   * 3. Make the number smaller (since it's superscript)
-   * 4. Slightly offset the number from the text
-   * 5. Reset link styles on the number to show it's usable
-   */
-  a::after {
-    content: '[' counter(footnotes) ']' !important; /* 1 */
-    vertical-align: super; /* 2 */
-    font-size: 0.5em; /* 3 */
-    margin-left: 2px; /* 4 */
-    color: blue; /* 5 */
-    text-decoration: underline; /* 5 */
-    cursor: pointer; /* 5 */
+  // Bootstrap places link href after the text, remove it
+  a[href]:after {
+    content: none;
   }
-  a::before{
-    content: '[' counter(footnotes) ']: ' attr(href);
-    float: footnote;
-  }
-
 }

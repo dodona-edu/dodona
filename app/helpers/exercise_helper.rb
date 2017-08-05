@@ -5,7 +5,7 @@ module ExerciseHelper
   # and as second item a hash of footnote indexes mapped on their url
   def exercise_description_and_footnotes(exercise)
     renderer = DescriptionRenderer.new(exercise)
-    [renderer.description, renderer.footnote_urls]
+    [renderer.description_html, renderer.footnote_urls]
   end
 
   class DescriptionRenderer
@@ -13,12 +13,12 @@ module ExerciseHelper
 
     def initialize(exercise)
       @exercise = exercise
-      @description = exercise.description
+      @description = exercise.description || ''
       @description = markdown(@description) if exercise.format == 'md'
       process_html
     end
 
-    def description
+    def description_html
       @description.html_safe
     end
 
@@ -29,13 +29,20 @@ module ExerciseHelper
     # 4: part between the closing '/" and >
     MEDIA_MATCH = %r{(<.*?=['"])(\.\/)?(media\/.*?)(['"].*?>)}
 
+    # Replace each occurence of a relative media path with an
+    # 'absolute paht' (with respect to the base URL)
+    #
+    # Static method to make it easier to test
+    #
     # Example substitutions:
+    # (with path = /nl/exercises/xxxx/)
     # <img src='media/photo.jpg'>
     #  => <img src='/nl/exercises/xxxx/media/photo.jpg'>
     # <a href='./media/page.html'>link</a>
     #  => <a href='/nl/exercises/xxxx/media/page.html'>
-    def absolutize_media_paths(html)
-      html.gsub(MEDIA_MATCH, "\\1#{exercise_path(@exercise)}\\3\\4")
+    def self.absolutize_media_paths(html, path)
+      path += '/' unless path.endswith '/'
+      html.gsub(MEDIA_MATCH, "\\1#{path}\\3\\4")
     end
 
     private
@@ -57,7 +64,7 @@ module ExerciseHelper
 
     # Rewrite all media urls
     def rewrite_media_urls
-      @description = absolutize_media_paths @description
+      @description = absolutize_media_paths @description, exercise_path(@exercise)
     end
 
     # Add a footnote reference after each anchor, and add the anchor href

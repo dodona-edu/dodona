@@ -10,12 +10,13 @@
 #  updated_at  :datetime         not null
 #  status      :integer
 #  accepted    :boolean          default(FALSE)
+#  course_id   :integer
 #
 
 require 'test_helper'
 
 class SubmissionTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'factory' do
+    create :submission
+  end
 end

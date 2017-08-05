@@ -95,8 +95,25 @@ gem 'rubyzip'
 gem 'rails_server_timings'
 
 group :development, :test do
+  # Use mocha for stubbing and mocking
+  gem 'mocha'
+  # Factory girl for factories
+  gem 'factory_girl'
+  gem 'factory_girl_rails'
+
+  # I18N default locale & better test reporter
+  gem 'minitest-utils'
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+end
+
+group :test do
+  # for measuring coverage
+  gem 'simplecov', require: false
+
+  # Generate 'random' values like usernames, emails, ...
+  gem 'faker', '~> 1.8'
 end
 
 group :development do

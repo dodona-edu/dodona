@@ -40,7 +40,7 @@ class Series < ApplicationRecord
       info = CSV.generate(force_quotes: true) do |csv|
         csv << %w[filename status submission_id name]
         exercises.each do |ex|
-          submission = ex.last_submission(user, deadline)
+          submission = ex.last_submission(user, deadline, course)
           # write the submission
           zio.put_next_entry(ex.file_name)
           zio.write submission&.code

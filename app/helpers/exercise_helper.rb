@@ -41,7 +41,7 @@ module ExerciseHelper
     # <a href='./media/page.html'>link</a>
     #  => <a href='/nl/exercises/xxxx/media/page.html'>
     def self.absolutize_media_paths(html, path)
-      path += '/' unless path.endswith '/'
+      path += '/' unless path.ends_with? '/'
       html.gsub(MEDIA_MATCH, "\\1#{path}\\3\\4")
     end
 

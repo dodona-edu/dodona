@@ -1,0 +1,30 @@
+<div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="card">
+    <div class="card-title card-title-colored">
+      <h2 class="card-title-text"><%= @series.course.name %></h2>
+      <h3 class="card-subtitle-text"> <%= @series.name %></h3>
+    </div>
+    <div class="card-supporting-text">
+
+      <span style="float: right">
+        <%= render partial: 'deadline', locals: { series: @series } %>
+      </span>
+    </div>
+  </div>
+
+  <% @series.exercises.each do |exercise| %>
+    <div class="card exercise-description">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">
+          <%= link_to exercise.name, exercise_path(exercise) %>
+        </h2>
+      </div>
+      <div class="card-supporting-text">
+        <%= exercise.description %>
+      </div>
+      <div class="card-actions card-border">
+        <%= link_to t('exercises.show.handin'), exercise_path(exercise), class: "btn-text" %>
+      </div>
+    </div>
+  <% end %>
+</div>

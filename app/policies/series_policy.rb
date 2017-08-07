@@ -1,7 +1,7 @@
 class SeriesPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if course_admin?
+      if user&.admin? || user&.admin_of?(series&.course)
         scope.all
       else
         scope.where(visibility: :open)

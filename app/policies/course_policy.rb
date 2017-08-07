@@ -37,6 +37,14 @@ class CoursePolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def update_membership
+    user&.admin?
+  end
+
+  def unsubscribe
+    user
+  end
+
   def subscribe?
     user
   end

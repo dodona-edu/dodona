@@ -74,9 +74,13 @@ class CoursesController < ApplicationController
   end
 
   def update_membership
+    user = User.find params[:user]
+    update_membership_status_for user, params[:status]
   end
 
   def unsubscribe
+    update_membership_status_for current_user,
+                                 :unsubscribed
   end
 
   def subscribe
@@ -111,6 +115,13 @@ class CoursesController < ApplicationController
   end
 
   private
+
+  def update_membership_status_for(user, status)
+    membership = CourseMembership.where(user: user,
+                                        course: course)
+                                 .first
+    membership&.update(status: status)
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_course

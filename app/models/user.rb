@@ -33,8 +33,8 @@ class User < ApplicationRecord
            through: :course_memberships,
            source: :course
 
-  has_many :moderated_courses,
-           -> { where course_memberships: { status: :moderator } },
+  has_many :administrating_courses,
+           -> { where course_memberships: { status: :course_admin } },
            through: :course_memberships,
            source: :course
 
@@ -91,12 +91,12 @@ class User < ApplicationRecord
   end
 
   def header_courses
-    return nil if courses.empty?
-    courses.group_by(&:year).first.second[0..2]
+    return nil if subscribed_courses.empty?
+    subscribed_courses.group_by(&:year).first.second[0..2]
   end
 
   def member_of?(course)
-    courses.include? course
+    subscribed_courses.include? course
   end
 
   def cas_extra_attributes=(extra_attributes)

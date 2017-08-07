@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: %i[show edit update destroy subscribe subscribe_with_secret scoresheet]
+  before_action :set_course, only: %i[show edit update destroy subscribe subscribe_with_secret scoresheet update_membership unsubscribe]
 
   # GET /courses
   # GET /courses.json
@@ -39,7 +39,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        @course.moderators << current_user
+        @course.course_admins << current_user
         format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
         format.json { render :show, status: :created, location: @course }
       else
@@ -71,6 +71,12 @@ class CoursesController < ApplicationController
       format.html { redirect_to courses_url, notice: I18n.t('controllers.destroyed', model: Course.model_name.human) }
       format.json { head :no_content }
     end
+  end
+
+  def update_membership
+  end
+
+  def unsubscribe
   end
 
   def subscribe

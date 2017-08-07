@@ -18,7 +18,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def edit?
-    user&.admin?
+    course_admin?
   end
 
   def create?
@@ -26,7 +26,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def update?
-    user&.admin?
+    course_admin?
   end
 
   def destroy?
@@ -34,11 +34,11 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def list_members?
-    user&.admin?
+    course_admin?
   end
 
   def update_membership
-    user&.admin?
+    course_admin?
   end
 
   def unsubscribe
@@ -54,18 +54,24 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def scoresheet?
-    user&.admin?
+    course_admin?
   end
 
   def add_series?
-    user&.admin?
+    course_admin?
   end
 
   def permitted_attributes
-    if user&.admin?
+    if course_admin?
       %i[name year description]
     else
       []
     end
+  end
+
+  private
+
+  def course_admin?
+    user&.admin? || user&.admin_of?(course)
   end
 end

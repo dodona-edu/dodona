@@ -75,18 +75,29 @@ class CoursesController < ApplicationController
 
   def update_membership
     user = User.find params[:user]
-    update_membership_status_for user, params[:status]
+    if update_membership_status_for user, params[:status]
+      format.html { redirect_to root_url, notice: I18n.t('courses.membership.updated_successfully') }
+      format.json { head :ok }
+    else
+      format.html { redirect_to root_url, notice: I18n.t('courses.membership.update_failed') }
+      format.json { head :unprocessable_entity }
+    end
   end
 
   def unsubscribe
-    update_membership_status_for current_user,
-                                 :unsubscribed
+    if update_membership_status_for current_user,
+                                    :unsubscribed
+      format.html { redirect_to root_url, notice: I18n.t('courses.unsubscribe.unsubscribed_successfully') }
+      format.json { head :ok }
+    else
+      format.html { redirect_to root_url, notice: I18n.t('courses.unsubscribe.unsubscribing_failed') }
+      format.json { head :unprocessable_entity }
+    end
   end
 
   def subscribe
-    membership = CourseMembership.new(course: @course, user: current_user)
     respond_to do |format|
-      if membership.save
+      if try_to_subscribe current_user
         format.html { redirect_to @course, notice: I18n.t('courses.subscribe.subscribed_successfully') }
         format.json { render :show, status: :created, location: @course }
       else
@@ -115,6 +126,16 @@ class CoursesController < ApplicationController
   end
 
   private
+
+  def try_to_subscribe(user)
+    if user.unsubscribed_courses.include? @course
+      update_membership_status_for user, :student
+    else
+      membership = CourseMembership.new course: @course,
+                                        user: user
+      membership.save
+    end
+  end
 
   def update_membership_status_for(user, status)
     membership = CourseMembership.where(user: user,

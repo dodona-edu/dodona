@@ -101,6 +101,9 @@ group :development, :test do
   gem 'factory_girl'
   gem 'factory_girl_rails'
 
+  # Generate 'random' values like usernames, emails, ...
+  gem 'faker', '~> 1.8'
+
   # I18N default locale & better test reporter
   gem 'minitest-utils'
 
@@ -111,9 +114,6 @@ end
 group :test do
   # for measuring coverage
   gem 'simplecov', require: false
-
-  # Generate 'random' values like usernames, emails, ...
-  gem 'faker', '~> 1.8'
 end
 
 group :development do

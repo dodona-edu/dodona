@@ -27,8 +27,8 @@ class Course < ApplicationRecord
            through: :course_memberships,
            source: :user
 
-  has_many :moderators,
-           -> { where course_memberships: { status: :moderator } },
+  has_many :course_admins,
+           -> { where course_memberships: { status: :course_admin } },
            through: :course_memberships,
            source: :user
 
@@ -59,7 +59,7 @@ class Course < ApplicationRecord
 
   def scoresheet(options = {})
     sorted_series = series.reverse
-    sorted_users = users.order(last_name: :asc, first_name: :asc)
+    sorted_users = members.order(last_name: :asc, first_name: :asc)
     CSV.generate(options) do |csv|
       csv << [I18n.t('courses.scoresheet.explanation')]
       csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')].concat(sorted_series.map(&:name))

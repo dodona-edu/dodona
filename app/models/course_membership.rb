@@ -11,7 +11,7 @@
 #
 
 class CourseMembership < ApplicationRecord
-  enum status: %i[pending moderator student]
+  enum status: %i[pending course_admin student]
 
   belongs_to :course
   belongs_to :user

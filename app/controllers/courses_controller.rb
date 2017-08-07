@@ -39,7 +39,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        @course.users << current_user
+        @course.moderators << current_user
         format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
         format.json { render :show, status: :created, location: @course }
       else

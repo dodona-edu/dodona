@@ -39,7 +39,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        @course.course_admins << current_user
+        @course.administrating_members << current_user
         format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
         format.json { render :show, status: :created, location: @course }
       else
@@ -139,9 +139,13 @@ class CoursesController < ApplicationController
 
   def update_membership_status_for(user, status)
     membership = CourseMembership.where(user: user,
-                                        course: course)
+                                        course: @course)
                                  .first
-    membership&.update(status: status)
+    return false unless membership
+    # There should always be one course administrator
+    return false if membership.status == :course_admin &&
+                    @course.administrating_members.count <= 1
+    membership.update(status: status)
   end
 
   # Use callbacks to share common setup or constraints between actions.

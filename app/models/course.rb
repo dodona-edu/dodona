@@ -22,23 +22,43 @@ class Course < ApplicationRecord
   has_many :submissions
   has_many :users, through: :course_memberships
 
-  has_many :members,
-           -> { where.not course_memberships: { status: :pending } },
+  has_many :subscribed_members,
+           lambda {
+             where.not course_memberships:
+                { status: %i[pending unsubscribed] }
+           },
            through: :course_memberships,
            source: :user
 
-  has_many :course_admins,
-           -> { where course_memberships: { status: :course_admin } },
+  has_many :administrating_members,
+           lambda {
+             where course_memberships:
+                { status: :course_admin }
+           },
            through: :course_memberships,
            source: :user
 
-  has_many :students,
-           -> { where course_memberships: { status: :student } },
+  has_many :enrolled_members,
+           lambda {
+             where course_memberships:
+                { status: :student }
+           },
            through: :course_memberships,
            source: :user
 
-  has_many :pending_subscriptions,
-           -> { where course_memberships: { status: :pending } },
+  has_many :pending_members,
+           lambda {
+             where course_memberships:
+                { status: :pending }
+           },
+           through: :course_memberships,
+           source: :user
+
+  has_many :unsubscribed_members,
+           lambda {
+             where course_memberships:
+                { status: :unsubscribed }
+           },
            through: :course_memberships,
            source: :user
 

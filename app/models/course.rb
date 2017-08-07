@@ -19,7 +19,19 @@ class Course < ApplicationRecord
   has_many :course_memberships
   has_many :series
   has_many :submissions
-  has_many :users, through: :course_memberships
+  # has_many :users, through: :course_memberships
+  has_many :moderators,
+           -> { where course_memberships: { status: :moderator } },
+           through: :course_memberships,
+           source: :user
+  has_many :students,
+           -> { where course_memberships: { status: :student } },
+           through: :course_memberships,
+           source: :user
+  has_many :pending_subscriptions,
+           -> { where course_memberships: { status: :pending } },
+           through: :course_memberships,
+           source: :user
 
   validates :name, presence: true
   validates :year, presence: true

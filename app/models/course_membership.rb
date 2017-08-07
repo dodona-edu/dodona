@@ -11,7 +11,7 @@
 #
 
 class CourseMembership < ApplicationRecord
-  enum status: %i[pending course_admin student]
+  enum status: %i[pending course_admin student unsubscribed]
 
   belongs_to :course
   belongs_to :user

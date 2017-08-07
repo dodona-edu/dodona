@@ -35,6 +35,8 @@ Rails.application.routes.draw do
       resources :exercises, only: [:show], concerns: [:mediable, :submitable]
       member do
         post 'subscribe'
+        post 'unsubscribe'
+        post 'update_membership'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: "subscribe_with_secret"
       end

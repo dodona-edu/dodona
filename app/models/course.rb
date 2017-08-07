@@ -7,6 +7,7 @@
 #  year        :string(255)
 #  secret      :string(255)
 #  open        :boolean
+#  moderated   :boolean
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  description :text(65535)

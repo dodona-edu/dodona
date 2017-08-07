@@ -28,6 +28,26 @@ class User < ApplicationRecord
   has_many :course_memberships
   has_many :courses, through: :course_memberships
 
+  has_many :subscribed_courses,
+           -> { where.not course_memberships: { status: :pending } },
+           through: :course_memberships,
+           source: :course
+
+  has_many :moderated_courses,
+           -> { where course_memberships: { status: :moderator } },
+           through: :course_memberships,
+           source: :course
+
+  has_many :enrolled_courses,
+           -> { where course_memberships: { status: :student } },
+           through: :course_memberships,
+           source: :course
+
+  has_many :pending_courses,
+           -> { where course_memberships: { status: :pending } },
+           through: :course_memberships,
+           source: :course
+
   devise :cas_authenticatable
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }

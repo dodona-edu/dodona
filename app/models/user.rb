@@ -29,22 +29,42 @@ class User < ApplicationRecord
   has_many :courses, through: :course_memberships
 
   has_many :subscribed_courses,
-           -> { where.not course_memberships: { status: :pending } },
+           lambda {
+             where.not course_memberships:
+                { status: %i[pending unsubscribed] }
+           },
            through: :course_memberships,
            source: :course
 
   has_many :administrating_courses,
-           -> { where course_memberships: { status: :course_admin } },
+           lambda {
+             where course_memberships:
+                { status: :course_admin }
+           },
            through: :course_memberships,
            source: :course
 
   has_many :enrolled_courses,
-           -> { where course_memberships: { status: :student } },
+           lambda {
+             where course_memberships:
+                { status: :student }
+           },
            through: :course_memberships,
            source: :course
 
   has_many :pending_courses,
-           -> { where course_memberships: { status: :pending } },
+           lambda {
+             where course_memberships:
+                { status: :pending }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :unsubscribed_courses,
+           lambda {
+             where course_memberships:
+                { status: :unsubscribed }
+           },
            through: :course_memberships,
            source: :course
 
@@ -97,6 +117,10 @@ class User < ApplicationRecord
 
   def member_of?(course)
     subscribed_courses.include? course
+  end
+
+  def admin_of?(course)
+    administrating_courses.include? course
   end
 
   def cas_extra_attributes=(extra_attributes)

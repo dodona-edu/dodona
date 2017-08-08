@@ -5,6 +5,15 @@ en:
     index:
       title: Users
       progress: Progress
+      access_level: Access level
+      promote: 'Promote to course administrator'
+      demote: 'Demote to student (fire)'
+      unsubscribe: 'Unsubscribe'
+      resubscribe: 'Resubscribe'
+      accept: 'Accept'
+      reject: 'Reject'
+      edit: 'Edit'
+      delete: 'Delete'
     new:
       title: Add user
     show:

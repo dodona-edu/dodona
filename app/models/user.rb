@@ -123,6 +123,11 @@ class User < ApplicationRecord
     administrating_courses.include? course
   end
 
+  def membership_status_for(course)
+    CourseMembership.find_by(course: course,
+                             user: self)&.status
+  end
+
   def cas_extra_attributes=(extra_attributes)
     Rails.logger.debug(extra_attributes)
     extra_attributes.each do |name, value|

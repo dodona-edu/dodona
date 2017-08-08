@@ -75,12 +75,14 @@ class CoursesController < ApplicationController
 
   def update_membership
     user = User.find params[:user]
-    if update_membership_status_for user, params[:status]
-      format.html { redirect_to root_url, notice: I18n.t('courses.membership.updated_successfully') }
-      format.json { head :ok }
-    else
-      format.html { redirect_to root_url, notice: I18n.t('courses.membership.update_failed') }
-      format.json { head :unprocessable_entity }
+    respond_to do |format|
+      if update_membership_status_for user, params[:status]
+        format.html { redirect_back fallback_location: root_url, notice: t('controllers.updated', model: CourseMembership.model_name.humanize) }
+        format.json { head :ok }
+      else
+        format.html { redirect_back(fallback_location: root_url, alert: t('controllers.update_failed', model: CourseMembership.model_name.humanize)) }
+        format.json { head :unprocessable_entity }
+      end
     end
   end
 
@@ -142,9 +144,16 @@ class CoursesController < ApplicationController
                                         course: @course)
                                  .first
     return false unless membership
-    # There should always be one course administrator
-    return false if membership.status == :course_admin &&
-                    @course.administrating_members.count <= 1
+    if membership.status == 'course_admin'
+      # There should always be one course administrator
+      return false if @course.administrating_members.count <= 1
+      authorize @course, :update_course_admin_membership?
+    end
+
+    if status == 'course_admin'
+      authorize @course, :update_course_admin_membership?
+    end
+
     membership.update(status: status)
   end
 

@@ -72,3 +72,11 @@ en:
         email: Email
         time_zone: Time zone
         permission: Permission
+      course_membership:
+        statuses:
+          unsubscribed: Unsubscribed
+          course_admin: Course admin
+          pending: Pending
+          student: Student
+
+

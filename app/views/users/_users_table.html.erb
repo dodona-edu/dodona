@@ -6,6 +6,7 @@
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th class='text-right'><%= t("users.index.progress") %></th>
+      <th class= 'text-right'><%= t("users.index.access_level")%></th>
       <th></th>
     </tr>
   </thead>
@@ -19,6 +20,9 @@
           <% if user.staff? %>
             <span class="glyphicon glyphicon-queen" title='staff'></span>
           <% end %>
+          <% if @course && user.admin_of?(@course) %>
+            <span class="glyphicon glyphicon-education" title='course admin'></span>
+          <% end %>
           <% if user.username.blank? %>
             <span class="glyphicon glyphicon-exclamation-sign"></span>
           <% end %>
@@ -31,15 +35,24 @@
         <td class='text-right'>
           <%= link_to "#{user.correct_exercises}/#{user.attempted_exercises}", user_submissions_path(user) %>
         </td>
+        <% if @course %>
+          <td>
+            <%= t("activerecord.attributes.course_membership.statuses.#{user.membership_status_for(@course)}") %>
+          </td>
+        <% end %>
         <td class="actions">
+          <% if @course %>
+            <%= render partial: 'courses/course_membership_buttons',
+                       locals: {course: @course, user: user} %>
+          <% end %>
           <% if policy(user).impersonate? %>
             <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %><span class="glyphicon glyphicon-user"></span><% end %>
           <% end %>
           <% if policy(user).edit? %>
-            <%= link_to edit_user_path(user), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
+            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
           <% end %>
           <% if policy(user).destroy? %>
-            <%= link_to user, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
+            <%= link_to user, title: t("users.index.delete"), method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
           <% end %>
         </td>
       </tr>

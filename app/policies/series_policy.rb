@@ -1,10 +1,19 @@
 class SeriesPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user&.admin? || user&.admin_of?(series&.course)
+      if user&.admin?
         scope.all
       else
-        scope.where(visibility: :open)
+        admin = CourseMembership.statuses['course_admin']
+        open = Series.visibilities['open']
+        scope.joins(course: :course_memberships)
+             .where(
+               <<~SQL
+                 series.visibility              = #{open}
+                 OR  course_memberships.status  = #{admin}
+                 AND course_memberships.user_id = #{user.id}
+               SQL
+             ).uniq
       end
     end
   end
@@ -84,6 +93,6 @@ class SeriesPolicy < ApplicationPolicy
   private
 
   def course_admin?
-    user&.admin? || user&.admin_of?(series&.course)
+    user&.admin? || user&.admin_of?(record&.course)
   end
 end

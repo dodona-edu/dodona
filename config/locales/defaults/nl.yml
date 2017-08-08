@@ -26,4 +26,5 @@ nl:
   controllers:
     created: "%{model} werd succesvol aangemaakt."
     updated: "%{model} werd succesvol aangepast."
+    update_failed: "%{model} kon niet worden aangepast."
     destroyed: "%{model} werd succesvol verwijderd."

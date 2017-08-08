@@ -37,11 +37,15 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
-  def update_membership
+  def update_membership?
     course_admin?
   end
 
-  def unsubscribe
+  def update_course_admin_membership?
+    user&.admin?
+  end
+
+  def unsubscribe?
     user
   end
 
@@ -72,6 +76,6 @@ class CoursePolicy < ApplicationPolicy
   private
 
   def course_admin?
-    user&.admin? || user&.admin_of?(course)
+    user&.admin? || user&.admin_of?(record)
   end
 end

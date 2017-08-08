@@ -15,19 +15,10 @@ class ExerciseSummary
 
     @user = kwargs[:user]
 
-    @latest_submission = kwargs[:latest_submission] ||
-                         query_submissions.first
+    @latest_submission = kwargs[:latest_submission] || query_submissions.first
+    @timely_submission = kwargs[:timely_submission] || query_timely_submission
     @accepted_submission = kwargs[:accepted_submission] ||
-                           if latest_submission
-                             # no need to query here if no submissions were made
-                             query_submissions.find_by(accepted: true)
-                           end
-    @timely_submission = kwargs[:timely_submission] ||
-                         if deadline
-                           query_timely_submissions.first
-                         else
-                           @latest_submission
-                         end
+                           query_accepted_submission
   end
 
   # whether latest submission is correct
@@ -86,5 +77,18 @@ class ExerciseSummary
 
   def query_timely_submissions
     query_submissions.timely
+  end
+
+  def query_accepted_submission
+    # no need to query here if no submissions were made
+    query_submissions.find_by(accepted: true) if submitted?
+  end
+
+  def query_timely_submission
+    if deadline
+      query_submissions.timely.first
+    else
+      latest_submission
+    end
   end
 end

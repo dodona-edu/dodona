@@ -36,7 +36,7 @@ class Submission < ApplicationRecord
   default_scope { order(id: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
-  scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }
+  scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { joins(exercise: :series_memberships).where(series_memberships: { series_id: series.id }) }
 
@@ -44,6 +44,29 @@ class Submission < ApplicationRecord
   scope :by_status, ->(status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
   scope :by_username, ->(username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
   scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
+
+  scope :join_series, -> {
+    joins(exercise: :series).where('submissions.course_id = series.course_id')
+  }
+
+  scope :timely, -> {
+    join_series
+      .where('submissions.created_at < series.deadline OR series.deadline IS NULL')
+  }
+
+  scope :most_recent, -> {
+    submissions = select('MAX(submissions.id) as id')
+    Submission.joins <<~HEREDOC
+      JOIN (#{submissions.to_sql}) most_recent
+      ON submissions.id = most_recent.id
+    HEREDOC
+  }
+
+  scope :exercise_hash, -> {
+    s = group(:exercise_id).most_recent
+    entries = s.map { |submission| [submission.exercise_id, submission] }
+    Hash[entries]
+  }
 
   def initialize(params)
     super

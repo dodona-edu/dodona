@@ -1,3 +1,5 @@
+<% summary = ExercisesSummary.new user: current_user, series: @series %>
+
 <div class="col-sm-10 col-sm-offset-1 col-xs-12">
   <div class="card">
     <div class="card-title card-title-colored">
@@ -12,18 +14,25 @@
     </div>
   </div>
 
-  <% @series.exercises.each do |exercise| %>
+  <% summary.exercise_summaries.each do |ex| %>
     <div class="card exercise-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
-          <%= link_to exercise.name, exercise_path(exercise) %>
+          <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
         </h2>
       </div>
       <div class="card-supporting-text">
-        <%= exercise.description %>
+        <%= ex.exercise.description %>
       </div>
       <div class="card-actions card-border">
-        <%= link_to t('exercises.show.handin'), exercise_path(exercise), class: "btn-text" %>
+        <% if ex.submitted? || ex.deadline_passed? %>
+          <div class="btn-text submission-status-button">
+            <%= render partial: 'exercises/status_icon', locals: { summary: ex } %>
+            <%= render partial: 'exercises/exercise_user_status', locals: { summary: ex } %>
+          </div>
+        <% else %>
+          <%= link_to t('exercises.show.handin'), exercise_path(ex.exercise), class: "btn-text" %>
+        <% end %>
       </div>
     </div>
   <% end %>

@@ -6,11 +6,12 @@
       <h2 class="card-title-text"><%= @series.course.name %></h2>
       <h3 class="card-subtitle-text"> <%= @series.name %></h3>
     </div>
+    <div class="card-progress-bar">
+      <div class="progress" style="width: <%= summary.progress * 100 %>%"></div>
+    </div>
     <div class="card-supporting-text">
       <span class="pull-left">
-        <%= t '.progress',
-            solved: summary.count(&:solved_before_deadline?),
-            count: summary.count %>
+        <%= t '.progress', solved: summary.number_solved, count: summary.count %>
       </span>
       <span class="pull-right">
         <%= render partial: 'deadline', locals: { series: @series } %>

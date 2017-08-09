@@ -8,14 +8,14 @@ class ExercisesSummary
   def initialize(**kwargs)
     @user = kwargs[:user]
     @series = kwargs[:series]
-    @exercises = kwargs[:exercises].to_a
+    @exercises = kwargs[:exercises]&.to_a
 
     if series
       @series_memberships =
         if exercises
           series.series_memberships.where(exercise: exercises)
         else
-          series.series_memberships.includes(:exercises)
+          series.series_memberships.includes(:exercise)
         end
       @exercises ||= @series_memberships.map(&:exercise)
     end

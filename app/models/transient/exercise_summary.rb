@@ -23,7 +23,7 @@ class ExerciseSummary
 
   # whether latest submission is correct
   def solved?
-    latest_submission.accepted
+    latest_submission&.accepted
   end
 
   # whether last submission before deadline is correct

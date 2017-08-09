@@ -18,10 +18,9 @@ FactoryGirl.define do
     end
 
     after :create do |course, e|
-      series = create_list(:series, e.series_count, course: course)
-      series.each do |s|
-        create_list(:exercise, e.exercises_per_series, series: [s])
-      end
+      create_list :series, e.series_count,
+                  course: course,
+                  exercise_count: e.exercises_per_series
     end
   end
 end

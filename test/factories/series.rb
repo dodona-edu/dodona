@@ -10,6 +10,14 @@ FactoryGirl.define do
       visibility :hidden
     end
 
+    transient do
+      exercise_count 0
+    end
+
+    after :create do |series, e|
+      create_list(:exercise, e.exercise_count, series: [series])
+    end
+
     trait :with_submissions do
       after :create do |series|
         repositories = create_list(:repository, 2, :git_stubbed)

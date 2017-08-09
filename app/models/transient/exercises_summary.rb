@@ -5,6 +5,8 @@ class ExercisesSummary
               :user,
               :exercises
 
+  include Enumerable
+
   def initialize(**kwargs)
     @user = kwargs[:user]
     @series = kwargs[:series]
@@ -26,6 +28,10 @@ class ExercisesSummary
                             query_accepted_submissions
     @timely_submissions = kwargs[:timely_submissions] ||
                           query_timely_submissions
+  end
+
+  def each(&block)
+    exercise_summaries.each(&block)
   end
 
   def exercise_summaries

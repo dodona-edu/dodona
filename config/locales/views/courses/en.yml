@@ -13,6 +13,7 @@ en:
       auto_subscribe_link: Automatic subscription link
       not_a_member: You are not a member of this course. Do you wish to subscribe?
       subscribe: subscribe
+      unsubscribe: unsubscribe
       exercise_series: Exercise series
       users: Users
       series: series

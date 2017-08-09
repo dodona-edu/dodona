@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: %i[show edit update destroy subscribe subscribe_with_secret scoresheet update_membership unsubscribe]
+  before_action :set_course, except: %i[index new create]
 
   # GET /courses
   # GET /courses.json
@@ -77,10 +77,10 @@ class CoursesController < ApplicationController
     user = User.find params[:user]
     respond_to do |format|
       if update_membership_status_for user, params[:status]
-        format.html { redirect_back fallback_location: root_url, notice: t('controllers.updated', model: CourseMembership.model_name.humanize) }
+        format.html { redirect_back fallback_location: root_url, notice: t('controllers.updated', model: CourseMembership.model_name.human) }
         format.json { head :ok }
       else
-        format.html { redirect_back(fallback_location: root_url, alert: t('controllers.update_failed', model: CourseMembership.model_name.humanize)) }
+        format.html { redirect_back(fallback_location: root_url, alert: t('controllers.update_failed', model: CourseMembership.model_name.human)) }
         format.json { head :unprocessable_entity }
       end
     end
@@ -125,6 +125,14 @@ class CoursesController < ApplicationController
     sheet = @course.scoresheet
     filename = "scoresheet-#{@course.name.parameterize}.csv"
     send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
+  end
+
+  def list_members
+    @users = @course.users
+                    .order('course_memberships.status ASC')
+                    .order(permission: :desc)
+                    .paginate(page: params[:page])
+    render 'users/index'
   end
 
   private

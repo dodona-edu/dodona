@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       resources :series
       resources :exercises, only: [:show], concerns: [:mediable, :submitable]
       member do
+        get 'list_members'
         post 'subscribe'
         post 'unsubscribe'
         post 'update_membership'

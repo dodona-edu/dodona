@@ -8,6 +8,7 @@ nl:
       series: Reeks
       submission: Oplossing
       user: Student
+      course_membership: Lidmaatschap van de cursus
     attributes:
       course:
         name: Naam

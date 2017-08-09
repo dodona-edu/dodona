@@ -8,6 +8,7 @@ en:
       series: Series
       submission: Submission
       user: Student
+      course_membership: Course membership
     attributes:
       course:
         name: Name

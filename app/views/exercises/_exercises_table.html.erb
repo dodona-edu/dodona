@@ -1,5 +1,9 @@
-<% summary = ExercisesSummary.new user: current_user, **local_assigns.slice(:exercises, :series) %>
-                                  
+<% get_exercise_path ||= method(:exercise_path) %>
+<% summary ||= ExercisesSummary.new(
+     user: current_user,
+     series: local_assigns[:series],
+     exercises: local_assigns[:exercises]) %>
+
 <table class="table exercise-table">
   <thead>
     <tr>
@@ -28,11 +32,7 @@
         </td>
 
         <td>
-          <% if ex.series %>
-            <%= link_to ex.exercise.name, course_exercise_path(ex.series.course_id, ex.exercise) %>
-          <% else %>
-            <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
-          <% end %>
+          <%= link_to ex.exercise.name, get_exercise_path.call(ex.exercise) %>
         </td>
 
         <td class='text-right'>

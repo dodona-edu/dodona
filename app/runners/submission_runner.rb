@@ -153,20 +153,20 @@ class SubmissionRunner
     config = JSON.parse(File.read(DEFAULT_CONFIG_PATH))
 
     # update with judge configuration
-    config.recursive_update(@judge.config)
+    config.deep_merge(@judge.config)
 
     # update with exercise configuration
-    config.recursive_update(@exercise.merged_config['evaluation'])
+    config.deep_merge(@exercise.merged_config['evaluation'])
 
     # update with submission-specific configuration
-    config.recursive_update('programming_language' => @submission.exercise.programming_language,
-                            'natural_language' => @submission.user.lang)
+    config.deep_merge('programming_language' => @submission.exercise.programming_language,
+                      'natural_language' => @submission.user.lang)
 
     # update with links to resources in docker container needed for processing submission
-    config.recursive_update('resources' => File.join(@hidden_path, 'resources'),
-                            'source'    => File.join(@hidden_path, 'submission', 'source'),
-                            'judge'     => File.join(@hidden_path, 'judge'),
-                            'workdir'   => '/home/runner/workdir')
+    config.deep_merge('resources' => File.join(@hidden_path, 'resources'),
+                      'source'    => File.join(@hidden_path, 'submission', 'source'),
+                      'judge'     => File.join(@hidden_path, 'judge'),
+                      'workdir'   => '/home/runner/workdir')
 
     config
   end

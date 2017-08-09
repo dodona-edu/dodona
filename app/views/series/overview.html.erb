@@ -4,23 +4,21 @@
   <div class="card">
     <div class="card-title card-title-colored">
       <h2 class="card-title-text"><%= @series.course.name %></h2>
-      <h3 class="card-subtitle-text"> <%= @series.name %></h3>
-    </div>
-    <div class="card-progress-bar">
-      <div class="progress" style="width: <%= summary.progress * 100 %>%"></div>
     </div>
     <div class="card-supporting-text">
-      <span class="pull-left">
-        <%= t '.progress', solved: summary.number_solved, count: summary.count %>
-      </span>
-      <span class="pull-right">
-        <%= render partial: 'deadline', locals: { series: @series } %>
-      </span>
+      <%= render partial: 'series/series', locals: {
+            series: @series,
+            get_exercise_path: method(:exercise_anchor)
+          } %>
     </div>
   </div>
 
   <% summary.exercise_summaries.each do |ex| %>
     <div class="card exercise-description">
+      <%= content_tag :a,
+            '',
+            name: exercise_anchor_id(ex.exercise),
+            class: 'anchor' %>
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
           <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>

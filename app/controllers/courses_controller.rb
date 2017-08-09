@@ -1,6 +1,9 @@
 class CoursesController < ApplicationController
   before_action :set_course, except: %i[index new create]
 
+  has_scope :by_permission, only: :list_members
+  has_scope :by_name, only: :list_members, as: 'filter'
+
   # GET /courses
   # GET /courses.json
   def index
@@ -128,10 +131,10 @@ class CoursesController < ApplicationController
   end
 
   def list_members
-    @users = @course.users
-                    .order('course_memberships.status ASC')
-                    .order(permission: :desc)
-                    .paginate(page: params[:page])
+    @users = apply_scopes(@course.users)
+             .order('course_memberships.status ASC')
+             .order(permission: :desc)
+             .paginate(page: params[:page])
     render 'users/index'
   end
 

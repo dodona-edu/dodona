@@ -69,21 +69,21 @@
         <% end %>
       </div>
       <% if policy(@course).list_members? %>
-        <div class="card-supporting-text">
-        <h3><%= t ".users" %></h3>
-        <div class="card card-nav">
-          <div class="card-title card-title-colored">
-              <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#">Ingeschreven</a></li>
-                <li role="presentation"><a href="#">Op de wachtlijst <span class="badge"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a></li>
+        <div class="card-supporting-text card-border">
+          <div class="card-subtitle">
+            <h3><%= t ".users" %></h3>
+          </div>
+          <div class="card-tab">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#">Ingeschreven</a></li>
+              <li role="presentation"><a href="#">Op de wachtlijst <span class="badge"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a></li>
+              <% if current_user.admin? %>
                 <li role="presentation"><a href="#">Uitgeschreven</a></li>
-              </ul>
-            </div>
-            <div class="card-supporting-text">
-            <%= render(partial: 'layouts/searchbar', locals: {baseUrl: list_members_course_path(@course), eager: true}) %>
-            <div id="users-table-wrapper">
-            </div>
-            </div>
+              <% end %>
+            </ul>
+          </div>
+          <%= render(partial: 'layouts/searchbar', locals: {baseUrl: list_members_course_path(@course), eager: true}) %>
+          <div id="users-table-wrapper">
           </div>
         </div>
       <% end %>

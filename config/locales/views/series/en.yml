@@ -33,3 +33,5 @@ en:
       ago: ago
     scoresheet:
         user: User
+  overview:
+    progress: '%{solved} out of %{count} solved'

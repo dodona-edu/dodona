@@ -7,12 +7,12 @@
       <h3 class="card-subtitle-text"> <%= @series.name %></h3>
     </div>
     <div class="card-supporting-text">
-      <span style="float: left">
+      <span class="pull-left">
         <%= t '.progress',
             solved: summary.count(&:solved_before_deadline?),
             count: summary.count %>
       </span>
-      <span style="float: right">
+      <span class="pull-right">
         <%= render partial: 'deadline', locals: { series: @series } %>
       </span>
     </div>

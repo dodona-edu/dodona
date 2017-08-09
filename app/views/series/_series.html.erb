@@ -1,3 +1,5 @@
+<% get_exercise_path ||= ->(ex) { course_exercise_path series.course_id, ex } %>
+
 <div class="card-subtitle">
   <a class="anchor" id="series-<%= series.name.parameterize %>"></a>
   <h4><%= series.name %>
@@ -69,4 +71,12 @@
   <div class="alert alert-info"><%= t "series.show.series_not_accessible" %></div>
 <% end %>
 <%= markdown(series.description) %>
-<%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises, series: series}) if series.exercises.length > 0 %>
+
+<% if series.exercises.length > 0 %>
+  <%= render partial: 'exercises/exercises_table', locals: {
+        series: series,
+        exercises: series.exercises,
+        get_exercise_path: get_exercise_path,
+        summary: local_assigns[:summary],
+  } %>
+<% end %>

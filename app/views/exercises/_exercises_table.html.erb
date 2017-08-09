@@ -20,13 +20,9 @@
             <% if current_user.admin? %>
               <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise } %>
             <% else %>
-              <% if ex.solved_before_deadline? %>
-                <span class="glyphicon glyphicon-ok colored-correct %>"></span>
-              <% elseif ex.solved? %>
-                <span class="glyphicon glyphicon-ok colored-wrong %>"></span>
-              <% elseif ex.submitted? %>
-                  <span class="glyphicon glyphicon-remove colored-wrong"></span>
-              <% end %>
+              <%= render partial: 'exercises/status_icon', locals: {
+                summary: ex
+              } %>
             <% end %>
           <% end %>
         </td>

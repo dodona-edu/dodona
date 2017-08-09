@@ -8,16 +8,20 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @course.name %> (<%= @course.formatted_year %>)</h2>
-        <% if policy(@course).edit? %>
-          <div class="card-title-fab">
-            <%= render 'fab_link', url: edit_course_path(@course), icon: 'pencil' %>
-          </div>
-        <% end %>
+        <div class="card-title-fab">
+          <% if policy(@course).edit? %>
+              <%= render 'fab_link', url: edit_course_path(@course), icon: 'pencil' %>
+          <% end %>
+        </div>
       </div>
       <% if !@course.description.blank? || (current_user && !current_user.member_of?(@course)) %>
         <div class="card-supporting-text row">
           <div class="col-sm-<%= (current_user && !current_user.member_of?(@course)) ? '6' : '12' %> col-xs-12">
             <%= markdown(@course.description) %>
+            <%= button_to t('.unsubscribe'),
+                          unsubscribe_course_path(@course),
+                          class: 'btn-text pull-right',
+                          data: { confirm: t('general.are_you_sure') } %>
           </div>
           <% if current_user && !current_user.member_of?(@course) %>
           <div class="col-sm-6 col-xs-12">
@@ -33,7 +37,7 @@
         <% end %>
       </div>
       <% end %>
-      <% if current_user&.admin? %>
+      <% if current_user&.admin_of?(@course) %>
         <div class="card-supporting-text card-border">
           <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %><br>
           <strong><%= t ".subscribed_users" %>:</strong> <%= @course.users.count %><br>
@@ -65,10 +69,21 @@
         <% end %>
       </div>
       <% if policy(@course).list_members? %>
-        <div class="card-supporting-text card-border">
-          <h3><%= t ".users" %></h3>
-          <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(course_id: @course.id), eager: true}) %>
-          <div id="users-table-wrapper">
+        <div class="card-supporting-text">
+        <h3><%= t ".users" %></h3>
+        <div class="card card-nav">
+          <div class="card-title card-title-colored">
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#">Ingeschreven</a></li>
+                <li role="presentation"><a href="#">Op de wachtlijst <span class="badge"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a></li>
+                <li role="presentation"><a href="#">Uitgeschreven</a></li>
+              </ul>
+            </div>
+            <div class="card-supporting-text">
+            <%= render(partial: 'layouts/searchbar', locals: {baseUrl: list_members_course_path(@course), eager: true}) %>
+            <div id="users-table-wrapper">
+            </div>
+            </div>
           </div>
         </div>
       <% end %>

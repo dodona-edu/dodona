@@ -46,6 +46,14 @@ class ExercisesSummary
     end
   end
 
+  def number_solved
+    count(&:solved_before_deadline?)
+  end
+
+  def progress
+    number_solved.to_f / count
+  end
+
   private
 
   def mk_exercise_summary(ex, **kwargs)

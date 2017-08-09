@@ -18,6 +18,13 @@
         <span class='glyphicon glyphicon-option-vertical'></span>
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
+        <% if policy(series).show? %>
+          <li>
+            <%= link_to overview_series_path(series) do %>
+              <span class='glyphicon glyphicon-eye-open'></span> <%= t("series.show.show_overview") %>
+            <% end %>
+          </li>
+        <% end %>
         <% if policy(series).download_solutions? %>
           <li>
             <%= link_to download_solutions_series_path(series) do %>

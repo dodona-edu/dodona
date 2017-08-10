@@ -95,19 +95,27 @@ class CoursesController < ApplicationController
       format.html { redirect_to root_url, notice: I18n.t('courses.unsubscribe.unsubscribed_successfully') }
       format.json { head :ok }
     else
-      format.html { redirect_to root_url, notice: I18n.t('courses.unsubscribe.unsubscribing_failed') }
-      format.json { head :unprocessable_entity }
+      subscription_failed_response format
     end
   end
 
   def subscribe
     respond_to do |format|
-      if try_to_subscribe current_user
-        format.html { redirect_to @course, notice: I18n.t('courses.subscribe.subscribed_successfully') }
-        format.json { render :show, status: :created, location: @course }
-      else
-        format.html { redirect_to @course, alert: I18n.t('courses.subscribe.subscription_failed') }
-        format.json { render json: @course.errors, status: :unprocessable_entity }
+      case @course.access
+      when 'open'
+        if try_to_subscribe current_user
+          subscription_succeeded_response format
+        else
+          subscription_failed_response format
+        end
+      when 'moderated'
+        if try_to_subscribe current_user, 'pending'
+          signup_succeeded_response format
+        else
+          subscription_failed_response format
+        end
+      when 'closed'
+        redirect_to(@course, alert: I18n.t('courses.subscribe.key_mismatch'))
       end
     end
   end
@@ -119,8 +127,10 @@ class CoursesController < ApplicationController
       redirect_to(@course, alert: I18n.t('courses.subscribe.key_mismatch'))
     elsif current_user.member_of?(@course)
       redirect_to(@course)
+    elsif try_to_subscribe current_user
+      respond_to { |f| subscription_failed_response f }
     else
-      subscribe
+      respond_to { |f| subscription_failed_response f }
     end
   end
 
@@ -147,11 +157,12 @@ class CoursesController < ApplicationController
 
   private
 
-  def try_to_subscribe(user)
+  def try_to_subscribe(user, status: 'student')
     if user.unsubscribed_courses.include? @course
-      update_membership_status_for user, :student
+      update_membership_status_for user, status
     else
       membership = CourseMembership.new course: @course,
+                                        status: status,
                                         user: user
       membership.save
     end
@@ -173,6 +184,21 @@ class CoursesController < ApplicationController
     end
 
     membership.update(status: status)
+  end
+
+  def signup_succeeded_response(format)
+    format.html { redirect_to @course, notice: I18n.t('courses.subscribe.subscribed_successfully') }
+    format.json { render :show, status: :created, location: @course }
+  end
+
+  def subscription_succeeded_response(format)
+    format.html { redirect_to @course, notice: I18n.t('courses.subscribe.sign_up_successfully') }
+    format.json { render :show, status: :created, location: @course }
+  end
+
+  def subscription_failed_response(format)
+    format.html { redirect_to @course, alert: I18n.t('courses.subscribe.subscription_failed') }
+    format.json { render json: @course.errors, status: :unprocessable_entity }
   end
 
   # Use callbacks to share common setup or constraints between actions.

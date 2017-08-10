@@ -57,8 +57,18 @@ class Repository < ApplicationRecord
     end
   end
 
-  def process_exercises
-    exercise_dirs.each { |dir| process_exercise(dir) }
+  def process_exercises(dirs = nil)
+    dirs ||= exercise_dirs
+    errors = []
+
+    dirs.each do |dir|
+      begin
+        process_exercise(dir)
+      rescue ConfigParseError => e
+        errors.push(e)
+      end
+    end
+    raise AggregatedConfigErrors.new(self, errors) if errors.any?
   end
 
   def process_exercise(directory)

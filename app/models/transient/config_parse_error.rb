@@ -13,3 +13,13 @@ class ConfigParseError < StandardError
     @json = groups[:json]
   end
 end
+
+class AggregatedConfigErrors < StandardError
+  attr_reader :repository,
+              :errors
+
+  def initialize(repository, errors)
+    @repository = repository
+    @errors = errors.uniq(&:path)
+  end
+end

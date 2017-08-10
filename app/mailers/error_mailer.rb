@@ -1,7 +1,6 @@
 class ErrorMailer < ApplicationMailer
-  def json_error(name, email, repository, error)
+  def json_error(name, email, error)
     @error = error
-    @repository = repository
     email_with_name = %("#{name}" <#{email}>)
     mail to: email_with_name,
          subject: 'error'

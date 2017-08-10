@@ -6,8 +6,7 @@
 #  name        :string(255)
 #  year        :string(255)
 #  secret      :string(255)
-#  open        :boolean
-#  moderated   :boolean
+#  access      :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  description :text(65535)
@@ -21,6 +20,8 @@ class Course < ApplicationRecord
   has_many :series
   has_many :submissions
   has_many :users, through: :course_memberships
+
+  enum access: %i[open moderated hidden]
 
   has_many :subscribed_members,
            lambda {
@@ -68,6 +69,16 @@ class Course < ApplicationRecord
   default_scope { order(year: :desc, name: :asc) }
 
   before_create :generate_secret
+
+  # Default year
+  after_initialize do |course|
+    unless year
+      now = Time.zone.now
+      y = now.year
+      y -= 1 if now.month < 7 # Before july
+      course.year = "#{y}-#{y + 1}"
+    end
+  end
 
   def formatted_year
     year.sub(/ ?- ?/, '–')

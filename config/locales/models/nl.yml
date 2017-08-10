@@ -15,6 +15,11 @@ nl:
         year: Academiejaar
         description: Beschrijving
         secret: Secret
+        access: Toegang
+        accesses:
+          open: Open
+          moderated: Gemodereerd
+          hidden: Verborgen
       exercise:
         name: Naam
         name_nl: Naam Nederlands

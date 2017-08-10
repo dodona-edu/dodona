@@ -21,6 +21,7 @@ nl:
       subscribed_users: Ingeschreven gebruikers
       download_scoresheet: Scoresheet downloaden
     subscribe:
+      sign_up_successfully: Je ingeschreven op de wachtlijst. Wacht tot een cursusbeheerder je heeft goedgekeurd.
       subscribed_successfully: Inschrijving succesvol
       subscription_failed: Inschrijven mislukt
       not_logged_in: Je moet ingelogd zijn om je in te schrijven

@@ -21,6 +21,7 @@ en:
       subscribed_users: Subscribed users
       download_scoresheet: Download scoresheet
     subscribe:
+      sign_up_successfully: You were succesfully signed up. Wait until a course administrator approves your subscription
       subscribed_successfully: Subscribed successfully
       subscription_failed: Subscription failed
       not_logged_in: You need to be logged in to subscribe

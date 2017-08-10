@@ -37,4 +37,8 @@ module Gitable
     _out, error, status = Open3.capture3(*cmd)
     errors.add(:remote, error) unless status.success?
   end
+
+  def github_remote?
+    remote =~ %r{^(git@)|(https:\/\/)github}
+  end
 end

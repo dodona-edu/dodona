@@ -115,7 +115,7 @@ class Exercise < ApplicationRecord
   end
 
   def github_url
-    repository.remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '') + '/tree/master/' + path
+    repository.github_url(path)
   end
 
   def config

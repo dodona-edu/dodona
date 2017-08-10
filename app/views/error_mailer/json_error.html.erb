@@ -1,12 +1,13 @@
 <span class="message">
-  There were errors while processing '<%= @error.repository.name %>'.
+  There were errors while processing <%= github_link @error.repository %>:
 </span>
 
 <div class="error-list">
   <% @error.errors.each do |err| %>
     <div class="error-report">
       <span class="file-name">
-        <%= err.path %>: <%= err.error_type %>:
+        <%= github_link err.repository, err.path %>:
+        <%= err.error_type %>:
       </span>
       <div class="error-json"><%= err.json %></div>
     </div>

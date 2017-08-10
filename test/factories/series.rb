@@ -12,30 +12,31 @@ FactoryGirl.define do
 
     transient do
       exercise_count 0
-    end
+      exercise_repositories do
+        create_list(:repository, 2, :git_stubbed) if exercise_count.positive?
+      end
 
-    after :create do |series, e|
-      create_list(:exercise, e.exercise_count, series: [series])
-    end
-
-    trait :with_submissions do
-      after :create do |series|
-        repositories = create_list(:repository, 2, :git_stubbed)
-        users = create_list(:user, 5, courses: [series.course])
-
-        10.times do
-          create(:exercise,
-                 repository: repositories.sample,
-                 series: [series])
-        end
-
-        30.times do
-          create(:submission,
-                 exercise: series.exercises.sample,
-                 user: users.sample)
+      exercise_submission_count 0
+      exercise_submission_users do
+        if exercise_submission_count.positive?
+          create_list :user, 2, courses: [course]
         end
       end
     end
 
+    after :create do |series, e|
+      e.exercise_count.times do
+        create :exercise,
+               repository: e.exercise_repositories.sample,
+               series: [series],
+               submission_count: e.exercise_submission_count,
+               submission_users: e.exercise_submission_users
+      end
+    end
+
+    trait :with_submissions do
+      exercise_count 10
+      exercise_submission_count 3
+    end
   end
 end

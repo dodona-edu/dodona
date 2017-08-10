@@ -24,8 +24,9 @@ class SeriesPolicy < ApplicationPolicy
 
   def show?
     return true if course_admin?
-    return true if record.open?
-    false
+    return false unless record.open?
+    course = record.course
+    course.visible? || user.member_of?(course)
   end
 
   def token_show?

@@ -1,12 +1,14 @@
 <span class="message">
-  An error occured while processing '<%= @error.repository.name %>'.
+  There were errors while processing '<%= @error.repository.name %>'.
 </span>
 
 <div class="error-list">
-  <div class="error-report">
-    <span class="file-name">
-      <%= @error.path %>: <%= @error.error_type %>:
-    </span>
-    <div class="error-json"><%= @error.json %></div>
-  </div>
+  <% @error.errors.each do |err| %>
+    <div class="error-report">
+      <span class="file-name">
+        <%= err.path %>: <%= err.error_type %>:
+      </span>
+      <div class="error-json"><%= err.json %></div>
+    </div>
+  <% end %>
 </div>

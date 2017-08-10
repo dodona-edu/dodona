@@ -252,7 +252,7 @@ class Exercise < ApplicationRecord
     begin
       JSON.parse(file.read) if file.file?
     rescue JSON::ParserError => e
-      raise ParseError.new(file, e)
+      raise ConfigParseError.new(file, e.to_s)
     end
   end
 

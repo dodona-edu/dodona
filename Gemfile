@@ -85,6 +85,10 @@ gem 'rails-i18n'
 gem 'exception_notification'
 gem 'slack-notifier'
 
+# css styles for emails
+gem 'premailer-rails'
+gem 'nokogiri'
+
 # filtering
 gem 'has_scope'
 

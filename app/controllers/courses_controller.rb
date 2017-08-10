@@ -131,9 +131,16 @@ class CoursesController < ApplicationController
   end
 
   def list_members
+    statuses = if %w[unsubscribed pending].include? params[:status]
+                 params[:status]
+               else
+                 %w[course_admin student]
+               end
+
     @users = apply_scopes(@course.users)
              .order('course_memberships.status ASC')
              .order(permission: :desc)
+             .where(course_memberships: { status: statuses })
              .paginate(page: params[:page])
     render 'users/index'
   end

@@ -85,6 +85,14 @@ class Repository < ApplicationRecord
     ex.save
   end
 
+  def read_config_file(file)
+    file = full_path + file if file.relative?
+    JSON.parse file.read if file.file?
+  rescue JSON::ParserError => e
+    rel_path = file.relative_path_from(full_path)
+    raise ConfigParseError.new(self, rel_path, e.to_s)
+  end
+
   private
 
   def exercise_dirs_below(directory)

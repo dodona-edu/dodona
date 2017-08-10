@@ -119,7 +119,7 @@ class Exercise < ApplicationRecord
   end
 
   def config
-    Exercise.read_config_file(config_file)
+    repository.read_config_file(config_file)
   end
 
   def file_name
@@ -248,17 +248,9 @@ class Exercise < ApplicationRecord
 
   private
 
-  def self.read_config_file(file)
-    begin
-      JSON.parse(file.read) if file.file?
-    rescue JSON::ParserError => e
-      raise ConfigParseError.new(file, e.to_s)
-    end
-  end
-
   #takes a relative path
   def read_dirconfig(subdir)
-    Exercise.read_config_file(repository.full_path + subdir + DIRCONFIG_FILE)
+    repository.read_config_file(subdir + DIRCONFIG_FILE)
   end
 
   def generate_id

@@ -1,7 +1,11 @@
 class ConfigParseError < StandardError
-  attr_reader :path, :error_type, :json
+  attr_reader :repository,
+              :path,
+              :error_type,
+              :json
 
-  def initialize(path, parse_error)
+  def initialize(repository, path, parse_error)
+    @repository = repository
     @path = path
     # ew.
     groups = /\d+:(?<error_type>.*) at '(?<json>.*)'/m.match(parse_error)

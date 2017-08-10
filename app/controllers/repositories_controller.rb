@@ -103,7 +103,7 @@ class RepositoriesController < ApplicationController
   rescue AggregatedConfigErrors => error
     if current_user
       ErrorMailer.json_error(
-        current_user.name,
+        current_user.full_name,
         current_user.email,
         error
       )
@@ -115,7 +115,7 @@ class RepositoriesController < ApplicationController
       )
     else
       raise 'could not send error mail'
-    end.deliver_later
+    end.deliver
   end
 
   # Use callbacks to share common setup or constraints between actions.

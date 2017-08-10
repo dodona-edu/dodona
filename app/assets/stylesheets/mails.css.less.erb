@@ -1,8 +1,17 @@
 @import "variables.css.less";
 
+<% if Rails.env.development? %>
+    @import "development.css.less";
+<% end %>
+
 body {
     font-size: 14px;
     font-family: helvetica, sans-serif;
+}
+
+a {
+    color: @accent-800;
+    text-decoration: none;
 }
 
 .error-list {

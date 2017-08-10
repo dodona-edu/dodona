@@ -3,6 +3,7 @@ en:
     form:
       description-help: A description is optional. Markdown formatting can be used.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
+      access-help: Open courses are open for anyone to subscribe. Hidden courses are hidden in the course overview and require a special invite link to subscribe. Moderated courses are listed in the overview, but a course administrator has to approve each subscription.
     index:
       title: Courses
       users: Users

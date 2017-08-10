@@ -249,7 +249,11 @@ class Exercise < ApplicationRecord
   private
 
   def self.read_config_file(file)
-    JSON.parse(file.read) if file.file?
+    begin
+      JSON.parse(file.read) if file.file?
+    rescue JSON::ParserError => e
+      raise ParseError.new(file, e)
+    end
   end
 
   #takes a relative path

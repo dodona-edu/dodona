@@ -101,7 +101,7 @@ class CoursesController < ApplicationController
 
   def subscribe
     respond_to do |format|
-      case @course.access
+      case @course.registration
       when 'open'
         if try_to_subscribe current_user
           subscription_succeeded_response format
@@ -158,6 +158,7 @@ class CoursesController < ApplicationController
   private
 
   def try_to_subscribe(user, status: 'student')
+    return false if @course.hidden? && params[:secret] != @course.secret
     if user.unsubscribed_courses.include? @course
       update_membership_status_for user, status
     else

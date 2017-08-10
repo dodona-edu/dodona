@@ -1,7 +1,11 @@
 class CoursePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope
+      if user&.admin?
+        scope
+      else
+        scope.where(visibility: 'visible')
+      end
     end
   end
 
@@ -10,7 +14,11 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    if record.hidden?
+      user&.admin? || user.member_of?(record)
+    else
+      true
+    end
   end
 
   def new?

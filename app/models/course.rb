@@ -2,14 +2,15 @@
 #
 # Table name: courses
 #
-#  id          :integer          not null, primary key
-#  name        :string(255)
-#  year        :string(255)
-#  secret      :string(255)
-#  access      :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  description :text(65535)
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  year         :string(255)
+#  secret       :string(255)
+#  visibility   :integer
+#  registration :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  description  :text(65535)
 #
 
 require 'securerandom'
@@ -21,7 +22,8 @@ class Course < ApplicationRecord
   has_many :submissions
   has_many :users, through: :course_memberships
 
-  enum access: %i[open moderated hidden]
+  enum visibility: %i[visible hidden]
+  enum registration: %i[open moderated closed]
 
   has_many :subscribed_members,
            lambda {

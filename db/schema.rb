@@ -26,10 +26,11 @@ ActiveRecord::Schema.define(version: 20170810112530) do
     t.string   "name"
     t.string   "year"
     t.string   "secret"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.text     "description", limit: 65535
-    t.integer  "access",                    default: 0
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.text     "description",  limit: 65535
+    t.integer  "visibility",                 default: 0
+    t.integer  "registration",               default: 0
   end
 
   create_table "delayed_jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

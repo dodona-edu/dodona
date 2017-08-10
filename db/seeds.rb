@@ -12,12 +12,28 @@ if Rails.env == 'development'
 
   staff = User.create username: 'staff', first_name: 'Stijn', last_name: 'Taff', email: 'stijn.taff@ugent.be', permission: :staff
 
+  jelix = User.create username: 'jvdrfeu', first_name: 'Jelix', last_name: 'Vanderfeught', email: 'jelix.vanderfeught@ugent.be', permission: :student
+
+  mart = User.create username: 'mbesuere', first_name: 'Mart', last_name: 'Besuere', email: 'mart.besuere@ugent.be', permission: :student
+
   student = User.create username: 'rbmaerte', first_name: 'Rien', last_name: 'Maertens', email: 'rien.maertens@ugent.be', permission: :student
+  
+  courses = []
 
-  testcourse = Course.create description: 'This is a test course.', name: 'Test Course' , year: '2017-2018'
-
+  courses << Course.create(description: 'This is a test course.', name: 'Open Test Course', year: '2017-2018', registration: 'open', visibility: 'visible')
+  courses << Course.create(description: 'This is a test course.', name: 'Moderated Test Course', year: '2017-2018', registration: 'moderated', visibility: 'visible')
+  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2017-2018', registration: 'closed', visibility: 'hidden')
   # Add student to course
-  student.courses << testcourse
+
+  courses.each do |course|
+    course.administrating_members << staff
+    course.administrating_members << mart
+    course.unsubscribed_members << jelix
+  end
+
+  courses[0].enrolled_members << student
+  courses[1].pending_members << student
+  courses[2].enrolled_members << student
 
   pythia_judge = Judge.create name: 'pythia', image: 'dodona-anaconda3', remote: 'git@github.ugent.be:dodona/judge-pythia.git', renderer: PythiaRenderer, runner: SubmissionRunner
 
@@ -34,7 +50,7 @@ if Rails.env == 'development'
   exercise_repo.process_exercises
 
   # Add exercices to test course
-  series1 = Series.create name: 'Reeks 1', course: testcourse
+  series1 = Series.create name: 'Reeks 1', course: courses[0]
   series1.exercises << exercise_repo.exercises
 
 end

@@ -8,8 +8,19 @@ function init_course_show(seriesShown, seriesTotal, autoLoad) {
         loading = false;
 
     function init() {
+        initUserTabs();
         $(".load-more-series").click(loadMoreSeries);
         $(window).scroll(scroll);
+    }
+
+    function initUserTabs(){
+      var baseUrl = $("#user-tabs").data("baseurl");
+      $("#user-tabs li a").click(function(){
+          var status = $(this).attr("href").substr(1);
+          init_filter_index(baseUrl + "?status=" + status, true);
+          $("#user-tabs li.active").removeClass("active");
+          $(this).parent().addClass("active");
+      });
     }
 
     function loadMoreSeries() {

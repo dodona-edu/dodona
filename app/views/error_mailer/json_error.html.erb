@@ -1,0 +1,12 @@
+<span class="message">
+  An error occured while processing '<%= @repository.name %>'.
+</span>
+
+<div class="error-list">
+  <div class="error-report">
+    <span class="file-name">
+      <%= @error.path %>: <%= @error.error_type %>:
+    </span>
+    <div class="error-json"><%= @error.json %></div>
+  </div>
+</div>

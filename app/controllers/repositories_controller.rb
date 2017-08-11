@@ -109,7 +109,7 @@ class RepositoriesController < ApplicationController
                              name: pusher[:name],
                              email: pusher[:email]
     else
-      raise 'could not send error mail'
+      raise error
     end.deliver
   end
 

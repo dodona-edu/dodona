@@ -12,7 +12,6 @@ en:
     show:
       course: Course
       auto_subscribe_link: Automatic subscription link
-      not_a_member: You are not a member of this course. Do you wish to subscribe?
       subscribe: subscribe
       unsubscribe: unsubscribe
       exercise_series: Exercise series
@@ -20,6 +19,11 @@ en:
       series: series
       subscribed_users: Subscribed users
       download_scoresheet: Download scoresheet
+
+    not_a_member_card: 
+      not_a_member: You are not a member of this course. Do you wish to subscribe?
+      not_a_member_moderated: Your registration has to be approved by a course administrator before you gain access to the course.
+      registration_closed: Registrations are closed for this course.
     subscribe:
       sign_up_successfully: You were succesfully signed up. Wait until a course administrator approves your subscription
       subscribed_successfully: Subscribed successfully

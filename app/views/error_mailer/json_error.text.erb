@@ -1,0 +1,12 @@
+<%= t '.greeting', name: @name %>
+<%= t '.error_message_html',
+      count: @error.count,
+      repository: @error.repository.name %>
+
+<% @error.each do |err| %>
+<%= err.path %>:
+<%= err.json %>
+<% end %>
+
+<%= t '.regards' %>
+Team Dodona

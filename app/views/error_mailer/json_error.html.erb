@@ -7,7 +7,7 @@
       ) %>
 
   <div class="error-list">
-    <% @error.errors.each do |err| %>
+    <% @error.each do |err| %>
       <div class="error-report">
         <span class="file-name">
           <%= github_link err.repository, err.path %>:

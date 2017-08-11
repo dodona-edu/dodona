@@ -26,16 +26,7 @@
             <% end %>
           </div>
           <% if current_user&.member_of?(@course).! %>
-          <div class="col-sm-6 col-xs-12">
-            <div class="card">
-              <div class="card-supporting-text">
-                <p><%= t ".not_a_member" %></p>
-              </div>
-              <div class="card-actions card-border">
-                <%=link_to t(".subscribe"), subscribe_course_path(@course), method: :post, class: "btn-text" %>
-              </div>
-            </div>
-          </div>
+            <%= render partial: 'not_a_member_card' %>
         <% end %>
       </div>
       <% end %>

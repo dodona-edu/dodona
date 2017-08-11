@@ -12,7 +12,6 @@ nl:
     show:
       course: Cursus
       auto_subscribe_link: Automatische inschrijvingslink
-      not_a_member: Je bent niet ingeschreven voor deze cursus. Wil je je inschrijven?
       subscribe: inschrijven
       unsubscribe: uitschrijven
       exercise_series: Oefeningenreeksen
@@ -20,8 +19,12 @@ nl:
       series: reeksen
       subscribed_users: Ingeschreven gebruikers
       download_scoresheet: Scoresheet downloaden
+    not_a_member_card:
+      not_a_member: Je bent niet ingeschreven voor deze cursus. Wil je je inschrijven?
+      not_a_member_moderated: Je inschrijving moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot dit vak.
+      registration_closed: Deze cursus is gesloten en aanvaardt geen nieuwe inschrijvingen.
     subscribe:
-      sign_up_successfully: Je ingeschreven op de wachtlijst. Wacht tot een cursusbeheerder je heeft goedgekeurd.
+      sign_up_successfully: Je ingeschreven op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je inschrijving accepteerd.
       subscribed_successfully: Inschrijving succesvol
       subscription_failed: Inschrijven mislukt
       not_logged_in: Je moet ingelogd zijn om je in te schrijven

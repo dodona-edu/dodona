@@ -1,0 +1,13 @@
+{
+  "description": {
+    "names": {
+      "en": "ISBN",
+      "nl": "ISBN"
+    }
+  },
+  "evaluation": {
+    "handler": "Iona Nikitchenko",
+    "pythia_judge": "output"
+  },
+  "programming_language": "python"
+}

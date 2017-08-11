@@ -22,12 +22,12 @@ if Rails.env == 'development'
 
   courses << Course.create(description: 'This is a test course.', name: 'Open Test Course', year: '2017-2018', registration: 'open', visibility: 'visible')
   courses << Course.create(description: 'This is a test course.', name: 'Moderated Test Course', year: '2017-2018', registration: 'moderated', visibility: 'visible')
-  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2017-2018', registration: 'closed', visibility: 'hidden')
-  # Add student to course
+  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2017-2018', registration: 'open', visibility: 'hidden')
+  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2017-2018', registration: 'closed', visibility: 'hidden')
 
   courses.each do |course|
-    course.administrating_members << staff
     course.administrating_members << mart
+    course.enrolled_members << staff
     course.unsubscribed_members << jelix
   end
 

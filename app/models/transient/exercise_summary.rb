@@ -11,7 +11,7 @@ class ExerciseSummary
     @series_membership = kwargs[:series_membership]
     @exercise = kwargs[:exercise] || @series_membership&.exercise
     @series = kwargs[:series] || @series_membership&.series
-    @series_membership ||= series_memberships.find_by(exercise: exercise) if series
+    @series_membership ||= series.series_memberships.find_by(exercise: exercise) if series
 
     @user = kwargs[:user]
 
@@ -68,15 +68,8 @@ class ExerciseSummary
 
   def query_submissions
     s = exercise.submissions.where(user: user).reorder(id: :desc)
-    if series
-      s.join_series.where(series: { id: series.id } )
-    else
-      s.where(course: nil)
-    end
-  end
-
-  def query_timely_submissions
-    query_submissions.timely
+    s = s.join_series.where(series: { id: series.id } ) if series
+    s
   end
 
   def query_accepted_submission

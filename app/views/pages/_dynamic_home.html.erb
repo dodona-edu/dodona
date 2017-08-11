@@ -62,6 +62,11 @@
       </div>
     </div>
   </div>
+  <% Course.first.series.each do |series| %>
+    <div class="col-sm-4">
+      <%= render partial: 'series/series_card', locals: { series: series } %>
+    </div>
+  <% end %>
   <% @user.courses.each do |course| %>
     <div class="col-xs-12 col-sm-6 col-lg-4">
       <div class="card home-summary-card">

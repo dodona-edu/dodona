@@ -11,16 +11,5 @@ FactoryGirl.define do
     end
 
     year { "#{start_year}-#{start_year + 1}" }
-
-    trait :with_series_and_exercises do
-      series_count 4
-      exercises_per_series 5
-    end
-
-    after :create do |course, e|
-      create_list :series, e.series_count,
-                  course: course,
-                  exercise_count: e.exercises_per_series
-    end
   end
 end

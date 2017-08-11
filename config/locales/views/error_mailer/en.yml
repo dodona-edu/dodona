@@ -1,6 +1,9 @@
 en:
   error_mailer:
     json_error:
+      subject:
+        one: '[Dodona] error in %{repository}'
+        other: '[Dodona] %{count} errors in %{repository}'
       greeting: 'Dear %{name},'
       error_message_html:
         one: 'There was an error processing %{repository}:'

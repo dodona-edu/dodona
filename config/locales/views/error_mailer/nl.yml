@@ -1,6 +1,9 @@
 nl:
   error_mailer:
     json_error:
+      subject:
+        one: '[Dodona] fout in %{repository}'
+        other: '[Dodona] %{count} fouten in %{repository}'
       greeting: 'Beste %{name},'
       error_message_html:
         one: 'Er is een probleem opgetreden bij het verwerken van %{repository}:'

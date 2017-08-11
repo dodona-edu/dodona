@@ -6,6 +6,10 @@ class ErrorMailer < ApplicationMailer
     @name = name
     addressee = %("#{name}" <#{email}>)
     mail to: addressee,
-         subject: 'error'
+         subject: I18n.t(
+           'error_mailer.json_error.subject',
+           count: error.count,
+           repository: error.repository.name
+         )
   end
 end

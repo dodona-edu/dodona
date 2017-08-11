@@ -102,17 +102,12 @@ class RepositoriesController < ApplicationController
     @repository.process_exercises dirs
   rescue AggregatedConfigErrors => error
     if current_user
-      ErrorMailer.json_error(
-        current_user.full_name,
-        current_user.email,
-        error
-      )
+      ErrorMailer.json_error error, user: current_user
     elsif params[:pusher]
-      ErrorMailer.json_error(
-        params[:pusher][:name],
-        params[:pusher][:email],
-        error
-      )
+      pusher = params[:pusher]
+      ErrorMailer.json_error error,
+                             name: pusher[:name],
+                             email: pusher[:email]
     else
       raise 'could not send error mail'
     end.deliver

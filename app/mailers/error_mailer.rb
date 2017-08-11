@@ -3,6 +3,7 @@ class ErrorMailer < ApplicationMailer
 
   def json_error(name, email, error)
     @error = error
+    @name = name
     addressee = %("#{name}" <#{email}>)
     mail to: addressee,
          subject: 'error'

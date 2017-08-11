@@ -1,0 +1,8 @@
+nl:
+  error_mailer:
+    json_error:
+      greeting: 'Beste %{name},'
+      error_message_html:
+        one: 'Er is een probleem opgetreden bij het verwerken van %{repository}:'
+        other: 'Er zijn %{count} problemen opgetreden bij het verwerken van %{repository}:'
+      regards: 'Vriendelijke groeten,'

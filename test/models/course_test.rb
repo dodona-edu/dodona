@@ -27,7 +27,8 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test 'course scoresheet should be correct' do
-    course = create :course, :with_series_and_exercises
+    course = create :course
+    create_list :series, 4, course: course, exercise_count: 5, deadline: Time.current
     users = create_list(:user, 4, courses: [course])
 
     course.series.each do |series|

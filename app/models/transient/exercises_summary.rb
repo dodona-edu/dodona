@@ -51,6 +51,7 @@ class ExercisesSummary
   def mk_exercise_summary(ex, **kwargs)
     ExerciseSummary.new(
       exercise: ex,
+      user: user,
       latest_submission: @latest_submissions[ex.id],
       accepted_submission: @accepted_submissions[ex.id],
       timely_submission: @timely_submissions[ex.id],

@@ -1,0 +1,34 @@
+<% summary ||= ExercisesSummary.new(
+   user: current_user,
+   series: series,
+   exercises: local_assigns[:exercises]
+  ) %>
+
+<div class="card">
+  <div class="card-title card-title-colored">
+    <span class="card-title-text"><%= series.course.name %>: <%= series.name %></span>
+    <span class="card-subtitle-text">
+      <span class="glyphicon glyphicon-time"></span>
+      <%= t 'series.show.deadline_in' %>
+      <%= distance_of_time_in_words Time.current, series.deadline %>
+    </span>
+  </div>
+  <div class="card-supporting-text">
+    <table class="table no-head">
+      <tbody>
+        <% summary.reject(&:solved?).each do |ex| %>
+        <tr>
+          <td>
+            <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
+          </td>
+          <td>
+            <%= render partial: 'exercises/exercise_user_status', locals: {
+                  summary: ex
+                } %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

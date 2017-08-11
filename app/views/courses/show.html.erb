@@ -32,8 +32,8 @@
       <% end %>
       <% if current_user&.admin_of?(@course) %>
         <div class="card-supporting-text card-border">
-          <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %><br>
-          <strong><%= t ".subscribed_users" %>:</strong> <%= @course.users.count %><br>
+          <strong><%= t ".invitation_link" %>:</strong> <%= registration_course_url(@course.id, @course.secret) %><br>
+          <strong><%= t ".subscribed_users" %>:</strong> <%= @course.subscribed_members.count %><br>
           <% if policy(@course).scoresheet? %>
             <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text pull-right' %>
           <% end %>

@@ -61,7 +61,7 @@ class CoursePolicy < ApplicationPolicy
     user
   end
 
-  def subscribe_with_secret?
+  def registration?
     user
   end
 

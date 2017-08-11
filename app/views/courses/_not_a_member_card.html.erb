@@ -4,20 +4,17 @@
       <% if @course.closed? %>
         <p>
         <strong><%= t 'layout.messages.danger' %>!</strong>
-        <%= t '.registration_closed'%>
+        <%= t 'courses.registration.closed'%>
       <% else %>
-        <p><%= t '.not_a_member' %>
+        <p><%= t 'courses.registration.not_a_member' %>
         <% if @course.moderated? %>
-          <p><%= t '.not_a_member_moderated' %>
+          <p><%= t 'courses.registration.moderated' %>
         <% end %>
       <% end %>
     </div>
     <% unless @course.closed? %>
       <div class="card-actions card-border">
-        <%= link_to t('.subscribe'),
-          subscribe_course_path(@course),
-          method: :post,
-          class: 'btn-text' %>
+        <%= registration_action_for course: @course, membership: @current_membership %>
       </div>
     <% end %>
   </div>

@@ -1,10 +1,6 @@
 
 # runner that implements the Pythia workflow of handling submissions
 class PythiaSubmissionRunner < SubmissionRunner
-  def schema_path
-    Rails.root.join 'public/schemas/DodonaSubmission/output.json'
-  end
-
   def add_runtime_metrics(result)
     metrics = result['runtime_metrics']
 

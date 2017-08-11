@@ -21,6 +21,8 @@ require 'action_view'
 include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
+  include StringHelper
+
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
@@ -65,8 +67,10 @@ class Exercise < ApplicationRecord
   end
 
   def name
-    name = send('name_' + I18n.locale.to_s) || name_nl || name_en
-    name.blank? ? path.split('/').last : name
+    first_string_present send('name_' + I18n.locale.to_s),
+                         name_nl,
+                         name_en,
+                         path.split('/').last
   end
 
   def description_localized(lang = I18n.locale.to_s)
@@ -184,34 +188,38 @@ class Exercise < ApplicationRecord
     subs.distinct.count(:user_id)
   end
 
-  def best_is_last_submission?(user, deadline = nil)
-    last_correct = last_correct_submission(user, deadline)
+  def best_is_last_submission?(user, deadline = nil, course = nil)
+    last_correct = last_correct_submission(user, deadline, course)
     return true if last_correct.nil?
-    last_correct == last_submission(user, deadline)
+    last_correct == last_submission(user, deadline, course)
   end
 
-  def best_submission(user, deadline = nil)
-    last_correct_submission(user, deadline) || last_submission(user, deadline)
+  def best_submission(user, deadline = nil, course = nil)
+    last_correct_submission(user, deadline, course) || last_submission(user, deadline, course)
   end
 
-  def last_correct_submission(user, deadline = nil)
+  def last_correct_submission(user, deadline = nil, course = nil)
     s = submissions.of_user(user).where(status: :correct)
+    s = s.in_course(course) if course
     s = s.before_deadline(deadline) if deadline
     s.limit(1).first
   end
 
-  def last_submission(user, deadline = nil)
+  def last_submission(user, deadline = nil, course = nil)
     s = submissions.of_user(user)
+    s = s.in_course(course) if course
     s = s.before_deadline(deadline) if deadline
     s.limit(1).first
   end
 
-  def accepted_for(user, deadline = nil)
-    last_submission(user, deadline).try(:accepted)
+  def accepted_for(user, deadline = nil, course = nil)
+    last_submission(user, deadline, course).try(:accepted)
   end
 
-  def number_of_submissions_for(user)
-    submissions.of_user(user).count
+  def number_of_submissions_for(user, course = nil)
+    s = submissions.of_user(user)
+    s = s.in_course(course) if course
+    s.count
   end
 
   def check_validity

@@ -7,19 +7,33 @@ Rails.application.routes.draw do
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
+
+    concern :mediable do
+      member do
+        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: "media"
+      end
+    end
+
+    concern :submitable do
+      resources :submissions, only: [:index, :create]
+    end
+
     resources :series do
       member do
         post 'add_exercise'
         post 'remove_exercise'
         post 'reorder_exercises'
+        post 'mass_rejudge'
         get 'download_solutions'
         get 'token/:token', to: 'series#token_show', as: 'token_show'
         get 'scoresheet'
+        get 'overview'
       end
     end
 
     resources :courses do
       resources :series
+      resources :exercises, only: [:show], concerns: [:mediable, :submitable]
       member do
         post 'subscribe'
         get 'scoresheet'
@@ -27,12 +41,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exercises, only: [:index, :show, :edit, :update] do
-      resources :submissions, only: [:index, :create]
-      member do
-        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: "media"
-      end
-    end
+    resources :exercises, only: [:index, :show, :edit, :update], concerns: [:mediable, :submitable]
 
     resources :judges do
       member do
@@ -47,7 +56,8 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :submissions, only: [:index, :show, :create, :edit] do
+    resources :submissions, only: [:index, :show, :create, :edit], concerns: :mediable do
+      post 'mass_rejudge', on: :collection
       member do
         get 'download'
         get 'evaluate'

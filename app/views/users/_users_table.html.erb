@@ -36,7 +36,7 @@
           <%= link_to "#{user.correct_exercises}/#{user.attempted_exercises}", user_submissions_path(user) %>
         </td>
         <% if @course %>
-          <td>
+          <td class='text-right'>
             <%= t("activerecord.attributes.course_membership.statuses.#{user.membership_status_for(@course)}") %>
           </td>
         <% end %>

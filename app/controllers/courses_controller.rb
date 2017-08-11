@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, except: %i[index new create]
+  before_action :set_course_and_current_membership, except: %i[index new create]
 
   has_scope :by_permission, only: :list_members
   has_scope :by_name, only: :list_members, as: 'filter'
@@ -100,38 +100,30 @@ class CoursesController < ApplicationController
   end
 
   def subscribe
+    redirect_unless_secret_correct if @course.hidden?
     respond_to do |format|
       case @course.registration
       when 'open'
-        if try_to_subscribe current_user
+        if try_to_subscribe_current_user
           subscription_succeeded_response format
         else
           subscription_failed_response format
         end
       when 'moderated'
-        if try_to_subscribe current_user, 'pending'
+        if try_to_subscribe_current_user status: 'pending'
           signup_succeeded_response format
         else
           subscription_failed_response format
         end
       when 'closed'
-        redirect_to(@course, alert: I18n.t('courses.subscribe.key_mismatch'))
+        redirect_to(@course, alert: I18n.t('courses.registration.key_mismatch'))
       end
     end
   end
 
-  def subscribe_with_secret
-    if !current_user
-      redirect_to(@course, notice: I18n.t('courses.subscribe.not_logged_in'))
-    elsif params[:secret] != @course.secret
-      redirect_to(@course, alert: I18n.t('courses.subscribe.key_mismatch'))
-    elsif current_user.member_of?(@course)
-      redirect_to(@course)
-    elsif try_to_subscribe current_user
-      respond_to { |f| subscription_failed_response f }
-    else
-      respond_to { |f| subscription_failed_response f }
-    end
+  def registration
+    @secret = params[:secret]
+    redirect_unless_secret_correct
   end
 
   def scoresheet
@@ -157,10 +149,12 @@ class CoursesController < ApplicationController
 
   private
 
-  def try_to_subscribe(user, status: 'student')
-    return false if @course.hidden? && params[:secret] != @course.secret
-    if user.unsubscribed_courses.include? @course
-      update_membership_status_for user, status
+  def try_to_subscribe_current_user(**args)
+    status = args[:status] || 'student'
+    user = current_user
+
+    if @current_membership.present?
+      @current_membership.update(status: status)
     else
       membership = CourseMembership.new course: @course,
                                         status: status,
@@ -169,10 +163,18 @@ class CoursesController < ApplicationController
     end
   end
 
+  def redirect_unless_secret_correct
+    if !current_user
+      redirect_back(fallback_location: root_url, notice: I18n.t('courses.registration.not_logged_in'))
+    elsif params[:secret] != @course.secret
+      redirect_back(fallback_location: root_url, alert: I18n.t('courses.registration.key_mismatch'))
+    elsif current_user.member_of?(@course)
+      redirect_to @course
+    end
+  end
+
   def update_membership_status_for(user, status)
-    membership = CourseMembership.where(user: user,
-                                        course: @course)
-                                 .first
+    membership = CourseMembership.where(user: user, course: @course).first
     return false unless membership
     if membership.status == 'course_admin'
       # There should always be one course administrator
@@ -188,23 +190,24 @@ class CoursesController < ApplicationController
   end
 
   def signup_succeeded_response(format)
-    format.html { redirect_to @course, notice: I18n.t('courses.subscribe.subscribed_successfully') }
+    format.html { redirect_back fallback_location: root_url, notice: I18n.t('courses.registration.sign_up_successfully') }
     format.json { render :show, status: :created, location: @course }
   end
 
   def subscription_succeeded_response(format)
-    format.html { redirect_to @course, notice: I18n.t('courses.subscribe.sign_up_successfully') }
+    format.html { redirect_to @course, notice: I18n.t('courses.registration.sign_up_successfully') }
     format.json { render :show, status: :created, location: @course }
   end
 
   def subscription_failed_response(format)
-    format.html { redirect_to @course, alert: I18n.t('courses.subscribe.subscription_failed') }
+    format.html { redirect_back fallback_location: root_url, alert: I18n.t('courses.registration.subscription_failed') }
     format.json { render json: @course.errors, status: :unprocessable_entity }
   end
 
   # Use callbacks to share common setup or constraints between actions.
-  def set_course
+  def set_course_and_current_membership
     @course = Course.find(params[:id])
+    @current_membership = CourseMembership.where(course: @course, user: current_user).first
     authorize @course
   end
 end

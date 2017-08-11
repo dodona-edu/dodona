@@ -13,7 +13,7 @@ class SeriesPolicy < ApplicationPolicy
                  OR  course_memberships.status  = #{admin}
                  AND course_memberships.user_id = #{user.id}
                SQL
-             ).uniq
+             ).distinct
       end
     end
   end

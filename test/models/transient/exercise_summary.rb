@@ -281,4 +281,76 @@ module ExerciseSummaryTests
       assert_equal 1, summary.users_correct
     end
   end
+
+
+  class ExercisesSummaryTest < ExerciseSummaryTest
+    setup do
+      # no submission: @exercise
+      @series.update(exercises: [])
+
+      # correct submission
+      ex1 = create :exercise, series: [@series], name: 'ex1'
+      submit :correct, exercise: ex1, created_at: 1.day.ago
+
+      # wrong submission
+      ex2 = create :exercise, series: [@series], name: 'ex2'
+      submit :wrong, exercise: ex2, created_at: 1.day.ago
+
+      # correct after deadline
+      ex3 = create :exercise, series: [@series], name: 'ex3'
+      submit :correct, exercise: ex3, created_at: 1.day.from_now
+
+      # last not best
+      ex4 = create :exercise, series: [@series], name: 'ex4'
+      submit :correct, exercise: ex4, created_at: 2.days.ago
+      submit :wrong, exercise: ex4, created_at: 1.day.ago
+    end
+
+    # assert that the created summaries are equal to individually created ones
+    def assert_summary(summary)
+      summary.each do |ex|
+        ex_ = ExerciseSummary.new(
+          exercise: ex.exercise,
+          series: ex.series,
+          user: ex.user
+        )
+
+        assert_identical :latest_submission, ex_, ex
+        assert_identical :timely_submission, ex_, ex
+        assert_identical :accepted_submission, ex_, ex
+      end
+    end
+
+    def assert_identical(sym, expected, actual)
+      if expected.send(sym)
+        assert_equal expected.send(sym), actual.send(sym),
+                     "#{sym} did not match for #{expected.exercise.name}"
+      else
+        assert_nil actual.send(sym),
+                   "expected #{sym} to be nil for #{expected.exercise.name}"
+      end
+    end
+
+    test 'should generate correct summary for series' do
+      summary = ExercisesSummary.new series: @series,
+                                     user: @user
+      assert_summary summary
+    end
+
+    test 'should generate correct summary for exercises' do
+      summary = ExercisesSummary.new user: @user,
+                                     exercises: @series.exercises
+      assert_summary summary
+    end
+
+    test 'should generate a summary for each exercise' do
+      summary = ExercisesSummary.new series: @series,
+                                     user: @user
+      @series.exercises.each do |exercise|
+        assert(summary.any? { |ex| ex.exercise == exercise })
+      end
+
+      assert_equal @series.exercises.count, summary.count
+    end
+  end
 end

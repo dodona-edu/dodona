@@ -176,11 +176,7 @@ class User < ApplicationRecord
   private
 
   def set_token
-    if username.present?
-      self.token = nil
-    elsif token.blank?
-      self.token = SecureRandom.urlsafe_base64(16)
-    end
+    self.token = SecureRandom.urlsafe_base64(16) if token.blank?
   end
 
   def set_time_zone

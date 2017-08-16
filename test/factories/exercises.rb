@@ -1,7 +1,8 @@
 FactoryGirl.define do
   factory :exercise do
-    sequence(:name_nl) { |n| "Oefening #{n}" }
-    sequence(:name_en) { |n| "Exercise #{n}" }
+    sequence(:name_nl) { |n| name || "Oefening #{n}" }
+    sequence(:name_en) { |n| name || "Exercise #{n}" }
+
     visibility 'open'
     status 'ok'
 
@@ -11,6 +12,8 @@ FactoryGirl.define do
     judge { repository.judge }
 
     transient do
+      name nil
+
       submission_count 0
       submission_users do
         create_list :user, 5 if submission_count.positive?

@@ -1,0 +1,23 @@
+<div class="message">
+  <%= content_tag :p, t('.greeting', name: @name) %>
+  <%= content_tag :p, t(
+      '.error_message_html',
+      count: @error.count,
+      repository: github_link(@error.repository)
+      ) %>
+
+  <div class="error-list">
+    <% @error.each do |err| %>
+      <div class="error-report">
+        <span class="file-name">
+          <%= github_link err.repository, err.path %>:
+          <%= err.error_type %>:
+        </span>
+        <div class="error-json"><%= err.json %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <%= content_tag :p, t('.regards') %>
+  <p>Team Dodona</p>
+</div>

@@ -36,7 +36,7 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
     saved = @repository.save
-    @repository.process_exercises if saved
+    process_exercise_dirs if saved
 
     respond_to do |format|
       if saved
@@ -85,7 +85,7 @@ class RepositoriesController < ApplicationController
           .uniq
       else
         @repository.exercise_dirs
-      end.each { |dir| @repository.process_exercise(dir) }
+      end.tap { |dirs| process_exercise_dirs dirs }
     end
     status = success ? 200 : 500
     render plain: msg, status: status
@@ -97,6 +97,21 @@ class RepositoriesController < ApplicationController
   end
 
   private
+
+  def process_exercise_dirs(dirs = nil)
+    @repository.process_exercises dirs
+  rescue AggregatedConfigErrors => error
+    if current_user
+      ErrorMailer.json_error error, user: current_user
+    elsif params[:pusher]
+      pusher = params[:pusher]
+      ErrorMailer.json_error error,
+                             name: pusher[:name],
+                             email: pusher[:email]
+    else
+      raise error
+    end.deliver
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_repository

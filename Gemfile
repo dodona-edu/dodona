@@ -85,6 +85,10 @@ gem 'rails-i18n'
 gem 'exception_notification'
 gem 'slack-notifier'
 
+# css styles for emails
+gem 'premailer-rails'
+gem 'nokogiri'
+
 # filtering
 gem 'has_scope'
 
@@ -125,6 +129,9 @@ group :development do
   gem 'rubocop'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  # for opening letters
+  gem 'letter_opener'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -1,7 +1,7 @@
 class CoursePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user&.admin?
+      if user&.zeus?
         scope
       else
         scope.where(visibility: 'visible')
@@ -15,7 +15,7 @@ class CoursePolicy < ApplicationPolicy
 
   def show?
     if record.hidden?
-      user&.admin? || user.member_of?(record)
+      user&.zeus? || user.member_of?(record)
     else
       true
     end
@@ -50,7 +50,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def update_course_admin_membership?
-    user&.admin?
+    user&.zeus? || (course_admin? && user.admin?)
   end
 
   def unsubscribe?
@@ -84,6 +84,6 @@ class CoursePolicy < ApplicationPolicy
   private
 
   def course_admin?
-    user&.admin? || user&.admin_of?(record)
+    user&.zeus? || user&.admin_of?(record)
   end
 end

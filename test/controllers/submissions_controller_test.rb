@@ -23,6 +23,18 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'submission on closed exercise should ok but not accepted' do
+    closed_exercise = create :exercise, visibility: :closed
+
+    attrs = generate_attr_hash
+    attrs[:exercise_id] = closed_exercise.id
+
+    submission = create_request_expect attr_hash: attrs
+
+    assert_response :success
+    assert_not submission.accepted
+  end
+
   test 'should get submission edit page' do
     get edit_submission_path(@instance)
     assert_redirected_to exercise_url(

@@ -8,7 +8,7 @@ class CoursesController < ApplicationController
   # GET /courses.json
   def index
     authorize Course
-    @courses = Course.all
+    @courses = policy_scope(Course.all)
     @title = I18n.t('courses.index.title')
   end
 

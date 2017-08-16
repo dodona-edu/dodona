@@ -72,8 +72,10 @@ class Course < ApplicationRecord
 
   before_create :generate_secret
 
-  # Default year
+  # Default year & enum values
   after_initialize do |course|
+    self.visibility   ||= 'visible'
+    self.registration ||= 'open'
     unless year
       now = Time.zone.now
       y = now.year

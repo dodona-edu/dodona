@@ -1,5 +1,5 @@
 /* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip, showNotification */
-function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorShown) {
+function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
     var editor;
     var lastSubmission;
 
@@ -121,7 +121,8 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         return $.post("/submissions.json", {
             submission: {
                 code: code,
-                exercise_id: exerciseId
+                exercise_id: exerciseId,
+                course_id: courseId
             }
         });
     }

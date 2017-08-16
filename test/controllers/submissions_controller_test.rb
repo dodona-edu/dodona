@@ -24,10 +24,10 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'submission on closed exercise should ok but not accepted' do
-    closed_exercise = create :exercise, visibility: :closed
-
     attrs = generate_attr_hash
-    attrs[:exercise_id] = closed_exercise.id
+
+    exercise = Exercise.find(attrs[:exercise_id])
+    exercise.update(visibility: 'closed')
 
     submission = create_request_expect attr_hash: attrs
 

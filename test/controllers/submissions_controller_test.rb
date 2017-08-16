@@ -14,8 +14,9 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should add submissions to delayed_job queue' do
     assert_jobs_enqueued(1) do
-      create_request
+      submission = create_request_expect
     end
+    assert submission.pending?
   end
 
   test 'create submission should respond with ok' do
@@ -23,16 +24,19 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'submission on closed exercise should ok but not accepted' do
+  test 'submission on closed exercise should not be ok' do
     attrs = generate_attr_hash
 
     exercise = Exercise.find(attrs[:exercise_id])
     exercise.update(visibility: 'closed')
 
-    submission = create_request_expect attr_hash: attrs
+    assert_difference('Submission.count', 0) do
+      create_request attr_hash: attrs
+    end
 
-    assert_response :success
-    assert_not submission.accepted
+    assert_response :unprocessable_entity
+    json = JSON.parse(response.body)
+    assert_not json['errors']&.empty?
   end
 
   test 'should get submission edit page' do

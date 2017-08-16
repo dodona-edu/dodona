@@ -1,5 +1,4 @@
-require 'json'         # JSON support
-require 'fileutils'    # file system utilities
+require 'json'         # JSON support require 'fileutils'    # file system utilities
 require 'securerandom' # random string generators (supports URL safety)
 require 'json-schema'  # json schema validation, from json-schema gem
 require 'tmpdir'       # temporary file support

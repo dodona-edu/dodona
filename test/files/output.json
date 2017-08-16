@@ -1,0 +1,102 @@
+{
+  "accepted": true,
+  "groups": [
+    {
+      "badgeCount": 1,
+      "groups": [
+        {
+          "accepted": true
+        },
+        {
+          "accepted": true,
+          "description": "Some testcases",
+          "groups": [
+            {
+              "accepted": true
+            },
+            {
+              "accepted": false,
+              "tests": [
+                {
+                  "accepted": true
+                },
+                {
+                  "accepted": true,
+                  "description": "Whether I like your code",
+                  "messages": [
+                    "I like your code"
+                  ]
+                },
+                {
+                  "accepted": false,
+                  "description": "random error messages",
+                  "messages": [
+                    {
+                      "format": "plain",
+                      "description": "a simple message"
+                    },
+                    {
+                      "format": "text",
+                      "description": "a text message"
+                    },
+                    {
+                      "format": "html",
+                      "description": "<div>a message in a div</div>"
+                    },
+                    {
+                      "format": "markdown",
+                      "description": "# a big message"
+                    },
+                    {
+                      "format": "code",
+                      "description": "while(!(succeed = try()));"
+                    },
+                    {
+                      "format": "python",
+                      "description": "print('hoi')"
+                    },
+                    {
+                      "format": "whitespace",
+                      "description": "   \t  \t   \n\t\n     \t\t  \t \t\n\t\n     \t\t \t\t  \n\t\n     \t\t \t\t  \n\t\n     \t\t \t\t\t\t\n\t\n     \t \t\t  \n\t\n     \t     \n\t\n     \t\t\t \t\t\t\n\t\n     \t\t \t\t\t\t\n\t\n     \t\t\t  \t \n\t\n     \t\t \t\t  \n\t\n     \t\t  \t  \n\t\n     \t    \t\n\t\n  \n\n\n"
+                    },
+                    {
+                      "format": "plain",
+                      "description": "a message for the gods",
+                      "permission": "zeus"
+                    }
+                  ]
+                },
+                {
+                  "accepted": false,
+                  "expected": "a satisfying life",
+                  "generated": "existential angst"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "another tab",
+      "groups": [
+        {
+          "accepted": false,
+          "groups": [
+            {
+              "accepted": false,
+              "tests": [
+                {
+                  "accepted": false,
+                  "description": "test whether user is screaming",
+                  "expected": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "generated": "meh"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

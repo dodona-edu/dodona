@@ -15,11 +15,15 @@ nl:
         year: Academiejaar
         description: Beschrijving
         secret: Secret
-        access: Toegang
-        accesses:
+        visibility: Zichtbaarheid
+        registration: Registratie
+        visibilities:
+          visible: Zichtbaar
+          hidden: Verborgen
+        registrations:
           open: Open
           moderated: Gemodereerd
-          hidden: Verborgen
+          closed: Gesloten
       exercise:
         name: Naam
         name_nl: Naam Nederlands

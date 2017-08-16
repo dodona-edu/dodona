@@ -3,7 +3,8 @@ nl:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
-      access-help: Open vakken zijn open voor iedereen. Verborgen vakken worden niet opgelijst in het overzicht en vereisen een speciale inschrijvingslink. Gemodereerde vakken zijn zichtbaar in het overzicht, maar iedere inschrijving moed goedgekeurd worden door een cursusbeheerder.
+      visibility-help: Zichtbare vakken zijn zichtbaar in het cursusoverzicht. Verborgen vakken worden niet opgelijst in het overzicht en vereisen een speciale inschrijvingslink.
+      registration-help: Bij open vakken worden inschrijvingen direct geaccepteerd. Bij gemoderereerde vakken moet elke inschrijving goedgekeurd worden door een cursusbeheerder. Wanneer een vak gesloten is kan niemand zich nog inschrijven.
     index:
       title: Cursussen
       users: Gebruikers

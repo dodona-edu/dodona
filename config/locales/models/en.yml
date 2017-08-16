@@ -15,11 +15,15 @@ en:
         year: Academic year
         description: Description
         secret: Secret
-        access: Access
-        accesses:
+        visibility: Visibility
+        registration: Registration
+        visibilities:
+          visible: Visible
+          hidden: Hidden
+        registrations:
           open: Open
           moderated: Moderated
-          hidden: Hidden
+          closed: Closed
       exercise:
         name: Name
         name_nl: Name Dutch

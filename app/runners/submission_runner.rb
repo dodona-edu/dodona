@@ -7,7 +7,7 @@ require 'pathname'     # better than File
 
 # base class for runners that handle Dodona submissions
 class SubmissionRunner
-  DEFAULT_CONFIG_PATH = Rails.root.join('app/runners/config.json').freeze
+  DEFAULT_CONFIG_PATH = Rails.root.join('app', 'runners', 'config.json').freeze
 
   @runners = [SubmissionRunner]
   def self.inherited(cl)
@@ -28,7 +28,7 @@ class SubmissionRunner
 
     # create name for hidden directory in docker container
     @mountsrc = nil # created when running
-    @mountdst = Pathname.new("/mnt")
+    @mountdst = Pathname.new('/mnt')
     @hidden_path = SecureRandom.urlsafe_base64
 
     # submission configuration (JSON)
@@ -89,7 +89,7 @@ class SubmissionRunner
     copy_or_create(@judge.full_path, @mountsrc + @hidden_path + 'judge')
 
     # ensure logs directory exist before mounting
-    begin (@mountsrc + @hidden_path + 'logs').mkdir rescue Errno::EEXIST end
+    (@mountsrc + @hidden_path + 'logs').mkpath
   end
 
   def execute
@@ -149,26 +149,26 @@ class SubmissionRunner
     if exit_status.nonzero? && exit_status != 143
       return build_error 'internal error', 'internal error', [
         build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
-        build_message("Standard Error:", 'staff', 'plain'),
+        build_message('Standard Error:', 'staff', 'plain'),
         build_message(stderr, 'staff'),
-        build_message("Standard Output:", 'staff', 'plain'),
-        build_message(stdout, 'staff'),
+        build_message('Standard Output:', 'staff', 'plain'),
+        build_message(stdout, 'staff')
       ]
     end
 
     begin
       rc = ResultConstructor.new @submission.user.lang
-      rc.feed(stdout.force_encoding "utf-8")
+      rc.feed(stdout.force_encoding('utf-8'))
       rc.result
     rescue ResultConstructor::ResultConstructorError => e
       if exit_status == 143
         description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
         build_error description, description, [
           build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
-          build_message("Standard Error:", 'staff', 'plain'),
+          build_message('Standard Error:', 'staff', 'plain'),
           build_message(stderr, 'staff'),
-          build_message("Standard Output:", 'staff', 'plain'),
-          build_message(stdout, 'staff'),
+          build_message('Standard Output:', 'staff', 'plain'),
+          build_message(stdout, 'staff')
         ]
       else
         messages = [build_message(e.title, 'staff', 'plain')]
@@ -181,11 +181,10 @@ class SubmissionRunner
   def add_runtime_metrics(result); end
 
   def finalize
+    return if @path.nil?
     # remove path on file system used as temporary working directory for processing the submission
-    unless @path.nil?
-      FileUtils.remove_entry_secure(@path, verbose: true)
-      @path = nil
-    end
+    FileUtils.remove_entry_secure(@path, verbose: true)
+    @path = nil
   end
 
   def run
@@ -221,5 +220,4 @@ class SubmissionRunner
       permission: permission
     }
   end
-
 end

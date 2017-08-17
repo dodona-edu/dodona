@@ -270,8 +270,6 @@ class ExerciseTest < ActiveSupport::TestCase
 
     assert_not @exercise.accepted_for(@user)
   end
-
-
 end
 
 class ExerciseRemoteTest < ActiveSupport::TestCase

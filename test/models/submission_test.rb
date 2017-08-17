@@ -16,7 +16,6 @@
 require 'test_helper'
 
 class SubmissionTest < ActiveSupport::TestCase
-
   test 'factory should create submission' do
     assert_not_nil create(:submission)
   end

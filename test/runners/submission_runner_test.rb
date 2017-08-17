@@ -71,6 +71,41 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     assert_equal accepted, @submission.accepted
   end
 
+  test 'judge should receive merged config' do
+    @exercise.update(programming_language: 'whitespace')
+    @exercise.unstub(:config)
+    # Stub global config
+    File.stubs(:read)
+        .with(Rails.root.join('app', 'runners', 'config.json'))
+        .returns({
+          memory_limit: 100,
+          time_limit: 42,
+          network_enabled: false
+        }.to_json)
+    # Overide something
+    @exercise.stubs(:config).returns({
+      evaluation: { network_enabled: true }.stringify_keys
+    }.stringify_keys)
+    mock = docker_mock
+    mock.unstub(:attach)
+    config = {}
+    mock.expects(:attach).with do |args|
+      config = JSON.parse(args[:stdin].read)
+      true
+    end
+    evaluate_with_stubbed_docker mock
+    assert_equal 100, config['memory_limit']
+    assert_equal 42, config['time_limit']
+    assert_equal true, config['network_enabled'] # overidden
+    assert_equal @exercise.programming_language, config['programming_language']
+    assert_equal @user.lang, config['natural_language']
+    %w[resources source judge workdir].each do |key|
+      path = config[key]
+      assert_not_nil path
+      assert path.starts_with?('/'), "Expected config[#{key}] to be an absolute path, but was '#{path}'"
+    end
+  end
+
   test 'submission evaluation should start docker container' do
     Docker::Container.expects(:create).once
     @submission.evaluate

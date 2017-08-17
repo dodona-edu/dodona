@@ -130,7 +130,10 @@ class SubmissionRunner
     end
 
     # run the container with a timeout.
-    timer = Thread.new { sleep time_limit ; container.stop }
+    timer = Thread.new do
+      sleep time_limit
+      container.stop
+    end
     outlines, errlines = container.tap(&:start).attach(
       stdin: StringIO.new(@config.to_json),
       stdout: true,

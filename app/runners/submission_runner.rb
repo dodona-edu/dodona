@@ -8,7 +8,7 @@ require 'pathname'     # better than File
 
 # base class for runners that handle Dodona submissions
 class SubmissionRunner
-  DEFAULT_CONFIG_PATH = Rails.root.join('app/runners/config.json').freeze
+  DEFAULT_CONFIG_PATH = Rails.root.join('app', 'runners', 'config.json').freeze
 
   @runners = [SubmissionRunner]
   def self.inherited(cl)
@@ -29,7 +29,7 @@ class SubmissionRunner
 
     # create name for hidden directory in docker container
     @mountsrc = nil # created when running
-    @mountdst = Pathname.new("/mnt")
+    @mountdst = Pathname.new('/mnt')
     @hidden_path = SecureRandom.urlsafe_base64
 
     # submission configuration (JSON)
@@ -43,20 +43,20 @@ class SubmissionRunner
     config = JSON.parse(File.read(DEFAULT_CONFIG_PATH))
 
     # update with judge configuration
-    config.recursive_update(@judge.config)
+    config.deep_merge!(@judge.config)
 
     # update with exercise configuration
-    config.recursive_update(@exercise.merged_config['evaluation'])
+    config.deep_merge!(@exercise.merged_config['evaluation'])
 
     # update with submission-specific configuration
-    config.recursive_update('programming_language' => @submission.exercise.programming_language,
-                            'natural_language' => @submission.user.lang)
+    config.deep_merge!('programming_language' => @submission.exercise.programming_language,
+                       'natural_language' => @submission.user.lang)
 
     # update with links to resources in docker container needed for processing submission
-    config.recursive_update('resources' => (@mountdst + @hidden_path + 'resources').to_path,
-                            'source'    => (@mountdst + @hidden_path + 'submission' + 'source').to_path,
-                            'judge'     => (@mountdst + @hidden_path + 'judge').to_path,
-                            'workdir'   => '/home/runner/workdir')
+    config.deep_merge!('resources' => (@mountdst + @hidden_path + 'resources').to_path,
+                       'source'    => (@mountdst + @hidden_path + 'submission' + 'source').to_path,
+                       'judge'     => (@mountdst + @hidden_path + 'judge').to_path,
+                       'workdir'   => '/home/runner/workdir')
 
     config
   end
@@ -90,7 +90,7 @@ class SubmissionRunner
     copy_or_create(@judge.full_path, @mountsrc + @hidden_path + 'judge')
 
     # ensure logs directory exist before mounting
-    begin (@mountsrc + @hidden_path + 'logs').mkdir rescue Errno::EEXIST end
+    (@mountsrc + @hidden_path + 'logs').mkpath
   end
 
   def execute
@@ -131,7 +131,10 @@ class SubmissionRunner
     end
 
     # run the container with a timeout.
-    timer = Thread.new { sleep time_limit ; container.stop }
+    timer = Thread.new do
+      sleep time_limit
+      container.stop
+    end
     outlines, errlines = container.tap(&:start).attach(
       stdin: StringIO.new(@config.to_json),
       stdout: true,
@@ -149,30 +152,30 @@ class SubmissionRunner
     if exit_status.nonzero? && exit_status != 143
       return build_error 'internal error', 'internal error', [
         build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
-        build_message("Standard Error:", 'staff', 'plain'),
+        build_message('Standard Error:', 'staff', 'plain'),
         build_message(stderr, 'staff'),
-        build_message("Standard Output:", 'staff', 'plain'),
-        build_message(stdout, 'staff'),
+        build_message('Standard Output:', 'staff', 'plain'),
+        build_message(stdout, 'staff')
       ]
     end
 
     begin
       rc = ResultConstructor.new @submission.user.lang
-      rc.feed(stdout.force_encoding "utf-8")
+      rc.feed(stdout.force_encoding('utf-8'))
       rc.result
     rescue ResultConstructor::ResultConstructorError => e
       if exit_status == 143
         build_error 'time limit exceeded', 'time limit exceeded', [
           build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
-          build_message("Standard Error:", 'staff', 'plain'),
+          build_message('Standard Error:', 'staff', 'plain'),
           build_message(stderr, 'staff'),
-          build_message("Standard Output:", 'staff', 'plain'),
-          build_message(stdout, 'staff'),
+          build_message('Standard Output:', 'staff', 'plain'),
+          build_message(stdout, 'staff')
         ]
       else
         build_error 'internal error', 'internal error', [
           build_message(e.title, 'staff', 'plain'),
-          build_message(e.description, 'staff'),
+          build_message(e.description, 'staff')
         ]
       end
     end
@@ -181,11 +184,10 @@ class SubmissionRunner
   def add_runtime_metrics(result); end
 
   def finalize
+    return if @path.nil?
     # remove path on file system used as temporary working directory for processing the submission
-    unless @path.nil?
-      FileUtils.remove_entry_secure(@path, verbose: true)
-      @path = nil
-    end
+    FileUtils.remove_entry_secure(@path, verbose: true)
+    @path = nil
   end
 
   def run
@@ -221,5 +223,4 @@ class SubmissionRunner
       permission: permission
     }
   end
-
 end

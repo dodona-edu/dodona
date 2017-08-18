@@ -90,12 +90,14 @@ class CoursesController < ApplicationController
   end
 
   def unsubscribe
-    if update_membership_status_for current_user,
-                                    :unsubscribed
-      format.html { redirect_to root_url, notice: I18n.t('courses.unsubscribe.unsubscribed_successfully') }
-      format.json { head :ok }
-    else
-      subscription_failed_response format
+    respond_to do |format|
+      if update_membership_status_for current_user,
+                                      :unsubscribed
+        format.html { redirect_to root_url, notice: I18n.t('courses.unsubscribe.unsubscribed_successfully') }
+        format.json { head :ok }
+      else
+        subscription_failed_response format
+      end
     end
   end
 
@@ -118,7 +120,8 @@ class CoursesController < ApplicationController
           subscription_failed_response format
         end
       when 'closed'
-        redirect_to(@course, alert: I18n.t('courses.registration.key_mismatch'))
+        format.html { redirect_to(@course, alert: I18n.t('courses.registration.closed')) }
+        format.json { render json: {errors: ['course closed']}, status: :unprocessable_entity }
       end
     end
   end
@@ -181,7 +184,7 @@ class CoursesController < ApplicationController
     if membership.status == 'course_admin'
       # There should always be one course administrator
       return false if @course.administrating_members.count <= 1
-      authorize @course, :update_course_admin_membership?
+      authorize @course, :update_course_admin_membership? unless user == current_user
     end
 
     if status == 'course_admin'

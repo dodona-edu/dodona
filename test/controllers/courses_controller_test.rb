@@ -14,54 +14,60 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
   test_crud_actions
 
   test 'should get scoresheet' do
-    get scoresheet_course_path(@instance)
+    get scoresheet_course_url(@instance)
     assert_response :success
   end
 
   test 'should subscribe current_user to course' do
     user = create :user
     sign_in user
-    post subscribe_course_path(@instance)
+    post subscribe_course_url(@instance)
     assert @instance.users.include? user
   end
 
   test 'subscribe should redirect to course' do
-    post subscribe_course_path(@instance)
+    post subscribe_course_url(@instance)
     assert_redirected_to(@instance)
   end
 
-  test 'should subscribe current_user to course with secret' do
+  test 'should get registration page with secret' do
     user = create :user
     sign_in user
-    get subscribe_with_secret_course_path(@instance, @instance.secret)
-    assert @instance.users.include? user
+    %w[visible hidden].product(%w[open moderated closed]).each do |v, r|
+      @instance.update(visibility: v, registration: r)
+      get registration_course_url(@instance, @instance.secret)
+      assert_response :success
+      # GET should not subscribe
+      assert_not user.member_of?(@instance)
+    end
   end
 
   test 'should not subscibe when already subscribed' do
     user = create :user, courses: [@instance]
     sign_in user
     assert_difference('CourseMembership.count', 0) do
-      post subscribe_course_path(@instance)
+      post subscribe_course_url(@instance)
     end
   end
 
-  test 'subscribe with secret should redirect to course' do
-    get subscribe_with_secret_course_path(@instance, @instance.secret)
-    assert_redirected_to(@instance)
-  end
-
-  test 'should not subscibe with secret when already subscribed' do
+  test 'visiting registration page when subscribed should redirect' do
     user = create :user, courses: [@instance]
     sign_in user
-    assert_difference('CourseMembership.count', 0) do
-      get subscribe_with_secret_course_path(@instance, @instance.secret)
-    end
+    get registration_course_url(@instance, @instance.secret)
+    assert_redirected_to @instance
   end
 
-  test 'should not subscribe current_user to course with invalid secret' do
+  test 'should not subscribe to hidden course with invalid, empty or absent secret' do
     user = create :user
     sign_in user
-    get subscribe_with_secret_course_path(@instance, 'the cake is a lie')
-    assert !@instance.users.include?(user)
+    @instance.update(visibility: 'hidden')
+    post subscribe_course_url(@instance, token: 'the cake is a lie')
+    assert !@instance.users.include?(user), 'invalid token'
+
+    post subscribe_course_url(@instance, token: '')
+    assert !@instance.users.include?(user), 'empty token'
+
+    post subscribe_course_url(@instance)
+    assert !@instance.users.include?(user), 'absent token'
   end
 end

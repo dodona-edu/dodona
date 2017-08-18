@@ -111,7 +111,7 @@ class User < ApplicationRecord
   end
 
   def header_courses
-    return [] if subscribed_courses.empty?
+    return nil if subscribed_courses.empty?
     subscribed_courses.group_by(&:year).first.second[0..2]
   end
 

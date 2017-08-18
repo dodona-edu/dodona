@@ -204,8 +204,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       post update_membership_course_url(@course, user: acceptme, status: 'student')
       assert @course.enrolled_members.include?(acceptme), "#{who} student not enrolled"
 
-      post update_membership_course_url(@course, user: acceptme, status: 'unsubscribed')
-      assert @course.unsubscribed_members.include?(acceptme), "#{who} student not unsubscribed"
+      post update_membership_course_url(@course, user: declineme, status: 'unsubscribed')
+      assert_not @course.enrolled_members.include?(declineme), "#{who} student not unsubscribed"
     end
   end
 
@@ -278,7 +278,41 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     @course.save
     with_users_signed_in @subscribed do |who, user|
       post unsubscribe_course_url(@course)
-      assert @course.unsubscribed_members.include?(user), "#{who} should be unsubscribed"
+      # our users do not have submissions, so their membership is deleted
+      assert_not @course.users.include?(user), "#{who} should be unsubscribed"
+    end
+  end
+
+  test 'unsubscribing user with solutions for course should keep membership' do
+    user = @students.first
+    sign_in user
+    create :correct_submission,
+           user: user,
+           course: @course
+
+    post unsubscribe_course_url(@course)
+    assert @course.unsubscribed_members.include?(user)
+  end
+
+  test 'unsubscribing user without solutions for course should delete  membership' do
+    user = @students.first
+    sign_in user
+
+    post unsubscribe_course_url(@course)
+    assert_not @course.users.include?(user)
+  end
+
+  test 'admins should be able to list members' do
+    with_users_signed_in @admins do |who|
+      get list_members_course_url(@course, format: :js)
+      assert_response :success, "#{who} should be able to list members"
+    end
+  end
+
+  test 'not-admins should not be able to list members' do
+    with_users_signed_in @not_admins do |who|
+      get list_members_course_url(@course, format: :js)
+      assert_response :redirect, "#{who} should not be able to list members"
     end
   end
 end

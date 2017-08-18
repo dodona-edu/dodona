@@ -115,11 +115,11 @@ class Exercise < ApplicationRecord
   end
 
   def github_url
-    repository.remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '') + '/tree/master/' + path
+    repository.github_url(path)
   end
 
   def config
-    Exercise.read_config_file(config_file)
+    repository.read_config_file(config_file)
   end
 
   def file_name
@@ -137,12 +137,11 @@ class Exercise < ApplicationRecord
   end
 
   def merged_config
-    merged_config = {}
-    full_path.relative_path_from(repository.full_path).ascend do |subdir|
-      merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path + subdir))
-    end
-    merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path))
-    merged_config.recursive_update(config)
+    Pathname.new(path).parent.descend         # all parent directories
+            .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+            .compact                          # remove nil entries
+            .push(config)                     # add exercise config file
+            .reduce(&:deep_merge)             # reduce into single hash
   end
 
   def config_file?
@@ -249,12 +248,9 @@ class Exercise < ApplicationRecord
 
   private
 
-  def self.read_config_file(file)
-    JSON.parse(file.read) if file.file?
-  end
-
-  def self.read_dirconfig(path)
-    Exercise.read_config_file(path + DIRCONFIG_FILE)
+  #takes a relative path
+  def read_dirconfig(subdir)
+    repository.read_config_file(subdir + DIRCONFIG_FILE)
   end
 
   def generate_id

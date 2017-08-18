@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  </head>
+  <body>
+    <p>In the ISBN-10 (<em>International Standard Book Numbering</em>)
+      system that was used until the end of 2006, each book is assigned a unique
+      10-digit code. The first nine digits uniquely identify the book itself,
+      whereas the last digit merely serves as a check digit to detect invalid
+      ISBN-10 codes.</p>
+    <div class="dodona-centered-group"> <img alt="ISBN" data-caption=" &lt;div class=&quot;thumbcaption&quot;&gt; ISBN in text and barcode&lt;/div&gt; "
+        src="media/ISBN.gif" title="ISBN" height="140">
+    </div>
+    <p>If $$x_1, \ldots, x_9$$ represent the first nine digits of an ISBN-10
+      code, the check digit $$x_{10}$$ is calculated as \[x_{10} = (x_1 + 2x_2 +
+      3x_3 + 4x_4 + 5x_5 + 6x_6 + 7x_7 + 8x_8 + 9x_9)\!\!\!\!\mod{11}\] As a
+      result, $$x_{10}$$ always takes a value in between 0 and 10. You are asked
+      to write a program that computes the tenth digit of an ISBN code, for
+      which the first nine digits are given.</p>
+    <h3>Input</h3>
+    <p>Nine integers $$x_1, \ldots, x_9$$ ($$0 \leq x_1, \ldots, x_9 \leq 9$$),
+      each on a separate line. These integers represent the first nine digits of
+      a given ISBN-10 code.</p>
+    <h3>Output</h3>
+    <p>A single line containing an integer: the ISBN-10 check digit
+      corresponding to the nine digits given. This check digit should be printed
+      without leading zeroes.</p>
+    <h3>Example</h3>
+    <p><strong>Input:</strong></p>
+    <pre>9
+9
+7
+1
+5
+0
+2
+1
+0</pre>
+    <p><strong>Output:</strong></p>
+    <pre>0</pre>
+    <h3>Epilogue</h3>
+    <div class="dodona-centered-group"> <img alt="evolution into barcode" data-caption=" &lt;div class=&quot;thumbcaption&quot;&gt;This is what we'll become. Be prepared.&lt;/div&gt; "
+        src="media/evaluation_barcode.jpg" title="evolution into barcode" height="320px">
+    </div>
+  </body>
+</html>

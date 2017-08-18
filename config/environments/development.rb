@@ -70,7 +70,7 @@ Rails.application.configure do
                           sender_address: %("Dodona" <dodona@ugent.be>),
                           exception_recipients: %w[dodona@ugent.be]
                         }
-  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.delivery_method = :letter_opener
   # Defaults to:
   # config.action_mailer.sendmail_settings = {
   #   :location => '/usr/sbin/sendmail',

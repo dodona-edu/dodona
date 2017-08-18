@@ -101,6 +101,8 @@ class CoursesController < ApplicationController
 
   def subscribe
     redirect_unless_secret_correct if @course.hidden?
+    return if performed? # return if redirect happenned
+
     respond_to do |format|
       case @course.registration
       when 'open'

@@ -14,7 +14,7 @@
         <% unless user_signed_in? %>
           <li><%= link_to(t("layout.menu.exercises"), exercises_path) %></li>
         <% else %>
-          <% if current_user.courses.empty? %>
+          <% if current_user.subscribed_courses.empty? %>
             <li><%= link_to t("layout.menu.courses"), courses_path %></li>
           <% else %>
             <% current_user.header_courses.each do |course| %>

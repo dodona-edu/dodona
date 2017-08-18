@@ -15,10 +15,14 @@ class CoursePolicy < ApplicationPolicy
 
   def show?
     if record.hidden?
-      user&.zeus? || user.member_of?(record)
+      user&.zeus? || user&.member_of?(record)
     else
       true
     end
+  end
+
+  def show_series?
+    user&.zeus? || record.open? || user&.member_of?(record)
   end
 
   def new?

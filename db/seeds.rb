@@ -56,8 +56,8 @@ if Rails.env == 'development'
     series << Series.create(name: 'Reeks 2', course: course)
     series << Series.create(name: 'Verborgen reeks',
                             course: course,
-                            visibility: :closed)
-    series << Series.create(name: 'Verborgen reeks',
+                            visibility: :hidden)
+    series << Series.create(name: 'Gesloten reeks',
                             course: course,
                             visibility: :closed)
 

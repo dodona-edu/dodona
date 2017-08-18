@@ -121,7 +121,7 @@ class CoursesController < ApplicationController
         end
       when 'closed'
         format.html { redirect_to(@course, alert: I18n.t('courses.registration.closed')) }
-        format.json { render json: {errors: ['course closed']}, status: :unprocessable_entity }
+        format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
       end
     end
   end
@@ -181,7 +181,7 @@ class CoursesController < ApplicationController
   def update_membership_status_for(user, status)
     membership = CourseMembership.where(user: user, course: @course).first
     return false unless membership
-    if membership.status == 'course_admin'
+    if membership.course_admin?
       # There should always be one course administrator
       return false if @course.administrating_members.count <= 1
       authorize @course, :update_course_admin_membership? unless user == current_user
@@ -191,7 +191,11 @@ class CoursesController < ApplicationController
       authorize @course, :update_course_admin_membership?
     end
 
-    membership.update(status: status)
+    membership.update(status: status).tap do |success|
+      if success && membership.unsubscribed?
+        membership.delete if @course.submissions.where(user: user).empty?
+      end
+    end
   end
 
   def signup_succeeded_response(format)

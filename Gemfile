@@ -85,6 +85,10 @@ gem 'rails-i18n'
 gem 'exception_notification'
 gem 'slack-notifier'
 
+# css styles for emails
+gem 'premailer-rails'
+gem 'nokogiri'
+
 # filtering
 gem 'has_scope'
 
@@ -95,8 +99,25 @@ gem 'rubyzip'
 gem 'rails_server_timings'
 
 group :development, :test do
+  # Use mocha for stubbing and mocking
+  gem 'mocha'
+  # Factory girl for factories
+  gem 'factory_girl'
+  gem 'factory_girl_rails'
+
+  # Generate 'random' values like usernames, emails, ...
+  gem 'faker', '~> 1.8'
+
+  # I18N default locale & better test reporter
+  gem 'minitest-utils'
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+end
+
+group :test do
+  # for measuring coverage
+  gem 'simplecov', require: false
 end
 
 group :development do
@@ -108,6 +129,9 @@ group :development do
   gem 'rubocop'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  # for opening letters
+  gem 'letter_opener'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

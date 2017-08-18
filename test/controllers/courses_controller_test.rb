@@ -1,48 +1,67 @@
+require 'helpers/crud_helper'
 require 'test_helper'
 
 class CoursesControllerTest < ActionDispatch::IntegrationTest
+  extend CRUDTest
+
+  crud_helpers Course, attrs: %i[name year description]
+
   setup do
-    @course = courses(:one)
+    @instance = create(:course)
+    sign_in create(:zeus)
   end
 
-  test 'should get index' do
-    get courses_url
+  test_crud_actions
+
+  test 'should get scoresheet' do
+    get scoresheet_course_path(@instance)
     assert_response :success
   end
 
-  test 'should get new' do
-    get new_course_url
-    assert_response :success
+  test 'should subscribe current_user to course' do
+    user = create :user
+    sign_in user
+    post subscribe_course_path(@instance)
+    assert @instance.users.include? user
   end
 
-  test 'should create course' do
-    assert_difference('Course.count') do
-      post courses_url, params: { course: { name: @course.name, open: @course.open, secret: @course.secret, year: @course.year } }
+  test 'subscribe should redirect to course' do
+    post subscribe_course_path(@instance)
+    assert_redirected_to(@instance)
+  end
+
+  test 'should subscribe current_user to course with secret' do
+    user = create :user
+    sign_in user
+    get subscribe_with_secret_course_path(@instance, @instance.secret)
+    assert @instance.users.include? user
+  end
+
+  test 'should not subscibe when already subscribed' do
+    user = create :user, courses: [@instance]
+    sign_in user
+    assert_difference('CourseMembership.count', 0) do
+      post subscribe_course_path(@instance)
     end
-
-    assert_redirected_to course_url(Course.last)
   end
 
-  test 'should show course' do
-    get course_url(@course)
-    assert_response :success
+  test 'subscribe with secret should redirect to course' do
+    get subscribe_with_secret_course_path(@instance, @instance.secret)
+    assert_redirected_to(@instance)
   end
 
-  test 'should get edit' do
-    get edit_course_url(@course)
-    assert_response :success
-  end
-
-  test 'should update course' do
-    patch course_url(@course), params: { course: { name: @course.name, open: @course.open, secret: @course.secret, year: @course.year } }
-    assert_redirected_to course_url(@course)
-  end
-
-  test 'should destroy course' do
-    assert_difference('Course.count', -1) do
-      delete course_url(@course)
+  test 'should not subscibe with secret when already subscribed' do
+    user = create :user, courses: [@instance]
+    sign_in user
+    assert_difference('CourseMembership.count', 0) do
+      get subscribe_with_secret_course_path(@instance, @instance.secret)
     end
+  end
 
-    assert_redirected_to courses_url
+  test 'should not subscribe current_user to course with invalid secret' do
+    user = create :user
+    sign_in user
+    get subscribe_with_secret_course_path(@instance, 'the cake is a lie')
+    assert !@instance.users.include?(user)
   end
 end

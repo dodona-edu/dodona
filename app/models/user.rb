@@ -124,8 +124,12 @@ class User < ApplicationRecord
   end
 
   def membership_status_for(course)
-    CourseMembership.find_by(course: course,
-                             user: self)&.status
+    membership = CourseMembership.find_by(course: course, user: self)
+    if membership
+      membership.status
+    else
+      'no_membership'
+    end
   end
 
   def cas_extra_attributes=(extra_attributes)

@@ -39,7 +39,7 @@
           <% end %>
         </div>
       <% end %>
-      <% if current_user.member_of?(@course) || current_user&.zeus? %>
+      <% if policy(@course).show_series? %>
         <div class="card-supporting-text card-border">
           <div class="card-subtitle">
             <a class="anchor" id="series"></a>

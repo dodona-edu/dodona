@@ -101,43 +101,40 @@ class SeriesScoreTokenControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should download solutions with token and email' do
-    get download_solutions_series_path @series,
-                                       params: {
-                                         email: @student.email,
-                                         token: @series.indianio_token
-                                       }
+    get indianio_download_series_url @series,
+                                     @series.indianio_token,
+                                     params: {
+                                       email: @student.email
+                                     }
     assert_response :success
   end
 
-  test 'should return 404 when user does not have submissions' do
+  test 'should have empty zip when user does not have submissions' do
     @other_student = create :student
-    get download_solutions_series_path @series,
-                                       params: {
-                                         email: @other_student.email,
-                                         token: @series.indianio_token
-                                       }
-    assert_response :not_found
+    get indianio_download_series_url @series,
+                                     @series.indianio_token,
+                                     params: {
+                                       email: @other_student.email
+                                     }
+    assert_response :success
   end
 
   test 'should return 404 when email does not exist' do
     @other_student = create :student
-    get download_solutions_series_path @series,
-                                       params: {
-                                         email: 'hupse@flup.se',
-                                         token: @series.indianio_token
-                                       }
+    get indianio_download_series_url @series,
+                                     @series.indianio_token,
+                                     params: {
+                                       email: 'hupse@flup.se'
+                                     }
     assert_response :not_found
   end
 
   test 'should not download solutions with wrong token' do
-    tokens = { wrong: 'hupsefulpse', blank: '', absent: nil }
-    tokens.each do |k, v|
-      get download_solutions_series_path @series,
-                                         params: {
-                                           email: @student.email,
-                                           token: v
-                                         }
-      assert_response :unauthorized, "#{k} token should not download solutions"
-    end
+    get indianio_download_series_url @series,
+                                     'hupseflupse',
+                                     params: {
+                                       email: @student.email
+                                     }
+    assert_response :unauthorized
   end
 end

@@ -80,7 +80,7 @@ class SeriesController < ApplicationController
   end
 
   def download_solutions
-    send_zip current_user, with_info: current_user.admin? || true_user.admin?
+    send_zip current_user
   end
 
   def indianio_download

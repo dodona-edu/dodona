@@ -50,7 +50,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get series by token' do
     course = create(:series, :hidden)
-    get token_show_series_path(course, course.token)
+    get token_show_series_path(course, course.access_token)
     assert_response :success
   end
 

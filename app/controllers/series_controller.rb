@@ -18,7 +18,7 @@ class SeriesController < ApplicationController
   end
 
   def token_show
-    raise Pundit::NotAuthorizedError if @series.token != params[:token]
+    raise Pundit::NotAuthorizedError if @series.access_token != params[:token]
 
     @course = @series.course
     @title = @series.name

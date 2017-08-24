@@ -93,7 +93,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 end
 
-class SeriesScoreTokenControllerTest < ActionDispatch::IntegrationTest
+class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
   setup do
     @student = create :student
     @series = create :series,

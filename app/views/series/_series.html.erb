@@ -29,6 +29,13 @@
               <span class='glyphicon glyphicon-pencil'></span> <%= t("series.edit.title") %>
             <% end %>
           </li>
+          <li>
+            <a href="#"
+               onclick="window.prompt('<%= t'series.show.copy' %>','<%= indianio_download_series_url series, series.indianio_token %>')">
+              <span class='glyphicon glyphicon-barcode'></span>
+              <%= t 'series.show.indianio_link' %>
+            </a>
+          </li>
         <% end %>
         <% if policy(series).destroy? %>
           <li>
@@ -40,7 +47,8 @@
         <% if policy(series).edit? && series.hidden? %>
           <li>
             <%= link_to token_show_series_path(series, series.access_token) do %>
-              <span class='glyphicon glyphicon-link'></span> Token link
+              <span class='glyphicon glyphicon-link'></span>
+              <%= t 'series.show.token_link' %>
             <% end %>
           </li>
         <% end %>

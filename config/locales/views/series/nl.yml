@@ -11,6 +11,9 @@ nl:
     new:
       title: Reeks toevoegen
     show:
+      copy: 'Om te kopieren: Ctrl+c, Enter'
+      indianio_link: 'Indianio API link'
+      token_link: 'Token link'
       series: Reeks
       exercises: Oefeningen
       download_solutions: Oplossingen downloaden

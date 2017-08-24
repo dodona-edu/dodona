@@ -91,3 +91,53 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal ids, @instance.series_memberships.map(&:exercise_id)
   end
 end
+
+class SeriesScoreTokenControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @student = create :student
+    @series = create :series,
+                     :with_submissions,
+                     exercise_submission_users: [@student]
+  end
+
+  test 'should download solutions with token and email' do
+    get download_solutions_series_path @series,
+                                       params: {
+                                         email: @student.email,
+                                         token: @series.score_token
+                                       }
+    assert_response :success
+  end
+
+  test 'should return 404 when user does not have submissions' do
+    @other_student = create :student
+    get download_solutions_series_path @series,
+                                       params: {
+                                         email: @other_student.email,
+                                         token: @series.score_token
+                                       }
+    assert_response :not_found
+  end
+
+  test 'should return 404 when email does not exist' do
+    @other_student = create :student
+    get download_solutions_series_path @series,
+                                       params: {
+                                         email: 'hupse@flup.se',
+                                         token: @series.score_token
+                                       }
+    assert_response :not_found
+  end
+
+  test 'should not download solutions with wrong token' do
+    tokens = { wrong: 'hupsefulpse', blank: '', absent: nil }
+    tokens.each do |k, v|
+      get download_solutions_series_path @series,
+                                         params: {
+                                           email: @student.email,
+                                           token: v
+                                         }
+      assert_response :unauthorized, "#{k} token should not download solutions"
+    end
+  end
+end

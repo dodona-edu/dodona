@@ -104,7 +104,7 @@ class SeriesScoreTokenControllerTest < ActionDispatch::IntegrationTest
     get download_solutions_series_path @series,
                                        params: {
                                          email: @student.email,
-                                         token: @series.score_token
+                                         token: @series.indianio_token
                                        }
     assert_response :success
   end
@@ -114,7 +114,7 @@ class SeriesScoreTokenControllerTest < ActionDispatch::IntegrationTest
     get download_solutions_series_path @series,
                                        params: {
                                          email: @other_student.email,
-                                         token: @series.score_token
+                                         token: @series.indianio_token
                                        }
     assert_response :not_found
   end
@@ -124,7 +124,7 @@ class SeriesScoreTokenControllerTest < ActionDispatch::IntegrationTest
     get download_solutions_series_path @series,
                                        params: {
                                          email: 'hupse@flup.se',
-                                         token: @series.score_token
+                                         token: @series.indianio_token
                                        }
     assert_response :not_found
   end

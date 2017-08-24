@@ -25,8 +25,8 @@ class SeriesTest < ActiveSupport::TestCase
     assert_not_nil @series
   end
 
-  test 'score_token should be set' do
-    assert @series.score_token.present?
+  test 'indianio_token should be set' do
+    assert @series.indianio_token.present?
   end
 
   test 'access_token should only be set when hidden' do

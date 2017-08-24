@@ -12,7 +12,7 @@
 #  updated_at      :datetime         not null
 #  deadline        :datetime
 #  access_token    :string(255)
-#  score_token     :string(255)
+#  indianio_token  :string(255)
 #
 
 require 'csv'
@@ -67,6 +67,6 @@ class Series < ApplicationRecord
     elsif access_token.blank?
       self.access_token = SecureRandom.urlsafe_base64(6)
     end
-    self.score_token = SecureRandom.urlsafe_base64(16) if score_token.blank?
+    self.indianio_token = SecureRandom.urlsafe_base64(16) if indianio_token.blank?
   end
 end

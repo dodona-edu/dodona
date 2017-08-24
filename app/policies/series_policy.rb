@@ -49,6 +49,10 @@ class SeriesPolicy < ApplicationPolicy
     user && token_show?
   end
 
+  def indianio_download?
+    true
+  end
+
   def modify_exercises?
     user&.admin?
   end

@@ -1,6 +1,6 @@
 require 'zip'
 class SeriesController < ApplicationController
-  before_action :set_series, only: %i[show edit update destroy add_exercise remove_exercise reorder_exercises download_solutions token_show scoresheet mass_rejudge]
+  before_action :set_series, only: %i[show edit update destroy add_exercise remove_exercise reorder_exercises download_solutions token_show scoresheet mass_rejudge indianio_download]
 
   # GET /series
   # GET /series.json
@@ -80,8 +80,24 @@ class SeriesController < ApplicationController
   end
 
   def download_solutions
-    zip = @series.zip_solutions(current_user, with_info: current_user.admin? || true_user.admin?)
-    send_data(zip[:data], type: 'application/zip', filename: zip[:filename], disposition: 'attachment', x_sendfile: true)
+    send_zip current_user, with_info: current_user.admin? || true_user.admin?
+  end
+
+  def indianio_download
+    token = params[:token]
+    email = params[:email]
+    if token.blank? || @series.indianio_token != token
+      render json: { errors: ['Wrong token'] }, status: :unauthorized
+    elsif email.blank?
+      render json: { errors: ['No email given'] }, status: :unprocessable_entity
+    else
+      user = User.find_by(email: email)
+      if user
+        send_zip user, with_info: true
+      else
+        render json: { errors: ['Unknown email'] }, status: :not_found
+      end
+    end
   end
 
   def add_exercise
@@ -119,5 +135,14 @@ class SeriesController < ApplicationController
   def set_series
     @series = Series.find(params[:id])
     authorize @series
+  end
+
+  # Generate and send a zip with solutions
+  def send_zip(user, **opts)
+    zip = @series.zip_solutions(user, opts)
+    send_data zip[:data],
+              type: 'application/zip',
+              filename: zip[:filename],
+              disposition: 'attachment', x_sendfile: true
   end
 end

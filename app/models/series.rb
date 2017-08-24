@@ -2,16 +2,17 @@
 #
 # Table name: series
 #
-#  id          :integer          not null, primary key
-#  course_id   :integer
-#  name        :string(255)
-#  description :text(65535)
-#  visibility  :integer
-#  order       :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  deadline    :datetime
-#  token       :string(255)
+#  id              :integer          not null, primary key
+#  course_id       :integer
+#  name            :string(255)
+#  description     :text(65535)
+#  visibility      :integer
+#  order           :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  deadline        :datetime
+#  access_token    :string(255)
+#  score_token     :string(255)
 #
 
 require 'csv'
@@ -26,7 +27,7 @@ class Series < ApplicationRecord
   validates :course, presence: true
   validates :name, presence: true
 
-  before_save :set_token
+  before_save :set_tokens
 
   default_scope { order(created_at: :desc) }
 
@@ -60,11 +61,12 @@ class Series < ApplicationRecord
 
   private
 
-  def set_token
+  def set_tokens
     if !hidden?
-      self.token = nil
-    elsif token.blank?
-      self.token = SecureRandom.urlsafe_base64(6)
+      self.access_token = nil
+    elsif access_token.blank?
+      self.access_token = SecureRandom.urlsafe_base64(6)
     end
+    self.score_token = SecureRandom.urlsafe_base64(16) if score_token.blank?
   end
 end

@@ -11,6 +11,9 @@ en:
     new:
       title: Add series
     show:
+      copy: 'To copy to clipbloard: Ctrl+c, Enter'
+      indianio_link: 'Indianio API link'
+      token_link: 'Token link'
       series: Series
       exercises: Exercises
       download_solutions: Download solutions

@@ -32,6 +32,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     series = create(:series, :with_submissions)
     get download_solutions_series_path(series)
     assert_response :success
+    assert_zip response.body, with_info: false
   end
 
   test 'should generate scoresheet' do
@@ -107,6 +108,7 @@ class SeriesScoreTokenControllerTest < ActionDispatch::IntegrationTest
                                        email: @student.email
                                      }
     assert_response :success
+    assert_zip response.body, with_info: true
   end
 
   test 'should have empty zip when user does not have submissions' do

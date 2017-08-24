@@ -108,10 +108,12 @@ class SeriesScoreTokenControllerTest < ActionDispatch::IntegrationTest
                                        email: @student.email
                                      }
     assert_response :success
-    assert_zip response.body, with_info: true
+    assert_zip response.body,
+               with_info: true,
+               solution_count: @series.exercises.count
   end
 
-  test 'should have empty zip when user does not have submissions' do
+  test 'should download solutions even when user does not have submissions' do
     @other_student = create :student
     get indianio_download_series_url @series,
                                      @series.indianio_token,
@@ -119,6 +121,9 @@ class SeriesScoreTokenControllerTest < ActionDispatch::IntegrationTest
                                        email: @other_student.email
                                      }
     assert_response :success
+    assert_zip response.body,
+               with_info: true,
+               solution_count: @series.exercises.count
   end
 
   test 'should return 404 when email does not exist' do

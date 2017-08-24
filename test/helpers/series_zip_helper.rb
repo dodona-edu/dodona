@@ -1,15 +1,16 @@
 module SeriesZipHelper
-  def assert_zip(zip_data, entry_count: nil, with_info: nil)
+  def assert_zip(zip_data, solution_count: nil, with_info: nil)
     zipio = StringIO.new(zip_data)
     Zip::File.open_buffer(zipio) do |zip|
-      entries = 0
       has_info = false
+      other_entries = 0
       zip.each do |entry|
         if entry.name == 'info.csv'
           has_info = true
           check_csv entry if with_info
+        else
+          other_entries += 1
         end
-        entries += 1
       end
       unless with_info.nil?
         if with_info
@@ -18,7 +19,7 @@ module SeriesZipHelper
           assert_not has_info, 'zip file should not contain info.csv but did'
         end
       end
-      assert_equal entry_count, entries if entry_count
+      assert_equal solution_count, other_entries, 'unexpected submission count in csv' if solution_count
     end
   end
 

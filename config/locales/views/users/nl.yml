@@ -4,10 +4,11 @@ nl:
       username-help: Als je een account aanmaakt zonder gebruikersnaam, dan zal er een inlog token gegenereerd worden. Later kan dan een gebruikersnaam toegevoegd worden.
     index:
       title: Gebruikers
+      no_users: Geen gebruikers gevonden
       progress: Voortgang
       access_level: Toegangsniveau
       promote: 'Promoveren tot cursusbeheerder'
-      demote: 'Demoveren tot student (fire, ontsla)'
+      demote: 'Demoveren tot student'
       unsubscribe: 'Uitschrijven'
       resubscribe: 'Herinschrijven'
       accept: 'Toelaten'

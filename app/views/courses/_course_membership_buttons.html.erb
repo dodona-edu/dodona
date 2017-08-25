@@ -18,6 +18,7 @@ when 'pending' %>
     <%= button_to update_membership_course_path(course),
                   params: {user: user.id, status: 'course_admin'},
                   title: t('users.index.promote'),
+                  data: { confirm: t('general.are_you_sure') },
                   class: 'btn btn-sm btn-default' do %>
       <span class='glyphicon glyphicon-education' aria-hidden='true'></span>
     <% end %>
@@ -25,6 +26,7 @@ when 'pending' %>
   <%= button_to update_membership_course_path(course),
                 params: {user: user.id, status: 'unsubscribed'},
                 title: t('users.index.unsubscribe'),
+                data: { confirm: t('general.are_you_sure') },
                 class: 'btn btn-sm btn-default' do %>
     <span class='glyphicon glyphicon-log-out' aria-hidden='true'></span>
   <% end %>
@@ -33,6 +35,7 @@ when 'pending' %>
     <%= button_to update_membership_course_path(course),
                   params: {user: user.id, status: 'student'},
                   title: t('users.index.demote'),
+                  data: { confirm: t('general.are_you_sure') },
                   class: 'btn btn-sm btn-default' do %>
       <span class='glyphicon glyphicon-education glyphicon-striketrough' aria-hidden='true'></span>
     <% end %>
@@ -41,6 +44,7 @@ when 'pending' %>
   <%= button_to update_membership_course_path(course),
                 params: {user: user.id, status: 'student'},
                 title: t('courses.show.subscribe'),
+                data: { confirm: t('general.are_you_sure') },
                 class: 'btn btn-sm btn-default' do %>
     <span class='glyphicon glyphicon-log-in' aria-hidden='true'></span>
   <% end %>

@@ -21,6 +21,9 @@ nl:
       series: reeksen
       subscribed_users: Ingeschreven gebruikers
       download_scoresheet: Scoresheet downloaden
+      subscribed: Ingeschreven
+      pending: Op de wachtlijst
+      unsubscribed: Uitgeschreven
     registration:
       page_title: Inschrijving
       not_a_member: Je bent niet ingeschreven voor deze cursus.

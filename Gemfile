@@ -135,6 +135,9 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
+  # Manage processes (webpack, rails, delayed_job, ...)
+  gem 'foreman'
+
   # for opening letters
   gem 'letter_opener'
 end

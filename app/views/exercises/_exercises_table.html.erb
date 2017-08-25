@@ -1,3 +1,5 @@
+<% summary = ExercisesSummary.new user: current_user, **local_assigns.slice(:exercises, :series) %>
+                                  
 <table class="table exercise-table">
   <thead>
     <tr>
@@ -11,8 +13,53 @@
     </tr>
   </thead>
   <tbody>
-    <% exercises.each do |ex| %>
-      <%= render(partial: 'exercises/exercise', locals: {exercise: ex, series: local_assigns.fetch(:series, nil)}) %>
+    <% summary.exercise_summaries.each do |ex| %>
+      <tr>
+        <td>
+          <% if user_signed_in? %>
+            <% if current_user.admin? %>
+              <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise } %>
+            <% else %>
+              <% if ex.solved_before_deadline? %>
+                <span class="glyphicon glyphicon-ok colored-correct %>"></span>
+              <% elseif ex.solved? %>
+                <span class="glyphicon glyphicon-ok colored-wrong %>"></span>
+              <% elseif ex.submitted? %>
+                  <span class="glyphicon glyphicon-remove colored-wrong"></span>
+              <% end %>
+            <% end %>
+          <% end %>
+        </td>
+
+        <td>
+          <% if ex.series %>
+            <%= link_to ex.exercise.name, course_exercise_path(ex.series.course_id, ex.exercise) %>
+          <% else %>
+            <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
+          <% end %>
+        </td>
+
+        <td class='text-right'>
+          <%= content_tag :span, title: t('exercises.exercise.count_tooltip') do %>
+            <%= ex.users_correct %>/<%= ex.users_tried%>
+          <% end %>
+        </td>
+
+        <% if user_signed_in? %>
+          <td>
+            <%= render partial: 'exercises/exercise_user_status', locals: { summary: ex } %>
+          </td>
+          <td>
+            <% if ex.submitted? || current_user.admin? %>
+              <%= link_to exercise_submissions_path(ex.exercise, course_id: ex.series&.course_id),
+                          title: t('layout.menu.my_submissions'),
+                          class: 'btn btn-icon' do %>
+                <span class="glyphicon glyphicon-chevron-right" %>
+              <% end %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
     <% end %>
   </tbody>
 </table>

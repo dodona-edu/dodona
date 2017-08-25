@@ -8,8 +8,11 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import jQuery from 'jquery'
+import 'ace/ace'
+import 'ace/ext-language-tools'
 
 // jQuery aliases
 window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$      = jQuery;
+

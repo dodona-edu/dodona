@@ -13,6 +13,10 @@ accepts@~1.3.3:
     mime-types "~2.1.16"
     negotiator "0.6.1"
 
+ace-builds@^1.2.8:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/ace-builds/-/ace-builds-1.2.8.tgz#062dc45772b00ece6a547a266a3081fe57591103"
+
 acorn-dynamic-import@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/acorn-dynamic-import/-/acorn-dynamic-import-2.0.2.tgz#c752bd210bef679501b6c6cb7fc84f8f47158cc4"

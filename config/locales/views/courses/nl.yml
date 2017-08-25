@@ -32,6 +32,7 @@ nl:
       closed: Deze cursus is gesloten en aanvaardt geen nieuwe inschrijvingen.
       sign_up_successfully: Je ingeschreven op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je inschrijving accepteerd.
       subscribed_successfully: Inschrijving succesvol
+      unsubscribed_successfully: Uitschrijving successvol
       subscription_failed: Inschrijven mislukt
       not_logged_in: Je moet ingelogd zijn om je in te schrijven
       key_mismatch: De sleutel kwam niet overeen

@@ -37,6 +37,7 @@ en:
       closed: This course is closed and does not accept new registrations at this time.
       sign_up_successfully: You were succesfully signed up. Wait until a course administrator approves your subscription
       subscribed_successfully: Subscribed successfully
+      unsubscribed_successfully: Unsubscribed successfully
       subscription_failed: Subscription failed
       not_logged_in: You need to be logged in to subscribe
       key_mismatch: "The key didn't match"

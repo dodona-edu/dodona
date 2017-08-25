@@ -89,6 +89,8 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+    capistrano-yarn (2.0.2)
+      capistrano (~> 3.0)
     capistrano3-delayed-job (1.7.3)
       capistrano (~> 3.0, >= 3.0.0)
       daemons (~> 1.2.4)
@@ -337,6 +339,7 @@ DEPENDENCIES
   capistrano-passenger
   capistrano-rails
   capistrano-rvm
+  capistrano-yarn
   capistrano3-delayed-job (~> 1.0)
   capybara (~> 2.13)
   coffee-rails (~> 4.2)

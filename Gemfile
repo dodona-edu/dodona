@@ -74,6 +74,7 @@ gem 'capistrano-passenger', group: :development
 gem 'capistrano-rails', group: :development
 gem 'capistrano-rvm', group: :development
 gem 'capistrano3-delayed-job', '~> 1.0'
+gem 'capistrano-yarn'
 
 # i18n
 gem 'i18n-js', '~> 3.0.0.rc14'

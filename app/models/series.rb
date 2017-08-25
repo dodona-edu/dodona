@@ -23,7 +23,6 @@ class Series < ApplicationRecord
   has_many :series_memberships, dependent: :destroy
   has_many :exercises, through: :series_memberships
 
-  validates :course, presence: true
   validates :name, presence: true
 
   before_save :set_token

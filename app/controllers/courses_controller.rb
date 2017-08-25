@@ -93,7 +93,7 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if update_membership_status_for current_user,
                                       :unsubscribed
-        format.html { redirect_to root_url, notice: I18n.t('courses.unsubscribe.unsubscribed_successfully') }
+        format.html { redirect_to root_url, notice: I18n.t('courses.registration.unsubscribed_successfully') }
         format.json { head :ok }
       else
         subscription_failed_response format
@@ -204,7 +204,7 @@ class CoursesController < ApplicationController
   end
 
   def subscription_succeeded_response(format)
-    format.html { redirect_to @course, notice: I18n.t('courses.registration.sign_up_successfully') }
+    format.html { redirect_to @course, notice: I18n.t('courses.registration.subscribed_successfully') }
     format.json { render :show, status: :created, location: @course }
   end
 

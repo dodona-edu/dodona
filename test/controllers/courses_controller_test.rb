@@ -4,7 +4,7 @@ require 'test_helper'
 class CoursesControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers Course, attrs: %i[name year description]
+  crud_helpers Course, attrs: %i[name year description visibility registration]
 
   setup do
     @instance = create(:course)
@@ -313,6 +313,28 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @not_admins do |who|
       get list_members_course_url(@course, format: :js)
       assert_response :redirect, "#{who} should not be able to list members"
+    end
+  end
+
+  test 'admins should be able to view their hidden course in the course overview' do
+    @course.update(visibility: 'hidden')
+    with_users_signed_in @admins do |who|
+      get courses_url, params: { format: :json }
+      courses = JSON.parse response.body
+      assert courses.any? { |c| c['id'] == @course.id }, "#{who} should be able to see a hidden course of which he is course administrator"
+    end
+  end
+
+  test 'not admins should not be able to view hidden courses' do
+    @course.update(visibility: 'hidden')
+    with_users_signed_in @not_admins do |who|
+      get courses_url, params: { format: :json }
+      if response.success?
+        courses = JSON.parse response.body
+        assert_not courses.any? { |c| c['id'] == @course.id }, "#{who} should not be able to see a hidden course"
+      else
+        assert_response :redirect
+      end
     end
   end
 end

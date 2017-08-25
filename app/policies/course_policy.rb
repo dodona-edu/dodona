@@ -4,7 +4,16 @@ class CoursePolicy < ApplicationPolicy
       if user&.zeus?
         scope
       else
-        scope.where(visibility: 'visible')
+        admin = CourseMembership.statuses['course_admin']
+        visible = Course.visibilities['visible']
+        scope.joins(:course_memberships)
+             .where(
+               <<~SQL
+                 courses.visibility             = #{visible}
+                 OR course_memberships.status   = #{admin}
+                 AND course_memberships.user_id = #{user.id}
+               SQL
+             ).distinct
       end
     end
   end
@@ -79,7 +88,7 @@ class CoursePolicy < ApplicationPolicy
 
   def permitted_attributes
     if course_admin?
-      %i[name year description]
+      %i[name year description visibility registration]
     else
       []
     end

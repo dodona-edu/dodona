@@ -18,8 +18,8 @@
     <title>Dodona<%= " - #{@title}" if @title %></title>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
     <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>
+    <%= javascript_include_tag 'application' %>
     <%= yield :javascripts %>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
     <script>

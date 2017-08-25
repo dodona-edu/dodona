@@ -18,14 +18,11 @@ class Submission < ApplicationRecord
 
   belongs_to :exercise
   belongs_to :user
-  belongs_to :course
+  belongs_to :course, optional: true
   has_one :judge, through: :exercise
   has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
 
   delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
-
-  validates :exercise, presence: true
-  validates :user, presence: true
 
   validate :code_cannot_contain_emoji, on: :create
 

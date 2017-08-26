@@ -93,6 +93,11 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def courses
+    @courses = @user.subscribed_courses
+    render 'courses/index'
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

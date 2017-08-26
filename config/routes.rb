@@ -73,6 +73,7 @@ Rails.application.routes.draw do
 
     resources :users do
       resources :submissions, only: [:index]
+      resources :courses, only: [:index]
       get 'stop_impersonating', on: :collection
       member do
         get 'impersonate'

@@ -53,6 +53,10 @@ class UserPolicy < ApplicationPolicy
     user&.zeus?
   end
 
+  def courses?
+    show?
+  end
+
   def permitted_attributes
     if user&.admin?
       %i[username ugent_id first_name last_name email permission time_zone]

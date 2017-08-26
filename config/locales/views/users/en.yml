@@ -4,7 +4,17 @@ en:
       username-help: Creating an account without a username will result in the generation of a sign in token. Afterwards, a username can be added.
     index:
       title: Users
+      no_users: No users found
       progress: Progress
+      access_level: Access level
+      promote: 'Promote to course administrator'
+      demote: 'Demote to student'
+      unsubscribe: 'Unsubscribe'
+      resubscribe: 'Resubscribe'
+      accept: 'Accept'
+      reject: 'Reject'
+      edit: 'Edit'
+      delete: 'Delete'
     new:
       title: Add user
     show:

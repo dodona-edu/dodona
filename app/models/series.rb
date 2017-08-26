@@ -25,10 +25,15 @@ class Series < ApplicationRecord
 
   validates :course, presence: true
   validates :name, presence: true
+  validates :visibility, presence: true
 
   before_save :set_token
 
   default_scope { order(created_at: :desc) }
+
+  after_initialize do
+    self.visibility ||= 'open'
+  end
 
   def deadline?
     deadline.present?

@@ -11,11 +11,14 @@
 #
 
 class CourseMembership < ApplicationRecord
+  enum status: %i[pending course_admin student unsubscribed]
+
   belongs_to :course
   belongs_to :user
 
   validates :course_id, uniqueness: { scope: :user_id }
 
+  before_create { self.status ||= :student }
   after_create :invalidate_stats_cache
 
   def invalidate_stats_cache

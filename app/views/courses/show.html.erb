@@ -8,66 +8,76 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @course.name %> (<%= @course.formatted_year %>)</h2>
-        <% if policy(@course).edit? %>
-          <div class="card-title-fab">
-            <%= render 'fab_link', url: edit_course_path(@course), icon: 'pencil' %>
-          </div>
-        <% end %>
+        <div class="card-title-fab">
+          <% if policy(@course).edit? %>
+              <%= render 'fab_link', url: edit_course_path(@course), icon: 'pencil' %>
+          <% end %>
+        </div>
       </div>
-      <% if !@course.description.blank? || (current_user && !current_user.member_of?(@course)) %>
+      <% if @course.description.present? || current_user.member_of?(@course).! %>
         <div class="card-supporting-text row">
-          <div class="col-sm-<%= (current_user && !current_user.member_of?(@course)) ? '6' : '12' %> col-xs-12">
+          <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
             <%= markdown(@course.description) %>
+            <% if current_user&.member_of? @course %>
+              <%= button_to t('.unsubscribe'),
+                            unsubscribe_course_path(@course),
+                            class: 'btn-text pull-right',
+                            data: { confirm: t('general.are_you_sure') } %>
+            <% end %>
           </div>
-          <% if current_user && !current_user.member_of?(@course) %>
-          <div class="col-sm-6 col-xs-12">
-            <div class="card">
-              <div class="card-supporting-text">
-                <p><%= t ".not_a_member" %></p>
-              </div>
-              <div class="card-actions card-border">
-                <%=link_to t(".subscribe"), subscribe_course_path(@course), method: :post, class: "btn-text" %>
-              </div>
-            </div>
-          </div>
+          <% if current_user&.member_of?(@course).! %>
+            <%= render partial: 'not_a_member_card' %>
         <% end %>
       </div>
       <% end %>
-      <% if current_user&.admin? %>
+      <% if current_user&.admin_of?(@course) %>
         <div class="card-supporting-text card-border">
-          <strong><%= t ".auto_subscribe_link" %>:</strong> <%= subscribe_with_secret_course_url(@course.id, @course.secret) %><br>
-          <strong><%= t ".subscribed_users" %>:</strong> <%= @course.users.count %><br>
+          <strong><%= t ".invitation_link" %>:</strong> <%= registration_course_url(@course.id, @course.secret) %><br>
+          <strong><%= t ".subscribed_users" %>:</strong> <%= @course.subscribed_members.count %><br>
           <% if policy(@course).scoresheet? %>
             <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text pull-right' %>
           <% end %>
         </div>
       <% end %>
-      <div class="card-supporting-text card-border">
-        <div class="card-subtitle">
-          <a class="anchor" id="series"></a>
-          <h3><%= t ".exercise_series" %></h3>
-          <div class="flex-spacer"></div>
-          <div class="card-subtitle-actions">
-            <% if policy(@course).add_series? %>
-              <%= link_to new_course_series_path(@course), title: t("series.new.title") do %>
-                <span class='glyphicon glyphicon-plus pull-right'></span>
+      <% if policy(@course).show_series? %>
+        <div class="card-supporting-text card-border">
+          <div class="card-subtitle">
+            <a class="anchor" id="series"></a>
+            <h3><%= t ".exercise_series" %></h3>
+            <div class="flex-spacer"></div>
+            <div class="card-subtitle-actions">
+              <% if policy(@course).add_series? %>
+                <%= link_to new_course_series_path(@course), title: t("series.new.title") do %>
+                  <span class='glyphicon glyphicon-plus pull-right'></span>
+                <% end %>
               <% end %>
+            </div>
+          </div>
+          <div id="series-listing">
+            <% @series.each do |series| %>
+              <%= render(partial: 'series/series', locals: {series: series}) %>
             <% end %>
           </div>
-        </div>
-        <div id="series-listing">
-          <% @series.each do |series| %>
-            <%= render(partial: 'series/series', locals: {series: series}) %>
+          <% if @total_series > @series.length %>
+            <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
           <% end %>
         </div>
-        <% if @total_series > @series.length %>
-          <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
-        <% end %>
-      </div>
+      <%  end %>
       <% if policy(@course).list_members? %>
         <div class="card-supporting-text card-border">
-          <h3><%= t ".users" %></h3>
-          <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(course_id: @course.id), eager: true}) %>
+          <div class="card-subtitle">
+            <h3><%= t ".users" %></h3>
+          </div>
+          <div class="card-tab">
+            <ul id="user-tabs" class="nav nav-tabs" data-baseurl="<%= list_members_course_path(@course) %>" role="tablist">
+              <li role="presentation" class="active"><a href="#enrolled"><%= t 'courses.show.subscribed' %></a></li>
+              <% if @course.moderated? || !@course.pending_members.empty? %>
+                <li role="presentation"><a href="#pending"><%= t 'courses.show.pending' %> <span class="badge"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a></li>
+              <% end %>
+              <li role="presentation"><a href="#unsubscribed"><%= t 'courses.show.unsubscribed' %></a></li>
+            </ul>
+          </div>
+          <%= render(partial: 'layouts/searchbar', locals: {baseUrl: list_members_course_path(@course), eager: true}) %>
           <div id="users-table-wrapper">
           </div>
         </div>

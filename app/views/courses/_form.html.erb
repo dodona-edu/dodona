@@ -19,6 +19,26 @@
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".year-help" %></span>
   </div>
   <div class="field form-group">
+    <%= f.label :visibility, class: 'col-sm-3 control-label' %>
+    <div class="col-sm-6">
+      <%= f.select :visibility,
+        options_for_select(Course.visibilities.keys.map { |k| [t("activerecord.attributes.course.visibilities.#{k}"), k] }),
+        {},
+        { class: 'form-control' } %>
+    </div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-help" %></span>
+  </div>
+  <div class="field form-group">
+    <%= f.label :registration, class: 'col-sm-3 control-label' %>
+    <div class="col-sm-6">
+      <%= f.select :registration,
+        options_for_select(Course.registrations.keys.map { |k| [t("activerecord.attributes.course.registrations.#{k}"), k] }),
+        {},
+        { class: 'form-control' } %>
+    </div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".registration-help" %></span>
+  </div>
+  <div class="field form-group">
     <%= f.label :description, :class => "col-sm-3 control-label" %>
     <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>

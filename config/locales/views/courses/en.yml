@@ -3,6 +3,8 @@ en:
     form:
       description-help: A description is optional. Markdown formatting can be used.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
+      visibility-help: Visible courses are visible for anyone. Hidden courses do not show up in the course overview, they require a special invite link to be able to subscribe.
+      registration-help: Open courses give direct access upon subscription. For moderated courses, a course administrator has to approve each subscription. Registrations are disabled with closed courses.
     index:
       title: Courses
       users: Users
@@ -10,16 +12,34 @@ en:
       title: Add course
     show:
       course: Course
-      auto_subscribe_link: Automatic subscription link
-      not_a_member: You are not a member of this course. Do you wish to subscribe?
+      invitation_link: Subscription link
       subscribe: subscribe
+      request_registration: request registration
+      unsubscribe: unsubscribe
       exercise_series: Exercise series
       users: Users
       series: series
       subscribed_users: Subscribed users
       download_scoresheet: Download scoresheet
-    subscribe:
+      subscribed: Subscribed
+      pending: Pending
+      unsubscribed: Unsubscribed
+    not_a_member_card: 
+      not_a_member: You are not a member of this course. Do you wish to subscribe?
+      not_a_member_moderated: Your registration has to be approved by a course administrator before you gain access to the course.
+      registration_closed: Registrations are closed for this course.
+    registration:
+      page_title: Registration
+      not_a_member: You are not a member of this course.
+      already_a_member: You are a member of this course.
+      moderated: Your registration has to be approved by a course administrator before you gain access to the course.
+      pending: Your registration is still pending.
+      explanation_html: 'This is the registration page of <strong>%{course_name}</strong>'
+      instruction: 'Register by clicking the button.'
+      closed: This course is closed and does not accept new registrations at this time.
+      sign_up_successfully: You were succesfully signed up. Wait until a course administrator approves your subscription
       subscribed_successfully: Subscribed successfully
+      unsubscribed_successfully: Unsubscribed successfully
       subscription_failed: Subscription failed
       not_logged_in: You need to be logged in to subscribe
       key_mismatch: "The key didn't match"

@@ -85,6 +85,7 @@ class SeriesController < ApplicationController
 
   def update_indianio_token
     @series.set_indianio_token!
+    redirect_back fallback_location: :root
   end
 
   def indianio_download

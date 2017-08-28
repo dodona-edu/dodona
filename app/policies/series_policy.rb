@@ -77,6 +77,10 @@ class SeriesPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def update_indianio_token?
+    edit?
+  end
+
   def permitted_attributes
     if user&.admin?
       %i[name description course_id visibility order deadline]

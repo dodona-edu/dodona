@@ -29,6 +29,8 @@ nl:
       exercises_in_series: Oefeningen in deze reeks
       add_exercise: oefening toevoegen
       remove_exercise: oefening verwijderen
+      indianio-support: Indianio ondersteuning
+      indianio-help: Klik op de refrsh-knop om een nieuw token te genereren. Kopieer dit token en plak het in indianio om indianio toe te laten oplossingen van studenten te downloaden voor deze reeks.
     delete:
       title: Verwijder reeks
       confirm: Bent u zeker dat u deze reeks wilt verwijderen?

@@ -1,6 +1,6 @@
 require 'zip'
 class SeriesController < ApplicationController
-  before_action :set_series, except: %i[index new create]
+  before_action :set_series, except: %i[index new create indianio_download]
 
   # GET /series
   # GET /series.json
@@ -91,7 +91,8 @@ class SeriesController < ApplicationController
   def indianio_download
     token = params[:token]
     email = params[:email]
-    if token.blank? || @series.indianio_token != token
+    @series = Series.find_by(indianio_token: token)
+    if token.blank? || @series.nil?
       render json: { errors: ['Wrong token'] }, status: :unauthorized
     elsif email.blank?
       render json: { errors: ['No email given'] }, status: :unprocessable_entity

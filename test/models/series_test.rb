@@ -25,8 +25,16 @@ class SeriesTest < ActiveSupport::TestCase
     assert_not_nil @series
   end
 
-  test 'indianio_token should be set' do
-    assert @series.indianio_token.present?
+  test 'indianio_token should not be set' do
+    assert_nil @series.indianio_token
+  end
+
+  test 'set_indianio_token! should work' do
+    @series.set_indianio_token!
+    token = Series.find(@series.id).indianio_token
+    assert_not_nil token
+    @series.set_indianio_token!
+    assert_not_equal token, Series.find(@series.id).indianio_token
   end
 
   test 'access_token should only be set when hidden' do

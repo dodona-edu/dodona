@@ -29,12 +29,20 @@ class SeriesTest < ActiveSupport::TestCase
     assert_nil @series.indianio_token
   end
 
-  test 'set_indianio_token! should work' do
-    @series.set_indianio_token!
+  test 'generate_indianio_token! should work' do
+    @series.generate_indianio_token!
     token = Series.find(@series.id).indianio_token
     assert_not_nil token
-    @series.set_indianio_token!
+    @series.generate_indianio_token!
     assert_not_equal token, Series.find(@series.id).indianio_token
+  end
+
+  test 'delete_indianio_token! should work' do
+    @series.generate_indianio_token!
+    @series = Series.find(@series.id)
+
+    @series.delete_indianio_token!
+    assert_nil @series.reload.indianio_token
   end
 
   test 'access_token should only be set when hidden' do

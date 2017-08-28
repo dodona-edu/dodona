@@ -77,7 +77,11 @@ class SeriesPolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def update_indianio_token?
+  def generate_indianio_token?
+    edit?
+  end
+
+  def delete_indianio_token?
     edit?
   end
 

@@ -22,13 +22,15 @@
                 <div class="input-group">
                   <%= text_field_tag :indianio_token, @series.indianio_token, readonly: true, placeholder: t('.indianio-placeholder'), class: 'form-control' %>
                   <span class="input-group-btn">
-                  <!-- TODO: Enable when there is clipboard support
-                    <button class="btn btn-default">
-                      <span class='glyphicon glyphicon-copy'></span>
-                    </button>
-                    -->
-                    <%= link_to update_indianio_token_series_path(@series), method: :post, class: 'btn btn-default' do %>
-                      <span class='glyphicon glyphicon-refresh'></span>
+                    <% if @series.indianio_token %>
+                      <button class="btn btn-default">
+                        <span class='glyphicon glyphicon-copy'></span>
+                      </button>
+                      <%= link_to indianio_token_series_path(@series), method: :delete, data: {confirm: t('general.are_you_sure') }, class: 'btn btn-default' do %>
+                        <span class="glyphicon glyphicon-trash"></span>
+                      <% end %>
+                    <% else %>
+                      <%= link_to t('.indianio-generate'), indianio_token_series_path(@series), method: :post, class: 'btn btn-default' %>
                     <% end %>
                   </span>
                 </div>

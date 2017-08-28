@@ -61,15 +61,21 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to :root
   end
 
-  test 'should update token' do
+  test 'should generate token' do
     token_pre = @instance.indianio_token
-    post update_indianio_token_series_path(@instance)
+    post indianio_token_series_path(@instance)
     token_mid = @instance.reload.indianio_token
     assert_not_equal token_pre, token_mid, 'token did not change'
 
-    post update_indianio_token_series_path(@instance)
+    post indianio_token_series_path(@instance)
     token_after = @instance.reload.indianio_token
     assert_not_equal token_mid, token_after, 'token did not change'
+  end
+
+  test 'should delete token' do
+    @instance.generate_indianio_token!
+    delete indianio_token_series_url(@instance)
+    assert_nil @instance.reload.indianio_token
   end
 
   test 'should add exercise to series' do

@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         get 'download_solutions'
         get 'token/:token', to: 'series#token_show', as: 'token_show'
         get 'scoresheet'
+        post 'update_indianio_token'
         get 'indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
       end
     end

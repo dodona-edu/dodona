@@ -27,7 +27,7 @@ class Series < ApplicationRecord
   validates :course, presence: true
   validates :name, presence: true
 
-  before_save :set_tokens
+  before_save :set_access_token
 
   default_scope { order(created_at: :desc) }
 
@@ -61,12 +61,15 @@ class Series < ApplicationRecord
 
   private
 
-  def set_tokens
+  def set_access_token
     if !hidden?
       self.access_token = nil
     elsif access_token.blank?
       self.access_token = SecureRandom.urlsafe_base64(6)
     end
-    self.indianio_token = SecureRandom.urlsafe_base64(16) if indianio_token.blank?
+  end
+
+  def set_indianio_token!
+    self.indianio_token = SecureRandom.urlsafe_base64(16)
   end
 end

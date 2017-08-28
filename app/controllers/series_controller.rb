@@ -83,8 +83,13 @@ class SeriesController < ApplicationController
     send_zip current_user
   end
 
-  def update_indianio_token
-    @series.set_indianio_token!
+  def delete_indianio_token
+    @series.delete_indianio_token!
+    redirect_back fallback_location: :root
+  end
+
+  def generate_indianio_token
+    @series.generate_indianio_token!
     redirect_back fallback_location: :root
   end
 

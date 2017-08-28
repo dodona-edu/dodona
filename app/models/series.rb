@@ -59,8 +59,13 @@ class Series < ApplicationRecord
     { filename: filename, data: zip_data }
   end
 
-  def set_indianio_token!
+  def generate_indianio_token!
     self.indianio_token = SecureRandom.urlsafe_base64(24)
+    save
+  end
+
+  def delete_indianio_token!
+    self.indianio_token = nil
     save
   end
 

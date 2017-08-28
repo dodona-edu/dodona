@@ -26,7 +26,8 @@ Rails.application.routes.draw do
         get 'download_solutions'
         get 'token/:token', to: 'series#token_show', as: 'token_show'
         get 'scoresheet'
-        post 'update_indianio_token'
+        post 'indianio_token', to: 'series#generate_indianio_token'
+        delete 'indianio_token', to: 'series#delete_indianio_token'
       end
     end
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'

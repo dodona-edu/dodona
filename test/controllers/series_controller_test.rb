@@ -61,6 +61,17 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to :root
   end
 
+  test 'should update token' do
+    token_pre = @instance.indianio_token
+    post update_indianio_token_series_path(@instance)
+    token_mid = @instance.reload.indianio_token
+    assert_not_equal token_pre, token_mid, 'token did not change'
+
+    post update_indianio_token_series_path(@instance)
+    token_after = @instance.reload.indianio_token
+    assert_not_equal token_mid, token_after, 'token did not change'
+  end
+
   test 'should add exercise to series' do
     exercise = create(:exercise)
     post add_exercise_series_path(@instance),
@@ -98,15 +109,15 @@ class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
     @student = create :student
     @series = create :series,
                      :with_submissions,
+                     indianio_token: 'supergeheimtoken',
                      exercise_submission_users: [@student]
   end
 
   test 'should download solutions with token and email' do
-    get indianio_download_series_url @series,
-                                     @series.indianio_token,
-                                     params: {
-                                       email: @student.email
-                                     }
+    get indianio_download_url @series.indianio_token,
+                              params: {
+                                email: @student.email
+                              }
     assert_response :success
     assert_zip response.body,
                with_info: true,
@@ -115,11 +126,10 @@ class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
 
   test 'should download solutions even when user does not have submissions' do
     @other_student = create :student
-    get indianio_download_series_url @series,
-                                     @series.indianio_token,
-                                     params: {
-                                       email: @other_student.email
-                                     }
+    get indianio_download_url @series.indianio_token,
+                              params: {
+                                email: @other_student.email
+                              }
     assert_response :success
     assert_zip response.body,
                with_info: true,
@@ -128,20 +138,18 @@ class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
 
   test 'should return 404 when email does not exist' do
     @other_student = create :student
-    get indianio_download_series_url @series,
-                                     @series.indianio_token,
-                                     params: {
-                                       email: 'hupse@flup.se'
-                                     }
+    get indianio_download_url @series.indianio_token,
+                              params: {
+                                email: 'hupse@flup.se'
+                              }
     assert_response :not_found
   end
 
   test 'should not download solutions with wrong token' do
-    get indianio_download_series_url @series,
-                                     'hupseflupse',
-                                     params: {
-                                       email: @student.email
-                                     }
+    get indianio_download_url 'hupseflupse',
+                              params: {
+                                email: @student.email
+                              }
     assert_response :unauthorized
   end
 end

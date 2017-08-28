@@ -1,6 +1,6 @@
 require 'zip'
 class SeriesController < ApplicationController
-  before_action :set_series, only: %i[show edit update destroy add_exercise remove_exercise reorder_exercises download_solutions token_show scoresheet mass_rejudge indianio_download]
+  before_action :set_series, except: %i[index new create]
 
   # GET /series
   # GET /series.json
@@ -81,6 +81,10 @@ class SeriesController < ApplicationController
 
   def download_solutions
     send_zip current_user
+  end
+
+  def update_indianio_token
+    @series.set_indianio_token!
   end
 
   def indianio_download

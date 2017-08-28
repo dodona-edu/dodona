@@ -12,6 +12,34 @@
           <%= render 'form', series: @series %>
         </div>
       </div>
+      <div class="card-supporting-text card-border">
+        <h4><%= t '.indianio-support' %></h4>
+        <div class="col-xs-12 col-sm-8">
+          <div class="form-horizontal">
+            <div class="field form-group">
+              <%= label_tag :indianio_token, 'Token', class: 'col-sm-4 control-label' %>
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <%= text_field_tag :indianio_token, @series.indianio_token, readonly: true, placeholder: t('.indianio-placeholder'), class: 'form-control' %>
+                  <span class="input-group-btn">
+                  <!-- TODO: Enable when there is clipboard support
+                    <button class="btn btn-default">
+                      <span class='glyphicon glyphicon-copy'></span>
+                    </button>
+                    -->
+                    <%= link_to update_indianio_token_series_path(@series), method: :post, class: 'btn btn-default' do %>
+                      <span class='glyphicon glyphicon-refresh'></span>
+                    <% end %>
+                  </span>
+                </div>
+              </div>
+              <span class="help-block col-sm-offset-4 col-sm-8">
+                <%= t '.indianio-help' %>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
       <% if policy(@series).modify_exercises? %>
         <div class="card-supporting-text card-border row">
           <div class="col-xs-12 col-sm-6 col-sm-push-6">

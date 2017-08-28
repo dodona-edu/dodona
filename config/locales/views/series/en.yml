@@ -29,6 +29,8 @@ en:
       exercises_in_series: Exercises in this series
       add_exercise: add exercise
       remove_exercise: remove exercise
+      indianio-support: Indianio support
+      indianio-help: Click on the refresh button to generate a new token. Copy the token and paste it in indianio to allow indianio to download students' submissions for this series.
     delete:
       title: Delete series
       confirm: Please confirm you want to delete this series.

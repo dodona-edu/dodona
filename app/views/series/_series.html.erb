@@ -29,13 +29,6 @@
               <span class='glyphicon glyphicon-pencil'></span> <%= t("series.edit.title") %>
             <% end %>
           </li>
-          <li>
-            <a href="#"
-               onclick="window.prompt('<%= t'series.show.copy' %>','<%= indianio_download_series_url series, series.indianio_token %>')">
-              <span class='glyphicon glyphicon-barcode'></span>
-              <%= t 'series.show.indianio_link' %>
-            </a>
-          </li>
         <% end %>
         <% if policy(series).destroy? %>
           <li>

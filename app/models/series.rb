@@ -35,6 +35,23 @@ class Series < ApplicationRecord
     deadline.present?
   end
 
+  def indianio_support
+    indianio_token.present?
+  end
+
+  def indianio_support?
+    indianio_support
+  end
+
+  def indianio_support=(value)
+    value = false if value == '0' || value == 0 || value == 'false'
+    if indianio_token.nil? && value
+      generate_token :indianio_token
+    elsif !value
+      self.indianio_token = nil
+    end
+  end
+
   def zip_solutions(user, with_info: false)
     filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
     stringio = Zip::OutputStream.write_buffer do |zio|
@@ -59,14 +76,9 @@ class Series < ApplicationRecord
     { filename: filename, data: zip_data }
   end
 
-  def generate_indianio_token!
-    self.indianio_token = SecureRandom.urlsafe_base64(24)
-    save
-  end
-
-  def delete_indianio_token!
-    self.indianio_token = nil
-    save
+  def generate_token(type)
+    raise 'unknown token type' unless %i[indianio_token access_token].include? type
+    self[type] = SecureRandom.urlsafe_base64(16)
   end
 
   private
@@ -75,7 +87,7 @@ class Series < ApplicationRecord
     if !hidden?
       self.access_token = nil
     elsif access_token.blank?
-      self.access_token = SecureRandom.urlsafe_base64(6)
+      generate_token :access_token
     end
   end
 end

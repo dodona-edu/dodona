@@ -77,17 +77,13 @@ class SeriesPolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def generate_indianio_token?
-    edit?
-  end
-
-  def delete_indianio_token?
+  def update_token?
     edit?
   end
 
   def permitted_attributes
     if user&.admin?
-      %i[name description course_id visibility order deadline]
+      %i[name description course_id visibility order deadline indianio_support]
     else
       []
     end

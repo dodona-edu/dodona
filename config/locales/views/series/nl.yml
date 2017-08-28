@@ -4,6 +4,7 @@ nl:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       visibility-help: Een verborgen reeks wordt niet op de vakpagina getoond en is enkel toegankelijk via de token link.
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
+      indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
     index:
       title: Reeksen
       load_more: Meer reeksen laden
@@ -29,10 +30,11 @@ nl:
       exercises_in_series: Oefeningen in deze reeks
       add_exercise: oefening toevoegen
       remove_exercise: oefening verwijderen
-      indianio-generate: Genereer
-      indianio-support: Indianio ondersteuning
-      indianio-placeholder: Deze reeks heeft nog geen token.
+      generate: Genereer een nieuw
+      confidential: Geheime links en tokens
       indianio-help: Kopieer dit token en plak het in indianio om indianio toe te laten oplossingen van studenten te downloaden voor deze reeks.
+      access-link: Geheime link
+      access-help: Met deze geheime link krijgen studenten toegang tot deze reeks.
     delete:
       title: Verwijder reeks
       confirm: Bent u zeker dat u deze reeks wilt verwijderen?

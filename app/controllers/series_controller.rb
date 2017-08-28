@@ -83,14 +83,21 @@ class SeriesController < ApplicationController
     send_zip current_user
   end
 
-  def delete_indianio_token
-    @series.delete_indianio_token!
-    redirect_back fallback_location: :root
-  end
-
-  def generate_indianio_token
-    @series.generate_indianio_token!
-    redirect_back fallback_location: :root
+  def update_token
+    type = params[:type].to_sym
+    @series.generate_token(type)
+    @series.save
+    value =
+      case type
+      when :indianio_token
+        @series.indianio_token
+      when :access_token
+        token_show_series_url(@series, @series.access_token)
+      end
+    render partial: 'token_field', locals: {
+      type: type,
+      value: value
+    }
   end
 
   def indianio_download

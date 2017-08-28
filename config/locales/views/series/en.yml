@@ -2,7 +2,7 @@ en:
   series:
     form:
       description-help: A description is optional. Markdown formatting can be used.
-      visibility-help: A hidden series is not shown on the course page and is only accessible using the token link.
+      visibility-help: A hidden series is not shown on the course page and is only accessible using the secret link.
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
       indianio-support-help: Allow students' solutions to be extracted by indianio.
     index:
@@ -14,11 +14,11 @@ en:
     show:
       copy: 'To copy to clipbloard: Ctrl+c, Enter'
       indianio_link: 'Indianio API link'
-      token_link: 'Token link'
+      token_link: 'Secret link'
       series: Series
       exercises: Exercises
       download_solutions: Download solutions
-      series_not_visible: This series is only visible for students using the url with the correct token!
+      series_not_visible: This series is only visible for students using the secret linok!
       series_not_accessible: This series is not accessible for students!
       missed_deadline: missed deadline
       deadline_in: in

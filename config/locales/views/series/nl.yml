@@ -2,7 +2,7 @@ nl:
   series:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
-      visibility-help: Een verborgen reeks wordt niet op de vakpagina getoond en is enkel toegankelijk via de token link.
+      visibility-help: Een verborgen reeks wordt niet op de vakpagina getoond en is enkel toegankelijk via de geheime link.
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
       indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
     index:
@@ -14,11 +14,11 @@ nl:
     show:
       copy: 'Om te kopieren: Ctrl+c, Enter'
       indianio_link: 'Indianio API link'
-      token_link: 'Token link'
+      token_link: 'Geheime link'
       series: Reeks
       exercises: Oefeningen
       download_solutions: Oplossingen downloaden
-      series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de url met het correcte token!
+      series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
       missed_deadline: deadline gemist
       deadline_in: binnen

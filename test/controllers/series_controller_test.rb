@@ -3,7 +3,7 @@ require 'test_helper'
 class SeriesControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers Series, attrs: %i[name description course_id visibility order deadline]
+  crud_helpers Series, attrs: %i[name description course_id visibility order deadline indianio_support]
 
   setup do
     @instance = create(:series)
@@ -61,20 +61,26 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to :root
   end
 
-  test 'should generate token' do
+  test 'should generate indianio_token' do
     token_pre = @instance.indianio_token
-    post indianio_token_series_path(@instance)
+    post update_token_series_path(@instance, type: :indianio_token), params: { format: :js }
     token_mid = @instance.reload.indianio_token
     assert_not_equal token_pre, token_mid, 'token did not change'
 
-    post indianio_token_series_path(@instance)
+    post update_token_series_path(@instance, type: :indianio_token), params: { format: :js }
     token_after = @instance.reload.indianio_token
     assert_not_equal token_mid, token_after, 'token did not change'
   end
 
-  test 'should delete token' do
-    @instance.generate_indianio_token!
-    delete indianio_token_series_url(@instance)
+  test 'enabling indianio support should generate token' do
+    @instance.update(indianio_token: nil)
+    patch series_url(@instance, series: { indianio_support: '1' })
+    assert_not_nil @instance.reload.indianio_token
+  end
+
+  test 'disabling indianio support should delete token' do
+    @instance.update(indianio_token: 'something')
+    patch series_url(@instance, series: { indianio_support: '0' })
     assert_nil @instance.reload.indianio_token
   end
 

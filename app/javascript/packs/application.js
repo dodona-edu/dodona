@@ -8,9 +8,11 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import jQuery from 'jquery'
+import dragula from 'dragula'
 
 // jQuery aliases
 window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$      = jQuery;
 
+window.dragula = dragula;

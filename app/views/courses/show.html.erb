@@ -77,7 +77,24 @@
               <li role="presentation"><a href="#unsubscribed"><%= t 'courses.show.unsubscribed' %></a></li>
             </ul>
           </div>
-          <%= render(partial: 'layouts/searchbar', locals: {baseUrl: list_members_course_path(@course), eager: true}) %>
+          <%= render(partial: 'layouts/searchbar',
+                     locals: {
+                        eager: false,
+                        actions: [
+                          {
+                            icon: 'ok',
+                            text: t(".accept_all"),
+                            confirm: t(".confirm_accept_all"),
+                            action: mass_accept_pending_course_path(@course)
+                          },
+                          {
+                            icon: 'remove',
+                            text: t(".decline_all"),
+                            confirm: t(".confirm_decline_all"),
+                            action: mass_decline_pending_course_path(@course)
+                          }
+                        ]
+          }) %>
           <div id="users-table-wrapper">
           </div>
         </div>

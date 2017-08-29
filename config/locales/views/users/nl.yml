@@ -12,7 +12,7 @@ nl:
       unsubscribe: 'Uitschrijven'
       resubscribe: 'Herinschrijven'
       accept: 'Toelaten'
-      reject: 'Afwijzen'
+      decline: 'Afwijzen'
       edit: 'Aanpassen'
       delete: 'Verwijderen'
     new:

@@ -4,7 +4,7 @@ en:
       description-help: A description is optional. Markdown formatting can be used.
       visibility-help: A hidden series is not shown on the course page and is only accessible using the secret link.
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
-      indianio-support-help: Allow students' solutions to be extracted by indianio.
+      indianio-support-help: Allow students' solutions to be extracted by Indianio.
     index:
       title: Series
       load_more: Load more series
@@ -13,12 +13,12 @@ en:
       title: Add series
     show:
       copy: 'To copy to clipbloard: Ctrl+c, Enter'
-      indianio_link: 'Indianio API link'
+      indianio_token: 'Indianio token'
       token_link: 'Secret link'
       series: Series
       exercises: Exercises
       download_solutions: Download solutions
-      series_not_visible: This series is only visible for students using the secret linok!
+      series_not_visible: This series is only visible for students using the secret link!
       series_not_accessible: This series is not accessible for students!
       missed_deadline: missed deadline
       deadline_in: in
@@ -26,6 +26,7 @@ en:
       best_is_not_last: Your best submission is not your last submission! Click to check (and edit/submit) your best submission.
     edit:
       title: Edit series
+      refresh_confirm: 'Are you sure? The old token/link will not be usable anymore when you generate a new one.'
       add_exercises: Add exercises
       exercises_in_series: Exercises in this series
       add_exercise: add exercise

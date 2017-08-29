@@ -10,8 +10,8 @@ when 'pending' %>
   <%= button_to update_membership_course_path(course),
                 params: {user: user.id, status: 'unsubscribed'},
                 title: t('users.index.reject'),
-                class: 'btn btn-sm btn-default' do %>
-    <span class='glyphicon glyphicon-ban-circle' aria-hidden='true'></span>
+                class: 'btn btn-sm btn-danger' do %>
+    <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
   <% end %>
 <% when 'student' %>
   <% if policy(course).update_course_admin_membership? %>

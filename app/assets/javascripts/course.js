@@ -1,4 +1,15 @@
 /* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip, showNotification */
+
+function loadUsers(baseUrl, status){
+  if(!baseUrl){
+    baseUrl = $("#user-tabs").data("baseurl");
+  }
+  if(!status){
+    status = window.location.hash.substr(1);
+  }
+  init_filter_index(baseUrl + "?status=" + status, true);
+}
+
 function init_course_show(seriesShown, seriesTotal, autoLoad) {
 
     var seriesShown = seriesShown,
@@ -28,7 +39,7 @@ function init_course_show(seriesShown, seriesTotal, autoLoad) {
           else {
             $kebab.hide();
           }
-          init_filter_index(baseUrl + "?status=" + status, true);
+          loadUsers(baseUrl, status);
           $("#user-tabs li.active").removeClass("active");
           $tab.parent().addClass("active");
         }

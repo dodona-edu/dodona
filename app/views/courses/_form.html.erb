@@ -22,7 +22,8 @@
     <%= f.label :visibility, class: 'col-sm-3 control-label' %>
     <div class="col-sm-6">
       <%= f.select :visibility,
-        options_for_select(Course.visibilities.keys.map { |k| [t("activerecord.attributes.course.visibilities.#{k}"), k] }),
+        options_for_select(Course.visibilities.keys.map { |k| [t("activerecord.attributes.course.visibilities.#{k}"), k] },
+                          @course.visibility),
         {},
         { class: 'form-control' } %>
     </div>
@@ -32,7 +33,8 @@
     <%= f.label :registration, class: 'col-sm-3 control-label' %>
     <div class="col-sm-6">
       <%= f.select :registration,
-        options_for_select(Course.registrations.keys.map { |k| [t("activerecord.attributes.course.registrations.#{k}"), k] }),
+        options_for_select(Course.registrations.keys.map { |k| [t("activerecord.attributes.course.registrations.#{k}"), k] },
+                          @course.registration),
         {},
         { class: 'form-control' } %>
     </div>

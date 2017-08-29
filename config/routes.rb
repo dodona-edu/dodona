@@ -38,7 +38,8 @@ Rails.application.routes.draw do
         post 'subscribe'
         post 'unsubscribe'
         post 'update_membership'
-        post 'mass_accept_users'
+        post 'mass_accept_pending'
+        post 'mass_decline_pending'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
       end

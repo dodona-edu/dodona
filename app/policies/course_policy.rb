@@ -86,6 +86,14 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def mass_accept_pending?
+    course_admin?
+  end
+
+  def mass_decline_pending?
+    course_admin?
+  end
+
   def permitted_attributes
     if course_admin?
       %i[name year description visibility registration]

@@ -92,6 +92,25 @@ class Course < ApplicationRecord
     self.secret = SecureRandom.urlsafe_base64(5)
   end
 
+  def pending_memberships
+    CourseMembership.where(course_id: id,
+                           status: :pending)
+  end
+
+  def accept_all_pending
+    pending_memberships.update(status: :student)
+  end
+
+  def decline_all_pending
+    pending_memberships.each do |cm|
+      if Submission.where(user: cm.user, course: cm.course).empty?
+        cm.delete
+      else
+        cm.update(status: :unsubscribed)
+      end
+    end
+  end
+
   def scoresheet(options = {})
     sorted_series = series.reverse
     sorted_users = users.order('course_memberships.status ASC')

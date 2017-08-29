@@ -137,6 +137,14 @@ class CoursesController < ApplicationController
     send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
   end
 
+  def mass_accept_pending
+    @course.accept_all_pending
+  end
+
+  def mass_decline_pending
+    @course.decline_all_pending
+  end
+
   def list_members
     statuses = if %w[unsubscribed pending].include? params[:status]
                  params[:status]
@@ -182,8 +190,6 @@ class CoursesController < ApplicationController
     membership = CourseMembership.where(user: user, course: @course).first
     return false unless membership
     if membership.course_admin?
-      # There should always be one course administrator
-      return false if @course.administrating_members.count <= 1
       authorize @course, :update_course_admin_membership? unless user == current_user
     end
 

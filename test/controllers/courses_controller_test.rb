@@ -209,6 +209,34 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'admin should be able to mass accept pending members' do
+    with_users_signed_in @admins do |who|
+      students = create_list :student, 10
+      @course.pending_members = students
+      post mass_accept_pending_course_url(@course)
+      @course.reload
+      assert @course.pending_members.empty?, "#{who} should be able to accept pending"
+      assert (students - @course.enrolled_members), "students should be enrolled for #{who}"
+    end
+  end
+
+  test 'admin should be able to mass decline pending members' do
+    with_users_signed_in @admins do |who|
+      students = create_list :student, 10
+      @course.pending_members = students
+
+      submission = create :submission, course: @course
+      @course.pending_members << submission.user
+
+      post mass_decline_pending_course_url(@course)
+      @course.reload
+      assert @course.pending_members.empty?, "#{who} should be able to decline pending"
+      assert CourseMembership.where(course: @course, user: students).empty?, "memberships should be deleted for #{who}"
+
+      assert @course.unsubscribed_members.include?(submission.user)
+    end
+  end
+
   test 'students should not be able to accept pending members' do
     with_users_signed_in @students do |who|
       acceptme = create :student

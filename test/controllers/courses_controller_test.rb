@@ -258,17 +258,18 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'last course admin should go down with his ship' do
-    course = create :course
+    @course = create :course
     admin = create :zeus
-    course.administrating_members << admin
+    @course.administrating_members << admin
     sign_in admin
 
     post unsubscribe_course_url(@course)
-    assert course.administrating_members.include?(admin)
+
+    assert @course.administrating_members.include?(admin)
 
     %w[student pending unsubscribed].each do |s|
       post update_membership_course_url(@course, user: admin, status: s)
-      assert course.administrating_members.include?(admin)
+      assert @course.administrating_members.include?(admin)
     end
   end
 

@@ -1,5 +1,9 @@
 nl:
   activerecord:
+    errors:
+      models:
+        course_membership:
+          at_least_one_admin: Een cursus moet altijd minstens één cursusbeheerder hebben.
     models:
       course: Cursus
       exercise: Oefening
@@ -83,6 +87,7 @@ nl:
         time_zone: Tijdzone
         permission: Rechten
       course_membership:
+        status: status
         statuses:
           unsubscribed: Uitgeschreven
           course_admin: Cursusbeheerder

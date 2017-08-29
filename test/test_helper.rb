@@ -12,6 +12,7 @@ require 'helpers/delayed_job_helper'
 require 'helpers/crud_helper'
 require 'helpers/git_helper'
 require 'helpers/remote_helper'
+require 'helpers/series_zip_helper'
 
 # automatically set locale for all routes
 require 'minitest/utils/rails/locale'
@@ -24,6 +25,7 @@ class ActiveSupport::TestCase
   include StubHelper
   include DelayedJobHelper
   include RemoteHelper
+  include SeriesZipHelper
 end
 
 class ActionDispatch::IntegrationTest

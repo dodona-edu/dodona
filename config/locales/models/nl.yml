@@ -37,6 +37,7 @@ nl:
         judge: Default judge
         exercises: Oefeningen
       series:
+        indianio_support: Indianio-ondersteuning
         course: Cursus
         name: Naam
         description: Beschrijving

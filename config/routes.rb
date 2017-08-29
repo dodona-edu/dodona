@@ -2,20 +2,19 @@ Rails.application.routes.draw do
   devise_for :users
   root 'pages#home'
 
-  match '/dj' => DelayedJobWeb, :anchor => false, via: [:get, :post]
+  match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
-
     concern :mediable do
       member do
-        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: "media"
+        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: 'media'
       end
     end
 
     concern :submitable do
-      resources :submissions, only: [:index, :create]
+      resources :submissions, only: %i[index create]
     end
 
     resources :series do
@@ -27,35 +26,37 @@ Rails.application.routes.draw do
         get 'download_solutions'
         get 'token/:token', to: 'series#token_show', as: 'token_show'
         get 'scoresheet'
+        post 'update_token'
       end
     end
+    get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
 
     resources :courses do
       resources :series
-      resources :exercises, only: [:show], concerns: [:mediable, :submitable]
+      resources :exercises, only: [:show], concerns: %i[mediable submitable]
       member do
         post 'subscribe'
         get 'scoresheet'
-        get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: "subscribe_with_secret"
+        get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: 'subscribe_with_secret'
       end
     end
 
-    resources :exercises, only: [:index, :show, :edit, :update], concerns: [:mediable, :submitable]
+    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable]
 
     resources :judges do
       member do
-        match 'hook', via: [:get, :post], to: 'judges#hook', as: "webhook"
+        match 'hook', via: %i[get post], to: 'judges#hook', as: 'webhook'
       end
     end
 
     resources :repositories do
       member do
-        match 'hook', via: [:get, :post], to: 'repositories#hook', as: "webhook"
+        match 'hook', via: %i[get post], to: 'repositories#hook', as: 'webhook'
         get 'reprocess'
       end
     end
 
-    resources :submissions, only: [:index, :show, :create, :edit], concerns: :mediable do
+    resources :submissions, only: %i[index show create edit], concerns: :mediable do
       post 'mass_rejudge', on: :collection
       member do
         get 'download'

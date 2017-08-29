@@ -17,14 +17,38 @@ function init_course_show(seriesShown, seriesTotal, autoLoad) {
       $userTabs = $("#user-tabs")
       if($userTabs.length > 0){
         var baseUrl = $userTabs.data("baseurl");
+
+        // Select tab and load users
+        var selectTab = function($tab){
+          var $kebab = $("#kebab-menu");
+          var status = $tab.attr("href").substr(1);
+          if(status == 'pending'){
+            $kebab.show();
+          }
+          else {
+            $kebab.hide();
+          }
+          init_filter_index(baseUrl + "?status=" + status, true);
+          $("#user-tabs li.active").removeClass("active");
+          $tab.parent().addClass("active");
+        }
+
+        // Switch to clicked tab
         $("#user-tabs li a").click(function(){
-            var status = $(this).attr("href").substr(1);
-            init_filter_index(baseUrl + "?status=" + status, true);
-            $("#user-tabs li.active").removeClass("active");
-            $(this).parent().addClass("active");
+            selectTab($(this));
         });
+
+        // Determine which tab to show first
+        var hash = window.location.hash;
+        var $tab = $("a[href='" + hash + "']");
+        if ($tab.length === 0){
+          // Default to enrolled (subscribed)
+          $tab = $("a[href='#enrolled']")
+        }
+        selectTab($tab);
       }
     }
+
 
     function loadMoreSeries() {
         loading = true;

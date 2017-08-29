@@ -12,7 +12,7 @@ en:
       unsubscribe: 'Unsubscribe'
       resubscribe: 'Resubscribe'
       accept: 'Accept'
-      reject: 'Reject'
+      decline: 'Decline'
       edit: 'Edit'
       delete: 'Delete'
     new:

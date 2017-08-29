@@ -9,7 +9,7 @@ when 'pending' %>
   <% end %>
   <%= button_to update_membership_course_path(course),
                 params: {user: user.id, status: 'unsubscribed'},
-                title: t('users.index.reject'),
+                title: t('users.index.decline'),
                 class: 'btn btn-sm btn-danger' do %>
     <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
   <% end %>

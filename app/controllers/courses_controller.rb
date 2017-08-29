@@ -80,11 +80,15 @@ class CoursesController < ApplicationController
     user = User.find params[:user]
     respond_to do |format|
       if update_membership_status_for user, params[:status]
-        format.html { redirect_back fallback_location: root_url, notice: t('controllers.updated', model: CourseMembership.model_name.human) }
+        notification = t('controllers.updated', model: CourseMembership.model_name.human)
+        format.html { redirect_back fallback_location: root_url, notice: notification }
         format.json { head :ok }
+        format.js { render 'reload_users', locals: { notification: notification } }
       else
-        format.html { redirect_back(fallback_location: root_url, alert: t('controllers.update_failed', model: CourseMembership.model_name.human)) }
+        alert = t('controllers.update_failed', model: CourseMembership.model_name.human)
+        format.html { redirect_back(fallback_location: root_url, alert: alert) }
         format.json { head :unprocessable_entity }
+        format.js { render 'reload_users', locals: { notification: alert } }
       end
     end
   end
@@ -139,10 +143,12 @@ class CoursesController < ApplicationController
 
   def mass_accept_pending
     @course.accept_all_pending
+    render 'reload_users', locals: { notification: t('courses.show.mass_accept_notification') }
   end
 
   def mass_decline_pending
     @course.decline_all_pending
+    render 'reload_users', locals: { notification: t('courses.show.mass_decline_notification') }
   end
 
   def list_members

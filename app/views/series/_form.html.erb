@@ -36,18 +36,22 @@
     <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".visibility-help" %></span>
   </div>
   <div class="field form-group">
-    <%= f.label :indianio_support, class: 'col-sm-4 control-label' %>
-    <div class="col-sm-8">
-      <%= f.check_box :indianio_support, class: 'checkbox' %>
+    <%= f.label :description, :class => "col-sm-4 control-label" %>
+    <div class="col-sm-8"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
+    <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".description-help" %></span>
+  </div>
+  <div class="field form-group">
+    <div class="col-sm-8 col-sm-offset-4">
+      <div class="checkbox">
+        <%= f.label :indianio_support do %>
+          <%= f.check_box :indianio_support %>
+          <%= Series.human_attribute_name(:indianio_support) %>
+        <% end %>
+      </div>
     </div>
     <span class="help-block col-sm-offset-4 col-sm-8">
       <%= t '.indianio-support-help' %>
     </span>
-  </div>
-  <div class="field form-group">
-    <%= f.label :description, :class => "col-sm-4 control-label" %>
-    <div class="col-sm-8"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
-    <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".description-help" %></span>
   </div>
 <% end %>
 <script type="text/javascript">

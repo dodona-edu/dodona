@@ -62,4 +62,6 @@
 <% if users.empty? %>
   <p class="text-center text-muted lead table-placeholder"><%= t 'users.index.no_users' %></p>
 <% end %>
-<center><%= page_navigation_links users, true, "users" if users.try(:total_pages) %></center>
+<center>
+  <%= user_page_navigation_links users, local_assigns.fetch(:pagination_opts, {}) %>
+</center>

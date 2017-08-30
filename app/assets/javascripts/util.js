@@ -1,25 +1,25 @@
-var dodona = {};
+let dodona = {};
 
 /*
  * Function to delay some other function until it isn't
  * called for "ms" ms
  */
-var delay = (function () {
-    var timer = 0;
+let delay = (function () {
+    let timer = 0;
     return function (callback, ms) {
         clearTimeout(timer);
         timer = setTimeout(callback, ms);
     };
 })();
 
-var updateURLParameter = function updateURLParameter(url, param, paramVal) {
-    var TheAnchor = null;
-    var newAdditionalURL = "";
-    var tempArray = url.split("?");
-    var baseURL = tempArray[0];
-    var additionalURL = tempArray[1];
-    var temp = "";
-    var i;
+let updateURLParameter = function updateURLParameter(url, param, paramVal) {
+    let TheAnchor = null;
+    let newAdditionalURL = "";
+    let tempArray = url.split("?");
+    let baseURL = tempArray[0];
+    let additionalURL = tempArray[1];
+    let temp = "";
+    let i;
 
     if (additionalURL) {
         var tmpAnchor = additionalURL.split("#");
@@ -30,7 +30,7 @@ var updateURLParameter = function updateURLParameter(url, param, paramVal) {
         }
         tempArray = additionalURL.split("&");
         for (i = 0; i < tempArray.length; i++) {
-            if (tempArray[i].split('=')[0] != param) {
+            if (tempArray[i].split("=")[0] != param) {
                 newAdditionalURL += temp + tempArray[i];
                 temp = "&";
             }
@@ -47,18 +47,19 @@ var updateURLParameter = function updateURLParameter(url, param, paramVal) {
     if (TheAnchor) {
         paramVal += "#" + TheAnchor;
     }
-    var rows_txt = temp + "" + param + "=" + paramVal;
+    let rows_txt = temp + "" + param + "=" + paramVal;
     return baseURL + "?" + newAdditionalURL + rows_txt;
 };
+
 function getURLParameter(name, url) {
     if (!url) {
         url = window.location.href;
     }
     name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
     if (!results) return null;
-    if (!results[2]) return '';
+    if (!results[2]) return "";
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
@@ -80,12 +81,14 @@ window.requestAnimFrame = (function () {
  */
 function logToGoogle(category, action, label, value) {
     if (typeof(ga) !== "undefined") {
-        ga('send', 'event', category, action, label, value);
+        ga("send", "event", category, action, label, value);
     }
 }
 
 function checkTimeZone(offset) {
-    if(offset !== new Date().getTimezoneOffset()) {
-        $("#time-zone-warning").removeClass('hidden');
+    if (offset !== new Date().getTimezoneOffset()) {
+        $("#time-zone-warning").removeClass("hidden");
     }
 }
+
+export {dodona, delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone};

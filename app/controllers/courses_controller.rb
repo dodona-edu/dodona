@@ -165,6 +165,10 @@ class CoursesController < ApplicationController
              .order(first_name: :asc)
              .where(course_memberships: { status: statuses })
              .paginate(page: params[:page])
+    @pagination_opts = {
+      controller: 'courses',
+      action: 'list_members'
+    }
     render 'users/index'
   end
 

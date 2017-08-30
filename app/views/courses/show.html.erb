@@ -1,3 +1,7 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'course' %>
+<% end %>
+
 <div class="row">
   <%= link_to '#series', class: "btn btn-lg btn-down col-sm-1 hidden-xs", title: t('.series') do %>
     <span class='hidden-sm'><%= t ".series" %></span><br>
@@ -77,6 +81,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_course_show(<%= @series.length %>, <%= @total_series %>, <%= !policy(@course).list_members? %>);
+    initCourseShow(<%= @series.length %>, <%= @total_series %>, <%= !policy(@course).list_members? %>);
   });
 </script>

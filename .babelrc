@@ -6,7 +6,8 @@
         "browsers": "> 1%",
         "uglify": true
       },
-      "useBuiltIns": true
+      "useBuiltIns": true,
+      "debug": true
     }]
   ],
 

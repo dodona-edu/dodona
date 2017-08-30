@@ -1,0 +1,5 @@
+<% if notification %>
+  showNotification("<%= notification %>");
+<% end %>
+loadUsers();
+$("#pending-count").text('<%= @course.pending_members.count %>');

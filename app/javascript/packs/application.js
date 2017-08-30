@@ -8,13 +8,26 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import jQuery from "jquery";
-import dragula from "dragula";
-
-import "../../assets/javascripts/polyfills.js";
 
 // jQuery aliases
 window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
 
+import dragula from "dragula";
 window.dragula = dragula;
+
+import "../../assets/javascripts/polyfills.js";
+
+// TODO: Include me in each javascript file, if needed (instead of globally binding)
+import {dodona, delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone} from "../../assets/javascripts/util.js";
+
+console.log("Warning: remove me");
+window.dodona = dodona;
+window.delay = delay;
+window.updateURLParameter = updateURLParameter;
+window.getURLParameter = getURLParameter;
+window.logToGoogle = logToGoogle;
+window.checkTimeZone = checkTimeZone;
+
+

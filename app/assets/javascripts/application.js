@@ -19,7 +19,6 @@
 
 //= require vendor
 
-//= require ./common
 //= require ./exercise
 //= require ./i18n/translations
 //= require ./index

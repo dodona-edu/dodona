@@ -161,6 +161,8 @@ class CoursesController < ApplicationController
     @users = apply_scopes(@course.users)
              .order('course_memberships.status ASC')
              .order(permission: :desc)
+             .order(last_name: :asc)
+             .order(first_name: :asc)
              .where(course_memberships: { status: statuses })
              .paginate(page: params[:page])
     render 'users/index'

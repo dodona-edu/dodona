@@ -98,7 +98,7 @@ class Course < ApplicationRecord
   end
 
   def accept_all_pending
-    pending_memberships.update(status: :student)
+    pending_memberships.update(status: :student).count
   end
 
   def decline_all_pending
@@ -108,7 +108,7 @@ class Course < ApplicationRecord
       else
         cm.update(status: :unsubscribed)
       end
-    end
+    end.count
   end
 
   def scoresheet(options = {})

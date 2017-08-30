@@ -28,6 +28,12 @@ en:
       confirm_decline_all: Are you sure you want to decline all pending users?
       accept_all: Accept all
       confirm_accept_all: Are you sure you want to accept all pending users?
+      mass_accept_notification:
+        one: 1 pending user is accepted.
+        other: "%{count} pending users are accepted."
+      mass_decline_notification:
+        one: 1 pending user is declined.
+        other: "%{count} pending users are declined."
     not_a_member_card:
       not_a_member: You are not a member of this course. Do you wish to subscribe?
       not_a_member_moderated: Your registration has to be approved by a course administrator before you gain access to the course.

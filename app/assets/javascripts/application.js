@@ -26,7 +26,6 @@
 //= require ./index
 //= require ./modal
 //= require ./notifications
-//= require ./polyfills
 //= require ./pythia_submission
 //= require ./series
 //= require ./submission

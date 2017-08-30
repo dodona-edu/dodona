@@ -7,12 +7,14 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-import jQuery from 'jquery'
-import dragula from 'dragula'
+import jQuery from "jquery";
+import dragula from "dragula";
+
+import "../../assets/javascripts/polyfills.js";
 
 // jQuery aliases
 window.jQuery = jQuery;
 window.jquery = jQuery;
-window.$      = jQuery;
+window.$ = jQuery;
 
 window.dragula = dragula;

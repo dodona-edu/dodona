@@ -142,13 +142,13 @@ class CoursesController < ApplicationController
   end
 
   def mass_accept_pending
-    @course.accept_all_pending
-    render 'reload_users', locals: { notification: t('courses.show.mass_accept_notification') }
+    accepted = @course.accept_all_pending
+    render json: { status: 'ok', message: I18n.t('courses.show.mass_accept_notification', count: accepted) }
   end
 
   def mass_decline_pending
-    @course.decline_all_pending
-    render 'reload_users', locals: { notification: t('courses.show.mass_decline_notification') }
+    declined = @course.decline_all_pending
+    render json: { status: 'ok', message: I18n.t('courses.show.mass_decline_notification', count: declined) }
   end
 
   def list_members

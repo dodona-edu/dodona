@@ -11,16 +11,16 @@
 // about supported directives.
 //
 //= require rails-ujs
+
 //= require i18n
 //= require i18n/translations
+//= require ./i18n/translations
 
 //= require ace-rails-ap
 //= require ace/ext-language_tools
 
 //= require vendor
 
-//= require ./i18n/translations
-//= require ./index
 //= require ./modal
 //= require ./notifications
 //= require ./pythia_submission

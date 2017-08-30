@@ -1,7 +1,7 @@
 /* globals delay, getURLParameter, updateURLParameter, confirm, showNotification */
-function init_filter_index(baseUrl, eager, actions) {
-    var PARAM = "filter";
-    var $filter;
+function initFilterIndex(baseUrl, eager, actions) {
+    let PARAM = "filter";
+    let $filter;
 
     function init() {
         initFilter();
@@ -18,25 +18,25 @@ function init_filter_index(baseUrl, eager, actions) {
         $filter.keyup(function () {
             delay(search, 300);
         });
-        var param = getURLParameter(PARAM);
+        let param = getURLParameter(PARAM);
         if (param !== "") {
             $filter.val(param);
         }
     }
 
     function initActions() {
-        var $actions = $(".table-toolbar-tools .actions");
+        let $actions = $(".table-toolbar-tools .actions");
         $actions.removeClass("hidden");
         actions.forEach(function (action) {
-            var $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");
+            let $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");
             $link.appendTo($actions.find("ul"));
             $link.wrap("<li></li>");
             $link.click(function () {
                 if (confirm(action.confirm)) {
-                    var val = $filter.val();
-                    var url = updateURLParameter(action.action, PARAM, val);
+                    let val = $filter.val();
+                    let url = updateURLParameter(action.action, PARAM, val);
                     $.post(url, {
-                        format: "js"
+                        format: "js",
                     }, function (data) {
                         showNotification(data.message);
                         search();
@@ -48,15 +48,15 @@ function init_filter_index(baseUrl, eager, actions) {
     }
 
     function search() {
-        var val = $filter.val();
-        var url = updateURLParameter(getUrl(), PARAM, val);
+        let val = $filter.val();
+        let url = updateURLParameter(getUrl(), PARAM, val);
         url = updateURLParameter(url, "page", 1);
         if (!baseUrl) {
             window.history.replaceState(null, "Dodona", url);
         }
         $("#progress-filter").css("visibility", "visible");
         $.get(url, {
-            format: "js"
+            format: "js",
         }, function (data) {
             eval(data);
             $("#progress-filter").css("visibility", "hidden");
@@ -69,3 +69,5 @@ function init_filter_index(baseUrl, eager, actions) {
 
     init();
 }
+
+export {initFilterIndex};

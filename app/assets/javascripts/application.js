@@ -21,9 +21,7 @@
 
 //= require vendor
 
-//= require ./modal
 //= require ./notifications
-//= require ./pythia_submission
 //= require ./series
 //= require ./submission
 

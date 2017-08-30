@@ -1,4 +1,6 @@
-
+<% content_for :javascript do %>
+  <%= javascript_pack_tag 'pythia_submission' if submission.judge.renderer == PythiaRenderer %>
+<% end %>
 <p>
   <% if current_user.admin? %>
     <b><%= t "submissions.show.user" %>:</b> <%= link_to submission.user.full_name + " - " + submission.user.username, user_path(submission.user) %><br />

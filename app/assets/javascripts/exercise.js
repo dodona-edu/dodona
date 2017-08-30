@@ -1,5 +1,5 @@
 /* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip, showNotification */
-function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
+function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
     var editor;
     var lastSubmission;
 
@@ -189,3 +189,5 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
 
     init();
 }
+
+export {initExerciseShow};

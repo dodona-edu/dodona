@@ -33,7 +33,7 @@
                 </td>
                 <td><%= link_to course.name, course %></td>
                 <td><%= course.formatted_year %> </td>
-                <td><%= course.users.count %> </td>
+                <td><%= course.enrolled_members.count %> </td>
                 <td class="actions">
                   <% if policy(course).edit? %>
                     <%= link_to edit_course_path(course), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>

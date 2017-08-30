@@ -1,0 +1,91 @@
+var dodona = {};
+
+/*
+ * Function to delay some other function until it isn't
+ * called for "ms" ms
+ */
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
+var updateURLParameter = function updateURLParameter(url, param, paramVal) {
+    var TheAnchor = null;
+    var newAdditionalURL = "";
+    var tempArray = url.split("?");
+    var baseURL = tempArray[0];
+    var additionalURL = tempArray[1];
+    var temp = "";
+    var i;
+
+    if (additionalURL) {
+        var tmpAnchor = additionalURL.split("#");
+        var TheParams = tmpAnchor[0];
+        TheAnchor = tmpAnchor[1];
+        if (TheAnchor) {
+            additionalURL = TheParams;
+        }
+        tempArray = additionalURL.split("&");
+        for (i = 0; i < tempArray.length; i++) {
+            if (tempArray[i].split('=')[0] != param) {
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }
+    } else {
+        var tmpAnchor = baseURL.split("#");
+        var TheParams = tmpAnchor[0];
+        TheAnchor = tmpAnchor[1];
+
+        if (TheParams) {
+            baseURL = TheParams;
+        }
+    }
+    if (TheAnchor) {
+        paramVal += "#" + TheAnchor;
+    }
+    var rows_txt = temp + "" + param + "=" + paramVal;
+    return baseURL + "?" + newAdditionalURL + rows_txt;
+};
+function getURLParameter(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+/**
+ * requestAnimationFrame shim
+ * source: http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+ */
+window.requestAnimFrame = (function () {
+    return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        function (callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+})();
+
+/*
+ * Logs data to Google Analytics
+ */
+function logToGoogle(category, action, label, value) {
+    if (typeof(ga) !== "undefined") {
+        ga('send', 'event', category, action, label, value);
+    }
+}
+
+function checkTimeZone(offset) {
+    if(offset !== new Date().getTimezoneOffset()) {
+        $("#time-zone-warning").removeClass('hidden');
+    }
+}

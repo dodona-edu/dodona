@@ -28,6 +28,46 @@ class User < ApplicationRecord
   has_many :course_memberships
   has_many :courses, through: :course_memberships
 
+  has_many :subscribed_courses,
+           lambda {
+             where.not course_memberships:
+                { status: %i[pending unsubscribed] }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :administrating_courses,
+           lambda {
+             where course_memberships:
+                { status: :course_admin }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :enrolled_courses,
+           lambda {
+             where course_memberships:
+                { status: :student }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :pending_courses,
+           lambda {
+             where course_memberships:
+                { status: :pending }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :unsubscribed_courses,
+           lambda {
+             where course_memberships:
+                { status: :unsubscribed }
+           },
+           through: :course_memberships,
+           source: :course
+
   devise :cas_authenticatable
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
@@ -71,12 +111,25 @@ class User < ApplicationRecord
   end
 
   def header_courses
-    return nil if courses.empty?
-    courses.group_by(&:year).first.second[0..2]
+    return nil if subscribed_courses.empty?
+    subscribed_courses.group_by(&:year).first.second[0..2]
   end
 
   def member_of?(course)
-    courses.include? course
+    subscribed_courses.include? course
+  end
+
+  def admin_of?(course)
+    administrating_courses.include? course
+  end
+
+  def membership_status_for(course)
+    membership = CourseMembership.find_by(course: course, user: self)
+    if membership
+      membership.status
+    else
+      'no_membership'
+    end
   end
 
   def cas_extra_attributes=(extra_attributes)

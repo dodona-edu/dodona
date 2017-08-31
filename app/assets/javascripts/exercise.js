@@ -1,6 +1,7 @@
-/* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip */
+/* globals ga, I18n, ace, MathJax, initStrip, Strip */
 
 import {showNotification} from "./notifications.js";
+import {dodona} from "./util.js";
 
 function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
     var editor;

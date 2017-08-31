@@ -1,4 +1,4 @@
-/* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip */
+/* globals ga, I18n, ace, MathJax, initStrip, Strip */
 
 function initCourseShow(seriesShown, seriesTotal, autoLoad) {
     var seriesShown = seriesShown,

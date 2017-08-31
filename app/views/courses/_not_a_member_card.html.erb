@@ -1,0 +1,21 @@
+<div class="col-sm-6 col-xs-12">
+  <div class="card">
+    <div class="card-supporting-text">
+      <% if @course.closed? %>
+        <p>
+        <strong><%= t 'layout.messages.danger' %>!</strong>
+        <%= t 'courses.registration.closed'%>
+      <% else %>
+        <p><%= t 'courses.registration.not_a_member' %>
+        <% if @course.moderated? %>
+          <p><%= t 'courses.registration.moderated' %>
+        <% end %>
+      <% end %>
+    </div>
+    <% unless @course.closed? %>
+      <div class="card-actions card-border">
+        <%= registration_action_for course: @course, membership: @current_membership %>
+      </div>
+    <% end %>
+  </div>
+</div>

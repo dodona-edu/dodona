@@ -10,6 +10,7 @@
 @import "series.css.less";
 @import "submissions.css.less";
 @import "pythia_submission.css.less";
+@import "users.css.less";
 
 <% if Rails.env.development? %>
     @import "development.css.less";
@@ -20,4 +21,16 @@
 
 .field_with_errors input {
     border-color: @danger-800;
+}
+
+.glyphicon.glyphicon-strikethrough:after {
+    position: absolute;
+    top: -12px;
+    left: 6px;
+    content: "|";
+    display: block;
+    font-weight: bold;
+    font-size: 1.5em;
+    font-size: 250%;
+    transform: rotate(45deg);
 }

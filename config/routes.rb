@@ -35,9 +35,14 @@ Rails.application.routes.draw do
       resources :series
       resources :exercises, only: [:show], concerns: %i[mediable submitable]
       member do
+        get 'list_members'
         post 'subscribe'
+        post 'unsubscribe'
+        post 'update_membership'
+        post 'mass_accept_pending'
+        post 'mass_decline_pending'
         get 'scoresheet'
-        get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: 'subscribe_with_secret'
+        get 'subscribe/:secret', to: 'courses#registration', as: "registration"
       end
     end
 

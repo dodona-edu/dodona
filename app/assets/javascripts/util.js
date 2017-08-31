@@ -1,5 +1,3 @@
-let dodona = {};
-
 /*
  * Function to delay some other function until it isn't
  * called for "ms" ms
@@ -91,4 +89,4 @@ function checkTimeZone(offset) {
     }
 }
 
-export {dodona, delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone};
+export {delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone};

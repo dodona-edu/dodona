@@ -88,6 +88,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id %>);
+    dodona.initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id %>);
   });
 </script>

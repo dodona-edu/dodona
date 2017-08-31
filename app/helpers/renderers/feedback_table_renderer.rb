@@ -229,7 +229,7 @@ class FeedbackTableRenderer
 
   def init_js
     @builder.script do
-      @builder << 'init_submission_show();'
+      @builder << 'initSubmissionShow();'
     end
   end
 

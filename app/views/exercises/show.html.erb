@@ -1,5 +1,7 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'exercise' %>
+  <%= javascript_pack_tag 'submission' %>
+  <%= javascript_pack_tag 'pythia_submission' if @exercise.judge.renderer == PythiaRenderer %>
 <% end %>
 
 <div class="row">

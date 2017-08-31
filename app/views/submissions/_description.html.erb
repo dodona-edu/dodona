@@ -1,4 +1,5 @@
-<% content_for :javascript do %>
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'submission' %>
   <%= javascript_pack_tag 'pythia_submission' if submission.judge.renderer == PythiaRenderer %>
 <% end %>
 <p>

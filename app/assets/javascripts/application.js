@@ -21,6 +21,5 @@
 
 //= require vendor
 
-//= require ./notifications
 //= require ./submission
 

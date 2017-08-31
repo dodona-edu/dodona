@@ -11,10 +11,10 @@
  */
 function showNotification(content, properties) {
     var properties = properties || {};
-    var autoHide = properties.autoHide === undefined ? true : properties.autoHide;
-    var loading = properties.loading === undefined ? false : properties.loading;
+    let autoHide = properties.autoHide === undefined ? true : properties.autoHide;
+    let loading = properties.loading === undefined ? false : properties.loading;
 
-    var $notification = getNotificationHTML(content);
+    let $notification = getNotificationHTML(content);
     $(".notifications").prepend($notification);
 
     if (autoHide) {
@@ -29,7 +29,7 @@ function showNotification(content, properties) {
     });
 
     return {
-        hide: hide
+        hide: hide,
     };
 
     function hide(delayed) {
@@ -43,3 +43,5 @@ function showNotification(content, properties) {
         return $("<br><div class='notification notification-show'>" + content + "</div>");
     }
 }
+
+export {showNotification};

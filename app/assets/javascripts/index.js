@@ -1,4 +1,7 @@
-/* globals delay, getURLParameter, updateURLParameter, confirm, showNotification */
+/* globals delay, getURLParameter, updateURLParameter, confirm */
+
+import {showNotification} from "./notifications.js";
+
 function initFilterIndex(baseUrl, eager, actions) {
     let PARAM = "filter";
     let $filter;

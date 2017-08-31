@@ -34,4 +34,7 @@ window.checkTimeZone = checkTimeZone;
 import {initPythiaSubmissionShow} from "../../assets/javascripts/pythia_submission.js";
 window.initPythiaSubmissionShow = initPythiaSubmissionShow;
 
+import {showNotification} from "../../assets/javascripts/notifications.js";
+window.showNotification = showNotification;
+
 

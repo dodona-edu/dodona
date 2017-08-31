@@ -20,6 +20,3 @@
 //= require ace/ext-language_tools
 
 //= require vendor
-
-//= require ./submission
-

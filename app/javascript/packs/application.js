@@ -17,20 +17,10 @@ window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
 
-import dragula from "dragula";
-window.dragula = dragula;
-
 import "../../assets/javascripts/polyfills.js";
 
-// TODO: Include me in each javascript file, if needed (instead of globally binding)
-import {dodona, delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone} from "../../assets/javascripts/util.js";
-
-console.log("Warning: remove me");
+import {dodona, checkTimeZone} from "../../assets/javascripts/util.js";
 window.dodona = dodona;
-window.delay = delay;
-window.updateURLParameter = updateURLParameter;
-window.getURLParameter = getURLParameter;
-window.logToGoogle = logToGoogle;
 window.checkTimeZone = checkTimeZone;
 
 import {showNotification} from "../../assets/javascripts/notifications.js";

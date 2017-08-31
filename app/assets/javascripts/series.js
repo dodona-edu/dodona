@@ -1,4 +1,7 @@
-/* globals dodona, dragula, I18n, Flatpickr */
+/* globals, dodona, I18n, Flatpickr */
+
+import dragula from "dragula";
+
 import {showNotification} from "./notifications.js";
 
 function initSeriesEdit() {

@@ -1,6 +1,5 @@
-/* globals delay, getURLParameter, updateURLParameter, confirm */
-
 import {showNotification} from "./notifications.js";
+import {delay, updateURLParameter, getURLParameter} from "./util.js";
 
 function initFilterIndex(baseUrl, eager, actions) {
     let PARAM = "filter";
@@ -35,7 +34,7 @@ function initFilterIndex(baseUrl, eager, actions) {
             $link.appendTo($actions.find("ul"));
             $link.wrap("<li></li>");
             $link.click(function () {
-                if (confirm(action.confirm)) {
+                if (window.confirm(action.confirm)) {
                     let val = $filter.val();
                     let url = updateURLParameter(action.action, PARAM, val);
                     $.post(url, {

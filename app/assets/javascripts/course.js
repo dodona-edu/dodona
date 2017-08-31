@@ -1,4 +1,5 @@
-/* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip, showNotification */
+/* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip */
+
 function initCourseShow(seriesShown, seriesTotal, autoLoad) {
     var seriesShown = seriesShown,
         perBatch = seriesShown,

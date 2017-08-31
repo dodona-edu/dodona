@@ -1,4 +1,6 @@
-/* globals dodona, showNotification, dragula, I18n, Flatpickr */
+/* globals dodona, dragula, I18n, Flatpickr */
+import {showNotification} from "./notifications.js";
+
 function initSeriesEdit() {
     function init() {
         initAddButtons();

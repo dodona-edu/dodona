@@ -1,17 +1,17 @@
-/* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip, showNotification */
+/* globals ga, I18n, ace, MathJax, initStrip, Strip */
+import {initFilterIndex} from "./index.js";
 
-function loadUsers(baseUrl, status){
-  if(!baseUrl){
-    baseUrl = $("#user-tabs").data("baseurl");
-  }
-  if(!status){
-    status = window.location.hash.substr(1);
-  }
-  init_filter_index(baseUrl + "?status=" + status, true);
+function loadUsers(baseUrl, status) {
+    if (!baseUrl) {
+        baseUrl = $("#user-tabs").data("baseurl");
+    }
+    if (!status) {
+        status = window.location.hash.substr(1);
+    }
+    initFilterIndex(baseUrl + "?status=" + status, true);
 }
 
-function init_course_show(seriesShown, seriesTotal, autoLoad) {
-
+function initCourseShow(seriesShown, seriesTotal, autoLoad) {
     var seriesShown = seriesShown,
         perBatch = seriesShown,
         seriesTotal = seriesTotal,
@@ -64,31 +64,39 @@ function init_course_show(seriesShown, seriesTotal, autoLoad) {
     function loadMoreSeries() {
         loading = true;
         autoLoad = true;
-        $(".load-more-series").button('loading');
+        $(".load-more-series").button("loading");
         $.get("?format=js&offset=" + seriesShown)
-        .done(function () {
-            seriesShown += perBatch;
-            if (seriesShown >= seriesTotal) {
-                $(".load-more-series").hide();
-            }
-        })
-        .always(function () {
-            loading = false;
-            $(".load-more-series").button('reset');
-        });
+            .done(function () {
+                seriesShown += perBatch;
+                if (seriesShown >= seriesTotal) {
+                    $(".load-more-series").hide();
+                }
+            })
+            .always(function () {
+                loading = false;
+                $(".load-more-series").button("reset");
+            });
     }
 
     function scroll() {
-        if (loading) { return; }
-        if (seriesShown >= seriesTotal) { return; }
-        if (!autoLoad) { return; }
+        if (loading) {
+            return;
+        }
+        if (seriesShown >= seriesTotal) {
+            return;
+        }
+        if (!autoLoad) {
+            return;
+        }
 
-        var top_of_element = $(".load-more-series").offset().top;
-        var bottom_of_screen = $(window).scrollTop() + $(window).height();
-        if(top_of_element < bottom_of_screen) {
+        let topOfElement = $(".load-more-series").offset().top;
+        let bottomOfScreen = $(window).scrollTop() + $(window).height();
+        if (topOfElement < bottomOfScreen) {
             loadMoreSeries();
         }
     }
 
     init();
 }
+
+export {initCourseShow, loadUsers};

@@ -13,6 +13,12 @@
 !/log/.keep
 !/tmp/.keep
 
+/node_modules
+/yarn-error.log
+
+/public/packs
+/public/packs-test/
+
 # Ignore Byebug command history file.
 .byebug_history
 
@@ -28,3 +34,5 @@ erd.pdf
 
 # Ignore coverage reports
 coverage
+/public/packs
+/node_modules

@@ -1,3 +1,9 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'exercise' %>
+  <%= javascript_pack_tag 'submission' %>
+  <%= javascript_pack_tag 'pythia_submission' if @exercise.judge.renderer == PythiaRenderer %>
+<% end %>
+
 <div class="row">
   <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs", title: t('.handin') do %>
     <span class='hidden-sm'><%= t('.handin') %></span><br>
@@ -82,6 +88,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_exercise_show(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id %>);
+    dodona.initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id %>);
   });
 </script>

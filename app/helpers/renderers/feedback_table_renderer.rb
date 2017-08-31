@@ -224,12 +224,12 @@ class FeedbackTableRenderer
     @builder.div(id: 'editor-result') do
       @builder.text! code
     end
-    @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
+    @builder << "<script>$(function () {dodona.loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
   end
 
   def init_js
     @builder.script do
-      @builder << 'init_submission_show();'
+      @builder << 'dodona.initSubmissionShow();'
     end
   end
 

@@ -39,9 +39,6 @@ class Exercise < ApplicationRecord
   has_many :series, through: :series_memberships
 
   validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
-  validates :repository_id, presence: true
-  validates :judge, presence: true
-  validates :repository, presence: true
 
   before_create :generate_id
   before_save :check_validity

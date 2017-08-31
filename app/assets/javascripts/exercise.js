@@ -1,5 +1,8 @@
-/* globals ga, I18n, dodona, ace, MathJax, initStrip, Strip, showNotification */
-function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
+/* globals ga, I18n, ace, MathJax, initStrip, Strip */
+
+import {showNotification} from "./notifications.js";
+
+function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
     var editor;
     var lastSubmission;
 
@@ -48,8 +51,8 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         });
 
         // export function
-        dodona.feedbackLoaded = feedbackLoaded;
-        dodona.feedbackTableLoaded = feedbackTableLoaded;
+        window.dodona.feedbackLoaded = feedbackLoaded;
+        window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
     function initEditor() {
@@ -189,3 +192,5 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
 
     init();
 }
+
+export {initExerciseShow};

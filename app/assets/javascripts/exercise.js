@@ -1,7 +1,6 @@
 /* globals ga, I18n, ace, MathJax, initStrip, Strip */
 
 import {showNotification} from "./notifications.js";
-import {dodona} from "./util.js";
 
 function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
     var editor;
@@ -52,8 +51,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         // export function
-        dodona.feedbackLoaded = feedbackLoaded;
-        dodona.feedbackTableLoaded = feedbackTableLoaded;
+        window.dodona.feedbackLoaded = feedbackLoaded;
+        window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
     function initEditor() {

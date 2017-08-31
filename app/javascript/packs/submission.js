@@ -1,4 +1,4 @@
 import {initSubmissionShow, loadResultEditor} from "../../assets/javascripts/submission.js";
 
-window.initSubmissionShow = initSubmissionShow;
-window.loadResultEditor = loadResultEditor;
+window.dodona.initSubmissionShow = initSubmissionShow;
+window.dodona.loadResultEditor = loadResultEditor;

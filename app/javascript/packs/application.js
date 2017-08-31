@@ -19,11 +19,12 @@ window.$ = jQuery;
 
 import "../../assets/javascripts/polyfills.js";
 
-import {dodona, checkTimeZone} from "../../assets/javascripts/util.js";
-window.dodona = dodona;
-window.checkTimeZone = checkTimeZone;
-
+// Use a global dodona object to prevent polluting the global namespace
 import {showNotification} from "../../assets/javascripts/notifications.js";
-window.showNotification = showNotification;
+import {checkTimeZone} from "../../assets/javascripts/util.js";
 
+let dodona = {};
+dodona.checkTimeZone = checkTimeZone;
+dodona.showNotification = showNotification;
+window.dodona = dodona;
 

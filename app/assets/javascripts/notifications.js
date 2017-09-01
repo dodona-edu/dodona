@@ -1,4 +1,3 @@
-/* globals requestAnimFrame */
 /**
  * Shows a notification in the bottom left corner
  *

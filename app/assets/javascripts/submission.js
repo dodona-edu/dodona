@@ -1,4 +1,3 @@
-/* globals ace */
 function initSubmissionShow() {
     function init() {
         initTabLinks();

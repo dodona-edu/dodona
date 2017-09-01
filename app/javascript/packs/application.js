@@ -20,9 +20,14 @@ window.$ = jQuery;
 
 import "polyfills.js";
 
+
 // Use a global dodona object to prevent polluting the global na
 import {showNotification} from "notifications.js";
-import {checkTimeZone} from "util.js";
+import {initClipboard, checkTimeZone} from "util.js";
+
+
+// Initialize clipboard.js
+initClipboard();
 
 let dodona = {};
 dodona.checkTimeZone = checkTimeZone;

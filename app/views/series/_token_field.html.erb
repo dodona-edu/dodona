@@ -1,8 +1,6 @@
 <%= text_field_tag type, value, readonly: true, class: 'form-control' %>
 <span class="input-group-btn">
-  <button class="btn btn-default" onclick="alert('Nog niet geïmplementeerd.')">
-    <span class='glyphicon glyphicon-copy'></span>
-  </button>
+  <%= clipboard_button_for type %>
   <%= link_to update_token_series_path(@series, type: type),
     title: t('series.edit.generate'),
     method: :post,

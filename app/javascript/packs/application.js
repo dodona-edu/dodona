@@ -7,6 +7,7 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
+
 import Rails from "rails-ujs";
 Rails.start();
 
@@ -19,7 +20,7 @@ window.$ = jQuery;
 
 import "../../assets/javascripts/polyfills.js";
 
-// Use a global dodona object to prevent polluting the global namespace
+// Use a global dodona object to prevent polluting the global na
 import {showNotification} from "../../assets/javascripts/notifications.js";
 import {checkTimeZone} from "../../assets/javascripts/util.js";
 
@@ -27,4 +28,3 @@ let dodona = {};
 dodona.checkTimeZone = checkTimeZone;
 dodona.showNotification = showNotification;
 window.dodona = dodona;
-

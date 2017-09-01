@@ -41,7 +41,11 @@ function initFilterIndex(baseUrl, eager, actions) {
                         format: "js",
                     }, function (data) {
                         showNotification(data.message);
-                        search(action.list_url);
+                        if (data.js) {
+                            eval(data.js);
+                        } else {
+                            search();
+                        }
                     });
                 }
                 return false;
@@ -49,10 +53,9 @@ function initFilterIndex(baseUrl, eager, actions) {
         });
     }
 
-    function search(listUrl) {
+    function search() {
         let val = $filter.val();
-        let listUrl = listUrl || getUrl();
-        let url = updateURLParameter(listUrl, PARAM, val);
+        let url = updateURLParameter(getUrl(), PARAM, val);
         url = updateURLParameter(url, "page", 1);
         if (!baseUrl) {
             window.history.replaceState(null, "Dodona", url);

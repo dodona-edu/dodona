@@ -142,13 +142,13 @@ class CoursesController < ApplicationController
   end
 
   def mass_accept_pending
-    accepted = @course.accept_all_pending
-    render json: { status: 'ok', message: I18n.t('courses.show.mass_accept_notification', count: accepted) }
+    @accepted = @course.accept_all_pending
+    render 'mass_accept_pending', formats: [:json]
   end
 
   def mass_decline_pending
-    declined = @course.decline_all_pending
-    render json: { status: 'ok', message: I18n.t('courses.show.mass_decline_notification', count: declined) }
+    @declined = @course.decline_all_pending
+    render 'mass_decline_pending', formats: [:json]
   end
 
   def list_members

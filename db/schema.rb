@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825083120) do
+ActiveRecord::Schema.define(version: 20170824071649) do
 
   create_table "course_memberships", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "course_id"
@@ -100,11 +100,13 @@ ActiveRecord::Schema.define(version: 20170825083120) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deadline"
-    t.string "token"
+    t.string "access_token"
+    t.string "indianio_token"
+    t.index ["access_token"], name: "index_series_on_access_token"
     t.index ["course_id"], name: "index_series_on_course_id"
     t.index ["deadline"], name: "index_series_on_deadline"
+    t.index ["indianio_token"], name: "index_series_on_indianio_token"
     t.index ["name"], name: "index_series_on_name"
-    t.index ["token"], name: "index_series_on_token"
     t.index ["visibility"], name: "index_series_on_visibility"
   end
 

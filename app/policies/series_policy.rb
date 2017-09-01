@@ -49,6 +49,10 @@ class SeriesPolicy < ApplicationPolicy
     user && token_show?
   end
 
+  def indianio_download?
+    true
+  end
+
   def modify_exercises?
     user&.admin?
   end
@@ -73,9 +77,13 @@ class SeriesPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def update_token?
+    edit?
+  end
+
   def permitted_attributes
     if user&.admin?
-      %i[name description course_id visibility order deadline]
+      %i[name description course_id visibility order deadline indianio_support]
     else
       []
     end

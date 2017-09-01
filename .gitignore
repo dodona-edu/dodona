@@ -34,3 +34,6 @@ erd.pdf
 
 # Ignore coverage reports
 coverage
+/public/packs
+/public/packs-test
+/node_modules

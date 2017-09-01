@@ -1,4 +1,13 @@
 module ApplicationHelper
+  def clipboard_button_for(selector)
+    selector = selector.to_s
+    selector.prepend('#') unless selector.starts_with?('#')
+    button_tag class: 'btn btn-default',
+               data: { clipboard_target: selector } do
+      tag :span, class: 'glyphicon glyphicon-copy'
+    end
+  end
+
   def markdown(source)
     source ||= ''
     Kramdown::Document.new(source, input: 'GFM', hard_wrap: false, syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe

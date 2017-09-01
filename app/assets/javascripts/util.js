@@ -1,3 +1,31 @@
+
+import Clipboard from "clipboard";
+
+function initClipboard() {
+    $(() => {
+        const selector = ".btn[data-clipboard-target]";
+        const tooltip = I18n.t("js.copy-to-clipboard");
+        const $el = $(selector)
+            .attr("title", tooltip)
+            .tooltip();
+        const clip = new Clipboard(selector);
+        clip.on("success", e => {
+            $(e.trigger).attr("title", I18n.t("js.copy-success"))
+                .tooltip("fixTitle")
+                .tooltip("show")
+                .attr("title", tooltip)
+                .tooltip("fixTitle");
+        });
+        clip.on("error", e => {
+            $(e.trigger).attr("title", I18n.t("js.copy-fail"))
+                .tooltip("fixTitle")
+                .tooltip("show")
+                .attr("title", tooltip)
+                .tooltip("fixTitle");
+        });
+    });
+}
+
 /*
  * Function to delay some other function until it isn't
  * called for "ms" ms
@@ -89,4 +117,4 @@ function checkTimeZone(offset) {
     }
 }
 
-export {delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone};
+export {initClipboard, delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone};

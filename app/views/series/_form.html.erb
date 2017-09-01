@@ -1,3 +1,7 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'series' %>
+<% end %>
+
 <%= form_for(series, :html => {:class => 'form-horizontal'}) do |f| %>
   <% if series.errors.any? %>
     <div id="error_explanation">
@@ -43,6 +47,6 @@
 <% end %>
 <script type="text/javascript">
   $(function () {
-    init_series_form();
+    dodona.initSeriesForm();
   });
 </script>

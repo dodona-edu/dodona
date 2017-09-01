@@ -1,4 +1,3 @@
-
 import {showInfoModal} from "./modal.js";
 import {logToGoogle} from "./util.js";
 

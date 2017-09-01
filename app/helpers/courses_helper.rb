@@ -11,11 +11,13 @@ module CoursesHelper
       when 'open'
         link_to t('courses.show.subscribe'),
                 subscribe_course_path(@course, secret: secret),
+                title: t('courses.registration.registration-tooltip'),
                 method: :post,
                 class: 'btn-text'
       when 'moderated'
         link_to t('courses.show.request_registration'),
                 subscribe_course_path(@course, secret: secret),
+                title: t('courses.registration.registration-tooltip'),
                 method: :post,
                 class: 'btn-text'
       when 'closed'

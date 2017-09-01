@@ -12,8 +12,8 @@ nl:
       title: Cursus toevoegen
     show:
       course: Cursus
-      invitation_link: Inschrijvingslink
-      subscribe: inschrijven
+      invitation_link: Registratielink
+      subscribe: registreren
       request_registration: registratieverzoek indienen
       unsubscribe: uitschrijven
       exercise_series: Oefeningenreeksen
@@ -35,19 +35,20 @@ nl:
         one: 1 gebruiker op de wachtlijst is afgewezen.
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
     registration:
-      page_title: Inschrijving
-      not_a_member: Je bent niet ingeschreven voor deze cursus.
-      already_a_member: Je bent al ingeschreven.
+      registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen de UGent.
+      page_title: Registratie
+      not_a_member: Je bent niet geregistreerd voor deze cursus.
+      already_a_member: Je bent al geregistreerd.
       pending: Je staat al op de wachtlijst.
-      moderated: Je inschrijving moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot dit vak.
-      explanation_html: 'Dit is de inschrijvingspagina voor het vak <strong>%{course_name}</strong>.'
-      instruction: 'Klik op de knop op je in te schrijven.'
-      closed: Deze cursus is gesloten en aanvaardt geen nieuwe inschrijvingen.
-      sign_up_successfully: Je ingeschreven op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je inschrijving accepteerd.
-      subscribed_successfully: Inschrijving succesvol
+      moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot dit vak.
+      explanation_html: 'Dit is de registratiepagina voor het vak <strong>%{course_name}</strong>.'
+      instruction: 'Klik op de knop om je te registreren voor deze cursus.'
+      closed: Deze cursus is gesloten en aanvaardt geen nieuwe registraties.
+      sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je registratie accepteerd.
+      subscribed_successfully: Registratie succesvol
       unsubscribed_successfully: Uitschrijving successvol
-      subscription_failed: Inschrijven mislukt
-      not_logged_in: Je moet ingelogd zijn om je in te schrijven
+      subscription_failed: Registratie mislukt
+      not_logged_in: Je moet ingelogd zijn om je te registreren
       key_mismatch: De sleutel kwam niet overeen
     scoresheet:
       explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"

@@ -1,3 +1,3 @@
-import {initExerciseShow} from "../../assets/javascripts/exercise.js";
+import {initExerciseShow} from "exercise.js";
 
 window.dodona.initExerciseShow = initExerciseShow;

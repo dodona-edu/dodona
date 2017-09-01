@@ -18,11 +18,11 @@ window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
 
-import "../../assets/javascripts/polyfills.js";
+import "polyfills.js";
 
 // Use a global dodona object to prevent polluting the global na
-import {showNotification} from "../../assets/javascripts/notifications.js";
-import {checkTimeZone} from "../../assets/javascripts/util.js";
+import {showNotification} from "notifications.js";
+import {checkTimeZone} from "util.js";
 
 let dodona = {};
 dodona.checkTimeZone = checkTimeZone;

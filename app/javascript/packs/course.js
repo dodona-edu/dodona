@@ -1,3 +1,3 @@
-import {initCourseShow} from "../../assets/javascripts/course.js";
+import {initCourseShow} from "course.js";
 
 window.dodona.initCourseShow = initCourseShow;

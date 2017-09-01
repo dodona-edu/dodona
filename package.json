@@ -2,6 +2,7 @@
     "name": "dodona",
     "private": true,
     "dependencies": {
+        "@rails/webpacker": "^3.0.0",
         "ace-builds": "^1.2.8",
         "autoprefixer": "^7.1.2",
         "babel-core": "^6.26.0",

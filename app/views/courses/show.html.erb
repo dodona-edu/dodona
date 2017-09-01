@@ -91,14 +91,12 @@
                             text: t(".accept_all"),
                             confirm: t(".confirm_accept_all"),
                             action: mass_accept_pending_course_path(@course),
-                            list_url: list_members_course_path(@course, status: 'pending')
                           },
                           {
                             icon: 'remove',
                             text: t(".decline_all"),
                             confirm: t(".confirm_decline_all"),
                             action: mass_decline_pending_course_path(@course),
-                            list_url: list_members_course_path(@course, status: 'pending')
                           }
                         ]
           }) %>

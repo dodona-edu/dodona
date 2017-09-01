@@ -25,7 +25,7 @@ function initCourseShow(seriesShown, seriesTotal, autoLoad) {
     }
 
     function initUserTabs(){
-      $userTabs = $("#user-tabs")
+      let $userTabs = $("#user-tabs")
       if($userTabs.length > 0){
         var baseUrl = $userTabs.data("baseurl");
 

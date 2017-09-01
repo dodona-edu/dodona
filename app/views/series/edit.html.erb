@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'series' %>
+<% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
@@ -45,6 +48,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_series_edit();
+    dodona.initSeriesEdit();
   });
 </script>

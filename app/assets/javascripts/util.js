@@ -3,25 +3,21 @@ import Clipboard from "clipboard";
 
 function initClipboard() {
     $(() => {
-        const selector = ".btn[data-clipboard-target]";
-        const tooltip = I18n.t("js.copy-to-clipboard");
-        const $el = $(selector)
-            .attr("title", tooltip)
-            .tooltip();
+        const selector = ".btn";
+        const delay = 1000;
         const clip = new Clipboard(selector);
+        const targetOf = e => $($(e.trigger).data("clipboard-target"));
         clip.on("success", e => {
-            $(e.trigger).attr("title", I18n.t("js.copy-success"))
-                .tooltip("fixTitle")
-                .tooltip("show")
-                .attr("title", tooltip)
-                .tooltip("fixTitle");
+            let $t = targetOf(e);
+            $t.attr("title", I18n.t("js.copy-success"))
+                .tooltip("show");
+            setTimeout(() => $t.tooltip("destroy"), delay);
         });
         clip.on("error", e => {
-            $(e.trigger).attr("title", I18n.t("js.copy-fail"))
-                .tooltip("fixTitle")
-                .tooltip("show")
-                .attr("title", tooltip)
-                .tooltip("fixTitle");
+            let $t = targetOf(e);
+            $t.attr("title", I18n.t("js.copy-fail"))
+                .tooltip("show");
+            setTimeout(() => $t.tooltip("destroy"), delay);
         });
     });
 }

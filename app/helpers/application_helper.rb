@@ -3,6 +3,7 @@ module ApplicationHelper
     selector = selector.to_s
     selector.prepend('#') unless selector.starts_with?('#')
     button_tag class: 'btn btn-default',
+               title: t('js.copy-to-clipboard'),
                data: { clipboard_target: selector } do
       tag :span, class: 'glyphicon glyphicon-copy'
     end

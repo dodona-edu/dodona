@@ -73,6 +73,7 @@ class ApplicationController < ActionController::Base
   def look_for_token
     token = request.headers['Authorization']&.strip
     return if token.blank?
+    token.gsub!(/Token token=\"(.*)\"/, '\1')
     user = User.find_by(token: token)
     if user
       sign_in user

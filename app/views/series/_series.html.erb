@@ -48,8 +48,9 @@
         <% end %>
         <% if policy(series).edit? && series.hidden? %>
           <li>
-            <%= link_to token_show_series_path(series, series.token) do %>
-              <span class='glyphicon glyphicon-link'></span> Token link
+            <%= link_to token_show_series_path(series, series.access_token) do %>
+              <span class='glyphicon glyphicon-link'></span>
+              <%= t 'series.show.token_link' %>
             <% end %>
           </li>
         <% end %>

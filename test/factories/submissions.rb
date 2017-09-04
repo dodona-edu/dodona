@@ -1,9 +1,23 @@
 FactoryGirl.define do
   factory :submission do
-    summary 'Correct answer'
-
     code { Faker::Lorem.paragraph }
-    result '{}'
+
+    transient do
+      status nil
+      result nil
+      summary nil
+    end
+
+    # When created, the submission ia queued and the status,
+    # result and summary are overwritten.
+    # Overwrite them again if explicitly given
+    after(:create) do |submission, e|
+      attrs = {}
+      attrs[:result] = e.result if e.result
+      attrs[:status] = e.status if e.status
+      attrs[:summary] = e.summary if e.summary
+      submission.update(attrs)
+    end
 
     user
     exercise

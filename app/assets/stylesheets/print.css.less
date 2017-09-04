@@ -1,0 +1,27 @@
+@media print {
+  @page {
+    size: A4;
+  }
+
+  // Hide footer
+  .footer {
+    display: none;
+  }
+
+  // Make font size a little bit bigger
+  .card-supporting-text {
+    font-size: 16px;
+  }
+  .card-title-text {
+    font-size: 30px;
+  }
+
+  // Underline links
+  a {
+    text-decoration: underline;
+  }
+  // Bootstrap places link href after the text, remove it
+  a[href]:after {
+    content: none;
+  }
+}

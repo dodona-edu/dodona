@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170509185106) do
+ActiveRecord::Schema.define(version: 20170825144325) do
 
   create_table "course_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
     t.integer  "user_id"
-    t.integer  "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "status",     default: 2
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.index ["course_id"], name: "index_course_memberships_on_course_id", using: :btree
     t.index ["user_id"], name: "index_course_memberships_on_user_id", using: :btree
   end
@@ -26,10 +26,11 @@ ActiveRecord::Schema.define(version: 20170509185106) do
     t.string   "name"
     t.string   "year"
     t.string   "secret"
-    t.boolean  "open"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.text     "description", limit: 65535
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.text     "description",  limit: 65535
+    t.integer  "visibility",                 default: 0
+    t.integer  "registration",               default: 0
   end
 
   create_table "delayed_jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -94,17 +95,19 @@ ActiveRecord::Schema.define(version: 20170509185106) do
   create_table "series", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "course_id"
     t.string   "name"
-    t.text     "description", limit: 65535
+    t.text     "description",    limit: 65535
     t.integer  "visibility"
     t.integer  "order"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.datetime "deadline"
-    t.string   "token"
+    t.string   "access_token"
+    t.string   "indianio_token"
+    t.index ["access_token"], name: "index_series_on_access_token", using: :btree
     t.index ["course_id"], name: "index_series_on_course_id", using: :btree
     t.index ["deadline"], name: "index_series_on_deadline", using: :btree
+    t.index ["indianio_token"], name: "index_series_on_indianio_token", using: :btree
     t.index ["name"], name: "index_series_on_name", using: :btree
-    t.index ["token"], name: "index_series_on_token", using: :btree
     t.index ["visibility"], name: "index_series_on_visibility", using: :btree
   end
 

@@ -37,6 +37,7 @@ en:
         judge: Default judge
         exercises: Exercises
       series:
+        indianio_support: Indianio support
         course: Course
         name: Name
         description: Description

@@ -12,7 +12,6 @@
           } %>
     </div>
   </div>
-
   <% summary.exercise_summaries.each do |ex| %>
     <div class="card exercise-description">
       <%= content_tag :a,
@@ -24,9 +23,8 @@
           <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
         </h2>
       </div>
-      <div class="card-supporting-text">
-        <%= ex.exercise.description %>
-      </div>
+      <%= render partial: 'exercises/description_card',
+                 locals: { exercise: ex.exercise } %>
       <div class="card-actions card-border">
         <% if ex.submitted? || ex.deadline_passed? %>
           <div class="btn-text submission-status-button">

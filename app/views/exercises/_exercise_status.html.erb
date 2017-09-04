@@ -1,19 +1,19 @@
 <% if exercise.hidden? %>
-  <%= content_tag :span,
+  <%= content_tag :span, nil,
                   class: 'glyphicon glyphicon-eye-close',
                   title: t('exercises.index.hidden') %>
 <% elsif exercise.closed? %>
-  <%= content_tag :span,
+  <%= content_tag :span, nil,
                   class: 'glyphicon glyphicon-ban-circle',
                   title: t('exercises.index.closed') %>
 <% end %>
 
 <% if exercise.removed? %>
-  <%= content_tag :span,
+  <%= content_tag :span, nil,
                   class: 'glyphicon glyphicon-trash',
                   title: t('exercises.index.removed') %>
 <% elsif exercise.not_valid? %>
-  <%= content_tag :span,
+  <%= content_tag :span, nil,
                   class: 'glyphicon glyphicon-exclamation-sign',
                   title: t('exercises.index.invalid') %>
 <% end %>

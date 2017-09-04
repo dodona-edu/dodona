@@ -1,7 +1,8 @@
 FactoryGirl.define do
   factory :exercise do
-    sequence(:name_nl) { |n| "Oefening #{n}" }
-    sequence(:name_en) { |n| "Exercise #{n}" }
+    sequence(:name_nl) { |n| name || "Oefening #{n}" }
+    sequence(:name_en) { |n| name || "Exercise #{n}" }
+
     visibility 'open'
     status 'ok'
 
@@ -9,6 +10,23 @@ FactoryGirl.define do
 
     association :repository, factory: %i[repository git_stubbed]
     judge { repository.judge }
+
+    transient do
+      name nil
+
+      submission_count 0
+      submission_users do
+        create_list :user, 5 if submission_count.positive?
+      end
+    end
+
+    after :create do |exercise, e|
+      e.submission_count.times do
+        create :submission,
+               exercise: exercise,
+               user: e.submission_users.sample
+      end
+    end
 
     trait :nameless do
       name_nl nil

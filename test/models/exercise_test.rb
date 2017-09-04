@@ -325,7 +325,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 end
 
 # multiple layers of configurations; tests merging.
-class LasagneTest < ActiveSupport::TestCase
+class LasagneConfigTest < ActiveSupport::TestCase
   setup do
     @judge = create :judge, :git_stubbed, name: 'Iona Nikitchenko'
     @remote = local_remote('exercises/lasagna')

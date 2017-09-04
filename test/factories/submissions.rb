@@ -1,8 +1,6 @@
 FactoryGirl.define do
-  factory :submission, aliases: [:correct_submission] do
-    status :correct
+  factory :submission do
     summary 'Correct answer'
-    accepted true
 
     code { Faker::Lorem.paragraph }
     result '{}'
@@ -12,18 +10,27 @@ FactoryGirl.define do
 
     initialize_with { new(attributes) }
 
-    transient do
-      evaluation_stubbed true
+    trait :correct do
+      after(:create) do |submission|
+        submission.update(
+          status: 'correct',
+          summary: 'Good job!',
+          accepted: true
+        )
+      end
     end
 
-    after(:build) do |submission, e|
-      submission.stubs(:evaluate_delayed) if e.evaluation_stubbed
+    trait :wrong do
+      after(:create) do |submission|
+        submission.update(
+          status: 'wrong',
+          summary: 'You used the wrong programming language',
+          accepted: false
+        )
+      end
     end
-  end
 
-  factory :wrong_submission, parent: :submission do
-    status :wrong
-    summary 'You used the wrong programming language.'
-    accepted false
+    factory :wrong_submission, traits: [:wrong]
+    factory :correct_submission, traits: [:correct]
   end
 end

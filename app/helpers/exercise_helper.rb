@@ -4,17 +4,20 @@ module ExerciseHelper
   # returns a list with as the first item the description of an execise
   # and as second item a hash of footnote indexes mapped on their url
   def exercise_description_and_footnotes(exercise)
-    renderer = DescriptionRenderer.new(exercise)
+    renderer = DescriptionRenderer.new(exercise, request)
     [renderer.description_html, renderer.footnote_urls]
   end
 
   class DescriptionRenderer
+    include Rails.application.routes.url_helpers
+
     attr_reader :footnote_urls
 
-    def initialize(exercise)
+    def initialize(exercise, request)
       @exercise = exercise
+      @request = request
       @description = exercise.description || ''
-      @description = markdown(@description) if exercise.format == 'md'
+      @description = markdown(@description) if exercise.description_format == 'md'
       process_html
     end
 
@@ -27,12 +30,13 @@ module ExerciseHelper
     # 2: optional ./
     # 3: media url (ex: media/photos/photo.png)
     # 4: part between the closing '/" and >
-    MEDIA_MATCH = %r{(<.*?=['"])(\.\/)?(media\/.*?)(['"].*?>)}
-
-    # Replace each occurence of a relative media path with an
-    # 'absolute paht' (with respect to the base URL)
     #
-    # Static method to make it easier to test
+    # The trailing 'm' makes this regex multiline,
+    # so newlines between attributes are handled correctly
+    MEDIA_MATCH = %r{(<.*?=['"])(\.\/)?(media\/.*?)(['"].*?>)}m
+
+    # Replace each occurence of a relative media path with a
+    # path relative to the context (base URL).
     #
     # Example substitutions:
     # (with path = /nl/exercises/xxxx/)
@@ -40,7 +44,7 @@ module ExerciseHelper
     #  => <img src='/nl/exercises/xxxx/media/photo.jpg'>
     # <a href='./media/page.html'>link</a>
     #  => <a href='/nl/exercises/xxxx/media/page.html'>
-    def self.absolutize_media_paths(html, path)
+    def contextualize_media_paths(html, path)
       path += '/' unless path.ends_with? '/'
       html.gsub(MEDIA_MATCH, "\\1#{path}\\3\\4")
     end
@@ -64,7 +68,13 @@ module ExerciseHelper
 
     # Rewrite all media urls
     def rewrite_media_urls
-      @description = absolutize_media_paths @description, exercise_path(@exercise)
+      @description = contextualize_media_paths @description, exercise_path(nil, @exercise)
+    end
+
+    # Rewrite relative url's to absulute
+    # (i.e. if it is relative, rewrite it to be absolute)
+    def absolutize_url(url)
+      URI.join(@request.original_url, url).to_s
     end
 
     # Add a footnote reference after each anchor, and add the anchor href
@@ -72,12 +82,14 @@ module ExerciseHelper
     def process_url_footnotes
       @doc = Nokogiri::HTML::DocumentFragment.parse @description
       @footnote_urls = {}
-      @doc.css('a').each.with_index(offset: 1) do |anchor, i|
+      i = 1
+      @doc.css('a').each do |anchor|
         ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"
         anchor.add_next_sibling ref
-        footnote_urls[i.to_s] = anchor.attribute('href').value
+        @footnote_urls[i.to_s] = absolutize_url anchor.attribute('href').value
+        i += 1
       end
-      @descriprion = @doc.to_html
+      @description = @doc.to_html
     end
   end
 end

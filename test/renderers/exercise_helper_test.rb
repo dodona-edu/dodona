@@ -8,23 +8,26 @@ class ExerciseHelperTest < ActiveSupport::TestCase
   end
 end
 
-class MediaPathAbsolutizerTest < ActiveSupport::TestCase
+class MediaPathContextualizerTest < ActiveSupport::TestCase
   include Rails.application.routes.url_helpers
 
   setup do
     @exercise = create :exercise
     @path = exercise_path(:en, @exercise)
+    @renderer = ExerciseHelper::DescriptionRenderer.new(@exercise, nil)
   end
 
   test 'substitute multiple lines' do
     test_html = "<img alt='eend' src='media/duck.jpg'>\n" \
                 "<a href='media/page.html'>Text</a>\n" \
+                "<a href=\"media/page.html\">Text</a>\n" \
                 "<img alt='nottosubstitute' src='mediaz.png'>\n" \
                 "<a href='http://google.com'>Google</a>\n" \
                 "<a href='./media/path/to/stuff.png'>stuff</a>\n"
-    res = ExerciseHelper::DescriptionRenderer.absolutize_media_paths test_html, @path
+    res = @renderer.contextualize_media_paths test_html, @path
     expected = "<img alt='eend' src='#{@path}/media/duck.jpg'>\n" \
                "<a href='#{@path}/media/page.html'>Text</a>\n" \
+               "<a href=\"#{@path}/media/page.html\">Text</a>\n" \
                "<img alt='nottosubstitute' src='mediaz.png'>\n" \
                "<a href='http://google.com'>Google</a>\n" \
                "<a href='#{@path}/media/path/to/stuff.png'>stuff</a>\n"
@@ -33,6 +36,8 @@ class MediaPathAbsolutizerTest < ActiveSupport::TestCase
 
   test 'media paths should be substituted' do
     testcases = {
+      "<img src=\"media/path/to/photo1.jpg\" alt=\"photo\" width=\"300\">":
+        "<img src=\"#{@path}/media/path/to/photo1.jpg\" alt=\"photo\" width=\"300\">",
       "<img src='media/path/to/photo.jpg' alt='photo' width='300'>":
         "<img src='#{@path}/media/path/to/photo.jpg' alt='photo' width='300'>",
       "<img src=\"media/path/to/photo.jpg\" alt=\"photo\" width=\"300\">":
@@ -44,10 +49,14 @@ class MediaPathAbsolutizerTest < ActiveSupport::TestCase
       "<a href='./media/link.html'><sup>LINK</sup></a>":
         "<a href='#{@path}/media/link.html'><sup>LINK</sup></a>",
       "<a href='./media/link.html' disabled><sup>LINK</sup></a>":
-        "<a href='#{@path}/media/link.html' disabled><sup>LINK</sup></a>"
+        "<a href='#{@path}/media/link.html' disabled><sup>LINK</sup></a>",
+        "<img alt=\"ISBN\" data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \" src=\"media/ISBN.gif\" title=\"ISBN\" height=\"140\">":
+        "<img alt=\"ISBN\" data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \" src=\"#{@path}/media/ISBN.gif\" title=\"ISBN\" height=\"140\">",
+        "<img alt=\"ISBN\"\n data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \"\n src=\"media/ISBN.gif\"\n title=\"ISBN\"\n height=\"140\">":
+        "<img alt=\"ISBN\"\n data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \"\n src=\"#{@path}/media/ISBN.gif\"\n title=\"ISBN\"\n height=\"140\">"
     }.stringify_keys
     testcases.each do |tag, expected|
-      res = ExerciseHelper::DescriptionRenderer.absolutize_media_paths tag, @path
+      res = @renderer.contextualize_media_paths tag, @path
       assert_equal expected, res
     end
   end
@@ -65,7 +74,7 @@ class MediaPathAbsolutizerTest < ActiveSupport::TestCase
       "Put your files in the ./media/stuff.folder",
     ]
     testcases.each do |tag|
-      res = ExerciseHelper::DescriptionRenderer.absolutize_media_paths tag, @path
+      res = @renderer.contextualize_media_paths tag, @path
       assert_equal tag, res
     end
   end

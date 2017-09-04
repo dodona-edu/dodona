@@ -3,8 +3,44 @@
 require 'test_helper'
 
 class ExerciseHelperTest < ActiveSupport::TestCase
-  setup do
-    @exercise = create :exercise
+  test 'html exercise' do
+    exercise = create :exercise, :description_html
+    check_desc_and_footnotes exercise
+  end
+
+  test 'md exercise' do
+    exercise = create :exercise, :description_md
+    check_desc_and_footnotes exercise
+  end
+
+  def check_desc_and_footnotes(exercise)
+    url = "http://example.com/exercises/#{exercise.id}/"
+    stubrequest = mock
+    stubrequest.stubs(:original_url).returns(url)
+    renderer = ExerciseHelper::DescriptionRenderer.new(exercise, stubrequest)
+    check_description renderer.description_html, exercise
+    check_footnotes renderer.footnote_urls, exercise, url
+  end
+
+  def check_description(description, exercise)
+    expected = <<~EOS
+      <h2 id="los-deze-oefening-op">Los deze oefening op</h2>
+      <p><img src="/exercises/#{exercise.id}/media/img.jpg" alt="media-afbeelding">
+      <a href="https://google.com">LMGTFY</a><sup class="footnote-url visible-print-inline">1</sup>
+      <a href="../123455/">Volgende oefening</a><sup class="footnote-url visible-print-inline">2</sup></p>
+    EOS
+    assert_equal expected, description
+  end
+
+  def check_footnotes(footnotes, exercise, url)
+    footnote_a = footnotes.to_a
+    index, content = footnote_a[0]
+    assert_equal '1', index
+    assert_equal 'https://google.com', content
+
+    index, content = footnote_a[1]
+    assert_equal '2', index
+    assert_equal 'http://example.com/exercises/123455/', content
   end
 end
 

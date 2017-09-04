@@ -39,5 +39,29 @@ FactoryGirl.define do
                 .returns({ 'evaluation': {} }.stringify_keys)
       end
     end
+
+    trait :description_html do
+      description_format 'html'
+      after :create do |exercise|
+        exercise.stubs(:description_localized).returns <<~EOS
+          <h2 id="los-deze-oefening-op">Los deze oefening op</h2>
+          <p><img src="media/img.jpg" alt="media-afbeelding"/>
+          <a href="https://google.com">LMGTFY</a>
+          <a href="../123455/">Volgende oefening</a></p>
+        EOS
+      end
+    end
+
+    trait :description_md do
+      description_format 'md'
+      after :create do |exercise|
+        exercise.stubs(:description_localized).returns <<~EOS
+          ## Los deze oefening op
+          ![media-afbeelding](media/img.jpg)
+          [LMGTFY](https://google.com)
+          [Volgende oefening](../123455/)
+        EOS
+      end
+    end
   end
 end

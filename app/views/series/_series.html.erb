@@ -14,7 +14,7 @@
   <div class="flex-spacer"></div>
   <div class="card-subtitle-actions">
     <div class="btn-group">
-      <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
+      <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
         <span class='glyphicon glyphicon-option-vertical'></span>
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
@@ -73,18 +73,20 @@
   </div>
 </div>
 <% if current_user&.admin? && series.hidden?%>
-  <div class="alert alert-info"><%= t "series.show.series_not_visible" %></div>
+  <div class="alert alert-info hidden-print"><%= t "series.show.series_not_visible" %></div>
 <% end %>
 <% if current_user&.admin? && series.closed?%>
-  <div class="alert alert-info"><%= t "series.show.series_not_accessible" %></div>
+  <div class="alert alert-info hidden-print"><%= t "series.show.series_not_accessible" %></div>
 <% end %>
 <%= markdown(series.description) %>
 
-<% if series.exercises.length > 0 %>
-  <%= render partial: 'exercises/exercises_table', locals: {
-        series: series,
-        exercises: series.exercises,
-        get_exercise_path: get_exercise_path,
-        summary: local_assigns[:summary],
-  } %>
-<% end %>
+<div class="hidden-print">
+  <% if series.exercises.length > 0 %>
+    <%= render partial: 'exercises/exercises_table', locals: {
+          series: series,
+          exercises: series.exercises,
+          get_exercise_path: get_exercise_path,
+          summary: local_assigns[:summary],
+    } %>
+  <% end %>
+</div>

@@ -6,11 +6,8 @@
       <h2 class="card-title-text">
         <%= @series.course.name %>
       </h2>
-      <h1 class="visible-print-inline">
-        <%= @series.name %>
-      </h1>
     </div>
-    <div class="card-supporting-text hidden-print">
+    <div class="card-supporting-text">
       <%= render partial: 'series/series', locals: {
             series: @series,
             get_exercise_path: method(:exercise_anchor)

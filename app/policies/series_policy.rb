@@ -19,6 +19,10 @@ class SeriesPolicy < ApplicationPolicy
     false
   end
 
+  def overview?
+    show?
+  end
+
   def token_show?
     return true if user&.admin?
     return true unless record.closed?

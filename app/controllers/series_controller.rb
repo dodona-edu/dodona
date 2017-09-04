@@ -17,6 +17,8 @@ class SeriesController < ApplicationController
     @title = @series.name
   end
 
+  def overview; end
+
   def token_show
     raise Pundit::NotAuthorizedError if @series.access_token != params[:token]
 

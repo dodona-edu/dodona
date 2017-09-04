@@ -5,34 +5,26 @@
 <% end %>
 
 <div class="row">
-  <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs", title: t('.handin') do %>
+  <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>
     <span class='hidden-sm'><%= t('.handin') %></span><br>
     <span class="glyphicon glyphicon-chevron-down"></span>
   <% end %>
-
   <div class="col-sm-10 col-xs-12">
     <div class="card exercise-description">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @exercise.name %></h2>
-          <% if policy(@exercise).edit? %>
-            <div class="card-title-fab">
-              <%= render 'fab_link', url: edit_exercise_path(@exercise), icon: 'pencil' %>
-            </div>
-          <% end %>
-      </div>
-      <div class="card-supporting-text">
-        <% if @exercise.removed? %>
-          <div class="alert alert-info"><%= t ".alert_removed" %></div>
-        <% elsif @exercise.not_valid? %>
-          <div class="alert alert-info"><%= t ".alert_not_valid" %></div>
-        <% else %>
-          <%= @exercise.description %>
+        <h2 class="card-title-text">
+          <%= @exercise.name %>
+        </h2>
+        <% if policy(@exercise).edit? %>
+          <div class="card-title-fab">
+            <%= render 'fab_link', url: edit_exercise_path(@exercise), icon: 'pencil' %>
+          </div>
         <% end %>
       </div>
+      <%= render partial: 'description_card', locals: { exercise: @exercise } %>
     </div>
   </div>
-</div>
-<div class="row">
+<div class="row hidden-print">
   <a class="anchor" id="submission-card"></a>
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card card-nav">

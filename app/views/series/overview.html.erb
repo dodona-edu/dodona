@@ -7,7 +7,7 @@
     <div class="card-supporting-text">
 
       <span style="float: right">
-        <%= render partial: 'deadline', locals: { series: @series } %>
+        <% # render partial: 'deadline', locals: { series: @series } %>
       </span>
     </div>
   </div>
@@ -19,9 +19,7 @@
           <%= link_to exercise.name, exercise_path(exercise) %>
         </h2>
       </div>
-      <div class="card-supporting-text">
-        <%= exercise.description %>
-      </div>
+      <%= render partial: 'exercises/description_card', locals: { exercise: exercise } %>
       <div class="card-actions card-border">
         <%= link_to t('exercises.show.handin'), exercise_path(exercise), class: "btn-text" %>
       </div>

@@ -83,7 +83,7 @@ class SeriesController < ApplicationController
     send_zip current_user
   end
 
-  def update_token
+  def reset_token
     type = params[:type].to_sym
     @series.generate_token(type)
     @series.save
@@ -94,9 +94,10 @@ class SeriesController < ApplicationController
       when :access_token
         token_show_series_url(@series, @series.access_token)
       end
-    render partial: 'token_field', locals: {
-      type: type,
-      value: value
+    render partial: 'application/token_field', locals: {
+      name: type,
+      value: value,
+      reset_url: reset_token_series_path(@series, type: type)
     }
   end
 

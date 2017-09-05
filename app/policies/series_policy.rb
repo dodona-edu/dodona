@@ -87,7 +87,7 @@ class SeriesPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def update_token?
+  def reset_token?
     edit?
   end
 

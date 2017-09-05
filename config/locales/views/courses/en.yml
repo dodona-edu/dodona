@@ -10,6 +10,8 @@ en:
       users: Users
     new:
       title: Add course
+    edit:
+      confidential: Confidential
     show:
       course: Course
       invitation_link: Subscription link

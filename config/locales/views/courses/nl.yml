@@ -10,6 +10,8 @@ nl:
       users: Gebruikers
     new:
       title: Cursus toevoegen
+    edit:
+      confidential: Confidentieel
     show:
       course: Cursus
       invitation_link: Registratielink

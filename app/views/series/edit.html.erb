@@ -25,7 +25,12 @@
               <%= label_tag :indianio_token, 'Indianio token', class: 'col-sm-3 control-label' %>
               <div class="col-sm-9">
                 <div class="input-group" id="indianio_token">
-                    <%= render partial: 'token_field' , locals: { type: :indianio_token, value: @series.indianio_token }%>
+                  <%= render partial: 'token_field' ,
+                      locals: {
+                        name: :indianio_token,
+                        value: @series.indianio_token,
+                        reset_url: reset_token_series_path(@series, type: :indianio_token)
+                  } %>
                 </div>
               </div>
               <span class="help-block col-sm-offset-3 col-sm-9">
@@ -38,7 +43,12 @@
               <%= label_tag :access_token, t('.access-link'), class: 'col-sm-3 control-label' %>
               <div class="col-sm-9">
                 <div class="input-group" id="access_token">
-                    <%= render partial: 'token_field' , locals: { type: :access_token, value: token_show_series_url(@series, @series.access_token) }%>
+                  <%= render partial: 'token_field' ,
+                    locals: {
+                    name: :access_token,
+                    value: token_show_series_url(@series, @series.access_token),
+                  reset_url: reset_token_series_path(@series, type: :access_token)
+                  } %>
                 </div>
               </div>
               <span class="help-block col-sm-offset-3 col-sm-9">

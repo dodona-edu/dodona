@@ -15,6 +15,7 @@ en:
     show:
       course: Course
       invitation_link: Subscription link
+      invitation_link_help_html: 'This URL links to a page where the user is promted to register. When this course is hidden, this is the only way a user can subscribe. If this course is moderated, the user will become pending. Your course is currently <strong>%{visibility}</strong> and registrations are <strong>%{registration}</strong>.'
       subscribe: subscribe
       request_registration: request registration
       unsubscribe: unsubscribe

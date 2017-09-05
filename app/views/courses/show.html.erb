@@ -53,21 +53,23 @@
             </div>
             <div class="col-sm-6">
               <p>
-                <%= t ".invitation_link" %>
+              <%= t ".invitation_link" %> 
+              <span class="glyphicon glyphicon-info-sign" title="<%= t ".invitation_link_help" %>">
+              </span>
               <div class="input-group input-group-sm">
                 <%= text_field_tag :registration_link, registration_course_url(@course, @course.secret), readonly: true, class: 'form-control' %>
                 <span class="input-group-btn">
                   <%= clipboard_button_for :registration_link %>
                 </span>
               </div>
-              <span class="help-block">
-                <%= t ".invitation_link_help_html",
-                  visibility: t("activerecord.attributes.course.visibilities.#{@course.visibility}").downcase,
-                  registration: t("activerecord.attributes.course.registrations.#{@course.registration}").downcase
-              %>
-              </span>
             </div>
           </div>
+          <span class="help-block">
+            <%= t ".visibility-#{@course.visibility}-info_html" %>
+          </span>
+          <span class="help-block">
+            <%= t ".registration-#{@course.registration}-info_html" %>
+          </span>
           <% if policy(@course).scoresheet? %>
             <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text pull-right' %>
           <% end %>

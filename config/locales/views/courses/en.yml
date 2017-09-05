@@ -15,7 +15,12 @@ en:
     show:
       course: Course
       invitation_link: Subscription link
-      invitation_link_help_html: 'This URL links to a page where the user is promted to register. When this course is hidden, this is the only way a user can subscribe. If this course is moderated, the user will become pending. Your course is currently <strong>%{visibility}</strong> and registrations are <strong>%{registration}</strong>.'
+      invitation_link_help: 'This URL links to a page where the user is promted to register.'
+      visibility-visible-info_html: 'This course is <strong>visible</strong>. Everyone can access this course from the courses overview and the contents are visible for anyone.'
+      visibility-hidden-info_html: 'This course is <strong>hidden</strong>. It is not listed in the course overview and to subscribe, users need the subscription link. The contents are only visible for subscribed members.'
+      registration-open-info_html: 'Registrations are <strong>open</strong> for this course, meaning that users immediately gain access when they click on the subscribe button.'
+      registration-moderated-info_html: 'Registrations are <strong>moderated</strong> for this course. Users who subscribe become pending and a course administrator has to accept them before they are listed within the course.'
+      registration-closed-info_html: 'Registrations are <strong>closed</strong> for this course. It is impossible for users to subscribe until you change the registration settings. Users who are currently subscribed still have access.'
       subscribe: subscribe
       request_registration: request registration
       unsubscribe: unsubscribe

@@ -171,6 +171,16 @@ class CoursesController < ApplicationController
     render 'users/index'
   end
 
+  def reset_token
+    @course.generate_secret
+    @course.save
+    render partial: 'token_field', locals: {
+      name: :registration_link,
+      value: registration_course_url(@course, @course.secret),
+      reset_url: reset_token_course_path(@course)
+    }
+  end
+
   private
 
   def try_to_subscribe_current_user(**args)

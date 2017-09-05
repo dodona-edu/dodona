@@ -94,6 +94,10 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def reset_token?
+    course_admin?
+  end
+
   def permitted_attributes
     if course_admin?
       %i[name year description visibility registration]

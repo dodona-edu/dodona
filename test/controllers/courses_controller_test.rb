@@ -12,6 +12,12 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test_crud_actions
+
+  test 'should reset token' do
+    old_secret = @instance.secret
+    post reset_token_course_url(@instance)
+    assert_not_equal old_secret, @instance.reload.secret
+  end
 end
 
 class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest

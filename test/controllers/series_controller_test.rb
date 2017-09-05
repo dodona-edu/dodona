@@ -75,11 +75,11 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should generate indianio_token' do
     token_pre = @instance.indianio_token
-    post update_token_series_path(@instance, type: :indianio_token), params: { format: :js }
+    post reset_token_series_path(@instance, type: :indianio_token), params: { format: :js }
     token_mid = @instance.reload.indianio_token
     assert_not_equal token_pre, token_mid, 'token did not change'
 
-    post update_token_series_path(@instance, type: :indianio_token), params: { format: :js }
+    post reset_token_series_path(@instance, type: :indianio_token), params: { format: :js }
     token_after = @instance.reload.indianio_token
     assert_not_equal token_mid, token_after, 'token did not change'
   end

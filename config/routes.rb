@@ -26,7 +26,7 @@ Rails.application.routes.draw do
         get 'download_solutions'
         get 'token/:token', to: 'series#token_show', as: 'token_show'
         get 'scoresheet'
-        post 'update_token'
+        post 'reset_token'
       end
     end
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       resources :exercises, only: [:show], concerns: %i[mediable submitable]
       member do
         get 'list_members'
+        post 'reset_token'
         post 'subscribe'
         post 'unsubscribe'
         post 'update_membership'

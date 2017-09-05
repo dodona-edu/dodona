@@ -92,7 +92,9 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if course_admin?
+    # record is the Series class on create
+    if course_admin? ||
+       (record == Series && user&.admin?)
       %i[name description course_id visibility order deadline indianio_support]
     else
       []
@@ -102,6 +104,8 @@ class SeriesPolicy < ApplicationPolicy
   private
 
   def course_admin?
-    user&.zeus? || user&.admin_of?(record&.course)
+    user&.zeus? ||
+      (record.class == Series &&
+       user&.admin_of?(record&.course))
   end
 end

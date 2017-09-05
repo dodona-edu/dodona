@@ -39,27 +39,33 @@
           <div class="row">
             <div class="col-sm-3">
               <p>
-                <%= t ".subscribed_users" %>:
+                <%= t ".subscribed_users" %>
                 <h1>
                   <%= @course.subscribed_members.count %>
                 </h1>
             </div>
             <div class="col-sm-3">
               <p>
-                <%= t ".submitted_solutions" %>:
+                <%= t ".submitted_solutions" %>
                 <h1>
                   <%= @course.submissions.count %>
                 </h1>
             </div>
             <div class="col-sm-6">
               <p>
-                <%= t ".invitation_link" %>:
+                <%= t ".invitation_link" %>
               <div class="input-group input-group-sm">
                 <%= text_field_tag :registration_link, registration_course_url(@course, @course.secret), readonly: true, class: 'form-control' %>
                 <span class="input-group-btn">
                   <%= clipboard_button_for :registration_link %>
                 </span>
               </div>
+              <span class="help-block">
+                <%= t ".invitation_link_help_html",
+                  visibility: t("activerecord.attributes.course.visibilities.#{@course.visibility}").downcase,
+                  registration: t("activerecord.attributes.course.registrations.#{@course.registration}").downcase
+              %>
+              </span>
             </div>
           </div>
           <% if policy(@course).scoresheet? %>

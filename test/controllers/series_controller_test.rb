@@ -17,6 +17,18 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to edit_series_url(instance)
   end
 
+  test 'course admin should be able to update course' do
+    sign_out :user
+    @admin = create :student
+    sign_in @admin
+
+    @instance.course.administrating_members << @admin
+    patch series_url(@instance, series: { name: 'Dirichlet' })
+
+    assert_response :redirect
+    assert_equal 'Dirichlet', @instance.reload.name
+  end
+
   test 'update series should redirect to course' do
     instance = update_request_expect
     assert_redirected_to course_url(instance.course, all: true, anchor: "series-#{instance.name.parameterize}")

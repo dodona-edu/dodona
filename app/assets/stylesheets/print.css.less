@@ -1,11 +1,38 @@
 @media print {
   @page {
     size: A4;
+    margin: 25mm;
   }
 
   // Hide footer
   .footer {
     display: none;
+  }
+
+  // Do not underline titles that are links
+  h1, h2, h3, h4, h5, h6 {
+    a {
+      text-decoration: none;
+    }
+  }
+
+  // Do not underline footnote URL's
+  .footnote-links a {
+    text-decoration: none;
+  }
+
+  .container.main {
+    padding-bottom: 0;
+  }
+
+  // New page for every exercise
+  .card.exercise-description {
+    page-break-after: always;
+  }
+
+  body {
+    min-height:initial !important;
+    margin: 0 0 0 0;
   }
 
   // Make font size a little bit bigger

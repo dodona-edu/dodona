@@ -29,6 +29,8 @@ en:
       series: series
       subscribed_users: Subscribed users
       submitted_solutions: Submitted solutions
+      exercise_count: Exercise count
+      average_correct: Average exercises correct per user
       download_scoresheet: Download scoresheet
       subscribed: Subscribed
       pending: Pending

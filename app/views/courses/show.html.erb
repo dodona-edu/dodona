@@ -37,19 +37,40 @@
       <% if current_user&.admin_of?(@course) %>
         <div class="card-supporting-text card-border">
           <div class="row">
-            <div class="col-sm-3">
-              <p>
-                <%= t ".subscribed_users" %>
-                <h1>
-                  <%= @course.subscribed_members.count %>
-                </h1>
-            </div>
-            <div class="col-sm-3">
-              <p>
-                <%= t ".submitted_solutions" %>
-                <h1>
-                  <%= @course.submissions.count %>
-                </h1>
+            <div class="col-sm-6">
+              <div class="row">
+                <div class="col-xs-6">
+                  <p>
+                    <%= t ".subscribed_users" %>
+                    <h1>
+                      <%= @course.subscribed_members.count %>
+                    </h1>
+                </div>
+                <div class="col-xs-6">
+                  <p>
+                    <%= t ".submitted_solutions" %>
+                    <h1>
+                      <%= @course.submissions.count %>
+                    </h1>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <p>
+                    <%= t ".exercise_count" %>
+                    <h1>
+                      <%= @course.exercises.count %>
+                    </h1>
+                </div>
+                <div class="col-xs-6">
+                  <p>
+                    <%= t ".average_correct" %>
+                    <h1>
+                      <%= @course.average_exercises_correct_per_user
+                                 .round(1) %>%
+                    </h1>
+                </div>
+              </div>
             </div>
             <div class="col-sm-6">
               <p>
@@ -62,13 +83,13 @@
                   <%= clipboard_button_for :registration_link %>
                 </span>
               </div>
+              <span class="help-block">
+                <%= t ".visibility-#{@course.visibility}-info_html" %>
+              </span>
+              <span class="help-block">
+                <%= t ".registration-#{@course.registration}-info_html" %>
             </div>
           </div>
-          <span class="help-block">
-            <%= t ".visibility-#{@course.visibility}-info_html" %>
-          </span>
-          <span class="help-block">
-            <%= t ".registration-#{@course.registration}-info_html" %>
           </span>
           <% if policy(@course).scoresheet? %>
             <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text pull-right' %>

@@ -22,9 +22,9 @@
             <% else %>
               <% if ex.solved_before_deadline? %>
                 <span class="glyphicon glyphicon-ok colored-correct %>"></span>
-              <% elseif ex.solved? %>
+              <% elsif ex.solved? %>
                 <span class="glyphicon glyphicon-ok colored-wrong %>"></span>
-              <% elseif ex.submitted? %>
+              <% elsif ex.submitted? %>
                   <span class="glyphicon glyphicon-remove colored-wrong"></span>
               <% end %>
             <% end %>

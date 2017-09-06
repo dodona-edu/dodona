@@ -1,7 +1,20 @@
 class CoursePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope
+      if user&.zeus?
+        scope
+      else
+        admin = CourseMembership.statuses['course_admin']
+        visible = Course.visibilities['visible']
+        scope.joins(:course_memberships)
+             .where(
+               <<~SQL
+                 courses.visibility             = #{visible}
+                 OR course_memberships.status   = #{admin}
+                 AND course_memberships.user_id = #{user.id}
+               SQL
+             ).distinct
+      end
     end
   end
 
@@ -10,7 +23,15 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    if record.hidden?
+      user&.zeus? || user&.member_of?(record)
+    else
+      true
+    end
+  end
+
+  def show_series?
+    user&.zeus? || record.open? || user&.member_of?(record)
   end
 
   def new?
@@ -18,7 +39,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def edit?
-    user&.admin?
+    course_admin?
   end
 
   def create?
@@ -26,7 +47,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def update?
-    user&.admin?
+    course_admin?
   end
 
   def destroy?
@@ -34,30 +55,60 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def list_members?
-    user&.admin?
+    course_admin?
+  end
+
+  def update_membership?
+    course_admin?
+  end
+
+  def update_course_admin_membership?
+    user&.zeus? || (course_admin? && user.admin?)
+  end
+
+  def unsubscribe?
+    user
   end
 
   def subscribe?
     user
   end
 
-  def subscribe_with_secret?
+  def registration?
     user
   end
 
   def scoresheet?
-    user&.admin?
+    course_admin?
   end
 
   def add_series?
-    user&.admin?
+    course_admin?
+  end
+
+  def mass_accept_pending?
+    course_admin?
+  end
+
+  def mass_decline_pending?
+    course_admin?
+  end
+
+  def reset_token?
+    course_admin?
   end
 
   def permitted_attributes
-    if user&.admin?
-      %i[name year description]
+    if course_admin?
+      %i[name year description visibility registration]
     else
       []
     end
+  end
+
+  private
+
+  def course_admin?
+    user&.zeus? || user&.admin_of?(record)
   end
 end

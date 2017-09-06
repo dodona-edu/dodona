@@ -38,10 +38,14 @@ function initFilterIndex(baseUrl, eager, actions) {
                     let val = $filter.val();
                     let url = updateURLParameter(action.action, PARAM, val);
                     $.post(url, {
-                        format: "js",
+                        format: "json",
                     }, function (data) {
                         showNotification(data.message);
-                        search();
+                        if (data.js) {
+                            eval(data.js);
+                        } else {
+                            search();
+                        }
                     });
                 }
                 return false;

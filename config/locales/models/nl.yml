@@ -1,5 +1,9 @@
 nl:
   activerecord:
+    errors:
+      models:
+        course_membership:
+          at_least_one_admin: Een cursus moet altijd minstens één cursusbeheerder hebben.
     models:
       course: Cursus
       exercise: Oefening
@@ -8,12 +12,22 @@ nl:
       series: Reeks
       submission: Oplossing
       user: Student
+      course_membership: Lidmaatschap van de cursus
     attributes:
       course:
         name: Naam
         year: Academiejaar
         description: Beschrijving
         secret: Secret
+        visibility: Zichtbaarheid
+        registration: Registratie
+        visibilities:
+          visible: Zichtbaar
+          hidden: Verborgen
+        registrations:
+          open: Open
+          moderated: Gemodereerd
+          closed: Gesloten
       exercise:
         name: Naam
         name_nl: Naam Nederlands
@@ -73,3 +87,10 @@ nl:
         email: Email
         time_zone: Tijdzone
         permission: Rechten
+      course_membership:
+        status: status
+        statuses:
+          unsubscribed: Uitgeschreven
+          course_admin: Cursusbeheerder
+          pending: In afwachting
+          student: Student

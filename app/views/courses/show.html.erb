@@ -37,42 +37,38 @@
       <% if current_user&.admin_of?(@course) %>
         <div class="card-supporting-text card-border">
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-md-6">
               <div class="row">
-                <div class="col-xs-6">
-                  <p>
+                <div class="col-xs-6 admin-card-stat">
                     <%= t ".subscribed_users" %>
                     <h1>
                       <%= @course.subscribed_members.count %>
                     </h1>
                 </div>
-                <div class="col-xs-6">
-                  <p>
-                    <%= t ".submitted_solutions" %>
-                    <h1>
-                      <%= @course.submissions.count %>
-                    </h1>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-6">
-                  <p>
+                <div class="col-xs-6 admin-card-stat">
                     <%= t ".exercise_count" %>
                     <h1>
                       <%= @course.exercises.count %>
                     </h1>
                 </div>
-                <div class="col-xs-6">
-                  <p>
-                    <%= t ".average_correct" %>
+              </div>
+              <div class="row">
+                <div class="col-xs-6 admin-card-stat">
+                    <%= t ".submitted_solutions" %>
                     <h1>
-                      <%= @course.average_exercises_correct_per_user
-                                 .round(1) %>%
+                      <%= @course.submissions.count %>
                     </h1>
+                </div>
+                <div class="col-xs-6 admin-card-stat"
+                     title="<%= t '.average_progress_info'%>">
+                    <%= t ".average_progress" %>
+                  <h1>
+                    <%= @course.average_progress.round(1) %>%
+                  </h1>
                 </div>
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-6">
               <p>
               <%= t ".invitation_link" %> 
               <span class="glyphicon glyphicon-info-sign" title="<%= t ".invitation_link_help" %>">
@@ -83,11 +79,14 @@
                   <%= clipboard_button_for :registration_link %>
                 </span>
               </div>
-              <span class="help-block">
-                <%= t ".visibility-#{@course.visibility}-info_html" %>
-              </span>
-              <span class="help-block">
-                <%= t ".registration-#{@course.registration}-info_html" %>
+              <div class="admin-card-info">
+                <span class="help-block">
+                  <%= t ".visibility-#{@course.visibility}-info_html" %>
+                </span>
+                <span class="help-block">
+                  <%= t ".registration-#{@course.registration}-info_html" %>
+                </span>
+              </div>
             </div>
           </div>
           </span>

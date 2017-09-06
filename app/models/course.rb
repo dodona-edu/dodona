@@ -96,7 +96,7 @@ class Course < ApplicationRecord
     self.secret = SecureRandom.urlsafe_base64(5)
   end
 
-  def average_exercises_correct_per_user
+  def average_progress
     solved = series_memberships.group(:exercise_id)
                                .pluck(:users_correct)
                                .sum

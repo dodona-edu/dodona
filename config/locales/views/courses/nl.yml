@@ -16,11 +16,11 @@ nl:
       course: Cursus
       invitation_link: Registratielink
       invitation_link_help: 'Met deze link worden gebruikers naar een pagina gebracht waar ze zich kunnen inschrijven.'
-      visibility-visible-info_html: 'Deze cursus is <strong>zichtbaar</strong>. Ze is zichtbaar in het cursusoverzicht en de inhoud is toegangkelijk voor iedereen.'
-      visibility-hidden-info_html: 'Deze cursus is <strong>verborgen</strong>. Ze verschijnt niet in het cursusoverzicht en enkel gebruikers met de registratielink kunnen zich inschrijven.'
-      registration-open-info_html: 'De registraties staan <strong>open</strong>. Gebruikers die op de registratie-knop klikken zijn onmiddellijk ingeschreven.'
-      registration-moderated-info_html: 'De registraties worden <strong>gemodereerd</strong>. Gebruikers die zich registreren komen op de wachtlijst terecht en moeten goedgekeurd worden door een cursusbeheerder voor ze ingeschreven zijn.'
-      registration-closed-info_html: 'De registraties zijn <strong>gesloten</strong>. Niemand kan zich nog inschrijven tot de registratie-instelling wordt aangepast. Gebruikers die ingeschreven zijn behouden hun toegang.'
+      visibility-visible-info_html: 'Deze cursus is <strong>zichtbaar</strong>: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegangkelijk voor iedereen.'
+      visibility-hidden-info_html: 'Deze cursus is <strong>verborgen</strong>: ze verschijnt niet in het cursusoverzicht en enkel gebruikers met de registratielink kunnen zich inschrijven.'
+      registration-open-info_html: 'De registraties staan <strong>open</strong>: gebruikers die op de registratie-knop klikken zijn onmiddellijk ingeschreven.'
+      registration-moderated-info_html: 'De registraties worden <strong>gemodereerd</strong>: gebruikers die zich registreren komen op de wachtlijst terecht en moeten goedgekeurd worden door een cursusbeheerder voor ze ingeschreven zijn.'
+      registration-closed-info_html: 'De registraties zijn <strong>gesloten</strong>: niemand kan zich nog inschrijven tot de registratie-instelling wordt aangepast. Gebruikers die ingeschreven zijn behouden hun toegang.'
 
       subscribe: registreren
       request_registration: registratieverzoek indienen
@@ -30,7 +30,8 @@ nl:
       series: reeksen
       subscribed_users: Geregistreerde gebruikers
       exercise_count: Aantal oefeningen
-      average_correct: Opgeloste oefeneningen per gebruiker
+      average_progress: Gemiddelde voortgang
+      average_progress_info: Gemiddeld percentage opgeloste oefeningen per gebruiker
       submitted_solutions: Ingediende oplossingen
       download_scoresheet: Scoresheet downloaden
       subscribed: Ingeschreven

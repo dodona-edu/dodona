@@ -113,4 +113,15 @@ function checkTimeZone(offset) {
     }
 }
 
-export {initClipboard, delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone};
+// add CSRF token to each ajax-request
+function initCSRF(){
+  $(function(){
+    $.ajaxSetup({
+      "headers": {
+        "X-CSRF-Token": $("meta[name='csrf-token']").attr("content")
+      }
+    })
+  });
+}
+
+export {initClipboard, delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone, initCSRF};

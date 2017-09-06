@@ -18,17 +18,20 @@ window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
 
+
 import "polyfills.js";
 
 
-// Use a global dodona object to prevent polluting the global na
 import {showNotification} from "notifications.js";
-import {initClipboard, checkTimeZone} from "util.js";
-
+import {initClipboard, checkTimeZone, initCSRF} from "util.js";
 
 // Initialize clipboard.js
 initClipboard();
 
+// Adds the CSRF token to each ajax request
+initCSRF();
+
+// Use a global dodona object to prevent polluting the global na
 let dodona = {};
 dodona.checkTimeZone = checkTimeZone;
 dodona.showNotification = showNotification;

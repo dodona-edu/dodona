@@ -144,24 +144,16 @@ class CoursesController < ApplicationController
   def mass_accept_pending
     @accepted = @course.accept_all_pending
     respond_to do |f|
-      f.html do
-        redirect_back(fallback_location: course_url(@course))
-      end
-      f.any(:js, :json) do
-        render 'mass_accept_pending', formats: [:json]
-      end
+      f.json
+      f.html { redirect_back(fallback_location: course_url(@course)) }
     end
   end
 
   def mass_decline_pending
     @declined = @course.decline_all_pending
     respond_to do |f|
-      f.html do
-        redirect_back(fallback_location: course_url(@course))
-      end
-      f.any(:js, :json) do
-        render 'mass_decline_pending', formats: [:json]
-      end
+      f.json
+      f.html { redirect_back(fallback_location: course_url(@course)) }
     end
   end
 

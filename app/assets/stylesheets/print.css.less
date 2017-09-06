@@ -1,12 +1,24 @@
 @media print {
+
   @page {
     size: A4;
     margin: 25mm;
   }
 
+  p {
+    line-height: 1.5;
+  }
+
   // Hide footer
   .footer {
     display: none;
+  }
+
+  // Fix page header of series overview
+  .card-subtitle h4 {
+    font-size: 48px;
+    margin-top: -24px;
+    margin-bottom: 30px;
   }
 
   // Do not underline titles that are links
@@ -25,9 +37,10 @@
     padding-bottom: 0;
   }
 
-  // New page for every exercise
+  // If exercise does not fit on the page anymore,
+  // put it on a new page
   .card.exercise-description {
-    page-break-after: always;
+    page-break-inside: avoid;
   }
 
   body {

@@ -58,9 +58,18 @@ module ExerciseHelper
 
     private
 
+    def with_nokogiri(html)
+      doc = Nokogiri::HTML::DocumentFragment.parse html
+      yield doc
+      doc.to_html
+    end
+
     def process_html
       rewrite_media_urls
-      process_url_footnotes
+      @description = with_nokogiri(@description) do |doc|
+        add_media_captions doc
+        process_url_footnotes doc
+      end
     end
 
     # Convert source to html
@@ -71,6 +80,18 @@ module ExerciseHelper
                              hard_wrap: false, syntax_highlighter:
                              'rouge',
                              math_engine_opts: { preview: true }).to_html.html_safe
+    end
+
+    def add_media_captions(doc)
+      doc.css('img[data-caption]').each do |img|
+        caption = img.attribute('data-caption').value
+        # Filter <div class="thumbcaption">???</div> away
+        text = caption.gsub(%r{\s*<div.*?>(.*?)</\s*div>}, '\1')
+
+        caption = "<figcaption class='visible-print-block'>"\
+                  "#{text}</figcaption>"
+        img.add_next_sibling caption
+      end
     end
 
     # Rewrite all media urls
@@ -86,17 +107,15 @@ module ExerciseHelper
 
     # Add a footnote reference after each anchor, and add the anchor href
     # to the hash of footnotes (with the footnote index as key)
-    def process_url_footnotes
-      @doc = Nokogiri::HTML::DocumentFragment.parse @description
+    def process_url_footnotes(doc)
       @footnote_urls = {}
       i = 1
-      @doc.css('a').each do |anchor|
+      doc.css('a').each do |anchor|
         ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"
         anchor.add_next_sibling ref
         @footnote_urls[i.to_s] = absolutize_url anchor.attribute('href').value
         i += 1
       end
-      @description = @doc.to_html
     end
   end
 end

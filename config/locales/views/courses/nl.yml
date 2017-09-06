@@ -28,7 +28,9 @@ nl:
       exercise_series: Oefeningenreeksen
       users: Gebruikers
       series: reeksen
-      subscribed_users: Ingeschreven gebruikers
+      subscribed_users: Geregistreerde gebruikers
+      exercise_count: Aantal oefeningen
+      average_correct: Opgeloste oefeneningen per gebruiker
       submitted_solutions: Ingediende oplossingen
       download_scoresheet: Scoresheet downloaden
       subscribed: Ingeschreven

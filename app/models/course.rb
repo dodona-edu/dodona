@@ -19,6 +19,10 @@ require 'csv'
 class Course < ApplicationRecord
   has_many :course_memberships
   has_many :series
+
+  has_many :exercises, -> { distinct }, through: :series
+  has_many :series_memberships, through: :series
+
   has_many :submissions
   has_many :users, through: :course_memberships
 
@@ -90,6 +94,13 @@ class Course < ApplicationRecord
 
   def generate_secret
     self.secret = SecureRandom.urlsafe_base64(5)
+  end
+
+  def average_exercises_correct_per_user
+    solved = series_memberships.group(:exercise_id)
+                               .pluck(:users_correct)
+                               .sum
+    (100 * solved.to_d / users.count.to_d)
   end
 
   def pending_memberships

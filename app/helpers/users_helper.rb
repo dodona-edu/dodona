@@ -10,4 +10,10 @@ module UsersHelper
     return false if current_user.student?
     user.student? || user.staff?
   end
+
+  def user_page_navigation_links(users, opts)
+    opts ||= {}
+    controller = 'users' if users.try(:total_pages)
+    page_navigation_links users, true, controller, opts
+  end
 end

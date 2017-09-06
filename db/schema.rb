@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170824071649) do
+ActiveRecord::Schema.define(version: 20170825144325) do
 
   create_table "course_memberships", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "course_id"
     t.integer "user_id"
-    t.integer "status"
+    t.integer "status", default: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_course_memberships_on_course_id"
@@ -26,10 +26,11 @@ ActiveRecord::Schema.define(version: 20170824071649) do
     t.string "name"
     t.string "year"
     t.string "secret"
-    t.boolean "open"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
+    t.integer "visibility", default: 0
+    t.integer "registration", default: 0
   end
 
   create_table "delayed_jobs", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

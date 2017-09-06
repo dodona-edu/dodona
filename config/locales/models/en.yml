@@ -1,5 +1,9 @@
 en:
   activerecord:
+    errors:
+      models:
+        course_membership:
+          at_least_one_admin: The course should always have at least one course administrator.
     models:
       course: Course
       exercise: Exercise
@@ -8,12 +12,22 @@ en:
       series: Series
       submission: Submission
       user: Student
+      course_membership: Course membership
     attributes:
       course:
         name: Name
         year: Academic year
         description: Description
         secret: Secret
+        visibility: Visibility
+        registration: Registration
+        visibilities:
+          visible: Visible
+          hidden: Hidden
+        registrations:
+          open: Open
+          moderated: Moderated
+          closed: Closed
       exercise:
         name: Name
         name_nl: Name Dutch
@@ -73,3 +87,12 @@ en:
         email: Email
         time_zone: Time zone
         permission: Permission
+      course_membership:
+        status: status
+        statuses:
+          unsubscribed: Unsubscribed
+          course_admin: Course admin
+          pending: Pending
+          student: Student
+
+

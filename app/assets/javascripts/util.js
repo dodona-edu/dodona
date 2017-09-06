@@ -1,3 +1,27 @@
+
+import Clipboard from "clipboard";
+
+function initClipboard() {
+    $(() => {
+        const selector = ".btn";
+        const delay = 1000;
+        const clip = new Clipboard(selector);
+        const targetOf = e => $($(e.trigger).data("clipboard-target"));
+        clip.on("success", e => {
+            let $t = targetOf(e);
+            $t.attr("title", I18n.t("js.copy-success"))
+                .tooltip("show");
+            setTimeout(() => $t.tooltip("destroy"), delay);
+        });
+        clip.on("error", e => {
+            let $t = targetOf(e);
+            $t.attr("title", I18n.t("js.copy-fail"))
+                .tooltip("show");
+            setTimeout(() => $t.tooltip("destroy"), delay);
+        });
+    });
+}
+
 /*
  * Function to delay some other function until it isn't
  * called for "ms" ms
@@ -89,4 +113,15 @@ function checkTimeZone(offset) {
     }
 }
 
-export {delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone};
+// add CSRF token to each ajax-request
+function initCSRF(){
+  $(function(){
+    $.ajaxSetup({
+      "headers": {
+        "X-CSRF-Token": $("meta[name='csrf-token']").attr("content")
+      }
+    })
+  });
+}
+
+export {initClipboard, delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone, initCSRF};

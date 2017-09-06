@@ -26,12 +26,10 @@ nl:
       best_is_not_last: Jouw beste oplossing is niet jouw laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
     edit:
       title: Reeks bewerken
-      refresh_confirm: 'Ben je zeker? De oude token/link zal niet meer bruikbaar zijn als je een nieuw genereert.'
       add_exercises: Oefeningen toevoegen
       exercises_in_series: Oefeningen in deze reeks
       add_exercise: oefening toevoegen
       remove_exercise: oefening verwijderen
-      generate: Genereer een nieuw
       confidential: Geheime links en tokens
       indianio-help: Kopieer dit token en plak het in Indianio om Indianio toe te laten oplossingen van studenten te downloaden voor deze reeks.
       access-link: Geheime link

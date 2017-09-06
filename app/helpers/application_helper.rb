@@ -1,4 +1,14 @@
 module ApplicationHelper
+  def clipboard_button_for(selector)
+    selector = selector.to_s
+    selector.prepend('#') unless selector.starts_with?('#')
+    button_tag class: 'btn btn-default',
+               title: t('js.copy-to-clipboard'),
+               data: { clipboard_target: selector } do
+      tag :span, class: 'glyphicon glyphicon-copy'
+    end
+  end
+
   def markdown(source)
     source ||= ''
     Kramdown::Document.new(source, input: 'GFM', hard_wrap: false, syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe
@@ -21,6 +31,17 @@ module ApplicationHelper
       'memory limit exceeded' => %w[hdd wrong]
     }[submission&.status] ||     %w[alert warning]
     "<span class=\"glyphicon glyphicon-#{icon} colored-#{color}\"></span>".html_safe
+  end
+
+  def options_for_enum(object, enum)
+    options = enums_to_translated_options_array(object.class.name, enum.to_s)
+    options_for_select(options, object.send(enum))
+  end
+
+  def enums_to_translated_options_array(klass, enum)
+    klass.classify.safe_constantize.send(enum.pluralize).map {
+        |key, value| [I18n.t("activerecord.enums.#{klass.downcase}.#{enum}.#{key}").humanize, key]
+    }
   end
 
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer

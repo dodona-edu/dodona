@@ -136,9 +136,7 @@ class SubmissionRunner
       stdout: true,
       stderr: true
     )
-    timer.kill
-    timer.join
-
+    timeout = timer.tap(&:kill).tap(&:join).status.nil?
     stdout = outlines.join
     stderr = errlines.join
     exit_status = container.wait(1)['StatusCode']
@@ -161,7 +159,8 @@ class SubmissionRunner
       rc.result
     rescue ResultConstructor::ResultConstructorError => e
       if exit_status == 143
-        build_error 'time limit exceeded', 'time limit exceeded', [
+        description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
+        build_error description, description, [
           build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
           build_message("Standard Error:", 'staff', 'plain'),
           build_message(stderr, 'staff'),
@@ -169,10 +168,9 @@ class SubmissionRunner
           build_message(stdout, 'staff'),
         ]
       else
-        build_error 'internal error', 'internal error', [
-          build_message(e.title, 'staff', 'plain'),
-          build_message(e.description, 'staff'),
-        ]
+        messages = [build_message(e.title, 'staff', 'plain')]
+        messages << build_message(e.description, 'staff') unless e.description.nil?
+        build_error 'internal error', 'internal error', messages
       end
     end
   end

@@ -24,6 +24,9 @@ class ResultConstructor
   end
 
   def feed(judge_output)
+    if judge_output.empty?
+      raise ResultConstructorError.new("No judge output")
+    end
     split_jsons(judge_output).each do |json|
       if JSON::Validator.validate(PART_SCHEMA, json)
         update(json)

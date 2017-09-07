@@ -97,10 +97,10 @@ class Course < ApplicationRecord
   end
 
   def average_progress
-    solved = series_memberships.group(:exercise_id)
-                               .pluck(:users_correct)
-                               .sum
-    (100 * solved.to_d / users.count.to_d)
+    solved_per_exercise = series_memberships.group(:exercise_id)
+                                            .pluck(:users_correct)
+    solved_total = solved_per_exercise.map(&:to_i).sum
+    ((100 * solved_total).to_d / (users.count * exercises.count).to_d)
   end
 
   def pending_memberships

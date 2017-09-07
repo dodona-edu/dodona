@@ -46,14 +46,14 @@ function initMathJax(){
   });
 }
 
-function init_exercises_readonly() {
+function initExercisesReadonly() {
   initLightboxes();
   centerImagesAndTables();
   initMathJax();
 }
 
 
-function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
+function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
     var editor;
     var lastSubmission;
 
@@ -61,7 +61,7 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
         if (editorShown) {
             initEditor();
         }
-        init_exercises_readonly();
+        initExercisesReadonly();
         swapActionButtons();
 
         // submit source code if button is clicked on editor panel
@@ -198,4 +198,4 @@ function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorSho
     init();
 }
 
-export {initExerciseShow};
+export {initExerciseShow, initExercisesReadonly};

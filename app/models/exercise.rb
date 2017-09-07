@@ -39,9 +39,6 @@ class Exercise < ApplicationRecord
   has_many :series, through: :series_memberships
 
   validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
-  validates :repository_id, presence: true
-  validates :judge, presence: true
-  validates :repository, presence: true
 
   before_create :generate_id
   before_save :check_validity
@@ -87,9 +84,7 @@ class Exercise < ApplicationRecord
   end
 
   def description
-    desc = description_localized || description_nl || description_en
-    desc = markdown(desc) if description_format == 'md'
-    desc.html_safe
+    description_localized || description_nl || description_en || ''
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)
@@ -115,11 +110,11 @@ class Exercise < ApplicationRecord
   end
 
   def github_url
-    repository.remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '') + '/tree/master/' + path
+    repository.github_url(path)
   end
 
   def config
-    Exercise.read_config_file(config_file)
+    repository.read_config_file(config_file)
   end
 
   def file_name
@@ -249,13 +244,9 @@ class Exercise < ApplicationRecord
 
   private
 
-  def self.read_config_file(file)
-    JSON.parse(file.read) if file.file?
-  end
-
   #takes a relative path
   def read_dirconfig(subdir)
-    Exercise.read_config_file(repository.full_path + subdir + DIRCONFIG_FILE)
+    repository.read_config_file(subdir + DIRCONFIG_FILE)
   end
 
   def generate_id

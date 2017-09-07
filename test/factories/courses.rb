@@ -2,7 +2,8 @@ FactoryGirl.define do
   factory :course do
     name { "#{Faker::Hacker.adjective.titlecase} Programming" }
     description { Faker::Hacker.say_something_smart }
-    open true
+    visibility 'visible'
+    registration 'open'
 
     transient do
       series_count 0

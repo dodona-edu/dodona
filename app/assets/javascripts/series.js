@@ -1,6 +1,8 @@
-/* globals dodona, showNotification, dragula, I18n, Flatpickr */
-function init_series_edit() {
+import dragula from "dragula";
 
+import {showNotification} from "./notifications.js";
+
+function initSeriesEdit() {
     function init() {
         initAddButtons();
         initRemoveButtons();
@@ -11,16 +13,16 @@ function init_series_edit() {
 
     function initAddButtons() {
         $("a.add-exercise").click(function () {
-            var exerciseId = $(this).data("exercise_id");
-            var exerciseName = $(this).data("exercise_name");
-            var seriesId = $(this).data("series_id");
-            var $row = $("<div class='col-xs-12 row exercise new'><div class='col-xs-1 drag-handle'><span class='glyphicon glyphicon-align-justify'></span></div><div class='col-xs-9'><a href='/exercises/" + exerciseId + "'>" + exerciseName + "</a></div><div class='actions col-xs-2'><a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><span class='glyphicon glyphicon-trash'></span></a></div></div>");
+            let exerciseId = $(this).data("exercise_id");
+            let exerciseName = $(this).data("exercise_name");
+            let seriesId = $(this).data("series_id");
+            let $row = $("<div class='col-xs-12 row exercise new'><div class='col-xs-1 drag-handle'><span class='glyphicon glyphicon-align-justify'></span></div><div class='col-xs-9'><a href='/exercises/" + exerciseId + "'>" + exerciseName + "</a></div><div class='actions col-xs-2'><a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><span class='glyphicon glyphicon-trash'></span></a></div></div>");
             $(".series-exercise-list").append($row);
             $row.css("opacity"); // trigger paint
             $row.removeClass("new").addClass("pending");
             $.post("/series/" + seriesId + "/add_exercise.js", {
-                    exercise_id: exerciseId
-                })
+                exercise_id: exerciseId,
+            })
                 .done(function () {
                     exerciseAdded($row);
                 })
@@ -39,27 +41,27 @@ function init_series_edit() {
     function initDragAndDrop() {
         dragula([$(".series-exercise-list").get(0)], {
             moves: function (el, source, handle, sibling) {
-                return $(handle).hasClass("drag-handle") || $(handle).parents('.drag-handle').length;
-            }
+                return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
+            },
         }).on("drop", function () {
-            var seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
-            var order = $(".series-exercise-list a.remove-exercise").map(function () {
+            let seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
+            let order = $(".series-exercise-list a.remove-exercise").map(function () {
                 return $(this).data("exercise_id");
             }).get();
             $.post("/series/" + seriesId + "/reorder_exercises.js", {
-                order: JSON.stringify(order)
+                order: JSON.stringify(order),
             });
         });
     }
 
     function removeExercise() {
-        var exerciseId = $(this).data("exercise_id");
-        var exerciseName = $(this).data("exercise_name");
-        var seriesId = $(this).data("series_id");
-        var $row = $(this).parents("div.exercise").addClass("pending");
+        let exerciseId = $(this).data("exercise_id");
+        let exerciseName = $(this).data("exercise_name");
+        let seriesId = $(this).data("series_id");
+        let $row = $(this).parents("div.exercise").addClass("pending");
         $.post("/series/" + seriesId + "/remove_exercise.js", {
-                exercise_id: exerciseId
-            })
+            exercise_id: exerciseId,
+        })
             .done(function () {
                 exerciseRemoved($row);
             })
@@ -99,20 +101,19 @@ function init_series_edit() {
 
     init();
 }
-function init_series_form() {
-
+function initSeriesForm() {
     function init() {
         if (I18n.locale === "nl") {
             Flatpickr = Flatpickr || {l10n: {}};
 
             Flatpickr.l10n.weekdays = {
-                shorthand: ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
-                longhand: ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag']
+                shorthand: ["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"],
+                longhand: ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"],
             };
 
             Flatpickr.l10n.months = {
-                shorthand: ['Jan', 'Feb', 'Maa', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Dec'],
-                longhand: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December']
+                shorthand: ["Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dec"],
+                longhand: ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"],
             };
 
             Flatpickr.l10n.firstDayOfWeek = 1;
@@ -130,3 +131,5 @@ function init_series_form() {
 
     init();
 }
+
+export {initSeriesEdit, initSeriesForm};

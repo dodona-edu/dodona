@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'series' %>
+<% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
@@ -12,6 +15,51 @@
           <%= render 'form', series: @series %>
         </div>
       </div>
+      <% if @series.indianio_token || @series.access_token %>
+      <div class="card-supporting-text card-border">
+        <h4><%= t '.confidential' %></h4>
+        <div class="col-xs-12 col-sm-10">
+          <div class="form-horizontal">
+            <% if @series.indianio_token %>
+            <div class="field form-group">
+              <%= label_tag :indianio_token, 'Indianio token', class: 'col-sm-3 control-label' %>
+              <div class="col-sm-9">
+                <div class="input-group" id="indianio_token">
+                  <%= render partial: 'token_field' ,
+                      locals: {
+                        name: :indianio_token,
+                        value: @series.indianio_token,
+                        reset_url: reset_token_series_path(@series, type: :indianio_token)
+                  } %>
+                </div>
+              </div>
+              <span class="help-block col-sm-offset-3 col-sm-9">
+                <%= t '.indianio-help' %>
+              </span>
+            </div>
+            <% end %>
+            <% if @series.access_token %>
+            <div class="field form-group">
+              <%= label_tag :access_token, t('.access-link'), class: 'col-sm-3 control-label' %>
+              <div class="col-sm-9">
+                <div class="input-group" id="access_token">
+                  <%= render partial: 'token_field' ,
+                    locals: {
+                    name: :access_token,
+                    value: token_show_series_url(@series, @series.access_token),
+                  reset_url: reset_token_series_path(@series, type: :access_token)
+                  } %>
+                </div>
+              </div>
+              <span class="help-block col-sm-offset-3 col-sm-9">
+                <%= t '.access-help' %>
+              </span>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% end %>
       <% if policy(@series).modify_exercises? %>
         <div class="card-supporting-text card-border row">
           <div class="col-xs-12 col-sm-6 col-sm-push-6">
@@ -45,6 +93,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    init_series_edit();
+    dodona.initSeriesEdit();
   });
 </script>

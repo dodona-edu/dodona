@@ -13,8 +13,9 @@
 @import "pythia_submission.css.less";
 @import "users.css.less";
 @import "course.css.less";
+@import "print.css.less";
 
-<% if Rails.env.development? %>
+<% if Rails.env.development? || Rails.env.test? %>
     @import "development.css.less";
 <% end %>
 
@@ -35,4 +36,8 @@
     font-size: 1.5em;
     font-size: 250%;
     transform: rotate(45deg);
+}
+
+figcaption {
+    margin: 0 10px;
 }

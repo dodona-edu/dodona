@@ -84,9 +84,7 @@ class Exercise < ApplicationRecord
   end
 
   def description
-    desc = description_localized || description_nl || description_en
-    desc = markdown(desc) if description_format == 'md'
-    desc.html_safe
+    description_localized || description_nl || description_en || ''
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)

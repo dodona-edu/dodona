@@ -29,6 +29,10 @@ class SeriesPolicy < ApplicationPolicy
     course.visible? || user.member_of?(course)
   end
 
+  def overview?
+    show?
+  end
+
   def token_show?
     return true if course_admin?
     return true unless record.closed?

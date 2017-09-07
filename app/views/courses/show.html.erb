@@ -18,7 +18,7 @@
           <% end %>
         </div>
       </div>
-      <% if @course.description.present? || current_user.member_of?(@course).! %>
+      <% if @course.description.blank? || (current_user && !current_user.member_of?(@course)) %>
         <div class="card-supporting-text row">
           <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
             <%= markdown(@course.description) %>

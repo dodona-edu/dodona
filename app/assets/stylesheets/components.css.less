@@ -113,6 +113,9 @@
 .card-actions.card-border {
     border-top: 1px solid @black-divider;
 }
+.card-title+.card-border {
+    border-top: 0px;
+}
 .card-expand {
     flex-grow: 1;
 }
@@ -231,6 +234,16 @@
     z-index: 10;
     form {
       display: inline;
+    }
+}
+.card-progress-bar {
+    background-color: @primary-100;
+    height: 5px;
+    width: 100%;
+
+    .progress {
+      height: 100%;
+      background-color: @accent-500;
     }
 }
 

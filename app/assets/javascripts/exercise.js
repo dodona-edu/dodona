@@ -1,16 +1,67 @@
 import {showNotification} from "./notifications.js";
 
-function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
-    let editor;
-    let lastSubmission;
+function initLightboxes() {
+  initStrip();
+
+  var index = 1;
+  var images = [];
+  $(".exercise-description img, a.dodona-lightbox").each(function () {
+    var imagesrc = $(this).data('large') || $(this).attr('src') || $(this).attr('href');
+    var altText = $(this).data("caption") || $(this).attr('alt') || imagesrc.split("/").pop();
+    var image_object = {
+      url: imagesrc,
+      caption: altText
+    };
+    images.push(image_object);
+
+    $(this).data('image_index', index++);
+  });
+
+  $(".exercise-description img, a.dodona-lightbox").click(function () {
+    Strip.show(images, {
+      side: 'top'
+    }, $(this).data('image_index'));
+    return false;
+  });
+}
+
+function centerImagesAndTables() {
+  $(".exercise-description p > img").parent().wrapInner("<center></center>");
+  $(".exercise-description > table").wrap("<center></center>");
+  $(".exercise-description > iframe").wrap("<center></center>");
+}
+
+function initMathJax(){
+  // configure mathjax
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [
+        ['$$', '$$'],
+        ['\\(', '\\)']
+      ],
+      displayMath: [
+        ['\\[', '\\]']
+      ]
+    }
+  });
+}
+
+function init_exercises_readonly() {
+  initLightboxes();
+  centerImagesAndTables();
+  initMathJax();
+}
+
+
+function init_exercise_show(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
+    var editor;
+    var lastSubmission;
 
     function init() {
         if (editorShown) {
             initEditor();
         }
-        initLightboxes();
-
-        centerImagesAndTables();
+        init_exercises_readonly();
         swapActionButtons();
 
         // submit source code if button is clicked on editor panel
@@ -35,19 +86,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             editor.resize(true);
         });
 
-        // configure mathjax
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [
-                    ["$$", "$$"],
-                    ["\\(", "\\)"],
-                ],
-                displayMath: [
-                    ["\\[", "\\]"],
-                ],
-            },
-        });
-
         // export function
         window.dodona.feedbackLoaded = feedbackLoaded;
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
@@ -65,37 +103,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
         editor.on("focus", enableSubmitButton);
-    }
-
-    function initLightboxes() {
-        initStrip();
-
-        let index = 1;
-        let images = [];
-        $(".exercise-description img, a.dodona-lightbox").each(function () {
-            let imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
-            let altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
-            let image_object = {
-                url: imagesrc,
-                caption: altText,
-            };
-            images.push(image_object);
-
-            $(this).data("image_index", index++);
-        });
-
-        $(".exercise-description img, a.dodona-lightbox").click(function () {
-            Strip.show(images, {
-                side: "top",
-            }, $(this).data("image_index"));
-            return false;
-        });
-    }
-
-    function centerImagesAndTables() {
-        $(".exercise-description p > img").parent().wrapInner("<center></center>");
-        $(".exercise-description > table").wrap("<center></center>");
-        $(".exercise-description > iframe").wrap("<center></center>");
     }
 
     function swapActionButtons() {

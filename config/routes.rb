@@ -19,13 +19,14 @@ Rails.application.routes.draw do
 
     resources :series do
       member do
+        get 'download_solutions'
+        get 'overview'
+        get 'scoresheet'
+        get 'token/:token', to: 'series#token_show', as: 'token_show'
         post 'add_exercise'
+        post 'mass_rejudge'
         post 'remove_exercise'
         post 'reorder_exercises'
-        post 'mass_rejudge'
-        get 'download_solutions'
-        get 'token/:token', to: 'series#token_show', as: 'token_show'
-        get 'scoresheet'
         post 'reset_token'
       end
     end
@@ -36,14 +37,14 @@ Rails.application.routes.draw do
       resources :exercises, only: [:show], concerns: %i[mediable submitable]
       member do
         get 'list_members'
+        get 'scoresheet'
+        get 'subscribe/:secret', to: 'courses#registration', as: "registration"
+        post 'mass_accept_pending'
+        post 'mass_decline_pending'
         post 'reset_token'
         post 'subscribe'
         post 'unsubscribe'
         post 'update_membership'
-        post 'mass_accept_pending'
-        post 'mass_decline_pending'
-        get 'scoresheet'
-        get 'subscribe/:secret', to: 'courses#registration', as: "registration"
       end
     end
 

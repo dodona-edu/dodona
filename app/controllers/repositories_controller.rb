@@ -85,7 +85,9 @@ class RepositoriesController < ApplicationController
           .uniq
       else
         @repository.exercise_dirs
-      end.tap { |dirs| process_exercise_dirs dirs }
+      end.tap do |dirs|
+        process_exercise_dirs dirs
+      end
     end
     status = success ? 200 : 500
     render plain: msg, status: status

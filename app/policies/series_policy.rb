@@ -24,19 +24,13 @@ class SeriesPolicy < ApplicationPolicy
 
   def show?
     return true if course_admin?
-    return false unless record.open?
+    return false if record.closed?
     course = record.course
     course.visible? || user.member_of?(course)
   end
 
   def overview?
     show?
-  end
-
-  def token_show?
-    return true if course_admin?
-    return true unless record.closed?
-    false
   end
 
   def new?
@@ -60,7 +54,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def download_solutions?
-    user && token_show?
+    user && show?
   end
 
   def indianio_download?

@@ -46,7 +46,7 @@
                   <%= render partial: 'token_field' ,
                     locals: {
                     name: :access_token,
-                    value: token_show_series_url(@series, @series.access_token),
+                    value: series_url(@series, token: @series.access_token),
                   reset_url: reset_token_series_path(@series, type: :access_token)
                   } %>
                 </div>

@@ -139,3 +139,32 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_equal 4, exercises.length
   end
 end
+
+class ExerciseErrorMailerTest < ActionDispatch::IntegrationTest
+  setup do
+    @pythia = create :judge, :git_stubbed, name: 'pythia'
+    @remote = local_remote('exercises/echo')
+    @repository = create :repository, remote: @remote.path
+    @repository.process_exercises
+  end
+
+  test 'error email' do
+    @remote.update_file('echo/config.json', 'break config') { '(╯°□°)╯︵ ┻━┻' }
+    @pusher = {
+      email: 'derp@ugent.be',
+      name: 'derp'
+    }
+
+    assert_difference 'ActionMailer::Base.deliveries.size', +1 do
+      post webhook_repository_path(@repository, pusher: @pusher)
+    end
+    email = ActionMailer::Base.deliveries.last
+
+    @dodona = Rails.application.config.dodona_email
+
+    assert_not_nil email
+    assert_equal [@pusher[:email]], email.to
+    assert_equal [@dodona], email.from
+    assert_equal [@dodona], email.cc
+  end
+end

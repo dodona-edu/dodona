@@ -4,6 +4,7 @@
     "dependencies": {
         "@rails/webpacker": "^3.0.0",
         "ace-builds": "^1.2.8",
+        "clipboard": "^1.7.1",
         "dragula": "^3.7.2",
         "jquery": "^3.2.1",
         "rails-ujs": "^5.1.3"

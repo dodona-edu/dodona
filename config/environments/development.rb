@@ -13,14 +13,14 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 
   # Enable/disable caching. By default caching is disabled.
-  if Rails.root.join('tmp/caching-dev.txt').exist?
+  if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
 
     config.action_mailer.perform_caching = false
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => 'public, max-age=172800'
+      'Cache-Control' => "public, max-age=#{2.days.seconds.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -70,7 +70,7 @@ Rails.application.configure do
                           sender_address: %("Dodona" <dodona@ugent.be>),
                           exception_recipients: %w[dodona@ugent.be]
                         }
-  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.delivery_method = :letter_opener
   # Defaults to:
   # config.action_mailer.sendmail_settings = {
   #   :location => '/usr/sbin/sendmail',

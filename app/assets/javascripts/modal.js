@@ -1,9 +1,9 @@
 function showInfoModal(title, content, options) {
     var options = options || {};
     if (options.allowFullscreen) {
-        $("#info-modal .modal-header #fullscreen-button").css('display', 'inline');
+        $("#info-modal .modal-header #fullscreen-button").css("display", "inline");
     } else {
-        $("#info-modal .modal-header #fullscreen-button").css('display', 'none');
+        $("#info-modal .modal-header #fullscreen-button").css("display", "none");
     }
     $("#info-modal .modal-title")
         .empty()
@@ -14,3 +14,5 @@ function showInfoModal(title, content, options) {
         .append("<p>" + content + "</p>");
     $("#info-modal").modal("show");
 }
+
+export {showInfoModal};

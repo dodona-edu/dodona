@@ -18,17 +18,14 @@ class Submission < ApplicationRecord
 
   belongs_to :exercise
   belongs_to :user
-  belongs_to :course
+  belongs_to :course, optional: true
   has_one :judge, through: :exercise
   has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
 
   delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
 
-  validates :exercise, presence: true
-  validates :user, presence: true
-
-  validate :exercise_not_closed, on: :create
   validate :code_cannot_contain_emoji, on: :create
+  validate :exercise_not_closed, on: :create
 
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed

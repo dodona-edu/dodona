@@ -2,14 +2,15 @@
 #
 # Table name: courses
 #
-#  id          :integer          not null, primary key
-#  name        :string(255)
-#  year        :string(255)
-#  secret      :string(255)
-#  open        :boolean
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  description :text(65535)
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  year         :string(255)
+#  secret       :string(255)
+#  visibility   :integer
+#  registration :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  description  :text(65535)
 #
 
 require 'securerandom'
@@ -18,8 +19,55 @@ require 'csv'
 class Course < ApplicationRecord
   has_many :course_memberships
   has_many :series
+
+  has_many :exercises, -> { distinct }, through: :series
+  has_many :series_memberships, through: :series
+
   has_many :submissions
   has_many :users, through: :course_memberships
+
+  enum visibility: %i[visible hidden]
+  enum registration: %i[open moderated closed]
+
+  has_many :subscribed_members,
+           lambda {
+             where.not course_memberships:
+                { status: %i[pending unsubscribed] }
+           },
+           through: :course_memberships,
+           source: :user
+
+  has_many :administrating_members,
+           lambda {
+             where course_memberships:
+                { status: :course_admin }
+           },
+           through: :course_memberships,
+           source: :user
+
+  has_many :enrolled_members,
+           lambda {
+             where course_memberships:
+                { status: :student }
+           },
+           through: :course_memberships,
+           source: :user
+
+  has_many :pending_members,
+           lambda {
+             where course_memberships:
+                { status: :pending }
+           },
+           through: :course_memberships,
+           source: :user
+
+  has_many :unsubscribed_members,
+           lambda {
+             where course_memberships:
+                { status: :unsubscribed }
+           },
+           through: :course_memberships,
+           source: :user
 
   validates :name, presence: true
   validates :year, presence: true
@@ -27,6 +75,18 @@ class Course < ApplicationRecord
   default_scope { order(year: :desc, name: :asc) }
 
   before_create :generate_secret
+
+  # Default year & enum values
+  after_initialize do |course|
+    self.visibility   ||= 'visible'
+    self.registration ||= 'open'
+    unless year
+      now = Time.zone.now
+      y = now.year
+      y -= 1 if now.month < 7 # Before july
+      course.year = "#{y}-#{y + 1}"
+    end
+  end
 
   def formatted_year
     year.sub(/ ?- ?/, '–')
@@ -36,9 +96,37 @@ class Course < ApplicationRecord
     self.secret = SecureRandom.urlsafe_base64(5)
   end
 
+  def average_progress
+    solved = series_memberships.group(:exercise_id)
+                               .pluck(:users_correct)
+                               .sum
+    (100 * solved.to_d / users.count.to_d)
+  end
+
+  def pending_memberships
+    CourseMembership.where(course_id: id,
+                           status: :pending)
+  end
+
+  def accept_all_pending
+    pending_memberships.update(status: :student)
+  end
+
+  def decline_all_pending
+    pending_memberships.each do |cm|
+      if Submission.where(user: cm.user, course: cm.course).empty?
+        cm.delete
+      else
+        cm.update(status: :unsubscribed)
+      end
+    end
+  end
+
   def scoresheet(options = {})
     sorted_series = series.reverse
-    sorted_users = users.order(last_name: :asc, first_name: :asc)
+    sorted_users = users.order('course_memberships.status ASC')
+                        .order(permission: :asc)
+                        .order(last_name: :asc, first_name: :asc)
     CSV.generate(options) do |csv|
       csv << [I18n.t('courses.scoresheet.explanation')]
       csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')].concat(sorted_series.map(&:name))

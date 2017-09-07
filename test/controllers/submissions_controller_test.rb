@@ -40,6 +40,17 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_not json['errors']&.empty?
   end
 
+  test 'create submission within course' do
+    attrs = generate_attr_hash
+    course = create :course
+    attrs[:course_id] = course.id
+
+    submission = create_request_expect attr_hash: attrs
+
+    assert_not_nil submission.course, 'Course was not properly set'
+    assert_equal course, submission.course
+  end
+
   test 'should get submission edit page' do
     get edit_submission_path(@instance)
     assert_redirected_to exercise_url(

@@ -1,0 +1,8 @@
+#!/bin/bash
+bundle install
+formation="all=1"
+if [ "$1" = "norails" ]
+then
+    formation="$formation,web=0"
+fi
+bundle exec foreman start -f Procfile.dev "$formation"

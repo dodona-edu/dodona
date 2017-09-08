@@ -14,6 +14,10 @@
     <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
   </div>
   <div class="field form-group">
+    <%= f.label :teacher, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.text_field :teacher, class: "form-control" %></div>
+  </div>
+  <div class="field form-group">
     <%= f.label :year, :class => "col-sm-3 control-label" %>
     <div class="col-sm-6"><%= f.text_field :year, class: "form-control" %></div>
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".year-help" %></span>

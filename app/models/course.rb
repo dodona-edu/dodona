@@ -2,15 +2,16 @@
 #
 # Table name: courses
 #
-#  id                 :integer          not null, primary key
-#  name               :string(255)
-#  year               :string(255)
-#  secret             :string(255)
-#  visibility         :integer
-#  registration       :integer
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  description        :text(65535)
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  year         :string(255)
+#  secret       :string(255)
+#  color        :integer
+#  visibility   :integer
+#  registration :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  description  :text(65535)
 #  correct_solutions  :integer
 #
 
@@ -29,6 +30,8 @@ class Course < ApplicationRecord
 
   enum visibility: %i[visible hidden]
   enum registration: %i[open moderated closed]
+  enum color: %i[red pink purple deep-purple indigo teal
+                 orange brown blue-grey]
 
   has_many :subscribed_members,
            lambda {
@@ -81,6 +84,7 @@ class Course < ApplicationRecord
   after_initialize do |course|
     self.visibility   ||= 'visible'
     self.registration ||= 'open'
+    self.color ||= Course.colors.keys.sample
     unless year
       now = Time.zone.now
       y = now.year

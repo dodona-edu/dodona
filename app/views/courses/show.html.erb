@@ -18,16 +18,10 @@
           <% end %>
         </div>
       </div>
-      <% if @course.description.blank? || (current_user && !current_user.member_of?(@course)) %>
+      <% if @course.description.present? || (current_user && !current_user.member_of?(@course)) %>
         <div class="card-supporting-text row">
           <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
             <%= markdown(@course.description) %>
-            <% if current_user&.member_of? @course %>
-              <%= button_to t('.unsubscribe'),
-                            unsubscribe_course_path(@course),
-                            class: 'btn-text pull-right',
-                            data: { confirm: t('general.are_you_sure') } %>
-            <% end %>
           </div>
           <% if current_user&.member_of?(@course).! %>
             <%= render partial: 'not_a_member_card' %>
@@ -156,6 +150,14 @@
           </div>
         </div>
       <% end %>
+      <% if current_user&.member_of? @course %>
+        <div class='card-supporting-text card-border'>
+          <%= button_to t('.unsubscribe'),
+            unsubscribe_course_path(@course),
+            class: 'btn-text pull-right',
+            data: { confirm: t('general.are_you_sure') } %>
+        </div>
+    <% end %>
     </div>
   </div>
 </div>

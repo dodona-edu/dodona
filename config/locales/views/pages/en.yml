@@ -1,6 +1,10 @@
 en:
   pages:
     dynamic_home:
+      exercises-solved: Exercises solved
+      exercises-unfinished: Exercises unfinished
+      submissions: Submissions
+      more-courses: More courses
+      no-pending-deadlines: No pending deadlines
       recent-exercises: Recent exercises
       pending-deadlines: Pending deadlines
-      courses: Courses

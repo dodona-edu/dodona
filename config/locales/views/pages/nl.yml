@@ -1,6 +1,10 @@
 nl:
   pages:
     dynamic_home:
+      exercises-solved: Oefeningen opgelost
+      exercises-unfinished: Onafgewerkte oefeningen
+      submissions: Inzendingen
+      more-courses: Meer cursussen
+      no-pending-deadlines: Geen toekomstige deadlines
       recent-exercises: Recente oefeningen
       pending-deadlines: Toekomstige deadlines
-      courses: Cursusses

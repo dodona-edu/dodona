@@ -1,14 +1,10 @@
 /* globals ga, I18n, ace, MathJax, initStrip, Strip */
-import {initFilterIndex} from "./index.js";
+import {initFilter} from "./index.js";
 
-function loadUsers(baseUrl, status) {
-    if (!baseUrl) {
-        baseUrl = $("#user-tabs").data("baseurl");
-    }
-    if (!status) {
-        status = window.location.hash.substr(1);
-    }
-    initFilterIndex(baseUrl + "?status=" + status, true);
+function loadUsers(_baseUrl, _status) {
+    let baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
+    let status = _status || window.location.hash.substr(1);
+    initFilter(baseUrl + "?status=" + status, true);
 }
 
 function initCourseShow(seriesShown, seriesTotal, autoLoad) {

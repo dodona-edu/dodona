@@ -134,8 +134,8 @@
             </ul>
           </div>
           <%= render(partial: 'layouts/searchbar',
-                     remote_links: true,
                      locals: {
+                        init_filter: false,
                         eager: false,
                         actions: [
                           {

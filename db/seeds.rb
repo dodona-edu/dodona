@@ -80,14 +80,16 @@ if Rails.env == 'development'
   # Add exercices to test course
   courses.each do |course|
     series = []
-    series << Series.create(name: 'Reeks 1', course: course)
-    series << Series.create(name: 'Reeks 2', course: course)
     series << Series.create(name: 'Verborgen reeks',
                             course: course,
                             visibility: :hidden)
     series << Series.create(name: 'Gesloten reeks',
                             course: course,
                             visibility: :closed)
+    20.times do |i|
+      series << Series.create(name: "Reeks #{i}",
+                              course: course)
+    end
 
     series.each do |s|
       s.exercises << exercise_repo.exercises

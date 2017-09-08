@@ -28,6 +28,17 @@ nl:
           open: Open
           moderated: Gemodereerd
           closed: Gesloten
+        color: Kleur
+        colors:
+          red: Rood
+          pink: Roze
+          purple: Paars
+          deep-purple: Donkerpaars
+          indigo: Indigo
+          teal: Appelblauwzeegroen
+          orange: Oranje
+          brown: Bruin
+          blue-grey: Blauwgrijs
       exercise:
         name: Naam
         name_nl: Naam Nederlands

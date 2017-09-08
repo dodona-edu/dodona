@@ -45,4 +45,16 @@
     <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>
   </div>
+  <% if current_user.zeus? %>
+  <div class="field form-group">
+    <%= f.label :color, class: 'col-sm-3 control-label' %>
+    <div class="col-sm-6">
+      <%= f.select :color,
+        options_for_select(Course.colors.keys.map { |k| [t("activerecord.attributes.course.colors.#{k}"), k] },
+                          @course.color),
+        {},
+        { class: 'form-control' } %>
+    </div>
+  </div>
+  <% end %>
 <% end %>

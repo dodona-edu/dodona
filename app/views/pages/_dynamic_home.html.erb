@@ -82,7 +82,7 @@
     </div>
   </div>
   <% @user.courses.each do |course| %>
-    <% incomplete = course.incomplete_series(@user).first(3) %>
+    <% incomplete = course.incomplete_series(@user) %>
     <div class="col-xs-12 col-sm-6 col-lg-4">
       <div class="card home-summary-card">
         <%= link_to course_url(course), class: 'card-title-link' do %>
@@ -94,27 +94,17 @@
         <% end %>
         <div class="card-supporting-text">
           <% if incomplete.empty? %>
-            <table class="table table-condensed">
-              <thead>
-                <tr>
-                  <th>Series</th>
-                  <th>Solved</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% incomplete.each do |series| %>
-                  <tr>
-                    <td>
-                      <%= link_to series.name, series %>
-                      <% if series.deadline? %>
-                        <span title="<%= l series.deadline, format: :long %>" class="text-muted"><span class='glyphicon glyphicon-time'></span> <%= t "series.show.deadline_in" %> <%= time_ago_in_words series.deadline %></span>
-                    <% end %>
-                    </td>
-                    <td><%= series.solved_exercises(@user).count %>/<%= series.exercises.count %></td>
-                  </tr>
+            <p><span class="glyphicon glyphicon-ok colored-correct"></span> <%= t '.all-exercises-finished' %>
+          <% else %>
+            <% with_deadlines = incomplete.select(&:deadline?) %>
+            <% if with_deadlines.any? %>
+              <h3>Deadlines</h3>
+                <% with_deadlines.first(3).each do |series| %>
+                  <p><%= link_to series.name, series %>
                 <% end %>
-              </tbody>
-            </table>
+            <% else %>
+              <%= link_to t('.resume-next-series'), overview_series_path(incomplete.last) %>
+            <% end %>
           <% end %>
         </div>
       </div>

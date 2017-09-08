@@ -120,7 +120,7 @@ class User < ApplicationRecord
   end
 
   def admin_of?(course)
-    administrating_courses.include? course
+    zeus? || administrating_courses.include?(course)
   end
 
   def membership_status_for(course)

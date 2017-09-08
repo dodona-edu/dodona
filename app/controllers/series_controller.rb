@@ -2,6 +2,8 @@ require 'zip'
 class SeriesController < ApplicationController
   before_action :set_series, except: %i[index new create indianio_download]
 
+  before_action :check_token, only: %i[show overview download_solutions]
+
   # GET /series
   # GET /series.json
   def index
@@ -19,14 +21,6 @@ class SeriesController < ApplicationController
 
   def overview
     @title = "#{@series.course.name} #{@series.name}"
-  end
-
-  def token_show
-    raise Pundit::NotAuthorizedError if @series.access_token != params[:token]
-
-    @course = @series.course
-    @title = @series.name
-    render 'show'
   end
 
   # GET /series/new
@@ -96,7 +90,7 @@ class SeriesController < ApplicationController
       when :indianio_token
         @series.indianio_token
       when :access_token
-        token_show_series_url(@series, @series.access_token)
+        series_url(@series, token: @series.access_token)
       end
     render partial: 'application/token_field', locals: {
       name: type,
@@ -158,6 +152,13 @@ class SeriesController < ApplicationController
   def set_series
     @series = Series.find(params[:id])
     authorize @series
+  end
+
+  def check_token
+    raise Pundit::NotAuthorizedError if
+      @series.hidden? &&
+      !current_user&.admin_of?(@series.course) &&
+      @series.access_token != params[:token]
   end
 
   # Generate and send a zip with solutions

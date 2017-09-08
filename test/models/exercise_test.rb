@@ -23,14 +23,6 @@ class ExerciseTest < ActiveSupport::TestCase
     @date = DateTime.new(1302, 7, 11, 13, 37, 42)
     @user = create :user
     @exercise = create :exercise
-    other_user = create :user
-
-    create :wrong_submission,
-           user: other_user,
-           exercise: @exercise
-    create :correct_submission,
-           user: other_user,
-           exercise: @exercise
   end
 
   test 'factory should create exercise' do
@@ -269,6 +261,44 @@ class ExerciseTest < ActiveSupport::TestCase
            created_at: @date + 1.minute
 
     assert_not @exercise.accepted_for(@user)
+  end
+
+  test 'exercise not made within course should not be accepted for that course' do
+    series = create_list :series, 2, exercises: [@exercise]
+    courses = series.map(&:course)
+
+    create :correct_submission,
+           user: @user,
+           exercise: @exercise
+
+    courses.each do |course|
+      assert_not @exercise.accepted_for(@user, nil, course)
+    end
+
+    create :wrong_submission,
+           user: @user,
+           exercise: @exercise
+
+    courses.each do |course|
+      assert_not @exercise.accepted_for(@user, nil, course)
+    end
+
+    create :correct_submission,
+           user: @user,
+           exercise: @exercise,
+           course: courses[0]
+
+    assert @exercise.accepted_for(@user, nil, courses[0])
+    assert_not @exercise.accepted_for(@user, nil, courses[1])
+
+    create :correct_submission,
+           user: @user,
+           exercise: @exercise,
+           course: courses[1]
+
+    courses.each do |course|
+      assert @exercise.accepted_for(@user, nil, course)
+    end
   end
 end
 

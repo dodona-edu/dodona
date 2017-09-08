@@ -25,6 +25,7 @@ class Submission < ApplicationRecord
   delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
 
   validate :code_cannot_contain_emoji, on: :create
+  validate :exercise_not_closed, on: :create
 
   # docs say to use after_commit_create, doesn't even work
   after_create :evaluate_delayed
@@ -92,6 +93,10 @@ class Submission < ApplicationRecord
     runner = judge.runner.new(self)
 
     runner.run
+  end
+
+  def exercise_not_closed
+    errors.add(:exercise, 'must not be closed') if exercise&.closed?
   end
 
   def code_cannot_contain_emoji

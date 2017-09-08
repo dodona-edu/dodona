@@ -200,6 +200,7 @@ class Exercise < ApplicationRecord
   end
 
   def last_submission(user, deadline = nil, course = nil)
+    raise 'Second argument is a deadline, not a course' if deadline.is_a? Course
     s = submissions.of_user(user)
     s = s.in_course(course) if course
     s = s.before_deadline(deadline) if deadline

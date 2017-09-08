@@ -13,14 +13,31 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   test_crud_actions only: %i[index show create], except: %i[create_redirect]
 
   test 'should add submissions to delayed_job queue' do
+    submission = nil
     assert_jobs_enqueued(1) do
-      create_request
+      submission = create_request_expect
     end
+    assert submission.queued?
   end
 
   test 'create submission should respond with ok' do
     create_request_expect
     assert_response :success
+  end
+
+  test 'submission on closed exercise should not be ok' do
+    attrs = generate_attr_hash
+
+    exercise = Exercise.find(attrs[:exercise_id])
+    exercise.update(visibility: 'closed')
+
+    assert_difference('Submission.count', 0) do
+      create_request attr_hash: attrs
+    end
+
+    assert_response :unprocessable_entity
+    json = JSON.parse(response.body)
+    assert_not json['errors']&.empty?
   end
 
   test 'create submission within course' do

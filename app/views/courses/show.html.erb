@@ -56,21 +56,21 @@
                 <div class="col-xs-6 admin-card-stat">
                     <%= t ".submitted_solutions" %>
                     <h1>
-                      <%= @course.submissions.count %>
+                      <%= number_with_delimiter @course.submissions.count, delimiter: " " %>
                     </h1>
                 </div>
                 <div class="col-xs-6 admin-card-stat"
                      title="<%= t '.average_progress_info'%>">
                     <%= t ".average_progress" %>
                   <h1>
-                    <%= @course.average_progress.round(1) %>%
+                    <%= number_to_percentage @course.average_progress, precision: 1 %>
                   </h1>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
               <p>
-              <%= t ".invitation_link" %> 
+              <%= t ".invitation_link" %>
               <span class="glyphicon glyphicon-info-sign" title="<%= t ".invitation_link_help" %>">
               </span>
               <div class="input-group input-group-sm">

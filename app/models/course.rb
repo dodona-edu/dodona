@@ -38,8 +38,7 @@ class Course < ApplicationRecord
              where.not course_memberships:
                 { status: %i[pending unsubscribed] }
            },
-           through: :course_memberships,
-           source: :user
+           through: :course_memberships
 
   has_many :administrating_members,
            lambda {
@@ -91,6 +90,10 @@ class Course < ApplicationRecord
       y -= 1 if now.month < 7 # Before july
       course.year = "#{y}-#{y + 1}"
     end
+  end
+
+  def visible_series
+    series.where(visibility: :visible)
   end
 
   def formatted_year
@@ -161,10 +164,10 @@ class Course < ApplicationRecord
   end
 
   def pending_series(user)
-    series.select {|s| s.pending? && !s.completed?(user) }
+    visible_series.select { |s| s.pending? && !s.completed?(user) }
   end
 
   def incomplete_series(user)
-    series.reject {|s| s.completed?(user) }
+    visible_series.reject { |s| s.completed?(user) }
   end
 end

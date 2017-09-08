@@ -115,7 +115,7 @@ class User < ApplicationRecord
   end
 
   def pending_series
-    courses.map {|c| c.pending_series }.flatten
+    courses.map {|c| c.pending_series(self) }.flatten
   end
 
   def header_courses

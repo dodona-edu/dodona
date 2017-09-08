@@ -62,20 +62,19 @@
       </div>
     </div>
   </div>
-  <% Course.first.series.each do |series| %>
-    <div class="col-sm-4">
-      <%= render partial: 'series/series_card', locals: { series: series } %>
-    </div>
-  <% end %>
   <% @user.courses.each do |course| %>
+    <% incomplete = course.incomplete_series(@user).first(3) %>
     <div class="col-xs-12 col-sm-6 col-lg-4">
       <div class="card home-summary-card">
-        <div class="card-title card-title-colored">
-          <h2 class="card-title-text"><%= link_to course.name, course %></h2>
-          <h3 class="card-subtitle-text"><%= course.year %></h3>
-        </div>
+        <%= link_to course_url(course), class: 'card-title-link' do %>
+          <div class="card-title card-colored-accent accent-<%= course.color %>">
+            <h2 class="card-title-text"><%= course.name %></h2>
+            <h3 class="card-subtitle-text"><%= course.year %></h3>
+            <h3 class="card-subtitle-text">Prof. Dr. Dr. Ir. Hupsakee</h3>
+          </div>
+        <% end %>
         <div class="card-supporting-text">
-          <% if course.incomplete_series.empty? %>
+          <% if incomplete.empty? %>
             No unsolved series.
           <% else %>
             <table class="table table-condensed">
@@ -86,7 +85,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% course.incomplete_series.each do |series| %>
+                <% incomplete.each do |series| %>
                   <tr>
                     <td>
                       <%= link_to series.name, series %>

@@ -22,7 +22,6 @@ Rails.application.routes.draw do
         get 'download_solutions'
         get 'overview'
         get 'scoresheet'
-        get 'token/:token', to: 'series#token_show', as: 'token_show'
         post 'add_exercise'
         post 'mass_rejudge'
         post 'remove_exercise'

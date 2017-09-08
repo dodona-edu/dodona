@@ -61,18 +61,6 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should get series by token' do
-    course = create(:series, :hidden)
-    get token_show_series_path(course, course.access_token)
-    assert_response :success
-  end
-
-  test 'should not get series with wrong token' do
-    course = create(:series, :hidden)
-    get token_show_series_path(course, 'hunter2')
-    assert_redirected_to :root
-  end
-
   test 'should generate indianio_token' do
     token_pre = @instance.indianio_token
     post reset_token_series_path(@instance, type: :indianio_token), params: { format: :js }
@@ -125,6 +113,78 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     post reorder_exercises_series_path(@instance), params: { order: ids.to_json }
     assert_response :success
     assert_equal ids, @instance.series_memberships.map(&:exercise_id)
+  end
+end
+
+class SeriesVisibilityTest < ActionDispatch::IntegrationTest
+  setup do
+    @series = create :series
+    @student = create :student
+    @zeus = create :zeus
+    @course_admin = create :student
+    @series.course.administrating_members << @course_admin
+  end
+
+  def assert_show_and_overview(authorized, token: nil)
+    response = authorized ? :success : :redirect
+    get series_url(@series, token: token)
+    assert_response response
+    get overview_series_url(@series, token: token)
+    assert_response response
+  end
+
+  test 'student should see visible series' do
+    sign_in @student
+    assert_show_and_overview true
+  end
+
+  test 'student should not see hidden or closed series without token' do
+    sign_in @student
+    @series.update(visibility: :hidden)
+    assert_show_and_overview false
+    @series.update(visibility: :closed)
+    assert_show_and_overview false
+  end
+
+  test 'student should see hidden series with token' do
+    sign_in @student
+    @series.update(visibility: :hidden)
+    assert_show_and_overview true, token: @series.access_token
+  end
+
+  test 'student should not see hidden series with wrong token' do
+    sign_in @student
+    @series.update(visibility: :hidden)
+    assert_show_and_overview false, token: 'hunter2'
+  end
+
+  test 'student should not see closed series with token' do
+    sign_in @student
+    @series.update(visibility: :closed)
+    assert_show_and_overview false, token: @series.access_token
+  end
+
+  test 'not logged in should not see hidden or closed series' do
+    @series.update(visibility: :hidden)
+    assert_show_and_overview false
+    @series.update(visibility: :closed)
+    assert_show_and_overview false
+  end
+
+  test 'course admin should see hidden and closed series without token' do
+    sign_in @course_admin
+    @series.update(visibility: :hidden)
+    assert_show_and_overview true
+    @series.update(visibility: :closed)
+    assert_show_and_overview true
+  end
+
+  test 'zeus should see hidden and closed series without token' do
+    sign_in @zeus
+    @series.update(visibility: :hidden)
+    assert_show_and_overview true
+    @series.update(visibility: :closed)
+    assert_show_and_overview true
   end
 end
 

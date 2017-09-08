@@ -44,6 +44,10 @@ FactoryGirl.define do
       end
     end
 
+    trait :within_course do
+      series
+    end
+
     factory :wrong_submission, traits: [:wrong]
     factory :correct_submission, traits: [:correct]
   end

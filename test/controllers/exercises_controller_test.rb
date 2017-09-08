@@ -94,11 +94,14 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
-  test 'user should be able to see invalid exercise when he has submissions' do
+  test 'user should be able to see invalid exercise when he has submissions, but not when closed' do
     @instance = create :exercise, :nameless
     create :submission, exercise: @instance, user: @user
     show_exercise
     assert_response :success
+    @instance.update(visibility: 'closed')
+    show_exercise
+    assert_redirected_to root_url
   end
 
   test 'admin should be able to see invalid exercise' do
@@ -106,6 +109,34 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     @instance = create :exercise, :nameless
     show_exercise
     assert_response :success
+  end
+
+  def create_exercises_return_valid
+    create :exercise, :nameless
+    create :exercise, visibility: 'closed'
+    create :exercise, visibility: 'hidden'
+    create :exercise
+  end
+
+  test 'exercise overview should not include closed, hidden or invalid exercises' do
+    visible = create_exercises_return_valid
+
+    get exercises_url, params: { format: :json }
+
+    exercises = JSON.parse response.body
+    assert_equal 1, exercises.length
+    assert_equal visible.id, exercises.first['id']
+  end
+
+  test 'exercise overview should include everything for admin' do
+    create_exercises_return_valid
+    sign_out :user
+    sign_in create(:zeus)
+
+    get exercises_url, params: { format: :json }
+
+    exercises = JSON.parse response.body
+    assert_equal 4, exercises.length
   end
 end
 

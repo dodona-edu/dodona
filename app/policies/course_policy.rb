@@ -102,7 +102,7 @@ class CoursePolicy < ApplicationPolicy
 
   def permitted_attributes
     if course_admin?
-      %i[name year description visibility registration color]
+      %i[name year description visibility registration color teacher]
     else
       []
     end

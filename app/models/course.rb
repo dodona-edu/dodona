@@ -6,6 +6,7 @@
 #  name         :string(255)
 #  year         :string(255)
 #  secret       :string(255)
+#  teacher      :string(255)
 #  color        :integer
 #  visibility   :integer
 #  registration :integer

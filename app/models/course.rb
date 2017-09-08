@@ -2,15 +2,16 @@
 #
 # Table name: courses
 #
-#  id           :integer          not null, primary key
-#  name         :string(255)
-#  year         :string(255)
-#  secret       :string(255)
-#  visibility   :integer
-#  registration :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  description  :text(65535)
+#  id                 :integer          not null, primary key
+#  name               :string(255)
+#  year               :string(255)
+#  secret             :string(255)
+#  visibility         :integer
+#  registration       :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  description        :text(65535)
+#  correct_solutions  :integer
 #
 
 require 'securerandom'
@@ -96,11 +97,25 @@ class Course < ApplicationRecord
     self.secret = SecureRandom.urlsafe_base64(5)
   end
 
+  def invalidate_stats_cache
+    update(correct_solutions: nil)
+  end
+
+  def correct_solutions_cached
+    if correct_solutions.nil?
+      self.correct_solutions = Submission.where(status: 'correct',
+                                               course: self)
+                                        .select(:exercise_id,
+                                                :user_id)
+                                        .distinct
+                                        .count
+      save
+    end
+    correct_solutions
+  end
+
   def average_progress
-    solved_per_exercise = series_memberships.group(:exercise_id)
-                                            .pluck(:users_correct)
-    solved_total = solved_per_exercise.map(&:to_i).sum
-    ((100 * solved_total).to_d / (users.count * exercises.count).to_d)
+    ((100 * correct_solutions_cached).to_d / (users.count * exercises.count).to_d)
   end
 
   def pending_memberships

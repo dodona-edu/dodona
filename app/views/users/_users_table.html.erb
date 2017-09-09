@@ -20,7 +20,7 @@
           <% if user.staff? %>
             <span class="glyphicon glyphicon-queen" title='staff'></span>
           <% end %>
-          <% if @course && user.admin_of?(@course) %>
+          <% if @course && user.course_admin?(@course) %>
             <span class="glyphicon glyphicon-education" title='course admin'></span>
           <% end %>
           <% if user.username.blank? %>

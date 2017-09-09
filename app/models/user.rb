@@ -93,6 +93,10 @@ class User < ApplicationRecord
     staff? || zeus?
   end
 
+  def course_admin?(course)
+    zeus? || admin_of?(course)
+  end
+
   def photo
     photo = PHOTOS_LOCATION.join((ugent_id || '') + '.jpg')
     photo if File.file? photo
@@ -120,7 +124,7 @@ class User < ApplicationRecord
   end
 
   def admin_of?(course)
-    zeus? || administrating_courses.include?(course)
+    administrating_courses.include?(course)
   end
 
   def membership_status_for(course)

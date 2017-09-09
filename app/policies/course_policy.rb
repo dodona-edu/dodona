@@ -111,6 +111,6 @@ class CoursePolicy < ApplicationPolicy
   private
 
   def course_admin?
-    user&.zeus? || user&.admin_of?(record)
+    user&.course_admin?(record)
   end
 end

@@ -1,13 +1,15 @@
 function initSubmissionShow() {
+    let currentMarkerId;
+
     function init() {
         initTabLinks();
     }
 
     function initTabLinks() {
         $("a.tab-link").click(function () {
-            let tab = $(this).data("tab") || "code";
-            let element = $(this).data("element");
-            let line = $(this).data("line");
+            const tab = $(this).data("tab") || "code";
+            const element = $(this).data("element");
+            const line = $(this).data("line");
 
             $(".tab-link-marker").removeClass("tab-link-marker");
             $(".feedback-table .nav-tabs > li a").filter(function () {
@@ -17,9 +19,12 @@ function initSubmissionShow() {
                 $("#element").addClass("tab-link-marker");
             }
             if (line !== undefined) {
-                let Range = ace.require("ace/range").Range;
-                let editor = ace.edit("editor-result");
-                editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line");
+                const Range = ace.require("ace/range").Range;
+                const editor = ace.edit("editor-result");
+                if (typeof currentMarkerId !== "undefined") {
+                    editor.getSession().removeMarker(currentMarkerId);
+                }
+                currentMarkerId = editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line");
             }
             return false;
         });

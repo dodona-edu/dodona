@@ -381,4 +381,11 @@ class LasagneConfigTest < ActiveSupport::TestCase
   test 'should set visibility' do
     assert_equal 'open', @exercise.visibility
   end
+
+  # set at top level, overridden by series, not set at exercise
+  test 'should no write visibility if initially not present' do
+    assert_equal 'open', @exercise.visibility
+    @exercise.update_config
+    assert_not @exercise.config.key? 'visibility'
+  end
 end

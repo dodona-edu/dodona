@@ -3,7 +3,7 @@ class CoursePolicy < ApplicationPolicy
     def resolve
       if user&.zeus?
         scope
-      else
+      elsif user
         admin = CourseMembership.statuses['course_admin']
         visible = Course.visibilities['visible']
         scope.joins(:course_memberships)
@@ -14,6 +14,8 @@ class CoursePolicy < ApplicationPolicy
                  AND course_memberships.user_id = #{user.id}
                SQL
              ).distinct
+       else
+         scope.where(visibility: :visible)
       end
     end
   end

@@ -186,18 +186,22 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'externals should be able to see course' do
-    with_users_signed_in @externals do |who|
+  test 'externals (and not logged in) should be able to see course' do
+    with_users_signed_in(@externals + [nil]) do |who|
       get course_url(@course)
       assert_response :success, "#{who} should be able to see course"
     end
   end
 
-  test 'externals should not be able to see hidden course' do
+  test 'externals (and not logged in) should not be able to see hidden course' do
     @course.update(visibility: 'hidden')
-    with_users_signed_in @externals do |who|
+    with_users_signed_in(@externals + [nil]) do |who, user|
       get course_url(@course)
-      assert_redirected_to :root, "#{who} should not be able to see course"
+      if user
+        assert_redirected_to :root, "#{who} should not be able to see course"
+      else
+        assert_redirected_to :new_user_session, "not logged in should be redirected to login page"
+      end
     end
   end
 

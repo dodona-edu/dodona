@@ -382,6 +382,12 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_equal 'open', @exercise.visibility
   end
 
+  test 'should set config values from dirconfig in reporoot' do
+    assert_not @exercise.config.key? 'root_config'
+    assert @exercise.merged_config.key? 'root_config'
+    assert_equal 'set', @exercise.merged_config['root_config']
+  end
+
   # set at top level, overridden by series, not set at exercise
   test 'should no write visibility if initially not present' do
     assert_equal 'open', @exercise.visibility

@@ -132,7 +132,7 @@ class Exercise < ApplicationRecord
   end
 
   def merged_config
-    Pathname.new(path).parent.descend         # all parent directories
+    Pathname.new('./' + path).parent.descend  # all parent directories
             .map { |dir| read_dirconfig dir } # try reading their dirconfigs
             .compact                          # remove nil entries
             .push(config)                     # add exercise config file

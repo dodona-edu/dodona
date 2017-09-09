@@ -35,6 +35,8 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-4">
     <div class="card home-summary-card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".recent-exercises" %></h2>
@@ -58,6 +60,8 @@
         <% end %>
       </div>
     </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-4">
     <div class="card home-summary-card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".pending-deadlines" %></h2>
@@ -81,40 +85,45 @@
       </div>
     </div>
   </div>
-  <% @user.courses.each do |course| %>
-    <% incomplete = course.incomplete_series(@user) %>
+</div>
+<div class="row">
+  <% if @user.courses.empty? %>
+  <% else %>
+    <% @user.courses.each do |course| %>
+      <% incomplete = course.incomplete_series(@user) %>
+      <div class="col-xs-12 col-sm-6 col-lg-4">
+        <div class="card home-summary-card">
+          <%= link_to course_url(course), class: 'card-title-link' do %>
+            <div class="card-title card-colored-accent accent-<%= course.color %>">
+              <h2 class="card-title-text"><%= course.name %></h2>
+              <h3 class="card-subtitle-text"><%= course.year %></h3>
+              <h3 class="card-subtitle-text"><%= course.teacher %></h3>
+            </div>
+          <% end %>
+          <div class="card-supporting-text">
+            <% if incomplete.empty? %>
+              <p><span class="glyphicon glyphicon-ok colored-correct"></span> <%= t '.all-exercises-finished' %>
+            <% else %>
+              <% with_deadlines = incomplete.select(&:deadline?) %>
+              <% if with_deadlines.any? %>
+                <h3>Deadlines</h3>
+                  <% with_deadlines.first(3).each do |series| %>
+                    <p><%= link_to series.name, series %>
+                  <% end %>
+              <% else %>
+                <%= link_to t('.resume-next-series'), overview_series_path(incomplete.last) %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
     <div class="col-xs-12 col-sm-6 col-lg-4">
       <div class="card home-summary-card">
-        <%= link_to course_url(course), class: 'card-title-link' do %>
-          <div class="card-title card-colored-accent accent-<%= course.color %>">
-            <h2 class="card-title-text"><%= course.name %></h2>
-            <h3 class="card-subtitle-text"><%= course.year %></h3>
-            <h3 class="card-subtitle-text"><%= course.teacher %></h3>
-          </div>
-        <% end %>
         <div class="card-supporting-text">
-          <% if incomplete.empty? %>
-            <p><span class="glyphicon glyphicon-ok colored-correct"></span> <%= t '.all-exercises-finished' %>
-          <% else %>
-            <% with_deadlines = incomplete.select(&:deadline?) %>
-            <% if with_deadlines.any? %>
-              <h3>Deadlines</h3>
-                <% with_deadlines.first(3).each do |series| %>
-                  <p><%= link_to series.name, series %>
-                <% end %>
-            <% else %>
-              <%= link_to t('.resume-next-series'), overview_series_path(incomplete.last) %>
-            <% end %>
-          <% end %>
+          <%=link_to (t('.more-courses') + ' ...'), courses_path, class: "btn-text" %>
         </div>
       </div>
     </div>
   <% end %>
-  <div class="col-xs-12 col-sm-6 col-lg-4">
-    <div class="card home-summary-card">
-      <div class="card-supporting-text">
-        <%=link_to (t('.more-courses') + ' ...'), courses_path, class: "btn-text" %>
-      </div>
-    </div>
-  </div>
 </div>

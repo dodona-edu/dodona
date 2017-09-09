@@ -72,10 +72,10 @@
     </div>
   </div>
 </div>
-<% if current_user&.admin_of?(series.course) && series.hidden?%>
+<% if current_user&.course_admin?(series.course) && series.hidden?%>
   <div class="alert alert-info hidden-print"><%= t "series.show.series_not_visible" %></div>
 <% end %>
-<% if current_user&.admin_of?(series.course) && series.closed?%>
+<% if current_user&.course_admin?(series.course) && series.closed?%>
   <div class="alert alert-info hidden-print"><%= t "series.show.series_not_accessible" %></div>
 <% end %>
 <%= markdown(series.description) %>

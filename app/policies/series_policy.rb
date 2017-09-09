@@ -3,7 +3,7 @@ class SeriesPolicy < ApplicationPolicy
     def resolve
       if user&.admin?
         scope.all
-      else
+      elsif user
         admin = CourseMembership.statuses['course_admin']
         open = Series.visibilities['open']
         scope.joins(course: :course_memberships)
@@ -14,6 +14,8 @@ class SeriesPolicy < ApplicationPolicy
                  AND course_memberships.user_id = #{user.id}
                SQL
              ).distinct
+      else
+        scope.where(visibility: :visible)
       end
     end
   end

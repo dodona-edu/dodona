@@ -42,7 +42,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter) {
 
     function init() {
         if (doInitFilter) {
-            initFilter(eager);
+            initFilter(baseUrl, eager);
         }
         if (actions) {
             initActions();

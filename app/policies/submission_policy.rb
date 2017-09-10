@@ -4,7 +4,7 @@ class SubmissionPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user
-        scope.of_user(user)
+        scope.of_user(user).or(scope.where(course_id: user.administrating_courses.map(&:id)))
       else
         scope.none
       end

@@ -1,7 +1,7 @@
 class SeriesPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user&.admin?
+      if user&.zeus?
         scope.all
       elsif user
         admin = CourseMembership.statuses['course_admin']
@@ -36,7 +36,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def new?
-    user&.admin?
+    course_admin?
   end
 
   def edit?
@@ -44,7 +44,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin?
+    course_admin?
   end
 
   def update?

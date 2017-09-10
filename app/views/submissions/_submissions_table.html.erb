@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th></th>
-      <% if current_user.admin? %>
+      <% if current_user.course_admin? local_assigns[:course] %>
         <th><%= t ".user" %></th>
       <% end %>
       <% if !exercise %>
@@ -15,7 +15,7 @@
     </tr>
   </thead>
   <tbody>
-    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links} %>
+    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course]} %>
   </tbody>
 </table>
 

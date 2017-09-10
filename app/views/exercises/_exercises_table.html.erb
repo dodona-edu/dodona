@@ -21,7 +21,7 @@
       <tr>
         <td>
           <% if user_signed_in? %>
-            <% if current_user.admin? %>
+            <% if current_user.course_admin? local_assigns[:series]&.course %>
               <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise } %>
             <% else %>
               <%= render partial: 'exercises/status_icon', locals: {
@@ -46,7 +46,7 @@
             <%= render partial: 'exercises/exercise_user_status', locals: { summary: ex } %>
           </td>
           <td>
-            <% if ex.submitted? || current_user.admin? %>
+            <% if ex.submitted? || current_user.course_admin?(local_assigns[:series]&.course) %>
               <%= link_to exercise_submissions_path(ex.exercise, course_id: ex.series&.course_id),
                           title: t('layout.menu.my_submissions'),
                           class: 'btn btn-icon' do %>

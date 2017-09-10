@@ -68,5 +68,4 @@ class UserPolicy < ApplicationPolicy
       %i[time_zone]
     end
   end
-
 end

@@ -14,8 +14,8 @@ class CoursePolicy < ApplicationPolicy
                  AND course_memberships.user_id = #{user.id}
                SQL
              ).distinct
-       else
-         scope.where(visibility: :visible)
+      else
+        scope.where(visibility: :visible)
       end
     end
   end

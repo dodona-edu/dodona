@@ -30,10 +30,6 @@ class ExercisePolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def users?
-    user&.admin?
-  end
-
   def media?
     show?
   end

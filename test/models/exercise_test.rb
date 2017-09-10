@@ -394,4 +394,23 @@ class LasagneConfigTest < ActiveSupport::TestCase
     @exercise.update_config
     assert_not @exercise.config.key? 'visibility'
   end
+
+  # set at top level, overridden by series, not set at exercise
+  test 'should override parent config visibility if manually changed' do
+    assert_not @exercise.config.key? 'visibility'
+    assert @exercise.merged_config.key? 'visibility'
+    assert_equal 'open', @exercise.visibility
+
+    @exercise.update_config
+    assert_not @exercise.config.key? 'visibility'
+
+    @exercise.visibility = 'open'
+    @exercise.update_config
+    assert_not @exercise.config.key? 'visibility'
+
+    @exercise.visibility = 'closed'
+    @exercise.update_config
+    assert_equal 'closed', @exercise.config['visibility']
+    assert_equal 'closed', @exercise.merged_config['visibility']
+  end
 end

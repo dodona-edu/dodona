@@ -9,4 +9,6 @@ en:
       recent-exercises: Recent exercises
       pending-deadlines: Pending deadlines
       all-exercises-finished: You have completed all series
-      resume-next-series: Resume with next series
+      not-all-exercises-finished: You have not completed all exercises
+      resume-next-exercise: Solve your next exercise
+

@@ -9,4 +9,5 @@ nl:
       recent-exercises: Recente oefeningen
       pending-deadlines: Toekomstige deadlines
       all-exercises-finished: Je hebt alle reeksen afgewerkt
-      resume-next-series: Herneem met de volgende reeks
+      not-all-exercises-finished: Je hebt nog niet alle oefeningen opgelost
+      resume-next-exercise: Los je volgende oefening op

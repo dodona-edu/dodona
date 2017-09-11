@@ -7,8 +7,12 @@ en:
       more-courses: More courses
       no-pending-deadlines: No pending deadlines
       recent-exercises: Recent exercises
-      pending-deadlines: Pending deadlines
+      pending-deadlines: Upcoming deadlines
       all-exercises-finished: You have completed all series
       not-all-exercises-finished: You have not completed all exercises
       resume-next-exercise: Solve your next exercise
+      more-deadlines:
+        one: You have 1 more upcoming deadline
+        other: You have %{count} more upcoming deadlines
+      in-this-course: in this course
 

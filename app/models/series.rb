@@ -39,6 +39,18 @@ class Series < ApplicationRecord
     deadline.present?
   end
 
+  def pending?
+    deadline? && deadline > Time.zone.now
+  end
+
+  def completed?(user)
+    exercises.all? { |e| e.accepted_for(user) }
+  end
+
+  def solved_exercises(user)
+    exercises.select { |e| e.accepted_for(user) }
+  end
+
   def indianio_support
     indianio_token.present?
   end

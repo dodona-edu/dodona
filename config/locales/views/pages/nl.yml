@@ -11,3 +11,7 @@ nl:
       all-exercises-finished: Je hebt alle reeksen afgewerkt
       not-all-exercises-finished: Je hebt nog niet alle oefeningen opgelost
       resume-next-exercise: Los je volgende oefening op
+      more-deadlines:
+        one: Je hebt nog 1 latere deadline
+        other: Je hebt nog %{count} latere deadlines
+      in-this-course: in deze cursus

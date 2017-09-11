@@ -157,7 +157,7 @@ class SeriesController < ApplicationController
   def check_token
     raise Pundit::NotAuthorizedError if
       @series.hidden? &&
-      !current_user&.admin_of?(@series.course) &&
+      !current_user&.course_admin?(@series.course) &&
       @series.access_token != params[:token]
   end
 

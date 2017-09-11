@@ -14,8 +14,8 @@ class CoursePolicy < ApplicationPolicy
                  AND course_memberships.user_id = #{user.id}
                SQL
              ).distinct
-       else
-         scope.where(visibility: :visible)
+      else
+        scope.where(visibility: :visible)
       end
     end
   end
@@ -34,14 +34,6 @@ class CoursePolicy < ApplicationPolicy
 
   def show_series?
     user&.zeus? || record.open? || user&.member_of?(record)
-  end
-
-  def new?
-    user&.admin?
-  end
-
-  def edit?
-    course_admin?
   end
 
   def create?
@@ -111,6 +103,6 @@ class CoursePolicy < ApplicationPolicy
   private
 
   def course_admin?
-    user&.zeus? || user&.admin_of?(record)
+    user&.course_admin?(record)
   end
 end

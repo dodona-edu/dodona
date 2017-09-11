@@ -133,13 +133,14 @@ class SubmissionRunner
     timer = Thread.new do
       sleep time_limit
       container.stop
+      true
     end
     outlines, errlines = container.tap(&:start).attach(
       stdin: StringIO.new(@config.to_json),
       stdout: true,
       stderr: true
     )
-    timeout = timer.tap(&:kill).tap(&:join).status.nil?
+    timeout = timer.tap(&:kill).value
     stdout = outlines.join
     stderr = errlines.join
     exit_status = container.wait(1)['StatusCode']

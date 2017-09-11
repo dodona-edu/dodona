@@ -110,6 +110,14 @@ class User < ApplicationRecord
     attempted_exercises - correct_exercises
   end
 
+  def recent_exercises(limit=5)
+    submissions.select('distinct exercise_id').limit(limit).map {|s| s.exercise }
+  end
+
+  def pending_series
+    courses.map {|c| c.pending_series }.flatten
+  end
+
   def header_courses
     return nil if subscribed_courses.empty?
     subscribed_courses.group_by(&:year).first.second[0..2]

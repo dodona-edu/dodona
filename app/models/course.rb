@@ -155,4 +155,13 @@ class Course < ApplicationRecord
       end
     end
   end
+
+  def pending_series
+    series.select {|s| s.pending? and not s.completed?(self) }
+  end
+
+  def incomplete_series
+    series.select {|s| not s.completed?(self) }
+  end
+
 end

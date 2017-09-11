@@ -2,15 +2,17 @@
 #
 # Table name: courses
 #
-#  id                 :integer          not null, primary key
-#  name               :string(255)
-#  year               :string(255)
-#  secret             :string(255)
-#  visibility         :integer
-#  registration       :integer
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  description        :text(65535)
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  year         :string(255)
+#  secret       :string(255)
+#  teacher      :string(255)
+#  color        :integer
+#  visibility   :integer
+#  registration :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  description  :text(65535)
 #  correct_solutions  :integer
 #
 
@@ -29,14 +31,15 @@ class Course < ApplicationRecord
 
   enum visibility: %i[visible hidden]
   enum registration: %i[open moderated closed]
+  enum color: %i[red pink purple deep-purple indigo teal
+                 orange brown blue-grey]
 
   has_many :subscribed_members,
            lambda {
              where.not course_memberships:
                 { status: %i[pending unsubscribed] }
            },
-           through: :course_memberships,
-           source: :user
+           through: :course_memberships
 
   has_many :administrating_members,
            lambda {
@@ -81,12 +84,17 @@ class Course < ApplicationRecord
   after_initialize do |course|
     self.visibility   ||= 'visible'
     self.registration ||= 'open'
+    self.color ||= Course.colors.keys.sample
     unless year
       now = Time.zone.now
       y = now.year
       y -= 1 if now.month < 7 # Before july
       course.year = "#{y}-#{y + 1}"
     end
+  end
+
+  def visible_series
+    series.where(visibility: :visible)
   end
 
   def formatted_year
@@ -154,5 +162,13 @@ class Course < ApplicationRecord
         csv << row
       end
     end
+  end
+
+  def pending_series(user)
+    visible_series.select { |s| s.pending? && !s.completed?(user) }
+  end
+
+  def incomplete_series(user)
+    visible_series.reject { |s| s.completed?(user) }
   end
 end

@@ -28,19 +28,11 @@ class SeriesPolicy < ApplicationPolicy
     return true if course_admin?
     return false if record.closed?
     course = record.course
-    course.visible? || user.member_of?(course)
+    course.visible? || user&.member_of?(course)
   end
 
   def overview?
     show?
-  end
-
-  def new?
-    course_admin?
-  end
-
-  def edit?
-    course_admin?
   end
 
   def create?

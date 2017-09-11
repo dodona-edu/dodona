@@ -41,11 +41,14 @@ class ResultConstructor
     end
   end
 
-  def result
-    # unclosed judgement. timeout?
-    status = { enum: 'time limit exceeded',
-               human: I18n.t("activerecord.attributes.submission.statuses.time limit exceeded",
+  def result(timeout)
+    # prepare status for possible timeout
+    reason = timeout ? 'time limit exceeded' : 'memory limit exceeded'
+    status = { enum: reason,
+               human: I18n.t("activerecord.attributes.submission.statuses.#{reason}",
                              locale: @locale) }
+
+    # close the levels left open
     close_test(generated: '',
                accepted: false,
                status: status) if @level == :test
@@ -54,6 +57,7 @@ class ResultConstructor
     close_tab(badgeCount: @tab[:badgeCount] || 1) if @level == :tab
     close_judgement(accepted: false,
                     status: status) if @level == :judgement
+
     @result
   end
 
@@ -195,7 +199,7 @@ class ResultConstructor
 
   def check_level(should, situation)
     if should != @level
-      raise ResultConstructorError.new "#{situation} during #{situation}"
+      raise ResultConstructorError.new "#{situation} during #{@level}"
     end
   end
 
@@ -204,6 +208,7 @@ class ResultConstructor
     'wrong',
     'runtime error',
     'compilation error',
+    'memory limit exceeded',
     'time limit exceeded',
     'internal error',
   ].each_with_index.reduce(Hash.new) do |memo,pair|

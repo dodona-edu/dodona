@@ -147,7 +147,7 @@ class SubmissionRunner
     container.delete
 
     # handling judge output
-    if exit_status.nonzero? && exit_status != 143
+    if [0, 137, 143].exclude? exit_status
       return build_error 'internal error', 'internal error', [
         build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
         build_message('Standard Error:', 'staff', 'plain'),
@@ -160,9 +160,9 @@ class SubmissionRunner
     begin
       rc = ResultConstructor.new @submission.user.lang
       rc.feed(stdout.force_encoding('utf-8'))
-      rc.result
+      rc.result(timeout)
     rescue ResultConstructor::ResultConstructorError => e
-      if exit_status == 143
+      if [137, 143].include? exit_status
         description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
         build_error description, description, [
           build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),

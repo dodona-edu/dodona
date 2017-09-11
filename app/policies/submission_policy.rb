@@ -36,6 +36,8 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def mass_rejudge?
+    # TODO only for admin? && course_admin?
+    #      or just course_admin?
     user&.admin?
   end
 

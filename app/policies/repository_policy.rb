@@ -13,14 +13,6 @@ class RepositoryPolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def new?
-    user&.admin?
-  end
-
-  def edit?
-    user&.zeus?
-  end
-
   def create?
     user&.admin?
   end

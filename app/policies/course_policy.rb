@@ -36,14 +36,6 @@ class CoursePolicy < ApplicationPolicy
     user&.zeus? || record.open? || user&.member_of?(record)
   end
 
-  def new?
-    user&.admin?
-  end
-
-  def edit?
-    course_admin?
-  end
-
   def create?
     user&.admin?
   end

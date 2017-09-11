@@ -94,7 +94,7 @@ class Course < ApplicationRecord
   end
 
   def visible_series
-    series.where(visibility: :visible)
+    series.where(visibility: :open)
   end
 
   def formatted_year

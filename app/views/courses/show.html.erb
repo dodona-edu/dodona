@@ -28,7 +28,7 @@
         <% end %>
       </div>
       <% end %>
-      <% if current_user&.admin_of?(@course) %>
+      <% if current_user&.course_admin?(@course) %>
         <div class="card-supporting-text card-border">
           <div class="row">
             <div class="col-md-6">

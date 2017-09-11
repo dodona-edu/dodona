@@ -86,6 +86,38 @@ class UserTest < ActiveSupport::TestCase
     assert_not create(:user).admin?
   end
 
+  test 'only zeus should always be course admin' do
+    assert create(:zeus).course_admin? nil
+    assert_not create(:staff).course_admin? nil
+    assert_not create(:user).course_admin? nil
+  end
+
+  test 'user and staff can be course admin' do
+    user = create(:user)
+    staff = create(:staff)
+    zeus = create(:zeus)
+
+    course = create(:course)
+
+    assert_not user.course_admin?(course)
+    assert_not staff.course_admin?(course)
+    assert zeus.course_admin?(course)
+
+    course.users.push(user, staff, zeus)
+
+    assert_not user.course_admin?(course)
+    assert_not staff.course_admin?(course)
+    assert zeus.course_admin?(course)
+
+    user.course_memberships.first.update(status: 'course_admin')
+    staff.course_memberships.first.update(status: 'course_admin')
+    zeus.course_memberships.first.update(status: 'course_admin')
+
+    assert user.course_admin?(course)
+    assert staff.course_admin?(course)
+    assert zeus.course_admin?(course)
+  end
+
   test 'full name should be n/a when blank' do
     user = create(:user, first_name: nil, last_name: nil)
     assert_equal 'n/a', user.full_name

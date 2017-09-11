@@ -15,6 +15,7 @@ class FeedbackTableRenderer
   def initialize(submission, user)
     @submission = JSON.parse(submission.result, symbolize_names: true)
     @current_user = user
+    @course = submission.course
     @builder = Builder::XmlMarkup.new
     @code = submission.code
     @exercise_id = submission.exercise_id
@@ -194,7 +195,7 @@ class FeedbackTableRenderer
     return if m.nil?
     m = { format: 'plain', description: m } if m.is_a? String
     if m[:permission]
-      return if m[:permission] == 'staff' && !@current_user.admin?
+      return if m[:permission] == 'staff' && !@current_user.course_admin?(@course)
       return if m[:permission] == 'zeus' && !@current_user.zeus?
     end
     output_message(m)

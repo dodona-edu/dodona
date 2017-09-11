@@ -1,7 +1,7 @@
 class SeriesPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user&.admin?
+      if user&.zeus?
         scope.all
       elsif user
         admin = CourseMembership.statuses['course_admin']
@@ -28,23 +28,15 @@ class SeriesPolicy < ApplicationPolicy
     return true if course_admin?
     return false if record.closed?
     course = record.course
-    course.visible? || user.member_of?(course)
+    course.visible? || user&.member_of?(course)
   end
 
   def overview?
     show?
   end
 
-  def new?
-    user&.admin?
-  end
-
-  def edit?
-    course_admin?
-  end
-
   def create?
-    user&.admin?
+    course_admin?
   end
 
   def update?
@@ -106,6 +98,6 @@ class SeriesPolicy < ApplicationPolicy
   def course_admin?
     user&.zeus? ||
       (record.class == Series &&
-       user&.admin_of?(record&.course))
+       user&.course_admin?(record&.course))
   end
 end

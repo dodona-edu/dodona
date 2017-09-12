@@ -39,7 +39,8 @@ class Course < ApplicationRecord
              where.not course_memberships:
                 { status: %i[pending unsubscribed] }
            },
-           through: :course_memberships
+           through: :course_memberships,
+           source: :user
 
   has_many :administrating_members,
            lambda {

@@ -1,0 +1,35 @@
+<div class="card">
+  <div class="card-title card-title-colored">
+    <h2 class="card-title-text"><%= @user.full_name %></h2>
+  </div>
+  <div class="card-supporting-text">
+    <div class="row">
+      <div class="col-xs-4">
+        <%= t ".exercises-solved" %>
+      </div>
+      <div class="col-xs-4">
+        <%= t ".exercises-unfinished" %>
+      </div>
+      <div class="col-xs-4">
+        <%= link_to t(".submissions"), submissions_path %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <h1>
+          <%= @user.correct_exercises %>
+        </h1>
+      </div>
+      <div class="col-xs-4">
+        <h1>
+          <%= @user.unfinished_exercises %>
+        </h1>
+      </div>
+      <div class="col-xs-4">
+        <h1>
+          <%= @user.submissions.count %>
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>

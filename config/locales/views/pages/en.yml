@@ -11,3 +11,7 @@ en:
       all-exercises-finished: You have completed all series
       not-all-exercises-finished: You have not completed all exercises
       resume-next-exercise: Solve your next exercise
+    course_card:
+      submissions: Submissions
+      correct-exercises: Correct exercises
+      go-to-course: Go to this course

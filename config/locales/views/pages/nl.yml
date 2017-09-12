@@ -11,3 +11,7 @@ nl:
       all-exercises-finished: Je hebt alle reeksen afgewerkt
       not-all-exercises-finished: Je hebt nog niet alle oefeningen opgelost
       resume-next-exercise: Los je volgende oefening op
+    course_card:
+      submissions: Inzendingen
+      correct-exercises: Correcte oefeningen
+      go-to-course: Ga naar dit vak

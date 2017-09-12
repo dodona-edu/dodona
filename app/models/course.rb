@@ -98,6 +98,16 @@ class Course < ApplicationRecord
     series.where(visibility: :open)
   end
 
+  def homepage_series
+    with_deadlines = visible_series
+                     .select { |s| s.deadline? && s.deadline > Time.zone.now - 1.week }
+                     .sort_by(&:deadline)
+    passed_deadlines = with_deadlines
+                       .select { |s| s.deadline < Time.zone.now }[-1, 1]
+    future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }
+    passed_deadlines.to_a + future_deadlines.to_a
+  end
+
   def formatted_year
     year.sub(/ ?- ?/, '–')
   end
@@ -113,11 +123,11 @@ class Course < ApplicationRecord
   def correct_solutions_cached
     if correct_solutions.nil?
       self.correct_solutions = Submission.where(status: 'correct',
-                                               course: self)
-                                        .select(:exercise_id,
-                                                :user_id)
-                                        .distinct
-                                        .count
+                                                course: self)
+                                         .select(:exercise_id,
+                                                 :user_id)
+                                         .distinct
+                                         .count
       save
     end
     correct_solutions

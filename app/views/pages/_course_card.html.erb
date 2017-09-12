@@ -1,4 +1,3 @@
-<% incomplete = course.incomplete_series(@user) %>
 <div class="card home-summary-card">
   <%= link_to course_url(course), class: 'card-title-link' do %>
     <div class="card-title card-colored-accent accent-<%= course.color %>">
@@ -8,25 +7,19 @@
     </div>
   <% end %>
   <div class="card-supporting-text">
-    <% if incomplete.empty? %>
-      <h4><span class="glyphicon glyphicon-ok colored-correct"></span> <%= t '.all-exercises-finished' %></h4>
-    <% else %>
-      <% with_deadlines = incomplete.select{ |s| s.deadline? && s.deadline > Time.zone.now - 1.week }.sort_by(&:deadline) %>
-      <% if with_deadlines.any? %>
-        <h5>Deadlines</h5>
-        <% with_deadlines.first(3).each do |series| %>
-          <p><%= link_to series.name, overview_series_path(series), class: "dynamic-homepage-series-link link-accent-#{course.color}" %>
-            <span class='pull-right'>
-              <%= render partial: 'series/human_deadline', locals: { series: series } %>
-            </span>
-          </p>
-        <% end %>
-      <% else %>
-        <h4><%= t '.not-all-exercises-finished' %></h4>
+    <% course_series = course.homepage_series %>
+    <% if course_series.any? %>
+      <h5>Deadlines</h5>
+      <% course_series.first(3).each do |series| %>
+        <p><%= link_to series.name, overview_series_path(series), class: "dynamic-homepage-series-link link-accent-#{course.color}" %>
+          <span class='pull-right'>
+            <%= render partial: 'series/human_deadline', locals: { series: series } %>
+          </span>
+        </p>
       <% end %>
-    </div>
-    <div class="card-actions card-border">
-      <%= link_to t('.resume-next-exercise'), overview_series_path(incomplete.last), class: 'btn-text pull-right' %>
     <% end %>
+  </div>
+  <div class="card-actions card-border">
+    <%= link_to t('.resume-next-exercise'), course_path(course), class: 'btn-text pull-right' %>
   </div>
 </div>

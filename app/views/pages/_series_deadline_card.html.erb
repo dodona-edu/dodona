@@ -1,0 +1,29 @@
+<div class="card home-summary-card">
+  <div class="card-title card-title-colored">
+    <h2 class="card-title-text"><%= t ".pending-deadlines" %></h2>
+  </div>
+  <div class="card-supporting-text">
+    <table class="table no-head">
+      <tbody>
+        <% pending.first(3).each do |series| %>
+          <tr>
+            <td>
+              <%= link_to "#{series.name} (#{series.course.name})", series %>
+            </td>
+            <td>
+              <span title="<%= l series.deadline, format: :long %>">
+                <span class='glyphicon glyphicon-time'></span>
+                <%= t "series.show.deadline_in" %> <%= time_ago_in_words series.deadline %>
+              </span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if pending.count > 3 %>
+      <p class='text-muted'>
+        <small><%= t '.more-deadlines', count: pending.count - 3 %></small>
+      </p>
+    <% end %>
+  </div>
+</div>

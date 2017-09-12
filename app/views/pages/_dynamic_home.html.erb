@@ -1,138 +1,30 @@
 <div class="row">
   <div class="col-xs-12 col-sm-6 col-lg-4">
-    <div class="card">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @user.full_name %></h2>
-      </div>
-      <div class="card-supporting-text">
-        <div class="row">
-          <div class="col-xs-4">
-            <%= t ".exercises-solved" %>
-          </div>
-          <div class="col-xs-4">
-            <%= t ".exercises-unfinished" %>
-          </div>
-          <div class="col-xs-4">
-            <%= link_to t(".submissions"), submissions_path %>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-4">
-            <h1>
-              <%= @user.correct_exercises %>
-            </h1>
-          </div>
-          <div class="col-xs-4">
-            <h1>
-              <%= @user.unfinished_exercises %>
-            </h1>
-          </div>
-          <div class="col-xs-4">
-            <h1>
-              <%= @user.submissions.count %>
-            </h1>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render "user_card" %>
   </div>
   <% if @user.submissions.any? %>
     <div class="col-xs-12 col-sm-6 col-lg-4">
-      <div class="card home-summary-card">
-        <div class="card-title card-title-colored">
-          <h2 class="card-title-text"><%= t ".recent-exercises" %></h2>
-        </div>
-        <div class="card-supporting-text">
-          <table class="table no-head">
-            <tbody>
-              <% @user.recent_exercises.each do |exercise| %>
-                <% submission = exercise.last_submission(@user) %>
-                <tr>
-                  <td><%= submission_status_icon(submission) %></td>
-                  <td><%= link_to submission.exercise.name, submission_path(submission) %></td>
-                  <td><%= link_to exercise_submissions_path(submission.exercise), class: 'btn btn-icon' do %><span class="glyphicon glyphicon-chevron-right"></span><% end %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <%= render "recent_exercises_card" %>
     </div>
   <% end %>
   <% pending = @user.pending_series %>
   <% if pending.any? %>
     <div class="col-xs-12 col-sm-6 col-lg-4">
-      <div class="card home-summary-card">
-        <div class="card-title card-title-colored">
-          <h2 class="card-title-text"><%= t ".pending-deadlines" %></h2>
-        </div>
-        <div class="card-supporting-text">
-          <table class="table no-head">
-            <tbody>
-              <% pending.first(3).each do |series| %>
-                <tr>
-                  <td><%= link_to "#{series.name} (#{series.course.name})", series %></td>
-                  <td><span title="<%= l series.deadline, format: :long %>"><span class='glyphicon glyphicon-time'></span></span> <%= t "series.show.deadline_in" %> <%= time_ago_in_words series.deadline %></span></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          <% if pending.count > 3 %>
-          <p class='text-muted'>
-          <small><%= t '.more-deadlines', count: pending.count - 3 %></small>
-        <% end %>
-        </div>
-      </div>
+      <%= render "series_deadline_card" %>
     </div>
   <% end %>
 </div>
 <div class="row">
-<% @user.courses.each do |course| %>
-  <% incomplete = course.incomplete_series(@user) %>
+  <% @user.courses.each do |course| %>
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <%= render partial: "course_card", locals: {course: course} %>
+    </div>
+  <% end %>
   <div class="col-xs-12 col-sm-6 col-lg-4">
     <div class="card home-summary-card">
-      <%= link_to course_url(course), class: 'card-title-link' do %>
-        <div class="card-title card-colored-accent accent-<%= course.color %>">
-          <h2 class="card-title-text"><%= course.name %></h2>
-          <h3 class="card-subtitle-text"><%= course.year %></h3>
-          <h3 class="card-subtitle-text"><%= course.teacher %></h3>
-        </div>
-      <% end %>
       <div class="card-supporting-text">
-        <% if incomplete.empty? %>
-          <h4><span class="glyphicon glyphicon-ok colored-correct"></span> <%= t '.all-exercises-finished' %></h4>
-        <% else %>
-          <% with_deadlines = incomplete.select{ |s| s.deadline? && s.deadline > Time.zone.now - 1.week }.sort_by(&:deadline) %>
-          <% if with_deadlines.any? %>
-            <h4>
-              DEADLINES
-            </h4>
-            <% with_deadlines.first(3).each do |series| %>
-              <p><%= link_to series.name, overview_series_path(series), class: "dynamic-homepage-series-link link-accent-#{course.color}" %>
-            <span class='pull-right'>
-              <%= render partial: 'series/human_deadline', locals: { series: series } %>
-            </span>
-        <% end %>
-        <% if with_deadlines.count > 3 %>
-          <p class='text-muted'><small><%= t '.more-deadlines', count: (with_deadlines.count - 3) %> <%= t '.in-this-course' %></small>
-      <% end %>
-      <% else %>
-        <h4><%= t '.not-all-exercises-finished' %></h4>
-      <% end %>
-      </div>
-      <div class="card-actions card-border">
-        <%= link_to t('.resume-next-exercise'), overview_series_path(incomplete.last), class: 'btn-text pull-right' %>
-      <% end %>
+        <%=link_to (t('.more-courses') + ' …'), courses_path, class: "btn-text" %>
       </div>
     </div>
   </div>
-<% end %>
-<div class="col-xs-12 col-sm-6 col-lg-4">
-  <div class="card home-summary-card">
-    <div class="card-supporting-text">
-      <%=link_to (t('.more-courses') + ' ...'), courses_path, class: "btn-text" %>
-    </div>
-  </div>
-</div>
-</div>
 </div>

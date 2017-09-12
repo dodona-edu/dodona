@@ -13,18 +13,13 @@
     <% else %>
       <% with_deadlines = incomplete.select{ |s| s.deadline? && s.deadline > Time.zone.now - 1.week }.sort_by(&:deadline) %>
       <% if with_deadlines.any? %>
-        <h4>
-          DEADLINES
-        </h4>
+        <h5>Deadlines</h5>
         <% with_deadlines.first(3).each do |series| %>
           <p><%= link_to series.name, overview_series_path(series), class: "dynamic-homepage-series-link link-accent-#{course.color}" %>
             <span class='pull-right'>
               <%= render partial: 'series/human_deadline', locals: { series: series } %>
             </span>
           </p>
-        <% end %>
-        <% if with_deadlines.count > 3 %>
-          <p class='text-muted'><small><%= t '.more-deadlines', count: (with_deadlines.count - 3) %> <%= t '.in-this-course' %></small></p>
         <% end %>
       <% else %>
         <h4><%= t '.not-all-exercises-finished' %></h4>

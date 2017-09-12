@@ -1,9 +1,6 @@
 nl:
   pages:
     dynamic_home:
-      exercises-solved: Oefeningen opgelost
-      exercises-unfinished: Onafgewerkte oefeningen
-      submissions: Inzendingen
       more-courses: Meer cursussen
       no-pending-deadlines: Geen toekomstige deadlines
       recent-exercises: Recente oefeningen
@@ -14,5 +11,9 @@ nl:
     course_card:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
-      go-to-course: Ga naar dit vak
+      go-to-course: Ga naar deze cursus
       users: Gebruikers
+      course-admin: Cursus beheerder
+    user_card:
+      submissions: Inzendingen
+      correct-exercises: Correcte oefeningen

@@ -94,18 +94,20 @@ class Course < ApplicationRecord
     end
   end
 
-  def visible_series
-    series.where(visibility: :open)
-  end
-
-  def homepage_series
-    with_deadlines = visible_series
-                     .select { |s| s.deadline? && s.deadline > Time.zone.now - 1.week }
-                     .sort_by(&:deadline)
+  def homepage_series(passed_series = 1)
+    with_deadlines = series.visible.with_deadline.sort_by(&:deadline)
     passed_deadlines = with_deadlines
-                       .select { |s| s.deadline < Time.zone.now }[-1, 1]
+                       .select { |s| s.deadline < Time.zone.now && s.deadline > Time.zone.now - 1.week }[-1 * passed_series, 1 * passed_series]
     future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }
     passed_deadlines.to_a + future_deadlines.to_a
+  end
+
+  def pending_series(user)
+    series.visible.select { |s| s.pending? && !s.completed?(user) }
+  end
+
+  def incomplete_series(user)
+    series.visible.reject { |s| s.completed?(user) }
   end
 
   def formatted_year
@@ -173,13 +175,5 @@ class Course < ApplicationRecord
         csv << row
       end
     end
-  end
-
-  def pending_series(user)
-    visible_series.select { |s| s.pending? && !s.completed?(user) }
-  end
-
-  def incomplete_series(user)
-    visible_series.reject { |s| s.completed?(user) }
   end
 end

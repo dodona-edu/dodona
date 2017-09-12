@@ -1,9 +1,6 @@
 en:
   pages:
     dynamic_home:
-      exercises-solved: Exercises solved
-      exercises-unfinished: Exercises unfinished
-      submissions: Submissions
       more-courses: More courses
       no-pending-deadlines: No pending deadlines
       recent-exercises: Recent exercises
@@ -16,3 +13,7 @@ en:
       correct-exercises: Correct exercises
       go-to-course: Go to this course
       users: Users
+      course-admin: Course administrator
+    user_card:
+      submissions: Submissions
+      correct-exercises: Correct exercises

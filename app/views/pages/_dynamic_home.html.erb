@@ -1,30 +1,36 @@
 <div class="row">
-  <div class="col-xs-12 col-sm-6 col-lg-4">
-    <%= render "user_card" %>
-  </div>
-  <% if @user.submissions.any? %>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <%= render "recent_exercises_card" %>
-    </div>
-  <% end %>
-  <% pending = @user.pending_series %>
-  <% if pending.any? %>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <%= render "series_deadline_card" %>
-    </div>
-  <% end %>
-</div>
-<div class="row">
-  <% @user.courses.each do |course| %>
-    <div class="col-xs-12 col-sm-6 col-lg-4">
-      <%= render partial: "course_card", locals: {course: course} %>
-    </div>
-  <% end %>
-  <div class="col-xs-12 col-sm-6 col-lg-4">
-    <div class="card home-summary-card">
-      <div class="card-supporting-text">
-        <%=link_to (t('.more-courses') + ' …'), courses_path, class: "btn-text" %>
+  <div class="col-xs-12 col-sm-6 col-lg-8">
+    <div class="row">
+      <% @user.courses.each do |course| %>
+        <div class="col-xs-12 col-sm-12 col-lg-6">
+          <%= render partial: "course_card", locals: {course: course} %>
+        </div>
+      <% end %>
+      <div class="col-xs-12 col-sm-12 col-lg-6">
+        <div class="card home-summary-card">
+          <div class="card-supporting-text">
+            <%=link_to (t('.more-courses') + ' …'), courses_path, class: "btn-text" %>
+          </div>
+        </div>
       </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <div class="row">
+      <div class="col-xs-12">
+        <%= render "user_card" %>
+      </div>
+      <% if @user.submissions.any? %>
+        <div class="col-xs-12">
+          <%= render "recent_exercises_card" %>
+        </div>
+      <% end %>
+      <% pending = @user.pending_series %>
+      <% if pending.any? %>
+        <div class="col-xs-12">
+          <%= render "series_deadline_card" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

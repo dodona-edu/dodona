@@ -38,8 +38,6 @@ function initFilter(baseUrl, eager) {
 }
 
 function initFilterIndex(baseUrl, eager, actions, doInitFilter) {
-    let $filter;
-
     function init() {
         if (doInitFilter) {
             initFilter(baseUrl, eager);
@@ -51,6 +49,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter) {
 
     function initActions() {
         let $actions = $(".table-toolbar-tools .actions");
+        let $filter = $(FILTER_ID);
         $actions.removeClass("hidden");
         actions.forEach(function (action) {
             let $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");

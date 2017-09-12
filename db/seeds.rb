@@ -35,16 +35,19 @@ if Rails.env == 'development'
 
   courses = []
 
-  courses << Course.create(description: 'This is a test course.', name: 'Open Test Course', year: '2017-2018', registration: 'open', visibility: 'visible')
-  courses << Course.create(description: 'This is a test course.', name: 'Moderated Test Course', year: '2017-2018', registration: 'moderated', visibility: 'visible')
-  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2017-2018', registration: 'open', visibility: 'hidden')
-  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2017-2018', registration: 'closed', visibility: 'hidden')
+  courses << Course.create(description: 'This is a test course.', name: 'Open Test Course', year: '2017-2018', registration: 'open', visibility: 'visible', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Moderated Test Course', year: '2017-2018', registration: 'moderated', visibility: 'visible', teacher: 'Prof. Barabas')
+  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2017-2018', registration: 'open', visibility: 'hidden', teacher: 'Prof. Kumulus')
+  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2017-2018', registration: 'closed', visibility: 'hidden', teacher: 'Graaf van Rommelgem')
+  courses << Course.create(description: 'This is a test course.', name: 'Old Open Test Course', year: '2016-2017', registration: 'open', visibility: 'visible', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Very Old Open Test Course', year: '2015-2016', registration: 'open', visibility: 'visible', teacher: 'Prof. Gobelijn')
 
   puts 'Adding users to courses'
 
   courses.each do |course|
     course.administrating_members << mart
     course.enrolled_members << staff
+    course.enrolled_members << zeus
     course.unsubscribed_members << jelix
     course.enrolled_members.concat(students.sample(80))
   end
@@ -87,8 +90,17 @@ if Rails.env == 'development'
                             course: course,
                             visibility: :closed)
     20.times do |i|
-      series << Series.create(name: "Reeks #{i}",
+      s = Series.create(name: "Reeks #{i}",
                               course: course)
+      if Random.rand < 0.1
+        if Random.rand < 0.3
+          t = Time.now.advance(days: -1 * Random.rand(5))
+        else
+          t = Time.now.advance(days: Random.rand(60))
+        end
+        s.update(deadline: t)
+      end
+      series << s
     end
 
     series.each do |s|

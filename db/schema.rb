@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20170908144658) do
     t.text "description"
     t.integer "visibility", default: 0
     t.integer "registration", default: 0
+    t.integer "correct_solutions"
     t.integer "color"
     t.string "teacher", default: ""
   end

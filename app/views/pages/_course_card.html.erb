@@ -3,8 +3,8 @@
   <%= link_to course_url(course), class: 'card-title-link' do %>
     <div class="card-title card-colored-accent accent-<%= course.color %>">
       <h2 class="card-title-text"><%= course.name %></h2>
-      <h3 class="card-subtitle-text"><%= course.year %></h3>
-      <h3 class="card-subtitle-text"><%= course.teacher %></h3>
+      <h3 class="card-subtitle-text"><%= course.formatted_year %></h3>
+      <h3 class="card-subtitle-text"><%= course.teacher %>&nbsp;</h3>
     </div>
   <% end %>
   <div class="card-supporting-text">

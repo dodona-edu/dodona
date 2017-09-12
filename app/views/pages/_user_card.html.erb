@@ -1,35 +1,32 @@
-<div class="card">
+<div class="card home-summary-card user">
   <div class="card-title card-title-colored">
     <h2 class="card-title-text"><%= @user.full_name %></h2>
   </div>
-  <div class="card-supporting-text">
+  <div class="card-supporting-text stats">
     <div class="row">
-      <div class="col-xs-4">
-        <%= t ".exercises-solved" %>
+      <div class="col-xs-6">
+        <h1><%= number_with_delimiter @user.submissions.count, delimiter: " " %></h1>
+        <%= t ".submissions" %>
       </div>
-      <div class="col-xs-4">
-        <%= t ".exercises-unfinished" %>
-      </div>
-      <div class="col-xs-4">
-        <%= link_to t(".submissions"), submissions_path %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-4">
-        <h1>
-          <%= @user.correct_exercises %>
-        </h1>
-      </div>
-      <div class="col-xs-4">
-        <h1>
-          <%= @user.unfinished_exercises %>
-        </h1>
-      </div>
-      <div class="col-xs-4">
-        <h1>
-          <%= @user.submissions.count %>
-        </h1>
+      <div class="col-xs-6">
+        <h1><%= number_with_delimiter @user.correct_exercises, delimiter: " " %></h1>
+        <%= t ".correct-exercises" %>
       </div>
     </div>
   </div>
+  <% deadlines = @user.homepage_series %>
+  <% if deadlines.any? %>
+    <div class="card-supporting-text card-border deadlines">
+      <h5>Deadlines</h5>
+      <% deadlines.first(5).each do |series| %>
+        <p>
+          <span class='pull-right'>
+            <%= render partial: 'series/human_deadline', locals: { series: series } %>
+          </span>
+          <%= link_to series.name, overview_series_path(series), class: "dynamic-homepage-series-link" %><br>
+          <%= link_to series.course.name, course_path(series.course), class: "small text-muted course-link" %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
 </div>

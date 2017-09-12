@@ -29,6 +29,8 @@ class Series < ApplicationRecord
 
   before_save :set_access_token
 
+  scope :visible, -> { where(visibility: :open) }
+  scope :with_deadline, -> { where.not(deadline: nil) }
   default_scope { order(created_at: :desc) }
 
   after_initialize do

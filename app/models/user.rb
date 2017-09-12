@@ -118,12 +118,16 @@ class User < ApplicationRecord
     attempted_exercises(course) - correct_exercises(course)
   end
 
-  def recent_exercises(limit=3)
-    submissions.select('distinct exercise_id').limit(limit).map {|s| s.exercise }
+  def recent_exercises(limit = 3)
+    submissions.select('distinct exercise_id').limit(limit).map(&:exercise)
   end
 
   def pending_series
-    courses.map {|c| c.pending_series(self) }.flatten.sort_by { |s| s.deadline }
+    courses.map { |c| c.pending_series(self) }.flatten.sort_by(&:deadline)
+  end
+
+  def homepage_series
+    courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
   end
 
   def header_courses

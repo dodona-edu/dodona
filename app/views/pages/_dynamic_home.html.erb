@@ -20,12 +20,6 @@
       <div class="col-xs-12">
         <%= render "user_card" %>
       </div>
-      <% pending = @user.pending_series %>
-      <% if pending.any? %>
-        <div class="col-xs-12">
-          <%= render partial: "series_deadline_card", locals: {pending: pending} %>
-        </div>
-      <% end %>
       <% if @user.submissions.any? %>
         <div class="col-xs-12">
           <%= render "recent_exercises_card" %>

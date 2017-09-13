@@ -2,12 +2,6 @@ nl:
   pages:
     dynamic_home:
       more-courses: Meer cursussen
-      no-pending-deadlines: Geen toekomstige deadlines
-      recent-exercises: Recente oefeningen
-      pending-deadlines: Toekomstige deadlines
-      all-exercises-finished: Je hebt alle reeksen afgewerkt
-      not-all-exercises-finished: Je hebt nog niet alle oefeningen opgelost
-      resume-next-exercise: Los je volgende oefening op
     course_card:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
@@ -17,3 +11,4 @@ nl:
     user_card:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
+      recent-exercises: Recente oefeningen

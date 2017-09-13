@@ -2,12 +2,6 @@ en:
   pages:
     dynamic_home:
       more-courses: More courses
-      no-pending-deadlines: No pending deadlines
-      recent-exercises: Recent exercises
-      pending-deadlines: Upcoming deadlines
-      all-exercises-finished: You have completed all series
-      not-all-exercises-finished: You have not completed all exercises
-      resume-next-exercise: Solve your next exercise
     course_card:
       submissions: Submissions
       correct-exercises: Correct exercises
@@ -17,3 +11,4 @@ en:
     user_card:
       submissions: Submissions
       correct-exercises: Correct exercises
+      recent-exercises: Recent exercises

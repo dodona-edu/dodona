@@ -30,7 +30,7 @@ module ApplicationHelper
       'compilation error'     => %w[wrench wrong],
       'memory limit exceeded' => %w[hdd wrong]
     }[submission&.status] ||     %w[alert warning]
-    "<span class=\"glyphicon glyphicon-#{icon} colored-#{color}\"></span>".html_safe
+    "<span class=\"submission-status glyphicon glyphicon-#{icon} colored-#{color}\"></span>".html_safe
   end
 
   def options_for_enum(object, enum)

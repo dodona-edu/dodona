@@ -1,7 +1,9 @@
 <div class="card home-summary-card user">
+
   <div class="card-title card-title-colored">
     <h2 class="card-title-text"><%= @user.full_name %></h2>
   </div>
+
   <div class="card-supporting-text stats">
     <div class="row">
       <div class="col-xs-6">
@@ -14,6 +16,7 @@
       </div>
     </div>
   </div>
+
   <% deadlines = @user.homepage_series %>
   <% if deadlines.any? %>
     <div class="card-supporting-text card-border deadlines">
@@ -29,4 +32,19 @@
       <% end %>
     </div>
   <% end %>
+
+  <% if @user.submissions.any? %>
+    <div class="card-supporting-text card-border recents">
+      <h5><%= t ".recent-exercises" %></h5>
+      <% @user.recent_exercises(5).each do |exercise| %>
+        <% submission = exercise.last_submission(@user) %>
+        <p>
+          <%= submission_status_icon(submission) %>
+          <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise) %>
+          <%= link_to exercise_submissions_path(submission.exercise), class: 'btn btn-icon pull-right' do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+
 </div>

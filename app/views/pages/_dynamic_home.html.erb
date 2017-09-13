@@ -6,19 +6,17 @@
           <%= render partial: "course_card", locals: {course: course} %>
         </div>
       <% end %>
-      <div class="col-xs-12 col-sm-12 col-lg-6">
-        <div class="card home-summary-card">
-          <div class="card-supporting-text">
-            <%=link_to (t('.more-courses') + ' …'), courses_path, class: "btn-text" %>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
   <div class="col-xs-12 col-sm-6 col-lg-4">
     <div class="row">
       <div class="col-xs-12">
         <%= render "user_card" %>
+        <div class="card home-summary-card">
+          <div class="card-supporting-text">
+            <%=link_to (t('.more-courses') + ' …'), courses_path, class: "btn-text" %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

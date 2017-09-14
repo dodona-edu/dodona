@@ -127,7 +127,7 @@ class User < ApplicationRecord
   end
 
   def homepage_series
-    courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
+    subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
   end
 
   def header_courses

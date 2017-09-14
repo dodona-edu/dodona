@@ -1,6 +1,16 @@
 <div class="row">
+  <% if @user.courses.empty? %>
+    <div class="col-xs-12 visible-sm">
+      <%= render "getting_started_card"%>
+    </div>
+  <% end %>
   <div class="col-xs-12 col-sm-6 col-lg-8">
     <div class="row">
+      <% if @user.courses.empty? %>
+        <div class="col-xs-12 hidden-sm">
+          <%= render "getting_started_card"%>
+        </div>
+      <% end %>
       <% @user.courses.each do |course| %>
         <div class="col-xs-12 col-sm-12 col-lg-6">
           <%= render partial: "course_card", locals: {course: course} %>

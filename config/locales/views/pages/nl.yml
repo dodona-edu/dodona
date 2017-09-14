@@ -1,7 +1,7 @@
 nl:
   pages:
     dynamic_home:
-      more-courses: Meer cursussen toevoegen
+      more-courses: Meer cursussen
     course_card:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
@@ -12,3 +12,7 @@ nl:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
       recent-exercises: Recente oefeningen
+    getting_started_card:
+      title: Hallo,
+      text: Welkom op Dodona! Registreer je voor een cursus om te starten.
+      action: verken cursussen

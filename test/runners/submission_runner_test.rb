@@ -148,7 +148,6 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   end
 
   test 'malformed json should result in internal error' do
-    skip
     evaluate_with_stubbed_docker output: 'DIKKE TAARTEN!!1!'
 
     assert_submission status: 'internal error',
@@ -157,10 +156,15 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   end
 
   test 'no output should result in internal error' do
-    skip
     evaluate_with_stubbed_docker output: nil
     assert_submission status: 'internal error',
                       message_includes: 'No judge output',
+                      accepted: false
+  end
+
+  test 'broken output should result in internal error' do
+    evaluate_with_stubbed_docker output: '{ status: "Aarhhg...'
+    assert_submission status: 'internal error',
                       accepted: false
   end
 
@@ -173,25 +177,17 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                       accepted: false
   end
 
-  test 'timeout without output should result in time limit exceeded' do
-    skip
-    evaluate_with_stubbed_docker output: nil, status_code: 143
-    assert_submission status: 'time limit exceeded',
-                      accepted: false
-  end
-
-  test 'timeout with broken output should result in time limit exceeded' do
-    skip
-    evaluate_with_stubbed_docker output: '{ status: "Aarhhg...',
-                                 status_code: 143
-    assert_submission status: 'time limit exceeded',
-                      accepted: false
-  end
-
-  test 'submissions eating RAM should result in memory limit exceeded' do
-    evaluate_with_stubbed_docker status_code: 1, err: 'got signal 9'
-
+  test 'dockers killed by 15 before timeout should result in memory limit exceeded' do
+    Thread.stubs(:new).returns(mock(kill: nil, value: nil))
+    evaluate_with_stubbed_docker output: nil, status_code: 128 + 15
     assert_submission status: 'memory limit exceeded',
+                      accepted: false
+  end
+
+  test 'dockers killed by 15 at timeout should result in time limit exceeded' do
+    Thread.stubs(:new).returns(mock(kill: nil, value: true))
+    evaluate_with_stubbed_docker output: nil, status_code: 128 + 15
+    assert_submission status: 'time limit exceeded',
                       accepted: false
   end
 

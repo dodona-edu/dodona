@@ -91,8 +91,15 @@ class Submission < ApplicationRecord
 
   def evaluate
     runner = judge.runner.new(self)
+    save_result runner.run
+  end
 
-    runner.run
+  def save_result(result_hash)
+    self.result = result_hash.to_json
+    self.status = Submission.normalize_status result_hash[:status]
+    self.accepted = result_hash[:accepted]
+    self.summary = result_hash[:description]
+    save
   end
 
   def exercise_not_closed

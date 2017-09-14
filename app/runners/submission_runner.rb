@@ -1,42 +1,13 @@
 require 'json'         # JSON support require 'fileutils'    # file system utilities
 require 'securerandom' # random string generators (supports URL safety)
-require 'json-schema'  # json schema validation, from json-schema gem
 require 'tmpdir'       # temporary file support
 require 'docker'       # docker client
 require 'timeout'      # to kill the docker after a certain time
+require 'pathname'     # better than File
 
 # base class for runners that handle Dodona submissions
 class SubmissionRunner
-  DEFAULT_CONFIG_PATH = Rails.root.join('app/runners/config.json').freeze
-
-  # ADT to store to recognize an error
-  # 'codes' is a list of possible exit codes that could come from this error
-  # 'tokens' is a list of possible substrings that could occur in the stderr of the error
-  class ErrorIdentifier
-    attr_reader :tokens, :codes
-
-    def initialize(codes, tokens)
-      @codes = codes
-      @tokens = tokens
-    end
-  end
-
-  def build_error(status = 'runtime error', description = 'runtime error', messages = [], accepted = false)
-    {
-      'accepted' => accepted,
-      'status' => status,
-      'description' => I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
-      'messages' => messages
-    }
-  end
-
-  def build_message(description = '', permission = 'zeus', format = 'code')
-    {
-      'format' => format,
-      'description' => description,
-      'permission' => permission
-    }
-  end
+  DEFAULT_CONFIG_PATH = Rails.root.join('app', 'runners', 'config.json').freeze
 
   @runners = [SubmissionRunner]
   def self.inherited(cl)
@@ -47,25 +18,7 @@ class SubmissionRunner
     attr_reader :runners
   end
 
-  # path to the default submission json schema, used to validate judge output
-  def schema_path
-    Rails.root.join 'public/schemas/judge_output.json'
-  end
-
   def initialize(submission)
-    # fields to recognize and handle errors
-    @error_identifiers = {}
-    @error_handlers = {}
-
-    # container receives signal 9 from host when memory limit is exceeded
-    register_error('memory limit', ErrorIdentifier.new([1], ['got signal 9']), method(:handle_memory_exceeded))
-
-    # default exit codes of the timeout command
-    register_error('time limit', ErrorIdentifier.new([9, 124, 137], []), method(:handle_timeout))
-
-    # something else
-    register_error('internal error', ErrorIdentifier.new([], []), method(:handle_unknown))
-
     # definition of submission
     @submission = submission
 
@@ -74,77 +27,14 @@ class SubmissionRunner
     @judge = @exercise.judge
 
     # create name for hidden directory in docker container
-    @hidden_path = File.join('/mnt', SecureRandom.urlsafe_base64)
+    @mountsrc = nil # created when running
+    @mountdst = Pathname.new('/mnt')
+    @hidden_path = SecureRandom.urlsafe_base64
 
     # submission configuration (JSON)
     @config = compose_config
 
-    # path on file system used as temporary working directory for processing the submission
-    @path = nil
-
     @mac = RUBY_PLATFORM.include?('darwin')
-  end
-
-  # registers a pair of error identifiers and error handlers with the same identifier string (name)
-  def register_error(name, identifier, handler)
-    @error_identifiers[name] = identifier
-    @error_handlers[name] = handler
-  end
-
-  # uses the exitcode and stderr to recognize which error occured
-  # returns a string identifier of the error
-  def recognize_error(exitcode, stderr)
-    @error_identifiers.keys.each do |key|
-      # loop over all the error identifiers
-      identifier = @error_identifiers[key]
-      codes = identifier.codes
-      tokens = identifier.tokens
-
-      # the process's exit code must be in the error identifier's list
-      next unless codes.include?(exitcode)
-
-      # if the token list is empty, the exit code is enough
-      # if not, one token must match the process's stderr
-      if tokens.empty? || tokens.any? { |token| stderr.include?(token) }
-        return key
-      end
-    end
-
-    # this is some serious error
-    'internal error'
-  end
-
-  # uses the exitcode and stderr to generate output json
-  def handle_error(exitcode, stderr)
-    # figure out which error occured
-    error = recognize_error(exitcode, stderr)
-
-    # fetch the correct handler
-    handler = @error_handlers[error]
-
-    # let the handler fill in the blanks
-    handler.call(stderr)
-  end
-
-  # adds the specific information to an output json for timeout errors
-  def handle_timeout(stderr)
-    build_error 'time limit exceeded', 'time limit exceeded', [
-      build_message(stderr, 'staff')
-    ]
-  end
-
-  # adds the specific information to an output json for memory limit errors
-  def handle_memory_exceeded(stderr)
-    build_error 'memory limit exceeded', 'memory limit exceeded', [
-      build_message(stderr, 'staff')
-    ]
-  end
-
-  # adds the specific information to an output json for unknown/general errors
-  def handle_unknown(stderr)
-    build_error 'internal error', 'internal error', [
-      build_message(stderr, 'staff')
-    ]
   end
 
   def compose_config
@@ -162,12 +52,20 @@ class SubmissionRunner
                        'natural_language' => @submission.user.lang)
 
     # update with links to resources in docker container needed for processing submission
-    config.deep_merge!('resources' => File.join(@hidden_path, 'resources'),
-                       'source'    => File.join(@hidden_path, 'submission', 'source'),
-                       'judge'     => File.join(@hidden_path, 'judge'),
+    config.deep_merge!('resources' => (@mountdst + @hidden_path + 'resources').to_path,
+                       'source'    => (@mountdst + @hidden_path + 'submission' + 'source').to_path,
+                       'judge'     => (@mountdst + @hidden_path + 'judge').to_path,
                        'workdir'   => '/home/runner/workdir')
 
     config
+  end
+
+  def copy_or_create(from, to)
+    if from.directory?
+      FileUtils.cp_r(from, to)
+    else
+      to.mkdir
+    end
   end
 
   def prepare
@@ -176,33 +74,22 @@ class SubmissionRunner
     @submission.save
 
     # create path on file system used as temporary working directory for processing the submission
-    @path = Dir.mktmpdir(nil, @mac ? '/tmp' : nil)
+    @mountsrc = Pathname.new Dir.mktmpdir(nil, @mac ? '/tmp' : nil)
 
     # put submission in the submission dir
-    Dir.mkdir(File.join(@path, 'submission'))
-    open(File.join(@path, 'submission', 'source'), 'w') do |file|
+    (@mountsrc + @hidden_path).mkdir
+    (@mountsrc + @hidden_path + 'submission').mkdir
+    (@mountsrc + @hidden_path + 'submission' + 'source').open('w') do |file|
       file.write(@submission.code)
     end
 
-    # put submission resources in working directory
-    src = File.join(@exercise.full_path, 'workdir')
-    if File.directory?(src)
-      FileUtils.cp_r(src, @path)
-    else
-      Dir.mkdir(File.join(@path, 'workdir'))
-    end
+    # put workdir, evaluation and judge directories in working directory
+    copy_or_create(@exercise.full_path + 'workdir', @mountsrc + 'workdir')
+    copy_or_create(@exercise.full_path + 'evaluation', @mountsrc + @hidden_path + 'resources')
+    copy_or_create(@judge.full_path, @mountsrc + @hidden_path + 'judge')
 
-    # ensure directories exist before mounting
-    begin
-      Dir.mkdir(File.join(@path, 'logs'))
-    rescue
-      'existed'
-    end
-    begin
-      Dir.mkdir(File.join(@exercise.full_path, 'evaluation'))
-    rescue
-      'existed'
-    end
+    # ensure logs directory exist before mounting
+    (@mountsrc + @hidden_path + 'logs').mkpath
   end
 
   def execute
@@ -220,9 +107,9 @@ class SubmissionRunner
         # TODO: move entry point to docker container definition
         Cmd: ['/main.sh',
               # judge entry point
-              "#{@hidden_path}/judge/run",
+              (@mountdst + @hidden_path + 'judge' + 'run').to_path,
               # directory for logging output
-              "#{@hidden_path}/logs"],
+              (@mountdst + @hidden_path + 'logs').to_path],
         Image: @judge.image.to_s,
         name: "dodona-#{@submission.id}", # assuming unique during execution
         OpenStdin: true,
@@ -231,129 +118,107 @@ class SubmissionRunner
         HostConfig: {
           Memory: memory_limit,
           MemorySwap: memory_limit, # memory including swap
-          Binds: [
-            # mount submission as a hidden directory (read-only)
-            "#{@path}/submission:#{@hidden_path}/submission:ro",
-            # mount judge resources in hidden directory (read-only)
-            "#{@exercise.full_path}/evaluation:#{@hidden_path}/resources:ro",
-            # mount judge definition in hidden directory (read-only)
-            "#{@judge.full_path}:#{@hidden_path}/judge:ro",
-            # mount logging directory in hidden directory
-            "#{@path}/logs:#{@hidden_path}/logs",
-            # evalution directory is read/write and seeded with copies
-            "#{@path}/workdir:/home/runner/workdir"
-          ]
+          Binds: ["#{@mountsrc}:#{@mountdst}",
+                  "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
         }
       )
-    rescue Exception => e
-      return handle_unknown("Error creating docker: #{e}")
+    rescue => e
+      return build_error 'internal error', 'internal error', [
+        build_message("Error creating docker: #{e}", 'staff', 'plain'),
+        build_message(e.backtrace.join("\n"), 'staff')
+      ]
+    end
+
+    # run the container with a timeout.
+    timer = Thread.new do
+      sleep time_limit
+      container.stop
+      true
+    end
+    outlines, errlines = container.tap(&:start).attach(
+      stdin: StringIO.new(@config.to_json),
+      stdout: true,
+      stderr: true
+    )
+    timeout = timer.tap(&:kill).value
+    stdout = outlines.join
+    stderr = errlines.join
+    exit_status = container.wait(1)['StatusCode']
+    container.delete
+
+    # handling judge output
+    if [0, 137, 143].exclude? exit_status
+      return build_error 'internal error', 'internal error', [
+        build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
+        build_message('Standard Error:', 'staff', 'plain'),
+        build_message(stderr, 'staff'),
+        build_message('Standard Output:', 'staff', 'plain'),
+        build_message(stdout, 'staff')
+      ]
     end
 
     begin
-      stdout, stderr, exit_status = Timeout.timeout(time_limit) do
-        stdout, stderr = container.tap(&:start).attach(
-          stdin: StringIO.new(@config.to_json),
-          stdout: true,
-          stderr: true
-        )
-        [stdout, stderr, container.wait(time_limit)['StatusCode']]
-      end
-      container.delete
-      if exit_status.nonzero?
-        handle_error(exit_status, stderr.join)
+      rc = ResultConstructor.new @submission.user.lang
+      rc.feed(stdout.force_encoding('utf-8'))
+      rc.result(timeout)
+    rescue ResultConstructorError => e
+      if [137, 143].include? exit_status
+        description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
+        build_error description, description, [
+          build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
+          build_message('Standard Error:', 'staff', 'plain'),
+          build_message(stderr, 'staff'),
+          build_message('Standard Output:', 'staff', 'plain'),
+          build_message(stdout, 'staff')
+        ]
       else
-        # submission was processed succesfully (stdout contains description of result)
-        output = stdout.join
-        if JSON::Validator.validate(schema_path.to_s, output)
-          result = JSON.parse(output)
-          add_runtime_metrics(result)
-          result
-        else
-          build_error 'internal error', 'internal error', [
-            build_message(JSON::Validator.fully_validate(schema_path.to_s, output).join("\n"), 'staff')
-          ]
-        end
+        messages = [build_message(e.title, 'staff', 'plain')]
+        messages << build_message(e.description, 'staff') unless e.description.nil?
+        build_error 'internal error', 'internal error', messages
       end
-    rescue Timeout::Error
-      container.delete(force: true)
-      handle_timeout('Docker container exceeded time limit.')
     end
   end
 
   def add_runtime_metrics(result); end
 
-  def finalize(result)
-    # save the result
-    @submission.result = result.to_json
-    @submission.status = Submission.normalize_status(result['status'])
-    @submission.accepted = result['accepted']
-    @submission.summary = result['description']
-    @submission.save
-
+  def finalize
+    return if @path.nil?
     # remove path on file system used as temporary working directory for processing the submission
-    unless @path.nil?
-      FileUtils.remove_entry_secure(@path, verbose: true)
-      @path = nil
-    end
+    FileUtils.remove_entry_secure(@path, verbose: true)
+    @path = nil
   end
 
   def run
     prepare
     result = execute
-  rescue Exception => e
+  rescue => e
     result = build_error 'internal error', 'internal error', [
       build_message(e.message + "\n" + e.backtrace.inspect, 'staff')
     ]
   ensure
-    finalize(result)
+    finalize
     result
   end
 
-  # calculates the difference between the biggest and smallest values
-  # in a log file
-  def logged_value_range(path)
-    max_logged_value(path) - min_logged_value(path)
+  private
+
+  # ============================================================
+  # json building helpers
+
+  def build_error(status = 'internal error', description = 'internal error', messages = [])
+    {
+      accepted: false,
+      status: status,
+      description: I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
+      messages: messages
+    }
   end
 
-  # extracts the smallest value from a log file
-  def min_logged_value(path)
-    m = nil
-
-    file = File.open(path).read
-
-    file.each_line do |line|
-      # each log line has a time stamp an actual value
-      split = line.split
-      value = split[1].to_i
-
-      m = value if m.nil? || value < m
-    end
-
-    m
-  end
-
-  # extracts the biggest value from a log file
-  def max_logged_value(path)
-    m = -1
-
-    file = File.open(path).read
-
-    file.each_line do |line|
-      # each log line has a time stamp and an actual value
-      split = line.split
-      value = split[1].to_i
-      m = value if value > m
-    end
-
-    m
-  end
-
-  # extracts the last timestamp from a log file
-  def last_timestamp(path)
-    line = IO.readlines(path).last
-
-    split = line.split
-
-    split[0].to_i
+  def build_message(description = '', permission = 'zeus', format = 'code')
+    {
+      format: format,
+      description: description,
+      permission: permission
+    }
   end
 end

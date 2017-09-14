@@ -16,6 +16,7 @@ nl:
     attributes:
       course:
         name: Naam
+        teacher: Lesgever
         year: Academiejaar
         description: Beschrijving
         secret: Secret

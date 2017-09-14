@@ -16,6 +16,7 @@ en:
     attributes:
       course:
         name: Name
+        teacher: Teacher
         year: Academic year
         description: Description
         secret: Secret
@@ -105,5 +106,3 @@ en:
           course_admin: Course admin
           pending: Pending
           student: Student
-
-

@@ -130,9 +130,9 @@ class User < ApplicationRecord
     subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
   end
 
-  def header_courses
+  def current_ay_courses
     return nil if subscribed_courses.empty?
-    subscribed_courses.group_by(&:year).first.second[0..2]
+    subscribed_courses.group_by(&:year).first.second
   end
 
   def member_of?(course)

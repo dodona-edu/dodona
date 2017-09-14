@@ -1,5 +1,10 @@
 en:
   pages:
+    static_home:
+      intro: "The Dodona environment contains dozens of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with your Ghent University credentials. Dodona is still in active development, any bug report on the Minerva forum or to the teaching assistants would certainly be appreciated."
+      sign-in: Sign in
+      dodona-title: "Who or what is Dodona?"
+      dodona-text_html: "Dodona is a place in Greece, located in a peaceful, green valley on the eastern slope of the mountain Tomaros in the historical region of Epirus. The oracle of Dodona was dedicated to Zeus <span class='hidden-xs'>(pictured left)</span> and the mother goddess Dione. It was, according to Herodotus, the oldest oracle of ancient Greece, possibly dating back to the second millennium BC."
     dynamic_home:
       more-courses: More courses
     course_card:

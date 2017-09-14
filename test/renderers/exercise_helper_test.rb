@@ -32,7 +32,7 @@ class ExerciseHelperTest < ActiveSupport::TestCase
     assert_equal expected, description
   end
 
-  def check_footnotes(footnotes, exercise, url)
+  def check_footnotes(footnotes, _exercise, _url)
     footnote_a = footnotes.to_a
     index, content = footnote_a[0]
     assert_equal '1', index
@@ -86,9 +86,9 @@ class MediaPathContextualizerTest < ActiveSupport::TestCase
         "<a href='#{@path}/media/link.html'><sup>LINK</sup></a>",
       "<a href='./media/link.html' disabled><sup>LINK</sup></a>":
         "<a href='#{@path}/media/link.html' disabled><sup>LINK</sup></a>",
-        "<img alt=\"ISBN\" data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \" src=\"media/ISBN.gif\" title=\"ISBN\" height=\"140\">":
+      "<img alt=\"ISBN\" data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \" src=\"media/ISBN.gif\" title=\"ISBN\" height=\"140\">":
         "<img alt=\"ISBN\" data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \" src=\"#{@path}/media/ISBN.gif\" title=\"ISBN\" height=\"140\">",
-        "<img alt=\"ISBN\"\n data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \"\n src=\"media/ISBN.gif\"\n title=\"ISBN\"\n height=\"140\">":
+      "<img alt=\"ISBN\"\n data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \"\n src=\"media/ISBN.gif\"\n title=\"ISBN\"\n height=\"140\">":
         "<img alt=\"ISBN\"\n data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \"\n src=\"#{@path}/media/ISBN.gif\"\n title=\"ISBN\"\n height=\"140\">"
     }.stringify_keys
     testcases.each do |tag, expected|
@@ -100,14 +100,14 @@ class MediaPathContextualizerTest < ActiveSupport::TestCase
   test 'non-media paths should not be substituted' do
     testcases = [
       "<img src='image.png' alt='random image'>",
-      "<img src=\"image.png\" alt=\"random image\">",
+      '<img src="image.png" alt="random image">',
       "<img src='http://media.com/img.png' alt='random image'>",
       "<img src='MEDIA/PATH/IN/CAPS.jpg' alt='random image'>",
       "<a href='localhost:3000'>media/path.jpg</a>",
       "<img src='img.jpg' alt='media image'>",
-      "Just some random text about media/mediums.",
-      "Text with media/page.html",
-      "Put your files in the ./media/stuff.folder",
+      'Just some random text about media/mediums.',
+      'Text with media/page.html',
+      'Put your files in the ./media/stuff.folder'
     ]
     testcases.each do |tag|
       res = @renderer.contextualize_media_paths tag, @path

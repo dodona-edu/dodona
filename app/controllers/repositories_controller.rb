@@ -81,7 +81,7 @@ class RepositoriesController < ApplicationController
           .reject    { |commit|    commit['author']['name'] == 'Dodona' }
           .flat_map  { |commit|    %w[added removed modified].flat_map { |type| commit[type] } }
           .compact # remove nil entries
-          .flat_map  { |file|      @repository.affected_exercise_dirs(file) }
+          .flat_map  { |file| @repository.affected_exercise_dirs(file) }
           .uniq
       else
         @repository.exercise_dirs

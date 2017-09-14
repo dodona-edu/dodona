@@ -40,9 +40,7 @@ class ExerciseSummary
     accepted_submission != nil
   end
 
-  def deadline
-    series&.deadline
-  end
+  delegate :deadline, to: :series
 
   def deadline_passed?
     deadline && deadline < Time.current
@@ -68,7 +66,7 @@ class ExerciseSummary
 
   def query_submissions
     s = exercise.submissions.where(user: user).reorder(id: :desc)
-    s = s.join_series.where(series: { id: series.id } ) if series
+    s = s.join_series.where(series: { id: series.id }) if series
     s
   end
 

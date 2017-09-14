@@ -41,13 +41,13 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user_korea.time_zone, 'Seoul'
   end
 
-  test 'header courses for user' do
+  test 'current ay courses for user' do
     user = create :user, courses: []
-    assert_nil user.header_courses
+    assert_equal [], user.current_ay_courses
 
     user.courses << create_list(:course, 5)
-    header = user.header_courses
-    assert_equal header.length, 3
+    courses = user.current_ay_courses
+    assert_not_equal [], courses
   end
 
   test 'cas_extra_attributes should be set' do

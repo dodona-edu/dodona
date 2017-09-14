@@ -40,7 +40,7 @@ class ExerciseSummary
     accepted_submission != nil
   end
 
-  delegate :deadline, to: :series
+  delegate :deadline, to: :series, allow_nil: true
 
   def deadline_passed?
     deadline && deadline < Time.current

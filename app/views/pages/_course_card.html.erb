@@ -41,7 +41,7 @@
     <div class="card-supporting-text card-border deadlines">
       <h5>Deadlines</h5>
       <% course_series.first(3).each do |series| %>
-        <p><%= link_to series.name, course_path(course, all: true , anchor: "series-#{series.id}"), class: "dynamic-homepage-series-link link-accent-#{course.color}" %>
+        <p><%= link_to series.name, course_path(course, series: series, anchor: "series-#{series.id}"), class: "dynamic-homepage-series-link link-accent-#{course.color}" %>
           <span class='pull-right'>
             <%= render partial: 'series/human_deadline', locals: { series: series } %>
           </span>

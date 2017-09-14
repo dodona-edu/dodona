@@ -131,7 +131,7 @@ class User < ApplicationRecord
   end
 
   def current_ay_courses
-    return nil if subscribed_courses.empty?
+    return [] if subscribed_courses.empty?
     subscribed_courses.group_by(&:year).first.second
   end
 

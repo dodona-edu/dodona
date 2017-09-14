@@ -10,21 +10,29 @@
   <div class="card-supporting-text stats row">
     <% if @user.course_admin?(course) %>
     <div class="col-xs-6">
-      <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
-      <%= t ".submissions" %>
+      <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
+        <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
+        <%= t ".submissions" %>
+      <% end %>
     </div>
     <div class="col-xs-6">
-      <h1><%= number_with_delimiter course.subscribed_members.count, delimiter: " " %></h1>
-      <%= t ".users" %>
+      <%= link_to course_path(course, anchor: "user-list"), class: 'card-title-link' do %>
+          <h1><%= number_with_delimiter course.subscribed_members.count, delimiter: " " %></h1>
+          <%= t ".users" %>
+      <% end %>
     </div>
     <% else %>
       <div class="col-xs-6">
-        <h1><%= number_with_delimiter @user.submissions.in_course(course).count, delimiter: " " %></h1>
-        <%= t ".submissions" %>
+        <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
+          <h1><%= number_with_delimiter @user.submissions.in_course(course).count, delimiter: " " %></h1>
+          <%= t ".submissions" %>
+        <% end %>
       </div>
       <div class="col-xs-6">
-        <h1><%= number_with_delimiter @user.correct_exercises(course), delimiter: " " %></h1>
-        <%= t ".correct-exercises" %>
+        <%= link_to course_path(course), class: 'card-title-link' do %>
+          <h1><%= number_with_delimiter @user.correct_exercises(course), delimiter: " " %></h1>
+          <%= t ".correct-exercises" %>
+        <% end %>
       </div>
     <% end %>
   </div>

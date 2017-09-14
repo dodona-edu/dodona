@@ -29,7 +29,7 @@
           <span class='pull-right'>
             <%= render partial: 'series/human_deadline', locals: { series: series } %>
           </span>
-          <%= link_to series.name, overview_series_path(series), class: "dynamic-homepage-series-link" %><br>
+          <%= link_to series.name, course_path(series.course, all: true , anchor: "series-#{series.id}"), class: "dynamic-homepage-series-link" %><br>
           <%= link_to series.course.name, course_path(series.course), class: "small text-muted course-link" %>
         </p>
       <% end %>

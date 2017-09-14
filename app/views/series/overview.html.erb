@@ -37,7 +37,7 @@
             <%= render partial: 'exercises/exercise_user_status', locals: { summary: ex } %>
           </div>
         <% else %>
-          <%= link_to t('exercises.show.handin'), exercise_path(ex.exercise), class: "btn-text" %>
+          <%= link_to t('exercises.show.handin'), course_exercise_path(@series.course, ex.exercise, anchor: "submission-card"), class: "btn-text" %>
         <% end %>
       </div>
     </div>

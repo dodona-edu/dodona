@@ -30,10 +30,10 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     zeus_extern = create :zeus
     zeus_intern = create :zeus
 
-    @course.administrating_members.concat(create_normies << zeus_intern)
+    @course.administrating_members.concat(create_normies)
 
     @course_admins = @course.administrating_members
-    @admins = @course_admins + [zeus_extern]
+    @admins = @course_admins
 
     @students = create_normies
     @course.enrolled_members.concat(@students)
@@ -46,7 +46,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     @subscribed = @students + @course_admins
     @externals = create_normies
-    @not_subscribed = @externals + @unsubscribed + @pending + [zeus_extern]
+    @not_subscribed = @externals + @unsubscribed + @pending
 
     @not_admins = @students + @unsubscribed + @pending + @externals + [nil]
   end

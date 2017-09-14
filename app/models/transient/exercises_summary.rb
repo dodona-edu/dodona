@@ -88,5 +88,4 @@ class ExercisesSummary
     return @latest_submissions unless series&.deadline
     query_submissions.before_deadline(series.deadline).exercise_hash
   end
-
 end

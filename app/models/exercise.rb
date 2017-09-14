@@ -244,7 +244,7 @@ class Exercise < ApplicationRecord
 
   private
 
-  #takes a relative path
+  # takes a relative path
   def read_dirconfig(subdir)
     repository.read_config_file(subdir + DIRCONFIG_FILE)
   end

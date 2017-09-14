@@ -212,7 +212,7 @@ class CoursesController < ApplicationController
     if !current_user
       redirect_back(fallback_location: root_url, notice: I18n.t('courses.registration.not_logged_in'))
     elsif current_user.zeus?
-      return
+      nil
     elsif params[:secret] != @course.secret
       redirect_back(fallback_location: root_url, alert: I18n.t('courses.registration.key_mismatch'))
     elsif current_user.member_of?(@course)

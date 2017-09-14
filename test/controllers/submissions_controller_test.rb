@@ -54,10 +54,10 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   test 'should get submission edit page' do
     get edit_submission_path(@instance)
     assert_redirected_to exercise_url(
-                           @instance.exercise,
-                           anchor: 'submission-card',
-                           edit_submission: @instance
-                         )
+      @instance.exercise,
+      anchor: 'submission-card',
+      edit_submission: @instance
+    )
   end
 
   test 'should download submission code' do

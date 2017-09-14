@@ -39,9 +39,9 @@ module ApplicationHelper
   end
 
   def enums_to_translated_options_array(klass, enum)
-    klass.classify.safe_constantize.send(enum.pluralize).map {
-        |key, value| [I18n.t("activerecord.enums.#{klass.downcase}.#{enum}.#{key}").humanize, key]
-    }
+    klass.classify.safe_constantize.send(enum.pluralize).map do |key, _value|
+      [I18n.t("activerecord.enums.#{klass.downcase}.#{enum}.#{key}").humanize, key]
+    end
   end
 
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer

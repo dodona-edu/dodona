@@ -282,7 +282,6 @@ module ExerciseSummaryTests
     end
   end
 
-
   class ExercisesSummaryTest < ExerciseSummaryTest
     setup do
       @series.update deadline: Time.current

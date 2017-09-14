@@ -75,8 +75,8 @@ gem 'annotate'
 gem 'capistrano-passenger', group: :development
 gem 'capistrano-rails', group: :development
 gem 'capistrano-rvm', group: :development
-gem 'capistrano3-delayed-job', '~> 1.0'
 gem 'capistrano-yarn'
+gem 'capistrano3-delayed-job', '~> 1.0'
 
 # i18n
 gem 'i18n-js', '~> 3.0.0.rc14'
@@ -87,8 +87,8 @@ gem 'exception_notification'
 gem 'slack-notifier'
 
 # css styles for emails
-gem 'premailer-rails'
 gem 'nokogiri'
+gem 'premailer-rails'
 
 # filtering
 gem 'has_scope'

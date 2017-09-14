@@ -18,4 +18,4 @@ Rails.application.config.assets.nodigest = []
 Rails.application.config.assets.nodigest_fonts = ['glyphicons-halflings-regular.eot', 'glyphicons-halflings-regular.svg', 'glyphicons-halflings-regular.ttf', 'glyphicons-halflings-regular.woff', 'glyphicons-halflings-regular.woff2']
 
 Rails.application.config.assets.paths << "#{Rails.root}/vendor/assets/fonts"
-Rails.application.config.assets.precompile += %w(mails.css)
+Rails.application.config.assets.precompile += %w[mails.css]

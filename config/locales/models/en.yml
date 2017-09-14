@@ -28,6 +28,17 @@ en:
           open: Open
           moderated: Moderated
           closed: Closed
+        color: Color
+        colors:
+          red: Red
+          pink: Pink
+          purple: Purple
+          deep-purple: Deep Purple
+          indigo: Indigo
+          teal: Teal
+          orange: Orange
+          brown: Brown
+          blue-grey: Blue Grey
       exercise:
         name: Name
         name_nl: Name Dutch

@@ -1,29 +1,5 @@
-<link rel="preload" as="image" href="<%= image_path('matrix.jpg') %>">
-<div class="home-cover-img">&nbsp;</div>
-<div class="row">
-    <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
-        <div class="card home-card">
-            <div class="card-supporting-text row">
-                <div class="col-xs-12 col-sm-8 col-md-9">
-                    <h2 class="card-title-text">Dodona</h2>
-                    <p>De Dodona-leeromgeving bevat tientallen programmeeroefeningen die gebruikt kunnen worden om de programmeertaal Python onder de knie te krijgen. Alle oefeningen zijn voorzien van automatische feedback op correctheid en programmeerstijl. Inloggen kan je met je UGent-gebruikersnaam en wachtwoord. Dodona is nog volop in ontwikkeling, eventuele bugs mogen dus zeker gemeld worden op het Minerva forum of aan de assistenten.</p>
-                </div>
-                <div class="hidden-xs col-sm-4 col-md-3">
-                  <%= image_tag("python.png") %>
-                </div>
-            </div>
-            <div class="card-supporting-text card-border row">
-            <div class="hidden-xs col-sm-5">
-              <%= image_tag("zeus.jpg") %>
-            </div>
-                <div class="col-xs-12 col-sm-7">
-                    <h3>Wie of wat is Dodona?</h3>
-                    <p>Dodona is een orakelplaats in Griekenland, gelegen in een vreedzame, groene vallei op de oostelijke helling van de berg Tomarós in de historische regio Epirus. Het orakel van Dodona was gewijd aan oppergod Zeus <span class="hidden-xs">(hiernaast afgebeeld)</span> en de moedergodin Dione. Het was volgens Herodotus het oudste orakel van het oude Griekenland, dat mogelijk terugging tot het tweede millennium voor Christus.</p>
-                </div>
-            </div>
-            <div class="card-actions card-border">
-              <%=link_to "naar de oefeningen", exercises_path, class: "btn-text" %>
-            </div>
-        </div>
-    </div>
-</div>
+<% if user_signed_in? %>
+  <%= render 'dynamic_home' %>
+<% else %>
+  <%= render 'static_home' %>
+<% end %>

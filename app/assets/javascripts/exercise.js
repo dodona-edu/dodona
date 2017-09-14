@@ -1,61 +1,61 @@
 import {showNotification} from "./notifications.js";
 
 function initLightboxes() {
-  initStrip();
+    initStrip();
 
-  var index = 1;
-  var images = [];
-  $(".exercise-description img, a.dodona-lightbox").each(function () {
-    var imagesrc = $(this).data('large') || $(this).attr('src') || $(this).attr('href');
-    var altText = $(this).data("caption") || $(this).attr('alt') || imagesrc.split("/").pop();
-    var image_object = {
-      url: imagesrc,
-      caption: altText
-    };
-    images.push(image_object);
+    let index = 1;
+    let images = [];
+    $(".exercise-description img, a.dodona-lightbox").each(function () {
+        let imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
+        let altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
+        let image_object = {
+            url: imagesrc,
+            caption: altText,
+        };
+        images.push(image_object);
 
-    $(this).data('image_index', index++);
-  });
+        $(this).data("image_index", index++);
+    });
 
-  $(".exercise-description img, a.dodona-lightbox").click(function () {
-    Strip.show(images, {
-      side: 'top'
-    }, $(this).data('image_index'));
-    return false;
-  });
+    $(".exercise-description img, a.dodona-lightbox").click(function () {
+        Strip.show(images, {
+            side: "top",
+        }, $(this).data("image_index"));
+        return false;
+    });
 }
 
 function centerImagesAndTables() {
-  $(".exercise-description p > img").parent().wrapInner("<center></center>");
-  $(".exercise-description > table").wrap("<center></center>");
-  $(".exercise-description > iframe").wrap("<center></center>");
+    $(".exercise-description p > img").parent().wrapInner("<center></center>");
+    $(".exercise-description > table").wrap("<center></center>");
+    $(".exercise-description > iframe").wrap("<center></center>");
 }
 
-function initMathJax(){
-  // configure mathjax
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [
-        ['$$', '$$'],
-        ['\\(', '\\)']
-      ],
-      displayMath: [
-        ['\\[', '\\]']
-      ]
-    }
-  });
+function initMathJax() {
+    // configure mathjax
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [
+                ["$$", "$$"],
+                ["\\(", "\\)"],
+            ],
+            displayMath: [
+                ["\\[", "\\]"],
+            ],
+        },
+    });
 }
 
 function initExercisesReadonly() {
-  initLightboxes();
-  centerImagesAndTables();
-  initMathJax();
+    initLightboxes();
+    centerImagesAndTables();
+    initMathJax();
 }
 
 
 function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
-    var editor;
-    var lastSubmission;
+    let editor;
+    let lastSubmission;
 
     function init() {
         if (editorShown) {
@@ -154,7 +154,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 }, 1000);
             } else {
                 if ($("#exercise-submission-link").parent().hasClass("active")) {
-                    $submissionRow.find(".load-submission").click();
+                    $submissionRow.find(".load-submission").get(0).click();
                 }
                 setTimeout(enableSubmitButton, 100);
                 showNotification(I18n.t("js.submission-processed"));

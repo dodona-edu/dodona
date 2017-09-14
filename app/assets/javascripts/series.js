@@ -91,7 +91,7 @@ function initSeriesEdit() {
             $row.remove();
         }, 500);
         showNotification(I18n.t("js.exercise-removed-success"));
-        $(".pagination .active a").click();
+        $(".pagination .active a").get(0).click();
     }
 
     function removingExerciseFailed($row) {

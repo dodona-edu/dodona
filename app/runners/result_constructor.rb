@@ -72,6 +72,7 @@ class ResultConstructor
     check_level(:judgement, 'tab started')
     @tab = {}
     @tab[:description] = title
+    @tab[:badgeCount] = 0
     @hiddentab = hidden || false
     @level = :tab
   end
@@ -118,6 +119,7 @@ class ResultConstructor
       @judgement[:description] = status[:human]
     end
     @testcase[:accepted] &&= @test[:accepted]
+    @tab[:badgeCount] += 1 unless @test[:accepted]
     (@testcase[:tests] ||= []) << @test
     @test = nil
     @level = :testcase

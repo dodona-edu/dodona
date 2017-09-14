@@ -122,7 +122,7 @@ class SubmissionRunner
                   "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
         }
       )
-    rescue Exception => e
+    rescue => e
       return build_error 'internal error', 'internal error', [
         build_message("Error creating docker: #{e}", 'staff', 'plain'),
         build_message(e.backtrace.join("\n"), 'staff')
@@ -161,7 +161,7 @@ class SubmissionRunner
       rc = ResultConstructor.new @submission.user.lang
       rc.feed(stdout.force_encoding('utf-8'))
       rc.result(timeout)
-    rescue ResultConstructor::ResultConstructorError => e
+    rescue ResultConstructorError => e
       if [137, 143].include? exit_status
         description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
         build_error description, description, [
@@ -191,7 +191,7 @@ class SubmissionRunner
   def run
     prepare
     result = execute
-  rescue Exception => e
+  rescue => e
     result = build_error 'internal error', 'internal error', [
       build_message(e.message + "\n" + e.backtrace.inspect, 'staff')
     ]

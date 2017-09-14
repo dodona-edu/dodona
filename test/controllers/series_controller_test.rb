@@ -31,7 +31,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'update series should redirect to course' do
     instance = update_request_expect
-    assert_redirected_to course_url(instance.course, all: true, anchor: "series-#{instance.name.parameterize}")
+    assert_redirected_to course_url(instance.course, series: instance, anchor: "series-#{instance.name.parameterize}")
   end
 
   test 'destroy series should redirect to course' do

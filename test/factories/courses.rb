@@ -4,6 +4,7 @@ FactoryGirl.define do
     description { Faker::Hacker.say_something_smart }
     visibility 'visible'
     registration 'open'
+    teacher { "Prof. #{Faker::Name.first_name} #{Faker::Name.last_name}" }
 
     transient do
       series_count 0

@@ -102,16 +102,32 @@ class User < ApplicationRecord
     photo if File.file? photo
   end
 
-  def attempted_exercises
-    submissions.select('distinct exercise_id').count
+  def attempted_exercises(course = nil)
+    s = submissions
+    s = s.in_course(course) if course
+    s.select('distinct exercise_id').count
   end
 
-  def correct_exercises
-    submissions.select('distinct exercise_id').where(status: :correct).count
+  def correct_exercises(course = nil)
+    s = submissions
+    s = s.in_course(course) if course
+    s.select('distinct exercise_id').where(status: :correct).count
   end
 
-  def unfinished_exercises
-    attempted_exercises - correct_exercises
+  def unfinished_exercises(course = nil)
+    attempted_exercises(course) - correct_exercises(course)
+  end
+
+  def recent_exercises(limit = 3)
+    submissions.select('distinct exercise_id').limit(limit).map(&:exercise)
+  end
+
+  def pending_series
+    courses.map { |c| c.pending_series(self) }.flatten.sort_by(&:deadline)
+  end
+
+  def homepage_series
+    courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
   end
 
   def header_courses

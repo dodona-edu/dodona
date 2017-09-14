@@ -29,6 +29,8 @@ class Series < ApplicationRecord
 
   before_save :set_access_token
 
+  scope :visible, -> { where(visibility: :open) }
+  scope :with_deadline, -> { where.not(deadline: nil) }
   default_scope { order(created_at: :desc) }
 
   after_initialize do
@@ -37,6 +39,18 @@ class Series < ApplicationRecord
 
   def deadline?
     deadline.present?
+  end
+
+  def pending?
+    deadline? && deadline > Time.zone.now
+  end
+
+  def completed?(user)
+    exercises.all? { |e| e.accepted_for(user) }
+  end
+
+  def solved_exercises(user)
+    exercises.select { |e| e.accepted_for(user) }
   end
 
   def indianio_support

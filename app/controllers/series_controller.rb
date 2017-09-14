@@ -57,7 +57,7 @@ class SeriesController < ApplicationController
   def update
     respond_to do |format|
       if @series.update(permitted_attributes(@series))
-        format.html { redirect_to course_path(@series.course, all: true, anchor: "series-#{@series.name.parameterize}"), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
+        format.html { redirect_to course_path(@series.course, series: @series, anchor: "series-#{@series.name.parameterize}"), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
         format.json { render :show, status: :ok, location: @series }
       else
         format.html { render :edit }

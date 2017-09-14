@@ -51,6 +51,51 @@
     color: rgb(0,0,0);
     background-color: @primary-500;
 }
+a.card-title-link,
+a.card-title-link:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.card-title.card-colored-accent {
+    color: @white-text;
+    .card-subtitle-text {
+      margin-top: 3px;
+      color: @white-secondary;
+    }
+    .card-subtitle-text + .card-subtitle-text {
+      margin-top: 10px;
+    }
+    a {
+      color: inherit;
+    }
+}
+.card-title.card-colored-accent.accent-red {
+    background-color: @color-red;
+}
+.card-title.card-colored-accent.accent-pink {
+    background-color: @color-pink;
+}
+.card-title.card-colored-accent.accent-purple {
+    background-color: @color-purple;
+}
+.card-title.card-colored-accent.accent-deep-purple {
+    background-color: @color-deep-purple;
+}
+.card-title.card-colored-accent.accent-indigo {
+    background-color: @color-indigo;
+}
+.card-title.card-colored-accent.accent-teal {
+    background-color: @color-teal;
+}
+.card-title.card-colored-accent.accent-orange {
+    background-color: @color-orange;
+}
+.card-title.card-colored-accent.accent-brown {
+    background-color: @color-brown;
+}
+.card-title.card-colored-accent.accent-blue-grey {
+    background-color: @color-blue-grey;
+}
 .card-title.card-title-plain li a {
     font-weight: 300;
     color: @black-text;
@@ -80,6 +125,7 @@
     margin-top: -61px;
     z-index: 1;
 }
+
 .card-subtitle-text {
     font-size: 14px;
     color: @black-secondary;
@@ -87,11 +133,13 @@
     font-weight: normal;
     line-height: 1.1;
 }
+
 .card-title.card-subtitle {
   align-items: inherit;
   padding: inherit;
 }
-.card-title-colored .card-subtitle-text {
+.card-title-colored .card-subtitle-text,
+.card-title-colored .card-subtitle-text a {
     color: @white-secondary;
 }
 .card-supporting-text {

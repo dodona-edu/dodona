@@ -1,8 +1,9 @@
 <div class="card home-summary-card user">
-
-  <div class="card-title card-title-colored">
-    <h2 class="card-title-text"><%= @user.full_name %></h2>
-  </div>
+  <%= link_to user_path(@user), class: 'card-title-link' do %>
+    <div class="card-title card-title-colored">
+      <h2 class="card-title-text"><%= @user.full_name %></h2>
+    </div>
+  <% end %>
 
   <div class="card-supporting-text stats">
     <div class="row">

@@ -1,7 +1,7 @@
 en:
   pages:
     dynamic_home:
-      more-courses: Add more courses
+      more-courses: More courses
     course_card:
       submissions: Submissions
       correct-exercises: Correct exercises
@@ -12,3 +12,7 @@ en:
       submissions: Submissions
       correct-exercises: Correct exercises
       recent-exercises: Recent exercises
+    getting_started_card:
+      title: Hi there,
+      text: It looks like you're new here. To get started, register for a course.
+      action: view courses

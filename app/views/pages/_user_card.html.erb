@@ -8,8 +8,10 @@
   <div class="card-supporting-text stats">
     <div class="row">
       <div class="col-xs-6">
-        <h1><%= number_with_delimiter @user.submissions.count, delimiter: " " %></h1>
-        <%= t ".submissions" %>
+        <%= link_to submissions_path, class: 'card-title-link' do %>
+          <h1><%= number_with_delimiter @user.submissions.count, delimiter: " " %></h1>
+          <%= t ".submissions" %>
+        <% end %>
       </div>
       <div class="col-xs-6">
         <h1><%= number_with_delimiter @user.correct_exercises, delimiter: " " %></h1>

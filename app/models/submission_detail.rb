@@ -8,7 +8,7 @@
 #
 
 class SubmissionDetail < ApplicationRecord
-  belongs_to :submission, dependent: :delete, autosave: true, foreign_key: 'id'
+  belongs_to :submission, dependent: :delete, autosave: true, foreign_key: 'id', optional: true
 
   def result=(result)
     self[:result] = ActiveSupport::Gzip.compress(result)

@@ -1,10 +1,21 @@
 class SeriesPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user&.admin?
+      if user&.zeus?
         scope.all
+      elsif user
+        admin = CourseMembership.statuses['course_admin']
+        open = Series.visibilities['open']
+        scope.joins(course: :course_memberships)
+             .where(
+               <<~SQL
+                 series.visibility              = #{open}
+                 OR  course_memberships.status  = #{admin}
+                 AND course_memberships.user_id = #{user.id}
+               SQL
+             ).distinct
       else
-        scope.where(visibility: :open)
+        scope.where(visibility: :visible)
       end
     end
   end
@@ -14,43 +25,38 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def show?
-    return true if user&.admin?
-    return true if record.open?
-    false
+    return true if course_admin?
+    return false if record.closed?
+    course = record.course
+    course.visible? || user&.member_of?(course)
   end
 
-  def token_show?
-    return true if user&.admin?
-    return true unless record.closed?
-    false
-  end
-
-  def new?
-    user&.admin?
-  end
-
-  def edit?
-    user&.admin?
+  def overview?
+    show?
   end
 
   def create?
-    user&.admin?
+    course_admin?
   end
 
   def update?
-    user&.admin?
+    course_admin?
   end
 
   def destroy?
-    user&.admin?
+    course_admin?
   end
 
   def download_solutions?
-    user && token_show?
+    user && show?
+  end
+
+  def indianio_download?
+    true
   end
 
   def modify_exercises?
-    user&.admin?
+    course_admin?
   end
 
   def add_exercise?
@@ -66,18 +72,30 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def scoresheet?
-    user&.admin?
+    course_admin?
   end
 
   def mass_rejudge?
-    user&.admin?
+    course_admin?
+  end
+
+  def reset_token?
+    edit?
   end
 
   def permitted_attributes
-    if user&.admin?
-      %i[name description course_id visibility order deadline]
+    # record is the Series class on create
+    if course_admin? ||
+       (record == Series && user&.admin?)
+      %i[name description course_id visibility order deadline indianio_support]
     else
       []
     end
+  end
+
+  private
+
+  def course_admin?
+    record.class == Series && user&.course_admin?(record&.course)
   end
 end

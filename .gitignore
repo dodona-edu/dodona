@@ -13,6 +13,12 @@
 !/log/.keep
 !/tmp/.keep
 
+/yarn-error.log
+
+/public/packs
+/public/packs-test/
+/node_modules
+
 # Ignore Byebug command history file.
 .byebug_history
 
@@ -22,3 +28,12 @@
 # Ignore media files
 /public/exercises
 /.project
+
+# Ignore generated entity-relationship diagram (rails-erd gem)
+erd.pdf
+
+# Ignore coverage reports
+coverage
+/public/packs
+/public/packs-test
+/node_modules

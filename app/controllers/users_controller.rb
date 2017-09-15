@@ -9,10 +9,6 @@ class UsersController < ApplicationController
   def index
     authorize User
     @users = apply_scopes(User).all.order(permission: :desc, username: :asc).paginate(page: params[:page])
-    if params[:course_id]
-      @course = Course.find(params[:course_id])
-      @users = @users.in_course(@course)
-    end
     @title = I18n.t('users.index.title')
   end
 
@@ -88,7 +84,7 @@ class UsersController < ApplicationController
   def stop_impersonating
     authorize User
     stop_impersonating_user
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def token_sign_in

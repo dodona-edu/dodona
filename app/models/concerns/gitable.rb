@@ -18,12 +18,9 @@ module Gitable
 
   def clone_repo
     self.path = remote.split('/')[-1].shellescape
-    begin
-      full_path.mkdir
-    rescue Errno::EEXIST
-      self.path += '_'
-      retry
-    end
+    # If file (or directory) already exists, append '_'
+    self.path += '_' while File.exist? full_path
+    full_path.mkpath
     cmd = ['git', 'clone', '--depth', '1', remote.shellescape, full_path.to_path]
     _out, error, status = Open3.capture3(*cmd)
     return if status.success?
@@ -36,5 +33,9 @@ module Gitable
     cmd = ['git', 'ls-remote', remote.shellescape]
     _out, error, status = Open3.capture3(*cmd)
     errors.add(:remote, error) unless status.success?
+  end
+
+  def github_remote?
+    remote =~ %r{^(git@)|(https:\/\/)github}
   end
 end

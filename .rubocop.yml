@@ -3,7 +3,8 @@ AllCops:
     - ''
   Exclude:
     - 'db/schema.rb'
-    - 'config/routes.rb'
+    - 'config/**'
+    - 'bin/**'
     - 'db/migrate/**'
   TargetRubyVersion: 2.3
 

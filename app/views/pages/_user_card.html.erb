@@ -1,0 +1,57 @@
+<div class="card home-summary-card user">
+  <%= link_to user_path(@user), class: 'card-title-link' do %>
+    <div class="card-title card-title-colored">
+      <h2 class="card-title-text"><%= @user.full_name %></h2>
+    </div>
+  <% end %>
+
+  <div class="card-supporting-text stats">
+    <div class="row">
+      <div class="col-xs-6">
+        <%= link_to submissions_path, class: 'card-title-link' do %>
+          <h1><%= number_with_delimiter @user.submissions.count, delimiter: " " %></h1>
+          <%= t ".submissions" %>
+        <% end %>
+      </div>
+      <div class="col-xs-6">
+        <h1><%= number_with_delimiter @user.correct_exercises, delimiter: " " %></h1>
+        <%= t ".correct-exercises" %>
+      </div>
+    </div>
+  </div>
+
+  <% deadlines = @user.homepage_series %>
+  <% if deadlines.any? %>
+    <div class="card-supporting-text card-border deadlines">
+      <h5>Deadlines</h5>
+      <% deadlines.first(5).each do |series| %>
+        <p>
+          <span class='pull-right'>
+            <%= render partial: 'series/human_deadline', locals: { series: series } %>
+          </span>
+          <%= link_to series.name, course_path(series.course, series: series , anchor: "series-#{series.name.parameterize}"), class: "dynamic-homepage-series-link", title: series.name %>
+          <%= link_to series.course.name, course_path(series.course), class: "small text-muted course-link" %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @user.submissions.any? %>
+    <div class="card-supporting-text card-border recents">
+      <h5><%= t ".recent-exercises" %></h5>
+      <% @user.recent_exercises(5).each do |exercise| %>
+        <% submission = exercise.last_submission(@user) %>
+        <p>
+          <%= link_to exercise_submissions_path(submission.exercise), class: 'btn btn-icon pull-right' do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
+          <span class='pull-left'><%= submission_status_icon(submission) %></span>
+          <% if submission.course.nil? %>
+            <%= link_to submission.exercise.name, exercise_path(submission.exercise), class: "course-link", title: submission.exercise.name %>
+          <% else %>
+            <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise), class: "course-link", title: submission.exercise.name %>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+
+</div>

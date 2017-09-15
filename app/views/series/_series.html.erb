@@ -1,3 +1,5 @@
+<% get_exercise_path ||= ->(ex) { course_exercise_path series.course_id, ex } %>
+
 <div class="card-subtitle">
   <a class="anchor" id="series-<%= series.name.parameterize %>"></a>
   <h4><%= series.name %>
@@ -12,17 +14,10 @@
   <div class="flex-spacer"></div>
   <div class="card-subtitle-actions">
     <div class="btn-group">
-      <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
+      <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
         <span class='glyphicon glyphicon-option-vertical'></span>
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
-        <% if policy(series).download_solutions? %>
-          <li>
-            <%= link_to download_solutions_series_path(series) do %>
-              <span class='glyphicon glyphicon-download-alt'></span> <%= t("series.show.download_solutions") %>
-            <% end %>
-          </li>
-        <% end %>
         <% if policy(series).edit? %>
           <li>
             <%= link_to edit_series_path(series) do %>
@@ -39,8 +34,9 @@
         <% end %>
         <% if policy(series).edit? && series.hidden? %>
           <li>
-            <%= link_to token_show_series_path(series, series.token) do %>
-              <span class='glyphicon glyphicon-link'></span> Token link
+            <%= link_to series_path(series, token: series.access_token) do %>
+              <span class='glyphicon glyphicon-link'></span>
+              <%= t 'series.show.token_link' %>
             <% end %>
           </li>
         <% end %>
@@ -58,15 +54,40 @@
             <% end %>
           </li>
         <% end %>
+        <% if policy(series).edit? %>
+          <li role="separator" class="divider"></li>
+        <% end %>
+        <% if policy(series).show? %>
+          <li>
+            <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?)) do %>
+              <span class='glyphicon glyphicon-eye-open'></span> <%= t("series.show.show_overview") %>
+            <% end %>
+          </li>
+        <% end %>
+        <% if policy(series).download_solutions? %>
+          <li>
+            <%= link_to download_solutions_series_path(series) do %>
+              <span class='glyphicon glyphicon-download-alt'></span> <%= t("series.show.download_solutions") %>
+            <% end %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
 </div>
-<% if current_user&.admin? && series.hidden?%>
-  <div class="alert alert-info"><%= t "series.show.series_not_visible" %></div>
+<% if current_user&.course_admin?(series.course) && series.hidden?%>
+  <div class="alert alert-info hidden-print"><%= t "series.show.series_not_visible" %></div>
 <% end %>
-<% if current_user&.admin? && series.closed?%>
-  <div class="alert alert-info"><%= t "series.show.series_not_accessible" %></div>
+<% if current_user&.course_admin?(series.course) && series.closed?%>
+  <div class="alert alert-info hidden-print"><%= t "series.show.series_not_accessible" %></div>
 <% end %>
 <%= markdown(series.description) %>
-<%= render(partial: "exercises/exercises_table", locals: {exercises: series.exercises, series: series}) if series.exercises.length > 0 %>
+
+<% if series.exercises.length > 0 %>
+  <%= render partial: 'exercises/exercises_table', locals: {
+        series: series,
+        exercises: series.exercises,
+        get_exercise_path: get_exercise_path,
+        summary: local_assigns[:summary],
+  } %>
+<% end %>

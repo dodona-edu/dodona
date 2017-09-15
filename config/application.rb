@@ -10,6 +10,11 @@ Bundler.require(*Rails.groups)
 
 module Dodona
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.1
+
+    config.dodona_email = 'dodona@ugent.be'
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -21,6 +26,7 @@ module Dodona
     Rails.application.config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
     Rails.application.config.autoload_paths += Dir[Rails.root.join('app', 'helpers', 'renderers')]
+    Rails.application.config.autoload_paths += Dir[Rails.root.join('app', 'models', 'transient')]
 
     Rails.application.config.middleware.use I18n::JS::Middleware
   end

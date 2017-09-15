@@ -2,53 +2,67 @@ Rails.application.routes.draw do
   devise_for :users
   root 'pages#home'
 
-  match '/dj' => DelayedJobWeb, :anchor => false, via: [:get, :post]
+  match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
-    resources :series do
+    concern :mediable do
       member do
-        post 'add_exercise'
-        post 'remove_exercise'
-        post 'reorder_exercises'
-        post 'mass_rejudge'
-        get 'download_solutions'
-        get 'token/:token', to: 'series#token_show', as: 'token_show'
-        get 'scoresheet'
+        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: 'media'
       end
     end
+
+    concern :submitable do
+      resources :submissions, only: %i[index create]
+    end
+
+    resources :series do
+      member do
+        get 'download_solutions'
+        get 'overview'
+        get 'scoresheet'
+        post 'add_exercise'
+        post 'mass_rejudge'
+        post 'remove_exercise'
+        post 'reorder_exercises'
+        post 'reset_token'
+      end
+    end
+    get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
 
     resources :courses do
       resources :series
+      resources :exercises, only: [:show], concerns: %i[mediable submitable]
       member do
-        post 'subscribe'
+        get 'list_members'
         get 'scoresheet'
-        get 'subscribe/:secret', to: 'courses#subscribe_with_secret', as: "subscribe_with_secret"
+        get 'subscribe/:secret', to: 'courses#registration', as: "registration"
+        post 'mass_accept_pending'
+        post 'mass_decline_pending'
+        post 'reset_token'
+        post 'subscribe'
+        post 'unsubscribe'
+        post 'update_membership'
       end
     end
 
-    resources :exercises, only: [:index, :show, :edit, :update] do
-      resources :submissions, only: [:index, :create]
-      member do
-        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: "media"
-      end
-    end
+    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable]
 
     resources :judges do
       member do
-        match 'hook', via: [:get, :post], to: 'judges#hook', as: "webhook"
+        match 'hook', via: %i[get post], to: 'judges#hook', as: 'webhook'
       end
     end
 
     resources :repositories do
       member do
-        match 'hook', via: [:get, :post], to: 'repositories#hook', as: "webhook"
+        match 'hook', via: %i[get post], to: 'repositories#hook', as: 'webhook'
         get 'reprocess'
       end
     end
 
-    resources :submissions, only: [:index, :show, :create, :edit] do
+    resources :submissions, only: %i[index show create edit], concerns: :mediable do
       post 'mass_rejudge', on: :collection
       member do
         get 'download'

@@ -3,8 +3,8 @@ class FeedbackTableRenderer
 
   require 'builder'
 
+  @renderers = [FeedbackTableRenderer]
   def self.inherited(cl)
-    @renderers ||= [FeedbackTableRenderer]
     @renderers << cl
   end
 
@@ -15,6 +15,7 @@ class FeedbackTableRenderer
   def initialize(submission, user)
     @submission = JSON.parse(submission.result, symbolize_names: true)
     @current_user = user
+    @course = submission.course
     @builder = Builder::XmlMarkup.new
     @code = submission.code
     @exercise_id = submission.exercise_id
@@ -194,7 +195,7 @@ class FeedbackTableRenderer
     return if m.nil?
     m = { format: 'plain', description: m } if m.is_a? String
     if m[:permission]
-      return if m[:permission] == 'staff' && !@current_user.admin?
+      return if m[:permission] == 'staff' && !@current_user.course_admin?(@course)
       return if m[:permission] == 'zeus' && !@current_user.zeus?
     end
     output_message(m)
@@ -224,12 +225,12 @@ class FeedbackTableRenderer
     @builder.div(id: 'editor-result') do
       @builder.text! code
     end
-    @builder << "<script>$(function () {loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
+    @builder << "<script>$(function () {dodona.loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
   end
 
   def init_js
     @builder.script do
-      @builder << 'init_submission_show();'
+      @builder << 'dodona.initSubmissionShow();'
     end
   end
 

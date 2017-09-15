@@ -1,0 +1,28 @@
+<link rel="preload" as="image" href="<%= image_path('matrix.jpg') %>">
+<div class="home-cover-img">&nbsp;</div>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card home-card">
+      <div class="card-supporting-text">
+        <div class="row v-align">
+          <div class="col-xs-7 col-sm-8">
+            <h2 class="card-title-text">Dodona</h2>
+            <p><%= t ".intro" %></p>
+          </div>
+          <div class="col-xs-5 col-sm-4 sign-in-wrapper">
+            <%= link_to t(".sign-in"), new_user_session_path, class: 'btn btn-primary btn-lg' %>
+          </div>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border row">
+        <div class="hidden-xs col-sm-5">
+          <%= image_tag("zeus.jpg") %>
+        </div>
+        <div class="col-xs-12 col-sm-7">
+          <h3><%= t ".dodona-title" %></h3>
+          <p><%= t ".dodona-text_html" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

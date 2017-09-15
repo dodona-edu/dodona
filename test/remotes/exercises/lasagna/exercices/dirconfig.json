@@ -1,0 +1,13 @@
+{
+  "visibility": "closed",
+  "description": {
+    "handler": "default"
+  },
+  "submission": {
+    "handler": "default"
+  },
+  "evaluation": {
+    "handler": "default"
+  },
+  "programming_language": "haskell"
+}

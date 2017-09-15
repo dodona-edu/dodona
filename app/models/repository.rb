@@ -20,7 +20,6 @@ class Repository < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :remote, presence: true
-  validates :judge, presence: true
 
   validate :repo_is_accessible, on: :create
 
@@ -57,8 +56,18 @@ class Repository < ApplicationRecord
     end
   end
 
-  def process_exercises
-    exercise_dirs.each { |dir| process_exercise(dir) }
+  def process_exercises(dirs = nil)
+    dirs ||= exercise_dirs
+    errors = []
+
+    dirs.each do |dir|
+      begin
+        process_exercise(dir)
+      rescue ConfigParseError => e
+        errors.push(e)
+      end
+    end
+    raise AggregatedConfigErrors.new(self, errors) if errors.any?
   end
 
   def process_exercise(directory)
@@ -83,6 +92,22 @@ class Repository < ApplicationRecord
     end
 
     ex.save
+  end
+
+  def github_url(path = nil)
+    if github_remote?
+      url = remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '')
+      url += '/tree/master/' + path.to_s if path
+      url
+    end
+  end
+
+  def read_config_file(file)
+    file = full_path + file if file.relative?
+    JSON.parse file.read if file.file?
+  rescue JSON::ParserError => e
+    rel_path = file.relative_path_from(full_path)
+    raise ConfigParseError.new(self, rel_path, e.to_s)
   end
 
   private

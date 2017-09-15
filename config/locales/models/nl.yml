@@ -1,5 +1,9 @@
 nl:
   activerecord:
+    errors:
+      models:
+        course_membership:
+          at_least_one_admin: Een cursus moet altijd minstens één cursusbeheerder hebben.
     models:
       course: Cursus
       exercise: Oefening
@@ -8,12 +12,34 @@ nl:
       series: Reeks
       submission: Oplossing
       user: Student
+      course_membership: Lidmaatschap van de cursus
     attributes:
       course:
         name: Naam
+        teacher: Lesgever
         year: Academiejaar
         description: Beschrijving
         secret: Secret
+        visibility: Zichtbaarheid
+        registration: Registratie
+        visibilities:
+          visible: Zichtbaar
+          hidden: Verborgen
+        registrations:
+          open: Open
+          moderated: Gemodereerd
+          closed: Gesloten
+        color: Kleur
+        colors:
+          red: Rood
+          pink: Roze
+          purple: Paars
+          deep-purple: Donkerpaars
+          indigo: Indigo
+          teal: Appelblauwzeegroen
+          orange: Oranje
+          brown: Bruin
+          blue-grey: Blauwgrijs
       exercise:
         name: Naam
         name_nl: Naam Nederlands
@@ -37,6 +63,7 @@ nl:
         judge: Default judge
         exercises: Oefeningen
       series:
+        indianio_support: Indianio-ondersteuning
         course: Cursus
         name: Naam
         description: Beschrijving
@@ -72,3 +99,10 @@ nl:
         email: Email
         time_zone: Tijdzone
         permission: Rechten
+      course_membership:
+        status: status
+        statuses:
+          unsubscribed: Uitgeschreven
+          course_admin: Cursusbeheerder
+          pending: In afwachting
+          student: Student

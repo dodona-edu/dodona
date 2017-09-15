@@ -123,7 +123,11 @@ class Submission < ApplicationRecord
   end
 
   def invalidate_stats_cache
-    # could be more fine grained by also filtering on series_id but makes the invalidation a lot slower
-    SeriesMembership.where(exercise_id: exercise_id).find_each(&:invalidate_stats_cache)
+    memberships = if course
+                    course.series_memberships
+                  else
+                    SeriesMembership.all
+                  end
+    memberships.where(exercise_id: exercise_id).includes(:exercise, series: :course).find_each(&:invalidate_stats_cache)
   end
 end

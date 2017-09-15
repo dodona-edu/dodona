@@ -93,7 +93,8 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if course_admin?
+    # record is the Course class on create
+    if course_admin? || (record == Course && user&.admin?)
       %i[name year description visibility registration color teacher]
     else
       []
@@ -103,6 +104,6 @@ class CoursePolicy < ApplicationPolicy
   private
 
   def course_admin?
-    user&.course_admin?(record)
+    record.class == Course && (user&.course_admin?(record))
   end
 end

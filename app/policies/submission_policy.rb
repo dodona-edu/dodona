@@ -52,8 +52,6 @@ class SubmissionPolicy < ApplicationPolicy
   private
 
   def course_admin?
-    user&.zeus? ||
-      (record.class == Submission &&
-       user&.course_admin?(record&.course))
+    record.class == Submission && user&.course_admin?(record&.course)
   end
 end

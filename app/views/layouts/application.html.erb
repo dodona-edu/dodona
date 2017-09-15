@@ -37,7 +37,7 @@
     <div id="page-wrapper">
       <%= render 'layouts/navbar' %>
       <div class="container main">
-        <div class="page-messages">
+        <div class="page-messages hidden-print">
           <% flash.each do |key, value| %>
             <% unless value.nil? %>
               <%= content_tag(:div, raw("<strong>#{t("layout.messages.info")}:</strong> ")+value, :class => "alert alert-info") if key == "notice" %>

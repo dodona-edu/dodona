@@ -3,8 +3,8 @@ nl:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
-      visibility-help: Zichtbare vakken zijn zichtbaar in het cursusoverzicht. Verborgen vakken worden niet opgelijst in het overzicht en vereisen een speciale inschrijvingslink.
-      registration-help: Bij open vakken worden inschrijvingen direct geaccepteerd. Bij gemoderereerde vakken moet elke inschrijving goedgekeurd worden door een cursusbeheerder. Wanneer een vak gesloten is kan niemand zich nog inschrijven.
+      visibility-help: Zichtbare vakken zijn zichtbaar in het cursusoverzicht. Verborgen vakken worden niet opgelijst in het overzicht en vereisen een speciale registratielink.
+      registration-help: Bij open vakken worden registraties direct geaccepteerd. Bij gemoderereerde vakken moet elke registratie goedgekeurd worden door een cursusbeheerder. Wanneer een vak gesloten is kan niemand zich nog registreren.
     index:
       title: Cursussen
       users: Gebruikers
@@ -15,12 +15,12 @@ nl:
     show:
       course: Cursus
       invitation_link: Registratielink
-      invitation_link_help: 'Met deze link worden gebruikers naar een pagina gebracht waar ze zich kunnen inschrijven.'
+      invitation_link_help: 'Met deze link worden gebruikers naar een pagina gebracht waar ze zich kunnen registreren.'
       visibility-visible-info_html: 'Deze cursus is <strong>zichtbaar</strong>: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'
-      visibility-hidden-info_html: 'Deze cursus is <strong>verborgen</strong>: ze verschijnt niet in het cursusoverzicht en enkel gebruikers met de registratielink kunnen zich inschrijven.'
-      registration-open-info_html: 'De registraties staan <strong>open</strong>: gebruikers die op de registratie-knop klikken zijn onmiddellijk ingeschreven.'
-      registration-moderated-info_html: 'De registraties worden <strong>gemodereerd</strong>: gebruikers die zich registreren komen op de wachtlijst terecht en moeten goedgekeurd worden door een cursusbeheerder voor ze ingeschreven zijn.'
-      registration-closed-info_html: 'De registraties zijn <strong>gesloten</strong>: niemand kan zich nog inschrijven tot de registratie-instelling wordt aangepast. Gebruikers die ingeschreven zijn behouden hun toegang.'
+      visibility-hidden-info_html: 'Deze cursus is <strong>verborgen</strong>: ze verschijnt niet in het cursusoverzicht en enkel gebruikers met de registratielink kunnen zich registreren.'
+      registration-open-info_html: 'De registraties staan <strong>open</strong>: gebruikers die op de registratie-knop klikken zijn onmiddellijk geregistreerd.'
+      registration-moderated-info_html: 'De registraties worden <strong>gemodereerd</strong>: gebruikers die zich registreren komen op de wachtlijst terecht en moeten goedgekeurd worden door een cursusbeheerder voor ze geregistreerd zijn.'
+      registration-closed-info_html: 'De registraties zijn <strong>gesloten</strong>: niemand kan zich nog registreren tot de registratie-instelling wordt aangepast. Gebruikers die geregistreerd zijn behouden hun toegang.'
 
       subscribe: registreren
       request_registration: registratieverzoek indienen
@@ -34,7 +34,7 @@ nl:
       average_progress_info: Gemiddeld percentage opgeloste oefeningen per gebruiker
       submitted_solutions: Ingediende oplossingen
       download_scoresheet: Scoresheet downloaden
-      subscribed: Ingeschreven
+      subscribed: Geregistreerd
       pending: Op de wachtlijst
       unsubscribed: Uitgeschreven
       decline_all: Iedereen afwijzen

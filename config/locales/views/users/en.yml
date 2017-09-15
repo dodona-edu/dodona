@@ -9,8 +9,8 @@ en:
       access_level: Access level
       promote: 'Promote to course administrator'
       demote: 'Demote to student'
-      unsubscribe: 'Unsubscribe'
-      resubscribe: 'Resubscribe'
+      unsubscribe: 'Unregister'
+      resubscribe: 'Reregister'
       accept: 'Accept'
       decline: 'Decline'
       edit: 'Edit'

@@ -3,8 +3,8 @@ en:
     form:
       description-help: A description is optional. Markdown formatting can be used.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
-      visibility-help: Visible courses are visible for anyone. Hidden courses do not show up in the course overview, they require a special invite link to be able to subscribe.
-      registration-help: Open courses give direct access upon subscription. For moderated courses, a course administrator has to approve each subscription. Registrations are disabled with closed courses.
+      visibility-help: Visible courses are visible for anyone. Hidden courses do not show up in the course overview, they require a special invite link to be able to register.
+      registration-help: Open courses give direct access upon subscription. For moderated courses, a course administrator has to approve each registration. Registrations are disabled with closed courses.
     index:
       title: Courses
       users: Users
@@ -17,25 +17,25 @@ en:
       invitation_link: Subscription link
       invitation_link_help: 'This URL links to a page where the user is promted to register.'
       visibility-visible-info_html: 'This course is <strong>visible</strong>: everyone can access this course from the course overview and the contents are visible for anyone.'
-      visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and to subscribe, users need the subscription link. The contents are only visible for subscribed members.'
-      registration-open-info_html: 'Registrations are <strong>open</strong>: users are immediately subscribed when they click on the subscribe button.'
-      registration-moderated-info_html: 'Registrations are <strong>moderated</strong>: users who subscribe become pending and a course administrator has to accept them before they are listed within the course.'
-      registration-closed-info_html: 'Registrations are <strong>closed</strong>: it is impossible for users to subscribe until you change the registration settings. Users who are currently subscribed still have access.'
-      subscribe: subscribe
+      visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and to register, users need the registration link. The contents is only visible for registered members.'
+      registration-open-info_html: 'Registrations are <strong>open</strong>: users are immediately registered when they click on the register button.'
+      registration-moderated-info_html: 'Registrations are <strong>moderated</strong>: users who register become pending and a course administrator has to accept them before they are listed within the course.'
+      registration-closed-info_html: 'Registrations are <strong>closed</strong>: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
+      subscribe: register
       request_registration: request registration
-      unsubscribe: unsubscribe
+      unsubscribe: unregister
       exercise_series: Exercise series
       users: Users
       series: series
-      subscribed_users: Subscribed users
+      subscribed_users: Registered users
       submitted_solutions: Submitted solutions
       exercise_count: Exercise count
       average_progress: Average progress
       average_progress_info: Average percentage of solved exercises per user
       download_scoresheet: Download scoresheet
-      subscribed: Subscribed
+      subscribed: Registered
       pending: Pending
-      unsubscribed: Unsubscribed
+      unsubscribed: Unregistered
       decline_all: Decline all
       confirm_decline_all: Are you sure you want to decline all pending users?
       accept_all: Accept all
@@ -47,11 +47,11 @@ en:
         one: 1 pending user is declined.
         other: "%{count} pending users are declined."
     not_a_member_card:
-      not_a_member: You are not a member of this course. Do you wish to subscribe?
+      not_a_member: You are not a member of this course. Do you wish to register?
       not_a_member_moderated: Your registration has to be approved by a course administrator before you gain access to the course.
       registration_closed: Registrations are closed for this course.
     registration:
-      registration-tooltip: Subscribing only influeces your status on this website, not within the UGent.
+      registration-tooltip: Registering only influeces your status on this website, not within the UGent.
       page_title: Registration
       not_a_member: You are not a member of this course.
       already_a_member: You are a member of this course.
@@ -60,12 +60,12 @@ en:
       explanation_html: 'This is the registration page of <strong>%{course_name}</strong>'
       instruction: 'Register by clicking the button.'
       closed: This course is closed and does not accept new registrations at this time.
-      sign_up_successfully: You were succesfully signed up. Wait until a course administrator approves your subscription
-      subscribed_successfully: Subscribed successfully
-      unsubscribed_successfully: Unsubscribed successfully
-      subscription_failed: Subscription failed
-      unsubscription_failed: Unsubscribing failed
-      not_logged_in: You need to be logged in to subscribe
+      sign_up_successfully: You were succesfully registered. Wait until a course administrator approves your registration
+      subscribed_successfully: Registered successfully
+      unsubscribed_successfully: Unregistered successfully
+      subscription_failed: Registration failed
+      unsubscription_failed: Unregistration failed
+      not_logged_in: You need to be logged in to register
       key_mismatch: "The key didn't match"
     scoresheet:
       explanation: "Showing the number of correctly solved exercises before the deadline"

@@ -1,0 +1,33 @@
+<div class="row">
+  <% if @user.subscribed_courses.empty? %>
+    <div class="col-xs-12 visible-sm">
+      <%= render "getting_started_card"%>
+    </div>
+  <% end %>
+  <div class="col-xs-12 col-sm-6 col-lg-8">
+    <div class="row">
+      <% if @user.subscribed_courses.empty? %>
+        <div class="col-xs-12 hidden-sm">
+          <%= render "getting_started_card"%>
+        </div>
+      <% end %>
+      <% @user.subscribed_courses.each do |course| %>
+        <div class="col-xs-12 col-sm-12 col-lg-6">
+          <%= render partial: "course_card", locals: {course: course} %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <div class="row">
+      <div class="col-xs-12">
+        <%= render "user_card" %>
+        <div class="card home-summary-card">
+          <div class="card-supporting-text">
+            <%=link_to (t('.more-courses') + ' …'), courses_path, class: "btn-text" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

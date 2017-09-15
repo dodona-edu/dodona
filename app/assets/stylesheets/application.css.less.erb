@@ -1,6 +1,8 @@
 @import "variables.css.less";
+@import "colors.css.less";
 @import "mixins.css.less";
 @import "vendor.less";
+@import "dragula/dist/dragula.min.css";
 @import "bootstrap_overrides.css.less";
 @import "components.css.less";
 @import "layout.css.less";
@@ -10,8 +12,11 @@
 @import "series.css.less";
 @import "submissions.css.less";
 @import "pythia_submission.css.less";
+@import "users.css.less";
+@import "course.css.less";
+@import "print.css.less";
 
-<% if Rails.env.development? %>
+<% if false && Rails.env.development? || Rails.env.test? %>
     @import "development.css.less";
 <% end %>
 
@@ -20,4 +25,20 @@
 
 .field_with_errors input {
     border-color: @danger-800;
+}
+
+.glyphicon.glyphicon-strikethrough:after {
+    position: absolute;
+    top: -12px;
+    left: 6px;
+    content: "|";
+    display: block;
+    font-weight: bold;
+    font-size: 1.5em;
+    font-size: 250%;
+    transform: rotate(45deg);
+}
+
+figcaption {
+    margin: 0 10px;
 }

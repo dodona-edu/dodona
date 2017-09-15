@@ -6,15 +6,15 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_action :store_current_location, unless: :devise_controller?, except: [:media] unless :js_request?
+  before_action :store_current_location,
+                except: [:media],
+                unless: -> { devise_controller? || remote_request? }
 
   before_action :set_locale
 
   around_action :user_time_zone, if: :current_user
 
   before_action :set_time_zone_offset
-
-  skip_before_action :verify_authenticity_token, if: :js_request?
 
   impersonates :user
 
@@ -28,8 +28,8 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def js_request?
-    request.format.js?
+  def remote_request?
+    request.format.js? || request.format.json?
   end
 
   private

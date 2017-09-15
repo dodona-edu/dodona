@@ -1,6 +1,8 @@
 require 'zip'
 class SeriesController < ApplicationController
-  before_action :set_series, only: %i[show edit update destroy add_exercise remove_exercise reorder_exercises download_solutions token_show scoresheet mass_rejudge]
+  before_action :set_series, except: %i[index new create indianio_download]
+
+  before_action :check_token, only: %i[show overview download_solutions]
 
   # GET /series
   # GET /series.json
@@ -17,12 +19,8 @@ class SeriesController < ApplicationController
     @title = @series.name
   end
 
-  def token_show
-    raise Pundit::NotAuthorizedError if @series.token != params[:token]
-
-    @course = @series.course
-    @title = @series.name
-    render 'show'
+  def overview
+    @title = "#{@series.course.name} #{@series.name}"
   end
 
   # GET /series/new
@@ -58,8 +56,8 @@ class SeriesController < ApplicationController
   # PATCH/PUT /series/1.json
   def update
     respond_to do |format|
-      if @series.update(permitted_attributes(Series))
-        format.html { redirect_to course_path(@series.course, all: true, anchor: "series-#{@series.name.parameterize}"), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
+      if @series.update(permitted_attributes(@series))
+        format.html { redirect_to course_path(@series.course, series: @series, anchor: "series-#{@series.name.parameterize}"), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
         format.json { render :show, status: :ok, location: @series }
       else
         format.html { render :edit }
@@ -80,8 +78,43 @@ class SeriesController < ApplicationController
   end
 
   def download_solutions
-    zip = @series.zip_solutions(current_user, with_info: current_user.admin? || true_user.admin?)
-    send_data(zip[:data], type: 'application/zip', filename: zip[:filename], disposition: 'attachment', x_sendfile: true)
+    send_zip current_user
+  end
+
+  def reset_token
+    type = params[:type].to_sym
+    @series.generate_token(type)
+    @series.save
+    value =
+      case type
+      when :indianio_token
+        @series.indianio_token
+      when :access_token
+        series_url(@series, token: @series.access_token)
+      end
+    render partial: 'application/token_field', locals: {
+      name: type,
+      value: value,
+      reset_url: reset_token_series_path(@series, type: type)
+    }
+  end
+
+  def indianio_download
+    token = params[:token]
+    email = params[:email]
+    @series = Series.find_by(indianio_token: token)
+    if token.blank? || @series.nil?
+      render json: { errors: ['Wrong token'] }, status: :unauthorized
+    elsif email.blank?
+      render json: { errors: ['No email given'] }, status: :unprocessable_entity
+    else
+      user = User.find_by(email: email)
+      if user
+        send_zip user, with_info: true
+      else
+        render json: { errors: ['Unknown email'] }, status: :not_found
+      end
+    end
   end
 
   def add_exercise
@@ -119,5 +152,21 @@ class SeriesController < ApplicationController
   def set_series
     @series = Series.find(params[:id])
     authorize @series
+  end
+
+  def check_token
+    raise Pundit::NotAuthorizedError if
+      @series.hidden? &&
+      !current_user&.course_admin?(@series.course) &&
+      @series.access_token != params[:token]
+  end
+
+  # Generate and send a zip with solutions
+  def send_zip(user, **opts)
+    zip = @series.zip_solutions(user, opts)
+    send_data zip[:data],
+              type: 'application/zip',
+              filename: zip[:filename],
+              disposition: 'attachment', x_sendfile: true
   end
 end

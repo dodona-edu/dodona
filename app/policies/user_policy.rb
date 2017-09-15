@@ -13,11 +13,7 @@ class UserPolicy < ApplicationPolicy
     user && (user.admin? || user.id == record.id)
   end
 
-  def new?
-    user&.admin?
-  end
-
-  def edit?
+  def update?
     return false unless user
     return true if user == record
     return true if user.zeus?
@@ -27,10 +23,6 @@ class UserPolicy < ApplicationPolicy
 
   def create?
     user&.admin?
-  end
-
-  def update?
-    edit?
   end
 
   def destroy?

@@ -40,7 +40,6 @@
 }
 .card-title {
     align-items: flex-start;
-    color: rgb(0,0,0);
     display: block;
     justify-content: stretch;
     line-height: normal;
@@ -49,7 +48,57 @@
     flex-direction: column;
 }
 .card-title.card-title-colored {
+    color: rgb(0,0,0);
     background-color: @primary-500;
+}
+a.card-title-link,
+a.card-title-link:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.card-title.card-colored-accent {
+    color: @white-text;
+    .card-subtitle-text {
+      margin-top: 3px;
+      color: @white-secondary;
+    }
+    .card-subtitle-text + .card-subtitle-text {
+      margin-top: 10px;
+    }
+    a {
+      color: inherit;
+    }
+}
+.card-title.card-colored-accent.accent-red {
+    background-color: @color-red;
+}
+.card-title.card-colored-accent.accent-pink {
+    background-color: @color-pink;
+}
+.card-title.card-colored-accent.accent-purple {
+    background-color: @color-purple;
+}
+.card-title.card-colored-accent.accent-deep-purple {
+    background-color: @color-deep-purple;
+}
+.card-title.card-colored-accent.accent-indigo {
+    background-color: @color-indigo;
+}
+.card-title.card-colored-accent.accent-teal {
+    background-color: @color-teal;
+}
+.card-title.card-colored-accent.accent-orange {
+    background-color: @color-orange;
+}
+.card-title.card-colored-accent.accent-brown {
+    background-color: @color-brown;
+}
+.card-title.card-colored-accent.accent-blue-grey {
+    background-color: @color-blue-grey;
+}
+.card-title.card-title-plain li a {
+    font-weight: 300;
+    color: @black-text;
 }
 .card-title.card-border {
     border-bottom: 1px solid @black-divider;
@@ -76,6 +125,7 @@
     margin-top: -61px;
     z-index: 1;
 }
+
 .card-subtitle-text {
     font-size: 14px;
     color: @black-secondary;
@@ -83,7 +133,13 @@
     font-weight: normal;
     line-height: 1.1;
 }
-.card-title-colored .card-subtitle-text {
+
+.card-title.card-subtitle {
+  align-items: inherit;
+  padding: inherit;
+}
+.card-title-colored .card-subtitle-text,
+.card-title-colored .card-subtitle-text a {
     color: @white-secondary;
 }
 .card-supporting-text {
@@ -104,6 +160,9 @@
 .card-supporting-text.card-border,
 .card-actions.card-border {
     border-top: 1px solid @black-divider;
+}
+.card-title+.card-border {
+    border-top: 0px;
 }
 .card-expand {
     flex-grow: 1;
@@ -137,19 +196,37 @@
 .card-nav .card-supporting-text {
     overflow: visible;
 }
+.card-nav .card-tab,
 .card-nav .card-title {
     padding-bottom: 0;
     padding-top: 11px;
 }
+
+.card-tab .nav-tabs,
 .card-title .nav-tabs {
-    border: none;
     height: 50px;
 }
+.card-title.card-title-colored.nav-tabs {
+    border: none;
+}
+
+
+
+.card-tab .nav-tabs li,
 .card-title .nav-tabs li {
     height: 50px;
     overflow: hidden;
     margin-bottom: 0;
 }
+
+.card-tab .nav {
+  margin-bottom: 9.5px;
+}
+
+.card-tab .nav-tabs li a {
+    font-weight: 300;
+}
+.card-tab .nav-tabs li a,
 .card-title .nav-tabs li a {
     padding-bottom: 8px;
     padding-left: 10px;
@@ -158,19 +235,31 @@
     height: 55px;
     border: none;
     border-bottom: 5px solid @accent-500;
-    color: white;
     font-size: 18px;
     .transition-duration(0.2s);
     .transition-property('height');
     .transition-timing-function(ease-out);
 }
+.card-title-colored .nav-tabs li a,
+.card-title-colored .nav-tabs li a:hover,
+.card-title-colored .nav-tabs li a:focus {
+    color: @white-text;
+}
+.card-tab .nav-tabs li.active a,
+.card-tab .nav-tabs li a:hover,
+.card-tab .nav-tabs li a:focus {
+    color: @black-text;
+}
+
+.card-tab .nav-tabs li.active a,
+.card-tab .nav-tabs li a:hover,
+.card-tab .nav-tabs li a:focus,
 .card-title .nav-tabs li.active a,
 .card-title .nav-tabs li a:hover,
 .card-title .nav-tabs li a:focus {
     border: none;
-    color: white;
-    border-bottom: 5px solid @accent-500;
     background: inherit;
+    border-bottom: 5px solid @accent-500;
     height: 50px;
 }
 .card-nav .btn-icon {
@@ -178,13 +267,12 @@
     margin: -5px -5px -5px -2px;
     cursor: pointer;
 }
+
 .card-nav .card-title .btn-icon:hover {
     background-color: rgba(255,255,255,.3);
 }
 .card-nav .badge {
     background-color: @accent-500;
-
-    //color: @accent-500;
 }
 
 .card-title-fab {
@@ -192,6 +280,19 @@
     right: 24px;
     top: 33px;
     z-index: 10;
+    form {
+      display: inline;
+    }
+}
+.card-progress-bar {
+    background-color: @primary-100;
+    height: 5px;
+    width: 100%;
+
+    .progress {
+      height: 100%;
+      background-color: @accent-500;
+    }
 }
 
 // text button

@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  </head>
+  <body>
+    <p>Binnen het ISBN-10 (<i>International Standard Book Numbering</i>) systeem
+      dat tot eind 2006 gebruikt werd, kreeg elk boek een unieke code toegewezen
+      die bestaat uit 10 cijfers. De eerste 9 daarvan geven informatie over het
+      boek zelf, terwijl het laatste louter een controlecijfer is dat dient om
+      foutieve ISBN-10 codes te detecteren.</p>
+    <div class="dodona-centered-group"> <img alt="ISBN" data-caption=" &lt;div class=&quot;thumbcaption&quot;&gt; ISBN in tekst en streepjescode&lt;/div&gt; "
+        src="media/ISBN.gif" title="ISBN" height="140"> </div>
+    <p>Indien $$x_1, \ldots, x_9$$ de eerste 9 cijfers van een ISBN-10 code
+      voorstellen, dan wordt het controlecijfer&#160;$$x_{10}$$ als volgt
+      berekend: \[x_{10} = (x_1+ 2x_2+ 3x_3+ 4x_4+ 5x_5+ 6x_6+ 7x_7+ 8x_8+
+      9x_9)\!\!\!\!\mod{11}\] Het controlecijfer $$x_{10}$$ kan m.a.w. de
+      waarden 0 tot en met 10 aannemen. Gevraagd wordt om een programma te
+      schrijven dat het controlecijfer berekent op basis van de eerste negen
+      cijfers van een ISBN-10 code.</p>
+    <h3>Invoer</h3>
+    <p>Negen natuurlijke getallen $$x_1, \ldots, x_9$$ ($$0 \leq x_1, \ldots,
+      x_9 \leq 9$$), elk op een afzonderlijke regel. Deze stellen de eerste
+      negen cijfers van een gegeven ISBN-10 code voor.</p>
+    <h3>Uitvoer</h3>
+    <p>E&#233;n regel die een natuurlijk getal bevat: het controlecijfer dat
+      correspondeert met de gegeven cijfers van een ISBN-10 code. Zorg ervoor
+      dat dit natuurlijk getal geen voorloopnullen heeft.</p>
+    <h3>Voorbeeld</h3>
+    <p><strong>Invoer:</strong></p>
+    <pre>9
+9
+7
+1
+5
+0
+2
+1
+0</pre>
+    <p><strong>Uitvoer:</strong></p>
+    <pre>0</pre>
+    <h3>Pythia spreekt &#8230;</h3>
+    <p>In onderstaande video legt Pythia uit hoe je deze opgave kunt aanpakken.
+      Bekijk de video als opstapje naar het oplossen van de oefeningen over <a
+        href="https://dodona.ugent.be/nl/exercises/?filter=opgaven/reeks01">variabelen,
+        expressies en statements</a>.</p>
+    <div class="dodona-centered-group"><iframe src="https://www.youtube.com/embed/Ne35kBQNLXg"
+        allowfullscreen="" frameborder="0" height="315" width="560"></iframe></div>
+    <h3>Epiloog</h3>
+    <div class="dodona-centered-group"> <img alt="evolution into barcode" data-caption=" &lt;div class=&quot;thumbcaption&quot;&gt;Dit is wat er van ons zal worden. Wees dus maar voorbereid.&lt;/div&gt; "
+        src="media/evaluation_barcode.jpg" title="evolution into barcode" height="320px">
+    </div>
+  </body>
+</html>

@@ -10,3 +10,5 @@ end
 Rails.application.eager_load!
 
 run Rails.application
+
+$stdout.sync = true

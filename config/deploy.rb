@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.8.0'
+lock '3.9.0'
 
 set :application, 'dodona'
 set :repo_url, 'git@github.ugent.be:dodona/dodona.git'
@@ -26,7 +26,7 @@ set :deploy_to, '/home/dodona/rails'
 # set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
 
 # Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'data/exercises', 'data/judges', 'data/user_photos')
+set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'data/exercises', 'data/judges', 'data/user_photos', 'node_modules')
 
 set :passenger_restart_with_touch, true
 

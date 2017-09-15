@@ -19,6 +19,7 @@
 require 'securerandom'
 
 class User < ApplicationRecord
+  include StringHelper
   PHOTOS_LOCATION = Rails.root.join('data', 'user_photos').freeze
 
   enum permission: %i[student staff zeus]
@@ -26,6 +27,46 @@ class User < ApplicationRecord
   has_many :submissions
   has_many :course_memberships
   has_many :courses, through: :course_memberships
+
+  has_many :subscribed_courses,
+           lambda {
+             where.not course_memberships:
+                { status: %i[pending unsubscribed] }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :administrating_courses,
+           lambda {
+             where course_memberships:
+                { status: :course_admin }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :enrolled_courses,
+           lambda {
+             where course_memberships:
+                { status: :student }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :pending_courses,
+           lambda {
+             where course_memberships:
+                { status: :pending }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :unsubscribed_courses,
+           lambda {
+             where course_memberships:
+                { status: :unsubscribed }
+           },
+           through: :course_memberships,
+           source: :course
 
   devise :cas_authenticatable
 
@@ -41,15 +82,19 @@ class User < ApplicationRecord
 
   def full_name
     name = (first_name || '') + ' ' + (last_name || '')
-    name.blank? ? 'n/a' : name
+    first_string_present name, 'n/a'
   end
 
   def short_name
-    username.blank? ? first_name : username
+    first_string_present username, first_name, full_name
   end
 
   def admin?
     staff? || zeus?
+  end
+
+  def course_admin?(course)
+    zeus? || admin_of?(course)
   end
 
   def photo
@@ -57,25 +102,54 @@ class User < ApplicationRecord
     photo if File.file? photo
   end
 
-  def attempted_exercises
-    submissions.select('distinct exercise_id').count
+  def attempted_exercises(course = nil)
+    s = submissions
+    s = s.in_course(course) if course
+    s.select('distinct exercise_id').count
   end
 
-  def correct_exercises
-    submissions.select('distinct exercise_id').where(status: :correct).count
+  def correct_exercises(course = nil)
+    s = submissions
+    s = s.in_course(course) if course
+    s.select('distinct exercise_id').where(status: :correct).count
   end
 
-  def unfinished_exercises
-    attempted_exercises - correct_exercises
+  def unfinished_exercises(course = nil)
+    attempted_exercises(course) - correct_exercises(course)
   end
 
-  def header_courses
-    return nil if courses.empty?
-    courses.group_by(&:year).first.second[0..2]
+  def recent_exercises(limit = 3)
+    submissions.select('distinct exercise_id').limit(limit).map(&:exercise)
+  end
+
+  def pending_series
+    courses.map { |c| c.pending_series(self) }.flatten.sort_by(&:deadline)
+  end
+
+  def homepage_series
+    subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
+  end
+
+  def current_ay_courses
+    return [] if subscribed_courses.empty?
+    subscribed_courses.group_by(&:year).first.second
   end
 
   def member_of?(course)
-    courses.include? course
+    subscribed_courses.include? course
+  end
+
+  def admin_of?(course)
+    administrating_courses.include?(course)
+  end
+
+  def membership_status_for(course)
+    membership = CourseMembership.find_by(course: course, user: self)
+    if membership
+      membership.status
+    else
+      'no_membership'
+    end
   end
 
   def cas_extra_attributes=(extra_attributes)

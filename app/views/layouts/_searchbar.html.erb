@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'index' %>
+<% end %>
 <div class='table-toolbar'>
   <div class='table-toolbar-tools'>
     <span class='glyphicon glyphicon-search'></span>
@@ -9,7 +12,7 @@
         <div class="auxbar bar bar3" style="width: 0%;"></div>
       </div>
     </form>
-    <div class="btn-group hidden actions">
+    <div class="btn-group hidden actions" id="kebab-menu">
       <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
         <span class="glyphicon glyphicon-option-vertical"></span>
       </a>
@@ -21,6 +24,6 @@
 
 <script type="text/javascript">
   $(function () {
-    init_filter_index("<%=local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%=raw (local_assigns.fetch :actions, false).to_json %>);
+    dodona.initFilterIndex("<%=local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%=raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>);
   });
 </script>

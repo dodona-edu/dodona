@@ -13,7 +13,9 @@
         <table class="table table-index table-resource">
           <thead>
             <tr>
+              <th class='status-icon'></th>
               <th><%= Course.human_attribute_name("name") %></th>
+              <th><%= Course.human_attribute_name("teacher") %></th>
               <th><%= Course.human_attribute_name("year") %></th>
               <th><%= t ".users" %></th>
               <th></th>
@@ -22,15 +24,21 @@
           <tbody>
             <% @courses.each do |course| %>
               <tr>
+                <td>
+                  <% if course.hidden? %>
+                    <span class="glyphicon glyphicon-eye-close"></span>
+                  <% end %>
+                  <% if course.closed? %>
+                    <span class="glyphicon glyphicon-ban-circle"></span>
+                  <% end %>
+                </td>
                 <td><%= link_to course.name, course %></td>
+                <td><%= course.teacher %></td>
                 <td><%= course.formatted_year %> </td>
-                <td><%= course.users.count %> </td>
+                <td><%= course.enrolled_members.count %> </td>
                 <td class="actions">
                   <% if policy(course).edit? %>
                     <%= link_to edit_course_path(course), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
-                  <% end %>
-                  <% if policy(course).destroy? %>
-                    <%= link_to course, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
                   <% end %>
                 </td>
               </tr>

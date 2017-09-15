@@ -1,0 +1,23 @@
+nl:
+  pages:
+    static_home:
+      intro: "De Dodona-leeromgeving bevat honderden programmeeroefeningen die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen. Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl. Inloggen kan je met je UGent-gebruikersnaam en wachtwoord. Dodona is nog volop in ontwikkeling, eventuele bugs mogen dus zeker gemeld worden op het Minerva forum of aan de assistenten."
+      sign-in: Aanmelden
+      dodona-title: "Wie of wat is Dodona?"
+      dodona-text_html: "Dodona is een orakelplaats in Griekenland, gelegen in een vreedzame, groene vallei op de oostelijke helling van de berg Tomarós in de historische regio Epirus. Het orakel van Dodona was gewijd aan oppergod Zeus <span class='hidden-xs'>(hiernaast afgebeeld)</span> en de moedergodin Dione. Het was volgens Herodotus het oudste orakel van het oude Griekenland, dat mogelijk terugging tot het tweede millennium voor Christus."
+    dynamic_home:
+      more-courses: Meer cursussen
+    course_card:
+      submissions: Inzendingen
+      correct-exercises: Correcte oefeningen
+      go-to-course: Ga naar deze cursus
+      users: Gebruikers
+      course-admin: Cursus beheerder
+    user_card:
+      submissions: Inzendingen
+      correct-exercises: Correcte oefeningen
+      recent-exercises: Recente oefeningen
+    getting_started_card:
+      title: Hallo,
+      text: Welkom op Dodona! Registreer je voor een cursus om van start te gaan.
+      action: verken cursussen

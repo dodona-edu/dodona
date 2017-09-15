@@ -14,10 +14,10 @@
         <% unless user_signed_in? %>
           <li><%= link_to(t("layout.menu.exercises"), exercises_path) %></li>
         <% else %>
-          <% if current_user.courses.empty? %>
+          <% if current_user.subscribed_courses.empty? %>
             <li><%= link_to t("layout.menu.courses"), courses_path %></li>
           <% else %>
-            <% current_user.header_courses.each do |course| %>
+            <% current_user.current_ay_courses.first(3).each do |course| %>
               <li><%= link_to course.name, course_path(course) %></li>
             <% end %>
           <% end %>
@@ -83,10 +83,10 @@
                   <li class='visible-sm-block'><%= link_to "Job queue", "/dj/overview" %></li>
                 <% end %>
               <% end %>
-              <% unless current_user.courses.empty? %>
+              <% unless current_user.current_ay_courses.empty? %>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header"><%= t "layout.menu.my_courses" %></li>
-                <% current_user.courses.each do |course| %>
+                <% current_user.current_ay_courses.each do |course| %>
                   <li><%= link_to course.name, course_path(course) %></li>
                 <% end %>
               <% end %>

@@ -3,25 +3,66 @@ nl:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
+      visibility-help: Zichtbare vakken zijn zichtbaar in het cursusoverzicht. Verborgen vakken worden niet opgelijst in het overzicht en vereisen een speciale registratielink.
+      registration-help: Bij open vakken worden registraties direct geaccepteerd. Bij gemoderereerde vakken moet elke registratie goedgekeurd worden door een cursusbeheerder. Wanneer een vak gesloten is kan niemand zich nog registreren.
     index:
       title: Cursussen
       users: Gebruikers
     new:
       title: Cursus toevoegen
+    edit:
+      confidential: Confidentieel
     show:
       course: Cursus
-      auto_subscribe_link: Automatische inschrijvingslink
-      not_a_member: Je bent niet ingeschreven voor deze cursus. Wil je je inschrijven?
-      subscribe: inschrijven
+      invitation_link: Registratielink
+      invitation_link_help: 'Met deze link worden gebruikers naar een pagina gebracht waar ze zich kunnen registreren.'
+      visibility-visible-info_html: 'Deze cursus is <strong>zichtbaar</strong>: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'
+      visibility-hidden-info_html: 'Deze cursus is <strong>verborgen</strong>: ze verschijnt niet in het cursusoverzicht en enkel gebruikers met de registratielink kunnen zich registreren.'
+      registration-open-info_html: 'De registraties staan <strong>open</strong>: gebruikers die op de registratie-knop klikken zijn onmiddellijk geregistreerd.'
+      registration-moderated-info_html: 'De registraties worden <strong>gemodereerd</strong>: gebruikers die zich registreren komen op de wachtlijst terecht en moeten goedgekeurd worden door een cursusbeheerder voor ze geregistreerd zijn.'
+      registration-closed-info_html: 'De registraties zijn <strong>gesloten</strong>: niemand kan zich nog registreren tot de registratie-instelling wordt aangepast. Gebruikers die geregistreerd zijn behouden hun toegang.'
+
+      subscribe: registreren
+      request_registration: registratieverzoek indienen
+      unsubscribe: uitschrijven
       exercise_series: Oefeningenreeksen
       users: Gebruikers
       series: reeksen
-      subscribed_users: Ingeschreven gebruikers
+      subscribed_users: Geregistreerde gebruikers
+      exercise_count: Aantal oefeningen
+      average_progress: Gemiddelde voortgang
+      average_progress_info: Gemiddeld percentage opgeloste oefeningen per gebruiker
+      submitted_solutions: Ingediende oplossingen
       download_scoresheet: Scoresheet downloaden
-    subscribe:
-      subscribed_successfully: Inschrijving succesvol
-      subscription_failed: Inschrijven mislukt
-      not_logged_in: Je moet ingelogd zijn om je in te schrijven
+      subscribed: Geregistreerd
+      pending: Op de wachtlijst
+      unsubscribed: Uitgeschreven
+      decline_all: Iedereen afwijzen
+      confirm_decline_all: Ben je zeker dat je alle gebruikers op de wachtlijst wil afwijzen?
+      accept_all: Iedereen toelaten
+      confirm_accept_all: Ben je zeker dat je alle gebruikers op de wachtlijst wil toelaten?
+      mass_accept_notification:
+        one: 1 gebruiker op de wachtlijst is toegelaten.
+        other: "%{count} gebruikers op de wachtlijst zijn toegelaten."
+      mass_decline_notification:
+        one: 1 gebruiker op de wachtlijst is afgewezen.
+        other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
+    registration:
+      registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen de UGent.
+      page_title: Registratie
+      not_a_member: Je bent niet geregistreerd voor deze cursus.
+      already_a_member: Je bent al geregistreerd.
+      pending: Je staat al op de wachtlijst.
+      moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot dit vak.
+      explanation_html: 'Dit is de registratiepagina voor het vak <strong>%{course_name}</strong>.'
+      instruction: 'Klik op de knop om je te registreren voor deze cursus.'
+      closed: Deze cursus is gesloten en aanvaardt geen nieuwe registraties.
+      sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je registratie accepteerd.
+      subscribed_successfully: Registratie succesvol
+      unsubscribed_successfully: Uitschrijving successvol
+      subscription_failed: Registratie mislukt
+      unsubscription_failed: Uitschrijven mislukt
+      not_logged_in: Je moet ingelogd zijn om je te registreren
       key_mismatch: De sleutel kwam niet overeen
     scoresheet:
       explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"

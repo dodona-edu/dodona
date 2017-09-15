@@ -21,6 +21,8 @@ require 'action_view'
 include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
+  include StringHelper
+
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
@@ -37,9 +39,6 @@ class Exercise < ApplicationRecord
   has_many :series, through: :series_memberships
 
   validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
-  validates :repository_id, presence: true
-  validates :judge, presence: true
-  validates :repository, presence: true
 
   before_create :generate_id
   before_save :check_validity
@@ -65,8 +64,10 @@ class Exercise < ApplicationRecord
   end
 
   def name
-    name = send('name_' + I18n.locale.to_s) || name_nl || name_en
-    name.blank? ? path.split('/').last : name
+    first_string_present send('name_' + I18n.locale.to_s),
+                         name_nl,
+                         name_en,
+                         path.split('/').last
   end
 
   def description_localized(lang = I18n.locale.to_s)
@@ -83,9 +84,7 @@ class Exercise < ApplicationRecord
   end
 
   def description
-    desc = description_localized || description_nl || description_en
-    desc = markdown(desc) if description_format == 'md'
-    desc.html_safe
+    description_localized || description_nl || description_en || ''
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)
@@ -111,11 +110,11 @@ class Exercise < ApplicationRecord
   end
 
   def github_url
-    repository.remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '') + '/tree/master/' + path
+    repository.github_url(path)
   end
 
   def config
-    Exercise.read_config_file(config_file)
+    repository.read_config_file(config_file)
   end
 
   def file_name
@@ -133,12 +132,11 @@ class Exercise < ApplicationRecord
   end
 
   def merged_config
-    merged_config = {}
-    full_path.relative_path_from(repository.full_path).ascend do |subdir|
-      merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path + subdir))
-    end
-    merged_config.recursive_update(Exercise.read_dirconfig(repository.full_path))
-    merged_config.recursive_update(config)
+    Pathname.new('./' + path).parent.descend  # all parent directories
+            .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+            .compact                          # remove nil entries
+            .push(config)                     # add exercise config file
+            .reduce(&:deep_merge)             # reduce into single hash
   end
 
   def config_file?
@@ -166,7 +164,7 @@ class Exercise < ApplicationRecord
   def update_config
     return unless ok?
     c = config
-    c['visibility'] = visibility
+    c['visibility'] = visibility if visibility != merged_config['visibility']
     c['description']['names']['nl'] = name_nl
     c['description']['names']['en'] = name_en
     store_config c
@@ -184,34 +182,39 @@ class Exercise < ApplicationRecord
     subs.distinct.count(:user_id)
   end
 
-  def best_is_last_submission?(user, deadline = nil)
-    last_correct = last_correct_submission(user, deadline)
+  def best_is_last_submission?(user, deadline = nil, course = nil)
+    last_correct = last_correct_submission(user, deadline, course)
     return true if last_correct.nil?
-    last_correct == last_submission(user, deadline)
+    last_correct == last_submission(user, deadline, course)
   end
 
-  def best_submission(user, deadline = nil)
-    last_correct_submission(user, deadline) || last_submission(user, deadline)
+  def best_submission(user, deadline = nil, course = nil)
+    last_correct_submission(user, deadline, course) || last_submission(user, deadline, course)
   end
 
-  def last_correct_submission(user, deadline = nil)
+  def last_correct_submission(user, deadline = nil, course = nil)
     s = submissions.of_user(user).where(status: :correct)
+    s = s.in_course(course) if course
     s = s.before_deadline(deadline) if deadline
     s.limit(1).first
   end
 
-  def last_submission(user, deadline = nil)
+  def last_submission(user, deadline = nil, course = nil)
+    raise 'Second argument is a deadline, not a course' if deadline.is_a? Course
     s = submissions.of_user(user)
+    s = s.in_course(course) if course
     s = s.before_deadline(deadline) if deadline
     s.limit(1).first
   end
 
-  def accepted_for(user, deadline = nil)
-    last_submission(user, deadline).try(:accepted)
+  def accepted_for(user, deadline = nil, course = nil)
+    last_submission(user, deadline, course).try(:accepted)
   end
 
-  def number_of_submissions_for(user)
-    submissions.of_user(user).count
+  def number_of_submissions_for(user, course = nil)
+    s = submissions.of_user(user)
+    s = s.in_course(course) if course
+    s.count
   end
 
   def check_validity
@@ -241,12 +244,9 @@ class Exercise < ApplicationRecord
 
   private
 
-  def self.read_config_file(file)
-    JSON.parse(file.read) if file.file?
-  end
-
-  def self.read_dirconfig(path)
-    Exercise.read_config_file(path + DIRCONFIG_FILE)
+  # takes a relative path
+  def read_dirconfig(subdir)
+    repository.read_config_file(subdir + DIRCONFIG_FILE)
   end
 
   def generate_id

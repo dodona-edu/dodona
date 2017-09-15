@@ -64,6 +64,7 @@ en:
       subscribed_successfully: Subscribed successfully
       unsubscribed_successfully: Unsubscribed successfully
       subscription_failed: Subscription failed
+      unsubscription_failed: Unsubscribing failed
       not_logged_in: You need to be logged in to subscribe
       key_mismatch: "The key didn't match"
     scoresheet:

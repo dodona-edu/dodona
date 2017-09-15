@@ -61,6 +61,7 @@ nl:
       subscribed_successfully: Registratie succesvol
       unsubscribed_successfully: Uitschrijving successvol
       subscription_failed: Registratie mislukt
+      unsubscription_failed: Uitschrijven mislukt
       not_logged_in: Je moet ingelogd zijn om je te registreren
       key_mismatch: De sleutel kwam niet overeen
     scoresheet:

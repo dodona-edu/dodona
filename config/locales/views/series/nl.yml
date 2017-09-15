@@ -36,7 +36,7 @@ nl:
       access-link: Geheime link
       access-help: Met deze geheime link krijgen studenten toegang tot deze reeks.
     delete:
-      title: Verwijder reeks
+      title: Reeks verwijderen
       confirm: Bent u zeker dat u deze reeks wilt verwijderen?
     deadline:
       ago: geleden

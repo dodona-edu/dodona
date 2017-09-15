@@ -105,7 +105,7 @@ class CoursesController < ApplicationController
         format.html { redirect_to root_url, notice: I18n.t('courses.registration.unsubscribed_successfully') }
         format.json { head :ok }
       else
-        subscription_failed_response format
+        unsubscription_failed_response format
       end
     end
   end
@@ -250,6 +250,11 @@ class CoursesController < ApplicationController
 
   def subscription_failed_response(format)
     format.html { redirect_back fallback_location: root_url, alert: I18n.t('courses.registration.subscription_failed') }
+    format.json { render json: @course.errors, status: :unprocessable_entity }
+  end
+
+  def unsubscription_failed_response(format)
+    format.html { redirect_back fallback_location: root_url, alert: I18n.t('courses.registration.unsubscription_failed') }
     format.json { render json: @course.errors, status: :unprocessable_entity }
   end
 

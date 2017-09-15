@@ -96,8 +96,6 @@ class SeriesPolicy < ApplicationPolicy
   private
 
   def course_admin?
-    user&.zeus? ||
-      (record.class == Series &&
-       user&.course_admin?(record&.course))
+    record.class == Series && user&.course_admin?(record&.course)
   end
 end

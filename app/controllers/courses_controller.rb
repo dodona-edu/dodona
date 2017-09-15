@@ -61,7 +61,7 @@ class CoursesController < ApplicationController
   # PATCH/PUT /courses/1.json
   def update
     respond_to do |format|
-      if @course.update(permitted_attributes(Course))
+      if @course.update(permitted_attributes(@course))
         format.html { redirect_to @course, notice: I18n.t('controllers.updated', model: Course.model_name.human) }
         format.json { render :show, status: :ok, location: @course }
       else

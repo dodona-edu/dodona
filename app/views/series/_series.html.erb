@@ -80,13 +80,11 @@
 <% end %>
 <%= markdown(series.description) %>
 
-<div class="hidden-print">
-  <% if series.exercises.length > 0 %>
-    <%= render partial: 'exercises/exercises_table', locals: {
-          series: series,
-          exercises: series.exercises,
-          get_exercise_path: get_exercise_path,
-          summary: local_assigns[:summary],
-    } %>
-  <% end %>
-</div>
+<% if series.exercises.length > 0 %>
+  <%= render partial: 'exercises/exercises_table', locals: {
+        series: series,
+        exercises: series.exercises,
+        get_exercise_path: get_exercise_path,
+        summary: local_assigns[:summary],
+  } %>
+<% end %>

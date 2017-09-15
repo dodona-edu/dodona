@@ -42,13 +42,13 @@
       <% @user.recent_exercises(5).each do |exercise| %>
         <% submission = exercise.last_submission(@user) %>
         <p>
-          <%= submission_status_icon(submission) %>
-          <% if submission.course.nil? %>
-            <%= link_to submission.exercise.name, exercise_path(submission.exercise) %>
-          <% else %>
-            <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise) %>
-          <% end %>
           <%= link_to exercise_submissions_path(submission.exercise), class: 'btn btn-icon pull-right' do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
+          <span class='pull-left'><%= submission_status_icon(submission) %></span>
+          <% if submission.course.nil? %>
+            <%= link_to submission.exercise.name, exercise_path(submission.exercise), class: "course-link", title: submission.exercise.name %>
+          <% else %>
+            <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise), class: "course-link", title: submission.exercise.name %>
+          <% end %>
         </p>
       <% end %>
     </div>

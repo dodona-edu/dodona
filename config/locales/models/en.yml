@@ -102,7 +102,7 @@ en:
       course_membership:
         status: status
         statuses:
-          unsubscribed: Unsubscribed
+          unsubscribed: Unregistered
           course_admin: Course admin
           pending: Pending
           student: Student

@@ -40,9 +40,6 @@
                   <% if policy(course).edit? %>
                     <%= link_to edit_course_path(course), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
                   <% end %>
-                  <% if policy(course).destroy? %>
-                    <%= link_to course, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
-                  <% end %>
                 </td>
               </tr>
             <% end %>

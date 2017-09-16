@@ -103,6 +103,7 @@ class Submission < ApplicationRecord
   end
 
   def exercise_not_closed
+    return if user&.admin?
     errors.add(:exercise, 'must not be closed') if exercise&.closed?
   end
 

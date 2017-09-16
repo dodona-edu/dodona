@@ -13,6 +13,19 @@ class ExerciseHelperTest < ActiveSupport::TestCase
     check_desc_and_footnotes exercise
   end
 
+  test 'html exercise with non-url footnote should not be replaced' do
+    desc = "<a href=\"javascript:(function() { alert('You clicked!') })();\">Click me!</a>"
+    exercise = create :exercise, description_html_stubbed: desc
+
+    url = "http://example.com/exercises/#{exercise.id}/"
+    stubrequest = mock
+    stubrequest.stubs(:original_url).returns(url)
+
+    renderer = ExerciseHelper::DescriptionRenderer.new(exercise, stubrequest)
+
+    assert renderer.footnote_urls.empty?
+  end
+
   def check_desc_and_footnotes(exercise)
     url = "http://example.com/exercises/#{exercise.id}/"
     stubrequest = mock

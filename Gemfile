@@ -99,6 +99,9 @@ gem 'rubyzip'
 # add request server timings to the devtools
 gem 'rails_server_timings'
 
+# Maybe in Ruby
+gem 'possibly'
+
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha'

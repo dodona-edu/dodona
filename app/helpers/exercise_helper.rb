@@ -101,8 +101,11 @@ module ExerciseHelper
 
     # Rewrite relative url's to absulute
     # (i.e. if it is relative, rewrite it to be absolute)
+    # Returns nil if the argument isn't an url
     def absolutize_url(url)
       URI.join(@request.original_url, url).to_s
+    rescue URI::InvalidURIError
+      nil
     end
 
     # Add a footnote reference after each anchor, and add the anchor href
@@ -111,18 +114,18 @@ module ExerciseHelper
       @footnote_urls = {}
       i = 1
       doc.css('a').each do |anchor|
-        # If href is not an URI, do not make it a footnote
-        begin
-          url = absolutize_url anchor.attribute('href').value
-        rescue URI::InvalidURIError
-          next
+        Maybe(anchor.attribute('href'))   # get href attribute
+          .map(&:value)                   # get its value
+          .map { |u| absolutize_url u }   # absolutize it
+          .map do |url|
+          # If any of the steps above returned nil, this block isn't executed
+
+          ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"
+          anchor.add_next_sibling ref
+
+          @footnote_urls[i.to_s] = url
+          i += 1
         end
-
-        ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"
-        anchor.add_next_sibling ref
-
-        @footnote_urls[i.to_s] = url
-        i += 1
       end
     end
   end

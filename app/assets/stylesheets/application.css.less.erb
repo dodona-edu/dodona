@@ -16,7 +16,7 @@
 @import "course.css.less";
 @import "print.css.less";
 
-<% if false && Rails.env.development? || Rails.env.test? %>
+<% if Rails.env.development? || Rails.env.test? %>
     @import "development.css.less";
 <% end %>
 

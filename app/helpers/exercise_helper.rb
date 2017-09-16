@@ -111,9 +111,17 @@ module ExerciseHelper
       @footnote_urls = {}
       i = 1
       doc.css('a').each do |anchor|
+        # If href is not an URI, do not make it a footnote
+        begin
+          url = absolutize_url anchor.attribute('href').value
+        rescue URI::InvalidURIError
+          next
+        end
+
         ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"
         anchor.add_next_sibling ref
-        @footnote_urls[i.to_s] = absolutize_url anchor.attribute('href').value
+
+        @footnote_urls[i.to_s] = url
         i += 1
       end
     end

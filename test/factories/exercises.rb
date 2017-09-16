@@ -13,6 +13,7 @@ FactoryGirl.define do
 
     transient do
       name nil
+      description_html_stubbed nil
 
       submission_count 0
       submission_users do
@@ -25,6 +26,10 @@ FactoryGirl.define do
         create :submission,
                exercise: exercise,
                user: e.submission_users.sample
+      end
+      if e.description_html_stubbed
+        exercise.description_format = 'html'
+        exercise.stubs(:description_localized).returns(e.description_html_stubbed)
       end
     end
 
@@ -63,5 +68,7 @@ FactoryGirl.define do
         EOS
       end
     end
+
+
   end
 end

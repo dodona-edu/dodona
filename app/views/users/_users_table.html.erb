@@ -33,7 +33,7 @@
         <td><%= user.full_name %></td>
         <td><%= user.email %></td>
         <td class='text-right'>
-          <%= link_to "#{user.correct_exercises}/#{user.attempted_exercises}", user_submissions_path(user) %>
+          <%= link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user) %>
         </td>
         <% if @course %>
           <td class='text-right'>

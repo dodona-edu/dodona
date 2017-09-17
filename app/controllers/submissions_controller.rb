@@ -20,9 +20,11 @@ class SubmissionsController < ApplicationController
     para[:user_id] = current_user.id
     para[:code].gsub!(/\r\n?/, "\n")
     @submission = Submission.new(para)
-    if Pundit.policy!(current_user, @submission.exercise).submit? && @submission.save
+    can_submit = Pundit.policy!(current_user, @submission.exercise).submit?
+    if can_submit && @submission.save
       render json: { status: 'ok', id: @submission.id }
     else
+      @submission.errors.add(:exercise, :not_permitted) unless can_submit
       render json: { status: 'failed', errors: @submission.errors }, status: :unprocessable_entity
     end
   end

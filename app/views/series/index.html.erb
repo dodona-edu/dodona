@@ -3,11 +3,6 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".title" %></h2>
-        <% if policy(Series).new? %>
-          <div class="card-title-fab">
-            <%= render 'fab_link', url: new_series_path, icon: 'plus' %>
-          </div>
-        <% end %>
       </div>
       <div class="card-supporting-text">
         <table class="table table-index table-resource">

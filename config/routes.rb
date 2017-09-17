@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :submissions, only: %i[index create]
     end
 
-    resources :series do
+    resources :series, except: %i[new] do
       member do
         get 'download_solutions'
         get 'overview'

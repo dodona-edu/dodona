@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th></th>
-      <% if current_user.course_admin? local_assigns[:course] %>
+      <% if current_user.administrating_courses.any? || current_user.admin? %>
         <th><%= t ".user" %></th>
       <% end %>
       <% if !exercise %>

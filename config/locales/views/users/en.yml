@@ -25,3 +25,8 @@ en:
       solutions: Number of submissions
       sign_in: Sign in
       token_sign_in: 'This user has no username and can only sign in using this link:'
+    users_table:
+      staff: Staff
+      zeus: Zeus
+      course_admin: Course administrator
+      no_ugent: This user has no Ghent University username

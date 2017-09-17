@@ -48,14 +48,14 @@ en:
         other: "%{count} pending users are declined."
     not_a_member_card:
       not_a_member: You are not a member of this course. Do you wish to register?
-      not_a_member_moderated: Your registration has to be approved by a course administrator before you gain access to the course.
+      not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
       registration_closed: Registrations are closed for this course.
     registration:
       registration-tooltip: Registering only influeces your status on this website, not within the UGent.
       page_title: Registration
       not_a_member: You are not a member of this course.
       already_a_member: You are a member of this course.
-      moderated: Your registration has to be approved by a course administrator before you gain access to the course.
+      moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
       pending: Your registration is still pending.
       explanation_html: 'This is the registration page of <strong>%{course_name}</strong>'
       instruction: 'Register by clicking the button.'

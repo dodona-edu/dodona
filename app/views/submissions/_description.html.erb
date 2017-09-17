@@ -6,7 +6,13 @@
   <% if current_user.course_admin? submission.course %>
     <b><%= t "submissions.show.user" %>:</b> <%= link_to submission.user.full_name + " - " + submission.user.username, user_path(submission.user) %><br />
   <% end %>
-  <b><%= t "submissions.show.exercise" %>:</b> <%= link_to submission.exercise.name, exercise_path(submission.exercise) %><br />
+  <b><%= t "submissions.show.exercise" %>:</b>
+  <% if submission.course.nil? %>
+    <%= link_to submission.exercise.name, exercise_path(submission.exercise) %>
+  <% else %>
+    <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise) %>
+  <% end %>
+  <br />
   <% unless submission.course.nil? %>
     <b><%= t "submissions.show.course" %>:</b> <%= link_to submission.course.name, course_path(submission.course) %><br />
   <% end %>

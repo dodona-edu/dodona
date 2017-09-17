@@ -23,6 +23,18 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to edit_series_url(instance)
   end
 
+  test 'should not create series or get new when not course admin' do
+    sign_out :user
+    sign_in create(:staff)
+    course = create(:course)
+
+    get new_course_series_url(course)
+    assert_response :redirect
+
+    create_request
+    assert_response :redirect
+  end
+
   test 'course admin should be able to update course' do
     sign_out :user
     @admin = create :student

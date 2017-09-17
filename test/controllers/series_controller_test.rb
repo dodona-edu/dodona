@@ -10,12 +10,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions except: %i[create_redirect update_redirect destroy_redirect]
-
-  test 'create series should redirect to edit' do
-    instance = create_request_expect
-    assert_redirected_to edit_series_url(instance)
-  end
+  test_crud_actions except: %i[new create_request create_redirect update_redirect destroy_redirect]
 
   test 'course admin should be able to update course' do
     sign_out :user

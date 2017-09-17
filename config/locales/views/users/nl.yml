@@ -25,3 +25,8 @@ nl:
       solutions: Oplossingen ingediend
       sign_in: Inloggen
       token_sign_in: 'Deze gebruiker heeft geen gebruikersnaam en kan enkel inloggen via deze link:'
+    users_table:
+      staff: Beheerder
+      zeus: Zeus
+      course_admin: cursusbeheerder
+      no_ugent: Deze gebruiker heeft geen UGent gebruikersnaam

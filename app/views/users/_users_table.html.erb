@@ -15,16 +15,16 @@
       <tr>
         <td>
           <% if user.zeus? %>
-            <span class="glyphicon glyphicon-king" title='zeus'></span>
+            <span class="glyphicon glyphicon-king" title='<%= t ".zeus" %>'></span>
           <% end %>
           <% if user.staff? %>
-            <span class="glyphicon glyphicon-queen" title='staff'></span>
+            <span class="glyphicon glyphicon-queen" title='<%= t ".staff" %>'></span>
           <% end %>
           <% if @course && user.course_admin?(@course) %>
-            <span class="glyphicon glyphicon-education" title='course admin'></span>
+            <span class="glyphicon glyphicon-education" title='<%= t ".course_admin" %>'></span>
           <% end %>
           <% if user.username.blank? %>
-            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <span class="glyphicon glyphicon-exclamation-sign" title='<%= t ".no_ugent" %>'></span>
           <% end %>
         </td>
         <td>
@@ -33,7 +33,7 @@
         <td><%= user.full_name %></td>
         <td><%= user.email %></td>
         <td class='text-right'>
-          <%= link_to "#{user.correct_exercises}/#{user.attempted_exercises}", user_submissions_path(user) %>
+          <%= link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user) %>
         </td>
         <% if @course %>
           <td class='text-right'>

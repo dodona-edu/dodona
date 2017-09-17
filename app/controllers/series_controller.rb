@@ -25,7 +25,10 @@ class SeriesController < ApplicationController
 
   # GET /series/new
   def new
-    authorize Series
+    course = Maybe(params[:course_id])
+             .map { |cid| Course.find_by id: cid }
+             .or_nil
+    authorize course, :add_series?
     @series = Series.new
     @title = I18n.t('series.new.title')
   end
@@ -38,9 +41,8 @@ class SeriesController < ApplicationController
   # POST /series
   # POST /series.json
   def create
-    authorize Series
     @series = Series.new(permitted_attributes(Series))
-
+    authorize @series.course, :add_series?
     respond_to do |format|
       if @series.save
         format.html { redirect_to edit_series_path(@series), notice: I18n.t('controllers.created', model: Series.model_name.human) }

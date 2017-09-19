@@ -140,12 +140,12 @@ function initPythiaSubmissionShow(submissionCode) {
             },
         });
 
-        var createTutor = function (codeTrace) {
+        const createTutor = function (codeTrace) {
             showInfoModal("Python Tutor", "<div id=\"tutorcontent\"><div class=\"progress\"><div class=\"progress-bar progress-bar-striped progress-bar-info active\" role=\"progressbar\" style=\"width: 100%\">Loading</div></div></div>", {"allowFullscreen": true});
 
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html("<iframe id=\"tutorviz\" width=\"100%\" frameBorder=\"0\" src=\"/tutorviz/tutorviz.html\"></iframe>");
-                $("#tutorviz").load(function () {
+                $("#tutorviz").on("load", function () {
                     let content = $("#tutorviz").get(0).contentWindow;
                     content.load(codeTrace);
                     $("#tutorviz").data("standardheight", content.document.body.scrollHeight);

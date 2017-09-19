@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :submissions, only: %i[index create]
     end
 
-    resources :series, except: %i[new] do
+    resources :series, except: :new do
       member do
         get 'download_solutions'
         get 'overview'
@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
 
     resources :courses do
-      resources :series
+      resources :series, only: :new
       resources :exercises, only: [:show], concerns: %i[mediable submitable]
       member do
         get 'list_members'

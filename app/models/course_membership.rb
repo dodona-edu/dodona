@@ -5,7 +5,7 @@
 #  id         :integer          not null, primary key
 #  course_id  :integer
 #  user_id    :integer
-#  status     :integer
+#  status     :integer          default("student")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

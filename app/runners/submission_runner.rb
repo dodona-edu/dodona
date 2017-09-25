@@ -182,10 +182,10 @@ class SubmissionRunner
   def add_runtime_metrics(result); end
 
   def finalize
-    return if @path.nil?
+    return if @mountsrc.nil?
     # remove path on file system used as temporary working directory for processing the submission
-    FileUtils.remove_entry_secure(@path, verbose: true)
-    @path = nil
+    FileUtils.remove_entry_secure(@mountsrc, verbose: true)
+    @mountsrc = nil
   end
 
   def run

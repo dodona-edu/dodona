@@ -41,9 +41,9 @@ Rails.application.routes.draw do
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'
-        post 'subscribe'
         post 'unsubscribe'
         post 'update_membership'
+        match 'subscribe', via: %i[get post]
       end
     end
 

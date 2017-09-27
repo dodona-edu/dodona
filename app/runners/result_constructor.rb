@@ -108,12 +108,12 @@ class ResultConstructor
 
   def annotate_code(values)
     (@result[:annotations] ||= []) << {
-      text: values[:text] or '',
-      type: values[:type] or 'info',
-      row: values[:row] or 0,
-      rows: values[:rows] or 0,
-      column: values[:column] or 0,
-      columns: values[:columns] or 0
+      text: values[:text] || '',
+      type: values[:type] || 'info',
+      row: values[:row] || 0,
+      rows: values[:rows] || 1,
+      column: values[:column] || 0,
+      columns: values[:columns] || 1
     }
   end
 

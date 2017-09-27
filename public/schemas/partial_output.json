@@ -81,9 +81,9 @@
             "row":     { "$ref": "#/definitions/index" },
             "column":  { "$ref": "#/definitions/index" },
             "text":    { "type": "string" },
-            "type":    { "$ref": "#/definitions/severity" }
+            "type":    { "$ref": "#/definitions/severity" },
             "rows":    { "$ref": "#/definitions/span" },
-            "columns": { "$ref": "#/definitions/span" },
+            "columns": { "$ref": "#/definitions/span" }
         }
     },
     "close-test": {

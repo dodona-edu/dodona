@@ -62,7 +62,7 @@ class FeedbackTableRenderer
           @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
           if show_code_tab
             @builder.div(class: "tab-pane #{'active' unless submission[:groups]}", id: 'code-tab') do
-              source(@code, [])
+              source(@code, submission[:annotations] or [])
             end
           end
         end

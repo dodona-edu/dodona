@@ -10,7 +10,8 @@
         "status":      { "$ref": "#/definitions/status" },
         "description": { "$ref": "#/definitions/description" },
         "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } },
-        "groups":      { "type": "array", "items": { "$ref": "#/definitions/tab" } }
+        "groups":      { "type": "array", "items": { "$ref": "#/definitions/tab" } },
+        "annotations": { "type": "array", "items": { "$ref": "#/definitions/annotation" } }
       }
     },
     "tab": {
@@ -68,6 +69,19 @@
         "permission":  { "$ref": "#/definitions/permission" }
       }
     },
+    "annotation": {
+      "type": "object",
+      "description": "An annotation on the source code.",
+      "required": ["row", "text"],
+      "properties": {
+        "row":     { "$ref": "#/definitions/index" },
+        "column":  { "$ref": "#/definitions/index" },
+        "text":    { "type": "string" },
+        "type":    { "$ref": "#/definitions/severity" }
+        "rows":    { "$ref": "#/definitions/span" },
+        "columns": { "$ref": "#/definitions/span" },
+      }
+    },
     "format": {
       "type": "string",
       "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'code' or any programming language (highlighted)."
@@ -103,6 +117,20 @@
     },
     "accepted": {
       "type": "boolean"
+    },
+    "index": {
+      "type": "number",
+      "description": "A zero-based index.",
+      "minimum": 0
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["error", "warning", "info"]
+    },
+    "span": {
+      "type": "number",
+      "description": "A range of items.",
+      "minimum": 1
     }
   }
 }

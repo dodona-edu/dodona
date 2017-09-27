@@ -106,6 +106,17 @@ class ResultConstructor
     messages << message unless message.nil?
   end
 
+  def annotate_code(values)
+    (@result[:annotations] ||= []) << {
+      text: values[:text] or '',
+      type: values[:type] or 'info',
+      row: values[:row] or 0,
+      rows: values[:rows] or 0,
+      column: values[:column] or 0,
+      columns: values[:columns] or 0
+    }
+  end
+
   def close_test(generated: nil, accepted: nil, status: nil)
     check_level(:test, 'test closed')
     @test[:generated] = generated

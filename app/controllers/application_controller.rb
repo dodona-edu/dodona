@@ -74,9 +74,9 @@ class ApplicationController < ActionController::Base
     token = request.headers['Authorization']&.strip
     return if token.blank?
     token.gsub!(/Token token=\"(.*)\"/, '\1')
-    user = User.find_by(token: token)
-    if user
-      sign_in user
+    api_token = ApiToken.find_by(token: token)
+    if api_token
+      sign_in api_token.user
     else
       head :unauthorized
     end

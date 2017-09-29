@@ -13,8 +13,8 @@
 class ApiToken < ApplicationRecord
   belongs_to :user
 
-  def initalize
-    super
+  def initialize(*params)
+    super(*params)
     self.token = SecureRandom.urlsafe_base64(32) unless token
   end
 end

@@ -130,6 +130,7 @@ class SubmissionRunner
     end
 
     # run the container with a timeout.
+    Delayed::Worker.logger.debug("Running submission #{@submission.id}")
     timer = Thread.new do
       sleep time_limit
       container.stop
@@ -145,6 +146,9 @@ class SubmissionRunner
     stderr = errlines.join
     exit_status = container.wait(1)['StatusCode']
     container.delete
+    Delayed::Worker.logger.debug("Finished submission with status #{exit_status} (T#{timeout})")
+    Delayed::Worker.logger.debug("Stderr: #{stderr}")
+    Delayed::Worker.logger.debug("Stdout: #{stdout}")
 
     # handling judge output
     if [0, 137, 143].exclude? exit_status

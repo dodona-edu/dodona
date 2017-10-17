@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def drawer_group(items)
+    render partial: 'layouts/drawer_group', locals: { items: items }
+  end
+
   def clipboard_button_for(selector)
     selector = selector.to_s
     selector.prepend('#') unless selector.starts_with?('#')

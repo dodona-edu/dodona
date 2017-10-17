@@ -1,0 +1,83 @@
+aside.drawer {
+  position: fixed;
+  height: 100%;
+  width: 240px;
+  pointer-events: auto;
+  background: #fff;
+}
+
+nav.drawer-nav {
+  border-left: 0;
+  border-right: 1px solid #e4e4e4;
+  left: 0;
+  right: initial;
+  height: 100%;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 240px;
+  overflow: hidden;
+  -ms-touch-action: none;
+  touch-action: none;
+}
+
+.drawer-group {
+  padding: 0 16px;
+}
+
+nav.drawer-list {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.75rem;
+  text-decoration: inherit;
+  text-transform: inherit;
+  margin: 0;
+  padding: 8px 16px 0 8px;
+  line-height: 1.5rem;
+  list-style-type: none;
+  color: @black-secondary;
+}
+
+a.drawer-list-item.active {
+  color: @black-text;
+}
+a.drawer-list-item {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.5rem;
+    text-decoration: inherit;
+    text-transform: inherit;
+    position: relative;
+    padding: 0 16px 0 0;
+    outline: none;
+    color: inherit;
+    text-decoration: none;
+    height: 48px;
+
+    span {
+      font-size: 20px;
+      margin-right: 24px;
+    }
+}

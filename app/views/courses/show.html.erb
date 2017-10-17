@@ -2,6 +2,8 @@
   <%= javascript_pack_tag 'course' %>
 <% end %>
 
+<%= render 'drawer' %>
+
 <div class="row">
   <%= link_to '#series', class: "btn btn-lg btn-down col-sm-1 hidden-xs", title: t('.series') do %>
     <span class='hidden-sm'><%= t ".series" %></span><br>

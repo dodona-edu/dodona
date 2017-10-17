@@ -36,6 +36,14 @@
   <body>
     <div id="page-wrapper">
       <%= render 'layouts/navbar' %>
+      <% if content_for? :drawer %>
+        <aside class="drawer">
+          <nav class="drawer-nav">
+            <%= yield :drawer %>
+          </nav>
+        </aside>
+      <% end %>
+      <div id="page-spacer"></div>
       <div class="container main">
         <div class="page-messages hidden-print">
           <% flash.each do |key, value| %>

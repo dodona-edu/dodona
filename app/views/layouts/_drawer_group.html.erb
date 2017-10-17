@@ -1,0 +1,16 @@
+<% content_for :drawer do %>
+  <div class="drawer-group">
+    <nav class="drawer-list">
+      <% items.each do |id, item| %>
+        <% current = current_page?(item[:url]) %>
+        <%= link_to item[:url],
+          class: "drawer-list-item #{'active' if current}",
+            id: "drawer-item-#{id}" do %>
+           <span class="glyphicon glyphicon-<%= item[:icon] %>">
+           </span>
+           <%= item[:text] %>
+         <% end %>
+      <% end %>
+    </nav>
+  </div>
+<% end %>

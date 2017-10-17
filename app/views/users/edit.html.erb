@@ -10,6 +10,47 @@
       <div class="card-supporting-text">
         <%= render 'form', user: @user %>
       </div>
+      <div class="card-supporting-text card-border">
+        <div class="col-xs-12">
+          <h4><%= t '.api-tokens' %></h4>
+          <h5>Create new token</h5>
+          <%= form_for(ApiToken.new, html: {class: 'form-horizontal'}) do |f| %>
+            <div class="field form-group">
+              <div class="input-group col-md-6">
+                <%= f.text_field :description, '', placeholder: 'Description (ex. \'Dodona CLI\')', class: 'form-control' %>
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </button>
+                </span>
+              </div>
+            </div>
+          <% end %>
+          <h5>Active tokens</h5>
+          <table class="table">
+            <thead>
+              <tr>
+                <th><%= ApiToken.human_attribute_name("description") %></th>
+                <th><%= ApiToken.human_attribute_name("created_at") %></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @user.api_tokens.each do |token| %>
+                <tr id="api-token-<%= token.id %>">
+                  <td><%= token.description %></td>
+                  <td><%= token.created_at %></td>
+                  <td class="text-right">
+                    <%= button_to api_token_path(token), method: :delete, remote: true, class: 'btn btn-sm btn-danger' do %>
+                      <span class="glyphicon glyphicon-remove"></span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>

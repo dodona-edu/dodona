@@ -13,6 +13,11 @@
 class ApiToken < ApplicationRecord
   belongs_to :user
 
+  validates :description,
+            presence: true,
+            length: { minimum: 3, maximum: 255 },
+            uniqueness: { scope: :user_id }
+
   def initialize(*params)
     super(*params)
     self.token = SecureRandom.urlsafe_base64(32) unless token

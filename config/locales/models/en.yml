@@ -13,7 +13,10 @@ en:
       submission: Submission
       user: Student
       course_membership: Course membership
+      api_token: API token
     attributes:
+      api_token:
+        description: Description
       course:
         name: Name
         teacher: Teacher

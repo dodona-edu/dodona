@@ -13,7 +13,11 @@ nl:
       submission: Oplossing
       user: Student
       course_membership: Lidmaatschap van de cursus
+      api_token: API Token
     attributes:
+      api_token:
+        description: Beschrijving
+        created_at: Aangemaakt op
       course:
         name: Naam
         teacher: Lesgever

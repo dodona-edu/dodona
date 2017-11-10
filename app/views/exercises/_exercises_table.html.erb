@@ -22,7 +22,7 @@
         <td>
           <% if user_signed_in? %>
             <% if current_user.course_admin? local_assigns[:series]&.course %>
-              <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise } %>
+              <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
             <% else %>
               <%= render partial: 'exercises/status_icon', locals: {
                 summary: ex

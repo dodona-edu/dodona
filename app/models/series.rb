@@ -96,7 +96,7 @@ class Series < ApplicationRecord
 
   def generate_token(type)
     raise 'unknown token type' unless %i[indianio_token access_token].include? type
-    self[type] = SecureRandom.urlsafe_base64(16)
+    self[type] = SecureRandom.urlsafe_base64(16).tr('1lL0oO', '')
   end
 
   private

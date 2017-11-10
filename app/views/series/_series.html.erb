@@ -66,7 +66,7 @@
         <% end %>
         <% if policy(series).download_solutions? %>
           <li>
-            <%= link_to download_solutions_series_path(series) do %>
+            <%= link_to download_solutions_series_path(series, token: (series.access_token if series.hidden?)) do %>
               <span class='glyphicon glyphicon-download-alt'></span> <%= t("series.show.download_solutions") %>
             <% end %>
           </li>

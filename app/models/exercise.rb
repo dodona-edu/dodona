@@ -230,7 +230,9 @@ class Exercise < ApplicationRecord
 
   def self.convert_visibility(visibility)
     return 'open' if visibility == 'public'
+    return 'open' if visibility == 'visible'
     return 'closed' if visibility == 'private'
+    return 'closed' if visibility == 'invisible'
     visibility
   end
 

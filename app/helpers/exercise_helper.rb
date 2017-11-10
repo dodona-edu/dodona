@@ -32,18 +32,24 @@ module ExerciseHelper
       @description.html_safe
     end
 
-    # Groups:
-    # 1: part between the opening < and '/"
-    # 2: optional ./
-    # 3: media url (ex: media/photos/photo.png)
-    # 4: part between the closing '/" and >
-    #
+    # Regex matching a HTML tag which has at least one attribute
+    # starting with 'media' or './media'
     # The trailing 'm' makes this regex multiline,
     # so newlines between attributes are handled correctly
-    MEDIA_MATCH = %r{(<.*?=['"])(\.\/)?(media\/.*?)(['"].*?>)}m
+    MEDIA_TAG_MATCH = %r{<.*?=['"](\.\/)?media\/.*?['"].*?>}m
+
+    # Regex used for replacing these relative paths:
+    # 1: opening quotation marks
+    # 2: optional ./ (discarded)
+    # 3: media url and closing quotation marks
+    MEDIA_ATTR_MATCH = %r{(=['"])(\.\/)?(media\/.*?['"])}
 
     # Replace each occurence of a relative media path with a
     # path relative to the context (base URL).
+    #
+    # A match within a match is used to be able to handle multiple
+    # relative media paths in one tag, while making sure we only
+    # substitute within tags.
     #
     # Example substitutions:
     # (with path = /nl/exercises/xxxx/)
@@ -53,7 +59,9 @@ module ExerciseHelper
     #  => <a href='/nl/exercises/xxxx/media/page.html'>
     def contextualize_media_paths(html, path)
       path += '/' unless path.ends_with? '/'
-      html.gsub(MEDIA_MATCH, "\\1#{path}\\3\\4")
+      html.gsub(MEDIA_TAG_MATCH) do |match|
+        match.gsub MEDIA_ATTR_MATCH, "\\1#{path}\\3"
+      end
     end
 
     private

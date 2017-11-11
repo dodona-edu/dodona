@@ -139,4 +139,11 @@ class MediaPathContextualizerTest < ActiveSupport::TestCase
       assert_equal tag, res
     end
   end
+
+  test 'multiple paths should be substituted' do
+    testcase = '<img data-large="media/cromwell.jpg" src="media/cromwell.thumb.jpg" alt="Oliver Cromwell" title="Oliver Cromwell" height="55px">'
+    expected = "<img data-large=\"#{@path}/media/cromwell.jpg\" src=\"#{@path}/media/cromwell.thumb.jpg\" alt=\"Oliver Cromwell\" title=\"Oliver Cromwell\" height=\"55px\">"
+    res = @renderer.contextualize_media_paths testcase, @path
+    assert_equal expected, res
+  end
 end

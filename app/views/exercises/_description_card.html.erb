@@ -1,8 +1,8 @@
 <div class="card-supporting-text">
   <% if exercise.removed? %>
-    <div class="alert alert-info"><%= t ".alert_removed" %></div>
+    <div class="alert alert-info"><%= t "exercises.show.alert_removed" %></div>
   <% elsif exercise.not_valid? %>
-    <div class="alert alert-info"><%= t ".alert_not_valid" %></div>
+    <div class="alert alert-info"><%= t "exercises.show.alert_not_valid" %></div>
   <% else %>
     <% description, footnotes = exercise_description_and_footnotes(exercise) %>
     <%= description %>

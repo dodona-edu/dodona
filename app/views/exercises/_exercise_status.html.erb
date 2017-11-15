@@ -1,4 +1,4 @@
-<% if exercise.hidden? %>
+<% if exercise.hidden? && local_assigns[:series].nil? %>
   <%= content_tag :span, nil,
                   class: 'glyphicon glyphicon-eye-close',
                   title: t('exercises.index.hidden') %>

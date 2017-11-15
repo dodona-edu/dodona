@@ -49,11 +49,11 @@
           <% end %>
           <p>
             <strong><%= t ".courses" %>:</strong>
-            <% if @user.courses.empty? %>
+            <% if @user.subscribed_courses.empty? %>
               <%= t ".no_courses" %>
             <% else %>
               <ul>
-              <% @user.courses.each do |course| %>
+              <% @user.subscribed_courses.each do |course| %>
                 <li><%= link_to course.name, course %></li>
               <% end %>
               </ul>

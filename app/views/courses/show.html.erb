@@ -2,7 +2,29 @@
   <%= javascript_pack_tag 'course' %>
 <% end %>
 
-<%= render 'drawer' %>
+<% drawer_group \
+  show: {
+    icon: 'eye-open',
+    text: 'Overview',
+    url: course_path(@course)
+  },
+  edit: {
+    icon: 'edit',
+    text: 'Edit',
+    url: edit_course_path(@course)
+  },
+  users: {
+    icon: 'user',
+    text: (t ".users"),
+    group: 'user-list'
+  },
+  series: {
+    icon: 'list-alt',
+    text: (t ".exercise_series"),
+    group: 'series'
+  }
+  %>
+
 
 <div class="row">
   <%= link_to '#series', class: "btn btn-lg btn-down col-sm-1 hidden-xs", title: t('.series') do %>
@@ -96,7 +118,7 @@
         </div>
       <% end %>
       <% if policy(@course).show_series? %>
-        <div class="card-supporting-text card-border">
+        <div class="card-supporting-text card-border" data-toggle-group="series">
           <div class="card-subtitle">
             <a class="anchor" id="series"></a>
             <h3><%= t ".exercise_series" %></h3>
@@ -120,7 +142,7 @@
         </div>
       <%  end %>
       <% if policy(@course).list_members? %>
-        <div class="card-supporting-text card-border">
+        <div class="card-supporting-text card-border" data-toggle-group="user-list">
           <div class="card-subtitle">
             <a class="anchor" id="user-list"></a>
             <h3><%= t ".users" %></h3>

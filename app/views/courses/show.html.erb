@@ -33,7 +33,7 @@
   <% end %>
 
   <div class="col-sm-10 col-xs-12">
-    <div class="card">
+    <div class="card  tab-content">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @course.name %> (<%= @course.formatted_year %>)</h2>
         <div class="card-title-fab">
@@ -118,9 +118,8 @@
         </div>
       <% end %>
       <% if policy(@course).show_series? %>
-        <div class="card-supporting-text card-border" data-toggle-group="series">
+        <div class="card-supporting-text card-border tab-pane" id="series">
           <div class="card-subtitle">
-            <a class="anchor" id="series"></a>
             <h3><%= t ".exercise_series" %></h3>
             <div class="flex-spacer"></div>
             <div class="card-subtitle-actions">
@@ -142,9 +141,8 @@
         </div>
       <%  end %>
       <% if policy(@course).list_members? %>
-        <div class="card-supporting-text card-border" data-toggle-group="user-list">
+        <div class="card-supporting-text card-border tab-pane" id="user-list">
           <div class="card-subtitle">
-            <a class="anchor" id="user-list"></a>
             <h3><%= t ".users" %></h3>
           </div>
           <div class="card-tab">

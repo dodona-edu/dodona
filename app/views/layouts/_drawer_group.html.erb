@@ -1,12 +1,14 @@
 <% content_for :drawer do %>
 <%= javascript_pack_tag 'drawer' %>
   <div class="drawer-group">
-    <nav class="drawer-list">
+    <ul class="drawer-list nav nav-tabs" role="tablist">
       <% items.each do |id, item| %>
         <% current = current_page?(item[:url]) %>
+          <li>
           <% if item.key?(:url)%>
             <%= link_to item[:url],
               class: "drawer-list-item #{'active' if current}",
+                "data-toggle":"tabb",
                 id: "drawer-item-#{id}" do %>
                <span class="glyphicon glyphicon-<%= item[:icon] %>">
                </span>
@@ -16,13 +18,15 @@
           <%  elsif item.key?(:group) %>
           <%= link_to "#"+item[:group],
             class: "drawer-list-item",
+              "data-toggle":"tabb",
               id: "drawer-item-#{id}" do %>
              <span class="glyphicon glyphicon-<%= item[:icon] %>">
              </span>
              <%= item[:text] %>
              <% end %>
         <% end %>
+      </li>
       <% end %>
-    </nav>
+    </ul>
   </div>
 <% end %>

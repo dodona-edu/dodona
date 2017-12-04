@@ -30,7 +30,7 @@ function initPythiaSubmissionShow(submissionCode) {
             let files = {"inline": {}, "href": {}};
 
             $group.find(".contains-file").each(function () {
-                content = $(this).data("files");
+                let content = $(this).data("files");
 
                 for (let key in content) {
                     let value = content[key];

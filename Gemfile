@@ -60,6 +60,7 @@ gem 'autoprefixer-rails'
 # cas authentication
 gem 'devise'
 gem 'devise_cas_authenticatable'
+gem 'devise_saml_authenticatable'
 gem 'rubycas-client', git: 'https://github.com/bmesuere/rubycas-client.git'
 
 # authorization

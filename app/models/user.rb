@@ -68,7 +68,7 @@ class User < ApplicationRecord
            through: :course_memberships,
            source: :course
 
-  devise :cas_authenticatable
+  devise :saml_authenticatable
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
 

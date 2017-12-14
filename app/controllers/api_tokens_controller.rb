@@ -2,7 +2,7 @@ class ApiTokensController < ApplicationController
   before_action :set_user, except: %i[destroy]
 
   def index
-    authorize ApiToken
+    authorize @user, :list_tokens?
     @tokens = ApiToken.where(user: @user)
   end
 

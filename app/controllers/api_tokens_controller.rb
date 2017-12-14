@@ -12,12 +12,16 @@ class ApiTokensController < ApplicationController
     @token.user_id = params[:user_id]
     respond_to do |f|
       if @token.save
-        f.html { redirect_back fallback_location: root_path, notice: I18n.t('controllers.created', model: ApiToken.model_name) }
+        message = I18n.t('controllers.created', model: ApiToken.model_name)
+        f.html { redirect_back fallback_location: root_path, notice: message }
+        f.js { render 'create', locals: { notification: message, new_token: @token } }
       else
+        message = @token.errors.full_messages.join(', ')
         f.html do
           redirect_back fallback_location: root_path,
-                        alert: @token.errors.full_messages.join(', ')
+                        alert: message
         end
+        f.js { render 'notification', locals: { notification: message } }
       end
     end
   end
@@ -25,8 +29,17 @@ class ApiTokensController < ApplicationController
   def destroy
     @token = ApiToken.find(params[:id])
     authorize @token
+    @user = current_user
     @token.delete
-    redirect_back fallback_location: root_path, notice: I18n.t('controllers.destroyed', model: ApiToken.model_name)
+    respond_to do |f|
+      message = I18n.t('controllers.destroyed', model: ApiToken.model_name)
+      f.html do
+        redirect_back fallback_location: root_path, notice: message
+      end
+      f.js do
+        render 'delete', locals: { notification: message }
+      end
+    end
   end
 
   private

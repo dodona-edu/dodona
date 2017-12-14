@@ -57,6 +57,10 @@ class UserPolicy < ApplicationPolicy
     show?
   end
 
+  def list_tokens?
+    show?
+  end
+
   def permitted_attributes
     if user&.admin?
       %i[username ugent_id first_name last_name email permission time_zone]

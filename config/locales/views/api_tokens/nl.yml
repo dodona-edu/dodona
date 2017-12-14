@@ -1,0 +1,5 @@
+nl:
+  api_tokens:
+    show:
+      new-token: Nieuw token aangemaakt
+      new-token-explanation: Dit is je nieuwe token. Kopieer dit token nu. Je zult dit token niet meer kunnen zien wanneer je deze pagina verlaat.

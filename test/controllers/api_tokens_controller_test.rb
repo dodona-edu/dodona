@@ -40,3 +40,31 @@ class ApiTokensControllerTest < ActionDispatch::IntegrationTest
     end
   end
 end
+class ApiTokensSignInTest < ActionDispatch::IntegrationTest
+
+  setup do
+    @user = create :user
+    @token = create :api_token, user: @user
+  end
+
+  def fetch_root_with_token(token)
+    if token.class == ApiToken
+      token = token.token
+    end
+    get root_url, params: { format: :json },
+                  headers: { 'Authorization' => token }
+  end
+
+  test 'should login with token' do
+    fetch_root_with_token(@token)
+    assert_response :success
+    result = JSON.parse response.body
+    assert_not_nil result['user']
+    assert_equal result['user']['email'], @user.email
+  end
+
+  test 'should not login with wrong token' do
+    fetch_root_with_token('Not a correct token')
+    assert_response :unauthorized
+  end
+end

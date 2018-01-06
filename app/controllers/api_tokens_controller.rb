@@ -17,8 +17,9 @@ class ApiTokensController < ApplicationController
         f.html { redirect_back fallback_location: root_path, notice: message }
         f.js { render 'create', locals: { notification: message, new_token: @token } }
       else
-        @token.errors.add(:user, :not_permitted) unless can_create
-        message = @token.errors.full_messages.join(', ')
+        errors = @token.errors.full_messages
+        errors << I18n.t('errors.models.api_token.attributes.not_permitted') unless can_create
+        message = errors.join(', ')
         f.html do
           redirect_back fallback_location: root_path,
                         alert: message

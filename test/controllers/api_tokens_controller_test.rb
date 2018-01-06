@@ -20,7 +20,23 @@ class ApiTokensControllerControllerTest < ActionDispatch::IntegrationTest
                     except: %i[create_redirect destroy_redirect]
 
   test 'should get index for user' do
-    get user_api_tokens_url(:nl, @instance.user, @instance)
+    get user_api_tokens_url(:nl, @instance.user, @instance), params: { format: :json }
     assert_response :success
+  end
+
+  test 'should not be able to create token for other user' do
+    @other_user = create :user
+    assert_difference('ApiToken.count', 0) do
+      post user_api_tokens_url(:nl, @other_user), params: model_params(generate_attr_hash)
+    end
+    assert_equal flash[:alert], I18n.t('errors.models.api_token.attributes.not_permitted')
+  end
+
+  test 'should not be able to delete token from other user' do
+    @other_user = create :user
+    token = create :api_token, user: @other_user
+    assert_difference('ApiToken.count', 0) do
+      delete api_token_url(:nl, token)
+    end
   end
 end

@@ -12,7 +12,7 @@
 
 FactoryGirl.define do
   factory :api_token do
-    description 'This is a token.'
+    description { Faker::Lorem.unique.sentence }
     user
   end
 end

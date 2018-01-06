@@ -13,7 +13,9 @@
 require 'test_helper'
 
 class ApiTokenTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'api token creation' do
+    token = create :api_token
+    assert_not_nil token
+    assert token.token.length > 30
+  end
 end

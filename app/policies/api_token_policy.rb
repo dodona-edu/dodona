@@ -9,10 +9,9 @@ class ApiTokenPolicy < ApplicationPolicy
     user
   end
 
+  # Actual check happends at UserPolicy.create_tokens?
   def create?
-    return false unless user
-    return true if user.admin?
-    record.user == user
+    user
   end
 
   def destroy?

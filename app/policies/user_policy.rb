@@ -57,6 +57,10 @@ class UserPolicy < ApplicationPolicy
     show?
   end
 
+  def create_tokens?
+    update?
+  end
+
   def list_tokens?
     show?
   end

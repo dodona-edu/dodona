@@ -10,12 +10,14 @@ class ApiTokensController < ApplicationController
     authorize ApiToken
     @token = ApiToken.new(permitted_attributes(ApiToken))
     @token.user_id = params[:user_id]
+    can_create = Pundit.policy!(current_user, @token.user).create_tokens?
     respond_to do |f|
-      if @token.save
+      if can_create && @token.save
         message = I18n.t('controllers.created', model: ApiToken.model_name)
         f.html { redirect_back fallback_location: root_path, notice: message }
         f.js { render 'create', locals: { notification: message, new_token: @token } }
       else
+        @token.errors.add(:user, :not_permitted) unless can_create
         message = @token.errors.full_messages.join(', ')
         f.html do
           redirect_back fallback_location: root_path,

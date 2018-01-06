@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ApiTokensControllerControllerTest < ActionDispatch::IntegrationTest
+class ApiTokensControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
   crud_helpers ApiToken, attrs: %i[description]

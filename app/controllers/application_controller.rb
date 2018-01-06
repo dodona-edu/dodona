@@ -73,8 +73,14 @@ class ApplicationController < ActionController::Base
   def look_for_token
     token = request.headers['Authorization']&.strip
     return if token.blank?
+
     token.gsub!(/Token token=\"(.*)\"/, '\1')
-    api_token = ApiToken.find_by(token: token)
+    # only allow urlsafe base64 characters to pass
+    token.gsub!(/[^A-Za-z0-9_\-]/, '')
+
+    # Do not search for empty strings
+    api_token = ApiToken.find_by(token: token) if token.present?
+
     if api_token
       sign_in api_token.user
     else

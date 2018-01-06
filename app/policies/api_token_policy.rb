@@ -15,7 +15,8 @@ class ApiTokenPolicy < ApplicationPolicy
   end
 
   def destroy?
-    create?
+    user&.admin?
+    record.user == user
   end
 
   def permitted_attributes

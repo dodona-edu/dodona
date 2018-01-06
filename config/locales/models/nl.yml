@@ -4,6 +4,8 @@ nl:
       models:
         course_membership:
           at_least_one_admin: Een cursus moet altijd minstens één cursusbeheerder hebben.
+        api_token:
+          not_permitted: Je hebt geen rechten om een token voor deze user te maken.
     models:
       course: Cursus
       exercise: Oefening

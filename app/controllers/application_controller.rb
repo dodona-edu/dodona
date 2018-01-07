@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
     token.gsub!(/[^A-Za-z0-9_\-]/, '')
 
     # Do not search for empty strings
-    api_token = ApiToken.find_by(token: token) if token.present?
+    api_token = ApiToken.find_token(token) if token.present?
 
     if api_token
       sign_in api_token.user

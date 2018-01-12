@@ -8,3 +8,7 @@ json.extract! user,
               :permission,
               :time_zone,
               :lang
+
+json.url user_url(user)
+json.submission_count @user.submissions.count
+json.correct_exercises @user.correct_exercises

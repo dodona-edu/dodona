@@ -284,7 +284,7 @@ Devise.setup do |config|
 
     # You can set this value to use Subject or SAML assertation as info to which email will be compared.
     # If you don't set it then email will be extracted from SAML assertation attributes.
-    config.saml_use_subject = true
+    config.saml_use_subject = false
 
     # You can support multiple IdPs by setting this value to a class that implements a #settings method which takes
     # an IdP entity id as an argument and returns a hash of idp settings for the corresponding IdP.

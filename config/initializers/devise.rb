@@ -306,6 +306,8 @@ Devise.setup do |config|
       settings.name_identifier_format             = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
       settings.issuer                             = "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/metadata"
       settings.authn_context                      = ""
+      settings.certificate = IO.read("/home/dodona/cert.pem")
+      settings.private_key = IO.read("/home/dodona/key.pem")
       settings.idp_slo_target_url                 = "https://ideq.ugent.be/simplesaml/saml2/idp/SingleLogoutService.php"
       settings.idp_sso_target_url                 = "https://ideq.ugent.be/simplesaml/saml2/idp/SSOService.php"
       settings.idp_cert                           = <<-CERT.chomp

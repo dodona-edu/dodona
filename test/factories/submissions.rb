@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: submissions
+#
+#  id          :integer          not null, primary key
+#  exercise_id :integer
+#  user_id     :integer
+#  summary     :string(255)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  status      :integer
+#  accepted    :boolean          default(FALSE)
+#  course_id   :integer
+#
+
 FactoryGirl.define do
   factory :submission do
     code { Faker::Lorem.paragraph }

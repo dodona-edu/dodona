@@ -28,6 +28,12 @@ module OneLogin
         if settings.attribute_consuming_service.configured?
           namespaces["xmlns:saml"] = "urn:oasis:names:tc:SAML:2.0:assertion"
         end
+
+# added for Belnet!
+        namespaces["xmlns:ds"] = "http://www.w3.org/2000/09/xmldsig#"
+
+
+
         root = meta_doc.add_element "md:EntityDescriptor", namespaces
         sp_sso = root.add_element "md:SPSSODescriptor", {
             "protocolSupportEnumeration" => "urn:oasis:names:tc:SAML:2.0:protocol",

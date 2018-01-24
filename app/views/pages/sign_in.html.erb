@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="sign-in-dialog-wrapper">
+    <h1>Sign in</h1>
+    <% @institutions.each do |institution| %>
+      <div class="row institution">
+        <div class="institution-logo"><img class="img-responsive" src='<%=institution.logo%>'></div>
+        <div class="institution-name"><h3><%= institution.name %></h3></div>
+        <div class="institution-go"><span class="glyphicon glyphicon-chevron-right"></span></div>
+      </div>
+    <% end %>
+  </div>
+</div>

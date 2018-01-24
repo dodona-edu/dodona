@@ -83,6 +83,37 @@
     border-radius: 2px;
     display: block;
 }
+
+// sign in page
+.sign-in-dialog-wrapper {
+    width: 350px;
+    margin: auto;
+}
+.institution {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 12px;
+    background-color: white;
+    border-radius: 2px;
+    transition: box-shadow 0.2s cubic-bezier(.4,0,.2,1);
+    .shadow-z2();
+    cursor: pointer;
+}
+.institution:hover {
+    .shadow-z4();
+}
+.institution-logo {
+    width: 70px;
+    margin-right: 12px;
+}
+.institution-name {
+    flex-grow: 1;
+}
+.institution-go {
+}
+
+
 a.link-accent-red {
     color: @color-red;
 }

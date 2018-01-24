@@ -3,4 +3,8 @@ class PagesController < ApplicationController
     @title = 'Home'
     @user = current_user
   end
+
+  def sign_in
+    @institutions = Institution.all
+  end
 end

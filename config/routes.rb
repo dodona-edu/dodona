@@ -4,9 +4,13 @@ Rails.application.routes.draw do
 
   match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
 
+  get '/sign_in' => 'pages#sign_in'
+
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
+    get '/sign_in' => 'pages#sign_in'
+
     concern :mediable do
       member do
         get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: 'media'

@@ -1,5 +1,6 @@
 class IdPSettingsAdapter
   def self.settings(idp_entity_id)
+    Rails.logger.debug idp_entity_id
     case idp_entity_id
     when "UGentTest"
       {
@@ -39,6 +40,13 @@ MIIDHzCCAgegAwIBAgIUSBvOr9fKss75aoQUN6KQhqgDg1kwDQYJKoZIhvcNAQEFBQAwGDEWMBQGA1UE
   end
 
   def self.entity_id(params)
-    params[:idp]
+    if params[:idp]
+      params[:idp]
+    elsif params[:SAMLResponse]
+      OneLogin::RubySaml::Response.new(
+        params[:SAMLResponse],
+        allowed_clock_drift: Devise.allowed_clock_drift_in_seconds,
+      ).issuers.first
+    end
   end
 end

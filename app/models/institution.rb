@@ -11,6 +11,7 @@
 #  certificate :text(65535)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  entity_id   :string(255)
 #
 
 class Institution < ApplicationRecord

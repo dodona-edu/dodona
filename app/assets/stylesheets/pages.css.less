@@ -96,12 +96,21 @@
     padding: 12px;
     background-color: white;
     border-radius: 2px;
-    transition: box-shadow 0.2s cubic-bezier(.4,0,.2,1);
+    transition: box-shadow 0.1s cubic-bezier(.4,0,.2,1);
     .shadow-z2();
     cursor: pointer;
 }
 .institution:hover {
     .shadow-z4();
+}
+a.institution-sign-in {
+    color: @black-text;
+}
+a.institution-sign-in:link,
+a.institution-sign-in:visited,
+a.institution-sign-in:hover,
+a.institution-sign-in:active {
+    text-decoration: none;
 }
 .institution-logo {
     width: 70px;
@@ -109,6 +118,9 @@
 }
 .institution-name {
     flex-grow: 1;
+}
+.institution-name h3 {
+    line-height: 1;
 }
 .institution-go {
 }

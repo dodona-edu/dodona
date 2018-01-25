@@ -1,7 +1,7 @@
 class IdPSettingsAdapter
   def self.settings(idp)
     institution = Institution.find_by(short_name: idp) || Institution.find_by(entity_id: idp)
-    raise 'NoIdpFound' if institution.nil?
+    return {} if institution.nil?
     {
       idp_slo_target_url: institution.slo_url,
       idp_sso_target_url: institution.sso_url,

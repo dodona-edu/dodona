@@ -1,59 +1,12 @@
 class IdPSettingsAdapter
-  def self.settings(idp_entity_id)
-    case idp_entity_id
-    when "UGentTest", "https://ideq.ugent.be/simplesaml/saml2/idp/metadata.php"
-      {
-        idp_slo_target_url: "https://ideq.ugent.be/simplesaml/saml2/idp/SingleLogoutService.php",
-        idp_sso_target_url: "https://ideq.ugent.be/simplesaml/saml2/idp/SSOService.php",
-        idp_cert: <<-CERT.chomp
-  MIIFMDCCBBigAwIBAgIQAy7rsc3GwUd4Cmd35/hqQjANBgkqhkiG9w0BAQsFADBkMQswCQYDVQQGEwJOTDEWMBQGA1UECBMNTm9vcmQtSG9sbGFuZDESMBAGA1UEBxMJQW1zdGVyZGFtMQ8wDQYDVQQKEwZURVJFTkExGDAWBgNVBAMTD1RFUkVOQSBTU0wgQ0EgMzAeFw0xNTA4MDUwMDAwMDBaFw0xODA4MDkxMjAwMDBaMIGDMQswCQYDVQQGEwJCRTEYMBYGA1UECBMPT29zdC1WbGFhbmRlcmVuMQ0wCwYDVQQHEwRHZW50MRowGAYDVQQKExFVbml2ZXJzaXRlaXQgR2VudDEXMBUGA1UECxMORGFubnkgQm9sbGFlcnQxFjAUBgNVBAMTDWlkZXEudWdlbnQuYmUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCsvNQsxWZLzB4tQ69M8NQv9i7J8t7ybfzN+eOIUwikTEMGmdLqNwab6MTJJEPl0RpxzDzc7sky5ysYOzAw6qa95/6Apnl3MLqXa8C+yYTLz5kxbA+7xJ16mGm1tHem9cusimfvLDTBYjLHGMTxvJOwDUG78KlT5CfJ2oSNYcyx9AI4z9TeccJz2nTKitYEQHjgXCQl+5z5wnPkU97YQWDQ6+c0oRo/6Q1jzL2fP4IG23YSAS0FTY2ntzVIEQl04yLv/iKVo5RpVj9iTTLX/QIp61LtsgC0Q2pIAp5OaAJoJ+SgxOTEUDMuEIuUi2pcpJDs4/7SIJxT4yQ6r9lT8lo3AgMBAAGjggG8MIIBuDAfBgNVHSMEGDAWgBRn/YggFCeYxwnSJRm76VERY3VQYjAdBgNVHQ4EFgQUYpS3fBMuqU0oAvI6354A6LP/NhowGAYDVR0RBBEwD4INaWRlcS51Z2VudC5iZTAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMGsGA1UdHwRkMGIwL6AtoCuGKWh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9URVJFTkFTU0xDQTMuY3JsMC+gLaArhilodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVEVSRU5BU1NMQ0EzLmNybDBCBgNVHSAEOzA5MDcGCWCGSAGG/WwBATAqMCgGCCsGAQUFBwIBFhxodHRwczovL3d3dy5kaWdpY2VydC5jb20vQ1BTMG4GCCsGAQUFBwEBBGIwYDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMDgGCCsGAQUFBzAChixodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVEVSRU5BU1NMQ0EzLmNydDAMBgNVHRMBAf8EAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCDuCU49W/+o10SSmq8gEHAD0CJIRR3wfTQZ3SObS7tuKfuT0kwcmWVvja3OzmH9MlX0aLa4lEaWkb6JAUUQexSPutgbv/mgU11YVnadDMcRIiC3L2sftlcSYLlayqBnOAQHm/5T/VV5rOrPUA2yarN8eg9PMqciE628obp2ujaLFmiecw3hT+N/laQbE2i0x6bCq3lgzSo3jOp/DAj78mplMkHVJv/dVgqzxkRKTzM1qYJcrcmJPS/Cuem89H8upodvT35Rag8xQqQDRLGA/UI7K4YLhQwotGpcnYAbz3vMhScwCLJdsz04d/d6Gm0SQkK3hzsuIFx0G69u/8/fbGi
-        CERT
-      }
-    when "UGent", "https://identity.ugent.be/simplesaml/saml2/idp/metadata.php"
-        {
-          idp_slo_target_url: "https://identity.ugent.be/simplesaml/saml2/idp/SingleLogoutService.php",
-          idp_sso_target_url: "https://identity.ugent.be/simplesaml/saml2/idp/SSOService.php",
-          idp_cert: <<-CERT.chomp
-  MIIFNjCCBB6gAwIBAgIQDTNsKIIro/EZAVFJOfYCYTANBgkqhkiG9w0BAQsFADBkMQswCQYDVQQGEwJOTDEWMBQGA1UECBMNTm9vcmQtSG9sbGFuZDESMBAGA1UEBxMJQW1zdGVyZGFtMQ8wDQYDVQQKEwZURVJFTkExGDAWBgNVBAMTD1RFUkVOQSBTU0wgQ0EgMzAeFw0xNTA4MTcwMDAwMDBaFw0xODA4MjExMjAwMDBaMIGFMQswCQYDVQQGEwJCRTEYMBYGA1UECBMPT29zdC1WbGFhbmRlcmVuMQ0wCwYDVQQHEwRHZW50MRowGAYDVQQKExFVbml2ZXJzaXRlaXQgR2VudDEVMBMGA1UECxMMRGlyZWN0aWUgSUNUMRowGAYDVQQDExFpZGVudGl0eS51Z2VudC5iZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMkIIBPrfC+bJdACG9LCraoxf9OaHJdkMRFmNoF6kZagLlrL0mQA5WQKo3rRaN/NDPXThwC5Xn2sjxFPwaYwFj+S9MxWhc0FrsmXBPSyTLixOxAJ2WaRVJK9dh2dvawz9bOhOhc86np1ussiM9S0mWN/txZHlTh7BmmQkHxRcdjIpMRDTCA5Sg4XKwKPPuA+l7hPB6vfIhVi2e/rTMFjGXU/4bt00GjW44kfvnNc6UqXX9WeQdQ+Bq6jaBN5q8R+Q0K2CgQYBG4ERDfNcoc8Te61vk0mlhuFXVyctpESqQ0n0YEg9T7dYj+SGJiGQQJ1EKUBxuMjvO2JKprpT1THZfsCAwEAAaOCAcAwggG8MB8GA1UdIwQYMBaAFGf9iCAUJ5jHCdIlGbvpURFjdVBiMB0GA1UdDgQWBBS5ySEy32qxhCWj+uA2++OpxXiDjjAcBgNVHREEFTATghFpZGVudGl0eS51Z2VudC5iZTAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMGsGA1UdHwRkMGIwL6AtoCuGKWh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9URVJFTkFTU0xDQTMuY3JsMC+gLaArhilodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVEVSRU5BU1NMQ0EzLmNybDBCBgNVHSAEOzA5MDcGCWCGSAGG/WwBATAqMCgGCCsGAQUFBwIBFhxodHRwczovL3d3dy5kaWdpY2VydC5jb20vQ1BTMG4GCCsGAQUFBwEBBGIwYDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMDgGCCsGAQUFBzAChixodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVEVSRU5BU1NMQ0EzLmNydDAMBgNVHRMBAf8EAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAxO7M96KkXO0rBlWrKmFwaRVItStjleeemn9IC+Jax/+ZWiwTlxGTZBC5t+6QHIn0xv32MvvTHtnWcK8WC1eBM7v9Iyxr+1YBuQLN0fJ79K4BDQRXmrnMjWAK2pIp5BTdUNvBrs9ll6m7Hq7TQanB3obGZtIrNv2uuvBHHXvtht3k1em1k6qZoSOaiRFiA8WuKsVA6zjTLQi+Mp/2rb6WF2GoSD+cCniWmDzOvbENPN+LMcx/WyoDGEL4n9ewU0OXsCBz2W/h34iFHAHZEAClPV8mnyQA7C7uj8H2kkBM3YhXR+/Atua33FFyaku1joJElpo1+UmG7HbrCWSFUn5Pt
-          CERT
-        }
-    when "UHasselt", "https://idp.uhasselt.be:443/idp/shibboleth"
-      {
-        idp_slo_target_url: "https://idp.uhasselt.be:443/idp/profile/SAML2/Redirect/SLO",
-        idp_sso_target_url: "https://idp.uhasselt.be:443/idp/profile/SAML2/Redirect/SSO",
-        idp_cert: <<-CERT.chomp
------BEGIN CERTIFICATE-----
-MIIDJzCCAg+gAwIBAgIUGvDqwi5sfi5DeNrZElGeeeSKA8cwDQYJKoZIhvcNAQEF
-BQAwGjEYMBYGA1UEAxMPaWRwLnVoYXNzZWx0LmJlMB4XDTA5MDkyMjEzNTUyOVoX
-DTI5MDkyMjEzNTUyOVowGjEYMBYGA1UEAxMPaWRwLnVoYXNzZWx0LmJlMIIBIjAN
-BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAobFBVfJW6lrIG6k8+tc6CLvuOfgg
-KRdPI6s57rBqyA23g9GYXSmkg1Mehha+ddRze3lXcsF1R+2OiXbmpIRU4kq1k0Vv
-xA2JtbHbQApg+4vk/3YMHvUN1LB35STTG8QX6vFUMTxjOnDMSS26GLSW/1lO6QRI
-Pf/auZUDFKHBlMJ2XHR9MJ+x/UP+IfF3VDS/mvlznRG6vo8txD/N0w9/7VACHQXy
-6/1U0gZKW79H3DnlCW4msTKG1BvNnYyQfmFVmysjnePDAdydkzPTfcg2EpCr9DRR
-nWPQwfSoSbG06iPMxYFx3/DWBcSB3aizgwCF8//ZVMG3muAQs1mNX4a2gQIDAQAB
-o2UwYzBCBgNVHREEOzA5gg9pZHAudWhhc3NlbHQuYmWGJmh0dHBzOi8vaWRwLnVo
-YXNzZWx0LmJlL2lkcC9zaGliYm9sZXRoMB0GA1UdDgQWBBS2b4PlaLQD2t/0P8uk
-bpvueWBYpDANBgkqhkiG9w0BAQUFAAOCAQEAnDelqfHax8vncq+gpIzSUSW7SZZE
-Fhtf3ubnzHD4lNvP+XQJ90YqEjdytNfpsqoZltGWhcoED/NZ2qTGo3JPZNGI5PUS
-AdonNedOe75IZEQFpzFi/uYqHhqawLTRRt8YIxwEMpgX7RnLtskqzXfWAaTKQsXr
-fzl4YgOKGdZelSm3f/3omJXuiZsUIJz9sSfoYbE5gWxB2EbI6IdDXWvt/02VNX4t
-EbLqvRE+8Q89PBACc8JtnkcG8G18FkslwbUoB0NMTnq10PsYCx5/bJOD29GURXEa
-ifXQTY04p/VdtztM+5pQDfmr0gtLAuejfj7k7gobDgvxawZLlFhao2GOAg==
------END CERTIFICATE-----
-        CERT
-      }
-  when "Howest", "https://idp.howest.be/idp/shibboleth"
+  def self.settings(idp)
+    institution = Institution.find_by(short_name: idp) || Institution.find_by(entity_id: idp)
+    raise 'NoIdpFound' if institution.nil?
     {
-      idp_slo_target_url: "https://idp.howest.be/idp/profile/SAML2/Redirect/SLO",
-      idp_sso_target_url: "https://idp.howest.be/idp/profile/SAML2/Redirect/SSO",
-      idp_cert: <<-CERT.chomp
-MIIDHzCCAgegAwIBAgIUSBvOr9fKss75aoQUN6KQhqgDg1kwDQYJKoZIhvcNAQEFBQAwGDEWMBQGA1UEAxMNaWRwLmhvd2VzdC5iZTAeFw0xNDAxMDkxNDQwMTFaFw0zNDAxMDkxNDQwMTFaMBgxFjAUBgNVBAMTDWlkcC5ob3dlc3QuYmUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCHEol4LQGnLqPYVR/ILHFMGRfcCwCjcX02XAqAleOoXH3ormJXs8HTRQK5tSfvwQC2FmUtvhNeBST1aUbRxpvk2Q60TCT7thrVc4M+06UdR35dgLROwpWM1dbu+k9DbUV+Bfl3e+e9msNx4fzjLOzu5zkp7GiWnDsxUlUIdmKm7tVkAt/6TTa8Y+F8f/Z7r1i/C69Ah4537oyzmQ2v/QtGrA8vA1lOovcnwXSWTrsQut4JErNTVw7So/SC20QtYg6SHIGzpA41tpZbnALUzMdMTKwBVMLbTtI7wACXwJvpmi3rXLJysnvjCx0sONQUjtBGW6OO4Y1Tt9qfAjfHRpLzAgMBAAGjYTBfMD4GA1UdEQQ3MDWCDWlkcC5ob3dlc3QuYmWGJGh0dHBzOi8vaWRwLmhvd2VzdC5iZS9pZHAvc2hpYmJvbGV0aDAdBgNVHQ4EFgQUhWX81bli5+wjTPDf52N/wnD8+qIwDQYJKoZIhvcNAQEFBQADggEBAGk1IiQMLYWg8EsE2qPEHBk3oQrOMor7oIhHWrkkPJn/cMDt2lymPiTEHuxZ2TDGHVsb9gs5W3gOzdEZuSL+S9oXigs09N11niA8BnYhu8iU3m0+tpewM8lFujHqByr8FZFIah98YMtPBpvoDIvgM1Sy0htbCaQRP+O+relFOitStRLVUieEG/uJZv/24AOahOGrLPhIke31rX70UxXBx5aIx0muCJBaNqYvu6pEoiRBF8jDs1/JK/9fBgbvMGufhfGd6jyrOieF/fL5sByBeodWzGoyFWYJMcs5TS8HgAuycAECwwL/ajDFlwHGDwoS0a1t93sNM5ETsWJuPfNhNm0=
-      CERT
+      idp_slo_target_url: institution.slo_url,
+      idp_sso_target_url: institution.sso_url,
+      idp_cert: institution.certificate
     }
-    else
-      {}
-    end
   end
 
   def self.entity_id(params)
@@ -62,7 +15,7 @@ MIIDHzCCAgegAwIBAgIUSBvOr9fKss75aoQUN6KQhqgDg1kwDQYJKoZIhvcNAQEFBQAwGDEWMBQGA1UE
     elsif params[:SAMLResponse]
       OneLogin::RubySaml::Response.new(
         params[:SAMLResponse],
-        allowed_clock_drift: Devise.allowed_clock_drift_in_seconds,
+        allowed_clock_drift: Devise.allowed_clock_drift_in_seconds
       ).issuers.first
     end
   end

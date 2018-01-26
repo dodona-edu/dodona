@@ -4,12 +4,10 @@ Rails.application.routes.draw do
 
   match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
 
-  get '/sign_in' => 'pages#sign_in'
-
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
-    get '/sign_in' => 'pages#sign_in'
+    get '/sign_in(/:idp)' => 'pages#sign_in', as: 'sign_in'
 
     concern :mediable do
       member do

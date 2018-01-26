@@ -12,6 +12,30 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions
 
+  test 'should get courses' do
+    # create distractions
+    other_user = create(:student)
+    create(:course, subscribed_members: [other_user])
+
+    # actual course to test against
+    create(:course, subscribed_members: [@instance, other_user])
+
+    get user_courses_url(@instance, format: :json)
+
+    assert_response :success
+    courses = JSON.parse response.body
+    course_ids = courses.map { |c| c['id'] }
+
+    # check if each course in the result actually belongs to the user
+    course_ids.each do |cid|
+      c = Course.find(cid)
+      assert @instance.subscribed_courses.include?(c), "should not contain #{c}"
+    end
+
+    # this should catch the case where there are less courses returned
+    assert_equal @instance.subscribed_courses.count, courses.count, 'unexpected amount of courses for this user'
+  end
+
   test 'should impersonate user' do
     other_user = create(:user)
 

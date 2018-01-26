@@ -94,6 +94,9 @@ class UsersController < ApplicationController
   end
 
   def courses
+    @user = User.find(params[:user_id])
+    authorize @user
+
     @courses = @user.subscribed_courses
     render 'courses/index'
   end

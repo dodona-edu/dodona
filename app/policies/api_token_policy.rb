@@ -9,7 +9,7 @@ class ApiTokenPolicy < ApplicationPolicy
     user
   end
 
-  # Actual check happends at UserPolicy.create_tokens?
+  # Actual check happens at UserPolicy.create_tokens?
   def create?
     user
   end

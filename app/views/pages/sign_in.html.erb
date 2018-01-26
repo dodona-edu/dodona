@@ -2,7 +2,7 @@
   <div class="sign-in-dialog-wrapper">
     <h1>Sign in</h1>
     <% @institutions.each do |institution| %>
-      <%= link_to new_user_session_path(idp: institution.short_name), class:'institution-sign-in' do %>
+      <%= link_to sign_in_path(idp: institution.short_name), class:'institution-sign-in' do %>
         <div class="row institution">
           <div class="institution-logo">
             <%= image_tag "idp/#{institution.logo}", class: "img-responsive" %>

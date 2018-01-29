@@ -1,4 +1,5 @@
 require_relative("../../lib/SAML/metadata.rb")
+require_relative("../../lib/SAML/SAMLController.rb")
 require_relative("../../lib/SAML/idp_settings_adapter.rb")
 
 # Use this hook to configure devise mailer, warden hooks and so forth.

@@ -91,7 +91,7 @@
                 <% end %>
               <% end %>
               <li role="separator" class="divider"></li>
-              <li><%= link_to t("layout.menu.log_out"), destroy_user_session_path(idp: session[:idp]), :method => :delete %></li>
+              <li><%= link_to t("layout.menu.log_out"), destroy_user_session_path(idp: session[:current_idp]), :method => :delete %></li>
             </ul>
           </li>
         <% else %>

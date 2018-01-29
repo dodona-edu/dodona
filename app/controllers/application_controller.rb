@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :store_current_location,
-                except: [:media],
-                unless: -> { devise_controller? || remote_request? }
+                except: [:media, :sign_in],
+                unless: -> { devise_controller? || remote_request?}
 
   before_action :set_locale
 

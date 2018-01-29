@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     if current_user.nil?
-      redirect_to new_user_session_path
+      redirect_to sign_in_path
     else
       flash[:alert] = I18n.t('errors.no_rights')
       redirect_to(request.referer || root_path)

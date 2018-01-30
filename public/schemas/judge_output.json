@@ -78,8 +78,8 @@
         "column":  { "$ref": "#/definitions/index" },
         "text":    { "type": "string" },
         "type":    { "$ref": "#/definitions/severity" },
-        "rows":    { "$ref": "#/definitions/span" },
-        "columns": { "$ref": "#/definitions/span" }
+        "rows":    { "$ref": "#/definitions/index" },
+        "columns": { "$ref": "#/definitions/index" }
       }
     },
     "format": {
@@ -126,11 +126,6 @@
     "severity": {
       "type": "string",
       "enum": ["error", "warning", "info"]
-    },
-    "span": {
-      "type": "number",
-      "description": "A range of items.",
-      "minimum": 1
     }
   }
 }

@@ -107,7 +107,7 @@ class ResultConstructor
   end
 
   def annotate_code(values)
-    (@result[:annotations] ||= []) << {
+    (@judgement[:annotations] ||= []) << {
       text: values[:text] || '',
       type: values[:type] || 'info',
       row: values[:row] || 0,

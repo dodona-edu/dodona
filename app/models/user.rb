@@ -25,6 +25,8 @@ class User < ApplicationRecord
 
   enum permission: %i[student staff zeus]
 
+  belongs_to :institution
+
   has_many :submissions
   has_many :course_memberships
   has_many :courses, through: :course_memberships

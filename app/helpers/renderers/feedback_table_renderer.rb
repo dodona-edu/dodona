@@ -141,7 +141,7 @@ class FeedbackTableRenderer
 
   def messages(msgs)
     return if msgs.nil?
-    @builder.div(class: 'col-xs-12 messages') do
+    @builder.div(class: 'messages') do
       msgs.each do |msg|
         @builder.div(class: 'message') do
           message(msg)

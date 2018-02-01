@@ -55,7 +55,7 @@ class Judge < ApplicationRecord
         errors.add(:renderer, 'should be a subclass of FeedbackTableRenderer')
         return false
       end
-    rescue
+    rescue StandardError
       errors.add(:renderer, 'should be a class in scope')
       return false
     end
@@ -77,7 +77,7 @@ class Judge < ApplicationRecord
         errors.add(:runner, 'should be a subclass of SubmissionRunner')
         return false
       end
-    rescue
+    rescue StandardError
       errors.add(:runner, 'should be a class in scope')
       return false
     end

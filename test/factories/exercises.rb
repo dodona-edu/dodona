@@ -86,7 +86,5 @@ FactoryGirl.define do
         EOS
       end
     end
-
-
   end
 end

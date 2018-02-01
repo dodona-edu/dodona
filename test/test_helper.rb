@@ -20,7 +20,7 @@ require 'minitest/utils/rails/locale'
 Faker::Config.random = Random.new(42)
 
 class ActiveSupport::TestCase
-  include FactoryGirl::Syntax::Methods
+  include FactoryBot::Syntax::Methods
   include StubHelper
   include DelayedJobHelper
   include RemoteHelper

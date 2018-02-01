@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :store_current_location,
-                except: [:media, :sign_in],
-                unless: -> { devise_controller? || remote_request?}
+                except: %i[media sign_in],
+                unless: -> { devise_controller? || remote_request? }
 
   before_action :set_locale
 
@@ -24,6 +24,11 @@ class ApplicationController < ActionController::Base
 
   def after_sign_out_path_for(_resource)
     stored_location_for(:user) || root_path
+  end
+
+  Warden::Manager.after_authentication do |user, auth, _opts|
+    idp = Institution.find_by(short_name: auth.env['rack.session'][:current_idp])
+    user.update(institution: idp)
   end
 
   protected

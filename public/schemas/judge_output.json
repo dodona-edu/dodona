@@ -72,7 +72,7 @@
     "annotation": {
       "type": "object",
       "description": "An annotation on the source code.",
-      "required": ["row", "text"],
+      "required": ["row", "text", "type"],
       "properties": {
         "row":     { "$ref": "#/definitions/index" },
         "column":  { "$ref": "#/definitions/index" },

@@ -74,6 +74,7 @@ class User < ApplicationRecord
   devise :saml_authenticatable
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
+  validates :email, uniqueness: { case_sensitive: false, allow_blank: false }
 
   before_save :set_token
   before_save :set_time_zone

@@ -28,6 +28,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'json-schema'
 
 # delayed jobs
+gem 'delayed_job', '~>4.1.4'
 gem 'delayed_job_active_record'
 # start workers in the background
 gem 'daemons'

@@ -11,11 +11,15 @@ class RenderersTest < ActiveSupport::TestCase
     renderer.new(submission, submission.user).parse
   end
 
+  def assert_no_xss(html)
+    assert_no_match %r{<script>alert.*</script>}, html, 'vulnerable to xss'
+  end
+
   test 'feedback table renderer' do
-    run_renderer(FeedbackTableRenderer, 'output.json')
+    assert_no_xss run_renderer(FeedbackTableRenderer, 'output.json')
   end
 
   test 'pythia renderer' do
-    run_renderer(PythiaRenderer, 'pythia_output.json')
+    assert_no_xss run_renderer(PythiaRenderer, 'pythia_output.json')
   end
 end

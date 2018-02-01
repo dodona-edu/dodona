@@ -122,7 +122,7 @@ class SubmissionRunner
                   "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
         }
       )
-    rescue => e
+    rescue StandardError => e
       return build_error 'internal error', 'internal error', [
         build_message("Error creating docker: #{e}", 'staff', 'plain'),
         build_message(e.backtrace.join("\n"), 'staff')
@@ -191,7 +191,7 @@ class SubmissionRunner
   def run
     prepare
     result = execute
-  rescue => e
+  rescue StandardError => e
     result = build_error 'internal error', 'internal error', [
       build_message(e.message + "\n" + e.backtrace.inspect, 'staff')
     ]

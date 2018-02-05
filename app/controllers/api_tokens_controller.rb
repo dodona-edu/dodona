@@ -3,7 +3,7 @@ class ApiTokensController < ApplicationController
 
   def index
     authorize @user, :list_tokens?
-    @tokens = ApiToken.where(user: @user)
+    @tokens = @user.api_tokens
   end
 
   def create

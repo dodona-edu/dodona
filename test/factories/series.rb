@@ -15,7 +15,7 @@
 #  indianio_token :string(255)
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :series do
     sequence(:name) { |n| "Series #{n}" }
     description Faker::DrWho.quote

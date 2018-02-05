@@ -74,7 +74,6 @@ Rails.application.routes.draw do
     resources :users do
       resources :api_tokens, only: %i[index create destroy], shallow: true
       resources :submissions, only: [:index]
-      resources :courses, only: [:index], to: 'users#courses', param: :id
       get 'stop_impersonating', on: :collection
       member do
         get 'impersonate'

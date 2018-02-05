@@ -16,11 +16,13 @@
 
 FactoryGirl.define do
   factory :institution do
-    name "Some University"
-    short_name "USome"
+    name { Faker::University.unique.name }
+    short_name { name }
     logo "logo.png"
-    sso_url "http://something.be"
-    slo_url "http://something.be"
-    certificate "this is a cert"
+    domain  = Faker::Internet.domain_name
+    sso_url { Faker::Internet.url(domain, '/SSO') }
+    slo_url { Faker::Internet.url(domain, '/SLO') }
+    certificate { Faker::Crypto.sha256 }
+    entity_id { Faker::Internet.url(domain, '/entity') }
   end
 end

@@ -17,7 +17,8 @@
 require 'test_helper'
 
 class InstitutionTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'factory' do
+    create :institution
+  end
+
 end

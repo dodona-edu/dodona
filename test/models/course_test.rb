@@ -2,14 +2,18 @@
 #
 # Table name: courses
 #
-#  id          :integer          not null, primary key
-#  name        :string(255)
-#  year        :string(255)
-#  secret      :string(255)
-#  open        :boolean
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  description :text(65535)
+#  id                :integer          not null, primary key
+#  name              :string(255)
+#  year              :string(255)
+#  secret            :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  description       :text(65535)
+#  visibility        :integer          default("visible")
+#  registration      :integer          default("open")
+#  correct_solutions :integer
+#  color             :integer
+#  teacher           :string(255)      default("")
 #
 
 require 'test_helper'

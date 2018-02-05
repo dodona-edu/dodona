@@ -72,6 +72,7 @@ Rails.application.routes.draw do
     end
 
     resources :users do
+      resources :api_tokens, only: %i[index create destroy], shallow: true
       resources :submissions, only: [:index]
       get 'stop_impersonating', on: :collection
       member do

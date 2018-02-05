@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
+  before_action :look_for_token, unless: :current_user
+
   around_action :user_time_zone, if: :current_user
 
   before_action :set_time_zone_offset
@@ -66,6 +68,24 @@ class ApplicationController < ActionController::Base
 
   def store_current_location
     store_location_for(:user, request.url)
+  end
+
+  def look_for_token
+    token = request.headers['Authorization']&.strip
+    return if token.blank?
+
+    token.gsub!(/Token token=\"(.*)\"/, '\1')
+    # only allow urlsafe base64 characters to pass
+    token.gsub!(/[^A-Za-z0-9_\-]/, '')
+
+    # Do not search for empty strings
+    api_token = ApiToken.find_token(token) if token.present?
+
+    if api_token
+      sign_in api_token.user
+    else
+      head :unauthorized
+    end
   end
 
   def user_time_zone(&block)

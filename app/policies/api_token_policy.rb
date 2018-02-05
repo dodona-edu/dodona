@@ -15,7 +15,7 @@ class ApiTokenPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.admin?
+    return true if user&.admin?
     record.user == user
   end
 

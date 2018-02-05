@@ -156,23 +156,6 @@ class User < ApplicationRecord
     end
   end
 
-  def cas_extra_attributes=(extra_attributes)
-    Rails.logger.debug(extra_attributes)
-    extra_attributes.each do |name, value|
-      case name.to_sym
-      when :mail
-        self.email = value
-      when :givenname
-        self.first_name = value
-      when :surname
-        self.last_name = value
-      when :ugentID
-        self.ugent_id = value
-      end
-    end
-    self.ugent_id = extra_attributes['ugentStudentID'] if extra_attributes.key?('ugentStudentID') && extra_attributes['ugentStudentID'].present?
-  end
-
   def self.default_photo
     Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
   end

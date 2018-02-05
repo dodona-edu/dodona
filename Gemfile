@@ -57,7 +57,7 @@ gem 'ace-rails-ap'
 # auto css prefixer
 gem 'autoprefixer-rails'
 
-# cas authentication
+# saml authentication
 gem 'devise'
 gem 'devise_saml_authenticatable'
 

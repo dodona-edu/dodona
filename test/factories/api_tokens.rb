@@ -10,7 +10,7 @@
 #  updated_at   :datetime         not null
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :api_token do
     description { Faker::Lorem.unique.sentence }
     user

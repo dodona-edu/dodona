@@ -358,7 +358,7 @@ DEPENDENCIES
   delayed_job_active_record
   delayed_job_web
   devise
-  devise_saml_authenticatable
+  devise_saml_authenticatable (= 1.3.2)
   diffy
   docker-api
   exception_notification

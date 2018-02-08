@@ -3,7 +3,6 @@
 require 'test_helper'
 
 class ExerciseHelperTest < ActiveSupport::TestCase
-
   def check_desc_and_footnotes(exercise)
     with_renderer_for exercise do |r|
       check_description r.description_html, exercise
@@ -52,7 +51,7 @@ class ExerciseHelperTest < ActiveSupport::TestCase
   end
 
   test 'exercise with anchor witout href attribute' do
-    desc = "<a>This is an anchor</a>"
+    desc = '<a>This is an anchor</a>'
     exercise = create :exercise, description_html_stubbed: desc
 
     with_renderer_for exercise do |r|

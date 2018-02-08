@@ -182,7 +182,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
   test 'annotating the source should work' do
     assert_equal({
       annotations: [
-        { row: 0, column: 0, rows: 1, columns: 1, text: "asdf", type: 'info' }
+        { row: 0, column: 0, rows: 1, columns: 1, text: 'asdf', type: 'info' }
       ]
     }, construct_result([
       '{ "command": "annotate-code", "row": 0, "text": "asdf" }'

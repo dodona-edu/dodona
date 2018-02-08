@@ -6,7 +6,8 @@ AllCops:
     - 'config/**'
     - 'bin/**'
     - 'db/migrate/**'
-  TargetRubyVersion: 2.3
+    - 'node_modules/**/*'
+  TargetRubyVersion: 2.5
 
 Rails:
   Enabled: true

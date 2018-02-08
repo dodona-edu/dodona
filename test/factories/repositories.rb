@@ -14,7 +14,7 @@
 require File.dirname(__FILE__) + '/../helpers/stub_helper.rb'
 using StubHelper
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :repository do
     name { Faker::Lorem.word + Faker::Number.unique.number(8).to_s }
     remote { "git@github.ugent.be:dodona/#{name}.git" }

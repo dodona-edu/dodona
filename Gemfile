@@ -104,9 +104,9 @@ gem 'possibly'
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha'
-  # Factory girl for factories
-  gem 'factory_girl'
-  gem 'factory_girl_rails'
+  # Factory bot for factories
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
 
   # test template rendering
   gem 'rails-controller-testing'

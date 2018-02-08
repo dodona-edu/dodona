@@ -6,6 +6,7 @@
 server 'dodona.ugent.be', user: 'dodona', port: '4840', roles: %w[app web db]
 server 'sisyphus.ugent.be', user: 'dodona', port: '4840', roles: %w[app worker]
 server 'salmoneu.ugent.be', user: 'dodona', port: '4840', roles: %w[app worker]
+server 'tantalus.ugent.be', user: 'dodona', port: '4840', roles: %w[app worker]
 
 set :branch, 'master'
 

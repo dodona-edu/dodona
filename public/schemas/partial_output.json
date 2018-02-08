@@ -9,6 +9,7 @@
           { "$ref": "#/definitions/start-testcase" },
           { "$ref": "#/definitions/start-test" },
           { "$ref": "#/definitions/append-message" },
+          { "$ref": "#/definitions/annotate-code" },
           { "$ref": "#/definitions/close-test" },
           { "$ref": "#/definitions/close-testcase" },
           { "$ref": "#/definitions/close-context" },
@@ -69,6 +70,20 @@
         "properties": {
             "command": { "enum": ["append-message"] },
             "message": { "$ref": "#/definitions/message" }
+        }
+    },
+    "annotate-code": {
+        "type": "object",
+        "description": "Annotate a piece of code.",
+        "required": ["command", "row", "text"],
+        "properties": {
+            "command": { "enum": ["annotate-code"] },
+            "row":     { "$ref": "#/definitions/index" },
+            "column":  { "$ref": "#/definitions/index" },
+            "text":    { "type": "string" },
+            "type":    { "$ref": "#/definitions/severity" },
+            "rows":    { "$ref": "#/definitions/index" },
+            "columns": { "$ref": "#/definitions/index" }
         }
     },
     "close-test": {
@@ -150,7 +165,7 @@
     },
     "index": {
       "type": "number",
-      "description": "Index in a list.",
+      "description": "A zero-based index.",
       "minimum": 0
     },
     "description": {
@@ -174,6 +189,10 @@
         "wrong", "wrong answer",
         "correct", "correct answer"
       ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["error", "warning", "info"]
     }
   }
 }

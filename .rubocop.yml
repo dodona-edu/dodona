@@ -22,6 +22,11 @@ Metrics/LineLength:
 Rails/OutputSafety:
   Enabled: false
 
+Layout/IndentArray:
+  EnforcedStyle: consistent
+Layout/IndentHash:
+  EnforcedStyle: consistent
+
 # disable for now
 # Lint/NestedMethodDefinition:
 #   Enabled: false

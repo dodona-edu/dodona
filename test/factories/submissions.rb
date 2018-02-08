@@ -13,7 +13,7 @@
 #  course_id   :integer
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :submission do
     code { Faker::Lorem.paragraph }
 

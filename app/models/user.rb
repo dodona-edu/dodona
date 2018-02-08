@@ -172,6 +172,6 @@ class User < ApplicationRecord
   end
 
   def set_time_zone
-    self.time_zone = 'Seoul' if email =~ /ghent.ac.kr$/
+    self.time_zone = 'Seoul' if email.match?(/ghent.ac.kr$/)
   end
 end

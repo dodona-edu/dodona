@@ -16,7 +16,7 @@
 require File.dirname(__FILE__) + '/../helpers/stub_helper.rb'
 using StubHelper
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :judge do
     sequence(:name) { |n| "python-#{n}" }
     sequence(:image) { |n| "dodona-python#{n}" }

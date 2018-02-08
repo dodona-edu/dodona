@@ -31,13 +31,13 @@ class SubmissionsController < ApplicationController
 
   def edit
     respond_to do |format|
-      format.html {
+      format.html do
         if @submission.course.nil?
           redirect_to exercise_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
         else
           redirect_to course_exercise_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
         end
-      }
+      end
     end
   end
 

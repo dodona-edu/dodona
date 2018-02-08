@@ -16,7 +16,7 @@
 #  status               :integer          default("ok")
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :exercise do
     sequence(:name_nl) { |n| name || "Oefening #{n}" }
     sequence(:name_en) { |n| name || "Exercise #{n}" }
@@ -86,7 +86,5 @@ FactoryGirl.define do
         EOS
       end
     end
-
-
   end
 end

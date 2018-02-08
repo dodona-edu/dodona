@@ -16,7 +16,7 @@
 #  teacher           :string(255)      default("")
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :course do
     name { "#{Faker::Hacker.adjective.titlecase} Programming" }
     description { Faker::Hacker.say_something_smart }

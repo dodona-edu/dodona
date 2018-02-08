@@ -28,6 +28,13 @@
                   ]
                 },
                 {
+                  "accepted": true,
+                  "description": "Test for XSS in messages",
+                  "messages": [
+                    "<script>alert('Tis but a scratch.')</script>"
+                  ]
+                },
+                {
                   "accepted": false,
                   "description": "random error messages",
                   "messages": [
@@ -70,6 +77,12 @@
                   "accepted": false,
                   "expected": "a satisfying life",
                   "generated": "existential angst"
+                },
+                {
+                    "accepted": true,
+                    "description": "test whether the user can XSS",
+                    "expected": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>",
+                    "generated": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>"
                 }
               ]
             }

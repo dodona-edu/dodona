@@ -2,18 +2,18 @@
 #
 # Table name: courses
 #
-#  id           :integer          not null, primary key
-#  name         :string(255)
-#  year         :string(255)
-#  secret       :string(255)
-#  teacher      :string(255)
-#  color        :integer
-#  visibility   :integer
-#  registration :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  description  :text(65535)
-#  correct_solutions  :integer
+#  id                :integer          not null, primary key
+#  name              :string(255)
+#  year              :string(255)
+#  secret            :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  description       :text(65535)
+#  visibility        :integer          default("visible")
+#  registration      :integer          default("open")
+#  correct_solutions :integer
+#  color             :integer
+#  teacher           :string(255)      default("")
 #
 
 require 'securerandom'
@@ -136,7 +136,8 @@ class Course < ApplicationRecord
   end
 
   def average_progress
-    ((100 * correct_solutions_cached).to_d / (users.count * exercises.count).to_d)
+    avg = ((100 * correct_solutions_cached).to_d / (users.count * exercises.count).to_d)
+    avg.nan? ? 0 : avg
   end
 
   def pending_memberships

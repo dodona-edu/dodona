@@ -1,6 +1,6 @@
 module CRUDHelper
   def model_name
-    model.to_s.downcase
+    model.name.underscore.downcase
   end
 
   def model_sym

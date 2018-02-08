@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="sign-in-dialog-wrapper">
+    <h1><%= t("layout.menu.log_in") %><br>
+      <small><%= t ".select-institution" %></small>
+    </h1>
+    <% @institutions.each do |institution| %>
+      <%= link_to sign_in_path(idp: institution.short_name), class:'institution-sign-in' do %>
+        <div class="row institution">
+          <div class="institution-logo">
+            <%= image_tag "idp/#{institution.logo}", class: "img-responsive" %>
+          </div>
+          <div class="institution-name">
+            <h3><%= institution.short_name %><br>
+            <small><%= institution.name %></small></h3>
+          </div>
+          <div class="institution-go"><span class="glyphicon glyphicon-chevron-right"></span></div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

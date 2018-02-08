@@ -32,6 +32,14 @@
                   ]
                 },
                 {
+                  "accepted": true,
+                  "data": {},
+                  "description": "Test for XSS in messages",
+                  "messages": [
+                    "<script>alert('Tis but a scratch.')</script>"
+                  ]
+                },
+                {
                   "accepted": false,
                   "data": {},
                   "description": "random error messages",
@@ -83,19 +91,20 @@
                 },
                 {
                   "accepted": true,
+                  "data": {},
+                  "description": "test whether the user can XSS",
+                  "expected": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>",
+                  "generated": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>"
+                },
+                {
+                  "accepted": true,
                   "data": {
                     "diff": [
-                      [],
                       [
-                        "euh",
-                        "agh",
-                        "egh"
-                      ],
-                      [
-                        "blegh",
-                        "ugh",
-                        "meh",
-                        "puh"
+                        "",
+                        "",
+                        "euh\nagh\negh",
+                        "blegh\nugh\nmeh\npuh"
                       ]
                     ]
                   }

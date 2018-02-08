@@ -57,10 +57,9 @@ gem 'ace-rails-ap'
 # auto css prefixer
 gem 'autoprefixer-rails'
 
-# cas authentication
+# saml authentication
 gem 'devise'
-gem 'devise_cas_authenticatable'
-gem 'rubycas-client', git: 'https://github.com/bmesuere/rubycas-client.git'
+gem 'devise_saml_authenticatable', '1.3.2'
 
 # authorization
 gem 'pundit'
@@ -105,9 +104,12 @@ gem 'possibly'
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha'
-  # Factory girl for factories
-  gem 'factory_girl'
-  gem 'factory_girl_rails'
+  # Factory bot for factories
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
+
+  # test template rendering
+  gem 'rails-controller-testing'
 
   # Generate 'random' values like usernames, emails, ...
   gem 'faker', '~> 1.8'

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
+    get '/sign_in(/:idp)' => 'pages#sign_in', as: 'sign_in'
+
     concern :mediable do
       member do
         get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: 'media'

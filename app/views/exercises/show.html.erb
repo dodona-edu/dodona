@@ -52,7 +52,7 @@
         <div class="tab-content">
           <div class="tab-pane fade in active" id="handin">
             <% if !user_signed_in? %>
-              <div class="alert alert-info"><%= t ".not_logged_in_html", :url => new_user_session_path %></div>
+              <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
             <% end %>
             <% if policy(@exercise).submit? || !user_signed_in? %>
               <div id="editor-window" class='tex2jax_ignore'>
@@ -63,7 +63,7 @@
           <div class="tab-pane fade <%='in active' if !(policy(@exercise).submit? || !user_signed_in?) %>" id="submissions">
             <div id="submissions-table-wrapper">
               <% if !user_signed_in? %>
-                <div class="alert alert-info"><%= t ".not_logged_in_html", :url => new_user_session_path %></div>
+                <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
               <% elsif @submissions.length > 0 %>
                 <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, remote_links: true}  %>
               <% else %>

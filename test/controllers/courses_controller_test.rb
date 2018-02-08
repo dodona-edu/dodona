@@ -200,7 +200,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       if user
         assert_redirected_to :root, "#{who} should not be able to see course"
       else
-        assert_redirected_to :new_user_session, 'not logged in should be redirected to login page'
+        assert_redirected_to :sign_in, 'not logged in should be redirected to login page'
       end
     end
   end

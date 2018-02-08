@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180107115632) do
+ActiveRecord::Schema.define(version: 20180126085937) do
 
   create_table "api_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
@@ -80,6 +80,18 @@ ActiveRecord::Schema.define(version: 20180107115632) do
     t.index ["repository_id"], name: "index_exercises_on_repository_id"
     t.index ["status"], name: "index_exercises_on_status"
     t.index ["visibility"], name: "index_exercises_on_visibility"
+  end
+
+  create_table "institutions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.string "short_name"
+    t.string "logo"
+    t.string "sso_url"
+    t.string "slo_url"
+    t.text "certificate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "entity_id"
   end
 
   create_table "judges", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -172,6 +184,8 @@ ActiveRecord::Schema.define(version: 20180107115632) do
     t.string "lang", default: "nl"
     t.string "token"
     t.string "time_zone", default: "Brussels"
+    t.bigint "institution_id"
+    t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"
     t.index ["username"], name: "index_users_on_username"
   end
@@ -185,4 +199,5 @@ ActiveRecord::Schema.define(version: 20180107115632) do
   add_foreign_key "submissions", "courses"
   add_foreign_key "submissions", "exercises"
   add_foreign_key "submissions", "users"
+  add_foreign_key "users", "institutions"
 end

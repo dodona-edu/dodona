@@ -136,7 +136,8 @@ class Course < ApplicationRecord
   end
 
   def average_progress
-    ((100 * correct_solutions_cached).to_d / (users.count * exercises.count).to_d)
+    avg = ((100 * correct_solutions_cached).to_d / (users.count * exercises.count).to_d)
+    avg.nan? ? 0 : avg
   end
 
   def pending_memberships

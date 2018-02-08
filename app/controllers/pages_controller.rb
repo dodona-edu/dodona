@@ -4,7 +4,7 @@ class PagesController < ApplicationController
     @user = current_user
   end
 
-  def sign_in
+  def sign_in_page
     if params[:idp].present?
       session[:current_idp] = params[:idp]
       redirect_to new_user_session_url(idp: params[:idp])

@@ -20,5 +20,4 @@ class InstitutionTest < ActiveSupport::TestCase
   test 'factory' do
     create :institution
   end
-
 end

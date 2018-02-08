@@ -57,10 +57,9 @@ gem 'ace-rails-ap'
 # auto css prefixer
 gem 'autoprefixer-rails'
 
-# cas authentication
+# saml authentication
 gem 'devise'
-gem 'devise_cas_authenticatable'
-gem 'rubycas-client', git: 'https://github.com/bmesuere/rubycas-client.git'
+gem 'devise_saml_authenticatable'
 
 # authorization
 gem 'pundit'
@@ -108,6 +107,9 @@ group :development, :test do
   # Factory girl for factories
   gem 'factory_girl'
   gem 'factory_girl_rails'
+
+  # test template rendering
+  gem 'rails-controller-testing'
 
   # Generate 'random' values like usernames, emails, ...
   gem 'faker', '~> 1.8'

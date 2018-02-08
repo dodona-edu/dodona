@@ -2,18 +2,19 @@
 #
 # Table name: users
 #
-#  id         :integer          not null, primary key
-#  username   :string(255)
-#  ugent_id   :string(255)
-#  first_name :string(255)
-#  last_name  :string(255)
-#  email      :string(255)
-#  permission :integer          default("student")
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  lang       :string(255)      default("nl")
-#  token      :string(255)
-#  time_zone  :string(255)      default("Brussels")
+#  id             :integer          not null, primary key
+#  username       :string(255)
+#  ugent_id       :string(255)
+#  first_name     :string(255)
+#  last_name      :string(255)
+#  email          :string(255)
+#  permission     :integer          default("student")
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  lang           :string(255)      default("nl")
+#  token          :string(255)
+#  time_zone      :string(255)      default("Brussels")
+#  institution_id :integer
 #
 
 require 'test_helper'
@@ -48,36 +49,6 @@ class UserTest < ActiveSupport::TestCase
     user.courses << create_list(:course, 5)
     courses = user.current_ay_courses
     assert_not_equal [], courses
-  end
-
-  test 'cas_extra_attributes should be set' do
-    user = create(:user,
-                  email: nil,
-                  first_name: nil,
-                  last_name: nil,
-                  ugent_id: nil)
-
-    attrs = {
-      mail: 'mertens.ron@gmail.com',
-      givenname: 'Ron',
-      surname: 'Mertens',
-      ugentID: '23456789'
-    }
-
-    user.cas_extra_attributes = attrs
-
-    real_attr_names = {
-      mail: :email,
-      givenname: :first_name,
-      surname: :last_name,
-      ugentID: :ugent_id
-    }
-
-    attrs
-      .transform_keys { |key| real_attr_names[key] }
-      .each do |attr_name, value|
-      assert_equal value, user.send(attr_name)
-    end
   end
 
   test 'only zeus and staff should be admin' do

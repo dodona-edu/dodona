@@ -2,18 +2,19 @@
 #
 # Table name: users
 #
-#  id         :integer          not null, primary key
-#  username   :string(255)
-#  ugent_id   :string(255)
-#  first_name :string(255)
-#  last_name  :string(255)
-#  email      :string(255)
-#  permission :integer          default("student")
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  lang       :string(255)      default("nl")
-#  token      :string(255)
-#  time_zone  :string(255)      default("Brussels")
+#  id             :integer          not null, primary key
+#  username       :string(255)
+#  ugent_id       :string(255)
+#  first_name     :string(255)
+#  last_name      :string(255)
+#  email          :string(255)
+#  permission     :integer          default("student")
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  lang           :string(255)      default("nl")
+#  token          :string(255)
+#  time_zone      :string(255)      default("Brussels")
+#  institution_id :integer
 #
 
 require 'securerandom'
@@ -23,6 +24,8 @@ class User < ApplicationRecord
   PHOTOS_LOCATION = Rails.root.join('data', 'user_photos').freeze
 
   enum permission: %i[student staff zeus]
+
+  belongs_to :institution, optional: true
 
   has_many :api_tokens
   has_many :submissions
@@ -69,9 +72,10 @@ class User < ApplicationRecord
            through: :course_memberships,
            source: :course
 
-  devise :cas_authenticatable
+  devise :saml_authenticatable
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
+  validates :email, uniqueness: { case_sensitive: false, allow_blank: false }
 
   before_save :set_token
   before_save :set_time_zone
@@ -151,23 +155,6 @@ class User < ApplicationRecord
     else
       'no_membership'
     end
-  end
-
-  def cas_extra_attributes=(extra_attributes)
-    Rails.logger.debug(extra_attributes)
-    extra_attributes.each do |name, value|
-      case name.to_sym
-      when :mail
-        self.email = value
-      when :givenname
-        self.first_name = value
-      when :surname
-        self.last_name = value
-      when :ugentID
-        self.ugent_id = value
-      end
-    end
-    self.ugent_id = extra_attributes['ugentStudentID'] if extra_attributes.key?('ugentStudentID') && extra_attributes['ugentStudentID'].present?
   end
 
   def self.default_photo

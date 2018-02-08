@@ -91,6 +91,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
     get user_url(@instance)
 
-    assert_redirected_to new_user_session_path
+    assert_redirected_to sign_in_path
   end
 end

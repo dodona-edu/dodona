@@ -61,11 +61,9 @@ class Repository < ApplicationRecord
     errors = []
 
     dirs.each do |dir|
-      begin
-        process_exercise(dir)
-      rescue ConfigParseError => e
-        errors.push(e)
-      end
+      process_exercise(dir)
+    rescue ConfigParseError => e
+      errors.push(e)
     end
     raise AggregatedConfigErrors.new(self, errors) if errors.any?
   end

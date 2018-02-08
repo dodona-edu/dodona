@@ -1,5 +1,7 @@
 en:
   pages:
+    sign_in_page:
+      select-institution: "Please select your institution"
     static_home:
       intro: "The Dodona environment contains dozens of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with your Ghent University credentials. Dodona is still in active development, any bug report on the Minerva forum or to the teaching assistants would certainly be appreciated."
       sign-in: Sign in

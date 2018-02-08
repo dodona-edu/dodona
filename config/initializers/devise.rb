@@ -1,3 +1,7 @@
+require_relative('../../lib/SAML/metadata.rb')
+require_relative('../../lib/SAML/SAMLController.rb')
+require_relative('../../lib/SAML/idp_settings_adapter.rb')
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -266,51 +270,52 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
-  config.cas_base_url = 'https://login.ugent.be'
-  config.cas_enable_single_sign_out = true
+  # ==> Configuration for :saml_authenticatable
 
-  # you can override these if you need to, but cas_base_url is usually enough
-  # config.cas_login_url = "https://cas.myorganization.com/login"
-  # config.cas_logout_url = "https://cas.myorganization.com/logout"
-  # config.cas_validate_url = "https://cas.myorganization.com/serviceValidate"
+  # Create user if the user does not exist. (Default is false)
+  config.saml_create_user = true
 
-  # The CAS specification allows for the passing of a follow URL to be displayed when
-  # a user logs out on the CAS server. RubyCAS-Server also supports redirecting to a
-  # URL via the destination param. Set either of these urls and specify either nil,
-  # 'destination' or 'follow' as the logout_url_param. If the urls are blank but
-  # logout_url_param is set, a default will be detected for the service.
-  # config.cas_destination_url = 'https://cas.myorganization.com'
-  # config.cas_follow_url = 'http://dodona.ugent.be'
-  config.cas_logout_url_param = 'destination'
+  # Update the attributes of the user after a successful login. (Default is false)
+  config.saml_update_user = true
 
-  # You can specify the name of the destination argument with the following option.
-  # e.g. the following option will change it from 'destination' to 'url'
-  config.cas_destination_logout_param_name = 'url'
+  # Set the default user key. The user will be looked up by this key. Make
+  # sure that the Authentication Response includes the attribute.
+  config.saml_default_user_key = :email
 
-  # By default, devise_cas_authenticatable will create users.  If you would rather
-  # require user records to already exist locally before they can authenticate via
-  # CAS, uncomment the following line.
-  # config.cas_create_user = false
+  # Optional. This stores the session index defined by the IDP during login.  If provided it will be used as a salt
+  # for the user's session to facilitate an IDP initiated logout request.
+  config.saml_session_index_key = :session_index
 
-  # You can enable Single Sign Out, which by default is disabled.
-  # config.cas_enable_single_sign_out = true
+  # You can set this value to use Subject or SAML assertation as info to which email will be compared.
+  # If you don't set it then email will be extracted from SAML assertation attributes.
+  config.saml_use_subject = false
 
-  # If you don't want to use the username returned from your CAS server as the unique
-  # identifier, but some other field passed in cas_extra_attributes, you can specify
-  # the field name here.
-  # config.cas_user_identifier = nil
+  # You can support multiple IdPs by setting this value to a class that implements a #settings method which takes
+  # an IdP entity id as an argument and returns a hash of idp settings for the corresponding IdP.
+  config.idp_settings_adapter = MyIdPSettingsAdapter
 
-  # If you want to use the Devise Timeoutable module with single sign out,
-  # uncommenting this will redirect timeouts to the logout url, so that the CAS can
-  # take care of signing out the other serviced applocations. Note that each
-  # application manages timeouts independently, so one application timing out will
-  # kill the session on all applications serviced by the CAS.
-  # config.warden do |manager|
-  #   manager.failure_app = DeviseCasAuthenticatable::SingleSignOut::WardenFailureApp
-  # end
+  # You provide you own method to find the idp_entity_id in a SAML message in the case of multiple IdPs
+  # by setting this to a custom reader class, or use the default.
+  config.idp_entity_id_reader = MyIdPSettingsAdapter
 
-  # If you need to specify some extra configs for rubycas-client, you can do this via:
-  # config.cas_client_config_options = {
-  #     logger: Rails.logger
-  # }
+  # You can set a handler object that takes the response for a failed SAML request and the strategy,
+  # and implements a #handle method. This method can then redirect the user, return error messages, etc.
+  # config.saml_failed_callback = nil
+
+  # Configure with your SAML settings (see ruby-saml's README for more information: https://github.com/onelogin/ruby-saml).
+  config.saml_configure do |settings|
+    # assertion_consumer_service_url is required starting with ruby-saml 1.4.3: https://github.com/onelogin/ruby-saml#updating-from-142-to-143
+    settings.assertion_consumer_service_url     = "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/auth"
+    settings.assertion_consumer_service_binding = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+    settings.name_identifier_format             = 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
+    settings.issuer                             = "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/metadata"
+    settings.authn_context                      = ''
+    settings.certificate = IO.read('/home/dodona/cert.pem') if File.file?('/home/dodona/cert.pem')
+    settings.private_key = IO.read('/home/dodona/key.pem') if File.file?('/home/dodona/key.pem')
+    settings.idp_slo_target_url                 = 'https://ideq.ugent.be/simplesaml/saml2/idp/SingleLogoutService.php'
+    settings.idp_sso_target_url                 = 'https://ideq.ugent.be/simplesaml/saml2/idp/SSOService.php'
+    settings.idp_cert                           = <<~CERT.chomp
+      MIIFMDCCBBigAwIBAgIQAy7rsc3GwUd4Cmd35/hqQjANBgkqhkiG9w0BAQsFADBkMQswCQYDVQQGEwJOTDEWMBQGA1UECBMNTm9vcmQtSG9sbGFuZDESMBAGA1UEBxMJQW1zdGVyZGFtMQ8wDQYDVQQKEwZURVJFTkExGDAWBgNVBAMTD1RFUkVOQSBTU0wgQ0EgMzAeFw0xNTA4MDUwMDAwMDBaFw0xODA4MDkxMjAwMDBaMIGDMQswCQYDVQQGEwJCRTEYMBYGA1UECBMPT29zdC1WbGFhbmRlcmVuMQ0wCwYDVQQHEwRHZW50MRowGAYDVQQKExFVbml2ZXJzaXRlaXQgR2VudDEXMBUGA1UECxMORGFubnkgQm9sbGFlcnQxFjAUBgNVBAMTDWlkZXEudWdlbnQuYmUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCsvNQsxWZLzB4tQ69M8NQv9i7J8t7ybfzN+eOIUwikTEMGmdLqNwab6MTJJEPl0RpxzDzc7sky5ysYOzAw6qa95/6Apnl3MLqXa8C+yYTLz5kxbA+7xJ16mGm1tHem9cusimfvLDTBYjLHGMTxvJOwDUG78KlT5CfJ2oSNYcyx9AI4z9TeccJz2nTKitYEQHjgXCQl+5z5wnPkU97YQWDQ6+c0oRo/6Q1jzL2fP4IG23YSAS0FTY2ntzVIEQl04yLv/iKVo5RpVj9iTTLX/QIp61LtsgC0Q2pIAp5OaAJoJ+SgxOTEUDMuEIuUi2pcpJDs4/7SIJxT4yQ6r9lT8lo3AgMBAAGjggG8MIIBuDAfBgNVHSMEGDAWgBRn/YggFCeYxwnSJRm76VERY3VQYjAdBgNVHQ4EFgQUYpS3fBMuqU0oAvI6354A6LP/NhowGAYDVR0RBBEwD4INaWRlcS51Z2VudC5iZTAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMGsGA1UdHwRkMGIwL6AtoCuGKWh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9URVJFTkFTU0xDQTMuY3JsMC+gLaArhilodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVEVSRU5BU1NMQ0EzLmNybDBCBgNVHSAEOzA5MDcGCWCGSAGG/WwBATAqMCgGCCsGAQUFBwIBFhxodHRwczovL3d3dy5kaWdpY2VydC5jb20vQ1BTMG4GCCsGAQUFBwEBBGIwYDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMDgGCCsGAQUFBzAChixodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVEVSRU5BU1NMQ0EzLmNydDAMBgNVHRMBAf8EAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCDuCU49W/+o10SSmq8gEHAD0CJIRR3wfTQZ3SObS7tuKfuT0kwcmWVvja3OzmH9MlX0aLa4lEaWkb6JAUUQexSPutgbv/mgU11YVnadDMcRIiC3L2sftlcSYLlayqBnOAQHm/5T/VV5rOrPUA2yarN8eg9PMqciE628obp2ujaLFmiecw3hT+N/laQbE2i0x6bCq3lgzSo3jOp/DAj78mplMkHVJv/dVgqzxkRKTzM1qYJcrcmJPS/Cuem89H8upodvT35Rag8xQqQDRLGA/UI7K4YLhQwotGpcnYAbz3vMhScwCLJdsz04d/d6Gm0SQkK3hzsuIFx0G69u/8/fbGi
+    CERT
+  end
 end

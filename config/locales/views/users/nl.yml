@@ -30,3 +30,7 @@ nl:
       zeus: Zeus
       course_admin: cursusbeheerder
       no_ugent: Deze gebruiker heeft geen UGent gebruikersnaam
+    edit:
+      api_tokens: API tokens
+      active_tokens: Actieve tokens
+      create_new_token: Nieuw token aanmaken

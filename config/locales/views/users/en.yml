@@ -30,3 +30,7 @@ en:
       zeus: Zeus
       course_admin: Course administrator
       no_ugent: This user has no Ghent University username
+    edit:
+      api_tokens: API tokens
+      active_tokens: Active tokens
+      create_new_token: Create new token

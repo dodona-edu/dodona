@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-if Rails.env == 'development'
+if Rails.env.development?
 
   puts 'Creating users'
 
@@ -23,11 +23,12 @@ if Rails.env == 'development'
   students = Array.new(500) do
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
+    username = Faker::Internet.unique.user_name(5..8)
     User.create first_name: first_name,
                 last_name: last_name,
-                username: Faker::Internet.unique.user_name(5..8),
+                username: username,
                 ugent_id: Faker::Number.number(8).to_s,
-                email: "#{first_name}.#{last_name}@ugent.be",
+                email: "#{first_name}.#{last_name}.#{username}@UGent.BE".downcase,
                 permission: :student
   end
 

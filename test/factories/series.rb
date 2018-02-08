@@ -1,4 +1,21 @@
-FactoryGirl.define do
+# == Schema Information
+#
+# Table name: series
+#
+#  id             :integer          not null, primary key
+#  course_id      :integer
+#  name           :string(255)
+#  description    :text(65535)
+#  visibility     :integer
+#  order          :integer
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  deadline       :datetime
+#  access_token   :string(255)
+#  indianio_token :string(255)
+#
+
+FactoryBot.define do
   factory :series do
     sequence(:name) { |n| "Series #{n}" }
     description Faker::DrWho.quote

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
+    get '/sign_in(/:idp)' => 'pages#sign_in_page', as: 'sign_in'
+
     concern :mediable do
       member do
         get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: 'media'
@@ -72,6 +74,7 @@ Rails.application.routes.draw do
     end
 
     resources :users do
+      resources :api_tokens, only: %i[index create destroy], shallow: true
       resources :submissions, only: [:index]
       get 'stop_impersonating', on: :collection
       member do

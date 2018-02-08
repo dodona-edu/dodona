@@ -7,7 +7,7 @@ module StubHelper
     obj.stubs(:repo_is_accessible).returns(true)
   end
 
-  refine FactoryGirl::SyntaxRunner do
+  refine FactoryBot::SyntaxRunner do
     include StubHelper
   end
 end

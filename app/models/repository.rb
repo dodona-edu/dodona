@@ -17,6 +17,7 @@ class Repository < ApplicationRecord
   include Gitable
 
   EXERCISE_LOCATIONS = Rails.root.join('data', 'exercises').freeze
+  MEDIA_DIR = 'public'.freeze
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :remote, presence: true
@@ -30,6 +31,10 @@ class Repository < ApplicationRecord
 
   def full_path
     Pathname.new File.join(EXERCISE_LOCATIONS, path)
+  end
+
+  def media_path
+    full_path + MEDIA_DIR
   end
 
   def commit(msg)

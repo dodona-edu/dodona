@@ -8,6 +8,19 @@ class SubmissionsController < ApplicationController
 
   def index
     authorize Submission
+
+    if params[:last_correct]
+      @submissions = @submissions.where(status: :correct)
+                                 .joins(
+                                   <<~SQL
+                                     LEFT JOIN submissions AS s
+                                     ON submissions.id != s.id
+                                        AND submissions.user_id = s.user_id
+                                        AND submissions.created_at < s.created_at
+                                     SQL
+                                 ).where('s.id IS NULL')
+    end
+
     @submissions = @submissions.paginate(page: params[:page])
     @title = I18n.t('submissions.index.title')
   end

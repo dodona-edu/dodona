@@ -31,5 +31,11 @@ FactoryBot.define do
     end
 
     year { "#{start_year}-#{start_year + 1}" }
+
+    after :create do |course, e|
+      e.series_count.times do
+        create :series, course: course, exercise_count: e.exercises_per_series
+      end
+    end
   end
 end

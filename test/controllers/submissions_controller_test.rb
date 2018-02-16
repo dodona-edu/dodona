@@ -12,6 +12,25 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions only: %i[index show create], except: %i[create_redirect]
 
+  test 'should fetch last correct submissions for exercise' do
+    users = create_list :user, 10
+    c = create :course, series_count: 1, exercises_per_series: 1
+    e = c.series.first.exercises.first
+
+    submissions = users.map {|u| create :correct_submission, user: u, exercise: e, course: c }
+    users.each {|u| create :wrong_submission, user: u, exercise: e, course: c }
+
+    get course_exercise_submissions_url c, e, last_correct: false, format: :json
+
+    results = JSON.parse response.body
+    result_ids = results.map { |r| r['id'] }
+
+    assert_equal submissions.count, result_ids.count
+    submissions.each do |sub|
+      assert_includes result_ids, sub.id
+    end
+  end
+
   test 'should add submissions to delayed_job queue' do
     submission = nil
     assert_jobs_enqueued(1) do

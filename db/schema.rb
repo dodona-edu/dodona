@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180126085937) do
+ActiveRecord::Schema.define(version: 20180219102814) do
 
   create_table "api_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20180126085937) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_course_memberships_on_course_id"
+    t.index ["user_id", "course_id"], name: "index_course_memberships_on_user_id_and_course_id", unique: true
     t.index ["user_id"], name: "index_course_memberships_on_user_id"
   end
 

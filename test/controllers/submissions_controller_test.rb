@@ -17,10 +17,10 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     c = create :course, series_count: 1, exercises_per_series: 1
     e = c.series.first.exercises.first
 
-    submissions = users.map {|u| create :correct_submission, user: u, exercise: e, course: c }
-    users.each {|u| create :wrong_submission, user: u, exercise: e, course: c }
+    submissions = users.map { |u| create :correct_submission, user: u, exercise: e, course: c }
+    users.each { |u| create :wrong_submission, user: u, exercise: e, course: c }
 
-    get course_exercise_submissions_url c, e, last_correct: false, format: :json
+    get course_exercise_submissions_url c, e, last_correct: true, format: :json
 
     results = JSON.parse response.body
     result_ids = results.map { |r| r['id'] }

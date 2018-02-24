@@ -10,15 +10,7 @@ class SubmissionsController < ApplicationController
     authorize Submission
 
     if params[:last_correct]
-      @submissions = @submissions.where(status: :correct)
-                                 .joins(
-                                   <<~SQL
-                                     LEFT JOIN submissions AS s
-                                     ON submissions.id != s.id
-                                        AND submissions.user_id = s.user_id
-                                        AND submissions.created_at < s.created_at
-                                     SQL
-                                 ).where('s.id IS NULL')
+      @submissions = @submissions.last_correct
     end
 
     @submissions = @submissions.paginate(page: params[:page])

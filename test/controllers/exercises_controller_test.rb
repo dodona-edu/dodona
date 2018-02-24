@@ -45,12 +45,12 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get public media' do
     @instance.stubs(:media_path).returns(Pathname.new('not-a-real-directory'))
-    @instance.repository.stubs(:media_path).returns(Pathname.new('public'))
+    Repository.any_instance.stubs(:full_path).returns(Pathname.new(Rails.root))
 
-    get media_exercise_url(@instance, media: 'favicon.ico')
+    get media_exercise_url(@instance, media: 'icon.png')
 
     assert_response :success
-    assert_equal response.content_type, 'image/ico'
+    assert_equal 'image/png', response.content_type
   end
 
   test 'should get exercices by repository_id' do

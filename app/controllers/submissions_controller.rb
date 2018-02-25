@@ -10,12 +10,6 @@ class SubmissionsController < ApplicationController
   def index
     authorize Submission
 
-    # this cannot use has_scope, because we need the scopes from set_submissions
-    # to be applied before this one
-    if params[:most_recent_correct_per_user]
-      @submissions = @submissions.most_recent_correct_per_user
-    end
-
     @submissions = @submissions.paginate(page: params[:page])
     @title = I18n.t('submissions.index.title')
   end
@@ -95,6 +89,12 @@ class SubmissionsController < ApplicationController
     if params[:exercise_id]
       @exercise = Exercise.find(params[:exercise_id])
       @submissions = @submissions.of_exercise(@exercise)
+    end
+
+    # this cannot use has_scope, because we need the scopes in this method
+    # to be applied before this one
+    if params[:most_recent_correct_per_user]
+      @submissions = @submissions.most_recent_correct_per_user
     end
   end
 end

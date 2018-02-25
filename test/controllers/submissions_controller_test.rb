@@ -20,7 +20,11 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     submissions = users.map { |u| create :correct_submission, user: u, exercise: e, course: c }
     users.each { |u| create :wrong_submission, user: u, exercise: e, course: c }
 
-    get course_exercise_submissions_url c, e, last_correct: true, format: :json
+    # create a correct submission with another exercise, to check if
+    # most_recent works
+    create :correct_submission, user: users.first
+
+    get course_exercise_submissions_url c, e, most_recent_correct_per_user: true, format: :json
 
     results = JSON.parse response.body
     result_ids = results.map { |r| r['id'] }

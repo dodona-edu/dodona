@@ -5,13 +5,10 @@ class SubmissionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create]
 
   has_scope :by_filter, as: 'filter'
+  has_scope :most_recent_correct_per_user
 
   def index
     authorize Submission
-
-    if params[:last_correct]
-      @submissions = @submissions.most_recent_correct_per_user
-    end
 
     @submissions = @submissions.paginate(page: params[:page])
     @title = I18n.t('submissions.index.title')

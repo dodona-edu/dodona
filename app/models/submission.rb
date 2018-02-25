@@ -60,7 +60,7 @@ class Submission < ApplicationRecord
     HEREDOC
   }
 
-  scope :most_recent_correct_per_user, -> {
+  scope :most_recent_correct_per_user, -> (*) {
     correct.group(:user_id).most_recent
   }
 

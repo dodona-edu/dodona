@@ -1,5 +1,4 @@
 class SubmissionsController < ApplicationController
-
   before_action :set_submission, only: %i[show download evaluate edit media]
   before_action :set_submissions, only: %i[index mass_rejudge]
 
@@ -9,7 +8,6 @@ class SubmissionsController < ApplicationController
 
   def index
     authorize Submission
-
     @submissions = @submissions.paginate(page: params[:page])
     @title = I18n.t('submissions.index.title')
   end

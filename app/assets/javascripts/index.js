@@ -47,6 +47,37 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter) {
         }
     }
 
+    function performAction(action, $filter){
+        if (action.confirm === undefined || window.confirm(action.confirm)) {
+            let val = $filter.val();
+            let url = updateURLParameter(action.action, PARAM, val);
+            $.post(url, {
+                format: "json",
+            }, function (data) {
+                showNotification(data.message);
+                if (data.js) {
+                    eval(data.js);
+                } else {
+                    search(baseUrl, $filter.val());
+                }
+            });
+        }
+    }
+
+    function performSearch(action, $filter){
+        let url = baseUrl;
+        let searchParams = Object.entries(action.search);
+        console.log(searchParams);
+        for (let i = 0; i < searchParams.length; i++) {
+            let key = searchParams[i][0];
+            let value = searchParams[i][1];
+            console.log(key);
+            console.log(value);
+            url = updateURLParameter(url, key.toString(), value.toString());
+        }
+        search(url, '');
+    }
+
     function initActions() {
         let $actions = $(".table-toolbar-tools .actions");
         let $filter = $(FILTER_ID);
@@ -56,19 +87,10 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter) {
             $link.appendTo($actions.find("ul"));
             $link.wrap("<li></li>");
             $link.click(function () {
-                if (window.confirm(action.confirm)) {
-                    let val = $filter.val();
-                    let url = updateURLParameter(action.action, PARAM, val);
-                    $.post(url, {
-                        format: "json",
-                    }, function (data) {
-                        showNotification(data.message);
-                        if (data.js) {
-                            eval(data.js);
-                        } else {
-                            search(baseUrl, $filter.val());
-                        }
-                    });
+                if (action.action){
+                  performAction(action, $filter);
+                } else if (action.search) {
+                  performSearch(action, $filter);
                 }
                 return false;
             });

@@ -14,6 +14,7 @@ nl:
       title: Oplossingen
       for: voor
       from: van
+      most_recent_correct: Meest recente correcte oplossing per gebruiker
       reevaluate_submissions: Oplossingen herevalueren
       confirm_reevaluate_submissions: Ben je zeker dat je deze oplossingen wil herevalueren?
       reevaluating_submissions:

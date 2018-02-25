@@ -10,7 +10,7 @@ class SubmissionsController < ApplicationController
     authorize Submission
 
     if params[:last_correct]
-      @submissions = @submissions.last_correct
+      @submissions = @submissions.most_recent_correct_per_user
     end
 
     @submissions = @submissions.paginate(page: params[:page])

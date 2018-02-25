@@ -52,22 +52,16 @@ class Submission < ApplicationRecord
       .where('submissions.created_at < series.deadline OR series.deadline IS NULL')
   }
 
-  scope :last_correct, -> {
-    where(status: :correct).joins(
-      <<~SQL
-        LEFT JOIN submissions AS s
-        ON submissions.id > s.id
-           AND submissions.user_id = s.user_id
-      SQL
-    ).where('s.id IS NULL')
-  }
-
   scope :most_recent, -> {
     submissions = select('MAX(submissions.id) as id')
     Submission.joins <<~HEREDOC
       JOIN (#{submissions.to_sql}) most_recent
       ON submissions.id = most_recent.id
     HEREDOC
+  }
+
+  scope :most_recent_correct_per_user, -> {
+    correct.group(:user_id).most_recent
   }
 
   scope :exercise_hash, -> {

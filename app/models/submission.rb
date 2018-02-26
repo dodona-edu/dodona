@@ -60,6 +60,10 @@ class Submission < ApplicationRecord
     HEREDOC
   }
 
+  scope :most_recent_correct_per_user, -> (*) {
+    correct.group(:user_id).most_recent
+  }
+
   scope :exercise_hash, -> {
     s = group(:exercise_id).most_recent
     entries = s.map { |submission| [submission.exercise_id, submission] }

@@ -88,5 +88,11 @@ class SubmissionsController < ApplicationController
       @exercise = Exercise.find(params[:exercise_id])
       @submissions = @submissions.of_exercise(@exercise)
     end
+
+    # this cannot use has_scope, because we need the scopes in this method
+    # to be applied before this one
+    if params[:most_recent_correct_per_user]
+      @submissions = @submissions.most_recent_correct_per_user
+    end
   end
 end

@@ -47,32 +47,67 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter) {
         }
     }
 
+    function performAction(action, $filter) {
+        if (action.confirm === undefined || window.confirm(action.confirm)) {
+            let val = $filter.val();
+            let url = updateURLParameter(action.action, PARAM, val);
+            $.post(url, {
+                format: "json",
+            }, function (data) {
+                showNotification(data.message);
+                if (data.js) {
+                    eval(data.js);
+                } else {
+                    search(baseUrl, $filter.val());
+                }
+            });
+        }
+    }
+
+    function performSearch(action, $filter) {
+        let url = baseUrl;
+        let searchParams = Object.entries(action.search);
+        console.log(searchParams);
+        for (let i = 0; i < searchParams.length; i++) {
+            let key = searchParams[i][0];
+            let value = searchParams[i][1];
+            console.log(key);
+            console.log(value);
+            url = updateURLParameter(url, key.toString(), value.toString());
+        }
+        search(url, "");
+    }
+
     function initActions() {
         let $actions = $(".table-toolbar-tools .actions");
         let $filter = $(FILTER_ID);
+        let searchOptions = actions.filter(action => action.search);
+        let searchActions = actions.filter(action => action.action);
         $actions.removeClass("hidden");
-        actions.forEach(function (action) {
-            let $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");
-            $link.appendTo($actions.find("ul"));
-            $link.wrap("<li></li>");
-            $link.click(function () {
-                if (window.confirm(action.confirm)) {
-                    let val = $filter.val();
-                    let url = updateURLParameter(action.action, PARAM, val);
-                    $.post(url, {
-                        format: "json",
-                    }, function (data) {
-                        showNotification(data.message);
-                        if (data.js) {
-                            eval(data.js);
-                        } else {
-                            search(baseUrl, $filter.val());
-                        }
-                    });
-                }
-                return false;
+        if (searchOptions.length > 0) {
+            $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.filter-options") + "</li>");
+            searchOptions.forEach(function (action) {
+                let $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");
+                $link.appendTo($actions.find("ul"));
+                $link.wrap("<li></li>");
+                $link.click(() => {
+                    performSearch(action, $filter);
+                    return false;
+                });
             });
-        });
+        }
+        if (searchActions.length > 0) {
+            $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
+            searchActions.forEach(function (action) {
+                let $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");
+                $link.appendTo($actions.find("ul"));
+                $link.wrap("<li></li>");
+                $link.click(() => {
+                    performSearch(action, $filter);
+                    return false;
+                });
+            });
+        }
     }
 
     init();

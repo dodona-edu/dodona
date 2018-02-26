@@ -9,7 +9,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
   test 'should get sign in page' do
     get sign_in_url
     assert_response :success
-    assert_template :sign_in
+    assert_template :sign_in_page
   end
 
   test 'should redirect to SAML sign in' do

@@ -197,7 +197,7 @@ ActiveRecord::Schema.define(version: 2018_10_15_130518) do
 
   create_table "submission_details", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "code"
-    t.binary "result", limit: 10000000
+    t.binary "result", limit: 5_000_000 # 5 MB
   end
 
   create_table "submissions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

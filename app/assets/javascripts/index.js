@@ -103,7 +103,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter) {
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 $link.click(() => {
-                    performSearch(action, $filter);
+                    performAction(action, $filter);
                     return false;
                 });
             });

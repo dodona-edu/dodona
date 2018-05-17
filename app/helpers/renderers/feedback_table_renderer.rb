@@ -25,7 +25,7 @@ class FeedbackTableRenderer
   def parse
     @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
       @builder.div(class: 'row feedback-table-messages') do
-        messages(@submission[:messages])
+        messages(@submission[:messages], true)
       end
       tabs(@submission)
       init_js
@@ -104,7 +104,7 @@ class FeedbackTableRenderer
           message(g[:description])
         end
       end
-      messages(g[:messages])
+      messages(g[:messages], true)
       g[:groups]&.each { |tc| testcase(tc) }
     end
   end
@@ -126,7 +126,7 @@ class FeedbackTableRenderer
       message(tc[:description]) if tc[:description]
     end
     tc[:tests]&.each { |t| test(t) }
-    messages(tc[:messages])
+    messages(tc[:messages], true)
   end
 
   def test(t)
@@ -145,9 +145,9 @@ class FeedbackTableRenderer
     end
   end
 
-  def messages(msgs)
+  def messages(msgs, in_row=false)
     return if msgs.nil?
-    @builder.div(class: 'messages') do
+    @builder.div(class: 'messages' + if in_row then ' col-xs-12' else '') do
       msgs.each do |msg|
         @builder.div(class: 'message') do
           message(msg)

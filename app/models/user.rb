@@ -72,7 +72,8 @@ class User < ApplicationRecord
            through: :course_memberships,
            source: :course
 
-  devise :saml_authenticatable
+  # devise :saml_authenticatable
+  devise :omniauthable, :omniauth_providers => [:zeuswpi]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: false }
@@ -159,6 +160,13 @@ class User < ApplicationRecord
 
   def self.default_photo
     Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
+  end
+
+  def self.from_omniauth(auth)
+    # TODO: do this properly (scope within institution?)
+    where(username: auth.uid).first_or_create do |user|
+      user.email = auth.uid + '@zeus.ugent.be'
+    end
   end
 
   private

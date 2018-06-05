@@ -15,6 +15,7 @@
 #  token          :string(255)
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :integer
+#  provider       :string(255)
 #
 
 require 'securerandom'
@@ -163,9 +164,12 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(auth)
-    # TODO: do this properly (scope within institution?)
-    where(username: auth.uid).first_or_create do |user|
-      user.email = auth.uid + '@zeus.ugent.be'
+    where(provider: auth.provider, username: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.first_name = auth.info.first_name
+      user.last_name = auth.info.last_name
+      # TODO: fix institution
+      # user.institution = Institution.find_by(name: auth.info.institution)
     end
   end
 

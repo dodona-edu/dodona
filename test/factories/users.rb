@@ -15,6 +15,7 @@
 #  token          :string(255)
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :integer
+#  provider       :string(255)
 #
 
 FactoryBot.define do

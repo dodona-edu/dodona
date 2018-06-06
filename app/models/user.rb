@@ -73,7 +73,7 @@ class User < ApplicationRecord
            through: :course_memberships,
            source: :course
 
-  # devise :saml_authenticatable
+  devise :saml_authenticatable
   devise :omniauthable, :omniauth_providers => [:zeuswpi]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }

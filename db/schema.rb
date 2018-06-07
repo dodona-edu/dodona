@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180605113826) do
+ActiveRecord::Schema.define(version: 20180219102814) do
 
   create_table "api_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
@@ -186,7 +186,6 @@ ActiveRecord::Schema.define(version: 20180605113826) do
     t.string "token"
     t.string "time_zone", default: "Brussels"
     t.bigint "institution_id"
-    t.string "provider"
     t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"
     t.index ["username"], name: "index_users_on_username"

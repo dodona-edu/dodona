@@ -1,18 +1,28 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  def zeuswpi
+  def oauth
     @user = User.from_omniauth(request.env['omniauth.auth'])
 
     if @user&.persisted?
       sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, kind: 'Zeus WPI') if is_navigational_format?
+      set_flash_message(:notice, :success, kind: 'OAuth2') if is_navigational_format?
     else
-      logger.debug "Unable to log in user with omniauth: #{requst.env['omniauth.auth']}"
-      set_flash_message(:notice, :failure, kind: 'Zeus WPI') if is_navigational_format?
+      if is_navigational_format?
+        set_flash_message :notice,
+                          :failure,
+                          kind: 'OAuth2',
+                          reason: t('devise.omniauth_callbacks.user_not_created')
+      end
       redirect_to root_path
     end
   end
 
   def failure
+    if is_navigational_format?
+      set_flash_message :notice,
+                        :failure,
+                        kind: 'OAuth2',
+                        reason: t('devise.omniauth_callbacks.unknown_callback')
+    end
     redirect_to root_path
   end
 end

@@ -245,7 +245,7 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  config.omniauth :zeuswpi,
+  config.omniauth :oauth,
                   Rails.application.secrets.omniauth_client_id,
                   Rails.application.secrets.omniauth_client_secret
 

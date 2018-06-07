@@ -24,6 +24,8 @@ nl:
       unlock_instructions:
         subject: "Ontgrendel instructies"
     omniauth_callbacks:
+      user_not_created: "kan gebruiker niet aanmaken"
+      unknown_callback: "onbekende omniauth provider"
       failure: "Kan je niet autoriseren van %{kind}, omdat \"%{reason}\"."
       success: "Succesvol geautoriseerd met %{kind} account."
     passwords:

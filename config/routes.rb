@@ -2,9 +2,14 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   root 'pages#home'
 
+  # TODO: remove this (using oauth2 as strategy name gives conflicts)
+  # this keeps the parameters of the request
+  get '/users/auth/oauth2/callback', to: redirect(status: 307){ |_, req| req.fullpath.sub('oauth2', 'oauth') }
+
   match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
+
 
   scope '(:locale)', locale: /en|nl/ do
     get '/sign_in(/:idp)' => 'pages#sign_in_page', as: 'sign_in'

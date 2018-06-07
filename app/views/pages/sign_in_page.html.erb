@@ -3,7 +3,7 @@
     <h1><%= t("layout.menu.log_in") %><br>
       <small><%= t ".select-institution" %></small>
     </h1>
-    <%= link_to 'Zeus WPI', user_zeuswpi_omniauth_authorize_path %>
+    <%= link_to 'SmartSchool', user_oauth_omniauth_authorize_path %>
     <% @institutions.each do |institution| %>
       <%= link_to sign_in_path(idp: institution.short_name), class:'institution-sign-in' do %>
         <div class="row institution">

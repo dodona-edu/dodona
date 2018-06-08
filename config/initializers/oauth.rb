@@ -11,7 +11,7 @@ module OmniAuth
       # This is where you pass the options you would pass when
       # initializing your consumer from the OAuth gem.
       option :client_options,
-             site:              'https://slow.smartschool.be/',
+             site:              'https://oauth.smartschool.be/',
              authorize_url:     '/OAuth?scope=fulluserinfo',
              token_url:         '/OAuth/index/token'
 
@@ -39,9 +39,7 @@ module OmniAuth
       end
 
       def callback_url
-        # TODO: change back
-        # fullhost + script + callback_path
-        'http://localhost:3000/users/auth/oauth2/callback'
+        full_host + script_name + callback_path
       end
     end
   end

@@ -1,5 +1,6 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def oauth
+    byebug
     @user = User.from_omniauth(request.env['omniauth.auth'])
 
     if @user&.persisted?
@@ -17,11 +18,16 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
+    reason = if request.params.key?('error_message')
+               request.params['error_message']
+             else
+               t('devise.omniauth_callbacks.unknown_failure')
+             end
     if is_navigational_format?
       set_flash_message :notice,
                         :failure,
                         kind: 'OAuth2',
-                        reason: t('devise.omniauth_callbacks.unknown_callback')
+                        reason: reason
     end
     redirect_to root_path
   end

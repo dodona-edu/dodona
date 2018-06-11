@@ -246,8 +246,12 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   config.omniauth :oauth,
-                  Rails.application.secrets.omniauth_client_id,
-                  Rails.application.secrets.omniauth_client_secret
+                  Rails.application.secrets.smartschool_client_id,
+                  Rails.application.secrets.smartschool_client_secret
+
+  config.omniauth :office365,
+                  Rails.application.secrets.office365_client_id,
+                  Rails.application.secrets.office365_client_secret
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

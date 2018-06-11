@@ -74,7 +74,7 @@ class User < ApplicationRecord
            source: :course
 
   devise :saml_authenticatable
-  devise :omniauthable, :omniauth_providers => [:oauth]
+  devise :omniauthable, omniauth_providers: %i[oauth office365]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: false }

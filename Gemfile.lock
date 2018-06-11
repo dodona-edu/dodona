@@ -388,6 +388,7 @@ DEPENDENCIES
   i18n-js (~> 3.0.0.rc14)
   jbuilder (~> 2.5)
   json-schema
+  jwt
   kramdown
   less-rails (~> 3.0)
   letter_opener

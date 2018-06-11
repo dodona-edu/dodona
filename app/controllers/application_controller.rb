@@ -29,8 +29,10 @@ class ApplicationController < ActionController::Base
   end
 
   Warden::Manager.after_authentication do |user, auth, _opts|
-    idp = Institution.find_by(short_name: auth.env['rack.session'][:current_idp])
-    user.update(institution: idp)
+    if user.institution.nil?
+      idp = Institution.find_by(short_name: auth.env['rack.session'][:current_idp])
+      user.update(institution: idp)
+    end
   end
 
   protected

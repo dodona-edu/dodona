@@ -24,6 +24,7 @@ nl:
       unlock_instructions:
         subject: "Ontgrendel instructies"
     omniauth_callbacks:
+      not_whitelisted: "de onderwijsinstelling waarmee je inlogde wordt momenteel niet ondersteund"
       user_not_created: "kan gebruiker niet aanmaken"
       unknown_failure: "een onbekende fout is opgetreden"
       failure: "Kan je niet autoriseren van %{kind}, omdat \"%{reason}\"."

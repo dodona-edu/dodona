@@ -1,25 +1,15 @@
 class RefactorInsitution < ActiveRecord::Migration[5.1]
   def change
-    create_table :providers do |t|
-      t.column :type, :string, null: false
-      t.index :type
-
-      # Provider (common)
-      t.string :name, :short_name, :logo
-
-      # SAMLProvider
-      t.string :sso_url, :slo_url, :entity_id
+    create_table :saml_providers do |t|
+      t.string :name, :short_name, :logo, :sso_url, :slo_url, :entity_id
       t.text :certificate
-
-      # OAuthProvider
-      t.string :site, :authorize_url, :token_url, :info_url, :client_id, :client_secret
 
       t.timestamps
     end
 
     change_table :institutions do |t|
-      t.integer :provider_id
-      add_foreign_key :provider_id, :providers
+      t.integer :saml_provider_id
+      add_foreign_key :saml_provider_id, :saml_providers
     end
 
     fields = %i[name short_name logo sso_url slo_url entity_id certificate]

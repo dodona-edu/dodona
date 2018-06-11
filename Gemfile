@@ -63,6 +63,7 @@ gem 'devise_saml_authenticatable', '1.3.2'
 
 # omniauth
 gem 'omniauth-oauth2'
+gem 'jwt'
 
 # authorization
 gem 'pundit'

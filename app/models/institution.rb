@@ -15,4 +15,5 @@
 #
 
 class Institution < ApplicationRecord
+  belongs_to :saml_provider, class_name: 'SAMLProvider', optional: true
 end

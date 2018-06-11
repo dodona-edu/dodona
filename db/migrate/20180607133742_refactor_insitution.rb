@@ -8,18 +8,17 @@ class RefactorInsitution < ActiveRecord::Migration[5.1]
     end
 
     change_table :institutions do |t|
-      t.integer :saml_provider_id
-      add_foreign_key :saml_provider_id, :saml_providers
+      t.belongs_to :saml_provider
     end
 
     fields = %i[name short_name logo sso_url slo_url entity_id certificate]
     Institution.all.each do |institution|
       provider = SAMLProvider.new
       fields.each do |field|
-        provider[field] = inst[field]
+        provider[field] = institution[field]
       end
       provider.save
-      institution.update(provider: provider)
+      institution.update(saml_provider: provider)
     end
 
     change_table :institutions do |t|

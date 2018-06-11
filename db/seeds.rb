@@ -10,7 +10,8 @@ if Rails.env.development?
 
   puts 'Creating institution'
 
-  ugent = Institution.new name: 'Universiteit Gent', short_name: 'UGent', logo: 'UGent.png', sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://ugent.be'
+  ugent = Institution.create name: 'Universiteit Gent', short_name: 'UGent', logo: 'UGent.png', sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://ugent.be'
+
 
   puts 'Creating users'
 

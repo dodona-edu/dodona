@@ -74,7 +74,7 @@ class User < ApplicationRecord
            source: :course
 
   devise :saml_authenticatable
-  devise :omniauthable, omniauth_providers: %i[oauth office365]
+  devise :omniauthable, omniauth_providers: %i[smartschool office365]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: false }
@@ -164,7 +164,7 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, username: auth.uid).first_or_create do |user|
+    where(username: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name

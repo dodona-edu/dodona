@@ -2,11 +2,11 @@ require 'omniauth-oauth2'
 
 module OmniAuth
   module Strategies
-    class Oauth < OmniAuth::Strategies::OAuth2
+    class Smartschool < OmniAuth::Strategies::OAuth2
       option :provider_ignores_state, true
 
       # strategy name
-      option :name, 'oauth'
+      option :name, 'smartschool'
 
       # This is where you pass the options you would pass when
       # initializing your consumer from the OAuth gem.
@@ -39,7 +39,8 @@ module OmniAuth
       end
 
       def callback_url
-        full_host + script_name + callback_path
+        # full_host + script_name + callback_path
+        'http://localhost:3000/users/auth/oauth/callback'
       end
     end
   end

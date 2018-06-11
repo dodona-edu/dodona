@@ -1,5 +1,5 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  def oauth
+  def smartschool
     user_login
   end
 
@@ -23,9 +23,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   private
 
   WHITELIST = {
-    'https://slow.smartschool.be'          => { provider: :oauth,     name: 'SLO Wetenschappen' },
-    'https://college-ieper.smartschool.be' => { provider: :oauth,     name: 'College Ieper'     },
-    'd7811cde-ecef-496c-8f91-a1786241b99c' => { provider: :office365, name: 'UGent Office365'   }
+    'https://slow.smartschool.be'          => { provider: :smartschool,     name: 'SLO Wetenschappen' },
+    'https://college-ieper.smartschool.be' => { provider: :smartschool,     name: 'College Ieper'     },
+    'd7811cde-ecef-496c-8f91-a1786241b99c' => { provider: :office365,       name: 'UGent Office365'   }
   }.freeze
 
   def provider
@@ -40,6 +40,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if WHITELIST.key?(institution) && WHITELIST[institution][:provider] == provider.to_sym
       return true
     end
+    byebug
 
     if is_navigational_format?
       set_flash_message :notice,

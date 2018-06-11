@@ -86,10 +86,14 @@ ActiveRecord::Schema.define(version: 20180607133742) do
   create_table "institutions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "short_name"
+    t.string "logo"
+    t.string "sso_url"
+    t.string "slo_url"
+    t.text "certificate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "saml_provider_id"
-    t.index ["saml_provider_id"], name: "index_institutions_on_saml_provider_id"
+    t.string "entity_id"
+    t.integer "provider"
   end
 
   create_table "judges", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -113,18 +117,6 @@ ActiveRecord::Schema.define(version: 20180607133742) do
     t.datetime "updated_at", null: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id"
     t.index ["path"], name: "index_repositories_on_path", unique: true
-  end
-
-  create_table "saml_providers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "name"
-    t.string "short_name"
-    t.string "logo"
-    t.string "sso_url"
-    t.string "slo_url"
-    t.string "entity_id"
-    t.text "certificate"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "series", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

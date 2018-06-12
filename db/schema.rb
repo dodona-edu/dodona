@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20180607133742) do
     t.string "entity_id"
     t.integer "provider"
     t.string "identifier"
+    t.index ["identifier"], name: "index_institutions_on_identifier"
   end
 
   create_table "judges", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

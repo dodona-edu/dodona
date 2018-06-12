@@ -159,6 +159,10 @@ class User < ApplicationRecord
     end
   end
 
+  def provider
+    institution.provider
+  end
+
   def self.default_photo
     Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
   end

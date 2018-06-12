@@ -29,11 +29,11 @@ module OmniAuth
       end
 
       # These are called after authentication has succeeded.
-      uid { raw_info['unique_name'] }
+      uid { username }
 
       info do
         {
-          username:     raw_info['unique_name'],
+          username:     username,
           first_name:   raw_info['given_name'],
           last_name:    raw_info['family_name'],
           email:        raw_info['upn'],
@@ -45,6 +45,10 @@ module OmniAuth
         {
           'raw_info' => raw_info
         }
+      end
+
+      def username
+        raw_info['unique_name'].split('@').first
       end
 
       def decoded_token

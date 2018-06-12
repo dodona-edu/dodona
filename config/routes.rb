@@ -2,10 +2,6 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   root 'pages#home'
 
-  # TODO: remove this when smartschool fixed the redirect URI
-  # this keeps the parameters of the request
-  get '/users/auth/oauth/callback', to: redirect(status: 307){ |_, req| req.fullpath.sub('oauth', 'smartschool') }
-
   match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/

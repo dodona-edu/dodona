@@ -17,7 +17,7 @@
 class Institution < ApplicationRecord
   enum provider: %i[smartschool office365 saml]
 
-  validates :identifier, uniqueness: true, presence: false
+  validates :identifier, uniqueness: { allow_blank: true }
   validates :logo, :short_name, :provider, presence: true
   validates :sso_url, :slo_url, :certificate, :entity_id, presence: true, if: :saml?
 end

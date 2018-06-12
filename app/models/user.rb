@@ -168,13 +168,13 @@ class User < ApplicationRecord
     Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
   end
 
-  def self.from_omniauth(auth)
-    where(username: auth.uid).first_or_create do |user|
+  def self.from_omniauth(auth, institution)
+    raise 'Institution should not be nil' if institution.nil?
+    where(username: auth.uid, institution: institution).first_or_create do |user|
       user.email = auth.info.email
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name
-      # TODO: fix institution
-      # user.institution = Institution.find_by(name: auth.info.institution)
+      user.institution = institution
     end
   end
 

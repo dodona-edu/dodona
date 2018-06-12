@@ -52,7 +52,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     institution = whitelisted_institution!
     return if institution.nil?
 
-    @user = User.from_omniauth(request.env['omniauth.auth'])
+    @user = User.from_omniauth(request.env['omniauth.auth'], institution)
 
     if @user&.persisted?
       sign_in_and_redirect @user, event: :authentication
@@ -62,7 +62,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         set_flash_message :notice,
                           :failure,
                           kind: provider,
-                          reason: t('devise.omniauth_callbacks.user_not_created')
+                          reason: @user.errors.full_messages.to_sentence
       end
       redirect_to root_path
     end

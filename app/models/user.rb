@@ -76,8 +76,9 @@ class User < ApplicationRecord
   devise :saml_authenticatable
   devise :omniauthable, omniauth_providers: %i[smartschool office365]
 
-  validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
-  validates :email, uniqueness: { case_sensitive: false, allow_blank: false }
+  validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
+  validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
+
 
   before_save :set_token
   before_save :set_time_zone
@@ -188,6 +189,6 @@ class User < ApplicationRecord
   end
 
   def set_time_zone
-    self.time_zone = 'Seoul' if email.match?(/ghent.ac.kr$/)
+    self.time_zone = 'Seoul' if email&.match?(/ghent.ac.kr$/)
   end
 end

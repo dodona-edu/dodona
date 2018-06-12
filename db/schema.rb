@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 20180607133742) do
     t.datetime "updated_at", null: false
     t.string "entity_id"
     t.integer "provider"
+    t.string "identifier"
   end
 
   create_table "judges", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

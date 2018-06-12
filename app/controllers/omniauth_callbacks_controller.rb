@@ -25,7 +25,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   WHITELIST = {
     'https://slow.smartschool.be'          => { provider: :smartschool,     name: 'SLO Wetenschappen' },
     'https://college-ieper.smartschool.be' => { provider: :smartschool,     name: 'College Ieper'     },
-    'd7811cde-ecef-496c-8f91-a1786241b99c' => { provider: :office365,       name: 'UGent Office365'   }
+    'd7811cde-ecef-496c-8f91-a1786241b99c' => { provider: :office365,       name: 'UGent Office365'   },
+    '9fdf506a-3be0-4f07-9e03-908ceeae50b4' => { provider: :office365,       name: 'College Waregem'   }
   }.freeze
 
   def provider

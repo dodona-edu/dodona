@@ -22,40 +22,35 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private
 
-  WHITELIST = {
-    'https://slow.smartschool.be'          => { provider: :smartschool,     name: 'SLO Wetenschappen' },
-    'https://college-ieper.smartschool.be' => { provider: :smartschool,     name: 'College Ieper'     },
-    'd7811cde-ecef-496c-8f91-a1786241b99c' => { provider: :office365,       name: 'UGent Office365'   },
-    '9fdf506a-3be0-4f07-9e03-908ceeae50b4' => { provider: :office365,       name: 'College Waregem'   }
-  }.freeze
-
   def provider
     request.env['omniauth.auth']&.provider
   end
 
-  def institution
+  def institution_identifier
     request.env['omniauth.auth']&.info&.institution
   end
 
-  def whitelisted?
-    if WHITELIST.key?(institution) && WHITELIST[institution][:provider] == provider.to_sym
-      return true
+  def whitelisted_institution!
+    if institution_identifier.present?
+      institution = Institution.find_by identifier: institution_identifier
+      return institution if institution.present?
     end
-    byebug
+
+    logger.info "OAuth login using #{provider} with identifier #{institution_identifier} rejected (not whitelisted)."
 
     if is_navigational_format?
       set_flash_message :notice,
                         :failure,
                         kind: provider,
-                        reason: t('devise.omniauth_callbacks.not_whitelisted')
+                        reason: t('devise.omniauth_callbacks.not_whitelisted', identifier: institution_identifier)
     end
     redirect_to root_path
-    false
+    nil
   end
 
   def user_login
-    return unless whitelisted?
-    institution_name = WHITELIST[institution][:name]
+    institution = whitelisted_institution!
+    return if institution.nil?
 
     @user = User.from_omniauth(request.env['omniauth.auth'])
 

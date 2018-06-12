@@ -10,8 +10,15 @@ if Rails.env.development?
 
   puts 'Creating institution'
 
-  ugent = Institution.create name: 'Universiteit Gent', short_name: 'UGent', logo: 'UGent.png', sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://ugent.be', provider: :saml
+  ugent = Institution.create name: 'Universiteit Gent (login werkt niet in develop)', short_name: 'UGent', logo: 'UGent.png', sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://ugent.be', provider: :saml
 
+  college_waregem = Institution.create name: 'College Waregem', short_name: 'College Waregem', logo: 'collegewaregem.png', provider: :office365, identifier: '9fdf506a-3be0-4f07-9e03-908ceeae50b4'
+
+  sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'collegewaregem.png', provider: :office365, identifier: 'af15916d-7d77-43f9-b366-ae98d0fe36be'
+
+  slo = Institution.create name: 'SLO Wetenschappen', short_name: 'SLOW', logo: 'ugent.png', provider: :smartschool, identifier: 'https://slow.smartschool.be'
+
+  college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.png', provider: :smartschool, identifier: 'https://college-ieper.smartschool.be'
 
   puts 'Creating users'
 

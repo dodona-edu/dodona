@@ -24,10 +24,10 @@ nl:
       unlock_instructions:
         subject: "Ontgrendel instructies"
     omniauth_callbacks:
-      not_whitelisted: "de onderwijsinstelling waarmee je inlogde wordt momenteel niet ondersteund"
+      not_whitelisted: "sorry, maar op dit moment ondersteunen we jouw onderwijsinstelling niet (identifier: %{identifier})"
       user_not_created: "kan gebruiker niet aanmaken"
       unknown_failure: "een onbekende fout is opgetreden"
-      failure: "Kan je niet autoriseren van %{kind}, omdat \"%{reason}\"."
+      failure: "Kan je niet autoriseren met %{kind}, reden: \"%{reason}\"."
       success: "Succesvol geautoriseerd met %{kind} account."
     passwords:
       no_token: "Je kunt deze pagina niet bereiken als je geen e-mail hebt ontvangen met wachtwoord reset instructies. Mocht je dit wel hebben ontvangen kijk dan het URL na in je mail of vraag de instructies opnieuw aan."

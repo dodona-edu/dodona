@@ -1,10 +1,10 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def smartschool
-    user_login
+    oauth_login
   end
 
   def office365
-    user_login
+    oauth_login
   end
 
   def failure
@@ -30,12 +30,32 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     request.env['omniauth.auth']&.info&.institution
   end
 
-  def whitelisted_institution!
-    if institution_identifier.present?
-      institution = Institution.find_by identifier: institution_identifier
-      return institution if institution.present?
-    end
+  def oauth_login
+    raise ActiveRecord::RecordNotFound if institution.blank?
 
+    institution = Institution.from_identifier(identifier)
+
+    if institution.present?
+
+      user = User.from_omniauth(request.env['omniauth.auth'], institution)
+      if user&.persisted?
+        sign_in_and_redirect user, event: :authentication
+        set_flash_message(:notice, :success, kind: provider) if is_navigational_format?
+      else
+        if is_navigational_format?
+          set_flash_message :notice,
+                            :failure,
+                            kind: provider,
+                            reason: user.errors.full_messages.to_sentence
+        end
+        redirect_to root_path
+      end
+    else
+      reject_institution!
+    end
+  end
+
+  def reject_institution!
     logger.info "OAuth login using #{provider} with identifier #{institution_identifier} rejected (not whitelisted)."
 
     if is_navigational_format?
@@ -45,26 +65,5 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
                         reason: t('devise.omniauth_callbacks.not_whitelisted', identifier: institution_identifier)
     end
     redirect_to root_path
-    nil
-  end
-
-  def user_login
-    institution = whitelisted_institution!
-    return if institution.nil?
-
-    @user = User.from_omniauth(request.env['omniauth.auth'], institution)
-
-    if @user&.persisted?
-      sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, kind: provider) if is_navigational_format?
-    else
-      if is_navigational_format?
-        set_flash_message :notice,
-                          :failure,
-                          kind: provider,
-                          reason: @user.errors.full_messages.to_sentence
-      end
-      redirect_to root_path
-    end
   end
 end

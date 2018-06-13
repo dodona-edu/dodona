@@ -21,7 +21,6 @@ require 'test_helper'
 class InstitutionTest < ActiveSupport::TestCase
   test 'saml factory' do
     create :saml_institution
-    byebug
   end
 
   test 'smartschool factory' do

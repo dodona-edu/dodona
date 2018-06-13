@@ -24,5 +24,10 @@ class SamlControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
     assert_nil @controller.current_user
   end
+
+  test 'SAML metadata' do
+    get metadata_user_session_path
+    assert_response :success
+  end
 end
 

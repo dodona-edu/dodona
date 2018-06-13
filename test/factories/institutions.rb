@@ -12,6 +12,8 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  entity_id   :string(255)
+#  provider    :integer
+#  identifier  :string(255)
 #
 
 FactoryGirl.define do

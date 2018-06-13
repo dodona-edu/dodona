@@ -3,8 +3,6 @@
     <h1><%= t("layout.menu.log_in") %><br>
       <small><%= t ".select-institution" %></small>
     </h1>
-    <%= link_to 'Smartschool', user_smartschool_omniauth_authorize_path %>
-    <%= link_to 'Office365', user_office365_omniauth_authorize_path %>
     <% @institutions.saml.each do |institution| %>
       <%= link_to sign_in_path(idp: institution.short_name), class:'institution-sign-in' do %>
         <div class="row institution">
@@ -18,6 +16,32 @@
           <div class="institution-go"><span class="glyphicon glyphicon-chevron-right"></span></div>
         </div>
       <% end %>
+    <% end %>
+    <%= link_to user_office365_omniauth_authorize_path, class:'institution-sign-in' do %>
+        <%# Only College Waregem uses O365 at this moment %>
+        <div class="row institution">
+          <div class="institution-logo">
+            <%= image_tag 'idp/collegewaregem.png', class: "img-responsive" %>
+          </div>
+          <div class="institution-name">
+            <h3>College Waregem<br>
+            <small>Inloggen met Office365</small></h3>
+          </div>
+          <div class="institution-go"><span class="glyphicon glyphicon-chevron-right"></span></div>
+        </div>
+    <% end %>
+    <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do%>
+        <%# Only College Ieper uses Smartschool at this moment %>
+        <div class="row institution">
+          <div class="institution-logo">
+            <%= image_tag 'idp/collegeieper.png', class: "img-responsive" %>
+          </div>
+          <div class="institution-name">
+            <h3>College Ieper<br>
+            <small>Inloggen met smartschool</small></h3>
+          </div>
+          <div class="institution-go"><span class="glyphicon glyphicon-chevron-right"></span></div>
+        </div>
     <% end %>
   </div>
 </div>

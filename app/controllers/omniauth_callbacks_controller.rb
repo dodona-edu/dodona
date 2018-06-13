@@ -31,9 +31,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def oauth_login
-    raise ActiveRecord::RecordNotFound if institution.blank?
+    raise ActiveRecord::RecordNotFound if institution_identifier.blank?
 
-    institution = Institution.from_identifier(identifier)
+    institution = Institution.from_identifier(institution_identifier)
 
     if institution.present?
 

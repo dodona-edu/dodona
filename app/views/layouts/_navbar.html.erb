@@ -92,7 +92,7 @@
               <% end %>
               <li role="separator" class="divider"></li>
               <li>
-                <% if current_user.institution.saml? %>
+                <% if current_user.institution&.saml? %>
                   <%= link_to t("layout.menu.log_out"), destroy_user_session_path(idp: session[:current_idp]), :method => :delete, target: "_blank", onclick: "window.setTimeout(function () {location.href = '#{root_path}';}, 1000);" %>
                 <% else %>
                   <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete %>

@@ -35,7 +35,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     institution = Institution.from_identifier(institution_identifier)
 
-    if institution.present?
+    if institution.present? && institution.provider.to_s == provider
 
       user = User.from_omniauth(request.env['omniauth.auth'], institution)
       if user&.persisted?
@@ -56,7 +56,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def reject_institution!
-    logger.info "OAuth login using #{provider} with identifier #{institution_identifier} rejected (not whitelisted)."
+    logger.info "OAuth login using #{provider} with identifier #{institution_identifier} rejected (not whitelisted). See below for more info about the request:\n#{request.env['omniauth.auth'].pretty_inspect}"
+
+    ApplicationMailer.with(authinfo: request.env['omniauth.auth']).login_rejected.deliver_later
 
     if is_navigational_format?
       set_flash_message :notice,

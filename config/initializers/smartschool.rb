@@ -39,8 +39,7 @@ module OmniAuth
       end
 
       def callback_url
-        # full_host + script_name + callback_path
-        'http://localhost:3000/users/auth/oauth/callback'
+        full_host + script_name + callback_path
       end
     end
   end

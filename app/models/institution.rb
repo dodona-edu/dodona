@@ -25,6 +25,6 @@ class Institution < ApplicationRecord
 
   # If the whitelist dissapears, this should create a new institution
   def self.from_identifier(identifier)
-    Insitution.find_by(identifier: identifier) if identifier.present?
+    find_by(identifier: identifier) if identifier.present?
   end
 end

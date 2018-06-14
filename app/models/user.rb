@@ -76,8 +76,8 @@ class User < ApplicationRecord
   devise :omniauthable, omniauth_providers: %i[smartschool office365]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
-  validates :email, uniqueness: { case_sensitive: false }
-
+  validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
+  validate :email_only_blank_if_smartschool
 
   before_save :set_token
   before_save :set_time_zone
@@ -86,6 +86,12 @@ class User < ApplicationRecord
   scope :by_name, ->(name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
 
   scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
+
+  def email_only_blank_if_smartschool
+    if email.blank? && !institution&.smartschool?
+      errors.add(:email, 'should not be blank when intitution does not use smartschool')
+    end
+  end
 
   def full_name
     name = (first_name || '') + ' ' + (last_name || '')

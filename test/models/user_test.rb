@@ -164,4 +164,30 @@ class UserTest < ActiveSupport::TestCase
     create :wrong_submission, user: user, exercise: exercise3
     assert_user_exercises user, 3, 2, 1
   end
+
+  test 'only smartschool users can have blank email' do
+    smartschool = create :smartschool_institution
+    office365 = create :office365_institution
+    saml = create :saml_institution
+
+    user = build :user, institution: office365
+    user.email = nil
+    assert_not user.valid?
+
+    user = build :user, institution: saml
+    user.email = nil
+    assert_not user.valid?
+
+    user = build :user, institution: nil
+    user.email = nil
+    assert_not user.valid?
+
+    user = build :user, institution: smartschool
+    user.email = nil
+    assert user.valid?
+
+    user = build :user, institution: smartschool
+    user.email = nil
+    assert user.valid?
+  end
 end

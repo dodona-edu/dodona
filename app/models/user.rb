@@ -76,7 +76,7 @@ class User < ApplicationRecord
   devise :omniauthable, omniauth_providers: %i[smartschool office365]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
-  validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
+  validates :email, uniqueness: { case_sensitive: false }
 
 
   before_save :set_token

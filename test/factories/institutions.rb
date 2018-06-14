@@ -39,6 +39,6 @@ FactoryGirl.define do
 
   factory :office365_institution, parent: :base_institution do
     identifier { SecureRandom.uuid }
-    provider :smartschool
+    provider :office365
   end
 end

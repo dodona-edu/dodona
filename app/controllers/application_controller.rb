@@ -33,6 +33,10 @@ class ApplicationController < ActionController::Base
       idp = Institution.find_by(short_name: auth.env['rack.session'][:current_idp])
       user.update(institution: idp)
     end
+    if user.email.blank? && !user.institution&.smartschool?
+      raise "User with id #{user.id} should not have a blank email " \
+            'if the provider is not smartschool'
+    end
   end
 
   protected

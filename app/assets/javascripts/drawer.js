@@ -20,8 +20,10 @@ export default class Drawer {
 }
 
   containedGroup(selector) {
-    const $containedTab = $(selector).closest(".tab-pane");
-    return $containedTab.get(0).id || null;
+    if(selector){
+      const $containedTab = $(selector).closest(".tab-pane");
+      return $containedTab.get(0).id || null;
+    }
   }
 
   setGroup(group=null) {

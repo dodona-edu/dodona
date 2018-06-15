@@ -1,7 +1,7 @@
 <% content_for :drawer do %>
 <%= javascript_pack_tag 'drawer' %>
-  <div class="drawer-group">
-    <ul class="drawer-list nav nav-tabs" role="tablist">
+  <nav class="drawer-group">
+    <ul class="drawer-list">
       <% items.each do |id, item| %>
         <% current = current_page?(item[:url]) %>
           <li>
@@ -28,5 +28,5 @@
       </li>
       <% end %>
     </ul>
-  </div>
+  </nav>
 <% end %>

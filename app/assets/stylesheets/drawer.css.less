@@ -4,35 +4,28 @@ aside.drawer {
   width: 240px;
   pointer-events: auto;
   background: #fff;
-  z-index: 5;
+  z-index: 2;
 }
 
 nav.drawer-nav {
   border-left: 0;
-  border-right: 1px solid #e4e4e4;
+  border-right: 1px solid @grey-300;
   left: 0;
   right: initial;
   height: 100%;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
   width: 240px;
   overflow: hidden;
-  -ms-touch-action: none;
   touch-action: none;
 }
 
-.drawer-group {
+nav.drawer-group {
   padding: 0 16px;
+  border-bottom: 1px solid @grey-300;
 }
 
-nav.drawer-list {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
+ul.drawer-list {
   font-size: 1rem;
   font-weight: 400;
   letter-spacing: 0.04em;
@@ -49,26 +42,19 @@ nav.drawer-list {
 a.drawer-list-item {
     &.active {
       color: @black-text;
+      background: @grey-200;
     }
 
     &:hover,&:focus {
-      background: @grey-300;
+      background: @grey-200;
     }
 
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
     justify-content: flex-start;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
     font-size: 16px;
     font-weight: 500;
     letter-spacing: 0.04em;

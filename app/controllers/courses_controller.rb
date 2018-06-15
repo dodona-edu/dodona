@@ -164,7 +164,7 @@ class CoursesController < ApplicationController
     end
   end
 
-  def list_members
+  def members
     statuses = if %w[unsubscribed pending].include? params[:status]
                  params[:status]
                else
@@ -177,11 +177,17 @@ class CoursesController < ApplicationController
              .order(username: :asc)
              .where(course_memberships: { status: statuses })
              .paginate(page: params[:page])
+
     @pagination_opts = {
       controller: 'courses',
-      action: 'list_members'
+      action: 'members'
     }
-    render 'users/index'
+
+    respond_to do |format|
+      format.json { render 'users/index' }
+      format.js { render 'users/index' }
+      format.html
+    end
   end
 
   def reset_token

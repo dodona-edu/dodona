@@ -1,0 +1,17 @@
+<% drawer_group \
+  series: {
+    icon: 'list-alt',
+    text: t('courses.show.series'),
+    url: course_path(@course)
+  },
+  edit: {
+    icon: 'edit',
+    text: t('courses.show.edit'),
+    url: edit_course_path(@course)
+  },
+  users: {
+    icon: 'user',
+    text: t('courses.show.users'),
+    url: members_course_path(@course)
+  }
+  %>

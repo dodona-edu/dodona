@@ -95,8 +95,9 @@
         </div>
       <% end %>
       <% if policy(@course).show_series? %>
-        <div class="card-supporting-text card-border tab-pane" id="series">
+        <div class="card-supporting-text card-border" >
           <div class="card-subtitle">
+            <a class="anchor" id="series"></a>
             <h3><%= t ".exercise_series" %></h3>
             <div class="flex-spacer"></div>
             <div class="card-subtitle-actions">
@@ -122,6 +123,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>, <%= !policy(@course).members? %>);
+    dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>, true);
   });
 </script>

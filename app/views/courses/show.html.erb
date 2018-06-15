@@ -116,50 +116,12 @@
             <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
           <% end %>
         </div>
-      <%  end %>
-      <% if policy(@course).list_members? %>
-        <div class="card-supporting-text card-border">
-          <div class="card-subtitle">
-            <a class="anchor" id="user-list"></a>
-            <h3><%= t ".users" %></h3>
-          </div>
-          <div class="card-tab">
-            <ul id="user-tabs" class="nav nav-tabs" data-baseurl="<%= list_members_course_path(@course) %>" role="tablist">
-              <li role="presentation" class="active"><a href="#enrolled"><%= t 'courses.show.subscribed' %></a></li>
-              <% if @course.moderated? || !@course.pending_members.empty? %>
-                <li role="presentation"><a href="#pending"><%= t 'courses.show.pending' %> <span class="badge" id="pending-count"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a></li>
-              <% end %>
-              <li role="presentation"><a href="#unsubscribed"><%= t 'courses.show.unsubscribed' %></a></li>
-            </ul>
-          </div>
-          <%= render(partial: 'layouts/searchbar',
-                     locals: {
-                        init_filter: false,
-                        eager: false,
-                        actions: [
-                          {
-                            icon: 'ok',
-                            text: t(".accept_all"),
-                            confirm: t(".confirm_accept_all"),
-                            action: mass_accept_pending_course_path(@course),
-                          },
-                          {
-                            icon: 'remove',
-                            text: t(".decline_all"),
-                            confirm: t(".confirm_decline_all"),
-                            action: mass_decline_pending_course_path(@course),
-                          }
-                        ]
-          }) %>
-          <div id="users-table-wrapper">
-          </div>
-        </div>
       <% end %>
     </div>
   </div>
 </div>
 <script type="text/javascript">
   $(function () {
-    dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>, <%= !policy(@course).list_members? %>);
+    dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>, <%= !policy(@course).members? %>);
   });
 </script>

@@ -48,7 +48,7 @@ class CoursePolicy < ApplicationPolicy
     user&.zeus?
   end
 
-  def list_members?
+  def members?
     course_admin?
   end
 

@@ -1,5 +1,10 @@
 nl:
   courses:
+    drawer:
+      overview: Overzicht
+      series: Reeksen
+      edit: Aanpassen
+      users: Gebruikers
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.

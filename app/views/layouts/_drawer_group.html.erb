@@ -12,7 +12,7 @@
                 id: "drawer-item-#{id}" do %>
                <span class="glyphicon glyphicon-<%= item[:icon] %>">
                </span>
-               <%= item[:text] %>
+               <%= item[:text].capitalize %>
                <% end %>
 
           <%  elsif item.key?(:group) %>
@@ -22,7 +22,7 @@
               id: "drawer-item-#{id}" do %>
              <span class="glyphicon glyphicon-<%= item[:icon] %>">
              </span>
-             <%= item[:text] %>
+             <%= item[:text].capitalize %>
              <% end %>
         <% end %>
       </li>

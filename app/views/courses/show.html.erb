@@ -122,6 +122,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>, <%= !policy(@course).members? %>);
+    dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>, true);
   });
 </script>

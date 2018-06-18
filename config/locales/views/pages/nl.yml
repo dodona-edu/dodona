@@ -23,3 +23,11 @@ nl:
       title: Hallo,
       text: Welkom op Dodona! Registreer je voor een cursus om van start te gaan.
       action: verken cursussen
+    institution_not_supported:
+      title: Sorry, we konden je niet aanmelden
+      explanation_html: "<p>Je probeerde aan te melden met een %{provider} account waarvan we de onderwijsinstelling momenteel niet ondersteunen.
+      <p>Indien je graag toegang wenst voor jouw onderwijsinstelling, <a href='mailto:dodona@ugent.be'>neem dan contact met ons op</a>."
+      more_info: Meer info over Dodona
+      smartschool: 'Smartschool'
+      office365: 'Office 365'
+      unknown: 'onbekende'

@@ -5,7 +5,8 @@
   <div class='footer-spacer'></div>
   <div class="footer-block">
     <div class='footer-version'>
-      Dodona <%= Dodona::Application::VERSION %>
+    <%= link_to 'Contact', contact_path %>
+    <%= link_to "Dodona #{Dodona::Application::VERSION}", about_path %>
     </div>
   </div>
 </footer>

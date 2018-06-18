@@ -2,7 +2,7 @@ nl:
   pages:
     sign_in_page:
       select-institution: "Selecteer je onderwijsinstelling"
-    static_home:
+    about:
       intro: "De Dodona-leeromgeving bevat honderden programmeeroefeningen die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen. Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl. Inloggen kan je met je UGent-gebruikersnaam en wachtwoord. Dodona is nog volop in ontwikkeling, eventuele bugs mogen dus zeker gemeld worden op het Minerva forum of aan de assistenten."
       sign-in: Aanmelden
       dodona-title: "Wie of wat is Dodona?"

@@ -2,6 +2,7 @@ class PagesController < ApplicationController
   def home
     @title = 'Home'
     @user = current_user
+    redirect_to about_path if @user.nil?
   end
 
   def sign_in_page

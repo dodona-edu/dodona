@@ -31,3 +31,8 @@ nl:
       smartschool: 'Smartschool'
       office365: 'Office 365'
       unknown: 'onbekende'
+    contact:
+      title: Contacteer ons
+    create_contact:
+      captcha_failed: reCAPTCHA kon niet geverifieerd worden, probeer opnieuw.
+      mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."

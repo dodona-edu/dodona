@@ -31,3 +31,9 @@ en:
       smartschool: 'Smartschool'
       office365: 'Office 365'
       unknown: 'unknown'
+    contact:
+      title: Get in touch
+    create_contact:
+      mail_sent: "Your message has been sent. Thanks for getting in touch."
+      captcha_failed: reCAPTCHA could not be verified, please try again.
+

@@ -11,4 +11,8 @@ class PagesController < ApplicationController
     end
     @institutions = Institution.all
   end
+
+  def institution_not_supported; end
+
+  def about; end
 end

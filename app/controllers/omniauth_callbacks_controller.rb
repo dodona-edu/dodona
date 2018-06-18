@@ -55,17 +55,28 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  # Tenant ID's of known office365 organisations who should use another sign in method
+  UGENT_TID = 'd7811cde-ecef-496c-8f91-a1786241b99c'.freeze
+  WAREGEM_TID = '9fdf506a-3be0-4f07-9e03-908ceeae50b4'.freeze
+
   def reject_institution!
-    logger.info "OAuth login using #{provider} with identifier #{institution_identifier} rejected (not whitelisted). See below for more info about the request:\n#{request.env['omniauth.auth'].pretty_inspect}"
-
-    ApplicationMailer.with(authinfo: request.env['omniauth.auth']).login_rejected.deliver_later
-
-    if is_navigational_format?
+    if institution_identifier == WAREGEM_TID
+      # College Waregem uses two emails, but we only allow <name>@sgpaulus.eu
       set_flash_message :notice,
                         :failure,
                         kind: provider,
-                        reason: t('devise.omniauth_callbacks.not_whitelisted', identifier: institution_identifier)
+                        reason: 'gebruik je sgpaulus-account (voornaam.naam@sgpaulus.eu) om in te loggen op Dodona'
+      redirect_to sign_in_path
+    elsif institution_identifier == UGENT_TID
+      # If an UGent-user logs in using office365, redirect to saml login
+      redirect_to sign_in_path(idp: 'UGent')
+    else
+      logger.info "OAuth login using #{provider} with identifier #{institution_identifier} rejected (not whitelisted). See below for more info about the request:\n#{request.env['omniauth.auth'].pretty_inspect}"
+
+      ApplicationMailer.with(authinfo: request.env['omniauth.auth']).login_rejected.deliver_later
+
+      session[:provider] = provider
+      redirect_to institution_not_supported_path
     end
-    redirect_to root_path
   end
 end

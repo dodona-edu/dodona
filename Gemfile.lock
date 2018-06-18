@@ -192,6 +192,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
+    mail_form (1.7.1)
+      actionmailer (>= 3.2, < 6)
+      activemodel (>= 3.2, < 6)
     metaclass (0.0.4)
     method_source (0.9.0)
     mini_mime (1.0.0)
@@ -286,6 +289,8 @@ GEM
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
     rb-readline (0.5.5)
+    recaptcha (4.8.0)
+      json
     ref (2.0.0)
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
@@ -393,6 +398,7 @@ DEPENDENCIES
   less-rails (~> 3.0)
   letter_opener
   listen (>= 3.0.5, < 3.2)
+  mail_form
   minitest-utils
   mocha
   mysql2 (>= 0.3.18, < 0.5)
@@ -409,6 +415,7 @@ DEPENDENCIES
   rails-i18n
   rails_server_timings
   rb-readline
+  recaptcha
   rouge (= 1.10.1)
   rubocop
   rubyzip

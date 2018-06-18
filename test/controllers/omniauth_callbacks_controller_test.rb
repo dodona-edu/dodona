@@ -82,7 +82,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     end
     assert_enqueued_jobs 1 # an email should be sent
 
-    assert_redirected_to root_path
+    assert_redirected_to institution_not_supported_path
     assert_nil @controller.current_user
   end
 

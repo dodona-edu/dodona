@@ -1,6 +1,6 @@
 module ApplicationHelper
-  def drawer_group(items)
-    render partial: 'layouts/drawer_group', locals: { items: items }
+  def drawer_group(options)
+    render partial: 'layouts/drawer_group', locals: options
   end
 
   def clipboard_button_for(selector)

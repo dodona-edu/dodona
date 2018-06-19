@@ -2,16 +2,6 @@
   <%= javascript_pack_tag 'course' %>
 <% end %>
 <%= render partial: 'navigation_drawer' %>
-<%= content_for :drawer do %>
-  <div class="drawer-group">
-    <h1>Reeksen</h1>
-    <ul class="drawer-list">
-      <li>
-        <a class="drawer-list-item" href="#reeksx">Reeks 1</a>
-      </li>
-    </ul>
-  </div>
-<% end %>
 
 <div class="row">
   <%= link_to '#series', class: "btn btn-lg btn-down col-sm-1 hidden-xs", title: t('.series') do %>

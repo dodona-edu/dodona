@@ -1,4 +1,5 @@
 aside.drawer {
+  .shadow-z5();
   position: fixed;
   height: 100%;
   width: 240px;
@@ -16,18 +17,26 @@ nav.drawer-nav {
   display: inline-flex;
   flex-direction: column;
   width: 240px;
-  overflow: hidden;
+  padding-bottom: 130px;
   touch-action: none;
 }
 
 .drawer-group {
-  padding: 8px;
+  padding: 8px 8px 8px 0;
   border-bottom: 1px solid @grey-300;
+}
+.drawer-group-scrollable {
+  overflow-y: auto;
+}
+
+h1.drawer-group-title {
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 16px;
+  color: @black-secondary;
 }
 
 ul.drawer-list {
-  font-size: 1rem;
-  font-weight: 400;
   letter-spacing: 0.04em;
   text-decoration: inherit;
   text-transform: inherit;
@@ -40,7 +49,7 @@ ul.drawer-list {
 
 a.drawer-list-item {
     &.active {
-      color: @black-text;
+      font-weight: 400;
       background: @grey-200;
     }
 
@@ -48,25 +57,21 @@ a.drawer-list-item {
       background: @grey-100;
     }
 
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     font-size: 16px;
-    font-weight: 500;
     letter-spacing: 0.04em;
     line-height: 1.5rem;
-    text-decoration: inherit;
     text-transform: inherit;
     position: relative;
     padding: 0 16px;
     outline: none;
-    color: inherit;
+    color: @black-text;
     text-decoration: none;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     height: 48px;
 
     span {

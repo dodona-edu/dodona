@@ -1,5 +1,5 @@
 <% content_for :drawer do %>
-  <div class="drawer-group">
+  <div class="drawer-group <%='drawer-group-scrollable' if scrollable %>">
     <% if defined?(title) %>
       <h1 class="drawer-group-title"><%= title %></h1>
     <% end %>
@@ -9,7 +9,8 @@
         <li>
           <%= link_to item[:url],
             class: "drawer-list-item #{'active' if current}",
-            id: "drawer-item-#{id}" do %>
+            id: "drawer-item-#{id}",
+            title: item[:text] do %>
             <span class="glyphicon glyphicon-<%= item[:icon] %>">
             </span>
             <%= item[:text].capitalize %>

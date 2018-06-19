@@ -1,5 +1,6 @@
 module ApplicationHelper
   def drawer_group(options)
+    options = { scrollable: false }.merge(options)
     render partial: 'layouts/drawer_group', locals: options
   end
 

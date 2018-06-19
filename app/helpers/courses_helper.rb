@@ -4,7 +4,7 @@ module CoursesHelper
       [series.name.to_sym,
        {
          text: series.name,
-         url: "#series-#{series.name.parameterize}"
+         url: '#' + series.anchor
        }]
     end
     drawer_group title: 'Reeksen', items: items.to_h

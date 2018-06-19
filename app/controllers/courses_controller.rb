@@ -25,8 +25,9 @@ class CoursesController < ApplicationController
                        else
                          5
                        end
-    @series = @series.limit(number_of_series) unless params[:all]
+
     @series = @series.offset(params[:offset]) if params[:offset]
+    @series = @series.limit(number_of_series) unless params[:all]
   end
 
   # GET /courses/new

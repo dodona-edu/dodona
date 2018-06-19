@@ -64,13 +64,46 @@ function initCourseShow(_seriesShown, _seriesTotal, _autoLoad) {
     function init() {
         $(".load-more-series").click(loadMoreSeries);
         $(window).scroll(scroll);
+        gotoHashSeries();
+        window.addEventListener("hashchange", gotoHashSeries);
     }
 
-    function loadMoreSeries() {
+    function gotoHashSeries() {
+      const hash = window.location.hash;
+
+      if($(hash).length > 0){
+        // The current series is already loaded
+        // and we should have scrolled to it
+        return;
+      }
+
+      const hashSplit = hash.split('-');
+      const seriesId = +hashSplit[1];
+
+      if (hashSplit[0] === '#series' && !isNaN(seriesId)){
         loading = true;
         autoLoad = true;
         $(".load-more-series").button("loading");
-        $.get("?format=js&offset=" + seriesShown)
+        $.get(`?format=js&offset=${seriesShown}&series=${seriesId}`)
+          .done(() => {
+            seriesShown = $(".series").length;
+            $(hash)[0].scrollIntoView();
+          })
+          .always(() => {
+            loading = false;
+            $(".load-more-series").button("reset");
+          });
+      }
+    }
+
+    function loadMoreSeries() {
+        if(loading){
+          return;
+        }
+        loading = true;
+        autoLoad = true;
+        $(".load-more-series").button("loading");
+        $.get(`?format=js&offset=${seriesShown}`)
             .done(() => {
                 seriesShown += perBatch;
                 if (seriesShown >= seriesTotal) {

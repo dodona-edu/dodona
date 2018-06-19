@@ -37,6 +37,10 @@ class Series < ApplicationRecord
     self.visibility ||= 'open'
   end
 
+  def anchor
+    "series-#{id}-#{name.parameterize}"
+  end
+
   def deadline?
     deadline.present?
   end

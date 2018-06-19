@@ -1,4 +1,15 @@
 module CoursesHelper
+  def series_drawer_group(course)
+    items = course.series.map do |series|
+      [series.name.to_sym,
+       {
+         text: series.name,
+         url: "#series-#{series.name.parameterize}"
+       }]
+    end
+    drawer_group title: 'Reeksen', items: items.to_h
+  end
+
   def registration_action_for(**args)
     course = args[:course]
     raise 'Course must be given' unless course

@@ -1,32 +1,21 @@
 <% content_for :drawer do %>
-<%= javascript_pack_tag 'drawer' %>
-  <nav class="drawer-group">
+  <div class="drawer-group">
+    <% if defined?(title) %>
+      <h1 class="drawer-group-title"><%= title %></h1>
+    <% end %>
     <ul class="drawer-list">
       <% items.each do |id, item| %>
         <% current = current_page?(item[:url]) %>
-          <li>
-          <% if item.key?(:url)%>
-            <%= link_to item[:url],
-              class: "drawer-list-item #{'active' if current}",
-                "data-toggle":"tabb",
-                id: "drawer-item-#{id}" do %>
-               <span class="glyphicon glyphicon-<%= item[:icon] %>">
-               </span>
-               <%= item[:text].capitalize %>
-               <% end %>
-
-          <%  elsif item.key?(:group) %>
-          <%= link_to "#"+item[:group],
-            class: "drawer-list-item",
-              "data-toggle":"tabb",
-              id: "drawer-item-#{id}" do %>
-             <span class="glyphicon glyphicon-<%= item[:icon] %>">
-             </span>
-             <%= item[:text].capitalize %>
-             <% end %>
-        <% end %>
-      </li>
+        <li>
+          <%= link_to item[:url],
+            class: "drawer-list-item #{'active' if current}",
+            id: "drawer-item-#{id}" do %>
+            <span class="glyphicon glyphicon-<%= item[:icon] %>">
+            </span>
+            <%= item[:text].capitalize %>
+          <% end %>
+        </li>
       <% end %>
     </ul>
-  </nav>
+  </div>
 <% end %>

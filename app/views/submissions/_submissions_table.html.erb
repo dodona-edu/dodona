@@ -1,3 +1,4 @@
+<div class="table-scroll-wrapper">
 <table class="table">
   <thead>
     <tr>
@@ -18,5 +19,6 @@
     <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course]} %>
   </tbody>
 </table>
+</div>
 
 <center><%= page_navigation_links submissions, true, 'submissions', {exercise_id: exercise.try(:id)} %></center>

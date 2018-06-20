@@ -1,20 +1,22 @@
 <% drawer_group \
   items: {
     series: {
+      if: policy(@course).show?,
       icon: 'eye-open',
       text: t('courses.drawer.overview'),
       url: course_path(@course)
     },
     edit: {
+      if: policy(@course).edit?,
       icon: 'edit',
       text: t('courses.drawer.edit'),
       url: edit_course_path(@course)
     },
     users: {
+      if: policy(@course).members?,
       icon: 'user',
       text: t('courses.drawer.users'),
       url: members_course_path(@course)
     }
-  }
-  %>
-<%= series_drawer_group(@course) %>
+  } if policy(@course).admin_drawer? %>
+<%= series_drawer_group(@course) if policy(@course).show_series? %>

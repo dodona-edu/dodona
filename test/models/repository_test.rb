@@ -90,4 +90,25 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       @repository.commit 'vandalize echo config'
     end
   end
+
+  test 'should detect deleted exercise' do
+    skip
+    @remote.remove_dir(@echo.path)
+    @remote.commit('remove exercise')
+    @repository.reset
+    @repository.process_exercises
+    assert_equal :removed, @echo.reload.status
+  end
+
+  test 'should detect moved exercise' do
+    skip
+    new_dir = 'echo2'
+    @remote.rename_dir(@echo.path, new_dir)
+    @remote.commit('move exercise')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'ok', @echo.status
+    assert_equal new_dir, @echo.path
+  end
 end

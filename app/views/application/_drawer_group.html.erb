@@ -5,17 +5,19 @@
     <% end %>
     <ul class="drawer-list">
       <% items.each do |id, item| %>
-        <% current = current_page?(item[:url]) %>
-        <li>
-          <%= link_to item[:url],
-            class: "drawer-list-item #{'active' if current}",
-            id: "drawer-item-#{id}",
-            title: item[:text] do %>
-            <span class="glyphicon glyphicon-<%= item[:icon] %>">
-            </span>
-            <%= item[:text].capitalize %>
-          <% end %>
-        </li>
+        <% if item[:if].nil? || item[:if] == true %>
+          <% current = current_page?(item[:url]) %>
+          <li>
+            <%= link_to item[:url],
+              class: "drawer-list-item #{'active' if current}",
+              id: "drawer-item-#{id}",
+              title: item[:text] do %>
+              <span class="glyphicon glyphicon-<%= item[:icon] %>">
+              </span>
+              <%= item[:text].capitalize %>
+            <% end %>
+          </li>
+        <% end %>
       <% end %>
     </ul>
   </div>

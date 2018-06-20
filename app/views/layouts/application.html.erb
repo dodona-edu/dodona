@@ -37,14 +37,15 @@
     <div id="page-wrapper">
       <%= render 'layouts/navbar' %>
       <% if content_for? :drawer %>
-        <aside class="drawer">
+        <aside id="drawer" class="drawer">
           <nav class="drawer-nav">
             <%= yield :drawer %>
+            <%= javascript_pack_tag 'drawer' %>
           </nav>
         </aside>
       <% end %>
       <div id="page-spacer"></div>
-      <div class="container main">
+      <div class="container main <%='container-with-drawer' if content_for? :drawer %>">
         <div class="page-messages hidden-print">
           <% flash.each do |key, value| %>
             <% unless value.nil? %>

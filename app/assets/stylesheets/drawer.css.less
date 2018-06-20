@@ -6,7 +6,20 @@ aside.drawer {
   pointer-events: auto;
   background: #fff;
   z-index: 2;
+
 }
+@media (max-width: @screen-lg) {
+  aside.drawer {
+    transition: .3s;
+    left: -240px;
+  }
+
+  aside.drawer.active {
+    transition: .3s;
+    left: 0;
+  }
+}
+
 
 nav.drawer-nav {
   border-left: 0;

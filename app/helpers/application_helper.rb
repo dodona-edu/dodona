@@ -1,7 +1,7 @@
 module ApplicationHelper
   def drawer_group(options)
     options = { scrollable: false }.merge(options)
-    render partial: 'layouts/drawer_group', locals: options
+    render partial: 'drawer_group', locals: options
   end
 
   def clipboard_button_for(selector)

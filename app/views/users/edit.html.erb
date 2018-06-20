@@ -20,6 +20,7 @@
             <%= render 'api_tokens/form', user: @user %>
           </div>
           <h5><%= t '.active_tokens' %></h5>
+          <div class="table-scroll-wrapper">
           <table class="table">
             <thead>
               <tr>
@@ -32,6 +33,7 @@
               <%= render 'api_tokens/list', user: @user %>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>

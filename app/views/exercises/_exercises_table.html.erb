@@ -4,6 +4,7 @@
      series: local_assigns[:series],
      exercises: local_assigns[:exercises]) %>
 
+<div class="table-scroll-wrapper">
 <table class="table exercise-table">
   <thead>
     <tr>
@@ -59,4 +60,5 @@
     <% end %>
   </tbody>
 </table>
+</div>
 <center><%= page_navigation_links exercises, true, "exercises" if exercises.try(:total_pages) %></center>

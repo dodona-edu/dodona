@@ -1,7 +1,14 @@
+.table-scroll-wrapper {
+  overflow-x: auto;
+}
 .table-resource .actions {
     text-align: right;
 }
 .table.table-resource td {
+    max-width: 33vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     vertical-align: middle;
     form {
       display: inline;

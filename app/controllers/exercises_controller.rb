@@ -1,5 +1,6 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: %i[show edit update media]
+  before_action :set_course, only: %i[show edit]
   before_action :ensure_trailing_slash, only: :show
   skip_before_action :verify_authenticity_token, only: [:media]
 
@@ -24,7 +25,6 @@ class ExercisesController < ApplicationController
   def show
     flash.now[:notice] = I18n.t('exercises.show.not_accessible') if @exercise.closed?
     flash.now[:notice] = I18n.t('exercises.show.not_visible') if @exercise.hidden? && policy(@exercise).edit?
-    @course = Course.find_by(id: params[:course_id])
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     @submissions = @exercise.submissions
     @submissions = @submissions.in_course(@course) unless @course.nil?
@@ -67,5 +67,11 @@ class ExercisesController < ApplicationController
   def set_exercise
     @exercise = Exercise.find(params[:id])
     authorize @exercise
+  end
+
+  def set_course
+    return if params[:course_id].nil?
+    @course = Course.find(params[:course_id])
+    authorize @course
   end
 end

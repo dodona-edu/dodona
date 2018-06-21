@@ -12,12 +12,22 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  entity_id   :string(255)
+#  provider    :integer
+#  identifier  :string(255)
 #
 
 require 'test_helper'
 
 class InstitutionTest < ActiveSupport::TestCase
-  test 'factory' do
-    create :institution
+  test 'saml factory' do
+    create :saml_institution
+  end
+
+  test 'smartschool factory' do
+    create :smartschool_institution
+  end
+
+  test 'office365 factory' do
+    create :office365_institution
   end
 end

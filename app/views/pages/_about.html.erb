@@ -7,11 +7,17 @@
         <div class="row v-align">
           <div class="col-xs-7 col-sm-8">
             <h2 class="card-title-text">Dodona</h2>
-            <p><%= t ".intro" %></p>
+            <p><%= t ".intro_html" %></p>
           </div>
+          <% if user_signed_in? %>
+            <div class="hidden-xs col-sm-4 sign-in-wrapper">
+              <img src="/icon.png" alt="Dodona icon"></img>
+            </div>
+          <% else %>
           <div class="col-xs-5 col-sm-4 sign-in-wrapper">
             <%= link_to t(".sign-in"), sign_in_path, class: 'btn btn-primary btn-lg' %>
           </div>
+          <% end %>
         </div>
       </div>
       <div class="card-supporting-text card-border row">

@@ -1,3 +1,4 @@
+// Drawer
 aside.drawer {
   .shadow-z5();
   position: fixed;
@@ -6,8 +7,9 @@ aside.drawer {
   pointer-events: auto;
   background: #fff;
   z-index: 2;
-
 }
+
+// Let drawer slide in on smaller screens
 @media (max-width: @screen-lg) {
   aside.drawer {
     transition: .3s;
@@ -19,7 +21,6 @@ aside.drawer {
     left: 0;
   }
 }
-
 
 nav.drawer-nav {
   border-left: 0;
@@ -38,6 +39,7 @@ nav.drawer-nav {
   padding: 8px 8px 8px 0;
   border-bottom: 1px solid @grey-300;
 }
+
 .drawer-group-scrollable {
   overflow-y: auto;
 }
@@ -61,34 +63,34 @@ ul.drawer-list {
 }
 
 a.drawer-list-item {
-    &.active {
-      font-weight: 400;
-      background: @grey-200;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  line-height: 1.5rem;
+  text-transform: inherit;
+  position: relative;
+  padding: 0 16px;
+  outline: none;
+  color: @black-text;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 48px;
 
-    &:hover,&:focus {
-      background: @grey-100;
-    }
+  &.active {
+    font-weight: 400;
+    background: @grey-200;
+  }
 
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 16px;
-    letter-spacing: 0.04em;
-    line-height: 1.5rem;
-    text-transform: inherit;
-    position: relative;
-    padding: 0 16px;
-    outline: none;
-    color: @black-text;
-    text-decoration: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    height: 48px;
+  &:hover,&:focus {
+    background: @grey-100;
+  }
 
-    span {
-      font-size: 20px;
-      margin-right: 24px;
-    }
+  span {
+    font-size: 20px;
+    margin-right: 24px;
+  }
 }

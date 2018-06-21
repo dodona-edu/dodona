@@ -343,14 +343,14 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'admins should be able to list members' do
     with_users_signed_in @admins do |who|
-      get list_members_course_url(@course), xhr: true
+      get members_course_url(@course), xhr: true
       assert_response :success, "#{who} should be able to list members"
     end
   end
 
   test 'not-admins should not be able to list members' do
     with_users_signed_in @not_admins do |who|
-      get list_members_course_url(@course), xhr: true
+      get members_course_url(@course), xhr: true
       assert_response :redirect, "#{who} should not be able to list members"
     end
   end

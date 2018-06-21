@@ -13,7 +13,7 @@ module CoursesHelper
          url: url
        }]
     end
-    drawer_group title: 'Reeksen', items: items.to_h, scrollable: true
+    drawer_group title: t('courses.drawer.series'), items: items.to_h, scrollable: true
   end
 
   def registration_action_for(**args)

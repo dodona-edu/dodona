@@ -52,12 +52,11 @@ function initCourseMembers(){
   initUserTabs();
 }
 
-function initCourseShow(_seriesShown, _seriesTotal, _autoLoad) {
+function initCourseShow(_seriesShown, _seriesTotal) {
     const perBatch = _seriesShown,
           seriesTotal = _seriesTotal;
 
     let seriesShown = _seriesShown,
-        autoLoad = _autoLoad,
         loading = false;
 
 
@@ -82,7 +81,6 @@ function initCourseShow(_seriesShown, _seriesTotal, _autoLoad) {
 
       if (hashSplit[0] === '#series' && !isNaN(seriesId)){
         loading = true;
-        autoLoad = true;
         $(".load-more-series").button("loading");
         $.get(`?format=js&offset=${seriesShown}&series=${seriesId}`)
           .done(() => {
@@ -101,7 +99,6 @@ function initCourseShow(_seriesShown, _seriesTotal, _autoLoad) {
           return;
         }
         loading = true;
-        autoLoad = true;
         $(".load-more-series").button("loading");
         $.get(`?format=js&offset=${seriesShown}`)
             .done(() => {
@@ -121,9 +118,6 @@ function initCourseShow(_seriesShown, _seriesTotal, _autoLoad) {
             return;
         }
         if (seriesShown >= seriesTotal) {
-            return;
-        }
-        if (!autoLoad) {
             return;
         }
 

@@ -1,0 +1,20 @@
+<% drawer_group \
+  items: {
+    overview: {
+      if: policy(@exercise).show?,
+      icon: 'eye-open',
+      text: t('exercises.drawer.overview'),
+      url: @course ? course_exercise_path(@course, @exercise) : exercise_path(@exercise)
+    },
+    edit: {
+      if: policy(@exercise).edit?,
+      icon: 'edit',
+      text: t('exercises.drawer.edit'),
+      url: @course ? edit_course_exercise_path(@course, @exercise) : edit_exercise_path(@exercise)
+    },
+    submissions: {
+      icon: 'inbox',
+      text: t('exercises.drawer.submissions'),
+      url: @course ? course_exercise_submissions_path(@course, @exercise) : exercise_submissions_path(@exercise)
+    }
+  } %>

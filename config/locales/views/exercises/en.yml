@@ -1,5 +1,10 @@
 en:
   exercises:
+    drawer:
+      overview: Overview
+      edit: Edit
+      submit: Submit
+      submissions: Submissions
     exercise:
       count_tooltip: number of students that solved this exercise correctly
       correct: correct

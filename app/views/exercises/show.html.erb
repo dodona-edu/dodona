@@ -3,6 +3,7 @@
   <%= javascript_pack_tag 'submission' %>
   <%= javascript_pack_tag 'pythia_submission' if @exercise.judge.renderer == PythiaRenderer %>
 <% end %>
+<%= render partial: 'navigation_drawer' %>
 
 <div class="row">
   <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>

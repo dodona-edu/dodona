@@ -12,7 +12,19 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  entity_id   :string(255)
+#  provider    :integer
+#  identifier  :string(255)
 #
 
 class Institution < ApplicationRecord
+  enum provider: %i[smartschool office365 saml]
+
+  validates :identifier, uniqueness: { allow_blank: true }
+  validates :logo, :short_name, :provider, presence: true
+  validates :sso_url, :slo_url, :certificate, :entity_id, presence: true, if: :saml?
+
+  # If the whitelist dissapears, this should create a new institution
+  def self.from_identifier(identifier)
+    find_by(identifier: identifier) if identifier.present?
+  end
 end

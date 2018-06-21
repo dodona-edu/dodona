@@ -73,9 +73,11 @@ class User < ApplicationRecord
            source: :course
 
   devise :saml_authenticatable
+  devise :omniauthable, omniauth_providers: %i[smartschool office365]
 
-  validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
-  validates :email, uniqueness: { case_sensitive: false, allow_blank: false }
+  validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
+  validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
+  validate :email_only_blank_if_smartschool
 
   before_save :set_token
   before_save :set_time_zone
@@ -84,6 +86,12 @@ class User < ApplicationRecord
   scope :by_name, ->(name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
 
   scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
+
+  def email_only_blank_if_smartschool
+    if email.blank? && !institution&.smartschool?
+      errors.add(:email, 'should not be blank when intitution does not use smartschool')
+    end
+  end
 
   def full_name
     name = (first_name || '') + ' ' + (last_name || '')
@@ -161,6 +169,16 @@ class User < ApplicationRecord
     Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
   end
 
+  def self.from_omniauth(auth, institution)
+    raise 'Institution should not be nil' if institution.nil?
+    where(username: auth.uid, institution: institution).first_or_create do |user|
+      user.email = auth.info.email
+      user.first_name = auth.info.first_name
+      user.last_name = auth.info.last_name
+      user.institution = institution
+    end
+  end
+
   private
 
   def set_token
@@ -172,6 +190,6 @@ class User < ApplicationRecord
   end
 
   def set_time_zone
-    self.time_zone = 'Seoul' if email.match?(/ghent.ac.kr$/)
+    self.time_zone = 'Seoul' if email&.match?(/ghent.ac.kr$/)
   end
 end

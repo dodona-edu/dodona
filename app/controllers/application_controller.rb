@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :store_current_location,
-                except: %i[media sign_in_page],
+                except: %i[media sign_in_page institution_not_supported],
                 unless: -> { devise_controller? || remote_request? }
 
   before_action :set_locale
@@ -29,8 +29,14 @@ class ApplicationController < ActionController::Base
   end
 
   Warden::Manager.after_authentication do |user, auth, _opts|
-    idp = Institution.find_by(short_name: auth.env['rack.session'][:current_idp])
-    user.update(institution: idp)
+    if user.institution.nil?
+      idp = Institution.find_by(short_name: auth.env['rack.session'][:current_idp])
+      user.update(institution: idp)
+    end
+    if user.email.blank? && !user.institution&.smartschool?
+      raise "User with id #{user.id} should not have a blank email " \
+            'if the provider is not smartschool'
+    end
   end
 
   protected

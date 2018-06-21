@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   root 'pages#home'
 
   match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
@@ -8,6 +8,12 @@ Rails.application.routes.draw do
 
   scope '(:locale)', locale: /en|nl/ do
     get '/sign_in(/:idp)' => 'pages#sign_in_page', as: 'sign_in'
+
+    get '/institution_not_supported' => 'pages#institution_not_supported'
+    get '/about' => 'pages#about'
+
+    get '/contact' => 'pages#contact'
+    post '/contact' => 'pages#create_contact', as: 'create_contact'
 
     concern :mediable do
       member do

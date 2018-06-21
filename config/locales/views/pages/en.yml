@@ -2,8 +2,8 @@ en:
   pages:
     sign_in_page:
       select-institution: "Please select your institution"
-    static_home:
-      intro: "The Dodona environment contains dozens of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with your Ghent University credentials. Dodona is still in active development, any bug report on the Minerva forum or to the teaching assistants would certainly be appreciated."
+    about:
+      intro_html: "The Dodona environment contains dozens of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with your Ghent University credentials. Dodona is still in active development, any bug report or suggestion is welcome trough the <a href='/contact'>contact form</a>."
       sign-in: Sign in
       dodona-title: "Who or what is Dodona?"
       dodona-text_html: "Dodona is a place in Greece, located in a peaceful, green valley on the eastern slope of the mountain Tomaros in the historical region of Epirus. The oracle of Dodona was dedicated to Zeus <span class='hidden-xs'>(pictured left)</span> and the mother goddess Dione. It was, according to Herodotus, the oldest oracle of ancient Greece, possibly dating back to the second millennium BC."
@@ -23,3 +23,18 @@ en:
       title: Hi there,
       text: It looks like you're new here. To get started, register for a course.
       action: view courses
+    institution_not_supported:
+      title: Sorry, but we could not sign you in
+      get_in_touch: Get in touch
+      explanation_html: "<p>You tried to sign in using an %{provider} account from which we do not support the educational institution.
+      <p>If you would like your institution to use Dodona, please get in touch."
+      more_info: More info about Dodona
+      smartschool: 'Smartschool'
+      office365: 'Office 365'
+      unknown: 'unknown'
+    contact:
+      title: Get in touch
+    create_contact:
+      mail_sent: "Your message has been sent. Thanks for getting in touch."
+      captcha_failed: reCAPTCHA could not be verified, please try again.
+

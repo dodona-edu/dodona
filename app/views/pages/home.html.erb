@@ -1,5 +1,5 @@
 <% if user_signed_in? %>
   <%= render 'dynamic_home' %>
 <% else %>
-  <%= render 'static_home' %>
+  <%= render partial: 'about' %>
 <% end %>

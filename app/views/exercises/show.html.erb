@@ -82,6 +82,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    dodona.initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id || "null" %>);
+    dodona.initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= current_user&.id || 'null' %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id || "null" %>);
   });
 </script>

@@ -9,17 +9,14 @@ aside.drawer {
   z-index: 2;
 }
 
-// Let drawer slide in on smaller screens
-@media (max-width: @screen-lg) {
-  aside.drawer {
-    transition: .3s;
-    left: -240px;
-  }
+aside.drawer {
+  transition: .3s;
+  left: -240px;
+}
 
-  aside.drawer.active {
-    transition: .3s;
-    left: 0;
-  }
+aside.drawer.active {
+  transition: .3s;
+  left: 0;
 }
 
 nav.drawer-nav {

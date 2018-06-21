@@ -45,7 +45,7 @@
         </aside>
       <% end %>
       <div id="page-spacer"></div>
-      <div class="container main <%='container-with-drawer' if content_for? :drawer %>">
+      <div id="main-container" class="container main <%='with-drawer' if content_for? :drawer %>">
         <div class="page-messages hidden-print">
           <% flash.each do |key, value| %>
             <% unless value.nil? %>

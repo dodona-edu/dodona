@@ -37,12 +37,15 @@ body {
   transition: .3s;
 }
 
+// Create some space for the drawer to show
 @media (min-width: @screen-lg) {
-  .container-with-drawer {
-    margin-left: 300px;
+  .with-drawer {
+    transform: translateX(0);
+    transition: .3s;
   }
-  .drawer-toggle {
-      display: none;
+  .with-drawer.drawer-shown {
+    transform: translateX(120px);
+    transition: .3s;
   }
 }
 

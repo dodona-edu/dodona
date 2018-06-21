@@ -20,6 +20,8 @@ if Rails.env.development?
 
   college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.png', provider: :smartschool, identifier: 'https://college-ieper.smartschool.be'
 
+  sint_bavo = Institution.create(name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg', provider: 'office365', identifier: 'a1d4c74b-2a28-46a6-89a5-912641f59eae')
+
   puts 'Creating users'
 
   zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus, institution: ugent

@@ -12,11 +12,13 @@
               class: "drawer-list-item #{'active' if current}",
               id: "drawer-item-#{id}",
               title: item[:text] do %>
-              <% if item[:icon] %>
-                <span class="glyphicon glyphicon-<%= item[:icon] %>">
-                </span>
-              <% end %>
-              <%= item[:text].capitalize %>
+              <div class="drawer-list-ellipsis">
+                <% if item[:icon] %>
+                  <span class="glyphicon glyphicon-<%= item[:icon] %>">
+                  </span>
+                <% end %>
+                <%= item[:text].capitalize %>
+              </div>
             <% end %>
           </li>
         <% end %>

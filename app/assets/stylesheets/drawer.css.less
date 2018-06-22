@@ -69,9 +69,6 @@ a.drawer-list-item {
   outline: none;
   color: @black-text;
   text-decoration: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   height: 42px;
 
   &.active {
@@ -87,4 +84,10 @@ a.drawer-list-item {
     font-size: 18px;
     margin-right: 24px;
   }
+}
+
+.drawer-list-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -55,6 +55,33 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_equal @controller.current_user.email, user.email
   end
 
+  test 'login with smartschool without email should work' do
+    institution = create :smartschool_institution
+    user = build :user, email: nil, institution: institution
+    omniauth_mock_user user
+
+    assert_difference 'User.count', +1 do
+      get user_smartschool_omniauth_authorize_url
+      follow_redirect!
+    end
+
+    assert_equal @controller.current_user.username, user.username
+    assert_nil @controller.current_user.email
+  end
+
+  test 'login with office365 without email should not work' do
+    institution = create :office365_institution
+    user = build :user, email: nil, institution: institution
+    omniauth_mock_user user
+
+    assert_difference 'User.count', 0 do
+      get user_office365_omniauth_authorize_url
+      follow_redirect!
+    end
+
+    assert_nil @controller.current_user
+  end
+
   test 'should not sign in when user tries to sign in with same email from different provider/institution' do
     first_user_insitution = create :smartschool_institution
     first_user = create :user, institution: first_user_insitution

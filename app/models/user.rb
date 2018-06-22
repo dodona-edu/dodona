@@ -166,7 +166,7 @@ class User < ApplicationRecord
   end
 
   # update and return user using an omniauth authentication hash
-  def update_from_oauth!(oauth_hash)
+  def update_from_oauth(oauth_hash)
     auth_inst = Institution.from_identifier(oauth_hash.info.institution)
     tap do |user|
       user.username     = oauth_hash.uid

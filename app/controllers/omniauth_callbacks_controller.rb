@@ -81,7 +81,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def try_login!(user)
     raise 'User should not be nil here' if user.nil?
     if institution_matches?(user)
-      user.update_from_oauth!(oauth_hash)
+      user.update_from_oauth(oauth_hash)
       if user.errors.none?
         sign_in_and_redirect user, event: :authentication
         if is_navigational_format?

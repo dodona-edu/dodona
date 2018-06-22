@@ -40,12 +40,15 @@
         <aside id="drawer" class="drawer">
           <nav class="drawer-nav">
             <%= yield :drawer %>
-            <%= javascript_pack_tag 'drawer' %>
           </nav>
         </aside>
       <% end %>
       <div id="page-spacer"></div>
       <div id="main-container" class="container main <%='with-drawer' if content_for? :drawer %>">
+        <% if content_for? :drawer %>
+          <%# Load drawer pack here, so main container is selected %>
+          <%= javascript_pack_tag 'drawer' %>
+        <% end %>
         <div class="page-messages hidden-print">
           <% flash.each do |key, value| %>
             <% unless value.nil? %>

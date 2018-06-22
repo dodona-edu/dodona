@@ -17,7 +17,7 @@ export default class Drawer {
     // so it can retutn the "false" string, which is truhty
     if(localStorage.getItem("show_drawer") === "true"
        && window.innerWidth > breakpoint_width) {
-      this.show();
+      this.show(false);
     } else {
       this.hide();
     }
@@ -35,17 +35,31 @@ export default class Drawer {
     localStorage.setItem("show_drawer", this.shown);
   }
 
-  show() {
+  show(transition = true) {
     this.shown = true;
     this.$drawer.addClass("active");
     this.$main.addClass("drawer-shown");
+    this.setTransition(transition);
   }
 
-  hide() {
+  hide(transition = true) {
     this.shown = false;
     this.$drawer.removeClass("active");
     this.$main.removeClass("drawer-shown");
+    this.setTransition(transition);
+  }
+
+  setTransition(doTransition){
+    if(doTransition){
+      this.$drawer.addClass("with-transition");
+      this.$main.addClass("with-transition");
+    } else {
+      this.$drawer.removeClass("with-transition");
+      this.$main.removeClass("with-transition");
+    }
   }
 }
 
-$(() => new Drawer());
+// Directly 'start' the drawer, waiting for the document
+// to be loaded makes the drawer 'jump' in
+new Drawer();

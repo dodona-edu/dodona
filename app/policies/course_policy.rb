@@ -57,7 +57,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def update_course_admin_membership?
-    user&.zeus? || (course_admin? && user.admin?)
+    user&.zeus? || course_admin?
   end
 
   def unsubscribe?

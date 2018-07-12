@@ -14,11 +14,17 @@
         <% unless user_signed_in? %>
           <li><%= link_to(t("layout.menu.exercises"), exercises_path) %></li>
         <% else %>
-          <% if current_user.subscribed_courses.empty? %>
-            <li><%= link_to t("layout.menu.courses"), courses_path %></li>
-          <% else %>
-            <% current_user.current_ay_courses.first(3).each do |course| %>
-              <li><%= link_to course.name, course_path(course) %></li>
+          <% if (@course && @course.id && @course.name) %>
+            <li><%= link_to @course.name, course_path(@course.id) %></li>
+          <% end %>
+          <% if (@series && @series.id && @series.name) %>
+            <li><%= link_to @series.name, overview_series_path(@series.id) %></li>
+          <% end %>
+          <% if @exercise %>
+            <% if @course %>
+              <li><%= link_to @exercise.name, course_exercise_path(@course.id, @exercise.id) %></li>
+            <% else %>
+              <li><%= link_to @exercise.name, exercise_path(@exercise.id) %></li>
             <% end %>
           <% end %>
         <% end %>

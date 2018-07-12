@@ -8,7 +8,7 @@ class SeriesController < ApplicationController
   # GET /series.json
   def index
     authorize Series
-    @series = policy_scope(Series)
+    @all_series = policy_scope(Series)
     @title = I18n.t('series.index.title')
   end
 
@@ -21,6 +21,7 @@ class SeriesController < ApplicationController
 
   def overview
     @title = "#{@series.course.name} #{@series.name}"
+    @course = @series.course
   end
 
   # GET /series/new

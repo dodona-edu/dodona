@@ -14,7 +14,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @series.each do |series| %>
+            <% @all_series.each do |series| %>
               <tr>
                 <td><%= link_to series.name, series %></td>
                 <td><%= "#{series.course.name} (#{series.course.formatted_year})" %> </td>

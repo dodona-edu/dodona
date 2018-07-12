@@ -108,11 +108,11 @@
             </div>
           </div>
           <div id="series-listing">
-            <% @series.each do |series| %>
+            <% @all_series.each do |series| %>
               <%= render(partial: 'series/series', locals: {series: series}) %>
             <% end %>
           </div>
-          <% if @total_series > @series.length %>
+          <% if @total_series > @all_series.length %>
             <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
           <% end %>
         </div>
@@ -160,6 +160,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>, <%= !policy(@course).list_members? %>);
+    dodona.initCourseShow(<%= @all_series.length %>, <%= @total_series %>, <%= !policy(@course).list_members? %>);
   });
 </script>

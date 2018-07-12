@@ -21,7 +21,6 @@ require 'securerandom'
 
 class User < ApplicationRecord
   include StringHelper
-  PHOTOS_LOCATION = Rails.root.join('data', 'user_photos').freeze
 
   enum permission: %i[student staff zeus]
 
@@ -110,11 +109,6 @@ class User < ApplicationRecord
     zeus? || admin_of?(course)
   end
 
-  def photo
-    photo = PHOTOS_LOCATION.join((ugent_id || '') + '.jpg')
-    photo if File.file? photo
-  end
-
   def attempted_exercises(course = nil)
     s = submissions
     s = s.in_course(course) if course
@@ -176,10 +170,6 @@ class User < ApplicationRecord
       user.institution  = auth_inst if user.institution.nil?
       user.save
     end
-  end
-
-  def self.default_photo
-    Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
   end
 
   def self.from_institution(auth, institution)

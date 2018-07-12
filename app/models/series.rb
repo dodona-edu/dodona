@@ -31,6 +31,7 @@ class Series < ApplicationRecord
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }
+  scope :by_course_and_exercise, ->(course, exercise) { joins(:series_memberships).where(course_id: course).where(series_memberships: { exercise_id: exercise.id }) }
   default_scope { order(created_at: :desc) }
 
   after_initialize do

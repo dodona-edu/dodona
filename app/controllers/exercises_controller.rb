@@ -26,6 +26,7 @@ class ExercisesController < ApplicationController
     flash.now[:notice] = I18n.t('exercises.show.not_visible') if @exercise.hidden? && policy(@exercise).edit?
     @course = Course.find_by(id: params[:course_id])
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
+    @series = Series.by_course_and_exercise(@course, @exercise).first
     @submissions = @exercise.submissions
     @submissions = @submissions.in_course(@course) unless @course.nil?
     @submissions = policy_scope(@submissions).paginate(page: params[:page])

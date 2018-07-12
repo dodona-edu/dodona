@@ -276,10 +276,23 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'everyone except admin & staff should not be able to promote or fire members' do
+  test 'all course admins should be able to promote or fire members' do
     student_admins = @admins.select(&:student?)
-    group = @not_admins + student_admins
-    with_users_signed_in group do |who|
+    with_users_signed_in student_admins do |who|
+      members_student = create_normies
+      members_admin = create_normies
+      @course.enrolled_members.concat members_student
+      @course.administrating_members.concat members_admin
+      members_student.each do |u|
+        post update_membership_course_url(@course, user: u, status: 'course_admin')
+        assert @course.reload.administrating_members.include?(u), "#{who} should be able to promote members"
+      end
+      members_admin.each do |u|
+        post update_membership_course_url(@course, user: u, status: 'student')
+        assert @course.reload.enrolled_members.include?(u), "#{who} should be able to demote members"
+      end
+    end
+    with_users_signed_in @not_admins do |who|
       members_student = create_normies
       members_admin = create_normies
       @course.enrolled_members.concat members_student
@@ -333,7 +346,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert @course.unsubscribed_members.include?(user)
   end
 
-  test 'unsubscribing user without solutions for course should delete  membership' do
+  test 'unsubscribing user without solutions for course should delete membership' do
     user = @students.first
     sign_in user
 

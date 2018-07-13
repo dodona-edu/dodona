@@ -21,7 +21,7 @@ class CoursesController < ApplicationController
     @all_series = policy_scope(@course.series)
     @total_series = @all_series.count
     number_of_series = if params[:series]
-                         @series.find_index { |s| s.id == params[:series].to_i }.to_i + 3
+                         @all_series.find_index { |s| s.id == params[:series].to_i }.to_i + 3
                        else
                          5
                        end

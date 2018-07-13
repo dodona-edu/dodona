@@ -29,6 +29,8 @@ nl:
       title: Hallo,
       text: Welkom op Dodona! Registreer je voor een cursus om van start te gaan.
       action: verken cursussen
+    pending_courses_card:
+      pending-courses: In afwachting
     institution_not_supported:
       title: Sorry, we konden je niet aanmelden
       get_in_touch: Neem contact op

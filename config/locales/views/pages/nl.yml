@@ -34,6 +34,10 @@ nl:
       unknown: 'onbekende'
     contact:
       title: Contacteer ons
+      name: Naam
+      email: Email
+      subject: Onderwerp
+      message: Bericht
     create_contact:
       captcha_failed: reCAPTCHA kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."

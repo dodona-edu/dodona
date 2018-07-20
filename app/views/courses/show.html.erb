@@ -90,14 +90,14 @@
       <% end %>
     </div>
     <% if policy(@course).show_series? %>
-        <div class="card-subtitle">
+        <div class="page-subtitle">
           <a class="anchor" id="series"></a>
           <h3><%= t ".exercise_series" %></h3>
           <div class="flex-spacer"></div>
-          <div class="card-subtitle-actions">
+          <div>
             <% if policy(@course).add_series? %>
-              <%= link_to new_course_series_path(@course), title: t("series.new.title") do %>
-                <span class='glyphicon glyphicon-plus pull-right'></span>
+              <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn btn-primary btn-fab-extended" do %>
+                <span class='glyphicon glyphicon-plus icon'></span><span class='text'><%= t("series.new.title") %></span>
               <% end %>
             <% end %>
           </div>

@@ -361,6 +361,33 @@ a.btn-fab .glyphicon.glyphicon-arrow-down {
 .btn-fab .glyphicon.glyphicon-send {
     margin-left: -7px;
 }
+.btn-fab-extended {
+    height: 42px;
+    border-radius: 24px;
+    font-size: 14px;
+    line-height: 28px;
+    padding-right: 20px;
+    text-transform: uppercase;
+    .icon {
+        padding-right: 12px;
+    }
+    @media (max-width: 480px) {
+        padding-left: 14px;
+        padding-right: 12px;
+        .text {
+            display: none;
+        }
+        .icon {
+            padding-right: 0;
+        }
+    }
+}
+
+.page-subtitle {
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+}
 
 // info modal
 .modal-info {

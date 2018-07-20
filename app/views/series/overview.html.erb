@@ -10,13 +10,11 @@
         <%= @series.course.name %>
       </h2>
     </div>
-    <div class="card-supporting-text">
-      <%= render partial: 'series/series', locals: {
-            series: @series,
-            get_exercise_path: method(:exercise_anchor)
-          } %>
-    </div>
   </div>
+  <%= render partial: 'series/series', locals: {
+      series: @series,
+      get_exercise_path: method(:exercise_anchor)
+    } %>
   <% summary.exercise_summaries.each do |ex| %>
     <div class="card exercise-description">
       <%= content_tag :a,

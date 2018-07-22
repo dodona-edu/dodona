@@ -1,14 +1,14 @@
 <div class="card home-summary-card">
   <%= link_to course_path(course), class: 'card-title-link' do %>
     <div class="card-title card-colored-accent accent-<%= course.color %>">
-      <% if @user.course_admin? course %> <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><span class='glyphicon glyphicon-education'></span></h2> <% end %>
+      <% if current_user.course_admin? course %> <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><span class='glyphicon glyphicon-education'></span></h2> <% end %>
       <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>
       <h3 class="card-subtitle-text"><%= course.formatted_year %>&nbsp;</h3>
       <h3 class="card-subtitle-text"><%= course.teacher %>&nbsp;</h3>
     </div>
   <% end %>
   <div class="card-supporting-text stats row">
-    <% if @user.course_admin?(course) %>
+    <% if current_user.course_admin?(course) %>
     <div class="col-xs-6">
       <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
         <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
@@ -25,13 +25,13 @@
     <% else %>
       <div class="col-xs-6">
         <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
-          <h1><%= number_with_delimiter @user.submissions.in_course(course).count, delimiter: " " %></h1>
+          <h1><%= number_with_delimiter current_user.submissions.in_course(course).count, delimiter: " " %></h1>
           <%= t ".submissions" %>
         <% end %>
       </div>
       <div class="col-xs-6">
         <%= link_to course_path(course), class: 'card-title-link' do %>
-          <h1><%= number_with_delimiter @user.correct_exercises(course), delimiter: " " %></h1>
+          <h1><%= number_with_delimiter current_user.correct_exercises(course), delimiter: " " %></h1>
           <%= t ".correct-exercises" %>
         <% end %>
       </div>

@@ -1,7 +1,7 @@
 <div class="card home-summary-card user">
-  <%= link_to user_path(@user), class: 'card-title-link' do %>
+  <%= link_to user_path(current_user), class: 'card-title-link' do %>
     <div class="card-title card-title-colored">
-      <h2 class="card-title-text"><%= @user.full_name %></h2>
+      <h2 class="card-title-text"><%= current_user.full_name %></h2>
     </div>
   <% end %>
 
@@ -9,18 +9,18 @@
     <div class="row">
       <div class="col-xs-6">
         <%= link_to submissions_path, class: 'card-title-link' do %>
-          <h1><%= number_with_delimiter @user.submissions.count, delimiter: " " %></h1>
+          <h1><%= number_with_delimiter current_user.submissions.count, delimiter: " " %></h1>
           <%= t ".submissions" %>
         <% end %>
       </div>
       <div class="col-xs-6">
-        <h1><%= number_with_delimiter @user.correct_exercises, delimiter: " " %></h1>
+        <h1><%= number_with_delimiter current_user.correct_exercises, delimiter: " " %></h1>
         <%= t ".correct-exercises" %>
       </div>
     </div>
   </div>
 
-  <% deadlines = @user.homepage_series %>
+  <% deadlines = current_user.homepage_series %>
   <% if deadlines.any? %>
     <div class="card-supporting-text card-border deadlines">
       <h5>Deadlines</h5>
@@ -36,11 +36,11 @@
     </div>
   <% end %>
 
-  <% if @user.submissions.any? %>
+  <% if current_user.submissions.any? %>
     <div class="card-supporting-text card-border recents">
       <h5><%= t ".recent-exercises" %></h5>
-      <% @user.recent_exercises(5).each do |exercise| %>
-        <% submission = exercise.last_submission(@user) %>
+      <% current_user.recent_exercises(5).each do |exercise| %>
+        <% submission = exercise.last_submission(current_user) %>
         <p>
           <%= link_to exercise_submissions_path(submission.exercise), class: 'btn btn-icon pull-right' do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
           <span class='pull-left'><%= submission_status_icon(submission) %></span>

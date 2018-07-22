@@ -1,57 +1,83 @@
 <div class="card home-summary-card">
   <%= link_to course_path(course), class: 'card-title-link' do %>
     <div class="card-title card-colored-accent accent-<%= course.color %>">
-      <% if current_user.course_admin? course %> <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><span class='glyphicon glyphicon-education'></span></h2> <% end %>
+      <% if current_user.course_admin? course %> 
+        <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><span class='glyphicon glyphicon-education'></span></h2>
+          <% if course.hidden? %>
+            <h2 class='card-title-text pull-right' title='<%= t ".course-hidden" %>'><span class="glyphicon glyphicon-eye-close"></span></h2>
+          <% end %>
+          <% if course.closed? %>
+            <h2 class='card-title-text pull-right' title='<%= t ".course-closed" %>'><span class="glyphicon glyphicon-ban-circle"></span></h2>
+          <% end %>
+      <% elsif local_assigns[:show_membership] and current_user.courses.include? course %>
+        <h2 class='card-title-text pull-right' title='<%= t ".course-member" %>'><span class='glyphicon glyphicon-star'></span></h2>
+      <% end %>
       <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>
       <h3 class="card-subtitle-text"><%= course.formatted_year %>&nbsp;</h3>
       <h3 class="card-subtitle-text"><%= course.teacher %>&nbsp;</h3>
     </div>
   <% end %>
   <div class="card-supporting-text stats row">
-    <% if current_user.course_admin?(course) %>
-    <div class="col-xs-6">
-      <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
-        <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
-        <%= t ".submissions" %>
-      <% end %>
-    </div>
-    <div class="col-xs-6">
-      <%= link_to members_course_path(course), class: 'card-title-link' do %>
-          <h1><%= number_with_delimiter course.subscribed_members.count,
-           delimiter: " " %></h1>
-          <%= t ".users" %>
-      <% end %>
-    </div>
-    <% else %>
+    <% if local_assigns[:course_index]%>
       <div class="col-xs-6">
-        <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
-          <h1><%= number_with_delimiter current_user.submissions.in_course(course).count, delimiter: " " %></h1>
-          <%= t ".submissions" %>
-        <% end %>
+        <h1><%= number_with_delimiter course.subscribed_members.count, delimiter: " " %></h1>
+          <%= t ".users" %>
       </div>
       <div class="col-xs-6">
-        <%= link_to course_path(course), class: 'card-title-link' do %>
-          <h1><%= number_with_delimiter current_user.correct_exercises(course), delimiter: " " %></h1>
-          <%= t ".correct-exercises" %>
+        <h1><%= number_with_delimiter course.exercises.count, delimiter: " " %></h1>
+          <%= t ".exercises" %>
+      </div>
+    <% else %>
+      <% if current_user.course_admin?(course) %>
+        <div class="col-xs-6">
+          <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
+            <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
+            <%= t ".submissions" %>
+          <% end %>
+        </div>
+        <div class="col-xs-6">
+          <%= link_to members_course_path(course), class: 'card-title-link' do %>
+            <h1><%= number_with_delimiter course.subscribed_members.count, delimiter: " " %></h1>
+            <%= t ".users" %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="col-xs-6">
+          <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
+            <h1><%= number_with_delimiter current_user.submissions.in_course(course).count, delimiter: " " %></h1>
+            <%= t ".submissions" %>
+          <% end %>
+        </div>
+        <div class="col-xs-6">
+          <%= link_to course_path(course), class: 'card-title-link' do %>
+            <h1><%= number_with_delimiter current_user.correct_exercises(course), delimiter: " " %></h1>
+            <%= t ".correct-exercises" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <% if local_assigns[:show_deadlines] %>
+    <% course_series = course.homepage_series %>
+    <% if course_series.any? %>
+      <div class="card-supporting-text card-border deadlines">
+        <h5>Deadlines</h5>
+        <% course_series.first(3).each do |series| %>
+          <p>
+            <span class='pull-right'>
+              <%= render partial: 'series/human_deadline', locals: { series: series } %>
+            </span>
+            <%= link_to series.name, course_path(course, series: series, anchor: "series-#{series.name.parameterize}"), class: "dynamic-homepage-series-link link-accent-#{course.color}", title: series.name %>
+          </p>
         <% end %>
       </div>
     <% end %>
-  </div>
-  <% course_series = course.homepage_series %>
-  <% if course_series.any? %>
-    <div class="card-supporting-text card-border deadlines">
-      <h5>Deadlines</h5>
-      <% course_series.first(3).each do |series| %>
-        <p>
-          <span class='pull-right'>
-            <%= render partial: 'series/human_deadline', locals: { series: series } %>
-          </span>
-          <%= link_to series.name, course_path(course, series: series, anchor: "series-#{series.name.parameterize}"), class: "dynamic-homepage-series-link link-accent-#{course.color}", title: series.name %>
-        </p>
-      <% end %>
-    </div>
   <% end %>
   <div class="card-actions card-border">
-    <%= link_to t('.go-to-course'), course_path(course), class: 'btn-text pull-right' %>
+    <% if local_assigns[:course_index] and current_user.course_admin? course %>
+      <%= link_to t('.edit-course'), edit_course_path(course), class: 'btn-text pull-right' %>
+    <% else %>
+      <%= link_to t('.go-to-course'), course_path(course), class: 'btn-text pull-right' %>
+    <% end %>
   </div>
 </div>

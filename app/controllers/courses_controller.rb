@@ -11,6 +11,7 @@ class CoursesController < ApplicationController
   def index
     authorize Course
     @courses = policy_scope(Course.all)
+    @grouped_courses = @courses.group_by(&:year)
     @title = I18n.t('courses.index.title')
   end
 

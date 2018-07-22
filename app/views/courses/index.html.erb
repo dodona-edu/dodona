@@ -1,51 +1,29 @@
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t '.title' %></h2>
-        <% if policy(Course).new? %>
-          <div class="card-title-fab">
-            <%= render 'fab_link', url: new_course_path, icon: 'plus' %>
-          </div>
-        <% end %>
-      </div>
-      <div class="card-supporting-text">
-        <table class="table table-index table-resource">
-          <thead>
-            <tr>
-              <th class='status-icon'></th>
-              <th><%= Course.human_attribute_name("name") %></th>
-              <th><%= Course.human_attribute_name("teacher") %></th>
-              <th><%= Course.human_attribute_name("year") %></th>
-              <th><%= t ".users" %></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @courses.each do |course| %>
-              <tr>
-                <td>
-                  <% if course.hidden? %>
-                    <span class="glyphicon glyphicon-eye-close"></span>
-                  <% end %>
-                  <% if course.closed? %>
-                    <span class="glyphicon glyphicon-ban-circle"></span>
-                  <% end %>
-                </td>
-                <td><%= link_to course.name, course %></td>
-                <td><%= course.teacher %></td>
-                <td><%= course.formatted_year %> </td>
-                <td><%= course.subscribed_members.count %> </td>
-                <td class="actions">
-                  <% if policy(course).edit? %>
-                    <%= link_to edit_course_path(course), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
       </div>
     </div>
+    <% @grouped_courses.each do |year, courses| %>
+      <div class="page-subtitle">
+        <h3><%= year %></h3>
+        <div class="flex-spacer"></div>
+        <div>
+          <% if policy(Course).new? && @grouped_courses.keys.first == year %>
+            <%= link_to new_course_path, title: t("courses.new.title"), class: "btn btn-primary btn-fab-extended" do %>
+              <span class='glyphicon glyphicon-plus icon'></span><span class='text'><%= t("courses.new.title") %></span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="row">
+      <% courses.each do |course| %>
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+          <%= render partial: "pages/course_card", locals: {course: course, show_membership: true, course_index: true} %>
+        </div>
+      <% end %>
+      </div>
+    <% end %>
   </div>
 </div>

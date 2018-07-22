@@ -24,7 +24,8 @@
     </div>
     <% @grouped_courses.each do |year, courses| %>
       <div class="page-subtitle">
-        <h3><%= year %></h3>
+        <a class="anchor" id="<%= year.parameterize %>"></a>
+        <h3><%= Course.format_year year %></h3>
         <div class="flex-spacer"></div>
         <div>
           <% if policy(Course).new? && @grouped_courses.keys.first == year %>
@@ -44,6 +45,17 @@
     <% end %>
   </div>
 </div>
+
+<% 
+  items = @grouped_courses.keys.map do |year|
+    [year.to_sym,
+      {
+        text: Course.format_year(year),
+        url: "#" + year.parameterize
+      }]
+  end
+  drawer_group title: t('courses.drawer.year'), items: items.to_h, scrollable: true
+%>
 
 <script type="text/javascript">
   $(function () {

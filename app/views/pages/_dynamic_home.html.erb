@@ -13,7 +13,7 @@
       <% end %>
       <% current_user.subscribed_courses.each do |course| %>
         <div class="col-xs-12 col-sm-12 col-lg-6">
-          <%= render partial: "course_card", locals: {course: course} %>
+          <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
         </div>
       <% end %>
     </div>

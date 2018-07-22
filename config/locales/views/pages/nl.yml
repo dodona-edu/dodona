@@ -14,8 +14,13 @@ nl:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
       go-to-course: Ga naar deze cursus
+      edit-course: Cursus bewerken
       users: Gebruikers
+      exercises: Oefeningen
       course-admin: Cursusbeheerder
+      course-member: Ingeschreven
+      course-hidden: Verborgen cursus
+      course-closed: Gesloten cursus
     user_card:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen

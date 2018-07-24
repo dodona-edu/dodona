@@ -14,3 +14,5 @@ nl:
     copy-fail: Druk Ctrl-C om te kopiëren
     filter-options: Filter opties
     actions: Acties
+    series-exercises-visibility-change-success: Zichtbaarheid van alle oefeningen in de reeks veranderd
+    series-exercises-visibility-change-failed: Zichtbaarheid veranderen mislukt

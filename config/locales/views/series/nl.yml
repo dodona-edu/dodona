@@ -35,6 +35,7 @@ nl:
       indianio-help: Kopieer dit token en plak het in Indianio om Indianio toe te laten oplossingen van studenten te downloaden voor deze reeks.
       access-link: Geheime link
       access-help: Met deze geheime link krijgen studenten toegang tot deze reeks.
+      change-visibility-of-exercises: Zichtbaarheid van oefeningen instellen
     delete:
       title: Reeks verwijderen
       confirm: Bent u zeker dat u deze reeks wilt verwijderen?

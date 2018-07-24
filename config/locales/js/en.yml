@@ -14,3 +14,5 @@ en:
     copy-fail: Press Ctrl-C to copy
     filter-options: Filter options
     actions: Actions
+    series-exercises-visibility-change-success: Visibility of all exercises in series changed
+    series-exercises-visibility-change-failed: Changing visibility of exercises failed

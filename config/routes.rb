@@ -34,6 +34,7 @@ Rails.application.routes.draw do
         post 'mass_rejudge'
         post 'remove_exercise'
         post 'reorder_exercises'
+        post 'change_exercises_visibility'
         post 'reset_token'
       end
     end

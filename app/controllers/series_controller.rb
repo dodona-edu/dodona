@@ -137,6 +137,13 @@ class SeriesController < ApplicationController
     end
   end
 
+  def change_exercises_visibility
+    @visibility = params[:visibility]
+    @series.exercises.each do |exercise|
+      exercise.update(visibility: @visibility)
+    end
+  end
+
   def scoresheet
     @course = @series.course
     @title = @series.name

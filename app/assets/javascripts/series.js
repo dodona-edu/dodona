@@ -7,6 +7,7 @@ function initSeriesEdit() {
         initAddButtons();
         initRemoveButtons();
         initDragAndDrop();
+        initExercisesVisibility();
         // export function
         dodona.seriesEditExercisesLoaded = initAddButtons;
     }
@@ -99,8 +100,32 @@ function initSeriesEdit() {
         showNotification(I18n.t("js.exercise-removed-failed"));
     }
 
+    function initExercisesVisibility() {
+        $("select#exercise_visibility").on("change", function () {
+            let seriesId = $(this).data("series_id");
+            $.post("/series/" + seriesId + "/change_exercises_visibility.js", {
+                visibility: this.value,
+            })
+                .done(function () {
+                    visibilityChanged();
+                })
+                .fail(function () {
+                    visibilityChangeFailed();
+                });
+        });
+    }
+
+    function visibilityChanged() {
+        showNotification(I18n.t("js.series-exercises-visibility-change-success"));
+    }
+
+    function visibilityChangeFailed() {
+        showNotification(I18n.t("js.series-exercises-visibility-change-failed"));
+    }
+
     init();
 }
+
 function initSeriesForm() {
     function init() {
         if (I18n.locale === "nl") {

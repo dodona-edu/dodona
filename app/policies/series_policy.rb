@@ -71,6 +71,10 @@ class SeriesPolicy < ApplicationPolicy
     modify_exercises?
   end
 
+  def change_exercises_visibility?
+    modify_exercises?
+  end
+
   def scoresheet?
     course_admin?
   end

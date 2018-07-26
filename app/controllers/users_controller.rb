@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show edit update destroy impersonate photo token_sign_in]
+  before_action :set_user, only: %i[show edit update destroy impersonate token_sign_in]
 
   has_scope :by_permission
   has_scope :by_name, as: 'filter'
@@ -69,11 +69,6 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url, notice: I18n.t('controllers.destroyed', model: User.model_name.human) }
       format.json { head :no_content }
     end
-  end
-
-  def photo
-    file = @user.photo || User.default_photo
-    send_file file, disposition: 'inline'
   end
 
   def impersonate

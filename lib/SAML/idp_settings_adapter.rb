@@ -1,5 +1,6 @@
 class MyIdPSettingsAdapter
   def self.settings(idp)
+    return {} if idp.nil?
     institution = Institution.find_by(short_name: idp) || Institution.find_by(entity_id: idp)
     return {} if institution.nil?
     {

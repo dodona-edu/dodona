@@ -21,7 +21,6 @@ require 'securerandom'
 
 class User < ApplicationRecord
   include StringHelper
-  PHOTOS_LOCATION = Rails.root.join('data', 'user_photos').freeze
 
   enum permission: %i[student staff zeus]
 
@@ -73,9 +72,11 @@ class User < ApplicationRecord
            source: :course
 
   devise :saml_authenticatable
+  devise :omniauthable, omniauth_providers: %i[smartschool office365]
 
-  validates :username, uniqueness: { case_sensitive: false, allow_blank: true }
-  validates :email, uniqueness: { case_sensitive: false, allow_blank: false }
+  validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
+  validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
+  validate :email_only_blank_if_smartschool
 
   before_save :set_token
   before_save :set_time_zone
@@ -84,6 +85,12 @@ class User < ApplicationRecord
   scope :by_name, ->(name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
 
   scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
+
+  def email_only_blank_if_smartschool
+    if email.blank? && !institution&.smartschool?
+      errors.add(:email, 'should not be blank when intitution does not use smartschool')
+    end
+  end
 
   def full_name
     name = (first_name || '') + ' ' + (last_name || '')
@@ -100,11 +107,6 @@ class User < ApplicationRecord
 
   def course_admin?(course)
     zeus? || admin_of?(course)
-  end
-
-  def photo
-    photo = PHOTOS_LOCATION.join((ugent_id || '') + '.jpg')
-    photo if File.file? photo
   end
 
   def attempted_exercises(course = nil)
@@ -157,8 +159,32 @@ class User < ApplicationRecord
     end
   end
 
-  def self.default_photo
-    Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
+  # update and return user using an omniauth authentication hash
+  def update_from_oauth(oauth_hash)
+    auth_inst = Institution.from_identifier(oauth_hash.info.institution)
+    tap do |user|
+      user.username     = oauth_hash.uid
+      user.email        = oauth_hash.info.email
+      user.first_name   = oauth_hash.info.first_name
+      user.last_name    = oauth_hash.info.last_name
+      user.institution  = auth_inst if user.institution.nil?
+      user.save
+    end
+  end
+
+  def self.from_institution(auth, institution)
+    # try to look up existing users
+    # using username and institution
+    user = find_by(username: auth.uid, institution: institution)
+    # create a new user within the institution
+    # if nothing was found
+    user = new(institution: institution) if user.nil?
+    user
+  end
+
+  def self.from_email(email)
+    return nil if email.blank?
+    find_by(email: email)
   end
 
   private
@@ -172,6 +198,6 @@ class User < ApplicationRecord
   end
 
   def set_time_zone
-    self.time_zone = 'Seoul' if email.match?(/ghent.ac.kr$/)
+    self.time_zone = 'Seoul' if email&.match?(/ghent.ac.kr$/)
   end
 end

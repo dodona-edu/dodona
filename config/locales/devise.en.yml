@@ -26,6 +26,9 @@ en:
       password_change:
         subject: "Password Changed"
     omniauth_callbacks:
+      not_whitelisted: "sorry, but we do not support your educational institution at this moment (identifier: %{identifier})"
+      user_not_created: "user creation failed"
+      unknown_failure: "an unknown failure has occured"
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."
     passwords:

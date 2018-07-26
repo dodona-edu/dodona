@@ -32,18 +32,20 @@ function centerImagesAndTables() {
 }
 
 function initMathJax() {
-    // configure mathjax
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [
-                ["$$", "$$"],
-                ["\\(", "\\)"],
-            ],
-            displayMath: [
-                ["\\[", "\\]"],
-            ],
-        },
-    });
+    // configure MathJax if loaded
+    if (typeof MathJax !== "undefined") {
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [
+                    ["$$", "$$"],
+                    ["\\(", "\\)"],
+                ],
+                displayMath: [
+                    ["\\[", "\\]"],
+                ],
+            },
+        });
+    }
 }
 
 function initExercisesReadonly() {
@@ -189,7 +191,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 if (response.errors.code[0] === "emoji found") {
                     message = I18n.t("js.submission-emoji");
                 }
-            } catch (e) {}
+            } catch (e) { }
         }
         $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
         enableSubmitButton();

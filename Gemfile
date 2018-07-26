@@ -61,6 +61,15 @@ gem 'autoprefixer-rails'
 gem 'devise'
 gem 'devise_saml_authenticatable', '1.3.2'
 
+# omniauth
+gem 'omniauth-oauth2'
+gem 'jwt'
+
+# contact mail form
+gem 'recaptcha', require: 'recaptcha/rails'
+gem 'mail_form'
+
+
 # authorization
 gem 'pundit'
 

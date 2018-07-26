@@ -104,27 +104,26 @@ function initSeriesEdit() {
 function initSeriesForm() {
     function init() {
         if (I18n.locale === "nl") {
-            Flatpickr = Flatpickr || {l10n: {}};
-
-            Flatpickr.l10n.weekdays = {
-                shorthand: ["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"],
-                longhand: ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"],
+            let Dutch = {
+                weekdays: {
+                    shorthand: ["zo", "ma", "di", "wo", "do", "vr", "za"],
+                    longhand: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"],
+                },
+                months: {
+                    shorthand: ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sept", "okt", "nov", "dec"],
+                    longhand: ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"],
+                },
+                firstDayOfWeek: 1,
+                weekAbbreviation: "wk",
+                rangeSeparator: " tot ",
+                scrollTitle: "Scroll voor volgende / vorige",
+                toggleTitle: "Klik om te wisselen",
+                ordinal: function ordinal(nth) {
+                    if (nth === 1 || nth === 8 || nth >= 20) return "ste";
+                    return "de";
+                },
             };
-
-            Flatpickr.l10n.months = {
-                shorthand: ["Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dec"],
-                longhand: ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"],
-            };
-
-            Flatpickr.l10n.firstDayOfWeek = 1;
-
-            Flatpickr.l10n.ordinal = function (nth) {
-                if (nth === 1 || nth === 8 || nth >= 20) {
-                    return "ste";
-                }
-
-                return "de";
-            };
+            flatpickr.localize(Dutch);
         }
         $("#deadline-group").flatpickr();
     }

@@ -1,7 +1,7 @@
 <% get_exercise_path ||= ->(ex) { course_exercise_path series.course_id, ex } %>
 
 <div class="card-subtitle">
-  <a class="anchor" id="series-<%= series.name.parameterize %>"></a>
+  <a class="anchor" name="series-<%= series.name.parameterize %>" id="series-<%= series.id %>"></a>
   <h4><%= series.name %>
     <% if series.deadline? %>
       <% if series.deadline > Time.now %>

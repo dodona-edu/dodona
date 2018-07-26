@@ -34,4 +34,8 @@ FactoryBot.define do
   factory :staff, parent: :user do
     permission :staff
   end
+
+  factory :temporary_user, parent: :user do
+    username nil
+  end
 end

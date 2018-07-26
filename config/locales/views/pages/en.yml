@@ -30,7 +30,7 @@ en:
       text: It looks like you're new here. To get started, register for a course.
       action: view courses
     pending_courses_card:
-      pending-courses: Pending
+      pending-courses: Awaiting approval
     institution_not_supported:
       title: Sorry, but we could not sign you in
       get_in_touch: Get in touch

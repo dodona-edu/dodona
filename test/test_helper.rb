@@ -19,6 +19,8 @@ require 'minitest/utils/rails/locale'
 # Always generate the same testdata
 Faker::Config.random = Random.new(42)
 
+OmniAuth.config.test_mode = true
+
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
   include StubHelper

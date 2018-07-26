@@ -16,6 +16,7 @@ class ExercisePolicy < ApplicationPolicy
   def show?
     return true  if user&.admin?
     return false if record.closed?
+    return false if record.hidden? && !user
     return true  if record.ok?
     return false unless user
     return true  if record.number_of_submissions_for(user).nonzero?

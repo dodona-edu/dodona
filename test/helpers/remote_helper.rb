@@ -41,6 +41,14 @@ class TempRepository < GitRepository
     commit msg
   end
 
+  def rename_dir(from_path, to_path)
+    FileUtils.move(File.join(@path, from_path), File.join(@path, to_path))
+  end
+
+  def remove_dir(dir_path)
+    FileUtils.remove_dir(File.join(@path, dir_path))
+  end
+
   def add_dir(src_path, msg: nil)
     FileUtils.cp_r Dir[src_path + '/*'], @path
     msg ||= "add #{src_path}"

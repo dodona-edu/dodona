@@ -8,17 +8,31 @@
 
 if Rails.env.development?
 
+  puts 'Creating institution'
+
+  ugent = Institution.create name: 'Universiteit Gent (login werkt niet in develop)', short_name: 'UGent', logo: 'UGent.png', sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://ugent.be', provider: :saml
+
+  college_waregem = Institution.create name: 'College Waregem', short_name: 'College Waregem', logo: 'collegewaregem.png', provider: :office365, identifier: '9fdf506a-3be0-4f07-9e03-908ceeae50b4'
+
+  sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'collegewaregem.png', provider: :office365, identifier: 'af15916d-7d77-43f9-b366-ae98d0fe36be'
+
+  slo = Institution.create name: 'SLO Wetenschappen', short_name: 'SLOW', logo: 'ugent.png', provider: :smartschool, identifier: 'https://slow.smartschool.be'
+
+  college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.png', provider: :smartschool, identifier: 'https://college-ieper.smartschool.be'
+
+  sint_bavo = Institution.create(name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg', provider: 'office365', identifier: 'a1d4c74b-2a28-46a6-89a5-912641f59eae')
+
   puts 'Creating users'
 
-  zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus
+  zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus, institution: ugent
 
-  staff = User.create username: 'staff', first_name: 'Stijn', last_name: 'Taff', email: 'stijn.taff@ugent.be', permission: :staff
+  staff = User.create username: 'staff', first_name: 'Stijn', last_name: 'Taff', email: 'stijn.taff@ugent.be', permission: :staff, institution: ugent
 
-  jelix = User.create username: 'jvdrfeu', first_name: 'Jelix', last_name: 'Vanderfeught', email: 'jelix.vanderfeught@ugent.be', permission: :student
+  jelix = User.create username: 'jvdrfeu', first_name: 'Jelix', last_name: 'Vanderfeught', email: 'jelix.vanderfeught@ugent.be', permission: :student, institution: ugent
 
-  mart = User.create username: 'mbesuere', first_name: 'Mart', last_name: 'Besuere', email: 'mart.besuere@ugent.be', permission: :student
+  mart = User.create username: 'mbesuere', first_name: 'Mart', last_name: 'Besuere', email: 'mart.besuere@ugent.be', permission: :student, institution: ugent
 
-  student = User.create username: 'rbmaerte', first_name: 'Rien', last_name: 'Maertens', email: 'rien.maertens@ugent.be', permission: :student
+  student = User.create username: 'rbmaerte', first_name: 'Rien', last_name: 'Maertens', email: 'rien.maertens@ugent.be', permission: :student, institution: ugent
 
   students = Array.new(500) do
     first_name = Faker::Name.first_name
@@ -29,7 +43,8 @@ if Rails.env.development?
                 username: username,
                 ugent_id: Faker::Number.number(8).to_s,
                 email: "#{first_name}.#{last_name}.#{username}@UGent.BE".downcase,
-                permission: :student
+                permission: :student,
+                institution: ugent
   end
 
   puts 'Creating courses'

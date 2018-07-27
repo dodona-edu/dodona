@@ -10,25 +10,7 @@
       <%= link_to "Dodona", root_path, class: "navbar-brand" %>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <% unless user_signed_in? %>
-          <li><%= link_to(t("layout.menu.exercises"), exercises_path) %></li>
-        <% else %>
-          <% if (@course && @course.id && @course.name) %>
-            <li><%= link_to @course.name, course_path(@course.id) %></li>
-          <% end %>
-          <% if (@series && @series.id && @series.name) %>
-            <li><%= link_to @series.name, overview_series_path(@series.id) %></li>
-          <% end %>
-          <% if @exercise %>
-            <% if @course %>
-              <li><%= link_to @exercise.name, course_exercise_path(@course.id, @exercise.id) %></li>
-            <% else %>
-              <li><%= link_to @exercise.name, exercise_path(@exercise.id) %></li>
-            <% end %>
-          <% end %>
-        <% end %>
-      </ul>
+      <%= render 'layouts/breadcrumbs' %>
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
           <% if current_user.admin? %>

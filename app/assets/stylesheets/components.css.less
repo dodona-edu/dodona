@@ -584,3 +584,20 @@ a.anchor {
 .callout-info h4 {
     color: @info-500;
 }
+/* breadcrumbs */
+.crumbs {
+    li+li::before {
+        content: ">";
+        display: block;
+        float: left;
+        padding-top: 15px;
+        color: @white-secondary;
+    }
+    li a.crumb {
+        float: left;
+        color: @white-secondary;
+    }
+    li:last-child a.crumb {
+        color: @white-text;
+    }
+}

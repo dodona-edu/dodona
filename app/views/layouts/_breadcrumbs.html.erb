@@ -1,0 +1,15 @@
+<%
+    if @crumbs.nil? && @title.present?
+        @crumbs = [[@title, "#"]]
+    end
+%>
+
+<ul class="nav navbar-nav crumbs">
+    <% if !user_signed_in? %>
+        <li><%= link_to(t("layout.menu.exercises"), exercises_path) %></li>
+    <% elsif @crumbs.present? %>
+        <% @crumbs.each do |name, path| %>
+            <li><%= link_to name, path, class: "crumb" %></li>
+        <% end %>
+    <% end %>
+</ul>

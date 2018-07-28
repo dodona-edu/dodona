@@ -16,6 +16,7 @@ class RepositoriesController < ApplicationController
   # GET /repositories/1.json
   def show
     @title = @repository.name
+    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, "#"]]
   end
 
   # GET /repositories/new
@@ -23,11 +24,13 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new
     @title = I18n.t('repositories.new.title')
+    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [I18n.t('repositories.new.title'), "#"]]
   end
 
   # GET /repositories/1/edit
   def edit
     @title = @repository.name
+    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t("crumbs.edit"), "#"]]
   end
 
   # POST /repositories

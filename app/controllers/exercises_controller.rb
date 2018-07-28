@@ -35,10 +35,12 @@ class ExercisesController < ApplicationController
       authorize @edit_submission, :edit?
     end
     @title = @exercise.name
+    @crumbs = [[@course.name, course_path(@course)], [@exercise.name, "#"]] unless @course.nil?
   end
 
   def edit
     @title = @exercise.name
+    @crumbs = [[@exercise.name, exercise_path(@exercise)], [I18n.t('crumbs.edit'), "#"]]
   end
 
   def update

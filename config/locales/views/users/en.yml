@@ -3,7 +3,7 @@ en:
     form:
       username-help: Creating an account without a username will result in the generation of a sign in token. Afterwards, a username can be added.
     index:
-      title: Users
+      title: All users
       no_users: No users found
       progress: Progress
       access_level: Access level
@@ -16,7 +16,7 @@ en:
       edit: 'Edit'
       delete: 'Delete'
     new:
-      title: Add user
+      title: Create user
     show:
       courses: Courses
       no_courses: no courses found

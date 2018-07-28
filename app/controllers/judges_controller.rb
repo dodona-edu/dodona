@@ -14,6 +14,7 @@ class JudgesController < ApplicationController
   # GET /judges/1.json
   def show
     @title = @judge.name
+    @crumbs = [[I18n.t('judges.index.title'), judges_path], [@judge.name, "#"]]
   end
 
   # GET /judges/new
@@ -21,11 +22,13 @@ class JudgesController < ApplicationController
     authorize Judge
     @judge = Judge.new
     @title = I18n.t('judges.new.title')
+    @crumbs = [[I18n.t('judges.index.title'), judges_path], [I18n.t('judges.new.title'), "#"]]
   end
 
   # GET /judges/1/edit
   def edit
     @title = @judge.name
+    @crumbs = [[I18n.t('judges.index.title'), judges_path], [@judge.name, judge_path(@judge)], [I18n.t('crumbs.edit'), "#"]]
   end
 
   # POST /judges

@@ -34,11 +34,13 @@ class CoursesController < ApplicationController
     authorize Course
     @course = Course.new
     @title = I18n.t('courses.new.title')
+    @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
   end
 
   # GET /courses/1/edit
   def edit
     @title = @course.name
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('crumbs.edit'), "#"]]
   end
 
   # POST /courses

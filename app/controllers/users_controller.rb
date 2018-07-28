@@ -23,11 +23,13 @@ class UsersController < ApplicationController
     authorize User
     @user = User.new
     @title = I18n.t('users.new.title')
+    @crumbs = [[I18n.t('users.index.title'), users_path], [I18n.t('users.new.title'), "#"]]
   end
 
   # GET /users/1/edit
   def edit
     @title = @user.full_name
+    @crumbs = [[@user.full_name, user_path(@user)], [I18n.t('crumbs.edit'), "#"]]
   end
 
   # POST /users

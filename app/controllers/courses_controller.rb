@@ -18,15 +18,15 @@ class CoursesController < ApplicationController
   # GET /courses/1.json
   def show
     @title = @course.name
-    @all_series = policy_scope(@course.series)
-    @total_series = @all_series.count
+    @series = policy_scope(@course.series)
+    @total_series = @series.count
     number_of_series = if params[:series]
-                         @all_series.find_index { |s| s.id == params[:series].to_i }.to_i + 3
+                         @series.find_index { |s| s.id == params[:series].to_i }.to_i + 3
                        else
                          5
                        end
-    @all_series = @all_series.limit(number_of_series) unless params[:all]
-    @all_series = @all_series.offset(params[:offset]) if params[:offset]
+    @series = @series.limit(number_of_series) unless params[:all]
+    @series = @series.offset(params[:offset]) if params[:offset]
   end
 
   # GET /courses/new

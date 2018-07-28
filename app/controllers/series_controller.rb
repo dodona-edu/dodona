@@ -8,7 +8,7 @@ class SeriesController < ApplicationController
   # GET /series.json
   def index
     authorize Series
-    @all_series = policy_scope(Series)
+    @series = policy_scope(Series)
     @title = I18n.t('series.index.title')
   end
 

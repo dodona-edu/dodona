@@ -587,11 +587,14 @@ a.anchor {
 /* breadcrumbs */
 .crumbs {
     li+li::before {
-        content: ">";
+        content: "\e5cc";
+        font-family: "Material Icons";
         display: block;
         float: left;
         padding-top: 15px;
         color: @white-secondary;
+        line-height: 1;
+        font-size: 22px;
     }
     li a.crumb {
         float: left;

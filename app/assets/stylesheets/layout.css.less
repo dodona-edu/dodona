@@ -12,6 +12,80 @@ body {
     padding-top: 70px;
 }
 
+.navbar-flex {
+    display: flex;
+    flex-wrap: nowrap;
+    @media (max-width: 767px) {
+        width: 100%;
+    }
+    .navbar-nav {
+        margin: 0;
+    }
+    .navbar-toggle-button {
+        margin-left: 30px;
+    }
+    .navbar-collapse {
+        @media (max-width: 767px) {
+            position: absolute;
+            top: 50px;
+            background: @primary-500;
+            width: 100%;
+            .shadow-z3();
+            .navbar-actions {
+                display: block;
+            }
+        }
+    }
+}
+.navbar-spacer {
+    flex-grow: 1;
+}
+.navbar-actions {
+    display: flex;
+    li {
+        white-space: nowrap;
+    }
+}
+/* breadcrumbs */
+.crumbs {
+    flex-shrink: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: flex;
+    padding-top: 15.5px;
+    .crumb {
+        flex-shrink: 10;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .crumb-separator {
+        overflow: hidden;
+        flex-shrink: 1;
+        .material-icons {
+            line-height: 0.9;
+            margin-left: 4px;
+            margin-right: 4px;
+        }
+    }
+    .crumb, .crumb a, .crumb-separator {
+        color: @white-secondary;
+    }
+    .crumb a:hover {
+        text-decoration: none;
+    }
+    .crumb:last-child, .crumb:last-child a {
+        color: @white-text;
+    }
+    .crumb:last-child {
+        flex-shrink: 0;
+    }
+}
+.navbar-flex .navbar-nav.crumbs {
+    margin-left: 16px;
+}
+
 .footer {
     position: absolute;
     bottom: 0;

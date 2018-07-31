@@ -1,6 +1,9 @@
 <nav class="navbar navbar-default navbar-fixed-top navbar-flex" role="navigation">
   <div class="container navbar-flex">
-    <%= link_to "Dodona", root_path, class: "navbar-brand" %>
+    <%= link_to root_path, class: "navbar-brand" do %>
+      <span class="hidden-xs">Dodona</span>
+      <i class="visible-xs material-icons">home</i>
+    <% end %>
     <%= render 'layouts/breadcrumbs' %>
     <div class="navbar-spacer"></div>
     <div class="navbar-header navbar-toggle-button">

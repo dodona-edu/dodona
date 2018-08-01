@@ -3,10 +3,12 @@ class MyIdPSettingsAdapter
     return {} if idp.nil?
     institution = Institution.find_by(short_name: idp) || Institution.find_by(entity_id: idp)
     return {} if institution.nil?
+    context = institution.entity_id == "https://idp.hogent.be/idp" ? false : ""
     {
       idp_slo_target_url: institution.slo_url,
       idp_sso_target_url: institution.sso_url,
-      idp_cert: institution.certificate
+      idp_cert: institution.certificate,
+      authn_context: context
     }
   end
 

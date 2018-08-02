@@ -17,10 +17,13 @@ class SeriesController < ApplicationController
   def show
     @course = @series.course
     @title = @series.name
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, "#"]]
   end
 
   def overview
     @title = "#{@series.course.name} #{@series.name}"
+    @course = @series.course
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, series_path(@series)], [I18n.t("crumbs.overview"), "#"]]
   end
 
   # GET /series/new
@@ -31,11 +34,13 @@ class SeriesController < ApplicationController
     authorize course, :add_series?
     @series = Series.new
     @title = I18n.t('series.new.title')
+    @crumbs = [[course.name, course_path(course)], [I18n.t('series.new.title'), "#"]]
   end
 
   # GET /series/1/edit
   def edit
     @title = @series.name
+    @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, series_path(@series)], [I18n.t("crumbs.edit"), "#"]]
   end
 
   # POST /series
@@ -141,6 +146,7 @@ class SeriesController < ApplicationController
     @course = @series.course
     @title = @series.name
     @exercises = @series.exercises
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, series_path(@series)], [I18n.t("crumbs.overview"), "#"]]
   end
 
   def mass_rejudge

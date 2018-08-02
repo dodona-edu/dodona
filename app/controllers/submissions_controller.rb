@@ -10,9 +10,31 @@ class SubmissionsController < ApplicationController
     authorize Submission
     @submissions = @submissions.paginate(page: params[:page])
     @title = I18n.t('submissions.index.title')
+    @crumbs = []
+    if @user
+      @crumbs << [@user.full_name, user_path(@user)]
+    else
+      if @course
+        @crumbs << [@course.name, course_path(@course)]
+      elsif @series
+        @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, series_path(@series)]
+      end
+    end
+    if @exercise
+      @crumbs << [@exercise.name, exercise_path(@exercise)]
+    end
+    @crumbs << [I18n.t('submissions.index.title'), "#"]
   end
 
-  def show; end
+  def show
+    @title = I18n.t('submissions.show.submission')
+    course = @submission.course
+    if course.present?
+      @crumbs = [[course.name, course_path(course)], [@submission.exercise.name, course_exercise_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), "#"]]
+    else
+      @crumbs = [[@submission.exercise.name, exercise_path(@submission.exercise)], [I18n.t('submissions.show.submission'), "#"]]
+    end
+  end
 
   def create
     authorize Submission

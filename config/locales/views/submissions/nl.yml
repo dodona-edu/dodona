@@ -11,7 +11,7 @@ nl:
       result: Resultaat
       summary: Samenvatting
     index:
-      title: Oplossingen
+      title: Alle oplossingen
       for: voor
       from: van
       most_recent_correct: Meest recente correcte oplossing per gebruiker

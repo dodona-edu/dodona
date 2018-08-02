@@ -3,9 +3,9 @@ nl:
     form:
       remote-help: De SSH clone URL van de repository. Dodona moet toegang hebben tot deze repository.
     index:
-      title: Repositories
+      title: Alle repository's
     new:
-      title: Repository toevoegen
+      title: Repository aanmaken
     show:
       repository: Repository
       webhook: "Vergeet niet de webhook te triggeren bij elke commit:"

@@ -66,7 +66,7 @@ nl:
         name: Naam
         remote: Clone URL
         path: Padnaam
-        judge: Default judge
+        judge: Standaard judge
         exercises: Oefeningen
       series:
         indianio_support: Indianio-ondersteuning

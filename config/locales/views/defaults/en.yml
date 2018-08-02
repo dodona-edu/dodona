@@ -30,6 +30,9 @@ en:
       ugent: Ghent University
     search:
       search: search
+  crumbs:
+    edit: Edit
+    overview: Overview
   general:
     are_you_sure: "Are you sure?"
     confirm_reset_token: 'Are you sure? The old token/link will not be usable anymore when you generate a new one.'

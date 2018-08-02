@@ -3,9 +3,9 @@ en:
     form:
       remote-help: The SSH clone URL of the repository to use. Dodona must have access to this repository.
     index:
-      title: Repositories
+      title: All repositories
     new:
-      title: Add repository
+      title: Create repository
     show:
       repository: Repository
       webhook: "Don't forget to trigger the webhook on each commit:"

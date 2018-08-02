@@ -1,4 +1,4 @@
-<% get_exercise_path ||= ->(ex) { course_exercise_path series.course_id, ex } %>
+<% get_exercise_path ||= ->(ex) { course_series_exercise_path series.course_id, series.id, ex } %>
 
 <div class="card-subtitle">
   <a class="anchor" name="series-<%= series.name.parameterize %>" id="series-<%= series.id %>"></a>

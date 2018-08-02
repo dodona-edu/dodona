@@ -40,7 +40,9 @@ Rails.application.routes.draw do
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
 
     resources :courses do
-      resources :series, only: :new
+      resources :series, only: :new do
+        resources :exercises, only: [:show], concerns: %i[mediable submitable]
+      end
       resources :exercises, only: [:show], concerns: %i[mediable submitable]
       member do
         get 'list_members'

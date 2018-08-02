@@ -2,6 +2,7 @@ class PagesController < ApplicationController
   def home
     @title = 'Home'
     @user = current_user
+    @crumbs = []
   end
 
   def sign_in_page
@@ -10,6 +11,7 @@ class PagesController < ApplicationController
       redirect_to new_user_session_url(idp: params[:idp])
     end
     @institutions = Institution.all
+    @title = I18n.t("pages.sign_in_page.sign_in")
   end
 
   def institution_not_supported; end
@@ -18,6 +20,7 @@ class PagesController < ApplicationController
 
   def contact
     @contact_form = ContactForm.new
+    @title = I18n.t("pages.contact.title")
   end
 
   def create_contact

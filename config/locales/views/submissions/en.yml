@@ -11,7 +11,7 @@ en:
       result: Result
       summary: Summary
     index:
-      title: Submissions
+      title: All submissions
       for: for
       from: from
       reevaluate_submissions: Re-evaluate submissions

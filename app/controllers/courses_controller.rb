@@ -3,8 +3,8 @@ class CoursesController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: [:subscribe]
 
-  has_scope :by_permission, only: :list_members
-  has_scope :by_name, only: :list_members, as: 'filter'
+  has_scope :by_permission, only: :members
+  has_scope :by_name, only: :members, as: 'filter'
 
   # GET /courses
   # GET /courses.json
@@ -25,8 +25,9 @@ class CoursesController < ApplicationController
                        else
                          5
                        end
-    @series = @series.limit(number_of_series) unless params[:all]
+
     @series = @series.offset(params[:offset]) if params[:offset]
+    @series = @series.limit(number_of_series) unless params[:all]
   end
 
   # GET /courses/new
@@ -166,7 +167,7 @@ class CoursesController < ApplicationController
     end
   end
 
-  def list_members
+  def members
     statuses = if %w[unsubscribed pending].include? params[:status]
                  params[:status]
                else
@@ -179,11 +180,20 @@ class CoursesController < ApplicationController
              .order(username: :asc)
              .where(course_memberships: { status: statuses })
              .paginate(page: params[:page])
+
     @pagination_opts = {
       controller: 'courses',
-      action: 'list_members'
+      action: 'members'
     }
-    render 'users/index'
+
+    @title = I18n.t("courses.index.users")
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
+
+    respond_to do |format|
+      format.json { render 'users/index' }
+      format.js { render 'users/index' }
+      format.html
+    end
   end
 
   def reset_token

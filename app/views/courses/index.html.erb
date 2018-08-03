@@ -46,17 +46,6 @@
   </div>
 </div>
 
-<% 
-  items = @grouped_courses.keys.map do |year|
-    [year.to_sym,
-      {
-        text: Course.format_year(year),
-        url: "#" + year.parameterize
-      }]
-  end
-  drawer_group title: t('courses.drawer.year'), items: items.to_h, scrollable: true
-%>
-
 <script type="text/javascript">
   $(function () {
     dodona.initCourseIndex();

@@ -19,7 +19,7 @@
         </div>
         <%= render partial: 'layouts/searchbar',
           locals: {
-          init_filter: false,
+          init_filter: true,
           eager: false,
           actions: [
             {
@@ -48,5 +48,5 @@
   </div>
 </div>
 <script type="text/javascript">
-$(dodona.initCourseMembers);
+  $(dodona.initCourseMembers);
 </script>

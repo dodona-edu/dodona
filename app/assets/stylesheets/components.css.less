@@ -176,9 +176,6 @@ a.card-title-link:hover {
     display: flex;
     align-items: center;
 }
-.card-subtitle-actions {
-    margin-right: 24px;
-}
 .card-subtitle-actions a {
     color: @black-secondary;
     font-size: 18px;
@@ -364,6 +361,35 @@ a.btn-fab .glyphicon.glyphicon-arrow-down {
 .btn-fab .glyphicon.glyphicon-send {
     margin-left: -7px;
 }
+.btn-fab-extended {
+    display: flex;
+    height: 42px;
+    border-radius: 24px;
+    font-size: 14px;
+    line-height: 28px;
+    padding-right: 20px;
+    text-transform: uppercase;
+    .icon {
+        padding-right: 12px;
+        padding-top: 1px;
+    }
+    @media (max-width: 480px) {
+        padding-left: 8px;
+        padding-right: 8px;
+        .text {
+            display: none;
+        }
+        .icon {
+            padding-right: 0;
+        }
+    }
+}
+
+.page-subtitle {
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+}
 
 // info modal
 .modal-info {
@@ -402,7 +428,7 @@ a.btn-fab .glyphicon.glyphicon-arrow-down {
 a.anchor {
     display: block;
     position: relative;
-    top: -70px;
+    top: -90px;
     visibility: hidden;
 }
 .alert a {

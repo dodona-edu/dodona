@@ -1,93 +1,96 @@
 <% get_exercise_path ||= ->(ex) { course_series_exercise_path series.course_id, series.id, ex } %>
 
-<div class="card-subtitle series">
-  <a class="anchor" name="series-<%= series.name.parameterize %>" id="<%= series.anchor %>"></a>
-  <h4><%= series.name %>
-    <% if series.deadline? %>
-      <% if series.deadline > Time.now %>
-        <%= "<small class='deadline-ok' title='deadline #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
-      <% else %>
-        <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
+<div class="card card-supporting-text series">
+  <div class="card-subtitle">
+    <a class="anchor" id="<%= series.anchor %>"  name="<%= series.name %>"></a>
+    <div class="card-title-icon"><i class="material-icons">school</i></div>
+    <h4><%= series.name %><br>
+      <% if series.deadline? %>
+        <% if series.deadline > Time.now %>
+          <%= "<small class='deadline-ok' title='deadline #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}'><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
+        <% else %>
+          <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><span class='glyphicon glyphicon-time'></span> #{l series.deadline, format: :long}</small>".html_safe %>
+        <% end %>
       <% end %>
-    <% end %>
-  </h4>
-  <div class="flex-spacer"></div>
-  <div class="card-subtitle-actions">
-    <div class="btn-group">
-      <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
-        <span class='glyphicon glyphicon-option-vertical'></span>
-      </a>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <% if policy(series).edit? %>
-          <li>
-            <%= link_to edit_series_path(series) do %>
-              <span class='glyphicon glyphicon-pencil'></span> <%= t("series.edit.title") %>
-            <% end %>
-          </li>
-        <% end %>
-        <% if policy(series).destroy? %>
-          <li>
-            <%= link_to series_path(series), method: :delete, data: { confirm: t("series.delete.confirm") } do %>
-              <span class='glyphicon glyphicon-trash'></span> <%= t("series.delete.title") %>
-            <% end %>
-          </li>
-        <% end %>
-        <% if policy(series).edit? && series.hidden? %>
-          <li>
-            <%= link_to series_path(series, token: series.access_token) do %>
-              <span class='glyphicon glyphicon-link'></span>
-              <%= t 'series.show.token_link' %>
-            <% end %>
-          </li>
-        <% end %>
-        <% if policy(series).scoresheet? %>
-          <li>
-            <%= link_to scoresheet_series_path(series) do %>
-              <span class='glyphicon glyphicon-th-list'></span> <%= t("series.show.series_scoresheet") %>
-            <% end %>
-          </li>
-        <% end %>
-        <% if policy(series).mass_rejudge? %>
-          <li>
-            <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: { confirm: t("submissions.index.confirm_reevaluate_submissions") } do %>
-              <span class='glyphicon glyphicon-repeat'></span> <%= t("submissions.index.reevaluate_submissions") %>
-            <% end %>
-          </li>
-        <% end %>
-        <% if policy(series).edit? %>
-          <li role="separator" class="divider"></li>
-        <% end %>
-        <% if policy(series).show? %>
-          <li>
-            <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?)) do %>
-              <span class='glyphicon glyphicon-eye-open'></span> <%= t("series.show.show_overview") %>
-            <% end %>
-          </li>
-        <% end %>
-        <% if policy(series).download_solutions? %>
-          <li>
-            <%= link_to download_solutions_series_path(series, token: (series.access_token if series.hidden?)) do %>
-              <span class='glyphicon glyphicon-download-alt'></span> <%= t("series.show.download_solutions") %>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
+    </h4>
+    <div class="flex-spacer"></div>
+    <div class="card-subtitle-actions">
+      <div class="btn-group">
+        <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
+          <span class='glyphicon glyphicon-option-vertical'></span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <% if policy(series).edit? %>
+            <li>
+              <%= link_to edit_series_path(series) do %>
+                <span class='glyphicon glyphicon-pencil'></span> <%= t("series.edit.title") %>
+              <% end %>
+            </li>
+          <% end %>
+          <% if policy(series).destroy? %>
+            <li>
+              <%= link_to series_path(series), method: :delete, data: { confirm: t("series.delete.confirm") } do %>
+                <span class='glyphicon glyphicon-trash'></span> <%= t("series.delete.title") %>
+              <% end %>
+            </li>
+          <% end %>
+          <% if policy(series).edit? && series.hidden? %>
+            <li>
+              <%= link_to series_path(series, token: series.access_token) do %>
+                <span class='glyphicon glyphicon-link'></span>
+                <%= t 'series.show.token_link' %>
+              <% end %>
+            </li>
+          <% end %>
+          <% if policy(series).scoresheet? %>
+            <li>
+              <%= link_to scoresheet_series_path(series) do %>
+                <span class='glyphicon glyphicon-th-list'></span> <%= t("series.show.series_scoresheet") %>
+              <% end %>
+            </li>
+          <% end %>
+          <% if policy(series).mass_rejudge? %>
+            <li>
+              <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: { confirm: t("submissions.index.confirm_reevaluate_submissions") } do %>
+                <span class='glyphicon glyphicon-repeat'></span> <%= t("submissions.index.reevaluate_submissions") %>
+              <% end %>
+            </li>
+          <% end %>
+          <% if policy(series).edit? %>
+            <li role="separator" class="divider"></li>
+          <% end %>
+          <% if policy(series).show? %>
+            <li>
+              <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?)) do %>
+                <span class='glyphicon glyphicon-eye-open'></span> <%= t("series.show.show_overview") %>
+              <% end %>
+            </li>
+          <% end %>
+          <% if policy(series).download_solutions? %>
+            <li>
+              <%= link_to download_solutions_series_path(series, token: (series.access_token if series.hidden?)) do %>
+                <span class='glyphicon glyphicon-download-alt'></span> <%= t("series.show.download_solutions") %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-<% if current_user&.course_admin?(series.course) && series.hidden?%>
-  <div class="alert alert-info hidden-print"><%= t "series.show.series_not_visible" %></div>
-<% end %>
-<% if current_user&.course_admin?(series.course) && series.closed?%>
-  <div class="alert alert-info hidden-print"><%= t "series.show.series_not_accessible" %></div>
-<% end %>
-<%= markdown(series.description) %>
+  <% if current_user&.course_admin?(series.course) && series.hidden?%>
+    <div class="alert alert-info hidden-print"><%= t "series.show.series_not_visible" %></div>
+  <% end %>
+  <% if current_user&.course_admin?(series.course) && series.closed?%>
+    <div class="alert alert-info hidden-print"><%= t "series.show.series_not_accessible" %></div>
+  <% end %>
+  <%= markdown(series.description) %>
 
-<% if series.exercises.length > 0 %>
-  <%= render partial: 'exercises/exercises_table', locals: {
-        series: series,
-        exercises: series.exercises,
-        get_exercise_path: get_exercise_path,
-        summary: local_assigns[:summary],
-  } %>
-<% end %>
+  <% if series.exercises.length > 0 %>
+    <%= render partial: 'exercises/exercises_table', locals: {
+          series: series,
+          exercises: series.exercises,
+          get_exercise_path: get_exercise_path,
+          summary: local_assigns[:summary],
+    } %>
+  <% end %>
+</div>

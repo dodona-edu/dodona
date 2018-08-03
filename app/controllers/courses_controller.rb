@@ -186,6 +186,9 @@ class CoursesController < ApplicationController
       action: 'members'
     }
 
+    @title = I18n.t("courses.index.users")
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
+
     respond_to do |format|
       format.json { render 'users/index' }
       format.js { render 'users/index' }

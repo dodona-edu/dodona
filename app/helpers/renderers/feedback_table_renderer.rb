@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class FeedbackTableRenderer
   include ApplicationHelper
 
@@ -265,22 +266,22 @@ class FeedbackTableRenderer
   end
 
   def icon_correct
-    @builder.span('', class: 'glyphicon glyphicon-ok')
+    @builder.i('check', class: 'material-icons')
   end
 
   def icon_wrong
-    @builder.span('', class: 'glyphicon glyphicon-remove')
+    @builder.i('close', class: 'material-icons')
   end
 
   def icon_warning
-    @builder.span('', class: 'glyphicon glyphicon-exclamation-sign')
+    @builder.i('warning', class: 'material-icons')
   end
 
   def icon_error
-    @builder.span('', class: 'glyphicon glyphicon-remove-sign')
+    @builder.i('error', class: 'material-icons')
   end
 
   def icon_info
-    @builder.span('', class: 'glyphicon glyphicon-info-sign')
+    @builder.i('info', class: 'material-icons')
   end
 end

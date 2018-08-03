@@ -20,10 +20,10 @@
                 <td><%= "#{series.course.name} (#{series.course.formatted_year})" %> </td>
                 <td class="actions">
                   <% if policy(series).edit? %>
-                    <%= link_to edit_series_path(series), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
+                    <%= link_to edit_series_path(series), class: "btn btn-sm btn-default" do %><i class="material-icons">edit</i><% end %>
                   <% end %>
                   <% if policy(series).destroy? %>
-                    <%= link_to series, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
+                    <%= link_to series, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons">delete</i><% end %>
                   <% end %>
                 </td>
               </tr>

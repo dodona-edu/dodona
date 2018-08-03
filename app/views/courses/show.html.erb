@@ -59,8 +59,7 @@
             <div class="col-md-6">
               <p>
               <%= t ".invitation_link" %>
-              <span class="glyphicon glyphicon-info-sign" title="<%= t ".invitation_link_help" %>">
-              </span>
+                  <i title="<%= t ".invitation_link_help" %>" class="material-icons">info</i>
               <div class="input-group input-group-sm">
                 <%= text_field_tag :registration_link, registration_course_url(@course, @course.secret), readonly: true, class: 'form-control' %>
                 <span class="input-group-btn">

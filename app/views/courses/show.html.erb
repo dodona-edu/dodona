@@ -97,7 +97,7 @@
           <div>
             <% if policy(@course).add_series? %>
               <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn btn-primary btn-fab-extended" do %>
-                <span class='glyphicon glyphicon-plus icon'></span><span class='text'><%= t("series.new.title") %></span>
+                <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
               <% end %>
             <% end %>
           </div>

@@ -87,7 +87,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter) {
         if (searchOptions.length > 0) {
             $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.filter-options") + "</li>");
             searchOptions.forEach(function (action) {
-                let $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");
+                let $link = $(`<a href='#'><i class='material-icons'>${action.icon}</i>${action.text}</a>`);
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 $link.click(() => {
@@ -99,7 +99,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter) {
         if (searchActions.length > 0) {
             $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
             searchActions.forEach(function (action) {
-                let $link = $("<a href='#'><span class='glyphicon glyphicon-" + action.icon + "'></span> " + action.text + "</a>");
+                let $link = $(`<a href='#'><i class='material-icons'>${action.icon}</i>${action.text}</a>`);
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 $link.click(() => {

@@ -20,16 +20,16 @@
       <tr>
         <td>
           <% if user.zeus? %>
-            <span class="glyphicon glyphicon-king" title='<%= t ".zeus" %>'></span>
+            <i class="material-icons" title='<%= t ".zeus" %>'>superviser_account</i>
           <% end %>
           <% if user.staff? %>
-            <span class="glyphicon glyphicon-queen" title='<%= t ".staff" %>'></span>
+            <i class="material-icons" title='<%= t ".staff" %>'>person_add</i>
           <% end %>
           <% if @course && user.course_admin?(@course) %>
-            <span class="glyphicon glyphicon-education" title='<%= t ".course_admin" %>'></span>
+            <i class="material-icons" title='<%= t ".course_admin" %>'>school</i>
           <% end %>
           <% if user.username.blank? %>
-            <span class="glyphicon glyphicon-exclamation-sign" title='<%= t ".no_ugent" %>'></span>
+            <i class="material-icons" title='<%= t ".no_ugent" %>'>warning</i>
           <% end %>
         </td>
         <td>
@@ -59,12 +59,12 @@
             <%  end  %>
             <% if policy(user).impersonate? %>
               <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
-                <span class="glyphicon glyphicon-user"></span>
+                <i class="material-icons">person</i>
               <% end %>
             <% end %>
             <% if policy(user).edit?  %>
               <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
-                <span class="glyphicon glyphicon-pencil"></span>
+                <i class="material-icons">edit</i>
               <% end %>
             <% end %>
           </td>

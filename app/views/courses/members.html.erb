@@ -5,17 +5,9 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @course.name %></h2>
-        <div class="card-title-fab">
-          <% if policy(@course).edit? %>
-              <%= render 'fab_link', url: edit_course_path(@course), icon: 'pencil' %>
-          <% end %>
-        </div>
+        <h2 class="card-title-text"><%= @course.name + " - " + t("courses.show.users") %></h2>
       </div>
       <div class="card-supporting-text card-border">
-        <div class="card-subtitle">
-          <h3><%= t "courses.show.users" %></h3>
-        </div>
         <div class="card-tab">
           <ul id="user-tabs" class="nav nav-tabs" data-baseurl="<%= members_course_path(@course) %>" role="tablist">
             <li role="presentation" class="active"><a href="#enrolled"><%= t 'courses.show.subscribed' %></a></li>

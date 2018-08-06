@@ -30,7 +30,7 @@
         <div>
           <% if policy(Course).new? && @grouped_courses.keys.first == year %>
             <%= link_to new_course_path, title: t("courses.new.title"), class: "btn btn-primary btn-fab-extended" do %>
-              <span class='glyphicon glyphicon-plus icon'></span><span class='text'><%= t("courses.new.title") %></span>
+              <i class="material-icons icon">add</i><span class='text'><%= t("courses.new.title") %></span>
             <% end %>
           <% end %>
         </div>

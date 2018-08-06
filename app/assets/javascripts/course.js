@@ -1,5 +1,6 @@
 /* globals ga, I18n, ace, MathJax, initStrip, Strip */
 import {initFilter} from "./index.js";
+import {delay} from "./util.js";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
@@ -7,54 +8,53 @@ function loadUsers(_baseUrl, _status) {
     initFilter(baseUrl + "?status=" + status, true);
 }
 
-function initUserTabs(){
-  const $userTabs = $("#user-tabs")
-  if($userTabs.length > 0){
-    const baseUrl = $userTabs.data("baseurl");
+function initUserTabs() {
+    const $userTabs = $("#user-tabs");
+    if ($userTabs.length > 0) {
+        const baseUrl = $userTabs.data("baseurl");
 
-    // Select tab and load users
-    const selectTab = ($tab) => {
-      if($tab.parent().hasClass("active")){
-        // The current tab is already loaded, nothing to do
-        return;
-      }
-      const $kebab = $("#kebab-menu");
-      const status = $tab.attr("href").substr(1);
-      if(status == 'pending'){
-        $kebab.show();
-      }
-      else {
-        $kebab.hide();
-      }
-      loadUsers(baseUrl, status);
-      $("#user-tabs li.active").removeClass("active");
-      $tab.parent().addClass("active");
+        // Select tab and load users
+        const selectTab = $tab => {
+            if ($tab.parent().hasClass("active")) {
+                // The current tab is already loaded, nothing to do
+                return;
+            }
+            const $kebab = $("#kebab-menu");
+            const status = $tab.attr("href").substr(1);
+            if (status == "pending") {
+                $kebab.show();
+            } else {
+                $kebab.hide();
+            }
+            loadUsers(baseUrl, status);
+            $("#user-tabs li.active").removeClass("active");
+            $tab.parent().addClass("active");
+        };
+
+        // Switch to clicked tab
+        $("#user-tabs li a").click(function () {
+            selectTab($(this));
+        });
+
+        // Determine which tab to show first
+        const hash = window.location.hash;
+        let $tab = $("a[href='" + hash + "']");
+        if ($tab.length === 0) {
+            // Default to enrolled (subscribed)
+            $tab = $("a[href='#enrolled']");
+        }
+        selectTab($tab);
     }
-
-    // Switch to clicked tab
-    $("#user-tabs li a").click(function(){
-      selectTab($(this));
-    });
-
-    // Determine which tab to show first
-    const hash = window.location.hash;
-    let $tab = $("a[href='" + hash + "']");
-    if ($tab.length === 0){
-      // Default to enrolled (subscribed)
-      $tab = $("a[href='#enrolled']")
-    }
-    selectTab($tab);
-  }
 }
 
-function initCourseMembers(){
-  $("#kebab-menu").hide();
-  initUserTabs();
+function initCourseMembers() {
+    $("#kebab-menu").hide();
+    initUserTabs();
 }
 
 function initCourseShow(_seriesShown, _seriesTotal) {
     const perBatch = _seriesShown,
-          seriesTotal = _seriesTotal;
+        seriesTotal = _seriesTotal;
 
     let seriesShown = _seriesShown,
         loading = false;
@@ -68,35 +68,35 @@ function initCourseShow(_seriesShown, _seriesTotal) {
     }
 
     function gotoHashSeries() {
-      const hash = window.location.hash;
+        const hash = window.location.hash;
 
-      if($(hash).length > 0){
-        // The current series is already loaded
-        // and we should have scrolled to it
-        return;
-      }
+        if ($(hash).length > 0) {
+            // The current series is already loaded
+            // and we should have scrolled to it
+            return;
+        }
 
-      const hashSplit = hash.split('-');
-      const seriesId = +hashSplit[1];
+        const hashSplit = hash.split("-");
+        const seriesId = +hashSplit[1];
 
-      if (hashSplit[0] === '#series' && !isNaN(seriesId)){
-        loading = true;
-        $(".load-more-series").button("loading");
-        $.get(`?format=js&offset=${seriesShown}&series=${seriesId}`)
-          .done(() => {
-            seriesShown = $(".series").length;
-            $(hash)[0].scrollIntoView();
-          })
-          .always(() => {
-            loading = false;
-            $(".load-more-series").button("reset");
-          });
-      }
+        if (hashSplit[0] === "#series" && !isNaN(seriesId)) {
+            loading = true;
+            $(".load-more-series").button("loading");
+            $.get(`?format=js&offset=${seriesShown}&series=${seriesId}`)
+                .done(() => {
+                    seriesShown = $(".series").length;
+                    $(hash)[0].scrollIntoView();
+                })
+                .always(() => {
+                    loading = false;
+                    $(".load-more-series").button("reset");
+                });
+        }
     }
 
     function loadMoreSeries() {
-        if(loading){
-          return;
+        if (loading) {
+            return;
         }
         loading = true;
         $(".load-more-series").button("loading");
@@ -131,4 +131,26 @@ function initCourseShow(_seriesShown, _seriesTotal) {
     init();
 }
 
-export {initCourseShow, initCourseMembers, loadUsers};
+function initCourseIndex() {
+    let $filter = $("#filter-query").focus();
+    $filter.on("keyup", function () {
+        $("#progress-filter").css("visibility", "visible");
+        delay(doSearch, 300);
+    });
+
+    function doSearch() {
+        let q = $filter.val().toLowerCase();
+        let $courseCards = $(".card.course");
+        if (q === "") {
+            $courseCards.parent().removeClass("hidden");
+        } else {
+            $courseCards.parent().addClass("hidden");
+            $courseCards.filter(function () {
+                return $(this).data("search").includes(q);
+            }).parent().removeClass("hidden");
+        }
+        setTimeout(() => $("#progress-filter").css("visibility", "hidden"), 200);
+    }
+}
+
+export {initCourseShow, initCourseMembers, loadUsers, initCourseIndex};

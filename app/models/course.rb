@@ -111,7 +111,7 @@ class Course < ApplicationRecord
   end
 
   def formatted_year
-    year.sub(/ ?- ?/, '–')
+    Course.format_year year
   end
 
   def generate_secret
@@ -176,5 +176,9 @@ class Course < ApplicationRecord
         csv << row
       end
     end
+  end
+
+  def self.format_year year
+    year.sub(/ ?- ?/, '–')
   end
 end

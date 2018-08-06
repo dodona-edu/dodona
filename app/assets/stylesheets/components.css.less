@@ -113,6 +113,10 @@ a.card-title-link:hover {
     overflow: hidden;
     margin: 0;
 }
+.card-title-text.pull-right {
+    margin-left: 8px;
+    overflow: visible;
+}
 .card-title-colored .card-title-text,
 .card-title-colored .card-title-text a {
     color: @white-text;
@@ -435,11 +439,11 @@ a.anchor {
     color: white;
     font-weight: bold;
 }
-.table-toolbar {
+.table-toolbar{
     display: flex;
     flex-direction: column;
     position: relative;
-    z-index: 2;
+    z-index: 1;
     font-size: 18px;
     min-height: 36px;
     width: 100%;
@@ -449,7 +453,7 @@ a.anchor {
         font-size: 18px;
     }
 }
-.table-toolbar .table-toolbar-tools {
+.table-toolbar .table-toolbar-tools{
     font-size: 18px;
     letter-spacing: .005em;
     font-weight: 400;
@@ -497,6 +501,10 @@ a.anchor {
       font-weight: 300;
     }
 }
+.page-searchbar.table-toolbar input{
+    background-color: #fafafa;
+}
+
 .dodona-progress {
     display: block;
     position: relative;

@@ -53,6 +53,8 @@ Rails.application.routes.draw do
         post 'reset_token'
         post 'unsubscribe'
         post 'update_membership'
+        post 'favorite'
+        post 'unfavorite'
         match 'subscribe', via: %i[get post]
       end
     end

@@ -1,12 +1,22 @@
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'course' %>
+  <%= javascript_pack_tag 'favorite_course_buttons' %>
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
   <div class="col-sm-offset-1 col-sm-10 col-xs-12">
     <div class="card tab-content">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @course.name %> (<%= @course.formatted_year %>)</h2>
+        <h2 class="card-title-text">
+          <% if current_user&.member_of?(@course) and current_user.full_view? %>
+            <% if current_user.favorite_courses.include? @course %>
+              <span class="glyphicon glyphicon-star" data-course_id="<%= @course.id %>"></span>
+            <% else %>
+              <span class="glyphicon glyphicon-star-empty" data-course_id="<%= @course.id %>"></span>
+            <% end %>
+          <% end %>
+          <%= @course.name %> (<%= @course.formatted_year %>)
+        </h2>
       </div>
       <div class="card-supporting-text row">
         <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
@@ -110,5 +120,6 @@
 <script type="text/javascript">
   $(function () {
     dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>);
+    dodona.initFavoriteButtons();
   });
 </script>

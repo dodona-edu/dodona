@@ -6,6 +6,7 @@
 #  course_id  :integer
 #  user_id    :integer
 #  status     :integer          default("student")
+#  favorite   :boolean          default(false)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -33,7 +34,7 @@ class CourseMembership < ApplicationRecord
        CourseMembership
        .where(course: course, status: :course_admin)
        .where.not(id: id).empty?
-      errors.add(:status, :at_least_onde_admin_per_course)
+      errors.add(:status, :at_least_one_admin_per_course)
     end
   end
 end

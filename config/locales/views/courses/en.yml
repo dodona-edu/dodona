@@ -73,3 +73,9 @@ en:
       key_mismatch: "The key didn't match"
     scoresheet:
       explanation: "Showing the number of correctly solved exercises before the deadline"
+    favorite:
+      succeeded: "Course favorited"
+      failed: "Failed favoriting course"
+    unfavorite:
+      succeeded: "Unfavorited course"
+      failed: "Failed unfavoriting course"

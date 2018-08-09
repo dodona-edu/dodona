@@ -70,3 +70,9 @@ nl:
       key_mismatch: De sleutel kwam niet overeen
     scoresheet:
       explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
+    favorite:
+      succeeded: "Cursus aan favorieten toegevoegd"
+      failed: "Cursus aan favorieten toevoegen mislukt"
+    unfavorite:
+      succeeded: "Cursus uit favorieten verwijderd"
+      failed: "Cursus uit favorieten verwijderen mislukt"

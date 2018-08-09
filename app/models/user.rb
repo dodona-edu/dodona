@@ -40,6 +40,16 @@ class User < ApplicationRecord
            through: :course_memberships,
            source: :course
 
+  has_many :favorite_courses,
+           lambda {
+             where.not course_memberships:
+                 { status: %i[pending unsubscribed] }
+             where course_memberships:
+                 { favorite: true }
+           },
+           through: :course_memberships,
+           source: :course
+
   has_many :administrating_courses,
            lambda {
              where course_memberships:
@@ -146,9 +156,17 @@ class User < ApplicationRecord
     subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
   end
 
-  def current_ay_courses
+  def recent_courses(number_of_years)
+    grouped_recent_courses(number_of_years).map{|a| a[1]}.flatten
+  end
+
+  def grouped_recent_courses(number_of_years)
     return [] if subscribed_courses.empty?
-    subscribed_courses.group_by(&:year).first.second
+    subscribed_courses.group_by(&:year).first(number_of_years)
+  end
+
+  def full_view?
+    subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count > 0
   end
 
   def member_of?(course)

@@ -10,6 +10,7 @@ en:
       dodona-text_html: "Dodona is a place in Greece, located in a peaceful, green valley on the eastern slope of the mountain Tomaros in the historical region of Epirus. The oracle of Dodona was dedicated to Zeus <span class='hidden-xs'>(pictured left)</span> and the mother goddess Dione. It was, according to Herodotus, the oldest oracle of ancient Greece, possibly dating back to the second millennium BC."
     dynamic_home:
       more-courses: More courses
+      favorites: "Favorites"
     course_card:
       submissions: Submissions
       correct-exercises: Correct exercises
@@ -21,6 +22,7 @@ en:
       course-member: Course member
       course-hidden: Hidden course
       course-closed: Closed course
+      favorite: "Favorite course"
     user_card:
       submissions: Submissions
       correct-exercises: Correct exercises

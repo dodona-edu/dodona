@@ -82,7 +82,7 @@ module ApplicationHelper
     button_tag class: 'btn btn-default',
                title: t('js.copy-to-clipboard'),
                data: { clipboard_target: selector } do
-      tag :span, class: 'glyphicon glyphicon-copy'
+      tag :i, 'assignment', class: 'material-icons'
     end
   end
 

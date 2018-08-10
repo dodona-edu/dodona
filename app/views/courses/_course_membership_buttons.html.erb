@@ -32,7 +32,7 @@ when 'pending' %>
                 title: t('users.index.unsubscribe'),
                 data: { confirm: t('general.are_you_sure') },
                 class: 'btn btn-sm btn-default' do %>
-    <span class='glyphicon glyphicon-log-out' aria-hidden='true'></span>
+    <i class="material-icons" aria-hidden="true">delete</i>
   <% end %>
 <% when 'course_admin' %>
   <% if policy(course).update_course_admin_membership? %>
@@ -52,6 +52,6 @@ when 'pending' %>
                 title: t('courses.show.subscribe'),
                 data: { confirm: t('general.are_you_sure') },
                 class: 'btn btn-sm btn-default' do %>
-    <span class='glyphicon glyphicon-log-in' aria-hidden='true'></span>
+    <i class="material-icons" aria-hidden="true">person_add</i>
   <% end %>
 <% end %>

@@ -62,7 +62,7 @@ class Repository < ApplicationRecord
 
     existing_exercises = exercise_dirs_and_configs
                          .reject{|_, c| c['internal'].nil?}
-                         .map {|d, c| [d, Exercise.find_by(token: c['internal'])]}
+                         .map {|d, c| [d, Exercise.find_by(token: c['internal'], repository_id: id)]}
                          .reject{|_, e| e.nil?}
                          .group_by{|_, e| e}
                          .map{|e, l| [e, l.map{|elem| elem[0]}]}
@@ -89,9 +89,9 @@ class Repository < ApplicationRecord
     repository_exercises = Exercise.where(repository_id: id)
     repository_exercises.reject{|e| handled_exercises.include? e}.each do |ex|
       if dirs.include?(ex.full_path) && !handled_directories.include?(ex.full_path)
+        handled_directories.push ex.full_path
         if exercise_dirs_and_configs.select{|d, _| d == ex.full_path}.first.nil?
           ex.update(status: :not_valid)
-          handled_directories.push ex.full_path
         else
           update_exercise ex
           ex.update_config
@@ -101,10 +101,14 @@ class Repository < ApplicationRecord
       end
     end
 
-    exercise_dirs_and_configs.reject{|d, _| handled_directories.include? d}.each do |dir, _|
-      ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id)
+    exercise_dirs_and_configs.reject{|d, _| handled_directories.include? d}.each do |dir, c|
+      if c['internal'] && c['internal'].is_a?(String) && c['internal'].length == 64 && Exercise.find_by(token: c['internal']).nil?
+        ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id, token: c['internal'])
+      else
+        ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id)
+        new_exercises.push ex
+      end
       update_exercise ex
-      new_exercises.push ex
     end
 
     new_exercises.each do |ex|

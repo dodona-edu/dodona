@@ -256,7 +256,7 @@ class Exercise < ApplicationRecord
     begin
       new = Base64.strict_encode64 SecureRandom.random_bytes(48)
     end until Exercise.find_by(token: new).nil?
-    self.token = new
+    self.token ||= new
   end
 
   private

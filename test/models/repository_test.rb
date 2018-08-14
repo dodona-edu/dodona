@@ -184,7 +184,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     new_dir = 'echo2'
     @remote.copy_dir(@echo.path, new_dir)
     @remote.update_json(new_dir + '/config.json', 'add token to new exercise') do |json|
-      json['internal'] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      json['internals']['token'] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
       json
     end
     @repository.reset

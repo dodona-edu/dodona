@@ -168,13 +168,15 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should create only 1 new exercise on copy + rename' do
-    new_dir = 'echo2'
-    @remote.copy_dir(@echo.path, new_dir)
-    @remote.rename_dir(@echo.path, 'echo3')
+    new_dir1 = 'echo2'
+    new_dir2 = 'echo3'
+    @remote.copy_dir(@echo.path, new_dir1)
+    @remote.rename_dir(@echo.path, new_dir2)
     @remote.commit('copy + rename exercise')
     @repository.reset
     @repository.process_exercises
     @echo.reload
+    assert [new_dir1, new_dir2].include?(@echo.path)
     assert_equal 2, Exercise.all.count
   end
 end

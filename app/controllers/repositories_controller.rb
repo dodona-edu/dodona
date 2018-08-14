@@ -78,7 +78,12 @@ class RepositoriesController < ApplicationController
 
   def hook
     success, msg = @repository.reset
-    process_exercise_dirs if success
+    if success
+      if !params.key?('commits') || params['forced'] ||
+         !params['commits'].reject {|commit| commit['author']['name'] == 'Dodona'}.empty?
+        process_exercise_dirs
+      end
+    end
     status = success ? 200 : 500
     render plain: msg, status: status
   end

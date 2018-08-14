@@ -131,4 +131,50 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 'ok', @echo.status
     assert_equal 'echo', @echo.path
   end
+
+  test 'should detect moved exercise with new exercise in original path' do
+    new_dir = 'echo2'
+    @remote.rename_dir(@echo.path, new_dir)
+    @remote.add_sample_dir('exercises/echo')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'ok', @echo.status
+    assert_equal new_dir, @echo.path
+  end
+
+  test 'should create new exercise when config without token is placed in path of removed exercise' do
+    @remote.remove_dir(@echo.path)
+    @remote.commit('remove exercise')
+    @repository.reset
+    @repository.process_exercises
+    @remote.add_sample_dir('exercises/echo')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'removed', @echo.status
+    assert_equal 2, Exercise.all.count
+  end
+
+  test 'should create new exercise when exercise is copied' do
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'echo', @echo.path
+    assert_equal 2, Exercise.all.count
+  end
+
+  test 'should create only 1 new exercise on copy + rename' do
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.rename_dir(@echo.path, 'echo3')
+    @remote.commit('copy + rename exercise')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 2, Exercise.all.count
+  end
 end

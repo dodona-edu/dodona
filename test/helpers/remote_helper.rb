@@ -49,6 +49,10 @@ class TempRepository < GitRepository
     FileUtils.remove_dir(File.join(@path, dir_path))
   end
 
+  def copy_dir(src_path, dest_path)
+    FileUtils.copy_entry(File.join(@path, src_path), File.join(@path, dest_path))
+  end
+
   def add_dir(src_path, msg: nil)
     FileUtils.cp_r Dir[src_path + '/*'], @path
     msg ||= "add #{src_path}"

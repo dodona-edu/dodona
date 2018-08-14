@@ -61,8 +61,8 @@ class Repository < ApplicationRecord
     end.compact
 
     existing_exercises = exercise_dirs_and_configs
-                         .reject{|_, c| c['internal'].nil?}
-                         .map {|d, c| [d, Exercise.find_by(token: c['internal'], repository_id: id)]}
+                         .reject{|_, c| c['internals']['token'].nil?}
+                         .map {|d, c| [d, Exercise.find_by(token: c['internals']['token'], repository_id: id)]}
                          .reject{|_, e| e.nil?}
                          .group_by{|_, e| e}
                          .map{|e, l| [e, l.map{|elem| elem[0]}]}
@@ -102,8 +102,9 @@ class Repository < ApplicationRecord
     end
 
     exercise_dirs_and_configs.reject{|d, _| handled_directories.include? d}.each do |dir, c|
-      if c['internal'] && c['internal'].is_a?(String) && c['internal'].length == 64 && Exercise.find_by(token: c['internal']).nil?
-        ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id, token: c['internal'])
+      token = c['internals']['token']
+      if token && token.is_a?(String) && token.length == 64 && Exercise.find_by(token: token).nil?
+        ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id, token: token)
       else
         ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id)
         new_exercises.push ex
@@ -113,7 +114,7 @@ class Repository < ApplicationRecord
 
     new_exercises.each do |ex|
       c = ex.config
-      c['internal'] = ex.token
+      c['internals']['token'] = ex.token
       ex.config_file.write(JSON.pretty_generate(c))
     end
     unless new_exercises.empty?

@@ -54,7 +54,8 @@ class Exercise < ApplicationRecord
   scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_visibility(query)) }
 
   def full_path
-    Pathname.new File.join(repository.full_path, path) if path
+    return "" unless path
+    Pathname.new File.join(repository.full_path, path)
   end
 
   def media_path

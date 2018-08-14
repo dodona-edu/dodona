@@ -255,9 +255,9 @@ class Exercise < ApplicationRecord
   # not private so we can use this in the migration
   def generate_token
     begin
-      new = Base64.strict_encode64 SecureRandom.random_bytes(48)
-    end until Exercise.find_by(token: new).nil?
-    self.token ||= new
+      new_token = Base64.strict_encode64 SecureRandom.random_bytes(48)
+    end until Exercise.find_by(token: new_token).nil?
+    self.token ||= new_token
   end
 
   private

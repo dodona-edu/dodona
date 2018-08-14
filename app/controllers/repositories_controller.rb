@@ -78,20 +78,7 @@ class RepositoriesController < ApplicationController
 
   def hook
     success, msg = @repository.reset
-    if success
-      if params.key?('commits') && !params['forced']
-        params['commits']
-          .reject    { |commit|    commit['author']['name'] == 'Dodona' }
-          .flat_map  { |commit|    %w[added removed modified].flat_map { |type| commit[type] } }
-          .compact # remove nil entries
-          .flat_map  { |file| @repository.affected_exercise_dirs(file) }
-          .uniq
-      else
-        @repository.exercise_dirs
-      end.tap do |dirs|
-        process_exercise_dirs dirs
-      end
-    end
+    process_exercise_dirs if success
     status = success ? 200 : 500
     render plain: msg, status: status
   end
@@ -103,8 +90,8 @@ class RepositoriesController < ApplicationController
 
   private
 
-  def process_exercise_dirs(dirs = nil)
-    @repository.process_exercises dirs
+  def process_exercise_dirs
+    @repository.process_exercises
   rescue AggregatedConfigErrors => error
     if current_user
       ErrorMailer.json_error error, user: current_user

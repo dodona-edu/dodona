@@ -89,8 +89,13 @@ class Repository < ApplicationRecord
     repository_exercises = Exercise.where(repository_id: id)
     repository_exercises.reject{|e| handled_exercises.include? e}.each do |ex|
       if dirs.include?(ex.full_path) && !handled_directories.include?(ex.full_path)
-        ex.update(status: :not_valid)
-        handled_directories.push ex.full_path
+        if exercise_dirs_and_configs.select{|d, _| d == ex.full_path}.first.nil?
+          ex.update(status: :not_valid)
+          handled_directories.push ex.full_path
+        else
+          update_exercise ex
+          ex.update_config
+        end
       else
         ex.update(status: :removed, path: nil)
       end

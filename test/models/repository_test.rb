@@ -179,4 +179,17 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert [new_dir1, new_dir2].include?(@echo.path)
     assert_equal 2, Exercise.all.count
   end
+
+  test 'should copy valid token for new exercise' do
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.update_json(new_dir + '/config.json', 'add token to new exercise') do |json|
+      json['internal'] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      json
+    end
+    @repository.reset
+    @repository.process_exercises
+    echo2 = Exercise.find_by(path: new_dir)
+    assert_equal echo2.token, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+  end
 end

@@ -121,4 +121,14 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @echo.reload
     assert_equal 'ok', @echo.status
   end
+
+  test 'should restore token when manually deleted' do
+    @remote.remove_dir(@echo.path)
+    @remote.add_sample_dir('exercises/echo')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'ok', @echo.status
+    assert_equal 'echo', @echo.path
+  end
 end

@@ -171,6 +171,7 @@ class Exercise < ApplicationRecord
   def update_config
     return unless ok?
     c = config
+    c['internals'] = {}
     c['internals']['token'] = token
     c['visibility'] = visibility if visibility != merged_config['visibility']
     c['description']['names']['nl'] = name_nl

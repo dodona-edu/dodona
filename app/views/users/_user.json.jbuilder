@@ -10,8 +10,8 @@ json.extract! user,
               :lang
 
 json.url user_url(user)
-json.submission_count @user.submissions.count
-json.correct_exercises @user.correct_exercises
+json.submission_count user.submissions.count
+json.correct_exercises user.correct_exercises
 
 json.subscribed_courses user.subscribed_courses do |course|
   json.extract! course, :id, :name, :year, :teacher, :color

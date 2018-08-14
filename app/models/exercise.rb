@@ -14,6 +14,7 @@
 #  repository_id        :integer
 #  judge_id             :integer
 #  status               :integer          default("ok")
+#  token                :string(64)       not null, unique
 #
 
 require 'pathname'
@@ -38,9 +39,10 @@ class Exercise < ApplicationRecord
   has_many :series_memberships
   has_many :series, through: :series_memberships
 
-  validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
+  validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }
 
   before_create :generate_id
+  before_create :generate_token
   before_save :check_validity
   before_update :update_config
 
@@ -52,7 +54,7 @@ class Exercise < ApplicationRecord
   scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_visibility(query)) }
 
   def full_path
-    Pathname.new File.join(repository.full_path, path)
+    Pathname.new File.join(repository.full_path, path) if path
   end
 
   def media_path
@@ -67,7 +69,7 @@ class Exercise < ApplicationRecord
     first_string_present send('name_' + I18n.locale.to_s),
                          name_nl,
                          name_en,
-                         path.split('/').last
+                         path&.split('/')&.last
   end
 
   def description_localized(lang = I18n.locale.to_s)
@@ -147,6 +149,10 @@ class Exercise < ApplicationRecord
     (directory + CONFIG_FILE).file?
   end
 
+  def self.config_file(directory)
+    directory + CONFIG_FILE
+  end
+
   def self.dirconfig_file?(file)
     file.basename.to_s == DIRCONFIG_FILE
   end
@@ -164,6 +170,7 @@ class Exercise < ApplicationRecord
   def update_config
     return unless ok?
     c = config
+    c['internal'] = token
     c['visibility'] = visibility if visibility != merged_config['visibility']
     c['description']['names']['nl'] = name_nl
     c['description']['names']['en'] = name_en
@@ -218,7 +225,7 @@ class Exercise < ApplicationRecord
   end
 
   def check_validity
-    return if removed?
+    return unless ok?
     self.status = if !(name_nl || name_en)
                     :not_valid
                   elsif !(description_nl || description_en)
@@ -242,6 +249,14 @@ class Exercise < ApplicationRecord
     else
       'md'
     end
+  end
+
+  # not private so we can use this in the migration
+  def generate_token
+    begin
+      new = Base64.strict_encode64 SecureRandom.random_bytes(48)
+    end until Exercise.find_by(token: new).nil?
+    self.token = new
   end
 
   private

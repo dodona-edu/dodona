@@ -49,50 +49,83 @@ class Repository < ApplicationRecord
     exercise_dirs_below(full_path)
   end
 
-  def affected_exercise_dirs(changed_file)
-    changed_file = Pathname.new(changed_file)
-    return if changed_file.absolute?
-    changed_file = changed_file.expand_path(full_path)
-
-    if Exercise.dirconfig_file? changed_file
-      exercise_dirs_below(changed_file.dirname)
-    else
-      [exercise_dir_containing(changed_file)].reject(&:nil?)
-    end
-  end
-
-  def process_exercises(dirs = nil)
-    dirs ||= exercise_dirs
+  def process_exercises
+    dirs = exercise_dirs
     errors = []
 
-    dirs.each do |dir|
-      process_exercise(dir)
+    exercise_dirs_and_configs = dirs.map do |d|
+      [d, read_config_file(Exercise.config_file(d))]
     rescue ConfigParseError => e
-      errors.push(e)
+      errors.push e
+      nil
+    end.compact
+
+    existing_exercises = exercise_dirs_and_configs
+                         .reject{|_, c| c['internal'].nil?}
+                         .map {|d, c| [d, Exercise.find_by(token: c['internal'])]}
+                         .reject{|_, e| e.nil?}
+                         .group_by{|_, e| e}
+                         .map{|e, l| [e, l.map{|elem| elem[0]}]}
+                         .to_h
+    handled_directories = []
+    handled_exercises = []
+    new_exercises = []
+
+    existing_exercises.each do |ex, directories|
+      orig_path = directories.select {|dir| dir == ex.full_path}.first || directories.first
+      ex.path = exercise_relative_path orig_path
+      update_exercise ex
+      handled_exercises.push ex
+      handled_directories.push orig_path
+      directories.reject{|dir| dir == orig_path}.each do |dir|
+        new_ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id)
+        new_exercises.push ex
+        update_exercise new_ex
+        handled_exercises.push new_ex
+        handled_directories.push dir
+      end
     end
+
+    repository_exercises = Exercise.where(repository_id: id)
+    repository_exercises.reject{|e| handled_exercises.include? e}.each do |ex|
+      if dirs.include?(ex.full_path) && !handled_directories.include?(ex.full_path)
+        ex.update(status: :not_valid)
+        handled_directories.push ex.full_path
+      else
+        ex.update(status: :removed, path: nil)
+      end
+    end
+
+    exercise_dirs_and_configs.reject{|d, _| handled_directories.include? d}.each do |dir, _|
+      ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id)
+      update_exercise ex
+      new_exercises.push ex
+    end
+
+    new_exercises.each do |ex|
+      c = ex.config
+      c['internal'] = ex.token
+      ex.config_file.write(JSON.pretty_generate(c))
+    end
+    unless new_exercises.empty?
+      commit 'stored tokens in new exercises'
+    end
+
     raise AggregatedConfigErrors.new(self, errors) if errors.any?
   end
 
-  def process_exercise(directory)
-    relative = directory.relative_path_from(full_path).cleanpath.to_path
-    ex = Exercise.find_by(path: relative, repository_id: id)
-    ex = Exercise.new(path: relative, repository_id: id) if ex.nil?
+  def update_exercise(ex)
+    config = ex.merged_config
 
-    if !ex.config_file?
-      ex.status = :removed
-    else
-      config = ex.merged_config
+    j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
 
-      j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
-
-      ex.judge_id = j&.id || judge_id
-      ex.programming_language = config['programming_language']
-      ex.name_nl = config['description']['names']['nl']
-      ex.name_en = config['description']['names']['en']
-      ex.description_format = Exercise.determine_format(directory)
-      ex.visibility = Exercise.convert_visibility(config['visibility'])
-      ex.status = :ok
-    end
+    ex.judge_id = j&.id || judge_id
+    ex.programming_language = config['programming_language']
+    ex.name_nl = config['description']['names']['nl']
+    ex.name_en = config['description']['names']['en']
+    ex.description_format = Exercise.determine_format(ex.full_path)
+    ex.visibility = Exercise.convert_visibility(config['visibility'])
+    ex.status = :ok
 
     ex.save
   end
@@ -133,9 +166,10 @@ class Repository < ApplicationRecord
   end
 
   def exercise_directory?(file)
-    file = file.cleanpath.relative_path_from(full_path)
-    return true if Exercise.find_by(path: file.to_path, repository_id: id)
+    Exercise.config_file? file
+  end
 
-    Exercise.config_file? file.expand_path(full_path)
+  def exercise_relative_path(path)
+    path.cleanpath.relative_path_from full_path
   end
 end

@@ -28,6 +28,8 @@ end
 
 class EchoRepositoryTest < ActiveSupport::TestCase
   def setup
+    # ensure we push to the repository
+    Rails.env.stubs(:production?).returns(true)
     @pythia = create :judge, :git_stubbed, name: 'pythia'
     @remote = local_remote('exercises/echo')
     @repository = create :repository, remote: @remote.path
@@ -81,8 +83,6 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should push commits to remote' do
-    # ensure we push to the repository
-    Rails.env.stubs(:production?).returns(true)
     assert_difference('@remote.commit_count', 1) do
       File.open(@echo.config_file, 'w') do |f|
         f.write('FUCK THE SYSTEM!!1! ANARCHY!!!!')
@@ -92,16 +92,14 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should detect deleted exercise' do
-    skip
     @remote.remove_dir(@echo.path)
     @remote.commit('remove exercise')
     @repository.reset
     @repository.process_exercises
-    assert_equal :removed, @echo.reload.status
+    assert_equal 'removed', @echo.reload.status
   end
 
   test 'should detect moved exercise' do
-    skip
     new_dir = 'echo2'
     @remote.rename_dir(@echo.path, new_dir)
     @remote.commit('move exercise')
@@ -110,5 +108,17 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @echo.reload
     assert_equal 'ok', @echo.status
     assert_equal new_dir, @echo.path
+  end
+
+  test 'should restore deleted exercise when reverted' do
+    @remote.remove_dir(@echo.path)
+    @remote.commit('remove exercise')
+    @repository.reset
+    @repository.process_exercises
+    @remote.revert_commit
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'ok', @echo.status
   end
 end

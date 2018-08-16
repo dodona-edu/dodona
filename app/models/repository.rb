@@ -49,6 +49,12 @@ class Repository < ApplicationRecord
     exercise_dirs_below(full_path)
   end
 
+  def process_exercises_email_errors(user: nil, name: nil, email: nil)
+    process_exercises
+  rescue AggregatedConfigErrors => error
+    ErrorMailer.json_error(error, user: user, name: name, email: email).deliver
+  end
+
   def process_exercises
     dirs = exercise_dirs
     errors = []

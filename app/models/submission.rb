@@ -90,7 +90,7 @@ class Submission < ApplicationRecord
       summary: nil
     )
 
-    delay(priority: p_value).evaluate
+    delay(priority: p_value, queue: 'submissions').evaluate
   end
 
   def evaluate

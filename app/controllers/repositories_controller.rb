@@ -82,12 +82,12 @@ class RepositoriesController < ApplicationController
       if !params.key?('commits') || params['forced'] ||
          !params['commits'].reject {|commit| commit['author']['name'] == 'Dodona'}.empty?
         if current_user
-          @repository.delay(queue: 'repositories').process_exercises_email_errors(user: current_user)
+          @repository.delay.process_exercises_email_errors(user: current_user)
         elsif params['pusher']
           pusher = params['pusher']
-          @repository.delay(queue: 'repositories').process_exercises_email_errors(name: pusher['name'], email: pusher['email'])
+          @repository.delay.process_exercises_email_errors(name: pusher['name'], email: pusher['email'])
         else
-          @repository.delay(queue: 'repositories').process_exercises
+          @repository.delay.process_exercises
         end
       end
     end

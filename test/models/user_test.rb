@@ -140,7 +140,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal unfinished, user.unfinished_exercises, 'wrong amount of unfinished exercises'
   end
 
-  test 'user should have correct number of attemted, unfinished and correct exercises' do
+  test 'user should have correct number of attempted, unfinished and correct exercises' do
     user = create :user
     exercise1 = create :exercise
     exercise2 = create :exercise

@@ -31,6 +31,8 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
   setup do
     @remote = local_remote('exercises/echo')
 
+    # allow pushing
+    Rails.env.stubs(:production?).returns(true)
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
 

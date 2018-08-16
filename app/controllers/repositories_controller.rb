@@ -1,7 +1,7 @@
 require 'set'
 
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: %i[show edit update destroy hook reprocess]
+  before_action :set_repository, only: %i[show edit update destroy hook reprocess admins]
   skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /repositories
@@ -39,7 +39,9 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
     saved = @repository.save
-    @repository.process_exercises_email_errors(user: current_user) if saved
+    administration = RepositoryAdmin.new(user_id: current_user.id, repository_id: @repository.id)
+    administration.save
+    @repository.process_exercises if saved
 
     respond_to do |format|
       if saved
@@ -73,6 +75,22 @@ class RepositoriesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to repositories_url, notice: I18n.t('controllers.destroyed', model: Repository.model_name.human) }
       format.json { head :no_content }
+    end
+  end
+
+  def admins
+    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t('repositories.admins.admins'), '#']]
+    @users = apply_scopes(@repository.admins)
+             .order(username: :asc)
+             .paginate(page: params[:page])
+    @pagination_opts = {
+        controller: 'repositories',
+        action: 'admins'
+    }
+    respond_to do |format|
+      format.json { render 'users/index' }
+      format.js { render 'users/index' }
+      format.html
     end
   end
 

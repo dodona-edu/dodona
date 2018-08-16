@@ -122,6 +122,7 @@ class Repository < ApplicationRecord
       c = ex.config
       c['internals'] = {}
       c['internals']['token'] = ex.token
+      c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
       ex.config_file.write(JSON.pretty_generate(c))
     end
     unless new_exercises.empty?

@@ -12,16 +12,16 @@ set :branch, 'master'
 
 set :delayed_job_pools_per_server, {
   'dodona' => {
-    'repositories' => 2,
+    'default' => 2,
   },
   'sisyphus' => {
-    'default,submissions,low_priority_submissions,high_priority_submissions' => 6,
+    'submissions,low_priority_submissions,high_priority_submissions' => 6,
   },
   'salmoneus' => {
-    'default,submissions,low_priority_submissions,high_priority_submissions' => 6,
+    'submissions,low_priority_submissions,high_priority_submissions' => 6,
   },
   'tantalus' => {
-    'default,submissions,low_priority_submissions,high_priority_submissions' => 6,
+    'submissions,low_priority_submissions,high_priority_submissions' => 6,
   },
 }
 

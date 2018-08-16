@@ -15,13 +15,13 @@ set :delayed_job_pools_per_server, {
     'repositories' => 2,
   },
   'sisyphus' => {
-    'default,submissions' => 6,
+    'default,submissions,low_priority_submissions,high_priority_submissions' => 6,
   },
   'salmoneus' => {
-    'default,submissions' => 6,
+    'default,submissions,low_priority_submissions,high_priority_submissions' => 6,
   },
   'tantalus' => {
-    'default,submissions' => 6,
+    'default,submissions,low_priority_submissions,high_priority_submissions' => 6,
   },
 }
 

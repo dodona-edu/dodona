@@ -76,13 +76,13 @@ class Submission < ApplicationRecord
   end
 
   def evaluate_delayed(priority = :normal)
-    p_value = if priority == :high
-                -10
-              elsif priority == :low
-                10
-              else
-                0
-              end
+    queue = if priority == :high
+              'high_priority_submissions'
+            elsif priority == :low
+              'low_priority_submissions'
+            else
+              'submissions'
+            end
 
     update(
       status: 'queued',
@@ -90,7 +90,7 @@ class Submission < ApplicationRecord
       summary: nil
     )
 
-    delay(priority: p_value, queue: 'submissions').evaluate
+    delay(queue: queue).evaluate
   end
 
   def evaluate

@@ -9,6 +9,7 @@ class AddTokenToExercise < ActiveRecord::Migration[5.1]
       if exercise.ok?
         c = exercise.config
         c['internals']['token'] = exercise.token
+        c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
         exercise.config_file.write(JSON.pretty_generate c)
       end
       exercise.save

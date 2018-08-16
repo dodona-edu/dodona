@@ -173,6 +173,7 @@ class Exercise < ApplicationRecord
     c = config
     c['internals'] = {}
     c['internals']['token'] = token
+    c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
     c['visibility'] = visibility if visibility != merged_config['visibility']
     c['description']['names']['nl'] = name_nl
     c['description']['names']['en'] = name_en

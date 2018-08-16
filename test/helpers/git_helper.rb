@@ -26,6 +26,10 @@ class GitRepository
     git 'commit', '-m', message
   end
 
+  def revert_commit
+    git 'revert', 'HEAD', '--no-edit'
+  end
+
   def remove
     FileUtils.rmtree @path
   end

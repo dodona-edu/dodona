@@ -304,13 +304,13 @@ end
 
 class ExerciseRemoteTest < ActiveSupport::TestCase
   setup do
+    # allow pushing
+    Rails.env.stubs(:production?).returns(true)
     @remote = local_remote('exercises/echo')
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
     @exercise = @repository.exercises.first
 
-    # allow pushing
-    Rails.env.stubs(:production?).returns(true)
   end
 
   teardown do

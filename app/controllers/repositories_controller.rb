@@ -39,7 +39,7 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
     saved = @repository.save
-    process_exercise_dirs if saved
+    @repository.process_exercises_email_errors(user: current_user) if saved
 
     respond_to do |format|
       if saved
@@ -79,17 +79,16 @@ class RepositoriesController < ApplicationController
   def hook
     success, msg = @repository.reset
     if success
-      if params.key?('commits') && !params['forced']
-        params['commits']
-          .reject    { |commit|    commit['author']['name'] == 'Dodona' }
-          .flat_map  { |commit|    %w[added removed modified].flat_map { |type| commit[type] } }
-          .compact # remove nil entries
-          .flat_map  { |file| @repository.affected_exercise_dirs(file) }
-          .uniq
-      else
-        @repository.exercise_dirs
-      end.tap do |dirs|
-        process_exercise_dirs dirs
+      if !params.key?('commits') || params['forced'] ||
+         !params['commits'].reject {|commit| commit['author']['name'] == 'Dodona'}.empty?
+        if current_user
+          @repository.delay.process_exercises_email_errors(user: current_user)
+        elsif params['pusher']
+          pusher = params['pusher']
+          @repository.delay.process_exercises_email_errors(name: pusher['name'], email: pusher['email'])
+        else
+          @repository.delay.process_exercises
+        end
       end
     end
     status = success ? 200 : 500
@@ -102,21 +101,6 @@ class RepositoriesController < ApplicationController
   end
 
   private
-
-  def process_exercise_dirs(dirs = nil)
-    @repository.process_exercises dirs
-  rescue AggregatedConfigErrors => error
-    if current_user
-      ErrorMailer.json_error error, user: current_user
-    elsif params[:pusher]
-      pusher = params[:pusher]
-      ErrorMailer.json_error error,
-                             name: pusher[:name],
-                             email: pusher[:email]
-    else
-      raise error
-    end.deliver
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_repository

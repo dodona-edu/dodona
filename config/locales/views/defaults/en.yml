@@ -1,4 +1,7 @@
 en:
+  layouts:
+    drawer:
+      courses: My courses
   layout:
     head:
       description: Exercises for the programming courses of Ghent University.

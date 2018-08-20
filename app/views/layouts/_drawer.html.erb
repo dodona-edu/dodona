@@ -1,0 +1,20 @@
+<aside id="drawer" class="drawer">
+  <nav class="drawer-nav">
+    <div class="drawer-group">
+      <h1 class="drawer-group-title"><%= t '.courses' %></h1>
+      <ul class="drawer-list">
+        <% current_user.current_ay_courses.each do |course| %>
+          <li>
+            <%= link_to course_path(course),
+              class: 'drawer-list-item',
+              title: course.name do %>
+              <div class="drawer-list-ellipsis">
+                <%= course.name %>
+              </div>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
+</aside>

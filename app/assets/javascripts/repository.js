@@ -1,5 +1,3 @@
-import {showNotification} from "./notifications.js";
-
 function initAdminsEdit() {
     function init() {
         initAddButtons();

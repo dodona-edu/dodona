@@ -42,8 +42,8 @@ function initAdminsEdit() {
     }
 
 
-    function adminAdded(button, oldRow, userId) {
-        button.html("<i class='material-icons md-12'>close</i>");
+    function adminAdded(button, oldRow) {
+        button.html("<i class='material-icons md-12'>delete</i>");
         button.removeClass("add-admin");
         button.removeClass("btn-success");
         button.addClass("remove-admin");
@@ -57,7 +57,7 @@ function initAdminsEdit() {
         $(`#admin-table-wrapper .btn[data-user_id="${userId}"]`).parents("tr").eq(0).remove();
         let button = $(`.btn[data-user_id="${userId}"]`);
         if (button) {
-            button.html("<i class='material-icons md-12'>add</i>");
+            button.html("<i class='material-icons md-12'>person_add</i>");
             button.removeClass("remove-admin");
             button.removeClass("btn-danger");
             button.addClass("add-admin");

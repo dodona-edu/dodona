@@ -85,20 +85,36 @@ class RepositoriesController < ApplicationController
   end
 
   def add_admin
-    RepositoryAdmin.create(repository_id: @repository.id, user_id: params[:user_id])
+    success = RepositoryAdmin.create(repository_id: @repository.id, user_id: params[:user_id])
     respond_to do |format|
-      format.json
-      format.js
-      format.html { redirect_to admins_repository_path(@repository) }
+      if success
+        notification = t('controllers.updated', model: RepositoryAdmin.model_name.human)
+        format.json { head :no_content }
+        format.js { render locals: { notification: notification } }
+        format.html { redirect_to admins_repository_path(@repository) }
+      else
+        alert = t('controllers.update_failed', model: RepositoryAdmin.model_name.human)
+        format.json { head :unprocessable_entity }
+        format.js { render status: 400, locals: { notification: alert } }
+        format.html { redirect_to admins_repository_path(@repository) }
+      end
     end
   end
 
   def remove_admin
-    RepositoryAdmin.find_by(repository_id: @repository.id, user_id: params[:user_id]).delete
+    success = RepositoryAdmin.find_by(repository_id: @repository.id, user_id: params[:user_id]).destroy
     respond_to do |format|
-      format.json
-      format.js
-      format.html { redirect_to admins_repository_path(@repository) }
+      if success
+        notification = t('controllers.updated', model: RepositoryAdmin.model_name.human)
+        format.json { head :no_content }
+        format.js { render locals: { notification: notification } }
+        format.html { redirect_to admins_repository_path(@repository), notice: notification }
+      else
+        alert = t('controllers.update_failed', model: RepositoryAdmin.model_name.human)
+        format.json { head :unprocessable_entity }
+        format.js { render status: 400, locals: { notification: alert } }
+        format.html { redirect_to admins_repository_path(@repository), alert: alert }
+      end
     end
   end
 

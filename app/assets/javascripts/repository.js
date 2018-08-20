@@ -29,7 +29,7 @@ function initAdminsEdit() {
             user_id: userId,
         })
             .done(() => adminAdded(button, oldRow, userId))
-            .fail(() => addingFailed());
+            .fail(() => {});
     }
 
     function onRemoveClick() {
@@ -40,7 +40,7 @@ function initAdminsEdit() {
             user_id: userId,
         })
             .done(() => adminRemoved(userId))
-            .fail(() => removingFailed());
+            .fail(() => {});
     }
 
 
@@ -53,11 +53,6 @@ function initAdminsEdit() {
         button.off("click");
         button.click(onRemoveClick);
         $("#admin-table-wrapper table tbody").append(oldRow.clone(true));
-        showNotification(I18n.t("js.admin-add-success"));
-    }
-
-    function addingFailed() {
-        showNotification(I18n.t("js.admin-add-failed"));
     }
 
     function adminRemoved(userId) {
@@ -71,12 +66,7 @@ function initAdminsEdit() {
             button.addClass("btn-success");
             button.off("click");
             button.click(onAddClick);
-            showNotification(I18n.t("js.admin-remove-success"));
         }
-    }
-
-    function removingFailed() {
-        showNotification(I18n.t("js.admin-remove-failed"));
     }
 
     init();

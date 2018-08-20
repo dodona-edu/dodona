@@ -8,10 +8,6 @@ en:
     exercise-added-failed: Adding exercise failed
     exercise-removed-success: Exercise removed
     exercise-removed-failed: Removing exercise failed
-    admin-add-success: Admin added
-    admin-add-failed: Adding admin failed
-    admin-remove-success: Admin removed
-    admin-remove-failed: Removing admin failed
     tutor-failed: Something went wrong while loading the online python tutor
     copy-to-clipboard: Click to copy
     copy-success: Copied!

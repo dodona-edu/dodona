@@ -70,6 +70,8 @@ Rails.application.routes.draw do
         match 'hook', via: %i[get post], to: 'repositories#hook', as: 'webhook'
         get 'reprocess'
         get 'admins'
+        post 'remove_admin'
+        post 'add_admin'
       end
     end
 

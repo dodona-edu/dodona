@@ -15,6 +15,7 @@ en:
       decline: 'Decline'
       edit: 'Edit'
       delete: 'Delete'
+      actions: "Actions"
     new:
       title: Create user
     show:

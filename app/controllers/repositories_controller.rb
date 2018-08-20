@@ -1,7 +1,7 @@
 require 'set'
 
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: %i[show edit update destroy hook reprocess admins]
+  before_action :set_repository, only: %i[show edit update destroy hook reprocess admins add_admin remove_admin]
   skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /repositories
@@ -83,14 +83,23 @@ class RepositoriesController < ApplicationController
     @users = apply_scopes(@repository.admins)
              .order(username: :asc)
              .paginate(page: params[:page])
-    @pagination_opts = {
-        controller: 'repositories',
-        action: 'admins'
-    }
+  end
+
+  def add_admin
+    RepositoryAdmin.create(repository_id: @repository.id, user_id: params[:user_id])
     respond_to do |format|
-      format.json { render 'users/index' }
-      format.js { render 'users/index' }
-      format.html
+      format.json
+      format.js
+      format.html { redirect_to admins_repository_path(@repository) }
+    end
+  end
+
+  def remove_admin
+    RepositoryAdmin.find_by(repository_id: @repository.id, user_id: params[:user_id]).delete
+    respond_to do |format|
+      format.json
+      format.js
+      format.html { redirect_to admins_repository_path(@repository) }
     end
   end
 

@@ -1,62 +1,69 @@
 <table class="table table-index table-resource">
   <thead>
     <tr>
-      <% unless @repository %>
-        <th class='status-icon'></th>
-      <% end %>
+      <th class='status-icon'></th>
       <th><%= User.human_attribute_name("username") %></th>
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
-      <% unless @repository %>
-        <th class='text-right'><%= t("users.index.progress") %></th>
-        <th class= 'text-right'><%= t("users.index.access_level")%></th>
+      <% if @repository %>
+        <th class="text-right"><%=  t("users.index.actions")  %></th>
+      <% else %>
+        <th class='text-right'><%=  t("users.index.progress")  %></th>
+        <th class='text-right'><%=  t("users.index.access_level") %></th>
         <th></th>
-      <% end %>
+      <%  end %>
     </tr>
   </thead>
   <tbody>
     <% users.each do |user| %>
       <tr>
-        <% unless @repository %>
-          <td>
-            <% if user.zeus? %>
-              <span class="glyphicon glyphicon-king" title='<%= t ".zeus" %>'></span>
-            <% end %>
-            <% if user.staff? %>
-              <span class="glyphicon glyphicon-queen" title='<%= t ".staff" %>'></span>
-            <% end %>
-            <% if @course && user.course_admin?(@course) %>
-              <span class="glyphicon glyphicon-education" title='<%= t ".course_admin" %>'></span>
-            <% end %>
-            <% if user.username.blank? %>
-              <span class="glyphicon glyphicon-exclamation-sign" title='<%= t ".no_ugent" %>'></span>
-            <% end %>
-          </td>
-        <% end %>
+        <td>
+          <% if user.zeus? %>
+            <span class="glyphicon glyphicon-king" title='<%= t ".zeus" %>'></span>
+          <% end %>
+          <% if user.staff? %>
+            <span class="glyphicon glyphicon-queen" title='<%= t ".staff" %>'></span>
+          <% end %>
+          <% if @course && user.course_admin?(@course) %>
+            <span class="glyphicon glyphicon-education" title='<%= t ".course_admin" %>'></span>
+          <% end %>
+          <% if user.username.blank? %>
+            <span class="glyphicon glyphicon-exclamation-sign" title='<%= t ".no_ugent" %>'></span>
+          <% end %>
+        </td>
         <td>
           <%= link_to user.short_name, user %>
         </td>
         <td><%= user.full_name %></td>
         <td><%= user.email %></td>
-        <% unless @repository %>
-        <td class='text-right'>
-          <%= link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user) %>
-        </td>
-        <% if @course %>
-          <td class='text-right'>
-            <%= t("activerecord.attributes.course_membership.statuses.#{user.membership_status_for(@course)}") %>
+        <% if @repository %>
+          <td class="actions">
+            <%=  render partial: 'repositories/repository_admin_buttons',
+                        locals: {repository: @repository, user: user } %>
           </td>
+        <% else %>
+          <td class='text-right'>
+            <%=  link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user)  %>
+          </td>
+        <% if @course %>
+            <td class='text-right'>
+              <%=  t("activerecord.attributes.course_membership.statuses.#{user.membership_status_for(@course)}")  %>
+            </td>
         <% end %>
           <td class="actions">
             <% if @course %>
               <%= render partial: 'courses/course_membership_buttons',
                          locals: {course: @course, user: user} %>
-            <% end %>
+            <%  end  %>
             <% if policy(user).impersonate? %>
-              <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %><span class="glyphicon glyphicon-user"></span><% end %>
+              <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
+                <span class="glyphicon glyphicon-user"></span>
+              <% end %>
             <% end %>
-            <% if policy(user).edit? %>
-              <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
+            <% if policy(user).edit?  %>
+              <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
+                <span class="glyphicon glyphicon-pencil"></span>
+              <% end %>
             <% end %>
           </td>
         <% end %>

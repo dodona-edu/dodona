@@ -29,6 +29,14 @@ class RepositoryPolicy < ApplicationPolicy
     user&.repository_admin?(record)
   end
 
+  def add_admin?
+    user&.repository_admin?(record)
+  end
+
+  def remove_admin?
+    user&.repository_admin?(record)
+  end
+
   def hook?
     true
   end

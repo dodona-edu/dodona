@@ -1,3 +1,7 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'repository' %>
+<% end %>
+
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
@@ -5,10 +9,20 @@
         <h2 class="card-title-text"><%= @repository.name + " - " + t(".admins") %></h2>
       </div>
       <div class="card-supporting-text card-border">
-        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: admins_repository_path(@repository), eager: true}) %>
+        <div id="admin-table-wrapper">
+          <%= render(partial: 'users/users_table', locals: {users: @users}) %>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border">
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(:repository_id => @repository.id), eager: true}) %>
         <div id="users-table-wrapper">
         </div>
       </div>
     </div>
   </div>
 </div>
+<script>
+  $(function() {
+      dodona.initAdminsEdit();
+  })
+</script>

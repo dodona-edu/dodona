@@ -8,6 +8,10 @@ nl:
     exercise-added-failed: Oefening toevoegen mislukt
     exercise-removed-success: Oefening verwijderd
     exercise-removed-failed: Oefening verwijderen mislukt
+    admin-add-success: Admin toegevoegd
+    admin-add-failed: Admin toevoegen mislukt
+    admin-remove-success: Admin verwijderd
+    admin-remove-failed: Admin verwijderen mislukt
     tutor-failed: Er ging iets fout bij het laden van de online python tutor
     copy-to-clipboard: Klik om te kopiëren
     copy-success: Gekopieerd!

@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   def index
     authorize User
     @users = apply_scopes(User).all.order(permission: :desc, username: :asc).paginate(page: params[:page])
+    @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @title = I18n.t('users.index.title')
   end
 

@@ -40,8 +40,10 @@ Rails.application.routes.draw do
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
 
     resources :courses do
-      resources :series, only: :new
-      resources :exercises, only: [:show, :edit], concerns: %i[mediable submitable]
+      resources :series, only: :new do
+        resources :exercises, only: [:show], concerns: %i[mediable submitable]
+      end
+      resources :exercises, only: [:show], concerns: %i[mediable submitable]
       member do
         get 'members'
         get 'scoresheet'
@@ -85,7 +87,6 @@ Rails.application.routes.draw do
       get 'stop_impersonating', on: :collection
       member do
         get 'impersonate'
-        get 'photo'
         get 'token/:token', to: 'users#token_sign_in', as: 'token_sign_in'
       end
     end

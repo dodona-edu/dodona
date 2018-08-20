@@ -11,6 +11,7 @@ class CoursesController < ApplicationController
   def index
     authorize Course
     @courses = policy_scope(Course.all)
+    @grouped_courses = @courses.group_by(&:year)
     @title = I18n.t('courses.index.title')
   end
 
@@ -35,11 +36,13 @@ class CoursesController < ApplicationController
     authorize Course
     @course = Course.new
     @title = I18n.t('courses.new.title')
+    @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
   end
 
   # GET /courses/1/edit
   def edit
     @title = @course.name
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('crumbs.edit'), "#"]]
   end
 
   # POST /courses
@@ -183,6 +186,9 @@ class CoursesController < ApplicationController
       controller: 'courses',
       action: 'members'
     }
+
+    @title = I18n.t("courses.index.users")
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
 
     respond_to do |format|
       format.json { render 'users/index' }

@@ -25,6 +25,8 @@ class ExercisesController < ApplicationController
   def show
     flash.now[:notice] = I18n.t('exercises.show.not_accessible') if @exercise.closed?
     flash.now[:notice] = I18n.t('exercises.show.not_visible') if @exercise.hidden? && policy(@exercise).edit?
+    @course = Course.find_by(id: params[:course_id])
+    @series = Series.find_by(id: params[:series_id])
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     @submissions = @exercise.submissions
     @submissions = @submissions.in_course(@course) unless @course.nil?
@@ -34,10 +36,19 @@ class ExercisesController < ApplicationController
       authorize @edit_submission, :edit?
     end
     @title = @exercise.name
+    @crumbs = []
+    if @course
+      @crumbs << [@course.name, course_path(@course)]
+    end
+    if @series
+      @crumbs << [@series.name, course_path(@course, series: @series, anchor: "series-#{@series.name.parameterize}")]
+    end
+    @crumbs << [@exercise.name, "#"]
   end
 
   def edit
     @title = @exercise.name
+    @crumbs = [[@exercise.name, exercise_path(@exercise)], [I18n.t('crumbs.edit'), "#"]]
   end
 
   def update

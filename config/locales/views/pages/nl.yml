@@ -2,6 +2,7 @@ nl:
   pages:
     sign_in_page:
       select-institution: "Selecteer je onderwijsinstelling"
+      sign_in: "Aanmelden"
     about:
       intro_html: "De Dodona-leeromgeving bevat honderden programmeeroefeningen die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen. Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl. Dodona is nog volop in ontwikkeling, eventuele bugs of suggesties mogen dus zeker gemeld worden via het <a href='/contact'>contactformulier</a>."
       sign-in: Aanmelden
@@ -13,8 +14,13 @@ nl:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
       go-to-course: Ga naar deze cursus
+      edit-course: Cursus bewerken
       users: Gebruikers
+      exercises: Oefeningen
       course-admin: Cursusbeheerder
+      course-member: Ingeschreven
+      course-hidden: Verborgen cursus
+      course-closed: Gesloten cursus
     user_card:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
@@ -34,6 +40,10 @@ nl:
       unknown: 'onbekende'
     contact:
       title: Contacteer ons
+      name: Naam
+      email: Email
+      subject: Onderwerp
+      message: Bericht
     create_contact:
       captcha_failed: reCAPTCHA kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."

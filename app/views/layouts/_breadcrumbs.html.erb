@@ -1,0 +1,22 @@
+<%
+    if @crumbs.nil? && @title.present?
+        @crumbs = [[@title, "#"]]
+    end
+%>
+
+<div class="nav navbar-nav crumbs">
+    <% if !user_signed_in? %>
+        <div class="crumb"><%= link_to(t("layout.menu.exercises"), exercises_path) %></div>
+    <% elsif @crumbs.present? %>
+        <% is_first = true %>
+        <% @crumbs.each do |name, path| %>
+            <% unless is_first %>
+                <div class="crumb-separator">
+                    <i class="material-icons">chevron_right</i>
+                </div>
+            <% end %>
+            <div class="crumb"><%= link_to name, path, title: name %></div>
+            <% is_first = false %>
+        <% end %>
+    <% end %>
+</div>

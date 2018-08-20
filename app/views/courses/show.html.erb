@@ -5,7 +5,7 @@
 
 <div class="row">
   <div class="col-sm-offset-1 col-sm-10 col-xs-12">
-    <div class="card  tab-content">
+    <div class="card tab-content">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @course.name %> (<%= @course.formatted_year %>)</h2>
         <div class="card-title-fab">
@@ -89,31 +89,29 @@
           <% end %>
         </div>
       <% end %>
-      <% if policy(@course).show_series? %>
-        <div class="card-supporting-text card-border" >
-          <div class="card-subtitle">
-            <a class="anchor" id="series"></a>
-            <h3><%= t ".exercise_series" %></h3>
-            <div class="flex-spacer"></div>
-            <div class="card-subtitle-actions">
-              <% if policy(@course).add_series? %>
-                <%= link_to new_course_series_path(@course), title: t("series.new.title") do %>
-                  <span class='glyphicon glyphicon-plus pull-right'></span>
-                <% end %>
+    </div>
+    <% if policy(@course).show_series? %>
+        <div class="page-subtitle">
+          <a class="anchor" id="series"></a>
+          <h3><%= t ".exercise_series" %></h3>
+          <div class="flex-spacer"></div>
+          <div>
+            <% if policy(@course).add_series? %>
+              <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn btn-primary btn-fab-extended" do %>
+                <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
               <% end %>
-            </div>
-          </div>
-          <div id="series-listing">
-            <% @series.each do |series| %>
-              <%= render(partial: 'series/series', locals: {series: series}) %>
             <% end %>
           </div>
-          <% if @total_series > @series.length %>
-            <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
+        </div>
+        <div id="series-listing">
+          <% @series.each do |series| %>
+            <%= render(partial: 'series/series', locals: {series: series}) %>
           <% end %>
         </div>
-      <%  end %>
-    </div>
+        <% if @total_series > @series.length %>
+          <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
+        <% end %>
+    <% end %>
   </div>
 </div>
 <script type="text/javascript">

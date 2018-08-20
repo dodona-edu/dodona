@@ -21,7 +21,6 @@ require 'securerandom'
 
 class User < ApplicationRecord
   include StringHelper
-  PHOTOS_LOCATION = Rails.root.join('data', 'user_photos').freeze
 
   enum permission: %i[student staff zeus]
 
@@ -110,11 +109,6 @@ class User < ApplicationRecord
     zeus? || admin_of?(course)
   end
 
-  def photo
-    photo = PHOTOS_LOCATION.join((ugent_id || '') + '.jpg')
-    photo if File.file? photo
-  end
-
   def attempted_exercises(course = nil)
     s = submissions
     s = s.in_course(course) if course
@@ -165,18 +159,32 @@ class User < ApplicationRecord
     end
   end
 
-  def self.default_photo
-    Rails.root.join('app', 'assets', 'images', 'unknown_user.jpg')
+  # update and return user using an omniauth authentication hash
+  def update_from_oauth(oauth_hash)
+    auth_inst = Institution.from_identifier(oauth_hash.info.institution)
+    tap do |user|
+      user.username     = oauth_hash.uid
+      user.email        = oauth_hash.info.email
+      user.first_name   = oauth_hash.info.first_name
+      user.last_name    = oauth_hash.info.last_name
+      user.institution  = auth_inst if user.institution.nil?
+      user.save
+    end
   end
 
-  def self.from_omniauth(auth, institution)
-    raise 'Institution should not be nil' if institution.nil?
-    where(username: auth.uid, institution: institution).first_or_create do |user|
-      user.email = auth.info.email
-      user.first_name = auth.info.first_name
-      user.last_name = auth.info.last_name
-      user.institution = institution
-    end
+  def self.from_institution(auth, institution)
+    # try to look up existing users
+    # using username and institution
+    user = find_by(username: auth.uid, institution: institution)
+    # create a new user within the institution
+    # if nothing was found
+    user = new(institution: institution) if user.nil?
+    user
+  end
+
+  def self.from_email(email)
+    return nil if email.blank?
+    find_by(email: email)
   end
 
   private

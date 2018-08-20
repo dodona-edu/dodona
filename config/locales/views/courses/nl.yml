@@ -11,10 +11,10 @@ nl:
       visibility-help: Zichtbare vakken zijn zichtbaar in het cursusoverzicht. Verborgen vakken worden niet opgelijst in het overzicht en vereisen een speciale registratielink.
       registration-help: Bij open vakken worden registraties direct geaccepteerd. Bij gemoderereerde vakken moet elke registratie goedgekeurd worden door een cursusbeheerder. Wanneer een vak gesloten is kan niemand zich nog registreren.
     index:
-      title: Cursussen
+      title: Alle cursussen
       users: Gebruikers
     new:
-      title: Cursus toevoegen
+      title: Cursus aanmaken
     edit:
       confidential: Confidentieel
     show:

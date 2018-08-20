@@ -54,12 +54,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal @controller.true_user, @instance
   end
 
-  test 'should get user photo' do
-    get photo_user_url(@instance)
-    assert_response :success
-    assert_match %r{image\/(png|jpg|jpeg)}, response.content_type
-  end
-
   test 'user token should log in' do
     sign_out :user
     token_user = create :user, username: nil

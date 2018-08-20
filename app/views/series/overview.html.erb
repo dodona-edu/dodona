@@ -10,13 +10,11 @@
         <%= @series.course.name %>
       </h2>
     </div>
-    <div class="card-supporting-text">
-      <%= render partial: 'series/series', locals: {
-            series: @series,
-            get_exercise_path: method(:exercise_anchor)
-          } %>
-    </div>
   </div>
+  <%= render partial: 'series/series', locals: {
+      series: @series,
+      get_exercise_path: method(:exercise_anchor)
+    } %>
   <% summary.exercise_summaries.each do |ex| %>
     <div class="card exercise-description">
       <%= content_tag :a,
@@ -37,7 +35,7 @@
             <%= render partial: 'exercises/exercise_user_status', locals: { summary: ex } %>
           </div>
         <% else %>
-          <%= link_to t('exercises.show.handin'), course_exercise_path(@series.course, ex.exercise, anchor: "submission-card"), class: "btn-text" %>
+          <%= link_to t('exercises.show.handin'), course_series_exercise_path(@series.course, @series.id, ex.exercise, anchor: "submission-card"), class: "btn-text" %>
         <% end %>
       </div>
     </div>

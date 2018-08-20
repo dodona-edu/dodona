@@ -2,6 +2,7 @@ en:
   pages:
     sign_in_page:
       select-institution: "Please select your institution"
+      sign_in: "Sign in"
     about:
       intro_html: "The Dodona environment contains dozens of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with your Ghent University credentials. Dodona is still in active development, any bug report or suggestion is welcome trough the <a href='/contact'>contact form</a>."
       sign-in: Sign in
@@ -13,8 +14,13 @@ en:
       submissions: Submissions
       correct-exercises: Correct exercises
       go-to-course: Go to this course
+      edit-course: Edit course
       users: Users
+      exercises: Exercises
       course-admin: Course administrator
+      course-member: Course member
+      course-hidden: Hidden course
+      course-closed: Closed course
     user_card:
       submissions: Submissions
       correct-exercises: Correct exercises
@@ -34,6 +40,10 @@ en:
       unknown: 'unknown'
     contact:
       title: Get in touch
+      name: Name
+      email: Email
+      subject: Subject
+      message: Message
     create_contact:
       mail_sent: "Your message has been sent. Thanks for getting in touch."
       captcha_failed: reCAPTCHA could not be verified, please try again.

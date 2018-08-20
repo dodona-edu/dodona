@@ -121,6 +121,19 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'unauthenticated user should not be able to see hidden exercise' do
+    sign_out :user
+    @instance = create :exercise, visibility: 'hidden'
+    show_exercise
+    assert_redirected_to sign_in_url
+  end
+
+  test 'authenticated user should be able to see hidden exercise' do
+    @instance = create :exercise, visibility: 'hidden'
+    show_exercise
+    assert_response :success
+  end
+
   def create_exercises_return_valid
     create :exercise, :nameless
     create :exercise, visibility: 'closed'

@@ -1,19 +1,19 @@
 <div class="row">
-  <% if @user.subscribed_courses.empty? %>
+  <% if current_user.subscribed_courses.empty? %>
     <div class="col-xs-12 visible-sm">
       <%= render "getting_started_card"%>
     </div>
   <% end %>
   <div class="col-xs-12 col-sm-6 col-lg-8">
     <div class="row">
-      <% if @user.subscribed_courses.empty? %>
+      <% if current_user.subscribed_courses.empty? %>
         <div class="col-xs-12 hidden-sm">
           <%= render "getting_started_card"%>
         </div>
       <% end %>
-      <% @user.subscribed_courses.each do |course| %>
+      <% current_user.subscribed_courses.each do |course| %>
         <div class="col-xs-12 col-sm-12 col-lg-6">
-          <%= render partial: "course_card", locals: {course: course} %>
+          <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
         </div>
       <% end %>
     </div>

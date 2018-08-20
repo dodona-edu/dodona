@@ -25,7 +25,7 @@ body {
   padding: inherit;
 
   &.collapsed {
-    transform:rotate(-180deg);
+    transform: rotate(-180deg);
     transition: .3s;
   }
 
@@ -36,11 +36,8 @@ body {
 }
 
 // Create some space for the drawer to show
-@media (min-width: @screen-lg) {
-  .with-drawer {
-    transform: translateX(0);
-  }
-  .with-drawer.drawer-shown {
+.with-drawer {
+  @media (min-width: @screen-lg) {
     transform: translateX(120px);
   }
 }

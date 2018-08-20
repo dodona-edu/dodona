@@ -20,8 +20,7 @@ window.$ = jQuery;
 
 
 import "polyfills.js";
-
-
+import "drawer.js";
 import {showNotification} from "notifications.js";
 import {initClipboard, checkTimeZone, initCSRF} from "util.js";
 

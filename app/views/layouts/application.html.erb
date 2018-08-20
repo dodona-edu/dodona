@@ -38,7 +38,11 @@
   <body>
     <div id="page-wrapper">
       <%= render 'layouts/navbar' %>
-      <div class="container main">
+      <% if user_signed_in? %>
+        <%= render 'layouts/drawer' %>
+      <% end %>
+      <div id="main-container" class="container main with-drawer">
+        <%= javascript_pack_tag 'drawer' %>
         <div class="page-messages hidden-print">
           <% flash.each do |key, value| %>
             <% unless value.nil? %>

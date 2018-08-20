@@ -1,4 +1,7 @@
 nl:
+  layouts:
+    drawer:
+      courses: Mijn cursussen
   layout:
     head:
       description: Oefeningenwebsite voor de programmeervakken aan de UGent.

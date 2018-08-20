@@ -9,9 +9,71 @@ body {
 #page-wrapper {
     min-height: 100%;
     position: relative;
-    padding-top: 70px;
+    padding-top: 50px;
+
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    width: 100%;
 }
 
+// Overide nav toggle button
+.navbar-default .navbar-toggle {
+  border: none;
+  color: white;
+  transition: .3s;
+  padding: inherit;
+
+  &.collapsed {
+    transform:rotate(-180deg);
+    transition: .3s;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: inherit;
+  }
+}
+
+// Create some space for the drawer to show
+@media (min-width: @screen-lg) {
+  .with-drawer {
+    transform: translateX(0);
+  }
+  .with-drawer.drawer-shown {
+    transform: translateX(120px);
+  }
+}
+
+.drawer-toggle {
+    border: none;
+    outline: none;
+    position: relative;
+    float: left;
+    margin: 0 15px;
+    padding: 9px 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+}
+
+.drawer-toggle .icon-bar {
+    background-color: #ffffff;
+}
+
+.drawer-toggle .icon-bar + .icon-bar {
+    margin-top: 4px;
+}
+
+.drawer-toggle .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+ }
+
+ /* navbar */
 .navbar-brand .material-icons {
     margin-top: -2px;
 }
@@ -134,6 +196,7 @@ body {
     text-decoration: none;
 }
 .container.main {
+    padding-top: 20px;
     padding-bottom: 80px;
 }
 .notifications {

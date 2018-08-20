@@ -1,5 +1,11 @@
 <nav class="navbar navbar-default navbar-fixed-top navbar-flex" role="navigation">
   <div class="container navbar-flex">
+    <button type="button" class="drawer-toggle" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
+        <span class="sr-only">Toggle drawer</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
     <%= link_to root_path, class: "navbar-brand" do %>
       <span class="hidden-xs">Dodona</span>
       <i class="visible-xs material-icons">home</i>
@@ -9,9 +15,9 @@
     <div class="navbar-header navbar-toggle-button">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+        <i class="material-icons">
+          expand_less
+        </i>
       </button>
     </div>
     <div id="navbar" class="collapse navbar-collapse">

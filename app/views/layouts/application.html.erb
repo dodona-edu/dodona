@@ -42,7 +42,6 @@
         <%= render 'layouts/drawer' %>
       <% end %>
       <div id="main-container" class="container main with-drawer">
-        <%= javascript_pack_tag 'drawer' %>
         <div class="page-messages hidden-print">
           <% flash.each do |key, value| %>
             <% unless value.nil? %>

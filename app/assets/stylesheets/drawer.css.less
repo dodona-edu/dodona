@@ -7,18 +7,14 @@ aside.drawer {
   pointer-events: auto;
   background: #fff;
   z-index: 2;
-}
-
-aside.drawer {
-  left: -240px;
-}
-
-aside.drawer.active {
-  left: 0;
-}
-
-.with-transition {
   transition: .3s;
+
+  @media (max-width: 1170px) {
+    left: -240px;
+    &.active {
+      left: 0;
+    }
+  }
 }
 
 nav.drawer-nav {

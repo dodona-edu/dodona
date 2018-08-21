@@ -39,8 +39,10 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
     saved = @repository.save
-    RepositoryAdmin.create(user_id: current_user.id, repository_id: @repository.id) if saved
-    @repository.process_exercises if saved
+    if saved
+      RepositoryAdmin.create(user_id: current_user.id, repository_id: @repository.id)
+      @repository.process_exercises
+    end
 
     respond_to do |format|
       if saved

@@ -50,11 +50,10 @@ nl:
         name: Naam
         name_nl: Naam Nederlands
         name_en: Naam Engels
-        visibility: Zichtbaarheid
-        visibilities:
-          open: Open
-          hidden: Verborgen
-          closed: Gesloten
+        access: Toegang
+        accesses:
+          public: Publiek
+          private: Privé
       judge:
         name: Naam
         remote: Clone URL

@@ -1,11 +1,7 @@
-<% if exercise.hidden? && local_assigns[:series].nil? %>
+<% if exercise.access_private? && local_assigns[:series].nil? %>
   <%= content_tag :span, nil,
                   class: 'glyphicon glyphicon-eye-close',
-                  title: t('exercises.index.hidden') %>
-<% elsif exercise.closed? %>
-  <%= content_tag :span, nil,
-                  class: 'glyphicon glyphicon-ban-circle',
-                  title: t('exercises.index.closed') %>
+                  title: t('exercises.index.private') %>
 <% end %>
 <% if exercise.removed? %>
   <%= content_tag :span, nil,

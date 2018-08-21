@@ -126,6 +126,14 @@ class SeriesController < ApplicationController
 
   def add_exercise
     @exercise = Exercise.find(params[:exercise_id])
+    unless @exercise.usable_by? @series.course
+      if current_user.repository_admin? @exercise.repository
+        @series.course.usable_repositories << @exercise.repository
+      else
+        render status: 403
+        return
+      end
+    end
     SeriesMembership.create(series: @series, exercise: @exercise)
   end
 

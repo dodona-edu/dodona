@@ -32,6 +32,10 @@ class Repository < ApplicationRecord
   has_many :admins,
            through: :repository_admins,
            source: :user
+  has_many :course_repositories
+  has_many :allowed_courses,
+           through: :course_repositories,
+           source: :course
 
   def full_path
     Pathname.new File.join(EXERCISE_LOCATIONS, path)
@@ -146,7 +150,9 @@ class Repository < ApplicationRecord
     ex.name_nl = config['description']['names']['nl']
     ex.name_en = config['description']['names']['en']
     ex.description_format = Exercise.determine_format(ex.full_path)
-    ex.visibility = Exercise.convert_visibility(config['visibility'])
+    ex.access = Exercise.convert_visibility_to_access(config['visibility']) if config['visibility']
+    ex.access = config['access'] if config['access']
+    ex.access ||= :private
     ex.status = :ok
 
     ex.save

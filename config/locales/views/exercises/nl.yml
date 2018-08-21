@@ -16,10 +16,9 @@ nl:
       title: Oefeningen
       exercise: Oefening
       status: Status
-      closed: gesloten
-      hidden: verborgen
-      invalid: ongeldig
-      removed: verwijderd
+      private: Privé
+      invalid: Ongeldig
+      removed: Verwijderd
     show:
       code: Code
       handin: Indienen
@@ -36,3 +35,5 @@ nl:
       not_a_member: Je bekijkt deze oefening binnen een vak waar je geen lid van bent. Je zult niet verschijnen op de puntenlijst van de lesgever tot je bent geregistreerd.
       alert_not_valid: Er is iets fout met deze oefening. Je kan momenteel niet indienen, maar je kan wel je oude oplossingen bekijken.
       alert_removed: Deze oefening is niet meer beschikbaar, maar je kan nog steeds je oude oplossingen bekijken.
+    series_exercises_table:
+      course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"

@@ -16,6 +16,10 @@ function initSeriesEdit() {
             let exerciseId = $(this).data("exercise_id");
             let exerciseName = $(this).data("exercise_name");
             let seriesId = $(this).data("series_id");
+            let confirmMessage = $(this).data("confirm");
+            if (confirmMessage && !confirm(confirmMessage)) {
+                return false;
+            }
             let $row = $("<div class='col-xs-12 row exercise new'><div class='col-xs-1 drag-handle'><span class='glyphicon glyphicon-align-justify'></span></div><div class='col-xs-9'><a href='/exercises/" + exerciseId + "'>" + exerciseName + "</a></div><div class='actions col-xs-2'><a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><span class='glyphicon glyphicon-trash'></span></a></div></div>");
             $(".series-exercise-list").append($row);
             $row.css("opacity"); // trigger paint

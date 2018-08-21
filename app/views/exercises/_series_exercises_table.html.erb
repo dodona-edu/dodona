@@ -3,8 +3,7 @@
     <% exercises.each do |exercise| %>
     <tr>
       <td class="status-icon">
-        <%= raw "<span class='glyphicon glyphicon-eye-close' title='#{t("exercises.index.hidden")}'></span>" if exercise.hidden? %>
-        <%= raw "<span class='glyphicon glyphicon-ban-circle' title='#{t("exercises.index.closed")}'></span>" if exercise.closed? %>
+        <%= raw "<span class='glyphicon glyphicon-eye-close' title='#{t("exercises.index.private")}'></span>" if exercise.access_private? %>
         <%= raw "<span class='glyphicon glyphicon-trash' title='#{t("exercises.index.removed")}'></span>" if exercise.removed? %>
         <%= raw "<span class='glyphicon glyphicon-exclamation-sign' title='#{t("exercises.index.invalid")}'></span>" if exercise.not_valid? %>
       </td>
@@ -13,7 +12,7 @@
       </td>
       <td class="add-exercise-action">
         <% unless series.exercises.include? exercise %>
-          <a href="#" class="btn btn-icon add-exercise" title="<%= t "series.edit.add_exercise"%>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>"><span class="glyphicon glyphicon-plus"></span></a>
+          <a href="#" class="btn btn-icon add-exercise" title="<%= t "series.edit.add_exercise"%>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>" data-confirm="<%= t('.course_added_to_usable') unless exercise.usable_by? @series.course %>"><span class="glyphicon glyphicon-plus"></span></a>
         <% end %>
       </td>
     </tr>

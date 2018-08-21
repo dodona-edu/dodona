@@ -17,12 +17,10 @@
     <%= f.label :name_en, :class => "col-sm-2 control-label" %>
     <div class="col-sm-4"><%= f.text_field :name_en, class: "form-control" , disabled: !f.permission?(:name_en) %></div>
   </div>
-  <% if f.permission?(:visibility) %>
-    <div class="field form-group">
-      <%= f.label :visibility, :class => "col-sm-2 control-label" %>
-      <div class="col-sm-4"><%= f.select :visibility, Exercise.visibilities.map { |key, value| [Exercise.human_enum_name(:visibility, key), key] }, {}, { :class => 'form-control', disabled: !f.permission?(:visibility) } %></div>
-    </div>
-  <% end %>
+  <div class="field form-group">
+    <%= f.label :access, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.select :access, Exercise.accesses.map { |key, value| [Exercise.human_enum_name(:access, key), key] }, {}, { :class => 'form-control' } %></div>
+  </div>
   <div class="field form-group">
     <label class="col-sm-2 control-label"><%= Exercise.human_attribute_name("repository") %></label>
     <div class="col-sm-4 form-control-static"><%= link_to exercise.repository.name, exercise.repository %></div>
@@ -34,6 +32,5 @@
   <div class="field form-group">
     <label class="col-sm-2 control-label"><%= t ".edit_exercise" %></label>
     <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), @exercise.github_url, target: '_blank' %></div>
-  </div>
   </div>
 <% end %>

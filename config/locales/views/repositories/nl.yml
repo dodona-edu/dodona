@@ -12,6 +12,6 @@ nl:
       reprocess: Alle oefeningen herverwerken
       exercises: Oefeningen
     admins:
-      admins: "Administrators"
+      admins: "Beheerders"
     reprocess:
       done: Alle oefeningen in deze repository werden opnieuw verwerkt

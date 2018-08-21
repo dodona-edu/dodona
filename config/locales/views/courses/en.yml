@@ -1,5 +1,10 @@
 en:
   courses:
+    drawer:
+      overview: Overview
+      series: Series
+      edit: Edit
+      users: Users
     form:
       description-help: A description is optional. Markdown formatting can be used.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.

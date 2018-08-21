@@ -1,5 +1,6 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: %i[show edit update media]
+  before_action :set_course, only: %i[show edit]
   before_action :ensure_trailing_slash, only: :show
   skip_before_action :verify_authenticity_token, only: [:media]
 
@@ -77,5 +78,11 @@ class ExercisesController < ApplicationController
   def set_exercise
     @exercise = Exercise.find(params[:id])
     authorize @exercise
+  end
+
+  def set_course
+    return if params[:course_id].nil?
+    @course = Course.find(params[:course_id])
+    authorize @course
   end
 end

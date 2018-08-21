@@ -1,4 +1,9 @@
 module ApplicationHelper
+  def drawer_group(options)
+    options = { scrollable: false }.merge(options)
+    render partial: 'drawer_group', locals: options
+  end
+
   def clipboard_button_for(selector)
     selector = selector.to_s
     selector.prepend('#') unless selector.starts_with?('#')

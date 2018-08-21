@@ -1,5 +1,10 @@
 nl:
   exercises:
+    drawer:
+      overview: Overzicht
+      submit: Indienen
+      edit: Aanpassen
+      submissions: Oplossingen
     exercise:
       count_tooltip: aantal studenten die deze oefening correct hebben
       correct: correct

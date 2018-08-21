@@ -92,6 +92,10 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def admin_drawer?
+    course_admin?
+  end
+
   def permitted_attributes
     # record is the Course class on create
     if course_admin? || (record == Course && user&.admin?)

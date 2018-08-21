@@ -55,7 +55,8 @@ function initExercisesReadonly() {
 }
 
 
-function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
+function initExerciseShow(exerciseId, programmingLanguage, userId, editorShown, courseId) {
+    const loggedIn = userId != null;
     let editor;
     let lastSubmission;
 

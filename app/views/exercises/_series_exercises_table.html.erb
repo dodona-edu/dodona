@@ -1,3 +1,4 @@
+<div class="table-scroll-wrapper">
 <table class="table exercise-table">
   <tbody>
     <% exercises.each do |exercise| %>
@@ -20,4 +21,5 @@
     <% end %>
   </tbody>
 </table>
+</div>
 <center><%= page_navigation_links exercises, true, "exercises", {series_id: series.id} %></center>

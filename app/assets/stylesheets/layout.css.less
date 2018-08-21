@@ -17,8 +17,8 @@ body {
     width: 100%;
 
     // Create some space for the drawer
-    @media (min-width: @screen-lg) {
-      padding-left: 240px;
+    @media (min-width: @screen-lg-min) {
+      padding-left: @drawer-width;
     }
 }
 
@@ -26,7 +26,8 @@ body {
 .navbar-default .navbar-toggle {
   border: none;
   color: white;
-  padding: inherit;
+  padding: 6px 0 0 0;
+
 
   &:hover,
   &:focus {
@@ -170,6 +171,10 @@ body {
     flex-shrink: 0;
     align-self: stretch;
     align-items: left;
+
+    @media (min-width: @screen-lg-min){
+      margin-left: @drawer-width;
+    }
 }
 .footer-block>* {
     flex-shrink: 0;

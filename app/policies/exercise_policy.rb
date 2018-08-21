@@ -24,7 +24,7 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def update?
-    user&.admin?
+    user&.repository_admin?(record.repository)
   end
 
   def media?
@@ -39,7 +39,7 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if user&.admin?
+    if update?
       %i[visibility name_nl name_en]
     else
       []

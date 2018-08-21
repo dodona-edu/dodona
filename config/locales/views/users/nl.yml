@@ -15,6 +15,7 @@ nl:
       decline: 'Afwijzen'
       edit: 'Aanpassen'
       delete: 'Verwijderen'
+      actions: "Acties"
     new:
       title: Gebruiker aanmaken
     show:

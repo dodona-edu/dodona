@@ -28,6 +28,10 @@ class Repository < ApplicationRecord
 
   belongs_to :judge
   has_many :exercises
+  has_many :repository_admins
+  has_many :admins,
+           through: :repository_admins,
+           source: :user
 
   def full_path
     Pathname.new File.join(EXERCISE_LOCATIONS, path)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180813075332) do
+ActiveRecord::Schema.define(version: 20180816102553) do
 
   create_table "api_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
@@ -123,6 +123,13 @@ ActiveRecord::Schema.define(version: 20180813075332) do
     t.index ["path"], name: "index_repositories_on_path", unique: true
   end
 
+  create_table "repository_admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "repository_id", null: false
+    t.integer "user_id", null: false
+    t.index ["repository_id", "user_id"], name: "index_repository_admins_on_repository_id_and_user_id", unique: true
+    t.index ["user_id"], name: "fk_rails_6b59ad362c"
+  end
+
   create_table "series", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "course_id"
     t.string "name"
@@ -200,6 +207,8 @@ ActiveRecord::Schema.define(version: 20180813075332) do
   add_foreign_key "exercises", "judges"
   add_foreign_key "exercises", "repositories"
   add_foreign_key "repositories", "judges"
+  add_foreign_key "repository_admins", "repositories"
+  add_foreign_key "repository_admins", "users"
   add_foreign_key "series", "courses"
   add_foreign_key "series_memberships", "exercises"
   add_foreign_key "series_memberships", "series"

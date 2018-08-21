@@ -25,12 +25,24 @@ class RepositoryPolicy < ApplicationPolicy
     user&.zeus?
   end
 
+  def admins?
+    user&.repository_admin?(record)
+  end
+
+  def add_admin?
+    admins?
+  end
+
+  def remove_admin?
+    admins?
+  end
+
   def hook?
     true
   end
 
   def reprocess?
-    user&.admin?
+    user&.repository_admin?(record)
   end
 
   def permitted_attributes

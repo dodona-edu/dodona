@@ -93,12 +93,12 @@ class RepositoriesController < ApplicationController
         notification = t('controllers.updated', model: RepositoryAdmin.model_name.human)
         format.json { head :no_content }
         format.js { render locals: { notification: notification } }
-        format.html { redirect_to admins_repository_path(@repository) }
+        format.html { redirect_to admins_repository_path(@repository), notice: notification }
       else
         alert = t('controllers.update_failed', model: RepositoryAdmin.model_name.human)
         format.json { head :unprocessable_entity }
         format.js { render status: 400, locals: { notification: alert } }
-        format.html { redirect_to admins_repository_path(@repository) }
+        format.html { redirect_to admins_repository_path(@repository), alert: alert }
       end
     end
   end

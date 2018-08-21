@@ -1,11 +1,33 @@
 <aside id="drawer" class="drawer">
   <nav class="drawer-nav">
     <div class="drawer-group">
+      <h1 class="drawer-group-title"><%= current_user.full_name %></h1>
+      <ul class="drawer-list">
+        <li>
+          <%= activatable_link_to current_user,
+            class: 'drawer-list-item' do %>
+            <%= t('layout.menu.profile') %>
+          <% end %>
+        </li>
+        <li>
+          <%= activatable_link_to submissions_path,
+            class: 'drawer-list-item' do %>
+            <%= if current_user.admin?
+                  t('layout.menu.all_submissions')
+                else
+                  t('layout.menu.my_submissions')
+                end
+              %>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+    <div class="drawer-group">
       <h1 class="drawer-group-title"><%= t '.courses' %></h1>
       <ul class="drawer-list">
         <% current_user.current_ay_courses.each do |course| %>
           <li>
-            <%= link_to course_path(course),
+            <%= activatable_link_to course_path(course),
               class: 'drawer-list-item',
               title: course.name do %>
               <div class="drawer-list-ellipsis">
@@ -14,6 +36,61 @@
             <% end %>
           </li>
         <% end %>
+      </ul>
+    </div>
+    <% if current_user.admin? %>
+      <div class="drawer-group">
+        <h1 class="drawer-group-title">Admin</h1>
+        <ul class="drawer-list">
+          <% if policy(Exercise).index? %>
+            <li><%= activatable_link_to exercises_path,
+              class: 'drawer-list-item' do %>
+              <%= t("layout.menu.exercises") %>
+            <% end %>
+          <% end %>
+          <% if policy(User).index? %>
+            <li><%= activatable_link_to users_path ,
+              class: 'drawer-list-item' do %>
+              <%= t("layout.menu.users") %>
+            <% end %>
+          <% end %>
+          <% if policy(Course).index? %>
+            <li><%= activatable_link_to courses_path ,
+              class: 'drawer-list-item' do %>
+              <%= t("layout.menu.courses") %>
+            <% end %>
+          <% end %>
+          <% if policy(Judge).index? %>
+            <li><%= activatable_link_to judges_path ,
+              class: 'drawer-list-item' do %>
+              <%= t("layout.menu.judges") %>
+            <% end %>
+          <% end %>
+          <% if policy(Repository).index? %>
+            <li><%= activatable_link_to repositories_path ,
+              class: 'drawer-list-item' do %>
+              <%= t("layout.menu.repositories") %>
+            <% end %>
+          <% end %>
+          <% if current_user.zeus? %>
+            <li><%= activatable_link_to "/dj/overview",
+              class: 'drawer-list-item' do%>
+              Job queue
+            <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="drawer-group bottom">
+      <ul class="drawer-list">
+        <li>
+          <% if current_user.institution&.saml? %>
+            <%= link_to t("layout.menu.log_out"), destroy_user_session_path(idp: session[:current_idp]), :method => :delete, target: "_blank", onclick: "window.setTimeout(function () {location.href = '#{root_path}';}, 1000);", class: 'drawer-list-item' %>
+          <% else %>
+            <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete, class: 'drawer-list-item' %>
+          <% end %>
+        </li>
       </ul>
     </div>
   </nav>

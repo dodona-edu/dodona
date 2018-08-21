@@ -1,4 +1,18 @@
 module ApplicationHelper
+  def activatable_link_to(url, options = nil)
+    if current_page?(url)
+      options ||= {}
+      if options[:class]
+        options[:class] += ' active'
+      else
+        options[:class] = 'active'
+      end
+    end
+    link_to url, options do
+      yield
+    end
+  end
+
   def clipboard_button_for(selector)
     selector = selector.to_s
     selector.prepend('#') unless selector.starts_with?('#')

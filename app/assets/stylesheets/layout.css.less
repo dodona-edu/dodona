@@ -15,6 +15,11 @@ body {
     flex-direction: row;
     margin: 0;
     width: 100%;
+
+    // Create some space for the drawer
+    @media (min-width: @screen-lg) {
+      padding-left: 240px;
+    }
 }
 
 // Overide nav toggle button
@@ -35,12 +40,6 @@ body {
   }
 }
 
-// Create some space for the drawer to show
-.with-drawer {
-  @media (min-width: @screen-lg) {
-    transform: translateX(120px);
-  }
-}
 
 .drawer-toggle {
     border: none;

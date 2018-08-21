@@ -6,34 +6,36 @@ function initAdminsEdit() {
     }
 
     function initAddButtons() {
-        let $buttons = $(".btn.add-admin");
+        const $buttons = $(".btn.add-admin");
         $buttons.off("click");
         $buttons.click(onAddClick);
     }
 
     function initRemoveButtons() {
-        let $buttons = $(".btn.remove-admin");
+        const $buttons = $(".btn.remove-admin");
         $buttons.off("click");
         $buttons.click(onRemoveClick);
     }
 
     function onAddClick() {
-        let button = $(this);
-        let userId = button.data("user_id");
-        let repositoryId = button.data("repository_id");
-        let oldRow = button.parents("tr").eq(0);
+        const $button = $(this);
+        const $cell = $button.parents("td.repository-admin-button-cell").eq(0);
+        const userId = $cell.data("user_id");
+        const repositoryId = $cell.data("repository_id");
+        const $oldRow = $cell.parents("tr").eq(0);
 
         $.post(`/repositories/${repositoryId}/add_admin.js`, {
             user_id: userId,
         })
-            .done(() => adminAdded(button, oldRow, userId))
+            .done(() => adminAdded($button, $oldRow, userId))
             .fail(() => {});
     }
 
     function onRemoveClick() {
-        let button = $(this);
-        let userId = button.data("user_id");
-        let repositoryId = button.data("repository_id");
+        const $button = $(this);
+        const $cell = $button.parents("td.repository-admin-button-cell").eq(0);
+        const userId = $cell.data("user_id");
+        const repositoryId = $cell.data("repository_id");
         $.post(`/repositories/${repositoryId}/remove_admin.js`, {
             user_id: userId,
         })
@@ -42,28 +44,25 @@ function initAdminsEdit() {
     }
 
 
-    function adminAdded(button, oldRow) {
-        button.html("<i class='material-icons md-12'>delete</i>");
-        button.removeClass("add-admin");
-        button.removeClass("btn-success");
-        button.addClass("remove-admin");
-        button.addClass("btn-danger");
-        button.off("click");
-        button.click(onRemoveClick);
-        $("#admin-table-wrapper table tbody").append(oldRow.clone(true));
+    function adminAdded($button, $oldRow) {
+        $button.html("<i class='material-icons md-12'>delete</i>");
+        $button.removeClass("add-admin");
+        $button.addClass("remove-admin");
+        $button.addClass("btn-danger");
+        $button.off("click");
+        $button.click(onRemoveClick);
+        $("#admin-table-wrapper table tbody").append($oldRow.clone(true));
+        $button.remove();
     }
 
     function adminRemoved(userId) {
-        $(`#admin-table-wrapper .btn[data-user_id="${userId}"]`).parents("tr").eq(0).remove();
-        let button = $(`.btn[data-user_id="${userId}"]`);
-        if (button) {
-            button.html("<i class='material-icons md-12'>person_add</i>");
-            button.removeClass("remove-admin");
-            button.removeClass("btn-danger");
-            button.addClass("add-admin");
-            button.addClass("btn-success");
-            button.off("click");
-            button.click(onAddClick);
+        $(`#admin-table-wrapper td.repository-admin-button-cell[data-user_id="${userId}"]`).parents("tr").eq(0).remove();
+        const $cell = $(`td[data-user_id="${userId}"]`);
+        if ($cell) {
+            $cell.html("<button type='button' class='btn btn-sm add-admin'><i class='material-icons md-12'>person_add</i></button>")
+            const $button = $cell.find(".add-admin");
+            $button.off("click");
+            $button.click(onAddClick);
         }
     }
 

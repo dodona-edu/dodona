@@ -37,9 +37,10 @@
         <td><%= user.full_name %></td>
         <td><%= user.email %></td>
         <% if @repository %>
-          <td class="actions">
+          <% show_delete_button = local_assigns.fetch(:show_delete_button, false) %>
+          <td class="actions repository-admin-button-cell" data-user_id="<%= user.id %>" data-repository_id="<%= @repository.id %>">
             <%=  render partial: 'repositories/repository_admin_buttons',
-                        locals: {repository: @repository, user: user } %>
+                        locals: {repository: @repository, user: user, show_delete_button: show_delete_button } %>
           </td>
         <% else %>
           <td class='text-right'>

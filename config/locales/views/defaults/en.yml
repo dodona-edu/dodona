@@ -1,7 +1,4 @@
 en:
-  layouts:
-    drawer:
-      courses: My courses
   layout:
     head:
       description: Exercises for the programming courses of Ghent University.
@@ -18,6 +15,7 @@ en:
       no_username: Your account has no username associated with it. If you already obtained a Ghent University account, please contact a teaching assistant as soon as possible.
       time_zone_html: Your time zone is currently set to <strong>%{time_zone}</strong>, but this doesn't seem to match with your local time. You can switch time zones on your <a href='%{profile_edit}'>profile page</a>.
     menu:
+      manual: User manual
       exercises: Exercises
       my_submissions: My submissions
       all_submissions: All submissions

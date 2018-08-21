@@ -45,7 +45,7 @@ nav.drawer-nav {
     overflow-y: auto;
   }
 
-  &.bottom {
+  &:last-child {
     flex-grow: 1;
     display: flex;
     align-items: flex-end;
@@ -71,33 +71,36 @@ ul.drawer-list {
   line-height: 1.5rem;
   list-style-type: none;
   color: @black-secondary;
+
+  li a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-transform: inherit;
+    position: relative;
+    padding: 0 16px;
+    outline: none;
+    color: @black-text;
+    text-decoration: none;
+    height: 42px;
+
+    &.active {
+      font-weight: 400;
+      background: @grey-200;
+    }
+
+    &:hover,&:focus {
+      background: @grey-100;
+    }
+
+    span, i {
+      font-size: 18px;
+      margin-right: 24px;
+    }
+  }
 }
 
 a.drawer-list-item {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  text-transform: inherit;
-  position: relative;
-  padding: 0 16px;
-  outline: none;
-  color: @black-text;
-  text-decoration: none;
-  height: 42px;
-
-  &.active {
-    font-weight: 400;
-    background: @grey-200;
-  }
-
-  &:hover,&:focus {
-    background: @grey-100;
-  }
-
-  span {
-    font-size: 18px;
-    margin-right: 24px;
-  }
 }
 
 .drawer-list-ellipsis {

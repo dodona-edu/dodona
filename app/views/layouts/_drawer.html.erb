@@ -1,28 +1,6 @@
 <aside id="drawer" class="drawer">
   <nav class="drawer-nav">
     <div class="drawer-group">
-      <h1 class="drawer-group-title"><%= current_user.full_name %></h1>
-      <ul class="drawer-list">
-        <li>
-          <%= activatable_link_to current_user,
-            class: 'drawer-list-item' do %>
-            <%= t('layout.menu.profile') %>
-          <% end %>
-        </li>
-        <li>
-          <%= activatable_link_to submissions_path,
-            class: 'drawer-list-item' do %>
-            <%= if current_user.admin?
-                  t('layout.menu.all_submissions')
-                else
-                  t('layout.menu.my_submissions')
-                end
-              %>
-          <% end %>
-        </li>
-      </ul>
-    </div>
-    <div class="drawer-group">
       <h1 class="drawer-group-title"><%= t '.courses' %></h1>
       <ul class="drawer-list">
         <% current_user.current_ay_courses.each do |course| %>
@@ -45,36 +23,42 @@
           <% if policy(Exercise).index? %>
             <li><%= activatable_link_to exercises_path,
               class: 'drawer-list-item' do %>
+              <i class="material-icons">assignment</i>
               <%= t("layout.menu.exercises") %>
             <% end %>
           <% end %>
           <% if policy(User).index? %>
             <li><%= activatable_link_to users_path ,
               class: 'drawer-list-item' do %>
+              <i class="material-icons">group</i>
               <%= t("layout.menu.users") %>
             <% end %>
           <% end %>
           <% if policy(Course).index? %>
             <li><%= activatable_link_to courses_path ,
               class: 'drawer-list-item' do %>
+              <i class="material-icons">collections_bookmark</i>
               <%= t("layout.menu.courses") %>
             <% end %>
           <% end %>
           <% if policy(Judge).index? %>
             <li><%= activatable_link_to judges_path ,
               class: 'drawer-list-item' do %>
+              <i class="material-icons">gavel</i>
               <%= t("layout.menu.judges") %>
             <% end %>
           <% end %>
           <% if policy(Repository).index? %>
             <li><%= activatable_link_to repositories_path ,
               class: 'drawer-list-item' do %>
+              <i class="material-icons">code</i>
               <%= t("layout.menu.repositories") %>
             <% end %>
           <% end %>
           <% if current_user.zeus? %>
             <li><%= activatable_link_to "/dj/overview",
               class: 'drawer-list-item' do%>
+              <i class="material-icons">library_books</i>
               Job queue
             <% end %>
             </li>
@@ -82,13 +66,32 @@
         </ul>
       </div>
     <% end %>
-    <div class="drawer-group bottom">
+    <div class="drawer-group">
       <ul class="drawer-list">
         <li>
+            <li><%= activatable_link_to user_path(current_user),
+              class: 'drawer-list-item' do %>
+              <i class="material-icons">account_circle</i>
+              <%= t("layout.menu.profile") %>
+            <% end %>
+        </li>
+        <li>
+          <%= link_to 'https://dodona.readthedocs.io/', class: 'drawer-list-item' do %>
+          <i class="material-icons">help</i>
+          <%=  t('layout.menu.manual') %>
+        <% end %>
+        </li>
+        <li>
           <% if current_user.institution&.saml? %>
-            <%= link_to t("layout.menu.log_out"), destroy_user_session_path(idp: session[:current_idp]), :method => :delete, target: "_blank", onclick: "window.setTimeout(function () {location.href = '#{root_path}';}, 1000);", class: 'drawer-list-item' %>
+            <%= link_to destroy_user_session_path(idp: session[:current_idp]), :method => :delete, target: "_blank", onclick: "window.setTimeout(function () {location.href = '#{root_path}';}, 1000);", class: 'drawer-list-item' do %>
+              <i class="material-icons">power_settings_new</i>
+              <%=  t('layout.menu.log_out') %>
+            <% end %>
           <% else %>
-            <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete, class: 'drawer-list-item' %>
+            <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete do %>
+              <i class="material-icons">power_settings_new</i>
+              <%=  t('layout.menu.log_out') %>
+            <% end %>
           <% end %>
         </li>
       </ul>

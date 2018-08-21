@@ -10,14 +10,14 @@ aside.drawer {
   left: 0;
 
   height: 100%;
-  width: 240px;
+  width: @drawer-width;
 
   z-index: 2;
 
   padding-top: 50px;
 
-  @media (max-width: 1170px) {
-    left: -240px;
+  @media (max-width: @screen-lg-min) {
+    left: -@drawer-width;
     &.active {
       left: 0;
     }
@@ -32,8 +32,7 @@ nav.drawer-nav {
   height: 100%;
   display: inline-flex;
   flex-direction: column;
-  width: 240px;
-  //padding-bottom: 130px;
+  width: @drawer-width;
   touch-action: none;
 }
 

@@ -23,42 +23,42 @@
           <% if policy(Exercise).index? %>
             <li><%= activatable_link_to exercises_path,
               class: 'drawer-list-item' do %>
-              <i class="material-icons">assignment</i>
+              <i class="material-icons md-24">assignment</i>
               <%= t("layout.menu.exercises") %>
             <% end %>
           <% end %>
           <% if policy(User).index? %>
             <li><%= activatable_link_to users_path ,
               class: 'drawer-list-item' do %>
-              <i class="material-icons">group</i>
+              <i class="material-icons md-24">group</i>
               <%= t("layout.menu.users") %>
             <% end %>
           <% end %>
           <% if policy(Course).index? %>
             <li><%= activatable_link_to courses_path ,
               class: 'drawer-list-item' do %>
-              <i class="material-icons">collections_bookmark</i>
+              <i class="material-icons md-24">collections_bookmark</i>
               <%= t("layout.menu.courses") %>
             <% end %>
           <% end %>
           <% if policy(Judge).index? %>
             <li><%= activatable_link_to judges_path ,
               class: 'drawer-list-item' do %>
-              <i class="material-icons">gavel</i>
+              <i class="material-icons md-24">gavel</i>
               <%= t("layout.menu.judges") %>
             <% end %>
           <% end %>
           <% if policy(Repository).index? %>
             <li><%= activatable_link_to repositories_path ,
               class: 'drawer-list-item' do %>
-              <i class="material-icons">code</i>
+              <i class="material-icons md-24">code</i>
               <%= t("layout.menu.repositories") %>
             <% end %>
           <% end %>
           <% if current_user.zeus? %>
             <li><%= activatable_link_to "/dj/overview",
               class: 'drawer-list-item' do%>
-              <i class="material-icons">library_books</i>
+              <i class="material-icons md-24">library_books</i>
               Job queue
             <% end %>
             </li>
@@ -71,25 +71,25 @@
         <li>
             <li><%= activatable_link_to user_path(current_user),
               class: 'drawer-list-item' do %>
-              <i class="material-icons">account_circle</i>
+              <i class="material-icons md-24">account_circle</i>
               <%= t("layout.menu.profile") %>
             <% end %>
         </li>
         <li>
           <%= link_to 'https://dodona.readthedocs.io/', class: 'drawer-list-item' do %>
-          <i class="material-icons">help</i>
+          <i class="material-icons md-24">help</i>
           <%=  t('layout.menu.manual') %>
         <% end %>
         </li>
         <li>
           <% if current_user.institution&.saml? %>
             <%= link_to destroy_user_session_path(idp: session[:current_idp]), :method => :delete, target: "_blank", onclick: "window.setTimeout(function () {location.href = '#{root_path}';}, 1000);", class: 'drawer-list-item' do %>
-              <i class="material-icons">power_settings_new</i>
+              <i class="material-icons md-24">power_settings_new</i>
               <%=  t('layout.menu.log_out') %>
             <% end %>
           <% else %>
             <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete do %>
-              <i class="material-icons">power_settings_new</i>
+              <i class="material-icons md-24">power_settings_new</i>
               <%=  t('layout.menu.log_out') %>
             <% end %>
           <% end %>

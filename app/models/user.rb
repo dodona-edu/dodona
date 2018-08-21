@@ -29,6 +29,7 @@ class User < ApplicationRecord
   has_many :api_tokens
   has_many :submissions
   has_many :course_memberships
+  has_many :repository_admins
   has_many :courses, through: :course_memberships
 
   has_many :subscribed_courses,
@@ -71,6 +72,10 @@ class User < ApplicationRecord
            through: :course_memberships,
            source: :course
 
+  has_many :repositories,
+           through: :repository_admins,
+           source: :repository
+
   devise :saml_authenticatable
   devise :omniauthable, omniauth_providers: %i[smartschool office365]
 
@@ -107,6 +112,10 @@ class User < ApplicationRecord
 
   def course_admin?(course)
     zeus? || admin_of?(course)
+  end
+
+  def repository_admin?(repository)
+    zeus? || repositories.include?(repository)
   end
 
   def attempted_exercises(course = nil)

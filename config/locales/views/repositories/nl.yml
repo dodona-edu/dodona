@@ -11,5 +11,7 @@ nl:
       webhook: "Vergeet niet de webhook te triggeren bij elke commit:"
       reprocess: Alle oefeningen herverwerken
       exercises: Oefeningen
+    admins:
+      admins: "Beheerders"
     reprocess:
       done: Alle oefeningen in deze repository werden opnieuw verwerkt

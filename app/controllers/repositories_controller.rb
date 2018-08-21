@@ -1,7 +1,7 @@
 require 'set'
 
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: %i[show edit update destroy hook reprocess]
+  before_action :set_repository, only: %i[show edit update destroy hook reprocess admins add_admin remove_admin]
   skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /repositories
@@ -39,7 +39,10 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
     saved = @repository.save
-    @repository.process_exercises_email_errors(user: current_user) if saved
+    if saved
+      RepositoryAdmin.create(user_id: current_user.id, repository_id: @repository.id)
+      @repository.process_exercises
+    end
 
     respond_to do |format|
       if saved
@@ -73,6 +76,47 @@ class RepositoriesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to repositories_url, notice: I18n.t('controllers.destroyed', model: Repository.model_name.human) }
       format.json { head :no_content }
+    end
+  end
+
+  def admins
+    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t('repositories.admins.admins'), '#']]
+    @users = apply_scopes(@repository.admins)
+             .order(username: :asc)
+             .paginate(page: params[:page])
+  end
+
+  def add_admin
+    success = RepositoryAdmin.create(repository_id: @repository.id, user_id: params[:user_id])
+    respond_to do |format|
+      if success
+        notification = t('controllers.updated', model: RepositoryAdmin.model_name.human)
+        format.json { head :no_content }
+        format.js { render locals: { notification: notification } }
+        format.html { redirect_to admins_repository_path(@repository), notice: notification }
+      else
+        alert = t('controllers.update_failed', model: RepositoryAdmin.model_name.human)
+        format.json { head :unprocessable_entity }
+        format.js { render status: 400, locals: { notification: alert } }
+        format.html { redirect_to admins_repository_path(@repository), alert: alert }
+      end
+    end
+  end
+
+  def remove_admin
+    success = RepositoryAdmin.find_by(repository_id: @repository.id, user_id: params[:user_id]).destroy
+    respond_to do |format|
+      if success
+        notification = t('controllers.updated', model: RepositoryAdmin.model_name.human)
+        format.json { head :no_content }
+        format.js { render locals: { notification: notification } }
+        format.html { redirect_to admins_repository_path(@repository), notice: notification }
+      else
+        alert = t('controllers.update_failed', model: RepositoryAdmin.model_name.human)
+        format.json { head :unprocessable_entity }
+        format.js { render status: 400, locals: { notification: alert } }
+        format.html { redirect_to admins_repository_path(@repository), alert: alert }
+      end
     end
   end
 

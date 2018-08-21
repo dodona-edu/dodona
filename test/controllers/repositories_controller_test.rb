@@ -9,7 +9,8 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     stub_git(Repository.any_instance)
     Repository.any_instance.stubs(:process_exercises)
     @instance = create :repository
-    sign_in create(:zeus)
+    @admin = create :zeus
+    sign_in @admin
   end
 
   test_crud_actions
@@ -23,6 +24,58 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     Repository.any_instance.expects(:process_exercises)
     get reprocess_repository_path(@instance)
     assert_redirected_to(@instance)
+  end
+
+  test 'should create repository admin on create' do
+    assert_difference('RepositoryAdmin.count', 1, "creating a repository should create a repository admin") do
+      create_request
+    end
+  end
+
+  test 'zeus and repository admin should be able to edit repository admins' do
+    user = create :user
+
+    assert_difference("@instance.admins.count", 1, "zeus should always be able to add a repository admin") do
+      post add_admin_repository_url(@instance, user_id: user.id)
+    end
+
+    sign_in user
+
+    assert_difference("@instance.admins.count", 1, "repo admin should be able to add a repository admin") do
+      post add_admin_repository_url(@instance, user_id: @admin.id)
+    end
+
+    assert_difference("@instance.admins.count", -1, "repo admin should be able to remove a repository admin") do
+      post remove_admin_repository_url(@instance, user_id: @admin.id)
+    end
+
+    user2 = create :user
+    @instance.admins << user2
+
+    sign_in @admin
+
+    assert_difference("@instance.admins.count", -1, "zeus should be able to remove a repository admin") do
+      post remove_admin_repository_url(@instance, user_id: user.id)
+    end
+
+    sign_in user
+
+    @instance.admins << @admin
+
+    assert_difference("@instance.admins.count", 0, "user should not be able to remove a repository admin") do
+      post remove_admin_repository_url(@instance, user_id: user2.id)
+    end
+
+    assert_difference("@instance.admins.count", 0, "user should not be able to add a repository admin") do
+      post add_admin_repository_url(@instance, user_id: user.id)
+    end
+  end
+
+  test 'last repository admin cannot be removed' do
+    @instance.admins << @admin
+
+    post remove_admin_repository_url(@instance, user_id: @admin.id)
+    assert @instance.admins.include? @admin
   end
 end
 

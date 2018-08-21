@@ -5,7 +5,6 @@
 #  id                   :integer          not null, primary key
 #  name_nl              :string(255)
 #  name_en              :string(255)
-#  visibility           :integer          default("open")
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  path                 :string(255)
@@ -14,6 +13,7 @@
 #  repository_id        :integer
 #  judge_id             :integer
 #  status               :integer          default("ok")
+#  access               :integer          default("public")
 #
 
 FactoryBot.define do
@@ -21,7 +21,7 @@ FactoryBot.define do
     sequence(:name_nl) { |n| name || "Oefening #{n}" }
     sequence(:name_en) { |n| name || "Exercise #{n}" }
 
-    visibility 'open'
+    access 'public'
     status 'ok'
 
     sequence(:path) { |n| "exercise#{n}" }

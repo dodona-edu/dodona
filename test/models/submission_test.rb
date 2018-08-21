@@ -19,10 +19,4 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'factory should create submission' do
     assert_not_nil create(:submission)
   end
-
-  test 'submission with closed exercise should not be creatable' do
-    submission = build(:submission)
-    submission.exercise.update(visibility: 'closed')
-    assert_not submission.save
-  end
 end

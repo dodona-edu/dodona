@@ -74,8 +74,8 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 'html', @echo.description_format
   end
 
-  test 'should set exercise visibility' do
-    assert_equal 'open', @echo.visibility
+  test 'should set exercise access' do
+    assert_equal 'public', @echo.access
   end
 
   test 'should set exercise status' do

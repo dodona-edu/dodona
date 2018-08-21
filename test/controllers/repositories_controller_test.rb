@@ -91,7 +91,7 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
 
     # update remote
     @remote.update_json('echo/config.json', 'make echo private') do |config|
-      config.update 'visibility' => 'closed'
+      config.update 'access' => 'private'
     end
   end
 
@@ -106,7 +106,7 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
 
   test 'webhook without commit info should update exercises' do
     post webhook_repository_path(@repository)
-    assert_equal 'closed', find_echo.visibility
+    assert_equal 'private', find_echo.access
   end
 
   test 'webhook with commit info should update exercises' do
@@ -126,6 +126,6 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
       }
     ]
     post webhook_repository_path(@repository), params: { commits: commit_info }
-    assert_equal 'closed', find_echo.visibility
+    assert_equal 'private', find_echo.access
   end
 end

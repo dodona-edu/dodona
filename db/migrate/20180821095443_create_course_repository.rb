@@ -8,5 +8,9 @@ class CreateCourseRepository < ActiveRecord::Migration[5.1]
     add_index :course_repositories, [:course_id, :repository_id], unique: true
     add_foreign_key :course_repositories, :courses
     add_foreign_key :course_repositories, :repositories
+
+    Exercise.where(access: :private).map{|e| e.series.map{|s| [e.repository, s.course]}}.uniq.each do |repository, course|
+      CourseRepository.create(course_id: course.id, repository_id: repository.id)
+    end
   end
 end

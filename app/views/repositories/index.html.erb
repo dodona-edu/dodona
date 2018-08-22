@@ -35,8 +35,11 @@
                   <td class="actions">
                     <% if policy(repository).admins? %>
                       <%= link_to admins_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-12">person</i><% end %>
-                    <% end  %>
-                    <% if policy(repository).edit? %>
+                    <% end %>
+                    <% if policy(repository).courses? %>
+                    <%= link_to courses_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-12">class</i><% end %>
+                  <% end %>
+                  <% if policy(repository).edit? %>
                       <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
                     <% end %>
                     <% if policy(repository).destroy? %>

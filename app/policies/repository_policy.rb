@@ -37,6 +37,18 @@ class RepositoryPolicy < ApplicationPolicy
     admins?
   end
 
+  def courses?
+    user&.repository_admin?(record)
+  end
+
+  def add_course?
+    courses?
+  end
+
+  def remove_course?
+    courses?
+  end
+
   def hook?
     true
   end

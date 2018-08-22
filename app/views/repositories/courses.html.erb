@@ -1,0 +1,28 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'repository' %>
+<% end %>
+
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @repository.name + " - " + t(".courses") %></h2>
+      </div>
+      <div class="card-supporting-text card-border">
+        <div id="allowed-courses-table-wrapper">
+          <%= render(partial: 'courses/courses_table', locals: {courses: @courses, show_delete_button: true}) %>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border">
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: courses_path(:repository_id => @repository.id), eager: true}) %>
+        <div id="courses-table-wrapper">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function() {
+      dodona.initCoursesEdit();
+  })
+</script>

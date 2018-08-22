@@ -1,7 +1,58 @@
 module ApplicationHelper
+  def exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
+    raise 'Exercise should not be nil' if exercise.nil?
+    if series.present?
+      course ||= series.course
+      course_series_exercise_path(I18n.locale, course, series, exercise, options)
+    elsif course.present?
+      course_exercise_path(I18n.locale, course, exercise, options)
+    else
+      exercise_path(I18n.locale, exercise, options)
+    end
+  end
+
+  def edit_exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
+    raise 'Exercise should not be nil' if exercise.nil?
+    if series.present?
+      course ||= series.course
+      edit_course_series_exercise_path(I18n.locale, course, series, exercise, options)
+    elsif course.present?
+      edit_course_exercise_path(I18n.locale, course, exercise, options)
+    else
+      edit_exercise_path(I18n.locale, exercise, options)
+    end
+  end
+
+  def submissions_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
+    if exercise.nil?
+      submissions_path(I18n.locale, options)
+    elsif series.present?
+      course ||= series.course
+      course_series_exercise_submissions_path(I18n.locale, course, series, exercise, options)
+    elsif course.present?
+      course_exercise_submissions_path(I18n.locale, course, exercise, options)
+    else
+      exercise_submissions_path(I18n.locale, exercise, options)
+    end
+  end
+
   def navbar_link(options)
-    return if options[:if] == false
-    render partial: 'navbar_link', locals: options
+    return if options.delete(:if) == false
+
+    url = options.delete(:url)
+    if current_page?(url)
+      options[:class] ||= ''
+      options[:class] +=  ' active'
+    end
+
+    locals = {
+      title: options.delete(:title),
+      icon: options.delete(:icon),
+      url: url,
+      link_options: options
+    }
+
+    render partial: 'navbar_link', locals: locals
   end
 
   def activatable_link_to(url, options = nil)

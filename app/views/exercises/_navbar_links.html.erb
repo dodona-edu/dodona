@@ -1,26 +1,19 @@
 <%= content_for :navbar do %>
-  <% if @course
-    show_url = course_series_exercise_path(@course, @series, @exercise)
-    edit_url = edit_course_series_exercise_path(@course, @series, @exercise)
-    submissions_url = course_series_exercise_submissions_path(@course, @series, @exercise)
-    can_view_submissions = policy(@course).submissions?
-  else
-    show_url = exercise_path(@exercise)
-    edit_url = edit_exercise_path(@exercise)
-    submissions_url = exercise_submissions_path(@exercise)
-    can_view_submissions = current_user.admin?
-  end %>
+  <% can_view_submissions = if @course
+                              policy(@course).submissions?
+                            else
+                              can_view_submissions = current_user.admin?
+                            end %>
 
-
-    <%= navbar_link url: show_url,
+    <%= navbar_link url: exercise_scoped_path(exercise: @exercise, course: @course, series: @series),
                     title: t('.show'),
                     icon: 'assignment',
                     if:  policy(@exercise).edit? || can_view_submissions %>
-    <%= navbar_link url: submissions_url,
+    <%= navbar_link url: submissions_scoped_path(exercise: @exercise, course: @course, series: @series),
                     title: t('.submissions'),
                     icon: 'library_books',
-                    if: can_view_submissions  %>
-    <%= navbar_link url: edit_url,
+                    if:  can_view_submissions %>
+    <%= navbar_link url: edit_exercise_scoped_path(exercise: @exercise, course: @course, series: @series),
                     title: t('.edit'),
                     icon: 'edit',
                     if: policy(@exercise).edit? %>

@@ -1,4 +1,5 @@
 class ExercisesController < ApplicationController
+
   before_action :set_exercise, only: %i[show edit update media]
   before_action :set_course, only: %i[show edit]
   before_action :set_series, only: %i[show edit]
@@ -40,12 +41,7 @@ class ExercisesController < ApplicationController
 
   def edit
     @title = @exercise.name
-    url = if @course
-            course_series_exercise_path(@course, @series, @exercise)
-          else
-            exercise_path(@exercise)
-          end
-    @crumbs << [@exercise.name, url] << [I18n.t('crumbs.edit'), '#']
+    @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] << [I18n.t('crumbs.edit'), '#']
   end
 
   def update

@@ -1,9 +1,10 @@
 en:
   courses:
     navbar_links:
-      submissions: Submissions for this course
-      members: Subscribed members
-      edit: Edit course
+      show: Show
+      submissions: Submissions
+      members: Members
+      edit: Edit
     form:
       description-help: A description is optional. Markdown formatting can be used.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.

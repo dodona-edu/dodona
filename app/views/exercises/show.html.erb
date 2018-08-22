@@ -3,6 +3,7 @@
   <%= javascript_pack_tag 'submission' %>
   <%= javascript_pack_tag 'pythia_submission' if @exercise.judge.renderer == PythiaRenderer %>
 <% end %>
+<%= render partial: 'navbar_links' %>
 
 <div class="row">
   <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>
@@ -15,11 +16,6 @@
         <h2 class="card-title-text">
           <%= @exercise.name %>
         </h2>
-        <% if policy(@exercise).edit? %>
-          <div class="card-title-fab">
-            <%= render 'fab_link', url: edit_exercise_path(@exercise), icon: 'pencil' %>
-          </div>
-        <% end %>
       </div>
       <%= render partial: 'description_card', locals: { exercise: @exercise } %>
     </div>

@@ -1,9 +1,10 @@
 nl:
   courses:
     navbar_links:
-      submissions: Oplossingen voor deze cursus
-      members: Geregistreerde gebruikers
-      edit: Cursus aanpassen
+      show: Bekijken
+      submissions: Oplossingen
+      members: Gebruikers
+      edit: Bewerken
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.

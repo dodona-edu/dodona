@@ -119,8 +119,36 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to sign_in_url
   end
 
-  test 'authenticated user should be able to see private exercise' do
+  test 'authenticated user should not be able to see private exercise' do
     @instance = create :exercise, access: 'private'
+    show_exercise
+    assert_redirected_to root_url
+
+    series = create :series
+    series.exercises << @instance
+    get course_exercise_path(series.course, @instance).concat('/')
+    assert_redirected_to root_url
+  end
+
+  test 'repository admin should always be able to see private exercises' do
+    @instance = create :exercise, access: 'private'
+    @instance.repository.admins << @user
+    show_exercise
+    assert_response :success
+  end
+
+  test 'authenticated user should be able to see private exercise when used in a subscribed course' do
+    series = create :series
+    @instance = create :exercise, access: 'private'
+    series.exercises << @instance
+    series.course.subscribed_members << @user
+    get course_exercise_path(series.course, @instance).concat('/')
+    assert_response :success
+  end
+
+  test 'authenticated user should be able to see private exercise if they have submissions' do
+    @instance = create :exercise, access: 'private'
+    create :submission, user: @user, exercise: @instance
     show_exercise
     assert_response :success
   end

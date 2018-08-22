@@ -1,4 +1,8 @@
 <%= content_for :navbar do %>
+    <%= navbar_link url: course_path(@course),
+                    title: t('.show'),
+                    icon: 'book',
+                    if: policy(@course).edit? || policy(@course).members?  %>
     <%= navbar_link url: edit_course_path(@course),
                     title: t('.edit'),
                     icon: 'edit',
@@ -7,8 +11,4 @@
                     title: t('.members'),
                     icon: 'group',
                     if: policy(@course).members? %>
-    <%= navbar_link url: submissions_path(course_id: @course),
-                    title: t('.submissions'),
-                    icon: 'library_books',
-                    if: policy(@course).submissions? %>
 <% end %>

@@ -1,5 +1,5 @@
 <li>
-  <%= link_to url, title: title do %>
+  <%= link_to url, title: title, class: ('active' if current_page?(url)) do %>
     <i class='material-icons'><%= icon %></i>
     <p class="dropdown-title"><%= title %></p>
   <% end %>

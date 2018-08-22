@@ -3,12 +3,12 @@
                     title: t('.show'),
                     icon: 'book',
                     if: policy(@course).edit? || policy(@course).members?  %>
-    <%= navbar_link url: edit_course_path(@course),
-                    title: t('.edit'),
-                    icon: 'edit',
-                    if: policy(@course).edit? %>
     <%= navbar_link url: members_course_path(@course),
                     title: t('.members'),
                     icon: 'group',
                     if: policy(@course).members? %>
+    <%= navbar_link url: edit_course_path(@course),
+                    title: t('.edit'),
+                    icon: 'edit',
+                    if: policy(@course).edit? %>
 <% end %>

@@ -1,0 +1,27 @@
+<%= content_for :navbar do %>
+  <% if @course
+    show_url = course_series_exercise_path(@course, @series, @exercise)
+    edit_url = edit_course_series_exercise_path(@course, @series, @exercise)
+    submissions_url = course_series_exercise_submissions_path(@course, @series, @exercise)
+    can_view_submissions = policy(@course).submissions?
+  else
+    show_url = exercise_path(@exercise)
+    edit_url = edit_exercise_path(@exercise)
+    submissions_url = exercise_submissions_path(@exercise)
+    can_view_submissions = current_user.admin?
+  end %>
+
+
+    <%= navbar_link url: show_url,
+                    title: t('.show'),
+                    icon: 'assignment',
+                    if:  policy(@exercise).edit? || can_view_submissions %>
+    <%= navbar_link url: submissions_url,
+                    title: t('.submissions'),
+                    icon: 'library_books',
+                    if: can_view_submissions  %>
+    <%= navbar_link url: edit_url,
+                    title: t('.edit'),
+                    icon: 'edit',
+                    if: policy(@exercise).edit? %>
+<% end %>

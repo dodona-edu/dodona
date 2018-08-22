@@ -77,6 +77,62 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     post remove_admin_repository_url(@instance, user_id: @admin.id)
     assert @instance.admins.include? @admin
   end
+
+  test 'zeus and repository admin should be able to edit allowed courses' do
+    course = create :course
+
+    assert_difference('@instance.allowed_courses.count',1, 'zeus should be able to add an allowed course') do
+      post add_course_repository_url(@instance, course_id: course.id)
+    end
+
+    assert_difference('@instance.allowed_courses.count',-1, 'zeus should be able to remove an allowed course') do
+      post remove_course_repository_url(@instance, course_id: course.id)
+    end
+
+    user = create :user
+    @instance.admins << user
+
+    sign_in user
+
+    assert_difference('@instance.allowed_courses.count',1, 'repository admin should be able to add an allowed course') do
+      post add_course_repository_url(@instance, course_id: course.id)
+    end
+
+    assert_difference('@instance.allowed_courses.count',-1, 'repository admin should be able to remove an allowed course') do
+      post remove_course_repository_url(@instance, course_id: course.id)
+    end
+  end
+
+  test 'user should not be able to edit allowed courses' do
+    course = create :course
+    user = create :user
+
+    sign_in user
+
+    assert_difference('@instance.allowed_courses.count', 0, 'user should not be able to add an allowed course') do
+      post add_course_repository_url(@instance, course_id: course.id)
+    end
+
+    @instance.allowed_courses << course
+
+    assert_difference('@instance.allowed_courses.count', 0, 'user should not be able to remove an allowed course') do
+      post remove_course_repository_url(@instance, course_id: course.id)
+    end
+  end
+
+  test 'revoking course permissions should remove private exercises from the course\'s series' do
+    Exercise.any_instance.stubs(:description_localized).returns("it's something")
+    course = create :course
+    series = create :series, course: course
+    exercise = create :exercise, repository: @instance, access: :private
+
+    @instance.allowed_courses << course
+    series.exercises << exercise
+
+    assert_difference('series.exercises.count', -1, 'private exercise should be removed when permission revoked') do
+      post remove_course_repository_url(@instance, course_id: course.id)
+    end
+  end
 end
 
 class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest

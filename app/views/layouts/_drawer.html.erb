@@ -68,12 +68,11 @@
     <% end %>
     <div class="drawer-group">
       <ul class="drawer-list">
-        <li>
-            <li><%= activatable_link_to user_path(current_user),
-              class: 'drawer-list-item' do %>
-              <i class="material-icons md-24">account_circle</i>
-              <%= t("layout.menu.profile") %>
-            <% end %>
+        <li><%= activatable_link_to user_path(current_user),
+          class: 'drawer-list-item' do %>
+          <i class="material-icons md-24">account_circle</i>
+          <%= t("layout.menu.profile") %>
+        <% end %>
         </li>
         <li>
           <%= link_to 'https://dodona.readthedocs.io/', class: 'drawer-list-item' do %>

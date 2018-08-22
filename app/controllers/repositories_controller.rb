@@ -1,7 +1,7 @@
 require 'set'
 
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: %i[show edit update destroy hook reprocess admins add_admin remove_admin]
+  before_action :set_repository, only: %i[show edit update destroy hook reprocess admins add_admin remove_admin courses add_course remove_course]
   skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /repositories
@@ -88,36 +88,28 @@ class RepositoriesController < ApplicationController
 
   def add_admin
     success = RepositoryAdmin.create(repository_id: @repository.id, user_id: params[:user_id])
-    respond_to do |format|
-      if success
-        notification = t('controllers.updated', model: RepositoryAdmin.model_name.human)
-        format.json { head :no_content }
-        format.js { render locals: { notification: notification } }
-        format.html { redirect_to admins_repository_path(@repository), notice: notification }
-      else
-        alert = t('controllers.update_failed', model: RepositoryAdmin.model_name.human)
-        format.json { head :unprocessable_entity }
-        format.js { render status: 400, locals: { notification: alert } }
-        format.html { redirect_to admins_repository_path(@repository), alert: alert }
-      end
-    end
+    model_update_response success, RepositoryAdmin, admins_repository_path(@repository)
   end
 
   def remove_admin
-    success = RepositoryAdmin.find_by(repository_id: @repository.id, user_id: params[:user_id]).destroy
-    respond_to do |format|
-      if success
-        notification = t('controllers.updated', model: RepositoryAdmin.model_name.human)
-        format.json { head :no_content }
-        format.js { render locals: { notification: notification } }
-        format.html { redirect_to admins_repository_path(@repository), notice: notification }
-      else
-        alert = t('controllers.update_failed', model: RepositoryAdmin.model_name.human)
-        format.json { head :unprocessable_entity }
-        format.js { render status: 400, locals: { notification: alert } }
-        format.html { redirect_to admins_repository_path(@repository), alert: alert }
-      end
-    end
+    success = RepositoryAdmin.find_by(repository_id: @repository.id, user_id: params[:user_id])&.destroy
+    model_update_response success, RepositoryAdmin, admins_repository_path(@repository)
+  end
+
+  def courses
+    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t('repositories.courses.courses'), '#']]
+    @courses = apply_scopes(@repository.allowed_courses)
+               .order(year: :desc, name: :asc)
+  end
+
+  def add_course
+    success = CourseRepository.create(repository_id: @repository.id, course_id: params[:course_id])
+    model_update_response success, CourseRepository, courses_repository_path(@repository)
+  end
+
+  def remove_course
+    success = CourseRepository.find_by(repository_id: @repository.id, course_id: params[:course_id])&.destroy
+    model_update_response success, CourseRepository, courses_repository_path(@repository)
   end
 
   def hook
@@ -150,5 +142,21 @@ class RepositoriesController < ApplicationController
   def set_repository
     @repository = Repository.find(params[:id])
     authorize @repository
+  end
+
+  def model_update_response(success, model, return_path)
+    respond_to do |format|
+      if success
+        notification = t('controllers.updated', model: model.model_name.human)
+        format.json { head :no_content }
+        format.js { render locals: {notification: notification } }
+        format.html { redirect_to return_path, notice: notification }
+      else
+        alert = t('controllers.update_failed', model: model.model_name.human)
+        format.json { head :unprocessable_entity }
+        format.js { render status: 400, locals: { notification: alert } }
+        format.html { redirect_to return_path, alert: alert }
+      end
+    end
   end
 end

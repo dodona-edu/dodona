@@ -15,3 +15,5 @@ nl:
       admins: "Beheerders"
     reprocess:
       done: Alle oefeningen in deze repository werden opnieuw verwerkt
+    courses:
+      courses: "Toegelaten cursussen"

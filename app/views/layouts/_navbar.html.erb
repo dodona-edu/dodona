@@ -24,7 +24,7 @@
       <ul class="nav navbar-nav navbar-actions">
         <%= content_for :navbar %>
         <% if content_for :navbar %>
-          <li class="divider"></li>
+          <li class="navbar-actions-spacer"></li>
         <% end %>
         <% if user_signed_in? %>
           <li class="dropdown">

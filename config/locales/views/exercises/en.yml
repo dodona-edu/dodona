@@ -1,5 +1,9 @@
 en:
   exercises:
+    navbar_links:
+      show: Show
+      submissions: Submissions
+      edit: Edit
     exercise:
       count_tooltip: number of students that solved this exercise correctly
       correct: correct

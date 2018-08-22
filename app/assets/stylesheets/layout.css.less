@@ -22,6 +22,32 @@ body {
     }
 }
 
+.dropdown-title {
+  @media(min-width: @screen-sm-min){
+    display: none;
+  }
+  display: inline-block;
+  padding-left: 25px;
+  transform: translateY(-.5em);
+}
+
+@media (min-width: @screen-sm-min){
+  ul.navbar-nav {
+
+    li a {
+      padding-bottom: 10px;
+
+      &.dropdown-toggle {
+        padding-right: 5px;
+      }
+    }
+    li.divider {
+      width: 56px;
+    }
+
+  }
+}
+
 // Overide nav toggle button
 .navbar-default .navbar-toggle {
   border: none;
@@ -62,7 +88,7 @@ body {
     width: 22px;
     height: 2px;
     border-radius: 1px;
- }
+}
 
  /* navbar */
 .navbar-brand .material-icons {

@@ -1,17 +1,12 @@
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'course' %>
 <% end %>
-
+<%= render partial: 'navbar_links' %>
 <div class="row">
   <div class="col-sm-offset-1 col-sm-10 col-xs-12">
     <div class="card tab-content">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @course.name %> (<%= @course.formatted_year %>)</h2>
-        <div class="card-title-fab">
-          <% if policy(@course).edit? %>
-              <%= render 'fab_link', url: edit_course_path(@course), icon: 'pencil' %>
-          <% end %>
-        </div>
       </div>
       <div class="card-supporting-text row">
         <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">

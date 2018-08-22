@@ -1,4 +1,9 @@
 module ApplicationHelper
+  def navbar_link(options)
+    return if options[:if] == false
+    render partial: 'navbar_link', locals: options
+  end
+
   def activatable_link_to(url, options = nil)
     if current_page?(url)
       options ||= {}

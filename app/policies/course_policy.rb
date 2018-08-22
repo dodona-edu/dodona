@@ -52,6 +52,10 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def submissions?
+    course_admin?
+  end
+
   def update_membership?
     course_admin?
   end

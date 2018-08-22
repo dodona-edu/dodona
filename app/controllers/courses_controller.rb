@@ -12,7 +12,7 @@ class CoursesController < ApplicationController
     authorize Course
     @courses = policy_scope(Course.all)
     @grouped_courses = @courses.group_by(&:year)
-    @repository = Repository.find(params[:repository_id])
+    @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @title = I18n.t('courses.index.title')
   end
 

@@ -119,20 +119,6 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
       post remove_course_repository_url(@instance, course_id: course.id)
     end
   end
-
-  test 'revoking course permissions should remove private exercises from the course\'s series' do
-    Exercise.any_instance.stubs(:description_localized).returns("it's something")
-    course = create :course
-    series = create :series, course: course
-    exercise = create :exercise, repository: @instance, access: :private
-
-    @instance.allowed_courses << course
-    series.exercises << exercise
-
-    assert_difference('series.exercises.count', -1, 'private exercise should be removed when permission revoked') do
-      post remove_course_repository_url(@instance, course_id: course.id)
-    end
-  end
 end
 
 class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest

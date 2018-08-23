@@ -23,7 +23,7 @@
         <% end %>
         <p>
           <% if policy(@user).impersonate? %>
-            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %><i class="material-icons">person</i> <%= t("layout.impersonate.impersonate") %><% end %>
+            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %><i class="material-icons md-12">person</i> <%= t("layout.impersonate.impersonate") %><% end %>
           <% end %>
         </p>
         <p>

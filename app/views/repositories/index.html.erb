@@ -40,10 +40,10 @@
                     <%= link_to courses_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">collections_bookmark</i><% end %>
                   <% end %>
                   <% if policy(repository).edit? %>
-                      <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons">edit</i><% end %>
+                      <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-12">edit</i><% end %>
                     <% end %>
                     <% if policy(repository).destroy? %>
-                      <%= link_to repository, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons">delete</i><% end %>
+                      <%= link_to repository, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons md-12">delete</i><% end %>
                     <% end %>
                   </td>
                 </tr>

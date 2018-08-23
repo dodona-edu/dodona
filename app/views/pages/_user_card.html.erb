@@ -42,7 +42,7 @@
       <% current_user.recent_exercises(5).each do |exercise| %>
         <% submission = exercise.last_submission(current_user) %>
         <p>
-          <%= link_to exercise_submissions_path(submission.exercise), class: 'btn btn-icon pull-right' do %><i class="material-icons">chevron_right</i><% end %>
+          <%= link_to exercise_submissions_path(submission.exercise), class: 'btn btn-icon pull-right' do %><i class="material-icons md-18">chevron_right</i><% end %>
           <span class='pull-left'><%= submission_status_icon(submission) %></span>
           <% if submission.course.nil? %>
             <%= link_to submission.exercise.name, exercise_path(submission.exercise), class: "course-link", title: submission.exercise.name %>

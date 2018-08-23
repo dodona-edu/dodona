@@ -20,16 +20,16 @@
       <tr>
         <td>
           <% if user.zeus? %>
-            <i class="material-icons" title='<%= t ".zeus" %>'>superviser_account</i>
+            <i class="material-icons md-18" title='<%= t ".zeus" %>'>supervisor_account</i>
           <% end %>
           <% if user.staff? %>
-            <i class="material-icons" title='<%= t ".staff" %>'>person_add</i>
+            <i class="material-icons md-18" title='<%= t ".staff" %>'>perm_identity</i>
           <% end %>
           <% if @course && user.course_admin?(@course) %>
-            <i class="material-icons" title='<%= t ".course_admin" %>'>school</i>
+            <i class="material-icons md-18" title='<%= t ".course_admin" %>'>school</i>
           <% end %>
           <% if user.username.blank? %>
-            <i class="material-icons" title='<%= t ".no_ugent" %>'>warning</i>
+            <i class="material-icons md-18" title='<%= t ".no_ugent" %>'>warning</i>
           <% end %>
         </td>
         <td>
@@ -59,12 +59,12 @@
             <%  end  %>
             <% if policy(user).impersonate? %>
               <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
-                <i class="material-icons">person</i>
+                <i class="material-icons md-12">person</i>
               <% end %>
             <% end %>
             <% if policy(user).edit?  %>
               <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
-                <i class="material-icons">edit</i>
+                <i class="material-icons md-12">edit</i>
               <% end %>
             <% end %>
           </td>

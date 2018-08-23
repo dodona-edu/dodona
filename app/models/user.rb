@@ -168,6 +168,15 @@ class User < ApplicationRecord
     end
   end
 
+  def can_access?(course, exercise)
+    return true if exercise.access_public?
+    return true if repository_admin? exercise.repository
+    return false unless course
+    return false unless course.series.flat_map(&:exercises).include? exercise
+    return false unless exercise.repository.allowed_courses.include? course
+    member_of? course
+  end
+
   # update and return user using an omniauth authentication hash
   def update_from_oauth(oauth_hash)
     auth_inst = Institution.from_identifier(oauth_hash.info.institution)

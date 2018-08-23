@@ -32,9 +32,8 @@ class ExercisesController < ApplicationController
 
   def show
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
-    if @exercise.access_private? && @exercise.number_of_submissions_for(current_user) == 0 &&
-       !current_user&.repository_admin?(@exercise.repository) &&
-       (!@course || !@course.subscribed_members.include?(current_user) || !@course.series.flat_map(&:exercises).include?(@exercise))
+    # We still need to check access because an unauthenticated user should be able to see public exercises
+    if @exercise.access_private? && !current_user&.can_access?(@course, @exercise)
       raise Pundit::NotAuthorizedError, "Not allowed"
     end
 

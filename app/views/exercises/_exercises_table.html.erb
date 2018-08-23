@@ -23,14 +23,18 @@
           <td>
             <% if user_signed_in? %>
               <% if current_user.repository_admin? ex.exercise.repository %>
-              <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
+                <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
+              <% end %>
+              <%= render partial: 'exercises/status_icon', locals: { summary: ex } %>
             <% end %>
-            <%= render partial: 'exercises/status_icon', locals: { summary: ex } %>
-          <% end %>
           </td>
 
           <td>
+            <% if @course && ex.exercise.access_private? && !current_user&.can_access?(@course, ex.exercise) %>
+            <%= ex.exercise.name %>
+          <% else %>
             <%= link_to ex.exercise.name, get_exercise_path.call(ex.exercise) %>
+          <% end %>
           </td>
 
           <td class='text-right'>

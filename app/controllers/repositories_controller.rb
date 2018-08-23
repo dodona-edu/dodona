@@ -109,10 +109,6 @@ class RepositoriesController < ApplicationController
 
   def remove_course
     success = CourseRepository.find_by(repository_id: @repository.id, course_id: params[:course_id])&.destroy
-    private_exercises = @repository.exercises.where(access: :private)
-    Course.find(params[:course_id])&.series&.each do |s|
-      s.exercises -= private_exercises
-    end
     model_update_response success, CourseRepository, courses_repository_path(@repository)
   end
 

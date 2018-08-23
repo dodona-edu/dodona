@@ -142,14 +142,8 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     @instance = create :exercise, access: 'private'
     series.exercises << @instance
     series.course.subscribed_members << @user
+    @instance.repository.allowed_courses << series.course
     get course_exercise_path(series.course, @instance).concat('/')
-    assert_response :success
-  end
-
-  test 'authenticated user should be able to see private exercise if they have submissions' do
-    @instance = create :exercise, access: 'private'
-    create :submission, user: @user, exercise: @instance
-    show_exercise
     assert_response :success
   end
 

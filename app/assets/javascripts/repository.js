@@ -46,7 +46,7 @@ function initAdminsEdit() {
 
 
     function adminAdded($button, $oldRow) {
-        $button.html("<i class='material-icons md-12'>delete</i>");
+        $button.html("<i class='material-icons md-18'>delete</i>");
         $button.removeClass("add-admin");
         $button.addClass("remove-admin");
         $button.addClass("btn-danger");
@@ -60,7 +60,7 @@ function initAdminsEdit() {
         $(`#admin-table-wrapper td.repository-admin-button-cell[data-user_id="${userId}"]`).parents("tr").eq(0).remove();
         const $cell = $(`td[data-user_id="${userId}"]`);
         if ($cell) {
-            $cell.html("<button type='button' class='btn btn-sm add-admin'><i class='material-icons md-12'>person_add</i></button>");
+            $cell.html("<button type='button' class='btn btn-sm add-admin'><i class='material-icons md-18'>person_add</i></button>");
             const $button = $cell.find(".add-admin");
             $button.off("click");
             $button.click(onAddClick);
@@ -117,7 +117,7 @@ function initCoursesEdit() {
     }
 
     function courseAdded($button, $oldRow) {
-        $button.html("<i class='material-icons md-12'>delete</i>");
+        $button.html("<i class='material-icons md-18'>delete</i>");
         $button.removeClass("add-course");
         $button.addClass("remove-course");
         $button.addClass("btn-danger");
@@ -131,7 +131,7 @@ function initCoursesEdit() {
         $(`#allowed-courses-table-wrapper td.repository-course-button-cell[data-course_id="${courseId}"]`).parents("tr").eq(0).remove();
         const $cell = $(`td[data-course_id="${courseId}"]`);
         if ($cell) {
-            $cell.html("<button type='button' class='btn btn-sm add-course'><i class='material-icons md-12'>add</i> </button>");
+            $cell.html("<button type='button' class='btn btn-sm add-course'><i class='material-icons md-18'>add</i> </button>");
             const $button = $cell.find(".add-course");
             $button.off("click");
             $button.click(onAddClick);

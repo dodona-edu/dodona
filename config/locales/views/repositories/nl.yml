@@ -17,3 +17,4 @@ nl:
       done: Alle oefeningen in deze repository werden opnieuw verwerkt
     courses:
       courses: "Toegelaten cursussen"
+      access_explanation: "Een repository kan publieke en privé oefeningen bevatten. Privé oefeningen worden enkel getoond in reeksen waar ze aan zijn toegevoegd. Publieke oefeningen worden voor iedereen opgelijst. Privé oefeningen kunnen geopend worden door beheerders van de repository en gebruikers die ingeschreven zijn voor een cursus waarin de oefening gebruikt wordt (als ze de oefening vanuit de cursus openen). Privé oefeningen kunnen enkel toegevoegd worden aan een reeks als de cursus van de reeks aan de toegelaten cursus is toegevoegd. Als repository beheerders een privé oefening proberen toe te voegen zullen ze gevraagd worden of ze de cursus ook aan de toegelaten lijst willen toevoegen."

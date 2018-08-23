@@ -17,3 +17,4 @@ en:
       done: All exercises in this repository were reprocessed
     courses:
       courses: "Allowed courses"
+      access_explanation: "A repository can contain public and private exercises. Private exercises are only shown in series' that they were added to. Public exercises are listed for everyone. Private exercises can only be opened by repository administrators and users that are subscribed to a course that uses the exercise (if the exercise is opened from the course page). Private exercises can only be added to a series if the series' course is added to the allowed list of the repository. If repository administrators try to add a private exercise to a course (not on the allowed list) they will be prompted whether they want to add the course to the allowed list."

@@ -68,12 +68,12 @@
               <% @series.exercises.each do |exercise| %>
                 <div class="col-xs-12 row exercise">
                   <div class='col-xs-1 drag-handle'>
-                    <i class='material-icons'>align_justify</i>
+                    <i class='material-icons md-18'>reorder</i>
                   </div>
                   <div class='col-xs-9'><%= link_to exercise.name, exercise, target: "_blank" %></div>
                   <div class='actions col-xs-2'>
                     <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-exercise_id="<%= exercise.id %>" data-series_id="<%= @series.id %>" data-exercise_name="<%= exercise.name %>">
-                      <i class='material-icons'>delete</i>
+                      <i class='material-icons md-18'>delete</i>
                     </a>
                   </div>
                 </div>

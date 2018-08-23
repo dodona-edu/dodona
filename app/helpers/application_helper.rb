@@ -82,7 +82,7 @@ module ApplicationHelper
     button_tag class: 'btn btn-default',
                title: t('js.copy-to-clipboard'),
                data: { clipboard_target: selector } do
-      tag :i, 'assignment', class: 'material-icons'
+      tag.i(class: 'material-icons md-12') { 'assignment' }
     end
   end
 
@@ -101,13 +101,13 @@ module ApplicationHelper
       'correct'               => %w[check correct],
       'wrong'                 => %w[close wrong],
       'time limit exceeded'   => %w[alarm wrong],
-      'running'               => %w[hourglass_full default],
-      'queued'                => %w[hourglass_full default],
+      'running'               => %w[hourglass_empty default],
+      'queued'                => %w[hourglass_empty default],
       'runtime error'         => %w[flash_on wrong],
       'compilation error'     => %w[offline_bolt wrong],
       'memory limit exceeded' => %w[memory wrong]
     }[submission&.status] ||     %w[warning warning]
-    "<i class=\"material-icons colored-#{color}\">#{icon}</i>".html_safe
+    "<i class=\"material-icons md-18 colored-#{color}\">#{icon}</i>".html_safe
   end
 
   def options_for_enum(object, enum)

@@ -9,7 +9,7 @@
     <span class="card-title-text"><%= series.course.name %>: <%= series.name %></span>
     <% if series.deadline %>
       <span class="card-subtitle-text">
-        <i class="material-icons">alarm</i>
+        <i class="material-icons md-12">alarm</i>
         <%= t 'series.show.deadline_in' %>
         <%= distance_of_time_in_words Time.current, series.deadline %>
       </span>

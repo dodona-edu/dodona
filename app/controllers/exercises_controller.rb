@@ -34,9 +34,12 @@ class ExercisesController < ApplicationController
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     if @exercise.access_private? && @exercise.number_of_submissions_for(current_user) == 0 &&
        !current_user&.repository_admin?(@exercise.repository) &&
-       (!@course || !@course.subscribed_members.include?(current_user) || !@course.series.flat_map{|s| s.exercises}.include?(@exercise))
+       (!@course || !@course.subscribed_members.include?(current_user) || !@course.series.flat_map(&:exercises).include?(@exercise))
       raise Pundit::NotAuthorizedError, "Not allowed"
     end
+
+    @series = Series.find_by(id: params[:series_id])
+    flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     @submissions = @exercise.submissions
     @submissions = @submissions.in_course(@course) unless @course.nil?
     @submissions = policy_scope(@submissions).paginate(page: params[:page])

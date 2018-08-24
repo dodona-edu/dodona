@@ -153,9 +153,11 @@ class CoursesController < ApplicationController
         @current_membership.update(favorite: true)
         format.html { redirect_to(@course, alert: I18n.t('courses.favorite.succeeded')) }
         format.json { render :show, status: :created, location: @course }
+        format.js
       else
         format.html { redirect_to(@course, alert: I18n.t('courses.favorite.failed')) }
         format.json { render json: { errors: ['not subscribed to course'] }, status: :unprocessable_entity }
+        format.js
       end
     end
   end
@@ -166,9 +168,11 @@ class CoursesController < ApplicationController
         @current_membership.update(favorite: false)
         format.html { redirect_to(@course, alert: I18n.t('courses.unfavorite.succeeded')) }
         format.json { head :ok}
+        format.js
       else
         format.html { redirect_to(@course, alert: I18n.t('courses.unfavorite.failed')) }
         format.json { render json: { errors: ['not subscribed to course'] }, status: :unprocessable_entity }
+        format.js
       end
     end
   end

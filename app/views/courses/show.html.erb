@@ -8,13 +8,6 @@
     <div class="card tab-content">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
-          <% if current_user&.member_of?(@course) and current_user.full_view? %>
-            <% if current_user.favorite_courses.include? @course %>
-              <span class="glyphicon glyphicon-star" data-course_id="<%= @course.id %>"></span>
-            <% else %>
-              <span class="glyphicon glyphicon-star-empty" data-course_id="<%= @course.id %>"></span>
-            <% end %>
-          <% end %>
           <%= @course.name %> (<%= @course.formatted_year %>)
         </h2>
       </div>

@@ -8,9 +8,20 @@
     box-shadow: none;
 }
 
+.btn {
+    padding: 2px 8px;
+}
+
 .btn-sm {
-    padding: 2px 4px;
-    line-height: 1;
+    padding: 1px 4px;
+}
+
+.btn .material-icons {
+    margin-top: 4px;
+}
+
+.btn-sm .material-icons {
+    margin-top: 2px;
 }
 
 // card
@@ -347,21 +358,22 @@ a.card-title-link:hover {
 .btn-fab + .btn-fab {
     margin-left: 20px;
 }
-a.btn-fab .material-icons {
-    margin-top: 6px;
-}
 .btn.btn-fab:focus {
     outline: none;
 }
 .btn-fab .material-icons {
-    margin-left: 3px;
+    margin-left: 2px;
+    margin-top: 2px;
+}
+a.btn-fab .material-icons {
+    margin-top: 6px;
 }
 .btn-fab-extended {
     display: flex;
     height: 42px;
     border-radius: 24px;
     font-size: 14px;
-    line-height: 28px;
+    line-height: 36px;
     padding-right: 20px;
     text-transform: uppercase;
     .icon {
@@ -497,6 +509,10 @@ a.anchor {
   background-color: inherit;
 }
 
+a.action .material-icons {
+  top: 4px;
+}
+
 .dodona-progress {
     display: block;
     position: relative;
@@ -610,4 +626,3 @@ a.anchor {
 .callout-info h4 {
     color: @info-500;
 }
-

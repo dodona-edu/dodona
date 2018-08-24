@@ -58,7 +58,7 @@ class PythiaRenderer < FeedbackTableRenderer
                    "data-stdin": (g[:data][:stdin]).to_s) do
         @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
           @builder.div(class: 'tutor-strip-icon') do
-            @builder.i('launch', class: 'material-icons md-12')
+            @builder.i('launch', class: 'material-icons md-18')
           end
         end
         if g[:description]

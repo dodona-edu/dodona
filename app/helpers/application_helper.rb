@@ -82,7 +82,7 @@ module ApplicationHelper
     button_tag class: 'btn btn-default',
                title: t('js.copy-to-clipboard'),
                data: { clipboard_target: selector } do
-      tag.i(class: 'material-icons md-12') { 'assignment' }
+      tag.i(class: 'material-icons md-18') { 'assignment' }
     end
   end
 

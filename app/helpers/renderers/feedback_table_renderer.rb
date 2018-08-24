@@ -266,22 +266,22 @@ class FeedbackTableRenderer
   end
 
   def icon_correct
-    @builder.i('done', class: 'material-icons md-12')
+    @builder.i('done', class: 'material-icons md-18')
   end
 
   def icon_wrong
-    @builder.i('close', class: 'material-icons md-12')
+    @builder.i('close', class: 'material-icons md-18')
   end
 
   def icon_warning
-    @builder.i('warning', class: 'material-icons md-12')
+    @builder.i('warning', class: 'material-icons md-18')
   end
 
   def icon_error
-    @builder.i('error', class: 'material-icons md-12')
+    @builder.i('error', class: 'material-icons md-18')
   end
 
   def icon_info
-    @builder.i('info', class: 'material-icons md-12')
+    @builder.i('info', class: 'material-icons md-18')
   end
 end

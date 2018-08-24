@@ -2,26 +2,24 @@ import {showNotification} from "./notifications";
 
 function initFavoriteButtons() {
     function init() {
-        $(".glyphicon-star-empty").click(toggleFavorite);
-        $(".glyphicon-star").click(toggleFavorite);
+        $(".favorite-button").click(toggleFavorite);
     }
 
     function toggleFavorite() {
         const element = $(this);
-        if (element.hasClass("glyphicon-star-empty")) {
-            favoriteCourse(element);
-        } else {
+        if (element.hasClass("favorited")) {
             unfavoriteCourse(element);
+        } else {
+            favoriteCourse(element);
         }
     }
 
     function favoriteCourse(element) {
         let courseId = element.data("course_id");
-        $.post(`/courses/${courseId}/favorite`)
+        $.post(`/courses/${courseId}/favorite.js`)
             .done(() => {
                 showNotification(I18n.t("js.favorite-course-succeeded"));
-                element.removeClass("glyphicon-star-empty");
-                element.addClass("glyphicon-star");
+                element.addClass("favorited");
             })
             .fail(() => {
                 showNotification(I18n.t("js.favorite-course-failed"));
@@ -30,11 +28,10 @@ function initFavoriteButtons() {
 
     function unfavoriteCourse(element) {
         let courseId = element.data("course_id");
-        $.post(`/courses/${courseId}/unfavorite`)
+        $.post(`/courses/${courseId}/unfavorite.js`)
             .done(() => {
                 showNotification(I18n.t("js.unfavorite-course-succeeded"));
-                element.removeClass("glyphicon-star");
-                element.addClass("glyphicon-star-empty");
+                element.removeClass("favorited");
             })
             .fail(() => {
                 showNotification(I18n.t("js.unfavorite-course-failed"));

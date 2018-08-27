@@ -23,7 +23,7 @@
           <% if policy(Submission).index? %>
             <li><%= activatable_link_to submissions_path,
               class: 'drawer-list-item' do %>
-              <i class="material-icons md-24">all_inbox</i>
+              <%= custom_icon 'submissions' %>
               <%= t("layout.menu.all_submissions") %>
             <% end %>
           <% end %>

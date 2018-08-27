@@ -4,6 +4,13 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".submission" %> <%= @submission.exercise.name %><%= " - #{@submission.course.name}" unless @submission.course.nil? %></h2>
+        <div class="card-title-fab">
+          <% if policy(@submission).create? %>
+            <%= link_to edit_submission_path(@submission), class: 'btn btn-primary btn-fab', title: t('.edit') do %>
+              <%= custom_icon 'square_edit', class: 'md-36 fix-alignment'%>
+            <% end %>
+          <% end %>
+        </div>
       </div>
       <div class="card-supporting-text">
         <%= render partial: 'description', locals: { submission: @submission } %>

@@ -20,6 +20,13 @@
       <div class="drawer-group">
         <h1 class="drawer-group-title">Admin</h1>
         <ul class="drawer-list">
+          <% if policy(Submission).index? %>
+            <li><%= activatable_link_to submissions_path,
+              class: 'drawer-list-item' do %>
+              <i class="material-icons md-24">all_inbox</i>
+              <%= t("layout.menu.all_submissions") %>
+            <% end %>
+          <% end %>
           <% if policy(Exercise).index? %>
             <li><%= activatable_link_to exercises_path,
               class: 'drawer-list-item' do %>

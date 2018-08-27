@@ -25,7 +25,7 @@
   </td>
   <td>
     <% if remote_links %>
-      <%= link_to submission, class: "load-submission", title: t(".view_solution"), 'data-remote' => true do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
+      <%= link_to submission_path(submission, format: :js), class: "load-submission", title: t(".view_solution"), remote: true do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
     <% else %>
       <%= link_to submission, class: "load-submission", title: t(".view_solution") do %><span class="glyphicon glyphicon-chevron-right"></span><% end %>
     <% end %>

@@ -17,4 +17,6 @@ nl:
       done: Alle oefeningen in deze repository werden opnieuw verwerkt
     courses:
       courses: "Toegelaten cursussen"
+      add_courses: "Cursussen toevoegen"
       access_explanation: "<li>Een repository kan <strong>publieke</strong> en <strong>privé</strong> oefeningen bevatten.</li><li><strong>Privé</strong> oefeningen worden enkel getoond in reeksen waar ze aan zijn toegevoegd. <strong>Publieke</strong> oefeningen worden voor iedereen opgelijst.</li><li><strong>Privé</strong> oefeningen kunnen geopend worden door beheerders van de repository en gebruikers die ingeschreven zijn voor een cursus waarin de oefening gebruikt wordt (als ze de oefening vanuit de cursus openen).</li><li><strong>Privé</strong> oefeningen kunnen enkel toegevoegd worden aan een reeks als de cursus van de reeks aan de toegelaten cursus is toegevoegd. Als repository beheerders een <strong>privé</strong> oefening proberen toe te voegen zullen ze gevraagd worden of ze de cursus ook aan de toegelaten lijst willen toevoegen."
+      short_explanation: "Deze cursussen kunnen oefeningen van de %{name} repository gebruiken."

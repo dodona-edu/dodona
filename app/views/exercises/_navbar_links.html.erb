@@ -11,7 +11,7 @@
                     if:  policy(@exercise).edit? || can_view_submissions %>
     <%= navbar_link url: submissions_scoped_path(exercise: @exercise, course: @course, series: @series),
                     title: t('.submissions'),
-                    icon: 'library_books',
+                    custom_icon: 'submissions',
                     if:  can_view_submissions %>
     <%= navbar_link url: edit_exercise_scoped_path(exercise: @exercise, course: @course, series: @series),
                     title: t('.edit'),

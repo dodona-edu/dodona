@@ -1,4 +1,10 @@
 module ApplicationHelper
+  def custom_icon(name, **options)
+    content_tag :i, class: "custom-material-icons #{name} #{options[:class]}" do
+      render partial: "application/icons/#{name}"
+    end
+  end
+
   def exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
     raise 'Exercise should not be nil' if exercise.nil?
     if series.present?
@@ -48,6 +54,7 @@ module ApplicationHelper
     locals = {
       title: options.delete(:title),
       icon: options.delete(:icon),
+      custom_icon_name: options.delete(:custom_icon),
       url: url,
       link_options: options
     }

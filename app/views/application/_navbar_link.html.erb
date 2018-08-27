@@ -1,6 +1,10 @@
 <li>
   <%= link_to url, link_options do %>
-    <i class='material-icons'><%= icon %></i>
+    <% if defined?(icon) && icon.present? %>
+      <i class='material-icons'><%= icon %></i>
+    <% elsif defined?(custom_icon_name) %>
+      <%= custom_icon custom_icon_name %>
+    <% end %>
     <p class="dropdown-title"><%= title %></p>
   <% end %>
 </li>

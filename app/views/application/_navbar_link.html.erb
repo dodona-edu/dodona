@@ -1,5 +1,5 @@
 <li>
-  <%= link_to url, link_options do %>
+  <%= link_to url, link_options.merge(title: title) do %>
     <% if defined?(icon) && icon.present? %>
       <i class='material-icons'><%= icon %></i>
     <% elsif defined?(custom_icon_name) %>

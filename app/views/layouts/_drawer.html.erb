@@ -87,7 +87,7 @@
               <%=  t('layout.menu.log_out') %>
             <% end %>
           <% else %>
-            <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete do %>
+            <%= link_to destroy_user_session_path, method: :delete do %>
               <i class="material-icons md-24">power_settings_new</i>
               <%=  t('layout.menu.log_out') %>
             <% end %>

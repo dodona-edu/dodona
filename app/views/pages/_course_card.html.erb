@@ -81,7 +81,7 @@
     <% end %>
     <% if not local_assigns[:course_index] and current_user.full_view? %>
       <div class="pull-left">
-        <i class="favorite-button material-icons <%= "favorited" if current_user.favorite_courses.include? course %>" data-course_id="<%= course.id %>">star_rate</i>
+        <i class="favorite-button material-icons <%= "favorited" if current_user.favorite_courses.include? course %>" data-course_id="<%= course.id %>">favorite</i>
       </div>
     <% end %>
   </div>

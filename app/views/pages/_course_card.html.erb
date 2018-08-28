@@ -4,7 +4,7 @@
       <% if current_user.course_admin? course %>
         <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><i class='material-icons'>school</i></h2>
           <% if course.hidden? %>
-            <h2 class='card-title-text pull-right' title='<%= t ".course-hidden" %>'><i class="material-icons">remove_red_eye</i></h2>
+            <h2 class='card-title-text pull-right' title='<%= t ".course-hidden" %>'><i class="material-icons material-icons-strikethrough">remove_red_eye</i></h2>
           <% end %>
           <% if course.closed? %>
             <h2 class='card-title-text pull-right' title='<%= t ".course-closed" %>'><i class="material-icons">block</i></h2>

@@ -1,3 +1,21 @@
 #approved-courses-header {
   margin-bottom: 2em;
 }
+
+.repository-courses-table-wrapper .text {
+  position: relative;
+}
+
+.repository-courses-table-wrapper .text span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.repository-courses-table-wrapper .text:before {
+  content: '';
+  display: inline-block;
+}

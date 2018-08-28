@@ -18,5 +18,5 @@ en:
     courses:
       courses: "Approved courses"
       add_courses: "Add courses"
-      access_explanation: "<li>A repository can contain <strong>public</strong> and <strong>private</strong> exercises.</li><li><strong>Private</strong> exercises are only shown in series' that they were added to. <strong>Public</strong> exercises are listed for everyone.</li><li><strong>Private</strong> exercises can only be opened by repository administrators and users that are subscribed to a course that uses the exercise (if the exercise is opened from the course page).</li><li><strong>Private</strong> exercises can only be added to a series if the series' course is added to the allowed list of the repository. If repository administrators try to add a <strong>private</strong> exercise to a course (not on the allowed list) they will be prompted whether they want to add the course to the allowed list.</li>"
+      access_explanation: "<li>A repository can contain both <strong>public</strong> and <strong>private exercises</strong>.</li><li><strong>Public exercises</strong> are available to use in <strong>any course</strong></li><li><strong>Private exercises</strong> can only be used in courses that received <strong>explicit approval</strong> using this page."
       short_explanation: "These courses can use private exercises from the %{name} repository."

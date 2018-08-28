@@ -1,5 +1,6 @@
 <% if exercise.access_private? && local_assigns[:series].nil? %>
   <i class="material-icons md-18 material-icons-strikethrough" title="<%= t('exercises.index.private') %>">remove_red_eye</i>
+<% end %>
 <% if exercise.removed? %>
   <i class="material-icons md-18" title="<%= t('exercises.index.removed') %>">delete</i>
 <% elsif exercise.not_valid? %>

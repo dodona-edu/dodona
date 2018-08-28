@@ -40,14 +40,19 @@
 }
 
 .material-icons.material-icons-strikethrough:after {
-    position: absolute;
+  position: absolute;
+  top: -11px;
+  left: 11px;
+  content: "|";
+  display: block;
+  font-weight: bold;
+  font-size: 140%;
+  transform: rotate(45deg);
+}
+
+.material-icons.material-icons-strikethrough.md-18:after {
     top: -7px;
     left: 9px;
-    content: "|";
-    display: block;
-    font-weight: bold;
-    font-size: 140%;
-    transform: rotate(45deg);
 }
 
 .custom-material-icons {

@@ -147,8 +147,8 @@ class Repository < ApplicationRecord
 
     ex.judge_id = j&.id || judge_id
     ex.programming_language = config['programming_language']
-    ex.name_nl = config['description']['names']['nl']
-    ex.name_en = config['description']['names']['en']
+    ex.name_nl = config['description']&.fetch('names', nil)&.fetch('nl', nil)
+    ex.name_en = config['description']&.fetch('names', nil)&.fetch('nl', nil)
     ex.description_format = Exercise.determine_format(ex.full_path)
     ex.access = Exercise.convert_visibility_to_access(config['visibility']) if config['visibility']
     ex.access = config['access'] if config['access']

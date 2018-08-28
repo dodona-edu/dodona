@@ -172,7 +172,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function disableSubmitButton() {
         $("#editor-process-btn").prop("disabled", true).addClass("busy");
-        $("#editor-process-btn .material-icons").html("hourglass_full");
+        $("#editor-process-btn .material-icons").html("hourglass_empty");
     }
 
     function submissionSuccessful(data) {

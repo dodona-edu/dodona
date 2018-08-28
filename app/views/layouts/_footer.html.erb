@@ -1,5 +1,5 @@
 <footer class="footer">
-  <div class="footer-block">
+  <div class="footer-block <%= 'with-drawer' if current_user %>">
     &copy; <%= Date.today.year %> <%= t "layout.footer.ugent" %>
   </div>
   <div class='footer-spacer'></div>

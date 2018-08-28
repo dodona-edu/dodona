@@ -36,12 +36,12 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <div id="page-wrapper">
+    <div id="page-wrapper" class="<%= 'with-drawer' if current_user %>">
       <%= render 'layouts/navbar' %>
       <% if user_signed_in? %>
         <%= render 'layouts/drawer' %>
       <% end %>
-      <div id="main-container" class="container main with-drawer">
+      <div id="main-container" class="container main">
         <div class="page-messages hidden-print">
           <% flash.each do |key, value| %>
             <% unless value.nil? %>

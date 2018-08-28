@@ -23,6 +23,7 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def update?
+    return false unless record.ok?
     user&.repository_admin?(record.repository)
   end
 
@@ -31,6 +32,7 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def submit?
+    return false if record.removed?
     return true  if user&.admin?
     return true  if record.ok?
     false

@@ -1,16 +1,35 @@
-.btn-icon {
-    color: @black-secondary;
-    box-shadow: none;
-    padding: 0;
+.btn {
+    padding: 2px 8px;
 }
-.btn-icon:hover {
-    color: @black-text;
-    box-shadow: none;
+
+.btn-lg {
+    padding: 10px 16px;
 }
 
 .btn-sm {
-    padding: 2px 4px;
-    line-height: 1;
+    padding: 1px 4px;
+}
+
+.btn-icon {
+  color: @black-secondary;
+  box-shadow: none;
+  padding: 0;
+}
+.btn-icon:hover {
+  color: @black-text;
+  box-shadow: none;
+}
+
+.btn .material-icons {
+    margin-top: 4px;
+}
+
+.input-group-sm .btn .material-icons {
+  margin-top: 0;
+}
+
+.btn-sm .material-icons {
+    margin-top: 2px;
 }
 
 // card
@@ -347,35 +366,26 @@ a.card-title-link:hover {
 .btn-fab + .btn-fab {
     margin-left: 20px;
 }
-a.btn-fab .glyphicon {
-    margin-top: 6px;
-}
 .btn.btn-fab:focus {
     outline: none;
 }
-.btn-fab .glyphicon {
-    margin-left: 3px;
+.btn-fab .material-icons {
+    margin-left: 2px;
+    margin-top: 2px;
 }
-.btn-fab .glyphicon.glyphicon-hourglass {
-    margin-left: 1px;
+a.btn-fab .material-icons {
+    margin-top: 6px;
 }
-a.btn-fab .glyphicon.glyphicon-repeat {
-    margin-left: 0px;
-    margin-top: 8px;
-}
-a.btn-fab .glyphicon.glyphicon-arrow-down {
-    margin-left: -3px;
-    margin-top: 8px;
-}
-.btn-fab .glyphicon.glyphicon-send {
-    margin-left: -7px;
+.btn-fab .material-icons.material-icons-replay {
+  margin-left: 0;
+  margin-top: 7px;
 }
 .btn-fab-extended {
     display: flex;
     height: 42px;
     border-radius: 24px;
     font-size: 14px;
-    line-height: 28px;
+    line-height: 36px;
     padding-right: 20px;
     text-transform: uppercase;
     .icon {
@@ -471,7 +481,7 @@ a.anchor {
     padding-left: 8px;
     margin: 0;
 }
-.table-toolbar .table-toolbar-tools > .glyphicon {
+.table-toolbar .table-toolbar-tools > .material-icons {
     color: @black-secondary;
     position: static;
     margin: 0;
@@ -509,6 +519,10 @@ a.anchor {
 
 .table-toolbar input {
   background-color: inherit;
+}
+
+a.action .material-icons {
+  top: 4px;
 }
 
 .dodona-progress {
@@ -624,4 +638,3 @@ a.anchor {
 .callout-info h4 {
     color: @info-500;
 }
-

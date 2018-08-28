@@ -167,12 +167,12 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function enableSubmitButton() {
         $("#editor-process-btn").prop("disabled", false).removeClass("busy");
-        $("#editor-process-btn .glyphicon").removeClass("glyphicon-hourglass").addClass("glyphicon-play");
+        $("#editor-process-btn .material-icons").html("play_arrow");
     }
 
     function disableSubmitButton() {
         $("#editor-process-btn").prop("disabled", true).addClass("busy");
-        $("#editor-process-btn .glyphicon").removeClass("glyphicon-play").addClass("glyphicon-hourglass");
+        $("#editor-process-btn .material-icons").html("hourglass_empty");
     }
 
     function submissionSuccessful(data) {

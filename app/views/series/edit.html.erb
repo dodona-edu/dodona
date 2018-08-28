@@ -7,7 +7,7 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @series.name %></h2>
         <div class="card-title-fab">
-          <%= render 'fab_button', form: "edit_series_#{@series.id}", icon: 'ok' %>
+          <%= render 'fab_button', form: "edit_series_#{@series.id}", icon: 'done' %>
         </div>
       </div>
       <div class="card-supporting-text row">
@@ -68,12 +68,12 @@
               <% @series.exercises.each do |exercise| %>
                 <div class="col-xs-12 row exercise">
                   <div class='col-xs-1 drag-handle'>
-                    <span class='glyphicon glyphicon-align-justify'></span>
+                    <i class='material-icons md-18'>reorder</i>
                   </div>
                   <div class='col-xs-9'><%= link_to exercise.name, exercise, target: "_blank" %></div>
                   <div class='actions col-xs-2'>
                     <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-exercise_id="<%= exercise.id %>" data-series_id="<%= @series.id %>" data-exercise_name="<%= exercise.name %>">
-                      <span class='glyphicon glyphicon-trash'></span>
+                      <i class='material-icons md-18'>delete</i>
                     </a>
                   </div>
                 </div>

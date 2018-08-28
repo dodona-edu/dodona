@@ -29,21 +29,30 @@
     border-color: @danger-800;
 }
 
+.material-icons.md-12 { font-size: 12px; }
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
 
-.glyphicon.glyphicon-strikethrough:after {
-    position: absolute;
-    top: -12px;
-    left: 6px;
-    content: "|";
-    display: block;
-    font-weight: bold;
-    font-size: 1.5em;
-    font-size: 250%;
-    transform: rotate(45deg);
+.material-icons {
+  position: relative;
+}
+
+.material-icons.material-icons-strikethrough:after {
+  position: absolute;
+  top: -11px;
+  left: 11px;
+  content: "|";
+  display: block;
+  font-weight: bold;
+  font-size: 140%;
+  transform: rotate(45deg);
+}
+
+.material-icons.material-icons-strikethrough.md-18:after {
+    top: -7px;
+    left: 9px;
 }
 
 .custom-material-icons {

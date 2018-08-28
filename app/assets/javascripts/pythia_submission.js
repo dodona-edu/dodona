@@ -64,7 +64,7 @@ function initPythiaSubmissionShow(submissionCode) {
 
     function showRealFile(name, path) {
         let random = Math.floor((Math.random() * 10000) + 1);
-        showInfoModal(name + " <a href='" + path + "' title='Download' download><i class='material-icons'>cloud_download</i></a>", "<div class='code' id='file-" + random + "'>Loading...</div>");
+        showInfoModal(name + " <a href='" + path + "' title='Download' download><i class='material-icons'>save_alt</i></a>", "<div class='code' id='file-" + random + "'>Loading...</div>");
         $.get(path, function (data) {
             let lines = data.split("\n");
             let maxLines = 200;

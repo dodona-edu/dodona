@@ -5,7 +5,7 @@
   exercises: local_assigns[:exercises]) %>
 
 <div class="table-scroll-wrapper">
-  <table class="table exercise-table">
+  <table class="table exercise-table table-resource">
     <thead>
       <tr>
         <th class='status-icon'></th>
@@ -24,8 +24,9 @@
             <% if user_signed_in? %>
               <% if current_user.repository_admin? ex.exercise.repository %>
                 <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
+              <% else %>
+                <%= render partial: 'exercises/status_icon', locals: { summary: ex } %>
               <% end %>
-              <%= render partial: 'exercises/status_icon', locals: { summary: ex } %>
             <% end %>
           </td>
 

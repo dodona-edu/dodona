@@ -23,10 +23,14 @@ body {
     margin: 0;
     width: 100%;
 
-    // Create some space for the drawer
-    @media (min-width: @screen-lg-min) {
-      padding-left: @drawer-width;
-    }
+}
+
+// Create some space for the drawer
+// (used for #page-wrapper and footer)
+@media (min-width: @screen-lg-min) {
+  .with-drawer {
+    padding-left: @drawer-width;
+  }
 }
 
 .dropdown-title {
@@ -209,10 +213,6 @@ ul.navbar-nav li a.active{
     flex-shrink: 0;
     align-self: stretch;
     align-items: left;
-
-    @media (min-width: @screen-lg-min){
-      margin-left: @drawer-width;
-    }
 }
 .footer-block>* {
     flex-shrink: 0;

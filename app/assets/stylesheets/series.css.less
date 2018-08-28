@@ -85,13 +85,40 @@
     .card-title-icon {
         width: 40px;
         height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         font-size: 22px;
-        padding-left: 3px;
-        padding-top: 2px;
         margin-right: 16px;
-        border: 5px solid @grey-300;
         border-radius: 50%;
-        color: @grey-300;
+        background-color: @grey-300;
+
+        i {
+          color: @grey-300;
+          background: #fff;
+          border-radius: 50%;
+          border: 5px solid #fff;
+        }
+
+        @degrees_per_percent: 3.6deg;
+        .generate-lower-percentages-by(5);
+        .generate-lower-percentages-by(@step, @pct: 0) when (@pct < 50) {
+          &.percentage-@{pct} {
+            @gradient_start: ((@pct*@degrees_per_percent) - 90 );
+            background-image: linear-gradient(90deg, @grey-300 50%, transparent 50%), linear-gradient(@gradient_start, transparent 50%, @info-500 50%);
+          }
+          .generate-lower-percentages-by(@step, (@pct + @step));
+        }
+
+        .generate-upper-percentages-by(5);
+        .generate-upper-percentages-by(@step, @pct: 50) when (@pct =< 100) {
+          &.percentage-@{pct} {
+            @gradient_start: ((@pct*@degrees_per_percent) - 90);
+            background-image: linear-gradient(-90deg, @info-500 50%, transparent 50%), linear-gradient(@gradient_start, transparent 50%, @info-500 50%);
+          }
+          .generate-upper-percentages-by(@step, (@pct + @step));
+        }
     }
 }
 

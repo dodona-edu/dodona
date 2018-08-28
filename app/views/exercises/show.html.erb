@@ -8,7 +8,7 @@
 <div class="row">
   <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>
     <span class='hidden-sm'><%= t('.handin') %></span><br>
-    <span class="glyphicon glyphicon-chevron-down"></span>
+    <i class="material-icons">expand_more</i>
   <% end %>
   <div class="col-sm-10 col-xs-12">
     <div class="card exercise-description">
@@ -29,10 +29,10 @@
         <% if policy(@exercise).submit? %>
           <div class="card-title-fab">
             <button class="btn btn-primary btn-fab" id="editor-process-btn">
-              <span class="glyphicon glyphicon-play"></span>
+              <i class="material-icons md-36">play_arrow</i>
             </button>
             <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">
-              <span class="glyphicon glyphicon-edit"></span>
+              <i class="material-icons md-36">edit</i>
             </a>
           </div>
         <% end %>

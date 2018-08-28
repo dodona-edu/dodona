@@ -5,7 +5,6 @@
 #  id                   :integer          not null, primary key
 #  name_nl              :string(255)
 #  name_en              :string(255)
-#  visibility           :integer          default("open")
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  path                 :string(255)
@@ -14,6 +13,7 @@
 #  repository_id        :integer
 #  judge_id             :integer
 #  status               :integer          default("ok")
+#  access               :integer          default("public")
 #
 
 require 'test_helper'
@@ -322,9 +322,9 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     JSON.parse(File.read(@exercise.config_file))
   end
 
-  test 'should update visibility in config file' do
-    @exercise.update visibility: 'hidden'
-    assert_equal 'hidden', config['visibility']
+  test 'should update access in config file' do
+    @exercise.update access: 'private'
+    assert_equal 'private', config['access']
   end
 
   test 'should update name_nl in config file' do
@@ -339,16 +339,16 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
   test 'should push to remote' do
     assert_difference('@remote.commit_count', 1) do
-      @exercise.update visibility: 'hidden'
+      @exercise.update access: 'private'
     end
   end
 
   test 'should push changes' do
-    @exercise.update visibility: 'hidden'
+    @exercise.update access: 'private'
     config = JSON.parse(
       File.read(File.join(@remote.path, @exercise.path, 'config.json'))
     )
-    assert_equal 'hidden', config['visibility']
+    assert_equal 'private', config['access']
   end
 end
 
@@ -378,8 +378,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
   end
 
   # set at top level, overridden by series
-  test 'should set visibility' do
-    assert_equal 'open', @exercise.visibility
+  test 'should set access' do
+    assert_equal 'public', @exercise.access
   end
 
   test 'should set config values from dirconfig in reporoot' do
@@ -389,28 +389,28 @@ class LasagneConfigTest < ActiveSupport::TestCase
   end
 
   # set at top level, overridden by series, not set at exercise
-  test 'should no write visibility if initially not present' do
-    assert_equal 'open', @exercise.visibility
+  test 'should not write access if initially not present' do
+    assert_equal 'public', @exercise.access
     @exercise.update_config
-    assert_not @exercise.config.key? 'visibility'
+    assert_not @exercise.config.key? 'access'
   end
 
   # set at top level, overridden by series, not set at exercise
-  test 'should override parent config visibility if manually changed' do
-    assert_not @exercise.config.key? 'visibility'
-    assert @exercise.merged_config.key? 'visibility'
-    assert_equal 'open', @exercise.visibility
+  test 'should override parent config access if manually changed' do
+    assert_not @exercise.config.key? 'access'
+    assert @exercise.merged_config.key? 'access'
+    assert_equal 'public', @exercise.access
 
     @exercise.update_config
-    assert_not @exercise.config.key? 'visibility'
+    assert_not @exercise.config.key? 'access'
 
-    @exercise.visibility = 'open'
+    @exercise.access = 'public'
     @exercise.update_config
-    assert_not @exercise.config.key? 'visibility'
+    assert_not @exercise.config.key? 'access'
 
-    @exercise.visibility = 'closed'
+    @exercise.access = 'private'
     @exercise.update_config
-    assert_equal 'closed', @exercise.config['visibility']
-    assert_equal 'closed', @exercise.merged_config['visibility']
+    assert_equal 'private', @exercise.config['access']
+    assert_equal 'private', @exercise.merged_config['access']
   end
 end

@@ -1,10 +1,10 @@
 class ExercisePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user&.admin?
+      if user&.zeus?
         scope.all
       else
-        scope.where(visibility: :open).where(status: :ok)
+        scope.where(access: :public, status: :ok).or(scope.where(repository: user&.repositories))
       end
     end
   end
@@ -15,8 +15,7 @@ class ExercisePolicy < ApplicationPolicy
 
   def show?
     return true  if user&.admin?
-    return false if record.closed?
-    return false if record.hidden? && !user
+    return false if !user && record.access_private?
     return true  if record.ok?
     return false unless user
     return true  if record.number_of_submissions_for(user).nonzero?
@@ -33,14 +32,13 @@ class ExercisePolicy < ApplicationPolicy
 
   def submit?
     return true  if user&.admin?
-    return false if record.closed?
     return true  if record.ok?
     false
   end
 
   def permitted_attributes
     if update?
-      %i[visibility name_nl name_en]
+      %i[access name_nl name_en]
     else
       []
     end

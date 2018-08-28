@@ -16,10 +16,9 @@ en:
       title: Exercises
       exercise: Exercise
       status: Status
-      closed: closed
-      hidden: hidden
-      invalid: invalid
-      removed: removed
+      private: Private
+      invalid: Invalid
+      removed: Removed
     show:
       code: Code
       handin: Hand in
@@ -36,3 +35,5 @@ en:
       not_a_member: You are viewing this exercise within a course of which you are not a member. You won't show up on your teacher's scoresheets until you register.
       alert_not_valid: There's something wrong with this exercise. You can't hand in solutions for the moment, but can still see your old submissions.
       alert_removed: This exercise is no longer available, but can still see your old submissions.
+    series_exercises_table:
+      course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"

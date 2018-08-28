@@ -15,3 +15,8 @@ en:
       admins: "Administrators"
     reprocess:
       done: All exercises in this repository were reprocessed
+    courses:
+      courses: "Approved courses"
+      add_courses: "Add courses"
+      access_explanation: "<li>A repository can contain both <strong>public</strong> and <strong>private exercises</strong>.</li><li><strong>Public exercises</strong> are available to use in <strong>any course</strong></li><li><strong>Private exercises</strong> can only be used in courses that received <strong>explicit approval</strong> using this page."
+      short_explanation: "These courses can use private exercises from the %{name} repository."

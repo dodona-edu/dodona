@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180816102553) do
+ActiveRecord::Schema.define(version: 20180821095443) do
 
   create_table "api_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(version: 20180816102553) do
     t.index ["course_id"], name: "index_course_memberships_on_course_id"
     t.index ["user_id", "course_id"], name: "index_course_memberships_on_user_id_and_course_id", unique: true
     t.index ["user_id"], name: "index_course_memberships_on_user_id"
+  end
+
+  create_table "course_repositories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "course_id", null: false
+    t.integer "repository_id", null: false
+    t.index ["course_id", "repository_id"], name: "index_course_repositories_on_course_id_and_repository_id", unique: true
+    t.index ["repository_id"], name: "fk_rails_4d1393e517"
   end
 
   create_table "courses", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -65,7 +72,6 @@ ActiveRecord::Schema.define(version: 20180816102553) do
   create_table "exercises", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name_nl"
     t.string "name_en"
-    t.integer "visibility", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "path"
@@ -75,6 +81,7 @@ ActiveRecord::Schema.define(version: 20180816102553) do
     t.integer "judge_id"
     t.integer "status", default: 0
     t.string "token", limit: 64
+    t.integer "access", default: 0, null: false
     t.index ["judge_id"], name: "index_exercises_on_judge_id"
     t.index ["name_nl"], name: "index_exercises_on_name_nl"
     t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true
@@ -82,7 +89,6 @@ ActiveRecord::Schema.define(version: 20180816102553) do
     t.index ["repository_id"], name: "index_exercises_on_repository_id"
     t.index ["status"], name: "index_exercises_on_status"
     t.index ["token"], name: "index_exercises_on_token", unique: true
-    t.index ["visibility"], name: "index_exercises_on_visibility"
   end
 
   create_table "institutions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -204,6 +210,8 @@ ActiveRecord::Schema.define(version: 20180816102553) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  add_foreign_key "course_repositories", "courses"
+  add_foreign_key "course_repositories", "repositories"
   add_foreign_key "exercises", "judges"
   add_foreign_key "exercises", "repositories"
   add_foreign_key "repositories", "judges"

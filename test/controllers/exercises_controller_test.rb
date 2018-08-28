@@ -3,7 +3,7 @@ require 'test_helper'
 class ExercisesControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers Exercise, attrs: %i[visibility name_nl name_en]
+  crud_helpers Exercise, attrs: %i[access name_nl name_en]
 
   def setup
     @instance = create(:exercise)
@@ -92,12 +92,6 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'user should not be able to see closed exercise' do
-    @instance = create :exercise, visibility: 'closed'
-    show_exercise
-    assert_redirected_to root_url
-  end
-
   test 'user should not be able to see invalid exercise' do
     @instance = create :exercise, :nameless
     show_exercise
@@ -109,9 +103,6 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     create :submission, exercise: @instance, user: @user
     show_exercise
     assert_response :success
-    @instance.update(visibility: 'closed')
-    show_exercise
-    assert_redirected_to root_url
   end
 
   test 'admin should be able to see invalid exercise' do
@@ -121,23 +112,44 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'unauthenticated user should not be able to see hidden exercise' do
+  test 'unauthenticated user should not be able to see private exercise' do
     sign_out :user
-    @instance = create :exercise, visibility: 'hidden'
+    @instance = create :exercise, access: 'private'
     show_exercise
     assert_redirected_to sign_in_url
   end
 
-  test 'authenticated user should be able to see hidden exercise' do
-    @instance = create :exercise, visibility: 'hidden'
+  test 'authenticated user should not be able to see private exercise' do
+    @instance = create :exercise, access: 'private'
     show_exercise
+    assert_redirected_to root_url
+
+    series = create :series
+    series.exercises << @instance
+    get course_exercise_path(series.course, @instance).concat('/')
+    assert_redirected_to root_url
+  end
+
+  test 'repository admin should always be able to see private exercises' do
+    @instance = create :exercise, access: 'private'
+    @instance.repository.admins << @user
+    show_exercise
+    assert_response :success
+  end
+
+  test 'authenticated user should be able to see private exercise when used in a subscribed course' do
+    series = create :series
+    @instance = create :exercise, access: 'private'
+    series.exercises << @instance
+    series.course.subscribed_members << @user
+    @instance.repository.allowed_courses << series.course
+    get course_exercise_path(series.course, @instance).concat('/')
     assert_response :success
   end
 
   def create_exercises_return_valid
     create :exercise, :nameless
-    create :exercise, visibility: 'closed'
-    create :exercise, visibility: 'hidden'
+    create :exercise, access: 'private'
     create :exercise
   end
 
@@ -159,7 +171,7 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     get exercises_url, params: { format: :json }
 
     exercises = JSON.parse response.body
-    assert_equal 4, exercises.length
+    assert_equal 3, exercises.length
   end
 end
 

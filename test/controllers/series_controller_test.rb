@@ -124,6 +124,21 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert !@instance.exercises.include?(exercise)
   end
 
+  test 'repository admin adding private exercise to series should add course to repository\'s allowed courses' do
+    exercise = create :exercise, access: :private
+    post add_exercise_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
+    assert exercise.repository.allowed_courses.include? @instance.course
+  end
+
+  test 'course admin should not be able to add private exercise to series' do
+    exercise = create :exercise, access: :private
+    user = create :user
+    sign_in user
+    @instance.course.administrating_members << user
+    post add_exercise_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
+    assert_not @instance.exercises.include? exercise
+  end
+
   test 'should reorder exercises' do
     exercises = create_list(:exercise, 10, series: [@instance])
     exercises.shuffle!

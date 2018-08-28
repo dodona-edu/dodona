@@ -49,11 +49,10 @@ en:
         name: Name
         name_nl: Name Dutch
         name_en: Name English
-        visibility: Visibility
-        visibilities:
-          open: Open
-          hidden: Hidden
-          closed: Closed
+        access: Access
+        accesses:
+          public: Public
+          private: Private
       judge:
         name: Name
         remote: Clone URL

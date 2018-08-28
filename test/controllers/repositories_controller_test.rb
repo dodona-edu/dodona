@@ -77,6 +77,48 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     post remove_admin_repository_url(@instance, user_id: @admin.id)
     assert @instance.admins.include? @admin
   end
+
+  test 'zeus and repository admin should be able to edit allowed courses' do
+    course = create :course
+
+    assert_difference('@instance.allowed_courses.count',1, 'zeus should be able to add an allowed course') do
+      post add_course_repository_url(@instance, course_id: course.id)
+    end
+
+    assert_difference('@instance.allowed_courses.count',-1, 'zeus should be able to remove an allowed course') do
+      post remove_course_repository_url(@instance, course_id: course.id)
+    end
+
+    user = create :user
+    @instance.admins << user
+
+    sign_in user
+
+    assert_difference('@instance.allowed_courses.count',1, 'repository admin should be able to add an allowed course') do
+      post add_course_repository_url(@instance, course_id: course.id)
+    end
+
+    assert_difference('@instance.allowed_courses.count',-1, 'repository admin should be able to remove an allowed course') do
+      post remove_course_repository_url(@instance, course_id: course.id)
+    end
+  end
+
+  test 'user should not be able to edit allowed courses' do
+    course = create :course
+    user = create :user
+
+    sign_in user
+
+    assert_difference('@instance.allowed_courses.count', 0, 'user should not be able to add an allowed course') do
+      post add_course_repository_url(@instance, course_id: course.id)
+    end
+
+    @instance.allowed_courses << course
+
+    assert_difference('@instance.allowed_courses.count', 0, 'user should not be able to remove an allowed course') do
+      post remove_course_repository_url(@instance, course_id: course.id)
+    end
+  end
 end
 
 class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
@@ -91,7 +133,7 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
 
     # update remote
     @remote.update_json('echo/config.json', 'make echo private') do |config|
-      config.update 'visibility' => 'closed'
+      config.update 'access' => 'private'
     end
   end
 
@@ -106,7 +148,7 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
 
   test 'webhook without commit info should update exercises' do
     post webhook_repository_path(@repository)
-    assert_equal 'closed', find_echo.visibility
+    assert_equal 'private', find_echo.access
   end
 
   test 'webhook with commit info should update exercises' do
@@ -126,6 +168,6 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
       }
     ]
     post webhook_repository_path(@repository), params: { commits: commit_info }
-    assert_equal 'closed', find_echo.visibility
+    assert_equal 'private', find_echo.access
   end
 end

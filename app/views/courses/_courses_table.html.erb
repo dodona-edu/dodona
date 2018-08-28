@@ -30,8 +30,8 @@
             <i class="material-icons md-18">block</i>
           <% end %>
         </td>
-        <td><%= link_to course.name, course %></td>
-        <td><%= course.teacher %></td>
+        <td title="<%= course.name %>" class="text"><span><%= link_to course.name, course %></span></td>
+        <td title="<%= course.teacher %>" class="text"><span><%= course.teacher %></span></td>
         <td><%= course.formatted_year %></td>
         <td><%= course.subscribed_members.count %></td>
           <% if @repository %>

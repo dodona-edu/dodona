@@ -1,1 +1,15 @@
-<div class="card-title-icon percentage-75"><i class="material-icons">school</i></div>
+<% if summary.completed? %>
+  <div class="card-title-icon completed">
+    <i class="material-icons completed">done_outline</i>
+  </div>
+<% elsif summary.wrong? %>
+  <div class="card-title-icon percentage-<%= summary.progress_percentage_step(5) %>">
+    <i class="material-icons wrong">close</i>
+  </div>
+<% elsif summary.started? %>
+  <div class="card-title-icon percentage-<%= summary.progress_percentage_step(5) %>">
+    <i class="material-icons started">thumb_up</i>
+  </div>
+<% else %>
+  <div class="card-title-icon"><i class="material-icons">school</i></div>
+<% end %>

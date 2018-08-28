@@ -94,7 +94,33 @@
         border-radius: 50%;
         background-color: @grey-300;
 
+        &.completed {
+          background-color: @success-500;
+        }
+
+        &.deadline-passed:after {
+          position: absolute;
+          font-size: 18px;
+          font-weight: bold;
+          top: 40px;
+          left: 40px;
+          content: 'alarm_off';
+          font-family: 'Material Icons';
+        }
+
         i {
+          &.started {
+            color: @info-500;
+          }
+
+          &.wrong {
+            color: @danger-500;
+          }
+
+          &.completed {
+            color: @success-500;
+          }
+
           color: @grey-300;
           background: #fff;
           border-radius: 50%;

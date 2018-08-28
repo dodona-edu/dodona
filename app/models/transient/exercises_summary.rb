@@ -46,12 +46,34 @@ class ExercisesSummary
     end
   end
 
-  def number_solved
+  def number_solved_before_deadline
     count(&:solved_before_deadline?)
+  end
+
+  def number_solved
+    count(&:solved?)
+  end
+
+  def progress_percentage_step(step)
+    pct = (number_solved * 100) / count
+    pct /= step
+    pct * step
   end
 
   def progress
     number_solved.to_f / count
+  end
+
+  def wrong?
+    any?(&:wrong?)
+  end
+
+  def completed?
+    all?(&:solved?)
+  end
+
+  def started?
+    query_submissions.any?
   end
 
   private

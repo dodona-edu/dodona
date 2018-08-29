@@ -59,8 +59,11 @@ body {
   }
 }
 
-ul.navbar-nav li a.active{
-  color: @white-secondary;
+ul.navbar-nav li a {
+  &.active {
+    border-bottom: solid #fff 2px;
+    padding-bottom: 8px;
+  }
 }
 
 // Overide nav toggle button

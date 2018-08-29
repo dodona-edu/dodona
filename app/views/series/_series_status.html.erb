@@ -1,15 +1,19 @@
-<% if summary.completed? %>
-  <div class="card-title-icon completed">
+
+<% progress_class = if summary.completed?
+                      'completed'
+                    elsif summary.started?
+                      "percentage-#{summary.progress_percentage_step(5)}"
+                    end %>
+
+                    <div class="card-title-icon <%= progress_class %> <%= 'deadline-missed' if summary.deadline_missed? %>">
+  <% if summary.completed? %>
     <i class="material-icons completed">done_outline</i>
-  </div>
-<% elsif summary.wrong? %>
-  <div class="card-title-icon percentage-<%= summary.progress_percentage_step(5) %>">
+  <% elsif summary.wrong? %>
     <i class="material-icons wrong">close</i>
-  </div>
-<% elsif summary.started? %>
-  <div class="card-title-icon percentage-<%= summary.progress_percentage_step(5) %>">
+  <% elsif summary.started? %>
     <i class="material-icons started">thumb_up</i>
-  </div>
-<% else %>
-  <div class="card-title-icon"><i class="material-icons">school</i></div>
-<% end %>
+  <% else %>
+    <i class="material-icons">school</i>
+  <% end %>
+</div>
+

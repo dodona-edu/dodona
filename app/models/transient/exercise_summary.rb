@@ -48,7 +48,7 @@ class ExerciseSummary
   delegate :deadline, to: :series, allow_nil: true
 
   def deadline_passed?
-    deadline && deadline < Time.current
+    deadline&.past?
   end
 
   def users_correct

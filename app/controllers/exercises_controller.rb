@@ -7,6 +7,7 @@ class ExercisesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:media]
 
   has_scope :by_filter, as: 'filter'
+  has_scope :by_tags, as: 'tags', type: :array
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')

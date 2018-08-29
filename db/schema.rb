@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180821095443) do
+ActiveRecord::Schema.define(version: 20180829072950) do
 
   create_table "api_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
@@ -67,6 +67,13 @@ ActiveRecord::Schema.define(version: 20180821095443) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "exercise_tags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "exercise_id", null: false
+    t.bigint "tag_id", null: false
+    t.index ["exercise_id", "tag_id"], name: "index_exercise_tags_on_exercise_id_and_tag_id", unique: true
+    t.index ["tag_id"], name: "fk_rails_8c4d69e87c"
   end
 
   create_table "exercises", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -191,6 +198,12 @@ ActiveRecord::Schema.define(version: 20180821095443) do
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end
 
+  create_table "tags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", null: false
+    t.integer "color", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
   create_table "users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "username"
     t.string "ugent_id"
@@ -212,6 +225,8 @@ ActiveRecord::Schema.define(version: 20180821095443) do
 
   add_foreign_key "course_repositories", "courses"
   add_foreign_key "course_repositories", "repositories"
+  add_foreign_key "exercise_tags", "exercises"
+  add_foreign_key "exercise_tags", "tags"
   add_foreign_key "exercises", "judges"
   add_foreign_key "exercises", "repositories"
   add_foreign_key "repositories", "judges"

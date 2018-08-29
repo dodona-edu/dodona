@@ -76,6 +76,10 @@ class ExercisesSummary
     query_submissions.any?
   end
 
+  def deadline_missed?
+    @series.deadline&.past? && !all?(&:solved_before_deadline?)
+  end
+
   private
 
   def mk_exercise_summary(ex, **kwargs)

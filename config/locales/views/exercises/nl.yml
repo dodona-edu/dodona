@@ -1,9 +1,9 @@
 nl:
   exercises:
     navbar_links:
-      show: Bekijken
-      edit: Aanpassen
-      submissions: Oplossingen
+      show: Oefening bekijken
+      edit: Oefening bewerken
+      submissions: Oplossingen vood deze oefening
     exercise:
       count_tooltip: aantal studenten die deze oefening correct hebben
       correct: correct

@@ -60,9 +60,11 @@ body {
 }
 
 ul.navbar-nav li a {
-  &.active {
-    border-bottom: solid #fff 2px;
-    padding-bottom: 8px;
+  @media (min-width: @screen-sm-min) {
+    &.active {
+      border-bottom: solid #fff 3px;
+      padding-bottom: 7px;
+    }
   }
 }
 

@@ -5,10 +5,11 @@ aside.drawer {
   left: 0;
 
   height: 100vh;
-  width: @drawer-width;
+
+  //width: @drawer-width;
+  width: 0;
 
   z-index: 2;
-
 
   .drawer-background {
     z-index: -1;
@@ -22,14 +23,15 @@ aside.drawer {
     height: 100%;
   }
 
+
   nav {
     position: fixed;
-    left: 0;
+    //left: 0;
+    left: -@drawer-width;
     top: 0;
     height: 100vh;
     padding-top: 50px;
 
-    width: @drawer-width;
     z-index: 3;
 
     display: inline-flex;
@@ -46,15 +48,9 @@ aside.drawer {
     transition: .3s;
   }
 
-  @media (max-width: @screen-lg-min) {
-    width: 0;
-
-    nav {
-      left: -@drawer-width;
-    }
-
-    &.active {
+  &.active {
       width: 100vw;
+
 
       nav {
         left: 0;
@@ -64,8 +60,11 @@ aside.drawer {
         opacity: 0.5;
         width: 100vw;
       }
-    }
+
+    //@media (max-width: @screen-lg-min) {
+    //}
   }
+
 }
 
 .drawer-group {

@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="card">
+      <div class="card-title card-colored-accent accent-<%= @tag.color %>">
+        <h2 class="card-title-text"><%= @tag.name %></h2>
+        <% if policy(Tag).edit? %>
+          <div class="card-title-fab">
+            <%= render 'application/fab_link', url: edit_tag_path(@tag), icon: 'edit' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: exercises_path({ "tags[]" => @tag.name }), eager: true}) %>
+        <div id="exercises-table-wrapper"></div>
+      </div>
+    </div>
+  </div>
+</div>

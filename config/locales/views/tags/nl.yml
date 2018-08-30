@@ -1,0 +1,9 @@
+nl:
+  tags:
+    index:
+      title: Tags
+      name: Naam
+      exercises: "# Oefeningen"
+      actions: Acties
+    new:
+      title: Nieuwe tag

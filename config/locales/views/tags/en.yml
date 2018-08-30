@@ -1,0 +1,9 @@
+en:
+  tags:
+    index:
+      title: Tags
+      name: Name
+      exercises: "# Exercises"
+      actions: Actions
+    new:
+      title: New tag

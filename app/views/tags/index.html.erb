@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+        <% if policy(Tag).new? %>
+          <div class="card-title-fab">
+            <%= render 'application/fab_link', url: new_tag_path, icon: 'add' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <div class="table-scroll-wrapper">
+          <table class="table table-index table-resource">
+            <colgroup>
+              <col class="col-xs-8"/>
+              <col class="col-xs-3"/>
+              <col class="col-xs-1"/>
+            </colgroup>
+            <thead>
+            <tr>
+              <th><%= t ".name" %></th>
+              <th><%= t ".exercises" %></th>
+              <th><%= t ".actions" %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @tags.each do |tag| %>
+              <tr>
+                <td><%= link_to tag.name, tag_path(tag) %></td>
+                <td><%= link_to tag.exercises.count, exercises_path({ "tags[]" => tag.name }) %></td>
+                <td>
+                  <% if policy(Tag).edit? %>
+                    <%= link_to edit_tag_path(tag), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">edit</i><% end %>
+                  <% end %>
+                  <% if policy(Tag).destroy? %>
+                    <%= link_to tag, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons md-18">delete</i><% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

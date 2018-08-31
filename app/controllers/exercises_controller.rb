@@ -63,6 +63,8 @@ class ExercisesController < ApplicationController
   def update
     respond_to do |format|
       if @exercise.update(permitted_attributes(@exercise))
+        new_tags = params[:exercise][:tags]
+        @exercise.tags = new_tags.reject(&:empty?).map { |id| Tag.find(id) }
         format.html { redirect_to exercise_path(@exercise), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else

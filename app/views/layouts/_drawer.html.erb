@@ -74,12 +74,12 @@
               <% end %>
             </li>
           <% end %>
-          <% if policy(Tag).index? %>
+          <% if policy(Label).index? %>
             <li>
-              <%= activatable_link_to tags_path,
+              <%= activatable_link_to labels_path,
                                       class: 'drawer-list-item' do %>
                 <i class="material-icons md-24">style</i>
-                <%= t("layout.menu.tags") %>
+                <%= t('layout.menu.labels') %>
               <% end %>
             </li>
           <% end %>

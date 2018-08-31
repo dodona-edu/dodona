@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TagPolicyTest < ActiveSupport::TestCase
+class LabelPolicyTest < ActiveSupport::TestCase
 
   def test_scope
   end

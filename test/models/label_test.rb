@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ExerciseTagTest < ActiveSupport::TestCase
+class LabelTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

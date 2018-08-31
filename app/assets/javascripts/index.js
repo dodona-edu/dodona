@@ -6,14 +6,14 @@ let PARAM = "filter";
 let FILTER_ID = "#filter-query";
 
 const {initFilterIndex, initFilter, search} = (() => {
-    const enabledTags = [];
+    const enabledLabels = [];
 
     function search(baseUrl, _query) {
         let getUrl = () => baseUrl || window.location.href;
         let query = _query || $(FILTER_ID).val();
         let url = updateURLParameter(getUrl(), PARAM, query);
         url = updateURLParameter(url, "page", 1);
-        url = updateArrayURLParameter(url, "tags", enabledTags);
+        url = updateArrayURLParameter(url, "labels", enabledLabels);
         if (!baseUrl) {
             window.history.replaceState(null, "Dodona", url);
         }
@@ -34,9 +34,9 @@ const {initFilterIndex, initFilter, search} = (() => {
             delay(doSearch, 300);
         });
         let param = getURLParameter(PARAM);
-        let tags = getArrayURLParameter("tags");
-        for (let tag of tags) {
-            enabledTags.push(tag);
+        let labels = getArrayURLParameter("labels");
+        for (let label of labels) {
+            enabledLabels.push(label);
         }
         if (param !== "") {
             $filter.val(param);
@@ -46,7 +46,7 @@ const {initFilterIndex, initFilter, search} = (() => {
         }
     }
 
-    function initFilterIndex(baseUrl, eager, actions, doInitFilter, taggable) {
+    function initFilterIndex(baseUrl, eager, actions, doInitFilter, labelgable) {
         function init() {
             if (doInitFilter) {
                 initFilter(baseUrl, eager);
@@ -56,8 +56,8 @@ const {initFilterIndex, initFilter, search} = (() => {
                 initActions();
             }
 
-            if (taggable) {
-                initTags();
+            if (labelgable) {
+                initLabels();
             }
         }
 
@@ -125,41 +125,41 @@ const {initFilterIndex, initFilter, search} = (() => {
         }
 
 
-        function initTags() {
-            function disableTag() {
-                const $tag = $(this);
-                const name = $tag.data("tag-name");
-                $tag.off("click");
-                $tag.click(enableTag);
-                $tag.removeClass("enabled");
-                const index = enabledTags.indexOf(name);
+        function initLabels() {
+            function disableLabel() {
+                const $label = $(this);
+                const name = $label.data("label-name");
+                $label.off("click");
+                $label.click(enableLabel);
+                $label.removeClass("enabled");
+                const index = enabledLabels.indexOf(name);
                 if (index >= 0) {
-                    enabledTags.splice(index, 1);
+                    enabledLabels.splice(index, 1);
                 }
                 search(baseUrl);
                 return false;
             }
 
-            function enableTag() {
-                const $tag = $(this);
-                $tag.off("click");
-                $tag.click(disableTag);
-                $tag.addClass("enabled");
-                const name = $tag.data("tag-name");
-                enabledTags.push(name);
+            function enableLabel() {
+                const $label = $(this);
+                $label.off("click");
+                $label.click(disableLabel);
+                $label.addClass("enabled");
+                const name = $label.data("label-name");
+                enabledLabels.push(name);
                 search(baseUrl);
                 return false;
             }
 
-            const tags = document.querySelectorAll(".tag-label");
-            for (let tag of tags) {
-                const $tag = $(tag);
-                const name = $tag.data("tag-name");
-                if (enabledTags.indexOf(name) >= 0) {
-                    $tag.addClass("enabled");
-                    $tag.click(disableTag);
+            const labels = document.querySelectorAll(".label-label");
+            for (let label of labels) {
+                const $label = $(label);
+                const name = $label.data("label-name");
+                if (enabledLabels.indexOf(name) >= 0) {
+                    $label.addClass("enabled");
+                    $label.click(disableLabel);
                 } else {
-                    $tag.click(enableTag);
+                    $label.click(enableLabel);
                 }
             }
         }

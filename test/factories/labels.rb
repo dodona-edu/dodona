@@ -1,6 +1,6 @@
 FactoryBot.define do
-  factory :tag do
+  factory :label do
     name { Faker::Lorem.unique.word }
-    color { Tag.colors.keys.sample }
+    color { Label.colors.keys.sample }
   end
 end

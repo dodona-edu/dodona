@@ -1,8 +1,8 @@
-<%= form_for(tag, :html => { :class => 'form-horizontal' }) do |f| %>
-  <% if tag.errors.any? %>
-    <h2><%= t('errors.validation_errors', :count => tag.errors.count) %></h2>
+<%= form_for(label, :html => { :class => 'form-horizontal' }) do |f| %>
+  <% if label.errors.any? %>
+    <h2><%= t('errors.validation_errors', :count => label.errors.count) %></h2>
     <ul>
-      <% tag.errors.full_messages.each do |message| %>
+      <% label.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     </ul>
@@ -15,7 +15,7 @@
     <%= f.label :color, class: 'col-sm-3 control-label' %>
     <div class="col-sm-6">
       <%= f.select :color,
-                   options_for_select(Tag.colors.keys.map { |k| [t("activerecord.attributes.tag.colors.#{k}"), k] }, @tag.color),
+                   options_for_select(Label.colors.keys.map { |k| [t("activerecord.attributes.label.colors.#{k}"), k] }, @label.color),
                    {}, { class: 'form-control' } %>
     </div>
   </div>

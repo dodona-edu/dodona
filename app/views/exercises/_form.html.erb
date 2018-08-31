@@ -22,6 +22,10 @@
     <div class="col-sm-4"><%= f.select :access, Exercise.accesses.map { |key, value| [Exercise.human_enum_name(:access, key), key] }, {}, { :class => 'form-control' } %></div>
   </div>
   <div class="field form-group">
+    <%= f.label :tags, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-4"><%= f.select :tags, Tag.all.map { |tag| [tag.name, tag.id] }, {selected: exercise.tags.map{|t| t.id}}, { multiple: true, class: 'form-control' }%></div>
+  </div>
+  <div class="field form-group">
     <label class="col-sm-2 control-label"><%= Exercise.human_attribute_name("repository") %></label>
     <div class="col-sm-4 form-control-static"><%= link_to exercise.repository.name, exercise.repository %></div>
   </div>

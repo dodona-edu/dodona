@@ -1,23 +1,25 @@
 class TagsController < ApplicationController
   before_action :set_tag, except: %i[index new create]
 
+  has_scope :by_name, as: 'filter'
+
   def index
     authorize Tag
-    @tags = policy_scope(Tag.all)
+    @tags = policy_scope(Tag.all).merge(apply_scopes(Tag).all)
     @title = I18n.t('tags.index.title')
-    @crumbs = [[I18n.t('tags.index.title'), "#"]]
+    @crumbs = [[I18n.t('tags.index.title'), '#']]
   end
 
   def show
     @title = @tag.name
-    @crumbs = [[I18n.t('tags.index.title'), tags_path], [@tag.name, "#"]]
+    @crumbs = [[I18n.t('tags.index.title'), tags_path], [@tag.name, '#']]
   end
 
   def new
     authorize Tag
     @tag = Tag.new
     @title = I18n.t('tags.new.title')
-    @crumbs = [[I18n.t('tags.index.title'), tags_path], [I18n.t('tags.new.title'), "#"]]
+    @crumbs = [[I18n.t('tags.index.title'), tags_path], [I18n.t('tags.new.title'), '#']]
   end
 
   def edit

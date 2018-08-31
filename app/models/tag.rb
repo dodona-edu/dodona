@@ -12,6 +12,8 @@ class Tag < ApplicationRecord
   enum color: %i[red pink purple deep-purple indigo teal
                  orange brown blue-grey]
 
+  scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
+
   after_initialize do
     self.color ||= Tag.colors.keys.sample
   end

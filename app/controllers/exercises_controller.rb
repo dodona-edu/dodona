@@ -15,7 +15,7 @@ class ExercisesController < ApplicationController
 
   def index
     authorize Exercise
-    @exercises = policy_scope(Exercise).merge(apply_scopes(Exercise).all)
+    @exercises = policy_scope(Exercise)
 
     if params[:repository_id]
       @repository = Repository.find(params[:repository_id])
@@ -27,7 +27,10 @@ class ExercisesController < ApplicationController
       @exercises = @exercises.or(Exercise.where(repository: @series.course.usable_repositories))
     end
 
+    @exercises = @exercises.merge(apply_scopes(Exercise).all)
+
     @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
+    @tags = Tag.all
     @title = I18n.t('exercises.index.title')
   end
 

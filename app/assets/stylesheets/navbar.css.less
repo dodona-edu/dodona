@@ -1,0 +1,220 @@
+.dodona-navbar {
+  .shadow-z3();
+  background: @primary-500;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+
+  width: 100%;
+
+  .flex {
+    display: inline-flex;
+    flex-direction: row;
+  }
+
+  .left {
+    // Drawer toggle & brand link
+    .drawer-toggle {
+      border: none;
+      outline: none;
+      background: none;
+      color: white;
+    }
+
+    .brand {
+      font-size: 18px;
+    }
+  }
+  
+  .right {
+    align-self: flex-end;
+    align-content: flex-end;
+  }
+
+
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  li {
+    display: inline-block;
+  }
+}
+
+/* breadcrumbs */
+.crumbs {
+    max-width: ~"calc(100vw - 230px)";
+    flex-shrink: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: flex;
+    padding-top: 17px;
+
+    .crumb {
+        flex-shrink: 10;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .crumb-separator {
+        overflow: hidden;
+        flex-shrink: 1;
+        .material-icons {
+            line-height: 0.9;
+            margin-left: 4px;
+            margin-right: 4px;
+        }
+    }
+    .crumb, .crumb a, .crumb-separator {
+        color: @white-text;
+    }
+    .crumb a:hover {
+        text-decoration: none;
+    }
+    .crumb:last-child, .crumb:last-child a {
+        color: @white-secondary;
+        pointer-events: none;
+        cursor: default;
+    }
+    .crumb:last-child {
+        flex-shrink: 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////
+
+.navbar {
+    .shadow-z3();
+}
+
+// Create some space for the drawer
+// (used for #page-wrapper and footer)
+//@media (min-width: @screen-lg-min) {
+//  .with-drawer {
+//    padding-left: @drawer-width;
+//  }
+//}
+
+.dropdown-title {
+  @media(min-width: @screen-sm-min){
+    display: none;
+  }
+  display: inline-block;
+  padding-left: 25px;
+  transform: translateY(-.5em);
+}
+
+@media (min-width: @screen-sm-min){
+  ul.navbar-nav {
+
+    li a {
+      padding-bottom: 10px;
+
+      &.dropdown-toggle {
+        padding-right: 5px;
+      }
+    }
+    li.navbar-actions-spacer {
+      width: 56px;
+    }
+
+  }
+}
+
+ul.navbar-nav li a {
+  @media (min-width: @screen-sm-min) {
+    &.active {
+      border-bottom: solid #fff 3px;
+      padding-bottom: 7px;
+    }
+  }
+}
+
+// Overide nav toggle button
+.navbar-default .navbar-toggle {
+  border: none;
+  color: white;
+  padding: 6px 0 0 0;
+
+
+  &:hover,
+  &:focus {
+    background-color: inherit;
+  }
+}
+
+
+.drawer-toggle {
+}
+
+
+ /* navbar */
+.navbar-brand  {
+  margin-top: -1px;
+  .material-icons {
+    margin-top: -1px;
+  }
+}
+.navbar-flex {
+    display: flex;
+    flex-wrap: nowrap;
+    @media (max-width: 767px) {
+        width: 100%;
+    }
+    .navbar-nav {
+        margin: 0;
+    }
+    .navbar-toggle-button {
+        margin-left: 30px;
+    }
+    .navbar-actions {
+      align-self: flex-end;
+    }
+    .navbar-left-flex {
+      float: left;
+      display: inline-flex;
+    }
+    .navbar-collapse {
+        @media (max-width: 767px) {
+            position: absolute;
+            top: 50px;
+            background: @primary-500;
+            width: 100%;
+            .shadow-z3();
+            .navbar-actions {
+                display: block;
+            }
+        }
+    }
+}
+.navbar-spacer {
+    flex-grow: 1;
+}
+.navbar-actions {
+    display: flex;
+    li {
+        white-space: nowrap;
+    }
+}
+
+.navbar-flex .navbar-nav.crumbs {
+    margin-left: 16px;
+}

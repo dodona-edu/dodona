@@ -1,13 +1,13 @@
 # == Schema Information
 #
-# Table name: tags
+# Table name: labels
 #
 #  id         :integer      not null, primary key
 #  name       :string       not null, unique
 #  color      :string       not null
-class Tag < ApplicationRecord
-  has_many :exercise_tags, dependent: :destroy
-  has_many :exercises, through: :exercise_tags
+class Label < ApplicationRecord
+  has_many :exercise_labels, dependent: :destroy
+  has_many :exercises, through: :exercise_labels
 
   enum color: %i[red pink purple deep-purple indigo teal
                  orange brown blue-grey]
@@ -15,6 +15,6 @@ class Tag < ApplicationRecord
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
 
   after_initialize do
-    self.color ||= Tag.colors.keys.sample
+    self.color ||= Label.colors.keys.sample
   end
 end

@@ -15,6 +15,7 @@ nl:
       submission: Oplossing
       user: Student
       course_membership: Lidmaatschap van de cursus
+      label: Label
       api_token: API Token
     attributes:
       api_token:
@@ -95,6 +96,9 @@ nl:
           compilation error: Compilatiefout
           memory limit exceeded: Geheugenlimiet overschreden
           internal error: Interne fout
+      label:
+        name: Naam
+        color: Kleur
       user:
         username: Gebruikersnaam
         ugent_id: Studentennummer

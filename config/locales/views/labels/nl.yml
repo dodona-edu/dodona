@@ -1,9 +1,9 @@
 nl:
-  tags:
+  labels:
     index:
-      title: Tags
+      title: Labels
       name: Naam
       exercises: "# Oefeningen"
       actions: Acties
     new:
-      title: Nieuwe tag
+      title: Nieuw label

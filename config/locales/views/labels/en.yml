@@ -1,9 +1,9 @@
 en:
-  tags:
+  labels:
     index:
-      title: Tags
+      title: Labels
       name: Name
       exercises: "# Exercises"
       actions: Actions
     new:
-      title: New tag
+      title: New label

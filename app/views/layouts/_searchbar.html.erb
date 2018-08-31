@@ -20,10 +20,10 @@
       </ul>
     </div>
   </div>
-  <% if local_assigns.fetch(:tags, []).any? %>
-    <div id="tags-container">
-      <% tags.each do |tag| %>
-        <span class="tag-label label label-default label-<%= tag.color %>" data-tag-name="<%= tag.name %>"><%= tag.name %></span>
+  <% if local_assigns.fetch(:labels, []).any? %>
+    <div id="labels-container">
+      <% labels.each do |label| %>
+        <span class="label-label label label-default label-<%= label.color %>" data-label-name="<%= label.name %>"><%= label.name %></span>
       <% end %>
     </div>
   <% end %>
@@ -31,6 +31,6 @@
 
 <script type="text/javascript">
   $(function () {
-    dodona.initFilterIndex("<%=local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%=raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, <%= local_assigns.fetch(:tags, []).any? %>);
+    dodona.initFilterIndex("<%=local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%=raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, <%= local_assigns.fetch(:labels, []).any? %>);
   });
 </script>

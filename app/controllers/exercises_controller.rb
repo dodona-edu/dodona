@@ -7,7 +7,7 @@ class ExercisesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:media]
 
   has_scope :by_filter, as: 'filter'
-  has_scope :by_tags, as: 'tags', type: :array
+  has_scope :by_labels, as: 'labels', type: :array
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')
@@ -30,7 +30,7 @@ class ExercisesController < ApplicationController
     @exercises = @exercises.merge(apply_scopes(Exercise).all)
 
     @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
-    @tags = Tag.all
+    @labels = Label.all
     @title = I18n.t('exercises.index.title')
   end
 
@@ -63,8 +63,8 @@ class ExercisesController < ApplicationController
   def update
     respond_to do |format|
       if @exercise.update(permitted_attributes(@exercise))
-        new_tags = params[:exercise][:tags]
-        @exercise.tags = new_tags.reject(&:empty?).map { |id| Tag.find(id) }
+        new_labels = params[:exercise][:labels]
+        @exercise.labels = new_labels.reject(&:empty?).map { |id| Label.find(id) }
         format.html { redirect_to exercise_path(@exercise), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else

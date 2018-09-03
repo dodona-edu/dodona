@@ -16,7 +16,7 @@
 #  identifier  :string(255)
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :base_institution, class: Institution do
     name { Faker::University.unique.name }
     short_name { name.gsub(/\s+/, '') }

@@ -1,7 +1,7 @@
 require 'simplecov'
 SimpleCov.start 'rails'
 
-require File.expand_path('../../config/environment', __FILE__)
+require_relative '../config/environment'
 require 'faker'
 require 'rails/test_help'
 require 'mocha/mini_test'

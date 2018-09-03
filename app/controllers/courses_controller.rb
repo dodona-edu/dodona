@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   before_action :set_course_and_current_membership, except: %i[index new create]
 
-  skip_before_action :verify_authenticity_token, only: [:subscribe]
+  skip_forgery_protection only: [:subscribe]
 
   has_scope :by_permission, only: :members
   has_scope :by_name, only: :members, as: 'filter'

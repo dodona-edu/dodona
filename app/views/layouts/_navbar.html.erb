@@ -1,4 +1,4 @@
-<nav class="dodona-navbar flex" role="navigation">
+<nav class="dodona-navbar" role="navigation">
   <div class="left flex">
     <button type="button" class="drawer-toggle" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
       <span class="sr-only">Toggle drawer</span>
@@ -9,22 +9,15 @@
       <i class="visible-xs material-icons">home</i>
     <% end %>
   </div>
-  <div class="flex">
+  <div class="center flex">
     <%= render 'layouts/breadcrumbs' %>
-    <ul class="actions">
+    <ul class="actions hidden-xs">
       <%= content_for :navbar %>
     <ul/>
   </div>
-  <div id="navbar" class="right flex">
-    <div class="">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <i class="material-icons">
-          more_vert
-        </i>
-      </button>
-    </div>
-    <ul class="">
+  <div class="right flex">
+    <ul id="navbar" class="dropdown-nav collapse">
+      <%= content_for :navbar %>
       <% if user_signed_in? %>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -60,5 +53,11 @@
         </ul>
       </li>
     </ul>
+    <button type="button" class="dodona-navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <span class="sr-only">Toggle navigation</span>
+      <i class="material-icons">
+        more_vert
+      </i>
+    </button>
   </div>
 </nav>

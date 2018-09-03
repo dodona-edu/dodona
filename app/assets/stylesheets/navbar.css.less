@@ -1,6 +1,15 @@
+@navbar-height: 50px;
+@navbar-sides-width: 140px;
+
 .dodona-navbar {
   .shadow-z3();
   background: @primary-500;
+
+  height: @navbar-height;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 
   position: fixed;
   top: 0;
@@ -16,8 +25,16 @@
   }
 
   .left {
+    width: @navbar-sides-width;
+    align-self: flex-start;
+    padding-left: 10px;
+
     // Drawer toggle & brand link
     .drawer-toggle {
+      i {
+        line-height: @navbar-height;
+        font-size: 24px;
+      }
       border: none;
       outline: none;
       background: none;
@@ -25,13 +42,128 @@
     }
 
     .brand {
+      line-height: @navbar-height;
       font-size: 18px;
+      padding-left: 18px;
+      i {
+        line-height: @navbar-height;
+        @media(min-width: @screen-sm-min){
+          display: none;
+        }
+      }
     }
   }
-  
+
+  .center {
+    justify-content: space-between;
+    padding-left: 17px;
+    padding-right: 17px;
+
+    @media(min-width: @screen-sm-min) {
+      width: 630px;
+    }
+    @media(min-width: @screen-md-min) {
+      width: 815px;
+    }
+    @media(min-width: @screen-lg-min) {
+      width: 980px;
+    }
+
+    .actions {
+      flex-shrink: 0;
+      align-self: flex-end;
+      align-content: flex-end;
+      .dropdown-title {
+        display: none;
+      }
+      li a {
+        padding-left: 8px;
+        padding-right: 8px;
+        @media (min-width: @screen-sm-min) {
+          &.active {
+            border-bottom: solid #fff 3px;
+            padding-bottom: 8px;
+          }
+        }
+      }
+    }
+  }
+
   .right {
+    width: @navbar-sides-width;
     align-self: flex-end;
     align-content: flex-end;
+    .dropdown-nav {
+      padding: 0 20px 0 0;
+      li a {
+        padding-left: 8px;
+      }
+      .action {
+        @media(min-width: @screen-sm-min) {
+          display: none;
+        }
+      }
+
+      .dropdown-menu {
+        li, a {
+          color: #fff;
+        }
+        position: static;
+        float: none;
+        margin-top: 0;
+        margin-left: 20px;
+        background-color: transparent;
+        border: 0;
+        box-shadow: none;
+        color: #fff;
+        width: 100%;
+      }
+    }
+  }
+
+  .dodona-navbar-toggle {
+    @media(min-width: @screen-sm-min) {
+      display: none;
+    }
+    position: absolute;
+    top: 0;
+    right: 10px;
+    border: none;
+    background: none;
+    color: #fff;
+    i {
+      line-height: @navbar-height;
+    }
+  }
+
+  .dropdown-nav {
+    @media(min-width: @screen-sm-min) {
+      display: inline-block;
+    }
+    @media(max-width: @screen-sm-min) {
+      .shadow-z3();
+      position: absolute;
+      top: @navbar-height;
+      right: 0;
+      width: fit-content;
+      height: fit-content;
+      background: @primary-500;
+
+      li {
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .dropdown-title {
+      @media(min-width: @screen-sm-min){
+        display: none;
+      }
+      display: inline-block;
+      padding-left: 25px;
+      transform: translateY(-.5em);
+    }
   }
 
 
@@ -43,6 +175,7 @@
   li {
     display: inline-block;
   }
+
 }
 
 /* breadcrumbs */
@@ -53,7 +186,8 @@
     text-overflow: ellipsis;
     overflow: hidden;
     display: flex;
-    padding-top: 17px;
+    //padding-top: 17px;
+    line-height: @navbar-height;
 
     .crumb {
         flex-shrink: 10;
@@ -65,7 +199,7 @@
         overflow: hidden;
         flex-shrink: 1;
         .material-icons {
-            line-height: 0.9;
+            line-height: @navbar-height;
             margin-left: 4px;
             margin-right: 4px;
         }
@@ -87,134 +221,3 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////
-
-.navbar {
-    .shadow-z3();
-}
-
-// Create some space for the drawer
-// (used for #page-wrapper and footer)
-//@media (min-width: @screen-lg-min) {
-//  .with-drawer {
-//    padding-left: @drawer-width;
-//  }
-//}
-
-.dropdown-title {
-  @media(min-width: @screen-sm-min){
-    display: none;
-  }
-  display: inline-block;
-  padding-left: 25px;
-  transform: translateY(-.5em);
-}
-
-@media (min-width: @screen-sm-min){
-  ul.navbar-nav {
-
-    li a {
-      padding-bottom: 10px;
-
-      &.dropdown-toggle {
-        padding-right: 5px;
-      }
-    }
-    li.navbar-actions-spacer {
-      width: 56px;
-    }
-
-  }
-}
-
-ul.navbar-nav li a {
-  @media (min-width: @screen-sm-min) {
-    &.active {
-      border-bottom: solid #fff 3px;
-      padding-bottom: 7px;
-    }
-  }
-}
-
-// Overide nav toggle button
-.navbar-default .navbar-toggle {
-  border: none;
-  color: white;
-  padding: 6px 0 0 0;
-
-
-  &:hover,
-  &:focus {
-    background-color: inherit;
-  }
-}
-
-
-.drawer-toggle {
-}
-
-
- /* navbar */
-.navbar-brand  {
-  margin-top: -1px;
-  .material-icons {
-    margin-top: -1px;
-  }
-}
-.navbar-flex {
-    display: flex;
-    flex-wrap: nowrap;
-    @media (max-width: 767px) {
-        width: 100%;
-    }
-    .navbar-nav {
-        margin: 0;
-    }
-    .navbar-toggle-button {
-        margin-left: 30px;
-    }
-    .navbar-actions {
-      align-self: flex-end;
-    }
-    .navbar-left-flex {
-      float: left;
-      display: inline-flex;
-    }
-    .navbar-collapse {
-        @media (max-width: 767px) {
-            position: absolute;
-            top: 50px;
-            background: @primary-500;
-            width: 100%;
-            .shadow-z3();
-            .navbar-actions {
-                display: block;
-            }
-        }
-    }
-}
-.navbar-spacer {
-    flex-grow: 1;
-}
-.navbar-actions {
-    display: flex;
-    li {
-        white-space: nowrap;
-    }
-}
-
-.navbar-flex .navbar-nav.crumbs {
-    margin-left: 16px;
-}

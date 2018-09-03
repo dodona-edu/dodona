@@ -220,7 +220,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustermann (1.0.3)
-    mysql2 (0.4.10)
+    mysql2 (0.5.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (5.0.2)
@@ -406,7 +406,7 @@ DEPENDENCIES
   foreman
   has_scope
   i18n-js (~> 3.0.0.rc14)
-  jbuilder (~> 2.5)
+  jbuilder (~> 2.7)
   json-schema
   jwt
   kramdown
@@ -416,7 +416,7 @@ DEPENDENCIES
   mail_form
   minitest-utils
   mocha
-  mysql2 (>= 0.3.18, < 0.5)
+  mysql2 (~> 0.5.2)
   nokogiri
   omniauth-oauth2
   possibly
@@ -442,9 +442,9 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   therubyracer
   tzinfo-data
-  uglifier (>= 1.3.0)
+  uglifier (>= 4.1.18)
   web-console (>= 3.3.0)
-  webpacker (~> 3.0)
+  webpacker (~> 3.5.5)
   will_paginate
 
 RUBY VERSION

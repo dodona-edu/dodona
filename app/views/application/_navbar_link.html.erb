@@ -1,10 +1,10 @@
-<li>
+<li class="action">
   <%= link_to url, link_options.merge(title: title) do %>
     <% if defined?(icon) && icon.present? %>
       <i class='material-icons'><%= icon %></i>
     <% elsif defined?(custom_icon_name) %>
       <%= custom_icon custom_icon_name %>
     <% end %>
-    <p class="dropdown-title"><%= title %></p>
+    <span class="dropdown-title"><%= title %></span>
   <% end %>
 </li>

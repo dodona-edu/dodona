@@ -16,10 +16,6 @@
       <% end %>
       <% if current_user.full_view? %>
         <% unless current_user.favorite_courses.empty? %>
-          <div class="page-subtitle">
-            <a class="anchor" id="favorites"></a>
-            <h3><%= t ".favorites" %></h3>
-          </div>
           <div class="row">
             <% current_user.favorite_courses.each do |course| %>
               <div class="col-xs-12 col-sm-12 col-lg-6">
@@ -28,12 +24,17 @@
             <% end %>
           </div>
         <% end %>
+        <% first = current_user.favorite_courses.empty? %>
         <% current_user.grouped_recent_courses(3).each do |year, courses| %>
           <% unless (courses - current_user.favorite_courses).empty? %>
-            <div class="page-subtitle">
-              <a class="anchor" id="<%= year.parameterize %>"></a>
-              <h3><%= Course.format_year year %></h3>
-            </div>
+            <% if first %>
+              <% first = false %>
+            <% else %>
+              <div class="page-subtitle">
+                <a class="anchor" id="<%= year.parameterize %>"></a>
+                <h3><%= Course.format_year year %></h3>
+              </div>
+            <% end %>
             <div class="row">
               <% (courses - current_user.favorite_courses).each do |course| %>
                 <div class="col-xs-12 col-sm-12 col-lg-6">

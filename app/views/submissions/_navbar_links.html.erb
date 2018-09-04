@@ -1,6 +1,6 @@
 <% content_for :navbar do %>
   <%= navbar_link url: evaluate_submission_path(@submission),
-                  title: t('submission.show.reevaluate'),
+                  title: t('submissions.show.reevaluate'),
                   icon: 'refresh',
                   if: policy(@submission).evaluate? %>
   <%= navbar_link url: download_submission_path(@submission),
@@ -10,7 +10,7 @@
                   download: '',
                   if: policy(@submission).download? %>
   <%= navbar_link url: edit_submission_path(@submission),
-                  title: t('submission.show.edit'),
+                  title: t('submissions.show.edit'),
                   icon: 'edit',
                   if: policy(@submission).create? %>
 <% end %>

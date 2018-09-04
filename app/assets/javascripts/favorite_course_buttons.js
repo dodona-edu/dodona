@@ -20,6 +20,7 @@ function initFavoriteButtons() {
             .done(() => {
                 showNotification(I18n.t("js.favorite-course-succeeded"));
                 element.addClass("favorited");
+                element.html("favorite");
             })
             .fail(() => {
                 showNotification(I18n.t("js.favorite-course-failed"));
@@ -32,6 +33,7 @@ function initFavoriteButtons() {
             .done(() => {
                 showNotification(I18n.t("js.unfavorite-course-succeeded"));
                 element.removeClass("favorited");
+                element.html("favorite_outline");
             })
             .fail(() => {
                 showNotification(I18n.t("js.unfavorite-course-failed"));

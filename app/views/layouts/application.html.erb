@@ -36,7 +36,7 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <div id="page-wrapper" class="<%= 'with-drawer' if current_user %>">
+    <div id="page-wrapper">
       <%= render 'layouts/navbar' %>
       <% if user_signed_in? %>
         <%= render 'layouts/drawer' %>

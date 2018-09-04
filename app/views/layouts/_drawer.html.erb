@@ -30,7 +30,7 @@
           <% if policy(Exercise).index? %>
             <li><%= activatable_link_to exercises_path,
               class: 'drawer-list-item' do %>
-              <i class="material-icons md-24">assignment</i>
+              <%= custom_icon 'exercises' %>
               <%= t("layout.menu.exercises") %>
             <% end %>
           <% end %>

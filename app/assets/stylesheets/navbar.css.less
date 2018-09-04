@@ -1,5 +1,6 @@
 @navbar-height: 50px;
 @navbar-sides-width: 140px;
+@navbar-collapse-width: @screen-xs-min;
 
 .dodona-navbar {
   .shadow-z3();
@@ -26,7 +27,7 @@
 
   .left {
     width: @navbar-sides-width;
-    @media(max-width: @screen-sm-min){
+    @media(max-width: @navbar-collapse-width){
       width: 90px;
     }
 
@@ -52,7 +53,7 @@
       padding-left: 18px;
       i {
         line-height: @navbar-height;
-        @media(min-width: @screen-sm-min){
+        @media(min-width: @navbar-collapse-width){
           display: none;
         }
       }
@@ -64,7 +65,7 @@
     padding-left: 17px;
     padding-right: 17px;
 
-    @media(min-width: @screen-sm-min) {
+    @media(min-width: @navbar-collapse-width) {
       width: 630px;
     }
     @media(min-width: @screen-md-min) {
@@ -75,6 +76,9 @@
     }
 
     .actions {
+      @media(max-width: @navbar-collapse-width){
+        display: none;
+      }
       flex-shrink: 0;
       align-self: flex-end;
       align-content: flex-end;
@@ -84,7 +88,7 @@
       li a {
         padding-left: 8px;
         padding-right: 8px;
-        @media (min-width: @screen-sm-min) {
+        @media (min-width: @navbar-collapse-width) {
           &.active {
             border-bottom: solid #fff 3px;
             padding-bottom: 8px;
@@ -96,7 +100,7 @@
 
   .right {
     width: @navbar-sides-width;
-    @media(max-width: @screen-sm-min) {
+    @media(max-width: @navbar-collapse-width) {
       width: 50px;
     }
 
@@ -110,12 +114,12 @@
         padding-left: 8px;
       }
       .action {
-        @media(min-width: @screen-sm-min) {
+        @media(min-width: @navbar-collapse-width) {
           display: none;
         }
       }
 
-      @media(max-width: @screen-sm-min) {
+      @media(max-width: @navbar-collapse-width) {
         .dropdown-toggle {
           .caret {
             vertical-align: text-top;
@@ -140,7 +144,7 @@
   }
 
   .dodona-navbar-toggle {
-    @media(min-width: @screen-sm-min) {
+    @media(min-width: @navbar-collapse-width) {
       display: none;
     }
     position: absolute;
@@ -155,10 +159,10 @@
   }
 
   .dropdown-nav {
-    @media(min-width: @screen-sm-min) {
+    @media(min-width: @navbar-collapse-width) {
       display: inline-block;
     }
-    @media(max-width: @screen-sm-min) {
+    @media(max-width: @navbar-collapse-width) {
       .shadow-z3();
       position: absolute;
       top: @navbar-height;
@@ -176,7 +180,7 @@
 
 
     .dropdown-title {
-      @media(min-width: @screen-sm-min){
+      @media(min-width: @navbar-collapse-width){
         display: none;
       }
       display: inline-block;

@@ -26,6 +26,11 @@
 
   .left {
     width: @navbar-sides-width;
+    @media(max-width: @screen-sm-min){
+      width: 90px;
+    }
+
+
     align-self: flex-start;
     padding-left: 10px;
 
@@ -91,6 +96,11 @@
 
   .right {
     width: @navbar-sides-width;
+    @media(max-width: @screen-sm-min) {
+      width: 50px;
+    }
+
+
     flex-shrink: 0;
     align-self: flex-end;
     align-content: flex-end;
@@ -184,7 +194,7 @@
 
 /* breadcrumbs */
 .crumbs {
-    max-width: ~"calc(100vw - 230px)";
+    max-width: ~"calc(100vw - 180px)";
     flex-shrink: 1;
     white-space: nowrap;
     text-overflow: ellipsis;

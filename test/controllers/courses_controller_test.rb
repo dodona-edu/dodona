@@ -381,7 +381,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     @course.update(visibility: 'hidden')
     with_users_signed_in @not_admins do |who|
       get courses_url, params: { format: :json }
-      if response.success?
+      if response.successful?
         courses = JSON.parse response.body
         assert_not courses.any? { |c| c['id'] == @course.id }, "#{who} should not be able to see a hidden course"
       else

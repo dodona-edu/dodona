@@ -18,9 +18,9 @@ FactoryBot.define do
     code { Faker::Lorem.paragraph }
 
     transient do
-      status nil
-      result nil
-      summary nil
+      status { nil }
+      result { nil }
+      summary { nil }
     end
 
     # When created, the submission ia queued and the status,

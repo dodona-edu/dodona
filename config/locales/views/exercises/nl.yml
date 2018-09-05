@@ -3,7 +3,7 @@ nl:
     navbar_links:
       show: Oefening bekijken
       edit: Oefening bewerken
-      submissions: Oplossingen vood deze oefening
+      submissions: Oplossingen voor deze oefening
     exercise:
       count_tooltip: aantal studenten die deze oefening correct hebben
       correct: correct

@@ -5,7 +5,7 @@ function initClipboard() {
     $(() => {
         const selector = ".btn";
         const delay = 1000;
-        const clip = new Clipboard(selector);
+        const clip = new ClipboardJS(selector);
         const targetOf = e => $($(e.trigger).data("clipboard-target"));
         clip.on("success", e => {
             let $t = targetOf(e);

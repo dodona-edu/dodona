@@ -16,11 +16,11 @@
 #  identifier  :string(255)
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :base_institution, class: Institution do
     name { Faker::University.unique.name }
     short_name { name.gsub(/\s+/, '') }
-    logo 'logo.png'
+    logo { 'logo.png' }
   end
 
   factory :institution, aliases: [:saml_institution], parent: :base_institution do
@@ -29,16 +29,16 @@ FactoryGirl.define do
     slo_url { Faker::Internet.url(domain, '/SLO') }
     certificate { Faker::Crypto.sha256 }
     entity_id { Faker::Internet.url(domain, '/entity') }
-    provider :saml
+    provider { :saml }
   end
 
   factory :smartschool_institution, parent: :base_institution do
     identifier { "https://#{short_name}.smartschool.be"  }
-    provider :smartschool
+    provider { :smartschool }
   end
 
   factory :office365_institution, parent: :base_institution do
     identifier { SecureRandom.uuid }
-    provider :office365
+    provider { :office365 }
   end
 end

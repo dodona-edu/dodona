@@ -6,7 +6,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
   crud_helpers Exercise, attrs: %i[access name_nl name_en]
 
   def setup
-    @instance = create(:exercise)
+    @instance = create(:exercise, :description_html)
     sign_in create(:zeus)
   end
 

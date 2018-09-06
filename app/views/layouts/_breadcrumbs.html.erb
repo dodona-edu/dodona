@@ -4,7 +4,7 @@
     end
 %>
 
-<div class="nav navbar-nav crumbs">
+<div class="crumbs">
     <% if !user_signed_in? %>
         <div class="crumb"><%= link_to(t("layout.menu.exercises"), exercises_path) %></div>
     <% elsif @crumbs.present? %>

@@ -6,23 +6,22 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index?
-    user&.admin?
+    user&.zeus?
   end
 
   def show?
-    user && (user.admin? || user.id == record.id)
+    user && (user.zeus? || user.id == record.id)
   end
 
   def update?
     return false unless user
     return true if user == record
     return true if user.zeus?
-    return true if user.staff? && !record.zeus?
     false
   end
 
   def create?
-    user&.admin?
+    user&.zeus?
   end
 
   def destroy?
@@ -33,7 +32,6 @@ class UserPolicy < ApplicationPolicy
     return false unless user
     return false if user == record
     return true if user.zeus?
-    return true if user.staff? && record.student?
     false
   end
 
@@ -62,7 +60,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if user&.admin?
+    if user&.zeus?
       %i[username ugent_id first_name last_name email permission time_zone]
     else
       %i[time_zone]

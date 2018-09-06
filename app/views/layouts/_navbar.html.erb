@@ -1,65 +1,63 @@
-<nav class="navbar navbar-default navbar-fixed-top navbar-flex" role="navigation">
-  <button type="button" class="drawer-toggle hidden-lg" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
-    <span class="sr-only">Toggle drawer</span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>  </button>
-  <div class="container navbar-flex">
-    <%= link_to root_path, class: "navbar-brand" do %>
+<nav class="dodona-navbar" role="navigation">
+  <div class="left flex">
+    <button type="button" class="drawer-toggle" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
+      <span class="sr-only">Toggle drawer</span>
+      <i class="material-icons">menu</i>
+    </button>
+    <%= link_to root_path, class: "brand" do %>
       <span class="hidden-xs">Dodona</span>
       <i class="visible-xs material-icons">home</i>
     <% end %>
+  </div>
+  <div class="center flex">
     <%= render 'layouts/breadcrumbs' %>
-    <div class="navbar-spacer"></div>
-    <div class="navbar-header navbar-toggle-button">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <i class="material-icons">
-          more_vert
-        </i>
-      </button>
-    </div>
-    <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav navbar-actions">
-        <%= content_for :navbar %>
-        <% if content_for :navbar %>
-          <li class="navbar-actions-spacer"></li>
-        <% end %>
-        <% if user_signed_in? %>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="material-icons md-24">account_circle</i>
-              <span class="dropdown-title"><%= t 'layout.menu.profile' %></span>
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-header"><%= current_user.full_name %></li>
-              <li><%= link_to t("layout.menu.profile"), current_user %></li>
-              <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
-              <li role="separator" class="divider"></li>
-              <li>
-                <% if current_user.institution&.saml? %>
-                  <%= link_to t("layout.menu.log_out"), destroy_user_session_path(idp: session[:current_idp]), :method => :delete, target: "_blank", onclick: "window.setTimeout(function () {location.href = '#{root_path}';}, 1000);" %>
-                <% else %>
-                  <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete %>
-                <% end %>
-              </li>
-            </ul>
-          </li>
-        <% else %>
-          <li><%= link_to t("layout.menu.log_in"), sign_in_path %></li>
-        <% end %>
+    <ul class="actions">
+      <%= content_for :navbar %>
+    <ul/>
+  </div>
+  <div class="right flex">
+    <ul id="navbar" class="dropdown-nav collapse">
+      <%= content_for :navbar %>
+      <% if user_signed_in? %>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <i class='material-icons md-24'>language</i>
-            <span class="dropdown-title"><%= I18n.locale.to_s.upcase %></span>
-            <span class="caret"></span></a>
+            <i class="material-icons md-24">account_circle</i>
+            <span class="dropdown-title"><%= t 'layout.menu.profile' %></span>
+            <span class="caret"></span>
+          </a>
           <ul class="dropdown-menu">
-            <li><%= link_to 'English', params.to_unsafe_h.merge(locale: "en") %></li>
-            <li><%= link_to 'Nederlands', params.to_unsafe_h.merge(locale: "nl") %></li>
+            <li class="dropdown-header"><%= current_user.full_name %></li>
+            <li><%= link_to t("layout.menu.profile"), current_user %></li>
+            <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <% if current_user.institution&.saml? %>
+                <%= link_to t("layout.menu.log_out"), destroy_user_session_path(idp: session[:current_idp]), :method => :delete, target: "_blank", onclick: "window.setTimeout(function () {location.href = '#{root_path}';}, 1000);" %>
+              <% else %>
+                <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete %>
+              <% end %>
+            </li>
           </ul>
         </li>
-      </ul>
-    </div>
+      <% else %>
+        <li class="sign-in"><%= link_to t("layout.menu.log_in"), sign_in_path %></li>
+      <% end %>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <i class='material-icons md-24'>language</i>
+          <span class="dropdown-title"><%= I18n.locale.to_s.upcase %></span>
+          <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><%= link_to 'English', params.to_unsafe_h.merge(locale: "en") %></li>
+          <li><%= link_to 'Nederlands', params.to_unsafe_h.merge(locale: "nl") %></li>
+        </ul>
+      </li>
+    </ul>
+    <button type="button" class="dodona-navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <span class="sr-only">Toggle navigation</span>
+      <i class="material-icons">
+        more_vert
+      </i>
+    </button>
   </div>
 </nav>

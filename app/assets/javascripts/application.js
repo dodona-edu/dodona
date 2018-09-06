@@ -18,3 +18,5 @@
 //= require ace/ext-language_tools
 
 //= require vendor
+//= require bootstrap-tokenfield
+//= require typeahead.js/dist/typeahead.bundle.js

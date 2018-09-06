@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <% javascript_pack_tag 'exercise' %>
+<% end %>
 <%= form_for(exercise, :url => exercise_path(exercise), :html => {:class => 'form-horizontal'}) do |f| %>
   <% if exercise.errors.any? %>
     <div id="error_explanation">
@@ -23,7 +26,7 @@
   </div>
   <div class="field form-group">
     <%= f.label :labels, :class => "col-sm-2 control-label" %>
-    <div class="col-sm-4"><%= f.select :labels, Label.all.map { |labe| [labe.name, labe.id] }, {selected: exercise.labels.map{|t| t.id}}, {multiple: true, class: 'form-control' }%></div>
+    <div class="col-sm-4"><%= f.text_field :labels, class: 'form-control', disable: !f.permission?(:labels), value: exercise.labels.map{|l| l.name}.join(',') %></div>
   </div>
   <div class="field form-group">
     <label class="col-sm-2 control-label"><%= Exercise.human_attribute_name("repository") %></label>
@@ -38,3 +41,6 @@
     <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), @exercise.github_url, target: '_blank' %></div>
   </div>
 <% end %>
+<script>
+  dodona.initLabelsEdit(<%= raw render template: 'labels/index', formats: :json %>)
+</script>

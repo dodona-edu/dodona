@@ -1,5 +1,4 @@
 class ExercisesController < ApplicationController
-
   before_action :set_exercise, only: %i[show edit update media]
   before_action :set_course, only: %i[show edit]
   before_action :set_series, only: %i[show edit]
@@ -58,13 +57,13 @@ class ExercisesController < ApplicationController
   def edit
     @title = @exercise.name
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] << [I18n.t('crumbs.edit'), '#']
+    @labels = Label.all
   end
 
   def update
     respond_to do |format|
       if @exercise.update(permitted_attributes(@exercise))
-        new_labels = params[:exercise][:labels]
-        @exercise.labels = new_labels.reject(&:empty?).map { |id| Label.find(id) }
+        @exercise.labels = params[:exercise][:labels].split(',').map { |name| Label.find_by(name: name) || Label.create(name: name) }.uniq
         format.html { redirect_to exercise_path(@exercise), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else

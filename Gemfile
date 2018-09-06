@@ -133,7 +133,8 @@ group :development, :test do
   gem 'faker', '~> 1.8'
 
   # I18N default locale & better test reporter
-  gem 'minitest-utils'
+  # Remove git fork once the original gem is updated
+  gem 'minitest-utils', git: 'https://github.com/rien/minitest-utils.git'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

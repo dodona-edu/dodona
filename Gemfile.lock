@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/rien/minitest-utils.git
+  revision: 64cb1c7a17e0638fe9f47a30e9943675440b4734
+  specs:
+    minitest-utils (0.4.0)
+      minitest
+
+GIT
   remote: https://github.com/sinatra/sinatra.git
   revision: b801c6b76b89eb071e2b01700273054bbe8aae05
   specs:
@@ -211,8 +218,6 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
-    minitest-utils (0.4.0)
-      minitest
     mocha (1.7.0)
       metaclass (~> 0.0.1)
     msgpack (1.2.4)
@@ -414,7 +419,7 @@ DEPENDENCIES
   letter_opener
   listen (>= 3.0.5, < 3.2)
   mail_form
-  minitest-utils
+  minitest-utils!
   mocha
   mysql2 (~> 0.5.2)
   nokogiri
@@ -451,4 +456,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.4

@@ -1,5 +1,5 @@
 
-import Clipboard from "clipboard";
+import ClipboardJS from "clipboard";
 
 function initClipboard() {
     $(() => {

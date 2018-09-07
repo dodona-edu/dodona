@@ -10,14 +10,17 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    user && (user.zeus? || user.id == record.id)
+    return false unless user
+    return true if user.zeus?
+    return true if user.id == record.id
+    (record.subscribed_courses & user.administrating_courses).any?
   end
 
   def update?
     return false unless user
-    return true if user == record
     return true if user.zeus?
-    false
+    return true if user.id == record.id
+    (record.subscribed_courses & user.administrating_courses).any?
   end
 
   def create?
@@ -60,7 +63,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if user&.zeus?
+    if user&.admin?
       %i[username ugent_id first_name last_name email permission time_zone]
     else
       %i[time_zone]

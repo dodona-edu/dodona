@@ -13,6 +13,8 @@ function search(baseUrl, _query) {
     url = updateURLParameter(url, "page", 1);
     if ($(LABELS_FILTER_ID).val() !== "") {
         url = updateArrayURLParameter(url, "labels", $(LABELS_FILTER_ID).val().split(","));
+    } else {
+        url = updateArrayURLParameter(url, "labels", []);
     }
     if (!baseUrl) {
         window.history.replaceState(null, "Dodona", url);

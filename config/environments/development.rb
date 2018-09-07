@@ -1,8 +1,13 @@
 Rails.application.configure do
-    config.after_initialize do
-      Bullet.enable = true
-      Bullet.console = true
-    end
+
+  # show notification of N+1 queries in javascript console
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.console = true
+  end
+
+  # which line causes which query?
+  config.active_record.verbose_query_logs = true;
 
 
   # Verifies that versions and hashed value of the package contents in the project's package.json

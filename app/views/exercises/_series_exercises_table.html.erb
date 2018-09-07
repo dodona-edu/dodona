@@ -3,7 +3,7 @@
     <% exercises.each do |exercise| %>
     <tr>
       <td class="status-icon">
-        <%= raw "<i class='material-icons md-18 material-icons-strikethrough' title='#{t("exercises.index.private")}'>remove_red_eye</i>" if exercise.access_private? %>
+        <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.private")}'>visibility_off</i>" if exercise.access_private? %>
         <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.removed")}'>delete</i>" if exercise.removed? %>
         <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.invalid")}'>error</i>" if exercise.not_valid? %>
       </td>

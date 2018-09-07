@@ -117,9 +117,10 @@
             @blue @p5, 
             @purple @p6
             );
+        }
 
-            // Instagram
-            //background:  linear-gradient(200deg, #d047d1, #ff0000, #ffff00);
+        &.completed.deadline-missed {
+          background: @success-500;
         }
 
         &.wrong {
@@ -133,6 +134,7 @@
 
         &.deadline-missed:after {
           color: @danger-800;
+          background-color: white;
           position: absolute;
           font-size: 18px;
           font-weight: bold;
@@ -152,12 +154,15 @@
           }
 
           &.completed {
-            //color: @success-500;
             font-weight: bolder;
-            font-size: 38px;
+            font-size: 32px;
             background: transparent;
             border: transparent;
             color: white;
+          }
+
+          &.completed-after-deadline {
+            color: @success-500;
           }
 
           color: @grey-300;

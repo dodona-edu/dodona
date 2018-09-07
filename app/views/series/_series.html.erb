@@ -62,7 +62,7 @@
           <% if policy(series).show? %>
             <li>
               <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?)) do %>
-                <i class='material-icons md-18'>remove_red_eye</i> <%= t("series.show.show_overview") %>
+                <i class='material-icons md-18'>visibility</i> <%= t("series.show.show_overview") %>
               <% end %>
             </li>
           <% end %>

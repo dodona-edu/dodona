@@ -19,11 +19,13 @@
     <% users.each do |user| %>
       <tr>
         <td>
-          <% if user.zeus? %>
-            <i class="material-icons md-18" title='<%= t ".zeus" %>'>supervisor_account</i>
-          <% end %>
-          <% if user.staff? %>
-            <i class="material-icons md-18" title='<%= t ".staff" %>'>perm_identity</i>
+          <% unless @course %>
+            <% if user.zeus? %>
+              <i class="material-icons md-18" title='<%= t ".zeus" %>'>supervisor_account</i>
+            <% end %>
+            <% if user.staff? %>
+              <i class="material-icons md-18" title='<%= t ".staff" %>'>perm_identity</i>
+            <% end %>
           <% end %>
           <% if @course && user.course_admin?(@course) %>
             <i class="material-icons md-18" title='<%= t ".course_admin" %>'>school</i>

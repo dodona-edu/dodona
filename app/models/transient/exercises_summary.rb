@@ -54,8 +54,18 @@ class ExercisesSummary
     count(&:solved?)
   end
 
-  def progress_percentage_step(step)
+  def number_wrong
+    count(&:wrong?)
+  end
+
+  def progress_percentage(step: 1)
     pct = (number_solved * 100) / count
+    pct /= step
+    pct * step
+  end
+
+  def wrong_percentage(step: 1)
+    pct = (number_wrong * 100) / count
     pct /= step
     pct * step
   end

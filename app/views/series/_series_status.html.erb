@@ -7,7 +7,7 @@
                     end %>
 <div class="card-title-icon <%= progress_class %> <%= 'deadline-missed' if summary.deadline_missed? %>">
   <% if summary.completed? %>
-    <i class="material-icons completed">done_outline</i>
+    <i class="material-icons completed">done</i>
   <% elsif summary.wrong? %>
     <i class="material-icons wrong">close</i>
   <% elsif summary.started? %>

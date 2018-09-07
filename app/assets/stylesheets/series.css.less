@@ -117,12 +117,8 @@
             @purple calc(@p5+1%)
             );
 
-            background:  linear-gradient(200deg, #d047d1, #ff0000, #ffff00);
-            i {
-              //background: transparent;
-              //border: transparent;
-              //color: white;
-            }
+            // Instagram
+            //background:  linear-gradient(200deg, #d047d1, #ff0000, #ffff00);
         }
 
         &.wrong {
@@ -155,9 +151,12 @@
           }
 
           &.completed {
-            color: @success-500;
-            //font-weight: bolder;
-            //font-size: 38px;
+            //color: @success-500;
+            font-weight: bolder;
+            font-size: 38px;
+            background: transparent;
+            border: transparent;
+            color: white;
           }
 
           color: @grey-300;
@@ -165,27 +164,6 @@
           border-radius: 50%;
           border: 5px solid #fff;
         }
-
-
-        /*
-        @degrees_per_percent: 3.6deg;
-        .generate-lower-percentages-by(5);
-        .generate-lower-percentages-by(@step, @pct: 0) when (@pct < 50) {
-          &.percentage-@{pct} {
-            @gradient_start: ((@pct*@degrees_per_percent) - 90 );
-            background-image: linear-gradient(90deg, @grey-300 50%, transparent 50%), linear-gradient(@gradient_start, transparent 50%, @info-500 50%);
-          }
-          .generate-lower-percentages-by(@step, (@pct + @step));
-        }
-
-        .generate-upper-percentages-by(5);
-        .generate-upper-percentages-by(@step, @pct: 50) when (@pct =< 100) {
-          &.percentage-@{pct} {
-            @gradient_start: ((@pct*@degrees_per_percent) - 90);
-            background-image: linear-gradient(-90deg, @info-500 50%, transparent 50%), linear-gradient(@gradient_start, transparent 50%, @info-500 50%);
-          }
-          .generate-upper-percentages-by(@step, (@pct + @step));
-        }*/
     }
 }
 

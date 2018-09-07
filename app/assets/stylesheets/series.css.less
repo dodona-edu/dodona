@@ -95,26 +95,27 @@
         background-color: @grey-300;
 
         &.completed {
-          @red: #D50000;
-          @orange: #FF6D00;
-          @yellow: #FFD600;
-          @green: #64DD17;
-          @blue: #0091EA;
-          @purple: #AA00FF;
+          @red: #F44336;
+          @orange: #FF9800;
+          @yellow: #FFEB3B;
+          @green: #4CAF50;
+          @blue: #2196F3;
+          @purple: #9C27B0;
 
-          @p1: 25%;
-          @p2: 37%;
-          @p3: 50%;
-          @p4: 62%;
+          @p1: 10%;
+          @p2: 25%;
+          @p3: 40%;
+          @p4: 60%;
           @p5: 75%;
+          @p6: 90%;
 
           background-image: linear-gradient(-135deg,
             @red @p1,
-            @orange calc(@p1+1%), @orange @p2,
-            @yellow calc(@p2+1%), @yellow @p3,
-            @green calc(@p3+1%), @green @p4,
-            @blue calc(@p4+1%), @blue @p5,
-            @purple calc(@p5+1%)
+            @orange @p2, 
+            @yellow @p3, 
+            @green @p4,
+            @blue @p5, 
+            @purple @p6
             );
 
             // Instagram

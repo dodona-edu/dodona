@@ -1,11 +1,11 @@
-
 <% progress_class = if summary.completed?
                       'completed'
+                    elsif summary.wrong?
+                      'wrong'
                     elsif summary.started?
-                      "percentage-#{summary.progress_percentage_step(5)}"
+                      'started'
                     end %>
-
-                    <div class="card-title-icon <%= progress_class %> <%= 'deadline-missed' if summary.deadline_missed? %>">
+<div class="card-title-icon <%= progress_class %> <%= 'deadline-missed' if summary.deadline_missed? %>">
   <% if summary.completed? %>
     <i class="material-icons completed">done_outline</i>
   <% elsif summary.wrong? %>

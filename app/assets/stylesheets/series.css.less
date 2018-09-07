@@ -95,8 +95,44 @@
         background-color: @grey-300;
 
         &.completed {
+          @red: #D50000;
+          @orange: #FF6D00;
+          @yellow: #FFD600;
+          @green: #64DD17;
+          @blue: #0091EA;
+          @purple: #AA00FF;
+
+          @p1: 25%;
+          @p2: 37%;
+          @p3: 50%;
+          @p4: 62%;
+          @p5: 75%;
+
+          background-image: linear-gradient(-135deg,
+            @red @p1,
+            @orange calc(@p1+1%), @orange @p2,
+            @yellow calc(@p2+1%), @yellow @p3,
+            @green calc(@p3+1%), @green @p4,
+            @blue calc(@p4+1%), @blue @p5,
+            @purple calc(@p5+1%)
+            );
+
+            background:  linear-gradient(200deg, #d047d1, #ff0000, #ffff00);
+            i {
+              //background: transparent;
+              //border: transparent;
+              //color: white;
+            }
+        }
+
+        &.wrong {
+          background-color: @danger-500;
+        }
+
+        &.started {
           background-color: @success-500;
         }
+
 
         &.deadline-missed:after {
           color: @danger-800;
@@ -111,7 +147,7 @@
 
         i {
           &.started {
-            color: @info-500;
+            color: @success-500;
           }
 
           &.wrong {
@@ -120,6 +156,8 @@
 
           &.completed {
             color: @success-500;
+            //font-weight: bolder;
+            //font-size: 38px;
           }
 
           color: @grey-300;
@@ -128,6 +166,8 @@
           border: 5px solid #fff;
         }
 
+
+        /*
         @degrees_per_percent: 3.6deg;
         .generate-lower-percentages-by(5);
         .generate-lower-percentages-by(@step, @pct: 0) when (@pct < 50) {
@@ -145,7 +185,7 @@
             background-image: linear-gradient(-90deg, @info-500 50%, transparent 50%), linear-gradient(@gradient_start, transparent 50%, @info-500 50%);
           }
           .generate-upper-percentages-by(@step, (@pct + @step));
-        }
+        }*/
     }
 }
 

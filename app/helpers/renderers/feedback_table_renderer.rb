@@ -20,7 +20,7 @@ class FeedbackTableRenderer
     @builder = Builder::XmlMarkup.new
     @code = submission.code
     @exercise_id = submission.exercise_id
-    @programming_language = submission.exercise.programming_language
+    @programming_language = submission.exercise.programming_language.name
   end
 
   def parse

@@ -17,6 +17,7 @@ nl:
       course_membership: Lidmaatschap van de cursus
       label: Label
       api_token: API Token
+      programming_language: Programmeertaal
     attributes:
       api_token:
         description: Beschrijving
@@ -115,3 +116,8 @@ nl:
           course_admin: Cursusbeheerder
           pending: In afwachting
           student: Student
+      programming_language:
+        name: Naam
+        markdown_name: Markdown
+        editor_name: Editor
+        extension: Extensie

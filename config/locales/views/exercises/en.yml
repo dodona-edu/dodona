@@ -12,6 +12,7 @@ en:
     form:
       edit_exercise: Edit exercise
       open_on_github: Open on GitHub
+      labels_delimiter: "Use a comma to delimit labels"
     index:
       title: Exercises
       exercise: Exercise

@@ -20,7 +20,7 @@ class SeriesSummary
           series.series_memberships
         end
       @series_memberships = @series_memberships.includes(:exercise)
-      @exercises ||= @series_memberships.map(&:exercise).includes(:repository)
+      @exercises ||= @series_memberships.map(&:exercise)
     end
 
     @latest_submissions = kwargs[:latest_submissions] ||

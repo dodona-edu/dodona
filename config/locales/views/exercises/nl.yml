@@ -12,6 +12,7 @@ nl:
     form:
       edit_exercise: Opgave aanpassen
       open_on_github: Open op GitHub
+      labels_delimiter: "Gebruik een komma om labels te scheiden"
     index:
       title: Oefeningen
       exercise: Oefening

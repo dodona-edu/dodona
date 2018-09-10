@@ -94,19 +94,35 @@ if Rails.env.development?
   exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
   exercise_repo.process_exercises
 
-  puts 'Add series and exercises to courses'
+  big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
+
+  Dir.glob("#{big_exercise_repo.full_path}/*")
+     .select{ |f| File.directory? f }
+     .each do |dir|
+    100.times do |i|
+      FileUtils.cp_r(dir, dir + i.to_s)
+    end
+  end
+  big_exercise_repo.process_exercises
+
+  exercises_list = Exercise.all.to_a
+
+  puts 'Add series, exercises and exercises to courses'
 
   # Add exercices to test course
   courses.each do |course|
     series = []
     series << Series.create(name: 'Verborgen reeks',
+                            description: Faker::Lorem.paragraph(25),
                             course: course,
                             visibility: :hidden)
     series << Series.create(name: 'Gesloten reeks',
+                            description: Faker::Lorem.paragraph(25),
                             course: course,
                             visibility: :closed)
     20.times do |i|
       s = Series.create(name: "Reeks #{i}",
+                        description: Faker::Lorem.paragraph(25),
                         course: course)
       if Random.rand < 0.1
         t = if Random.rand < 0.3
@@ -120,8 +136,25 @@ if Rails.env.development?
     end
 
     series.each do |s|
-      s.exercises << exercise_repo.exercises
+      series_exercises = exercises_list.sample(rand(3) + 2)
+      s.exercises << series_exercises
+      series_exercises.each do |exercise|
+        course.enrolled_members.sample(5).each do |student|
+          status = if rand() < 0.5
+            :correct
+          else
+            :wrong
+          end
+          Submission.create user: student,
+                            course: s.course,
+                            exercise: exercise,
+                            skip_evaluation: true,
+                            result: {},
+                            status: status,
+                            accepted: status == :correct,
+                            code: "print(input())\n"
+        end
+      end
     end
   end
-
 end

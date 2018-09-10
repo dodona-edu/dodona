@@ -147,6 +147,8 @@ group :development, :test do
   gem 'selenium-webdriver'
 
   gem 'bullet'
+  gem 'rails-perftest'
+  gem 'ruby-prof'
 end
 
 group :test do

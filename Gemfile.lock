@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/mistersourcerer/rails-perftest.git
+  revision: 09ba1d81fb22c19b4bf055d0744a1c36a19dd644
+  branch: ms_#38_calltree-new-interface
+  specs:
+    rails-perftest (0.0.7)
+
+GIT
   remote: https://github.com/rien/minitest-utils.git
   revision: 64cb1c7a17e0638fe9f47a30e9943675440b4734
   specs:
@@ -297,7 +304,6 @@ GEM
     rails-i18n (5.1.1)
       i18n (>= 0.7, < 2)
       railties (>= 5.0, < 6)
-    rails-perftest (0.0.7)
     rails_server_timings (1.0.8)
       railties (>= 3.0.0)
     railties (5.2.1)
@@ -442,7 +448,7 @@ DEPENDENCIES
   rails (~> 5.2.1)
   rails-controller-testing
   rails-i18n
-  rails-perftest
+  rails-perftest!
   rails_server_timings
   rb-readline
   recaptcha

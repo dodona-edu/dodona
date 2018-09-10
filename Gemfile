@@ -147,7 +147,11 @@ group :development, :test do
   gem 'selenium-webdriver'
 
   gem 'bullet'
-  gem 'rails-perftest'
+
+  # Remove git fork once this PR is merged
+  gem 'rails-perftest', 
+      git: 'https://github.com/mistersourcerer/rails-perftest.git',
+      branch: 'ms_#38_calltree-new-interface'
   gem 'ruby-prof'
 end
 

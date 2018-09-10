@@ -1,0 +1,9 @@
+nl:
+  programming_languages:
+    index: 
+      title: Programmeertalen
+      actions: Acties
+    new:
+      title: Nieuwe programmeertaal
+    edit:
+      title: Aanpassen

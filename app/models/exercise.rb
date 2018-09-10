@@ -36,6 +36,7 @@ class Exercise < ApplicationRecord
 
   belongs_to :repository
   belongs_to :judge
+  belongs_to :programming_language, optional: true
   has_many :submissions
   has_many :series_memberships
   has_many :series, through: :series_memberships
@@ -129,13 +130,7 @@ class Exercise < ApplicationRecord
   end
 
   def file_extension
-    return 'py' if programming_language == 'python'
-    return 'js' if programming_language == 'JavaScript'
-    return 'hs' if programming_language == 'haskell'
-    return 'sh' if programming_language == 'bash'
-    return 'sh' if programming_language == 'shell'
-    return 'sh' if programming_language == 'sh'
-    'txt'
+    programming_language&.extension || 'txt'
   end
 
   def merged_config

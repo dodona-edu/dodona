@@ -59,7 +59,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should set exercise programming language' do
-    assert_equal 'python', @echo.programming_language
+    assert_equal ProgrammingLanguage.find_by(name: 'python'), @echo.programming_language
   end
 
   test 'should set exercise name_nl' do

@@ -374,7 +374,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
 
   # set at top level, overridden by series, overridden by exercise
   test 'should set programming language' do
-    assert_equal 'python', @exercise.programming_language
+    assert_equal ProgrammingLanguage.find_by(name: 'python'), @exercise.programming_language
   end
 
   # set at top level, overridden by series

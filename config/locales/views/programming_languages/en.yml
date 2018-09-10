@@ -1,0 +1,9 @@
+en:
+  programming_languages:
+    index: 
+      title: Programming Languages
+      actions: Actions
+    new:
+      title: New Programming Language
+    edit:
+      title: Edit

@@ -15,6 +15,7 @@ en:
       submission: Submission
       user: Student
       course_membership: Course membership
+      label: Label
       api_token: API token
     attributes:
       api_token:
@@ -94,6 +95,9 @@ en:
           compilation error: Compilation error
           memory limit exceeded: Memory limit exceeded
           internal error: Internal error
+      label:
+        name: Name
+        color: Color
       user:
         username: Username
         ugent_id: Student id

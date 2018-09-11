@@ -119,6 +119,9 @@ gem 'rails_server_timings'
 # Maybe in Ruby
 gem 'possibly'
 
+# bootstrap tokenizer
+gem 'bootstrap_tokenfield_rails'
+
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha'

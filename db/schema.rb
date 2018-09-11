@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180821095443) do
+ActiveRecord::Schema.define(version: 20180829072950) do
 
   create_table "api_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
@@ -69,6 +69,13 @@ ActiveRecord::Schema.define(version: 20180821095443) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "exercise_labels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "exercise_id", null: false
+    t.bigint "label_id", null: false
+    t.index ["exercise_id", "label_id"], name: "index_exercise_labels_on_exercise_id_and_label_id", unique: true
+    t.index ["label_id"], name: "fk_rails_0510a660e5"
+  end
+
   create_table "exercises", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name_nl"
     t.string "name_en"
@@ -116,6 +123,12 @@ ActiveRecord::Schema.define(version: 20180821095443) do
     t.string "runner", null: false
     t.string "remote"
     t.index ["name"], name: "index_judges_on_name", unique: true
+  end
+
+  create_table "labels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", null: false
+    t.integer "color", null: false
+    t.index ["name"], name: "index_labels_on_name", unique: true
   end
 
   create_table "repositories", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -212,6 +225,8 @@ ActiveRecord::Schema.define(version: 20180821095443) do
 
   add_foreign_key "course_repositories", "courses"
   add_foreign_key "course_repositories", "repositories"
+  add_foreign_key "exercise_labels", "exercises"
+  add_foreign_key "exercise_labels", "labels"
   add_foreign_key "exercises", "judges"
   add_foreign_key "exercises", "repositories"
   add_foreign_key "repositories", "judges"

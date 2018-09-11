@@ -1,0 +1,32 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource">
+    <colgroup>
+      <col class="col-xs-8"/>
+      <col class="col-xs-3"/>
+      <col class="col-xs-1"/>
+    </colgroup>
+    <thead>
+    <tr>
+      <th><%= t "labels.index.name" %></th>
+      <th><%= t "labels.index.exercises" %></th>
+      <th><%= t "labels.index.actions" %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% labels.each do |label| %>
+      <tr>
+        <td><%= link_to label.name, label_path(label) %></td>
+        <td><%= link_to label.exercises.count, exercises_path({ "labels[]" => label.name }) %></td>
+        <td>
+          <% if policy(Label).edit? %>
+            <%= link_to edit_label_path(label), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">edit</i><% end %>
+          <% end %>
+          <% if policy(Label).destroy? %>
+            <%= link_to label, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons md-18">delete</i><% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

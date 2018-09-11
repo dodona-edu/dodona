@@ -23,6 +23,7 @@ en:
       courses: Courses
       judges: Judges
       repositories: Repositories
+      labels: Labels
       profile: My profile
       my_courses: My courses
       log_in: Sign in
@@ -40,6 +41,6 @@ en:
     generate_token: 'Generate new'
   errors:
     no_rights: Sorry, you are not allowed to access this page.
-    validation_erors:
+    validation_errors:
       one: 'one error prevents saving:'
       other: '%{count} errors prevent saving:'

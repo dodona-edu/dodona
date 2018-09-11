@@ -34,7 +34,7 @@ let delay = (function () {
     };
 })();
 
-let updateURLParameter = function updateURLParameter(url, param, paramVal) {
+function updateURLParameter(url, param, paramVal) {
     let TheAnchor = null;
     let newAdditionalURL = "";
     let tempArray = url.split("?");
@@ -71,18 +71,71 @@ let updateURLParameter = function updateURLParameter(url, param, paramVal) {
     }
     let rows_txt = temp + "" + param + "=" + paramVal;
     return baseURL + "?" + newAdditionalURL + rows_txt;
-};
+}
 
-function getURLParameter(name, url) {
-    if (!url) {
-        url = window.location.href;
+function updateArrayURLParameter(url, param, _paramVals) {
+    let paramVals = _paramVals;
+    let TheAnchor = null;
+    let newAdditionalURL = "";
+    let tempArray = url.split("?");
+    let baseURL = tempArray[0];
+    let additionalURL = tempArray[1];
+    let temp = "";
+
+    if (additionalURL) {
+        let tmpAnchor = additionalURL.split("#");
+        let TheParams = tmpAnchor[0];
+        TheAnchor = tmpAnchor[1];
+        if (TheAnchor) {
+            additionalURL = TheParams;
+        }
+        tempArray = additionalURL.split("&");
+        for (let i = 0; i < tempArray.length; i++) {
+            if (tempArray[i].split("=")[0] !== `${param}[]`) {
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }
+    } else {
+        let tmpAnchor = baseURL.split("#");
+        let TheParams = tmpAnchor[0];
+        TheAnchor = tmpAnchor[1];
+
+        if (TheParams) {
+            baseURL = TheParams;
+        }
     }
-    name = name.replace(/[\[\]]/g, "\\$&");
+    let rowsTxt = "";
+    for (let paramVal of paramVals) {
+        rowsTxt += `${temp}${param}[]=${paramVal}`;
+        temp = "&";
+    }
+    if (TheAnchor) {
+        rowsTxt += "#" + TheAnchor;
+    }
+    return baseURL + "?" + newAdditionalURL + rowsTxt;
+}
+
+function getURLParameter(_name, _url) {
+    const url = _url || window.location.href;
+    const name = _name.replace(/[[\]]/g, "\\$&");
     let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return "";
     return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function getArrayURLParameter(name, _url) {
+    const url = _url || window.location.href;
+    let result = [];
+    for (let part of url.split(/[?&]/)) {
+        const regResults = new RegExp(`${name}\\[]=([^#]+)`).exec(part);
+        if (regResults && regResults[1]) {
+            result.push(decodeURIComponent(regResults[1]));
+        }
+    }
+    return result;
 }
 
 /**
@@ -114,14 +167,14 @@ function checkTimeZone(offset) {
 }
 
 // add CSRF token to each ajax-request
-function initCSRF(){
-  $(function(){
-    $.ajaxSetup({
-      "headers": {
-        "X-CSRF-Token": $("meta[name='csrf-token']").attr("content")
-      }
-    })
-  });
+function initCSRF() {
+    $(() => {
+        $.ajaxSetup({
+            "headers": {
+                "X-CSRF-Token": $("meta[name='csrf-token']").attr("content")
+            },
+        });
+    });
 }
 
-export {initClipboard, delay, updateURLParameter, getURLParameter, logToGoogle, checkTimeZone, initCSRF};
+export {initClipboard, delay, updateURLParameter, updateArrayURLParameter, getURLParameter, getArrayURLParameter, logToGoogle, checkTimeZone, initCSRF};

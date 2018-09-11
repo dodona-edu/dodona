@@ -1,0 +1,9 @@
+nl:
+  labels:
+    index:
+      title: Labels
+      name: Naam
+      exercises: "# Oefeningen"
+      actions: Acties
+    new:
+      title: Nieuw label

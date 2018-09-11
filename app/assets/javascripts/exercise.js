@@ -1,4 +1,44 @@
+/* globals Bloodhound */
 import {showNotification} from "./notifications.js";
+
+function initLabelsEdit(labels) {
+    const colorMap = {};
+    for (let label of labels) {
+        colorMap[label.name] = label.color;
+        label.value = label.name;
+    }
+
+    const engine = new Bloodhound({
+        local: labels,
+        identify: d => d.id,
+        datumTokenizer: d => {
+            let result = Bloodhound.tokenizers.whitespace(d.name);
+            $.each(result, (i, val) => {
+                for (let i = 1; i < val.length; i++) {
+                    result.push(val.substr(i, val.length));
+                }
+            });
+            return result;
+        }, queryTokenizer: Bloodhound.tokenizers.whitespace,
+    });
+
+    const $field = $("#exercise_labels");
+    $field.on("tokenfield:createdtoken", e => {
+        if (colorMap[e.attrs.value]) {
+            $(e.relatedTarget).addClass(`accent-${colorMap[e.attrs.value]}`);
+        }
+    });
+    $field.tokenfield({
+        beautify: false,
+        createTokensOnBlur: true,
+        typeahead: [{
+            highlight: true,
+        }, {
+            source: engine,
+            display: d => d.name,
+        }],
+    });
+}
 
 function initLightboxes() {
     initStrip();
@@ -200,4 +240,4 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-export {initExerciseShow, initExercisesReadonly};
+export {initExerciseShow, initExercisesReadonly, initLabelsEdit};

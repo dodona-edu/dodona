@@ -96,6 +96,8 @@ Rails.application.routes.draw do
         get 'token/:token', to: 'users#token_sign_in', as: 'token_sign_in'
       end
     end
+
+    resources :labels
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

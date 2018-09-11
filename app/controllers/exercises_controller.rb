@@ -1,5 +1,4 @@
 class ExercisesController < ApplicationController
-
   before_action :set_exercise, only: %i[show edit update media]
   before_action :set_course, only: %i[show edit]
   before_action :set_series, only: %i[show edit]
@@ -7,6 +6,7 @@ class ExercisesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:media]
 
   has_scope :by_filter, as: 'filter'
+  has_scope :by_labels, as: 'labels', type: :array
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')
@@ -14,7 +14,7 @@ class ExercisesController < ApplicationController
 
   def index
     authorize Exercise
-    @exercises = policy_scope(Exercise).merge(apply_scopes(Exercise).all)
+    @exercises = policy_scope(Exercise)
 
     if params[:repository_id]
       @repository = Repository.find(params[:repository_id])
@@ -26,7 +26,10 @@ class ExercisesController < ApplicationController
       @exercises = @exercises.or(Exercise.where(repository: @series.course.usable_repositories))
     end
 
+    @exercises = @exercises.merge(apply_scopes(Exercise).all)
+
     @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
+    @labels = Label.all
     @title = I18n.t('exercises.index.title')
   end
 
@@ -54,11 +57,13 @@ class ExercisesController < ApplicationController
   def edit
     @title = @exercise.name
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] << [I18n.t('crumbs.edit'), '#']
+    @labels = Label.all
   end
 
   def update
     respond_to do |format|
       if @exercise.update(permitted_attributes(@exercise))
+        @exercise.labels = params[:exercise][:labels].split(',').map { |name| Label.find_by(name: name) || Label.create(name: name) }.uniq
         format.html { redirect_to exercise_path(@exercise), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else

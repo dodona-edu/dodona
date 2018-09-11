@@ -15,6 +15,6 @@ class Label < ApplicationRecord
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
 
   after_initialize do
-    self.color ||= Label.colors.keys.sample
+    self.color ||= :purple
   end
 end

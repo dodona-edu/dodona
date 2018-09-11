@@ -2,19 +2,19 @@
 #
 # Table name: exercises
 #
-#  id                   :integer          not null, primary key
-#  name_nl              :string(255)
-#  name_en              :string(255)
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  path                 :string(255)
-#  description_format   :string(255)
-#  programming_language :string(255)
-#  repository_id        :integer
-#  judge_id             :integer
-#  status               :integer          default("ok")
-#  token                :string(64)       not null, unique
-#  access               :integer          not null, default("public")
+#  id                          :integer          not null, primary key
+#  name_nl                     :string(255)
+#  name_en                     :string(255)
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  path                        :string(255)
+#  description_format          :string(255)
+#  programming_language_id     :integer
+#  repository_id               :integer
+#  judge_id                    :integer
+#  status                      :integer          default("ok")
+#  token                       :string(64)       not null, unique
+#  access                      :integer          not null, default("public")
 #
 
 require 'pathname'

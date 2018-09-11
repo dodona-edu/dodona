@@ -158,6 +158,9 @@ end
 group :test do
   # for measuring coverage
   gem 'simplecov', require: false
+
+  # Add before_all to tests
+  gem 'minitest-hooks'
 end
 
 group :development do

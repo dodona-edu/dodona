@@ -1,18 +1,32 @@
 require 'test_helper'
 require 'rails/performance_test_help'
+require 'minitest/hooks/test'
+
 
 class PerformanceTest < ActionDispatch::PerformanceTest
+  include Minitest::Hooks
   # Refer to the documentation for all available options
   # self.profile_options = { runs: 5, metrics: [:wall_time, :memory],
   #                          output: 'tmp/performance', formats: [:flat] }
-
-  setup do
-    @user = create :zeus
-    @courses = create_list(:course, 5, series_count: 10, exercises_per_series: 5, subscribed_members: [@user])
-    sign_in @user
+  
+  around(:all) do |&block|
+    ActiveRecord::Base.transaction do
+      puts "\n[Seeding fake data for performance test]"
+      load "#{Rails.root}/db/seed_fake_data.rb"
+      super(&block)
+      raise ActiveRecord::Rollback
+    end
   end
 
-  #test "homepage" do
-  #  get '/'
-  #end
+  before do
+    sign_in User.first # should be Zeus
+  end
+
+  test "homepage" do
+    get '/'
+  end
+
+  test "homepage json" do
+    get '/', params: { format: :json }
+  end
 end

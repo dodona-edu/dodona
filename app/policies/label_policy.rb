@@ -26,6 +26,6 @@ class LabelPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    %i[name color]
+    %i[name]
   end
 end

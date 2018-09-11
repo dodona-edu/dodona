@@ -2,13 +2,12 @@ require 'test_helper'
 require 'rails/performance_test_help'
 require 'minitest/hooks/test'
 
-
 class PerformanceTest < ActionDispatch::PerformanceTest
   include Minitest::Hooks
   # Refer to the documentation for all available options
   # self.profile_options = { runs: 5, metrics: [:wall_time, :memory],
   #                          output: 'tmp/performance', formats: [:flat] }
-  
+
   around(:all) do |&block|
     ActiveRecord::Base.transaction do
       puts "\n[Seeding fake data for performance test]"
@@ -19,11 +18,17 @@ class PerformanceTest < ActionDispatch::PerformanceTest
   end
 
   before do
-    sign_in User.first # should be Zeus
+    @user = User.first # should be Zeus
+    sign_in @user
+    @course = Course.first
   end
 
   test "homepage" do
     get '/'
+  end
+
+  test "course page" do
+    get course_url(@course)
   end
 
   test "homepage json" do

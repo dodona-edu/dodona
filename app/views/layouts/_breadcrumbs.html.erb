@@ -1,5 +1,5 @@
 <%
-    if @crumbs.nil? && @title.present?
+    if !defined?(@crumbs) && @title.present?
         @crumbs = [[@title, "#"]]
     end
 %>

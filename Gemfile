@@ -146,7 +146,7 @@ group :development, :test do
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
 
-  gem 'bullet'
+  # gem 'bullet'
 
   # Remove git fork once this PR is merged
   gem 'rails-perftest', 

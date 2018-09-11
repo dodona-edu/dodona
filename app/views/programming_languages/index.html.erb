@@ -23,9 +23,6 @@
                   <%= ProgrammingLanguage.human_attribute_name("editor_name") %>
                 </th>
                 <th>
-                  <%= ProgrammingLanguage.human_attribute_name("markdown_name") %>
-                </th>
-                <th>
                   <%= ProgrammingLanguage.human_attribute_name("extension") %>
                 </th>
                 <th class="actions">
@@ -38,9 +35,6 @@
                 <tr>
                   <td>
                     <%= link_to programming_language.name, programming_language %>
-                  </td>
-                  <td>
-                    <%= programming_language.markdown_name %>
                   </td>
                   <td>
                     <%= programming_language.editor_name %>

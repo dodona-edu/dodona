@@ -117,6 +117,5 @@ en:
           student: Student
       programming_language:
         name: Name
-        markdown_name: Markdown
-        editor_name: Editor
+        editor_name: Editor mode
         extension: Extension

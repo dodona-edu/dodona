@@ -1,5 +1,5 @@
 <% get_exercise_path ||= method(:exercise_path) %>
-<% summary ||= ExercisesSummary.new(
+<% summary ||= SeriesSummary.new(
   user: current_user,
   series: local_assigns[:series],
   exercises: local_assigns[:exercises]) %>

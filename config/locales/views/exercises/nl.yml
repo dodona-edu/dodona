@@ -7,7 +7,9 @@ nl:
     exercise:
       count_tooltip: aantal studenten die deze oefening correct hebben
       correct: correct
+      correct_after_deadline: correct na de deadline
       wrong: verkeerd
+      wrong_after_deadline: verkeerd na de deadline
       not_solved: niet opgelost
     form:
       edit_exercise: Opgave aanpassen

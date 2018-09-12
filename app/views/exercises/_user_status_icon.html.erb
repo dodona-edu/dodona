@@ -1,7 +1,13 @@
-<% if summary.solved_before_deadline? %>
-  <i class="material-icons md-18 colored-correct">check</i>
-<% elsif summary.solved? %>
-  <i class="material-icons md-18 colored-wrong">check</i>
-<% elsif summary.submitted? %>
-  <i class="material-icons md-18 colored-wrong">close</i>
+<% if summary.series.deadline&.past? %>
+  <% if summary.solved_before_deadline? %>
+    <i class="material-icons md-18 colored-correct">alarm</i>
+  <% else %>
+    <i class="material-icons md-18 colored-wrong">alarm_off</i>
+  <% end %>
+<% else %>
+  <% if summary.solved? %>
+    <i class="material-icons md-18 colored-correct">check</i>
+  <% elsif summary.submitted? %>
+    <i class="material-icons md-18 colored-wrong">close</i>
+  <% end %>
 <% end %>

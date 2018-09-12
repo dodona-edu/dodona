@@ -63,7 +63,7 @@ class ExercisesController < ApplicationController
   def update
     respond_to do |format|
       if @exercise.update(permitted_attributes(@exercise))
-        @exercise.labels = params[:exercise][:labels].split(',').map { |name| Label.find_by(name: name) || Label.create(name: name) }.uniq
+        @exercise.labels = params[:exercise][:labels]&.split(',')&.map { |name| Label.find_by(name: name) || Label.create(name: name) }&.uniq || []
         format.html { redirect_to exercise_path(@exercise), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else

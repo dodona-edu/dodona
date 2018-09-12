@@ -7,7 +7,9 @@ en:
     exercise:
       count_tooltip: number of students that solved this exercise correctly
       correct: correct
+      correct_after_deadline: correct after deadline
       wrong: wrong
+      wrong_after_deadline: wrong after deadline
       not_solved: not solved
     form:
       edit_exercise: Edit exercise

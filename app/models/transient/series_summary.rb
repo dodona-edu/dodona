@@ -1,6 +1,6 @@
 # summary for a group of exercises, optionally within a given Series.
 # powers the 'exercises_table' view partial.
-class ExercisesSummary
+class SeriesSummary
   attr_reader :series,
               :user,
               :exercises

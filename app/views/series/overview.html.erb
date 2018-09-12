@@ -1,4 +1,4 @@
-<% summary = ExercisesSummary.new user: current_user, series: @series %>
+<% summary = SeriesSummary.new user: current_user, series: @series %>
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'series_overview' %>
 <% end %>

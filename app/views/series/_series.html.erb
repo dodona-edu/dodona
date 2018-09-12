@@ -1,5 +1,5 @@
 <% get_exercise_path ||= ->(ex) { course_series_exercise_path series.course_id, series.id, ex } %>
-<% summary ||= ExercisesSummary.new(
+<% summary ||= SeriesSummary.new(
   user: current_user,
   series: series,
   exercises: series.exercises) %>

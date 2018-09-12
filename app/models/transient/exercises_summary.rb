@@ -30,6 +30,34 @@ class ExercisesSummary
                           query_timely_submissions
   end
 
+  def progress_status
+    if completed?
+      'completed'
+    elsif wrong?
+      'wrong'
+    elsif started?
+      'started'
+    else
+      'not-yet-begun'
+    end
+  end
+
+  def deadline_status
+    if @series.deadline&.past?
+      if all?(&:solved_before_deadline?)
+        'deadline-met'
+      else
+        'deadline-missed'
+      end
+    else
+      ''
+    end
+  end
+
+  def full_status
+    progress_status + ' ' + deadline_status
+  end
+
   def each(&block)
     exercise_summaries.each(&block)
   end

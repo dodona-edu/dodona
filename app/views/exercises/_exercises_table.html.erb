@@ -22,11 +22,10 @@
         <tr>
           <td>
             <% if user_signed_in? %>
-              <% if current_user.repository_admin? ex.exercise.repository %>
+              <% if current_user.repository_admin?(ex.exercise.repository) || current_user.course_admin?(@course) %>
                 <%= render partial: 'exercises/repository_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
-              <% else %>
-                <%= render partial: 'exercises/user_status_icon', locals: { summary: ex } %>
               <% end %>
+              <%= render partial: 'exercises/user_status_icon', locals: { summary: ex } %>
             <% end %>
           </td>
 

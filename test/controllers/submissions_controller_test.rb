@@ -48,6 +48,13 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'create submission should respond bad_request without an exercise' do
+    attrs = generate_attr_hash
+    attrs.delete(:exercise_id)
+    create_request(attr_hash: attrs)
+    assert_response 422
+  end
+
   test 'create submission within course' do
     attrs = generate_attr_hash
     course = create :course

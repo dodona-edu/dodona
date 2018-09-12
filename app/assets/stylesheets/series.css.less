@@ -94,7 +94,52 @@
         border-radius: 50%;
         background-color: @grey-300;
 
-        &.completed {
+        &.deadline-missed:after {
+          color: @danger-800;
+          background-color: white;
+          position: absolute;
+          font-size: 18px;
+          font-weight: bold;
+          top: 40px;
+          left: 40px;
+          content: 'alarm_off';
+          font-family: 'Material Icons';
+        }
+
+        &.deadline-met:not(.completed):after {
+          color: @success-500;
+          background-color: white;
+          position: absolute;
+          font-size: 18px;
+          font-weight: bold;
+          top: 40px;
+          left: 40px;
+          content: 'alarm';
+          font-family: 'Material Icons';
+        }
+
+        i {
+          color: @grey-300;
+          background: #fff;
+          border-radius: 50%;
+          border: 5px solid #fff;
+        }
+
+        &.wrong {
+          background-color: @danger-500;
+          i {
+            color: @danger-500;
+          }
+        }
+
+        &.started, &.completed.deadline-missed {
+          background-color: @success-500;
+          i {
+            color: @success-500;
+          }
+        }
+
+        &.completed:not(.deadline-missed) {
           @red: #F44336;
           @orange: #FF9800;
           @yellow: #FFEB3B;
@@ -111,64 +156,20 @@
 
           background-image: linear-gradient(-135deg,
             @red @p1,
-            @orange @p2, 
-            @yellow @p3, 
+            @orange @p2,
+            @yellow @p3,
             @green @p4,
-            @blue @p5, 
+            @blue @p5,
             @purple @p6
             );
-        }
 
-        &.completed.deadline-missed {
-          background: @success-500;
-        }
-
-        &.wrong {
-          background-color: @danger-500;
-        }
-
-        &.started {
-          background-color: @success-500;
-        }
-
-
-        &.deadline-missed:after {
-          color: @danger-800;
-          background-color: white;
-          position: absolute;
-          font-size: 18px;
-          font-weight: bold;
-          top: 40px;
-          left: 40px;
-          content: 'alarm_off';
-          font-family: 'Material Icons';
-        }
-
-        i {
-          &.started {
-            color: @success-500;
-          }
-
-          &.wrong {
-            color: @danger-500;
-          }
-
-          &.completed {
-            font-weight: bolder;
-            font-size: 32px;
-            background: transparent;
-            border: transparent;
-            color: white;
-          }
-
-          &.completed-after-deadline {
-            color: @success-500;
-          }
-
-          color: @grey-300;
-          background: #fff;
-          border-radius: 50%;
-          border: 5px solid #fff;
+            i {
+              font-weight: bolder;
+              font-size: 32px;
+              background: transparent;
+              border: transparent;
+              color: white;
+            }
         }
     }
 }

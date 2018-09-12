@@ -23,9 +23,9 @@
           <td>
             <% if user_signed_in? %>
               <% if current_user.repository_admin? ex.exercise.repository %>
-                <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
+                <%= render partial: 'exercises/repository_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
               <% else %>
-                <%= render partial: 'exercises/status_icon', locals: { summary: ex } %>
+                <%= render partial: 'exercises/user_status_icon', locals: { summary: ex } %>
               <% end %>
             <% end %>
           </td>
@@ -46,7 +46,7 @@
 
           <% if user_signed_in? %>
             <td>
-              <%= render partial: 'exercises/exercise_user_status', locals: { summary: ex } %>
+              <%= render partial: 'exercises/user_status', locals: { summary: ex } %>
             </td>
             <td>
               <% if ex.submitted? || current_user.course_admin?(local_assigns[:series]&.course) %>

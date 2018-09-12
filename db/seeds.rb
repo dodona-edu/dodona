@@ -7,5 +7,5 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 if Rails.env.development?
-  load "./seed_fake_data.rb"
+  load "#{Rails.root}/db/seed_fake_data.rb"
 end

@@ -42,8 +42,11 @@ class SubmissionsController < ApplicationController
     para[:user_id] = current_user.id
     para[:code].gsub!(/\r\n?/, "\n")
     @submission = Submission.new(para)
-    can_submit = Pundit.policy!(current_user, @submission.exercise).submit?
-    can_submit &&= current_user.can_access?(@submission.course, @submission.exercise)
+    can_submit = true
+    if @submission.exercise.present?
+      can_submit &&= Pundit.policy!(current_user, @submission.exercise).submit?
+      can_submit &&= current_user.can_access?(@submission.course, @submission.exercise)
+    end
     if can_submit && @submission.save
       render json: { status: 'ok', id: @submission.id }
     else

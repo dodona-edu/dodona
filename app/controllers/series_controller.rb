@@ -8,7 +8,8 @@ class SeriesController < ApplicationController
   # GET /series.json
   def index
     authorize Series
-    @series = policy_scope(Series)
+    @course = Course.find(params[:course_id])
+    @series = policy_scope(@course.series)
     @title = I18n.t('series.index.title')
   end
 

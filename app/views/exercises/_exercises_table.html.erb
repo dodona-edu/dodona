@@ -20,7 +20,7 @@
     <tbody>
       <% summary.exercise_summaries.each do |ex| %>
         <tr>
-          <td>
+          <td class='status-icon'>
             <% if user_signed_in? %>
               <% if current_user.repository_admin?(ex.exercise.repository) || current_user.course_admin?(@course) %>
                 <%= render partial: 'exercises/repository_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>

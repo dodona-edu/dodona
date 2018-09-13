@@ -157,4 +157,106 @@ if Rails.env.development?
       end
     end
   end
+
+  puts 'Create Status Test course'
+
+  status_test = Course.create(name: 'Status Test', year: '2018-2019', registration: 'open', visibility: 'visible', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
+
+  deadline = Time.now - 1.day
+  after_deadline = deadline + 1.hour
+  before_deadline = deadline - 1.hour
+
+  statuses = [:correct, :wrong, :none]
+  code = 'print(input())'
+
+  status_exercises = statuses.each_with_index.map do |before, i|
+    afters = statuses.each_with_index.map do |after, j|
+      exercise = Exercise.offset(statuses.count*i + j).first
+      if before != :none
+        Submission.create user: zeus,
+          exercise: exercise,
+          course: status_test,
+          status: before,
+          accepted: before == :correct,
+          created_at: before_deadline,
+          skip_evaluation: true,
+          code: code
+      end
+      if after != :none
+        Submission.create user: zeus,
+          exercise: exercise,
+          course: status_test,
+          status: after,
+          accepted: after == :correct,
+          created_at: after_deadline,
+          skip_evaluation: true,
+          code: code
+      end
+      [after, exercise]
+    end
+    [before, afters.to_h]
+  end.to_h
+
+
+  Series.create name: "Onbegonnen zonder deadline",
+                course: status_test,
+                exercises: [status_exercises[:none][:none]]
+
+  Series.create name: "Onbegonnen met deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:none][:none]]
+
+  Series.create name: "Alles correct zonder deadline",
+                course: status_test,
+                exercises: [status_exercises[:correct][:none]]
+
+  Series.create name: "Alles correct voor deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:correct][:none]]
+
+  Series.create name: "Alles correct voor en na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:correct][:correct]]
+
+  Series.create name: "Alles correct na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:none][:correct]]
+
+  Series.create name: "Verkeerd voor, correct na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:wrong][:correct]]
+
+  Series.create name: "Correct voor, verkeerd na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:correct][:wrong]]
+
+  Series.create name: "Correcte oplossing bestaat, maar niet laatste, na deadline",
+                course: status_test,
+                deadline: Time.now,
+                exercises: [status_exercises[:correct][:wrong]]
+
+  Series.create name: "Correcte oplossing bestaat, maar niet laatste, zonder deadline",
+                course: status_test,
+                exercises: [status_exercises[:correct][:wrong]]
+
+  Series.create name: "Begonnen correct",
+                course: status_test,
+                exercises: [status_exercises[:correct][:none], status_exercises[:none][:none]]
+
+  Series.create name: "Begonnen correct voor deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:correct][:none], status_exercises[:none][:none]]
+
+  Series.create name: "Begonnen correct na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:none][:correct], status_exercises[:none][:none]]
+
 end

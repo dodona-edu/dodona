@@ -21,7 +21,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def index?
-    user&.zeus?
+    user
   end
 
   def show?

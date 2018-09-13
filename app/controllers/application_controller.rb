@@ -82,6 +82,9 @@ class ApplicationController < ActionController::Base
     token = request.headers['Authorization']&.strip
     return if token.blank?
 
+    # Sessions are not needed for the JSON API
+    request.session_options[:skip] = true
+
     token.gsub!(/Token token=\"(.*)\"/, '\1')
     # only allow urlsafe base64 characters to pass
     token.gsub!(/[^A-Za-z0-9_\-]/, '')

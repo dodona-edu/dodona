@@ -389,4 +389,40 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test 'users should be able to favorite subscribed courses' do
+    user = @students.first
+    sign_in user
+
+    post favorite_course_url(@course)
+    assert CourseMembership.find_by(user: user, course: @course).favorite
+  end
+
+  test 'users should be able to unfavorite favorited courses' do
+    user = @students.first
+    sign_in user
+
+    post favorite_course_url(@course)
+    post unfavorite_course_url(@course)
+    assert_not CourseMembership.find_by(user: user, course: @course).favorite
+  end
+
+  test 'users should not be able to favorite unsubscribed courses' do
+    user = @students.first
+    sign_in user
+
+    post unsubscribe_course_url(@course)
+    post favorite_course_url(@course)
+    assert_not response.success?
+  end
+
+  test 'users should not be able to unfavorite unsubscribed courses' do
+    user = @students.first
+    sign_in user
+
+    post unsubscribe_course_url(@course)
+    post unfavorite_course_url(@course)
+    assert_not response.success?
+  end
+
 end

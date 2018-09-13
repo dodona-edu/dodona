@@ -72,6 +72,14 @@ class CoursePolicy < ApplicationPolicy
     user
   end
 
+  def favorite?
+    user && user&.member_of?(record)
+  end
+
+  def unfavorite?
+    user && user&.member_of?(record)
+  end
+
   def registration?
     user
   end

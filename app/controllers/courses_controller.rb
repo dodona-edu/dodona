@@ -147,6 +147,36 @@ class CoursesController < ApplicationController
     redirect_unless_secret_correct
   end
 
+  def favorite
+    respond_to do |format|
+      if @current_membership
+        @current_membership.update(favorite: true)
+        format.html { redirect_to(@course, alert: I18n.t('courses.favorite.succeeded')) }
+        format.json { render :show, status: :created, location: @course }
+        format.js
+      else
+        format.html { redirect_to(@course, alert: I18n.t('courses.favorite.failed')) }
+        format.json { render json: { errors: ['not subscribed to course'] }, status: :unprocessable_entity }
+        format.js
+      end
+    end
+  end
+
+  def unfavorite
+    respond_to do |format|
+      if @current_membership
+        @current_membership.update(favorite: false)
+        format.html { redirect_to(@course, alert: I18n.t('courses.unfavorite.succeeded')) }
+        format.json { head :ok}
+        format.js
+      else
+        format.html { redirect_to(@course, alert: I18n.t('courses.unfavorite.failed')) }
+        format.json { render json: { errors: ['not subscribed to course'] }, status: :unprocessable_entity }
+        format.js
+      end
+    end
+  end
+
   def scoresheet
     sheet = @course.scoresheet
     filename = "scoresheet-#{@course.name.parameterize}.csv"
@@ -249,6 +279,7 @@ class CoursesController < ApplicationController
 
     membership.update(status: status).tap do |success|
       if success && membership.unsubscribed?
+        membership.favorite = false
         membership.delete if @course.submissions.where(user: user).empty?
       end
     end

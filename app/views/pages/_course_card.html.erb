@@ -14,7 +14,7 @@
       <% end %>
       <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>
       <h3 class="card-subtitle-text"><%= course.formatted_year %>&nbsp;</h3>
-      <h3 class="card-subtitle-text"><%= course.teacher %>&nbsp;</h3>
+      <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %>"><%= course.teacher %>&nbsp;</h3>
     </div>
   <% end %>
   <div class="card-supporting-text stats row">
@@ -78,6 +78,17 @@
       <%= link_to t('.edit-course'), edit_course_path(course), class: 'btn-text pull-right' %>
     <% else %>
       <%= link_to t('.go-to-course'), course_path(course), class: 'btn-text pull-right' %>
+    <% end %>
+    <% if not local_assigns[:course_index] and current_user.full_view? %>
+      <div class="pull-left">
+        <i class="favorite-button material-icons <%= "favorited" if current_user.favorite_courses.include? course %>" data-course_id="<%= course.id %>">
+          <% if current_user.favorite_courses.include? course %>
+            favorite
+          <% else %>
+            favorite_outline
+          <% end %>
+        </i>
+      </div>
     <% end %>
   </div>
 </div>

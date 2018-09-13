@@ -30,7 +30,7 @@
             <%= render partial: 'series/human_deadline', locals: { series: series } %>
           </span>
           <%= link_to series.name, course_path(series.course, series: series , anchor: "series-#{series.name.parameterize}"), class: "dynamic-homepage-series-link", title: series.name %>
-          <%= link_to series.course.name, course_path(series.course), class: "small text-muted course-link" %>
+          <%= link_to series.course.name, course_path(series.course), class: "small text-muted course-link", title: series.course.name %>
         </p>
       <% end %>
     </div>
@@ -48,6 +48,7 @@
             <%= link_to submission.exercise.name, exercise_path(submission.exercise), class: "course-link", title: submission.exercise.name %>
           <% else %>
             <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise), class: "course-link", title: submission.exercise.name %>
+            <%= link_to submission.course.name, course_path(submission.course), class: "small text-muted course-link", title: submission.course.name %>
           <% end %>
         </p>
       <% end %>

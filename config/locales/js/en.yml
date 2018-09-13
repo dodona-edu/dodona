@@ -14,3 +14,7 @@ en:
     copy-fail: Press Ctrl-C to copy
     filter-options: Filter options
     actions: Actions
+    favorite-course-succeeded: Favorited course
+    favorite-course-failed: Favoriting course failed
+    unfavorite-course-succeeded: Unfavorited course
+    unfavorite-course-failed: Unfavoriting course failed

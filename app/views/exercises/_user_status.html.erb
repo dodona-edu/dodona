@@ -2,7 +2,7 @@
 <% if summary.submitted? %>
   <% if summary.solved? %>
     <% if !summary.solved_before_deadline? %>
-      <%= link_to submission do %>
+      <%= link_to submission, class: 'deadline-ok' do %>
         <%= t 'exercises.exercise.correct_after_deadline' %>
       <% end %>
     <% else %>
@@ -22,19 +22,12 @@
                     class: 'btn btn-icon' do %>
           <i class="material-icons colored-warning md-18">warning</i>
         <% end %>
-      <% else %>
-        <%= link_to submission do %>
-          <%= t 'exercises.exercise.wrong' %>
-        <% end %>
+      <% end %>
+      <%= link_to submission do %>
+        <%= t 'exercises.exercise.wrong' %>
       <% end %>
     <% end %>
   <% end %>
 <% else %>
-  <% if summary.deadline_passed? %>
-    <%= content_tag :span, class: 'deadline-passed' do %>
-      <%= t 'series.show.missed_deadline' %>
-    <% end %>
-  <% else %>
-    <%= t 'exercises.exercise.not_solved' %>
-  <% end %>
+  <%= t 'exercises.exercise.not_solved' %>
 <% end %>

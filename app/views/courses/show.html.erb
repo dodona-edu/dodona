@@ -1,12 +1,15 @@
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'course' %>
+  <%= javascript_pack_tag 'favorite_course_buttons' %>
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
   <div class="col-sm-offset-1 col-sm-10 col-xs-12">
     <div class="card tab-content">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @course.name %> (<%= @course.formatted_year %>)</h2>
+        <h2 class="card-title-text">
+          <%= @course.name %> (<%= @course.formatted_year %>)
+        </h2>
       </div>
       <div class="card-supporting-text row">
         <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
@@ -110,5 +113,6 @@
 <script type="text/javascript">
   $(function () {
     dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>);
+    dodona.initFavoriteButtons();
   });
 </script>

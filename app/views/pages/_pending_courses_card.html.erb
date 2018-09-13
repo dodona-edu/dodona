@@ -3,7 +3,7 @@
     <h2 class="card-title-text"><%= t ".pending-courses" %></h2>
   </div>
   <div class="card-supporting-text card-border">
-    <% @user.pending_courses.each do |course| %>
+    <% current_user.pending_courses.each do |course| %>
       <p>
         <%= link_to course_path(course) do %>
           <span><%= course.name %></span>

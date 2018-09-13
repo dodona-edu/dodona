@@ -48,6 +48,7 @@
             <%= link_to submission.exercise.name, exercise_path(submission.exercise), class: "course-link", title: submission.exercise.name %>
           <% else %>
             <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise), class: "course-link", title: submission.exercise.name %>
+            <%= link_to submission.course.name, course_path(submission.course), class: "small text-muted course-link" %>
           <% end %>
         </p>
       <% end %>

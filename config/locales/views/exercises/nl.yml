@@ -7,10 +7,10 @@ nl:
     exercise:
       count_tooltip: aantal studenten die deze oefening correct hebben
       correct: correct
-      correct_after_deadline: correct, maar deadline gemist
+      correct_after_deadline: Je hebt de deadline niet gehaald, maar je laatste oplossing na de deadline is correct.
       wrong: verkeerd
-      wrong_after_deadline: verkeerd, maar deadline gehaald
-      deadline_missed: Je hebt de deadline gemist
+      wrong_after_deadline: Je hebt de deadline gehaald, maar je laatste oplossing na de deadline is verkeerd. Klik om naar je laatste correcte oplossing te gaan.
+      deadline_missed: Je hebt de deadline niet gehaald (je laatste oplossing voor de deadline is verkeerd)
       deadline_met: Je hebt de deadline gehaald
       not_solved: niet opgelost
     form:

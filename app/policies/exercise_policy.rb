@@ -22,6 +22,10 @@ class ExercisePolicy < ApplicationPolicy
     false
   end
 
+  def available?
+    return true if user
+  end
+
   def update?
     return false unless record.ok?
     user&.repository_admin?(record.repository)

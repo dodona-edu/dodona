@@ -1,6 +1,6 @@
 <table class="table exercise-table">
   <tbody>
-    <% exercises.each do |exercise| %>
+    <% @exercises.each do |exercise| %>
     <tr>
       <td class="status-icon">
         <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.private")}'>visibility_off</i>" if exercise.access_private? %>

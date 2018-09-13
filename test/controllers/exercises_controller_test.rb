@@ -58,6 +58,63 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get available exercises for series' do
+    course = create :course, usable_repositories: [@instance.repository]
+    other_exercise = create :exercise
+    series_exercise = create :exercise, repository: @instance.repository
+    create :exercise # Other exercise that should never show up
+    series = create :series, course: course, exercises: [series_exercise]
+    admin = create :staff, administrating_courses: [course], repositories: [other_exercise.repository]
+
+    sign_out :user
+    sign_in admin
+
+    get available_exercises_series_url(series, format: :json)
+
+    assert_response :success
+    result_exercises = JSON.parse response.body
+
+    assert result_exercises.any?{ |ex| ex['id'] == @instance.id }, 'should contain exercise usable by course'
+    assert result_exercises.any?{ |ex| ex['id'] == other_exercise.id }, 'should contain exercise usable by repo admin'
+    assert_equal 2, result_exercises.count, 'should only contain available exercises'
+  end
+
+  test 'should get available exercises for course with labels' do
+    course = create :course, usable_repositories: [@instance.repository]
+    other_exercise = create :exercise
+    series_exercise = create :exercise, repository: @instance.repository
+    create :exercise # Other exercise that should never show up
+    series = create :series, course: course, exercises: [series_exercise]
+    admin = create :staff, administrating_courses: [course], repositories: [other_exercise.repository]
+
+    label = create :label
+
+    sign_out :user
+    sign_in admin
+
+    get available_exercises_series_url(series, labels: [label.name], format: :json)
+
+    assert_response :success
+    result_exercises = JSON.parse response.body
+    assert_equal 0, result_exercises.count, 'should not contain exercises'
+
+    label.exercises << @instance
+
+    get available_exercises_series_url(series, labels: [label.name], format: :json)
+
+    assert_response :success
+    result_exercises = JSON.parse response.body
+
+    assert result_exercises.any?{ |ex| ex['id'] == @instance.id }, 'should contain exercise with label'
+    assert result_exercises.all?{ |ex| ex['id'] != other_exercise.id }, 'should not contain exercise without label'
+  end
+
+  def assert_response_contains_exercise(exercise, msg=nil)
+    assert_response :success
+    result_exercises = JSON.parse response.body
+    assert result_exercises.any?{ |ex| ex['id'] == exercise.id }, msg
+  end
+
   test 'should get edit submission with show' do
     submission = create :submission
     @instance.submissions << submission

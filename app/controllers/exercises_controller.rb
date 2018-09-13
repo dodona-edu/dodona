@@ -33,6 +33,18 @@ class ExercisesController < ApplicationController
     @title = I18n.t('exercises.index.title')
   end
 
+  def available
+    @series = Series.find(params[:id])
+    @course = @series.course
+    authorize @series
+    @exercises = policy_scope(Exercise)
+    @exercises = @exercises.or(Exercise.where(repository: @course.usable_repositories))
+    @exercises = @exercises.where.not(id: @series.exercises.map(&:id)) # exclude exercises currently within series
+    @exercises = apply_scopes(@exercises)
+    @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
+    @labels = Label.all
+  end
+
   def show
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     # We still need to check access because an unauthenticated user should be able to see public exercises

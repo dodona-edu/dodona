@@ -31,6 +31,10 @@ class SeriesPolicy < ApplicationPolicy
     course.visible? || user&.member_of?(course)
   end
 
+  def available?
+    edit?
+  end
+
   def overview?
     show?
   end

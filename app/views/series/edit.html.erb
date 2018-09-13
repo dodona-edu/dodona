@@ -82,7 +82,7 @@
           </div>
           <div class="col-xs-12 col-sm-6 col-sm-pull-6">
             <h4><%= t ".add_exercises" %></h4>
-            <%= render partial: 'layouts/searchbar', locals: { baseUrl: exercises_path(:series_id => @series.id), eager: true, labels: @labels }  %>
+            <%= render partial: 'layouts/searchbar', locals: { baseUrl: available_exercises_series_path(@series.course), eager: true, labels: @labels }  %>
             <div id="exercises-table-wrapper">
             </div>
           </div>

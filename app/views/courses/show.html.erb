@@ -100,11 +100,14 @@
           </div>
         </div>
         <div id="series-listing">
-          <% @series.each do |series| %>
-            <%= render(partial: 'series/series', locals: {series: series}) %>
+          <% @series.first(5).each do |series| %>
+            <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
+          <% end %>
+          <% @series.offset(5).each do |series| %>
+            <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
           <% end %>
         </div>
-        <% if @total_series > @series.length %>
+        <% if false && @total_series > @series.length %>
           <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
         <% end %>
     <% end %>

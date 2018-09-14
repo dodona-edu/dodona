@@ -5,6 +5,18 @@ module ApplicationHelper
     end
   end
 
+  def exercise_scoped_url(exercise: nil, series: nil, course: nil, options: nil)
+    raise 'Exercise should not be nil' if exercise.nil?
+    if series.present?
+      course ||= series.course
+      course_series_exercise_url(I18n.locale, course, series, exercise, options)
+    elsif course.present?
+      course_exercise_url(I18n.locale, course, exercise, options)
+    else
+      exercise_url(I18n.locale, exercise, options)
+    end
+  end
+
   def exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
     raise 'Exercise should not be nil' if exercise.nil?
     if series.present?

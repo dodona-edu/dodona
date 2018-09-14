@@ -9,7 +9,8 @@ json.extract! user,
               :time_zone,
               :lang
 
-json.url user_url(user)
+json.url user_url(user, format: :json)
+json.submissions user_submissions_url(user, format: :json)
 json.submission_count user.submissions.count
 json.correct_exercises user.correct_exercises
 

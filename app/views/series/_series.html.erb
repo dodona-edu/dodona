@@ -1,13 +1,18 @@
 <% get_exercise_path ||= ->(ex) { course_series_exercise_path series.course_id, series.id, ex } %>
-<% summary ||= SeriesSummary.new(
-  user: current_user,
-  series: series,
-  exercises: series.exercises) %>
+<% loaded = true unless defined?(loaded) %>
+<% if loaded %>
+  <% summary ||= SeriesSummary.new(
+    user: current_user,
+    series: series,
+    exercises: series.exercises) %>
+<% else %>
+  <% summary ||= nil %>
+<% end %>
 
 <div class="card card-supporting-text series">
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>"  name="<%= series.name %>"></a>
-    <%= render partial: 'series/series_status', locals: { summary: summary } %>
+    <%= render partial: 'series/series_status', locals: { loaded: loaded, summary: summary } %>
     <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
       <% if series.deadline? %>
         <% if series.deadline > Time.now %>
@@ -90,11 +95,19 @@
   <%= markdown(series.description) %>
 
   <% if series.exercises.length > 0 %>
-    <%= render partial: 'exercises/exercises_table', locals: {
-          series: series,
-          exercises: series.exercises,
-          get_exercise_path: get_exercise_path,
-          summary: summary,
-    } %>
+    <div class="series-exercises-table-wrapper" id="exercises-table-<%= series.id %>">
+    <% if loaded %>
+      <%= render partial: 'exercises/exercises_table', locals: {
+            series: series,
+            exercises: series.exercises,
+            get_exercise_path: get_exercise_path,
+            summary: summary,
+      } %>
+    <% else %>
+      <div class="exercises-table-skeleton">
+        insert skeleton here
+      </div>
+    <% end %>
+    </div>
   <% end %>
 </div>

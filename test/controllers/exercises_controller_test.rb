@@ -109,6 +109,20 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert result_exercises.all?{ |ex| ex['id'] != other_exercise.id }, 'should not contain exercise without label'
   end
 
+  test 'should not get available exercises as student' do
+    course = create :course, usable_repositories: [@instance.repository]
+    create :exercise # Other exercise that should never show up
+    series = create :series, course: course
+
+    student = create :student, subscribed_courses: [course]
+    sign_out :user
+    sign_in student
+
+    get available_exercises_series_url(series, format: :json)
+
+    assert_response :redirect
+  end
+
   def assert_response_contains_exercise(exercise, msg=nil)
     assert_response :success
     result_exercises = JSON.parse response.body

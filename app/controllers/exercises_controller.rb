@@ -36,7 +36,7 @@ class ExercisesController < ApplicationController
   def available
     @series = Series.find(params[:id])
     @course = @series.course
-    authorize @series
+    authorize @series, :edit?
     @exercises = policy_scope(Exercise)
     @exercises = @exercises.or(Exercise.where(repository: @course.usable_repositories))
     @exercises = @exercises.where.not(id: @series.exercises.map(&:id)) # exclude exercises currently within series

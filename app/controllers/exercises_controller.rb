@@ -14,19 +14,23 @@ class ExercisesController < ApplicationController
 
   def index
     authorize Exercise
-    @exercises = policy_scope(Exercise)
+
+    @exercises = if params[:series_id]
+                   @series = Series.find(params[:series_id])
+                   authorize @series, :show?
+                   @series.exercises
+                 else
+                   Exercise.all
+                 end
+
+    @exercises = policy_scope(@exercises)
 
     if params[:repository_id]
       @repository = Repository.find(params[:repository_id])
       @exercises = @exercises.in_repository(@repository)
     end
 
-    if params[:series_id]
-      @series = Series.find(params[:series_id])
-      @exercises = @exercises.or(Exercise.where(repository: @series.course.usable_repositories))
-    end
-
-    @exercises = @exercises.merge(apply_scopes(Exercise).all)
+    @exercises = apply_scopes(@exercises)
 
     @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
     @labels = Label.all

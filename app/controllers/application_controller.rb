@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_trailing_slash
-    redirect_to url_for(trailing_slash: true), status: 301 unless trailing_slash?
+    redirect_to url_for(trailing_slash: true), status: 301 unless trailing_slash? || request.format == :json
   end
 
   def trailing_slash?

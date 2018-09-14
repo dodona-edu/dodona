@@ -49,7 +49,7 @@ class SubmissionsController < ApplicationController
       can_submit &&= current_user.can_access?(@submission.course, @submission.exercise)
     end
     if can_submit && @submission.save
-      render json: { status: 'ok', id: @submission.id }
+      render json: { status: 'ok', id: @submission.id, url: submission_url(@submission, format: :json) }
     else
       @submission.errors.add(:exercise, :not_permitted) unless can_submit
       render json: { status: 'failed', errors: @submission.errors }, status: :unprocessable_entity

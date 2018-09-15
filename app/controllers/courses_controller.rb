@@ -21,6 +21,7 @@ class CoursesController < ApplicationController
   def show
     @title = @course.name
     @series = policy_scope(@course.series)
+    @series_loaded = 5
     #@total_series = @series.count
     #number_of_series = if params[:series]
     #                     @series.find_index { |s| s.id == params[:series].to_i }.to_i + 3

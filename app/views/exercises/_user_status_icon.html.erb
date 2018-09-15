@@ -1,4 +1,4 @@
-<% if summary.series.deadline&.past? %>
+<% if summary.series&.deadline&.past? %>
   <% if summary.solved_before_deadline? %>
     <i class="material-icons md-18 colored-correct" title="<%= t 'exercises.exercise.deadline_met' %>">alarm</i>
   <% else %>

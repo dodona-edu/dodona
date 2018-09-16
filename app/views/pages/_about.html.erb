@@ -1,31 +1,46 @@
 <div class="home-cover-img">&nbsp;</div>
 <div class="row">
   <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="row home-header">
+      <div class="col-md-7 home-lead">
+        <h1>Dodona</h1>
+        <p class='lead'>Leren programmeren <br> voor middelbaar en hoger onderwijs</p>
+        <%= link_to t(".sign-in"), sign_in_path, class: 'btn btn-primary btn-lg' %>
+      </div>
+      <div class="col-md-5">
+        <%= image_tag("home.png", class: 'img-responsive') %>
+      </div>
+    </div>
     <div class="card home-card">
       <div class="card-supporting-text">
-        <div class="row v-align">
-          <div class="col-xs-7 col-sm-8">
-            <h2 class="card-title-text">Dodona</h2>
-            <p><%= t ".intro_html" %></p>
-          </div>
-          <% if user_signed_in? %>
-            <div class="hidden-xs col-sm-4 sign-in-wrapper">
-              <img src="/icon.png" alt="Dodona icon"></img>
-            </div>
-          <% else %>
-          <div class="col-xs-5 col-sm-4 sign-in-wrapper">
-            <%= link_to t(".sign-in"), sign_in_path, class: 'btn btn-primary btn-lg' %>
-          </div>
-          <% end %>
+        <div class="col-xs-4 info-step">
+          <%= image_tag("code.png", class: 'img-responsive') %>
+          <h3>Schrijf code</h3>
+          <p>
+            Schrijf je in voor een cursus en kies een van de honderden programmeeroefeningen.
+          </p>
+        </div>
+        <div class="col-xs-4 info-step">
+          <%= image_tag("plane.png", class: 'img-responsive') %>
+          <h3>Dien in</h3>
+          <p>
+            Los de oefening op en dien je code in via de ingebouwde editor.
+          </p>
+        </div>
+        <div class="col-xs-4 info-step">
+          <%= image_tag("feedback.png", class: 'img-responsive') %>
+          <h3>Krijg feedback</h3>
+          <p>
+            Je code wordt automatisch getest en na enkele seconden krijg je het resultaat te zien.
+          </p>
         </div>
       </div>
-      <div class="card-supporting-text card-border row">
-        <div class="hidden-xs col-sm-5">
-          <%= image_tag("zeus.jpg") %>
+      <div class="card-supporting-text card-border row ugent">
+        <div class="col-xs-12 col-sm-4">
+          <%= image_tag("ugent.png", class: 'img-responsive') %>
         </div>
-        <div class="col-xs-12 col-sm-7">
-          <h3><%= t ".dodona-title" %></h3>
-          <p><%= t ".dodona-text_html" %></p>
+        <div class="col-xs-12 col-sm-8">
+          <p><%= t ".intro_html" %></p>
         </div>
       </div>
     </div>

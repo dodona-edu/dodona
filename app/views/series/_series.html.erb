@@ -104,8 +104,11 @@
             summary: summary,
       } %>
     <% else %>
-      <div class="exercises-table-skeleton">
-        insert skeleton here
+      <div class="exercise-table-skeleton">
+        <div class="skeleton-head"></div>
+        <% series.exercises.count.times do %>
+          <div class="skeleton-row"></div>
+        <% end %>
       </div>
     <% end %>
     </div>

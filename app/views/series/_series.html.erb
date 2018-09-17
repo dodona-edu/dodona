@@ -1,9 +1,13 @@
 <% get_exercise_path ||= ->(ex) { course_series_exercise_path series.course_id, series.id, ex } %>
+<% summary ||= SeriesSummary.new(
+  user: current_user,
+  series: series,
+  exercises: series.exercises) %>
 
 <div class="card card-supporting-text series">
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>"  name="<%= series.name %>"></a>
-    <div class="card-title-icon"><i class="material-icons">school</i></div>
+    <%= render partial: 'series/series_status', locals: { summary: summary } %>
     <h4><%= series.name %><br>
       <% if series.deadline? %>
         <% if series.deadline > Time.now %>
@@ -90,7 +94,7 @@
           series: series,
           exercises: series.exercises,
           get_exercise_path: get_exercise_path,
-          summary: local_assigns[:summary],
+          summary: summary,
     } %>
   <% end %>
 </div>

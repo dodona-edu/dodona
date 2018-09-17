@@ -1,5 +1,5 @@
 <% get_exercise_path ||= method(:exercise_path) %>
-<% summary ||= ExercisesSummary.new(
+<% summary ||= SeriesSummary.new(
   user: current_user,
   series: local_assigns[:series],
   exercises: local_assigns[:exercises]) %>
@@ -20,13 +20,12 @@
     <tbody>
       <% summary.exercise_summaries.each do |ex| %>
         <tr>
-          <td>
+          <td class='status-icon'>
             <% if user_signed_in? %>
-              <% if current_user.repository_admin? ex.exercise.repository %>
-                <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
-              <% else %>
-                <%= render partial: 'exercises/status_icon', locals: { summary: ex } %>
+              <% if current_user.repository_admin?(ex.exercise.repository) || current_user.course_admin?(@course) %>
+                <%= render partial: 'exercises/repository_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
               <% end %>
+              <%= render partial: 'exercises/user_status_icon', locals: { summary: ex } %>
             <% end %>
           </td>
 
@@ -46,7 +45,7 @@
 
           <% if user_signed_in? %>
             <td>
-              <%= render partial: 'exercises/exercise_user_status', locals: { summary: ex } %>
+              <%= render partial: 'exercises/user_status', locals: { summary: ex } %>
             </td>
             <td>
               <% if ex.submitted? || current_user.course_admin?(local_assigns[:series]&.course) %>

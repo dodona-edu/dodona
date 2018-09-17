@@ -21,6 +21,11 @@ class ExerciseSummary
                            query_accepted_submission
   end
 
+  # whether latest submission is wrong, if it exists
+  def wrong?
+    latest_submission.present? && !latest_submission.accepted
+  end
+
   # whether latest submission is correct
   def solved?
     latest_submission&.accepted
@@ -43,7 +48,7 @@ class ExerciseSummary
   delegate :deadline, to: :series, allow_nil: true
 
   def deadline_passed?
-    deadline && deadline < Time.current
+    deadline&.past?
   end
 
   def users_correct

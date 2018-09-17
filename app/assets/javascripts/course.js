@@ -53,8 +53,7 @@ function initCourseMembers() {
 }
 
 function initCourseShow(_seriesShown, _seriesTotal) {
-    const perBatch = _seriesShown,
-        seriesTotal = _seriesTotal;
+    const seriesTotal = _seriesTotal;
 
     let seriesShown = _seriesShown,
         loading = false;
@@ -102,7 +101,7 @@ function initCourseShow(_seriesShown, _seriesTotal) {
         $(".load-more-series").button("loading");
         $.get(`?format=js&offset=${seriesShown}`)
             .done(() => {
-                seriesShown += perBatch;
+                seriesShown = $(".series").length;
                 if (seriesShown >= seriesTotal) {
                     $(".load-more-series").hide();
                 }

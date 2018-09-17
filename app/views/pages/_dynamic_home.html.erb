@@ -1,20 +1,55 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'favorite_course_buttons' %>
+<% end %>
 <div class="row">
-  <% if @user.subscribed_courses.empty? %>
+  <% if current_user.subscribed_courses.empty? %>
     <div class="col-xs-12 visible-sm">
       <%= render "getting_started_card"%>
     </div>
   <% end %>
   <div class="col-xs-12 col-sm-6 col-lg-8">
     <div class="row">
-      <% if @user.subscribed_courses.empty? %>
+      <% if current_user.subscribed_courses.empty? %>
         <div class="col-xs-12 hidden-sm">
           <%= render "getting_started_card"%>
         </div>
       <% end %>
-      <% @user.subscribed_courses.each do |course| %>
-        <div class="col-xs-12 col-sm-12 col-lg-6">
-          <%= render partial: "course_card", locals: {course: course} %>
-        </div>
+      <% if current_user.full_view? %>
+        <% unless current_user.favorite_courses.empty? %>
+          <div class="row">
+            <% current_user.favorite_courses.each do |course| %>
+              <div class="col-xs-12 col-sm-12 col-lg-6">
+                <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <% first = current_user.favorite_courses.empty? %>
+        <% current_user.grouped_recent_courses(3).each do |year, courses| %>
+          <% unless (courses - current_user.favorite_courses).empty? %>
+            <% if first %>
+              <% first = false %>
+            <% else %>
+              <div class="page-subtitle">
+                <a class="anchor" id="<%= year.parameterize %>"></a>
+                <h3><%= Course.format_year year %></h3>
+              </div>
+            <% end %>
+            <div class="row">
+              <% (courses - current_user.favorite_courses).each do |course| %>
+                <div class="col-xs-12 col-sm-12 col-lg-6">
+                  <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <% current_user.recent_courses(3).each do |course| %>
+          <div class="col-xs-12 col-sm-12 col-lg-6">
+            <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -22,12 +57,20 @@
     <div class="row">
       <div class="col-xs-12">
         <%= render "user_card" %>
+        <% if current_user.pending_courses.any? %>
+          <%= render "pending_courses_card" %>
+        <% end %>
         <div class="card home-summary-card">
           <div class="card-supporting-text">
-            <%=link_to (t('.more-courses') + ' …'), courses_path, class: "btn-text" %>
+            <%= link_to (t('.more-courses') + ' …'), courses_path, class: "btn-text" %>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        dodona.initFavoriteButtons();
+    });
+</script>

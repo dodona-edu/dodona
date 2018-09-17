@@ -1,16 +1,18 @@
 class CoursesController < ApplicationController
   before_action :set_course_and_current_membership, except: %i[index new create]
 
-  skip_before_action :verify_authenticity_token, only: [:subscribe]
+  skip_forgery_protection only: [:subscribe]
 
-  has_scope :by_permission, only: :list_members
-  has_scope :by_name, only: :list_members, as: 'filter'
+  has_scope :by_permission, only: :members
+  has_scope :by_name, only: :members, as: 'filter'
 
   # GET /courses
   # GET /courses.json
   def index
     authorize Course
     @courses = policy_scope(Course.all)
+    @grouped_courses = @courses.group_by(&:year)
+    @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @title = I18n.t('courses.index.title')
   end
 
@@ -25,8 +27,9 @@ class CoursesController < ApplicationController
                        else
                          5
                        end
-    @series = @series.limit(number_of_series) unless params[:all]
+
     @series = @series.offset(params[:offset]) if params[:offset]
+    @series = @series.limit(number_of_series) unless params[:all]
   end
 
   # GET /courses/new
@@ -34,11 +37,13 @@ class CoursesController < ApplicationController
     authorize Course
     @course = Course.new
     @title = I18n.t('courses.new.title')
+    @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
   end
 
   # GET /courses/1/edit
   def edit
     @title = @course.name
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('crumbs.edit'), "#"]]
   end
 
   # POST /courses
@@ -142,6 +147,36 @@ class CoursesController < ApplicationController
     redirect_unless_secret_correct
   end
 
+  def favorite
+    respond_to do |format|
+      if @current_membership
+        @current_membership.update(favorite: true)
+        format.html { redirect_to(@course, alert: I18n.t('courses.favorite.succeeded')) }
+        format.json { render :show, status: :created, location: @course }
+        format.js
+      else
+        format.html { redirect_to(@course, alert: I18n.t('courses.favorite.failed')) }
+        format.json { render json: { errors: ['not subscribed to course'] }, status: :unprocessable_entity }
+        format.js
+      end
+    end
+  end
+
+  def unfavorite
+    respond_to do |format|
+      if @current_membership
+        @current_membership.update(favorite: false)
+        format.html { redirect_to(@course, alert: I18n.t('courses.unfavorite.succeeded')) }
+        format.json { head :ok}
+        format.js
+      else
+        format.html { redirect_to(@course, alert: I18n.t('courses.unfavorite.failed')) }
+        format.json { render json: { errors: ['not subscribed to course'] }, status: :unprocessable_entity }
+        format.js
+      end
+    end
+  end
+
   def scoresheet
     sheet = @course.scoresheet
     filename = "scoresheet-#{@course.name.parameterize}.csv"
@@ -164,7 +199,7 @@ class CoursesController < ApplicationController
     end
   end
 
-  def list_members
+  def members
     statuses = if %w[unsubscribed pending].include? params[:status]
                  params[:status]
                else
@@ -177,11 +212,20 @@ class CoursesController < ApplicationController
              .order(username: :asc)
              .where(course_memberships: { status: statuses })
              .paginate(page: params[:page])
+
     @pagination_opts = {
       controller: 'courses',
-      action: 'list_members'
+      action: 'members'
     }
-    render 'users/index'
+
+    @title = I18n.t("courses.index.users")
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
+
+    respond_to do |format|
+      format.json { render 'users/index' }
+      format.js { render 'users/index' }
+      format.html
+    end
   end
 
   def reset_token
@@ -235,6 +279,7 @@ class CoursesController < ApplicationController
 
     membership.update(status: status).tap do |success|
       if success && membership.unsubscribed?
+        membership.favorite = false
         membership.delete if @course.submissions.where(user: user).empty?
       end
     end

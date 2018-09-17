@@ -2,19 +2,33 @@ en:
   pages:
     sign_in_page:
       select-institution: "Please select your institution"
+      sign_in: "Sign in"
     about:
       intro_html: "The Dodona environment contains dozens of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with your Ghent University credentials. Dodona is still in active development, any bug report or suggestion is welcome trough the <a href='/contact'>contact form</a>."
       sign-in: Sign in
-      dodona-title: "Who or what is Dodona?"
-      dodona-text_html: "Dodona is a place in Greece, located in a peaceful, green valley on the eastern slope of the mountain Tomaros in the historical region of Epirus. The oracle of Dodona was dedicated to Zeus <span class='hidden-xs'>(pictured left)</span> and the mother goddess Dione. It was, according to Herodotus, the oldest oracle of ancient Greece, possibly dating back to the second millennium BC."
+      learn-to-code: Learn to code
+      higher-education: for secondary and higher education
+      write-code: Write code
+      hand-in: Hand in
+      get-feedback: Get feedback
+      write-code-text: Subscribe for a course and pick one of the hundreds of programming exercises.
+      hand-in-text: Solve the exercise and hand in using the built-in code editor.
+      get-feedback-text: You code is automatically tested. Get your results in seconds!
     dynamic_home:
       more-courses: More courses
+      favorites: "Favorites"
     course_card:
       submissions: Submissions
       correct-exercises: Correct exercises
       go-to-course: Go to this course
+      edit-course: Edit course
       users: Users
+      exercises: Exercises
       course-admin: Course administrator
+      course-member: Course member
+      course-hidden: Hidden course
+      course-closed: Closed course
+      favorite: "Favorite course"
     user_card:
       submissions: Submissions
       correct-exercises: Correct exercises
@@ -23,6 +37,8 @@ en:
       title: Hi there,
       text: It looks like you're new here. To get started, register for a course.
       action: view courses
+    pending_courses_card:
+      pending-courses: Awaiting approval
     institution_not_supported:
       title: Sorry, but we could not sign you in
       get_in_touch: Get in touch

@@ -94,19 +94,35 @@ if Rails.env.development?
   exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
   exercise_repo.process_exercises
 
-  puts 'Add series and exercises to courses'
+  big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
+
+  Dir.glob("#{big_exercise_repo.full_path}/*")
+     .select{ |f| File.directory? f }
+     .each do |dir|
+    100.times do |i|
+      FileUtils.cp_r(dir, dir + i.to_s)
+    end
+  end
+  big_exercise_repo.process_exercises
+
+  exercises_list = Exercise.all.to_a
+
+  puts 'Add series, exercises and exercises to courses'
 
   # Add exercices to test course
   courses.each do |course|
     series = []
     series << Series.create(name: 'Verborgen reeks',
+                            description: Faker::Lorem.paragraph(25),
                             course: course,
                             visibility: :hidden)
     series << Series.create(name: 'Gesloten reeks',
+                            description: Faker::Lorem.paragraph(25),
                             course: course,
                             visibility: :closed)
     20.times do |i|
       s = Series.create(name: "Reeks #{i}",
+                        description: Faker::Lorem.paragraph(25),
                         course: course)
       if Random.rand < 0.1
         t = if Random.rand < 0.3
@@ -120,8 +136,127 @@ if Rails.env.development?
     end
 
     series.each do |s|
-      s.exercises << exercise_repo.exercises
+      series_exercises = exercises_list.sample(rand(3) + 2)
+      s.exercises << series_exercises
+      series_exercises.each do |exercise|
+        course.enrolled_members.sample(5).each do |student|
+          status = if rand() < 0.5
+            :correct
+          else
+            :wrong
+          end
+          Submission.create user: student,
+                            course: s.course,
+                            exercise: exercise,
+                            evaluate: false,
+                            result: {},
+                            status: status,
+                            accepted: status == :correct,
+                            code: "print(input())\n"
+        end
+      end
     end
   end
+
+  puts 'Create Status Test course'
+
+  status_test = Course.create(name: 'Status Test', year: '2018-2019', registration: 'open', visibility: 'visible', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
+
+  deadline = Time.now - 1.day
+  after_deadline = deadline + 1.hour
+  before_deadline = deadline - 1.hour
+
+  statuses = [:correct, :wrong, :none]
+  code = 'print(input())'
+
+  status_exercises = statuses.each_with_index.map do |before, i|
+    afters = statuses.each_with_index.map do |after, j|
+      exercise = Exercise.offset(statuses.count*i + j).first
+      if before != :none
+        Submission.create user: zeus,
+          exercise: exercise,
+          evaluate: false,
+          course: status_test,
+          status: before,
+          accepted: before == :correct,
+          created_at: before_deadline,
+          code: code
+      end
+      if after != :none
+        Submission.create user: zeus,
+          exercise: exercise,
+          evaluate: false,
+          course: status_test,
+          status: after,
+          accepted: after == :correct,
+          created_at: after_deadline,
+          code: code
+      end
+      [after, exercise]
+    end
+    [before, afters.to_h]
+  end.to_h
+
+
+  Series.create name: "Onbegonnen zonder deadline",
+                course: status_test,
+                exercises: [status_exercises[:none][:none]]
+
+  Series.create name: "Onbegonnen met deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:none][:none]]
+
+  Series.create name: "Alles correct zonder deadline",
+                course: status_test,
+                exercises: [status_exercises[:correct][:none]]
+
+  Series.create name: "Alles correct voor deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:correct][:none]]
+
+  Series.create name: "Alles correct voor en na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:correct][:correct]]
+
+  Series.create name: "Alles correct na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:none][:correct]]
+
+  Series.create name: "Verkeerd voor, correct na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:wrong][:correct]]
+
+  Series.create name: "Correct voor, verkeerd na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:correct][:wrong]]
+
+  Series.create name: "Correcte oplossing bestaat, maar niet laatste, na deadline",
+                course: status_test,
+                deadline: Time.now,
+                exercises: [status_exercises[:correct][:wrong]]
+
+  Series.create name: "Correcte oplossing bestaat, maar niet laatste, zonder deadline",
+                course: status_test,
+                exercises: [status_exercises[:correct][:wrong]]
+
+  Series.create name: "Begonnen correct",
+                course: status_test,
+                exercises: [status_exercises[:correct][:none], status_exercises[:none][:none]]
+
+  Series.create name: "Begonnen correct voor deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:correct][:none], status_exercises[:none][:none]]
+
+  Series.create name: "Begonnen correct na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [status_exercises[:none][:correct], status_exercises[:none][:none]]
 
 end

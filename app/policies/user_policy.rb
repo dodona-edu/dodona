@@ -6,23 +6,25 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index?
-    user&.admin?
+    user&.zeus?
   end
 
   def show?
-    user && (user.admin? || user.id == record.id)
+    return false unless user
+    return true if user.zeus?
+    return true if user.id == record.id
+    (record.subscribed_courses & user.administrating_courses).any?
   end
 
   def update?
     return false unless user
-    return true if user == record
     return true if user.zeus?
-    return true if user.staff? && !record.zeus?
-    false
+    return true if user.id == record.id
+    (record.subscribed_courses & user.administrating_courses).any?
   end
 
   def create?
-    user&.admin?
+    user&.zeus?
   end
 
   def destroy?
@@ -33,7 +35,6 @@ class UserPolicy < ApplicationPolicy
     return false unless user
     return false if user == record
     return true if user.zeus?
-    return true if user.staff? && record.student?
     false
   end
 

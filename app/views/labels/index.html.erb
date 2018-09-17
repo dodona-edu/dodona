@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+        <% if policy(Label).new? %>
+          <div class="card-title-fab">
+            <%= render 'application/fab_link', url: new_label_path, icon: 'add' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <%= render partial: 'layouts/searchbar' %>
+        <div id="labels-table-wrapper">
+          <%= render partial: 'labels_table', locals: { labels: @labels } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

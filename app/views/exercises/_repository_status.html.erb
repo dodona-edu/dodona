@@ -1,0 +1,8 @@
+<% if exercise.access_private? && local_assigns[:series].nil? %>
+  <i class="material-icons md-18" title="<%= t('exercises.index.private') %>">visibility_off</i>
+<% end %>
+<% if exercise.removed? %>
+  <i class="material-icons md-18" title="<%= t('exercises.index.removed') %>">delete</i>
+<% elsif exercise.not_valid? %>
+  <i class="material-icons md-18" title="<%= t('exercises.index.invalid') %>">error</i>
+<% end %>

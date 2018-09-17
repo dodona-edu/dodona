@@ -22,20 +22,20 @@ FactoryBot.define do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     username { Faker::Internet.unique.user_name(5..32) }
-    ugent_id Faker::Number.number(8).to_s
+    ugent_id { Faker::Number.number(8).to_s }
     email { "#{first_name}.#{last_name}.#{username}@UGent.BE".downcase }
-    permission :student
+    permission { :student }
   end
 
   factory :zeus, parent: :user do
-    permission :zeus
+    permission { :zeus }
   end
 
   factory :staff, parent: :user do
-    permission :staff
+    permission { :staff }
   end
 
   factory :temporary_user, parent: :user do
-    username nil
+    username { nil }
   end
 end

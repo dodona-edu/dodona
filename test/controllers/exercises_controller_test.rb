@@ -3,10 +3,10 @@ require 'test_helper'
 class ExercisesControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers Exercise, attrs: %i[visibility name_nl name_en]
+  crud_helpers Exercise, attrs: %i[access name_nl name_en]
 
   def setup
-    @instance = create(:exercise)
+    @instance = create(:exercise, :description_html)
     sign_in create(:zeus)
   end
 
@@ -58,6 +58,77 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get available exercises for series' do
+    course = create :course, usable_repositories: [@instance.repository]
+    other_exercise = create :exercise
+    series_exercise = create :exercise, repository: @instance.repository
+    create :exercise # Other exercise that should never show up
+    series = create :series, course: course, exercises: [series_exercise]
+    admin = create :staff, administrating_courses: [course], repositories: [other_exercise.repository]
+
+    sign_out :user
+    sign_in admin
+
+    get available_exercises_series_url(series, format: :json)
+
+    assert_response :success
+    result_exercises = JSON.parse response.body
+
+    assert result_exercises.any?{ |ex| ex['id'] == @instance.id }, 'should contain exercise usable by course'
+    assert result_exercises.any?{ |ex| ex['id'] == other_exercise.id }, 'should contain exercise usable by repo admin'
+    assert_equal 2, result_exercises.count, 'should only contain available exercises'
+  end
+
+  test 'should get available exercises for course with labels' do
+    course = create :course, usable_repositories: [@instance.repository]
+    other_exercise = create :exercise
+    series_exercise = create :exercise, repository: @instance.repository
+    create :exercise # Other exercise that should never show up
+    series = create :series, course: course, exercises: [series_exercise]
+    admin = create :staff, administrating_courses: [course], repositories: [other_exercise.repository]
+
+    label = create :label
+
+    sign_out :user
+    sign_in admin
+
+    get available_exercises_series_url(series, labels: [label.name], format: :json)
+
+    assert_response :success
+    result_exercises = JSON.parse response.body
+    assert_equal 0, result_exercises.count, 'should not contain exercises'
+
+    label.exercises << @instance
+
+    get available_exercises_series_url(series, labels: [label.name], format: :json)
+
+    assert_response :success
+    result_exercises = JSON.parse response.body
+
+    assert result_exercises.any?{ |ex| ex['id'] == @instance.id }, 'should contain exercise with label'
+    assert result_exercises.all?{ |ex| ex['id'] != other_exercise.id }, 'should not contain exercise without label'
+  end
+
+  test 'should not get available exercises as student' do
+    course = create :course, usable_repositories: [@instance.repository]
+    create :exercise # Other exercise that should never show up
+    series = create :series, course: course
+
+    student = create :student, subscribed_courses: [course]
+    sign_out :user
+    sign_in student
+
+    get available_exercises_series_url(series, format: :json)
+
+    assert_response :redirect
+  end
+
+  def assert_response_contains_exercise(exercise, msg=nil)
+    assert_response :success
+    result_exercises = JSON.parse response.body
+    assert result_exercises.any?{ |ex| ex['id'] == exercise.id }, msg
+  end
+
   test 'should get edit submission with show' do
     submission = create :submission
     @instance.submissions << submission
@@ -71,6 +142,27 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     get response.headers['Location'],
         params: { edit_submission: submission.id }
     assert_response :success
+  end
+
+  test 'should list all exercises within series' do
+    exercises = create_list :exercise, 10, repository: @instance.repository
+    exercises_in_series = exercises.take(5)
+    series = create :series, exercises: exercises_in_series
+    create :series, exercises: create_list(:exercise, 5)
+    series.course.usable_repositories << @instance.repository
+
+    get series_exercises_url(series, format: :json)
+
+    assert_response :success
+    exercises_response = JSON.parse response.body
+    assert_equal 5, exercises_response.count
+
+    exercise_response_ids = exercises_response.map do |ex|
+      ex['id']
+    end
+    exercises_in_series.each do |exercise_expected|
+      assert_includes exercise_response_ids, exercise_expected.id
+    end
   end
 end
 
@@ -92,12 +184,6 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'user should not be able to see closed exercise' do
-    @instance = create :exercise, visibility: 'closed'
-    show_exercise
-    assert_redirected_to root_url
-  end
-
   test 'user should not be able to see invalid exercise' do
     @instance = create :exercise, :nameless
     show_exercise
@@ -109,9 +195,6 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     create :submission, exercise: @instance, user: @user
     show_exercise
     assert_response :success
-    @instance.update(visibility: 'closed')
-    show_exercise
-    assert_redirected_to root_url
   end
 
   test 'admin should be able to see invalid exercise' do
@@ -121,23 +204,44 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'unauthenticated user should not be able to see hidden exercise' do
+  test 'unauthenticated user should not be able to see private exercise' do
     sign_out :user
-    @instance = create :exercise, visibility: 'hidden'
+    @instance = create :exercise, access: 'private'
     show_exercise
     assert_redirected_to sign_in_url
   end
 
-  test 'authenticated user should be able to see hidden exercise' do
-    @instance = create :exercise, visibility: 'hidden'
+  test 'authenticated user should not be able to see private exercise' do
+    @instance = create :exercise, access: 'private'
     show_exercise
+    assert_redirected_to root_url
+
+    series = create :series
+    series.exercises << @instance
+    get course_exercise_path(series.course, @instance).concat('/')
+    assert_redirected_to root_url
+  end
+
+  test 'repository admin should always be able to see private exercises' do
+    @instance = create :exercise, access: 'private'
+    @instance.repository.admins << @user
+    show_exercise
+    assert_response :success
+  end
+
+  test 'authenticated user should be able to see private exercise when used in a subscribed course' do
+    series = create :series
+    @instance = create :exercise, access: 'private'
+    series.exercises << @instance
+    series.course.subscribed_members << @user
+    @instance.repository.allowed_courses << series.course
+    get course_exercise_path(series.course, @instance).concat('/')
     assert_response :success
   end
 
   def create_exercises_return_valid
     create :exercise, :nameless
-    create :exercise, visibility: 'closed'
-    create :exercise, visibility: 'hidden'
+    create :exercise, access: 'private'
     create :exercise
   end
 
@@ -159,7 +263,7 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     get exercises_url, params: { format: :json }
 
     exercises = JSON.parse response.body
-    assert_equal 4, exercises.length
+    assert_equal 3, exercises.length
   end
 end
 

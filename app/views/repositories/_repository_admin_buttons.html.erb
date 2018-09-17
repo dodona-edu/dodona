@@ -1,0 +1,11 @@
+<%# We don't user user.repository_admin?, otherwise every zeus would show up as admin in the non-admin list %>
+<% is_repository_admin = user.repositories.include?(repository) %>
+<% if is_repository_admin && show_delete_button %>
+  <button type="button" class="btn btn-sm btn-danger remove-admin">
+    <i class="material-icons md-18">delete</i>
+  </button>
+<% elsif !is_repository_admin %>
+  <button type="button" class="btn btn-sm add-admin">
+    <i class="material-icons md-18">person_add</i>
+  </button>
+<% end %>

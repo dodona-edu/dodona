@@ -17,6 +17,8 @@
     <link rel="manifest" href="/manifest.json">
     <title>Dodona<%= " - #{@title}" if @title %></title>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
     <%= javascript_include_tag 'application' %>
@@ -32,11 +34,15 @@
       ga('send', 'pageview');
     </script>
     <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
   </head>
   <body>
     <div id="page-wrapper">
       <%= render 'layouts/navbar' %>
-      <div class="container main">
+      <% if user_signed_in? %>
+        <%= render 'layouts/drawer' %>
+      <% end %>
+      <div id="main-container" class="container main">
         <div class="page-messages hidden-print">
           <% flash.each do |key, value| %>
             <% unless value.nil? %>

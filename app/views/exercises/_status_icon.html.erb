@@ -1,7 +1,0 @@
-<% if summary.solved_before_deadline? %>
-  <span class="glyphicon glyphicon-ok colored-correct %>"></span>
-<% elsif summary.solved? %>
-  <span class="glyphicon glyphicon-ok colored-wrong %>"></span>
-<% elsif summary.submitted? %>
-    <span class="glyphicon glyphicon-remove colored-wrong"></span>
-<% end %>

@@ -3,9 +3,9 @@
 <% end %>
 <div class='table-toolbar'>
   <div class='table-toolbar-tools'>
-    <span class='glyphicon glyphicon-search'></span>
+    <i class="material-icons">search</i>
     <form class='search' onsubmit="return false;">
-      <input type='text' id='filter-query' placeholder='<%= t("layout.search.search") %>' name='filter' autocomplete="off"></input>
+      <input type='text' id='filter-query' placeholder='<%= t("layout.search.search") %>' name='filter' autocomplete="off"/>
       <div id="progress-filter" class="dodona-progress dodona-progress-indeterminate">
         <div class="progressbar bar bar1" style="width: 0%;"></div>
         <div class="bufferbar bar bar2" style="width: 100%;"></div>
@@ -14,7 +14,7 @@
     </form>
     <div class="btn-group hidden actions" id="kebab-menu">
       <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
-        <span class="glyphicon glyphicon-option-vertical"></span>
+        <i class="material-icons">more_vert</i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
       </ul>
@@ -24,6 +24,6 @@
 
 <script type="text/javascript">
   $(function () {
-    dodona.initFilterIndex("<%=local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%=raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>);
+    dodona.initFilterIndex("<%=local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%=raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, <%= raw render template: 'labels/index', formats: :json %>);
   });
 </script>

@@ -1,48 +1,56 @@
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(Repository).new? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: new_repository_path, icon: 'plus' %>
+            <%= render 'fab_link', url: new_repository_path, icon: 'add' %>
           </div>
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <table class="table table-index table-resource">
-          <thead>
-            <tr>
-              <th><%= Repository.human_attribute_name("name") %></th>
-              <th><%= Repository.human_attribute_name("remote") %></th>
-              <% if policy(User).server_access? %>
-              <th><%= Repository.human_attribute_name("path") %></th>
-              <% end %>
-              <th><%= Repository.human_attribute_name("judge") %></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @repositories.each do |repository| %>
+        <div class="table-scroll-wrapper">
+          <table class="table table-index table-resource">
+            <thead>
               <tr>
-                <td><%= link_to repository.name, repository %></td>
-                <td><%= repository.remote %> </td>
+                <th><%= Repository.human_attribute_name("name") %></th>
+                <th><%= Repository.human_attribute_name("remote") %></th>
                 <% if policy(User).server_access? %>
-                <td><%= repository.path %> </td>
+                  <th><%= Repository.human_attribute_name("path") %></th>
                 <% end %>
-                <td><%= link_to repository.judge.name, repository.judge %></td>
-                <td class="actions">
-                  <% if policy(repository).edit? %>
-                    <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
-                  <% end %>
-                  <% if policy(repository).destroy? %>
-                    <%= link_to repository, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
-                  <% end %>
-                </td>
+                <th><%= Repository.human_attribute_name("judge") %></th>
+                <th></th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <% @repositories.each do |repository| %>
+                <tr>
+                  <td><%= link_to repository.name, repository %></td>
+                  <td><%= repository.remote %> </td>
+                  <% if policy(User).server_access? %>
+                    <td><%= repository.path %> </td>
+                  <% end %>
+                  <td><%= link_to repository.judge.name, repository.judge %></td>
+                  <td class="actions">
+                    <% if policy(repository).admins? %>
+                      <%= link_to admins_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">group</i><% end %>
+                    <% end %>
+                    <% if policy(repository).courses? %>
+                    <%= link_to courses_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">collections_bookmark</i><% end %>
+                  <% end %>
+                  <% if policy(repository).edit? %>
+                      <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">edit</i><% end %>
+                    <% end %>
+                    <% if policy(repository).destroy? %>
+                      <%= link_to repository, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons md-18">delete</i><% end %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

@@ -6,11 +6,11 @@ nl:
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
       indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
     index:
-      title: Reeksen
+      title: Alle reeksen
       load_more: Meer reeksen laden
       loading_more: Reeksen worden geladen...
     new:
-      title: Reeks toevoegen
+      title: Reeks aanmaken
     show:
       copy: 'Om te kopieren: Ctrl+c, Enter'
       indianio_token: 'Indianio-token'

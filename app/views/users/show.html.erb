@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= @user.full_name %></h2>
         <% if policy(@user).edit? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: edit_user_path(@user), icon: 'pencil' %>
+            <%= render 'fab_link', url: edit_user_path(@user), icon: 'edit' %>
           </div>
         <% end %>
       </div>
@@ -23,7 +23,7 @@
         <% end %>
         <p>
           <% if policy(@user).impersonate? %>
-            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %><span class="glyphicon glyphicon-user"></span> <%= t("layout.impersonate.impersonate") %><% end %>
+            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %><i class="material-icons md-18">person</i> <%= t("layout.impersonate.impersonate") %><% end %>
           <% end %>
         </p>
         <p>

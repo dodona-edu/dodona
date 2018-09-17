@@ -3,13 +3,20 @@ nl:
     form:
       remote-help: De SSH clone URL van de repository. Dodona moet toegang hebben tot deze repository.
     index:
-      title: Repositories
+      title: Alle repository's
     new:
-      title: Repository toevoegen
+      title: Repository aanmaken
     show:
       repository: Repository
       webhook: "Vergeet niet de webhook te triggeren bij elke commit:"
       reprocess: Alle oefeningen herverwerken
       exercises: Oefeningen
+    admins:
+      admins: "Beheerders"
     reprocess:
       done: Alle oefeningen in deze repository werden opnieuw verwerkt
+    courses:
+      courses: "Toegelaten cursussen"
+      add_courses: "Cursussen toevoegen"
+      access_explanation: "<li>Een repository kan <strong>publieke</strong> en <strong>privé oefeningen</strong> bevatten.</li><li><strong>Publieke oefeningen</strong> kunnen in <strong>elke cursus</strong> gebruikt worden.</li><li><strong>Privé oefeningen</strong> kunnen enkel gebruikt worden in cursussen die <strong>expliciete toestemming</strong> hebben gekregen via deze pagina.</li>"
+      short_explanation: "Deze cursussen kunnen oefeningen van de %{name} repository gebruiken."

@@ -2,17 +2,58 @@
     position: absolute;
     left: 0;
     top: 0;
-    height: 300px;
+    height: 380px;
     width: 100%;
-    background-image: image-url('matrix.jpg');
-    z-index: -1;
+    background: @primary-800;
+}
+.home-header img {
+    margin-top: -35px;
+    margin-bottom: -10px;
+    @media (max-width: 991px) { 
+        margin-top: 20px;
+    }
+}
+.home-lead {
+    color: @white-text;
+    margin-bottom: 20px;
+    .btn, .btn:active {
+        border-radius: 2px;
+        background-color: white;
+        border-color: @primary-800;
+        color: @primary-800;
+        text-transform: uppercase;
+    }
+    .btn:active {
+        background-color: @grey-100;
+    }
+    .lead {
+        margin-top: 25px;
+        margin-bottom: 30px;
+        font-size: 24px;
+    }
 }
 .home-card .card-title-text {
     font-size: 36px;
     line-height: 1.8;
 }
-.home-card img {
-    width: 100%;
+.home-card .ugent {
+    img {
+        margin-top: -10px;
+        margin-bottom: -10px;
+    }
+    p {    
+        margin-top: 12px;
+        line-height: 20px;
+    }
+}
+.info-step p {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+}
+.info-step img {
+    padding-left: 25px;
+    padding-right: 25px;
 }
 .home-summary-card h5 {
     line-height: 18px;
@@ -35,10 +76,11 @@
     font-size: 100%;
     line-height: 2;
 }
-.home-summary-card .recents .submission-status.glyphicon {
+.home-summary-card .recents .submission-status.material-icons {
     margin-right: 5px;
     margin-bottom: 5px;
 }
+.home-summary-card .deadlines .course-link,
 .home-summary-card .recents .course-link {
     white-space: nowrap;
     overflow: hidden;
@@ -75,6 +117,17 @@
 .home-summary-card.getting-started .getting-started-action {
     background: white;
 }
+
+.ellipsis-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recents span.pull-left {
+  padding-right: 2px;
+}
+
 .row.v-align {
     display: flex;
     align-items: center;

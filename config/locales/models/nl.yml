@@ -15,6 +15,7 @@ nl:
       submission: Oplossing
       user: Student
       course_membership: Lidmaatschap van de cursus
+      label: Label
       api_token: API Token
     attributes:
       api_token:
@@ -50,11 +51,10 @@ nl:
         name: Naam
         name_nl: Naam Nederlands
         name_en: Naam Engels
-        visibility: Zichtbaarheid
-        visibilities:
-          open: Open
-          hidden: Verborgen
-          closed: Gesloten
+        access: Toegang
+        accesses:
+          public: Publiek
+          private: Privé
       judge:
         name: Naam
         remote: Clone URL
@@ -66,7 +66,7 @@ nl:
         name: Naam
         remote: Clone URL
         path: Padnaam
-        judge: Default judge
+        judge: Standaard judge
         exercises: Oefeningen
       series:
         indianio_support: Indianio-ondersteuning
@@ -96,6 +96,9 @@ nl:
           compilation error: Compilatiefout
           memory limit exceeded: Geheugenlimiet overschreden
           internal error: Interne fout
+      label:
+        name: Naam
+        color: Kleur
       user:
         username: Gebruikersnaam
         ugent_id: Studentennummer

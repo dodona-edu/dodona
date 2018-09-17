@@ -3,7 +3,7 @@ nl:
     form:
       username-help: Als je een account aanmaakt zonder gebruikersnaam, dan zal er een inlog token gegenereerd worden. Later kan dan een gebruikersnaam toegevoegd worden.
     index:
-      title: Gebruikers
+      title: Alle gebruikers
       no_users: Geen gebruikers gevonden
       progress: Voortgang
       access_level: Toegangsniveau
@@ -15,8 +15,9 @@ nl:
       decline: 'Afwijzen'
       edit: 'Aanpassen'
       delete: 'Verwijderen'
+      actions: "Acties"
     new:
-      title: Gebruiker toevoegen
+      title: Gebruiker aanmaken
     show:
       courses: Cursussen
       no_courses: geen cursussen gevonden

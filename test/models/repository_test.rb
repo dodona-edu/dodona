@@ -28,6 +28,8 @@ end
 
 class EchoRepositoryTest < ActiveSupport::TestCase
   def setup
+    # ensure we push to the repository
+    Rails.env.stubs(:production?).returns(true)
     @pythia = create :judge, :git_stubbed, name: 'pythia'
     @remote = local_remote('exercises/echo')
     @repository = create :repository, remote: @remote.path
@@ -72,8 +74,8 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 'html', @echo.description_format
   end
 
-  test 'should set exercise visibility' do
-    assert_equal 'open', @echo.visibility
+  test 'should set exercise access' do
+    assert_equal 'public', @echo.access
   end
 
   test 'should set exercise status' do
@@ -81,8 +83,6 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should push commits to remote' do
-    # ensure we push to the repository
-    Rails.env.stubs(:production?).returns(true)
     assert_difference('@remote.commit_count', 1) do
       File.open(@echo.config_file, 'w') do |f|
         f.write('FUCK THE SYSTEM!!1! ANARCHY!!!!')
@@ -92,16 +92,14 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should detect deleted exercise' do
-    skip
     @remote.remove_dir(@echo.path)
     @remote.commit('remove exercise')
     @repository.reset
     @repository.process_exercises
-    assert_equal :removed, @echo.reload.status
+    assert_equal 'removed', @echo.reload.status
   end
 
   test 'should detect moved exercise' do
-    skip
     new_dir = 'echo2'
     @remote.rename_dir(@echo.path, new_dir)
     @remote.commit('move exercise')
@@ -110,5 +108,88 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @echo.reload
     assert_equal 'ok', @echo.status
     assert_equal new_dir, @echo.path
+  end
+
+  test 'should restore deleted exercise when reverted' do
+    @remote.remove_dir(@echo.path)
+    @remote.commit('remove exercise')
+    @repository.reset
+    @repository.process_exercises
+    @remote.revert_commit
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'ok', @echo.status
+  end
+
+  test 'should restore token when manually deleted' do
+    @remote.remove_dir(@echo.path)
+    @remote.add_sample_dir('exercises/echo')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'ok', @echo.status
+    assert_equal 'echo', @echo.path
+  end
+
+  test 'should detect moved exercise with new exercise in original path' do
+    new_dir = 'echo2'
+    @remote.rename_dir(@echo.path, new_dir)
+    @remote.add_sample_dir('exercises/echo')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'ok', @echo.status
+    assert_equal new_dir, @echo.path
+  end
+
+  test 'should create new exercise when config without token is placed in path of removed exercise' do
+    @remote.remove_dir(@echo.path)
+    @remote.commit('remove exercise')
+    @repository.reset
+    @repository.process_exercises
+    @remote.add_sample_dir('exercises/echo')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'removed', @echo.status
+    assert_equal 2, Exercise.all.count
+  end
+
+  test 'should create new exercise when exercise is copied' do
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert_equal 'echo', @echo.path
+    assert_equal 2, Exercise.all.count
+  end
+
+  test 'should create only 1 new exercise on copy + rename' do
+    new_dir1 = 'echo2'
+    new_dir2 = 'echo3'
+    @remote.copy_dir(@echo.path, new_dir1)
+    @remote.rename_dir(@echo.path, new_dir2)
+    @remote.commit('copy + rename exercise')
+    @repository.reset
+    @repository.process_exercises
+    @echo.reload
+    assert [new_dir1, new_dir2].include?(@echo.path)
+    assert_equal 2, Exercise.all.count
+  end
+
+  test 'should copy valid token for new exercise' do
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.update_json(new_dir + '/config.json', 'add token to new exercise') do |json|
+      json['internals']['token'] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      json
+    end
+    @repository.reset
+    @repository.process_exercises
+    echo2 = Exercise.find_by(path: new_dir)
+    assert_equal echo2.token, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
   end
 end

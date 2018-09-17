@@ -25,8 +25,10 @@ Rails.application.routes.draw do
       resources :submissions, only: %i[index create]
     end
 
-    resources :series, except: :new do
+    resources :series, except: [:new, :index] do
+      resources :exercises, only: [:index]
       member do
+        get 'available_exercises', to: 'exercises#available'
         get 'download_solutions'
         get 'overview'
         get 'scoresheet'
@@ -40,10 +42,12 @@ Rails.application.routes.draw do
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
 
     resources :courses do
-      resources :series, only: :new
-      resources :exercises, only: [:show], concerns: %i[mediable submitable]
+      resources :series, only: [:new, :index] do
+        resources :exercises, only: [:show, :edit], concerns: %i[mediable submitable]
+      end
+      resources :exercises, only: [:show, :edit], concerns: %i[mediable submitable]
       member do
-        get 'list_members'
+        get 'members'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
         post 'mass_accept_pending'
@@ -51,6 +55,8 @@ Rails.application.routes.draw do
         post 'reset_token'
         post 'unsubscribe'
         post 'update_membership'
+        post 'favorite'
+        post 'unfavorite'
         match 'subscribe', via: %i[get post]
       end
     end
@@ -67,6 +73,12 @@ Rails.application.routes.draw do
       member do
         match 'hook', via: %i[get post], to: 'repositories#hook', as: 'webhook'
         get 'reprocess'
+        get 'admins'
+        get 'courses'
+        post 'add_admin'
+        post 'remove_admin'
+        post 'add_course'
+        post 'remove_course'
       end
     end
 
@@ -88,6 +100,8 @@ Rails.application.routes.draw do
         get 'token/:token', to: 'users#token_sign_in', as: 'token_sign_in'
       end
     end
+
+    resources :labels
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

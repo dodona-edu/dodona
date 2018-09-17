@@ -5,7 +5,6 @@
 #  id                   :integer          not null, primary key
 #  name_nl              :string(255)
 #  name_en              :string(255)
-#  visibility           :integer          default("open")
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  path                 :string(255)
@@ -14,15 +13,18 @@
 #  repository_id        :integer
 #  judge_id             :integer
 #  status               :integer          default("ok")
-#
+#  access               :integer          default("public")
+
+require File.dirname(__FILE__) + '/../helpers/stub_helper.rb'
+using StubHelper
 
 FactoryBot.define do
   factory :exercise do
     sequence(:name_nl) { |n| name || "Oefening #{n}" }
     sequence(:name_en) { |n| name || "Exercise #{n}" }
 
-    visibility 'open'
-    status 'ok'
+    access { 'public' }
+    status { 'ok' }
 
     sequence(:path) { |n| "exercise#{n}" }
 
@@ -30,10 +32,10 @@ FactoryBot.define do
     judge { repository.judge }
 
     transient do
-      name nil
-      description_html_stubbed nil
+      name { nil }
+      description_html_stubbed { nil }
 
-      submission_count 0
+      submission_count { 0 }
       submission_users do
         create_list :user, 5 if submission_count.positive?
       end
@@ -47,25 +49,36 @@ FactoryBot.define do
       end
       if e.description_html_stubbed
         exercise.description_format = 'html'
+        stub_status(exercise, 'ok')
         exercise.stubs(:description_localized).returns(e.description_html_stubbed)
       end
     end
 
     trait :nameless do
-      name_nl nil
-      name_en nil
+      name_nl { nil }
+      name_en { nil }
     end
 
     trait :config_stubbed do
-      after :create do |exercise|
+      after :build do |exercise|
+        exercise.stubs(:update_config)
         exercise.stubs(:config)
                 .returns({ 'evaluation': {} }.stringify_keys)
       end
     end
 
+    trait :valid do
+      config_stubbed
+      after :build do |exercise|
+        exercise.update(status: :ok)
+        stub_status(exercise, 'ok')
+      end
+    end
+
     trait :description_html do
-      description_format 'html'
-      after :create do |exercise|
+      valid
+      description_format { 'html' }
+      after :build do |exercise|
         exercise.stubs(:description_localized).returns <<~EOS
           <h2 id="los-deze-oefening-op">Los deze oefening op</h2>
           <p><img src="media/img.jpg" alt="media-afbeelding"/>
@@ -76,8 +89,9 @@ FactoryBot.define do
     end
 
     trait :description_md do
-      description_format 'md'
-      after :create do |exercise|
+      valid
+      description_format { 'md' }
+      after :build do |exercise|
         exercise.stubs(:description_localized).returns <<~EOS
           ## Los deze oefening op
           ![media-afbeelding](media/img.jpg)

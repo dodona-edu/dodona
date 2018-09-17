@@ -3,13 +3,20 @@ en:
     form:
       remote-help: The SSH clone URL of the repository to use. Dodona must have access to this repository.
     index:
-      title: Repositories
+      title: All repositories
     new:
-      title: Add repository
+      title: Create repository
     show:
       repository: Repository
       webhook: "Don't forget to trigger the webhook on each commit:"
       reprocess: Reprocess all exercises
       exercises: Exercises
+    admins:
+      admins: "Administrators"
     reprocess:
       done: All exercises in this repository were reprocessed
+    courses:
+      courses: "Approved courses"
+      add_courses: "Add courses"
+      access_explanation: "<li>A repository can contain both <strong>public</strong> and <strong>private exercises</strong>.</li><li><strong>Public exercises</strong> are available to use in <strong>any course</strong></li><li><strong>Private exercises</strong> can only be used in courses that received <strong>explicit approval</strong> using this page."
+      short_explanation: "These courses can use private exercises from the %{name} repository."

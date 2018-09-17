@@ -6,11 +6,11 @@ en:
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
       indianio-support-help: Allow students' solutions to be extracted by Indianio.
     index:
-      title: Series
+      title: All series
       load_more: Load more series
       loading_more: Loading more series...
     new:
-      title: Add series
+      title: Create series
     show:
       copy: 'To copy to clipbloard: Ctrl+c, Enter'
       indianio_token: 'Indianio token'

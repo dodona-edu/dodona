@@ -48,7 +48,11 @@ class CoursePolicy < ApplicationPolicy
     user&.zeus?
   end
 
-  def list_members?
+  def members?
+    course_admin?
+  end
+
+  def submissions?
     course_admin?
   end
 
@@ -66,6 +70,14 @@ class CoursePolicy < ApplicationPolicy
 
   def subscribe?
     user
+  end
+
+  def favorite?
+    user && user&.member_of?(record)
+  end
+
+  def unfavorite?
+    user && user&.member_of?(record)
   end
 
   def registration?

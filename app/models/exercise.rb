@@ -176,7 +176,7 @@ class Exercise < ApplicationRecord
     return unless ok?
     c = config
     c.delete('visibility')
-    c['access'] = access if access != merged_config['access']
+    c['access'] = access if defined?(access) && access != merged_config['access']
     c['description']['names']['nl'] = name_nl
     c['description']['names']['en'] = name_en
     c['internals'] = {}

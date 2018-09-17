@@ -41,6 +41,7 @@ class SubmissionsController < ApplicationController
     para = permitted_attributes(Submission)
     para[:user_id] = current_user.id
     para[:code].gsub!(/\r\n?/, "\n")
+    para[:evaluate] = true # immediately evaluate after create
     @submission = Submission.new(para)
     can_submit = true
     if @submission.exercise.present?
@@ -48,7 +49,6 @@ class SubmissionsController < ApplicationController
       can_submit &&= current_user.can_access?(@submission.course, @submission.exercise)
     end
     if can_submit && @submission.save
-      @submission.evaluate_delayed
       render json: { status: 'ok', id: @submission.id }
     else
       @submission.errors.add(:exercise, :not_permitted) unless can_submit

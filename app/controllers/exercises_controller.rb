@@ -7,6 +7,7 @@ class ExercisesController < ApplicationController
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array
+  has_scope :by_programming_language, as: 'programming_language'
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')
@@ -32,6 +33,7 @@ class ExercisesController < ApplicationController
 
     @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
     @labels = Label.all
+    @programming_languages = ProgrammingLanguage.all
     @title = I18n.t('exercises.index.title')
   end
 
@@ -41,10 +43,10 @@ class ExercisesController < ApplicationController
     authorize @series, :edit?
     @exercises = policy_scope(Exercise)
     @exercises = @exercises.or(Exercise.where(repository: @course.usable_repositories))
-    @exercises = @exercises.where.not(id: @series.exercises.map(&:id)) # exclude exercises currently within series
     @exercises = apply_scopes(@exercises)
     @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
     @labels = Label.all
+    @programming_languages = ProgrammingLanguage.all
   end
 
   def show

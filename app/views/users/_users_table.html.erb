@@ -74,7 +74,9 @@
 <% if users.empty? %>
   <p class="text-center text-muted lead table-placeholder"><%= t 'users.index.no_users' %></p>
 <% end %>
-<center>
-  <%= user_page_navigation_links users, local_assigns.fetch(:pagination_opts, {}) %>
-</center>
+<% if local_assigns.fetch(:paginate, true) %>
+  <center>
+    <%= user_page_navigation_links users, local_assigns.fetch(:pagination_opts, {}) %>
+  </center>
+<% end %>
 

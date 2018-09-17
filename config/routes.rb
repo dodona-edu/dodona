@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
     resources :series, except: :new do
       member do
+        get 'available_exercises', to: 'exercises#available'
         get 'download_solutions'
         get 'overview'
         get 'scoresheet'

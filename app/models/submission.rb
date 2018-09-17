@@ -26,8 +26,6 @@ class Submission < ApplicationRecord
 
   validate :code_cannot_contain_emoji, on: :create
 
-  # docs say to use after_commit_create, doesn't even work
-  after_create :evaluate_delayed, unless: :skip_evaluation?
   after_update :invalidate_stats_cache
 
   default_scope { order(id: :desc) }
@@ -70,13 +68,8 @@ class Submission < ApplicationRecord
   }
 
   def initialize(params)
-    @skip_evaluation = params.delete(:skip_evaluation)
     super
     self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
-  end
-
-  def skip_evaluation?
-    @skip_evaluation
   end
 
   def evaluate_delayed(priority = :normal)

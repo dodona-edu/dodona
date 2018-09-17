@@ -148,7 +148,6 @@ if Rails.env.development?
           Submission.create user: student,
                             course: s.course,
                             exercise: exercise,
-                            skip_evaluation: true,
                             result: {},
                             status: status,
                             accepted: status == :correct,
@@ -179,7 +178,6 @@ if Rails.env.development?
           status: before,
           accepted: before == :correct,
           created_at: before_deadline,
-          skip_evaluation: true,
           code: code
       end
       if after != :none
@@ -189,7 +187,6 @@ if Rails.env.development?
           status: after,
           accepted: after == :correct,
           created_at: after_deadline,
-          skip_evaluation: true,
           code: code
       end
       [after, exercise]

@@ -16,6 +16,7 @@
 FactoryBot.define do
   factory :submission do
     code { Faker::Lorem.paragraph }
+    evaluate { true }
 
     transient do
       status { nil }

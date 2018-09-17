@@ -41,6 +41,7 @@ class SubmissionsController < ApplicationController
     para = permitted_attributes(Submission)
     para[:user_id] = current_user.id
     para[:code].gsub!(/\r\n?/, "\n")
+    para[:evaluate] = true # immediately evaluate after create
     @submission = Submission.new(para)
     can_submit = true
     if @submission.exercise.present?

@@ -7,7 +7,11 @@ nl:
     exercise:
       count_tooltip: aantal studenten die deze oefening correct hebben
       correct: correct
+      correct_after_deadline: Je hebt de deadline niet gehaald, maar je recentste oplossing (na de deadline) is correct.
       wrong: verkeerd
+      wrong_after_deadline: Je hebt de deadline gehaald, maar je recentste oplossing (na de deadline) is verkeerd. Klik om naar je laatste correcte oplossing te gaan.
+      deadline_missed: Je hebt de deadline niet gehaald (je recentste oplossing voor de deadline is verkeerd)
+      deadline_met: Je hebt de deadline gehaald
       not_solved: niet opgelost
     form:
       edit_exercise: Opgave aanpassen
@@ -17,7 +21,7 @@ nl:
     index:
       title: Oefeningen
       exercise: Oefening
-      status: Status
+      status: Recentste oplossing
       private: Privé
       invalid: Ongeldig
       removed: Verwijderd

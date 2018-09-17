@@ -85,13 +85,92 @@
     .card-title-icon {
         width: 40px;
         height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         font-size: 22px;
-        padding-left: 3px;
-        padding-top: 2px;
         margin-right: 16px;
-        border: 5px solid @grey-300;
         border-radius: 50%;
-        color: @grey-300;
+        background-color: @grey-300;
+
+        &.deadline-missed:after {
+          color: @danger-800;
+          background-color: white;
+          position: absolute;
+          font-size: 18px;
+          font-weight: bold;
+          top: 40px;
+          left: 40px;
+          content: 'alarm_off';
+          font-family: 'Material Icons';
+        }
+
+        &.deadline-met:not(.completed):after {
+          color: @success-500;
+          background-color: white;
+          position: absolute;
+          font-size: 18px;
+          font-weight: bold;
+          top: 40px;
+          left: 40px;
+          content: 'alarm';
+          font-family: 'Material Icons';
+        }
+
+        i {
+          color: @grey-300;
+          background: #fff;
+          border-radius: 50%;
+          border: 5px solid #fff;
+        }
+
+        &.wrong {
+          background-color: @danger-500;
+          i {
+            color: @danger-500;
+          }
+        }
+
+        &.started, &.completed.deadline-missed {
+          background-color: @success-500;
+          i {
+            color: @success-500;
+          }
+        }
+
+        &.completed:not(.deadline-missed) {
+          @red: #F44336;
+          @orange: #FF9800;
+          @yellow: #FFEB3B;
+          @green: #4CAF50;
+          @blue: #2196F3;
+          @purple: #9C27B0;
+
+          @p1: 10%;
+          @p2: 25%;
+          @p3: 40%;
+          @p4: 60%;
+          @p5: 75%;
+          @p6: 90%;
+
+          background-image: linear-gradient(-135deg,
+            @red @p1,
+            @orange @p2,
+            @yellow @p3,
+            @green @p4,
+            @blue @p5,
+            @purple @p6
+            );
+
+            i {
+              font-weight: bolder;
+              font-size: 32px;
+              background: transparent;
+              border: transparent;
+              color: white;
+            }
+        }
     }
 }
 

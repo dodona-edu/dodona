@@ -22,7 +22,7 @@
 @import "drawer.css.less";
 @import "navbar.css.less";
 
-<% unless Rails.env.development? || Rails.env.test? %>
+<% if Rails.env.development? || Rails.env.test? %>
     @import "development.css.less";
 <% end %>
 

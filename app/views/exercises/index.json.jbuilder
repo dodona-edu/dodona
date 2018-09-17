@@ -1,4 +1,1 @@
-json.array!(@exercises) do |exercise|
-  json.extract! exercise, :id, :name, :programming_language
-  json.url exercise_url(exercise, format: :json)
-end
+json.array! @exercises, partial: 'exercises/exercise', as: :exercise, locals: {series: @series, course: @course}

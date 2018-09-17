@@ -1,0 +1,53 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'course' %>
+<% end %>
+<%= render partial: 'navbar_links' %>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @course.name + " - " + t("courses.show.users") %></h2>
+      </div>
+      <div class="card-supporting-text card-border">
+        <div class="card-tab">
+          <ul id="user-tabs" class="nav nav-tabs" data-baseurl="<%= members_course_path(@course) %>" role="tablist">
+            <li role="presentation" class="active"><a href="#enrolled"><%= t 'courses.show.subscribed' %></a></li>
+            <% if @course.moderated? || !@course.pending_members.empty? %>
+              <li role="presentation"><a href="#pending"><%= t 'courses.show.pending' %> <span class="badge" id="pending-count"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a></li>
+            <% end %>
+            <li role="presentation"><a href="#unsubscribed"><%= t 'courses.show.unsubscribed' %></a></li>
+          </ul>
+        </div>
+        <%= render partial: 'layouts/searchbar',
+          locals: {
+          init_filter: true,
+          eager: false,
+          actions: [
+            {
+              icon: 'ok',
+              text: t("courses.show.accept_all"),
+              confirm: t("courses.show.confirm_accept_all"),
+              action: mass_accept_pending_course_path(@course),
+            },
+            {
+              icon: 'remove',
+              text: t("courses.show.decline_all"),
+              confirm: t("courses.show.confirm_decline_all"),
+              action: mass_decline_pending_course_path(@course),
+            }
+          ]
+        } %>
+      <div id="users-table-wrapper">
+        <%= render partial: 'users/users_table',
+          locals: {
+          users: @users,
+          pagination_opts: @pagination_opts
+        } %>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(dodona.initCourseMembers);
+</script>

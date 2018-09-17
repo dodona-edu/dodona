@@ -1,4 +1,4 @@
-<% summary = ExercisesSummary.new user: current_user, series: @series %>
+<% summary = SeriesSummary.new user: current_user, series: @series %>
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'series_overview' %>
 <% end %>
@@ -10,13 +10,11 @@
         <%= @series.course.name %>
       </h2>
     </div>
-    <div class="card-supporting-text">
-      <%= render partial: 'series/series', locals: {
-            series: @series,
-            get_exercise_path: method(:exercise_anchor)
-          } %>
-    </div>
   </div>
+  <%= render partial: 'series/series', locals: {
+      series: @series,
+      get_exercise_path: method(:exercise_anchor)
+    } %>
   <% summary.exercise_summaries.each do |ex| %>
     <div class="card exercise-description">
       <%= content_tag :a,
@@ -33,11 +31,11 @@
       <div class="card-actions card-border hidden-print">
         <% if ex.submitted? || ex.deadline_passed? %>
           <div class="btn-text submission-status-button">
-            <%= render partial: 'exercises/status_icon', locals: { summary: ex } %>
-            <%= render partial: 'exercises/exercise_user_status', locals: { summary: ex } %>
+            <%= render partial: 'exercises/user_status_icon', locals: { summary: ex } %>
+            <%= render partial: 'exercises/user_status', locals: { summary: ex } %>
           </div>
         <% else %>
-          <%= link_to t('exercises.show.handin'), course_exercise_path(@series.course, ex.exercise, anchor: "submission-card"), class: "btn-text" %>
+          <%= link_to t('exercises.show.handin'), course_series_exercise_path(@series.course, @series.id, ex.exercise, anchor: "submission-card"), class: "btn-text" %>
         <% end %>
       </div>
     </div>

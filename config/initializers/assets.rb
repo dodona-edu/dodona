@@ -3,7 +3,7 @@
 # Version of your assets, change this if you want to expire all your assets.
 Rails.application.config.assets.version = '1.0'
 
-# Add additional assets to the asset load path
+# Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
 
 # Add Yarn node_modules folder to the asset load path.
@@ -15,7 +15,7 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 
 Rails.application.config.assets.nodigest = []
-Rails.application.config.assets.nodigest_fonts = ['glyphicons-halflings-regular.eot', 'glyphicons-halflings-regular.svg', 'glyphicons-halflings-regular.ttf', 'glyphicons-halflings-regular.woff', 'glyphicons-halflings-regular.woff2']
+Rails.application.config.assets.nodigest_fonts = []
 
 Rails.application.config.assets.paths << "#{Rails.root}/vendor/assets/fonts"
 Rails.application.config.assets.precompile += %w[mails.css]

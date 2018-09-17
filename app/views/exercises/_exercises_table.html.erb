@@ -1,62 +1,65 @@
 <% get_exercise_path ||= method(:exercise_path) %>
-<% summary ||= ExercisesSummary.new(
-     user: current_user,
-     series: local_assigns[:series],
-     exercises: local_assigns[:exercises]) %>
+<% summary ||= SeriesSummary.new(
+  user: current_user,
+  series: local_assigns[:series],
+  exercises: local_assigns[:exercises]) %>
 
-<table class="table exercise-table">
-  <thead>
-    <tr>
-      <th class='status-icon'></th>
-      <th><%= t "exercises.index.exercise"%></th>
-      <th class='count'></th>
-      <% if user_signed_in? %>
-        <th class='status'><%= t "exercises.index.status"%></th>
-        <th class='status-icon'></th>
-      <% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% summary.exercise_summaries.each do |ex| %>
+<div class="table-scroll-wrapper">
+  <table class="table exercise-table table-resource">
+    <thead>
       <tr>
-        <td>
-          <% if user_signed_in? %>
-            <% if current_user.course_admin? local_assigns[:series]&.course %>
-              <%= render partial: 'exercises/exercise_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
-            <% else %>
-              <%= render partial: 'exercises/status_icon', locals: {
-                summary: ex
-              } %>
-            <% end %>
-          <% end %>
-        </td>
-
-        <td>
-          <%= link_to ex.exercise.name, get_exercise_path.call(ex.exercise) %>
-        </td>
-
-        <td class='text-right'>
-          <%= content_tag :span, title: t('exercises.exercise.count_tooltip') do %>
-            <%= ex.users_correct %>/<%= ex.users_tried%>
-          <% end %>
-        </td>
-
+        <th class='status-icon'></th>
+        <th><%= t "exercises.index.exercise"%></th>
+        <th class='count'></th>
         <% if user_signed_in? %>
-          <td>
-            <%= render partial: 'exercises/exercise_user_status', locals: { summary: ex } %>
-          </td>
-          <td>
-            <% if ex.submitted? || current_user.course_admin?(local_assigns[:series]&.course) %>
-              <%= link_to exercise_submissions_path(ex.exercise, course_id: ex.series&.course_id),
-                          title: t('layout.menu.my_submissions'),
-                          class: 'btn btn-icon' do %>
-                <span class="glyphicon glyphicon-chevron-right"></span>
-              <% end %>
-            <% end %>
-          </td>
+          <th class='status'><%= t "exercises.index.status"%></th>
+          <th class='status-icon'></th>
         <% end %>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% summary.exercise_summaries.each do |ex| %>
+        <tr>
+          <td class='status-icon'>
+            <% if user_signed_in? %>
+              <% if current_user.repository_admin?(ex.exercise.repository) || current_user.course_admin?(@course) %>
+                <%= render partial: 'exercises/repository_status', locals: { exercise: ex.exercise, series: local_assigns[:series] } %>
+              <% end %>
+              <%= render partial: 'exercises/user_status_icon', locals: { summary: ex } %>
+            <% end %>
+          </td>
+
+          <td>
+            <% if @course && ex.exercise.access_private? && !current_user&.can_access?(@course, ex.exercise) %>
+            <%= ex.exercise.name %>
+          <% else %>
+            <%= link_to ex.exercise.name, get_exercise_path.call(ex.exercise) %>
+          <% end %>
+          </td>
+
+          <td class='text-right'>
+            <%= content_tag :span, title: t('exercises.exercise.count_tooltip') do %>
+              <%= ex.users_correct %>/<%= ex.users_tried%>
+            <% end %>
+          </td>
+
+          <% if user_signed_in? %>
+            <td>
+              <%= render partial: 'exercises/user_status', locals: { summary: ex } %>
+            </td>
+            <td>
+              <% if ex.submitted? || current_user.course_admin?(local_assigns[:series]&.course) %>
+                <%= link_to submissions_scoped_path(exercise: ex.exercise, course: ex.series&.course, series: ex.series),
+                  title: t('layout.menu.my_submissions'),
+                  class: 'btn-icon' do %>
+                  <i class="material-icons md-18">chevron_right</i>
+                <% end %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 <center><%= page_navigation_links exercises, true, "exercises" if exercises.try(:total_pages) %></center>

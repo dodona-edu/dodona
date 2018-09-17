@@ -356,14 +356,14 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'admins should be able to list members' do
     with_users_signed_in @admins do |who|
-      get list_members_course_url(@course), xhr: true
+      get members_course_url(@course), xhr: true
       assert_response :success, "#{who} should be able to list members"
     end
   end
 
   test 'not-admins should not be able to list members' do
     with_users_signed_in @not_admins do |who|
-      get list_members_course_url(@course), xhr: true
+      get members_course_url(@course), xhr: true
       assert_response :redirect, "#{who} should not be able to list members"
     end
   end
@@ -381,7 +381,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     @course.update(visibility: 'hidden')
     with_users_signed_in @not_admins do |who|
       get courses_url, params: { format: :json }
-      if response.success?
+      if response.successful?
         courses = JSON.parse response.body
         assert_not courses.any? { |c| c['id'] == @course.id }, "#{who} should not be able to see a hidden course"
       else
@@ -389,4 +389,40 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test 'users should be able to favorite subscribed courses' do
+    user = @students.first
+    sign_in user
+
+    post favorite_course_url(@course)
+    assert CourseMembership.find_by(user: user, course: @course).favorite
+  end
+
+  test 'users should be able to unfavorite favorited courses' do
+    user = @students.first
+    sign_in user
+
+    post favorite_course_url(@course)
+    post unfavorite_course_url(@course)
+    assert_not CourseMembership.find_by(user: user, course: @course).favorite
+  end
+
+  test 'users should not be able to favorite unsubscribed courses' do
+    user = @students.first
+    sign_in user
+
+    post unsubscribe_course_url(@course)
+    post favorite_course_url(@course)
+    assert_not response.successful?
+  end
+
+  test 'users should not be able to unfavorite unsubscribed courses' do
+    user = @students.first
+    sign_in user
+
+    post unsubscribe_course_url(@course)
+    post unfavorite_course_url(@course)
+    assert_not response.successful?
+  end
+
 end

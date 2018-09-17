@@ -1,5 +1,5 @@
 {
-  "visibility": "open",
+  "access": "public",
   "description": {
     "handler": "default",
     "difficulty": 0.5,

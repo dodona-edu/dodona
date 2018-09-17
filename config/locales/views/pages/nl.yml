@@ -2,19 +2,33 @@ nl:
   pages:
     sign_in_page:
       select-institution: "Selecteer je onderwijsinstelling"
+      sign_in: "Aanmelden"
     about:
       intro_html: "De Dodona-leeromgeving bevat honderden programmeeroefeningen die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen. Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl. Dodona is nog volop in ontwikkeling, eventuele bugs of suggesties mogen dus zeker gemeld worden via het <a href='/contact'>contactformulier</a>."
       sign-in: Aanmelden
-      dodona-title: "Wie of wat is Dodona?"
-      dodona-text_html: "Dodona is een orakelplaats in Griekenland, gelegen in een vreedzame, groene vallei op de oostelijke helling van de berg Tomarós in de historische regio Epirus. Het orakel van Dodona was gewijd aan oppergod Zeus <span class='hidden-xs'>(hiernaast afgebeeld)</span> en de moedergodin Dione. Het was volgens Herodotus het oudste orakel van het oude Griekenland, dat mogelijk terugging tot het tweede millennium voor Christus."
+      learn-to-code: Leren programmeren
+      higher-education: voor secundair en hoger onderwijs
+      write-code: Schrijf code
+      hand-in: Dien in
+      get-feedback: Krijg feedback
+      write-code-text: Schrijf je in voor een cursus en kies een van de honderden programmeeroefeningen.
+      hand-in-text: Los de oefening op en dien je code in via de ingebouwde editor.
+      get-feedback-text: Je code wordt automatisch getest en na enkele seconden krijg je het resultaat te zien.
     dynamic_home:
       more-courses: Meer cursussen
+      favorites: "Favorieten"
     course_card:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
       go-to-course: Ga naar deze cursus
+      edit-course: Cursus bewerken
       users: Gebruikers
+      exercises: Oefeningen
       course-admin: Cursusbeheerder
+      course-member: Ingeschreven
+      course-hidden: Verborgen cursus
+      course-closed: Gesloten cursus
+      favorite: "Favoriete cursus"
     user_card:
       submissions: Inzendingen
       correct-exercises: Correcte oefeningen
@@ -23,6 +37,8 @@ nl:
       title: Hallo,
       text: Welkom op Dodona! Registreer je voor een cursus om van start te gaan.
       action: verken cursussen
+    pending_courses_card:
+      pending-courses: In afwachting
     institution_not_supported:
       title: Sorry, we konden je niet aanmelden
       get_in_touch: Neem contact op

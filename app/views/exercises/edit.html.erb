@@ -1,10 +1,11 @@
+<%= render 'navbar_links' %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @exercise.name %></h2>
         <div class="card-title-fab">
-          <%= render 'fab_button', form: "edit_exercise_#{@exercise.id}", icon: 'ok' %>
+          <%= render 'application/fab_button', form: "edit_exercise_#{@exercise.id}", icon: 'done' %>
         </div>
       </div>
       <div class="card-supporting-text">

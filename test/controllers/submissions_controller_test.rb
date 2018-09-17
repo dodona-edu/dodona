@@ -48,34 +48,11 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'submission on closed exercise should not be ok for student' do
-    sign_out :user
-    sign_in create(:student)
+  test 'create submission should respond bad_request without an exercise' do
     attrs = generate_attr_hash
-
-    exercise = Exercise.find(attrs[:exercise_id])
-    exercise.update(visibility: 'closed')
-
-    assert_difference('Submission.count', 0) do
-      create_request attr_hash: attrs
-    end
-
-    assert_response :unprocessable_entity
-    json = JSON.parse(response.body)
-    assert_not json['errors']&.empty?
-  end
-
-  test 'submission on closed exercise should be ok for admin' do
-    attrs = generate_attr_hash
-
-    exercise = Exercise.find(attrs[:exercise_id])
-    exercise.update(visibility: 'closed')
-
-    assert_difference('Submission.count', 1) do
-      create_request attr_hash: attrs
-    end
-
-    assert_response :success
+    attrs.delete(:exercise_id)
+    create_request(attr_hash: attrs)
+    assert_response 422
   end
 
   test 'create submission within course' do

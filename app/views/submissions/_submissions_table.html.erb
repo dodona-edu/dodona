@@ -1,22 +1,24 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th></th>
-      <% if current_user.administrating_courses.any? || current_user.admin? %>
-        <th><%= t ".user" %></th>
-      <% end %>
-      <% if !exercise %>
-        <th><%= t ".exercise" %></th>
-      <% end %>
-      <th><%= t ".time" %></th>
-      <th><%= t ".status" %></th>
-      <th><%= t ".summary" %></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course]} %>
-  </tbody>
-</table>
+<div class="table-scroll-wrapper">
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <% if current_user.administrating_courses.any? || current_user.admin? %>
+          <th><%= t ".user" %></th>
+        <% end %>
+        <% if !exercise %>
+          <th><%= t ".exercise" %></th>
+        <% end %>
+        <th><%= t ".time" %></th>
+        <th><%= t ".status" %></th>
+        <th><%= t ".summary" %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course]} %>
+    </tbody>
+  </table>
+</div>
 
 <center><%= page_navigation_links submissions, true, 'submissions', {exercise_id: exercise.try(:id)} %></center>

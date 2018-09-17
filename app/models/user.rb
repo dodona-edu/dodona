@@ -29,12 +29,23 @@ class User < ApplicationRecord
   has_many :api_tokens
   has_many :submissions
   has_many :course_memberships
+  has_many :repository_admins
   has_many :courses, through: :course_memberships
 
   has_many :subscribed_courses,
            lambda {
              where.not course_memberships:
                 { status: %i[pending unsubscribed] }
+           },
+           through: :course_memberships,
+           source: :course
+
+  has_many :favorite_courses,
+           lambda {
+             where.not course_memberships:
+                 { status: %i[pending unsubscribed] }
+             where course_memberships:
+                 { favorite: true }
            },
            through: :course_memberships,
            source: :course
@@ -70,6 +81,10 @@ class User < ApplicationRecord
            },
            through: :course_memberships,
            source: :course
+
+  has_many :repositories,
+           through: :repository_admins,
+           source: :repository
 
   devise :saml_authenticatable
   devise :omniauthable, omniauth_providers: %i[smartschool office365]
@@ -109,6 +124,10 @@ class User < ApplicationRecord
     zeus? || admin_of?(course)
   end
 
+  def repository_admin?(repository)
+    zeus? || repositories.include?(repository)
+  end
+
   def attempted_exercises(course = nil)
     s = submissions
     s = s.in_course(course) if course
@@ -137,9 +156,17 @@ class User < ApplicationRecord
     subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
   end
 
-  def current_ay_courses
+  def recent_courses(number_of_years)
+    grouped_recent_courses(number_of_years).map{|a| a[1]}.flatten
+  end
+
+  def grouped_recent_courses(number_of_years)
     return [] if subscribed_courses.empty?
-    subscribed_courses.group_by(&:year).first.second
+    subscribed_courses.group_by(&:year).first(number_of_years)
+  end
+
+  def full_view?
+    subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count > 0
   end
 
   def member_of?(course)
@@ -157,6 +184,15 @@ class User < ApplicationRecord
     else
       'no_membership'
     end
+  end
+
+  def can_access?(course, exercise)
+    return true if exercise.access_public?
+    return true if repository_admin? exercise.repository
+    return false unless course
+    return false unless course.series.flat_map(&:exercises).include? exercise
+    return false unless exercise.repository.allowed_courses.include? course
+    member_of? course
   end
 
   # update and return user using an omniauth authentication hash

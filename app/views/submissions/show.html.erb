@@ -1,22 +1,13 @@
+<%= render 'navbar_links' %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".submission" %> <%= @submission.exercise.name %><%= " - #{@submission.course.name}" unless @submission.course.nil? %></h2>
         <div class="card-title-fab">
-          <% if policy(@submission).evaluate? %>
-            <%= link_to evaluate_submission_path(@submission), class: 'btn btn-primary btn-fab', title: t('.reevaluate') do %>
-              <span class="glyphicon glyphicon-repeat"></span>
-            <% end %>
-          <% end %>
           <% if policy(@submission).create? %>
             <%= link_to edit_submission_path(@submission), class: 'btn btn-primary btn-fab', title: t('.edit') do %>
-              <span class="glyphicon glyphicon-edit"></span>
-            <% end %>
-          <% end %>
-          <% if policy(@submission).download? %>
-            <%= link_to download_submission_path(@submission), class: 'btn btn-primary btn-fab', title: 'Download', target: "_blank", download: '' do %>
-              <span class="glyphicon glyphicon-save"></span>
+              <%= custom_icon 'square_edit', class: 'md-36 fix-alignment'%>
             <% end %>
           <% end %>
         </div>

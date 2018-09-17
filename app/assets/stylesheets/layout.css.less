@@ -1,16 +1,27 @@
-.navbar {
-    .shadow-z3();
-}
 html,
 body {
     height: 100%;
     font-family: @font-family-base;
 }
+
+#main-container {
+  // Prevent the main container from overflowing
+  // when its content is too wide
+  max-width: ~"calc(100vw - 30px)";
+}
+
 #page-wrapper {
     min-height: 100%;
     position: relative;
-    padding-top: 70px;
+    padding-top: 50px;
+
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    width: 100%;
+
 }
+
 
 .footer {
     position: absolute;
@@ -55,6 +66,7 @@ body {
     text-decoration: none;
 }
 .container.main {
+    padding-top: 20px;
     padding-bottom: 80px;
 }
 .notifications {

@@ -10,7 +10,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions except: %i[new create_redirect update_redirect destroy_redirect]
+  test_crud_actions except: %i[new index create_redirect update_redirect destroy_redirect]
 
   test 'should get new for course' do
     course = create :course
@@ -49,7 +49,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'update series should redirect to course' do
     instance = update_request_expect
-    assert_redirected_to course_url(instance.course, series: instance, anchor: "series-#{instance.name.parameterize}")
+    assert_redirected_to course_url(instance.course, series: instance, anchor: instance.anchor)
   end
 
   test 'destroy series should redirect to course' do
@@ -124,6 +124,21 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert !@instance.exercises.include?(exercise)
   end
 
+  test 'repository admin adding private exercise to series should add course to repository\'s allowed courses' do
+    exercise = create :exercise, access: :private
+    post add_exercise_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
+    assert exercise.repository.allowed_courses.include? @instance.course
+  end
+
+  test 'course admin should not be able to add private exercise to series' do
+    exercise = create :exercise, access: :private
+    user = create :user
+    sign_in user
+    @instance.course.administrating_members << user
+    post add_exercise_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
+    assert_not @instance.exercises.include? exercise
+  end
+
   test 'should reorder exercises' do
     exercises = create_list(:exercise, 10, series: [@instance])
     exercises.shuffle!
@@ -137,10 +152,11 @@ end
 class SeriesVisibilityTest < ActionDispatch::IntegrationTest
   setup do
     @series = create :series
+    @course = @series.course
     @student = create :student
     @zeus = create :zeus
     @course_admin = create :student
-    @series.course.administrating_members << @course_admin
+    @course.administrating_members << @course_admin
   end
 
   def assert_show_and_overview(authorized, token: nil)
@@ -149,6 +165,36 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
     assert_response response
     get overview_series_url(@series, token: token)
     assert_response response
+  end
+
+  test 'student should only see visible series in course' do
+    @hidden_series = create :series, visibility: :hidden, course: @course
+    @closed_series = create :series, visibility: :closed, course: @course
+
+    sign_in @student
+    get course_series_index_url(@course, format: :json)
+
+    assert_response :success
+
+    result_series = JSON.parse response.body
+
+    assert_equal 1, result_series.count, 'expected only one (visible) series'
+
+    assert_equal @series.id, result_series.first['id']
+  end
+
+  test 'course admin should see all series in course' do
+    @hidden_series = create :series, visibility: :hidden, course: @course
+    @closed_series = create :series, visibility: :closed, course: @course
+
+    sign_in @course_admin
+    get course_series_index_url(@course, format: :json)
+
+    assert_response :success
+
+    result_series = JSON.parse response.body
+
+    assert_equal 3, result_series.count, 'expected all series (open, visible and closed)'
   end
 
   test 'student should see visible series' do

@@ -5,7 +5,6 @@
 #  id                   :integer          not null, primary key
 #  name_nl              :string(255)
 #  name_en              :string(255)
-#  visibility           :integer          default("open")
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  path                 :string(255)
@@ -14,6 +13,8 @@
 #  repository_id        :integer
 #  judge_id             :integer
 #  status               :integer          default("ok")
+#  token                :string(64)       not null, unique
+#  access               :integer          not null, default("public")
 #
 
 require 'pathname'
@@ -29,7 +30,8 @@ class Exercise < ApplicationRecord
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
-  enum visibility: %i[open hidden closed]
+  # We need to prefix, otherwise Rails can't generate the public? method
+  enum access: %i[public private], _prefix: true
   enum status: %i[ok not_valid removed]
 
   belongs_to :repository
@@ -37,10 +39,13 @@ class Exercise < ApplicationRecord
   has_many :submissions
   has_many :series_memberships
   has_many :series, through: :series_memberships
+  has_many :exercise_labels, dependent: :destroy
+  has_many :labels, through: :exercise_labels
 
-  validates :path, presence: true, uniqueness: { scope: :repository_id, case_sensitive: false }
+  validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }
 
   before_create :generate_id
+  before_create :generate_token
   before_save :check_validity
   before_update :update_config
 
@@ -48,10 +53,12 @@ class Exercise < ApplicationRecord
 
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
-  scope :by_visibility, ->(visibility) { where(visibility: visibility.in?(visibilities) ? visibility : -1) }
-  scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_visibility(query)) }
+  scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
+  scope :by_labels, ->(labels) { joins(:labels).includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
+  scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_access(query)) }
 
   def full_path
+    return '' unless path
     Pathname.new File.join(repository.full_path, path)
   end
 
@@ -67,7 +74,7 @@ class Exercise < ApplicationRecord
     first_string_present send('name_' + I18n.locale.to_s),
                          name_nl,
                          name_en,
-                         path.split('/').last
+                         path&.split('/')&.last
   end
 
   def description_localized(lang = I18n.locale.to_s)
@@ -147,6 +154,10 @@ class Exercise < ApplicationRecord
     (directory + CONFIG_FILE).file?
   end
 
+  def self.config_file(directory)
+    directory + CONFIG_FILE
+  end
+
   def self.dirconfig_file?(file)
     file.basename.to_s == DIRCONFIG_FILE
   end
@@ -164,10 +175,18 @@ class Exercise < ApplicationRecord
   def update_config
     return unless ok?
     c = config
-    c['visibility'] = visibility if visibility != merged_config['visibility']
+    c.delete('visibility')
+    c['access'] = access if access != merged_config['access']
     c['description']['names']['nl'] = name_nl
     c['description']['names']['en'] = name_en
+    c['internals'] = {}
+    c['internals']['token'] = token
+    c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
     store_config c
+  end
+
+  def usable_by?(course)
+    access_public? || course.usable_repositories.include?(repository)
   end
 
   def users_correct(course = nil)
@@ -218,7 +237,7 @@ class Exercise < ApplicationRecord
   end
 
   def check_validity
-    return if removed?
+    return unless ok?
     self.status = if !(name_nl || name_en)
                     :not_valid
                   elsif !(description_nl || description_en)
@@ -228,11 +247,12 @@ class Exercise < ApplicationRecord
                   end
   end
 
-  def self.convert_visibility(visibility)
-    return 'open' if visibility == 'public'
-    return 'open' if visibility == 'visible'
-    return 'closed' if visibility == 'private'
-    return 'closed' if visibility == 'invisible'
+  def self.convert_visibility_to_access(visibility)
+    return 'public' if visibility == 'visible'
+    return 'public' if visibility == 'open'
+    return 'private' if visibility == 'invisible'
+    return 'private' if visibility == 'hidden'
+    return 'private' if visibility == 'closed'
     visibility
   end
 
@@ -242,6 +262,14 @@ class Exercise < ApplicationRecord
     else
       'md'
     end
+  end
+
+  # not private so we can use this in the migration
+  def generate_token
+    begin
+      new_token = Base64.strict_encode64 SecureRandom.random_bytes(48)
+    end until Exercise.find_by(token: new_token).nil?
+    self.token ||= new_token
   end
 
   private

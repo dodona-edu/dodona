@@ -42,12 +42,15 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user_korea.time_zone, 'Seoul'
   end
 
-  test 'current ay courses for user' do
+  test 'recent courses for user' do
     user = create :user, courses: []
-    assert_equal [], user.current_ay_courses
+    assert_equal [], user.recent_courses(2)
 
     user.courses << create_list(:course, 5)
-    courses = user.current_ay_courses
+    courses = user.recent_courses(2)
+    assert_not_equal [], courses
+
+    courses = user.recent_courses(1)
     assert_not_equal [], courses
   end
 
@@ -140,7 +143,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal unfinished, user.unfinished_exercises, 'wrong amount of unfinished exercises'
   end
 
-  test 'user should have correct number of attemted, unfinished and correct exercises' do
+  test 'user should have correct number of attempted, unfinished and correct exercises' do
     user = create :user
     exercise1 = create :exercise
     exercise2 = create :exercise

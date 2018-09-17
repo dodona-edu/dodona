@@ -5,18 +5,20 @@
         <h2 class="card-title-text"><%= @repository.name %></h2>
         <% if policy(@repository).edit? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: edit_repository_path(@repository), icon: 'pencil' %>
+            <%= render 'fab_link', url: edit_repository_path(@repository), icon: 'edit' %>
           </div>
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <div class="col-sm-6 col-xs-12">
+        <div class="<%= current_user.repository_admin?(@repository) ? "col-sm-6" : "col-sm-12" %> col-xs-12">
           <p>
             <strong><%= t ".repository" %>:</strong> <%= @repository.name %>
           </p>
-          <p>
-            <strong><%= Repository.human_attribute_name("remote") %>:</strong> <%= @repository.remote %>
-          </p>
+          <% if current_user.repository_admin?(@repository) %>
+            <p>
+              <strong><%= Repository.human_attribute_name("remote") %>:</strong> <%= @repository.remote %>
+            </p>
+          <% end %>
           <% if policy(User).server_access? %>
           <p>
             <strong><%= Repository.human_attribute_name("path") %>:</strong> <%= @repository.path %>
@@ -34,22 +36,24 @@
           </p>
           <% end %>
         </div>
-        <div class="col-sm-6 col-xs-12">
-          <div class="card">
-            <div class="card-title card-title-colored">
-              <h2 class="card-title-text">Webhook</h2>
-            </div>
-            <div class="card-supporting-text">
-              <p><%= t ".webhook" %></p>
-              <div class="input-group intput-froup-sm">
-                <%= text_field_tag :webhook_link, webhook_repository_url(@repository), readonly: true, class: 'form-control' %>
-                <span class="input-group-btn">
+        <% if current_user.repository_admin?(@repository) %>
+          <div class="col-sm-6 col-xs-12">
+            <div class="card">
+              <div class="card-title card-title-colored">
+                <h2 class="card-title-text">Webhook</h2>
+              </div>
+              <div class="card-supporting-text">
+                <p><%= t ".webhook" %></p>
+                <div class="input-group intput-froup-sm">
+                  <%= text_field_tag :webhook_link, webhook_repository_url(@repository), readonly: true, class: 'form-control' %>
+                  <span class="input-group-btn">
                   <%= clipboard_button_for :webhook_link %>
                 </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       </div>
       <div class="card-supporting-text card-border">
         <h3><%= t ".exercises" %></h3>

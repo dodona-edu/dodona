@@ -5,42 +5,44 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(Judge).new? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: new_judge_path, icon: 'plus' %>
+            <%= render 'fab_link', url: new_judge_path, icon: 'add' %>
           </div>
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <table class="table table-index table-resource">
-          <thead>
-            <tr>
-              <th><%= Judge.human_attribute_name("name") %></th>
-              <th><%= Judge.human_attribute_name("image") %></th>
-              <% if policy(User).server_access? %>
-              <th><%= Judge.human_attribute_name("path") %></th>
-              <% end %>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @judges.each do |judge| %>
+        <div class="table-scroll-wrapper">
+          <table class="table table-index table-resource">
+            <thead>
               <tr>
-                <td><%= link_to judge.name, judge %></td>
-                <td><%= judge.image %> </td>
+                <th><%= Judge.human_attribute_name("name") %></th>
+                <th><%= Judge.human_attribute_name("image") %></th>
                 <% if policy(User).server_access? %>
-                <td><%= judge.path %> </td>
+                  <th><%= Judge.human_attribute_name("path") %></th>
                 <% end %>
-                <td class="actions">
-                  <% if policy(judge).edit? %>
-                    <%= link_to edit_judge_path(judge), class: "btn btn-sm btn-default" do %><span class="glyphicon glyphicon-pencil"></span><% end %>
-                  <% end %>
-                  <% if policy(judge).destroy? %>
-                    <%= link_to judge, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><span class="glyphicon glyphicon-trash"></span><% end %>
-                  <% end %>
-                </td>
+                <th></th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <% @judges.each do |judge| %>
+                <tr>
+                  <td><%= link_to judge.name, judge %></td>
+                  <td><%= judge.image %> </td>
+                  <% if policy(User).server_access? %>
+                    <td><%= judge.path %> </td>
+                  <% end %>
+                  <td class="actions">
+                    <% if policy(judge).edit? %>
+                      <%= link_to edit_judge_path(judge), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">edit</i><% end %>
+                    <% end %>
+                    <% if policy(judge).destroy? %>
+                      <%= link_to judge, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons md-18">delete</i><% end %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

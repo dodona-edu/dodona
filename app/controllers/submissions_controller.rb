@@ -10,19 +10,46 @@ class SubmissionsController < ApplicationController
     authorize Submission
     @submissions = @submissions.paginate(page: params[:page])
     @title = I18n.t('submissions.index.title')
+    @crumbs = []
+    if @user
+      @crumbs << [@user.full_name, user_path(@user)]
+    else
+      if @series
+        @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, series_path(@series)]
+      elsif @course
+        @crumbs << [@course.name, course_path(@course)]
+      end
+    end
+    if @exercise
+      @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)]
+    end
+    @crumbs << [I18n.t('submissions.index.title'), "#"]
   end
 
-  def show; end
+  def show
+    @title = I18n.t('submissions.show.submission')
+    course = @submission.course
+    if course.present?
+      @crumbs = [[course.name, course_path(course)], [@submission.exercise.name, course_exercise_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), "#"]]
+    else
+      @crumbs = [[@submission.exercise.name, exercise_path(@submission.exercise)], [I18n.t('submissions.show.submission'), "#"]]
+    end
+  end
 
   def create
     authorize Submission
     para = permitted_attributes(Submission)
     para[:user_id] = current_user.id
     para[:code].gsub!(/\r\n?/, "\n")
+    para[:evaluate] = true # immediately evaluate after create
     @submission = Submission.new(para)
-    can_submit = Pundit.policy!(current_user, @submission.exercise).submit?
+    can_submit = true
+    if @submission.exercise.present?
+      can_submit &&= Pundit.policy!(current_user, @submission.exercise).submit?
+      can_submit &&= current_user.can_access?(@submission.course, @submission.exercise)
+    end
     if can_submit && @submission.save
-      render json: { status: 'ok', id: @submission.id }
+      render json: { status: 'ok', id: @submission.id, url: submission_url(@submission, format: :json) }
     else
       @submission.errors.add(:exercise, :not_permitted) unless can_submit
       render json: { status: 'failed', errors: @submission.errors }, status: :unprocessable_entity

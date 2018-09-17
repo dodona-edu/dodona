@@ -1,4 +1,4 @@
-<% summary ||= ExercisesSummary.new(
+<% summary ||= SeriesSummary.new(
    user: current_user,
    series: series,
    exercises: local_assigns[:exercises]
@@ -9,7 +9,7 @@
     <span class="card-title-text"><%= series.course.name %>: <%= series.name %></span>
     <% if series.deadline %>
       <span class="card-subtitle-text">
-        <span class="glyphicon glyphicon-time"></span>
+        <i class="material-icons md-18 material-icons-alarm">alarm</i>
         <%= t 'series.show.deadline_in' %>
         <%= distance_of_time_in_words Time.current, series.deadline %>
       </span>

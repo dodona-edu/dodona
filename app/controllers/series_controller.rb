@@ -8,7 +8,8 @@ class SeriesController < ApplicationController
   # GET /series.json
   def index
     authorize Series
-    @series = policy_scope(Series)
+    @course = Course.find(params[:course_id])
+    @series = policy_scope(@course.series)
     @title = I18n.t('series.index.title')
   end
 
@@ -17,10 +18,13 @@ class SeriesController < ApplicationController
   def show
     @course = @series.course
     @title = @series.name
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, "#"]]
   end
 
   def overview
     @title = "#{@series.course.name} #{@series.name}"
+    @course = @series.course
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, series_path(@series)], [I18n.t("crumbs.overview"), "#"]]
   end
 
   # GET /series/new
@@ -31,11 +35,14 @@ class SeriesController < ApplicationController
     authorize course, :add_series?
     @series = Series.new
     @title = I18n.t('series.new.title')
+    @crumbs = [[course.name, course_path(course)], [I18n.t('series.new.title'), "#"]]
   end
 
   # GET /series/1/edit
   def edit
     @title = @series.name
+    @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, series_path(@series)], [I18n.t("crumbs.edit"), "#"]]
+    @labels = Label.all
   end
 
   # POST /series
@@ -59,7 +66,7 @@ class SeriesController < ApplicationController
   def update
     respond_to do |format|
       if @series.update(permitted_attributes(@series))
-        format.html { redirect_to course_path(@series.course, series: @series, anchor: "series-#{@series.name.parameterize}"), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
+        format.html { redirect_to course_path(@series.course, series: @series, anchor: @series.anchor), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
         format.json { render :show, status: :ok, location: @series }
       else
         format.html { render :edit }
@@ -121,6 +128,14 @@ class SeriesController < ApplicationController
 
   def add_exercise
     @exercise = Exercise.find(params[:exercise_id])
+    unless @exercise.usable_by? @series.course
+      if current_user.repository_admin? @exercise.repository
+        @series.course.usable_repositories << @exercise.repository
+      else
+        render status: 403
+        return
+      end
+    end
     SeriesMembership.create(series: @series, exercise: @exercise)
   end
 
@@ -141,6 +156,7 @@ class SeriesController < ApplicationController
     @course = @series.course
     @title = @series.name
     @exercises = @series.exercises
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, series_path(@series)], [I18n.t("crumbs.overview"), "#"]]
   end
 
   def mass_rejudge

@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(User).new? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: new_user_path, icon: 'plus' %>
+            <%= render 'fab_link', url: new_user_path, icon: 'add' %>
           </div>
         <% end %>
       </div>

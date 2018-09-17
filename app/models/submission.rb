@@ -25,11 +25,9 @@ class Submission < ApplicationRecord
   delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
 
   validate :code_cannot_contain_emoji, on: :create
-  validate :exercise_not_closed, on: :create
 
-  # docs say to use after_commit_create, doesn't even work
-  after_create :evaluate_delayed
   after_update :invalidate_stats_cache
+  after_create :evaluate_delayed, if: :evaluate?
 
   default_scope { order(id: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
@@ -71,18 +69,24 @@ class Submission < ApplicationRecord
   }
 
   def initialize(params)
+    raise 'please explicitly tell wheter you want to evaluate this submission' unless params.has_key? :evaluate
+    @evaluate = params.delete(:evaluate)
     super
     self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
   end
 
+  def evaluate?
+    @evaluate
+  end
+
   def evaluate_delayed(priority = :normal)
-    p_value = if priority == :high
-                -10
-              elsif priority == :low
-                10
-              else
-                0
-              end
+    queue = if priority == :high
+              'high_priority_submissions'
+            elsif priority == :low
+              'low_priority_submissions'
+            else
+              'submissions'
+            end
 
     update(
       status: 'queued',
@@ -90,7 +94,7 @@ class Submission < ApplicationRecord
       summary: nil
     )
 
-    delay(priority: p_value).evaluate
+    delay(queue: queue).evaluate
   end
 
   def evaluate
@@ -104,11 +108,6 @@ class Submission < ApplicationRecord
     self.accepted = result_hash[:accepted]
     self.summary = result_hash[:description]
     save
-  end
-
-  def exercise_not_closed
-    return if user&.admin?
-    errors.add(:exercise, 'must not be closed') if exercise&.closed?
   end
 
   def code_cannot_contain_emoji

@@ -10,7 +10,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:zeus)
   end
 
-  test_crud_actions except: %i[new create_redirect update_redirect destroy_redirect]
+  test_crud_actions except: %i[new index create_redirect update_redirect destroy_redirect]
 
   test 'should get new for course' do
     course = create :course
@@ -152,10 +152,11 @@ end
 class SeriesVisibilityTest < ActionDispatch::IntegrationTest
   setup do
     @series = create :series
+    @course = @series.course
     @student = create :student
     @zeus = create :zeus
     @course_admin = create :student
-    @series.course.administrating_members << @course_admin
+    @course.administrating_members << @course_admin
   end
 
   def assert_show_and_overview(authorized, token: nil)
@@ -164,6 +165,36 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
     assert_response response
     get overview_series_url(@series, token: token)
     assert_response response
+  end
+
+  test 'student should only see visible series in course' do
+    @hidden_series = create :series, visibility: :hidden, course: @course
+    @closed_series = create :series, visibility: :closed, course: @course
+
+    sign_in @student
+    get course_series_index_url(@course, format: :json)
+
+    assert_response :success
+
+    result_series = JSON.parse response.body
+
+    assert_equal 1, result_series.count, 'expected only one (visible) series'
+
+    assert_equal @series.id, result_series.first['id']
+  end
+
+  test 'course admin should see all series in course' do
+    @hidden_series = create :series, visibility: :hidden, course: @course
+    @closed_series = create :series, visibility: :closed, course: @course
+
+    sign_in @course_admin
+    get course_series_index_url(@course, format: :json)
+
+    assert_response :success
+
+    result_series = JSON.parse response.body
+
+    assert_equal 3, result_series.count, 'expected all series (open, visible and closed)'
   end
 
   test 'student should see visible series' do

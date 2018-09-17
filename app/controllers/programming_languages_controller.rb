@@ -22,14 +22,14 @@ class ProgrammingLanguagesController < ApplicationController
   def edit
     @title = @programming_language.name
     @crumbs = [
-      [I18n.t('programming_languages.index.title'), programming_languages_path], 
-      [@programming_language.name, programming_language_path(@programming_language)], 
+      [I18n.t('programming_languages.index.title'), programming_languages_path],
+      [@programming_language.name, programming_language_path(@programming_language)],
       [I18n.t('programming_languages.edit.title'), '#']
     ]
   end
 
   def create
-    @programming_language = ProgrammingLanguage.new(programming_language_params)
+    @programming_language = ProgrammingLanguage.new(permitted_attributes(ProgrammingLanguage))
 
     respond_to do |format|
       if @programming_language.save
@@ -44,7 +44,7 @@ class ProgrammingLanguagesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @programming_language.update(programming_language_params)
+      if @programming_language.update(permitted_attributes(@programming_language))
         format.html { redirect_to @programming_language, notice: I18n.t('controllers.updated', model: ProgrammingLanguage.model_name.human) }
         format.json { render :show, status: :ok, location: @programming_language }
       else

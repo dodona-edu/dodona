@@ -14,7 +14,7 @@
       </div>
       <div class="card-supporting-text card-border">
         <div id="admin-table-wrapper">
-          <%= render(partial: 'users/users_table', locals: {users: @users, show_delete_button: true}) %>
+          <%= render(partial: 'users/users_table', locals: {users: @users, show_delete_button: true, paginate: false}) %>
         </div>
       </div>
       <div class="card-supporting-text card-border">

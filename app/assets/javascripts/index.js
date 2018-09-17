@@ -2,20 +2,20 @@
 import {showNotification} from "./notifications.js";
 import {delay, updateURLParameter, updateArrayURLParameter, getURLParameter, getArrayURLParameter} from "./util.js";
 
-let PARAM = "filter";
-let LABELS_FILTER_ID = "#filter-query";
-let QUERY_FILTER_ID = "#filter-query-tokenfield";
+const FILTER_PARAM = "filter";
+const LABELS_PARAM = "labels";
+const PROGRAMMING_LANGUAGE_PARAM = "programming_language";
+const LABELS_FILTER_ID = "#filter-query";
+const QUERY_FILTER_ID = "#filter-query-tokenfield";
 
 function search(baseUrl, _query) {
     let getUrl = () => baseUrl || window.location.href;
     let query = _query || $(QUERY_FILTER_ID).val();
-    let url = updateURLParameter(getUrl(), PARAM, query);
+    let url = updateURLParameter(getUrl(), FILTER_PARAM, query);
     url = updateURLParameter(url, "page", 1);
-    if ($(LABELS_FILTER_ID).val() !== "") {
-        url = updateArrayURLParameter(url, "labels", $(LABELS_FILTER_ID).val().split(","));
-    } else {
-        url = updateArrayURLParameter(url, "labels", []);
-    }
+    url = updateArrayURLParameter(url, LABELS_PARAM, $(LABELS_FILTER_ID).tokenfield("getTokens").filter(e => e.type === "label").map(e => e.name));
+    let programmingLanguage = $(LABELS_FILTER_ID).tokenfield("getTokens").filter(e => e.type === "programmingLanguage")[0];
+    url = updateURLParameter(url, PROGRAMMING_LANGUAGE_PARAM, programmingLanguage ? programmingLanguage.name : "");
     if (!baseUrl) {
         window.history.replaceState(null, "Dodona", url);
     }
@@ -28,22 +28,28 @@ function search(baseUrl, _query) {
     });
 }
 
-function initFilter(baseUrl, eager, _labels) {
+function initFilter(baseUrl, eager, _labels, _programmingLanguages) {
     const labels = _labels || [];
+    const programmingLanguages = _programmingLanguages || [];
     let $queryFilter = $(QUERY_FILTER_ID);
     let $labelsFilter = $(LABELS_FILTER_ID);
     let doSearch = () => search(baseUrl, $queryFilter.typeahead("val"));
     $queryFilter.keyup(() => delay(doSearch, 300));
-    let param = getURLParameter(PARAM);
-    let textLabels = getArrayURLParameter("labels");
-    $labelsFilter.tokenfield("setTokens", textLabels.map(name => {
-        const index = labels.map(l => l.name).indexOf(name);
-        if (index >= 0) {
-            return labels[index];
-        } else {
-            return null;
+    let param = getURLParameter(FILTER_PARAM);
+    let enabledLabels = getArrayURLParameter(LABELS_PARAM);
+    let enabledProgrammingLanguage = getURLParameter(PROGRAMMING_LANGUAGE_PARAM);
+    let allTokens = [];
+    for (let enabledLabel of enabledLabels) {
+        let label = labels.filter(l => l.name === enabledLabel)[0];
+        if (label) {
+            allTokens.push(label);
         }
-    }).filter(e => e !== null));
+    }
+    let programmingLanguage = programmingLanguages.filter(p => p.name === enabledProgrammingLanguage)[0];
+    if (programmingLanguage) {
+        allTokens.push(programmingLanguage);
+    }
+    $labelsFilter.tokenfield("setTokens", allTokens);
     if (param !== "") {
         $queryFilter.typeahead("val", param);
     }
@@ -57,7 +63,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
         initLabels();
 
         if (doInitFilter) {
-            initFilter(baseUrl, eager, labels);
+            initFilter(baseUrl, eager, labels, programmingLanguages);
         }
 
         if (actions) {
@@ -68,7 +74,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
     function performAction(action, $filter) {
         if (action.confirm === undefined || window.confirm(action.confirm)) {
             let val = $filter.val();
-            let url = updateURLParameter(action.action, PARAM, val);
+            let url = updateURLParameter(action.action, FILTER_PARAM, val);
             $.post(url, {
                 format: "json",
             }, function (data) {
@@ -127,10 +133,18 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
 
 
     function initLabels() {
+        const $field = $(LABELS_FILTER_ID);
+
         const colorMap = {};
         for (let label of labels) {
             colorMap[label.name] = label.color;
             label.value = label.name;
+            label.type = "label";
+        }
+
+        for (let programmingLanguage of programmingLanguages) {
+            programmingLanguage.value = programmingLanguage.name;
+            programmingLanguage.type = "programmingLanguage";
         }
 
         function doSearch() {
@@ -138,20 +152,33 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
         }
 
         function validateLabel(e) {
-            return labels.map(l => l.name).indexOf(e.attrs.value) >= 0;
+            if (e.attrs.type === "label") {
+                return labels.map(l => l.name).indexOf(e.attrs.value) >= 0;
+            } else if (e.attrs.type === "programmingLanguage") {
+                return programmingLanguages.map(p => p.name).indexOf(e.attrs.value) >= 0;
+            }
         }
 
-        function disableLabel(e) {
+        function disableLabel() {
+            // We need to delay, otherwise tokenfield hasn't finished setting all the right values
             delay(doSearch, 100);
         }
 
         function enableLabel(e) {
-            $(e.relatedTarget).addClass(`accent-${colorMap[e.attrs.value]}`);
+            if (e.attrs.type === "label") {
+                $(e.relatedTarget).addClass(`accent-${colorMap[e.attrs.value]}`);
+            } else if (e.attrs.type === "programmingLanguage") {
+                $(e.relatedTarget).addClass("accent-teal");
+                const newTokens = $field.tokenfield("getTokens").filter(el => el.type !== "programmingLanguage" || el.name === e.attrs.value);
+                if (newTokens.length !== $field.tokenfield("getTokens").length) {
+                    $field.tokenfield("setTokens", newTokens);
+                }
+            }
+            // We need to delay, otherwise tokenfield hasn't finished setting all the right values
             delay(doSearch, 100);
         }
 
-
-        const engine = new Bloodhound({
+        const labelEngine = new Bloodhound({
             local: labels,
             identify: d => d.id,
             datumTokenizer: d => {
@@ -166,7 +193,21 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
             queryTokenizer: Bloodhound.tokenizers.whitespace,
         });
 
-        const $field = $(LABELS_FILTER_ID);
+        const programmingLanguageEngine = new Bloodhound({
+            local: programmingLanguages,
+            identify: d => d.id,
+            datumTokenizer: d => {
+                const result = Bloodhound.tokenizers.whitespace(d.name);
+                $.each(result, (i, val) => {
+                    for (let i = 1; i < val.length; i++) {
+                        result.push(val.substr(i, val.length));
+                    }
+                });
+                return result;
+            },
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+        });
+
         $field.on("tokenfield:createtoken", validateLabel);
         $field.on("tokenfield:createdtoken", enableLabel);
         $field.on("tokenfield:removedtoken", disableLabel);
@@ -174,9 +215,19 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
             beautify: false,
             typeahead: [{
                 highlight: true,
+                minLength: 0,
             }, {
-                source: engine,
+                source: labelEngine,
                 display: d => d.name,
+                templates: {
+                    header: `<strong class="tt-header">${I18n.t("js.labels")}</strong>`,
+                },
+            }, {
+                source: programmingLanguageEngine,
+                display: d => d.name,
+                templates: {
+                    header: `<strong class="tt-header">${I18n.t("js.programming-languages")}</strong>`,
+                },
             }],
         });
     }

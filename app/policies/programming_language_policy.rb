@@ -24,4 +24,12 @@ class ProgrammingLanguagePolicy < ApplicationPolicy
   def destroy?
     user.zeus?
   end
+
+  def permitted_attributes
+    if user.zeus?
+      [:name, :extension, :editor_name]
+    else
+      []
+    end
+  end
 end

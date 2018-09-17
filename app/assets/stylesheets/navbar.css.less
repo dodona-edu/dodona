@@ -246,7 +246,7 @@
     .crumb a:hover {
         text-decoration: none;
     }
-    .crumb:last-child, .crumb:last-child a {
+    .crumb:last-child:not(:first-child), .crumb:last-child:not(:first-child) a {
         color: @white-secondary;
         pointer-events: none;
         cursor: default;

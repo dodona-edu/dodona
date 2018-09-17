@@ -47,7 +47,7 @@ class Exercise < ApplicationRecord
   before_create :generate_id
   before_create :generate_token
   before_save :check_validity
-  #before_update :update_config
+  before_update :update_config
 
   scope :in_repository, ->(repository) { where repository_id: repository.id }
 

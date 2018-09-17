@@ -16,10 +16,15 @@
 .home-lead {
     color: @white-text;
     margin-bottom: 20px;
-    .btn {
+    .btn, .btn:active {
         border-radius: 2px;
-        background-color: @accent-500;
-        border-color: @accent-500;
+        background-color: white;
+        border-color: @primary-800;
+        color: @primary-800;
+        text-transform: uppercase;
+    }
+    .btn:active {
+        background-color: @grey-100;
     }
     .lead {
         margin-top: 25px;

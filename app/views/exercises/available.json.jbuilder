@@ -1,3 +1,1 @@
-json.array! @exercises do |exercise|
-  json.id exercise.id
-end
+json.array! @exercises, partial: 'exercises/exercise', as: :exercise, locals: { course: @course, series: @series }

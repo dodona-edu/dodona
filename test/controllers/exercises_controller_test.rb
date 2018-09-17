@@ -143,6 +143,27 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
         params: { edit_submission: submission.id }
     assert_response :success
   end
+
+  test 'should list all exercises within series' do
+    exercises = create_list :exercise, 10, repository: @instance.repository
+    exercises_in_series = exercises.take(5)
+    series = create :series, exercises: exercises_in_series
+    create :series, exercises: create_list(:exercise, 5)
+    series.course.usable_repositories << @instance.repository
+
+    get series_exercises_url(series, format: :json)
+
+    assert_response :success
+    exercises_response = JSON.parse response.body
+    assert_equal 5, exercises_response.count
+
+    exercise_response_ids = exercises_response.map do |ex|
+      ex['id']
+    end
+    exercises_in_series.each do |exercise_expected|
+      assert_includes exercise_response_ids, exercise_expected.id
+    end
+  end
 end
 
 class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest

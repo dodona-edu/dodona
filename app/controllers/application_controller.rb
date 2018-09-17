@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_trailing_slash
-    redirect_to url_for(trailing_slash: true), status: 301 unless trailing_slash?
+    redirect_to url_for(trailing_slash: true), status: 301 unless trailing_slash? || request.format == :json
   end
 
   def trailing_slash?
@@ -81,6 +81,9 @@ class ApplicationController < ActionController::Base
   def look_for_token
     token = request.headers['Authorization']&.strip
     return if token.blank?
+
+    # Sessions are not needed for the JSON API
+    request.session_options[:skip] = true
 
     token.gsub!(/Token token=\"(.*)\"/, '\1')
     # only allow urlsafe base64 characters to pass

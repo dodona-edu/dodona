@@ -413,7 +413,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     post unsubscribe_course_url(@course)
     post favorite_course_url(@course)
-    assert_not response.success?
+    assert_not response.successful?
   end
 
   test 'users should not be able to unfavorite unsubscribed courses' do
@@ -422,7 +422,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     post unsubscribe_course_url(@course)
     post unfavorite_course_url(@course)
-    assert_not response.success?
+    assert_not response.successful?
   end
 
 end

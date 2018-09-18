@@ -25,7 +25,7 @@ nl:
       courses: "Toegelaten cursussen"
       add_courses: "Cursussen toevoegen"
       access_explanation: "<li>Een repository kan <strong>publieke</strong> en <strong>privé oefeningen</strong> bevatten.</li><li><strong>Publieke oefeningen</strong> kunnen in <strong>elke cursus</strong> gebruikt worden.</li><li><strong>Privé oefeningen</strong> kunnen enkel gebruikt worden in cursussen die <strong>expliciete toestemming</strong> hebben gekregen via deze pagina.</li>"
-      short_explanation: "Deze cursussen kunnen oefeningen van de %{name} repository gebruiken."
+      short_explanation: "Deze cursussen kunnen privé oefeningen van de %{name} repository gebruiken."
     navbar_links:
       show: "Tonen"
       administrators: "Beheerders aanpassen"

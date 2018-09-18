@@ -8,7 +8,7 @@
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>"  name="<%= series.name %>"></a>
     <%= render partial: 'series/series_status', locals: { summary: summary } %>
-    <h4><%= series.name %><br>
+    <h4 class="ellipsis-overflow"><%= series.name %><br>
       <% if series.deadline? %>
         <% if series.deadline > Time.now %>
           <%= "<small class='deadline-ok' title='deadline #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}'><i class='material-icons md-12 material-icons-alarm'>alarm</i> #{l series.deadline, format: :long}</small>".html_safe %>

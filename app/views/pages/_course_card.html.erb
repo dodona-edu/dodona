@@ -1,14 +1,16 @@
 <div class="card home-summary-card course" data-search="<%= course.name.downcase + " " + course.teacher.downcase %>">
   <%= link_to course_path(course), class: 'card-title-link' do %>
     <div class="card-title card-colored-accent accent-<%= course.color %>">
-      <% if current_user.admin_of?(course) %>
-        <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><i class='material-icons'>school</i></h2>
-          <% if course.hidden? %>
-            <h2 class='card-title-text pull-right' title='<%= t ".course-hidden" %>'><i class="material-icons">visibility_off</i></h2>
-          <% end %>
-          <% if course.closed? %>
-            <h2 class='card-title-text pull-right' title='<%= t ".course-closed" %>'><i class="material-icons">block</i></h2>
-          <% end %>
+      <% if current_user.course_admin?(course) %>
+        <% if current_user.admin_of?(course) %>
+          <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><i class='material-icons'>school</i></h2>
+        <% end %>
+        <% if course.hidden? %>
+          <h2 class='card-title-text pull-right' title='<%= t ".course-hidden" %>'><i class="material-icons">visibility_off</i></h2>
+        <% end %>
+        <% if course.closed? %>
+          <h2 class='card-title-text pull-right' title='<%= t ".course-closed" %>'><i class="material-icons">block</i></h2>
+        <% end %>
       <% elsif local_assigns[:show_membership] and current_user.courses.include? course %>
         <h2 class='card-title-text pull-right' title='<%= t ".course-member" %>'><i class='material-icons'>star</i></h2>
       <% end %>

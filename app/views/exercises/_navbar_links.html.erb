@@ -2,7 +2,7 @@
   <% can_view_submissions = if @course
                               policy(@course).submissions?
                             else
-                              current_user.admin?
+                              current_user&.admin?
                             end %>
 
     <%= navbar_link url: exercise_scoped_path(exercise: @exercise, course: @course, series: @series),

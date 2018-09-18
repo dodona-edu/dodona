@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(Repository).new? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: new_repository_path, icon: 'add' %>
+            <%= render 'application/fab_link', url: new_repository_path, icon: 'add' %>
           </div>
         <% end %>
       </div>
@@ -14,6 +14,7 @@
           <table class="table table-index table-resource">
             <thead>
               <tr>
+                <th></th>
                 <th><%= Repository.human_attribute_name("name") %></th>
                 <th><%= Repository.human_attribute_name("remote") %></th>
                 <% if policy(User).server_access? %>
@@ -26,6 +27,11 @@
             <tbody>
               <% @repositories.each do |repository| %>
                 <tr>
+                  <td>
+                    <% if current_user.repository_admin? repository %>
+                    <span title="<%= t(".admin") %>"><i class="material-icons md-18">perm_identity</i></span>
+                    <% end %>
+                  </td>
                   <td><%= link_to repository.name, repository %></td>
                   <td><%= repository.remote %> </td>
                   <% if policy(User).server_access? %>
@@ -34,16 +40,16 @@
                   <td><%= link_to repository.judge.name, repository.judge %></td>
                   <td class="actions">
                     <% if policy(repository).admins? %>
-                      <%= link_to admins_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">group</i><% end %>
+                      <%= link_to admins_repository_path(repository), class: "btn btn-sm btn-default", title: t(".admins") do %><i class="material-icons md-18">group</i><% end %>
                     <% end %>
                     <% if policy(repository).courses? %>
-                    <%= link_to courses_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">collections_bookmark</i><% end %>
+                    <%= link_to courses_repository_path(repository), class: "btn btn-sm btn-default", title: t(".courses") do %><i class="material-icons md-18">collections_bookmark</i><% end %>
                   <% end %>
                   <% if policy(repository).edit? %>
-                      <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">edit</i><% end %>
+                      <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default", title: t(".edit") do %><i class="material-icons md-18">edit</i><% end %>
                     <% end %>
                     <% if policy(repository).destroy? %>
-                      <%= link_to repository, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons md-18">delete</i><% end %>
+                      <%= link_to repository, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger", title: t(".delete") do %><i class="material-icons md-18">delete</i><% end %>
                     <% end %>
                   </td>
                 </tr>

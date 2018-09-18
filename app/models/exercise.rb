@@ -42,7 +42,7 @@ class Exercise < ApplicationRecord
   has_many :exercise_labels, dependent: :destroy
   has_many :labels, through: :exercise_labels
 
-  validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }
+  validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
 
   before_create :generate_id
   before_create :generate_token

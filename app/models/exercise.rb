@@ -272,6 +272,11 @@ class Exercise < ApplicationRecord
     self.token ||= new_token
   end
 
+  def self.move_relations(from, to)
+    from.submissions.each{|s| s.exercise = to}
+    from.series_memberships.each{|sm| sm.exercise = to unless SeriesMembership.find_by(exercise: to, series: sm.series)}
+  end
+
   private
 
   # takes a relative path

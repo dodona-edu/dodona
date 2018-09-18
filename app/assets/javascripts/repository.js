@@ -46,6 +46,7 @@ function initAdminsEdit() {
 
 
     function adminAdded($button, $oldRow) {
+        $(".table-placeholder").remove();
         $button.html("<i class='material-icons md-18'>delete</i>");
         $button.removeClass("add-admin");
         $button.addClass("remove-admin");

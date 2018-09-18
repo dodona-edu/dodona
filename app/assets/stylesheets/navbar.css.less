@@ -1,5 +1,4 @@
 @navbar-height: 50px;
-@navbar-sides-width: 140px;
 @navbar-collapse-width: @screen-xs-min;
 
 .dodona-navbar {
@@ -26,8 +25,8 @@
   }
 
   .left {
-    width: @navbar-sides-width;
-    @media(max-width: @navbar-collapse-width){
+    width: 125px;
+    @media(max-width: @screen-sm-min){
       width: 90px;
     }
 
@@ -66,10 +65,10 @@
     padding-right: 17px;
 
     @media(min-width: @navbar-collapse-width) {
-      width: 370px;
+      width: ~"calc(100vw - 240px)";
     }
     @media(min-width: @screen-sm-min) {
-      width: 570px;
+      width: 640px;
     }
     @media(min-width: @screen-md-min) {
       width: 815px;

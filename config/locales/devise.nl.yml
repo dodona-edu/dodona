@@ -44,9 +44,9 @@ nl:
       update_needs_confirmation: "Je account is succesvol gewijzigd, echter hebben moet je nog wel je e-mail adres verifiëren."
       updated: "Je account is succesvol gewijzigd"
     sessions:
-      signed_in: "Succesvol ingelogd"
-      signed_out: "Succesvol uitgelogd van Dodona. Je zal ook nog moeten uitloggen bij je identiteitsprovider."
-      already_signed_out: "Succesvol uitgelogd van Dodona. Je zal ook nog moeten uitloggen bij je identiteitsprovider."
+      signed_in: ""
+      signed_out: ""
+      already_signed_out: ""
     unlocks:
       send_instructions: "Je zult een e-mail met instructies ontvangen over hoe je jouw account moet unlocken over een paar minuten."
       send_paranoid_instructions: "Als je e-mail bestaat in onze database, zul je een e-mail met instructies ontvangen over hoe je jouw account moet unlocken over een paar minuten."

@@ -277,6 +277,13 @@ class Exercise < ApplicationRecord
     from.series_memberships.each{|sm| sm.exercise = to unless SeriesMembership.find_by(exercise: to, series: sm.series)}
   end
 
+  def safe_destroy
+    return unless removed?
+    return if submissions.any?
+    return if series_memberships.any?
+    destroy
+  end
+
   private
 
   # takes a relative path

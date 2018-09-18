@@ -6,7 +6,9 @@
   <div class="footer-block">
     <div class='footer-version'>
     <%= link_to 'Contact', contact_path %>
-    <%= link_to "Dodona #{Dodona::Application::VERSION}", about_path %>
+    <% version_info = "Dodona #{Dodona::Application::VERSION}" %>
+    <% version_info += " (ruby #{RUBY_VERSION} #{`which ruby`})" if Rails.env.development? %>
+    <%= link_to version_info, about_path %>
     </div>
   </div>
 </footer>

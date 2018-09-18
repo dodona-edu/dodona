@@ -4,6 +4,11 @@ en:
       remote-help: The SSH clone URL of the repository to use. Dodona must have access to this repository.
     index:
       title: All repositories
+      admins: "Edit administrators"
+      courses: "Edit allowed courses"
+      edit: "Edit"
+      delete: "Delete"
+      admin: "You are an administrator of this repository"
     new:
       title: Create repository
     show:
@@ -13,6 +18,7 @@ en:
       exercises: Exercises
     admins:
       admins: "Administrators"
+      admin_explanation: "Repository admins can make others repository admins, view private exercises, edit exercises in the repository and allow courses to use private exercises."
     reprocess:
       done: All exercises in this repository were reprocessed
     courses:
@@ -20,3 +26,8 @@ en:
       add_courses: "Add courses"
       access_explanation: "<li>A repository can contain both <strong>public</strong> and <strong>private exercises</strong>.</li><li><strong>Public exercises</strong> are available to use in <strong>any course</strong></li><li><strong>Private exercises</strong> can only be used in courses that received <strong>explicit approval</strong> using this page."
       short_explanation: "These courses can use private exercises from the %{name} repository."
+    navbar_links:
+      show: "Show"
+      administrators: "Edit administrators"
+      courses: "Edit allowed courses"
+      edit: "Edit"

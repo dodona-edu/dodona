@@ -5,11 +5,12 @@
     height: 380px;
     width: 100%;
     background: @primary-800;
+    z-index: -1;
 }
 .home-header img {
     margin-top: -35px;
     margin-bottom: -10px;
-    @media (max-width: 991px) { 
+    @media (max-width: 991px) {
         margin-top: 20px;
     }
 }
@@ -41,7 +42,7 @@
         margin-top: -10px;
         margin-bottom: -10px;
     }
-    p {    
+    p {
         margin-top: 12px;
         line-height: 20px;
     }
@@ -54,6 +55,9 @@
 .info-step img {
     padding-left: 25px;
     padding-right: 25px;
+    @media (max-width: @screen-sm-min) {
+      margin: auto;
+    }
 }
 .home-summary-card h5 {
     line-height: 18px;

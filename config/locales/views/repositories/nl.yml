@@ -4,6 +4,11 @@ nl:
       remote-help: De SSH clone URL van de repository. Dodona moet toegang hebben tot deze repository.
     index:
       title: Alle repository's
+      admins: "Beheerders aanpassen"
+      courses: "Toegelaten cursussen aanpassen"
+      edit: "Aanpassen"
+      delete: "Verwijderen"
+      admin: "Je bent beheerder van deze repository"
     new:
       title: Repository aanmaken
     show:
@@ -13,6 +18,7 @@ nl:
       exercises: Oefeningen
     admins:
       admins: "Beheerders"
+      admin_explanation: "Repository beheerders kunnen anderen repository beheerder maken, privé oefeningen zien, oefeningen aanpassen en cursussen toelaten om privé oefeningen te gebruiken."
     reprocess:
       done: Alle oefeningen in deze repository werden opnieuw verwerkt
     courses:
@@ -20,3 +26,8 @@ nl:
       add_courses: "Cursussen toevoegen"
       access_explanation: "<li>Een repository kan <strong>publieke</strong> en <strong>privé oefeningen</strong> bevatten.</li><li><strong>Publieke oefeningen</strong> kunnen in <strong>elke cursus</strong> gebruikt worden.</li><li><strong>Privé oefeningen</strong> kunnen enkel gebruikt worden in cursussen die <strong>expliciete toestemming</strong> hebben gekregen via deze pagina.</li>"
       short_explanation: "Deze cursussen kunnen oefeningen van de %{name} repository gebruiken."
+    navbar_links:
+      show: "Tonen"
+      administrators: "Beheerders aanpassen"
+      courses: "Toegelaten cursussen aanpassen"
+      edit: "Aanpassen"

@@ -115,16 +115,9 @@
           <% end %>
         </li>
         <li>
-          <% if current_user.institution&.saml? %>
-            <%= link_to destroy_user_session_path(idp: session[:current_idp]), :method => :delete, target: "_blank", onclick: "window.setTimeout(function () {location.href = '#{root_path}';}, 1000);", class: 'drawer-list-item' do %>
-              <i class="material-icons md-24">power_settings_new</i>
-              <%=  t('layout.menu.log_out') %>
-            <% end %>
-          <% else %>
-            <%= link_to destroy_user_session_path, method: :delete do %>
-              <i class="material-icons md-24">power_settings_new</i>
-              <%=  t('layout.menu.log_out') %>
-            <% end %>
+          <%= link_to destroy_user_session_path, method: :delete do %>
+            <i class="material-icons md-24">power_settings_new</i>
+            <%=  t('layout.menu.log_out') %>
           <% end %>
         </li>
       </ul>

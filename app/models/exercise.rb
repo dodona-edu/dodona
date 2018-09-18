@@ -42,7 +42,7 @@ class Exercise < ApplicationRecord
   has_many :exercise_labels, dependent: :destroy
   has_many :labels, through: :exercise_labels
 
-  validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }
+  validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
 
   before_create :generate_id
   before_create :generate_token
@@ -270,6 +270,18 @@ class Exercise < ApplicationRecord
       new_token = Base64.strict_encode64 SecureRandom.random_bytes(48)
     end until Exercise.find_by(token: new_token).nil?
     self.token ||= new_token
+  end
+
+  def self.move_relations(from, to)
+    from.submissions.each{|s| s.exercise = to}
+    from.series_memberships.each{|sm| sm.exercise = to unless SeriesMembership.find_by(exercise: to, series: sm.series)}
+  end
+
+  def safe_destroy
+    return unless removed?
+    return if submissions.any?
+    return if series_memberships.any?
+    destroy
   end
 
   private

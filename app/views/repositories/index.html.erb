@@ -28,7 +28,7 @@
               <% @repositories.each do |repository| %>
                 <tr>
                   <td>
-                    <% if current_user.repository_admin? repository %>
+                    <% if current_user.repositories.include? repository %>
                     <span title="<%= t(".admin") %>"><i class="material-icons md-18">perm_identity</i></span>
                     <% end %>
                   </td>

@@ -11,7 +11,7 @@
         <% if course.closed? %>
           <h2 class='card-title-text pull-right' title='<%= t ".course-closed" %>'><i class="material-icons">block</i></h2>
         <% end %>
-      <% elsif local_assigns[:show_membership] and current_user.courses.include? course %>
+      <% elsif local_assigns[:show_membership] and current_user.subscribed_courses.include? course %>
         <h2 class='card-title-text pull-right' title='<%= t ".course-member" %>'><i class='material-icons'>star</i></h2>
       <% end %>
       <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>

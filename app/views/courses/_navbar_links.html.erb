@@ -6,6 +6,7 @@
     <%= navbar_link url: members_course_path(@course),
                     title: t('.members'),
                     icon: 'group',
+                    class: (@course.pending_members.any? ? 'notification' : ''),
                     if: policy(@course).members? %>
     <%= navbar_link url: edit_course_path(@course),
                     title: t('.edit'),

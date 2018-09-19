@@ -9,7 +9,10 @@
 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+
+  @media (min-width: @screen-sm-min) {
+    justify-content: space-between;
+  }
 
   position: fixed;
   top: 0;

@@ -60,7 +60,8 @@ en:
       not_a_member: You are not a member of this course.
       already_a_member: You are a member of this course.
       moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
-      pending: Your registration is still pending.
+      pending: Your registration is pending.
+      remove_from_pending: Withdraw registration request
       explanation_html: 'This is the registration page of <strong>%{course_name}</strong>'
       instruction: 'Register by clicking the button.'
       closed: This course is closed and does not accept new registrations at this time.

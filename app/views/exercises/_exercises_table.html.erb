@@ -12,7 +12,7 @@
         <th><%= t "exercises.index.exercise"%></th>
         <th class='count'></th>
         <% if user_signed_in? %>
-          <th class='status'><%= t "exercises.index.status"%></th>
+          <th class='status ellipsis-overflow' title="<%= t "exercises.index.status" %>"><%= t "exercises.index.status"%></th>
           <th class='status-icon'></th>
         <% end %>
       </tr>

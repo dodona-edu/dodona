@@ -9,7 +9,10 @@
 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+
+  @media (min-width: @screen-sm-min) {
+    justify-content: space-between;
+  }
 
   position: fixed;
   top: 0;
@@ -87,6 +90,21 @@
       .dropdown-title {
         display: none;
       }
+
+      a.notification:before {
+        content: '';
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 1px solid white;
+        display: inline-block;
+        background-color: @deep-orange-A400;
+        position: relative;
+        margin-left: -15px;
+        left: 30px;
+        z-index: 10;
+      }
+
       li a {
         padding-left: 8px;
         padding-right: 8px;

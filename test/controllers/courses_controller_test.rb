@@ -178,6 +178,14 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'should be able to withdraw registration request' do
+    @course.update(registration: 'moderated')
+    with_users_signed_in @pending do |who, user|
+      post unsubscribe_course_url(@course)
+      assert_not @course.pending_members.include?(user), "#{who} should not be pending anymore"
+    end
+  end
+
   test 'should be on pending list with moderated and hidden course' do
     @course.update(registration: 'moderated', visibility: 'hidden')
     with_users_signed_in @not_subscribed do |who, user|

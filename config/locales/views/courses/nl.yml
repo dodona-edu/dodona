@@ -56,7 +56,8 @@ nl:
       page_title: Registratie
       not_a_member: Je bent niet geregistreerd voor deze cursus.
       already_a_member: Je bent al geregistreerd.
-      pending: Je staat al op de wachtlijst.
+      pending: Je staat op de wachtlijst.
+      remove_from_pending: Registratieverzoek annuleren
       moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot dit vak.
       explanation_html: 'Dit is de registratiepagina voor het vak <strong>%{course_name}</strong>.'
       instruction: 'Klik op de knop om je te registreren voor deze cursus.'

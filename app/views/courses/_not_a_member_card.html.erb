@@ -6,7 +6,11 @@
         <strong><%= t 'layout.messages.danger' %>!</strong>
         <%= t 'courses.registration.closed'%>
       <% else %>
-        <p><%= t 'courses.registration.not_a_member' %>
+        <% if @current_membership&.pending? %>
+          <p><%= t 'courses.registration.pending' %>
+        <% else %>
+          <p><%= t 'courses.registration.not_a_member' %>
+        <% end %>
         <% if @course.moderated? %>
           <p><%= t 'courses.registration.moderated' %>
         <% end %>

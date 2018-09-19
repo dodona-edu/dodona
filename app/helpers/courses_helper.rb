@@ -24,7 +24,10 @@ module CoursesHelper
         content_tag :p, t('courses.registration.registration_closed')
       end
     elsif membership.pending?
-      content_tag :p, t('courses.registration.pending')
+      link_to t('courses.registration.remove_from_pending'),
+              unsubscribe_course_path(@course),
+              method: :post,
+              class: 'btn-text'
     else
       content_tag :p, t('courses.registration.already_a_member')
     end

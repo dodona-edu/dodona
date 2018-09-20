@@ -1,7 +1,7 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: %i[show edit update media]
-  before_action :set_course, only: %i[show edit]
-  before_action :set_series, only: %i[show edit]
+  before_action :set_course, only: %i[show edit update]
+  before_action :set_series, only: %i[show edit update]
   before_action :ensure_trailing_slash, only: :show
   skip_before_action :verify_authenticity_token, only: [:media]
 
@@ -20,10 +20,8 @@ class ExercisesController < ApplicationController
                    authorize @series, :show?
                    @series.exercises
                  else
-                   Exercise.all
+                   policy_scope(Exercise)
                  end
-
-    @exercises = policy_scope(@exercises)
 
     if params[:repository_id]
       @repository = Repository.find(params[:repository_id])
@@ -80,7 +78,7 @@ class ExercisesController < ApplicationController
     respond_to do |format|
       if @exercise.update(permitted_attributes(@exercise))
         @exercise.labels = params[:exercise][:labels]&.split(',')&.map { |name| Label.find_by(name: name) || Label.create(name: name) }&.uniq || []
-        format.html { redirect_to exercise_path(@exercise), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
+        format.html { redirect_to helpers.exercise_scoped_path(exercise: @exercise, course: @course, series: @series), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else
         format.html { render :edit }

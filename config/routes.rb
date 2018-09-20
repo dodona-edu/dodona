@@ -43,9 +43,9 @@ Rails.application.routes.draw do
 
     resources :courses do
       resources :series, only: [:new, :index] do
-        resources :exercises, only: [:show, :edit], concerns: %i[mediable submitable]
+        resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
       end
-      resources :exercises, only: [:show, :edit], concerns: %i[mediable submitable]
+      resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
       member do
         get 'members'
         get 'scoresheet'

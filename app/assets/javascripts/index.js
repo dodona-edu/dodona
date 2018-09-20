@@ -28,14 +28,22 @@ function search(baseUrl, _query) {
     });
 }
 
-function initFilter(baseUrl, eager) {
+function initFilter(baseUrl, eager, _labels) {
+    const labels = _labels || [];
     let $queryFilter = $(QUERY_FILTER_ID);
     let $labelsFilter = $(LABELS_FILTER_ID);
     let doSearch = () => search(baseUrl, $queryFilter.typeahead("val"));
     $queryFilter.keyup(() => delay(doSearch, 300));
     let param = getURLParameter(PARAM);
-    let labels = getArrayURLParameter("labels");
-    $labelsFilter.tokenfield("setTokens", labels);
+    let textLabels = getArrayURLParameter("labels");
+    $labelsFilter.tokenfield("setTokens", textLabels.map(name => {
+        const index = labels.map(l => l.name).indexOf(name);
+        if (index >= 0) {
+            return labels[index];
+        } else {
+            return null;
+        }
+    }).filter(e => e !== null));
     if (param !== "") {
         $queryFilter.typeahead("val", param);
     }
@@ -49,7 +57,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
         initLabels();
 
         if (doInitFilter) {
-            initFilter(baseUrl, eager);
+            initFilter(baseUrl, eager, labels);
         }
 
         if (actions) {
@@ -77,7 +85,6 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
     function performSearch(action, $filter) {
         let url = baseUrl;
         let searchParams = Object.entries(action.search);
-        console.log(searchParams);
         for (let i = 0; i < searchParams.length; i++) {
             let key = searchParams[i][0];
             let value = searchParams[i][1];

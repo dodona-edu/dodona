@@ -75,7 +75,8 @@ class Series {
     this.$skeleton = this.$table_wrapper.find(skeleton_table_selector);
     this.loaded = this.$skeleton.length === 0;
     this.loading = false;
-    this.position = this.$card.offset().top;
+    this.top = this.$card.offset().top;
+    this.bottom = this.top + this.$card.height();
   }
 
   needsLoading(){
@@ -93,7 +94,7 @@ class Series {
 }
 
 function initCourseShow() {
-    let series = Series.findAll().sort((s1, s2) => s1.position - s2.position);
+    let series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
 
     function init() {
         $(window).scroll(scroll);
@@ -130,14 +131,16 @@ function initCourseShow() {
     }
 
     function scroll() {
-      const screen_bottom = $(window).scrollTop() + $(window).height();
-      let i = 0;
-      while(i < series.length && series[i].position < screen_bottom) {
-        if (series[i].needsLoading()) {
-          series[i].load();
-        }
-        i += 1;
-      }
+      const screen_top = $(window).scrollTop();
+      const screen_bottom = screen_top + $(window).height();
+      const first_visible = series.findIndex(s => screen_top < s.bottom);
+      const first_to_load = first_visible <= 0 ? 0 : first_visible - 1;
+      const last_visible_idx = series.findIndex(s => screen_bottom < s.top);
+      const last_to_load = last_visible_idx == -1 ? series.length : last_visible_idx;
+
+      series.slice(first_to_load, last_to_load + 1)
+            .filter(s => s.needsLoading())
+            .forEach(s => s.load());
     }
 
     init();

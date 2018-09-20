@@ -100,10 +100,10 @@
           </div>
         </div>
         <div id="series-listing">
-          <% @series.first(5).each do |series| %>
+          <% @series.first(@series_loaded).each do |series| %>
             <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
           <% end %>
-          <% @series.offset(5).each do |series| %>
+          <% @series.offset(@series_loaded).each do |series| %>
             <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
           <% end %>
         </div>

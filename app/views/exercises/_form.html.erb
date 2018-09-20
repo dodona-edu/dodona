@@ -1,7 +1,7 @@
 <% content_for :javascripts do %>
   <% javascript_pack_tag 'exercise' %>
 <% end %>
-<%= form_for(exercise, :url => exercise_path(exercise), :html => {:class => 'form-horizontal'}) do |f| %>
+<%= form_for(exercise, :url => exercise_scoped_path(exercise: exercise, course: @course, series: @series), :html => {:class => 'form-horizontal'}) do |f| %>
   <% if exercise.errors.any? %>
     <div id="error_explanation">
       <h2><%= t('errors.validation_errors', :count => exercise.errors.count) %></h2>

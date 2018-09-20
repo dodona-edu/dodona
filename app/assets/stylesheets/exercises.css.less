@@ -124,11 +124,17 @@ center img {
   width: 100%;
   .skeleton-head {
     border-bottom: solid 1px #ddd;
-    height: 40px;
+    height: 33px;
     background-repeat: no-repeat;
-    background-image: linear-gradient(@grey-300 100%, transparent 0);
-    background-size: 56px 12px;
-    background-position: 56px 15px;
+    background-image:
+      linear-gradient(@grey-300 100%, transparent 0),
+      linear-gradient(@grey-300 100%, transparent 0);
+    background-size:
+      56px 12px,
+      115px 12px;
+    background-position:
+      58px 10px,
+      ~'calc(100% - 75px)' 10px;
   }
   .skeleton-row {
     border-top: solid 1px #ddd;
@@ -136,13 +142,19 @@ center img {
     background-repeat: no-repeat;
     background-image:
       linear-gradient(@grey-300 100%, transparent 0),
+      linear-gradient(@grey-300 100%, transparent 0),
+      linear-gradient(@grey-300 100%, transparent 0),
       linear-gradient(@grey-300 100%, transparent 0);
     background-size:
       90px 12px,
-      24px 12px;
+      24px 12px,
+      90px 12px,
+      8px 12px;
     background-position:
-      56px 15px,
-      ~'calc(100% - 8px)' 15px;
+      58px 15px,
+      ~'calc(100% - 210px)' 15px,
+      ~'calc(100% - 100px)' 15px,
+      ~'calc(100% - 25px)' 15px;
     padding-right: 8px;
   }
 }

@@ -91,7 +91,7 @@ function updateArrayURLParameter(url, param, _paramVals) {
         }
         tempArray = additionalURL.split("&");
         for (let i = 0; i < tempArray.length; i++) {
-            if (tempArray[i].split("=")[0] !== `${param}[]`) {
+            if (tempArray[i].split("=")[0] !== `${param}%5B%5D`) {
                 newAdditionalURL += temp + tempArray[i];
                 temp = "&";
             }
@@ -107,7 +107,7 @@ function updateArrayURLParameter(url, param, _paramVals) {
     }
     let rowsTxt = "";
     for (let paramVal of paramVals) {
-        rowsTxt += `${temp}${param}[]=${paramVal}`;
+        rowsTxt += `${temp}${param}%5B%5D=${paramVal}`;
         temp = "&";
     }
     if (TheAnchor) {
@@ -130,7 +130,8 @@ function getArrayURLParameter(name, _url) {
     const url = _url || window.location.href;
     let result = [];
     for (let part of url.split(/[?&]/)) {
-        const regResults = new RegExp(`${name}\\[]=([^#]+)`).exec(part);
+        const regResults = new RegExp(`${name}%5B%5D=([^#]+)`).exec(part);
+        console.log(part, regResults);
         if (regResults && regResults[1]) {
             result.push(decodeURIComponent(regResults[1]));
         }

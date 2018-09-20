@@ -9,7 +9,9 @@
   <% summary ||= nil %>
 <% end %>
 
-<div class="card card-supporting-text series">
+<div class="card card-supporting-text series"
+     id="series-card-<%= series.id %>"
+     data-series-url="<%= series_path(series, format: :js) %>">
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>"  name="<%= series.name %>"></a>
     <%= render partial: 'series/series_status', locals: { loaded: loaded, summary: summary } %>
@@ -95,7 +97,7 @@
   <%= markdown(series.description) %>
 
   <% if series.exercises.length > 0 %>
-    <div class="series-exercises-table-wrapper" id="exercises-table-<%= series.id %>">
+    <div class="series-exercises-table-wrapper">
     <% if loaded %>
       <%= render partial: 'exercises/exercises_table', locals: {
             series: series,

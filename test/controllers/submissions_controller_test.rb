@@ -7,7 +7,8 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @instance = create :submission
-    sign_in create(:zeus)
+    @zeus = create(:zeus)
+    sign_in @zeus
   end
 
   test_crud_actions only: %i[index show create], except: %i[create_redirect]
@@ -58,6 +59,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   test 'create submission within course' do
     attrs = generate_attr_hash
     course = create :course
+    course.subscribed_members << @zeus
     attrs[:course_id] = course.id
 
     submission = create_request_expect attr_hash: attrs

@@ -131,7 +131,6 @@ function initCourseShow() {
 
     function scroll() {
       const screen_bottom = $(window).scrollTop() + $(window).height();
-      console.log(screen_bottom);
       let i = 0;
       while(i < series.length && series[i].position < screen_bottom) {
         if (series[i].needsLoading()) {

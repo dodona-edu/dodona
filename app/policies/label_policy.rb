@@ -18,7 +18,7 @@ class LabelPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.admin?
+    user&.zeus?
   end
 
   def destroy?

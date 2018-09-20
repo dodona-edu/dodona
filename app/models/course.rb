@@ -128,7 +128,8 @@ class Course < ApplicationRecord
   def correct_solutions_cached
     if correct_solutions.nil?
       self.correct_solutions = Submission.where(status: 'correct',
-                                                course: self)
+                                                course: self,
+                                                user: subscribed_members)
                                          .select(:exercise_id,
                                                  :user_id)
                                          .distinct
@@ -139,7 +140,7 @@ class Course < ApplicationRecord
   end
 
   def average_progress
-    avg = ((100 * correct_solutions_cached).to_d / (users.count * exercises.count).to_d)
+    avg = ((100 * correct_solutions_cached).to_d / (subscribed_members.count * exercises.count).to_d)
     avg.nan? ? 0 : avg
   end
 

@@ -31,9 +31,10 @@ class Submission < ApplicationRecord
 
   default_scope { order(id: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
+  scope :of_users, ->(users) { where user_id: users.map{|u| u.id} }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
-  scope :in_course, ->(course) { where course_id: course.id }
+  scope :in_course, ->(course) { where(course_id: course.id) }
   scope :in_series, ->(series) { joins(exercise: :series_memberships).where(course_id: series.course.id).where(series_memberships: { series_id: series.id }) }
 
   scope :by_exercise_name, ->(name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }

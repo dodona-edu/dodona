@@ -192,12 +192,14 @@ class Exercise < ApplicationRecord
   def users_correct(course = nil)
     subs = submissions.where(status: :correct)
     subs = subs.in_course(course) if course
+    subs = subs.of_users(course.subscribed_members) if course
     subs.distinct.count(:user_id)
   end
 
   def users_tried(course = nil)
     subs = submissions.all
     subs = subs.in_course(course) if course
+    subs = subs.of_users(course.subscribed_members) if course
     subs.distinct.count(:user_id)
   end
 

@@ -1,0 +1,6 @@
+<% series_card = render partial: 'series.html.erb',
+                        locals: { 
+                          series: @series,
+                          loaded: true
+                        } %>
+$("#series-card-<%= @series.id %>").replaceWith("<%= escape_javascript series_card %>");

@@ -52,18 +52,54 @@ function initCourseMembers() {
     initUserTabs();
 }
 
-function initCourseShow(_seriesShown, _seriesTotal) {
-    const seriesTotal = _seriesTotal;
 
-    let seriesShown = _seriesShown,
-        loading = false;
+const table_wrapper_selector = '.series-exercises-table-wrapper';
+const skeleton_table_selector = '.exercise-table-skeleton';
 
+class Series {
+  static findAll(cards_selector='.series.card') {
+    let $cards = $(cards_selector);
+    return $.map($cards, card => new Series(card));
+  }
+
+  constructor(card,) {
+    this.id = +card.id.split('series-card-')[1];
+
+    this.reselect(card);
+  }
+
+  reselect(card_selector){
+    this.$card = $(card_selector);
+    this.url = this.$card.data("series-url");
+    this.$table_wrapper = this.$card.find(table_wrapper_selector);
+    this.$skeleton = this.$table_wrapper.find(skeleton_table_selector);
+    this.loaded = this.$skeleton.length === 0;
+    this.loading = false;
+    this.position = this.$card.offset().top;
+  }
+
+  needsLoading(){
+    return !this.loaded && !this.loading;
+  }
+
+  load(callback=()=>{}) {
+    this.loading = true;
+    $.get(this.url).done(() => {
+      this.loading = false;
+      this.reselect(`#series-card-${this.id}`);
+    });
+    callback();
+  }
+}
+
+function initCourseShow() {
+    let series = Series.findAll().sort((s1, s2) => s1.position - s2.position);
 
     function init() {
-        $(".load-more-series").click(loadMoreSeries);
         $(window).scroll(scroll);
         gotoHashSeries();
         window.addEventListener("hashchange", gotoHashSeries);
+        scroll(); // Also load series
     }
 
     function gotoHashSeries() {
@@ -93,38 +129,16 @@ function initCourseShow(_seriesShown, _seriesTotal) {
         }
     }
 
-    function loadMoreSeries() {
-        if (loading) {
-            return;
-        }
-        loading = true;
-        $(".load-more-series").button("loading");
-        $.get(`?format=js&offset=${seriesShown}`)
-            .done(() => {
-                seriesShown = $(".series").length;
-                if (seriesShown >= seriesTotal) {
-                    $(".load-more-series").hide();
-                }
-            })
-            .always(() => {
-                loading = false;
-                $(".load-more-series").button("reset");
-            });
-    }
-
     function scroll() {
-        if (loading) {
-            return;
+      const screen_bottom = $(window).scrollTop() + $(window).height();
+      console.log(screen_bottom);
+      let i = 0;
+      while(i < series.length && series[i].position < screen_bottom) {
+        if (series[i].needsLoading()) {
+          series[i].load();
         }
-        if (seriesShown >= seriesTotal) {
-            return;
-        }
-
-        const topOfElement = $(".load-more-series").offset().top;
-        const bottomOfScreen = $(window).scrollTop() + $(window).height();
-        if (topOfElement < bottomOfScreen) {
-            loadMoreSeries();
-        }
+        i += 1;
+      }
     }
 
     init();

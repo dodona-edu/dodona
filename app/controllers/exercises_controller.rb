@@ -20,10 +20,8 @@ class ExercisesController < ApplicationController
                    authorize @series, :show?
                    @series.exercises
                  else
-                   Exercise.all
+                   policy_scope(Exercise)
                  end
-
-    @exercises = policy_scope(@exercises)
 
     if params[:repository_id]
       @repository = Repository.find(params[:repository_id])

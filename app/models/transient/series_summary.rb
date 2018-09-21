@@ -17,8 +17,9 @@ class SeriesSummary
         if exercises
           series.series_memberships.where(exercise: exercises)
         else
-          series.series_memberships.includes(:exercise)
+          series.series_memberships
         end
+      @series_memberships = @series_memberships.includes(:exercise)
       @exercises ||= @series_memberships.map(&:exercise)
     end
 

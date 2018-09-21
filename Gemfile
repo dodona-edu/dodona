@@ -145,11 +145,22 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
+
+  # gem 'bullet'
+
+  # Remove git fork once this PR is merged
+  gem 'rails-perftest', 
+      git: 'https://github.com/mistersourcerer/rails-perftest.git',
+      branch: 'ms_#38_calltree-new-interface'
+  gem 'ruby-prof'
 end
 
 group :test do
   # for measuring coverage
   gem 'simplecov', require: false
+
+  # Add before_all to tests
+  gem 'minitest-hooks'
 end
 
 group :development do

@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+ARGV = ['test:profile', 'TEST=benchmark/*']
+load './bin/rails'

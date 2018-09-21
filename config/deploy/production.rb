@@ -86,3 +86,14 @@ end
 #     auth_methods: %w(publickey password)
 #     # password: 'please use keys'
 #   }
+
+namespace :tutor do
+    desc 'Starting tutor'
+    task :tutor do
+        on roles(:web) do
+            execute :screen, "-dm docker run --rm -p 8080:8080 python-tutor-webservice"
+        end
+    end
+end
+
+after "deploy", "tutor:tutor"

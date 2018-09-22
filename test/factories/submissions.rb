@@ -17,7 +17,7 @@ FactoryBot.define do
   factory :submission do
     code { Faker::Lorem.paragraph }
     evaluate { true }
-    rate_limited { false }
+    skip_rate_limit_check { true }
 
     transient do
       status { nil }
@@ -34,10 +34,6 @@ FactoryBot.define do
       attrs[:status] = e.status if e.status
       attrs[:summary] = e.summary if e.summary
       submission.update(attrs)
-    end
-
-    after(:build) do |submission, e|
-      submission.stubs(:submission_rate_limiting) unless e.rate_limited
     end
 
     user
@@ -71,5 +67,9 @@ FactoryBot.define do
 
     factory :wrong_submission, traits: [:wrong]
     factory :correct_submission, traits: [:correct]
+
+    trait :rate_limited do
+      skip_rate_limit_check { false }
+    end
   end
 end

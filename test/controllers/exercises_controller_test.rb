@@ -120,7 +120,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
     get available_exercises_series_url(series, format: :json)
 
-    assert_response :redirect
+    assert_response :forbidden
   end
 
   def assert_response_contains_exercise(exercise, msg=nil)

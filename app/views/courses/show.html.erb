@@ -87,29 +87,26 @@
       <% end %>
     </div>
     <% if policy(@course).show_series? %>
-        <div class="page-subtitle">
-          <a class="anchor" id="series"></a>
-          <h3><%= t ".exercise_series" %></h3>
-          <div class="flex-spacer"></div>
-          <div>
-            <% if policy(@course).add_series? %>
-              <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn btn-primary btn-fab-extended" do %>
-                <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
-              <% end %>
+      <div class="page-subtitle">
+        <a class="anchor" id="series"></a>
+        <h3><%= t ".exercise_series" %></h3>
+        <div class="flex-spacer"></div>
+        <div>
+          <% if policy(@course).add_series? %>
+            <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn btn-primary btn-fab-extended" do %>
+              <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
             <% end %>
-          </div>
-        </div>
-        <div id="series-listing">
-          <% @series.first(@series_loaded).each do |series| %>
-            <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
-          <% end %>
-          <% @series.offset(@series_loaded).each do |series| %>
-            <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
           <% end %>
         </div>
-        <% if false && @total_series > @series.length %>
-          <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
+      </div>
+      <div id="series-listing">
+        <% @series.first(@series_loaded).each do |series| %>
+          <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
         <% end %>
+        <% @series.offset(@series_loaded).each do |series| %>
+          <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>

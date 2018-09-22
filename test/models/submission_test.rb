@@ -19,4 +19,26 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'factory should create submission' do
     assert_not_nil create(:submission)
   end
+
+  test 'submissions should be rate limited for a user' do
+    user = create :user
+    create :submission, user: user
+    submission = build :submission, user: user, rate_limited: true
+    assert_not submission.valid?
+
+    later = Time.now + 10.seconds
+
+    Time.stubs(:now).returns(later)
+
+    later_submission = build :submission, user: user, rate_limited: true
+    assert later_submission.valid?, 'should be able to create submission after waiting'
+  end
+
+  test 'submissions should not be rate limited for different users' do
+    user = create :user
+    other = create :user
+    create :submission, user: user
+    submission = build :submission, user: other, rate_limited: true
+    assert submission.valid?
+  end
 end

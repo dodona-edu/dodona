@@ -12,7 +12,6 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #
-
 class Submission < ApplicationRecord
   enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
 
@@ -24,7 +23,7 @@ class Submission < ApplicationRecord
 
   delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
 
-  validate :code_cannot_contain_emoji, on: :create
+  validate :code_cannot_contain_emoji, :submission_rate_limiting, on: :create
 
   after_update :invalidate_stats_cache
   after_create :evaluate_delayed, if: :evaluate?
@@ -70,6 +69,8 @@ class Submission < ApplicationRecord
 
   def initialize(params)
     raise 'please explicitly tell wheter you want to evaluate this submission' unless params.has_key? :evaluate
+    @rate_limited = params.delete(:rate_limited)
+    @rate_limited = true if @rate_limited.nil?
     @evaluate = params.delete(:evaluate)
     super
     self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
@@ -113,6 +114,15 @@ class Submission < ApplicationRecord
   def code_cannot_contain_emoji
     no_emoji_found = code.chars.all? { |c| c.bytes.length < 4 }
     errors.add(:code, 'emoji found') unless no_emoji_found
+  end
+
+  def submission_rate_limiting
+    return if self.user.nil? || !@rate_limited
+    latest = self.user.submissions.most_recent.first
+    if latest.present?
+      time_since_latest = Time.now - latest.created_at
+      errors.add(:submission, 'too little time between latest') if time_since_latest < 5.seconds
+    end
   end
 
   def self.rejudge(submissions, priority = :low)

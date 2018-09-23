@@ -372,7 +372,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'not-admins should not be able to list members' do
     with_users_signed_in @not_admins do |who|
       get members_course_url(@course), xhr: true
-      assert_response :redirect, "#{who} should not be able to list members"
+      assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to list members"
     end
   end
 
@@ -393,7 +393,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
         courses = JSON.parse response.body
         assert_not courses.any? { |c| c['id'] == @course.id }, "#{who} should not be able to see a hidden course"
       else
-        assert_response :redirect
+        assert (response.forbidden? || response.unauthorized?)
       end
     end
   end

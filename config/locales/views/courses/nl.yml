@@ -4,6 +4,7 @@ nl:
       show: Cursus bekijken
       members: Ingeschreven gebruikers
       edit: Cursus bewerken
+      submissions: Oplossingen voor dit vak
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.

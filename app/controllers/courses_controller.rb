@@ -21,15 +21,7 @@ class CoursesController < ApplicationController
   def show
     @title = @course.name
     @series = policy_scope(@course.series)
-    @total_series = @series.count
-    number_of_series = if params[:series]
-                         @series.find_index { |s| s.id == params[:series].to_i }.to_i + 3
-                       else
-                         5
-                       end
-
-    @series = @series.offset(params[:offset]) if params[:offset]
-    @series = @series.limit(number_of_series) unless params[:all]
+    @series_loaded = 5
   end
 
   # GET /courses/new

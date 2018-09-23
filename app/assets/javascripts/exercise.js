@@ -228,8 +228,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (request.status === 422) {
             try {
                 let response = JSON.parse(request.responseText);
-                if (response.errors.code[0] === "emoji found") {
+                let errors = response.errors;
+                if (errors.code && errors.code[0] === "emoji found") {
                     message = I18n.t("js.submission-emoji");
+                } else if (errors.submission && errors.submission[0] === "rate limited") {
+                    message = I18n.t("js.submission-rate-limit");
                 }
             } catch (e) { }
         }

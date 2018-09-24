@@ -107,7 +107,7 @@ if Rails.env.development?
 
   exercises_list = Exercise.all.to_a
 
-  puts 'Add series, exercises and exercises to courses'
+  puts 'Add series, exercises and submissions to courses'
 
   # Add exercices to test course
   courses.each do |course|
@@ -149,7 +149,7 @@ if Rails.env.development?
                             course: s.course,
                             exercise: exercise,
                             evaluate: false,
-                            rate_limited: false,
+                            skip_rate_limit_check: true,
                             result: {},
                             status: status,
                             accepted: status == :correct,
@@ -177,7 +177,7 @@ if Rails.env.development?
         Submission.create user: zeus,
           exercise: exercise,
           evaluate: false,
-          rate_limited: false,
+          skip_rate_limit_check: true,
           course: status_test,
           status: before,
           accepted: before == :correct,
@@ -188,7 +188,7 @@ if Rails.env.development?
         Submission.create user: zeus,
           exercise: exercise,
           evaluate: false,
-          rate_limited: false,
+          skip_rate_limit_check: true,
           course: status_test,
           status: after,
           accepted: after == :correct,

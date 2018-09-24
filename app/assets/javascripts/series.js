@@ -23,7 +23,7 @@ function initSeriesEdit() {
             }
             const $row = $(this).parents("tr").clone();
             $row.addClass("new");
-            $row.children("td:first").before("<td><div class='drag-handle'><i class='material-icons md-18'>reorder</i></div></td>")
+            $row.children("td:first").before("<td><div class='drag-handle'><i class='material-icons md-18'>reorder</i></div></td>");
             $row.children("td.actions").html("<a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><i class='material-icons md-18'>delete</i></a>");
             $(".series-exercise-list tbody").append($row);
             $row.css("opacity"); // trigger paint
@@ -51,6 +51,7 @@ function initSeriesEdit() {
             moves: function (el, source, handle, sibling) {
                 return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
             },
+            mirrorContainer: $(".series-exercise-list tbody").get(0),
         }).on("drop", function () {
             let seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
             let order = $(".series-exercise-list a.remove-exercise").map(function () {

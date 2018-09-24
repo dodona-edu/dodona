@@ -273,8 +273,8 @@ class Exercise < ApplicationRecord
   end
 
   def self.move_relations(from, to)
-    from.submissions.each{|s| s.exercise = to}
-    from.series_memberships.each{|sm| sm.exercise = to unless SeriesMembership.find_by(exercise: to, series: sm.series)}
+    from.submissions.each{|s| s.update(exercise: to) }
+    from.series_memberships.each{|sm| sm.update(exercise: to) unless SeriesMembership.find_by(exercise: to, series: sm.series)}
   end
 
   def safe_destroy

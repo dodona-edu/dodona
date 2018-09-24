@@ -25,6 +25,9 @@
                 <th>
                   <%= ProgrammingLanguage.human_attribute_name("extension") %>
                 </th>
+                <th>
+                  <%= t('.exercises') %>
+                </th>
                 <th class="actions">
                   <%= t('.actions') %>
                 </th>
@@ -41,6 +44,9 @@
                   </td>
                   <td>
                     <%= programming_language.extension %>
+                  </td>
+                  <td>
+                    <%= link_to programming_language.exercises.count, exercises_path(programming_language: programming_language.name) %>
                   </td>
                   <td class="actions">
                     <% if policy(programming_language).edit? %>

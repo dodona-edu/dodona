@@ -58,7 +58,7 @@ function initFilter(baseUrl, eager, _labels, _programmingLanguages) {
     }
 }
 
-function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
+function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels, programmingLanguages) {
     function init() {
         initLabels();
 

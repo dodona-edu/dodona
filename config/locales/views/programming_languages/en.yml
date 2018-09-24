@@ -1,8 +1,9 @@
 en:
   programming_languages:
-    index: 
+    index:
       title: Programming Languages
       actions: Actions
+      exercises: "Exercises"
     new:
       title: New Programming Language
     edit:

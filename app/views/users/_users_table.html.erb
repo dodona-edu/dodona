@@ -3,7 +3,6 @@
   <thead>
     <tr>
       <th class='status-icon'></th>
-      <th><%= User.human_attribute_name("username") %></th>
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
       <% if @repository %>
@@ -34,10 +33,7 @@
             <i class="material-icons md-18" title='<%= t ".no_ugent" %>'>warning</i>
           <% end %>
         </td>
-        <td>
-          <%= link_to user.short_name, user %>
-        </td>
-        <td><%= user.full_name %></td>
+        <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
         <td><%= user.email %></td>
         <% if @repository %>
           <% show_delete_button = local_assigns.fetch(:show_delete_button, false) %>

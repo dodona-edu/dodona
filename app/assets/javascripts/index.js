@@ -180,33 +180,27 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels, programm
             delay(doSearch, 100);
         }
 
+        function customWhitespaceTokenizer(datum) {
+            const result = Bloodhound.tokenizers.whitespace(datum);
+            $.each(result, (i, val) => {
+                for (let i = 1; i < val.length; i++) {
+                    result.push(val.substr(i, val.length));
+                }
+            });
+            return result;
+        }
+
         const labelEngine = new Bloodhound({
             local: labels,
             identify: d => d.id,
-            datumTokenizer: d => {
-                const result = Bloodhound.tokenizers.whitespace(d.name);
-                $.each(result, (i, val) => {
-                    for (let i = 1; i < val.length; i++) {
-                        result.push(val.substr(i, val.length));
-                    }
-                });
-                return result;
-            },
+            datumTokenizer: d => customWhitespaceTokenizer(d.name),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
         });
 
         const programmingLanguageEngine = new Bloodhound({
             local: programmingLanguages,
             identify: d => d.id,
-            datumTokenizer: d => {
-                const result = Bloodhound.tokenizers.whitespace(d.name);
-                $.each(result, (i, val) => {
-                    for (let i = 1; i < val.length; i++) {
-                        result.push(val.substr(i, val.length));
-                    }
-                });
-                return result;
-            },
+            datumTokenizer: d => customWhitespaceTokenizer(d.name),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
         });
 

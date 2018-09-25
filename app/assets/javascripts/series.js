@@ -47,11 +47,12 @@ function initSeriesEdit() {
     }
 
     function initDragAndDrop() {
-        dragula([$(".series-exercise-list tbody").get(0)], {
+        const tableBody = $(".series-exercise-list tbody").get(0);
+        dragula([tableBody], {
             moves: function (el, source, handle, sibling) {
                 return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
             },
-            mirrorContainer: $(".series-exercise-list tbody").get(0),
+            mirrorContainer: tableBody,
         }).on("drop", function () {
             let seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
             let order = $(".series-exercise-list a.remove-exercise").map(function () {

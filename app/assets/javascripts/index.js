@@ -156,6 +156,8 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels, programm
                 return labels.map(l => l.name).indexOf(e.attrs.value) >= 0;
             } else if (e.attrs.type === "programmingLanguage") {
                 return programmingLanguages.map(p => p.name).indexOf(e.attrs.value) >= 0;
+            } else {
+                return false;
             }
         }
 

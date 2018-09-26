@@ -1,48 +1,51 @@
 <table class="table exercise-table table-resource">
-  <thead>
-  <tr>
-    <% if local_assigns.fetch(:show_buttons_for_present, false) %>
-      <th class="col-xs-1"></th>
-    <% end %>
-    <th class="col-xs-1"></th>
-    <th class="col-xs-5"><%= t "exercises.index.exercise" %></th>
-    <th class="col-xs-2"><%= t "exercises.index.repository" %></th>
-    <th class="col-xs-2"><%= t "exercises.index.path" %></th>
-    <th class="col-xs-1 actions"></th>
-  </tr>
-  </thead>
+  <colgroup>
+    <col/>
+    <col/>
+    <col class="col-xs-5"/>
+    <col class="col-xs-5"/>
+    <col class="col-xs-1"/>
+  </colgroup>
   <tbody>
     <% exercises.each do |exercise| %>
     <tr>
-      <% if local_assigns.fetch(:show_buttons_for_present, false) %>
-        <td>
+      <td>
+        <% if local_assigns.fetch(:show_buttons_for_present, false) %>
           <div class="drag-handle">
             <i class="material-icons md-18">reorder</i>
           </div>
-        </td>
-      <% end %>
+        <% end %>
+      </td>
       <td class="status-icon">
-        <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.private")}'>visibility_off</i>" if exercise.access_private? %>
-        <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.removed")}'>delete</i>" if exercise.removed? %>
-        <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.invalid")}'>error</i>" if exercise.not_valid? %>
+        <span class="pull-right">
+          <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.private")}'>visibility_off</i>" if exercise.access_private? %>
+          <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.removed")}'>delete</i>" if exercise.removed? %>
+          <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.invalid")}'>error</i>" if exercise.not_valid? %>
+        </span>
       </td>
       <td>
-        <span class="pull-left ellipsis-overflow" title="<%= exercise.name %>">
+        <span class="ellipsis-overflow" title="<%= exercise.name %>">
           <%= link_to exercise.name, exercise_path(exercise), target: "_blank" %>
         </span>
-        <span class="pull-right">
-          <%# We can't just use exercise.labels because a search by labels might restrict the loaded labels %>
-          <% Label.includes(:exercises).where(exercises: { id: exercise.id }).each do |label| %>
-            <span class="label label-default accent-<%= label.color %>"><%= label.name %></span>
-          <% end %>
-          <span class="label label-default accent-teal"><%= exercise.programming_language.name %></span>
-        </span>
+        <div class="text-muted">
+          <small>
+            <span class="ellipsis-overflow" title="<%= exercise.repository.name %>: <%= exercise.path %>"><%= exercise.repository.name %>: <%= exercise.path %></span>
+          </small>
+        </div>
       </td>
-      <td>
-        <span class="ellipsis-overflow" title="<%= exercise.repository.name %>"><%= exercise.repository.name %></span>
-      </td>
-      <td>
-        <span class="ellipsis-overflow" title="<%= exercise.path %>"><%= exercise.path %></span>
+      <td class="series-exercises-table-labels">
+        <span><%= exercise.programming_language&.name || "" %></span>
+        <div class="text-muted">
+          <small>
+            <%# We can't just use exercise.labels because a search by labels might restrict the loaded labels %>
+            <% labels = Label.includes(:exercises).where(exercises: { id: exercise.id }).load %>
+            <% if labels.count > 5 %>
+              <span title="<%= labels.map(&:name).join(", ") %>"><%= labels.first(5).map(&:name).join(", ") + ", ..." %></span>
+            <% else %>
+              <%= labels.map{|label| "#{label.name}"}.join(", ") %>
+            <% end %>
+          </small>
+        </div>
       </td>
       <td class="actions">
         <% if !series.exercises.include? exercise %>

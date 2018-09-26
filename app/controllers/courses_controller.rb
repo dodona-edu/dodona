@@ -4,13 +4,14 @@ class CoursesController < ApplicationController
   skip_forgery_protection only: [:subscribe]
 
   has_scope :by_permission, only: :members
-  has_scope :by_name, only: :members, as: 'filter'
+  has_scope :by_name, only: [:members, :index], as: 'filter'
 
   # GET /courses
   # GET /courses.json
   def index
     authorize Course
     @courses = policy_scope(Course.all)
+    @courses = apply_scopes(@courses)
     @grouped_courses = @courses.group_by(&:year)
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @title = I18n.t('courses.index.title')

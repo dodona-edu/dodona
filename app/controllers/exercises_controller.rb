@@ -31,7 +31,7 @@ class ExercisesController < ApplicationController
 
     @exercises = apply_scopes(@exercises)
 
-    @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
+    @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: params[:page])
     @labels = Label.all
     @programming_languages = ProgrammingLanguage.all
     @title = I18n.t('exercises.index.title')
@@ -44,7 +44,7 @@ class ExercisesController < ApplicationController
     @exercises = policy_scope(Exercise)
     @exercises = @exercises.or(Exercise.where(repository: @course.usable_repositories))
     @exercises = apply_scopes(@exercises)
-    @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
+    @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: params[:page])
     @labels = Label.all
     @programming_languages = ProgrammingLanguage.all
   end

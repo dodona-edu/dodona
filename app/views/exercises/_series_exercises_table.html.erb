@@ -2,14 +2,13 @@
   <thead>
   <tr>
     <% if local_assigns.fetch(:show_buttons_for_present, false) %>
-      <th></th>
+      <th class="col-xs-1"></th>
     <% end %>
-    <th></th>
-    <th><%= t "exercises.index.exercise" %></th>
-    <th><%= t "exercises.index.repository" %></th>
-    <th><%= t "exercises.index.programming_language" %></th>
-    <th><%= t "exercises.index.labels" %></th>
-    <th class="actions"></th>
+    <th class="col-xs-1"></th>
+    <th class="col-xs-5"><%= t "exercises.index.exercise" %></th>
+    <th class="col-xs-2"><%= t "exercises.index.repository" %></th>
+    <th class="col-xs-2"><%= t "exercises.index.path" %></th>
+    <th class="col-xs-1 actions"></th>
   </tr>
   </thead>
   <tbody>
@@ -28,18 +27,22 @@
         <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.invalid")}'>error</i>" if exercise.not_valid? %>
       </td>
       <td>
-        <%= link_to exercise.name, exercise_path(exercise), target: "_blank" %>
+        <span class="pull-left ellipsis-overflow" title="<%= exercise.name %>">
+          <%= link_to exercise.name, exercise_path(exercise), target: "_blank" %>
+        </span>
+        <span class="pull-right">
+          <%# We can't just use exercise.labels because a search by labels might restrict the loaded labels %>
+          <% Label.includes(:exercises).where(exercises: { id: exercise.id }).each do |label| %>
+            <span class="label label-default accent-<%= label.color %>"><%= label.name %></span>
+          <% end %>
+          <span class="label label-default accent-teal"><%= exercise.programming_language.name %></span>
+        </span>
       </td>
       <td>
         <%= exercise.repository.name %>
       </td>
       <td>
-        <%= exercise.programming_language.name %>
-      </td>
-      <td>
-        <% exercise.labels.each do |label| %>
-          <span class="label label-default accent-<%= label.color %>"><%= label.name %></span>
-        <% end %>
+        <span class="ellipsis-overflow" title="<%= exercise.path %>"><%= exercise.path %></span>
       </td>
       <td class="actions">
         <% if !series.exercises.include? exercise %>

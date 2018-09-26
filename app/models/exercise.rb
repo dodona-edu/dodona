@@ -55,8 +55,8 @@ class Exercise < ApplicationRecord
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
-  scope :by_labels, ->(labels) { joins(:labels).includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
-  scope :by_programming_language, ->(programming_language) { joins(:programming_language).includes(:programming_language).where(programming_languages: {name: programming_language})}
+  scope :by_labels, ->(labels) { includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
+  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: {name: programming_language})}
   scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_access(query)) }
 
   def full_path

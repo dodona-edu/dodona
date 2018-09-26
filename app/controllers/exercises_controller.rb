@@ -115,7 +115,7 @@ class ExercisesController < ApplicationController
   def set_series
     return if params[:series_id].nil?
     @series = Series.find(params[:series_id])
-    @crumbs << [@series.name, course_path(@course, series: @series, anchor: "series-#{@series.name.parameterize}")]
+    @crumbs << [@series.name, course_path(@course, series: @series, anchor: @series.anchor)]
     authorize @series
   end
 end

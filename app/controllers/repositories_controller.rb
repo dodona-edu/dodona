@@ -132,7 +132,7 @@ class RepositoriesController < ApplicationController
   end
 
   def reprocess
-    @repository.process_exercises
+    @repository.process_exercises_email_errors(user: current_user)
     redirect_to(@repository, notice: I18n.t('repositories.reprocess.done'))
   end
 

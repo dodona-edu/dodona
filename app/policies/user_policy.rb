@@ -9,6 +9,10 @@ class UserPolicy < ApplicationPolicy
     user&.zeus?
   end
 
+  def available_for_repository?
+    user&.admin?
+  end
+
   def show?
     return false unless user
     return true if user.zeus?

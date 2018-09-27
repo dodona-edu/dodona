@@ -16,6 +16,7 @@ en:
       edit: 'Edit'
       delete: 'Delete'
       actions: "Actions"
+      institution: "Institution"
     new:
       title: Create user
     show:

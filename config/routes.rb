@@ -95,6 +95,7 @@ Rails.application.routes.draw do
       resources :api_tokens, only: %i[index create destroy], shallow: true
       resources :submissions, only: [:index]
       get 'stop_impersonating', on: :collection
+      get 'available_for_repository', on: :collection
       member do
         get 'impersonate'
         get 'token/:token', to: 'users#token_sign_in', as: 'token_sign_in'

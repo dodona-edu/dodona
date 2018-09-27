@@ -11,9 +11,9 @@ module UsersHelper
     user.student? || user.staff?
   end
 
-  def user_page_navigation_links(users, opts)
+  def user_page_navigation_links(users, opts, action = 'index')
     opts ||= {}
     controller = 'users' if users.try(:total_pages)
-    page_navigation_links users, true, controller, opts
+    page_navigation_links users, true, controller, opts, action
   end
 end

@@ -433,4 +433,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_not response.successful?
   end
 
+  test 'subscribing to a moderated course when already subscribed should not change status' do
+    user = @students.first
+    course = create :course, registration: :moderated
+    course.subscribed_members << user
+
+    sign_in user
+    post subscribe_course_url(course)
+    assert_redirected_to course
+    assert course.subscribed_members.include?(user)
+  end
+
 end

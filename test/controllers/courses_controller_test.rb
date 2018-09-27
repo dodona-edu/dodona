@@ -130,6 +130,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'zeus visiting registration page when subscribed should redirect' do
+    zeus = create :zeus
+    @course.subscribed_members << zeus
+    sign_in zeus
+
+    get registration_course_url(@course, @course.secret)
+    assert_redirected_to @course, "zeus should be redirected"
+  end
+
   test 'should not subscribe to hidden course with invalid, empty or absent secret' do
     @course.update(visibility: 'hidden')
     with_users_signed_in @not_subscribed do |who, user|

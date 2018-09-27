@@ -123,22 +123,27 @@ class CoursesController < ApplicationController
     return if performed? # return if redirect happenned
 
     respond_to do |format|
-      case @course.registration
-      when 'open'
-        if try_to_subscribe_current_user
-          subscription_succeeded_response format
-        else
-          subscription_failed_response format
+      if current_user.member_of? @course
+        format.html { redirect_to(@course) }
+        format.json { render json: { errors: ['already subscribed'] }, status: :unprocessable_entity }
+      else
+        case @course.registration
+        when 'open'
+          if try_to_subscribe_current_user
+            subscription_succeeded_response format
+          else
+            subscription_failed_response format
+          end
+        when 'moderated'
+          if try_to_subscribe_current_user status: 'pending'
+            signup_succeeded_response format
+          else
+            subscription_failed_response format
+          end
+        when 'closed'
+          format.html { redirect_to(@course, alert: I18n.t('courses.registration.closed')) }
+          format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
         end
-      when 'moderated'
-        if try_to_subscribe_current_user status: 'pending'
-          signup_succeeded_response format
-        else
-          subscription_failed_response format
-        end
-      when 'closed'
-        format.html { redirect_to(@course, alert: I18n.t('courses.registration.closed')) }
-        format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
       end
     end
   end

@@ -23,7 +23,6 @@
       <% end %>
     <% end %>
     <%= link_to user_office365_omniauth_authorize_path, class:'institution-sign-in' do %>
-        <%# Only College Waregem uses O365 at this moment %>
         <div class="col-sm-6 col-lg-4">
           <div class="institution">
             <div class="institution-logo">
@@ -52,7 +51,6 @@
         </div>
     <% end %>
     <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do%>
-        <%# Only College Ieper uses Smartschool at this moment %>
         <div class="col-sm-6 col-lg-4">
           <div class="institution">
             <div class="institution-logo">
@@ -65,6 +63,20 @@
             <div class="institution-go"><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
+    <% end %>
+    <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do%>
+      <div class="col-sm-6 col-lg-4">
+        <div class="institution">
+          <div class="institution-logo">
+            <%= image_tag 'idp/mska-roeselare.jpg', class: "img-responsive" %>
+          </div>
+          <div class="institution-name">
+            <h3>MSKA Roeselare<br>
+              <small>Inloggen met Smartschool</small></h3>
+          </div>
+          <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+        </div>
+      </div>
     <% end %>
     </div>
   </div>

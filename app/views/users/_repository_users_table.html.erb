@@ -1,0 +1,40 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource">
+    <thead>
+      <tr>
+        <th class='status-icon'></th>
+        <th><%= User.human_attribute_name("name") %></th>
+        <th><%= t "users.index.institution" %></th>
+        <th class="text-right"><%=  t("users.index.actions")  %></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% users.each do |user| %>
+      <tr>
+        <td>
+          <% if user.zeus? %>
+            <i class="material-icons md-18" title='<%= t ".zeus" %>'>supervisor_account</i>
+          <% end %>
+          <% if user.staff? %>
+            <i class="material-icons md-18" title='<%= t ".staff" %>'>perm_identity</i>
+          <% end %>
+        </td>
+        <td><%= user.full_name %></td>
+        <td><%= user.institution.name %></td>
+        <% show_delete_button = local_assigns.fetch(:show_delete_button, false) %>
+        <td class="actions repository-admin-button-cell" data-user_id="<%= user.id %>" data-repository_id="<%= @repository.id %>">
+          <%=  render partial: 'repositories/repository_admin_buttons',
+                      locals: {repository: @repository, user: user, show_delete_button: show_delete_button } %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table></div>
+<% if users.empty? %>
+  <p class="text-center text-muted lead table-placeholder"><%= t 'users.index.no_users' %></p>
+<% end %>
+<% if local_assigns.fetch(:paginate, true) %>
+  <center>
+    <%= user_page_navigation_links users, local_assigns.fetch(:pagination_opts, {}), :available_for_repository %>
+  </center>
+<% end %>

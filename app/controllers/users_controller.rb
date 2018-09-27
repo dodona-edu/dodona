@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy impersonate token_sign_in]
+  before_action :set_users, only: %i[index available_for_repository]
 
   has_scope :by_permission
   has_scope :by_name, as: 'filter'
@@ -7,10 +8,16 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    authorize User
-    @users = apply_scopes(User).all.order(permission: :desc, last_name: :asc, first_name: :asc).paginate(page: params[:page])
-    @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @title = I18n.t('users.index.title')
+  end
+
+  def available_for_repository
+    @repository = Repository.find(params[:repository_id]) if params[:repository_id]
+    respond_to do |format|
+      format.html { redirect_to @repository }
+      format.json { render :available_for_repository }
+      format.js { render :available_for_repository }
+    end
   end
 
   # GET /users/1
@@ -97,5 +104,10 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find(params[:id])
     authorize @user
+  end
+
+  def set_users
+    authorize User
+    @users = apply_scopes(User).all.order(permission: :desc, last_name: :asc, first_name: :asc).paginate(page: params[:page])
   end
 end

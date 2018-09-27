@@ -70,8 +70,8 @@ class ExerciseSummary
   private
 
   def query_submissions
-    s = exercise.submissions.where(user: user).reorder(id: :desc)
-    s = s.join_series.where(series: { id: series.id }) if series
+    s = Submission.where(user: user, exercise: exercise).reorder(id: :desc)
+    s = s.where(course_id: series.course_id) if series
     s
   end
 
@@ -82,7 +82,7 @@ class ExerciseSummary
 
   def query_timely_submission
     if deadline
-      query_submissions.timely.first
+      query_submissions.where('submissions.created_at < ?', series.deadline).first
     else
       latest_submission
     end

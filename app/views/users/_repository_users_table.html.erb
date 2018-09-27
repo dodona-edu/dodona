@@ -13,14 +13,14 @@
       <tr>
         <td>
           <% if user.zeus? %>
-            <i class="material-icons md-18" title='<%= t ".zeus" %>'>supervisor_account</i>
+            <i class="material-icons md-18" title='<%= t "users.users_table.zeus" %>'>supervisor_account</i>
           <% end %>
           <% if user.staff? %>
-            <i class="material-icons md-18" title='<%= t ".staff" %>'>perm_identity</i>
+            <i class="material-icons md-18" title='<%= t "users.users_table.staff" %>'>perm_identity</i>
           <% end %>
         </td>
         <td><%= user.full_name %></td>
-        <td><%= user.institution.name %></td>
+        <td><%= user.institution&.name || t(".no_institution") %></td>
         <% show_delete_button = local_assigns.fetch(:show_delete_button, false) %>
         <td class="actions repository-admin-button-cell" data-user_id="<%= user.id %>" data-repository_id="<%= @repository.id %>">
           <%=  render partial: 'repositories/repository_admin_buttons',

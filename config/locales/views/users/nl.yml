@@ -16,6 +16,7 @@ nl:
       edit: 'Aanpassen'
       delete: 'Verwijderen'
       actions: "Acties"
+      institution: "Instituut"
     new:
       title: Gebruiker aanmaken
     show:

@@ -14,11 +14,11 @@
       </div>
       <div class="card-supporting-text card-border">
         <div id="admin-table-wrapper">
-          <%= render(partial: 'users/users_table', locals: {users: @users, show_delete_button: true}) %>
+          <%= render(partial: 'users/repository_users_table', locals: {users: @users, show_delete_button: true}) %>
         </div>
       </div>
       <div class="card-supporting-text card-border">
-        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: users_path(:repository_id => @repository.id), eager: true}) %>
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: available_for_repository_users_path(:repository_id => @repository.id), eager: true}) %>
         <div id="users-table-wrapper">
         </div>
       </div>

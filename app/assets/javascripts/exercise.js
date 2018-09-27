@@ -1,4 +1,4 @@
-/* globals Bloodhound */
+/* globals Bloodhound,Strip,MathJax,ace,ga,I18n,initStrip */
 import {showNotification} from "./notifications.js";
 
 function initLabelsEdit(labels) {
@@ -48,11 +48,11 @@ function initLightboxes() {
     $(".exercise-description img, a.dodona-lightbox").each(function () {
         let imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
         let altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
-        let image_object = {
+        let imageObject = {
             url: imagesrc,
             caption: altText,
         };
-        images.push(image_object);
+        images.push(imageObject);
 
         $(this).data("image_index", index++);
     });
@@ -234,7 +234,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 } else if (errors.submission && errors.submission[0] === "rate limited") {
                     message = I18n.t("js.submission-rate-limit");
                 }
-            } catch (e) { }
+            } catch (e) {}
         }
         $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
         enableSubmitButton();

@@ -2,19 +2,19 @@
 #
 # Table name: exercises
 #
-#  id                   :integer          not null, primary key
-#  name_nl              :string(255)
-#  name_en              :string(255)
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  path                 :string(255)
-#  description_format   :string(255)
-#  programming_language :string(255)
-#  repository_id        :integer
-#  judge_id             :integer
-#  status               :integer          default("ok")
-#  token                :string(64)       not null, unique
-#  access               :integer          not null, default("public")
+#  id                          :integer          not null, primary key
+#  name_nl                     :string(255)
+#  name_en                     :string(255)
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  path                        :string(255)
+#  description_format          :string(255)
+#  programming_language_id     :integer
+#  repository_id               :integer
+#  judge_id                    :integer
+#  status                      :integer          default("ok")
+#  token                       :string(64)       not null, unique
+#  access                      :integer          not null, default("public")
 #
 
 require 'pathname'
@@ -36,6 +36,7 @@ class Exercise < ApplicationRecord
 
   belongs_to :repository
   belongs_to :judge
+  belongs_to :programming_language, optional: true
   has_many :submissions
   has_many :series_memberships
   has_many :series, through: :series_memberships
@@ -54,7 +55,8 @@ class Exercise < ApplicationRecord
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
-  scope :by_labels, ->(labels) { joins(:labels).includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
+  scope :by_labels, ->(labels) { includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
+  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: {name: programming_language})}
   scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_access(query)) }
 
   def full_path
@@ -129,13 +131,7 @@ class Exercise < ApplicationRecord
   end
 
   def file_extension
-    return 'py' if programming_language == 'python'
-    return 'js' if programming_language == 'JavaScript'
-    return 'hs' if programming_language == 'haskell'
-    return 'sh' if programming_language == 'bash'
-    return 'sh' if programming_language == 'shell'
-    return 'sh' if programming_language == 'sh'
-    'txt'
+    programming_language&.extension || 'txt'
   end
 
   def merged_config

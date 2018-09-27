@@ -72,7 +72,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   end
 
   test 'judge should receive merged config' do
-    @exercise.update(programming_language: 'whitespace')
+    @exercise.update(programming_language: ProgrammingLanguage.create(name: 'whitespace'))
     @exercise.unstub(:config)
     # Stub global config
     File.stubs(:read)
@@ -97,7 +97,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     assert_equal 100, config['memory_limit']
     assert_equal 42, config['time_limit']
     assert_equal true, config['network_enabled'] # overidden
-    assert_equal @exercise.programming_language, config['programming_language']
+    assert_equal @exercise.programming_language.name, config['programming_language']
     assert_equal @user.lang, config['natural_language']
     %w[resources source judge workdir].each do |key|
       path = config[key]

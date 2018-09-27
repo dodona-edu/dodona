@@ -19,3 +19,5 @@ en:
     favorite-course-failed: Favoriting course failed
     unfavorite-course-succeeded: Unfavorited course
     unfavorite-course-failed: Unfavoriting course failed
+    labels: Labels
+    programming-languages: Programming Languages

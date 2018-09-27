@@ -22,6 +22,7 @@ en:
       users: Users
       courses: Courses
       judges: Judges
+      programming_languages: Programming languages
       repositories: Repositories
       labels: Labels
       profile: My profile

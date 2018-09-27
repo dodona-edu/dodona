@@ -25,6 +25,10 @@ en:
       private: Private
       invalid: Invalid
       removed: Removed
+      programming_language: "Programming language"
+      labels: "Labels"
+      repository: "Repository"
+      path: "Path"
     show:
       code: Code
       handin: Hand in

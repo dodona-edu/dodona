@@ -48,7 +48,7 @@ class SubmissionRunner
     config.deep_merge!(@exercise.merged_config['evaluation'])
 
     # update with submission-specific configuration
-    config.deep_merge!('programming_language' => @submission.exercise.programming_language,
+    config.deep_merge!('programming_language' => @submission.exercise.programming_language&.name,
                        'natural_language' => @submission.user.lang)
 
     # update with links to resources in docker container needed for processing submission

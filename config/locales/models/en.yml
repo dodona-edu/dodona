@@ -17,6 +17,7 @@ en:
       course_membership: Course membership
       label: Label
       api_token: API token
+      programming_language: Programming Language
     attributes:
       api_token:
         description: Description
@@ -114,3 +115,7 @@ en:
           course_admin: Course admin
           pending: Pending
           student: Student
+      programming_language:
+        name: Name
+        editor_name: Editor mode
+        extension: Extension

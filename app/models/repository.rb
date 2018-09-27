@@ -143,10 +143,17 @@ class Repository < ApplicationRecord
   def update_exercise(ex)
     config = ex.merged_config
 
+    j = nil
     j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
+    programming_language_name = config['programming_language']
+    programming_language = nil
+    if programming_language_name
+      programming_language = ProgrammingLanguage.find_by(name: programming_language_name)
+      programming_language ||= ProgrammingLanguage.create(name: programming_language_name)
+    end
 
-    ex.judge_id = j&.id || judge_id
-    ex.programming_language = config['programming_language']
+    ex.judge = j || judge
+    ex.programming_language = programming_language
     ex.name_nl = config['description']&.fetch('names', nil)&.fetch('nl', nil)
     ex.name_en = config['description']&.fetch('names', nil)&.fetch('en', nil)
     ex.description_format = Exercise.determine_format(ex.full_path)

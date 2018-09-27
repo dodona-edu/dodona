@@ -43,6 +43,7 @@ class SeriesController < ApplicationController
     @title = @series.name
     @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, series_path(@series)], [I18n.t("crumbs.edit"), "#"]]
     @labels = Label.all
+    @programming_languages = ProgrammingLanguage.all
   end
 
   # POST /series

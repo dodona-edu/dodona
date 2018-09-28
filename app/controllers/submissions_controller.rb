@@ -48,7 +48,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(para)
     can_submit = true
     if @submission.exercise.present?
-      can_submit &&= Pundit.policy!(UserContext.new(current_user, request.remote_ip), @submission.exercise).submit?
+      can_submit &&= Pundit.policy!(current_user, @submission.exercise).submit?
       can_submit &&= current_user.can_access?(@submission.course, @submission.exercise)
     end
     if can_submit && @submission.save

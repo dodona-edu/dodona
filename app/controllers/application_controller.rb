@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
+  include SetCurrentRequestDetails
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -23,11 +24,6 @@ class ApplicationController < ActionController::Base
 
   def after_sign_out_path_for(_resource)
     stored_location_for(:user) || root_path
-  end
-
-  def pundit_user
-    # Always run this behind a proxy, otherwise remote_ip might be spoofed
-    UserContext.new(current_user, request.remote_ip)
   end
 
   Warden::Manager.after_authentication do |user, auth, _opts|

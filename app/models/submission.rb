@@ -43,15 +43,6 @@ class Submission < ApplicationRecord
   scope :by_username, ->(username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
   scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
 
-  scope :join_series, -> {
-    joins(exercise: :series).where('submissions.course_id = series.course_id')
-  }
-
-  scope :timely, -> {
-    join_series
-      .where('submissions.created_at < series.deadline OR series.deadline IS NULL')
-  }
-
   scope :most_recent, -> {
     submissions = select('MAX(submissions.id) as id')
     Submission.joins <<~HEREDOC

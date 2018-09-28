@@ -26,8 +26,8 @@ class ApplicationController < ActionController::Base
   end
 
   def pundit_user
-    # Always run this behind a proxy, otherwise X-Forwarded-For might be spoofed
-    UserContext.new(current_user, request.headers["X-Forwarded-For"])
+    # Always run this behind a proxy, otherwise remote_ip might be spoofed
+    UserContext.new(current_user, request.remote_ip)
   end
 
   Warden::Manager.after_authentication do |user, auth, _opts|

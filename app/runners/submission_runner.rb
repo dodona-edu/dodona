@@ -130,6 +130,7 @@ class SubmissionRunner
     end
 
     # run the container with a timeout.
+    before_time = Time.now
     timer = Thread.new do
       sleep time_limit
       container.stop
@@ -141,6 +142,7 @@ class SubmissionRunner
       stderr: true
     )
     timeout = timer.tap(&:kill).value
+    after_time = Time.now
     stdout = outlines.join
     stderr = errlines.join
     exit_status = container.wait(1)['StatusCode']
@@ -157,7 +159,7 @@ class SubmissionRunner
       ]
     end
 
-    begin
+    result = begin
       rc = ResultConstructor.new @submission.user.lang
       rc.feed(stdout.force_encoding('utf-8'))
       rc.result(timeout)
@@ -177,6 +179,11 @@ class SubmissionRunner
         build_error 'internal error', 'internal error', messages
       end
     end
+
+    result[:messages] ||= []
+    result[:messages] << build_message("worker: #{`hostname`.strip}", 'zeus', 'plain')
+    result[:messages] << build_message("runtime: #{after_time - before_time} seconds", 'zeus', 'plain')
+    result
   end
 
   def add_runtime_metrics(result); end

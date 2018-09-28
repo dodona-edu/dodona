@@ -10,7 +10,7 @@ class ApiTokensController < ApplicationController
     authorize ApiToken
     @token = ApiToken.new(permitted_attributes(ApiToken))
     @token.user_id = params[:user_id]
-    can_create = Pundit.policy!(current_user, @token.user).create_tokens?
+    can_create = Pundit.policy!(UserContext.new(current_user, request.headers['X-Forwarded-For']), @token.user).create_tokens?
     respond_to do |f|
       if can_create && @token.save
         message = I18n.t('controllers.created', model: ApiToken.model_name)

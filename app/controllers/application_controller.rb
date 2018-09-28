@@ -25,6 +25,11 @@ class ApplicationController < ActionController::Base
     stored_location_for(:user) || root_path
   end
 
+  def pundit_user
+    # Always run this behind a proxy, otherwise X-Forwarded-For might be spoofed
+    UserContext.new(current_user, request.headers["X-Forwarded-For"])
+  end
+
   Warden::Manager.after_authentication do |user, auth, _opts|
     if user.institution.nil?
       idp = Institution.find_by(short_name: auth.env['rack.session'][:current_idp])

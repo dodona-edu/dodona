@@ -1,9 +1,8 @@
 class ApplicationPolicy
-  attr_reader :user, :ip, :record
+  attr_reader :user, :record
 
   def initialize(user, record)
-    @user = user.user
-    @ip = user.ip
+    @user = user
     @record = record
   end
 
@@ -48,11 +47,10 @@ class ApplicationPolicy
   end
 
   class Scope
-    attr_reader :user, :ip, :scope
+    attr_reader :user, :scope
 
     def initialize(user, scope)
-      @user = user.user
-      @ip = user.ip
+      @user = user
       @scope = scope
     end
 

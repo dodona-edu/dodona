@@ -28,6 +28,7 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def media?
+    return true if Current.ip_address&.start_with? Rails.application.config.tutor_docker_network_prefix
     show?
   end
 

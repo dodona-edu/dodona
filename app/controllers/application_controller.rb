@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
+  include SetCurrentRequestDetails
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

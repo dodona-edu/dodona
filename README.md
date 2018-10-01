@@ -33,3 +33,7 @@ The simplest way to start the server is with the `rails s` command. But this wil
 To run all these processes at the same time, the foreman gem is used. To start the rails server, delayed job and the webpack dev server, simply run `bin/server`.
 
 This has one letdown: debugging with `byebug` is broken. You can run `bin/server norails` to only start webpack and delayed_job in foreman and then run `rails s` in a different terminal to be able to use `byebug` again.
+
+## Tutor Docker network
+
+Your docker network (for the python tutor) should be in `192.168.0.0/16`. If this is not the case, you should edit `Rails.config.tutor_docker_network_prefix` in `config/application.rb`. Be aware that you should run this application behind a proxy, otherwise users could spoof their IP address via the `X-Forwarder-For` header. (If they spoof their ip addres to one within the docker network, they will be able to access media files of private exercises that they would otherwise not have access to.)

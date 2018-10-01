@@ -1,5 +1,7 @@
 <% get_exercise_path ||= ->(ex) { course_series_exercise_path series.course_id, series.id, ex } %>
-<% loaded = true unless defined?(loaded) %>
+<% unless defined? loaded %>
+  <% loaded = true %>
+<% end %>
 <% if loaded %>
   <% summary ||= SeriesSummary.new(
     user: current_user,
@@ -14,7 +16,7 @@
      data-series-url="<%= series_path(series, format: :js) %>">
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>"  name="<%= series.name %>"></a>
-    <%= render partial: 'series/series_status', locals: { loaded: loaded, summary: summary } %>
+    <%= render partial: 'series/series_status', locals: { summary: summary } %>
     <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
       <% if series.deadline? %>
         <% if series.deadline > Time.now %>

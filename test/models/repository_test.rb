@@ -192,4 +192,14 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     echo2 = Exercise.find_by(path: new_dir)
     assert_equal echo2.token, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
   end
+
+  test 'should write new token to config file of copied exercise' do
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
+    @repository.reset
+    @repository.process_exercises
+    echo2 = Exercise.find_by(path: new_dir)
+    assert_not_equal @echo.token, echo2.config['internals']['token']
+  end
 end

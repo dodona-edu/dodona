@@ -93,7 +93,7 @@ class Repository < ApplicationRecord
       handled_directories.push orig_path
       directories.reject{|dir| dir == orig_path}.each do |dir|
         new_ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id)
-        new_exercises.push ex
+        new_exercises.push new_ex
         update_exercise new_ex
         handled_exercises.push new_ex
         handled_directories.push dir

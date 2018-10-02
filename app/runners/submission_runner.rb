@@ -173,10 +173,10 @@ class SubmissionRunner
       if [137, 143].include? exit_status
         description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
         build_error description, description, [
-          build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
-          build_message('Standard Error:', 'staff', 'plain'),
+          build_message("Judge exited with <strong>status code #{exit_status}.</strong>", 'staff', 'html'),
+          build_message('<strong>Standard Error:</strong>', 'staff', 'html'),
           build_message(stderr, 'staff'),
-          build_message('Standard Output:', 'staff', 'plain'),
+          build_message('<strong>Standard Output:</strong>', 'staff', 'html'),
           build_message(stdout, 'staff')
         ]
       else
@@ -187,9 +187,9 @@ class SubmissionRunner
     end
 
     result[:messages] ||= []
-    result[:messages] << build_message("worker: #{`hostname`.strip}", 'zeus', 'plain')
-    result[:messages] << build_message("runtime: #{after_time - before_time} seconds", 'zeus', 'plain')
-    result[:messages] << build_message("memory: #{memory} MiB", 'zeus', 'plain')
+    result[:messages] << build_message("<strong>Worker:</strong> #{`hostname`.strip}", 'zeus', 'html')
+    result[:messages] << build_message("<strong>Runtime:</strong> #{after_time - before_time} seconds", 'zeus', 'html')
+    result[:messages] << build_message("<strong>Memory usage:</strong> #{memory} MiB", 'zeus', 'html')
     result
   end
 

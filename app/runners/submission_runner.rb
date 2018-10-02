@@ -130,9 +130,15 @@ class SubmissionRunner
     end
 
     # run the container with a timeout.
+    memory = 0
     before_time = Time.now
     timer = Thread.new do
-      sleep time_limit
+      while Time.now - before_time < time_limit
+        sleep 1
+        stats = container.stats
+        # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
+        memory = stats["memory_stats"]["max_usage"] / (1024.0 * 1024.0) if stats["memory_stats"]&.fetch("max_usage", nil)
+      end
       container.stop
       true
     end
@@ -183,6 +189,7 @@ class SubmissionRunner
     result[:messages] ||= []
     result[:messages] << build_message("worker: #{`hostname`.strip}", 'zeus', 'plain')
     result[:messages] << build_message("runtime: #{after_time - before_time} seconds", 'zeus', 'plain')
+    result[:messages] << build_message("memory: #{memory} MiB", 'zeus', 'plain')
     result
   end
 

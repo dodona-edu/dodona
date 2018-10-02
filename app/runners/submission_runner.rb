@@ -130,8 +130,15 @@ class SubmissionRunner
     end
 
     # run the container with a timeout.
+    memory = 0
+    before_time = Time.now
     timer = Thread.new do
-      sleep time_limit
+      while Time.now - before_time < time_limit
+        sleep 1
+        stats = container.stats
+        # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
+        memory = stats["memory_stats"]["max_usage"] / (1024.0 * 1024.0) if stats["memory_stats"]&.fetch("max_usage", nil)
+      end
       container.stop
       true
     end
@@ -141,6 +148,7 @@ class SubmissionRunner
       stderr: true
     )
     timeout = timer.tap(&:kill).value
+    after_time = Time.now
     stdout = outlines.join
     stderr = errlines.join
     exit_status = container.wait(1)['StatusCode']
@@ -157,7 +165,7 @@ class SubmissionRunner
       ]
     end
 
-    begin
+    result = begin
       rc = ResultConstructor.new @submission.user.lang
       rc.feed(stdout.force_encoding('utf-8'))
       rc.result(timeout)
@@ -165,10 +173,10 @@ class SubmissionRunner
       if [137, 143].include? exit_status
         description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
         build_error description, description, [
-          build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
-          build_message('Standard Error:', 'staff', 'plain'),
+          build_message("Judge exited with <strong>status code #{exit_status}.</strong>", 'staff', 'html'),
+          build_message('<strong>Standard Error:</strong>', 'staff', 'html'),
           build_message(stderr, 'staff'),
-          build_message('Standard Output:', 'staff', 'plain'),
+          build_message('<strong>Standard Output:</strong>', 'staff', 'html'),
           build_message(stdout, 'staff')
         ]
       else
@@ -177,6 +185,12 @@ class SubmissionRunner
         build_error 'internal error', 'internal error', messages
       end
     end
+
+    result[:messages] ||= []
+    result[:messages] << build_message("<strong>Worker:</strong> #{`hostname`.strip}", 'zeus', 'html')
+    result[:messages] << build_message("<strong>Runtime:</strong> %.2f seconds" % (after_time - before_time), 'zeus', 'html')
+    result[:messages] << build_message("<strong>Memory usage:</strong> %.2f MiB" % memory, 'zeus', 'html')
+    result
   end
 
   def add_runtime_metrics(result); end

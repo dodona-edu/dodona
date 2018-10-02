@@ -188,8 +188,8 @@ class SubmissionRunner
 
     result[:messages] ||= []
     result[:messages] << build_message("<strong>Worker:</strong> #{`hostname`.strip}", 'zeus', 'html')
-    result[:messages] << build_message("<strong>Runtime:</strong> #{after_time - before_time} seconds", 'zeus', 'html')
-    result[:messages] << build_message("<strong>Memory usage:</strong> #{memory} MiB", 'zeus', 'html')
+    result[:messages] << build_message("<strong>Runtime:</strong> %.2f seconds" % (after_time - before_time), 'zeus', 'html')
+    result[:messages] << build_message("<strong>Memory usage:</strong> %.2f MiB" % memory, 'zeus', 'html')
     result
   end
 

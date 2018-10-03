@@ -69,7 +69,7 @@
             <span class='pull-right'>
               <%= render partial: 'series/human_deadline', locals: { series: series } %>
             </span>
-            <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link link-accent-#{course.color}", title: series.name %>
+            <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
           </p>
         <% end %>
       </div>

@@ -110,7 +110,7 @@ class SubmissionRunner
               (@mountdst + @hidden_path + 'judge' + 'run').to_path,
               # directory for logging output
               (@mountdst + @hidden_path + 'logs').to_path],
-        Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image.to_s,
+        Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
         name: "dodona-#{@submission.id}", # assuming unique during execution
         OpenStdin: true,
         StdinOnce: true, # closes stdin after first disconnect

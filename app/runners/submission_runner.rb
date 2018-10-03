@@ -118,6 +118,7 @@ class SubmissionRunner
         HostConfig: {
           Memory: memory_limit,
           MemorySwap: memory_limit, # memory including swap
+          PidsLimit: 256,
           Binds: ["#{@mountsrc}:#{@mountdst}",
                   "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
         }

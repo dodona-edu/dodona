@@ -157,6 +157,10 @@ class Repository < ApplicationRecord
       programming_language ||= ProgrammingLanguage.create(name: programming_language_name)
     end
 
+    labels = config['labels']&.map do |name|
+      Label.find_by(name: name) || Label.create(name: name)
+    end || []
+
     ex.judge = j || judge
     ex.programming_language = programming_language
     ex.name_nl = config['description']&.fetch('names', nil)&.fetch('nl', nil)
@@ -168,6 +172,8 @@ class Repository < ApplicationRecord
     ex.status = :ok
 
     ex.save
+
+    ex.labels = labels
   end
 
   def github_url(path = nil)

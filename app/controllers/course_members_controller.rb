@@ -26,7 +26,7 @@ class CourseMembersController < ApplicationController
     }
 
     @title = I18n.t("courses.index.users")
-    @crumbs = [[I18n.t('courses.index.title'), courses_path], [@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
 
     respond_to do |format|
       format.json { render 'users/index' }
@@ -39,7 +39,7 @@ class CourseMembersController < ApplicationController
     authorize @user, :show?
 
     @title = @user.full_name
-    @crumbs = [[I18n.t('courses.index.title'), courses_path], [@course.name, course_path(@course)], [I18n.t('courses.index.users'), course_members_path(@course)], [@user.full_name, '#']]
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), course_members_path(@course)], [@user.full_name, '#']]
     @series = policy_scope(@course.series)
     @series_loaded = 5
   end

@@ -9,5 +9,6 @@
     "handler": "Iona Nikitchenko",
     "pythia_judge": "output"
   },
-  "programming_language": "python"
+  "programming_language": "python",
+  "labels": ["label1", "label4"]
 }

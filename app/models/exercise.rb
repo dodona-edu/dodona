@@ -139,7 +139,15 @@ class Exercise < ApplicationRecord
             .map { |dir| read_dirconfig dir } # try reading their dirconfigs
             .compact                          # remove nil entries
             .push(config)                     # add exercise config file
-            .reduce(&:deep_merge)             # reduce into single hash
+            .reduce do |h1, h2|
+              h1.deep_merge(h2) do |_, v1, v2|
+                if v1.is_a?(Array) && v2.is_a?(Array)
+                  (v1 + v2).uniq
+                else
+                  v2
+                end
+              end
+            end # reduce into single hash
   end
 
   def config_file?

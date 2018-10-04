@@ -425,4 +425,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_equal 'private', @exercise.config['access']
     assert_equal 'private', @exercise.merged_config['access']
   end
+
+  test 'should merge label arrays' do
+    assert_equal 4, @exercise.labels.count
+  end
 end

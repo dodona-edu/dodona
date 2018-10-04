@@ -36,7 +36,11 @@ class CourseMembersController < ApplicationController
   end
 
   def show
-    authorize @user, :show?
+    authorize @user, :show_in_course?
+    # We don't have access to the course in the users_controller
+    unless (@user.subscribed_courses & current_user.administrating_courses).include? @course || @user == current_user
+      raise Pundit::NotAuthorizedError
+    end
 
     @title = @user.full_name
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), course_members_path(@course)], [@user.full_name, '#']]

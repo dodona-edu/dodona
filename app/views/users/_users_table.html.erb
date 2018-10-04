@@ -29,7 +29,11 @@
             <i class="material-icons md-18" title='<%= t ".no_ugent" %>'>warning</i>
           <% end %>
         </td>
-        <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
+        <% if @course %>
+          <td><%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %></td>
+        <% else %>
+          <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
+        <% end %>
         <td><%= user.email %></td>
         <td class='text-right'>
           <%=  link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user)  %>

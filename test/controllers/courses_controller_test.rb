@@ -373,15 +373,33 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'admins should be able to list members' do
     with_users_signed_in @admins do |who|
-      get members_course_url(@course), xhr: true
+      get course_members_url(@course), xhr: true
       assert_response :success, "#{who} should be able to list members"
     end
   end
 
   test 'not-admins should not be able to list members' do
     with_users_signed_in @not_admins do |who|
-      get members_course_url(@course), xhr: true
+      get course_members_url(@course), xhr: true
       assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to list members"
+    end
+  end
+
+  test 'admins should be able to view members in course' do
+    with_users_signed_in @admins do |who|
+      @course.users.each do |view|
+        get course_member_url(@course, view), xhr: true
+        assert_response :success, "#{who} should be able to view #{view}"
+      end
+    end
+  end
+
+  test 'not-admins should not be able to view members in course' do
+    with_users_signed_in @not_admins do |who|
+      @course.users.each do |view|
+        get course_member_url(@course, view), xhr: true
+        assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to view #{view}"
+      end
     end
   end
 

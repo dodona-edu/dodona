@@ -3,8 +3,7 @@ class CoursesController < ApplicationController
 
   skip_forgery_protection only: [:subscribe]
 
-  has_scope :by_permission, only: :members
-  has_scope :by_name, only: [:members, :index], as: 'filter'
+  has_scope :by_name, as: 'filter'
 
   # GET /courses
   # GET /courses.json
@@ -194,35 +193,6 @@ class CoursesController < ApplicationController
     respond_to do |f|
       f.json
       f.html { redirect_back(fallback_location: course_url(@course)) }
-    end
-  end
-
-  def members
-    statuses = if %w[unsubscribed pending].include? params[:status]
-                 params[:status]
-               else
-                 %w[course_admin student]
-               end
-
-    @users = apply_scopes(@course.users)
-             .order('course_memberships.status ASC')
-             .order(permission: :desc)
-             .order(last_name: :asc, first_name: :asc)
-             .where(course_memberships: { status: statuses })
-             .paginate(page: params[:page])
-
-    @pagination_opts = {
-      controller: 'courses',
-      action: 'members'
-    }
-
-    @title = I18n.t("courses.index.users")
-    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
-
-    respond_to do |format|
-      format.json { render 'users/index' }
-      format.js { render 'users/index' }
-      format.html
     end
   end
 

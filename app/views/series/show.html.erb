@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= @series.course.name %></h2>
       </div>
       <div class="card-supporting-text">
-        <%= render(partial: 'series/series', locals: {series: @series}) %>
+        <%= render(partial: 'series/series', locals: {series: @series, user: @user}) %>
       </div>
     </div>
   </div>

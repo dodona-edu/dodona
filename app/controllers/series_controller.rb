@@ -19,6 +19,9 @@ class SeriesController < ApplicationController
     @course = @series.course
     @title = @series.name
     @crumbs = [[@course.name, course_path(@course)], [@series.name, "#"]]
+    if params[:user_id] && current_user.course_admin?(@course)
+      @user = User.find(params[:user_id])
+    end
   end
 
   def overview

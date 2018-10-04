@@ -2,9 +2,14 @@
 <% unless defined? loaded %>
   <% loaded = true %>
 <% end %>
+<% if defined? user
+     user = user || current_user
+   else
+     user = current_user
+   end %>
 <% if loaded %>
   <% summary ||= SeriesSummary.new(
-    user: current_user,
+    user: user,
     series: series,
     exercises: series.exercises) %>
 <% else %>
@@ -13,7 +18,7 @@
 
 <div class="card card-supporting-text series"
      id="series-card-<%= series.id %>"
-     data-series-url="<%= series_path(series, format: :js) %>">
+     data-series-url="<%= series_path(series, format: :js, user_id: user.id) %>">
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>"  name="<%= series.name %>"></a>
     <%= render partial: 'series/series_status', locals: { summary: summary } %>
@@ -106,6 +111,7 @@
             exercises: series.exercises,
             get_exercise_path: get_exercise_path,
             summary: summary,
+            user: user,
       } %>
     <% else %>
       <div class="exercise-table-skeleton">

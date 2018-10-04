@@ -1,6 +1,5 @@
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'course' %>
-  <%= javascript_pack_tag 'favorite_course_buttons' %>
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
@@ -111,8 +110,5 @@
   </div>
 </div>
 <script type="text/javascript">
-  $(function () {
-    dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>);
-    dodona.initFavoriteButtons();
-  });
+    $(dodona.initCourseShow);
 </script>

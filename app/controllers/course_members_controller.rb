@@ -6,22 +6,23 @@ class CourseMembersController < ApplicationController
   has_scope :by_name, as: 'filter'
 
   def index
-     statuses = if %w[unsubscribed pending].include? params[:status]
+    authorize @course, :members?
+    statuses = if %w[unsubscribed pending].include? params[:status]
                  params[:status]
                else
                  %w[course_admin student]
                end
 
     @users = apply_scopes(@course.users)
-             .order('course_memberships.status ASC')
-             .order(permission: :desc)
-             .order(last_name: :asc, first_name: :asc)
-             .where(course_memberships: { status: statuses })
-             .paginate(page: params[:page])
+                 .order('course_memberships.status ASC')
+                 .order(permission: :desc)
+                 .order(last_name: :asc, first_name: :asc)
+                 .where(course_memberships: { status: statuses })
+                 .paginate(page: params[:page])
 
     @pagination_opts = {
-      controller: 'course_members',
-      action: 'index'
+        controller: 'course_members',
+        action: 'index'
     }
 
     @title = I18n.t("courses.index.users")
@@ -35,15 +36,18 @@ class CourseMembersController < ApplicationController
   end
 
   def show
+    authorize @user, :show?
+
     @title = @user.full_name
     @crumbs = [[I18n.t('courses.index.title'), courses_path], [@course.name, course_path(@course)], [I18n.t('courses.index.users'), course_members_path(@course)], [@user.full_name, '#']]
+    @series = policy_scope(@course.series)
+    @series_loaded = 5
   end
 
   private
 
   def set_course
     @course = Course.find(params[:course_id])
-    authorize @course, :members?
   end
 
   def set_user

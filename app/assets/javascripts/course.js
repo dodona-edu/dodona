@@ -62,7 +62,7 @@ class Series {
     return $.map($cards, card => new Series(card));
   }
 
-  constructor(card,) {
+  constructor(card) {
     this.id = +card.id.split('series-card-')[1];
 
     this.reselect(card);

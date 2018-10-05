@@ -3,7 +3,7 @@
                     title: t('.show'),
                     icon: 'book',
                     if: policy(@course).edit? || policy(@course).members?  %>
-    <%= navbar_link url: members_course_path(@course),
+    <%= navbar_link url: course_members_path(@course),
                     title: t('.members'),
                     icon: 'group',
                     class: (@course.pending_members.any? ? 'notification' : ''),

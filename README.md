@@ -12,10 +12,11 @@ Take a look at [the wiki](https://github.ugent.be/dodona/dodona/wiki) for more i
 ## Development Setup
 
 1. Install and start `mysql` or `mariadb`.
-2. Create dodona user (with password 'dodona') with create database permissions.
-3. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
-4. [Start the server](#starting-the-server). The simplest way is with `rails s`.
-5. Because CAS authentication does not work in development, you have to log in manually. You can do this by writing the line `sign_in User.first`in the beginning of the `set_locale` function in `app/controllers/application_controller.rb`. When you reload the page you should be logged in. **Do not forget to remove this line, so you don't accidentally commit this change.**
+2. If using `mysql`, add `sql-mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'` to the `/etc/mysql/mysql.conf.d/mysqld.cnf` file.
+3. Create dodona user (with password 'dodona') with create database permissions.
+4. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
+5. [Start the server](#starting-the-server). The simplest way is with `rails s`.
+6. Because CAS authentication does not work in development, you have to log in manually. You can do this by writing the line `sign_in User.first`in the beginning of the `set_locale` function in `app/controllers/application_controller.rb`. When you reload the page you should be logged in. **Do not forget to remove this line, so you don't accidentally commit this change.**
 
 ## Evaluating exercises
 These steps are not required to run the server, but you need docker to actually evaluate exercises.

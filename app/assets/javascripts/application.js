@@ -20,3 +20,5 @@
 //= require vendor
 //= require bootstrap-tokenfield
 //= require typeahead.js/dist/typeahead.bundle.js
+
+//= require d3

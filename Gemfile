@@ -178,3 +178,4 @@ gem 'docker-api'
 
 gem "actiontext", github: "rails/actiontext", require: "action_text"
 gem "image_processing", "~> 1.2" # for Active Storage variants
+gem 'd3-rails'

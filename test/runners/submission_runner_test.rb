@@ -49,6 +49,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     obj.stubs(:delete)
     obj.stubs(:attach).returns([[stdout], [params[:err]]])
     obj.stubs(:wait).returns('StatusCode' => params[:status_code])
+    obj.stubs(:stats).returns({:memory_stats => {:max_usage => 100_000_000}})
     obj
   end
 
@@ -107,6 +108,8 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   end
 
   test 'submission evaluation should start docker container' do
+    obj ||= docker_mock({})
+    Docker::Container.stubs(:create).returns(obj)
     Docker::Container.expects(:create).once
     @submission.evaluate
   end

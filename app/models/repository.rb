@@ -46,7 +46,12 @@ class Repository < ApplicationRecord
   end
 
   def commit(msg)
-    _out, error, status = Open3.capture3('git', 'commit', '--author="Dodona <dodona@ugent.be>"', '-am', msg, chdir: full_path.to_path)
+    author = if Current.user&.full_name && Current.user&.email
+               "#{Current.user.full_name} <#{Current.user.email}>"
+             else
+               'Dodona <dodona@ugent.be>'
+             end
+    _out, error, status = Open3.capture3('git', 'commit', "--author=\"#{author}\"", '-am', "#{msg}\nThis commit was created automatically by Dodona.", chdir: full_path.to_path)
     if Rails.env.production?
       _out, error, status = Open3.capture3('git push', chdir: full_path.to_path) if status.success?
     end

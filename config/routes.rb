@@ -46,8 +46,8 @@ Rails.application.routes.draw do
         resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
       end
       resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
+      resources :members, only: [:index, :show], controller: :course_members
       member do
-        get 'members'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
         post 'mass_accept_pending'

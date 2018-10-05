@@ -38,7 +38,7 @@
           <% end %>
         </div>
         <div class="col-xs-6">
-          <%= link_to members_course_path(course), class: 'card-title-link' do %>
+          <%= link_to course_members_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter course.subscribed_members.count, delimiter: " " %></h1>
             <%= t ".users" %>
           <% end %>

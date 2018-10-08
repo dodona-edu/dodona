@@ -79,14 +79,16 @@ class ExercisesController < ApplicationController
   end
 
   def update
+    attributes = permitted_attributes(@exercise)
+
+    labels = params[:exercise][:labels]
+    unless labels.is_a?(Array)
+      labels = labels&.split(',')
+    end
+    labels = (labels + (@exercise.merged_dirconfig[:labels] || [])).uniq
+    attributes[:labels] = labels&.map { |name| Label.find_by(name: name) || Label.create(name: name) } if labels
+
     respond_to do |format|
-      attributes = permitted_attributes(@exercise)
-      labels = params[:exercise][:labels]
-      unless labels.is_a?(Array)
-        labels = labels&.split(',')
-      end
-      labels = (labels + (@exercise.merged_dirconfig[:labels] || [])).uniq
-      attributes[:labels] = labels&.map { |name| Label.find_by(name: name) || Label.create(name: name) } if labels
       if @exercise.update(attributes)
         format.html { redirect_to helpers.exercise_scoped_path(exercise: @exercise, course: @course, series: @series), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }

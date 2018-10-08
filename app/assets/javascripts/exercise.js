@@ -29,6 +29,7 @@ function initLabelsEdit(labels, undeletableLabels) {
         }
         if (undeletableLabels.indexOf(e.attrs.value) >= 0) {
             $(e.relatedTarget).addClass("tokenfield-undeletable");
+            $(e.relatedTarget).prop("title", I18n.t("js.label-undeletable"));
         }
     });
     $field.on("tokenfield:removetoken", e => {

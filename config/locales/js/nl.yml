@@ -21,3 +21,4 @@ nl:
     unfavorite-course-failed: Cursus uit favorieten verwijderen mislukt
     labels: Labels
     programming-languages: Programmeertalen
+    label-undeletable: Dit label kan niet verwijderd worden aangezien het in een dirconfig bestand werd ingesteld.

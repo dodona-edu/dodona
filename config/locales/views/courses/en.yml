@@ -4,6 +4,7 @@ en:
       show: Show course
       members: Subscribed members
       edit: Edit course
+      submissions: Submissions for this course
     form:
       description-help: A description is optional. Markdown formatting can be used.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.

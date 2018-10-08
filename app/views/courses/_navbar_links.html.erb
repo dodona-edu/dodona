@@ -8,7 +8,7 @@
                     icon: 'group',
                     class: (@course.pending_members.any? ? 'notification' : ''),
                     if: policy(@course).members? %>
-    <%= navbar_link url: submissions_path(course_id: @course.id),
+    <%= navbar_link url: course_submissions_path(@course),
                     title: t('.submissions'),
                     custom_icon: 'submissions',
                     if: current_user.course_admin?(@course) %>

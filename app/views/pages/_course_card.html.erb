@@ -32,7 +32,7 @@
     <% else %>
       <% if current_user.course_admin?(course) %>
         <div class="col-xs-6">
-          <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
+          <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
             <%= t ".submissions" %>
           <% end %>
@@ -45,7 +45,7 @@
         </div>
       <% else %>
         <div class="col-xs-6">
-          <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
+          <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter current_user.submissions.in_course(course).count, delimiter: " " %></h1>
             <%= t ".submissions" %>
           <% end %>

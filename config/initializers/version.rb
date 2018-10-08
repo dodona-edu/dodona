@@ -3,7 +3,7 @@ module Dodona
     module Version
       MAJOR = 2
       MINOR = 4
-      PATCH = 8
+      PATCH = 12
 
       STRING = [MAJOR, MINOR, PATCH].compact.join('.')
     end

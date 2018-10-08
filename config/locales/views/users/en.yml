@@ -16,6 +16,7 @@ en:
       edit: 'Edit'
       delete: 'Delete'
       actions: "Actions"
+      institution: "Institution"
     new:
       title: Create user
     show:
@@ -35,3 +36,5 @@ en:
       api_tokens: API tokens
       active_tokens: Active tokens
       create_new_token: Create new token
+    repository_users_table:
+      no_institution: "No institution"

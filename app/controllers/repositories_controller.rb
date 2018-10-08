@@ -82,8 +82,7 @@ class RepositoriesController < ApplicationController
   def admins
     @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t('repositories.admins.admins'), '#']]
     @users = apply_scopes(@repository.admins)
-             .order(username: :asc)
-             .paginate(page: params[:page])
+             .order(last_name: :asc, first_name: :asc)
   end
 
   def add_admin
@@ -132,7 +131,7 @@ class RepositoriesController < ApplicationController
   end
 
   def reprocess
-    @repository.process_exercises
+    @repository.process_exercises_email_errors(user: current_user)
     redirect_to(@repository, notice: I18n.t('repositories.reprocess.done'))
   end
 

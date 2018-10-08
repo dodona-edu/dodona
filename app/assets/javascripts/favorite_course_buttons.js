@@ -1,3 +1,4 @@
+/* globals I18n */
 import {showNotification} from "./notifications";
 
 function initFavoriteButtons() {
@@ -21,6 +22,12 @@ function initFavoriteButtons() {
                 showNotification(I18n.t("js.favorite-course-succeeded"));
                 element.addClass("favorited");
                 element.html("favorite");
+                const card = element.parents(".course.card").parent();
+                const favoritesRow = $(".favorites-row");
+                if (favoritesRow.children().length === 0) {
+                    $(".page-subtitle.first").removeClass("hidden");
+                }
+                card.clone(true).appendTo(favoritesRow);
             })
             .fail(() => {
                 showNotification(I18n.t("js.favorite-course-failed"));
@@ -32,8 +39,13 @@ function initFavoriteButtons() {
         $.post(`/courses/${courseId}/unfavorite.js`)
             .done(() => {
                 showNotification(I18n.t("js.unfavorite-course-succeeded"));
-                element.removeClass("favorited");
-                element.html("favorite_outline");
+                const elements = $(`[data-course_id="${courseId}"]`);
+                elements.removeClass("favorited");
+                elements.html("favorite_outline");
+                $(`.favorites-row [data-course_id="${courseId}"]`).parents(".course.card").parent().remove();
+                if ($(".favorites-row").children().length === 0) {
+                    $(".page-subtitle.first").addClass("hidden");
+                }
             })
             .fail(() => {
                 showNotification(I18n.t("js.unfavorite-course-failed"));

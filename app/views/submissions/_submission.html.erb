@@ -2,7 +2,7 @@
   <td><%= submission_status_icon(submission) %></td>
   <% if current_user.administrating_courses.any? || current_user.admin? %>
     <td>
-      <%= link_to submission.user.short_name, user_submissions_path(submission.user), title: submission.user.full_name %>
+      <%= link_to submission.user.full_name, user_submissions_path(submission.user), title: submission.user.full_name, class: "ellipsis-overflow" %>
     </td>
   <% end %>
   <% if !exercise %>
@@ -29,6 +29,5 @@
     <% else %>
       <%= link_to submission, class: "load-submission", title: t(".view_solution") do %><i class="material-icons md-18">chevron_right</i><% end %>
     <% end %>
-
   </td>
 </tr>

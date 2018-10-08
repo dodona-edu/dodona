@@ -86,7 +86,7 @@ if Rails.env.development?
 
   #  prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.ugent.be:dodona/judge-prolog.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
   #  bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.ugent.be:dodona/judge-bash.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  #  junit-judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.ugent.be:dodona/judge-junit.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.ugent.be:dodona/judge-java.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
   #  javascript-judge = Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.ugent.be:dodona/dodona-javascript.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
 
   puts 'Create & clone exercise repository'
@@ -107,7 +107,7 @@ if Rails.env.development?
 
   exercises_list = Exercise.all.to_a
 
-  puts 'Add series, exercises and exercises to courses'
+  puts 'Add series, exercises and submissions to courses'
 
   # Add exercices to test course
   courses.each do |course|
@@ -149,6 +149,7 @@ if Rails.env.development?
                             course: s.course,
                             exercise: exercise,
                             evaluate: false,
+                            skip_rate_limit_check: true,
                             result: {},
                             status: status,
                             accepted: status == :correct,
@@ -176,6 +177,7 @@ if Rails.env.development?
         Submission.create user: zeus,
           exercise: exercise,
           evaluate: false,
+          skip_rate_limit_check: true,
           course: status_test,
           status: before,
           accepted: before == :correct,
@@ -186,6 +188,7 @@ if Rails.env.development?
         Submission.create user: zeus,
           exercise: exercise,
           evaluate: false,
+          skip_rate_limit_check: true,
           course: status_test,
           status: after,
           accepted: after == :correct,

@@ -25,6 +25,7 @@ FactoryBot.define do
 
     access { 'public' }
     status { 'ok' }
+    programming_language
 
     sequence(:path) { |n| "exercise#{n}" }
 

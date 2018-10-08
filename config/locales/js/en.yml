@@ -3,6 +3,7 @@ en:
     submission-saved: Submission saved
     submission-failed: "Oops, something went wrong while saving your solution. Reload this page, try again, or contact the teaching assistant."
     submission-emoji: "Oops, something went wrong while saving your solution. Your solution contains special symbols such as emoji or math characters that were copied from the problem description. Please remove them and try again. If you can't find the problem, contact the teaching assistant."
+    submission-rate-limit: "Oops, you're submitting too fast! Please wait a little between each submission."
     submission-processed: Evaluation finished
     exercise-added-success: Exercise added
     exercise-added-failed: Adding exercise failed
@@ -18,3 +19,5 @@ en:
     favorite-course-failed: Favoriting course failed
     unfavorite-course-succeeded: Unfavorited course
     unfavorite-course-failed: Unfavoriting course failed
+    labels: Labels
+    programming-languages: Programming Languages

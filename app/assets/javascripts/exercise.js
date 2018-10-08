@@ -27,18 +27,18 @@ function initLabelsEdit(labels, undeletableLabels) {
         if (colorMap[e.attrs.value]) {
             $(e.relatedTarget).addClass(`accent-${colorMap[e.attrs.value]}`);
         }
-        if (undeletableLabels.indexOf(e.attrs.value) >= 0) {
+        if (undeletableLabels.includes(e.attrs.value)) {
             $(e.relatedTarget).addClass("tokenfield-undeletable");
             $(e.relatedTarget).prop("title", I18n.t("js.label-undeletable"));
         }
     });
     $field.on("tokenfield:removetoken", e => {
-        if (undeletableLabels.indexOf(e.attrs.value) >= 0) {
+        if (undeletableLabels.includes(e.attrs.value)) {
             return false;
         }
     });
     $field.on("tokenfield:edittoken", e => {
-        if (undeletableLabels.indexOf(e.attrs.value) >= 0) {
+        if (undeletableLabels.includes(e.attrs.value)) {
             return false;
         }
     });

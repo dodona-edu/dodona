@@ -130,6 +130,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'zeus visiting registration page when subscribed should redirect' do
+    zeus = create :zeus
+    @course.subscribed_members << zeus
+    sign_in zeus
+
+    get registration_course_url(@course, @course.secret)
+    assert_redirected_to @course, "zeus should be redirected"
+  end
+
   test 'should not subscribe to hidden course with invalid, empty or absent secret' do
     @course.update(visibility: 'hidden')
     with_users_signed_in @not_subscribed do |who, user|
@@ -364,15 +373,33 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'admins should be able to list members' do
     with_users_signed_in @admins do |who|
-      get members_course_url(@course), xhr: true
+      get course_members_url(@course), xhr: true
       assert_response :success, "#{who} should be able to list members"
     end
   end
 
   test 'not-admins should not be able to list members' do
     with_users_signed_in @not_admins do |who|
-      get members_course_url(@course), xhr: true
-      assert_response :redirect, "#{who} should not be able to list members"
+      get course_members_url(@course), xhr: true
+      assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to list members"
+    end
+  end
+
+  test 'admins should be able to view members in course' do
+    with_users_signed_in @admins do |who|
+      @students.each do |view|
+        get course_member_url(@course, view), xhr: true
+        assert_response :success, "#{who} should be able to view #{view.permission}:#{view.membership_status_for(@course)}"
+      end
+    end
+  end
+
+  test 'not-admins should not be able to view members in course except themselves' do
+    with_users_signed_in @not_admins do |who, signed_in|
+      @course.users.reject{|u| u == signed_in}.each do |view|
+        get course_member_url(@course, view), xhr: true
+        assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to view #{view}"
+      end
     end
   end
 
@@ -393,7 +420,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
         courses = JSON.parse response.body
         assert_not courses.any? { |c| c['id'] == @course.id }, "#{who} should not be able to see a hidden course"
       else
-        assert_response :redirect
+        assert (response.forbidden? || response.unauthorized?)
       end
     end
   end
@@ -431,6 +458,17 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     post unsubscribe_course_url(@course)
     post unfavorite_course_url(@course)
     assert_not response.successful?
+  end
+
+  test 'subscribing to a moderated course when already subscribed should not change status' do
+    user = @students.first
+    course = create :course, registration: :moderated
+    course.subscribed_members << user
+
+    sign_in user
+    post subscribe_course_url(course)
+    assert_redirected_to course
+    assert course.subscribed_members.include?(user)
   end
 
 end

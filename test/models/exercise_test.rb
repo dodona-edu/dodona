@@ -337,6 +337,18 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     assert_equal 'Echo', config['description']['names']['en']
   end
 
+  test 'should use current user name when committing' do
+    Current.user = create :user
+    @exercise.update access: 'private'
+    assert_equal Current.user.full_name, @remote.git('log', '-1', '--pretty=format:%an')
+  end
+
+  test 'should use current user email when committing' do
+    Current.user = create :user
+    @exercise.update access: 'private'
+    assert_equal Current.user.email, @remote.git('log', '-1', '--pretty=format:%ae')
+  end
+
   test 'should push to remote' do
     assert_difference('@remote.commit_count', 1) do
       @exercise.update access: 'private'
@@ -374,7 +386,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
 
   # set at top level, overridden by series, overridden by exercise
   test 'should set programming language' do
-    assert_equal 'python', @exercise.programming_language
+    assert_equal ProgrammingLanguage.find_by(name: 'python'), @exercise.programming_language
   end
 
   # set at top level, overridden by series

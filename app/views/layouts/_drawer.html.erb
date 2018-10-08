@@ -74,7 +74,7 @@
             <li>
               <%= activatable_link_to repositories_path ,
                                         class: 'drawer-list-item' do %>
-                <i class="material-icons md-24">code</i>
+                <i class="material-icons md-24">storage</i>
                 <%= t("layout.menu.repositories") %>
               <% end %>
             </li>
@@ -88,11 +88,19 @@
               <% end %>
             </li>
           <% end %>
+          <% if policy(ProgrammingLanguage).index? %>
+            <li>
+              <%= activatable_link_to programming_languages_path,
+                class: 'drawer-list-item' do %>
+                <i class='material-icons md-24'>code</i>
+                <%= t("layout.menu.programming_languages") %>
+              <% end %>
+          <% end %>
           <% if current_user.zeus? %>
             <li>
               <%= activatable_link_to "/dj/overview",
                                         class: 'drawer-list-item' do %>
-                <i class="material-icons md-24">storage</i>
+                <i class="material-icons md-24">queue</i>
                 Job queue
               <% end %>
             </li>

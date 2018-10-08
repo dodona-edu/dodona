@@ -46,7 +46,12 @@ class Repository < ApplicationRecord
   end
 
   def commit(msg)
-    _out, error, status = Open3.capture3('git', 'commit', '--author="Dodona <dodona@ugent.be>"', '-am', msg, chdir: full_path.to_path)
+    author = if Current.user&.full_name && Current.user&.email
+               "#{Current.user.full_name} <#{Current.user.email}>"
+             else
+               'Dodona <dodona@ugent.be>'
+             end
+    _out, error, status = Open3.capture3('git', 'commit', "--author=\"#{author}\"", '-am', "#{msg}\nThis commit was created automatically by Dodona.", chdir: full_path.to_path)
     if Rails.env.production?
       _out, error, status = Open3.capture3('git push', chdir: full_path.to_path) if status.success?
     end
@@ -93,7 +98,7 @@ class Repository < ApplicationRecord
       handled_directories.push orig_path
       directories.reject{|dir| dir == orig_path}.each do |dir|
         new_ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id)
-        new_exercises.push ex
+        new_exercises.push new_ex
         update_exercise new_ex
         handled_exercises.push new_ex
         handled_directories.push dir
@@ -143,10 +148,17 @@ class Repository < ApplicationRecord
   def update_exercise(ex)
     config = ex.merged_config
 
+    j = nil
     j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
+    programming_language_name = config['programming_language']
+    programming_language = nil
+    if programming_language_name
+      programming_language = ProgrammingLanguage.find_by(name: programming_language_name)
+      programming_language ||= ProgrammingLanguage.create(name: programming_language_name)
+    end
 
-    ex.judge_id = j&.id || judge_id
-    ex.programming_language = config['programming_language']
+    ex.judge = j || judge
+    ex.programming_language = programming_language
     ex.name_nl = config['description']&.fetch('names', nil)&.fetch('nl', nil)
     ex.name_en = config['description']&.fetch('names', nil)&.fetch('en', nil)
     ex.description_format = Exercise.determine_format(ex.full_path)

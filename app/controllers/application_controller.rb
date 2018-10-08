@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
+  include SetCurrentRequestDetails
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -45,11 +46,19 @@ class ApplicationController < ActionController::Base
   private
 
   def user_not_authorized
-    if current_user.nil?
-      redirect_to sign_in_path
+    if remote_request?
+      if current_user.nil?
+        head :unauthorized
+      else
+        head :forbidden
+      end
     else
-      flash[:alert] = I18n.t('errors.no_rights')
-      redirect_to(request.referer || root_path)
+      if current_user.nil?
+        redirect_to sign_in_path
+      else
+        flash[:alert] = I18n.t('errors.no_rights')
+        redirect_to(request.referer || root_path)
+      end
     end
   end
 

@@ -25,6 +25,10 @@ nl:
       private: Privé
       invalid: Ongeldig
       removed: Verwijderd
+      programming_language: "Programmeertaal"
+      labels: "Labels"
+      repository: "Repository"
+      path: "Pad"
     show:
       code: Code
       handin: Indienen

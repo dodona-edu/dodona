@@ -1,13 +1,19 @@
-<div class="card-title-icon <%= summary.full_status %>">
-  <i class="material-icons">
-    <% if summary.completed? %>
-      done
-    <% elsif summary.wrong? %>
-      close
-    <% elsif summary.started? %>
-      thumb_up
-    <% else %>
-      school
-    <% end %>
-  </i>
-</div>
+<% if summary.present? %>
+  <div class="card-title-icon <%= summary.full_status %>">
+    <i class="material-icons">
+      <% if summary.completed? %>
+        done
+      <% elsif summary.wrong? %>
+        close
+      <% elsif summary.started? %>
+        thumb_up
+      <% else %>
+        school
+      <% end %>
+    </i>
+  </div>
+<% else %>
+  <div class="card-title-icon skeleton">
+    <i class="material-icons">school</i>
+  </div>
+<% end %>

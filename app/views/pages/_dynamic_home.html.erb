@@ -14,34 +14,36 @@
         </div>
       <% end %>
       <% if current_user.full_view? %>
-        <% unless current_user.favorite_courses.empty? %>
-          <div class="row">
-            <% current_user.favorite_courses.each do |course| %>
+        <div class="row favorites-row">
+          <% unless current_user.favorite_courses.empty? %>
+              <% current_user.favorite_courses.each do |course| %>
+                <div class="col-xs-12 col-sm-12 col-lg-6">
+                  <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
+                </div>
+              <% end %>
+          <% end %>
+        </div>
+        <% first = true %>
+        <% current_user.grouped_recent_courses(3).each do |year, courses| %>
+          <% if first %>
+            <% first = false %>
+            <div class="page-subtitle first <%= "hidden" if current_user.favorite_courses.empty? %>">
+              <a class="anchor" id="<%= year.parameterize %>"></a>
+              <h3><%= Course.format_year year %></h3>
+            </div>
+          <% else %>
+            <div class="page-subtitle">
+              <a class="anchor" id="<%= year.parameterize %>"></a>
+              <h3><%= Course.format_year year %></h3>
+            </div>
+          <% end %>
+          <div class="row row-<%= year.parameterize %>">
+            <% courses.each do |course| %>
               <div class="col-xs-12 col-sm-12 col-lg-6">
                 <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
               </div>
             <% end %>
           </div>
-        <% end %>
-        <% first = current_user.favorite_courses.empty? %>
-        <% current_user.grouped_recent_courses(3).each do |year, courses| %>
-          <% unless (courses - current_user.favorite_courses).empty? %>
-            <% if first %>
-              <% first = false %>
-            <% else %>
-              <div class="page-subtitle">
-                <a class="anchor" id="<%= year.parameterize %>"></a>
-                <h3><%= Course.format_year year %></h3>
-              </div>
-            <% end %>
-            <div class="row">
-              <% (courses - current_user.favorite_courses).each do |course| %>
-                <div class="col-xs-12 col-sm-12 col-lg-6">
-                  <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
         <% end %>
       <% else %>
         <div class="row">

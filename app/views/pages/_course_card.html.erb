@@ -38,7 +38,7 @@
           <% end %>
         </div>
         <div class="col-xs-6">
-          <%= link_to members_course_path(course), class: 'card-title-link' do %>
+          <%= link_to course_members_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter course.subscribed_members.count, delimiter: " " %></h1>
             <%= t ".users" %>
           <% end %>
@@ -69,7 +69,7 @@
             <span class='pull-right'>
               <%= render partial: 'series/human_deadline', locals: { series: series } %>
             </span>
-            <%= link_to series.name, course_path(course, series: series, anchor: "series-#{series.name.parameterize}"), class: "dynamic-homepage-series-link link-accent-#{course.color}", title: series.name %>
+            <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
           </p>
         <% end %>
       </div>

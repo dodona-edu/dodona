@@ -12,8 +12,9 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #
-
 class Submission < ApplicationRecord
+  SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
+
   enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
 
   belongs_to :exercise
@@ -25,6 +26,7 @@ class Submission < ApplicationRecord
   delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
 
   validate :code_cannot_contain_emoji, on: :create
+  validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
   after_update :invalidate_stats_cache
   after_create :evaluate_delayed, if: :evaluate?
@@ -40,15 +42,6 @@ class Submission < ApplicationRecord
   scope :by_status, ->(status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
   scope :by_username, ->(username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
   scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
-
-  scope :join_series, -> {
-    joins(exercise: :series).where('submissions.course_id = series.course_id')
-  }
-
-  scope :timely, -> {
-    join_series
-      .where('submissions.created_at < series.deadline OR series.deadline IS NULL')
-  }
 
   scope :most_recent, -> {
     submissions = select('MAX(submissions.id) as id')
@@ -70,6 +63,7 @@ class Submission < ApplicationRecord
 
   def initialize(params)
     raise 'please explicitly tell wheter you want to evaluate this submission' unless params.has_key? :evaluate
+    @skip_rate_limit_check  = params.delete(:skip_rate_limit_check) { false }
     @evaluate = params.delete(:evaluate)
     super
     self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
@@ -77,6 +71,10 @@ class Submission < ApplicationRecord
 
   def evaluate?
     @evaluate
+  end
+
+  def skip_rate_limit_check?
+    @skip_rate_limit_check
   end
 
   def evaluate_delayed(priority = :normal)
@@ -113,6 +111,15 @@ class Submission < ApplicationRecord
   def code_cannot_contain_emoji
     no_emoji_found = code.chars.all? { |c| c.bytes.length < 4 }
     errors.add(:code, 'emoji found') unless no_emoji_found
+  end
+
+  def is_not_rate_limited
+    return if self.user.nil?
+    previous = self.user.submissions.most_recent.first
+    if previous.present?
+      time_since_previous = Time.now - previous.created_at
+      errors.add(:submission, 'rate limited') if time_since_previous < SECONDS_BETWEEN_SUBMISSIONS.seconds
+    end
   end
 
   def self.rejudge(submissions, priority = :low)

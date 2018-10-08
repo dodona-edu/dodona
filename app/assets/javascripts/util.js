@@ -131,7 +131,6 @@ function getArrayURLParameter(name, _url) {
     let result = [];
     for (let part of url.split(/[?&]/)) {
         const regResults = new RegExp(`${name}%5B%5D=([^#]+)`).exec(part);
-        console.log(part, regResults);
         if (regResults && regResults[1]) {
             result.push(decodeURIComponent(regResults[1]));
         }

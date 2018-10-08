@@ -59,7 +59,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should set exercise programming language' do
-    assert_equal 'python', @echo.programming_language
+    assert_equal ProgrammingLanguage.find_by(name: 'python'), @echo.programming_language
   end
 
   test 'should set exercise name_nl' do
@@ -191,5 +191,15 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.process_exercises
     echo2 = Exercise.find_by(path: new_dir)
     assert_equal echo2.token, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+  end
+
+  test 'should write new token to config file of copied exercise' do
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
+    @repository.reset
+    @repository.process_exercises
+    echo2 = Exercise.find_by(path: new_dir)
+    assert_not_equal @echo.token, echo2.config['internals']['token']
   end
 end

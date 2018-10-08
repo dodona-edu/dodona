@@ -47,8 +47,8 @@ Rails.application.routes.draw do
       end
       resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
       resources :submissions, only: [:index]
+      resources :members, only: [:index, :show], controller: :course_members
       member do
-        get 'members'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
         post 'mass_accept_pending'
@@ -96,6 +96,7 @@ Rails.application.routes.draw do
       resources :api_tokens, only: %i[index create destroy], shallow: true
       resources :submissions, only: [:index]
       get 'stop_impersonating', on: :collection
+      get 'available_for_repository', on: :collection
       member do
         get 'impersonate'
         get 'token/:token', to: 'users#token_sign_in', as: 'token_sign_in'
@@ -103,6 +104,7 @@ Rails.application.routes.draw do
     end
 
     resources :labels
+    resources :programming_languages
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

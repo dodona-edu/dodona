@@ -3,14 +3,14 @@ class CoursesController < ApplicationController
 
   skip_forgery_protection only: [:subscribe]
 
-  has_scope :by_permission, only: :members
-  has_scope :by_name, only: :members, as: 'filter'
+  has_scope :by_name, as: 'filter'
 
   # GET /courses
   # GET /courses.json
   def index
     authorize Course
     @courses = policy_scope(Course.all)
+    @courses = apply_scopes(@courses)
     @grouped_courses = @courses.group_by(&:year)
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @title = I18n.t('courses.index.title')
@@ -21,15 +21,7 @@ class CoursesController < ApplicationController
   def show
     @title = @course.name
     @series = policy_scope(@course.series)
-    @total_series = @series.count
-    number_of_series = if params[:series]
-                         @series.find_index { |s| s.id == params[:series].to_i }.to_i + 3
-                       else
-                         5
-                       end
-
-    @series = @series.offset(params[:offset]) if params[:offset]
-    @series = @series.limit(number_of_series) unless params[:all]
+    @series_loaded = 5
   end
 
   # GET /courses/new
@@ -122,22 +114,27 @@ class CoursesController < ApplicationController
     return if performed? # return if redirect happenned
 
     respond_to do |format|
-      case @course.registration
-      when 'open'
-        if try_to_subscribe_current_user
-          subscription_succeeded_response format
-        else
-          subscription_failed_response format
+      if current_user.member_of? @course
+        format.html { redirect_to(@course) }
+        format.json { render json: { errors: ['already subscribed'] }, status: :unprocessable_entity }
+      else
+        case @course.registration
+        when 'open'
+          if try_to_subscribe_current_user
+            subscription_succeeded_response format
+          else
+            subscription_failed_response format
+          end
+        when 'moderated'
+          if try_to_subscribe_current_user status: 'pending'
+            signup_succeeded_response format
+          else
+            subscription_failed_response format
+          end
+        when 'closed'
+          format.html { redirect_to(@course, alert: I18n.t('courses.registration.closed')) }
+          format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
         end
-      when 'moderated'
-        if try_to_subscribe_current_user status: 'pending'
-          signup_succeeded_response format
-        else
-          subscription_failed_response format
-        end
-      when 'closed'
-        format.html { redirect_to(@course, alert: I18n.t('courses.registration.closed')) }
-        format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
       end
     end
   end
@@ -199,35 +196,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def members
-    statuses = if %w[unsubscribed pending].include? params[:status]
-                 params[:status]
-               else
-                 %w[course_admin student]
-               end
-
-    @users = apply_scopes(@course.users)
-             .order('course_memberships.status ASC')
-             .order(permission: :desc)
-             .order(username: :asc)
-             .where(course_memberships: { status: statuses })
-             .paginate(page: params[:page])
-
-    @pagination_opts = {
-      controller: 'courses',
-      action: 'members'
-    }
-
-    @title = I18n.t("courses.index.users")
-    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
-
-    respond_to do |format|
-      format.json { render 'users/index' }
-      format.js { render 'users/index' }
-      format.html
-    end
-  end
-
   def reset_token
     @course.generate_secret
     @course.save
@@ -257,12 +225,12 @@ class CoursesController < ApplicationController
   def redirect_unless_secret_correct
     if !current_user
       redirect_back(fallback_location: root_url, notice: I18n.t('courses.registration.not_logged_in'))
+    elsif current_user.member_of?(@course)
+      redirect_to @course
     elsif current_user.zeus?
       nil
     elsif params[:secret] != @course.secret
       redirect_back(fallback_location: root_url, alert: I18n.t('courses.registration.key_mismatch'))
-    elsif current_user.member_of?(@course)
-      redirect_to @course
     end
   end
 

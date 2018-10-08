@@ -59,7 +59,9 @@ class ExercisesController < ApplicationController
     @series = Series.find_by(id: params[:series_id])
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     @submissions = @exercise.submissions
-    @submissions = @submissions.in_course(@course) unless @course.nil? || !current_user&.member_of?(@course)
+    if @course.present? && current_user&.member_of?(@course)
+      @submissions = @submissions.in_course(@course)
+    end
     @submissions = @submissions.of_user(current_user) if current_user
     @submissions = policy_scope(@submissions).paginate(page: params[:page])
     if params[:edit_submission]

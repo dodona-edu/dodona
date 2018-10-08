@@ -116,6 +116,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should rejudge course submissions' do
     series = create(:series, :with_submissions)
+    series.course.subscribed_members << @zeus
     assert_jobs_enqueued(Submission.in_course(series.course).count) do
       rejudge_submissions course_id: series.course.id
     end
@@ -123,6 +124,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should rejudge series submissions' do
     series = create(:series, :with_submissions)
+    series.course.subscribed_members << @zeus
     assert_jobs_enqueued(Submission.in_series(series).count) do
       rejudge_submissions series_id: series.id
     end

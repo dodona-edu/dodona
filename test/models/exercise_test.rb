@@ -407,6 +407,13 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_not @exercise.config.key? 'access'
   end
 
+  test 'should add labels to config file when exercise is updated' do
+    @exercise.update(labels: [])
+    assert_equal [], @exercise.config['labels']
+    @exercise.update(labels: [Label.create(name: 'new label')])
+    assert_equal ['new label'], @exercise.config['labels']
+  end
+
   # set at top level, overridden by series, not set at exercise
   test 'should override parent config access if manually changed' do
     assert_not @exercise.config.key? 'access'

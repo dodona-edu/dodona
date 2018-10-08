@@ -1,7 +1,7 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,I18n,initStrip */
 import {showNotification} from "./notifications.js";
 
-function initLabelsEdit(labels) {
+function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
     for (let label of labels) {
         colorMap[label.name] = label.color;
@@ -26,6 +26,19 @@ function initLabelsEdit(labels) {
     $field.on("tokenfield:createdtoken", e => {
         if (colorMap[e.attrs.value]) {
             $(e.relatedTarget).addClass(`accent-${colorMap[e.attrs.value]}`);
+        }
+        if (undeletableLabels.indexOf(e.attrs.value) >= 0) {
+            $(e.relatedTarget).addClass("tokenfield-undeletable");
+        }
+    });
+    $field.on("tokenfield:removetoken", e => {
+        if (undeletableLabels.indexOf(e.attrs.value) >= 0) {
+            return false;
+        }
+    });
+    $field.on("tokenfield:edittoken", e => {
+        if (undeletableLabels.indexOf(e.attrs.value) >= 0) {
+            return false;
         }
     });
     $field.tokenfield({

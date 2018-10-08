@@ -113,7 +113,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             let source = editor.getValue();
             disableSubmitButton();
             submitSolution(source)
-                .done(submissionSuccessful)
+                .done(data => submissionSuccessful(data, $("#editor-process-btn").data("user_id")))
                 .fail(submissionFailed);
         });
 
@@ -184,7 +184,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $("#exercise-feedback-link").tab("show");
     }
 
-    function feedbackTableLoaded() {
+    function feedbackTableLoaded(userId) {
         $("a.load-submission").attr("data-remote", "true");
         if (lastSubmission) {
             let $submissionRow = $("#submission_" + lastSubmission);
@@ -192,7 +192,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             if (status == "queued" || status == "running") {
                 setTimeout(function () {
                     ga("send", "pageview");
-                    $.get("submissions.js");
+                    $.get(`submissions.js?user_id=${userId}`);
                 }, 1000);
             } else {
                 if ($("#exercise-submission-link").parent().hasClass("active")) {
@@ -215,11 +215,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $("#editor-process-btn .material-icons").html("hourglass_empty");
     }
 
-    function submissionSuccessful(data) {
+    function submissionSuccessful(data, userId) {
         lastSubmission = data.id;
         showNotification(I18n.t("js.submission-saved"));
         ga("send", "pageview");
-        $.get("submissions.js");
+        $.get(`submissions.js?user_id=${userId}`);
         $("#exercise-submission-link").tab("show");
     }
 

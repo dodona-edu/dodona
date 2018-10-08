@@ -46,6 +46,7 @@ Rails.application.routes.draw do
         resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
       end
       resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
+      resources :submissions, only: [:index]
       resources :members, only: [:index, :show], controller: :course_members
       member do
         get 'scoresheet'

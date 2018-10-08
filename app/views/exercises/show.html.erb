@@ -28,7 +28,7 @@
       <div class="card-title card-title-colored">
         <% if policy(@exercise).submit? %>
           <div class="card-title-fab">
-            <button class="btn btn-primary btn-fab" id="editor-process-btn">
+            <button class="btn btn-primary btn-fab" id="editor-process-btn" data-user_id="<%= current_user.id %>">
               <i class="material-icons md-36">play_arrow</i>
             </button>
             <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">

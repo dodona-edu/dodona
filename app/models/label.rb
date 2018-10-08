@@ -6,7 +6,7 @@
 #  name       :string       not null, unique
 #  color      :string       not null
 class Label < ApplicationRecord
-  has_many :exercise_labels, dependent: :destroy
+  has_many :exercise_labels, dependent: :restrict_with_error
   has_many :exercises, through: :exercise_labels
 
   enum color: %i[red pink purple deep-purple indigo teal

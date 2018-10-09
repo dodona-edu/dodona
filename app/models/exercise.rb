@@ -139,7 +139,30 @@ class Exercise < ApplicationRecord
             .map { |dir| read_dirconfig dir } # try reading their dirconfigs
             .compact                          # remove nil entries
             .push(config)                     # add exercise config file
-            .reduce(&:deep_merge)             # reduce into single hash
+            .reduce do |h1, h2|
+              h1.deep_merge(h2) do |_, v1, v2|
+                if v1.is_a?(Array) && v2.is_a?(Array)
+                  (v1 + v2).uniq
+                else
+                  v2
+                end
+              end
+            end # reduce into single hash
+  end
+
+  def merged_dirconfig
+    Pathname.new('./' + path).parent.descend  # all parent directories
+        .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+        .compact                          # remove nil entries
+        .reduce do |h1, h2|
+          h1.deep_merge(h2) do |_, v1, v2|
+            if v1.is_a?(Array) && v2.is_a?(Array)
+              (v1 + v2).uniq
+            else
+              v2
+            end
+          end
+        end # reduce into single hash
   end
 
   def config_file?
@@ -170,6 +193,9 @@ class Exercise < ApplicationRecord
 
   def update_config
     return unless ok?
+
+    labels_to_write = labels.map{|l| l.name} - (merged_dirconfig['labels'] || [])
+
     c = config
     c.delete('visibility')
     c['access'] = access if defined?(access) && access != merged_config['access']
@@ -178,6 +204,7 @@ class Exercise < ApplicationRecord
     c['internals'] = {}
     c['internals']['token'] = token
     c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
+    c['labels'] = labels_to_write unless (labels_to_write & (merged_config['labels'] || [])) == labels_to_write
     store_config c
   end
 

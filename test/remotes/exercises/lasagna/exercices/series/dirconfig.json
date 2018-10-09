@@ -1,4 +1,5 @@
 {
   "access": "public",
-  "programming_language": "prolog"
+  "programming_language": "prolog",
+  "labels": ["label3"]
 }

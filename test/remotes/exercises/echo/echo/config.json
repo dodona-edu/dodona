@@ -1,4 +1,5 @@
 {
+  "labels": ["label1", "label2", "label3"],
   "access": "public",
   "description": {
     "handler": "default",

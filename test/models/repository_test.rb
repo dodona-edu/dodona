@@ -82,6 +82,23 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 'ok', @echo.status
   end
 
+  test 'should set exercise labels' do
+    assert_equal Label.all, @echo.labels
+    assert_equal 3, Label.count
+  end
+
+  test 'should not create new labels when they are already present' do
+    Label.create(name: 'label4')
+    @remote.update_json(@echo.path + '/config.json') do |json|
+      json['labels'] << 'label4'
+      json
+    end
+    @repository.reset
+    @repository.process_exercises
+    assert_equal Label.all, @echo.labels
+    assert_equal 4, Label.count
+  end
+
   test 'should push commits to remote' do
     assert_difference('@remote.commit_count', 1) do
       File.open(@echo.config_file, 'w') do |f|

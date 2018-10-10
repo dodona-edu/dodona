@@ -21,7 +21,9 @@
      data-series-url="<%= series_path(series, format: :js, user_id: user.id) %>">
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>"  name="<%= series.name %>"></a>
-    <%= render partial: 'series/series_status', locals: { summary: summary } %>
+    <div class="hidden-print">
+      <%= render partial: 'series/series_status', locals: { summary: summary } %>
+    </div>
     <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
       <% if series.deadline? %>
         <% if series.deadline > Time.now %>

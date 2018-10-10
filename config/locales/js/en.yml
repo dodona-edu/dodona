@@ -21,4 +21,5 @@ en:
     unfavorite-course-failed: Unfavoriting course failed
     labels: Labels
     programming-languages: Programming Languages
+    repositories: Repositories
     label-undeletable: This label can't be deleted because it was set in the dirconfig file of a parent directory of the exercise.

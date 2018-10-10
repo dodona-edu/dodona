@@ -72,7 +72,7 @@
         <div class="card-supporting-text card-border row">
           <div class="col-xs-12">
             <h4><%= t ".add_exercises" %></h4>
-            <%= render partial: 'layouts/searchbar', locals: { baseUrl: available_exercises_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages }  %>
+            <%= render partial: 'layouts/searchbar', locals: { baseUrl: available_exercises_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories }  %>
             <div id="exercises-table-wrapper">
             </div>
           </div>

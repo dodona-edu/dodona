@@ -20,6 +20,6 @@ nl:
     unfavorite-course-succeeded: Cursus verwijderd uit favorieten
     unfavorite-course-failed: Cursus uit favorieten verwijderen mislukt
     labels: Labels
-    programming-languages: Programmeertalen
+    programming_languages: Programmeertalen
     repositories: Repository's
     label-undeletable: Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.

@@ -6,10 +6,14 @@ import {showNotification} from "./notifications.js";
 function initSeriesEdit() {
     function init() {
         initAddButtons();
+        initTokenClickables();
         initRemoveButtons();
         initDragAndDrop();
         // export function
-        dodona.seriesEditExercisesLoaded = initAddButtons;
+        dodona.seriesEditExercisesLoaded = () => {
+            initAddButtons();
+            initTokenClickables();
+        };
     }
 
     function initAddButtons() {
@@ -39,6 +43,17 @@ function initSeriesEdit() {
                 });
             $(this).remove();
             return false;
+        });
+    }
+
+    function initTokenClickables() {
+        $(".clickable-token").click(function () {
+            const $htmlElement = $(this);
+            const type = $htmlElement.data("type");
+            const name = $htmlElement.data("name");
+            if (dodona.addTokenToSearch) {
+                dodona.addTokenToSearch(type, name);
+            }
         });
     }
 

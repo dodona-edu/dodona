@@ -1,4 +1,4 @@
-/* globals I18n,Bloodhound */
+/* globals I18n,Bloodhound,dodona */
 import {showNotification} from "./notifications.js";
 import {delay, updateURLParameter, updateArrayURLParameter, getURLParameter, getArrayURLParameter} from "./util.js";
 
@@ -195,7 +195,6 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
             });
             return result;
         }
-
         const typeAheadOpts = [{
             highlight: true,
             minLength: 0,
@@ -232,6 +231,23 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
             beautify: false,
             typeahead: typeAheadOpts,
         });
+
+        function addTokenToSearch(type, name) {
+            const collection = filterCollections[type];
+            if (!collection) {
+                return false;
+            }
+
+            const element = collection.data.filter(el => el.name === name)[0];
+            if (!element) {
+                return false;
+            }
+
+            $field.tokenfield("createToken", element);
+        }
+
+        dodona.addTokenToSearch = addTokenToSearch;
+
     }
 
     init();

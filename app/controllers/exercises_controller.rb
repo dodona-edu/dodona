@@ -33,9 +33,9 @@ class ExercisesController < ApplicationController
     @exercises = apply_scopes(@exercises)
 
     @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: params[:page])
-    @labels = Label.all
-    @programming_languages = ProgrammingLanguage.all
-    @repositories = Repository.all
+    @labels = policy_scope(Label.all)
+    @programming_languages = policy_scope(ProgrammingLanguage.all)
+    @repositories = policy_scope(Repository.all)
     @title = I18n.t('exercises.index.title')
   end
 

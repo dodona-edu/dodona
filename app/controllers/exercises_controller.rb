@@ -82,11 +82,13 @@ class ExercisesController < ApplicationController
     attributes = permitted_attributes(@exercise)
 
     labels = params[:exercise][:labels]
-    unless labels.is_a?(Array)
-      labels = labels&.split(',')
+    if labels
+      unless labels.is_a?(Array)
+        labels = labels&.split(',')
+      end
+      labels = (labels + (@exercise.merged_dirconfig[:labels] || [])).uniq
+      attributes[:labels] = labels&.map { |name| Label.find_by(name: name) || Label.create(name: name) }
     end
-    labels = (labels + (@exercise.merged_dirconfig[:labels] || [])).uniq
-    attributes[:labels] = labels&.map { |name| Label.find_by(name: name) || Label.create(name: name) } if labels
 
     respond_to do |format|
       if @exercise.update(attributes)

@@ -162,7 +162,7 @@ class Exercise < ApplicationRecord
               v2
             end
           end
-        end # reduce into single hash
+        end || {} # reduce into single hash
   end
 
   def config_file?
@@ -204,7 +204,9 @@ class Exercise < ApplicationRecord
     c['internals'] = {}
     c['internals']['token'] = token
     c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
-    c['labels'] = labels_to_write unless (labels_to_write & (merged_config['labels'] || [])) == labels_to_write
+    if (labels_to_write & (merged_config['labels'] || [])) != labels_to_write || labels_to_write == []
+      c['labels'] = labels_to_write
+    end
     store_config c
   end
 

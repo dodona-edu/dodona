@@ -50,7 +50,7 @@ class Exercise < ApplicationRecord
   before_save :check_validity
   before_update :update_config
 
-  scope :in_repository, ->(repository) { where repository_id: repository.id }
+  scope :in_repository, ->(repository) { where repository: repository }
 
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }

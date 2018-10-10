@@ -8,6 +8,7 @@ class ExercisesController < ApplicationController
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array
   has_scope :by_programming_language, as: 'programming_language'
+  has_scope :in_repository, as: 'repository_id'
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')
@@ -32,8 +33,9 @@ class ExercisesController < ApplicationController
     @exercises = apply_scopes(@exercises)
 
     @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: params[:page])
-    @labels = Label.all
-    @programming_languages = ProgrammingLanguage.all
+    @labels = policy_scope(Label.all)
+    @programming_languages = policy_scope(ProgrammingLanguage.all)
+    @repositories = policy_scope(Repository.all)
     @title = I18n.t('exercises.index.title')
   end
 
@@ -45,8 +47,6 @@ class ExercisesController < ApplicationController
     @exercises = @exercises.or(Exercise.where(repository: @course.usable_repositories))
     @exercises = apply_scopes(@exercises)
     @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: params[:page])
-    @labels = Label.all
-    @programming_languages = ProgrammingLanguage.all
   end
 
   def show
@@ -82,11 +82,13 @@ class ExercisesController < ApplicationController
     attributes = permitted_attributes(@exercise)
 
     labels = params[:exercise][:labels]
-    unless labels.is_a?(Array)
-      labels = labels&.split(',')
+    if labels
+      unless labels.is_a?(Array)
+        labels = labels&.split(',')
+      end
+      labels = (labels + (@exercise.merged_dirconfig[:labels] || [])).uniq
+      attributes[:labels] = labels&.map { |name| Label.find_by(name: name) || Label.create(name: name) }
     end
-    labels = (labels + (@exercise.merged_dirconfig[:labels] || [])).uniq
-    attributes[:labels] = labels&.map { |name| Label.find_by(name: name) || Label.create(name: name) } if labels
 
     respond_to do |format|
       if @exercise.update(attributes)

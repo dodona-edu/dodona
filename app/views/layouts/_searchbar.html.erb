@@ -24,6 +24,35 @@
 
 <script type="text/javascript">
   $(function () {
-    dodona.initFilterIndex("<%= local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%=raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, <%= raw render template: 'labels/index', formats: :json %>, <%= raw render template: 'programming_languages/index', formats: :json %>);
+    const filterCollections = {};
+    <% if local_assigns.fetch :labels, [] %>
+      filterCollections["labels"] = {
+          param: "labels",
+          paramVal: l => l.name,
+          multi: true,
+          data: <%= raw render template: 'labels/index', formats: :json %>,
+          color: label => label.color,
+      };
+    <% end %>
+    <% if local_assigns.fetch :programming_languages, [] %>
+      filterCollections["programming_languages"] = {
+          param: "programming_language",
+          paramVal: p => p.name,
+          multi: false,
+          data: <%= raw render template: 'programming_languages/index', formats: :json %>,
+          color: () => 'teal',
+      };
+    <% end %>
+    <% if local_assigns.fetch :repositories, [] %>
+      filterCollections["repositories"] = {
+          param: "repository_id",
+          paramVal: r => r.id,
+          multi: false,
+          data: <%= raw render template: 'repositories/index', formats: :json %>,
+          color: () => 'blue-grey',
+      };
+    <% end %>
+
+    dodona.initFilterIndex("<%= local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%=raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, filterCollections);
   });
 </script>

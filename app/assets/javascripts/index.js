@@ -5,6 +5,7 @@ import {delay, updateURLParameter, updateArrayURLParameter, getURLParameter, get
 const FILTER_PARAM = "filter";
 const LABELS_PARAM = "labels";
 const PROGRAMMING_LANGUAGE_PARAM = "programming_language";
+const REPOSITORY_PARAM = "repository_id";
 const LABELS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
 
@@ -16,6 +17,8 @@ function search(baseUrl, _query) {
     url = updateArrayURLParameter(url, LABELS_PARAM, $(LABELS_FILTER_ID).tokenfield("getTokens").filter(e => e.type === "label").map(e => e.name));
     let programmingLanguage = $(LABELS_FILTER_ID).tokenfield("getTokens").filter(e => e.type === "programmingLanguage")[0];
     url = updateURLParameter(url, PROGRAMMING_LANGUAGE_PARAM, programmingLanguage ? programmingLanguage.name : "");
+    let repository = $(LABELS_FILTER_ID).tokenfield("getTokens").filter(e => e.type === "repository")[0];
+    url = updateURLParameter(url, REPOSITORY_PARAM, repository ? repository.id : "");
     if (!baseUrl) {
         window.history.replaceState(null, "Dodona", url);
     }
@@ -28,9 +31,10 @@ function search(baseUrl, _query) {
     });
 }
 
-function initFilter(baseUrl, eager, _labels, _programmingLanguages) {
+function initFilter(baseUrl, eager, _labels, _programmingLanguages, _repositories) {
     const labels = _labels || [];
     const programmingLanguages = _programmingLanguages || [];
+    const repositories = _repositories || [];
     let $queryFilter = $(QUERY_FILTER_ID);
     let $labelsFilter = $(LABELS_FILTER_ID);
     let doSearch = () => search(baseUrl, $queryFilter.typeahead("val"));
@@ -38,6 +42,7 @@ function initFilter(baseUrl, eager, _labels, _programmingLanguages) {
     let param = getURLParameter(FILTER_PARAM);
     let enabledLabels = getArrayURLParameter(LABELS_PARAM);
     let enabledProgrammingLanguage = getURLParameter(PROGRAMMING_LANGUAGE_PARAM);
+    let enabledRepository = getURLParameter(REPOSITORY_PARAM);
     let allTokens = [];
     for (let enabledLabel of enabledLabels) {
         let label = labels.filter(l => l.name === enabledLabel)[0];
@@ -49,6 +54,10 @@ function initFilter(baseUrl, eager, _labels, _programmingLanguages) {
     if (programmingLanguage) {
         allTokens.push(programmingLanguage);
     }
+    let repository = repositories.filter(r => `${r.id}` === enabledRepository)[0];
+    if (repository) {
+        allTokens.push(repository);
+    }
     $labelsFilter.tokenfield("setTokens", allTokens);
     if (param !== "") {
         $queryFilter.typeahead("val", param);
@@ -58,12 +67,12 @@ function initFilter(baseUrl, eager, _labels, _programmingLanguages) {
     }
 }
 
-function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels, programmingLanguages) {
+function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels, programmingLanguages, repositories) {
     function init() {
         initLabels();
 
         if (doInitFilter) {
-            initFilter(baseUrl, eager, labels, programmingLanguages);
+            initFilter(baseUrl, eager, labels, programmingLanguages, repositories);
         }
 
         if (actions) {
@@ -147,15 +156,22 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels, programm
             programmingLanguage.type = "programmingLanguage";
         }
 
+        for (let repository of repositories) {
+            repository.value = repository.name;
+            repository.type = "repository";
+        }
+
         function doSearch() {
             search(baseUrl);
         }
 
         function validateLabel(e) {
             if (e.attrs.type === "label") {
-                return labels.map(l => l.name).indexOf(e.attrs.value) >= 0;
+                return labels.map(l => l.name).includes(e.attrs.value);
             } else if (e.attrs.type === "programmingLanguage") {
-                return programmingLanguages.map(p => p.name).indexOf(e.attrs.value) >= 0;
+                return programmingLanguages.map(p => p.name).includes(e.attrs.value);
+            } else if (e.attrs.type === "repository") {
+                return repositories.map(r => r.name).includes(e.attrs.value)
             } else {
                 return false;
             }
@@ -171,7 +187,17 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels, programm
                 $(e.relatedTarget).addClass(`accent-${colorMap[e.attrs.value]}`);
             } else if (e.attrs.type === "programmingLanguage") {
                 $(e.relatedTarget).addClass("accent-teal");
-                const newTokens = $field.tokenfield("getTokens").filter(el => el.type !== "programmingLanguage" || el.name === e.attrs.value);
+                const newTokens = $field.tokenfield("getTokens")
+                    .filter(el => el.type !== "programmingLanguage" || el.name === e.attrs.value)
+                    .filter((el, i, arr) => arr.map(el => `${el.type}${el.id}`).indexOf(`${el.type}${el.id}`) === i);
+                if (newTokens.length !== $field.tokenfield("getTokens").length) {
+                    $field.tokenfield("setTokens", newTokens);
+                }
+            } else if (e.attrs.type === "repository") {
+                $(e.relatedTarget).addClass("accent-blue-grey");
+                const newTokens = $field.tokenfield("getTokens")
+                    .filter(el => el.type !== "repository" || el.name === e.attrs.value)
+                    .filter((el, i, arr) => arr.map(el => `${el.type}${el.id}`).indexOf(`${el.type}${el.id}`) === i);
                 if (newTokens.length !== $field.tokenfield("getTokens").length) {
                     $field.tokenfield("setTokens", newTokens);
                 }
@@ -204,6 +230,13 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels, programm
             queryTokenizer: Bloodhound.tokenizers.whitespace,
         });
 
+        const repositoryEngine = new Bloodhound({
+            local: repositories,
+            identify: d => d.id,
+            datumTokenizer: d => customWhitespaceTokenizer(d.name),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+        });
+
         $field.on("tokenfield:createtoken", validateLabel);
         $field.on("tokenfield:createdtoken", enableLabel);
         $field.on("tokenfield:removedtoken", disableLabel);
@@ -223,6 +256,12 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels, programm
                 display: d => d.name,
                 templates: {
                     header: `<strong class="tt-header">${I18n.t("js.programming-languages")}</strong>`,
+                },
+            }, {
+                source: repositoryEngine,
+                display: d => d.name,
+                templates: {
+                    header: `<strong class="tt-header">${I18n.t("js.repositories")}</strong>`,
                 },
             }],
         });

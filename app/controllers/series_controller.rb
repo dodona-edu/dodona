@@ -45,8 +45,9 @@ class SeriesController < ApplicationController
   def edit
     @title = @series.name
     @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, series_path(@series)], [I18n.t("crumbs.edit"), "#"]]
-    @labels = Label.all
-    @programming_languages = ProgrammingLanguage.all
+    @labels = policy_scope(Label.all)
+    @programming_languages = policy_scope(ProgrammingLanguage.all)
+    @repositories = policy_scope(Repository.all)
   end
 
   # POST /series

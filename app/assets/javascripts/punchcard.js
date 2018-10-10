@@ -51,13 +51,14 @@ function drawPunchCard(data) {
 }
 
 function initChart(data) {
-    const width = d3.select("#punchcard-container").node().getBoundingClientRect().width;
+    const container = d3.select("#punchcard-container");
+    const width = container.node().getBoundingClientRect().width;
     const innerWidth = width - margin.left - margin.right;
     const unitSize = innerWidth / 24;
     const innerHeight = unitSize * 7;
     const height = innerHeight + margin.top + margin.bottom;
 
-    const chart = d3.select("#punchcard-container").append("svg")
+    const chart = container.append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")

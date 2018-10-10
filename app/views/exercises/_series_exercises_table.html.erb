@@ -29,20 +29,20 @@
         </span>
         <div class="text-muted">
           <small>
-            <span class="ellipsis-overflow" title="<%= exercise.repository.name %>: <%= exercise.path %>"><%= exercise.repository.name %>: <%= exercise.path %></span>
+            <span class="ellipsis-overflow clickable-token" title="<%= exercise.repository.name %>: <%= exercise.path %>" data-type="repositories" data-name="<%= exercise.repository.name %>"><%= exercise.repository.name %>: <%= exercise.path %></span>
           </small>
         </div>
       </td>
       <td class="series-exercises-table-labels">
-        <span><%= exercise.programming_language&.name || "" %></span>
+        <span class="<%= exercise.programming_language ? "clickable-token" : "" %>" data-type="programming_languages" data-name="<%= exercise.programming_language&.name %>"><%= exercise.programming_language&.name || "" %></span>
         <div class="text-muted">
           <small>
             <%# We can't just use exercise.labels because a search by labels might restrict the loaded labels %>
             <% labels = Label.includes(:exercises).where(exercises: { id: exercise.id }).load %>
             <% if labels.count > 5 %>
-              <span title="<%= labels.map(&:name).join(", ") %>"><%= labels.first(5).map(&:name).join(", ") + ", ..." %></span>
+              <span title="<%= labels.map(&:name).join(", ") %>"><%= raw labels.first(5).map{|label| "<span class='clickable-token' data-type='labels' data-name='#{label.name}'>#{label.name}</span>"}.join(", ") + ", ..." %></span>
             <% else %>
-              <%= labels.map{|label| "#{label.name}"}.join(", ") %>
+              <%= raw labels.map{|label| "<span class='clickable-token' data-type='labels' data-name='#{label.name}'>#{label.name}</span>"}.join(", ") %>
             <% end %>
           </small>
         </div>

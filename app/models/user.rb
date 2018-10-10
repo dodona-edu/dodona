@@ -124,6 +124,10 @@ class User < ApplicationRecord
     zeus? || admin_of?(course)
   end
 
+  def is_a_course_admin?
+    admin? || administrating_courses.any?
+  end
+
   def repository_admin?(repository)
     zeus? || repositories.include?(repository)
   end

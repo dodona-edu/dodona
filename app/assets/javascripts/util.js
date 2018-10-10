@@ -66,11 +66,14 @@ function updateURLParameter(url, param, paramVal) {
             baseURL = TheParams;
         }
     }
-    if (TheAnchor) {
-        paramVal += "#" + TheAnchor;
+    let rowsTxt = "";
+    if (paramVal) {
+        rowsTxt += `${temp}${param}=${paramVal}`;
     }
-    let rows_txt = temp + "" + param + "=" + paramVal;
-    return baseURL + "?" + newAdditionalURL + rows_txt;
+    if (TheAnchor) {
+        rowsTxt += "#" + TheAnchor;
+    }
+    return baseURL + "?" + newAdditionalURL + rowsTxt;
 }
 
 function updateArrayURLParameter(url, param, _paramVals) {

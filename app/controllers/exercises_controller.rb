@@ -8,6 +8,7 @@ class ExercisesController < ApplicationController
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array
   has_scope :by_programming_language, as: 'programming_language'
+  has_scope :in_repository, as: 'repository_id'
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')

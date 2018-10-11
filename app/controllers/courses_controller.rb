@@ -27,7 +27,7 @@ class CoursesController < ApplicationController
   # GET /courses/new
   def new
     authorize Course
-    @course = Course.new
+    @course = Course.new(institution: current_user.institution)
     @title = I18n.t('courses.new.title')
     @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
   end

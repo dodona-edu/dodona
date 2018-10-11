@@ -10,6 +10,7 @@ en:
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
       visibility-help: Visible courses are visible for anyone. Hidden courses do not show up in the course overview, they require a special invite link to be able to register.
       registration-help: Open courses give direct access upon subscription. For moderated courses, a course administrator has to approve each registration. Registrations are disabled with closed courses.
+      no_institution: "No institution"
     index:
       title: All courses
       users: Users

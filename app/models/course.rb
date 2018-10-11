@@ -14,12 +14,15 @@
 #  correct_solutions :integer
 #  color             :integer
 #  teacher           :string(255)      default("")
+#  institution_id    :integer
 #
 
 require 'securerandom'
 require 'csv'
 
 class Course < ApplicationRecord
+  belongs_to :institution, optional: true
+
   has_many :course_memberships
   has_many :series
   has_many :course_repositories

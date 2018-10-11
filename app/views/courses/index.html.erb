@@ -13,7 +13,7 @@
 
 <script type="text/javascript">
   $(function () {
-    <% if current_user %>
+    <% if current_user&.institution.present? %>
       dodona.addTokenToSearch("institutions", "<%= current_user.institution.name %>");
     <% end %>
   });

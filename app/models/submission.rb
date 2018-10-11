@@ -40,7 +40,7 @@ class Submission < ApplicationRecord
 
   scope :by_exercise_name, ->(name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_status, ->(status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
-  scope :by_username, ->(username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
+  scope :by_username, ->(name) { joins(:exercise, :user).where('users.username LIKE ? OR users.first_name LIKE ? OR users.last_name LIKE ? OR CONCAT(users.first_name, \' \', users.last_name) LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
 
   scope :most_recent, -> {

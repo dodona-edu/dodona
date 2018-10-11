@@ -4,6 +4,7 @@ class CoursesController < ApplicationController
   skip_forgery_protection only: [:subscribe]
 
   has_scope :by_name, as: 'filter'
+  has_scope :by_institution, as: 'institution_id'
 
   # GET /courses
   # GET /courses.json

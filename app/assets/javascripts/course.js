@@ -146,26 +146,4 @@ function initCourseShow() {
     init();
 }
 
-function initCourseIndex() {
-    let $filter = $("#filter-query").focus();
-    $filter.on("keyup", function () {
-        $("#progress-filter").css("visibility", "visible");
-        delay(doSearch, 300);
-    });
-
-    function doSearch() {
-        let q = $filter.val().toLowerCase();
-        let $courseCards = $(".card.course");
-        if (q === "") {
-            $courseCards.parent().removeClass("hidden");
-        } else {
-            $courseCards.parent().addClass("hidden");
-            $courseCards.filter(function () {
-                return $(this).data("search").includes(q);
-            }).parent().removeClass("hidden");
-        }
-        setTimeout(() => $("#progress-filter").css("visibility", "hidden"), 200);
-    }
-}
-
-export {initCourseShow, initCourseMembers, loadUsers, initCourseIndex};
+export {initCourseShow, initCourseMembers, loadUsers};

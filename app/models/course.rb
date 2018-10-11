@@ -84,6 +84,7 @@ class Course < ApplicationRecord
   validates :year, presence: true
 
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%")}
+  scope :by_institution, ->(institution) { where(institution: institution) }
   default_scope { order(year: :desc, name: :asc) }
 
   before_create :generate_secret

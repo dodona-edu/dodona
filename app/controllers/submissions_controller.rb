@@ -108,15 +108,25 @@ class SubmissionsController < ApplicationController
     end
     if params[:course_id]
       @course = Course.find(params[:course_id])
-      @submissions = @submissions.in_course(@course) if current_user&.member_of?(@course)
     end
     if params[:series_id]
       @series = Series.find(params[:series_id])
-      @submissions = @submissions.in_series(@series) if current_user&.member_of?(@series.course)
     end
     if params[:exercise_id]
       @exercise = Exercise.find(params[:exercise_id])
+    end
+
+    if @exercise
       @submissions = @submissions.of_exercise(@exercise)
+      if @course
+        @submissions = @submissions.in_course(@course) if current_user&.member_of(@course)
+      elsif @series
+        @submissions = @submissions.in_course(@series.course) if current_user&.member_of(@series.course)
+      end
+    elsif @series
+      @submissions = @submissions.in_series(@series) if current_user&.member_of(@series.course)
+    elsif @course
+      @submissions = @submissions.in_course(@course) if current_user&.member_of(@course)
     end
 
     # this cannot use has_scope, because we need the scopes in this method

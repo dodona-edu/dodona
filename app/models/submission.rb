@@ -38,9 +38,9 @@ class Submission < ApplicationRecord
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
 
-  scope :by_exercise_name, ->(name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
-  scope :by_status, ->(status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
-  scope :by_username, ->(username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
+  scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
+  scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
+  scope :by_username, ->(name) { where(user: User.by_name(name)) }
   scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
 
   scope :most_recent, -> {

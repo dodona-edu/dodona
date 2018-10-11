@@ -36,7 +36,7 @@ class SeriesController < ApplicationController
              .map { |cid| Course.find_by id: cid }
              .or_nil
     authorize course, :add_series?
-    @series = Series.new
+    @series = Series.new(course: course)
     @title = I18n.t('series.new.title')
     @crumbs = [[course.name, course_path(course)], [I18n.t('series.new.title'), "#"]]
   end

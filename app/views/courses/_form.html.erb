@@ -54,7 +54,7 @@
     <div class="col-sm-6">
         <%= f.select :institution_id,
                      options_for_select(Institution.all.map { |i| [i.name, i.id] }, @course.institution_id),
-                     {},
+                     { include_blank: t('.no_institution') },
                      { class: 'form-control' } %>
     </div>
   </div>

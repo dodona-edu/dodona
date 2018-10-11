@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_11_074449) do
+ActiveRecord::Schema.define(version: 2018_10_11_095959) do
 
   create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -53,6 +53,8 @@ ActiveRecord::Schema.define(version: 2018_09_11_074449) do
     t.integer "correct_solutions"
     t.integer "color"
     t.string "teacher", default: ""
+    t.bigint "institution_id"
+    t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 
   create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -235,6 +237,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_074449) do
 
   add_foreign_key "course_repositories", "courses"
   add_foreign_key "course_repositories", "repositories"
+  add_foreign_key "courses", "institutions"
   add_foreign_key "exercise_labels", "exercises"
   add_foreign_key "exercise_labels", "labels"
   add_foreign_key "exercises", "judges"

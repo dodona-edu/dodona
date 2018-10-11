@@ -119,14 +119,14 @@ class SubmissionsController < ApplicationController
     if @exercise
       @submissions = @submissions.of_exercise(@exercise)
       if @course
-        @submissions = @submissions.in_course(@course) if current_user&.member_of(@course)
+        @submissions = @submissions.in_course(@course) if current_user&.member_of?(@course)
       elsif @series
-        @submissions = @submissions.in_course(@series.course) if current_user&.member_of(@series.course)
+        @submissions = @submissions.in_course(@series.course) if current_user&.member_of?(@series.course)
       end
     elsif @series
-      @submissions = @submissions.in_series(@series) if current_user&.member_of(@series.course)
+      @submissions = @submissions.in_series(@series) if current_user&.member_of?(@series.course)
     elsif @course
-      @submissions = @submissions.in_course(@course) if current_user&.member_of(@course)
+      @submissions = @submissions.in_course(@course) if current_user&.member_of?(@course)
     end
 
     # this cannot use has_scope, because we need the scopes in this method

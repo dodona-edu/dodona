@@ -16,7 +16,11 @@
       <% end %>
       <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>
       <h3 class="card-subtitle-text"><%= course.formatted_year %>&nbsp;</h3>
-      <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %>"><%= course.teacher %>&nbsp;</h3>
+      <% if course.institution&.name %>
+        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %> (<%= course.institution.name %>)"><%= course.teacher %> (<%= course.institution.name %>)&nbsp;</h3>
+      <% else %>
+        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %>"><%= course.teacher %>&nbsp;</h3>
+      <% end %>
     </div>
   <% end %>
   <div class="card-supporting-text stats row">

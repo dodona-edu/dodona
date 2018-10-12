@@ -9,8 +9,15 @@
         <h2 class="card-title-text">
           <%= @course.name %> (<%= @course.formatted_year %>)
         </h2>
+        <small class="card-title-text">
+          <% if @course.institution&.name.present? %>
+            <%= t(".taught_by_at", {teacher: @course.teacher, institution: @course.institution.name}) %>
+          <% else %>
+            <%= t(".taught_by", {teacher: @course.teacher}) %>
+          <% end %>
+        </small>
       </div>
-      <div class="card-supporting-text row">
+      <div class="card-supporting-text card-border row">
         <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
           <%= markdown(@course.description) %>
           <% if current_user&.member_of? @course %>

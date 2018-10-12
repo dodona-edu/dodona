@@ -1,4 +1,4 @@
-<div class="card home-summary-card course" data-search="<%= course.name.downcase + " " + course.teacher.downcase %>">
+<div class="card home-summary-card course">
   <%= link_to course_path(course), class: 'card-title-link' do %>
     <div class="card-title card-colored-accent accent-<%= course.color %>">
       <% if current_user.course_admin?(course) %>

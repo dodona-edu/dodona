@@ -118,6 +118,7 @@ class SubmissionRunner
         HostConfig: {
           Memory: memory_limit,
           MemorySwap: memory_limit, # memory including swap
+          BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }],
           PidsLimit: 256,
           Binds: ["#{@mountsrc}:#{@mountdst}",
                   "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]

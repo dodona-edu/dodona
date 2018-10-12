@@ -53,6 +53,8 @@ nl:
       mass_decline_notification:
         one: 1 gebruiker op de wachtlijst is afgewezen.
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
+      taught_by: "Gegeven door %{teacher}."
+      taught_by_at: "Gegeven door %{teacher} aan %{institution}."
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen de UGent.
       page_title: Registratie

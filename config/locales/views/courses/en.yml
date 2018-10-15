@@ -10,6 +10,7 @@ en:
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
       visibility-help: Visible courses are visible for anyone. Hidden courses do not show up in the course overview, they require a special invite link to be able to register.
       registration-help: Open courses give direct access upon subscription. For moderated courses, a course administrator has to approve each registration. Registrations are disabled with closed courses.
+      no_institution: "No institution"
     index:
       title: All courses
       users: Users
@@ -51,6 +52,8 @@ en:
       mass_decline_notification:
         one: 1 pending user is declined.
         other: "%{count} pending users are declined."
+      taught_by: "Taught by %{teacher}."
+      taught_by_at: "Taught by %{teacher} at %{institution}."
     not_a_member_card:
       not_a_member: You are not a member of this course. Do you wish to register?
       not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to the course.

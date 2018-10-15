@@ -22,4 +22,5 @@ nl:
     labels: Labels
     programming_languages: Programmeertalen
     repositories: Repository's
+    institutions: Onderwijsinstellingen
     label-undeletable: Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.

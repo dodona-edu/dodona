@@ -1,4 +1,4 @@
-<div class="card home-summary-card course" data-search="<%= course.name.downcase + " " + course.teacher.downcase %>">
+<div class="card home-summary-card course">
   <%= link_to course_path(course), class: 'card-title-link' do %>
     <div class="card-title card-colored-accent accent-<%= course.color %>">
       <% if current_user.course_admin?(course) %>
@@ -16,7 +16,11 @@
       <% end %>
       <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>
       <h3 class="card-subtitle-text"><%= course.formatted_year %>&nbsp;</h3>
-      <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %>"><%= course.teacher %>&nbsp;</h3>
+      <% if course.institution&.name %>
+        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %> (<%= course.institution.name %>)"><%= course.teacher %> (<%= course.institution.name %>)&nbsp;</h3>
+      <% else %>
+        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %>"><%= course.teacher %>&nbsp;</h3>
+      <% end %>
     </div>
   <% end %>
   <div class="card-supporting-text stats row">

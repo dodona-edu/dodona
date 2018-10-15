@@ -47,6 +47,7 @@ en:
           orange: Orange
           brown: Brown
           blue-grey: Blue Grey
+        institution: Institution
       exercise:
         name: Name
         name_nl: Name Dutch

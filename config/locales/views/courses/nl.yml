@@ -10,6 +10,7 @@ nl:
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
       visibility-help: Zichtbare vakken zijn zichtbaar in het cursusoverzicht. Verborgen vakken worden niet opgelijst in het overzicht en vereisen een speciale registratielink.
       registration-help: Bij open vakken worden registraties direct geaccepteerd. Bij gemoderereerde vakken moet elke registratie goedgekeurd worden door een cursusbeheerder. Wanneer een vak gesloten is kan niemand zich nog registreren.
+      no_institution: "Geen onderwijsinstelling"
     index:
       title: Alle cursussen
       users: Gebruikers
@@ -52,6 +53,8 @@ nl:
       mass_decline_notification:
         one: 1 gebruiker op de wachtlijst is afgewezen.
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
+      taught_by: "Gegeven door %{teacher}."
+      taught_by_at: "Gegeven door %{teacher} aan %{institution}."
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen de UGent.
       page_title: Registratie

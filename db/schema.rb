@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_15_121833) do
+ActiveRecord::Schema.define(version: 2018_10_15_124238) do
 
   create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 2018_10_15_121833) do
     t.string "token", limit: 64
     t.integer "access", default: 0, null: false
     t.bigint "programming_language_id"
+    t.string "search"
     t.index ["judge_id"], name: "index_exercises_on_judge_id"
     t.index ["name_nl"], name: "index_exercises_on_name_nl"
     t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true

@@ -96,7 +96,7 @@ class User < ApplicationRecord
 
   before_save :set_token
   before_save :set_time_zone
-  before_update :set_search
+  before_save :set_search
 
   scope :by_permission, ->(permission) { where(permission: permission) }
   scope :by_filter, ->(filter) { filter.split(' ').map(&:strip).select(&:present?).inject(self) {|query, part| query.where('search LIKE ?', "%#{part}%")} }

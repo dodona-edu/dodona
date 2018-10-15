@@ -91,7 +91,7 @@ class Course < ApplicationRecord
   default_scope { order(year: :desc, name: :asc) }
 
   before_create :generate_secret
-  before_update :set_search
+  before_save :set_search
 
   # Default year & enum values
   after_initialize do |course|

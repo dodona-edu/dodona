@@ -28,6 +28,7 @@ class Submission < ApplicationRecord
   validate :code_cannot_contain_emoji, on: :create
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
+  before_save :set_search
   after_update :invalidate_stats_cache
   after_create :evaluate_delayed, if: :evaluate?
 
@@ -41,7 +42,7 @@ class Submission < ApplicationRecord
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_username, ->(name) { where(user: User.by_name(name)) }
-  scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
+  scope :by_filter, ->(filter) { filter.split(' ').map(&:strip).select(&:present?).inject(self) {|query, part| query.where("search LIKE ?", "%#{part}%")} }
 
   scope :most_recent, -> {
     submissions = select('MAX(submissions.id) as id')
@@ -140,5 +141,11 @@ class Submission < ApplicationRecord
                     SeriesMembership.all
                   end
     memberships.where(exercise_id: exercise_id).includes(:exercise, series: :course).find_each(&:invalidate_stats_cache)
+  end
+
+  private
+
+  def set_search
+    self.search = "#{status} #{user.search} #{exercise.name_nl} #{exercise.name_en} #{exercise.path}"
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_15_124238) do
+ActiveRecord::Schema.define(version: 2018_10_15_130518) do
 
   create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -209,6 +209,7 @@ ActiveRecord::Schema.define(version: 2018_10_15_124238) do
     t.integer "status"
     t.boolean "accepted", default: false
     t.integer "course_id"
+    t.string "search"
     t.index ["accepted"], name: "index_submissions_on_accepted"
     t.index ["course_id"], name: "index_submissions_on_course_id"
     t.index ["exercise_id", "user_id", "accepted", "created_at"], name: "ex_us_ac_cr_index"

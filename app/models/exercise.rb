@@ -49,6 +49,7 @@ class Exercise < ApplicationRecord
   before_create :generate_token
   before_save :check_validity
   before_update :update_config
+  before_save :set_search
 
   scope :in_repository, ->(repository) { where repository: repository }
 
@@ -57,7 +58,7 @@ class Exercise < ApplicationRecord
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
   scope :by_labels, ->(labels) { includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: {name: programming_language})}
-  scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_access(query)) }
+  scope :by_filter, ->(filter) { filter.split(' ').map(&:strip).select(&:present?).inject(self) {|query, part| query.where('search LIKE ? ', "%#{part}%")} }
 
   def full_path
     return '' unless path
@@ -321,5 +322,9 @@ class Exercise < ApplicationRecord
       new = SecureRandom.random_number(2_147_483_646)
     end until Exercise.find_by(id: new).nil?
     self.id = new
+  end
+
+  def set_search
+    self.search = "#{status} #{access} #{name_nl} #{name_en} #{path}"
   end
 end

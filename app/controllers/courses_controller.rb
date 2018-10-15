@@ -3,7 +3,8 @@ class CoursesController < ApplicationController
 
   skip_forgery_protection only: [:subscribe]
 
-  has_scope :by_name, as: 'filter'
+  has_scope :by_filter, as: 'filter'
+  has_scope :by_institution, as: 'institution_id'
 
   # GET /courses
   # GET /courses.json
@@ -27,7 +28,7 @@ class CoursesController < ApplicationController
   # GET /courses/new
   def new
     authorize Course
-    @course = Course.new
+    @course = Course.new(institution: current_user.institution)
     @title = I18n.t('courses.new.title')
     @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
   end

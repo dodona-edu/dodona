@@ -25,7 +25,7 @@
 <script type="text/javascript">
   $(function () {
     const filterCollections = {};
-    <% if local_assigns.fetch :labels, [] %>
+    <% if local_assigns.fetch :labels, false %>
       filterCollections["labels"] = {
           param: "labels",
           paramVal: l => l.name,
@@ -34,7 +34,7 @@
           color: label => label.color,
       };
     <% end %>
-    <% if local_assigns.fetch :programming_languages, [] %>
+    <% if local_assigns.fetch :programming_languages, false %>
       filterCollections["programming_languages"] = {
           param: "programming_language",
           paramVal: p => p.name,
@@ -43,13 +43,22 @@
           color: () => 'teal',
       };
     <% end %>
-    <% if local_assigns.fetch :repositories, [] %>
+    <% if local_assigns.fetch :repositories, false %>
       filterCollections["repositories"] = {
           param: "repository_id",
           paramVal: r => r.id,
           multi: false,
           data: <%= raw render template: 'repositories/index', formats: :json %>,
           color: () => 'blue-grey',
+      };
+    <% end %>
+    <% if local_assigns.fetch :institutions, false %>
+      filterCollections["institutions"] = {
+          param: "institution_id",
+          paramVal: i => i.id,
+          multi: false,
+          data: <%= raw local_assigns.fetch(:institutions, []).map{|i| {id: i.id, name: i.name}}.to_json %>,
+          color: () => 'pink',
       };
     <% end %>
 

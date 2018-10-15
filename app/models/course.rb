@@ -14,12 +14,15 @@
 #  correct_solutions :integer
 #  color             :integer
 #  teacher           :string(255)      default("")
+#  institution_id    :integer
 #
 
 require 'securerandom'
 require 'csv'
 
 class Course < ApplicationRecord
+  belongs_to :institution, optional: true
+
   has_many :course_memberships
   has_many :series
   has_many :course_repositories
@@ -81,6 +84,9 @@ class Course < ApplicationRecord
   validates :year, presence: true
 
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%")}
+  scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
+  scope :by_institution, ->(institution) { where(institution: institution) }
+  scope :by_filter, ->(query) { by_name(query).or(by_teacher(query))}
   default_scope { order(year: :desc, name: :asc) }
 
   before_create :generate_secret

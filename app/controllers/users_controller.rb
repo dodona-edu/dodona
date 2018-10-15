@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :set_users, only: %i[index available_for_repository]
 
   has_scope :by_permission
-  has_scope :by_name, as: 'filter'
+  has_scope :by_filter, as: 'filter'
 
   # GET /users
   # GET /users.json

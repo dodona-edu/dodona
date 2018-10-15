@@ -15,6 +15,7 @@
 #  token          :string(255)
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :integer
+#  search         :string(255)
 #
 
 require 'securerandom'
@@ -95,9 +96,10 @@ class User < ApplicationRecord
 
   before_save :set_token
   before_save :set_time_zone
+  before_update :set_search
 
   scope :by_permission, ->(permission) { where(permission: permission) }
-  scope :by_name, ->(name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR CONCAT(first_name, \' \', last_name) LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%", "%#{name}%") }
+  scope :by_filter, ->(filter) { filter.split(' ').map(&:strip).select(&:present?).inject(self) {|query, part| query.where('search LIKE ?', "%#{part}%")} }
 
   scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
 
@@ -239,5 +241,9 @@ class User < ApplicationRecord
 
   def set_time_zone
     self.time_zone = 'Seoul' if email&.match?(/ghent.ac.kr$/)
+  end
+
+  def set_search
+    self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
   end
 end

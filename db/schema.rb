@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_15_114042) do
+ActiveRecord::Schema.define(version: 2018_10_15_121833) do
 
   create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2018_10_15_114042) do
     t.integer "color"
     t.string "teacher", default: ""
     t.bigint "institution_id"
+    t.string "search"
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 

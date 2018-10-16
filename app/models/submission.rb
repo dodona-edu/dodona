@@ -190,20 +190,26 @@ class Submission < ApplicationRecord
   end
 
   def update_aggregate
-    submissions = Submission.where(user_id: self.user_id).where(course_id: self.course_id)
-    submissions_matrix = Hash.new(0)
-    submissions.each do |s|
-      d = s.created_at.wday - 1
-      d = 6 if d == -1
-      submissions_matrix[[d, s.created_at.hour]] += 1
-    end
-
     pathname = File.join( 'data', 'aggregates', "#{self.course_id}_#{self.user_id}.json")
+
+    # if the file already exists: get the matrix and update
     if File.exist?(pathname)
+      submissions_matrix = JSON.parse File.read pathname
       File.open(pathname, "w") do |f|
+        day = (self.created_at.wday > 0) ? self.created_at.wday - 1 : 6
+        key = "[#{day}, #{self.created_at.hour}]"
+        submissions_matrix.key?(key) ? submissions_matrix[key] += 1 : submissions_matrix[key] = 0
         f.write(submissions_matrix.to_json)
       end
     else
+      # the file does not exist -> get all data and write it
+      submissions = Submission.where(user_id: self.user_id).where(course_id: self.course_id)
+      submissions_matrix = Hash.new(0)
+      submissions.each do |s|
+        day = (self.created_at.wday > 0) ? self.created_at.wday - 1 : 6
+        submissions_matrix[[day, s.created_at.hour]] += 1
+      end
+
       f = File.new(pathname, "w")
       f.write(submissions_matrix.to_json)
       f.close

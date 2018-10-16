@@ -96,7 +96,6 @@ function renderCard(data, unitSize, chart, x, y) {
     });
 
 
-
     circles.exit().remove();
 }
 

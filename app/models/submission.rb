@@ -31,6 +31,7 @@ class Submission < ApplicationRecord
 
   after_update :invalidate_caches
   after_create :evaluate_delayed, if: :evaluate?
+  after_create :update_aggregate
 
   default_scope {order(id: :desc)}
   scope :of_user, ->(user) {where user_id: user.id}
@@ -186,5 +187,26 @@ class Submission < ApplicationRecord
     course.invalidate_correct_solutions_cache if course.present?
     exercise.invalidate_cache(course)
     user.invalidate_cache(course)
+  end
+
+  def update_aggregate
+    submissions = Submission.where(user_id: self.user_id).where(course_id: self.course_id)
+    submissions_matrix = Hash.new(0)
+    submissions.each do |s|
+      d = s.created_at.wday - 1
+      d = 6 if d == -1
+      submissions_matrix[[d, s.created_at.hour]] += 1
+    end
+
+    pathname = File.join( 'data', 'aggregates', "#{self.course_id}_#{self.user_id}.json")
+    if File.exist?(pathname)
+      File.open(pathname, "w") do |f|
+        f.write(submissions_matrix.to_json)
+      end
+    else
+      f = File.new(pathname, "w")
+      f.write(submissions_matrix.to_json)
+      f.close
+    end
   end
 end

@@ -7,16 +7,13 @@ class StatisticsController < ApplicationController
       raise Pundit::NotAuthorizedError
     end
 
-    submissions = Submission.of_user(@user).in_course(@course)
-    submissions_matrix = Hash.new(0)
-    submissions.each do |s|
-      d = s.created_at.wday - 1
-      d = 6 if d == -1
-      submissions_matrix[[d, s.created_at.hour]] += 1
+    submissions_matrix_path = File.join('data', 'aggregates', "#{@course.id}_#{@user.id}.json")
+    submissions_matrix = JSON.parse File.read submissions_matrix_path
+
+    @submissions_aggregate = submissions_matrix.map do |key, val|
+      key = JSON.parse key
+      key.push(val)
     end
-
-    @submissions_aggregate = submissions_matrix.map{|key, val| key.push(val)}
-
   end
 
   private
@@ -31,5 +28,4 @@ class StatisticsController < ApplicationController
       raise ActiveRecord::RecordNotFound
     end
   end
-
 end

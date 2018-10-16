@@ -50,6 +50,7 @@ Rails.application.routes.draw do
       resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
       resources :submissions, only: [:index]
       resources :members, only: [:index, :show, :edit, :update], controller: :course_members do
+        resources :submissions, only: [:index], controller: :statistics
         get 'download_labels_csv', on: :collection
         post 'upload_labels_csv', on: :collection
       end

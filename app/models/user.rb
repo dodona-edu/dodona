@@ -15,12 +15,13 @@
 #  token          :string(255)
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :integer
-#  search         :string(255)
+#  search         :string(4096)
 #
 
 require 'securerandom'
 
 class User < ApplicationRecord
+  include Filterable
   include StringHelper
 
   enum permission: %i[student staff zeus]
@@ -96,10 +97,8 @@ class User < ApplicationRecord
 
   before_save :set_token
   before_save :set_time_zone
-  before_save :set_search
 
   scope :by_permission, ->(permission) { where(permission: permission) }
-  scope :by_filter, ->(filter) { filter.split(' ').map(&:strip).select(&:present?).inject(self) {|query, part| query.where('search LIKE ?', "%#{part}%")} }
 
   scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
 
@@ -229,6 +228,10 @@ class User < ApplicationRecord
     find_by(email: email)
   end
 
+  def set_search
+    self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
+  end
+
   private
 
   def set_token
@@ -241,9 +244,5 @@ class User < ApplicationRecord
 
   def set_time_zone
     self.time_zone = 'Seoul' if email&.match?(/ghent.ac.kr$/)
-  end
-
-  def set_search
-    self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
   end
 end

@@ -15,13 +15,15 @@
 #  color             :integer
 #  teacher           :string(255)      default("")
 #  institution_id    :integer
-#  search            :integer
+#  search            :string(4096)
 #
 
 require 'securerandom'
 require 'csv'
 
 class Course < ApplicationRecord
+  include Filterable
+
   belongs_to :institution, optional: true
 
   has_many :course_memberships
@@ -87,11 +89,9 @@ class Course < ApplicationRecord
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%")}
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
   scope :by_institution, ->(institution) { where(institution: institution) }
-  scope :by_filter, ->(filter) { filter.split(' ').map(&:strip).select(&:present?).inject(self) {|query, part| query.where('search LIKE ?', "%#{part}%")} }
   default_scope { order(year: :desc, name: :asc) }
 
   before_create :generate_secret
-  before_save :set_search
 
   # Default year & enum values
   after_initialize do |course|
@@ -194,10 +194,8 @@ class Course < ApplicationRecord
     year.sub(/ ?- ?/, '–')
   end
 
-  private
-
   def set_search
-    self.search = "#{teacher || ''} #{name || ''}"
+    self.search = "#{teacher || ''} #{name || ''} #{year || ''}"
   end
 
 end

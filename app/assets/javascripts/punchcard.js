@@ -5,7 +5,7 @@ let initPunchcard = function (url) {
         url: url,
         dataType: "json",
         success: function (data) {
-            drawPunchCard(data);
+            initChart(data);
         },
         failure: function () {
             console.log("Failed to load submission data");
@@ -13,42 +13,9 @@ let initPunchcard = function (url) {
     });
 };
 
-const margin = {top: 20, right: 20, bottom: 40, left: 100};
+const margin = {top: 10, right: 10, bottom: 20, left: 70};
 const labelsX = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 const labelsY = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-function formatData(data) {
-    // Map submission times to days and hours. We want the week to start on Monday, but getDay() returns 0 for Sunday.
-    let mapDates = data.map(s => {
-        let d = new Date(s.created_at);
-        let day = d.getDay() - 1;
-        if (day === -1) {
-            day = 6;
-        }
-        return [day, d.getHours()];
-    });
-
-    // Kind of hacky? Use an object as an accumulator. An object can only have strings as keys, so the array is
-    // converted to a string. Find the value if the key already exists and add 1, else just use 1 as the key.
-    let counts = mapDates.reduce((acc, curr) => {
-        acc[curr] = (acc[curr] + 1) || 1;
-        return acc;
-    }, {});
-
-    // Get the keys from the previous generated object and map over them, adding the count back to the array.
-    let sumSubmissions = Object.keys(counts).map(function (key) {
-        let keyArray = key.split(",");
-        keyArray.push(counts[key]);
-        return keyArray;
-    });
-    return sumSubmissions;
-}
-
-function drawPunchCard(data) {
-    const submissionData = formatData(data);
-
-    initChart(submissionData);
-}
 
 function initChart(data) {
     const container = d3.select("#punchcard-container");
@@ -127,6 +94,8 @@ function renderCard(data, unitSize, chart, x, y) {
                 return `rgb(${gr},${gr},${gr})`;
             });
     });
+
+
 
     circles.exit().remove();
 }

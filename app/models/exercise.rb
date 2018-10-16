@@ -15,6 +15,7 @@
 #  status                      :integer          default("ok")
 #  token                       :string(64)       not null, unique
 #  access                      :integer          not null, default("public")
+#  search                      :string(4096)
 #
 
 require 'pathname'
@@ -22,6 +23,7 @@ require 'action_view'
 include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
+  include Filterable
   include StringHelper
 
   CONFIG_FILE = 'config.json'.freeze
@@ -49,7 +51,6 @@ class Exercise < ApplicationRecord
   before_create :generate_token
   before_save :check_validity
   before_update :update_config
-  before_save :set_search
 
   scope :in_repository, ->(repository) { where repository: repository }
 
@@ -58,7 +59,6 @@ class Exercise < ApplicationRecord
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
   scope :by_labels, ->(labels) { includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: {name: programming_language})}
-  scope :by_filter, ->(filter) { filter.split(' ').map(&:strip).select(&:present?).inject(self) {|query, part| query.where('search LIKE ? ', "%#{part}%")} }
 
   def full_path
     return '' unless path
@@ -310,6 +310,10 @@ class Exercise < ApplicationRecord
     destroy
   end
 
+  def set_search
+    self.search = "#{Exercise.human_enum_name(:status, status, locale: :nl)} #{Exercise.human_enum_name(:status, status, locale: :en)} #{Exercise.human_enum_name(:access, access, locale: :en)} #{Exercise.human_enum_name(:access, access, locale: :nl)} #{name_nl} #{name_en} #{path}"
+  end
+
   private
 
   # takes a relative path
@@ -322,9 +326,5 @@ class Exercise < ApplicationRecord
       new = SecureRandom.random_number(2_147_483_646)
     end until Exercise.find_by(id: new).nil?
     self.id = new
-  end
-
-  def set_search
-    self.search = "#{status} #{access} #{name_nl} #{name_en} #{path}"
   end
 end

@@ -1,9 +1,10 @@
 class AddSearchFieldToSubmissions < ActiveRecord::Migration[5.2]
   def change
-    add_column :submissions, :search, :string
+    add_column :submissions, :search, :string, :limit => 4096
 
     Submission.all.each do |s|
-      s.update(search: "#{s.status} #{s.user.search} #{s.exercise.name_nl} #{s.exercise.name_en} #{s.exercise.path}")
+      s.set_search
+      s.save
     end
   end
 end

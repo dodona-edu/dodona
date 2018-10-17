@@ -209,7 +209,6 @@ ActiveRecord::Schema.define(version: 2018_10_15_130518) do
     t.integer "status"
     t.boolean "accepted", default: false
     t.integer "course_id"
-    t.string "search", limit: 4096
     t.index ["accepted"], name: "index_submissions_on_accepted"
     t.index ["course_id"], name: "index_submissions_on_course_id"
     t.index ["exercise_id", "user_id", "accepted", "created_at"], name: "ex_us_ac_cr_index"

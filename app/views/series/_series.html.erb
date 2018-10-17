@@ -20,7 +20,7 @@
      id="series-card-<%= series.id %>"
      data-series-url="<%= series_path(series, format: :js, user_id: user.id) %>">
   <div class="card-subtitle">
-    <a class="anchor" id="<%= series.anchor %>"  name="<%= series.name %>"></a>
+    <a class="anchor" id="<%= series.anchor %>"  name="series-<%= series.id %>"></a>
     <div class="hidden-print">
       <%= render partial: 'series/series_status', locals: { summary: summary } %>
     </div>

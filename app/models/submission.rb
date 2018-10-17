@@ -40,8 +40,16 @@ class Submission < ApplicationRecord
 
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
-  scope :by_username, ->(name) { where(user: User.by_name(name)) }
-  scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
+  scope :by_username, ->(name) { where(user: User.by_filter(name)) }
+  scope :by_filter, ->(filter, skip_user, skip_exercise, skip_status) do
+    filter.split(' ').map(&:strip).select(&:present?).map do |part|
+      scopes = []
+      scopes << by_exercise_name(part) unless skip_exercise
+      scopes << by_status(part) unless skip_status
+      scopes << by_username(part) unless skip_user
+      scopes.any? ? self.merge(scopes.reduce(&:or)) : self
+    end.reduce(&:merge)
+  end
 
   scope :most_recent, -> {
     submissions = select('MAX(submissions.id) as id')

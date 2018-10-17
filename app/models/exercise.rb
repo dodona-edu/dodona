@@ -15,6 +15,7 @@
 #  status                      :integer          default("ok")
 #  token                       :string(64)       not null, unique
 #  access                      :integer          not null, default("public")
+#  search                      :string(4096)
 #
 
 require 'pathname'
@@ -22,6 +23,7 @@ require 'action_view'
 include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
+  include Filterable
   include StringHelper
 
   CONFIG_FILE = 'config.json'.freeze
@@ -57,7 +59,6 @@ class Exercise < ApplicationRecord
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
   scope :by_labels, ->(labels) { includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: {name: programming_language})}
-  scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_access(query)) }
 
   def full_path
     return '' unless path
@@ -307,6 +308,10 @@ class Exercise < ApplicationRecord
     return if submissions.any?
     return if series_memberships.any?
     destroy
+  end
+
+  def set_search
+    self.search = "#{Exercise.human_enum_name(:status, status, locale: :nl)} #{Exercise.human_enum_name(:status, status, locale: :en)} #{Exercise.human_enum_name(:access, access, locale: :en)} #{Exercise.human_enum_name(:access, access, locale: :nl)} #{name_nl} #{name_en} #{path}"
   end
 
   private

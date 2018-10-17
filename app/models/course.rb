@@ -15,12 +15,15 @@
 #  color             :integer
 #  teacher           :string(255)      default("")
 #  institution_id    :integer
+#  search            :string(4096)
 #
 
 require 'securerandom'
 require 'csv'
 
 class Course < ApplicationRecord
+  include Filterable
+
   belongs_to :institution, optional: true
 
   has_many :course_memberships
@@ -86,7 +89,6 @@ class Course < ApplicationRecord
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%")}
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
   scope :by_institution, ->(institution) { where(institution: institution) }
-  scope :by_filter, ->(query) { by_name(query).or(by_teacher(query))}
   default_scope { order(year: :desc, name: :asc) }
 
   before_create :generate_secret
@@ -191,4 +193,9 @@ class Course < ApplicationRecord
   def self.format_year year
     year.sub(/ ?- ?/, '–')
   end
+
+  def set_search
+    self.search = "#{teacher || ''} #{name || ''} #{year || ''}"
+  end
+
 end

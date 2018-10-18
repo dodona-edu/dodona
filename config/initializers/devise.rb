@@ -2,6 +2,7 @@ require_relative('../../lib/SAML/metadata.rb')
 require_relative('../../lib/SAML/saml_controller.rb')
 require_relative('../../lib/SAML/idp_settings_adapter.rb')
 require_relative('../../lib/SAML/my_resource_validator.rb')
+require_relative('../../lib/devise/custom_failure.rb')
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
@@ -258,10 +259,9 @@ Devise.setup do |config|
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
   #
-  # config.warden do |manager|
-  #   manager.intercept_401 = false
-  #   manager.default_strategies(scope: :user).unshift :some_external_strategy
-  # end
+  config.warden do |manager|
+    manager.failure_app = CustomFailure
+  end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine

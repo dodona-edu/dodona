@@ -6,13 +6,12 @@ const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
 
-function search(baseUrl, _query, _filterCollections) {
+function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
     const filterCollections = _filterCollections || {};
+    const query = _query || $(QUERY_FILTER_ID).val();
+    const extraParams = _extraParams || {};
 
-    let getUrl = () => baseUrl || window.location.href;
-    let query = _query || $(QUERY_FILTER_ID).val();
-    let url = updateURLParameter(getUrl(), FILTER_PARAM, query);
-    url = updateURLParameter(url, "page", 1);
+    let url = updateURLParameter(baseUrl || window.location.href, FILTER_PARAM, query);
 
     const tokens = $(TOKENS_FILTER_ID).tokenfield("getTokens");
     for (let type in filterCollections) {
@@ -28,6 +27,19 @@ function search(baseUrl, _query, _filterCollections) {
             }
         }
     }
+
+    for (let key in extraParams) {
+        if (extraParams.hasOwnProperty(key)) {
+            url = updateURLParameter(url, key, extraParams[key])
+        }
+    }
+
+    return url;
+}
+
+function search(baseUrl, _query, _filterCollections, extraParams) {
+    let url = addParametersToUrl(baseUrl, _query, _filterCollections, extraParams);
+    url = updateURLParameter(url, "page", 1);
 
     if (!baseUrl) {
         window.history.replaceState(null, "Dodona", url);
@@ -88,10 +100,9 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
         }
     }
 
-    function performAction(action, $filter) {
+    function performAction(action) {
         if (action.confirm === undefined || window.confirm(action.confirm)) {
-            let val = $filter.val();
-            let url = updateURLParameter(action.action, FILTER_PARAM, val);
+            let url = addParametersToUrl(action.action, $(QUERY_FILTER_ID).val(), filterCollections);
             $.post(url, {
                 format: "json",
             }, function (data) {
@@ -99,26 +110,18 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
                 if (data.js) {
                     eval(data.js);
                 } else {
-                    search(baseUrl, $filter.val());
+                    search(baseUrl);
                 }
             });
         }
     }
 
-    function performSearch(action, $filter) {
-        let url = baseUrl;
-        let searchParams = Object.entries(action.search);
-        for (let i = 0; i < searchParams.length; i++) {
-            let key = searchParams[i][0];
-            let value = searchParams[i][1];
-            url = updateURLParameter(url, key.toString(), value.toString());
-        }
-        search(url, "", filterCollections);
+    function performSearch(action) {
+        search(baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, action.search);
     }
 
     function initActions() {
         let $actions = $(".table-toolbar-tools .actions");
-        let $filter = $(QUERY_FILTER_ID);
         let searchOptions = actions.filter(action => action.search);
         let searchActions = actions.filter(action => action.action);
         $actions.removeClass("hidden");
@@ -129,7 +132,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 $link.click(() => {
-                    performSearch(action, $filter);
+                    performSearch(action);
                     return false;
                 });
             });
@@ -141,7 +144,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 $link.click(() => {
-                    performAction(action, $filter);
+                    performAction(action);
                     return false;
                 });
             });

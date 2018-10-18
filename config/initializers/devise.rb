@@ -1,6 +1,7 @@
 require_relative('../../lib/SAML/metadata.rb')
 require_relative('../../lib/SAML/saml_controller.rb')
 require_relative('../../lib/SAML/idp_settings_adapter.rb')
+require_relative('../../lib/SAML/my_resource_validator.rb')
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
@@ -277,6 +278,8 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
   # ==> Configuration for :saml_authenticatable
+
+  config.saml_resource_validator = MyResourceValidator
 
   # Create user if the user does not exist. (Default is false)
   config.saml_create_user = true

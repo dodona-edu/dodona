@@ -34,7 +34,8 @@ class ExercisePolicy < ApplicationPolicy
 
   def submit?
     return false if record.removed?
-    return true  if user&.admin?
+    return false unless user.present?
+    return true  if user.admin?
     return true  if record.ok?
     false
   end

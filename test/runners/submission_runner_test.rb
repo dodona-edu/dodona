@@ -213,4 +213,14 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                       message_includes: STRIKE_ERROR,
                       accepted: false
   end
+
+  test 'errors outside of docker startup should be sent to slack' do
+    Delayed::Backend::ActiveRecord::Job.delete_all
+    Rails.env.stubs(:"production?").returns(true)
+    Submission.any_instance.stubs(:judge).raises(STRIKE_ERROR)
+    ExceptionNotifier.stubs(:notify_exception).once
+    Docker::Container.stubs(:create).returns(docker_mock)
+    @submission.evaluate_delayed
+    Delayed::Worker.new.work_off(1)
+  end
 end

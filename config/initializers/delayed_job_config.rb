@@ -12,7 +12,7 @@ Delayed::Worker.logger = Logger.new(File.join(Rails.root, 'log', 'delayed_job.lo
 # rubocop:disable RescueException, HandleExceptions
 class SubmissionDjPlugin < Delayed::Plugin
   callbacks do |lifecycle|
-    lifecycle.after(:failure) do |_worker, job, *_args|
+    lifecycle.after(:error) do |_worker, job, *_args|
       if job.payload_object.object.is_a?(Submission)
         sub = job.payload_object.object
         Delayed::Worker.logger.debug("Failed submission #{sub.id} by user #{sub.user_id} for exercise #{sub.exercise_id} after #{job.attempts} attempts (worker #{job.locked_by})")
@@ -27,6 +27,10 @@ class SubmissionDjPlugin < Delayed::Plugin
           ]
         })
         Delayed::Worker.logger.debug("Set failed status on submission #{sub.id}")
+
+        if Rails.env.production?
+          ExceptionNotifier.notify_exception(job.last_error, notifiers: Rails.configuration.exception_notification_notifiers)
+        end
       end
     rescue Exception
       # This must not fail in any case.

@@ -1,4 +1,4 @@
-let initPunchcard = function (url) {
+let initCourseUserPunchcard = function (url) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -10,6 +10,43 @@ let initPunchcard = function (url) {
         failure: function () {
             console.log("Failed to load submission data");
         },
+    });
+};
+
+let initUserPunchcard = function (courses) {
+    console.log(courses);
+    courses = courses.slice(1, courses.length - 1).split(",");
+    $.when(...courses.map(function (url) {
+        return $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: url.slice(1, url.length - 1),
+            dataType: "json",
+        });
+    })).done(function () {
+        let results = [];
+        for (let i = 0; i < arguments.length; i++) {
+            results.push(arguments[i][0]);
+        }
+        results = [].concat.apply([], results);
+        const mapResults = {};
+        for (let i = 0; i < results.length; i++) {
+            let key = [results[i][0], results[i][1]];
+            if (mapResults.hasOwnProperty(key)) {
+                mapResults[key] += results[i][2];
+            } else {
+                mapResults[key] = results[i][2];
+            }
+        }
+
+        const data = Object.keys(mapResults).map(key => {
+            let elem = key.split(",").map( item => parseInt(item));
+            elem.push(mapResults[key]);
+            return elem;
+        });
+
+        console.log(data);
+        initChart(data);
     });
 };
 
@@ -26,8 +63,11 @@ function initChart(data) {
     const height = innerHeight + margin.top + margin.bottom;
 
     const chart = container.append("svg")
-        .attr("width", width)
-        .attr("height", height)
+    // When resizing, the svg will scale as well. Doesn't work perfectly.
+        .attr("viewBox", `0,0,${width},${height}`)
+        // .attr("width", width)
+        // .attr("height", height)
+        .style("overflow-x", "scroll")
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
@@ -84,19 +124,17 @@ function renderCard(data, unitSize, chart, x, y) {
     let circles = chart.selectAll("circle")
         .data(data);
 
-    let updates = [circles, circles.enter().append("circle")];
-    updates.forEach(group => {
-        group.attr("cx", d => x(d[1]))
-            .attr("cy", d => y(d[0]))
-            .attr("r", d => radius(d[2]))
-            .style("fill", d => {
-                const gr = gradient(d[2]);
-                return `rgb(${gr},${gr},${gr})`;
-            });
-    });
-
-
+    let updates = circles.enter().append("circle");
+    updates.attr("cx", d => x(d[1]))
+        .attr("cy", d => y(d[0]))
+        .attr("r", d => radius(d[2]))
+        .style("fill", d => {
+            const gr = gradient(d[2]);
+            return `rgb(${gr},${gr},${gr})`;
+        })
+        .append("svg:title")
+        .text(d => d[2]);
     circles.exit().remove();
 }
 
-export {initPunchcard};
+export {initCourseUserPunchcard, initUserPunchcard};

@@ -81,7 +81,6 @@
   </div>
 </div>
 <script type="text/javascript">
-    $(function () {
-        dodona.initPunchcard("<%= user_submissions_path(@user) %>");
-    });
+    $(dodona.initUserPunchcard('<%= raw @user.subscribed_courses.map{|c| course_member_submissions_path(c, @user)}.to_json %>'));
 </script>
+

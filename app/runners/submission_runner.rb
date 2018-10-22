@@ -151,12 +151,23 @@ class SubmissionRunner
     )
     timeout = timer.tap(&:kill).value
     after_time = Time.now
-    stdout = outlines.join
-    stderr = errlines.join
+    stdout = outlines.join.force_encoding('utf-8')
+    stderr = errlines.join.force_encoding('utf-8')
     exit_status = container.wait(1)['StatusCode']
     container.delete
 
     # handling judge output
+    if stdout.bytesize + stderr.bytesize > 5 * 1024 * 1024
+      return build_error 'internal error', 'internal error', [
+        build_message('Judge generated more than 5MiB of output.', 'staff', 'plain'),
+        build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
+        build_message("Standard Error #{stderr.bytesize} Bytes:", 'staff', 'plain'),
+        build_message(truncate(stderr, 15_000), 'staff'),
+        build_message("Standard Output #{stdout.bytesize} Bytes:", 'staff', 'plain'),
+        build_message(truncate(stdout, 15_000), 'staff')
+      ]
+    end
+
     if [0, 137, 143].exclude? exit_status
       return build_error 'internal error', 'internal error', [
         build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
@@ -236,5 +247,9 @@ class SubmissionRunner
       description: description,
       permission: permission
     }
+  end
+
+  def truncate(string, max)
+    string.length > max ? "#{string[0...max]}... (truncated)" : string
   end
 end

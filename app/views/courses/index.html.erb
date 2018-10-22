@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= t '.title' %></h2>
       </div>
     </div>
-    <%= render partial: 'layouts/searchbar', locals: { institutions: Institution.all } %>
+    <%= render partial: 'layouts/searchbar', locals: { institutions: Institution.all, eager: true } %>
     <div id="grouped-course-cards-wrapper">
     </div>
   </div>

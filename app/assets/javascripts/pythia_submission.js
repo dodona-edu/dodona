@@ -106,7 +106,7 @@ function initPythiaSubmissionShow(submissionCode) {
         let remove = false;
         let source_array = [];
         while (i < lines.length) {
-            if (remove && !(lines[i].match(/\s+.*/g))) {
+            if (remove && !(lines[i].match(/^\s+.*/g))) {
                 remove = false;
             }
             if (lines[i].match(/if\s+__name__\s*==\s*(['"])__main__\s*\1:\s*/g)) {

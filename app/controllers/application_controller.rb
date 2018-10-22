@@ -57,7 +57,11 @@ class ApplicationController < ActionController::Base
         redirect_to sign_in_path
       else
         flash[:alert] = I18n.t('errors.no_rights')
-        redirect_to(request.referer || root_path)
+        if request.referer.present? && URI.parse(request.referer).host == request.host
+          redirect_to(request.referer)
+        else
+          redirect_to(root_path)
+        end
       end
     end
   end

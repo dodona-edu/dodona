@@ -18,7 +18,7 @@ Delayed::Worker.queue_attributes = {
 # rubocop:disable RescueException, HandleExceptions
 class SubmissionDjPlugin < Delayed::Plugin
   callbacks do |lifecycle|
-    lifecycle.after(:error) do |_worker, job, *_args|
+    lifecycle.after(:failure) do |_worker, job, *_args|
       if job.payload_object.object.is_a?(Submission)
         sub = job.payload_object.object
         Delayed::Worker.logger.debug("Failed submission #{sub.id} by user #{sub.user_id} for exercise #{sub.exercise_id} after #{job.attempts} attempts (worker #{job.locked_by})")

@@ -221,6 +221,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     ExceptionNotifier.stubs(:notify_exception).once
     Docker::Container.stubs(:create).returns(docker_mock)
     @submission.evaluate_delayed
-    Delayed::Worker.new.work_off(1)
+    Delayed::Worker.max_attempts = 1
+    Delayed::Worker.new.work_off
   end
 end

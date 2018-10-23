@@ -22,7 +22,7 @@
               <i class="material-icons md-18" title='<%= t ".staff" %>'>perm_identity</i>
             <% end %>
           <% end %>
-          <% if @course && user.course_admin?(@course) %>
+          <% if @course && user.administrating_courses.include?(@course) %>
             <i class="material-icons md-18" title='<%= t ".course_admin" %>'>school</i>
           <% end %>
           <% if user.username.blank? %>

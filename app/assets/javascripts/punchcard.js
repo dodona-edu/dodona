@@ -1,10 +1,12 @@
+const containerSelector = "#punchcard-container"
+const margin = {top: 10, right: 10, bottom: 20, left: 70};
+const labelsX = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+
 let initPunchcard = function (url) {
-    const margin = {top: 10, right: 10, bottom: 20, left: 70};
-    const labelsX = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
     // If this is defined outside of a function, the locale always defaults to "en".
     const labelsY = [I18n.t("js.monday"), I18n.t("js.tuesday"), I18n.t("js.wednesday"), I18n.t("js.thursday"), I18n.t("js.friday"), I18n.t("js.saturday"), I18n.t("js.sunday")];
 
-    const container = d3.select("#punchcard-container");
+    const container = d3.select(containerSelector);
     const width = container.node().getBoundingClientRect().width;
     const innerWidth = width - margin.left - margin.right;
     const unitSize = innerWidth / 24;
@@ -12,7 +14,6 @@ let initPunchcard = function (url) {
     const height = innerHeight + margin.top + margin.bottom;
 
     const chart = container.append("svg")
-        .attr("id", "punchcard-svg")
     // When resizing, the svg will scale as well. Doesn't work perfectly.
         .attr("viewBox", `0,0,${width},${height}`)
         .style("overflow-x", "scroll")

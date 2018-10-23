@@ -2,30 +2,13 @@ class StatisticsController < ApplicationController
   before_action :set_user
 
   def punchcard
-    authorize @user
     if params.key? :course_id
       @course = Course.find(params[:course_id])
-      punchcard_course_user
+      @submissions_matrix = get_submission_matrix @user, @course
     else
-      punchcard_user
+      @submissions_matrix = @user.subscribed_courses.map{|c| get_submission_matrix @user, c}
+                                 .reduce {|h1, h2| h1.merge(h2) {|_k, v1, v2| v1 + v2}}
     end
-  end
-
-  def punchcard_user
-    all_submissions = []
-    @user.subscribed_courses.each do |c|
-      matrix = get_submission_matrix @user, c
-      matrix.each {|k, v| all_submissions.push({:key => k, :val => v})}
-    end
-
-    @result = Hash.new(0)
-    all_submissions.each {|h| @result[h[:key]] += h[:val]}
-
-    render json: @result
-  end
-
-  def punchcard_course_user
-    @submissions_matrix = get_submission_matrix @user, @course
     render json: @submissions_matrix
   end
 
@@ -45,5 +28,6 @@ class StatisticsController < ApplicationController
 
   def set_user
     @user = User.find(params[:user_id])
+    authorize @user
   end
 end

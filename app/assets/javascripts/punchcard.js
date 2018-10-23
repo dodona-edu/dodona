@@ -1,4 +1,4 @@
-let initCourseUserPunchcard = function (url) {
+let initPunchcard = function (url) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -7,36 +7,6 @@ let initCourseUserPunchcard = function (url) {
         success: function (data) {
             initChart(d3.entries(data));
         },
-    });
-};
-
-let initUserPunchcard = function (courses) {
-    courses = courses.slice(1, courses.length - 1).split(",");
-    $.when(...courses.map(function (url) {
-        return $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: url.slice(1, url.length - 1),
-            dataType: "json",
-        });
-    })).done(function () {
-        let results = [];
-        for (let i = 0; i < arguments.length; i++) {
-            results.push(d3.entries(arguments[i][0]));
-        }
-        results = [].concat.apply([], results);
-        const mapResults = {};
-        for (let i = 0; i < results.length; i++) {
-            let key = results[i].key;
-            if (mapResults.hasOwnProperty(key)) {
-                mapResults[key] += results[i].value;
-            } else {
-                mapResults[key] = results[i].value;
-            }
-        }
-
-        const data = d3.entries(mapResults);
-        initChart(data);
     });
 };
 
@@ -125,4 +95,4 @@ function renderCard(data, unitSize, chart, x, y) {
     circles.exit().remove();
 }
 
-export {initCourseUserPunchcard, initUserPunchcard};
+export {initPunchcard};

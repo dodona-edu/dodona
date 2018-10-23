@@ -1,4 +1,3 @@
-import {initCourseUserPunchcard, initUserPunchcard} from "punchcard.js";
+import {initPunchcard} from "punchcard.js";
 
-window.dodona.initCourseUserPunchcard = initCourseUserPunchcard;
-window.dodona.initUserPunchcard = initUserPunchcard;
+window.dodona.initPunchcard = initPunchcard;

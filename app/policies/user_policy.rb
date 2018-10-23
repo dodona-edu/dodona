@@ -66,6 +66,13 @@ class UserPolicy < ApplicationPolicy
     show?
   end
 
+  def punchcard?
+    return false unless user
+    return true if user.zeus?
+    return true if user.id == record.id
+    false
+  end
+
   def permitted_attributes
     if user&.admin?
       %i[username ugent_id first_name last_name email permission time_zone]

@@ -198,21 +198,19 @@ class Submission < ApplicationRecord
       File.open(pathname, 'r+') do |f|
         day = created_at.wday > 0 ? created_at.wday - 1 : 6
         key = "#{day}, #{created_at.hour}"
-        submissions_matrix.key?(key) ? submissions_matrix[key] += 1 : submissions_matrix[key] = 0
+        submissions_matrix.key?(key) ? submissions_matrix[key] += 1 : submissions_matrix[key] = 1
         f.write(submissions_matrix.to_json)
       end
     else
-      calculate_submissions_matrix pathname, user_id, course_id
+      Submission.calculate_submissions_matrix pathname, user_id, course_id
     end
   end
 
   def self.calculate_submissions_matrix(pathname, user_id, course_id)
-    submissions = Submission.where(user_id: user_id).where(course_id: course_id)
-    submissions_matrix = Hash.new(0)
-    submissions.each do |s|
-      day = s.created_at.wday > 0 ? s.created_at.wday - 1 : 6
-      submissions_matrix["#{day}, #{s.created_at.hour}"] += 1
-    end
+    submissions_matrix = Submission.where(user_id: user_id).where(course_id: course_id).pluck(:created_at)
+                             .map{|d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"}
+                             .group_by(&:itself).transform_values(&:count)
+
     f = File.new(pathname, 'w')
     f.write(submissions_matrix.to_json)
     f.close

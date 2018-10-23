@@ -197,21 +197,38 @@ class Submission < ApplicationRecord
       # Open the file, update the object
       File.open(pathname, 'r+') do |f|
         day = created_at.wday > 0 ? created_at.wday - 1 : 6
-        key = "[#{day}, #{created_at.hour}]"
+        key = "#{day}, #{created_at.hour}"
         submissions_matrix.key?(key) ? submissions_matrix[key] += 1 : submissions_matrix[key] = 0
         f.write(submissions_matrix.to_json)
       end
     else
+      calculate_submissions_matrix pathname, user_id, course_id
       # the file does not exist -> get all data and write back to the file.
-      submissions = Submission.where(user_id: user_id).where(course_id: course_id)
-      submissions_matrix = Hash.new(0)
-      submissions.each do |s|
-        day = s.created_at.wday > 0 ? s.created_at.wday - 1 : 6
-        submissions_matrix[[day, s.created_at.hour]] += 1
-      end
-      f = File.new(pathname, 'w')
-      f.write(submissions_matrix.to_json)
-      f.close
+      # submissions = Submission.where(user_id: user_id).where(course_id: course_id)
+      # submissions_matrix = Hash.new(0)
+      # submissions.each do |s|
+      #   day = s.created_at.wday > 0 ? s.created_at.wday - 1 : 6
+      #   submissions_matrix["#{day}, #{created_at.hour}"] += 1
+      # end
+      # f = File.new(pathname, 'w')
+      # f.write(submissions_matrix.to_json)
+      # f.close
     end
   end
+
+  def self.calculate_submissions_matrix(pathname, user_id, course_id)
+    submissions = Submission.where(user_id: user_id).where(course_id: course_id)
+    submissions_matrix = Hash.new(0)
+    submissions.each do |s|
+      day = s.created_at.wday > 0 ? s.created_at.wday - 1 : 6
+      submissions_matrix["#{day}, #{s.created_at.hour}"] += 1
+    end
+    f = File.new(pathname, 'w')
+    f.write(submissions_matrix.to_json)
+    f.close
+
+    submissions_matrix
+  end
+
+
 end

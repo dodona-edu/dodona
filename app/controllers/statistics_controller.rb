@@ -1,52 +1,49 @@
 class StatisticsController < ApplicationController
-  before_action :set_course
   before_action :set_user
 
-  def index
-    print @user.id
-    print current_user.id
-    unless (@user.subscribed_courses & current_user.administrating_courses).include?(@course) || @user == current_user
-      raise Pundit::NotAuthorizedError
+  def punchcard
+    authorize @user
+    if params.key? :course_id
+      @course = Course.find(params[:course_id])
+      punchcard_course_user
+    else
+      punchcard_user
+    end
+  end
+
+  def punchcard_user
+    all_submissions = []
+    @user.subscribed_courses.each do |c|
+      matrix = get_submission_matrix @user, c
+      matrix.each {|k, v| all_submissions.push({:key => k, :val => v})}
     end
 
-    submissions_matrix_path = File.join('data', 'aggregates', "#{@course.id}_#{@user.id}.json")
+    @result = Hash.new(0)
+    all_submissions.each {|h| @result[h[:key]] += h[:val]}
 
-    submissions_matrix = if File.exist?(submissions_matrix_path)
-                           JSON.parse File.read submissions_matrix_path
-                         else
-                           calculate_submissions_matrix submissions_matrix_path
-                         end
+    render json: @result
+  end
 
-    @submissions_aggregate = submissions_matrix.map do |key, val|
-      key = JSON.parse key
-      key.push(val)
-    end
-
+  def punchcard_course_user
+    @submissions_matrix = get_submission_matrix @user, @course
+    render json: @submissions_matrix
   end
 
   private
 
-  def calculate_submissions_matrix(pathname)
-    submissions = Submission.of_user(@user).in_course(@course)
-    submissions_matrix = Hash.new(0)
-    submissions.each do |s|
-      day = created_at.wday > 0 ? created_at.wday - 1 : 6
-      submissions_matrix[[day, s.created_at.hour]] += 1
+  def get_submission_matrix(user, course)
+    unless (@user.subscribed_courses & current_user.administrating_courses).include?(@course) || @user == current_user
+      raise Pundit::NotAuthorizedError
     end
-
-    f = File.new(pathname, 'w')
-    f.write(submissions_matrix.to_json)
-    f.close
-
-    submissions_matrix
-  end
-
-  def set_course
-    @course = Course.find(params[:course_id])
+    path = File.join('data', 'aggregates', "#{course.id}_#{user.id}.json")
+    if File.exist?(path)
+      JSON.parse File.read path
+    else
+      Submission.calculate_submissions_matrix(submissions_matrix_path, user.id, course.id)
+    end
   end
 
   def set_user
-    @user = User.find(params[:member_id])
-    raise ActiveRecord::RecordNotFound unless @user.courses.include? @course
+    @user = User.find(params[:user_id])
   end
 end

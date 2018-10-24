@@ -37,9 +37,8 @@
 .series-exercise-list .exercise .actions {
   text-align: right;
 }
-
 .drag-handle {
-  color: @black-disabled;
+    color: @text-disabled;
 }
 
 .drag-handle .material-icons {
@@ -52,7 +51,7 @@
 
 .flatpickr-day.selected, .flatpickr-day.selected:focus, .flatpickr-day.selected:hover {
   background: @accent-500;
-  color: #fff;
+  color: @white-text;
   border-color: @accent-500;
 }
 
@@ -122,7 +121,7 @@
 
     &.deadline-missed:after {
       color: @danger-800;
-      background-color: white;
+      background-color: @content-bg;
       position: absolute;
       font-size: 18px;
       font-weight: bold;
@@ -134,7 +133,7 @@
 
     &.deadline-met:not(.completed):after {
       color: @success-500;
-      background-color: white;
+      background-color: @content-bg;
       position: absolute;
       font-size: 18px;
       font-weight: bold;

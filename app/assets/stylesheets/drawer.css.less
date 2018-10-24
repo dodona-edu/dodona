@@ -44,7 +44,7 @@ aside.drawer {
     overflow-y: auto;
     overflow-x: hidden;
 
-    background: #fff;
+    background: @content-bg;
     .shadow-z5();
     transition: .3s;
   }
@@ -88,7 +88,7 @@ h1.drawer-group-title {
   font-size: 14px;
   font-weight: 400;
   margin-left: 16px;
-  color: @black-secondary;
+  color: @text-secondary;
 }
 
 ul.drawer-list {
@@ -100,7 +100,7 @@ ul.drawer-list {
   padding: 0;
   line-height: 1.5rem;
   list-style-type: none;
-  color: @black-secondary;
+  color: @text-secondary;
 
   li a {
     display: flex;
@@ -110,7 +110,7 @@ ul.drawer-list {
     position: relative;
     padding: 0 16px;
     outline: none;
-    color: @black-text;
+    color: @text-color;
     text-decoration: none;
     height: 42px;
 

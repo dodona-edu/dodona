@@ -13,6 +13,7 @@
 #  course_id   :integer
 #
 class Submission < ApplicationRecord
+  SUBMISSION_LOCATIONS = Rails.root.join('data', 'submissions').freeze
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
 
   enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
@@ -23,12 +24,13 @@ class Submission < ApplicationRecord
   has_one :judge, through: :exercise
   has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
 
-  delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
-
   validate :code_cannot_contain_emoji, on: :create
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
   after_update :invalidate_stats_cache
+  # This assumes that there won't be a new submission created for the same
+  # exercise by the same user before the record was saved in the database
+  after_create :move_files
   after_create :evaluate_delayed, if: :evaluate?
 
   default_scope {order(id: :desc)}
@@ -74,7 +76,34 @@ class Submission < ApplicationRecord
     @skip_rate_limit_check = params.delete(:skip_rate_limit_check) {false}
     @evaluate = params.delete(:evaluate)
     super
-    self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
+    self.submission_detail = SubmissionDetail.new(id: id, code: '', result: '')
+    self.code = params[:code]
+  end
+
+  def code
+    if code_location.exist?
+      code_location.read
+    else
+      submission_detail.code
+    end
+  end
+
+  def code=(code)
+    location.mkpath
+    code_location.write code
+  end
+
+  def result
+    if result_location.exist?
+      result_location.read
+    else
+      submission_detail.result
+    end
+  end
+
+  def result=(result)
+    location.mkpath
+    result_location.write result
   end
 
   def evaluate?
@@ -149,4 +178,42 @@ class Submission < ApplicationRecord
                   end
     memberships.where(exercise_id: exercise_id).includes(:exercise, series: :course).find_each(&:invalidate_stats_cache)
   end
+
+  private
+
+  def location
+    if id.present?
+      if course
+        SUBMISSION_LOCATIONS.join("#{course_id}", "#{exercise_id}", "#{user_id}", "#{id}")
+      else
+        SUBMISSION_LOCATIONS.join('no_course', "#{exercise_id}", "#{user_id}", "#{id}")
+      end
+    else
+      if course
+        SUBMISSION_LOCATIONS.join("#{course_id}", "#{exercise_id}", "#{user_id}", "new")
+      else
+        SUBMISSION_LOCATIONS.join('no_course', "#{exercise_id}", "#{user_id}", "new")
+      end
+    end
+  end
+
+  def move_files
+    if course
+      prev = SUBMISSION_LOCATIONS.join("#{course_id}", "#{exercise_id}", "#{user_id}", "new")
+      new = SUBMISSION_LOCATIONS.join("#{course_id}", "#{exercise_id}", "#{user_id}", "#{id}")
+    else
+      prev = SUBMISSION_LOCATIONS.join('no_course', "#{exercise_id}", "#{user_id}", "new")
+      new = SUBMISSION_LOCATIONS.join('no_course', "#{exercise_id}", "#{user_id}", "#{id}")
+    end
+    prev.rename(new)
+  end
+
+  def code_location
+    location.join("code")
+  end
+
+  def result_location
+    location.join("result.json")
+  end
+
 end

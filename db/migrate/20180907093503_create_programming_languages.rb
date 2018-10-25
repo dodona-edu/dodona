@@ -26,8 +26,8 @@ class CreateProgrammingLanguages < ActiveRecord::Migration[5.2]
 
     add_column :exercises, :programming_language_id, :bigint
 
-    Exercise.all.each do |e|
-      e.update(programming_language_id: ProgrammingLanguage.find_by(name: e.programming_language)&.id)
+    Exercise.find_each do |e|
+      e.update_columns(programming_language_id: ProgrammingLanguage.find_by(name: e.programming_language)&.id)
     end
 
     remove_column :exercises, :programming_language

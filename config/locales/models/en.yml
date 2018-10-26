@@ -56,6 +56,11 @@ en:
         accesses:
           public: Public
           private: Private
+        status: Status
+        statuses:
+          ok: Ok
+          not_valid: Not valid
+          removed: Removed
       judge:
         name: Name
         remote: Clone URL

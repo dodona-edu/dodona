@@ -22,6 +22,7 @@ nl:
       users: Gebruikers
       courses: Cursussen
       judges: Judges
+      programming_languages: Programmeertalen
       repositories: Repository's
       labels: Labels
       profile: Mijn profiel

@@ -1,3 +1,4 @@
 {
-  "root_config": "set"
+  "root_config": "set",
+  "labels": ["label1"]
 }

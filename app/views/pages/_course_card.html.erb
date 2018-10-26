@@ -1,4 +1,4 @@
-<div class="card home-summary-card course" data-search="<%= course.name.downcase + " " + course.teacher.downcase %>">
+<div class="card home-summary-card course">
   <%= link_to course_path(course), class: 'card-title-link' do %>
     <div class="card-title card-colored-accent accent-<%= course.color %>">
       <% if current_user.course_admin?(course) %>
@@ -16,7 +16,13 @@
       <% end %>
       <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>
       <h3 class="card-subtitle-text"><%= course.formatted_year %>&nbsp;</h3>
-      <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %>"><%= course.teacher %>&nbsp;</h3>
+      <% if course.institution&.name.present? && course.teacher.present? %>
+        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %> (<%= course.institution.name %>)"><%= course.teacher %> (<%= course.institution.name %>)&nbsp;</h3>
+      <% elsif course.teacher.present? %>
+        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %>"><%= course.teacher %>&nbsp;</h3>
+      <% elsif course.institution&.name.present? %>
+        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.institution.name %>"><%= course.institution.name %></h3>
+      <% end %>
     </div>
   <% end %>
   <div class="card-supporting-text stats row">
@@ -32,20 +38,20 @@
     <% else %>
       <% if current_user.course_admin?(course) %>
         <div class="col-xs-6">
-          <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
+          <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
             <%= t ".submissions" %>
           <% end %>
         </div>
         <div class="col-xs-6">
-          <%= link_to members_course_path(course), class: 'card-title-link' do %>
+          <%= link_to course_members_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter course.subscribed_members.count, delimiter: " " %></h1>
             <%= t ".users" %>
           <% end %>
         </div>
       <% else %>
         <div class="col-xs-6">
-          <%= link_to submissions_path(course_id: course.id), class: 'card-title-link' do %>
+          <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter current_user.submissions.in_course(course).count, delimiter: " " %></h1>
             <%= t ".submissions" %>
           <% end %>
@@ -69,7 +75,7 @@
             <span class='pull-right'>
               <%= render partial: 'series/human_deadline', locals: { series: series } %>
             </span>
-            <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link link-accent-#{course.color}", title: series.name %>
+            <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
           </p>
         <% end %>
       </div>

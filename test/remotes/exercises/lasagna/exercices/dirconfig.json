@@ -9,5 +9,6 @@
   "evaluation": {
     "handler": "default"
   },
-  "programming_language": "haskell"
+  "programming_language": "haskell",
+  "labels": ["label2"]
 }

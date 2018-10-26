@@ -12,8 +12,9 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #
-
 class Submission < ApplicationRecord
+  SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
+
   enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
 
   belongs_to :exercise
@@ -25,6 +26,7 @@ class Submission < ApplicationRecord
   delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
 
   validate :code_cannot_contain_emoji, on: :create
+  validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
   after_update :invalidate_stats_cache
   after_create :evaluate_delayed, if: :evaluate?
@@ -36,19 +38,18 @@ class Submission < ApplicationRecord
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
 
-  scope :by_exercise_name, ->(name) { joins(:exercise, :user).where('exercises.name_nl LIKE ? OR exercises.name_en LIKE ? OR exercises.path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
-  scope :by_status, ->(status) { joins(:exercise, :user).where(status: status.in?(statuses) ? status : -1) }
-  scope :by_username, ->(username) { joins(:exercise, :user).where('users.username LIKE ?', "%#{username}%") }
-  scope :by_filter, ->(query) { by_exercise_name(query).or(by_status(query)).or(by_username(query)) }
-
-  scope :join_series, -> {
-    joins(exercise: :series).where('submissions.course_id = series.course_id')
-  }
-
-  scope :timely, -> {
-    join_series
-      .where('submissions.created_at < series.deadline OR series.deadline IS NULL')
-  }
+  scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
+  scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
+  scope :by_username, ->(name) { where(user: User.by_filter(name)) }
+  scope :by_filter, ->(filter, skip_user, skip_exercise, skip_status) do
+    filter.split(' ').map(&:strip).select(&:present?).map do |part|
+      scopes = []
+      scopes << by_exercise_name(part) unless skip_exercise
+      scopes << by_status(part) unless skip_status
+      scopes << by_username(part) unless skip_user
+      scopes.any? ? self.merge(scopes.reduce(&:or)) : self
+    end.reduce(&:merge)
+  end
 
   scope :most_recent, -> {
     submissions = select('MAX(submissions.id) as id')
@@ -70,6 +71,7 @@ class Submission < ApplicationRecord
 
   def initialize(params)
     raise 'please explicitly tell wheter you want to evaluate this submission' unless params.has_key? :evaluate
+    @skip_rate_limit_check  = params.delete(:skip_rate_limit_check) { false }
     @evaluate = params.delete(:evaluate)
     super
     self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
@@ -77,6 +79,10 @@ class Submission < ApplicationRecord
 
   def evaluate?
     @evaluate
+  end
+
+  def skip_rate_limit_check?
+    @skip_rate_limit_check
   end
 
   def evaluate_delayed(priority = :normal)
@@ -113,6 +119,15 @@ class Submission < ApplicationRecord
   def code_cannot_contain_emoji
     no_emoji_found = code.chars.all? { |c| c.bytes.length < 4 }
     errors.add(:code, 'emoji found') unless no_emoji_found
+  end
+
+  def is_not_rate_limited
+    return if self.user.nil?
+    previous = self.user.submissions.most_recent.first
+    if previous.present?
+      time_since_previous = Time.now - previous.created_at
+      errors.add(:submission, 'rate limited') if time_since_previous < SECONDS_BETWEEN_SUBMISSIONS.seconds
+    end
   end
 
   def self.rejudge(submissions, priority = :low)

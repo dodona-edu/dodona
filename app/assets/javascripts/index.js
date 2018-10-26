@@ -1,21 +1,46 @@
-/* globals I18n,Bloodhound */
+/* globals I18n,Bloodhound,dodona */
 import {showNotification} from "./notifications.js";
 import {delay, updateURLParameter, updateArrayURLParameter, getURLParameter, getArrayURLParameter} from "./util.js";
 
-let PARAM = "filter";
-let LABELS_FILTER_ID = "#filter-query";
-let QUERY_FILTER_ID = "#filter-query-tokenfield";
+const FILTER_PARAM = "filter";
+const TOKENS_FILTER_ID = "#filter-query";
+const QUERY_FILTER_ID = "#filter-query-tokenfield";
 
-function search(baseUrl, _query) {
-    let getUrl = () => baseUrl || window.location.href;
-    let query = _query || $(QUERY_FILTER_ID).val();
-    let url = updateURLParameter(getUrl(), PARAM, query);
-    url = updateURLParameter(url, "page", 1);
-    if ($(LABELS_FILTER_ID).val() !== "") {
-        url = updateArrayURLParameter(url, "labels", $(LABELS_FILTER_ID).val().split(","));
-    } else {
-        url = updateArrayURLParameter(url, "labels", []);
+function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
+    const filterCollections = _filterCollections || {};
+    const query = _query || $(QUERY_FILTER_ID).val();
+    const extraParams = _extraParams || {};
+
+    let url = updateURLParameter(baseUrl || window.location.href, FILTER_PARAM, query);
+
+    const tokens = $(TOKENS_FILTER_ID).tokenfield("getTokens");
+    for (let type in filterCollections) {
+        if (filterCollections.hasOwnProperty(type)) {
+            if (filterCollections[type].multi) {
+                url = updateArrayURLParameter(url, filterCollections[type].param, tokens
+                    .filter(el => el.type === type)
+                    .map(e => filterCollections[type].paramVal(e))
+                );
+            } else {
+                const elem = tokens.filter(e => e.type === type)[0];
+                url = updateURLParameter(url, filterCollections[type].param, elem ? filterCollections[type].paramVal(elem) : "");
+            }
+        }
     }
+
+    for (let key in extraParams) {
+        if (extraParams.hasOwnProperty(key)) {
+            url = updateURLParameter(url, key, extraParams[key])
+        }
+    }
+
+    return url;
+}
+
+function search(baseUrl, _query, _filterCollections, extraParams) {
+    let url = addParametersToUrl(baseUrl, _query, _filterCollections, extraParams);
+    url = updateURLParameter(url, "page", 1);
+
     if (!baseUrl) {
         window.history.replaceState(null, "Dodona", url);
     }
@@ -28,36 +53,46 @@ function search(baseUrl, _query) {
     });
 }
 
-function initFilter(baseUrl, eager, _labels) {
-    const labels = _labels || [];
+function initFilter(baseUrl, eager, _filterCollections) {
+    const filterCollections = _filterCollections || {};
     let $queryFilter = $(QUERY_FILTER_ID);
-    let $labelsFilter = $(LABELS_FILTER_ID);
-    let doSearch = () => search(baseUrl, $queryFilter.typeahead("val"));
+    let $tokensFilter = $(TOKENS_FILTER_ID);
+    let doSearch = () => search(baseUrl, $queryFilter.typeahead("val"), filterCollections);
     $queryFilter.keyup(() => delay(doSearch, 300));
-    let param = getURLParameter(PARAM);
-    let textLabels = getArrayURLParameter("labels");
-    $labelsFilter.tokenfield("setTokens", textLabels.map(name => {
-        const index = labels.map(l => l.name).indexOf(name);
-        if (index >= 0) {
-            return labels[index];
-        } else {
-            return null;
-        }
-    }).filter(e => e !== null));
+    let param = getURLParameter(FILTER_PARAM);
     if (param !== "") {
         $queryFilter.typeahead("val", param);
     }
+
+    const allTokens = [];
+    for (let type in filterCollections) {
+        if (filterCollections.hasOwnProperty(type)) {
+            if (filterCollections[type].multi) {
+                const enabledElements = getArrayURLParameter(filterCollections[type].param);
+                const mapped = filterCollections[type].data.filter(el => enabledElements.includes(`${filterCollections[type].paramVal(el)}`));
+                allTokens.push(...mapped);
+            } else {
+                const enabledElement = getURLParameter(filterCollections[type].param);
+                if (enabledElement) {
+                    const mapped = filterCollections[type].data.filter(el => `${filterCollections[type].paramVal(el)}` === enabledElement)[0];
+                    allTokens.push(mapped);
+                }
+            }
+        }
+    }
+    $tokensFilter.tokenfield("setTokens", allTokens);
+
     if (eager) {
         doSearch();
     }
 }
 
-function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
+function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollections) {
     function init() {
-        initLabels();
+        initTokens();
 
         if (doInitFilter) {
-            initFilter(baseUrl, eager, labels);
+            initFilter(baseUrl, eager, filterCollections);
         }
 
         if (actions) {
@@ -65,10 +100,9 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
         }
     }
 
-    function performAction(action, $filter) {
+    function performAction(action) {
         if (action.confirm === undefined || window.confirm(action.confirm)) {
-            let val = $filter.val();
-            let url = updateURLParameter(action.action, PARAM, val);
+            let url = addParametersToUrl(action.action, $(QUERY_FILTER_ID).val(), filterCollections);
             $.post(url, {
                 format: "json",
             }, function (data) {
@@ -76,26 +110,18 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
                 if (data.js) {
                     eval(data.js);
                 } else {
-                    search(baseUrl, $filter.val());
+                    search(baseUrl);
                 }
             });
         }
     }
 
-    function performSearch(action, $filter) {
-        let url = baseUrl;
-        let searchParams = Object.entries(action.search);
-        for (let i = 0; i < searchParams.length; i++) {
-            let key = searchParams[i][0];
-            let value = searchParams[i][1];
-            url = updateURLParameter(url, key.toString(), value.toString());
-        }
-        search(url, "");
+    function performSearch(action) {
+        search(baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, action.search);
     }
 
     function initActions() {
         let $actions = $(".table-toolbar-tools .actions");
-        let $filter = $(QUERY_FILTER_ID);
         let searchOptions = actions.filter(action => action.search);
         let searchActions = actions.filter(action => action.action);
         $actions.removeClass("hidden");
@@ -106,7 +132,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 $link.click(() => {
-                    performSearch(action, $filter);
+                    performSearch(action);
                     return false;
                 });
             });
@@ -118,7 +144,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 $link.click(() => {
-                    performAction(action, $filter);
+                    performAction(action);
                     return false;
                 });
             });
@@ -126,59 +152,105 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, labels) {
     }
 
 
-    function initLabels() {
-        const colorMap = {};
-        for (let label of labels) {
-            colorMap[label.name] = label.color;
-            label.value = label.name;
-        }
+    function initTokens() {
+        const $field = $(TOKENS_FILTER_ID);
 
         function doSearch() {
-            search(baseUrl);
+            search(baseUrl, "", filterCollections);
         }
 
         function validateLabel(e) {
-            return labels.map(l => l.name).indexOf(e.attrs.value) >= 0;
+            const collection = filterCollections[e.attrs.type];
+            if (!collection) {
+                return false;
+            }
+            return collection.data.map(el => el.name).includes(e.attrs.name);
         }
 
-        function disableLabel(e) {
+        function disableLabel() {
+            // We need to delay, otherwise tokenfield hasn't finished setting all the right values
             delay(doSearch, 100);
         }
 
         function enableLabel(e) {
-            $(e.relatedTarget).addClass(`accent-${colorMap[e.attrs.value]}`);
+            const collection = filterCollections[e.attrs.type];
+
+            $(e.relatedTarget).addClass(`accent-${collection.color(e.attrs)}`);
+            if (!collection.multi) {
+                const tokens = $field.tokenfield("getTokens");
+                const newTokens = tokens
+                    .filter(el => el.type !== e.attrs.type || el.name === e.attrs.name)
+                    .filter((el, i, arr) => arr.map(el2 => `${el2.type}${el2.id}`).indexOf(`${el.type}${el.id}`) === i);
+                if (newTokens.length !== tokens.length) {
+                    $field.tokenfield("setTokens", newTokens);
+                }
+            }
+            // We need to delay, otherwise tokenfield hasn't finished setting all the right values
             delay(doSearch, 100);
         }
 
+        function customWhitespaceTokenizer(datum) {
+            const result = Bloodhound.tokenizers.whitespace(datum);
+            $.each(result, (i, val) => {
+                for (let i = 1; i < val.length; i++) {
+                    result.push(val.substr(i, val.length));
+                }
+            });
+            return result;
+        }
+        const typeAheadOpts = [{
+            highlight: true,
+            minLength: 0,
+        }];
 
-        const engine = new Bloodhound({
-            local: labels,
-            identify: d => d.id,
-            datumTokenizer: d => {
-                const result = Bloodhound.tokenizers.whitespace(d.name);
-                $.each(result, (i, val) => {
-                    for (let i = 1; i < val.length; i++) {
-                        result.push(val.substr(i, val.length));
-                    }
+        for (let type in filterCollections) {
+            if (filterCollections.hasOwnProperty(type)) {
+                for (let elem of filterCollections[type].data) {
+                    elem.type = type;
+                    elem.value = elem.name;
+                }
+
+                const engine = new Bloodhound({
+                    local: filterCollections[type].data,
+                    identify: d => d.id,
+                    datumTokenizer: d => customWhitespaceTokenizer(d.name),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
                 });
-                return result;
-            },
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-        });
 
-        const $field = $(LABELS_FILTER_ID);
+                typeAheadOpts.push({
+                    source: engine,
+                    display: d => d.name,
+                    templates: {
+                        header: `<strong class="tt-header">${I18n.t(`js.${type}`)}</strong>`,
+                    },
+                });
+            }
+        }
+
         $field.on("tokenfield:createtoken", validateLabel);
         $field.on("tokenfield:createdtoken", enableLabel);
         $field.on("tokenfield:removedtoken", disableLabel);
         $field.tokenfield({
             beautify: false,
-            typeahead: [{
-                highlight: true,
-            }, {
-                source: engine,
-                display: d => d.name,
-            }],
+            typeahead: typeAheadOpts,
         });
+
+        function addTokenToSearch(type, name) {
+            const collection = filterCollections[type];
+            if (!collection) {
+                return false;
+            }
+
+            const element = collection.data.filter(el => el.name === name)[0];
+            if (!element) {
+                return false;
+            }
+
+            $field.tokenfield("createToken", element);
+        }
+
+        dodona.addTokenToSearch = addTokenToSearch;
+
     }
 
     init();

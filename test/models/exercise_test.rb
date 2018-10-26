@@ -337,6 +337,18 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     assert_equal 'Echo', config['description']['names']['en']
   end
 
+  test 'should use current user name when committing' do
+    Current.user = create :user
+    @exercise.update access: 'private'
+    assert_equal Current.user.full_name, @remote.git('log', '-1', '--pretty=format:%an')
+  end
+
+  test 'should use current user email when committing' do
+    Current.user = create :user
+    @exercise.update access: 'private'
+    assert_equal Current.user.email, @remote.git('log', '-1', '--pretty=format:%ae')
+  end
+
   test 'should push to remote' do
     assert_difference('@remote.commit_count', 1) do
       @exercise.update access: 'private'
@@ -374,7 +386,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
 
   # set at top level, overridden by series, overridden by exercise
   test 'should set programming language' do
-    assert_equal 'python', @exercise.programming_language
+    assert_equal ProgrammingLanguage.find_by(name: 'python'), @exercise.programming_language
   end
 
   # set at top level, overridden by series
@@ -395,6 +407,13 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_not @exercise.config.key? 'access'
   end
 
+  test 'should add labels to config file when exercise is updated' do
+    @exercise.update(labels: [])
+    assert_equal [], @exercise.config['labels']
+    @exercise.update(labels: [Label.create(name: 'new label')])
+    assert_equal ['new label'], @exercise.config['labels']
+  end
+
   # set at top level, overridden by series, not set at exercise
   test 'should override parent config access if manually changed' do
     assert_not @exercise.config.key? 'access'
@@ -412,5 +431,9 @@ class LasagneConfigTest < ActiveSupport::TestCase
     @exercise.update_config
     assert_equal 'private', @exercise.config['access']
     assert_equal 'private', @exercise.merged_config['access']
+  end
+
+  test 'should merge label arrays' do
+    assert_equal 4, @exercise.labels.count
   end
 end

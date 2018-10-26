@@ -19,12 +19,15 @@ class SeriesController < ApplicationController
     @course = @series.course
     @title = @series.name
     @crumbs = [[@course.name, course_path(@course)], [@series.name, "#"]]
+    if params[:user_id] && current_user.course_admin?(@course)
+      @user = User.find(params[:user_id])
+    end
   end
 
   def overview
     @title = "#{@series.course.name} #{@series.name}"
     @course = @series.course
-    @crumbs = [[@course.name, course_path(@course)], [@series.name, series_path(@series)], [I18n.t("crumbs.overview"), "#"]]
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t("crumbs.overview"), "#"]]
   end
 
   # GET /series/new
@@ -33,7 +36,7 @@ class SeriesController < ApplicationController
              .map { |cid| Course.find_by id: cid }
              .or_nil
     authorize course, :add_series?
-    @series = Series.new
+    @series = Series.new(course: course)
     @title = I18n.t('series.new.title')
     @crumbs = [[course.name, course_path(course)], [I18n.t('series.new.title'), "#"]]
   end
@@ -41,8 +44,10 @@ class SeriesController < ApplicationController
   # GET /series/1/edit
   def edit
     @title = @series.name
-    @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, series_path(@series)], [I18n.t("crumbs.edit"), "#"]]
-    @labels = Label.all
+    @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t("crumbs.edit"), "#"]]
+    @labels = policy_scope(Label.all)
+    @programming_languages = policy_scope(ProgrammingLanguage.all)
+    @repositories = policy_scope(Repository.all)
   end
 
   # POST /series

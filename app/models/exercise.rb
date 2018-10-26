@@ -2,19 +2,20 @@
 #
 # Table name: exercises
 #
-#  id                   :integer          not null, primary key
-#  name_nl              :string(255)
-#  name_en              :string(255)
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  path                 :string(255)
-#  description_format   :string(255)
-#  programming_language :string(255)
-#  repository_id        :integer
-#  judge_id             :integer
-#  status               :integer          default("ok")
-#  token                :string(64)       not null, unique
-#  access               :integer          not null, default("public")
+#  id                          :integer          not null, primary key
+#  name_nl                     :string(255)
+#  name_en                     :string(255)
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  path                        :string(255)
+#  description_format          :string(255)
+#  programming_language_id     :integer
+#  repository_id               :integer
+#  judge_id                    :integer
+#  status                      :integer          default("ok")
+#  token                       :string(64)       not null, unique
+#  access                      :integer          not null, default("public")
+#  search                      :string(4096)
 #
 
 require 'pathname'
@@ -22,6 +23,7 @@ require 'action_view'
 include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
+  include Filterable
   include StringHelper
 
   CONFIG_FILE = 'config.json'.freeze
@@ -36,6 +38,7 @@ class Exercise < ApplicationRecord
 
   belongs_to :repository
   belongs_to :judge
+  belongs_to :programming_language, optional: true
   has_many :submissions
   has_many :series_memberships
   has_many :series, through: :series_memberships
@@ -49,13 +52,13 @@ class Exercise < ApplicationRecord
   before_save :check_validity
   before_update :update_config
 
-  scope :in_repository, ->(repository) { where repository_id: repository.id }
+  scope :in_repository, ->(repository) { where repository: repository }
 
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
-  scope :by_labels, ->(labels) { joins(:labels).includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
-  scope :by_filter, ->(query) { by_name(query).or(by_status(query)).or(by_access(query)) }
+  scope :by_labels, ->(labels) { includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
+  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: {name: programming_language})}
 
   def full_path
     return '' unless path
@@ -129,13 +132,7 @@ class Exercise < ApplicationRecord
   end
 
   def file_extension
-    return 'py' if programming_language == 'python'
-    return 'js' if programming_language == 'JavaScript'
-    return 'hs' if programming_language == 'haskell'
-    return 'sh' if programming_language == 'bash'
-    return 'sh' if programming_language == 'shell'
-    return 'sh' if programming_language == 'sh'
-    'txt'
+    programming_language&.extension || 'txt'
   end
 
   def merged_config
@@ -143,7 +140,30 @@ class Exercise < ApplicationRecord
             .map { |dir| read_dirconfig dir } # try reading their dirconfigs
             .compact                          # remove nil entries
             .push(config)                     # add exercise config file
-            .reduce(&:deep_merge)             # reduce into single hash
+            .reduce do |h1, h2|
+              h1.deep_merge(h2) do |_, v1, v2|
+                if v1.is_a?(Array) && v2.is_a?(Array)
+                  (v1 + v2).uniq
+                else
+                  v2
+                end
+              end
+            end # reduce into single hash
+  end
+
+  def merged_dirconfig
+    Pathname.new('./' + path).parent.descend  # all parent directories
+        .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+        .compact                          # remove nil entries
+        .reduce do |h1, h2|
+          h1.deep_merge(h2) do |_, v1, v2|
+            if v1.is_a?(Array) && v2.is_a?(Array)
+              (v1 + v2).uniq
+            else
+              v2
+            end
+          end
+        end || {} # reduce into single hash
   end
 
   def config_file?
@@ -174,6 +194,9 @@ class Exercise < ApplicationRecord
 
   def update_config
     return unless ok?
+
+    labels_to_write = labels.map{|l| l.name} - (merged_dirconfig['labels'] || [])
+
     c = config
     c.delete('visibility')
     c['access'] = access if defined?(access) && access != merged_config['access']
@@ -182,6 +205,9 @@ class Exercise < ApplicationRecord
     c['internals'] = {}
     c['internals']['token'] = token
     c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
+    if (labels_to_write & (merged_config['labels'] || [])) != labels_to_write || labels_to_write == []
+      c['labels'] = labels_to_write
+    end
     store_config c
   end
 
@@ -282,6 +308,10 @@ class Exercise < ApplicationRecord
     return if submissions.any?
     return if series_memberships.any?
     destroy
+  end
+
+  def set_search
+    self.search = "#{Exercise.human_enum_name(:status, status, locale: :nl)} #{Exercise.human_enum_name(:status, status, locale: :en)} #{Exercise.human_enum_name(:access, access, locale: :en)} #{Exercise.human_enum_name(:access, access, locale: :nl)} #{name_nl} #{name_en} #{path}"
   end
 
   private

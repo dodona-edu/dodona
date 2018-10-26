@@ -9,7 +9,7 @@ nl:
     failure:
       already_authenticated: "Je bent al ingelogd."
       inactive: "Je account is nog niet geactiveerd."
-      invalid: "Ongeldig e-mail of wachtwoord."
+      invalid: "Er was een probleem bij het aanmelden. Vermoedelijk is je emailadres veranderd. Neem contact op om dit probleem op te lossen."
       invalid_token: "Ongeldig authenticiteit token."
       locked: "Je account is vergrendeld."
       not_found_in_database: "Ongeldig e-mail of wachtwoord."

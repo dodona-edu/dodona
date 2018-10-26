@@ -49,6 +49,8 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     obj.stubs(:delete)
     obj.stubs(:attach).returns([[stdout], [params[:err]]])
     obj.stubs(:wait).returns('StatusCode' => params[:status_code])
+    obj.stubs(:stats).returns({:memory_stats => {:max_usage => 100_000_000}})
+    obj.stubs(:stop)
     obj
   end
 
@@ -72,7 +74,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   end
 
   test 'judge should receive merged config' do
-    @exercise.update(programming_language: 'whitespace')
+    @exercise.update(programming_language: ProgrammingLanguage.create(name: 'whitespace'))
     @exercise.unstub(:config)
     # Stub global config
     File.stubs(:read)
@@ -97,7 +99,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     assert_equal 100, config['memory_limit']
     assert_equal 42, config['time_limit']
     assert_equal true, config['network_enabled'] # overidden
-    assert_equal @exercise.programming_language, config['programming_language']
+    assert_equal @exercise.programming_language.name, config['programming_language']
     assert_equal @user.lang, config['natural_language']
     %w[resources source judge workdir].each do |key|
       path = config[key]
@@ -107,7 +109,8 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   end
 
   test 'submission evaluation should start docker container' do
-    Docker::Container.expects(:create).once
+    obj ||= docker_mock({})
+    Docker::Container.expects(:create).once.returns(obj)
     @submission.evaluate
   end
 
@@ -209,5 +212,16 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     assert_submission status: 'internal error',
                       message_includes: STRIKE_ERROR,
                       accepted: false
+  end
+
+  test 'errors outside of docker startup should be sent to slack' do
+    Delayed::Backend::ActiveRecord::Job.delete_all
+    Rails.env.stubs(:"production?").returns(true)
+    Submission.any_instance.stubs(:judge).raises(STRIKE_ERROR)
+    ExceptionNotifier.stubs(:notify_exception).once
+    Docker::Container.stubs(:create).returns(docker_mock)
+    @submission.evaluate_delayed
+    Delayed::Worker.max_attempts = 1
+    Delayed::Worker.new.work_off
   end
 end

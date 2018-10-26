@@ -1,0 +1,10 @@
+nl:
+  programming_languages:
+    index:
+      title: Programmeertalen
+      actions: Acties
+      exercises: "Oefeningen"
+    new:
+      title: Nieuwe programmeertaal
+    edit:
+      title: Aanpassen

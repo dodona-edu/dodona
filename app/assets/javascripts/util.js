@@ -66,11 +66,14 @@ function updateURLParameter(url, param, paramVal) {
             baseURL = TheParams;
         }
     }
-    if (TheAnchor) {
-        paramVal += "#" + TheAnchor;
+    let rowsTxt = "";
+    if (paramVal) {
+        rowsTxt += `${temp}${param}=${paramVal}`;
     }
-    let rows_txt = temp + "" + param + "=" + paramVal;
-    return baseURL + "?" + newAdditionalURL + rows_txt;
+    if (TheAnchor) {
+        rowsTxt += "#" + TheAnchor;
+    }
+    return baseURL + "?" + newAdditionalURL + rowsTxt;
 }
 
 function updateArrayURLParameter(url, param, _paramVals) {
@@ -131,7 +134,6 @@ function getArrayURLParameter(name, _url) {
     let result = [];
     for (let part of url.split(/[?&]/)) {
         const regResults = new RegExp(`${name}%5B%5D=([^#]+)`).exec(part);
-        console.log(part, regResults);
         if (regResults && regResults[1]) {
             result.push(decodeURIComponent(regResults[1]));
         }

@@ -1,6 +1,5 @@
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'course' %>
-  <%= javascript_pack_tag 'favorite_course_buttons' %>
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
@@ -10,8 +9,19 @@
         <h2 class="card-title-text">
           <%= @course.name %> (<%= @course.formatted_year %>)
         </h2>
+        <% if @course.institution&.name.present? || @course.teacher.present? %>
+          <small class="card-title-text">
+            <% if @course.institution&.name.present? && @course.teacher.present? %>
+              <%= t(".taught_by_at", {teacher: @course.teacher, institution: @course.institution.name}) %>
+            <% elsif @course.institution&.name.present? %>
+              <%= t(".taught_at", {institution: @course.institution.name}) %>
+            <% elsif @course.teacher.present? %>
+              <%= t(".taught_by", {teacher: @course.teacher}) %>
+            <% end %>
+          </small>
+        <% end %>
       </div>
-      <div class="card-supporting-text row">
+      <div class="card-supporting-text card-border row">
         <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
           <%= markdown(@course.description) %>
           <% if current_user&.member_of? @course %>
@@ -87,32 +97,29 @@
       <% end %>
     </div>
     <% if policy(@course).show_series? %>
-        <div class="page-subtitle">
-          <a class="anchor" id="series"></a>
-          <h3><%= t ".exercise_series" %></h3>
-          <div class="flex-spacer"></div>
-          <div>
-            <% if policy(@course).add_series? %>
-              <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn btn-primary btn-fab-extended" do %>
-                <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
-              <% end %>
+      <div class="page-subtitle">
+        <a class="anchor" id="series"></a>
+        <h3><%= t ".exercise_series" %></h3>
+        <div class="flex-spacer"></div>
+        <div>
+          <% if policy(@course).add_series? %>
+            <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn btn-primary btn-fab-extended" do %>
+              <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
             <% end %>
-          </div>
-        </div>
-        <div id="series-listing">
-          <% @series.each do |series| %>
-            <%= render(partial: 'series/series', locals: {series: series}) %>
           <% end %>
         </div>
-        <% if @total_series > @series.length %>
-          <div class="text-center"><button class='btn btn-text load-more-series' data-loading-text="<%= t("series.index.loading_more") %>"><%= t("series.index.load_more") %></button></div>
+      </div>
+      <div id="series-listing">
+        <% @series.first(@series_loaded).each do |series| %>
+          <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
         <% end %>
+        <% @series.offset(@series_loaded).each do |series| %>
+          <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>
 <script type="text/javascript">
-  $(function () {
-    dodona.initCourseShow(<%= @series.length %>, <%= @total_series %>);
-    dodona.initFavoriteButtons();
-  });
+    $(dodona.initCourseShow);
 </script>

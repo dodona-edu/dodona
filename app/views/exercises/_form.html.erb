@@ -54,10 +54,10 @@
   <div class="field form-group">
     <div class="row">
       <label class="col-sm-2 control-label"><%= t ".edit_exercise" %></label>
-      <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), @exercise.github_url, target: '_blank' %></div>
+      <div class="col-sm-4 form-control-static"><%= link_to t(".open_on_github"), exercise.github_url, target: '_blank' %></div>
     </div>
   </div>
 <% end %>
 <script>
-  dodona.initLabelsEdit(<%= raw render template: 'labels/index', formats: :json %>)
+  dodona.initLabelsEdit(<%= raw render template: 'labels/index', formats: :json %>, <%= raw (exercise.merged_dirconfig['labels'] || []).to_json %>)
 </script>

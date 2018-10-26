@@ -1,4 +1,5 @@
 <% content_for :javascripts do %>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
   <%= javascript_pack_tag 'exercise' %>
   <%= javascript_pack_tag 'submission' %>
   <%= javascript_pack_tag 'pythia_submission' if @exercise.judge.renderer == PythiaRenderer %>
@@ -28,7 +29,7 @@
       <div class="card-title card-title-colored">
         <% if policy(@exercise).submit? %>
           <div class="card-title-fab">
-            <button class="btn btn-primary btn-fab" id="editor-process-btn">
+            <button class="btn btn-primary btn-fab" id="editor-process-btn" data-user_id="<%= current_user.id %>">
               <i class="material-icons md-36">play_arrow</i>
             </button>
             <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">
@@ -77,6 +78,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    dodona.initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id || "null" %>);
+    dodona.initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language&.editor_name || "text" %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id || "null" %>);
   });
 </script>

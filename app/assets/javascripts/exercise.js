@@ -97,6 +97,7 @@ function initMathJax() {
                 displayMath: [
                     ["\\[", "\\]"],
                 ],
+                ignoreClass: "feedback-table",
             },
         });
     }

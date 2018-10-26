@@ -85,27 +85,9 @@ function centerImagesAndTables() {
     $(".exercise-description > iframe").wrap("<center></center>");
 }
 
-function initMathJax() {
-    // configure MathJax if loaded
-    if (typeof MathJax !== "undefined") {
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [
-                    ["$$", "$$"],
-                    ["\\(", "\\)"],
-                ],
-                displayMath: [
-                    ["\\[", "\\]"],
-                ],
-            },
-        });
-    }
-}
-
 function initExercisesReadonly() {
     initLightboxes();
     centerImagesAndTables();
-    initMathJax();
 }
 
 
@@ -248,7 +230,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 } else if (errors.submission && errors.submission[0] === "rate limited") {
                     message = I18n.t("js.submission-rate-limit");
                 }
-            } catch (e) {}
+            } catch (e) {
+            }
         }
         $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
         enableSubmitButton();

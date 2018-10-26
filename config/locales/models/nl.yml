@@ -57,6 +57,11 @@ nl:
         accesses:
           public: Publiek
           private: Privé
+        status: Status
+        statuses:
+          ok: Ok
+          not_valid: Ongeldig
+          removed: Verwijderd
       judge:
         name: Naam
         remote: Clone URL

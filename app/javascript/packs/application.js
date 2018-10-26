@@ -23,7 +23,6 @@ import "polyfills.js";
 import "drawer.js";
 import {showNotification} from "notifications.js";
 import {initClipboard, checkTimeZone, initCSRF} from "util.js";
-import {initMathJax} from "mathjax.js";
 
 // Initialize clipboard.js
 initClipboard();
@@ -35,5 +34,4 @@ initCSRF();
 let dodona = {};
 dodona.checkTimeZone = checkTimeZone;
 dodona.showNotification = showNotification;
-dodona.initMathJax = initMathJax;
 window.dodona = dodona;

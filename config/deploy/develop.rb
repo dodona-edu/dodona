@@ -9,3 +9,4 @@ set :branch, ENV['BRANCH'] || 'develop'
 set :rails_env, :development
 
 set :delayed_job_workers, 3
+

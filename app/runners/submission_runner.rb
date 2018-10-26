@@ -48,7 +48,7 @@ class SubmissionRunner
     config.deep_merge!(@exercise.merged_config['evaluation'])
 
     # update with submission-specific configuration
-    config.deep_merge!('programming_language' => @submission.exercise.programming_language,
+    config.deep_merge!('programming_language' => @submission.exercise.programming_language&.name,
                        'natural_language' => @submission.user.lang)
 
     # update with links to resources in docker container needed for processing submission
@@ -110,7 +110,7 @@ class SubmissionRunner
               (@mountdst + @hidden_path + 'judge' + 'run').to_path,
               # directory for logging output
               (@mountdst + @hidden_path + 'logs').to_path],
-        Image: @judge.image.to_s,
+        Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
         name: "dodona-#{@submission.id}", # assuming unique during execution
         OpenStdin: true,
         StdinOnce: true, # closes stdin after first disconnect
@@ -118,6 +118,8 @@ class SubmissionRunner
         HostConfig: {
           Memory: memory_limit,
           MemorySwap: memory_limit, # memory including swap
+          BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }],
+          PidsLimit: 256,
           Binds: ["#{@mountsrc}:#{@mountdst}",
                   "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
         }
@@ -130,8 +132,15 @@ class SubmissionRunner
     end
 
     # run the container with a timeout.
+    memory = 0
+    before_time = Time.now
     timer = Thread.new do
-      sleep time_limit
+      while Time.now - before_time < time_limit
+        sleep 1
+        stats = container.stats
+        # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
+        memory = stats["memory_stats"]["max_usage"] / (1024.0 * 1024.0) if stats["memory_stats"]&.fetch("max_usage", nil)
+      end
       container.stop
       true
     end
@@ -141,12 +150,24 @@ class SubmissionRunner
       stderr: true
     )
     timeout = timer.tap(&:kill).value
-    stdout = outlines.join
-    stderr = errlines.join
+    after_time = Time.now
+    stdout = outlines.join.force_encoding('utf-8')
+    stderr = errlines.join.force_encoding('utf-8')
     exit_status = container.wait(1)['StatusCode']
     container.delete
 
     # handling judge output
+    if stdout.bytesize + stderr.bytesize > 5 * 1024 * 1024
+      return build_error 'internal error', 'internal error', [
+        build_message('Judge generated more than 5MiB of output.', 'staff', 'plain'),
+        build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
+        build_message("Standard Error #{stderr.bytesize} Bytes:", 'staff', 'plain'),
+        build_message(truncate(stderr, 15_000), 'staff'),
+        build_message("Standard Output #{stdout.bytesize} Bytes:", 'staff', 'plain'),
+        build_message(truncate(stdout, 15_000), 'staff')
+      ]
+    end
+
     if [0, 137, 143].exclude? exit_status
       return build_error 'internal error', 'internal error', [
         build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
@@ -157,7 +178,7 @@ class SubmissionRunner
       ]
     end
 
-    begin
+    result = begin
       rc = ResultConstructor.new @submission.user.lang
       rc.feed(stdout.force_encoding('utf-8'))
       rc.result(timeout)
@@ -165,10 +186,10 @@ class SubmissionRunner
       if [137, 143].include? exit_status
         description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
         build_error description, description, [
-          build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
-          build_message('Standard Error:', 'staff', 'plain'),
+          build_message("Judge exited with <strong>status code #{exit_status}.</strong>", 'staff', 'html'),
+          build_message('<strong>Standard Error:</strong>', 'staff', 'html'),
           build_message(stderr, 'staff'),
-          build_message('Standard Output:', 'staff', 'plain'),
+          build_message('<strong>Standard Output:</strong>', 'staff', 'html'),
           build_message(stdout, 'staff')
         ]
       else
@@ -177,6 +198,12 @@ class SubmissionRunner
         build_error 'internal error', 'internal error', messages
       end
     end
+
+    result[:messages] ||= []
+    result[:messages] << build_message("<strong>Worker:</strong> #{`hostname`.strip}", 'zeus', 'html')
+    result[:messages] << build_message("<strong>Runtime:</strong> %.2f seconds" % (after_time - before_time), 'zeus', 'html')
+    result[:messages] << build_message("<strong>Memory usage:</strong> %.2f MiB" % memory, 'zeus', 'html')
+    result
   end
 
   def add_runtime_metrics(result); end
@@ -220,5 +247,9 @@ class SubmissionRunner
       description: description,
       permission: permission
     }
+  end
+
+  def truncate(string, max)
+    string.length > max ? "#{string[0...max]}... (truncated)" : string
   end
 end

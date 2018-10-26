@@ -1,0 +1,10 @@
+en:
+  programming_languages:
+    index:
+      title: Programming Languages
+      actions: Actions
+      exercises: "Exercises"
+    new:
+      title: New Programming Language
+    edit:
+      title: Edit

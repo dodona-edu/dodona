@@ -137,6 +137,10 @@ a.card-title-link:hover {
     overflow: hidden;
     margin: 0;
 }
+small.card-title-text {
+  font-size: 14px;
+  margin-top: .4em;
+}
 .card-title-text.pull-right {
     margin-left: 8px;
     overflow: visible;
@@ -520,57 +524,111 @@ a.anchor {
   background-color: inherit;
 }
 
+.label.accent-red {
+  background-color: @color-red;
+  border-color: darken(@color-red, 20%);
+  color: @grey-100;
+}
+
+.label.accent-pink {
+  background-color: @color-pink;
+  border-color: darken(@color-pink, 20%);
+  color: @grey-100;
+}
+
+.label.accent-purple {
+  background-color: @color-purple;
+  border-color: darken(@color-purple, 20%);
+  color: @grey-100;
+}
+
+.label.accent-deep-purple {
+  background-color: @color-deep-purple;
+  border-color: darken(@color-deep-purple, 20%);
+  color: @grey-100;
+}
+
+.label.accent-indigo {
+  background-color: @color-indigo;
+  border-color: darken(@color-indigo, 20%);
+  color: @grey-100;
+}
+
+.label.accent-teal {
+  background-color: @color-teal;
+  border-color: darken(@color-teal, 20%);
+  color: @grey-100;
+}
+
+.label.accent-orange {
+  background-color: @color-orange;
+  border-color: darken(@color-orange, 20%);
+  color: @grey-100;
+}
+
+.label.accent-brown {
+  background-color: @color-brown;
+  border-color: darken(@color-brown, 20%);
+  color: @grey-100;
+}
+
+.label.accent-blue-grey {
+  background-color: @color-blue-grey;
+  border-color: darken(@color-blue-grey, 20%);
+  color: @grey-100;
+}
+
 .token.accent-red {
   background-color: @color-red;
-  border-color: @color-red - 20%;
+  border-color: darken(@color-red, 20%);
   color: @grey-100;
 }
 
 .token.accent-pink {
   background-color: @color-pink;
-  border-color: @color-pink - 20%;
+  border-color: darken(@color-pink, 20%);
   color: @grey-100;
 }
 
 .token.accent-purple {
   background-color: @color-purple;
-  border-color: @color-purple - 20%;
+  border-color: darken(@color-purple, 20%);
   color: @grey-100;
 }
 
 .token.accent-deep-purple {
   background-color: @color-deep-purple;
-  border-color: @color-deep-purple - 20%;
+  border-color: darken(@color-deep-purple, 20%);
   color: @grey-100;
 }
 
 .token.accent-indigo {
   background-color: @color-indigo;
-  border-color: @color-indigo - 20%;
+  border-color: darken(@color-indigo, 20%);
   color: @grey-100;
 }
 
 .token.accent-teal {
   background-color: @color-teal;
-  border-color: @color-teal - 20%;
+  border-color: darken(@color-teal, 20%);
   color: @grey-100;
 }
 
 .token.accent-orange {
   background-color: @color-orange;
-  border-color: @color-orange - 20%;
+  border-color: darken(@color-orange, 20%);
   color: @grey-100;
 }
 
 .token.accent-brown {
   background-color: @color-brown;
-  border-color: @color-brown - 20%;
+  border-color: darken(@color-brown, 20%);
   color: @grey-100;
 }
 
 .token.accent-blue-grey {
   background-color: @color-blue-grey;
-  border-color: @color-blue-grey - 20%;
+  border-color: darken(@color-blue-grey, 20%);
   color: @grey-100;
 }
 
@@ -603,6 +661,26 @@ a.anchor {
     -moz-background-clip: padding;
     background-clip: padding-box;
   }
+
+  .tt-hint {
+    width: 100% !important;
+  }
+
+  .tt-selectable {
+    cursor: pointer;
+  }
+
+  .tokenfield-undeletable .close {
+    display: none;
+  }
+}
+
+.tokenfield.form-control {
+  background-color: transparent;
+}
+
+.clickable-token {
+  cursor: pointer;
 }
 
 .table-toolbar .table-toolbar-tools .search .tokenfield {
@@ -625,6 +703,10 @@ a.anchor {
   input {
     font-size: 18px;
   }
+}
+
+.tt-header {
+  padding-left: 5px;
 }
 
 a.action .material-icons {

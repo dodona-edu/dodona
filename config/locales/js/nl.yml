@@ -3,6 +3,7 @@ nl:
     submission-saved: Oplossing opgeslagen
     submission-failed: "Oeps, er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent."
     submission-emoji: "Oeps, er ging iets fout bij het opslaan van je oplossing. Je oplossing bevat speciale tekens zoals emoji of wiskundige symbolen die je uit de opgave gekopieerd hebt. Verwijder deze en probeer opnieuw. Contacteer de assistent als je het probleem niet vindt."
+    submission-rate-limit: "Oeps, je bent te snel! Wacht eventjes tussen het indienen van een nieuwe oplossing."
     submission-processed: Evaluatie afgerond
     exercise-added-success: Oefening toegevoegd
     exercise-added-failed: Oefening toevoegen mislukt
@@ -18,3 +19,8 @@ nl:
     favorite-course-failed: Cursus aan favorieten toevoegen mislukt
     unfavorite-course-succeeded: Cursus verwijderd uit favorieten
     unfavorite-course-failed: Cursus uit favorieten verwijderen mislukt
+    labels: Labels
+    programming_languages: Programmeertalen
+    repositories: Repository's
+    institutions: Onderwijsinstellingen
+    label-undeletable: Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.

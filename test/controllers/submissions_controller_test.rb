@@ -7,7 +7,8 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @instance = create :submission
-    sign_in create(:zeus)
+    @zeus = create(:zeus)
+    sign_in @zeus
   end
 
   test_crud_actions only: %i[index show create], except: %i[create_redirect]
@@ -58,6 +59,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   test 'create submission within course' do
     attrs = generate_attr_hash
     course = create :course
+    course.subscribed_members << @zeus
     attrs[:course_id] = course.id
 
     submission = create_request_expect attr_hash: attrs
@@ -114,6 +116,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should rejudge course submissions' do
     series = create(:series, :with_submissions)
+    series.course.subscribed_members << @zeus
     assert_jobs_enqueued(Submission.in_course(series.course).count) do
       rejudge_submissions course_id: series.course.id
     end
@@ -121,6 +124,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should rejudge series submissions' do
     series = create(:series, :with_submissions)
+    series.course.subscribed_members << @zeus
     assert_jobs_enqueued(Submission.in_series(series).count) do
       rejudge_submissions series_id: series.id
     end

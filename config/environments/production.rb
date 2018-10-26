@@ -77,7 +77,7 @@ Rails.application.configure do
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "dodona_#{Rails.env}"
-  
+
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -100,21 +100,27 @@ Rails.application.configure do
   # Do not add server timings in production
   config.server_timings.enabled = false
 
-  config.middleware.use ExceptionNotification::Rack,
-                        email: {
-                          email_prefix: '[Dodona] ',
-                          sender_address: %("Dodona" <dodona@ugent.be>),
-                          exception_recipients: %w[dodona@ugent.be]
-                        },
-                        slack: {
-                          webhook_url: 'https://hooks.slack.com/services/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',
-                          channel: '#dodona',
-                          username: 'Dodona-server',
-                          additional_parameters: {
-                            icon_url: 'http://dodona.ugent.be/icon.png',
-                            mrkdwn: true
-                          }
-                        }
+  notifiers = {
+      email: {
+          email_prefix: '[Dodona] ',
+          sender_address: %("Dodona" <dodona@ugent.be>),
+          exception_recipients: %w[dodona@ugent.be]
+      },
+      slack: {
+          webhook_url: 'https://hooks.slack.com/services/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',
+          channel: '#dodona',
+          username: 'Dodona-server',
+          additional_parameters: {
+              icon_url: 'http://dodona.ugent.be/icon.png',
+              mrkdwn: true
+          }
+      }
+  }
+
+  config.exception_notification_notifiers = notifiers
+
+  config.middleware.use ExceptionNotification::Rack, notifiers
+
 
   config.action_mailer.delivery_method = :sendmail
   # Defaults to:

@@ -46,8 +46,9 @@ Rails.application.routes.draw do
         resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
       end
       resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
+      resources :submissions, only: [:index]
+      resources :members, only: [:index, :show], controller: :course_members
       member do
-        get 'members'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
         post 'mass_accept_pending'
@@ -103,6 +104,7 @@ Rails.application.routes.draw do
     end
 
     resources :labels
+    resources :programming_languages
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

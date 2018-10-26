@@ -7,6 +7,8 @@ class ExercisesController < ApplicationController
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array
+  has_scope :by_programming_language, as: 'programming_language'
+  has_scope :in_repository, as: 'repository_id'
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')
@@ -30,8 +32,10 @@ class ExercisesController < ApplicationController
 
     @exercises = apply_scopes(@exercises)
 
-    @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
-    @labels = Label.all
+    @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: params[:page])
+    @labels = policy_scope(Label.all)
+    @programming_languages = policy_scope(ProgrammingLanguage.all)
+    @repositories = policy_scope(Repository.all)
     @title = I18n.t('exercises.index.title')
   end
 
@@ -41,10 +45,8 @@ class ExercisesController < ApplicationController
     authorize @series, :edit?
     @exercises = policy_scope(Exercise)
     @exercises = @exercises.or(Exercise.where(repository: @course.usable_repositories))
-    @exercises = @exercises.where.not(id: @series.exercises.map(&:id)) # exclude exercises currently within series
     @exercises = apply_scopes(@exercises)
-    @exercises = @exercises.order('name_' + I18n.locale.to_s).paginate(page: params[:page])
-    @labels = Label.all
+    @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: params[:page])
   end
 
   def show
@@ -57,7 +59,9 @@ class ExercisesController < ApplicationController
     @series = Series.find_by(id: params[:series_id])
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     @submissions = @exercise.submissions
-    @submissions = @submissions.in_course(@course) unless @course.nil?
+    if @course.present? && current_user&.member_of?(@course)
+      @submissions = @submissions.in_course(@course)
+    end
     @submissions = @submissions.of_user(current_user) if current_user
     @submissions = policy_scope(@submissions).paginate(page: params[:page])
     if params[:edit_submission]
@@ -75,9 +79,19 @@ class ExercisesController < ApplicationController
   end
 
   def update
+    attributes = permitted_attributes(@exercise)
+
+    labels = params[:exercise][:labels]
+    if labels
+      unless labels.is_a?(Array)
+        labels = labels&.split(',')
+      end
+      labels = (labels + (@exercise.merged_dirconfig[:labels] || [])).uniq
+      attributes[:labels] = labels&.map { |name| Label.find_by(name: name) || Label.create(name: name) }
+    end
+
     respond_to do |format|
-      if @exercise.update(permitted_attributes(@exercise))
-        @exercise.labels = params[:exercise][:labels]&.split(',')&.map { |name| Label.find_by(name: name) || Label.create(name: name) }&.uniq || []
+      if @exercise.update(attributes)
         format.html { redirect_to helpers.exercise_scoped_path(exercise: @exercise, course: @course, series: @series), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
         format.json { render :show, status: :ok, location: @exercise }
       else
@@ -115,7 +129,7 @@ class ExercisesController < ApplicationController
   def set_series
     return if params[:series_id].nil?
     @series = Series.find(params[:series_id])
-    @crumbs << [@series.name, course_path(@course, series: @series, anchor: @series.anchor)]
+    @crumbs << [@series.name, course_path(@course, anchor: @series.anchor)]
     authorize @series
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_29_072950) do
+ActiveRecord::Schema.define(version: 2018_10_15_124238) do
 
   create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -53,6 +53,9 @@ ActiveRecord::Schema.define(version: 2018_08_29_072950) do
     t.integer "correct_solutions"
     t.integer "color"
     t.string "teacher", default: ""
+    t.bigint "institution_id"
+    t.string "search", limit: 4096
+    t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 
   create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -84,16 +87,17 @@ ActiveRecord::Schema.define(version: 2018_08_29_072950) do
     t.datetime "updated_at", null: false
     t.string "path"
     t.string "description_format"
-    t.string "programming_language"
     t.integer "repository_id"
     t.integer "judge_id"
     t.integer "status", default: 0
     t.string "token", limit: 64
     t.integer "access", default: 0, null: false
+    t.bigint "programming_language_id"
+    t.string "search", limit: 4096
     t.index ["judge_id"], name: "index_exercises_on_judge_id"
     t.index ["name_nl"], name: "index_exercises_on_name_nl"
     t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true
-    t.index ["programming_language"], name: "index_exercises_on_programming_language"
+    t.index ["programming_language_id"], name: "fk_rails_f60feebafd"
     t.index ["repository_id"], name: "index_exercises_on_repository_id"
     t.index ["status"], name: "index_exercises_on_status"
     t.index ["token"], name: "index_exercises_on_token", unique: true
@@ -130,6 +134,15 @@ ActiveRecord::Schema.define(version: 2018_08_29_072950) do
     t.string "name", null: false
     t.integer "color", null: false
     t.index ["name"], name: "index_labels_on_name", unique: true
+  end
+
+  create_table "programming_languages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "editor_name", null: false
+    t.string "extension", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_programming_languages_on_name", unique: true
   end
 
   create_table "repositories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -218,6 +231,7 @@ ActiveRecord::Schema.define(version: 2018_08_29_072950) do
     t.string "token"
     t.string "time_zone", default: "Brussels"
     t.bigint "institution_id"
+    t.string "search", limit: 4096
     t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"
     t.index ["username", "institution_id"], name: "index_users_on_username_and_institution_id", unique: true
@@ -226,9 +240,11 @@ ActiveRecord::Schema.define(version: 2018_08_29_072950) do
 
   add_foreign_key "course_repositories", "courses"
   add_foreign_key "course_repositories", "repositories"
+  add_foreign_key "courses", "institutions"
   add_foreign_key "exercise_labels", "exercises"
   add_foreign_key "exercise_labels", "labels"
   add_foreign_key "exercises", "judges"
+  add_foreign_key "exercises", "programming_languages"
   add_foreign_key "exercises", "repositories"
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"

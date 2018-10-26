@@ -3,8 +3,8 @@ class CoursesController < ApplicationController
 
   skip_forgery_protection only: [:subscribe]
 
-  has_scope :by_permission, only: :members
-  has_scope :by_name, only: [:members, :index], as: 'filter'
+  has_scope :by_filter, as: 'filter'
+  has_scope :by_institution, as: 'institution_id'
 
   # GET /courses
   # GET /courses.json
@@ -22,21 +22,13 @@ class CoursesController < ApplicationController
   def show
     @title = @course.name
     @series = policy_scope(@course.series)
-    @total_series = @series.count
-    number_of_series = if params[:series]
-                         @series.find_index { |s| s.id == params[:series].to_i }.to_i + 3
-                       else
-                         5
-                       end
-
-    @series = @series.offset(params[:offset]) if params[:offset]
-    @series = @series.limit(number_of_series) unless params[:all]
+    @series_loaded = 5
   end
 
   # GET /courses/new
   def new
     authorize Course
-    @course = Course.new
+    @course = Course.new(institution: current_user.institution)
     @title = I18n.t('courses.new.title')
     @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
   end
@@ -205,35 +197,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def members
-    statuses = if %w[unsubscribed pending].include? params[:status]
-                 params[:status]
-               else
-                 %w[course_admin student]
-               end
-
-    @users = apply_scopes(@course.users)
-             .order('course_memberships.status ASC')
-             .order(permission: :desc)
-             .order(username: :asc)
-             .where(course_memberships: { status: statuses })
-             .paginate(page: params[:page])
-
-    @pagination_opts = {
-      controller: 'courses',
-      action: 'members'
-    }
-
-    @title = I18n.t("courses.index.users")
-    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
-
-    respond_to do |format|
-      format.json { render 'users/index' }
-      format.js { render 'users/index' }
-      format.html
-    end
-  end
-
   def reset_token
     @course.generate_secret
     @course.save
@@ -263,12 +226,12 @@ class CoursesController < ApplicationController
   def redirect_unless_secret_correct
     if !current_user
       redirect_back(fallback_location: root_url, notice: I18n.t('courses.registration.not_logged_in'))
+    elsif current_user.member_of?(@course)
+      redirect_to @course
     elsif current_user.zeus?
       nil
     elsif params[:secret] != @course.secret
       redirect_back(fallback_location: root_url, alert: I18n.t('courses.registration.key_mismatch'))
-    elsif current_user.member_of?(@course)
-      redirect_to @course
     end
   end
 

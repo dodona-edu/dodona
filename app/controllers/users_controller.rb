@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :set_users, only: %i[index available_for_repository]
 
   has_scope :by_permission
-  has_scope :by_name, as: 'filter'
+  has_scope :by_filter, as: 'filter'
 
   # GET /users
   # GET /users.json
@@ -108,6 +108,6 @@ class UsersController < ApplicationController
 
   def set_users
     authorize User
-    @users = apply_scopes(User).all.order(permission: :desc, username: :asc).paginate(page: params[:page])
+    @users = apply_scopes(User).all.order(permission: :desc, last_name: :asc, first_name: :asc).paginate(page: params[:page])
   end
 end

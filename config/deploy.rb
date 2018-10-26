@@ -114,3 +114,15 @@ namespace :deploy do
     end
   end
 end
+
+namespace :tutor do
+    desc 'Starting tutor'
+    task :tutor do
+        on roles(:web) do
+            execute :screen, "-S tutor -X quit", raise_on_non_zero_exit: false
+            execute :screen, "-S tutor -dm docker run --rm -p 8080:8080 python-tutor-webservice"
+        end
+    end
+end
+
+after "deploy", "tutor:tutor"

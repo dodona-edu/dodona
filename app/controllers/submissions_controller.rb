@@ -4,7 +4,9 @@ class SubmissionsController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: [:create]
 
-  has_scope :by_filter, as: 'filter'
+  has_scope :by_filter, as: 'filter' do |controller, scope, value|
+    scope.by_filter(value, controller.params[:user_id].present?, controller.params[:exercise_id].present?, controller.params[:most_recent_correct_per_user].present?)
+  end
 
   def index
     authorize Submission
@@ -119,14 +121,14 @@ class SubmissionsController < ApplicationController
     if @exercise
       @submissions = @submissions.of_exercise(@exercise)
       if @course
-        @submissions = @submissions.in_course(@course)
+        @submissions = @submissions.in_course(@course) if current_user&.member_of?(@course)
       elsif @series
-        @submissions = @submissions.in_course(@series.course)
+        @submissions = @submissions.in_course(@series.course) if current_user&.member_of?(@series.course)
       end
     elsif @series
-      @submissions = @submissions.in_series(@series)
+      @submissions = @submissions.in_series(@series) if current_user&.member_of?(@series.course)
     elsif @course
-      @submissions = @submissions.in_course(@course)
+      @submissions = @submissions.in_course(@course) if current_user&.member_of?(@course)
     end
 
     # this cannot use has_scope, because we need the scopes in this method

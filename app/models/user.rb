@@ -15,11 +15,13 @@
 #  token          :string(255)
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :integer
+#  search         :string(4096)
 #
 
 require 'securerandom'
 
 class User < ApplicationRecord
+  include Filterable
   include StringHelper
 
   enum permission: %i[student staff zeus]
@@ -97,7 +99,6 @@ class User < ApplicationRecord
   before_save :set_time_zone
 
   scope :by_permission, ->(permission) { where(permission: permission) }
-  scope :by_name, ->(name) { where('username LIKE ? OR first_name LIKE ? OR last_name LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
 
   scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
 
@@ -122,6 +123,10 @@ class User < ApplicationRecord
 
   def course_admin?(course)
     zeus? || admin_of?(course)
+  end
+
+  def is_a_course_admin?
+    admin? || administrating_courses.any?
   end
 
   def repository_admin?(repository)
@@ -221,6 +226,10 @@ class User < ApplicationRecord
   def self.from_email(email)
     return nil if email.blank?
     find_by(email: email)
+  end
+
+  def set_search
+    self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
   end
 
   private

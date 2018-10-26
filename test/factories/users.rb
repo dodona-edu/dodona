@@ -25,6 +25,7 @@ FactoryBot.define do
     ugent_id { Faker::Number.number(8).to_s }
     email { "#{first_name}.#{last_name}.#{username}@UGent.BE".downcase }
     permission { :student }
+    institution
   end
 
   factory :zeus, parent: :user do
@@ -37,5 +38,6 @@ FactoryBot.define do
 
   factory :temporary_user, parent: :user do
     username { nil }
+    institution { nil }
   end
 end

@@ -20,17 +20,19 @@ class CreateProgrammingLanguages < ActiveRecord::Migration[5.2]
       'txt'
     end
 
-    Exercise.all.map{|e| e.programming_language}.uniq.compact.each do |name|
+    rename_column :exercises, :programming_language, :old_programming_language
+
+    Exercise.all.map{|e| e.old_programming_language}.uniq.compact.each do |name|
       ProgrammingLanguage.create(name: name, markdown_name: name, editor_name: name, extension: file_extension(name))
     end
 
     add_column :exercises, :programming_language_id, :bigint
 
     Exercise.find_each do |e|
-      e.update_columns(programming_language_id: ProgrammingLanguage.find_by(name: e.programming_language)&.id)
+      e.update_columns(programming_language_id: ProgrammingLanguage.find_by(name: e.old_programming_language)&.id)
     end
 
-    remove_column :exercises, :programming_language
+    remove_column :exercises, :old_programming_language
     add_foreign_key :exercises, :programming_languages
   end
 end

@@ -87,7 +87,7 @@ class PythiaRenderer < FeedbackTableRenderer
   def tutor_init
     # Initialize tutor javascript
     @builder.script do
-      escaped = escape_javascript(@code.strip)
+      escaped = escape_javascript(@code.blob.download.strip)
       @builder << '$(function() {'
       @builder << "$('#tutor').appendTo('body');"
       @builder << "var code = \"#{escaped}\";"

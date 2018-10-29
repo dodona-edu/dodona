@@ -23,7 +23,6 @@ aside.drawer {
     height: 100%;
   }
 
-
   nav {
     position: fixed;
     //left: 0;
@@ -51,17 +50,16 @@ aside.drawer {
   }
 
   &.active {
+    width: 100vw;
+
+    nav {
+      left: 0;
+    }
+
+    .drawer-background {
+      opacity: 0.5;
       width: 100vw;
-
-
-      nav {
-        left: 0;
-      }
-
-      .drawer-background {
-        opacity: 0.5;
-        width: 100vw;
-      }
+    }
 
     //@media (max-width: @screen-lg-min) {
     //}
@@ -85,7 +83,6 @@ aside.drawer {
     width: 100%;
   }
 }
-
 
 h1.drawer-group-title {
   font-size: 14px;
@@ -122,7 +119,7 @@ ul.drawer-list {
       background: @grey-200;
     }
 
-    &:hover,&:focus {
+    &:hover, &:focus {
       background: @grey-100;
     }
 

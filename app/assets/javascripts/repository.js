@@ -28,7 +28,8 @@ function initAdminsEdit() {
             user_id: userId,
         })
             .done(() => adminAdded($button, $oldRow))
-            .fail(() => {});
+            .fail(() => {
+            });
     }
 
     function onRemoveClick() {
@@ -41,7 +42,8 @@ function initAdminsEdit() {
             user_id: userId,
         })
             .done(() => adminRemoved(userId))
-            .fail(() => {});
+            .fail(() => {
+            });
     }
 
 
@@ -101,7 +103,8 @@ function initCoursesEdit() {
             course_id: courseId,
         })
             .done(() => courseAdded($button, $oldRow))
-            .fail(() => {});
+            .fail(() => {
+            });
     }
 
     function onRemoveClick() {
@@ -114,7 +117,8 @@ function initCoursesEdit() {
             course_id: courseId,
         })
             .done(() => courseRemoved(courseId))
-            .fail(() => {});
+            .fail(() => {
+            });
     }
 
     function courseAdded($button, $oldRow) {

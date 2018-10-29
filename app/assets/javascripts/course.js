@@ -53,44 +53,45 @@ function initCourseMembers() {
 }
 
 
-const table_wrapper_selector = '.series-exercises-table-wrapper';
-const skeleton_table_selector = '.exercise-table-skeleton';
+const table_wrapper_selector = ".series-exercises-table-wrapper";
+const skeleton_table_selector = ".exercise-table-skeleton";
 
 class Series {
-  static findAll(cards_selector='.series.card') {
-    let $cards = $(cards_selector);
-    return $.map($cards, card => new Series(card));
-  }
+    static findAll(cards_selector = ".series.card") {
+        let $cards = $(cards_selector);
+        return $.map($cards, card => new Series(card));
+    }
 
-  constructor(card) {
-    this.id = +card.id.split('series-card-')[1];
+    constructor(card) {
+        this.id = +card.id.split("series-card-")[1];
 
-    this.reselect(card);
-  }
+        this.reselect(card);
+    }
 
-  reselect(card_selector){
-    this.$card = $(card_selector);
-    this.url = this.$card.data("series-url");
-    this.$table_wrapper = this.$card.find(table_wrapper_selector);
-    this.$skeleton = this.$table_wrapper.find(skeleton_table_selector);
-    this.loaded = this.$skeleton.length === 0;
-    this.loading = false;
-    this.top = this.$card.offset().top;
-    this.bottom = this.top + this.$card.height();
-  }
+    reselect(card_selector) {
+        this.$card = $(card_selector);
+        this.url = this.$card.data("series-url");
+        this.$table_wrapper = this.$card.find(table_wrapper_selector);
+        this.$skeleton = this.$table_wrapper.find(skeleton_table_selector);
+        this.loaded = this.$skeleton.length === 0;
+        this.loading = false;
+        this.top = this.$card.offset().top;
+        this.bottom = this.top + this.$card.height();
+    }
 
-  needsLoading(){
-    return !this.loaded && !this.loading;
-  }
+    needsLoading() {
+        return !this.loaded && !this.loading;
+    }
 
-  load(callback=()=>{}) {
-    this.loading = true;
-    $.get(this.url).done(() => {
-      this.loading = false;
-      this.reselect(`#series-card-${this.id}`);
-    });
-    callback();
-  }
+    load(callback = () => {
+    }) {
+        this.loading = true;
+        $.get(this.url).done(() => {
+            this.loading = false;
+            this.reselect(`#series-card-${this.id}`);
+        });
+        callback();
+    }
 }
 
 function initCourseShow() {
@@ -131,14 +132,14 @@ function initCourseShow() {
     }
 
     function scroll() {
-      const screen_top = $(window).scrollTop();
-      const screen_bottom = screen_top + $(window).height();
-      const first_visible = series.findIndex(s => screen_top < s.bottom);
-      const first_to_load = first_visible <= 0 ? 0 : first_visible - 1;
-      const last_visible_idx = series.findIndex(s => screen_bottom < s.top);
-      const last_to_load = last_visible_idx == -1 ? series.length : last_visible_idx;
+        const screen_top = $(window).scrollTop();
+        const screen_bottom = screen_top + $(window).height();
+        const first_visible = series.findIndex(s => screen_top < s.bottom);
+        const first_to_load = first_visible <= 0 ? 0 : first_visible - 1;
+        const last_visible_idx = series.findIndex(s => screen_bottom < s.top);
+        const last_to_load = last_visible_idx == -1 ? series.length : last_visible_idx;
 
-      series.slice(first_to_load, last_to_load + 1)
+        series.slice(first_to_load, last_to_load + 1)
             .filter(s => s.needsLoading())
             .forEach(s => s.load());
     }

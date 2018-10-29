@@ -41,6 +41,6 @@ nl:
     deadline:
       ago: geleden
     scoresheet:
-        user: Gebruiker
+      user: Gebruiker
     overview:
       progress: '%{solved} van de %{count} opgelost'

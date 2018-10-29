@@ -54,10 +54,10 @@ class SubmissionsController < ApplicationController
       can_submit &&= current_user.can_access?(@submission.course, @submission.exercise)
     end
     if can_submit && @submission.save
-      render json: { status: 'ok', id: @submission.id, url: submission_url(@submission, format: :json) }
+      render json: {status: 'ok', id: @submission.id, url: submission_url(@submission, format: :json)}
     else
       @submission.errors.add(:exercise, :not_permitted) unless can_submit
-      render json: { status: 'failed', errors: @submission.errors }, status: :unprocessable_entity
+      render json: {status: 'failed', errors: @submission.errors}, status: :unprocessable_entity
     end
   end
 
@@ -91,7 +91,7 @@ class SubmissionsController < ApplicationController
   def mass_rejudge
     authorize Submission
     Submission.rejudge(@submissions)
-    render json: { status: 'ok', message: I18n.t('submissions.index.reevaluating_submissions', count: @submissions.length) }
+    render json: {status: 'ok', message: I18n.t('submissions.index.reevaluating_submissions', count: @submissions.length)}
   end
 
   private

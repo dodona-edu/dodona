@@ -1,8 +1,8 @@
 <% summary ||= SeriesSummary.new(
-   user: current_user,
-   series: series,
-   exercises: local_assigns[:exercises]
-  ) %>
+    user: current_user,
+    series: series,
+    exercises: local_assigns[:exercises]
+) %>
 
 <div class="card">
   <div class="card-title card-title-colored">
@@ -18,18 +18,18 @@
   <div class="card-supporting-text">
     <table class="table no-head">
       <tbody>
-        <% summary.reject(&:solved?).each do |ex| %>
+      <% summary.reject(&:solved?).each do |ex| %>
         <tr>
           <td>
             <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
           </td>
           <td>
             <%= render partial: 'exercises/exercise_user_status', locals: {
-                  summary: ex
-                } %>
+                summary: ex
+            } %>
           </td>
         </tr>
-        <% end %>
+      <% end %>
       </tbody>
     </table>
   </div>

@@ -13,7 +13,7 @@
             <%= t ".for" %> <%= @exercise.name %>
           <% end %>
           <% if @user %>
-             <%= t ".from" %>&nbsp;<%= link_to @user.full_name, user_path(@user) %>
+            <%= t ".from" %>&nbsp;<%= link_to @user.full_name, user_path(@user) %>
           <% end %>
         </h2>
       </div>
@@ -26,7 +26,7 @@
           <%= render partial: 'layouts/searchbar', locals: {actions: actions} %>
         <% end %>
         <div id="submissions-table-wrapper">
-          <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, remote_links: false}  %>
+          <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, remote_links: false} %>
         </div>
       </div>
     </div>

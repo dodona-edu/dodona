@@ -3,8 +3,8 @@
     <div class="card-supporting-text">
       <% if @course.closed? %>
         <p>
-        <strong><%= t 'layout.messages.danger' %>!</strong>
-        <%= t 'courses.registration.closed'%>
+          <strong><%= t 'layout.messages.danger' %>!</strong>
+          <%= t 'courses.registration.closed' %>
       <% else %>
         <% if @current_membership&.pending? %>
           <p><%= t 'courses.registration.pending' %>

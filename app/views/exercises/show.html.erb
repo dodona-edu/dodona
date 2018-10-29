@@ -18,7 +18,7 @@
           <%= @exercise.name %>
         </h2>
       </div>
-      <%= render partial: 'description_card', locals: { exercise: @exercise } %>
+      <%= render partial: 'description_card', locals: {exercise: @exercise} %>
     </div>
   </div>
 </div>
@@ -39,10 +39,12 @@
         <% end %>
         <ul class="nav nav-tabs">
           <% if policy(@exercise).submit? || !user_signed_in? %>
-            <li class="active"><a href="#handin" id="exercise-handin-link" data-toggle="tab"><%= t ".handin"%></a></li>
+            <li class="active"><a href="#handin" id="exercise-handin-link" data-toggle="tab"><%= t ".handin" %></a></li>
           <% end %>
-          <li class="<%='active' if !(policy(@exercise).submit? || !user_signed_in?) %>"><a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions"%></a></li>
-          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link' class='hidden'><%= t ".feedback"%></a></li>
+          <li class="<%= 'active' if !(policy(@exercise).submit? || !user_signed_in?) %>">
+            <a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions" %></a></li>
+          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link' class='hidden'><%= t ".feedback" %></a>
+          </li>
         </ul>
       </div>
       <div class="card-supporting-text">
@@ -57,14 +59,14 @@
               </div>
             <% end %>
           </div>
-          <div class="tab-pane fade <%='in active' if !(policy(@exercise).submit? || !user_signed_in?) %>" id="submissions">
+          <div class="tab-pane fade <%= 'in active' if !(policy(@exercise).submit? || !user_signed_in?) %>" id="submissions">
             <div id="submissions-table-wrapper">
               <% if !user_signed_in? %>
                 <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
               <% elsif @submissions.length > 0 %>
-                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, remote_links: true}  %>
+                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, remote_links: true} %>
               <% else %>
-                <div class="alert alert-info"><%= t ".hand_in_tooltip"%></div>
+                <div class="alert alert-info"><%= t ".hand_in_tooltip" %></div>
               <% end %>
             </div>
           </div>
@@ -77,7 +79,7 @@
   </div>
 </div>
 <script type="text/javascript">
-  $(function () {
-    dodona.initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language&.editor_name || "text" %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id || "null" %>);
-  });
+    $(function () {
+        dodona.initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language&.editor_name || "text" %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id || "null" %>);
+    });
 </script>

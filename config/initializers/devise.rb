@@ -314,16 +314,16 @@ Devise.setup do |config|
   # Configure with your SAML settings (see ruby-saml's README for more information: https://github.com/onelogin/ruby-saml).
   config.saml_configure do |settings|
     # assertion_consumer_service_url is required starting with ruby-saml 1.4.3: https://github.com/onelogin/ruby-saml#updating-from-142-to-143
-    settings.assertion_consumer_service_url     = "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/auth"
+    settings.assertion_consumer_service_url = "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/auth"
     settings.assertion_consumer_service_binding = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
-    settings.name_identifier_format             = 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
-    settings.issuer                             = "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/metadata"
-    settings.authn_context                      = ''
+    settings.name_identifier_format = 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
+    settings.issuer = "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/metadata"
+    settings.authn_context = ''
     settings.certificate = IO.read('/home/dodona/cert.pem') if File.file?('/home/dodona/cert.pem')
     settings.private_key = IO.read('/home/dodona/key.pem') if File.file?('/home/dodona/key.pem')
-    settings.idp_slo_target_url                 = 'https://ideq.ugent.be/simplesaml/saml2/idp/SingleLogoutService.php'
-    settings.idp_sso_target_url                 = 'https://ideq.ugent.be/simplesaml/saml2/idp/SSOService.php'
-    settings.idp_cert                           = <<~CERT.chomp
+    settings.idp_slo_target_url = 'https://ideq.ugent.be/simplesaml/saml2/idp/SingleLogoutService.php'
+    settings.idp_sso_target_url = 'https://ideq.ugent.be/simplesaml/saml2/idp/SSOService.php'
+    settings.idp_cert = <<~CERT.chomp
       MIIFMDCCBBigAwIBAgIQAy7rsc3GwUd4Cmd35/hqQjANBgkqhkiG9w0BAQsFADBkMQswCQYD
       VQQGEwJOTDEWMBQGA1UECBMNTm9vcmQtSG9sbGFuZDESMBAGA1UEBxMJQW1zdGVyZGFtMQ8w
       DQYDVQQKEwZURVJFTkExGDAWBgNVBAMTD1RFUkVOQSBTU0wgQ0EgMzAeFw0xNTA4MDUwMDAw

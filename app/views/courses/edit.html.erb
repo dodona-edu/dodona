@@ -13,20 +13,20 @@
       </div>
       <div class="card-supporting-text card-border">
         <h4><%= t '.confidential' %></h4>
-          <div class="form-horizontal">
-            <div class="field form-group">
-              <%= label_tag :registration_link,
-                  t('course.show.registration_link'),
-                  class: 'col-sm-3 control-label' %>
-              <div class="col-sm-6">
-                <div class="input-group" id="registration_link">
-                  <%= render partial: 'token_field',
-                  locals: {
-                    name: :registration_link,
-                    value: registration_course_url(@course, @course.secret),
-                    reset_url: reset_token_course_path(@course)
-                  } %>
-                </div>
+        <div class="form-horizontal">
+          <div class="field form-group">
+            <%= label_tag :registration_link,
+                          t('course.show.registration_link'),
+                          class: 'col-sm-3 control-label' %>
+            <div class="col-sm-6">
+              <div class="input-group" id="registration_link">
+                <%= render partial: 'token_field',
+                           locals: {
+                               name: :registration_link,
+                               value: registration_course_url(@course, @course.secret),
+                               reset_url: reset_token_course_path(@course)
+                           } %>
+              </div>
             </div>
           </div>
         </div>

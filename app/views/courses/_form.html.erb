@@ -26,19 +26,19 @@
     <%= f.label :institution, :class => "col-sm-3 control-label" %>
     <div class="col-sm-6">
       <%= f.select :institution_id,
-                   options_for_select(Institution.all.map { |i| [i.name, i.id] }, @course.institution_id),
-                   { include_blank: t('.no_institution') },
-                   { class: 'form-control' } %>
+                   options_for_select(Institution.all.map {|i| [i.name, i.id]}, @course.institution_id),
+                   {include_blank: t('.no_institution')},
+                   {class: 'form-control'} %>
     </div>
   </div>
   <div class="field form-group">
     <%= f.label :visibility, class: 'col-sm-3 control-label' %>
     <div class="col-sm-6">
       <%= f.select :visibility,
-        options_for_select(Course.visibilities.keys.map { |k| [t("activerecord.attributes.course.visibilities.#{k}"), k] },
-                          @course.visibility),
-        {},
-        { class: 'form-control' } %>
+                   options_for_select(Course.visibilities.keys.map {|k| [t("activerecord.attributes.course.visibilities.#{k}"), k]},
+                                      @course.visibility),
+                   {},
+                   {class: 'form-control'} %>
     </div>
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-help" %></span>
   </div>
@@ -46,10 +46,10 @@
     <%= f.label :registration, class: 'col-sm-3 control-label' %>
     <div class="col-sm-6">
       <%= f.select :registration,
-        options_for_select(Course.registrations.keys.map { |k| [t("activerecord.attributes.course.registrations.#{k}"), k] },
-                          @course.registration),
-        {},
-        { class: 'form-control' } %>
+                   options_for_select(Course.registrations.keys.map {|k| [t("activerecord.attributes.course.registrations.#{k}"), k]},
+                                      @course.registration),
+                   {},
+                   {class: 'form-control'} %>
     </div>
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".registration-help" %></span>
   </div>
@@ -59,15 +59,15 @@
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>
   </div>
   <% if current_user.zeus? %>
-  <div class="field form-group">
-    <%= f.label :color, class: 'col-sm-3 control-label' %>
-    <div class="col-sm-6">
-      <%= f.select :color,
-        options_for_select(Course.colors.keys.map { |k| [t("activerecord.attributes.course.colors.#{k}"), k] },
-                          @course.color),
-        {},
-        { class: 'form-control' } %>
+    <div class="field form-group">
+      <%= f.label :color, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-6">
+        <%= f.select :color,
+                     options_for_select(Course.colors.keys.map {|k| [t("activerecord.attributes.course.colors.#{k}"), k]},
+                                        @course.color),
+                     {},
+                     {class: 'form-control'} %>
+      </div>
     </div>
-  </div>
   <% end %>
 <% end %>

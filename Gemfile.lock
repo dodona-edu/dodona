@@ -173,6 +173,8 @@ GEM
       activesupport (>= 4.1)
     hashie (3.5.7)
     htmlentities (4.3.4)
+    httparty (0.16.2)
+      multi_xml (>= 0.5.2)
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     i18n-js (3.0.11)
@@ -336,7 +338,6 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    slack-notifier (2.3.2)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -412,6 +413,7 @@ DEPENDENCIES
   faker (~> 1.8)
   foreman
   has_scope
+  httparty
   i18n-js (~> 3.0.0.rc14)
   jbuilder (~> 2.7)
   json-schema
@@ -444,7 +446,6 @@ DEPENDENCIES
   selenium-webdriver
   simplecov
   sinatra!
-  slack-notifier
   spring
   spring-watcher-listen (~> 2.0.0)
   therubyracer

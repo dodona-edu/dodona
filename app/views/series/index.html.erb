@@ -7,27 +7,31 @@
       <div class="card-supporting-text">
         <table class="table table-index table-resource">
           <thead>
-            <tr>
-              <th><%= Series.human_attribute_name("name") %></th>
-              <th><%= Series.human_attribute_name("course") %></th>
-              <th></th>
-            </tr>
+          <tr>
+            <th><%= Series.human_attribute_name("name") %></th>
+            <th><%= Series.human_attribute_name("course") %></th>
+            <th></th>
+          </tr>
           </thead>
           <tbody>
-            <% @series.each do |series| %>
-              <tr>
-                <td><%= link_to series.name, series %></td>
-                <td><%= "#{series.course.name} (#{series.course.formatted_year})" %> </td>
-                <td class="actions">
-                  <% if policy(series).edit? %>
-                    <%= link_to edit_series_path(series), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">edit</i><% end %>
+          <% @series.each do |series| %>
+            <tr>
+              <td><%= link_to series.name, series %></td>
+              <td><%= "#{series.course.name} (#{series.course.formatted_year})" %> </td>
+              <td class="actions">
+                <% if policy(series).edit? %>
+                  <%= link_to edit_series_path(series), class: "btn btn-sm btn-default" do %>
+                    <i class="material-icons md-18">edit</i>
                   <% end %>
-                  <% if policy(series).destroy? %>
-                    <%= link_to series, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons md-18">delete</i><% end %>
+                <% end %>
+                <% if policy(series).destroy? %>
+                  <%= link_to series, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
+                    <i class="material-icons md-18">delete</i>
                   <% end %>
-                </td>
-              </tr>
-            <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
           </tbody>
         </table>
       </div>

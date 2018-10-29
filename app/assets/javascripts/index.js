@@ -30,7 +30,7 @@ function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
 
     for (let key in extraParams) {
         if (extraParams.hasOwnProperty(key)) {
-            url = updateURLParameter(url, key, extraParams[key])
+            url = updateURLParameter(url, key, extraParams[key]);
         }
     }
 
@@ -198,6 +198,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
             });
             return result;
         }
+
         const typeAheadOpts = [{
             highlight: true,
             minLength: 0,

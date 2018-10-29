@@ -86,8 +86,8 @@ module ExerciseHelper
       Kramdown::Document.new(source,
                              input: 'GFM',
                              hard_wrap: false, syntax_highlighter:
-                             'rouge',
-                             math_engine_opts: { preview: true }).to_html.html_safe
+                                 'rouge',
+                             math_engine_opts: {preview: true}).to_html.html_safe
     end
 
     def add_media_captions(doc)
@@ -122,10 +122,10 @@ module ExerciseHelper
       @footnote_urls = {}
       i = 1
       doc.css('a').each do |anchor|
-        Maybe(anchor.attribute('href'))   # get href attribute
-          .map(&:value)                   # get its value
-          .map { |u| absolutize_url u }   # absolutize it
-          .map do |url|
+        Maybe(anchor.attribute('href')) # get href attribute
+            .map(&:value) # get its value
+            .map {|u| absolutize_url u} # absolutize it
+            .map do |url|
           # If any of the steps above returned nil, this block isn't executed
 
           ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"

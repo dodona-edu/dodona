@@ -7,13 +7,13 @@ class CoursePolicy < ApplicationPolicy
         admin = CourseMembership.statuses['course_admin']
         visible = Course.visibilities['visible']
         scope.joins(:course_memberships)
-             .where(
-               <<~SQL
-                 courses.visibility             = #{visible}
-                 OR course_memberships.status   = #{admin}
-                 AND course_memberships.user_id = #{user.id}
-               SQL
-             ).distinct
+            .where(
+                <<~SQL
+                  courses.visibility             = #{visible}
+                  OR course_memberships.status   = #{admin}
+                  AND course_memberships.user_id = #{user.id}
+        SQL
+        ).distinct
       else
         scope.where(visibility: :visible)
       end

@@ -16,20 +16,21 @@
             </p>
           <% end %>
           <% if policy(User).server_access? %>
-          <p>
-            <strong><%= Repository.human_attribute_name("path") %>:</strong> <%= @repository.path %>
-          </p>
+            <p>
+              <strong><%= Repository.human_attribute_name("path") %>:</strong> <%= @repository.path %>
+            </p>
           <% end %>
           <p>
-            <strong><%= Repository.human_attribute_name("judge") %>:</strong> <%= link_to @repository.judge.name, @repository.judge %>
+            <strong><%= Repository.human_attribute_name("judge") %>
+              :</strong> <%= link_to @repository.judge.name, @repository.judge %>
           </p>
           <p>
             <strong># <%= Repository.human_attribute_name("exercises") %>:</strong> <%= @repository.exercises.count %>
           </p>
           <% if policy(@repository).reprocess? %>
-          <p>
-            <%= link_to t(".reprocess"), reprocess_repository_path(@repository) %>
-          </p>
+            <p>
+              <%= link_to t(".reprocess"), reprocess_repository_path(@repository) %>
+            </p>
           <% end %>
         </div>
         <% if current_user.repository_admin?(@repository) %>

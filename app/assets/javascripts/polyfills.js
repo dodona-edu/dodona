@@ -10,8 +10,10 @@
             isFullScreen: function () {
                 return false;
             },
-            requestFullScreen: function () {},
-            cancelFullScreen: function () {},
+            requestFullScreen: function () {
+            },
+            cancelFullScreen: function () {
+            },
             fullScreenEventName: "",
             prefix: "",
         },
@@ -47,40 +49,40 @@
 
         fullScreenApi.isFullScreen = function () {
             switch (this.prefix) {
-            case "":
-                return document.fullscreenElement !== null;
-            case "moz":
-                return document.mozFullScreenElement !== null;
-            default:
-                return document[this.prefix + "FullscreenElement"] !== null;
+                case "":
+                    return document.fullscreenElement !== null;
+                case "moz":
+                    return document.mozFullScreenElement !== null;
+                default:
+                    return document[this.prefix + "FullscreenElement"] !== null;
             }
         };
         fullScreenApi.requestFullScreen = function (el) {
             switch (this.prefix) {
-            case "":
-                return el.requestFullscreen();
-            case "webkit":
-                return el.webkitRequestFullscreen();
-            case "ms":
-                return el.msRequestFullscreen();
-            case "moz":
-                return el.mozRequestFullScreen();
-            case "default":
-                return el[this.prefix + "RequestFullscreen"]();
+                case "":
+                    return el.requestFullscreen();
+                case "webkit":
+                    return el.webkitRequestFullscreen();
+                case "ms":
+                    return el.msRequestFullscreen();
+                case "moz":
+                    return el.mozRequestFullScreen();
+                case "default":
+                    return el[this.prefix + "RequestFullscreen"]();
             }
         };
         fullScreenApi.cancelFullScreen = function (el) {
             switch (this.prefix) {
-            case "":
-                return document.exitFullscreen();
-            case "webkit":
-                return document.webkitExitFullscreen();
-            case "ms":
-                return document.msExitFullscreen();
-            case "moz":
-                return document.mozCancelFullScreen();
-            case "default":
-                return document[this.prefix + "ExitFullscreen"]();
+                case "":
+                    return document.exitFullscreen();
+                case "webkit":
+                    return document.webkitExitFullscreen();
+                case "ms":
+                    return document.msExitFullscreen();
+                case "moz":
+                    return document.mozCancelFullScreen();
+                case "default":
+                    return document[this.prefix + "ExitFullscreen"]();
             }
         };
     }

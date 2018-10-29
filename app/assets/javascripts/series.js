@@ -126,6 +126,7 @@ function initSeriesEdit() {
 
     init();
 }
+
 function initSeriesForm() {
     function init() {
         if (I18n.locale === "nl") {

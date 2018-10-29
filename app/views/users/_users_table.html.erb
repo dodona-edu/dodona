@@ -1,16 +1,16 @@
 <div class="table-scroll-wrapper">
   <table class="table table-index table-resource">
-  <thead>
+    <thead>
     <tr>
       <th class='status-icon'></th>
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
-      <th class='text-right'><%=  t("users.index.progress")  %></th>
-      <th class='text-right'><%=  t("users.index.access_level") %></th>
+      <th class='text-right'><%= t("users.index.progress") %></th>
+      <th class='text-right'><%= t("users.index.access_level") %></th>
       <th></th>
     </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     <% users.each do |user| %>
       <tr>
         <td>
@@ -36,24 +36,24 @@
         <% end %>
         <td><%= user.email %></td>
         <td class='text-right'>
-          <%=  link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user)  %>
+          <%= link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user) %>
         </td>
         <% if @course %>
           <td class='text-right'>
-            <%=  t("activerecord.attributes.course_membership.statuses.#{user.membership_status_for(@course)}")  %>
+            <%= t("activerecord.attributes.course_membership.statuses.#{user.membership_status_for(@course)}") %>
           </td>
         <% end %>
         <td class="actions">
           <% if @course %>
             <%= render partial: 'courses/course_membership_buttons',
                        locals: {course: @course, user: user} %>
-          <%  end  %>
+          <% end %>
           <% if policy(user).impersonate? %>
             <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
               <i class="material-icons md-18">person</i>
             <% end %>
           <% end %>
-          <% if policy(user).edit?  %>
+          <% if policy(user).edit? %>
             <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
               <i class="material-icons md-18">edit</i>
             <% end %>
@@ -61,8 +61,9 @@
         </td>
       </tr>
     <% end %>
-  </tbody>
-</table></div>
+    </tbody>
+  </table>
+</div>
 <% if users.empty? %>
   <p class="text-center text-muted lead table-placeholder"><%= t 'users.index.no_users' %></p>
 <% end %>

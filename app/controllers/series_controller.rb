@@ -33,8 +33,8 @@ class SeriesController < ApplicationController
   # GET /series/new
   def new
     course = Maybe(params[:course_id])
-             .map { |cid| Course.find_by id: cid }
-             .or_nil
+                 .map {|cid| Course.find_by id: cid}
+                 .or_nil
     authorize course, :add_series?
     @series = Series.new(course: course)
     @title = I18n.t('series.new.title')
@@ -57,11 +57,11 @@ class SeriesController < ApplicationController
     authorize @series.course, :add_series?
     respond_to do |format|
       if @series.save
-        format.html { redirect_to edit_series_path(@series), notice: I18n.t('controllers.created', model: Series.model_name.human) }
-        format.json { render :show, status: :created, location: @series }
+        format.html {redirect_to edit_series_path(@series), notice: I18n.t('controllers.created', model: Series.model_name.human)}
+        format.json {render :show, status: :created, location: @series}
       else
-        format.html { render :new }
-        format.json { render json: @series.errors, status: :unprocessable_entity }
+        format.html {render :new}
+        format.json {render json: @series.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -71,11 +71,11 @@ class SeriesController < ApplicationController
   def update
     respond_to do |format|
       if @series.update(permitted_attributes(@series))
-        format.html { redirect_to course_path(@series.course, series: @series, anchor: @series.anchor), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
-        format.json { render :show, status: :ok, location: @series }
+        format.html {redirect_to course_path(@series.course, series: @series, anchor: @series.anchor), notice: I18n.t('controllers.updated', model: Series.model_name.human)}
+        format.json {render :show, status: :ok, location: @series}
       else
-        format.html { render :edit }
-        format.json { render json: @series.errors, status: :unprocessable_entity }
+        format.html {render :edit}
+        format.json {render json: @series.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -86,8 +86,8 @@ class SeriesController < ApplicationController
     course = @series.course
     @series.destroy
     respond_to do |format|
-      format.html { redirect_to course_url(course), notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
-      format.json { head :no_content }
+      format.html {redirect_to course_url(course), notice: I18n.t('controllers.destroyed', model: Series.model_name.human)}
+      format.json {head :no_content}
     end
   end
 
@@ -100,16 +100,16 @@ class SeriesController < ApplicationController
     @series.generate_token(type)
     @series.save
     value =
-      case type
-      when :indianio_token
-        @series.indianio_token
-      when :access_token
-        series_url(@series, token: @series.access_token)
-      end
+        case type
+        when :indianio_token
+          @series.indianio_token
+        when :access_token
+          series_url(@series, token: @series.access_token)
+        end
     render partial: 'application/token_field', locals: {
-      name: type,
-      value: value,
-      reset_url: reset_token_series_path(@series, type: type)
+        name: type,
+        value: value,
+        reset_url: reset_token_series_path(@series, type: type)
     }
   end
 
@@ -118,15 +118,15 @@ class SeriesController < ApplicationController
     email = params[:email]
     @series = Series.find_by(indianio_token: token)
     if token.blank? || @series.nil?
-      render json: { errors: ['Wrong token'] }, status: :unauthorized
+      render json: {errors: ['Wrong token']}, status: :unauthorized
     elsif email.blank?
-      render json: { errors: ['No email given'] }, status: :unprocessable_entity
+      render json: {errors: ['No email given']}, status: :unprocessable_entity
     else
       user = User.find_by(email: email)
       if user
         send_zip user, with_info: true
       else
-        render json: { errors: ['Unknown email'] }, status: :not_found
+        render json: {errors: ['Unknown email']}, status: :not_found
       end
     end
   end
@@ -178,10 +178,9 @@ class SeriesController < ApplicationController
   end
 
   def check_token
-    raise Pundit::NotAuthorizedError if
-      @series.hidden? &&
-      !current_user&.course_admin?(@series.course) &&
-      @series.access_token != params[:token]
+    raise Pundit::NotAuthorizedError if @series.hidden? &&
+        !current_user&.course_admin?(@series.course) &&
+        @series.access_token != params[:token]
   end
 
   # Generate and send a zip with solutions

@@ -4,7 +4,8 @@
 <% end %>
 <p>
   <% if current_user.course_admin? submission.course %>
-    <b><%= t "submissions.show.user" %>:</b> <%= link_to submission.user.full_name + " - " + submission.user.username, user_path(submission.user) %><br />
+    <b><%= t "submissions.show.user" %>
+      :</b> <%= link_to submission.user.full_name + " - " + submission.user.username, user_path(submission.user) %><br/>
   <% end %>
   <b><%= t "submissions.show.exercise" %>:</b>
   <% if submission.course.nil? %>
@@ -12,13 +13,15 @@
   <% else %>
     <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise) %>
   <% end %>
-  <br />
+  <br/>
   <% unless submission.course.nil? %>
-    <b><%= t "submissions.show.course" %>:</b> <%= link_to submission.course.name, course_path(submission.course) %><br />
+    <b><%= t "submissions.show.course" %>:</b> <%= link_to submission.course.name, course_path(submission.course) %>
+    <br/>
   <% end %>
-  <b><%= t "submissions.show.handed_in" %>:</b> <span title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span><br />
-  <b><%= t "submissions.show.status" %>:</b> <%= Submission.human_enum_name(:status, submission.status) %><br />
-  <b><%= t "submissions.submissions_table.summary" %>:</b> <%= submission.summary or "N/A" %><br />
+  <b><%= t "submissions.show.handed_in" %>:</b>
+  <span title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span><br/>
+  <b><%= t "submissions.show.status" %>:</b> <%= Submission.human_enum_name(:status, submission.status) %><br/>
+  <b><%= t "submissions.submissions_table.summary" %>:</b> <%= submission.summary or "N/A" %><br/>
 </p>
 <% unless submission.queued? or submission.running? %>
   <p><%= submission.judge.renderer.new(submission, current_user).parse %></p>

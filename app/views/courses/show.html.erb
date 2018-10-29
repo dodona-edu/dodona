@@ -26,9 +26,9 @@
           <%= markdown(@course.description) %>
           <% if current_user&.member_of? @course %>
             <%= button_to t('.unsubscribe'),
-              unsubscribe_course_path(@course),
-              class: 'btn-text pull-right',
-              data: { confirm: t('general.are_you_sure') } %>
+                          unsubscribe_course_path(@course),
+                          class: 'btn-text pull-right',
+                          data: {confirm: t('general.are_you_sure')} %>
           <% end %>
         </div>
         <% if current_user&.member_of?(@course).! %>
@@ -41,28 +41,28 @@
             <div class="col-md-6">
               <div class="row">
                 <div class="col-xs-6 admin-card-stat">
-                    <%= t ".subscribed_users" %>
-                    <h1>
-                      <%= @course.subscribed_members.count %>
-                    </h1>
+                  <%= t ".subscribed_users" %>
+                  <h1>
+                    <%= @course.subscribed_members.count %>
+                  </h1>
                 </div>
                 <div class="col-xs-6 admin-card-stat">
-                    <%= t ".exercise_count" %>
-                    <h1>
-                      <%= @course.exercises.count %>
-                    </h1>
+                  <%= t ".exercise_count" %>
+                  <h1>
+                    <%= @course.exercises.count %>
+                  </h1>
                 </div>
               </div>
               <div class="row">
                 <div class="col-xs-6 admin-card-stat">
-                    <%= t ".submitted_solutions" %>
-                    <h1>
-                      <%= number_with_delimiter @course.submissions.count, delimiter: " " %>
-                    </h1>
+                  <%= t ".submitted_solutions" %>
+                  <h1>
+                    <%= number_with_delimiter @course.submissions.count, delimiter: " " %>
+                  </h1>
                 </div>
                 <div class="col-xs-6 admin-card-stat"
-                     title="<%= t '.average_progress_info'%>">
-                    <%= t ".average_progress" %>
+                     title="<%= t '.average_progress_info' %>">
+                  <%= t ".average_progress" %>
                   <h1>
                     <%= number_to_percentage @course.average_progress, precision: 1 %>
                   </h1>
@@ -73,20 +73,20 @@
               <p>
                 <%= t ".invitation_link" %>
                 <i title="<%= t ".invitation_link_help" %>" class="material-icons md-18 material-icons-info">info</i>
-                <div class="input-group input-group-sm">
-                  <%= text_field_tag :registration_link, registration_course_url(@course, @course.secret), readonly: true, class: 'form-control' %>
-                  <span class="input-group-btn">
+              <div class="input-group input-group-sm">
+                <%= text_field_tag :registration_link, registration_course_url(@course, @course.secret), readonly: true, class: 'form-control' %>
+                <span class="input-group-btn">
                     <%= clipboard_button_for :registration_link %>
                   </span>
-                </div>
-                <div class="admin-card-info">
+              </div>
+              <div class="admin-card-info">
                   <span class="help-block">
                     <%= t ".visibility-#{@course.visibility}-info_html" %>
                   </span>
-                  <span class="help-block">
+                <span class="help-block">
                     <%= t ".registration-#{@course.registration}-info_html" %>
                   </span>
-                </div>
+              </div>
             </div>
           </div>
           </span>

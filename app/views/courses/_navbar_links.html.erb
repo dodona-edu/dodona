@@ -1,19 +1,19 @@
 <%= content_for :navbar do %>
-    <%= navbar_link url: course_path(@course),
-                    title: t('.show'),
-                    icon: 'book',
-                    if: policy(@course).edit? || policy(@course).members?  %>
-    <%= navbar_link url: course_members_path(@course),
-                    title: t('.members'),
-                    icon: 'group',
-                    class: (@course.pending_members.any? ? 'notification' : ''),
-                    if: policy(@course).members? %>
-    <%= navbar_link url: course_submissions_path(@course),
-                    title: t('.submissions'),
-                    custom_icon: 'submissions',
-                    if: current_user&.course_admin?(@course) %>
-    <%= navbar_link url: edit_course_path(@course),
-                    title: t('.edit'),
-                    icon: 'edit',
-                    if: policy(@course).edit? %>
+  <%= navbar_link url: course_path(@course),
+                  title: t('.show'),
+                  icon: 'book',
+                  if: policy(@course).edit? || policy(@course).members? %>
+  <%= navbar_link url: course_members_path(@course),
+                  title: t('.members'),
+                  icon: 'group',
+                  class: (@course.pending_members.any? ? 'notification' : ''),
+                  if: policy(@course).members? %>
+  <%= navbar_link url: course_submissions_path(@course),
+                  title: t('.submissions'),
+                  custom_icon: 'submissions',
+                  if: current_user&.course_admin?(@course) %>
+  <%= navbar_link url: edit_course_path(@course),
+                  title: t('.edit'),
+                  icon: 'edit',
+                  if: policy(@course).edit? %>
 <% end %>

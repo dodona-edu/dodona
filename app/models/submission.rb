@@ -31,16 +31,16 @@ class Submission < ApplicationRecord
   after_update :invalidate_stats_cache
   after_create :evaluate_delayed, if: :evaluate?
 
-  default_scope { order(id: :desc) }
-  scope :of_user, ->(user) { where user_id: user.id }
-  scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
-  scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
-  scope :in_course, ->(course) { where course_id: course.id }
-  scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
+  default_scope {order(id: :desc)}
+  scope :of_user, ->(user) {where user_id: user.id}
+  scope :of_exercise, ->(exercise) {where exercise_id: exercise.id}
+  scope :before_deadline, ->(deadline) {where('submissions.created_at < ?', deadline)}
+  scope :in_course, ->(course) {where course_id: course.id}
+  scope :in_series, ->(series) {where(course_id: series.course.id).where(exercise: series.exercises)}
 
-  scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
-  scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
-  scope :by_username, ->(name) { where(user: User.by_filter(name)) }
+  scope :by_exercise_name, ->(name) {where(exercise: Exercise.by_name(name))}
+  scope :by_status, ->(status) {where(status: status.in?(statuses) ? status : -1)}
+  scope :by_username, ->(name) {where(user: User.by_filter(name))}
   scope :by_filter, ->(filter, skip_user, skip_exercise, skip_status) do
     filter.split(' ').map(&:strip).select(&:present?).map do |part|
       scopes = []
@@ -65,13 +65,13 @@ class Submission < ApplicationRecord
 
   scope :exercise_hash, -> {
     s = group(:exercise_id).most_recent
-    entries = s.map { |submission| [submission.exercise_id, submission] }
+    entries = s.map {|submission| [submission.exercise_id, submission]}
     Hash[entries]
   }
 
   def initialize(params)
     raise 'please explicitly tell wheter you want to evaluate this submission' unless params.has_key? :evaluate
-    @skip_rate_limit_check  = params.delete(:skip_rate_limit_check) { false }
+    @skip_rate_limit_check = params.delete(:skip_rate_limit_check) {false}
     @evaluate = params.delete(:evaluate)
     super
     self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
@@ -95,9 +95,9 @@ class Submission < ApplicationRecord
             end
 
     update(
-      status: 'queued',
-      result: '',
-      summary: nil
+        status: 'queued',
+        result: '',
+        summary: nil
     )
 
     delay(queue: queue).evaluate
@@ -117,7 +117,7 @@ class Submission < ApplicationRecord
   end
 
   def code_cannot_contain_emoji
-    no_emoji_found = code.chars.all? { |c| c.bytes.length < 4 }
+    no_emoji_found = code.chars.all? {|c| c.bytes.length < 4}
     errors.add(:code, 'emoji found') unless no_emoji_found
   end
 
@@ -131,7 +131,7 @@ class Submission < ApplicationRecord
   end
 
   def self.rejudge(submissions, priority = :low)
-    submissions.each { |s| s.evaluate_delayed(priority) }
+    submissions.each {|s| s.evaluate_delayed(priority)}
   end
 
   def self.normalize_status(s)

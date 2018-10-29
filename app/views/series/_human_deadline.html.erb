@@ -2,6 +2,6 @@
   <% if series.deadline > Time.now %>
     <%= "<small class='deadline-ok' title='#{l series.deadline, format: :long}'><i class='material-icons md-12 material-icons-alarm'>alarm</i> #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}</small>".html_safe %>
   <% else %>
-      <%= "<small class='deadline-passed' title='#{l series.deadline, format: :long}'><i class='material-icons md-12 material-icons-alarm'>alarm</i> #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'}</small>".html_safe %>
+    <%= "<small class='deadline-passed' title='#{l series.deadline, format: :long}'><i class='material-icons md-12 material-icons-alarm'>alarm</i> #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'}</small>".html_safe %>
   <% end %>
 <% end %>

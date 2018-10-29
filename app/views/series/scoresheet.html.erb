@@ -9,27 +9,27 @@
       <div class="card-supporting-text">
         <table class="table scoresheet-table">
           <thead>
-            <tr>
-              <th></th>
-              <% @exercises.each do |exercise| %>
-                <th class="status-icon-header"><%= exercise.name %></th>
-              <% end %>
-            </tr>
+          <tr>
+            <th></th>
+            <% @exercises.each do |exercise| %>
+              <th class="status-icon-header"><%= exercise.name %></th>
+            <% end %>
+          </tr>
           </thead>
           <tbody>
-            <% @course.users.each do |student| %>
-              <tr>
-                <td><%= link_to student.full_name, user_submissions_path(student), title: student.full_name, class: "ellipsis-overflow" %></td>
-                <% @exercises.each do |exercise| %>
-                  <% submission = exercise.last_submission(student, @series.deadline, @course) %>
-                  <td class="status-icon">
-                    <% if submission.present? %>
-                      <%= link_to submission_status_icon(submission), submission, title: Submission.human_enum_name(:status, submission.status) %>
-                    <% end %>
-                  </td>
-                <% end %>
-              </tr>
-            <% end %>
+          <% @course.users.each do |student| %>
+            <tr>
+              <td><%= link_to student.full_name, user_submissions_path(student), title: student.full_name, class: "ellipsis-overflow" %></td>
+              <% @exercises.each do |exercise| %>
+                <% submission = exercise.last_submission(student, @series.deadline, @course) %>
+                <td class="status-icon">
+                  <% if submission.present? %>
+                    <%= link_to submission_status_icon(submission), submission, title: Submission.human_enum_name(:status, submission.status) %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
           </tbody>
         </table>
       </div>

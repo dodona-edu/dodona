@@ -5,7 +5,7 @@ function initPythiaSubmissionShow(submissionCode) {
     function init() {
         initTutorLinks();
         initFileViewers();
-        if ( $(".tutormodal").length == 1) {
+        if ($(".tutormodal").length == 1) {
             initFullScreen();
         } else {
             $(".tutormodal:last").remove();

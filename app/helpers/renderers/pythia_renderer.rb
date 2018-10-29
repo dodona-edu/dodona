@@ -12,7 +12,7 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def show_code_tab
     return true unless @submission[:groups]
-    @submission[:groups].none? { |t| t[:data][:source_annotations] }
+    @submission[:groups].none? {|t| t[:data][:source_annotations]}
   end
 
   def tab_content(t)
@@ -67,7 +67,7 @@ class PythiaRenderer < FeedbackTableRenderer
           end
         end
         messages(g[:messages])
-        g[:groups]&.each { |tc| testcase(tc) }
+        g[:groups]&.each {|tc| testcase(tc)}
       end
     else
       super(g)
@@ -131,7 +131,7 @@ class PythiaRenderer < FeedbackTableRenderer
   def linting(lint_messages, code)
     @builder.div(class: 'linter') do
       lint_messages(lint_messages)
-      source(code, lint_messages.map { |m| convert_lint_message(m) })
+      source(code, lint_messages.map {|m| convert_lint_message(m)})
     end
   end
 
@@ -175,9 +175,9 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def convert_lint_message(message)
     {
-      row: message[:line] - 1,
-      type: convert_lint_type(message[:type]),
-      text: message[:description]
+        row: message[:line] - 1,
+        type: convert_lint_type(message[:type]),
+        text: message[:description]
     }
   end
 end

@@ -15,28 +15,30 @@
   <div class="field form-group">
     <div class="row">
       <%= f.label :name_nl, :class => "col-sm-2 control-label" %>
-      <div class="col-sm-4"><%= f.text_field :name_nl, class: "form-control" , disabled: !f.permission?(:name_nl) %></div>
+      <div class="col-sm-4"><%= f.text_field :name_nl, class: "form-control", disabled: !f.permission?(:name_nl) %></div>
     </div>
   </div>
   <div class="field form-group">
     <div class="row">
       <%= f.label :name_en, :class => "col-sm-2 control-label" %>
-      <div class="col-sm-4"><%= f.text_field :name_en, class: "form-control" , disabled: !f.permission?(:name_en) %></div>
+      <div class="col-sm-4"><%= f.text_field :name_en, class: "form-control", disabled: !f.permission?(:name_en) %></div>
     </div>
   </div>
   <div class="field form-group">
     <div class="row">
       <%= f.label :access, :class => "col-sm-2 control-label" %>
-      <div class="col-sm-4"><%= f.select :access, Exercise.accesses.map { |key, value| [Exercise.human_enum_name(:access, key), key] }, {}, { :class => 'form-control' } %></div>
+      <div class="col-sm-4"><%= f.select :access, Exercise.accesses.map {|key, value| [Exercise.human_enum_name(:access, key), key]}, {}, {:class => 'form-control'} %></div>
     </div>
   </div>
   <div class="field form-group">
     <div class="row">
       <%= f.label :labels, :class => "col-sm-2 control-label" %>
-      <div class="col-sm-4"><%= f.text_field :labels, class: 'form-control', disable: !f.permission?(:labels), value: exercise.labels.map{|l| l.name}.join(','), placeholder: t(".labels") %></div>
+      <div class="col-sm-4"><%= f.text_field :labels, class: 'form-control', disable: !f.permission?(:labels), value: exercise.labels.map {|l| l.name}.join(','), placeholder: t(".labels") %></div>
     </div>
     <div class="row">
-      <div class="col-sm-4 col-sm-push-2"><small><%= t '.labels_delimiter' %></small></div>
+      <div class="col-sm-4 col-sm-push-2">
+        <small><%= t '.labels_delimiter' %></small>
+      </div>
     </div>
   </div>
   <div class="field form-group">
@@ -59,5 +61,5 @@
   </div>
 <% end %>
 <script>
-  dodona.initLabelsEdit(<%= raw render template: 'labels/index', formats: :json %>, <%= raw (exercise.merged_dirconfig['labels'] || []).to_json %>)
+    dodona.initLabelsEdit(<%= raw render template: 'labels/index', formats: :json %>, <%= raw (exercise.merged_dirconfig['labels'] || []).to_json %>);
 </script>

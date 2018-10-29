@@ -10,7 +10,7 @@
           <%= @course.name %> (<%= @course.formatted_year %>)
         </h2>
         <% if @course.institution&.name.present? || @course.teacher.present? %>
-          <small class="card-title-text">
+          <h3 class="card-subtitle-text">
             <% if @course.institution&.name.present? && @course.teacher.present? %>
               <%= t(".taught_by_at", {teacher: @course.teacher, institution: @course.institution.name}) %>
             <% elsif @course.institution&.name.present? %>
@@ -18,7 +18,7 @@
             <% elsif @course.teacher.present? %>
               <%= t(".taught_by", {teacher: @course.teacher}) %>
             <% end %>
-          </small>
+          </h3>
         <% end %>
       </div>
       <div class="card-supporting-text card-border row">

@@ -10,7 +10,7 @@
           <%= render 'fab_button', form: "edit_series_#{@series.id}", icon: 'done' %>
         </div>
       </div>
-      <div class="card-supporting-text row">
+      <div class="card-supporting-text">
         <div class="col-xs-12 col-sm-8">
           <%= render 'form', series: @series %>
         </div>
@@ -61,7 +61,7 @@
         </div>
       <% end %>
       <% if policy(@series).modify_exercises? %>
-        <div class="card-supporting-text card-border row">
+        <div class="card-supporting-text card-border">
           <div class="col-xs-12">
             <div class="page-subtitle">
               <h4><%= t ".exercises_in_series" %></h4>
@@ -77,7 +77,7 @@
             </div>
           </div>
         </div>
-        <div class="card-supporting-text card-border row">
+        <div class="card-supporting-text card-border">
           <div class="col-xs-12">
             <h4 id="add-exercises"><%= t ".add_exercises" %></h4>
             <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_exercises_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories} %>

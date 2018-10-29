@@ -16,9 +16,9 @@
         <div class="form-horizontal">
           <div class="field form-group">
             <%= label_tag :registration_link,
-                          t('course.show.registration_link'),
+                          t('courses.show.invitation_link'),
                           class: 'col-sm-3 control-label' %>
-            <div class="col-sm-6">
+            <div class="col-sm-7">
               <div class="input-group" id="registration_link">
                 <%= render partial: 'token_field',
                            locals: {
@@ -27,6 +27,7 @@
                                reset_url: reset_token_course_path(@course)
                            } %>
               </div>
+              <small><%= t "courses.show.invitation_link_help" %></small>
             </div>
           </div>
         </div>

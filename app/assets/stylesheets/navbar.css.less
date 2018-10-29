@@ -29,7 +29,7 @@
 
   .left {
     width: 125px;
-    @media (max-width: @screen-sm-min) {
+    @media (max-width: calc(@screen-sm-min - 1px)) {
       width: 90px;
     }
 
@@ -169,7 +169,7 @@
   }
 
   .dodona-navbar-toggle {
-    @media (min-width: @navbar-collapse-width) {
+    @media (min-width: calc(@navbar-collapse-width + 1px)) {
       display: none;
     }
     position: absolute;
@@ -190,7 +190,7 @@
       transform: translateY(-6px);
     }
 
-    @media (min-width: @navbar-collapse-width) {
+    @media (min-width: calc(@navbar-collapse-width + 1px)) {
       display: inline-block;
     }
     @media (max-width: @navbar-collapse-width) {
@@ -210,7 +210,7 @@
     }
 
     .dropdown-title {
-      @media (min-width: @navbar-collapse-width) {
+      @media (min-width: calc(@navbar-collapse-width + 1px)) {
         display: none;
       }
       display: inline-block;

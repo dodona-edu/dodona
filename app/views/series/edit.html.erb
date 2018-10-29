@@ -63,7 +63,15 @@
       <% if policy(@series).modify_exercises? %>
         <div class="card-supporting-text card-border row">
           <div class="col-xs-12">
-            <h4><%= t ".exercises_in_series" %></h4>
+            <div class="page-subtitle">
+              <h4><%= t ".exercises_in_series" %></h4>
+              <div class="flex-spacer"></div>
+              <div>
+                <a href="#add-exercises" title="<%= t(".add_exercises") %>" class="btn btn-primary btn-fab-extended">
+                  <i class="material-icons icon">add</i><span class="text"><%= t(".add_exercises") %></span>
+                </a>
+              </div>
+            </div>
             <div class="series-exercise-list">
               <%= render partial: 'exercises/series_exercises_table', locals: {exercises: @series.exercises, series: @series, paginate: false, show_buttons_for_present: true} %>
             </div>
@@ -71,7 +79,7 @@
         </div>
         <div class="card-supporting-text card-border row">
           <div class="col-xs-12">
-            <h4><%= t ".add_exercises" %></h4>
+            <h4 id="add-exercises"><%= t ".add_exercises" %></h4>
             <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_exercises_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories} %>
             <div id="exercises-table-wrapper">
             </div>

@@ -15,6 +15,8 @@
 class Submission < ApplicationRecord
   SUBMISSION_LOCATIONS = Rails.root.join('data', 'submissions').freeze
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
+  has_one_attached :code
+  has_one_attached :result
 
   enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
 
@@ -28,9 +30,6 @@ class Submission < ApplicationRecord
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
   after_update :invalidate_stats_cache
-  # This assumes that there won't be a new submission created for the same
-  # exercise by the same user before the record was saved in the database
-  after_create :move_files
   after_create :evaluate_delayed, if: :evaluate?
 
   default_scope {order(id: :desc)}
@@ -75,35 +74,10 @@ class Submission < ApplicationRecord
     raise 'please explicitly tell wheter you want to evaluate this submission' unless params.has_key? :evaluate
     @skip_rate_limit_check = params.delete(:skip_rate_limit_check) {false}
     @evaluate = params.delete(:evaluate)
+    code = params.delete(:code)
     super
     self.submission_detail = SubmissionDetail.new(id: id, code: '', result: '')
-    self.code = params[:code]
-  end
-
-  def code
-    if code_location.exist?
-      code_location.read
-    else
-      submission_detail.code
-    end
-  end
-
-  def code=(code)
-    location.mkpath
-    code_location.write code
-  end
-
-  def result
-    if result_location.exist?
-      result_location.read
-    else
-      submission_detail.result
-    end
-  end
-
-  def result=(result)
-    location.mkpath
-    result_location.write result
+    self.code = ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code), filename: "code.#{exercise.programming_language.extension}", content_type: 'text/plain')
   end
 
   def evaluate?
@@ -125,7 +99,7 @@ class Submission < ApplicationRecord
 
     update(
         status: 'queued',
-        result: '',
+        result: ActiveStorage::Blob.create_after_upload!(io: StringIO.new(''), filename: 'result.json', content_type: 'application/json'),
         summary: nil
     )
 
@@ -138,7 +112,7 @@ class Submission < ApplicationRecord
   end
 
   def save_result(result_hash)
-    self.result = result_hash.to_json
+    self.result = ActiveStorage::Blob.create_after_upload!(io: StringIO.new(result_hash.to_json), filename: 'result.json', content_type: 'application/json')
     self.status = Submission.normalize_status result_hash[:status]
     self.accepted = result_hash[:accepted]
     self.summary = result_hash[:description]
@@ -146,7 +120,7 @@ class Submission < ApplicationRecord
   end
 
   def code_cannot_contain_emoji
-    no_emoji_found = code.chars.all? {|c| c.bytes.length < 4}
+    no_emoji_found = code.blob.download.chars.all? {|c| c.bytes.length < 4}
     errors.add(:code, 'emoji found') unless no_emoji_found
   end
 
@@ -177,43 +151,6 @@ class Submission < ApplicationRecord
                     SeriesMembership.all
                   end
     memberships.where(exercise_id: exercise_id).includes(:exercise, series: :course).find_each(&:invalidate_stats_cache)
-  end
-
-  private
-
-  def location
-    if id.present?
-      if course
-        SUBMISSION_LOCATIONS.join("#{course_id}", "#{exercise_id}", "#{user_id}", "#{id}")
-      else
-        SUBMISSION_LOCATIONS.join('no_course', "#{exercise_id}", "#{user_id}", "#{id}")
-      end
-    else
-      if course
-        SUBMISSION_LOCATIONS.join("#{course_id}", "#{exercise_id}", "#{user_id}", "new")
-      else
-        SUBMISSION_LOCATIONS.join('no_course', "#{exercise_id}", "#{user_id}", "new")
-      end
-    end
-  end
-
-  def move_files
-    if course
-      prev = SUBMISSION_LOCATIONS.join("#{course_id}", "#{exercise_id}", "#{user_id}", "new")
-      new = SUBMISSION_LOCATIONS.join("#{course_id}", "#{exercise_id}", "#{user_id}", "#{id}")
-    else
-      prev = SUBMISSION_LOCATIONS.join('no_course', "#{exercise_id}", "#{user_id}", "new")
-      new = SUBMISSION_LOCATIONS.join('no_course', "#{exercise_id}", "#{user_id}", "#{id}")
-    end
-    prev.rename(new)
-  end
-
-  def code_location
-    location.join("code")
-  end
-
-  def result_location
-    location.join("result.json")
   end
 
 end

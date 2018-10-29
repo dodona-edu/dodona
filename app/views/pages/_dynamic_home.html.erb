@@ -2,18 +2,10 @@
   <%= javascript_pack_tag 'favorite_course_buttons' %>
 <% end %>
 <div class="row">
-  <% if current_user.subscribed_courses.empty? %>
-    <div class="col-xs-12 visible-sm">
-      <%= render "getting_started_card"%>
-    </div>
-  <% end %>
   <div class="col-xs-12 col-sm-6 col-lg-8">
       <% if current_user.subscribed_courses.empty? %>
-        <div class="col-xs-12 hidden-sm">
-          <%= render "getting_started_card"%>
-        </div>
-      <% end %>
-      <% if current_user.full_view? %>
+        <%= render "getting_started_card"%>
+      <% elsif current_user.full_view? %>
         <div class="row favorites-row">
           <% unless current_user.favorite_courses.empty? %>
               <% current_user.favorite_courses.each do |course| %>

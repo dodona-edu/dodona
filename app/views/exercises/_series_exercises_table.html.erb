@@ -27,9 +27,9 @@
         <span class="ellipsis-overflow" title="<%= exercise.name %>">
           <%= link_to exercise.name, exercise_path(exercise), target: "_blank" %>
         </span>
-        <div class="text-muted">
+        <div class="text-muted ellipsis-overflow">
           <small>
-            <span class="ellipsis-overflow clickable-token" title="<%= exercise.repository.name %>: <%= exercise.path %>" data-type="repositories" data-name="<%= exercise.repository.name %>"><%= exercise.repository.name %>: <%= exercise.path %></span>
+            <span class="clickable-token" title="<%= exercise.repository.name %>: <%= exercise.path %>" data-type="repositories" data-name="<%= exercise.repository.name %>"><%= exercise.repository.name %>: <%= exercise.path %></span>
           </small>
         </div>
       </td>

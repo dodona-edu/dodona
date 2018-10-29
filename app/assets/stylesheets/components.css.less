@@ -137,8 +137,7 @@ a.card-title-link:hover {
     overflow: hidden;
     margin: 0;
 }
-small.card-title-text {
-  font-size: 14px;
+.card-title-text + .card-subtitle-text {
   margin-top: .4em;
 }
 .card-title-text.pull-right {
@@ -546,18 +545,30 @@ a.anchor {
   background-color: @color-deep-purple;
   border-color: darken(@color-deep-purple, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .label.accent-indigo {
   background-color: @color-indigo;
   border-color: darken(@color-indigo, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .label.accent-teal {
   background-color: @color-teal;
   border-color: darken(@color-teal, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .label.accent-orange {
@@ -570,12 +581,20 @@ a.anchor {
   background-color: @color-brown;
   border-color: darken(@color-brown, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .label.accent-blue-grey {
   background-color: @color-blue-grey;
   border-color: darken(@color-blue-grey, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .token.accent-red {
@@ -600,18 +619,30 @@ a.anchor {
   background-color: @color-deep-purple;
   border-color: darken(@color-deep-purple, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .token.accent-indigo {
   background-color: @color-indigo;
   border-color: darken(@color-indigo, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .token.accent-teal {
   background-color: @color-teal;
   border-color: darken(@color-teal, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .token.accent-orange {
@@ -624,16 +655,25 @@ a.anchor {
   background-color: @color-brown;
   border-color: darken(@color-brown, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .token.accent-blue-grey {
   background-color: @color-blue-grey;
   border-color: darken(@color-blue-grey, 20%);
   color: @grey-100;
+
+  a.close {
+    color: @white-text;
+  }
 }
 
 .tokenfield {
   height: auto;
+  z-index: 1;
 
   #exercise_labels.form-control {
     height: auto;

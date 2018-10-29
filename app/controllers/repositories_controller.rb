@@ -46,11 +46,11 @@ class RepositoriesController < ApplicationController
 
     respond_to do |format|
       if saved
-        format.html { redirect_to @repository, notice: I18n.t('controllers.created', model: Repository.model_name.human) }
-        format.json { render :show, status: :created, location: @repository }
+        format.html {redirect_to @repository, notice: I18n.t('controllers.created', model: Repository.model_name.human)}
+        format.json {render :show, status: :created, location: @repository}
       else
-        format.html { render :new }
-        format.json { render json: @repository.errors, status: :unprocessable_entity }
+        format.html {render :new}
+        format.json {render json: @repository.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -60,11 +60,11 @@ class RepositoriesController < ApplicationController
   def update
     respond_to do |format|
       if @repository.update(permitted_attributes(Repository))
-        format.html { redirect_to @repository, notice: I18n.t('controllers.updated', model: Repository.model_name.human) }
-        format.json { render :show, status: :ok, location: @repository }
+        format.html {redirect_to @repository, notice: I18n.t('controllers.updated', model: Repository.model_name.human)}
+        format.json {render :show, status: :ok, location: @repository}
       else
-        format.html { render :edit }
-        format.json { render json: @repository.errors, status: :unprocessable_entity }
+        format.html {render :edit}
+        format.json {render json: @repository.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -74,15 +74,15 @@ class RepositoriesController < ApplicationController
   def destroy
     @repository.destroy
     respond_to do |format|
-      format.html { redirect_to repositories_url, notice: I18n.t('controllers.destroyed', model: Repository.model_name.human) }
-      format.json { head :no_content }
+      format.html {redirect_to repositories_url, notice: I18n.t('controllers.destroyed', model: Repository.model_name.human)}
+      format.json {head :no_content}
     end
   end
 
   def admins
     @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t('repositories.admins.admins'), '#']]
     @users = apply_scopes(@repository.admins)
-             .order(last_name: :asc, first_name: :asc)
+                 .order(last_name: :asc, first_name: :asc)
   end
 
   def add_admin
@@ -98,7 +98,7 @@ class RepositoriesController < ApplicationController
   def courses
     @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t('repositories.courses.courses'), '#']]
     @courses = apply_scopes(@repository.allowed_courses)
-               .order(year: :desc, name: :asc)
+                   .order(year: :desc, name: :asc)
   end
 
   def add_course
@@ -115,7 +115,7 @@ class RepositoriesController < ApplicationController
     success, msg = @repository.reset
     if success
       if !params.key?('commits') || params['forced'] ||
-         !params['commits'].reject {|commit| commit['author']['name'] == 'Dodona'}.empty?
+          !params['commits'].reject {|commit| commit['author']['name'] == 'Dodona'}.empty?
         if current_user
           @repository.delay.process_exercises_email_errors(user: current_user)
         elsif params['pusher']
@@ -147,14 +147,14 @@ class RepositoriesController < ApplicationController
     respond_to do |format|
       if success
         notification = t('controllers.updated', model: model.model_name.human)
-        format.json { head :no_content }
-        format.js { render locals: {notification: notification } }
-        format.html { redirect_to return_path, notice: notification }
+        format.json {head :no_content}
+        format.js {render locals: {notification: notification}}
+        format.html {redirect_to return_path, notice: notification}
       else
         alert = t('controllers.update_failed', model: model.model_name.human)
-        format.json { head :unprocessable_entity }
-        format.js { render status: 400, locals: { notification: alert } }
-        format.html { redirect_to return_path, alert: alert }
+        format.json {head :unprocessable_entity}
+        format.js {render status: 400, locals: {notification: alert}}
+        format.html {redirect_to return_path, alert: alert}
       end
     end
   end

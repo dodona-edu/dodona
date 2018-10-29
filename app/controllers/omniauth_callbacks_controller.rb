@@ -15,8 +15,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def failure
     reason = request.params['error_message'] \
-              || request.params['error_description'] \
-              || t('devise.omniauth_callbacks.unknown_failure')
+               || request.params['error_description'] \
+               || t('devise.omniauth_callbacks.unknown_failure')
     if is_navigational_format?
       set_flash_message :notice,
                         :failure,
@@ -47,7 +47,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def institution_matches?(user)
     return true if user.institution.nil?
     if user.institution&.identifier != institution_identifier \
-       || user.institution&.provider != provider
+        || user.institution&.provider != provider
       user.errors.add(:institution, 'mismatch')
       false
     else
@@ -136,8 +136,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{oauth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: oauth_hash)
-                     .login_rejected
-                     .deliver_later
+        .login_rejected
+        .deliver_later
 
     session[:provider] = provider
     redirect_to institution_not_supported_path

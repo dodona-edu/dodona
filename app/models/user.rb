@@ -37,7 +37,7 @@ class User < ApplicationRecord
   has_many :subscribed_courses,
            lambda {
              where.not course_memberships:
-                { status: %i[pending unsubscribed] }
+                           {status: %i[pending unsubscribed]}
            },
            through: :course_memberships,
            source: :course
@@ -45,9 +45,9 @@ class User < ApplicationRecord
   has_many :favorite_courses,
            lambda {
              where.not course_memberships:
-                 { status: %i[pending unsubscribed] }
+                           {status: %i[pending unsubscribed]}
              where course_memberships:
-                 { favorite: true }
+                       {favorite: true}
            },
            through: :course_memberships,
            source: :course
@@ -55,7 +55,7 @@ class User < ApplicationRecord
   has_many :administrating_courses,
            lambda {
              where course_memberships:
-                { status: :course_admin }
+                       {status: :course_admin}
            },
            through: :course_memberships,
            source: :course
@@ -63,7 +63,7 @@ class User < ApplicationRecord
   has_many :enrolled_courses,
            lambda {
              where course_memberships:
-                { status: :student }
+                       {status: :student}
            },
            through: :course_memberships,
            source: :course
@@ -71,7 +71,7 @@ class User < ApplicationRecord
   has_many :pending_courses,
            lambda {
              where course_memberships:
-                { status: :pending }
+                       {status: :pending}
            },
            through: :course_memberships,
            source: :course
@@ -79,7 +79,7 @@ class User < ApplicationRecord
   has_many :unsubscribed_courses,
            lambda {
              where course_memberships:
-                { status: :unsubscribed }
+                       {status: :unsubscribed}
            },
            through: :course_memberships,
            source: :course
@@ -91,16 +91,16 @@ class User < ApplicationRecord
   devise :saml_authenticatable
   devise :omniauthable, omniauth_providers: %i[smartschool office365]
 
-  validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
-  validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
+  validates :username, uniqueness: {case_sensitive: false, allow_blank: true, scope: :institution}
+  validates :email, uniqueness: {case_sensitive: false, allow_blank: true}
   validate :email_only_blank_if_smartschool
 
   before_save :set_token
   before_save :set_time_zone
 
-  scope :by_permission, ->(permission) { where(permission: permission) }
+  scope :by_permission, ->(permission) {where(permission: permission)}
 
-  scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
+  scope :in_course, ->(course) {joins(:course_memberships).where('course_memberships.course_id = ?', course.id)}
 
   def email_only_blank_if_smartschool
     if email.blank? && !institution&.smartschool?
@@ -154,15 +154,15 @@ class User < ApplicationRecord
   end
 
   def pending_series
-    courses.map { |c| c.pending_series(self) }.flatten.sort_by(&:deadline)
+    courses.map {|c| c.pending_series(self)}.flatten.sort_by(&:deadline)
   end
 
   def homepage_series
-    subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
+    subscribed_courses.map {|c| c.homepage_series(0)}.flatten.sort_by(&:deadline)
   end
 
   def recent_courses(number_of_years)
-    grouped_recent_courses(number_of_years).map{|a| a[1]}.flatten
+    grouped_recent_courses(number_of_years).map {|a| a[1]}.flatten
   end
 
   def grouped_recent_courses(number_of_years)
@@ -204,11 +204,11 @@ class User < ApplicationRecord
   def update_from_oauth(oauth_hash)
     auth_inst = Institution.from_identifier(oauth_hash.info.institution)
     tap do |user|
-      user.username     = oauth_hash.uid
-      user.email        = oauth_hash.info.email
-      user.first_name   = oauth_hash.info.first_name
-      user.last_name    = oauth_hash.info.last_name
-      user.institution  = auth_inst if user.institution.nil?
+      user.username = oauth_hash.uid
+      user.email = oauth_hash.info.email
+      user.first_name = oauth_hash.info.first_name
+      user.last_name = oauth_hash.info.last_name
+      user.institution = auth_inst if user.institution.nil?
       user.save
     end
   end

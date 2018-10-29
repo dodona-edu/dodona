@@ -40,9 +40,9 @@ class SubmissionsController < ApplicationController
 
   def create
     authorize Submission
+    puts params
     para = permitted_attributes(Submission)
     para[:user_id] = current_user.id
-    para[:code].gsub!(/\r\n?/, "\n")
     para[:evaluate] = true # immediately evaluate after create
     if para[:course_id].present?
       para.delete(:course_id) unless Course.find(para[:course_id]).subscribed_members.include?(current_user)

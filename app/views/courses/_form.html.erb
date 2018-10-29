@@ -23,6 +23,15 @@
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".year-help" %></span>
   </div>
   <div class="field form-group">
+    <%= f.label :institution, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6">
+      <%= f.select :institution_id,
+                   options_for_select(Institution.all.map { |i| [i.name, i.id] }, @course.institution_id),
+                   { include_blank: t('.no_institution') },
+                   { class: 'form-control' } %>
+    </div>
+  </div>
+  <div class="field form-group">
     <%= f.label :visibility, class: 'col-sm-3 control-label' %>
     <div class="col-sm-6">
       <%= f.select :visibility,
@@ -48,15 +57,6 @@
     <%= f.label :description, :class => "col-sm-3 control-label" %>
     <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>
-  </div>
-  <div class="field form-group">
-    <%= f.label :institution, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-6">
-        <%= f.select :institution_id,
-                     options_for_select(Institution.all.map { |i| [i.name, i.id] }, @course.institution_id),
-                     { include_blank: t('.no_institution') },
-                     { class: 'form-control' } %>
-    </div>
   </div>
   <% if current_user.zeus? %>
   <div class="field form-group">

@@ -6,27 +6,27 @@ class ProgrammingLanguagePolicy < ApplicationPolicy
   end
 
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def show?
-    user.admin?
+    user&.admin?
   end
 
   def update?
-    user.zeus?
+    user&.zeus?
   end
 
   def create?
-    user.zeus?
+    user&.zeus?
   end
 
   def destroy?
-    user.zeus?
+    user&.zeus?
   end
 
   def permitted_attributes
-    if user.zeus?
+    if user&.zeus?
       [:name, :extension, :editor_name]
     else
       []

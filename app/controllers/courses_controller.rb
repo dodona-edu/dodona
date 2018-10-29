@@ -22,7 +22,7 @@ class CoursesController < ApplicationController
   def show
     @title = @course.name
     @series = policy_scope(@course.series)
-    @series_loaded = 5
+    @series_loaded = 3
   end
 
   # GET /courses/new

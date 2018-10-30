@@ -11,18 +11,18 @@ server 'tantalus.ugent.be', user: 'dodona', port: '4840', roles: %w[app worker]
 set :branch, 'master'
 
 set :delayed_job_pools_per_server, {
-  'dodona' => {
-    'default' => 2,
-  },
-  'sisyphus' => {
-    'submissions,low_priority_submissions,high_priority_submissions' => 6,
-  },
-  'salmoneus' => {
-    'submissions,low_priority_submissions,high_priority_submissions' => 6,
-  },
-  'tantalus' => {
-    'submissions,low_priority_submissions,high_priority_submissions' => 6,
-  },
+    'dodona' => {
+        'default' => 2,
+    },
+    'sisyphus' => {
+        'submissions,low_priority_submissions,high_priority_submissions' => 6,
+    },
+    'salmoneus' => {
+        'submissions,low_priority_submissions,high_priority_submissions' => 6,
+    },
+    'tantalus' => {
+        'submissions,low_priority_submissions,high_priority_submissions' => 6,
+    },
 }
 
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value

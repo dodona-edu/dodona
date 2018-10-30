@@ -10,7 +10,7 @@
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: exercises_path({ "labels[]" => @label.name }), eager: true}) %>
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: exercises_path({"labels[]" => @label.name}), eager: true}) %>
         <div id="exercises-table-wrapper"></div>
       </div>
     </div>

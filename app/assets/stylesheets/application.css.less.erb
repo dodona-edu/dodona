@@ -19,23 +19,34 @@
 @import "repository.css.less";
 @import "drawer.css.less";
 @import "navbar.css.less";
-
 <% if Rails.env.development? || Rails.env.test? %>
-    @import "development.css.less";
+@import "development.css.less";
 <% end %>
-
-
 @import "rouge.css.less";
 
 .field_with_errors input {
-    border-color: @danger-800;
+  border-color: @danger-800;
 }
 
-.material-icons.md-12 { font-size: 12px; }
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-12 {
+  font-size: 12px;
+}
+
+.material-icons.md-18 {
+  font-size: 18px;
+}
+
+.material-icons.md-24 {
+  font-size: 24px;
+}
+
+.material-icons.md-36 {
+  font-size: 36px;
+}
+
+.material-icons.md-48 {
+  font-size: 48px;
+}
 
 .material-icons {
   position: relative;
@@ -53,8 +64,8 @@
 }
 
 .material-icons.material-icons-strikethrough.md-18:after {
-    top: -7px;
-    left: 9px;
+  top: -7px;
+  left: 9px;
 }
 
 .colored-info {
@@ -75,22 +86,37 @@
     }
   }
 
-
-  &.md-12 { width: 12px; height: 12px; }
-  &.md-18 { width: 18px; height: 18px; }
-  &.md-24 { width: 24px; height: 24px; }
-  &.md-36 { width: 36px; height: 36px; }
-  &.md-48 { width: 48px; height: 48px; }
+  &.md-12 {
+    width: 12px;
+    height: 12px;
+  }
+  &.md-18 {
+    width: 18px;
+    height: 18px;
+  }
+  &.md-24 {
+    width: 24px;
+    height: 24px;
+  }
+  &.md-36 {
+    width: 36px;
+    height: 36px;
+  }
+  &.md-48 {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 figcaption {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 
 /* Override inline styling of search bar */
 input.token-input.tt-input {
   width: 100% !important;
 }
+
 .tokenfield .twitter-typeahead {
   width: 100% !important;
 }

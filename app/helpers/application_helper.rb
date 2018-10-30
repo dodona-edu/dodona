@@ -60,15 +60,15 @@ module ApplicationHelper
     url = options.delete(:url)
     if current_page?(url)
       options[:class] ||= ''
-      options[:class] +=  ' active'
+      options[:class] += ' active'
     end
 
     locals = {
-      title: options.delete(:title),
-      icon: options.delete(:icon),
-      custom_icon_name: options.delete(:custom_icon),
-      url: url,
-      link_options: options
+        title: options.delete(:title),
+        icon: options.delete(:icon),
+        custom_icon_name: options.delete(:custom_icon),
+        url: url,
+        link_options: options
     }
 
     render partial: 'navbar_link', locals: locals
@@ -93,14 +93,14 @@ module ApplicationHelper
     selector.prepend('#') unless selector.starts_with?('#')
     button_tag class: 'btn btn-default',
                title: t('js.copy-to-clipboard'),
-               data: { clipboard_target: selector } do
-      tag.i(class: 'material-icons md-18') { 'assignment' }
+               data: {clipboard_target: selector} do
+      tag.i(class: 'material-icons md-18') {'assignment'}
     end
   end
 
   def markdown(source)
     source ||= ''
-    Kramdown::Document.new(source, input: 'GFM', hard_wrap: false, syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe
+    Kramdown::Document.new(source, input: 'GFM', hard_wrap: false, syntax_highlighter: 'rouge', math_engine_opts: {preview: true}).to_html.html_safe
   end
 
   def escape_double_quotes(string)
@@ -109,16 +109,16 @@ module ApplicationHelper
 
   def submission_status_icon(submission)
     icon, color = {
-      nil                     => %w[remove default],
-      'correct'               => %w[check correct],
-      'wrong'                 => %w[close wrong],
-      'time limit exceeded'   => %w[alarm wrong],
-      'running'               => %w[hourglass_empty default],
-      'queued'                => %w[hourglass_empty default],
-      'runtime error'         => %w[flash_on wrong],
-      'compilation error'     => %w[offline_bolt wrong],
-      'memory limit exceeded' => %w[memory wrong]
-    }[submission&.status] ||     %w[warning warning]
+        nil => %w[remove default],
+        'correct' => %w[check correct],
+        'wrong' => %w[close wrong],
+        'time limit exceeded' => %w[alarm wrong],
+        'running' => %w[hourglass_empty default],
+        'queued' => %w[hourglass_empty default],
+        'runtime error' => %w[flash_on wrong],
+        'compilation error' => %w[offline_bolt wrong],
+        'memory limit exceeded' => %w[memory wrong]
+    }[submission&.status] || %w[warning warning]
     "<i class=\"material-icons md-18 colored-#{color}\">#{icon}</i>".html_safe
   end
 
@@ -136,21 +136,21 @@ module ApplicationHelper
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
     protected
 
-      def html_container(html)
-        tag :ul, html, container_attributes
-      end
+    def html_container(html)
+      tag :ul, html, container_attributes
+    end
 
-      def page_number(page)
-        tag :li, link(page, page, rel: rel_value(page)), class: ('active' if page == current_page)
-      end
+    def page_number(page)
+      tag :li, link(page, page, rel: rel_value(page)), class: ('active' if page == current_page)
+    end
 
-      def gap
-        tag :li, link('&hellip;', '#'), class: 'disabled'
-      end
+    def gap
+      tag :li, link('&hellip;', '#'), class: 'disabled'
+    end
 
-      def previous_or_next_page(page, text, classname)
-        tag :li, link(text, page || '#'), class: [classname[0..3], classname, ('disabled' unless page)].join(' ')
-      end
+    def previous_or_next_page(page, text, classname)
+      tag :li, link(text, page || '#'), class: [classname[0..3], classname, ('disabled' unless page)].join(' ')
+    end
   end
 
   class AjaxLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
@@ -161,26 +161,26 @@ module ApplicationHelper
 
     protected
 
-      def html_container(html)
-        tag :ul, html, container_attributes
-      end
+    def html_container(html)
+      tag :ul, html, container_attributes
+    end
 
-      def page_number(page)
-        tag :li, link(page, page, rel: rel_value(page), "data-remote": true), class: ('active' if page == current_page)
-      end
+    def page_number(page)
+      tag :li, link(page, page, rel: rel_value(page), "data-remote": true), class: ('active' if page == current_page)
+    end
 
-      def gap
-        tag :li, link('&hellip;', '#'), class: 'disabled'
-      end
+    def gap
+      tag :li, link('&hellip;', '#'), class: 'disabled'
+    end
 
-      def previous_or_next_page(page, text, classname)
-        tag :li, link(text, page || '#', "data-remote": true), class: [classname[0..3], classname, ('disabled' unless page)].join(' ')
-      end
+    def previous_or_next_page(page, text, classname)
+      tag :li, link(text, page || '#', "data-remote": true), class: [classname[0..3], classname, ('disabled' unless page)].join(' ')
+    end
   end
 
   def page_navigation_links(pages, remote = false, controller = '', params = {}, action = 'index')
     if remote
-      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { controller: controller, action: action, format: nil }.merge(params))
+      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: {controller: controller, action: action, format: nil}.merge(params))
     else
       will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: BootstrapLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe)
     end

@@ -1,10 +1,10 @@
 <nav class="dodona-navbar hidden-print" role="navigation">
   <div class="left flex">
     <% if user_signed_in? %>
-    <button type="button" class="drawer-toggle" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
-      <span class="sr-only">Toggle drawer</span>
-      <i class="material-icons">menu</i>
-    </button>
+      <button type="button" class="drawer-toggle" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
+        <span class="sr-only">Toggle drawer</span>
+        <i class="material-icons">menu</i>
+      </button>
     <% end %>
     <%= link_to root_path, class: "brand" do %>
       <span class="hidden-xs">Dodona</span>

@@ -3,187 +3,201 @@
 // You can use Less here: http://lesscss.org/
 
 .btn-group.open .dropdown-toggle.btn-icon {
-    box-shadow: none;
+  box-shadow: none;
 }
+
 .dropdown-menu a,
 .dropdown-menu a:hover {
-    font-size: @font-size-base;
+  font-size: @font-size-base;
 }
+
 .dropdown-menu a .material-icons {
   top: 2px;
   padding-right: 5px;
 }
 
 .add-exercise-action {
-    width: 25px;
+  width: 25px;
 }
+
 .series-exercise-list .exercise {
-    height: 40px;
-    transition: opacity 0.5s ease-in-out;
+  height: 40px;
+  transition: opacity 0.5s ease-in-out;
 }
+
 .series-exercise-list .exercise.new {
-    opacity: 0;
+  opacity: 0;
 }
+
 .series-exercise-list .exercise.pending {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .exercise.gu-mirror .actions,
 .series-exercise-list .exercise .actions {
-    text-align: right;
+  text-align: right;
 }
+
 .exercise .drag-handle {
-    color: @black-disabled;
+  color: @black-disabled;
 }
+
 .exercise .drag-handle .material-icons {
-    cursor: grab;
+  cursor: grab;
 }
+
 .exercise.gu-mirror .drag-handle .material-icons {
-    cursor: grabbing;
+  cursor: grabbing;
 }
+
 .flatpickr-day.selected, .flatpickr-day.selected:focus, .flatpickr-day.selected:hover {
-    background: @accent-500;
-    color: #fff;
-    border-color: @accent-500;
+  background: @accent-500;
+  color: #fff;
+  border-color: @accent-500;
 }
+
 .deadline-passed {
-    color: @danger-800;
+  color: @danger-800;
 }
+
 .deadline-ok {
-    color: @success-800;
+  color: @success-800;
 }
 
 .scoresheet-table {
-    table-layout: fixed;
+  table-layout: fixed;
 }
+
 .status-icon-header {
-    overflow: hidden;
+  overflow: hidden;
 }
+
 .status-icon, .status-icon-header {
-    text-align: center;
+  text-align: center;
 }
 
 .submission-status-button {
-    a {
-        color: @accent-500;
-    }
+  a {
+    color: @accent-500;
+  }
 }
+
 .card.series-overview {
-    overflow: visible;
+  overflow: visible;
 }
 
 .card.series {
-    // position: relative (bootstrap default) starts a new stacking context which messes up the z-indices
-    position: unset;
-    overflow: visible;
-    z-index: 0;
+  // position: relative (bootstrap default) starts a new stacking context which messes up the z-indices
+  position: unset;
+  overflow: visible;
+  z-index: 0;
 
-    .dropdown-menu {
-      z-index: 991;
+  .dropdown-menu {
+    z-index: 991;
+  }
+
+  .card-subtitle {
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .card-subtitle h4 {
+    line-height: 20px;
+  }
+  .card-subtitle h4 small {
+    font-size: 65%;
+  }
+  .card-title-icon {
+    min-width: 40px;
+    width: 40px;
+    min-height: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 22px;
+    margin-right: 16px;
+    border-radius: 50%;
+    background-color: @grey-300;
+
+    &.deadline-missed:after {
+      color: @danger-800;
+      background-color: white;
+      position: absolute;
+      font-size: 18px;
+      font-weight: bold;
+      top: 23px;
+      left: 23px;
+      content: 'alarm_off';
+      font-family: 'Material Icons';
     }
 
-    .card-subtitle {
-        position: relative;
-        margin-bottom: 16px;
+    &.deadline-met:not(.completed):after {
+      color: @success-500;
+      background-color: white;
+      position: absolute;
+      font-size: 18px;
+      font-weight: bold;
+      top: 23px;
+      left: 23px;
+      content: 'alarm';
+      font-family: 'Material Icons';
     }
-    .card-subtitle h4 {
-        line-height: 20px;
+
+    i {
+      color: @grey-300;
+      background: #fff;
+      border-radius: 50%;
+      border: 5px solid #fff;
     }
-    .card-subtitle h4 small{
-        font-size: 65%;
+
+    &.wrong {
+      background-color: @danger-500;
+      i {
+        color: @danger-500;
+      }
     }
-    .card-title-icon {
-        min-width: 40px;
-        width: 40px;
-        min-height: 40px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
 
-        font-size: 22px;
-        margin-right: 16px;
-        border-radius: 50%;
-        background-color: @grey-300;
-
-        &.deadline-missed:after {
-          color: @danger-800;
-          background-color: white;
-          position: absolute;
-          font-size: 18px;
-          font-weight: bold;
-          top: 23px;
-          left: 23px;
-          content: 'alarm_off';
-          font-family: 'Material Icons';
-        }
-
-        &.deadline-met:not(.completed):after {
-          color: @success-500;
-          background-color: white;
-          position: absolute;
-          font-size: 18px;
-          font-weight: bold;
-          top: 23px;
-          left: 23px;
-          content: 'alarm';
-          font-family: 'Material Icons';
-        }
-
-        i {
-          color: @grey-300;
-          background: #fff;
-          border-radius: 50%;
-          border: 5px solid #fff;
-        }
-
-        &.wrong {
-          background-color: @danger-500;
-          i {
-            color: @danger-500;
-          }
-        }
-
-        &.started, &.completed.deadline-missed {
-          background-color: @success-500;
-          i {
-            color: @success-500;
-          }
-        }
-
-        &.completed:not(.deadline-missed) {
-          @red: #F44336;
-          @orange: #FF9800;
-          @yellow: #FFEB3B;
-          @green: #4CAF50;
-          @blue: #2196F3;
-          @purple: #9C27B0;
-
-          @p1: 10%;
-          @p2: 25%;
-          @p3: 40%;
-          @p4: 60%;
-          @p5: 75%;
-          @p6: 90%;
-
-          background-image: linear-gradient(-135deg,
-            @red @p1,
-            @orange @p2,
-            @yellow @p3,
-            @green @p4,
-            @blue @p5,
-            @purple @p6
-            );
-
-            i {
-              font-weight: bolder;
-              font-size: 32px;
-              background: transparent;
-              border: transparent;
-              color: white;
-            }
-        }
+    &.started, &.completed.deadline-missed {
+      background-color: @success-500;
+      i {
+        color: @success-500;
+      }
     }
+
+    &.completed:not(.deadline-missed) {
+      @red: #F44336;
+      @orange: #FF9800;
+      @yellow: #FFEB3B;
+      @green: #4CAF50;
+      @blue: #2196F3;
+      @purple: #9C27B0;
+
+      @p1: 10%;
+      @p2: 25%;
+      @p3: 40%;
+      @p4: 60%;
+      @p5: 75%;
+      @p6: 90%;
+
+      background-image: linear-gradient(-135deg,
+      @red @p1,
+      @orange @p2,
+      @yellow @p3,
+      @green @p4,
+      @blue @p5,
+      @purple @p6
+      );
+
+      i {
+        font-weight: bolder;
+        font-size: 32px;
+        background: transparent;
+        border: transparent;
+        color: white;
+      }
+    }
+  }
 }
 
 .card.series-edit {

@@ -15,25 +15,25 @@
   <%= render partial: 'series/series', locals: {
       series: @series,
       get_exercise_path: method(:exercise_anchor)
-    } %>
+  } %>
   <% summary.exercise_summaries.each do |ex| %>
     <div class="card exercise-description">
       <%= content_tag :a,
-            '',
-            name: exercise_anchor_id(ex.exercise),
-            class: 'anchor' %>
+                      '',
+                      name: exercise_anchor_id(ex.exercise),
+                      class: 'anchor' %>
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
           <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
         </h2>
       </div>
       <%= render partial: 'exercises/description_card',
-                 locals: { exercise: ex.exercise } %>
+                 locals: {exercise: ex.exercise} %>
       <div class="card-actions card-border hidden-print">
         <% if ex.submitted? || ex.deadline_passed? %>
           <div class="btn-text submission-status-button">
-            <%= render partial: 'exercises/user_status_icon', locals: { summary: ex } %>
-            <%= render partial: 'exercises/user_status', locals: { summary: ex } %>
+            <%= render partial: 'exercises/user_status_icon', locals: {summary: ex} %>
+            <%= render partial: 'exercises/user_status', locals: {summary: ex} %>
           </div>
         <% else %>
           <%= link_to t('exercises.show.handin'), course_series_exercise_path(@series.course, @series.id, ex.exercise, anchor: "submission-card"), class: "btn-text" %>
@@ -42,8 +42,8 @@
     </div>
   <% end %>
   <script type="text/javascript">
-      $(function() {
-        dodona.initExercisesReadonly();
+      $(function () {
+          dodona.initExercisesReadonly();
       });
   </script>
 </div>

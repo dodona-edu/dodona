@@ -14,11 +14,11 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def show?
-    return true  if user&.admin?
+    return true if user&.admin?
     return false if !user && record.access_private?
-    return true  if record.ok?
+    return true if record.ok?
     return false unless user
-    return true  if record.number_of_submissions_for(user).nonzero?
+    return true if record.number_of_submissions_for(user).nonzero?
     false
   end
 
@@ -35,8 +35,8 @@ class ExercisePolicy < ApplicationPolicy
   def submit?
     return false if record.removed?
     return false unless user.present?
-    return true  if user.admin?
-    return true  if record.ok?
+    return true if user.admin?
+    return true if record.ok?
     false
   end
 

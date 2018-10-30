@@ -3,7 +3,7 @@ class CourseMembersController < ApplicationController
   before_action :set_user, only: [:show]
 
   has_scope :by_permission
-  has_scope :by_name, as: 'filter'
+  has_scope :by_filter, as: 'filter'
 
   def index
     authorize @course, :members?

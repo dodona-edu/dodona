@@ -18,9 +18,9 @@ class SeriesMembership < ApplicationRecord
 
   delegate :course, to: :series
 
-  default_scope { order(order: :asc) }
+  default_scope {order(order: :asc)}
 
-  validates :series_id, uniqueness: { scope: :exercise_id }
+  validates :series_id, uniqueness: {scope: :exercise_id}
 
   def cached_users_correct
     if users_correct.nil?

@@ -10,7 +10,9 @@
       <div class="card-supporting-text">
         <p>
           <% if policy(@user).impersonate? %>
-            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %><i class="material-icons md-18">person</i> <%= t("layout.impersonate.impersonate") %><% end %>
+            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %>
+              <i class="material-icons md-18">person</i> <%= t("layout.impersonate.impersonate") %>
+            <% end %>
           <% end %>
         </p>
         <p>
@@ -38,7 +40,8 @@
           <strong><%= t ".unfinished" %>:</strong> <%= @user.unfinished_exercises(@course) %>
         </p>
         <p>
-          <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.in_course(@course).count, user_submissions_path(@user, course_id: @course.id) %>
+          <strong><%= t ".solutions" %>
+            :</strong> <%= link_to @user.submissions.in_course(@course).count, user_submissions_path(@user, course_id: @course.id) %>
         </p>
       </div>
       <div class="card-supporting-text" id="series-listing">

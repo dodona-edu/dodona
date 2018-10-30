@@ -29,9 +29,9 @@ class Series < ApplicationRecord
 
   before_save :set_access_token
 
-  scope :visible, -> { where(visibility: :open) }
-  scope :with_deadline, -> { where.not(deadline: nil) }
-  default_scope { order(id: :desc) }
+  scope :visible, -> {where(visibility: :open)}
+  scope :with_deadline, -> {where.not(deadline: nil)}
+  default_scope {order(id: :desc)}
 
   after_initialize do
     self.visibility ||= 'open'
@@ -50,11 +50,11 @@ class Series < ApplicationRecord
   end
 
   def completed?(user)
-    exercises.all? { |e| e.accepted_for(user) }
+    exercises.all? {|e| e.accepted_for(user)}
   end
 
   def solved_exercises(user)
-    exercises.select { |e| e.accepted_for(user) }
+    exercises.select {|e| e.accepted_for(user)}
   end
 
   def indianio_support
@@ -95,7 +95,7 @@ class Series < ApplicationRecord
     end
     stringio.rewind
     zip_data = stringio.sysread
-    { filename: filename, data: zip_data }
+    {filename: filename, data: zip_data}
   end
 
   def generate_token(type)

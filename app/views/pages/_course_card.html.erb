@@ -3,13 +3,16 @@
     <div class="card-title card-colored-accent accent-<%= course.color %>">
       <% if current_user.course_admin?(course) %>
         <% if current_user.admin_of?(course) %>
-          <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><i class='material-icons'>school</i></h2>
+          <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><i class='material-icons'>school</i>
+          </h2>
         <% end %>
         <% if course.hidden? %>
-          <h2 class='card-title-text pull-right' title='<%= t ".course-hidden" %>'><i class="material-icons">visibility_off</i></h2>
+          <h2 class='card-title-text pull-right' title='<%= t ".course-hidden" %>'>
+            <i class="material-icons">visibility_off</i></h2>
         <% end %>
         <% if course.closed? %>
-          <h2 class='card-title-text pull-right' title='<%= t ".course-closed" %>'><i class="material-icons">block</i></h2>
+          <h2 class='card-title-text pull-right' title='<%= t ".course-closed" %>'><i class="material-icons">block</i>
+          </h2>
         <% end %>
       <% elsif local_assigns[:show_membership] and current_user.subscribed_courses.include? course %>
         <h2 class='card-title-text pull-right' title='<%= t ".course-member" %>'><i class='material-icons'>star</i></h2>
@@ -17,7 +20,8 @@
       <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>
       <h3 class="card-subtitle-text"><%= course.formatted_year %>&nbsp;</h3>
       <% if course.institution&.name.present? && course.teacher.present? %>
-        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %> (<%= course.institution.name %>)"><%= course.teacher %> (<%= course.institution.name %>)&nbsp;</h3>
+        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %> (<%= course.institution.name %>)"><%= course.teacher %>
+          (<%= course.institution.name %>)&nbsp;</h3>
       <% elsif course.teacher.present? %>
         <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %>"><%= course.teacher %>&nbsp;</h3>
       <% elsif course.institution&.name.present? %>
@@ -26,14 +30,14 @@
     </div>
   <% end %>
   <div class="card-supporting-text stats row">
-    <% if local_assigns[:course_index]%>
+    <% if local_assigns[:course_index] %>
       <div class="col-xs-6">
         <h1><%= number_with_delimiter course.subscribed_members.count, delimiter: " " %></h1>
-          <%= t ".users" %>
+        <%= t ".users" %>
       </div>
       <div class="col-xs-6">
         <h1><%= number_with_delimiter course.exercises.count, delimiter: " " %></h1>
-          <%= t ".exercises" %>
+        <%= t ".exercises" %>
       </div>
     <% else %>
       <% if current_user.course_admin?(course) %>
@@ -73,7 +77,7 @@
         <% course_series.first(3).each do |series| %>
           <p>
             <span class='pull-right'>
-              <%= render partial: 'series/human_deadline', locals: { series: series } %>
+              <%= render partial: 'series/human_deadline', locals: {series: series} %>
             </span>
             <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
           </p>

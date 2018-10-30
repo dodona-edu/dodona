@@ -18,7 +18,7 @@ Rails.application.configure do
   config.read_encrypted_secrets = false
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Disable serving static files from the `/public` folder by default since

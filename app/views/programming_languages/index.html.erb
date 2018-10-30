@@ -15,49 +15,53 @@
         <div class="table-scroll-wrapper">
           <table class="table table-index table-resource">
             <thead>
-              <tr>
-                <th>
-                  <%= ProgrammingLanguage.human_attribute_name("name") %>
-                </th>
-                <th>
-                  <%= ProgrammingLanguage.human_attribute_name("editor_name") %>
-                </th>
-                <th>
-                  <%= ProgrammingLanguage.human_attribute_name("extension") %>
-                </th>
-                <th>
-                  <%= t('.exercises') %>
-                </th>
-                <th class="actions">
-                  <%= t('.actions') %>
-                </th>
-              </tr>
+            <tr>
+              <th>
+                <%= ProgrammingLanguage.human_attribute_name("name") %>
+              </th>
+              <th>
+                <%= ProgrammingLanguage.human_attribute_name("editor_name") %>
+              </th>
+              <th>
+                <%= ProgrammingLanguage.human_attribute_name("extension") %>
+              </th>
+              <th>
+                <%= t('.exercises') %>
+              </th>
+              <th class="actions">
+                <%= t('.actions') %>
+              </th>
+            </tr>
             </thead>
             <tbody>
-              <% @programming_languages.each do |programming_language| %>
-                <tr>
-                  <td>
-                    <%= link_to programming_language.name, programming_language %>
-                  </td>
-                  <td>
-                    <%= programming_language.editor_name %>
-                  </td>
-                  <td>
-                    <%= programming_language.extension %>
-                  </td>
-                  <td>
-                    <%= link_to programming_language.exercises.count, exercises_path(programming_language: programming_language.name) %>
-                  </td>
-                  <td class="actions">
-                    <% if policy(programming_language).edit? %>
-                      <%= link_to edit_programming_language_path(programming_language), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">edit</i><% end %>
+            <% @programming_languages.each do |programming_language| %>
+              <tr>
+                <td>
+                  <%= link_to programming_language.name, programming_language %>
+                </td>
+                <td>
+                  <%= programming_language.editor_name %>
+                </td>
+                <td>
+                  <%= programming_language.extension %>
+                </td>
+                <td>
+                  <%= link_to programming_language.exercises.count, exercises_path(programming_language: programming_language.name) %>
+                </td>
+                <td class="actions">
+                  <% if policy(programming_language).edit? %>
+                    <%= link_to edit_programming_language_path(programming_language), class: "btn btn-sm btn-default" do %>
+                      <i class="material-icons md-18">edit</i>
                     <% end %>
-                    <% if policy(programming_language).destroy? %>
-                      <%= link_to programming_language, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-sm btn-danger" do %><i class="material-icons md-18">delete</i><% end %>
+                  <% end %>
+                  <% if policy(programming_language).destroy? %>
+                    <%= link_to programming_language, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
+                      <i class="material-icons md-18">delete</i>
                     <% end %>
-                  </td>
-                </tr>
-              <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
             </tbody>
           </table>
         </div>

@@ -5,6 +5,7 @@ class FeedbackTableRenderer
   require 'builder'
 
   @renderers = [FeedbackTableRenderer]
+
   def self.inherited(cl)
     @renderers << cl
   end
@@ -60,7 +61,7 @@ class FeedbackTableRenderer
       end
       @builder.div(class: 'card-supporting-text') do
         @builder.div(class: 'tab-content') do
-          @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
+          @submission[:groups].each_with_index {|t, i| tab(t, i)} if submission[:groups]
           if show_code_tab
             @builder.div(class: "tab-pane #{'active' unless submission[:groups]}", id: 'code-tab') do
               if submission[:annotations]
@@ -94,7 +95,7 @@ class FeedbackTableRenderer
     @diff_type = determine_tab_diff_type(t)
     messages(t[:messages])
     @builder.div(class: 'groups') do
-      t[:groups]&.each { |g| group(g) }
+      t[:groups]&.each {|g| group(g)}
     end
   end
 
@@ -106,11 +107,13 @@ class FeedbackTableRenderer
         end
       end
       messages(g[:messages])
-      g[:groups]&.each { |tc| testcase(tc) }
+      g[:groups]&.each {|tc| testcase(tc)}
     end
   end
 
-  def testcase_icons(tc); end
+  def testcase_icons(tc)
+    ;
+  end
 
   def testcase(tc)
     @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
@@ -126,7 +129,7 @@ class FeedbackTableRenderer
       end
       message(tc[:description]) if tc[:description]
     end
-    tc[:tests]&.each { |t| test(t) }
+    tc[:tests]&.each {|t| test(t)}
     messages(tc[:messages])
   end
 
@@ -200,7 +203,7 @@ class FeedbackTableRenderer
 
   def message(m)
     return if m.nil?
-    m = { format: 'plain', description: m } if m.is_a? String
+    m = {format: 'plain', description: m} if m.is_a? String
     if m[:permission]
       return if m[:permission] == 'staff' && !@current_user.course_admin?(@course)
       return if m[:permission] == 'zeus' && !@current_user.zeus?

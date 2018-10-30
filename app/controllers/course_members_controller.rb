@@ -17,7 +17,7 @@ class CourseMembersController < ApplicationController
                  .order('course_memberships.status ASC')
                  .order(permission: :desc)
                  .order(last_name: :asc, first_name: :asc)
-                 .where(course_memberships: { status: statuses })
+                 .where(course_memberships: {status: statuses})
                  .paginate(page: params[:page])
 
     @pagination_opts = {
@@ -29,8 +29,8 @@ class CourseMembersController < ApplicationController
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
 
     respond_to do |format|
-      format.json { render 'users/index' }
-      format.js { render 'users/index' }
+      format.json {render 'users/index'}
+      format.js {render 'users/index'}
       format.html
     end
   end

@@ -5,16 +5,16 @@
         <h2 class="card-title-text"><%= t '.title' %></h2>
       </div>
     </div>
-    <%= render partial: 'layouts/searchbar', locals: { institutions: Institution.all, eager: !current_user&.institution.present? } %>
+    <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: !current_user&.institution.present?} %>
     <div id="grouped-course-cards-wrapper">
     </div>
   </div>
 </div>
 
 <script type="text/javascript">
-  $(function () {
-    <% if current_user&.institution.present? %>
-      dodona.addTokenToSearch("institutions", "<%= current_user.institution.name %>");
-    <% end %>
-  });
+    $(function () {
+        <% if current_user&.institution.present? %>
+        dodona.addTokenToSearch("institutions", "<%= current_user.institution.name %>");
+        <% end %>
+    });
 </script>

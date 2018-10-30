@@ -1,8 +1,9 @@
-require 'json'         # JSON support
-require 'json-schema'  # json schema validation, from json-schema gem
+require 'json' # JSON support
+require 'json-schema' # json schema validation, from json-schema gem
 
 class ResultConstructorError < StandardError
   attr_accessor :title, :description
+
   def initialize(title, description = nil)
     @title = title
     @description = description
@@ -14,8 +15,8 @@ class ResultConstructor
   PART_SCHEMA = JSON.parse(File.read(Rails.root.join('public', 'schemas', 'partial_output.json')))
 
   LEVELSA = %i[judgement tab context testcase test].freeze
-  LEVELSH = { judgement: 0, tab: 1, context: 2, testcase: 3, test: 4 }.freeze
-  GATHER = { tab: :groups, context: :groups, testcase: :groups, test: :tests }.freeze
+  LEVELSH = {judgement: 0, tab: 1, context: 2, testcase: 3, test: 4}.freeze
+  GATHER = {tab: :groups, context: :groups, testcase: :groups, test: :tests}.freeze
 
   def initialize(locale)
     @locale = locale
@@ -32,8 +33,8 @@ class ResultConstructor
         @result = json
       else
         raise ResultConstructorError.new(
-          'Judge output is not a valid json',
-          json.to_s
+            'Judge output is not a valid json',
+            json.to_s
         )
       end
     end
@@ -42,9 +43,9 @@ class ResultConstructor
   def result(timeout)
     # prepare status for possible timeout
     reason = timeout ? 'time limit exceeded' : 'memory limit exceeded'
-    status = { enum: reason,
-               human: I18n.t("activerecord.attributes.submission.statuses.#{reason}",
-                             locale: @locale) }
+    status = {enum: reason,
+              human: I18n.t("activerecord.attributes.submission.statuses.#{reason}",
+                            locale: @locale)}
 
     # close the levels left open
     close_test(generated: '', accepted: false, status: status) if @level == :test
@@ -108,12 +109,12 @@ class ResultConstructor
 
   def annotate_code(values)
     (@judgement[:annotations] ||= []) << {
-      text: values[:text] || '',
-      type: values[:type] || 'info',
-      row: values[:row] || 0,
-      rows: values[:rows] || 1,
-      column: values[:column] || 0,
-      columns: values[:columns] || 1
+        text: values[:text] || '',
+        type: values[:type] || 'info',
+        row: values[:row] || 0,
+        rows: values[:rows] || 1,
+        column: values[:column] || 0,
+        columns: values[:columns] || 1
     }
   end
 
@@ -122,8 +123,10 @@ class ResultConstructor
     @test[:generated] = generated
     status[:enum] = Submission.normalize_status(status[:enum])
     @test[:accepted] = if accepted.nil?
-                       then status[:enum] == 'correct'
-                       else accepted
+    then
+                         status[:enum] == 'correct'
+                       else
+                         accepted
                        end
     if worse?(@judgement[:status], status[:enum])
       @judgement[:status] = status[:enum]
@@ -207,13 +210,13 @@ class ResultConstructor
   end
 
   EVILNESS = [
-    'correct',
-    'wrong',
-    'runtime error',
-    'compilation error',
-    'memory limit exceeded',
-    'time limit exceeded',
-    'internal error'
+      'correct',
+      'wrong',
+      'runtime error',
+      'compilation error',
+      'memory limit exceeded',
+      'time limit exceeded',
+      'internal error'
   ].each_with_index.reduce({}) do |memo, pair|
     memo.merge(pair[0] => pair[1])
   end

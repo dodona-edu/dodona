@@ -39,12 +39,14 @@
           <% show_delete_button = local_assigns.fetch(:show_delete_button, false) %>
           <td class="repository-course-button-cell" data-course_id="<%= course.id %>" data-repository_id="<%= @repository.id %>">
             <%= render partial: 'repositories/repository_course_buttons',
-                       locals: { repository: @repository, course: course, show_delete_button: show_delete_button }%>
+                       locals: {repository: @repository, course: course, show_delete_button: show_delete_button} %>
           </td>
         <% else %>
           <td class="actions">
             <% if policy(course).edit? %>
-              <%= link_to edit_course_path(course), class: "btn btn-sm btn-default" do %><i class="material-icons md-18">edit</i><% end %>
+              <%= link_to edit_course_path(course), class: "btn btn-sm btn-default" do %>
+                <i class="material-icons md-18">edit</i>
+              <% end %>
             <% end %>
           </td>
         <% end %>

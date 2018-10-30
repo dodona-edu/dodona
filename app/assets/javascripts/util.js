@@ -1,4 +1,3 @@
-
 import ClipboardJS from "clipboard";
 
 function initClipboard() {
@@ -180,4 +179,14 @@ function initCSRF() {
     });
 }
 
-export {initClipboard, delay, updateURLParameter, updateArrayURLParameter, getURLParameter, getArrayURLParameter, logToGoogle, checkTimeZone, initCSRF};
+export {
+    initClipboard,
+    delay,
+    updateURLParameter,
+    updateArrayURLParameter,
+    getURLParameter,
+    getArrayURLParameter,
+    logToGoogle,
+    checkTimeZone,
+    initCSRF
+};

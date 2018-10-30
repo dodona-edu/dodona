@@ -6,10 +6,10 @@
       </div>
       <div class="card-supporting-text row">
         <div class="col-sm-12">
-        <p><%= t '.explanation_html', course_name: @course.name %>
-        <% if @course.moderated? %>
-          <p><%= t'.moderated' %>
-        <% end %>
+          <p><%= t '.explanation_html', course_name: @course.name %>
+            <% if @course.moderated? %>
+            <p><%= t '.moderated' %>
+          <% end %>
         </div>
       </div>
       <div class="card-actions card-border">
@@ -17,7 +17,7 @@
                                     membership: @current_membership,
                                     secret: @secret %>
       </div>
-      </div>
     </div>
   </div>
+</div>
 </div>

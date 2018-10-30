@@ -30,17 +30,18 @@
 @border-radius-base: 2px;
 
 // font stuff
-@font-family-sans-serif:  Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-family-sans-serif: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 @font-size-base: 14px;
 @baseLineHeight: 24px;
 @line-height-base: 1.3846153846;
 @icon-font-path: "/assets/bootstrap/";
 h1, h2, h3, h4, h5 {
-    font-weight: 300;
-    letter-spacing: -0.01em;
-    line-height: 48px;
-    margin: 0;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 48px;
+  margin: 0;
 }
+
 @blockquote-font-size: @font-size-base;
 
 // nav bar
@@ -52,6 +53,7 @@ h1, h2, h3, h4, h5 {
 .navbar {
   border: none;
 }
+
 @navbar-default-link-active-bg: lighten(@navbar-default-bg, 6.5%);
 @navbar-default-toggle-icon-bar-bg: @white-text;
 @navbar-default-toggle-border-color: @white-secondary;
@@ -71,18 +73,21 @@ h1, h2, h3, h4, h5 {
 @state-success-border: @brand-success;
 @state-success-text: white;
 .alert {
-    .shadow-z2();
+  .shadow-z2();
 }
+
 .alert-link {
-    color: white !important;
+  color: white !important;
 }
+
 .alert button.close {
-    color: @white-secondary;
-    opacity: 1;
-    text-shadow: initial;
+  color: @white-secondary;
+  opacity: 1;
+  text-shadow: initial;
 }
+
 .alert button.close:hover {
-    color: @white-text;
+  color: @white-text;
 }
 
 // modals
@@ -94,99 +99,107 @@ h1, h2, h3, h4, h5 {
 @popover-border-color: @grey-100;
 @popover-title-bg: @grey-100;
 .popover {
-    border-radius: 2px;
-    padding: 0px;
-    .shadow-z5();
-    z-index: 5;
+  border-radius: 2px;
+  padding: 0px;
+  .shadow-z5();
+  z-index: 5;
 }
+
 .popover .popover-title {
-    border-radius: 2px 2px 0 0;
-    border: 0;
+  border-radius: 2px 2px 0 0;
+  border: 0;
 }
+
 .popover-title {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 // buttons
 .btn {
-    .shadow-z1();
+  .shadow-z1();
 }
+
 .btn:hover {
-    .shadow-z3();
+  .shadow-z3();
 }
+
 .btn.btn-file,
 .btn.btn-file:hover,
 .btn.btn-link,
 .btn.btn-link:hover {
-    box-shadow: none;
+  box-shadow: none;
 }
+
 .dropdown-menu {
-    .shadow-z5();
+  .shadow-z5();
 }
 
 // tables
 .table {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
+
 .table th {
-    position: relative;
-    vertical-align: bottom;
-    text-overflow: ellipsis;
-    font-weight: 700;
-    line-height: 24px;
-    letter-spacing: 0;
-    font-size: 12px;
-    color: rgba(0,0,0,.54);
-    padding-bottom: 8px;
+  position: relative;
+  vertical-align: bottom;
+  text-overflow: ellipsis;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, .54);
+  padding-bottom: 8px;
 }
 
 // modals
 .modal-content {
-    border-radius: 2px;
-    .shadow-z5();
+  border-radius: 2px;
+  .shadow-z5();
 }
 
 // extra small input elements
 .input-xs {
-    height: 22px;
-    padding: 1px 10px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
+  height: 22px;
+  padding: 1px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
 }
+
 .help-block {
-    font-size: 12px;
-    line-height: 14px;
-    color: @black-secondary;
+  font-size: 12px;
+  line-height: 14px;
+  color: @black-secondary;
 }
 
 // panels
 .panel {
-    border: 0;
-    .shadow-z3();
+  border: 0;
+  .shadow-z3();
 }
 
 // mark
 mark,
 .mark {
   background-color: @primary-300;
- }
+}
 
 // fix position errors
 .tab-content {
-    position: relative;
+  position: relative;
 }
 
 .lead {
-    font-size: 18px;
-    margin-top: 5px;
+  font-size: 18px;
+  margin-top: 5px;
 }
 
 .input-group .input-group-btn .btn {
-    box-shadow: none;
+  box-shadow: none;
 }
+
 .badge {
-    padding-left: 6.5px;
+  padding-left: 6.5px;
 }
 
 

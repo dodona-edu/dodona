@@ -14,20 +14,20 @@ class SeriesSummary
 
     if series
       @series_memberships =
-        if exercises
-          series.series_memberships.where(exercise: exercises)
-        else
-          series.series_memberships.includes(:exercise)
-        end
+          if exercises
+            series.series_memberships.where(exercise: exercises)
+          else
+            series.series_memberships.includes(:exercise)
+          end
       @exercises ||= @series_memberships.map(&:exercise)
     end
 
     @latest_submissions = kwargs[:latest_submissions] ||
-                          query_latest_submissions
+        query_latest_submissions
     @accepted_submissions = kwargs[:accepted_submissions] ||
-                            query_accepted_submissions
+        query_accepted_submissions
     @timely_submissions = kwargs[:timely_submissions] ||
-                          query_timely_submissions
+        query_timely_submissions
   end
 
   def progress_status
@@ -122,12 +122,12 @@ class SeriesSummary
 
   def mk_exercise_summary(ex, **kwargs)
     ExerciseSummary.new(
-      exercise: ex,
-      user: user,
-      latest_submission: @latest_submissions[ex.id],
-      accepted_submission: @accepted_submissions[ex.id],
-      timely_submission: @timely_submissions[ex.id],
-      **kwargs
+        exercise: ex,
+        user: user,
+        latest_submission: @latest_submissions[ex.id],
+        accepted_submission: @accepted_submissions[ex.id],
+        timely_submission: @timely_submissions[ex.id],
+        **kwargs
     )
   end
 

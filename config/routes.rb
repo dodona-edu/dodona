@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+  devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
   root 'pages#home'
 
   match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
     concern :mediable do
       member do
-        get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: 'media'
+        get 'media/*media', to: 'exercises#media', constraints: {media: /.*/}, as: 'media'
       end
     end
 
@@ -88,7 +88,7 @@ Rails.application.routes.draw do
       member do
         get 'download'
         get 'evaluate'
-        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }
+        get 'media/*media', to: 'submissions#media', constraints: {media: /.*/}
       end
     end
 

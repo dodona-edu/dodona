@@ -37,9 +37,9 @@ nl:
     edit: Bewerken
     overview: Overzicht
   general:
-      are_you_sure: "Ben je zeker?"
-      confirm_reset_token: 'Ben je zeker? De oude token/link zal niet meer bruikbaar zijn als je een nieuw genereert.'
-      generate_token: 'Genereer nieuw'
+    are_you_sure: "Ben je zeker?"
+    confirm_reset_token: 'Ben je zeker? De oude token/link zal niet meer bruikbaar zijn als je een nieuw genereert.'
+    generate_token: 'Genereer nieuw'
   errors:
     no_rights: Sorry, je hebt geen toegangsrechten tot deze pagina.
     validation_erors:

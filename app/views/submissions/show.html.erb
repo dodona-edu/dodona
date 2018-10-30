@@ -7,17 +7,19 @@
         <div class="card-title-fab">
           <% if policy(@submission).create? %>
             <%= link_to edit_submission_path(@submission), class: 'btn btn-primary btn-fab', title: t('.edit') do %>
-              <%= custom_icon 'square_edit', class: 'md-36 fix-alignment'%>
+              <%= custom_icon 'square_edit', class: 'md-36 fix-alignment' %>
             <% end %>
           <% end %>
         </div>
       </div>
       <div class="card-supporting-text">
-        <%= render partial: 'description', locals: { submission: @submission } %>
+        <%= render partial: 'description', locals: {submission: @submission} %>
       </div>
     </div>
   </div>
 </div>
 <% if @submission.queued? || @submission.running? %>
-<script>setTimeout(function () { location.reload(1); }, 3000);</script>
+  <script>setTimeout(function () {
+      location.reload(1);
+  }, 3000);</script>
 <% end %>

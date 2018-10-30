@@ -30,7 +30,7 @@ class Course < ApplicationRecord
   has_many :series
   has_many :course_repositories
 
-  has_many :exercises, -> { distinct }, through: :series
+  has_many :exercises, -> {distinct}, through: :series
   has_many :series_memberships, through: :series
 
   has_many :submissions
@@ -46,7 +46,7 @@ class Course < ApplicationRecord
   has_many :subscribed_members,
            lambda {
              where.not course_memberships:
-                { status: %i[pending unsubscribed] }
+                           {status: %i[pending unsubscribed]}
            },
            through: :course_memberships,
            source: :user
@@ -54,7 +54,7 @@ class Course < ApplicationRecord
   has_many :administrating_members,
            lambda {
              where course_memberships:
-                { status: :course_admin }
+                       {status: :course_admin}
            },
            through: :course_memberships,
            source: :user
@@ -62,7 +62,7 @@ class Course < ApplicationRecord
   has_many :enrolled_members,
            lambda {
              where course_memberships:
-                { status: :student }
+                       {status: :student}
            },
            through: :course_memberships,
            source: :user
@@ -70,7 +70,7 @@ class Course < ApplicationRecord
   has_many :pending_members,
            lambda {
              where course_memberships:
-                { status: :pending }
+                       {status: :pending}
            },
            through: :course_memberships,
            source: :user
@@ -78,7 +78,7 @@ class Course < ApplicationRecord
   has_many :unsubscribed_members,
            lambda {
              where course_memberships:
-                { status: :unsubscribed }
+                       {status: :unsubscribed}
            },
            through: :course_memberships,
            source: :user
@@ -86,16 +86,16 @@ class Course < ApplicationRecord
   validates :name, presence: true
   validates :year, presence: true
 
-  scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%")}
-  scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
-  scope :by_institution, ->(institution) { where(institution: [institution, nil]) if Course.where(institution: institution).any? }
-  default_scope { order(year: :desc, name: :asc) }
+  scope :by_name, ->(name) {where('name LIKE ?', "%#{name}%")}
+  scope :by_teacher, ->(teacher) {where('teacher LIKE ?', "%#{teacher}%")}
+  scope :by_institution, ->(institution) {Course.where(institution: institution).any? ? where(institution: [institution, nil]) : self}
+  default_scope {order(year: :desc, name: :asc)}
 
   before_create :generate_secret
 
   # Default year & enum values
   after_initialize do |course|
-    self.visibility   ||= 'visible'
+    self.visibility ||= 'visible'
     self.registration ||= 'open'
     self.color ||= Course.colors.keys.sample
     unless year
@@ -109,17 +109,17 @@ class Course < ApplicationRecord
   def homepage_series(passed_series = 1)
     with_deadlines = series.visible.with_deadline.sort_by(&:deadline)
     passed_deadlines = with_deadlines
-                       .select { |s| s.deadline < Time.zone.now && s.deadline > Time.zone.now - 1.week }[-1 * passed_series, 1 * passed_series]
-    future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }
+                           .select {|s| s.deadline < Time.zone.now && s.deadline > Time.zone.now - 1.week}[-1 * passed_series, 1 * passed_series]
+    future_deadlines = with_deadlines.select {|s| s.deadline > Time.zone.now}
     passed_deadlines.to_a + future_deadlines.to_a
   end
 
   def pending_series(user)
-    series.visible.select { |s| s.pending? && !s.completed?(user) }
+    series.visible.select {|s| s.pending? && !s.completed?(user)}
   end
 
   def incomplete_series(user)
-    series.visible.reject { |s| s.completed?(user) }
+    series.visible.reject {|s| s.completed?(user)}
   end
 
   def formatted_year
@@ -138,10 +138,10 @@ class Course < ApplicationRecord
     if correct_solutions.nil?
       self.correct_solutions = Submission.where(status: 'correct',
                                                 course: self)
-                                         .select(:exercise_id,
-                                                 :user_id)
-                                         .distinct
-                                         .count
+                                   .select(:exercise_id,
+                                           :user_id)
+                                   .distinct
+                                   .count
       save
     end
     correct_solutions
@@ -174,16 +174,16 @@ class Course < ApplicationRecord
   def scoresheet(options = {})
     sorted_series = series.reverse
     sorted_users = users.order('course_memberships.status ASC')
-                        .order(permission: :asc)
-                        .order(last_name: :asc, first_name: :asc)
+                       .order(permission: :asc)
+                       .order(last_name: :asc, first_name: :asc)
     CSV.generate(options) do |csv|
       csv << [I18n.t('courses.scoresheet.explanation')]
       csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')].concat(sorted_series.map(&:name))
-      csv << ['Maximum', '', '', ''].concat(sorted_series.map { |s| s.exercises.count })
+      csv << ['Maximum', '', '', ''].concat(sorted_series.map {|s| s.exercises.count})
       sorted_users.each do |user|
         row = [user.first_name, user.last_name, user.username, user.email]
         sorted_series.each do |s|
-          row << s.exercises.map { |ex| ex.accepted_for(user, s.deadline, self) }.count(true)
+          row << s.exercises.map {|ex| ex.accepted_for(user, s.deadline, self)}.count(true)
         end
         csv << row
       end

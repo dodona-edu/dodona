@@ -45,7 +45,7 @@
           <% end %>
           <% if policy(User).index? %>
             <li>
-              <%= activatable_link_to users_path ,
+              <%= activatable_link_to users_path,
                                       class: 'drawer-list-item' do %>
                 <i class="material-icons md-24">group</i>
                 <%= t("layout.menu.users") %>
@@ -54,7 +54,7 @@
           <% end %>
           <% if policy(Course).index? %>
             <li>
-              <%= activatable_link_to courses_path ,
+              <%= activatable_link_to courses_path,
                                       class: 'drawer-list-item' do %>
                 <i class="material-icons md-24">collections_bookmark</i>
                 <%= t("layout.menu.courses") %>
@@ -63,8 +63,8 @@
           <% end %>
           <% if policy(Judge).index? %>
             <li>
-              <%= activatable_link_to judges_path ,
-                                        class: 'drawer-list-item' do %>
+              <%= activatable_link_to judges_path,
+                                      class: 'drawer-list-item' do %>
                 <i class="material-icons md-24">gavel</i>
                 <%= t("layout.menu.judges") %>
               <% end %>
@@ -72,8 +72,8 @@
           <% end %>
           <% if policy(Repository).index? %>
             <li>
-              <%= activatable_link_to repositories_path ,
-                                        class: 'drawer-list-item' do %>
+              <%= activatable_link_to repositories_path,
+                                      class: 'drawer-list-item' do %>
                 <i class="material-icons md-24">storage</i>
                 <%= t("layout.menu.repositories") %>
               <% end %>
@@ -91,7 +91,7 @@
           <% if policy(ProgrammingLanguage).index? %>
             <li>
               <%= activatable_link_to programming_languages_path,
-                class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item' do %>
                 <i class='material-icons md-24'>code</i>
                 <%= t("layout.menu.programming_languages") %>
               <% end %>
@@ -99,7 +99,7 @@
           <% if current_user.zeus? %>
             <li>
               <%= activatable_link_to "/dj/overview",
-                                        class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item' do %>
                 <i class="material-icons md-24">queue</i>
                 Job queue
               <% end %>
@@ -119,13 +119,13 @@
         <li>
           <%= link_to 'https://dodona.readthedocs.io/', class: 'drawer-list-item' do %>
             <i class="material-icons md-24">help</i>
-            <%=  t('layout.menu.manual') %>
+            <%= t('layout.menu.manual') %>
           <% end %>
         </li>
         <li>
           <%= link_to destroy_user_session_path, method: :delete do %>
             <i class="material-icons md-24">power_settings_new</i>
-            <%=  t('layout.menu.log_out') %>
+            <%= t('layout.menu.log_out') %>
           <% end %>
         </li>
       </ul>

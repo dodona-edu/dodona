@@ -4,8 +4,8 @@
       repository: @error.repository.name %>
 
 <% @error.each do |err| %>
-<%= err.path %>:
-<%= err.json %>
+  <%= err.path %>:
+  <%= err.json %>
 <% end %>
 
 <%= t '.regards' %>

@@ -7,13 +7,13 @@ class SeriesPolicy < ApplicationPolicy
         admin = CourseMembership.statuses['course_admin']
         open = Series.visibilities['open']
         scope.joins(course: :course_memberships)
-             .where(
-               <<~SQL
-                 series.visibility              = #{open}
-                 OR  course_memberships.status  = #{admin}
-                 AND course_memberships.user_id = #{user.id}
-               SQL
-             ).distinct
+            .where(
+                <<~SQL
+                  series.visibility              = #{open}
+                  OR  course_memberships.status  = #{admin}
+                  AND course_memberships.user_id = #{user.id}
+        SQL
+        ).distinct
       else
         scope.where(visibility: :visible)
       end

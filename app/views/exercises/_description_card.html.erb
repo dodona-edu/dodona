@@ -9,7 +9,7 @@
   <% end %>
   <footer class="footnote-links visible-print">
     <% if footnotes&.any? %>
-    <h4>Links</h4>
+      <h4>Links</h4>
       <% footnotes.each do |index, url| %>
         <%= link_to "[#{index}]: #{url}", url %><br/>
       <% end %>

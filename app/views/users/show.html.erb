@@ -23,7 +23,9 @@
         <% end %>
         <p>
           <% if policy(@user).impersonate? %>
-            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %><i class="material-icons md-18">person</i> <%= t("layout.impersonate.impersonate") %><% end %>
+            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %>
+              <i class="material-icons md-18">person</i> <%= t("layout.impersonate.impersonate") %>
+            <% end %>
           <% end %>
         </p>
         <p>
@@ -45,21 +47,21 @@
           <strong><%= User.human_attribute_name("time_zone") %>:</strong> <%= @user.time_zone %>
         </p>
         <% if current_user.admin? %>
-        <p>
-          <strong><%= User.human_attribute_name("permission") %>:</strong> <%= @user.permission %>
-        </p>
+          <p>
+            <strong><%= User.human_attribute_name("permission") %>:</strong> <%= @user.permission %>
+          </p>
         <% end %>
         <p>
           <strong><%= t ".courses" %>:</strong>
           <% if @user.subscribed_courses.empty? %>
             <%= t ".no_courses" %>
           <% else %>
-            <ul>
+          <ul>
             <% @user.subscribed_courses.each do |course| %>
               <li><%= link_to course.name, course %></li>
             <% end %>
-            </ul>
-          <% end %>
+          </ul>
+        <% end %>
         </p>
         <p>
           <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>

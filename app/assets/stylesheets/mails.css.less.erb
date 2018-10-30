@@ -1,32 +1,32 @@
 @import "variables.css.less";
-
 <% if Rails.env.development? %>
-    @import "development.css.less";
+@import "development.css.less";
+
 <% end %>
 
 body {
-    font-size: 14px;
-    font-family: helvetica, sans-serif;
+  font-size: 14px;
+  font-family: helvetica, sans-serif;
 }
 
 a {
-    color: @accent-800;
-    text-decoration: none;
+  color: @accent-800;
+  text-decoration: none;
 }
 
 .error-list {
-    margin: 10px 0px;
+  margin: 10px 0px;
 }
 
 .error-report {
-    margin: 25px 0px;
-    font-family: monospace;
-    font-size: 12px;
+  margin: 25px 0px;
+  font-family: monospace;
+  font-size: 12px;
 }
 
 .error-json {
-    margin: 8px;
-    border-left: 3px solid @danger-500;
-    padding-left: 8px;
-    white-space: pre;
+  margin: 8px;
+  border-left: 3px solid @danger-500;
+  padding-left: 8px;
+  white-space: pre;
 }

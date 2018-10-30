@@ -1,4 +1,4 @@
-<%= form_for(label, :html => { :class => 'form-horizontal' }) do |f| %>
+<%= form_for(label, :html => {:class => 'form-horizontal'}) do |f| %>
   <% if label.errors.any? %>
     <h2><%= t('errors.validation_errors', :count => label.errors.count) %></h2>
     <ul>

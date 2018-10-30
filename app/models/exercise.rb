@@ -45,20 +45,20 @@ class Exercise < ApplicationRecord
   has_many :exercise_labels, dependent: :destroy
   has_many :labels, through: :exercise_labels
 
-  validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
+  validates :path, uniqueness: {scope: :repository_id, case_sensitive: false}, allow_nil: true
 
   before_create :generate_id
   before_create :generate_token
   before_save :check_validity
   before_update :update_config
 
-  scope :in_repository, ->(repository) { where repository: repository }
+  scope :in_repository, ->(repository) {where repository: repository}
 
-  scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
-  scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
-  scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
-  scope :by_labels, ->(labels) { includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
-  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: {name: programming_language})}
+  scope :by_name, ->(name) {where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%")}
+  scope :by_status, ->(status) {where(status: status.in?(statuses) ? status : -1)}
+  scope :by_access, ->(access) {where(access: access.in?(accesses) ? access : -1)}
+  scope :by_labels, ->(labels) {includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length)}
+  scope :by_programming_language, ->(programming_language) {includes(:programming_language).where(programming_languages: {name: programming_language})}
 
   def full_path
     return '' unless path
@@ -136,34 +136,34 @@ class Exercise < ApplicationRecord
   end
 
   def merged_config
-    Pathname.new('./' + path).parent.descend  # all parent directories
-            .map { |dir| read_dirconfig dir } # try reading their dirconfigs
-            .compact                          # remove nil entries
-            .push(config)                     # add exercise config file
-            .reduce do |h1, h2|
-              h1.deep_merge(h2) do |_, v1, v2|
-                if v1.is_a?(Array) && v2.is_a?(Array)
-                  (v1 + v2).uniq
-                else
-                  v2
-                end
-              end
-            end # reduce into single hash
+    Pathname.new('./' + path).parent.descend # all parent directories
+        .map {|dir| read_dirconfig dir} # try reading their dirconfigs
+        .compact # remove nil entries
+        .push(config) # add exercise config file
+        .reduce do |h1, h2|
+      h1.deep_merge(h2) do |_, v1, v2|
+        if v1.is_a?(Array) && v2.is_a?(Array)
+          (v1 + v2).uniq
+        else
+          v2
+        end
+      end
+    end # reduce into single hash
   end
 
   def merged_dirconfig
-    Pathname.new('./' + path).parent.descend  # all parent directories
-        .map { |dir| read_dirconfig dir } # try reading their dirconfigs
-        .compact                          # remove nil entries
+    Pathname.new('./' + path).parent.descend # all parent directories
+        .map {|dir| read_dirconfig dir} # try reading their dirconfigs
+        .compact # remove nil entries
         .reduce do |h1, h2|
-          h1.deep_merge(h2) do |_, v1, v2|
-            if v1.is_a?(Array) && v2.is_a?(Array)
-              (v1 + v2).uniq
-            else
-              v2
-            end
-          end
-        end || {} # reduce into single hash
+      h1.deep_merge(h2) do |_, v1, v2|
+        if v1.is_a?(Array) && v2.is_a?(Array)
+          (v1 + v2).uniq
+        else
+          v2
+        end
+      end
+    end || {} # reduce into single hash
   end
 
   def config_file?
@@ -195,7 +195,7 @@ class Exercise < ApplicationRecord
   def update_config
     return unless ok?
 
-    labels_to_write = labels.map{|l| l.name} - (merged_dirconfig['labels'] || [])
+    labels_to_write = labels.map {|l| l.name} - (merged_dirconfig['labels'] || [])
 
     c = config
     c.delete('visibility')
@@ -299,8 +299,8 @@ class Exercise < ApplicationRecord
   end
 
   def self.move_relations(from, to)
-    from.submissions.each{|s| s.update(exercise: to) }
-    from.series_memberships.each{|sm| sm.update(exercise: to) unless SeriesMembership.find_by(exercise: to, series: sm.series)}
+    from.submissions.each {|s| s.update(exercise: to)}
+    from.series_memberships.each {|sm| sm.update(exercise: to) unless SeriesMembership.find_by(exercise: to, series: sm.series)}
   end
 
   def safe_destroy

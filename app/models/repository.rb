@@ -19,7 +19,7 @@ class Repository < ApplicationRecord
   EXERCISE_LOCATIONS = Rails.root.join('data', 'exercises').freeze
   MEDIA_DIR = 'public'.freeze
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :name, presence: true, uniqueness: {case_sensitive: false}
   validates :remote, presence: true
 
   validate :repo_is_accessible, on: :create
@@ -80,12 +80,12 @@ class Repository < ApplicationRecord
     end.compact
 
     existing_exercises = exercise_dirs_and_configs
-                         .reject{|_, c| c['internals'].nil? || c['internals']['token'].nil?}
-                         .map {|d, c| [d, Exercise.find_by(token: c['internals']['token'], repository_id: id)]}
-                         .reject{|_, e| e.nil?}
-                         .group_by{|_, e| e}
-                         .map{|e, l| [e, l.map{|elem| elem[0]}]}
-                         .to_h
+                             .reject {|_, c| c['internals'].nil? || c['internals']['token'].nil?}
+                             .map {|d, c| [d, Exercise.find_by(token: c['internals']['token'], repository_id: id)]}
+                             .reject {|_, e| e.nil?}
+                             .group_by {|_, e| e}
+                             .map {|e, l| [e, l.map {|elem| elem[0]}]}
+                             .to_h
     handled_directories = []
     handled_exercises = []
     new_exercises = []
@@ -96,7 +96,7 @@ class Repository < ApplicationRecord
       update_exercise ex
       handled_exercises.push ex
       handled_directories.push orig_path
-      directories.reject{|dir| dir == orig_path}.each do |dir|
+      directories.reject {|dir| dir == orig_path}.each do |dir|
         new_ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id)
         new_exercises.push new_ex
         update_exercise new_ex
@@ -106,10 +106,10 @@ class Repository < ApplicationRecord
     end
 
     repository_exercises = Exercise.where(repository_id: id)
-    repository_exercises.reject{|e| handled_exercises.include? e}.each do |ex|
+    repository_exercises.reject {|e| handled_exercises.include? e}.each do |ex|
       if dirs.include?(ex.full_path) && !handled_directories.include?(ex.full_path)
         handled_directories.push ex.full_path
-        if exercise_dirs_and_configs.select{|d, _| d == ex.full_path}.first.nil?
+        if exercise_dirs_and_configs.select {|d, _| d == ex.full_path}.first.nil?
           ex.update(status: :not_valid)
         else
           update_exercise ex
@@ -120,7 +120,7 @@ class Repository < ApplicationRecord
       end
     end
 
-    exercise_dirs_and_configs.reject{|d, _| handled_directories.include? d}.each do |dir, c|
+    exercise_dirs_and_configs.reject {|d, _| handled_directories.include? d}.each do |dir, c|
       token = c['internals'] && c['internals']['token']
       if token && token.is_a?(String) && token.length == 64 && Exercise.find_by(token: token).nil?
         ex = Exercise.new(path: exercise_relative_path(dir), repository_id: id, token: token)
@@ -199,10 +199,10 @@ class Repository < ApplicationRecord
       directory.cleanpath
     else
       directory.entries
-               .reject   { |entry| entry.basename.to_path.start_with?('.') }
-               .map      { |entry| entry.expand_path(directory) }
-               .select(&:directory?)
-               .flat_map { |entry| exercise_dirs_below(entry) }
+          .reject {|entry| entry.basename.to_path.start_with?('.')}
+          .map {|entry| entry.expand_path(directory)}
+          .select(&:directory?)
+          .flat_map {|entry| exercise_dirs_below(entry)}
     end
   end
 

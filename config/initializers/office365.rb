@@ -10,11 +10,11 @@ module OmniAuth
       option :name, 'office365'
 
       option :client_options,
-             site:            'https://login.microsoftonline.com/',
-             authorize_url:   '/common/oauth2/authorize',
-             token_url:       '/common/oauth2/token'
+             site: 'https://login.microsoftonline.com/',
+             authorize_url: '/common/oauth2/authorize',
+             token_url: '/common/oauth2/token'
 
-      DEFAULT_SCOPE="openid email profile https://outlook.office.com/contacts.read"
+      DEFAULT_SCOPE = "openid email profile https://outlook.office.com/contacts.read"
 
       def authorize_params
         super.tap do |params|
@@ -29,21 +29,21 @@ module OmniAuth
       end
 
       # These are called after authentication has succeeded.
-      uid { username }
+      uid {username}
 
       info do
         {
-          username:     username,
-          first_name:   raw_info['given_name'],
-          last_name:    raw_info['family_name'],
-          email:        raw_info['upn'],
-          institution:  raw_info['tid']
+            username: username,
+            first_name: raw_info['given_name'],
+            last_name: raw_info['family_name'],
+            email: raw_info['upn'],
+            institution: raw_info['tid']
         }
       end
 
       extra do
         {
-          'raw_info' => raw_info
+            'raw_info' => raw_info
         }
       end
 

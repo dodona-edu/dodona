@@ -18,7 +18,7 @@ class ExerciseSummary
     @latest_submission = kwargs[:latest_submission] || query_submissions.first
     @timely_submission = kwargs[:timely_submission] || query_timely_submission
     @accepted_submission = kwargs[:accepted_submission] ||
-                           query_accepted_submission
+        query_accepted_submission
   end
 
   # whether latest submission is wrong, if it exists

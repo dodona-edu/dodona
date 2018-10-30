@@ -43,8 +43,8 @@ function loadResultEditor(programmingLanguage, annotations) {
         highlightActiveLine: false,
         highlightGutterLine: false,
     });
-    editor.renderer.$cursorLayer.element.style.opacity=0;
-    editor.commands.commmandKeyBinding={};
+    editor.renderer.$cursorLayer.element.style.opacity = 0;
+    editor.commands.commmandKeyBinding = {};
     editor.getSession().setUseWrapMode(true);
     editor.$blockScrolling = Infinity; // disable warning
     $("#editor-result .ace_content").click(function () {

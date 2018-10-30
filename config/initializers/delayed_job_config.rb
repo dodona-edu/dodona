@@ -7,10 +7,10 @@ Delayed::Worker.raise_signal_exceptions = :term # on kill release job
 Delayed::Worker.logger = Logger.new(File.join(Rails.root, 'log', 'delayed_job.log'))
 Delayed::Worker.default_queue_name = 'default'
 Delayed::Worker.queue_attributes = {
-    default: { priority: 0 },
-    low_priority_submissions: { priority: 10 },
-    submissions: { priority: 0 },
-    high_priority_submission: { priority: -10 },
+    default: {priority: 0},
+    low_priority_submissions: {priority: 10},
+    submissions: {priority: 0},
+    high_priority_submission: {priority: -10},
 }
 
 # If a submission delayed job fails: set the status to failed and add log
@@ -24,13 +24,13 @@ class SubmissionDjPlugin < Delayed::Plugin
         Delayed::Worker.logger.debug("Failed submission #{sub.id} by user #{sub.user_id} for exercise #{sub.exercise_id} after #{job.attempts} attempts (worker #{job.locked_by})")
         Delayed::Worker.logger.debug(job.last_error[0..10_000])
         sub.save_result ({
-          accepted: false,
-          status: 'internal error',
-          description: 'Dodona Error',
-          messages: [
-            { 'format' => 'plain', 'description' => 'Delayed job failed, due to a very unexpected error.', 'permission' => 'staff' },
-            { 'format' => 'code', 'description' => job.last_error[0..10_000], 'permission' => 'staff' }
-          ]
+            accepted: false,
+            status: 'internal error',
+            description: 'Dodona Error',
+            messages: [
+                {'format' => 'plain', 'description' => 'Delayed job failed, due to a very unexpected error.', 'permission' => 'staff'},
+                {'format' => 'code', 'description' => job.last_error[0..10_000], 'permission' => 'staff'}
+            ]
         })
         Delayed::Worker.logger.debug("Set failed status on submission #{sub.id}")
 

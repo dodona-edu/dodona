@@ -22,14 +22,14 @@
           <h5><%= t '.active_tokens' %></h5>
           <table class="table table-resource">
             <thead>
-              <tr>
-                <th><%= ApiToken.human_attribute_name("description") %></th>
-                <th><%= ApiToken.human_attribute_name("created_at") %></th>
-                <th></th>
-              </tr>
+            <tr>
+              <th><%= ApiToken.human_attribute_name("description") %></th>
+              <th><%= ApiToken.human_attribute_name("created_at") %></th>
+              <th></th>
+            </tr>
             </thead>
             <tbody id="token-list">
-              <%= render 'api_tokens/list', user: @user %>
+            <%= render 'api_tokens/list', user: @user %>
             </tbody>
           </table>
         </div>

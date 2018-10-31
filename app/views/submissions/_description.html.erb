@@ -3,9 +3,14 @@
   <%= javascript_pack_tag 'pythia_submission' if submission.judge.renderer == PythiaRenderer %>
 <% end %>
 <p>
-  <% if current_user.course_admin? submission.course %>
-    <b><%= t "submissions.show.user" %>
-      :</b> <%= link_to submission.user.full_name + " - " + submission.user.username, user_path(submission.user) %><br/>
+  <% if current_user.course_admin?(submission.course) %>
+    <b><%= t "submissions.show.user" %>:</b>
+    <% if submission.course.present? %>
+      <%= link_to submission.user.full_name, course_member_path(submission.course, submission.user) %>
+    <% else %>
+      <%= link_to submission.user.full_name, user_path(submission.user) %>
+    <% end %>
+    <br/>
   <% end %>
   <b><%= t "submissions.show.exercise" %>:</b>
   <% if submission.course.nil? %>

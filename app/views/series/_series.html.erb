@@ -81,14 +81,14 @@
           <% end %>
           <% if policy(series).show? %>
             <li>
-              <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?)) do %>
+              <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
                 <i class='material-icons md-18'>visibility</i> <%= t("series.show.show_overview") %>
               <% end %>
             </li>
           <% end %>
           <% if policy(series).download_solutions? %>
             <li>
-              <%= link_to download_solutions_series_path(series, token: (series.access_token if series.hidden?)) do %>
+              <%= link_to download_solutions_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
                 <i class='material-icons md-18'>cloud_download</i> <%= t("series.show.download_solutions") %>
               <% end %>
             </li>

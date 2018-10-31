@@ -14,6 +14,8 @@
 #
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
+  has_one_attached :code
+  has_one_attached :result
 
   enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
 
@@ -22,8 +24,6 @@ class Submission < ApplicationRecord
   belongs_to :course, optional: true
   has_one :judge, through: :exercise
   has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
-
-  delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
 
   validate :code_cannot_contain_emoji, on: :create
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
@@ -75,6 +75,36 @@ class Submission < ApplicationRecord
     @evaluate = params.delete(:evaluate)
     super
     self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
+  end
+
+  old_code = instance_method(:code)
+  define_method(:code) do
+    as_code = old_code.bind(self).()
+    if as_code.attached?
+      as_code.blob.download
+    else
+      submission_detail.code
+    end
+  end
+
+  define_method(:"code=") do |code|
+    old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code), filename: "code", content_type: 'text/plain'))
+    submission_detail.code = code if submission_detail
+  end
+
+  old_result = instance_method(:result)
+  define_method(:result) do
+    as_result = old_result.bind(self).()
+    if as_result.attached?
+      as_result.blob.download
+    else
+      submission_detail.result
+    end
+  end
+
+  define_method(:"result=") do |result|
+    old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(result), filename: "result.json", content_type: 'text/plain'))
+    submission_detail.result = result if submission_detail
   end
 
   def evaluate?

@@ -47,6 +47,6 @@ Rails.application.configure do
 
   Delayed::Worker.delay_jobs = ->(job) {job.queue != 'default'}
 
-  # Fix tests usin ActiveStorage
+  # Fix tests using ActiveStorage
   config.active_job.queue_adapter = :inline
 end

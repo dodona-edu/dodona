@@ -28,6 +28,9 @@ class SeriesController < ApplicationController
     @title = "#{@series.course.name} #{@series.name}"
     @course = @series.course
     @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t("crumbs.overview"), "#"]]
+    if params[:user_id] && current_user&.course_admin?(@course)
+      @user = User.find(params[:user_id])
+    end
   end
 
   # GET /series/new
@@ -92,7 +95,11 @@ class SeriesController < ApplicationController
   end
 
   def download_solutions
-    send_zip current_user
+    if params[:user_id] && current_user&.course_admin?(@series.course)
+      send_zip User.find(params[:user_id])
+    else
+      send_zip current_user
+    end
   end
 
   def reset_token

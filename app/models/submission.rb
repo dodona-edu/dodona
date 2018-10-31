@@ -13,7 +13,6 @@
 #  course_id   :integer
 #
 class Submission < ApplicationRecord
-  SUBMISSION_LOCATIONS = Rails.root.join('data', 'submissions').freeze
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
   has_one_attached :code
   has_one_attached :result

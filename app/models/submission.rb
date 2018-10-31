@@ -74,10 +74,36 @@ class Submission < ApplicationRecord
     raise 'please explicitly tell wheter you want to evaluate this submission' unless params.has_key? :evaluate
     @skip_rate_limit_check = params.delete(:skip_rate_limit_check) {false}
     @evaluate = params.delete(:evaluate)
-    code = params.delete(:code)
     super
     self.submission_detail = SubmissionDetail.new(id: id, code: '', result: '')
-    self.code = ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code), filename: "code.#{exercise.programming_language.extension}", content_type: 'text/plain')
+  end
+
+  old_code = instance_method(:code)
+  define_method(:code) do
+    as_code = old_code.bind(self).()
+    if as_code.attached?
+      as_code.blob.download
+    else
+      submission_detail.code
+    end
+  end
+
+  define_method(:"code=") do |code|
+    old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code), filename: "code", content_type: 'text/plain'))
+  end
+
+  old_result = instance_method(:result)
+  define_method(:result) do
+    as_result = old_result.bind(self).()
+    if as_result.attached?
+      as_result.blob.download
+    else
+      submission_detail.result
+    end
+  end
+
+  define_method(:"result=") do |result|
+    old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(result), filename: "result.json", content_type: 'text/plain'))
   end
 
   def evaluate?
@@ -99,7 +125,7 @@ class Submission < ApplicationRecord
 
     update(
         status: 'queued',
-        result: ActiveStorage::Blob.create_after_upload!(io: StringIO.new(''), filename: 'result.json', content_type: 'application/json'),
+        result: '',
         summary: nil
     )
 
@@ -112,7 +138,7 @@ class Submission < ApplicationRecord
   end
 
   def save_result(result_hash)
-    self.result = ActiveStorage::Blob.create_after_upload!(io: StringIO.new(result_hash.to_json), filename: 'result.json', content_type: 'application/json')
+    self.result = result_hash.to_json
     self.status = Submission.normalize_status result_hash[:status]
     self.accepted = result_hash[:accepted]
     self.summary = result_hash[:description]
@@ -120,7 +146,7 @@ class Submission < ApplicationRecord
   end
 
   def code_cannot_contain_emoji
-    no_emoji_found = code.blob.download.chars.all? {|c| c.bytes.length < 4}
+    no_emoji_found = code.chars.all? {|c| c.bytes.length < 4}
     errors.add(:code, 'emoji found') unless no_emoji_found
   end
 
@@ -152,5 +178,4 @@ class Submission < ApplicationRecord
                   end
     memberships.where(exercise_id: exercise_id).includes(:exercise, series: :course).find_each(&:invalidate_stats_cache)
   end
-
 end

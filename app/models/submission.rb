@@ -74,7 +74,7 @@ class Submission < ApplicationRecord
     @skip_rate_limit_check = params.delete(:skip_rate_limit_check) {false}
     @evaluate = params.delete(:evaluate)
     super
-    self.submission_detail = SubmissionDetail.new(id: id, code: '', result: '')
+    self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
   end
 
   old_code = instance_method(:code)
@@ -89,6 +89,7 @@ class Submission < ApplicationRecord
 
   define_method(:"code=") do |code|
     old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code), filename: "code", content_type: 'text/plain'))
+    submission_detail.code = code if submission_detail
   end
 
   old_result = instance_method(:result)
@@ -103,6 +104,7 @@ class Submission < ApplicationRecord
 
   define_method(:"result=") do |result|
     old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(result), filename: "result.json", content_type: 'text/plain'))
+    submission_detail.result = result if submission_detail
   end
 
   def evaluate?

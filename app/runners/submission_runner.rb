@@ -81,7 +81,7 @@ class SubmissionRunner
     (@mountsrc + @hidden_path).mkdir
     (@mountsrc + @hidden_path + 'submission').mkdir
     (@mountsrc + @hidden_path + 'submission' + 'source').open('w') do |file|
-      file.write(@submission.code.blob.download)
+      file.write(@submission.code)
     end
 
     # put workdir, evaluation and judge directories in working directory

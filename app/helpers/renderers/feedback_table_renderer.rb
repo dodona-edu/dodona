@@ -15,7 +15,7 @@ class FeedbackTableRenderer
   end
 
   def initialize(submission, user)
-    @submission = JSON.parse(submission.result.blob.download, symbolize_names: true)
+    @submission = JSON.parse(submission.result, symbolize_names: true)
     @current_user = user
     @course = submission.course
     @builder = Builder::XmlMarkup.new
@@ -233,7 +233,7 @@ class FeedbackTableRenderer
 
   def source(code, messages)
     @builder.div(id: 'editor-result') do
-      @builder.text! code.blob.download
+      @builder.text! code
     end
     @builder << "<script>$(function () {dodona.loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
   end

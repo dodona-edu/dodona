@@ -55,7 +55,7 @@
             <% end %>
             <% if policy(@exercise).submit? || !user_signed_in? %>
               <div id="editor-window" class='tex2jax_ignore'>
-                <div id="editor-text"><%= @edit_submission.try(:code)&.blob&.download || @exercise.boilerplate %></div>
+                <div id="editor-text"><%= @edit_submission.try(:code) || @exercise.boilerplate %></div>
               </div>
             <% end %>
           </div>

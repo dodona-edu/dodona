@@ -96,14 +96,14 @@ class Submission < ApplicationRecord
   define_method(:result) do
     as_result = old_result.bind(self).()
     if as_result.attached?
-      as_result.blob.download
+      ActiveSupport::Gzip.decompress(as_result.blob.download)
     else
       submission_detail.result
     end
   end
 
   define_method(:"result=") do |result|
-    old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(result), filename: "result.json", content_type: 'text/plain'))
+    old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(ActiveSupport::Gzip.compress(result)), filename: "result.json.gz", content_type: 'application/json'))
     submission_detail.result = result if submission_detail
   end
 

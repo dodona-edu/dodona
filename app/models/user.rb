@@ -195,7 +195,7 @@ class User < ApplicationRecord
     return true if exercise.access_public?
     return true if repository_admin? exercise.repository
     return false unless course
-    return false unless course.series.flat_map(&:exercises).include? exercise
+    return false unless course.series.where(visibility: [:open, :hidden]).flat_map(&:exercises).include? exercise
     return false unless exercise.repository.allowed_courses.include? course
     member_of? course
   end

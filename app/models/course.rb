@@ -165,7 +165,7 @@ class Course < ApplicationRecord
   end
 
   def average_progress
-    avg = ((100 * correct_solutions).to_d / (users.count * exercises.count).to_d)
+    avg = ((100 * correct_solutions).to_d / (users.count * exercises_count).to_d)
     avg.nan? ? 0 : avg
   end
 

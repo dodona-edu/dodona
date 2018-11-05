@@ -134,15 +134,28 @@ class User < ApplicationRecord
   end
 
   def attempted_exercises(course = nil)
-    s = submissions
-    s = s.in_course(course) if course
-    s.select('distinct exercise_id').count
+    Rails.cache.fetch("/courses/#{course.present? ? course.id : 'global'}/user/#{id}/attempted_exercises") do
+      s = submissions
+      s = s.in_course(course) if course
+      s.select('distinct exercise_id').count
+    end
   end
 
   def correct_exercises(course = nil)
-    s = submissions
-    s = s.in_course(course) if course
-    s.select('distinct exercise_id').where(status: :correct).count
+    Rails.cache.fetch("/courses/#{course.present? ? course.id : 'global'}/user/#{id}/correct_exercises") do
+      s = submissions
+      s = s.in_course(course) if course
+      s.select('distinct exercise_id').where(status: :correct).count
+    end
+  end
+
+  def invalidate_cache(course = nil)
+    if course.present?
+      Rails.cache.delete("/courses/#{course.id}/user/#{id}/correct_exercises")
+      Rails.cache.delete("/courses/#{course.id}/user/#{id}/attempted_exercises")
+    end
+    Rails.cache.delete("/courses/global/user/#{id}/correct_exercises")
+    Rails.cache.delete("/courses/global/user/#{id}/attempted_exercises")
   end
 
   def unfinished_exercises(course = nil)

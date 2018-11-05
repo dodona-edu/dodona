@@ -182,5 +182,6 @@ class Submission < ApplicationRecord
                     SeriesMembership.all
                   end
     memberships.where(exercise_id: exercise_id).includes(:exercise, series: :course).find_each(&:invalidate_stats_cache)
+    user.invalidate_cache(course: course)
   end
 end

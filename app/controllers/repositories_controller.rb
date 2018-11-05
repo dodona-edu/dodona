@@ -115,7 +115,7 @@ class RepositoriesController < ApplicationController
     success, msg = @repository.reset
     if success
       if !params.key?('commits') || params['forced'] ||
-          !params['commits'].reject {|commit| commit['author']['name'] == 'Dodona'}.empty?
+          !params['commits'].reject {|commit| commit['committer']['name'] == 'Dodona Server'}.empty?
         if current_user
           @repository.delay.process_exercises_email_errors(user: current_user)
         elsif params['pusher']

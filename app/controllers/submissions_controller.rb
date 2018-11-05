@@ -21,7 +21,7 @@ class SubmissionsController < ApplicationController
       end
     else
       if @series
-        @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, series_path(@series)]
+        @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
       elsif @course
         @crumbs << [@course.name, course_path(@course)]
       end

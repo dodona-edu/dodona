@@ -19,21 +19,4 @@ class SeriesMembership < ApplicationRecord
   default_scope {order(order: :asc)}
 
   validates :series_id, uniqueness: {scope: :exercise_id}
-
-  def cached_users_correct
-    Rails.cache.fetch("/course/#{series.course_id}/exercise/#{exercise_id}/users_correct") do
-      exercise.users_correct(course)
-    end
-  end
-
-  def cached_users_tried
-    Rails.cache.fetch("/course/#{series.course_id}/exercise/#{exercise_id}/users_tried") do
-      exercise.users_tried(course)
-    end
-  end
-
-  def invalidate_stats_cache
-    Rails.cache.delete("/course/#{series.course_id}/exercise/#{exercise_id}/users_correct")
-    Rails.cache.delete("/course/#{series.course_id}/exercise/#{exercise_id}/users_tried")
-  end
 end

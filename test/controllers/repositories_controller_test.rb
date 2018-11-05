@@ -154,15 +154,20 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
   test 'webhook with commit info should update exercises' do
     commit_info = [
       {
-        message: 'make echo private',
-        author: {
+          message: 'make echo private',
+          author: {
           name: 'Deter Pawyndt',
           email: 'deter.pawyndt@ugent.be',
           username: 'dpawyndt'
         },
-        added: [],
-        removed: [],
-        modified: [
+          committer: {
+              name: 'Deter Pawyndt',
+              email: 'deter.pawyndt@ugent.be',
+              username: 'dpawyndt'
+          },
+          added: [],
+          removed: [],
+          modified: [
           'echo/config.json'
         ]
       }

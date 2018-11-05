@@ -24,6 +24,9 @@ class User < ApplicationRecord
   include Filterable
   include StringHelper
 
+  ATTEMPTED_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/attempted_exercises".freeze
+  CORRECT_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/correct_exercises".freeze
+
   enum permission: %i[student staff zeus]
 
   belongs_to :institution, optional: true
@@ -134,7 +137,7 @@ class User < ApplicationRecord
   end
 
   def attempted_exercises(course = nil)
-    Rails.cache.fetch("/courses/#{course.present? ? course.id : 'global'}/user/#{id}/attempted_exercises") do
+    Rails.cache.fetch(ATTEMPTED_EXERCISES_CACHE_STRING % {course_id: course.present? ? course.id : 'global', id: id}) do
       s = submissions
       s = s.in_course(course) if course
       s.select('distinct exercise_id').count
@@ -142,7 +145,7 @@ class User < ApplicationRecord
   end
 
   def correct_exercises(course = nil)
-    Rails.cache.fetch("/courses/#{course.present? ? course.id : 'global'}/user/#{id}/correct_exercises") do
+    Rails.cache.fetch(CORRECT_EXERCISES_CACHE_STRING % {course_id: course.present? ? course.id : 'global', id: id}) do
       s = submissions
       s = s.in_course(course) if course
       s.select('distinct exercise_id').where(status: :correct).count
@@ -151,11 +154,11 @@ class User < ApplicationRecord
 
   def invalidate_cache(course = nil)
     if course.present?
-      Rails.cache.delete("/courses/#{course.id}/user/#{id}/correct_exercises")
-      Rails.cache.delete("/courses/#{course.id}/user/#{id}/attempted_exercises")
+      Rails.cache.delete(ATTEMPTED_EXERCISES_CACHE_STRING % {course_id: course.id, id: id})
+      Rails.cache.delete(CORRECT_EXERCISES_CACHE_STRING % {course_id: course.id, id: id})
     end
-    Rails.cache.delete("/courses/global/user/#{id}/correct_exercises")
-    Rails.cache.delete("/courses/global/user/#{id}/attempted_exercises")
+    Rails.cache.delete(ATTEMPTED_EXERCISES_CACHE_STRING % {course_id: 'global', id: id})
+    Rails.cache.delete(CORRECT_EXERCISES_CACHE_STRING % {course_id: 'global', id: id})
   end
 
   def unfinished_exercises(course = nil)

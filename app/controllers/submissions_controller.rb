@@ -14,7 +14,11 @@ class SubmissionsController < ApplicationController
     @title = I18n.t('submissions.index.title')
     @crumbs = []
     if @user
-      @crumbs << [@user.full_name, user_path(@user)]
+      if @course.present?
+        @crumbs << [@user.full_name, course_member_path(@course, @user)]
+      else
+        @crumbs << [@user.full_name, user_path(@user)]
+      end
     else
       if @series
         @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, series_path(@series)]

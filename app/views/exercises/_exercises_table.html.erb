@@ -35,10 +35,10 @@
         </td>
 
         <td>
-          <% if @course && ex.exercise.access_private? && !current_user&.can_access?(@course, ex.exercise) %>
-            <%= ex.exercise.name %>
-          <% else %>
+          <% if ex.exercise.accessible?(current_user, @course) %>
             <%= link_to ex.exercise.name, get_exercise_path.call(ex.exercise) %>
+          <% else %>
+            <%= ex.exercise.name %>
           <% end %>
         </td>
 

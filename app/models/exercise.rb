@@ -215,6 +215,22 @@ class Exercise < ApplicationRecord
     access_public? || course.usable_repositories.include?(repository)
   end
 
+  def accessible?(user, course)
+    if course.present?
+      if user&.course_admin? course
+        return false unless course.series.flat_map(&:exercises).include? self
+      else
+        return false unless course.series.where(visibility: [:open, :hidden]).flat_map(&:exercises).include? self
+      end
+      return true if user&.repository_admin? repository
+      return false unless access_public? || repository.allowed_courses.include?(course)
+      user&.member_of? course
+    else
+      return true if user&.repository_admin? repository
+      access_public?
+    end
+  end
+
   def users_correct(course = nil)
     subs = submissions.where(status: :correct)
     subs = subs.in_course(course) if course

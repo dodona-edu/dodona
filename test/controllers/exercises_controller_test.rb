@@ -270,6 +270,16 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'authenticated user should not be able to see private exercise when used in a closed series of a subscribed course' do
+    series = create :series, visibility: :closed
+    @instance = create :exercise, access: :private
+    series.exercises << @instance
+    series.course.subscribed_members << @user
+    @instance.repository.allowed_courses << series.course
+    get course_exercise_path(series.course, @instance).concat('/')
+    assert_redirected_to root_url
+  end
+
   def create_exercises_return_valid
     create :exercise, :nameless
     create :exercise, access: 'private'

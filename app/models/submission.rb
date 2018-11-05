@@ -28,7 +28,7 @@ class Submission < ApplicationRecord
   validate :code_cannot_contain_emoji, on: :create
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
-  after_update :invalidate_stats_cache
+  after_update :invalidate_caches
   after_create :evaluate_delayed, if: :evaluate?
 
   default_scope {order(id: :desc)}
@@ -175,13 +175,9 @@ class Submission < ApplicationRecord
     'unknown'
   end
 
-  def invalidate_stats_cache
-    memberships = if course
-                    course.series_memberships
-                  else
-                    SeriesMembership.all
-                  end
-    memberships.where(exercise_id: exercise_id).includes(:exercise, series: :course).find_each(&:invalidate_stats_cache)
-    user.invalidate_cache(course: course)
+  def invalidate_caches
+    course.invalidate_cache if course.present?
+    exercise.invalidate_cache(course)
+    user.invalidate_cache(course)
   end
 end

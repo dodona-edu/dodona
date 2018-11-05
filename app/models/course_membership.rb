@@ -22,11 +22,6 @@ class CourseMembership < ApplicationRecord
   validate :at_least_one_admin_per_course
 
   before_create {self.status ||= :student}
-  after_create :invalidate_stats_cache
-
-  def invalidate_stats_cache
-    SeriesMembership.where(series_id: course.series).find_each(&:invalidate_stats_cache)
-  end
 
   def at_least_one_admin_per_course
     if status_was == 'course_admin' &&

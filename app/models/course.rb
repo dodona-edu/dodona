@@ -129,11 +129,11 @@ class Course < ApplicationRecord
     self.secret = SecureRandom.urlsafe_base64(5)
   end
 
-  def invalidate_stats_cache
+  def invalidate_cache
     Rails.cache.delete("/courses/#{id}/correct_solutions")
   end
 
-  def correct_solutions_cached
+  def correct_solutions
     Rails.cache.fetch("/courses/#{id}/correct_solutions") do
       Submission.where(status: 'correct',
                        course: self)
@@ -145,7 +145,7 @@ class Course < ApplicationRecord
   end
 
   def average_progress
-    avg = ((100 * correct_solutions_cached).to_d / (users.count * exercises.count).to_d)
+    avg = ((100 * correct_solutions).to_d / (users.count * exercises.count).to_d)
     avg.nan? ? 0 : avg
   end
 

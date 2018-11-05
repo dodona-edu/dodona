@@ -55,7 +55,7 @@ class SubmissionsController < ApplicationController
     can_submit = true
     if @submission.exercise.present?
       can_submit &&= Pundit.policy!(current_user, @submission.exercise).submit?
-      can_submit &&= current_user.can_access?(@submission.course, @submission.exercise)
+      can_submit &&= @submission.exercise.accessible?(current_user, @submission.course)
     end
     if can_submit && @submission.save
       render json: {status: 'ok', id: @submission.id, url: submission_url(@submission, format: :json)}

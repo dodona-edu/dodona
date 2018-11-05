@@ -51,8 +51,6 @@ class SeriesMembershipTest < ActiveSupport::TestCase
     users_tried = @membership.cached_users_tried
     users_correct = @membership.cached_users_correct
 
-    @membership.invalidate_stats_cache
-
     Exercise.any_instance.expects(:users_tried).once.returns(users_tried)
     Exercise.any_instance.expects(:users_correct).once.returns(users_correct)
 

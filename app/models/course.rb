@@ -129,7 +129,27 @@ class Course < ApplicationRecord
     self.secret = SecureRandom.urlsafe_base64(5)
   end
 
-  def invalidate_cache
+  def invalidate_subscribed_members_count_cache
+    Rails.cache.delete("/courses/#{id}/subscribed_members_count")
+  end
+
+  def subscribed_members_count
+    Rails.cache.fetch("/courses/#{id}/subscribed_members_count") do
+      subscribed_members.count
+    end
+  end
+
+  def invalidate_exercises_count_cache
+    Rails.cache.delete("/courses/#{id}/exercises_count")
+  end
+
+  def exercises_count
+    Rails.cache.fetch("/courses/#{id}/exercises_count") do
+      exercises.count
+    end
+  end
+
+  def invalidate_correct_solutions_cache
     Rails.cache.delete("/courses/#{id}/correct_solutions")
   end
 

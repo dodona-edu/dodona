@@ -176,7 +176,7 @@ class Submission < ApplicationRecord
   end
 
   def invalidate_caches
-    course.invalidate_cache if course.present?
+    course.invalidate_correct_solutions_cache if course.present?
     exercise.invalidate_cache(course)
     user.invalidate_cache(course)
   end

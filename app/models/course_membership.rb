@@ -22,6 +22,8 @@ class CourseMembership < ApplicationRecord
   validate :at_least_one_admin_per_course
 
   before_create {self.status ||= :student}
+  after_update :invalidate_caches
+  before_destroy :invalidate_caches
 
   def at_least_one_admin_per_course
     if status_was == 'course_admin' &&
@@ -31,5 +33,9 @@ class CourseMembership < ApplicationRecord
             .where.not(id: id).empty?
       errors.add(:status, :at_least_one_admin_per_course)
     end
+  end
+
+  def invalidate_caches
+    course.invalidate_subscribed_members_count_cache
   end
 end

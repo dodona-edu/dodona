@@ -8,8 +8,6 @@
 #  order           :integer          default(999)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  users_correct   :integer
-#  users_attempted :integer
 #
 
 class SeriesMembership < ApplicationRecord
@@ -23,25 +21,19 @@ class SeriesMembership < ApplicationRecord
   validates :series_id, uniqueness: {scope: :exercise_id}
 
   def cached_users_correct
-    if users_correct.nil?
-      self.users_correct = exercise.users_correct(course)
-      save
+    Rails.cache.fetch("/course/#{series.course_id}/exercise/#{exercise_id}/users_correct") do
+      exercise.users_correct(course)
     end
-    users_correct
   end
 
   def cached_users_tried
-    if users_attempted.nil?
-      self.users_attempted = exercise.users_tried(course)
-      save
+    Rails.cache.fetch("/course/#{series.course_id}/exercise/#{exercise_id}/users_tried") do
+      exercise.users_tried(course)
     end
-    users_attempted
   end
 
   def invalidate_stats_cache
-    course.invalidate_stats_cache
-    self.users_correct = nil
-    self.users_attempted = nil
-    save
+    Rails.cache.delete("/course/#{series.course_id}/exercise/#{exercise_id}/users_correct")
+    Rails.cache.delete("/course/#{series.course_id}/exercise/#{exercise_id}/users_tried")
   end
 end

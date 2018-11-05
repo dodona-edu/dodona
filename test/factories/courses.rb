@@ -11,7 +11,6 @@
 #  description       :text(65535)
 #  visibility        :integer          default("visible")
 #  registration      :integer          default("open")
-#  correct_solutions :integer
 #  color             :integer
 #  teacher           :string(255)      default("")
 #

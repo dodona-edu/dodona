@@ -11,7 +11,6 @@
 #  description       :text(65535)
 #  visibility        :integer          default("visible")
 #  registration      :integer          default("open")
-#  correct_solutions :integer
 #  color             :integer
 #  teacher           :string(255)      default("")
 #  institution_id    :integer
@@ -131,20 +130,18 @@ class Course < ApplicationRecord
   end
 
   def invalidate_stats_cache
-    update(correct_solutions: nil)
+    Rails.cache.delete("/courses/#{id}/correct_solutions")
   end
 
   def correct_solutions_cached
-    if correct_solutions.nil?
-      self.correct_solutions = Submission.where(status: 'correct',
-                                                course: self)
-                                   .select(:exercise_id,
-                                           :user_id)
-                                   .distinct
-                                   .count
-      save
+    Rails.cache.fetch("/courses/#{id}/correct_solutions") do
+      Submission.where(status: 'correct',
+                       course: self)
+          .select(:exercise_id,
+                  :user_id)
+          .distinct
+          .count
     end
-    correct_solutions
   end
 
   def average_progress

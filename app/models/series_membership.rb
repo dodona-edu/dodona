@@ -19,4 +19,10 @@ class SeriesMembership < ApplicationRecord
   default_scope {order(order: :asc)}
 
   validates :series_id, uniqueness: {scope: :exercise_id}
+  after_update :invalidate_caches
+  before_destroy :invalidate_caches
+
+  def invalidate_caches
+    course.invalidate_exercises_count_cache
+  end
 end

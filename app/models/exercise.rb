@@ -200,13 +200,13 @@ class Exercise < ApplicationRecord
     c = config
     c.delete('visibility')
     c['access'] = access if defined?(access) && access != merged_config['access']
-    c['description']['names']['nl'] = name_nl
-    c['description']['names']['en'] = name_en
+    c['description']['names']['nl'] = name_nl if name_nl.present? || c['description']['names']['nl'].present?
+    c['description']['names']['en'] = name_en if name_en.present? || c['description']['names']['en'].present?
     c['internals'] = {}
     c['internals']['token'] = token
     c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
-    if (labels_to_write & (merged_config['labels'] || [])) != labels_to_write || labels_to_write == []
-      c['labels'] = labels_to_write
+    if (labels_to_write & (merged_config['labels'] || [])) != labels_to_write
+      c['labels'] = labels_to_write if labels_to_write.present? || c['labels'].present?
     end
     store_config c
   end

@@ -118,6 +118,10 @@ class SeriesSummary
     @series.deadline&.past? && !all?(&:solved_before_deadline?)
   end
 
+  def deadline_met?
+    @series.deadline&.past? && all?(&:solved_before_deadline?)
+  end
+
   private
 
   def mk_exercise_summary(ex, **kwargs)

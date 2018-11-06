@@ -1,5 +1,45 @@
 <% if summary.present? %>
-  <div class="card-title-icon <%= summary.full_status %>">
+  <% tooltip = if summary.series.deadline.present?
+                 if summary.deadline_missed?
+                   if summary.completed?
+                     t ".completed_after_deadline_missed"
+                   elsif summary.wrong?
+                     t ".wrong_after_deadline_missed"
+                   elsif summary.started?
+                     t ".started_after_deadline_missed"
+                   else
+                     t ".unstarted_after_deadline_missed"
+                   end
+                 elsif summary.deadline_met?
+                   if summary.completed?
+                     t ".completed_after_deadline_met"
+                   else
+                     t ".wrong_after_deadline_met"
+                   end # started and unstarted are impossible after deadline met
+                 else
+                   if summary.completed?
+                     t ".completed_before_deadline"
+                   elsif summary.wrong?
+                     t ".wrong_before_deadline"
+                   elsif summary.started?
+                     t ".started_before_deadline"
+                   else
+                     t ".unstarted_before_deadline"
+                   end
+                 end
+               else
+                 if summary.completed?
+                   t ".completed_no_deadline"
+                 elsif summary.wrong?
+                   t ".wrong_no_deadline"
+                 elsif summary.started?
+                   t ".started_no_deadline"
+                 else
+                   t ".unstarted_no_deadline"
+                 end
+               end
+  %>
+  <div class="card-title-icon <%= summary.full_status %>" title="<%= tooltip %>">
     <i class="material-icons">
       <% if summary.completed? %>
         done

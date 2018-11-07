@@ -168,7 +168,7 @@ class FeedbackTableRenderer
   end
 
   def test_failed(t)
-    @builder.div(class: 'test-accepted') do
+    @builder.div(class: 'test-failed') do
       diff(t)
     end
   end
@@ -186,19 +186,11 @@ class FeedbackTableRenderer
   end
 
   def diff_unified(t)
-    @builder << Diffy::Diff.new(t[:generated], t[:expected]).to_s(:html)
+    @builder << LCSHtmlDiffer.new(t[:generated], t[:expected]).unified
   end
 
   def diff_split(t)
-    d = Diffy::SplitDiff.new(t[:generated], t[:expected], format: :html)
-    @builder.div(class: 'row') do
-      @builder.div(class: 'col-sm-6 col-xs-12', title: I18n.t('submissions.show.generated')) do
-        @builder << d.left
-      end
-      @builder.div(class: 'col-sm-6 col-xs-12', title: I18n.t('submissions.show.expected')) do
-        @builder << d.right
-      end
-    end
+    @builder << LCSHtmlDiffer.new(t[:generated], t[:expected]).split
   end
 
   def message(m)

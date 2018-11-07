@@ -3,7 +3,7 @@ class LCSHtmlDiffer
   require 'builder'
 
   def initialize(generated, expected)
-    @diff = Diff::LCS.sdiff(generated.split("\n"), expected.split("\n"))
+    @diff = Diff::LCS.sdiff(generated&.split("\n", -1) || [], expected&.split("\n", -1) || [])
     @builder = Builder::XmlMarkup.new
   end
 

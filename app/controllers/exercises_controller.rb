@@ -52,7 +52,7 @@ class ExercisesController < ApplicationController
   def show
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     # We still need to check access because an unauthenticated user should be able to see public exercises
-    if @exercise.access_private? && !current_user&.can_access?(@course, @exercise)
+    unless @exercise.accessible?(current_user, @course)
       raise Pundit::NotAuthorizedError, "Not allowed"
     end
 
@@ -129,7 +129,11 @@ class ExercisesController < ApplicationController
   def set_series
     return if params[:series_id].nil?
     @series = Series.find(params[:series_id])
-    @crumbs << [@series.name, course_path(@course, anchor: @series.anchor)]
+    if @series.hidden?
+      @crumbs << [@series.name, series_path(@series)]
+    else
+      @crumbs << [@series.name, course_path(@series.course, anchor: @series.anchor)]
+    end
     authorize @series
   end
 end

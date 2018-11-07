@@ -14,10 +14,14 @@ class SubmissionsController < ApplicationController
     @title = I18n.t('submissions.index.title')
     @crumbs = []
     if @user
-      @crumbs << [@user.full_name, user_path(@user)]
+      if @course.present?
+        @crumbs << [@user.full_name, course_member_path(@course, @user)]
+      else
+        @crumbs << [@user.full_name, user_path(@user)]
+      end
     else
       if @series
-        @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, series_path(@series)]
+        @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
       elsif @course
         @crumbs << [@course.name, course_path(@course)]
       end
@@ -51,7 +55,7 @@ class SubmissionsController < ApplicationController
     can_submit = true
     if @submission.exercise.present?
       can_submit &&= Pundit.policy!(current_user, @submission.exercise).submit?
-      can_submit &&= current_user.can_access?(@submission.course, @submission.exercise)
+      can_submit &&= @submission.exercise.accessible?(current_user, @submission.course)
     end
     if can_submit && @submission.save
       render json: {status: 'ok', id: @submission.id, url: submission_url(@submission, format: :json)}

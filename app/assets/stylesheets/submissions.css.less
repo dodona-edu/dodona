@@ -82,14 +82,13 @@
   }
   .diff td.ins {
     background: #dfd;
-    color: #080;
   }
   .diff td.del {
     background: #fee;
-    color: #b00;
   }
   .diff .line-nr {
-    background: @grey-300;
+    background: @grey-50;
+    color: @black-secondary;
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -110,7 +109,7 @@
   .diff .del,
   .diff .ins,
   .diff .unchanged {
-    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    word-wrap: break-word;
     word-break: break-all;
     white-space: normal;
     font-family: @font-family-monospace;

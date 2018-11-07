@@ -14,6 +14,15 @@ class LCSHtmlDiffer
         @builder.col(class: 'line-nr')
         @builder.col(class: 'output')
       end
+      @builder.thead do
+        @builder.th(class: 'line-nr', title: I18n.t("submissions.show.generated")) do
+          @builder.i(class: 'mdi mdi-18 mdi-file-account')
+        end
+        @builder.th(class: 'line-nr', title: I18n.t("submissions.show.expected")) do
+          @builder.i(class: 'mdi mdi-18 mdi-file-check')
+        end
+        @builder.th
+      end
       @builder.tbody do
         @diff.each do |chunk|
           case chunk.action
@@ -83,6 +92,16 @@ class LCSHtmlDiffer
         @builder.col(class: 'del-output')
         @builder.col(class: 'line-nr')
         @builder.col(class: 'ins-output')
+      end
+      @builder.thead do
+        @builder.th(class: 'line-nr', title: I18n.t("submissions.show.generated")) do
+          @builder.i(class: 'mdi mdi-18 mdi-file-account')
+        end
+        @builder.th
+        @builder.th(class: 'line-nr', title: I18n.t("submissions.show.expected")) do
+          @builder.i(class: 'mdi mdi-18 mdi-file-check')
+        end
+        @builder.th
       end
       @builder.tbody do
         @diff.each do |chunk|

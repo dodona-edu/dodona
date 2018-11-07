@@ -97,11 +97,15 @@ class LCSHtmlDiffer
         @builder.th(class: 'line-nr', title: I18n.t("submissions.show.generated")) do
           @builder.i(class: 'mdi mdi-18 mdi-file-account')
         end
-        @builder.th
+        @builder.th do
+          @builder << I18n.t("submissions.show.generated")
+        end
         @builder.th(class: 'line-nr', title: I18n.t("submissions.show.expected")) do
           @builder.i(class: 'mdi mdi-18 mdi-file-check')
         end
-        @builder.th
+        @builder.th do
+          @builder << I18n.t("submissions.show.expected")
+        end
       end
       @builder.tbody do
         @diff.each do |chunk|

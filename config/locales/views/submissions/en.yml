@@ -32,7 +32,7 @@ en:
       code: Code
       line: Line
       reevaluate: Re-evaluate
-      generated: generated output
-      expected: expected output
+      generated: Generated output
+      expected: Expected output
       edit: Edit submission
       in: "in"

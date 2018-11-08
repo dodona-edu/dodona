@@ -1,0 +1,41 @@
+<%= form_for(version, :html => {:class => 'form-horizontal'}) do |f| %>
+  <% if version.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= t("errors.validation_errors", :count => version.errors.count) %></h2>
+      <ul>
+        <% version.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group">
+    <div class="row">
+      <%= f.label :tag, :class => "col-sm-2 control-label" %>
+      <div class="col-sm-4"><%= f.text_field :tag, class: "form-control", disabled: !f.permission?(:tag) %></div>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <div class="row">
+      <%= f.label :release, :class => "col-sm-2 control-label" %>
+      <div class="col-sm-4"><%= f.date_select :release, class: "form-control", disabled: !f.permission?(:release) %></div>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <%= f.label :draft do %>
+          <%= f.check_box :draft %>
+          <%= Series.human_attribute_name(:draft) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= f.rich_text_area :notes %>
+  </div>
+<% end %>

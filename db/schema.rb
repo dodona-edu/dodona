@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_13_103618) do
+ActiveRecord::Schema.define(version: 2018_11_13_103619) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -254,6 +254,15 @@ ActiveRecord::Schema.define(version: 2018_11_13_103618) do
     t.index ["token"], name: "index_users_on_token"
     t.index ["username", "institution_id"], name: "index_users_on_username_and_institution_id", unique: true
     t.index ["username"], name: "index_users_on_username"
+  end
+
+  create_table "versions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "tag", null: false
+    t.date "release", null: false
+    t.boolean "draft", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag"], name: "index_versions_on_tag", unique: true
   end
 
   add_foreign_key "course_repositories", "courses"

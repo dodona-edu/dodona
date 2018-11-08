@@ -15,7 +15,7 @@ class LCSHtmlDiffer
         @builder.col(class: 'output')
       end
       @builder.thead do
-        @builder.th(class: 'line-nr', title: I18n.t("submissions.show.generated")) do
+        @builder.th(class: 'line-nr', title: I18n.t('submissions.show.your_output')) do
           @builder.i(class: 'mdi mdi-18 mdi-file-account')
         end
         @builder.th(class: 'line-nr', title: I18n.t("submissions.show.expected")) do
@@ -94,11 +94,11 @@ class LCSHtmlDiffer
         @builder.col(class: 'ins-output')
       end
       @builder.thead do
-        @builder.th(class: 'line-nr', title: I18n.t("submissions.show.generated")) do
+        @builder.th(class: 'line-nr', title: I18n.t('submissions.show.your_output')) do
           @builder.i(class: 'mdi mdi-18 mdi-file-account')
         end
         @builder.th do
-          @builder << I18n.t("submissions.show.generated")
+          @builder << I18n.t('submissions.show.your_output')
         end
         @builder.th(class: 'line-nr', title: I18n.t("submissions.show.expected")) do
           @builder.i(class: 'mdi mdi-18 mdi-file-check')

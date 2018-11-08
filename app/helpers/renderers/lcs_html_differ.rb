@@ -175,19 +175,51 @@ class LCSHtmlDiffer
   def diff_strings(generated, expected)
     exp_result = ""
     gen_result = ""
+    in_exp_strong = false
+    in_gen_strong = false
     Diff::LCS.sdiff(generated, expected) do |chunk|
       case chunk.action
       when "-"
-        gen_result += "<strong>#{CGI::escape_html chunk.old_element}</strong>"
+        unless in_gen_strong
+          gen_result += "<strong>"
+          in_gen_strong = true
+        end
+        gen_result += CGI::escape_html chunk.old_element
       when "+"
-        exp_result += "<strong>#{CGI::escape_html chunk.new_element}</strong>"
+        unless in_exp_strong
+          exp_result += "<strong>"
+          in_exp_strong = true
+        end
+        exp_result += CGI::escape_html chunk.new_element
       when "="
+        if in_gen_strong
+          gen_result += "</strong>"
+          in_gen_strong = false
+        end
+        if in_exp_strong
+          exp_result += "</strong>"
+          in_exp_strong = false
+        end
         gen_result += CGI::escape_html chunk.old_element
         exp_result += CGI::escape_html chunk.new_element
       when "!"
-        gen_result += "<strong>#{CGI::escape_html chunk.old_element}</strong>"
-        exp_result += "<strong>#{CGI::escape_html chunk.new_element}</strong>"
+        unless in_gen_strong
+          gen_result += "<strong>"
+          in_gen_strong = true
+        end
+        unless in_exp_strong
+          exp_result += "<strong>"
+          in_exp_strong = true
+        end
+        gen_result += CGI::escape_html chunk.old_element
+        exp_result += CGI::escape_html chunk.new_element
       end
+    end
+    if in_gen_strong
+      gen_result += "</strong>"
+    end
+    if in_exp_strong
+      exp_result += "</strong>"
     end
     [gen_result, exp_result]
   end

@@ -60,6 +60,8 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     attrs = generate_attr_hash
     course = create :course
     course.subscribed_members << @zeus
+    course.series << create(:series)
+    course.series.first.exercises << Exercise.find(attrs[:exercise_id])
     attrs[:course_id] = course.id
 
     submission = create_request_expect attr_hash: attrs

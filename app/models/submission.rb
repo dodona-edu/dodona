@@ -107,7 +107,7 @@ class Submission < ApplicationRecord
     submission_detail.result = result if submission_detail
   end
 
-  def copied_to_activestorage?
+  define_method(:"copied_to_activestorage?") do
     old_code.bind(self).().attached? && old_result.bind(self).().attached?
   end
 

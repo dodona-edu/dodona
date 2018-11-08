@@ -11,7 +11,6 @@
 #  description       :text(65535)
 #  visibility        :integer          default("visible")
 #  registration      :integer          default("open")
-#  correct_solutions :integer
 #  color             :integer
 #  teacher           :string(255)      default("")
 #  institution_id    :integer
@@ -23,6 +22,10 @@ require 'csv'
 
 class Course < ApplicationRecord
   include Filterable
+
+  SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = "/courses/%{id}/subscribed_members_count".freeze
+  EXERCISES_COUNT_CACHE_STRING = "/courses/%{id}/exercises_count".freeze
+  CORRECT_SOLUTIONS_CACHE_STRING = "/courses/%{id}/correct_solutions".freeze
 
   belongs_to :institution, optional: true
 
@@ -130,25 +133,43 @@ class Course < ApplicationRecord
     self.secret = SecureRandom.urlsafe_base64(5)
   end
 
-  def invalidate_stats_cache
-    update(correct_solutions: nil)
+  def invalidate_subscribed_members_count_cache
+    Rails.cache.delete(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING % {id: id})
   end
 
-  def correct_solutions_cached
-    if correct_solutions.nil?
-      self.correct_solutions = Submission.where(status: 'correct',
-                                                course: self)
-                                   .select(:exercise_id,
-                                           :user_id)
-                                   .distinct
-                                   .count
-      save
+  def subscribed_members_count
+    Rails.cache.fetch(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING % {id: id}) do
+      subscribed_members.count
     end
-    correct_solutions
+  end
+
+  def invalidate_exercises_count_cache
+    Rails.cache.delete(EXERCISES_COUNT_CACHE_STRING % {id: id})
+  end
+
+  def exercises_count
+    Rails.cache.fetch(EXERCISES_COUNT_CACHE_STRING % {id: id}) do
+      exercises.count
+    end
+  end
+
+  def invalidate_correct_solutions_cache
+    Rails.cache.delete(CORRECT_SOLUTIONS_CACHE_STRING % {id: id})
+  end
+
+  def correct_solutions
+    Rails.cache.fetch(CORRECT_SOLUTIONS_CACHE_STRING % {id: id}) do
+      Submission.where(status: 'correct',
+                       course: self)
+          .select(:exercise_id,
+                  :user_id)
+          .distinct
+          .count
+    end
   end
 
   def average_progress
-    avg = ((100 * correct_solutions_cached).to_d / (users.count * exercises.count).to_d)
+    avg = ((100 * correct_solutions).to_d / (users.count * exercises_count).to_d)
     avg.nan? ? 0 : avg
   end
 

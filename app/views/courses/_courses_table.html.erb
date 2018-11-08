@@ -34,7 +34,7 @@
         <td title="<%= course.name %>" class="text"><span><%= link_to course.name, course %></span></td>
         <td title="<%= course.teacher %>" class="text"><span><%= course.teacher %></span></td>
         <td><%= course.formatted_year %></td>
-        <td><%= course.subscribed_members.count %></td>
+        <td><%= course.subscribed_members_count %></td>
         <% if @repository %>
           <% show_delete_button = local_assigns.fetch(:show_delete_button, false) %>
           <td class="repository-course-button-cell" data-course_id="<%= course.id %>" data-repository_id="<%= @repository.id %>">

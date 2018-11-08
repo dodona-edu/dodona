@@ -174,7 +174,7 @@ class FeedbackTableRenderer
   end
 
   def diff(t)
-    diff_unified(t)
+    diff_heuristical(t)
   end
 
   def diff_heuristical(t)

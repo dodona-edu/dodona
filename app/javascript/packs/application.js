@@ -9,21 +9,20 @@
 
 
 import Rails from "rails-ujs";
+import jQuery from "jquery";
+import "polyfills.js";
+import "drawer.js";
+import {showNotification} from "notifications.js";
+import {checkTimeZone, initClipboard, initCSRF} from "util.js";
+import "actiontext";
 
 Rails.start();
-
-import jQuery from "jquery";
 
 // jQuery aliases
 window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
 
-
-import "polyfills.js";
-import "drawer.js";
-import {showNotification} from "notifications.js";
-import {initClipboard, checkTimeZone, initCSRF} from "util.js";
 
 // Initialize clipboard.js
 initClipboard();

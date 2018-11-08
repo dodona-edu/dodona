@@ -224,6 +224,7 @@ class Exercise < ApplicationRecord
       end
       return true if user&.repository_admin? repository
       return false unless access_public? || repository.allowed_courses.include?(course)
+      return true if course.public?
       user&.member_of? course
     else
       return true if user&.repository_admin? repository

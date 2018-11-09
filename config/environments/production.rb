@@ -111,6 +111,15 @@ Rails.application.configure do
           channel: 'dodona',
           username: 'Dodona-server',
           avatar: 'https://dodona.ugent.be/icon.png'
+      },
+      slack: {
+          webhook_url: 'https://hooks.slack.com/services/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',
+          channel: '#dodona',
+          username: 'Dodona-server',
+          additional_parameters: {
+              icon_url: 'https://dodona.ugent.be/icon.png',
+              mrkdwn: true
+          }
       }
   }
 

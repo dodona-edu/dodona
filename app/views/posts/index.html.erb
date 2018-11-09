@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t '.news' %></h2>
+      </div>
+    </div>
+    <% @posts.each do |post| %>
+      <%= render 'post', post: post, show_new: @posts.first == post %>
+    <% end %>
+  </div>
+</div>
+<center>
+  <%= page_navigation_links @posts, false, 'posts' %>
+</center>

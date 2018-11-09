@@ -4,11 +4,11 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t '.title' %></h2>
         <div class="card-title-fab">
-          <%= render 'application/fab_button', form: 'new_version', icon: 'done' %>
+          <%= render 'application/fab_button', form: 'new_post', icon: 'done' %>
         </div>
       </div>
       <div class="card-supporting-text">
-        <%= render 'form', version: @version %>
+        <%= render 'form', post: @post %>
       </div>
     </div>
   </div>

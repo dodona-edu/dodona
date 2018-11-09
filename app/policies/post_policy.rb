@@ -1,4 +1,4 @@
-class VersionPolicy < ApplicationPolicy
+class PostPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user&.zeus?
@@ -7,6 +7,11 @@ class VersionPolicy < ApplicationPolicy
         scope.where(draft: false)
       end
     end
+  end
+
+  def show?
+    return true if user&.zeus?
+    !record.draft
   end
 
   def index?
@@ -27,7 +32,7 @@ class VersionPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.zeus?
-      %i[tag notes draft release]
+      %i[title content draft release]
     else
       %i[]
     end

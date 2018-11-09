@@ -1,0 +1,7 @@
+nl:
+  posts:
+    index:
+      title: Posts
+      news: "Nieuws"
+    new:
+      title: Nieuwe post

@@ -32,7 +32,7 @@ nl:
       code: Code
       line: Regel
       reevaluate: Herevalueren
-      generated: gegenereerde uitvoer
-      expected: verwachte uitvoer
+      your_output: Jouw uitvoer
+      expected: Verwachte uitvoer
       edit: Wijzig oplossing
       in: "in"

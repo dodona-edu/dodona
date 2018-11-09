@@ -59,57 +59,78 @@
     font-size: 13px;
     white-space: pre-wrap;
   }
-  .diff ul {
+  table.diff {
     overflow: auto;
     font-size: 13px;
     list-style: none;
     margin: 0;
     padding: 0;
-    display: table;
+    width: 100%;
+    td {
+      vertical-align: top;
+    }
+    td.line-nr {
+      text-align: right;
+    }
+    th {
+      font-weight: normal;
+      padding-left: 5px;
+      padding-right: 5px;
+      background: @grey-50;
+      color: @black-secondary;
+      vertical-align: center;
+    }
+  }
+  .diff .del,
+  .diff .ins,
+  .diff .unchanged {
+    text-decoration: none;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .diff td.ins {
+    background: #B9F6CA;
+  }
+  .diff td.del {
+    background: #FFCDD2;
+  }
+  .diff .line-nr {
+    background: @grey-50;
+    color: @black-secondary;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .diff .output {
     width: 100%;
   }
-  .diff del,
-  .diff ins {
-    display: block;
-    text-decoration: none;
+  .diff .ins-output,
+  .diff .del-output {
+    width: 50%;
+    max-width: 50%;
   }
-  .diff li {
+  .diff .tr {
     padding: 0;
-    display: table-row;
     margin: 0;
-    height: 1em;
+    line-height: 1.0;
   }
-  .diff li.ins {
-    background: #dfd;
-    color: #080;
-  }
-  .diff li.del {
-    background: #fee;
-    color: #b00;
-  }
-  /*.diff li:hover {
-      background: #ffc;
-  }*/
   /* try 'whitespace:pre;' if you don't want lines to wrap */
-  .diff del,
-  .diff ins,
-  .diff span {
-    white-space: pre-wrap;
+  .diff .del,
+  .diff .ins,
+  .diff .unchanged {
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
     font-family: @font-family-monospace;
   }
-  .diff del strong {
+  .diff .ins strong {
     font-weight: normal;
-    background: #fcc;
+    background: #69F0AE;
+    border-radius: 0.2em;
   }
-  .diff ins strong {
+  .diff .del strong {
     font-weight: normal;
-    background: #9f9;
-  }
-  .diff li.diff-comment {
-    display: none;
-  }
-  .diff li.diff-block-info {
-    background: none repeat scroll 0 0 gray;
+    background: #FF8A80;
+    border-radius: 0.2em;
   }
   .linter pre {
     border: none;

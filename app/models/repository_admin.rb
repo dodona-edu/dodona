@@ -2,9 +2,11 @@
 #
 # Table name: repository_admins
 #
-#  id            :integer         not null, primary key
-#  repository_id :integer         not null
-#  user_id       :integer         not null
+#  id            :bigint(8)        not null, primary key
+#  repository_id :integer          not null
+#  user_id       :integer          not null
+#
+
 class RepositoryAdmin < ApplicationRecord
   before_destroy :at_least_one_admin_per_repository
 

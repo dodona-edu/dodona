@@ -6,9 +6,9 @@
 #  course_id  :integer
 #  user_id    :integer
 #  status     :integer          default("student")
-#  favorite   :boolean          default(false)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  favorite   :boolean          default(FALSE)
 #
 
 class CourseMembership < ApplicationRecord

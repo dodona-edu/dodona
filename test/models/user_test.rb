@@ -14,7 +14,8 @@
 #  lang           :string(255)      default("nl")
 #  token          :string(255)
 #  time_zone      :string(255)      default("Brussels")
-#  institution_id :integer
+#  institution_id :bigint(8)
+#  search         :string(4096)
 #
 
 require 'test_helper'

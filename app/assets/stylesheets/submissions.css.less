@@ -80,57 +80,99 @@
       color: @black-secondary;
       vertical-align: center;
     }
+    .del,
+    .ins,
+    .unchanged {
+      text-decoration: none;
+      padding-left: 5px;
+      padding-right: 5px;
+      word-wrap: break-word;
+      word-break: break-all;
+      white-space: normal;
+      font-family: @font-family-monospace;
+    }
+    .ins {
+      background: #B9F6CA;
+    }
+    .del {
+      background: #FFCDD2;
+    }
+    .line-nr {
+      background: @grey-50;
+      color: @black-secondary;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .output {
+      width: 100%;
+    }
+    .ins-output,
+    .del-output {
+      width: 50%;
+      max-width: 50%;
+    }
+    .tr {
+      padding: 0;
+      margin: 0;
+      line-height: 1.0;
+    }
+    .ins strong {
+      font-weight: normal;
+      background: #69F0AE;
+      border-radius: 0.2em;
+    }
+    .del strong {
+      font-weight: normal;
+      background: #FF8A80;
+      border-radius: 0.2em;
+    }
   }
-  .diff .del,
-  .diff .ins,
-  .diff .unchanged {
-    text-decoration: none;
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-  .diff td.ins {
-    background: #B9F6CA;
-  }
-  .diff td.del {
-    background: #FFCDD2;
-  }
-  .diff .line-nr {
-    background: @grey-50;
-    color: @black-secondary;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-  .diff .output {
-    width: 100%;
-  }
-  .diff .ins-output,
-  .diff .del-output {
-    width: 50%;
-    max-width: 50%;
-  }
-  .diff .tr {
-    padding: 0;
+  .diff ul {
+    overflow: auto;
+    font-size: 13px;
+    list-style: none;
     margin: 0;
-    line-height: 1.0;
-  }
-  /* try 'whitespace:pre;' if you don't want lines to wrap */
-  .diff .del,
-  .diff .ins,
-  .diff .unchanged {
-    word-wrap: break-word;
-    word-break: break-all;
-    white-space: normal;
-    font-family: @font-family-monospace;
-  }
-  .diff .ins strong {
-    font-weight: normal;
-    background: #69F0AE;
-    border-radius: 0.2em;
-  }
-  .diff .del strong {
-    font-weight: normal;
-    background: #FF8A80;
-    border-radius: 0.2em;
+    padding: 0;
+    display: table;
+    width: 100%;
+    li.diff-block-info {
+      background: none repeat scroll 0 0 gray;
+    }
+    del,
+    ins {
+      display: block;
+      text-decoration: none;
+    }
+    li {
+      padding: 0;
+      display: table-row;
+      margin: 0;
+      height: 1em;
+    }
+    li.ins {
+      background: #B9F6CA;
+    }
+    li.del {
+      background: #FFCDD2;
+    }
+    del, ins, span {
+      white-space: pre-wrap;
+      font-family: @font-family-monospace;
+
+    }
+    del strong {
+      font-weight: normal;
+      background: #FF8A80;
+      border-radius: 0.2em;
+    }
+    ins strong {
+      font-weight: normal;
+      background: #69F0AE;
+      border-radius: 0.2em;
+    }
+    li.diff-comment {
+      display: none;
+    }
   }
   .linter pre {
     border: none;

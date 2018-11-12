@@ -53,7 +53,7 @@ class FeedbackTableRenderer
             end
           end
           if show_code_tab
-            @builder.li(class: ('active' unless submission[:groups])) do
+            @builder.li(class: ('active' unless submission[:groups].present?)) do
               @builder.a(I18n.t('submissions.show.code'), href: '#code-tab', 'data-toggle': 'tab')
             end
           end
@@ -63,7 +63,7 @@ class FeedbackTableRenderer
         @builder.div(class: 'tab-content') do
           @submission[:groups].each_with_index {|t, i| tab(t, i)} if submission[:groups]
           if show_code_tab
-            @builder.div(class: "tab-pane #{'active' unless submission[:groups]}", id: 'code-tab') do
+            @builder.div(class: "tab-pane #{'active' unless submission[:groups].present?}", id: 'code-tab') do
               if submission[:annotations]
                 @builder.div(class: 'linter') do
                   source(@code, submission[:annotations])

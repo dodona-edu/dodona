@@ -1,12 +1,18 @@
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t '.news' %></h2>
+    <div class="page-subtitle">
+      <h2><%= t '.news' %></h2>
+      <div class="flex-spacer"></div>
+      <div>
+        <% if policy(Post).new? %>
+          <%= link_to new_post_path, title: t("posts.new.title"), class: "btn btn-primary btn-fab-extended" do %>
+            <i class="material-icons icon">add</i><span class="text"><%= t("posts.new.title") %></span>
+          <% end %>
+        <% end %>
       </div>
     </div>
     <% @posts.each do |post| %>
-      <%= render 'post', post: post, show_new: @posts.first == post %>
+      <%= render 'post', post: post %>
     <% end %>
   </div>
 </div>

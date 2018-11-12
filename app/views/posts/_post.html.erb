@@ -4,16 +4,8 @@
       <h2 class="card-title-text"><%= post.title %></h2>
       <h3 class="card-subtitle-text"><%= post.release %></h3>
       <div class="card-title-fab card-subtitle-fab">
-        <% if policy(Post).new? && show_new %>
-          <%= render 'application/fab_link', url: new_post_path, icon: 'add' %>
-        <% end %>
         <% if policy(post).update? %>
           <%= render 'application/fab_link', url: edit_post_path(post), icon: 'edit' %>
-        <% end %>
-        <% if policy(post).destroy? %>
-          <%= link_to post, method: :delete, class: "btn btn-primary btn-fab hidden-print" do %>
-            <i class="material-icons md-36">delete</i>
-          <% end %>
         <% end %>
       </div>
     </div>

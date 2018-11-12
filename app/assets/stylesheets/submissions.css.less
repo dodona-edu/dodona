@@ -127,6 +127,18 @@
       border-radius: 0.2em;
     }
   }
+  .diffs .unified-diff {
+    display: none;
+  }
+  .diffs .split-diff {
+    display: none;
+  }
+  .diffs.show-unified .unified-diff {
+    display: table;
+  }
+  .diffs.show-split .split-diff {
+    display: table;
+  }
   .diff ul {
     overflow: auto;
     font-size: 13px;

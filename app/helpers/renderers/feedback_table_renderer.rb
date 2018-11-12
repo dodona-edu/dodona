@@ -174,13 +174,8 @@ class FeedbackTableRenderer
   end
 
   def diff(t)
-    diff_heuristical(t)
-  end
-
-  def diff_heuristical(t)
-    if @diff_type == 'split'
+    @builder.div(class: "diffs show-#{@diff_type}") do
       diff_split(t)
-    else
       diff_unified(t)
     end
   end

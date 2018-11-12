@@ -161,7 +161,7 @@ class FeedbackTableRenderer
         end
       elsif t[:data][:channel]
         @builder.div(class: 'description') do
-          @builder.span(class: "label label-#{t[:accepted] ? 'correct' : 'danger'}") do
+          @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
             @builder << t[:data][:channel]
           end
         end

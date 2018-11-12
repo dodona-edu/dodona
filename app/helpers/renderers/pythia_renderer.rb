@@ -15,6 +15,15 @@ class PythiaRenderer < FeedbackTableRenderer
     @submission[:groups].none? {|t| t[:data][:source_annotations]}
   end
 
+  def show_diff_type_switch(tab)
+    tab[:groups].compact # Groups
+        .flat_map {|t| t[:groups]} # Testcases
+        .flat_map {|t| t[:tests]} # Tests
+        .reject {|t| t[:accepted]}
+        .select {|t| t[:data][:diff].nil?}
+        .any?
+  end
+
   def tab_content(t)
     if t[:data][:source_annotations]
       linting(t[:data][:source_annotations], @code)

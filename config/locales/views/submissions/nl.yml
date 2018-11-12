@@ -36,3 +36,6 @@ nl:
       expected: Verwachte uitvoer
       edit: Wijzig oplossing
       in: "in"
+      diff:
+        split: Gescheiden # TODO: Better translations
+        unified: Eengemaakt

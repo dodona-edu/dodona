@@ -38,6 +38,14 @@ class FeedbackTableRenderer
     true
   end
 
+  def show_diff_type_switch(tab)
+    tab[:groups].compact # Groups
+        .flat_map {|t| t[:groups]} # Testcases
+        .flat_map {|t| t[:tests]} # Tests
+        .reject {|t| t[:accepted]}
+        .any?
+  end
+
   def tabs(submission)
     @builder.div(class: 'card card-nav') do
       @builder.div(class: 'card-title card-title-colored') do
@@ -93,6 +101,16 @@ class FeedbackTableRenderer
 
   def tab_content(t)
     @diff_type = determine_tab_diff_type(t)
+    if show_diff_type_switch t
+      @builder.div(class: "btn-group diff-switch-buttons") do
+        @builder.button(class: "btn btn-primary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split') do
+          @builder << I18n.t("submissions.show.diff.split")
+        end
+        @builder.button(class: "btn btn-primary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified') do
+          @builder << I18n.t("submissions.show.diff.unified")
+        end
+      end
+    end
     messages(t[:messages])
     @builder.div(class: 'groups') do
       t[:groups]&.each {|g| group(g)}

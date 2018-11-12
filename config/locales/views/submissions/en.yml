@@ -36,3 +36,6 @@ en:
       expected: Expected output
       edit: Edit submission
       in: "in"
+      diff:
+        split: Split
+        unified: Unified

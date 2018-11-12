@@ -83,12 +83,12 @@ class SeriesTest < ActiveSupport::TestCase
     end
   end
 
-  test 'access_token should only be set when hidden' do
+  test 'access_token should always be set' do
     @series.update(visibility: 'open')
-    assert_nil @series.access_token
+    assert @series.access_token.present?
     @series.update(visibility: 'hidden')
     assert @series.access_token.present?
     @series.update(visibility: 'closed')
-    assert_nil @series.access_token
+    assert @series.access_token.present?
   end
 end

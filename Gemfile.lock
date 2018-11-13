@@ -338,6 +338,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
+    slack-notifier (2.3.2)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -446,6 +447,7 @@ DEPENDENCIES
   selenium-webdriver
   simplecov
   sinatra!
+  slack-notifier
   spring
   spring-watcher-listen (~> 2.0.0)
   therubyracer

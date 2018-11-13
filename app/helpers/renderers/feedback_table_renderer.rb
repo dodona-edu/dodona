@@ -42,7 +42,7 @@ class FeedbackTableRenderer
     @builder.div(class: 'card card-nav') do
       @builder.div(class: 'card-title card-title-colored') do
         @builder.ul(class: 'nav nav-tabs') do
-          submission[:groups]&.each_with_index do |t, i|
+          submission[:groups]&.select {|t| @current_user&.course_admin?(@course) || !t[:hidden]}&.each_with_index do |t, i|
             @builder.li(class: ('active' if i.zero?)) do
               @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
                 @builder.text!((t[:description] || 'Test').upcase_first + ' ')

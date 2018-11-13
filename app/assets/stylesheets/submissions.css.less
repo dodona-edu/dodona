@@ -2,15 +2,21 @@
   .label {
     display: block;
     text-align: left;
+    border-left: 3px solid;
+    border-radius: 0;
   }
   .label.label-danger {
-    background-color: @danger-A100;
+    color: @danger-500;
+    border-color: @danger-500;
+    background-color: white;
   }
   .label.label-success {
-    background-color: @success-300;
+    color: @success-500;
+    border-color: @success-500;
+    background-color: white;
   }
   .description {
-    background-color: @grey-300;
+    background-color: @code-bg;
     pre {
       border: none;
     }

@@ -1,12 +1,12 @@
 <%= form_for(programming_language, :html => {class: 'form-horizontal'}) do |f| %>
   <% if programming_language.errors.any? %>
     <div id="error_explanation">
-      <h2><%= t("errors.validation_errors", :count => programming_language.errors.count) %>
-        <ul>
-          <% programming_language.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+      <h2><%= t("errors.validation_errors", :count => programming_language.errors.count) %></h2>
+      <ul>
+        <% programming_language.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
   <div class="field form-group">

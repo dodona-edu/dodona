@@ -54,7 +54,7 @@
               <% end %>
             </li>
           <% end %>
-          <% if policy(series).edit? && series.hidden? %>
+          <% if policy(series).edit? && !series.open? %>
             <li>
               <%= link_to series_path(series, token: series.access_token) do %>
                 <i class="material-icons md-18">link</i>

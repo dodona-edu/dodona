@@ -41,6 +41,8 @@ class Course < ApplicationRecord
 
   has_many :usable_repositories, through: :course_repositories, source: :repository
 
+  has_many :course_labels, dependent: :destroy
+
   enum visibility: %i[visible hidden]
   enum registration: %i[open moderated closed]
   enum color: %i[red pink purple deep-purple indigo teal

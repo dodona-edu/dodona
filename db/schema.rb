@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_135757) do
+ActiveRecord::Schema.define(version: 2018_11_28_135759) do
 
   create_table "action_text_rich_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -51,6 +51,21 @@ ActiveRecord::Schema.define(version: 2018_11_28_135757) do
     t.datetime "updated_at", null: false
     t.index ["token_digest"], name: "index_api_tokens_on_token_digest"
     t.index ["user_id"], name: "index_api_tokens_on_user_id"
+  end
+
+  create_table "course_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "course_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id", "name"], name: "index_course_labels_on_course_id_and_name", unique: true
+  end
+
+  create_table "course_membership_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "course_membership_id", null: false
+    t.bigint "course_label_id", null: false
+    t.index ["course_label_id", "course_membership_id"], name: "unique_label_and_course_membership_index", unique: true
+    t.index ["course_membership_id"], name: "fk_rails_7d6a6611cf"
   end
 
   create_table "course_memberships", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -275,6 +290,9 @@ ActiveRecord::Schema.define(version: 2018_11_28_135757) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  add_foreign_key "course_labels", "courses", on_delete: :cascade
+  add_foreign_key "course_membership_labels", "course_labels", on_delete: :cascade
+  add_foreign_key "course_membership_labels", "course_memberships", on_delete: :cascade
   add_foreign_key "course_repositories", "courses"
   add_foreign_key "course_repositories", "repositories"
   add_foreign_key "courses", "institutions"

@@ -31,7 +31,7 @@ class Series < ApplicationRecord
 
   scope :visible, -> {where(visibility: :open)}
   scope :with_deadline, -> {where.not(deadline: nil)}
-  default_scope {order(id: :desc)}
+  default_scope {order(order: :asc, id: :desc)}
 
   after_initialize do
     self.visibility ||= 'open'

@@ -26,6 +26,7 @@ nl:
       repositories: Repository's
       labels: Labels
       profile: Mijn profiel
+      news: Nieuws
       my_courses: Mijn vakken
       log_in: Aanmelden
       log_out: Afmelden

@@ -16,6 +16,8 @@ class CourseMembership < ApplicationRecord
 
   belongs_to :course
   belongs_to :user
+  has_many :course_membership_labels
+  has_many :course_labels, through: :course_membership_labels
 
   validates :course_id, uniqueness: {scope: :user_id}
 

@@ -18,6 +18,7 @@ nl:
       title: Cursus aanmaken
     edit:
       confidential: Confidentieel
+      series_in_course: "Reeksen in het vak"
     show:
       course: Cursus
       invitation_link: Registratielink

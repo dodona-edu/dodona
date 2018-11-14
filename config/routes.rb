@@ -58,6 +58,7 @@ Rails.application.routes.draw do
         post 'update_membership'
         post 'favorite'
         post 'unfavorite'
+        post 'reorder_series'
         match 'subscribe', via: %i[get post]
       end
     end

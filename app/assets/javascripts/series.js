@@ -47,7 +47,9 @@ function initSeriesEdit() {
     }
 
     function initTokenClickables() {
-        $(".clickable-token").click(function () {
+        const $clickableTokens = $(".clickable-token");
+        $clickableTokens.off("click");
+        $clickableTokens.click(function () {
             const $htmlElement = $(this);
             const type = $htmlElement.data("type");
             const name = $htmlElement.data("name");

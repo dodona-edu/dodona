@@ -1,7 +1,7 @@
 en:
   posts:
     index:
-      title: Posts
-      news: "News"
+      title: News
+      news: News
     new:
       title: New post

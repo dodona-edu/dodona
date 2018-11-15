@@ -2,9 +2,11 @@
 #
 # Table name: labels
 #
-#  id         :integer      not null, primary key
-#  name       :string       not null, unique
-#  color      :string       not null
+#  id    :bigint(8)        not null, primary key
+#  name  :string(255)      not null
+#  color :integer          not null
+#
+
 class Label < ApplicationRecord
   has_many :exercise_labels, dependent: :restrict_with_error
   has_many :exercises, through: :exercise_labels

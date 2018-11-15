@@ -18,6 +18,7 @@ en:
       label: Label
       api_token: API token
       programming_language: Programming Language
+      post: Post
     attributes:
       api_token:
         description: Description
@@ -125,3 +126,8 @@ en:
         name: Name
         editor_name: Editor mode
         extension: Extension
+      post:
+        title: Title
+        content: Content
+        release: Release date
+        draft: Draft

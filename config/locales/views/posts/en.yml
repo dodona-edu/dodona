@@ -1,0 +1,7 @@
+en:
+  posts:
+    index:
+      title: News
+      news: News
+    new:
+      title: New post

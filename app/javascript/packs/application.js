@@ -9,6 +9,7 @@
 
 
 import Rails from "rails-ujs";
+import "actiontext";
 
 Rails.start();
 
@@ -19,11 +20,10 @@ window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
 
-
 import "polyfills.js";
 import "drawer.js";
 import {showNotification} from "notifications.js";
-import {initClipboard, checkTimeZone, initCSRF} from "util.js";
+import {checkTimeZone, initClipboard, initCSRF} from "util.js";
 
 // Initialize clipboard.js
 initClipboard();

@@ -117,6 +117,12 @@
           <% end %>
         </li>
         <li>
+          <%= activatable_link_to posts_path, class: 'drawer-list-item' do %>
+            <i class="material-icons md-24">new_releases</i>
+            <%= t('layout.menu.news') %>
+          <% end %>
+        </li>
+        <li>
           <%= link_to 'https://dodona.readthedocs.io/', class: 'drawer-list-item' do %>
             <i class="material-icons md-24">help</i>
             <%= t('layout.menu.manual') %>

@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/rails/actiontext.git
+  revision: 18974137be2c4027dfcf430668edd712e7ec011b
+  specs:
+    actiontext (0.1.0)
+      nokogiri
+      rails (>= 5.2.0)
+
+GIT
   remote: https://github.com/rien/minitest-utils.git
   revision: 64cb1c7a17e0638fe9f47a30e9943675440b4734
   specs:
@@ -179,6 +187,9 @@ GEM
       concurrent-ruby (~> 1.0)
     i18n-js (3.0.11)
       i18n (>= 0.6.6, < 2)
+    image_processing (1.7.1)
+      mini_magick (~> 4.0)
+      ruby-vips (>= 2.0.13, < 3)
     jaro_winkler (1.5.1)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
@@ -218,6 +229,7 @@ GEM
     metaclass (0.0.4)
     method_source (0.9.0)
     mimemagic (0.3.2)
+    mini_magick (4.9.2)
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
@@ -328,6 +340,8 @@ GEM
     ruby-progressbar (1.10.0)
     ruby-saml (1.8.0)
       nokogiri (>= 1.5.10)
+    ruby-vips (2.0.13)
+      ffi (~> 1.9)
     ruby_dep (1.5.0)
     rubyzip (1.2.2)
     selenium-webdriver (3.14.0)
@@ -388,6 +402,7 @@ PLATFORMS
 
 DEPENDENCIES
   ace-rails-ap
+  actiontext!
   annotate
   autoprefixer-rails
   bootsnap (>= 1.1.0)
@@ -416,6 +431,7 @@ DEPENDENCIES
   has_scope
   httparty
   i18n-js (~> 3.0.0.rc14)
+  image_processing (~> 1.2)
   jbuilder (~> 2.7)
   json-schema
   jwt

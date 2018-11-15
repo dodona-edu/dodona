@@ -15,7 +15,7 @@
           <%= render 'form', series: @series %>
         </div>
       </div>
-      <% if @series.indianio_token || @series.access_token %>
+      <% if @series.indianio_token || !@series.open? %>
         <div class="card-supporting-text card-border">
           <h4><%= t '.confidential' %></h4>
           <div class="col-xs-12 col-sm-10">
@@ -38,7 +38,7 @@
               </span>
                 </div>
               <% end %>
-              <% if @series.access_token %>
+              <% unless @series.open? %>
                 <div class="field form-group">
                   <%= label_tag :access_token, t('.access-link'), class: 'col-sm-3 control-label' %>
                   <div class="col-sm-9">

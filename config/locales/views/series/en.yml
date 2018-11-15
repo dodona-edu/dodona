@@ -34,7 +34,7 @@ en:
       confidential: Confidential information
       indianio-help: Copy this token and paste it in Indianio to allow Indianio to download students' submissions for this series.
       access-link: Secret link
-      access-help: Students who follow this link will receive access to this series.
+      access-help: Students who follow this link will receive access to this series (if the series is hidden).
     delete:
       title: Delete series
       confirm: Please confirm you want to delete this series.

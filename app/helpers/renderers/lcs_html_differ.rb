@@ -86,7 +86,7 @@ class LCSHtmlDiffer
   end
 
   def split
-    @builder.table(class: 'splitt-diff diff') do
+    @builder.table(class: 'split-diff diff') do
       @builder.colgroup do
         @builder.col(class: 'line-nr')
         @builder.col(class: 'del-output')

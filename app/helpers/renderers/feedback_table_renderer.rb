@@ -38,6 +38,14 @@ class FeedbackTableRenderer
     true
   end
 
+  def show_diff_type_switch(tab)
+    tab[:groups].compact # Groups
+        .flat_map {|t| t[:groups]} # Testcases
+        .flat_map {|t| t[:tests]} # Tests
+        .reject {|t| t[:accepted]}
+        .any?
+  end
+
   def tabs(submission)
     @builder.div(class: 'card card-nav') do
       @builder.div(class: 'card-title card-title-colored') do
@@ -93,6 +101,16 @@ class FeedbackTableRenderer
 
   def tab_content(t)
     @diff_type = determine_tab_diff_type(t)
+    if show_diff_type_switch t
+      @builder.div(class: "btn-group diff-switch-buttons") do
+        @builder.button(class: "btn btn-primary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split') do
+          @builder << I18n.t("submissions.show.diff.split")
+        end
+        @builder.button(class: "btn btn-primary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified') do
+          @builder << I18n.t("submissions.show.diff.unified")
+        end
+      end
+    end
     messages(t[:messages])
     @builder.div(class: 'groups') do
       t[:groups]&.each {|g| group(g)}
@@ -130,7 +148,9 @@ class FeedbackTableRenderer
       message(tc[:description]) if tc[:description]
     end
     tc[:tests]&.each {|t| test(t)}
-    messages(tc[:messages])
+    @builder.div(class: 'col-xs-12') do
+      messages(tc[:messages])
+    end
   end
 
   def test(t)
@@ -138,6 +158,12 @@ class FeedbackTableRenderer
       if t[:description]
         @builder.div(class: 'description') do
           message(t[:description])
+        end
+      elsif t[:data][:channel]
+        @builder.div(class: 'description') do
+          @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
+            @builder << t[:data][:channel]
+          end
         end
       end
       if t[:accepted]
@@ -174,13 +200,8 @@ class FeedbackTableRenderer
   end
 
   def diff(t)
-    diff_heuristical(t)
-  end
-
-  def diff_heuristical(t)
-    if @diff_type == 'split'
+    @builder.div(class: "diffs show-#{@diff_type}") do
       diff_split(t)
-    else
       diff_unified(t)
     end
   end

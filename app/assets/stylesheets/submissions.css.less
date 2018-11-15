@@ -1,6 +1,22 @@
 .feedback-table {
+  .label {
+    display: block;
+    text-align: left;
+    border-left: 3px solid;
+    border-radius: 0;
+  }
+  .label.label-danger {
+    color: @danger-500;
+    border-color: @danger-500;
+    background-color: white;
+  }
+  .label.label-success {
+    color: @success-500;
+    border-color: @success-500;
+    background-color: white;
+  }
   .description {
-    background-color: @grey-300;
+    background-color: @code-bg;
     pre {
       border: none;
     }
@@ -25,8 +41,7 @@
     .indicator {
       width: 15px;
       height: 15px;
-      margin: 3px;
-      margin-right: -12px;
+      margin: 0 -12px 3px 3px;
       float: right;
 
       span {
@@ -126,6 +141,21 @@
       background: #FF8A80;
       border-radius: 0.2em;
     }
+  }
+  .diffs .unified-diff {
+    display: none;
+  }
+  .diffs .split-diff {
+    display: none;
+  }
+  .diffs.show-unified .unified-diff {
+    display: table;
+  }
+  .diffs.show-split .split-diff {
+    display: table;
+  }
+  .diff-switch-buttons {
+    margin-bottom: 1rem;
   }
   .diff ul {
     overflow: auto;

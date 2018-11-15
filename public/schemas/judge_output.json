@@ -22,7 +22,8 @@
         "description": { "$ref": "#/definitions/description" },
         "badgeCount":  { "$ref": "#/definitions/badgeCount" },
         "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } },
-        "groups":      { "type": "array", "items": { "$ref": "#/definitions/context" } }
+        "groups":      { "type": "array", "items": { "$ref": "#/definitions/context" } },
+        "hidden":      { "type": "boolean" }
       }
     },
     "context": {

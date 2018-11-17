@@ -2,8 +2,19 @@
   <colgroup>
     <col/>
     <col/>
-    <col class="col-xs-12"/>
+    <col class="col-xs-5"/>
+    <col class="col-xs-5"/>
+    <col class="col-xs-2"/>
   </colgroup>
+  <thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th><%= t ".name" %></th>
+    <th><%= t ".deadline" %></th>
+    <th><%= t ".num_exercises", {count: '#'} %></th>
+  </tr>
+  </thead>
   <tbody>
   <% series.each do |s| %>
     <tr>
@@ -25,6 +36,16 @@
         <span class="ellipsis-overflow" title="<%= s.name %>">
           <%= link_to s.name, course_path(course, anchor: s.anchor), target: "_blank" %>
         </span>
+      </td>
+      <td>
+        <% if s.deadline? %>
+          <span class="ellipsis-overflow" title="<%= l s.deadline, format: :long %>">
+            <%= l s.deadline, format: :long %>
+          </span>
+        <% end %>
+      </td>
+      <td>
+        <%= t ".num_exercises", {count: s.exercises.count} %>
       </td>
     </tr>
   <% end %>

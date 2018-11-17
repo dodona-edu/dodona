@@ -18,7 +18,8 @@ nl:
       title: Cursus aanmaken
     edit:
       confidential: Confidentieel
-      series_in_course: "Reeksen in het vak"
+      series_in_course: "Reeksen in dit vak"
+      series_reordering_help: "Je kan de reeksen herordenen door ze te slepen met het icoon aan de linkerkant van de tabel. Hou rekening met het feit dat de volgorde die voor jou het handigst is niet noodzakelijk de volgorde is die voor jouw studenten het handigst is."
     show:
       course: Cursus
       invitation_link: Registratielink

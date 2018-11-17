@@ -42,6 +42,7 @@
           <div class="page-subtitle">
             <h4><%= t '.series_in_course' %></h4>
           </div>
+          <small><%= t ".series_reordering_help" %></small>
           <div class="course-series-list" data-course_id="<%= @course.id %>">
             <%= render partial: 'series/course_series_table', locals: {series: @course.series, course: @course} %>
           </div>

@@ -38,7 +38,7 @@ class CourseMembersController < ApplicationController
   def show
     authorize @user, :show_in_course?
     # We don't have access to the course in the users_controller
-    unless (@user.subscribed_courses & current_user.administrating_courses).include?(@course) || @user == current_user || current_user.zeus?
+    unless (@user.subscribed_courses & current_user.administrating_courses).include?(@course) || current_user.zeus?
       raise Pundit::NotAuthorizedError
     end
 

@@ -91,7 +91,7 @@ class Course < ApplicationRecord
 
   scope :by_name, ->(name) {where('name LIKE ?', "%#{name}%")}
   scope :by_teacher, ->(teacher) {where('teacher LIKE ?', "%#{teacher}%")}
-  scope :by_institution, ->(institution) {Course.where(institution: institution).any? ? where(institution: [institution, nil]) : self}
+  scope :by_institution, ->(institution) {where(institution: [institution, nil])}
   default_scope {order(year: :desc, name: :asc)}
 
   before_create :generate_secret

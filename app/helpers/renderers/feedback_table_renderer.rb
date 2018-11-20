@@ -40,8 +40,8 @@ class FeedbackTableRenderer
 
   def show_diff_type_switch(tab)
     tab[:groups].compact # Groups
-        .flat_map {|t| t[:groups]} # Testcases
-        .flat_map {|t| t[:tests]} # Tests
+        .flat_map {|t| t[:groups]}.compact # Testcases
+        .flat_map {|t| t[:tests]}.compact # Tests
         .reject {|t| t[:accepted]}
         .any?
   end
@@ -159,7 +159,7 @@ class FeedbackTableRenderer
         @builder.div(class: 'description') do
           message(t[:description])
         end
-      elsif t[:data][:channel]
+      elsif t[:data]&.fetch(:channel, nil)
         @builder.div(class: 'description') do
           @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
             @builder << t[:data][:channel]

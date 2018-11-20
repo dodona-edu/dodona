@@ -41,4 +41,16 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, :rate_limited, user: other
     assert submission.valid?
   end
+
+  test 'submissions that are too long should be rejected' do
+    submission = build :submission, code: Random.new.bytes(64.kilobytes)
+    assert_not submission.valid?
+  end
+
+
+  test 'submissions that are short enough should not be rejected' do
+    submission = build :submission, code: Random.new.bytes(64.kilobytes - 1)
+    assert submission.valid?
+  end
+
 end

@@ -252,6 +252,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     message = I18n.t("js.submission-emoji");
                 } else if (errors.submission && errors.submission[0] === "rate limited") {
                     message = I18n.t("js.submission-rate-limit");
+                } else if (errors.code && errors.code[0] === "too long") {
+                    message = I18n.t("js.submission-too-long");
                 }
             } catch (e) {
             }

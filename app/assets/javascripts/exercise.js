@@ -113,6 +113,7 @@ function initExercisesReadonly() {
 function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
     let editor;
     let lastSubmission;
+    let lastTimeout;
 
     function init() {
         if (editorShown) {
@@ -204,12 +205,15 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (lastSubmission) {
             let $submissionRow = $("#submission_" + lastSubmission);
             let status = $submissionRow.data("status");
-            if (status == "queued" || status == "running") {
+            if (status === "queued" || status === "running") {
                 setTimeout(function () {
+                    lastTimeout = (lastTimeout || 0) + 1000;
+                    lastTimeout = lastTimeout >= 5000 ? 4000 : lastTimeout;
                     ga("send", "pageview");
                     $.get(`submissions.js?user_id=${userId}`);
-                }, 1000);
+                }, (lastTimeout || 0) + 1000);
             } else {
+                lastTimeout = 0;
                 if ($("#exercise-submission-link").parent().hasClass("active")) {
                     $submissionRow.find(".load-submission").get(0).click();
                 }

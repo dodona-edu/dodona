@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @user.full_name %></h2>
+        <div class="card-title-fab">
+          <%= render 'application/fab_button', form: "edit_course_membership_#{@course_membership.id}", icon: 'done' %>
+        </div>
+      </div>
+      <div class="card-supporting-text">
+        <%= render 'form', user: @user, course_membership: @course_membership, course: @course %>
+      </div>
+    </div>
+  </div>
+</div>

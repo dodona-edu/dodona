@@ -47,7 +47,7 @@ Rails.application.routes.draw do
       end
       resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
       resources :submissions, only: [:index]
-      resources :members, only: [:index, :show], controller: :course_members
+      resources :members, only: [:index, :show, :edit, :update], controller: :course_members
       member do
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"

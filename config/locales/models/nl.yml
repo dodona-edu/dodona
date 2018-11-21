@@ -123,6 +123,7 @@ nl:
           course_admin: Cursusbeheerder
           pending: In afwachting
           student: Student
+        course_labels: Labels
       programming_language:
         name: Naam
         editor_name: Editor modus

@@ -1,0 +1,8 @@
+en:
+  course_members:
+    show:
+      labels: Labels
+      no_labels: No labels
+    form:
+      course_labels: "Labels"
+      labels_delimiter: "Use a comma to delimit labels"

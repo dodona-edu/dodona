@@ -1,0 +1,8 @@
+nl:
+  course_members:
+    show:
+      labels: Labels
+      no_labels: Geen labels
+    form:
+      course_labels: "Labels"
+      labels_delimiter: "Gebruik een komma om labels te scheiden"

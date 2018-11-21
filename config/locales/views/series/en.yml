@@ -57,3 +57,10 @@ en:
       wrong_no_deadline: There are still some unfinished exercises.
       started_no_deadline: There are still some unstarted exercises.
       unstarted_no_deadline: You haven't started any exercises.
+    course_series_table:
+      num_exercises:
+        zero: "No exercises"
+        one: "1 exercise"
+        other: "%{count} exercises"
+      name: "Name"
+      deadline: "Deadline"

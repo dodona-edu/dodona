@@ -1,6 +1,6 @@
 /* globals ga, I18n, ace, MathJax, initStrip, Strip */
 import {initFilter} from "./index.js";
-import {delay} from "./util.js";
+import dragula from "dragula";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
@@ -21,7 +21,7 @@ function initUserTabs() {
             }
             const $kebab = $("#kebab-menu");
             const status = $tab.attr("href").substr(1);
-            if (status == "pending") {
+            if (status === "pending") {
                 $kebab.show();
             } else {
                 $kebab.hide();
@@ -53,8 +53,8 @@ function initCourseMembers() {
 }
 
 
-const table_wrapper_selector = ".series-exercises-table-wrapper";
-const skeleton_table_selector = ".exercise-table-skeleton";
+const TABLE_WRAPPER_SELECTOR = ".series-exercises-table-wrapper";
+const SKELETON_TABLE_SELECTOR = ".exercise-table-skeleton";
 
 class Series {
     static findAll(cards_selector = ".series.card") {
@@ -68,11 +68,11 @@ class Series {
         this.reselect(card);
     }
 
-    reselect(card_selector) {
-        this.$card = $(card_selector);
+    reselect(cardSelector) {
+        this.$card = $(cardSelector);
         this.url = this.$card.data("series-url");
-        this.$table_wrapper = this.$card.find(table_wrapper_selector);
-        this.$skeleton = this.$table_wrapper.find(skeleton_table_selector);
+        this.$table_wrapper = this.$card.find(TABLE_WRAPPER_SELECTOR);
+        this.$skeleton = this.$table_wrapper.find(SKELETON_TABLE_SELECTOR);
         this.loaded = this.$skeleton.length === 0;
         this.loading = false;
         this.top = this.$card.offset().top;
@@ -117,7 +117,7 @@ function initCourseShow() {
         const seriesId = +hashSplit[1];
 
         if (hashSplit[0] === "#series" && !isNaN(seriesId)) {
-            loading = true;
+            let loading = true;
             $(".load-more-series").button("loading");
             $.get(`?format=js&offset=${seriesShown}&series=${seriesId}`)
                 .done(() => {
@@ -132,14 +132,14 @@ function initCourseShow() {
     }
 
     function scroll() {
-        const screen_top = $(window).scrollTop();
-        const screen_bottom = screen_top + $(window).height();
-        const first_visible = series.findIndex(s => screen_top < s.bottom);
-        const first_to_load = first_visible <= 0 ? 0 : first_visible - 1;
-        const last_visible_idx = series.findIndex(s => screen_bottom < s.top);
-        const last_to_load = last_visible_idx == -1 ? series.length : last_visible_idx;
+        const screenTop = $(window).scrollTop();
+        const screenBottom = screenTop + $(window).height();
+        const firstVisible = series.findIndex(s => screenTop < s.bottom);
+        const firstToLoad = firstVisible <= 0 ? 0 : firstVisible - 1;
+        const lastVisibleIdx = series.findIndex(s => screenBottom < s.top);
+        const lastToLoad = lastVisibleIdx == -1 ? series.length : lastVisibleIdx;
 
-        series.slice(first_to_load, last_to_load + 1)
+        series.slice(firstToLoad, lastToLoad + 1)
             .filter(s => s.needsLoading())
             .forEach(s => s.load());
     }
@@ -147,4 +147,30 @@ function initCourseShow() {
     init();
 }
 
-export {initCourseShow, initCourseMembers, loadUsers};
+function initCourseEdit() {
+    function init() {
+        initDragAndDrop();
+    }
+
+    function initDragAndDrop() {
+        const tableBody = $(".course-series-list tbody").get(0);
+        dragula([tableBody], {
+            moves: function (el, source, handle, sibling) {
+                return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
+            },
+            mirrorContainer: tableBody,
+        }).on("drop", () => {
+            let courseId = $(".course-series-list").data("course_id");
+            let order = $(".course-series-list tbody .series-name").map(function () {
+                return $(this).data("series_id");
+            }).get();
+            $.post(`/courses/${courseId}/reorder_series.js`, {
+                order: JSON.stringify(order),
+            });
+        });
+    }
+
+    init();
+}
+
+export {initCourseEdit, initCourseShow, initCourseMembers, loadUsers};

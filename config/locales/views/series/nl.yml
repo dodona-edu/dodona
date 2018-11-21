@@ -59,3 +59,10 @@ nl:
       wrong_no_deadline: Er zijn nog enkele onafgewerkte oefeningen.
       started_no_deadline: Er zijn nog enkele oefeningen waar je nog niet aan begonnen bent.
       unstarted_no_deadline: Je bent nog niet begonnen aan de oefeningen.
+    course_series_table:
+      num_exercises:
+        zero: "Geen oefeningen"
+        one: "1 oefening"
+        other: "%{count} oefeningen"
+      name: "Naam"
+      deadline: "Deadline"

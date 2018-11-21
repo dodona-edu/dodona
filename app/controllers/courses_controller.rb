@@ -207,6 +207,14 @@ class CoursesController < ApplicationController
     }
   end
 
+  def reorder_series
+    order = JSON.parse(params[:order])
+    @course.series.each do |s|
+      rank = order.find_index(s.id) || 999
+      s.update(order: rank)
+    end
+  end
+
   private
 
   def try_to_subscribe_current_user(**args)

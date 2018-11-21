@@ -5,6 +5,7 @@ en:
     submission-emoji: "Oops, something went wrong while saving your solution. Your solution contains special symbols such as emoji or math characters that were copied from the problem description. Please remove them and try again. If you can't find the problem, contact the teaching assistant."
     submission-rate-limit: "Oops, you're submitting too fast! Please wait a little between each submission."
     submission-too-long: "Oops, something went wrong while saving your solution. Your solution is too long. Try to make it shorter and try again."
+    submission-network: "Oops, you're unable to connect to the server. Check your internet connection."
     submission-processed: Evaluation finished
     exercise-added-success: Exercise added
     exercise-added-failed: Adding exercise failed

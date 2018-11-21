@@ -8,6 +8,14 @@ class SubmissionsController < ApplicationController
     scope.by_filter(value, controller.params[:user_id].present?, controller.params[:exercise_id].present?, controller.params[:most_recent_correct_per_user].present?)
   end
 
+  has_scope :by_course_labels, as: 'course_labels', type: :array do |controller, scope, value|
+    if controller.params[:course_id].present? && controller.params[:user_id].nil?
+      scope.by_course_labels(value, controller.params[:course_id])
+    else
+      scope
+    end
+  end
+
   def index
     authorize Submission
     @submissions = @submissions.paginate(page: params[:page])
@@ -114,6 +122,7 @@ class SubmissionsController < ApplicationController
     end
     if params[:course_id]
       @course = Course.find(params[:course_id])
+      @course_labels = CourseLabel.where(course: @course) unless @user.present?
     end
     if params[:series_id]
       @series = Series.find(params[:series_id])

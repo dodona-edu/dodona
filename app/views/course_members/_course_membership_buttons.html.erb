@@ -1,4 +1,3 @@
-<% membership_status = user.membership_status_for(course) %>
 <% case membership_status %>
 <% when 'pending' %>
   <%= button_to update_membership_course_path(course),

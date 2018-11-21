@@ -11,25 +11,32 @@
     </tr>
     </thead>
     <tbody>
-    <% users.each do |user| %>
+    <% course_memberships.each do |course_membership| %>
+      <% user = course_membership.user %>
       <tr>
         <td>
-          <% if user.zeus? %>
-            <i class="material-icons md-18" title='<%= t ".zeus" %>'>supervisor_account</i>
-          <% end %>
-          <% if user.staff? %>
-            <i class="material-icons md-18" title='<%= t ".staff" %>'>perm_identity</i>
+          <% if course_membership.course_admin? %>
+            <i class="material-icons md-18" title='<%= t "users.users_table.course_admin" %>'>school</i>
           <% end %>
           <% if user.username.blank? %>
-            <i class="material-icons md-18" title='<%= t ".no_ugent" %>'>warning</i>
+            <i class="material-icons md-18" title='<%= t "users.users_table.no_ugent" %>'>warning</i>
           <% end %>
         </td>
-        <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
+        <% if course_membership.pending? || course_membership.unsubscribed? %>
+          <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
+        <% else %>
+          <td><%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %></td>
+        <% end %>
         <td><%= user.email %></td>
         <td class='text-right'>
-          <%= link_to "#{user.correct_exercises}/#{user.attempted_exercises}", user_submissions_path(user) %>
+          <%= link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user) %>
+        </td>
+        <td class='text-right'>
+          <%= t("activerecord.attributes.course_membership.statuses.#{course_membership.status}") %>
         </td>
         <td class="actions">
+          <%= render partial: 'course_membership_buttons',
+                     locals: {course: @course, user: user, membership_status: course_membership.status} %>
           <% if policy(user).impersonate? %>
             <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
               <i class="material-icons md-18">person</i>
@@ -46,12 +53,9 @@
     </tbody>
   </table>
 </div>
-<% if users.empty? %>
+<% if course_memberships.empty? %>
   <p class="text-center text-muted lead table-placeholder"><%= t 'users.index.no_users' %></p>
 <% end %>
-<% if local_assigns.fetch(:paginate, true) %>
-  <center>
-    <%= user_page_navigation_links users, local_assigns.fetch(:pagination_opts, {}) %>
-  </center>
-<% end %>
-
+<center>
+  <%= page_navigation_links course_memberships, false, 'course_members' %>
+</center>

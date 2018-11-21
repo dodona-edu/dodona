@@ -61,6 +61,19 @@
             color: function() { return "pink"; },
         };
         <% end %>
+        <% if local_assigns.fetch :course_labels, false %>
+        filterCollections["course_labels"] = {
+            param: "course_labels",
+            paramVal: function (cl) {
+                return cl.name;
+            },
+            multi: true,
+            data: <%= raw local_assigns.fetch(:course_labels, []).map{|cl| {id: cl.id, name: cl.name}}.to_json %>,
+            color: function () {
+                return "orange";
+            },
+        };
+        <% end %>
 
         dodona.initFilterIndex("<%= local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%=raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, filterCollections);
     });

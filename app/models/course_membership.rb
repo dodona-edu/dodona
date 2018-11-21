@@ -27,6 +27,15 @@ class CourseMembership < ApplicationRecord
   after_update :invalidate_caches
   before_destroy :invalidate_caches
 
+  scope :by_permission, ->(permission) {where(user: User.by_permission(permission))}
+  scope :by_filter, ->(filter) {where(user: User.by_filter(filter))}
+  scope :by_course_labels, ->(course_labels) do
+    includes(:course_labels)
+        .where(course_labels: {name: course_labels})
+        .group(:id)
+        .having('COUNT(DISTINCT(course_membership_labels.course_label_id)) = ?', course_labels.uniq.length)
+  end
+
   def at_least_one_admin_per_course
     if status_was == 'course_admin' &&
         status != 'course_admin' &&

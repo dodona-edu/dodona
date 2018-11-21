@@ -159,7 +159,7 @@ class SeriesController < ApplicationController
   def reorder_exercises
     order = JSON.parse(params[:order])
     @series.series_memberships.each do |membership|
-      rank = order.find_index(membership.exercise_id) || 999
+      rank = order.find_index(membership.exercise_id) || 0
       membership.update(order: rank)
     end
   end

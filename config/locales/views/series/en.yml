@@ -34,7 +34,7 @@ en:
       confidential: Confidential information
       indianio-help: Copy this token and paste it in Indianio to allow Indianio to download students' submissions for this series.
       access-link: Secret link
-      access-help: Students who follow this link will receive access to this series.
+      access-help: Students who follow this link will receive access to this series (if the series is hidden).
     delete:
       title: Delete series
       confirm: Please confirm you want to delete this series.
@@ -42,3 +42,25 @@ en:
       ago: ago
     scoresheet:
       user: User
+    series_status:
+      completed_after_deadline_missed: You finished all exercises but not before the deadline.
+      wrong_after_deadline_missed: You missed the deadline and there are still some unfinished exercises.
+      started_after_deadline_missed: You missed the deadline and there are still some unstarted exercises.
+      unstarted_after_deadline_missed: You missed the deadline and you haven't started any exercises yet.
+      completed_after_deadline_met: You finished all the exercises before the deadline. Congratulations!
+      wrong_after_deadline_met: Don't worry, you finished all the exercises before the deadline but submitted at least one wrong solution after the deadline.
+      completed_before_deadline: You finished all the exercises before the deadline. Congratulations!
+      wrong_before_deadline: There are still some unfinished exercises but you still have time. Success!
+      started_before_deadline: There are still some unstarted exercises but you still have time. Success!
+      unstarted_before_deadline: You haven't started any exercises but you still have time. Success!
+      completed_no_deadline: You finished all exercises. Congratulations!
+      wrong_no_deadline: There are still some unfinished exercises.
+      started_no_deadline: There are still some unstarted exercises.
+      unstarted_no_deadline: You haven't started any exercises.
+    course_series_table:
+      num_exercises:
+        zero: "No exercises"
+        one: "1 exercise"
+        other: "%{count} exercises"
+      name: "Name"
+      deadline: "Deadline"

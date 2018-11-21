@@ -58,7 +58,7 @@ gem 'rouge', '1.10.1'
 gem 'builder'
 
 # generate diffs
-gem 'diffy'
+gem 'diff-lcs'
 
 # code editor
 gem 'ace-rails-ap'
@@ -101,6 +101,7 @@ gem 'rails-i18n'
 
 # email exceptions
 gem 'exception_notification'
+gem 'httparty'
 gem 'slack-notifier'
 
 # css styles for emails
@@ -174,3 +175,6 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
 gem 'docker-api'
+
+gem "actiontext", github: "rails/actiontext", require: "action_text"
+gem "image_processing", "~> 1.2" # for Active Storage variants

@@ -38,11 +38,19 @@ class FeedbackTableRenderer
     true
   end
 
+  def show_diff_type_switch(tab)
+    tab[:groups].compact # Groups
+        .flat_map {|t| t[:groups]}.compact # Testcases
+        .flat_map {|t| t[:tests]}.compact # Tests
+        .reject {|t| t[:accepted]}
+        .any?
+  end
+
   def tabs(submission)
     @builder.div(class: 'card card-nav') do
       @builder.div(class: 'card-title card-title-colored') do
         @builder.ul(class: 'nav nav-tabs') do
-          submission[:groups]&.each_with_index do |t, i|
+          submission[:groups]&.select {|t| @current_user&.course_admin?(@course) || !t[:hidden]}&.each_with_index do |t, i|
             @builder.li(class: ('active' if i.zero?)) do
               @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
                 @builder.text!((t[:description] || 'Test').upcase_first + ' ')
@@ -53,7 +61,7 @@ class FeedbackTableRenderer
             end
           end
           if show_code_tab
-            @builder.li(class: ('active' unless submission[:groups])) do
+            @builder.li(class: ('active' unless submission[:groups].present?)) do
               @builder.a(I18n.t('submissions.show.code'), href: '#code-tab', 'data-toggle': 'tab')
             end
           end
@@ -63,7 +71,7 @@ class FeedbackTableRenderer
         @builder.div(class: 'tab-content') do
           @submission[:groups].each_with_index {|t, i| tab(t, i)} if submission[:groups]
           if show_code_tab
-            @builder.div(class: "tab-pane #{'active' unless submission[:groups]}", id: 'code-tab') do
+            @builder.div(class: "tab-pane #{'active' unless submission[:groups].present?}", id: 'code-tab') do
               if submission[:annotations]
                 @builder.div(class: 'linter') do
                   source(@code, submission[:annotations])
@@ -93,6 +101,16 @@ class FeedbackTableRenderer
 
   def tab_content(t)
     @diff_type = determine_tab_diff_type(t)
+    if show_diff_type_switch t
+      @builder.div(class: "btn-group diff-switch-buttons") do
+        @builder.button(class: "btn btn-primary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split') do
+          @builder << I18n.t("submissions.show.diff.split")
+        end
+        @builder.button(class: "btn btn-primary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified') do
+          @builder << I18n.t("submissions.show.diff.unified")
+        end
+      end
+    end
     messages(t[:messages])
     @builder.div(class: 'groups') do
       t[:groups]&.each {|g| group(g)}
@@ -130,7 +148,9 @@ class FeedbackTableRenderer
       message(tc[:description]) if tc[:description]
     end
     tc[:tests]&.each {|t| test(t)}
-    messages(tc[:messages])
+    @builder.div(class: 'col-xs-12') do
+      messages(tc[:messages])
+    end
   end
 
   def test(t)
@@ -138,6 +158,12 @@ class FeedbackTableRenderer
       if t[:description]
         @builder.div(class: 'description') do
           message(t[:description])
+        end
+      elsif t[:data]&.fetch(:channel, nil)
+        @builder.div(class: 'description') do
+          @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
+            @builder << t[:data][:channel]
+          end
         end
       end
       if t[:accepted]
@@ -168,37 +194,24 @@ class FeedbackTableRenderer
   end
 
   def test_failed(t)
-    @builder.div(class: 'test-accepted') do
+    @builder.div(class: 'test-failed') do
       diff(t)
     end
   end
 
   def diff(t)
-    diff_heuristical(t)
-  end
-
-  def diff_heuristical(t)
-    if @diff_type == 'split'
+    @builder.div(class: "diffs show-#{@diff_type}") do
       diff_split(t)
-    else
       diff_unified(t)
     end
   end
 
   def diff_unified(t)
-    @builder << Diffy::Diff.new(t[:generated], t[:expected]).to_s(:html)
+    @builder << LCSHtmlDiffer.new(t[:generated], t[:expected]).unified
   end
 
   def diff_split(t)
-    d = Diffy::SplitDiff.new(t[:generated], t[:expected], format: :html)
-    @builder.div(class: 'row') do
-      @builder.div(class: 'col-sm-6 col-xs-12', title: I18n.t('submissions.show.generated')) do
-        @builder << d.left
-      end
-      @builder.div(class: 'col-sm-6 col-xs-12', title: I18n.t('submissions.show.expected')) do
-        @builder << d.right
-      end
-    end
+    @builder << LCSHtmlDiffer.new(t[:generated], t[:expected]).split
   end
 
   def message(m)

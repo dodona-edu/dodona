@@ -150,7 +150,7 @@ if Rails.env.development?
                             exercise: exercise,
                             evaluate: false,
                             skip_rate_limit_check: true,
-                            result: {},
+                            result: {}.to_json,
                             status: status,
                             accepted: status == :correct,
                             code: "print(input())\n"

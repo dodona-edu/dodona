@@ -26,6 +26,7 @@ en:
       repositories: Repositories
       labels: Labels
       profile: My profile
+      news: News
       my_courses: My courses
       log_in: Sign in
       log_out: Log out

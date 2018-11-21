@@ -1,0 +1,53 @@
+<table class="table series-table table-resource">
+  <colgroup>
+    <col/>
+    <col/>
+    <col class="col-xs-5"/>
+    <col class="col-xs-5"/>
+    <col class="col-xs-2"/>
+  </colgroup>
+  <thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th><%= t ".name" %></th>
+    <th><%= t ".deadline" %></th>
+    <th><%= t ".num_exercises", {count: '#'} %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% series.each do |s| %>
+    <tr>
+      <td>
+        <div class="drag-handle">
+          <i class="material-icons mdi-18">reorder</i>
+        </div>
+      </td>
+      <td class="status-icon">
+      <span class="pull-right">
+        <% if s.hidden? %>
+        <i class="material-icons md-18" title="<%= t "activerecord.attributes.series.visibilities.hidden" %>">visibility_off</i>
+        <% elsif s.closed? %>
+        <i class="material-icons md-18" title="<%= t "activerecord.attributes.series.visibilities.closed" %>">block</i>
+        <% end %>
+      </span>
+      </td>
+      <td class="series-name" data-series_id="<%= s.id %>">
+        <span class="ellipsis-overflow" title="<%= s.name %>">
+          <%= link_to s.name, course_path(course, anchor: s.anchor), target: "_blank" %>
+        </span>
+      </td>
+      <td>
+        <% if s.deadline? %>
+          <span class="ellipsis-overflow" title="<%= l s.deadline, format: :long %>">
+            <%= l s.deadline, format: :long %>
+          </span>
+        <% end %>
+      </td>
+      <td>
+        <%= t ".num_exercises", {count: s.exercises.count} %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

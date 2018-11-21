@@ -2,20 +2,20 @@
 #
 # Table name: exercises
 #
-#  id                          :integer          not null, primary key
-#  name_nl                     :string(255)
-#  name_en                     :string(255)
-#  created_at                  :datetime         not null
-#  updated_at                  :datetime         not null
-#  path                        :string(255)
-#  description_format          :string(255)
-#  programming_language_id     :integer
-#  repository_id               :integer
-#  judge_id                    :integer
-#  status                      :integer          default("ok")
-#  token                       :string(64)       not null, unique
-#  access                      :integer          not null, default("public")
-#  search                      :string(4096)
+#  id                      :integer          not null, primary key
+#  name_nl                 :string(255)
+#  name_en                 :string(255)
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  path                    :string(255)
+#  description_format      :string(255)
+#  repository_id           :integer
+#  judge_id                :integer
+#  status                  :integer          default("ok")
+#  token                   :string(64)
+#  access                  :integer          default("public"), not null
+#  programming_language_id :bigint(8)
+#  search                  :string(4096)
 #
 
 require 'pathname'
@@ -26,6 +26,8 @@ class Exercise < ApplicationRecord
   include Filterable
   include StringHelper
 
+  USERS_CORRECT_CACHE_STRING = "/course/%{course_id}/exercise/%{id}/users_correct".freeze
+  USERS_TRIED_CACHE_STRING = "/course/%{course_id}/exercise/%{id}/users_tried".freeze
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
@@ -200,8 +202,8 @@ class Exercise < ApplicationRecord
     c = config
     c.delete('visibility')
     c['access'] = access if defined?(access) && access != merged_config['access']
-    c['description']['names']['nl'] = name_nl
-    c['description']['names']['en'] = name_en
+    c['description']['names']['nl'] = name_nl if name_nl.present? || c['description']['names']['nl'].present?
+    c['description']['names']['en'] = name_en if name_en.present? || c['description']['names']['en'].present?
     c['internals'] = {}
     c['internals']['token'] = token
     c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
@@ -233,15 +235,28 @@ class Exercise < ApplicationRecord
   end
 
   def users_correct(course = nil)
-    subs = submissions.where(status: :correct)
-    subs = subs.in_course(course) if course
-    subs.distinct.count(:user_id)
+    Rails.cache.fetch(USERS_CORRECT_CACHE_STRING % {course_id: course ? course.id : 'global', id: id}) do
+      subs = submissions.where(status: :correct)
+      subs = subs.in_course(course) if course
+      subs.distinct.count(:user_id)
+    end
   end
 
   def users_tried(course = nil)
-    subs = submissions.all
-    subs = subs.in_course(course) if course
-    subs.distinct.count(:user_id)
+    Rails.cache.fetch(USERS_TRIED_CACHE_STRING % {course_id: course ? course.id : 'global', id: id}) do
+      subs = submissions.all
+      subs = subs.in_course(course) if course
+      subs.distinct.count(:user_id)
+    end
+  end
+
+  def invalidate_cache(course = nil)
+    if course.present?
+      Rails.cache.delete(USERS_CORRECT_CACHE_STRING % {course_id: course.id, id: id})
+      Rails.cache.delete(USERS_TRIED_CACHE_STRING % {course_id: course.id, id: id})
+    end
+    Rails.cache.delete(USERS_CORRECT_CACHE_STRING % {course_id: 'global', id: id})
+    Rails.cache.delete(USERS_TRIED_CACHE_STRING % {course_id: 'global', id: id})
   end
 
   def best_is_last_submission?(user, deadline = nil, course = nil)

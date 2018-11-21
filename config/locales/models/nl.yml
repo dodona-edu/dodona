@@ -18,6 +18,7 @@ nl:
       label: Label
       api_token: API Token
       programming_language: Programmeertaal
+      post: Post
     attributes:
       api_token:
         description: Beschrijving
@@ -126,3 +127,8 @@ nl:
         name: Naam
         editor_name: Editor modus
         extension: Extensie
+      post:
+        title: Titel
+        content: Inhoud
+        release: Releasedatum
+        draft: Ontwerp

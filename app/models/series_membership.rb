@@ -2,14 +2,12 @@
 #
 # Table name: series_memberships
 #
-#  id              :integer          not null, primary key
-#  series_id       :integer
-#  exercise_id     :integer
-#  order           :integer          default(999)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  users_correct   :integer
-#  users_attempted :integer
+#  id          :integer          not null, primary key
+#  series_id   :integer
+#  exercise_id :integer
+#  order       :integer          default(999)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
 class SeriesMembership < ApplicationRecord
@@ -21,27 +19,10 @@ class SeriesMembership < ApplicationRecord
   default_scope {order(order: :asc)}
 
   validates :series_id, uniqueness: {scope: :exercise_id}
+  after_update :invalidate_caches
+  before_destroy :invalidate_caches
 
-  def cached_users_correct
-    if users_correct.nil?
-      self.users_correct = exercise.users_correct(course)
-      save
-    end
-    users_correct
-  end
-
-  def cached_users_tried
-    if users_attempted.nil?
-      self.users_attempted = exercise.users_tried(course)
-      save
-    end
-    users_attempted
-  end
-
-  def invalidate_stats_cache
-    course.invalidate_stats_cache
-    self.users_correct = nil
-    self.users_attempted = nil
-    save
+  def invalidate_caches
+    course.invalidate_exercises_count_cache
   end
 end

@@ -6,9 +6,9 @@
 #  course_id  :integer
 #  user_id    :integer
 #  status     :integer          default("student")
-#  favorite   :boolean          default(false)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  favorite   :boolean          default(FALSE)
 #
 
 class CourseMembership < ApplicationRecord
@@ -22,11 +22,8 @@ class CourseMembership < ApplicationRecord
   validate :at_least_one_admin_per_course
 
   before_create {self.status ||= :student}
-  after_create :invalidate_stats_cache
-
-  def invalidate_stats_cache
-    SeriesMembership.where(series_id: course.series).find_each(&:invalidate_stats_cache)
-  end
+  after_update :invalidate_caches
+  before_destroy :invalidate_caches
 
   def at_least_one_admin_per_course
     if status_was == 'course_admin' &&
@@ -36,5 +33,9 @@ class CourseMembership < ApplicationRecord
             .where.not(id: id).empty?
       errors.add(:status, :at_least_one_admin_per_course)
     end
+  end
+
+  def invalidate_caches
+    course.invalidate_subscribed_members_count_cache
   end
 end

@@ -14,6 +14,8 @@
 #
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
+  has_one_attached :code
+  has_one_attached :result
 
   enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
 
@@ -23,12 +25,11 @@ class Submission < ApplicationRecord
   has_one :judge, through: :exercise
   has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
 
-  delegate :code, :"code=", :result, :"result=", to: :submission_detail, allow_nil: true
-
   validate :code_cannot_contain_emoji, on: :create
+  validate :maximum_code_length, on: :create
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
-  after_update :invalidate_stats_cache
+  after_update :invalidate_caches
   after_create :evaluate_delayed, if: :evaluate?
 
   default_scope {order(id: :desc)}
@@ -77,6 +78,40 @@ class Submission < ApplicationRecord
     self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
   end
 
+  old_code = instance_method(:code)
+  define_method(:code) do
+    #as_code = old_code.bind(self).()
+    #if as_code.attached?
+    #  as_code.blob.download
+    #else
+    submission_detail.code
+    #end
+  end
+
+  define_method(:"code=") do |code|
+    #old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code), filename: "code", content_type: 'text/plain'))
+    submission_detail.code = code if submission_detail
+  end
+
+  old_result = instance_method(:result)
+  define_method(:result) do
+    #as_result = old_result.bind(self).()
+    #if as_result.attached?
+    #  ActiveSupport::Gzip.decompress(as_result.blob.download)
+    #else
+    submission_detail.result
+    #end
+  end
+
+  define_method(:"result=") do |result|
+    #old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(ActiveSupport::Gzip.compress(result)), filename: "result.json.gz", content_type: 'application/json'))
+    submission_detail.result = result if submission_detail
+  end
+
+  define_method(:"copied_to_activestorage?") do
+    old_code.bind(self).().attached? && old_result.bind(self).().attached?
+  end
+
   def evaluate?
     @evaluate
   end
@@ -121,6 +156,11 @@ class Submission < ApplicationRecord
     errors.add(:code, 'emoji found') unless no_emoji_found
   end
 
+  def maximum_code_length
+    # code is saved in a TEXT field which has max size 2^16 - 1 bytes
+    errors.add(:code, 'too long') if code.bytesize >= 64.kilobytes
+  end
+
   def is_not_rate_limited
     return if self.user.nil?
     previous = self.user.submissions.most_recent.first
@@ -141,12 +181,9 @@ class Submission < ApplicationRecord
     'unknown'
   end
 
-  def invalidate_stats_cache
-    memberships = if course
-                    course.series_memberships
-                  else
-                    SeriesMembership.all
-                  end
-    memberships.where(exercise_id: exercise_id).includes(:exercise, series: :course).find_each(&:invalidate_stats_cache)
+  def invalidate_caches
+    course.invalidate_correct_solutions_cache if course.present?
+    exercise.invalidate_cache(course)
+    user.invalidate_cache(course)
   end
 end

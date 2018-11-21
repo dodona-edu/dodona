@@ -26,6 +26,7 @@ class Submission < ApplicationRecord
   has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
 
   validate :code_cannot_contain_emoji, on: :create
+  validate :maximum_code_length, on: :create
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
   after_update :invalidate_caches
@@ -153,6 +154,11 @@ class Submission < ApplicationRecord
   def code_cannot_contain_emoji
     no_emoji_found = code.chars.all? {|c| c.bytes.length < 4}
     errors.add(:code, 'emoji found') unless no_emoji_found
+  end
+
+  def maximum_code_length
+    # code is saved in a TEXT field which has max size 2^16 - 1 bytes
+    errors.add(:code, 'too long') if code.bytesize >= 64.kilobytes
   end
 
   def is_not_rate_limited

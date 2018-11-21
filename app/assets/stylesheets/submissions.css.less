@@ -1,6 +1,22 @@
 .feedback-table {
+  .label {
+    display: block;
+    text-align: left;
+    border-left: 3px solid;
+    border-radius: 0;
+  }
+  .label.label-danger {
+    color: @danger-500;
+    border-color: @danger-500;
+    background-color: white;
+  }
+  .label.label-success {
+    color: @success-500;
+    border-color: @success-500;
+    background-color: white;
+  }
   .description {
-    background-color: @grey-300;
+    background-color: @code-bg;
     pre {
       border: none;
     }
@@ -25,8 +41,7 @@
     .indicator {
       width: 15px;
       height: 15px;
-      margin: 3px;
-      margin-right: -12px;
+      margin: 0 -12px 3px 3px;
       float: right;
 
       span {
@@ -59,6 +74,89 @@
     font-size: 13px;
     white-space: pre-wrap;
   }
+  table.diff {
+    overflow: auto;
+    font-size: 13px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    td {
+      vertical-align: top;
+    }
+    td.line-nr {
+      text-align: right;
+    }
+    th {
+      font-weight: normal;
+      padding-left: 5px;
+      padding-right: 5px;
+      background: @grey-50;
+      color: @black-secondary;
+      vertical-align: center;
+    }
+    .del,
+    .ins,
+    .unchanged {
+      text-decoration: none;
+      padding-left: 5px;
+      padding-right: 5px;
+      word-wrap: break-word;
+      word-break: break-all;
+      white-space: normal;
+      font-family: @font-family-monospace;
+    }
+    .ins {
+      background: #B9F6CA;
+    }
+    .del {
+      background: #FFCDD2;
+    }
+    .line-nr {
+      background: @grey-50;
+      color: @black-secondary;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .output {
+      width: 100%;
+    }
+    .ins-output,
+    .del-output {
+      width: 50%;
+      max-width: 50%;
+    }
+    .tr {
+      padding: 0;
+      margin: 0;
+      line-height: 1.0;
+    }
+    .ins strong {
+      font-weight: normal;
+      background: #69F0AE;
+      border-radius: 0.2em;
+    }
+    .del strong {
+      font-weight: normal;
+      background: #FF8A80;
+      border-radius: 0.2em;
+    }
+  }
+  .diffs .unified-diff {
+    display: none;
+  }
+  .diffs .split-diff {
+    display: none;
+  }
+  .diffs.show-unified .unified-diff {
+    display: table;
+  }
+  .diffs.show-split .split-diff {
+    display: table;
+  }
+  .diff-switch-buttons {
+    margin-bottom: 1rem;
+  }
   .diff ul {
     overflow: auto;
     font-size: 13px;
@@ -67,49 +165,44 @@
     padding: 0;
     display: table;
     width: 100%;
-  }
-  .diff del,
-  .diff ins {
-    display: block;
-    text-decoration: none;
-  }
-  .diff li {
-    padding: 0;
-    display: table-row;
-    margin: 0;
-    height: 1em;
-  }
-  .diff li.ins {
-    background: #dfd;
-    color: #080;
-  }
-  .diff li.del {
-    background: #fee;
-    color: #b00;
-  }
-  /*.diff li:hover {
-      background: #ffc;
-  }*/
-  /* try 'whitespace:pre;' if you don't want lines to wrap */
-  .diff del,
-  .diff ins,
-  .diff span {
-    white-space: pre-wrap;
-    font-family: @font-family-monospace;
-  }
-  .diff del strong {
-    font-weight: normal;
-    background: #fcc;
-  }
-  .diff ins strong {
-    font-weight: normal;
-    background: #9f9;
-  }
-  .diff li.diff-comment {
-    display: none;
-  }
-  .diff li.diff-block-info {
-    background: none repeat scroll 0 0 gray;
+    li.diff-block-info {
+      background: none repeat scroll 0 0 gray;
+    }
+    del,
+    ins {
+      display: block;
+      text-decoration: none;
+    }
+    li {
+      padding: 0;
+      display: table-row;
+      margin: 0;
+      height: 1em;
+    }
+    li.ins {
+      background: #B9F6CA;
+    }
+    li.del {
+      background: #FFCDD2;
+    }
+    del, ins, span {
+      white-space: pre-wrap;
+      font-family: @font-family-monospace;
+
+    }
+    del strong {
+      font-weight: normal;
+      background: #FF8A80;
+      border-radius: 0.2em;
+    }
+    ins strong {
+      font-weight: normal;
+      background: #69F0AE;
+      border-radius: 0.2em;
+    }
+    li.diff-comment {
+      display: none;
+    }
   }
   .linter pre {
     border: none;

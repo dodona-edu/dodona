@@ -27,11 +27,11 @@ class Series < ApplicationRecord
   validates :name, presence: true
   validates :visibility, presence: true
 
-  before_save :set_access_token
+  before_create :set_access_token
 
   scope :visible, -> {where(visibility: :open)}
   scope :with_deadline, -> {where.not(deadline: nil)}
-  default_scope {order(id: :desc)}
+  default_scope {order(order: :asc, id: :desc)}
 
   after_initialize do
     self.visibility ||= 'open'
@@ -106,10 +106,6 @@ class Series < ApplicationRecord
   private
 
   def set_access_token
-    if !hidden?
-      self.access_token = nil
-    elsif access_token.blank?
-      generate_token :access_token
-    end
+    generate_token :access_token
   end
 end

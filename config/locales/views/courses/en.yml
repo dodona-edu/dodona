@@ -18,6 +18,8 @@ en:
       title: Create course
     edit:
       confidential: Confidential
+      series_in_course: "Series in this course"
+      series_reordering_help: "You can reorder series by dragging them using the icon at the left of the table. Keep in mind that a logical order for you might not be the most logical order for your students."
     show:
       course: Course
       invitation_link: Subscription link

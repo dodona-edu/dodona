@@ -4,6 +4,7 @@
 @import "vendor.less";
 @import "dragula.css.less";
 @import "bootstrap_overrides.css.less";
+@import "material_design_icons.css.less";
 @import "components.css.less";
 @import "layout.css.less";
 @import "pages.css.less";
@@ -23,6 +24,7 @@
 @import "development.css.less";
 <% end %>
 @import "rouge.css.less";
+@import "actiontext.css.less";
 
 .field_with_errors input {
   border-color: @danger-800;
@@ -114,9 +116,9 @@ figcaption {
 
 /* Override inline styling of search bar */
 input.token-input.tt-input {
-  width: 100% !important;
+  max-width: 100% !important;
 }
 
 .tokenfield .twitter-typeahead {
-  width: 100% !important;
+  max-width: 100% !important;
 }

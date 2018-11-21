@@ -58,6 +58,7 @@ Rails.application.routes.draw do
         post 'update_membership'
         post 'favorite'
         post 'unfavorite'
+        post 'reorder_series'
         match 'subscribe', via: %i[get post]
       end
     end
@@ -105,6 +106,7 @@ Rails.application.routes.draw do
 
     resources :labels
     resources :programming_languages
+    resources :posts
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -52,19 +52,11 @@ class ExerciseSummary
   end
 
   def users_correct
-    if series_membership
-      series_membership.cached_users_correct
-    else
-      exercise.users_correct
-    end
+    exercise.users_correct(series_membership&.course)
   end
 
   def users_tried
-    if series_membership
-      series_membership.cached_users_tried
-    else
-      exercise.users_tried
-    end
+    exercise.users_tried(series_membership&.course)
   end
 
   private

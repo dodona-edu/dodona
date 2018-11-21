@@ -32,7 +32,10 @@ en:
       code: Code
       line: Line
       reevaluate: Re-evaluate
-      generated: generated output
-      expected: expected output
+      your_output: Your output
+      expected: Expected output
       edit: Edit submission
       in: "in"
+      diff:
+        split: Split
+        unified: Unified

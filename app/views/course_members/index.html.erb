@@ -37,12 +37,13 @@
                                confirm: t("courses.show.confirm_decline_all"),
                                action: mass_decline_pending_course_path(@course),
                            }
-                       ]
+                       ],
+                       course_labels: @course_labels
                    } %>
         <div id="users-table-wrapper">
-          <%= render partial: 'users/users_table',
+          <%= render partial: 'members_table',
                      locals: {
-                         users: @users,
+                         course_memberships: @course_memberships,
                          pagination_opts: @pagination_opts
                      } %>
         </div>

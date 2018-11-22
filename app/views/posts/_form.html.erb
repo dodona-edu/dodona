@@ -1,3 +1,7 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'post' %>
+<% end %>
+
 <%= form_for(post, :html => {:class => 'form-horizontal'}) do |f| %>
   <% if post.errors.any? %>
     <div id="error_explanation">
@@ -20,7 +24,14 @@
   <div class="field form-group">
     <div class="row">
       <%= f.label :release, :class => "col-sm-2 control-label" %>
-      <div class="col-sm-4"><%= f.date_select :release, class: "form-control", disabled: !f.permission?(:release) %></div>
+      <div class="col-sm-4">
+        <div class="input-group" id="release-group" data-wrap=true>
+          <%= f.text_field :release, class: "form-control", 'data-input': true %>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" data-toggle><i class='material-icons md-18'>calendar_today</i></button>
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -39,3 +50,8 @@
     <%= f.rich_text_area :content %>
   </div>
 <% end %>
+<script type="text/javascript">
+    $(function () {
+        dodona.initPostForm();
+    });
+</script>

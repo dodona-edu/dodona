@@ -11,10 +11,6 @@
     </div>
   <% end %>
   <div class="card-supporting-text">
-    <% if I18n.locale == :nl %>
-      <%= post.content_nl %>
-    <% else %>
-      <%= post.content_en %>
-    <% end %>
+    <%= post.content %>
   </div>
 </div>

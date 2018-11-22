@@ -11,7 +11,8 @@
 #
 
 class Post < ApplicationRecord
-  has_rich_text :content
+  has_rich_text :content_en
+  has_rich_text :content_nl
 
   default_scope {order(release: :desc)}
 end

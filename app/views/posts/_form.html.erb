@@ -47,7 +47,13 @@
   </div>
 
   <div class="field">
-    <%= f.rich_text_area :content %>
+    <%= f.label :content_en, :class => "control-label" %>
+    <%= f.rich_text_area :content_en %>
+  </div>
+
+  <div class="field">
+    <%= f.label :content_nl, :class => "control-label" %>
+    <%= f.rich_text_area :content_nl %>
   </div>
 <% end %>
 <script type="text/javascript">

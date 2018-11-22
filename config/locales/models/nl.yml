@@ -129,6 +129,7 @@ nl:
         extension: Extensie
       post:
         title: Titel
-        content: Inhoud
+        content_en: Engelstalige inhoud
+        content_nl: Nederlandstalige inhoud
         release: Releasedatum
         draft: Ontwerp

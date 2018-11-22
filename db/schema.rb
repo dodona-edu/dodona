@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_14_092600) do
+ActiveRecord::Schema.define(version: 2018_11_21_162758) do
 
   create_table "action_text_rich_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -81,7 +81,6 @@ ActiveRecord::Schema.define(version: 2018_11_14_092600) do
     t.text "description"
     t.integer "visibility", default: 0
     t.integer "registration", default: 0
-    t.integer "correct_solutions"
     t.integer "color"
     t.string "teacher", default: ""
     t.bigint "institution_id"
@@ -228,8 +227,6 @@ ActiveRecord::Schema.define(version: 2018_11_14_092600) do
     t.integer "order", default: 999
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "users_correct"
-    t.integer "users_attempted"
     t.index ["exercise_id"], name: "index_series_memberships_on_exercise_id"
     t.index ["series_id", "exercise_id"], name: "index_series_memberships_on_series_id_and_exercise_id"
     t.index ["series_id"], name: "index_series_memberships_on_series_id"

@@ -764,7 +764,8 @@ a.anchor {
   }
 
   .tt-hint {
-    width: 100% !important;
+    max-width: 100% !important;
+    width: unset !important;
   }
 
   .tt-selectable {
@@ -773,6 +774,17 @@ a.anchor {
 
   .tokenfield-undeletable .close {
     display: none;
+  }
+
+  /* Override inline styling of search bar */
+  .twitter-typeahead {
+    max-width: 100% !important;
+    width: unset !important;
+
+    input.token-input.tt-input {
+      max-width: 100% !important;
+      width: unset !important;
+    }
   }
 }
 

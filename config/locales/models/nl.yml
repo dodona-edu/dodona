@@ -128,7 +128,8 @@ nl:
         editor_name: Editor modus
         extension: Extensie
       post:
-        title: Titel
+        title_en: Engelstalige titel
+        title_nl: Nederlandstalige titel
         content_en: Engelstalige inhoud
         content_nl: Nederlandstalige inhoud
         release: Releasedatum

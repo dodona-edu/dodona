@@ -3,6 +3,8 @@ nl:
     show:
       labels: Labels
       no_labels: Geen labels
+      close: "Sluiten"
+      save: "Opslaan"
     form:
       course_labels: "Labels"
       labels_delimiter: "Gebruik een komma om labels te scheiden"

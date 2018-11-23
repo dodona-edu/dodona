@@ -6,11 +6,6 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @user.full_name %></h2>
-        <% if policy(@course_membership).update? %>
-          <div class="card-title-fab">
-            <%= render 'application/fab_link', url: edit_course_member_path(@course, @user), icon: 'edit' %>
-          </div>
-        <% end %>
       </div>
       <div class="card-supporting-text">
         <p>
@@ -62,6 +57,29 @@
                 <% end %>
               <% else %>
                 <%= t ".no_labels" %>
+              <% end %>
+              <% if policy(@course_membership).update? %>
+                <span class="material-icons md-inherit" data-toggle="modal" data-target="#labelsEditModal">edit</span>
+                <% content_for :modal do %>
+                  <div class="modal fade" id="labelsEditModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="<%= t(".close") %>">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title"><%= t "crumbs.edit" %></h4>
+                        </div>
+                        <div class="modal-body">
+                          <%= render 'form', course: @course, user: @user, course_membership: @course_membership %>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal"><%= t(".close") %></button>
+                          <button type="submit" class="btn btn-primary" form="<%= "edit_course_membership_#{@course_membership.id}" %>"><%= t(".save") %></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
               <% end %>
             </p>
           </div>

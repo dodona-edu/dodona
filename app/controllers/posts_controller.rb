@@ -15,7 +15,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     authorize Post
-    @post = Post.new
+    @post = Post.new(release: Date.today)
     @title = I18n.t('posts.new.title')
     @crumbs = [[I18n.t('posts.index.title'), posts_path], [I18n.t('posts.new.title'), '#']]
   end

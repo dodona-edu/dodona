@@ -127,7 +127,9 @@ en:
         editor_name: Editor mode
         extension: Extension
       post:
-        title: Title
-        content: Content
+        title_en: English title
+        title_nl: Dutch title
+        content_en: English content
+        content_nl: Dutch content
         release: Release date
         draft: Draft

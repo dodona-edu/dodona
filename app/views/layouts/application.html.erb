@@ -51,6 +51,7 @@
 </head>
 <body>
 <div id="page-wrapper">
+  <%= yield :modal %>
   <%= render 'layouts/navbar' %>
   <% if user_signed_in? %>
     <%= render 'layouts/drawer' %>

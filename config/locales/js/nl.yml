@@ -5,7 +5,7 @@ nl:
     submission-emoji: "Oeps, er ging iets fout bij het opslaan van je oplossing. Je oplossing bevat speciale tekens zoals emoji of wiskundige symbolen die je uit de opgave gekopieerd hebt. Verwijder deze en probeer opnieuw. Contacteer de assistent als je het probleem niet vindt."
     submission-rate-limit: "Oeps, je bent te snel! Wacht eventjes tussen het indienen van een nieuwe oplossing."
     submission-too-long: "Oeps, er ging iets fout bij het opslaan van je oplossing. Je oplossing is te lang. Maak ze korter en probeer opnieuw."
-    submission-network: "Oeps, je kan niet verbinden met de server. Kijk na of je netwerkverbinding in orde is."
+    submission-network: "Oeps, we kunnen niet verbinden met de server. Controleer je internetverbinding."
     submission-processed: Evaluatie afgerond
     exercise-added-success: Oefening toegevoegd
     exercise-added-failed: Oefening toevoegen mislukt

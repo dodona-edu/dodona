@@ -32,7 +32,7 @@ class PostPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.zeus?
-      %i[title content draft release]
+      %i[title_en title_nl content_en content_nl draft release]
     else
       %i[]
     end

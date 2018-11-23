@@ -46,6 +46,13 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
   def update
+    attributes = permitted_attributes(@post)
+    if attributes[:content_en].present?
+      @post.content_en.embeds.detach
+    end
+    if attributes[:content_nl].present?
+      @post.content_nl.embeds.detach
+    end
     respond_to do |format|
       if @post.update(permitted_attributes(@post))
         format.html {redirect_to post_url(@post), notice: I18n.t('controllers.updated', model: Post.model_name.human)}

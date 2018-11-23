@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_21_162758) do
+ActiveRecord::Schema.define(version: 2018_11_22_141338) do
 
   create_table "action_text_rich_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -167,12 +167,12 @@ ActiveRecord::Schema.define(version: 2018_11_21_162758) do
   end
 
   create_table "posts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "title", null: false
     t.date "release", null: false
     t.boolean "draft", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["title", "release"], name: "index_posts_on_title_and_release", unique: true
+    t.string "title_en", null: false
+    t.string "title_nl", null: false
   end
 
   create_table "programming_languages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

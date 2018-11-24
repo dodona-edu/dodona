@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,6 +9,10 @@
   <meta name="author" content="<%= t "layout.footer.ugent" %>">
   <meta name="application-name" content="Dodona">
   <meta name="theme-color" content="#2196F3">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@DodonaEdu">
+  <meta property="og:title" content="<%= @title || 'Dodona' %>">
+  <%= yield :meta_tags %>
   <meta name="msapplication-TileColor" content="#2196F3"/>
   <meta name="msapplication-TileImage" content="/icon.png"/>
   <link rel="apple-touch-icon-precomposed" href="/icon.png"/>

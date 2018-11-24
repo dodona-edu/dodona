@@ -8,3 +8,5 @@ nl:
     form:
       course_labels: "Labels"
       labels_delimiter: "Gebruik een komma om labels te scheiden"
+    members_table:
+      labels: "Labels"

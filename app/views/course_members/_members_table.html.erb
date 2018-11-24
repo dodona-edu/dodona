@@ -6,7 +6,7 @@
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th class='text-right'><%= t("users.index.progress") %></th>
-      <th class='text-right'><%= t("users.index.access_level") %></th>
+      <th class='text-right'><%= t(".labels") %></th>
       <th></th>
     </tr>
     </thead>
@@ -32,7 +32,9 @@
           <%= link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user) %>
         </td>
         <td class='text-right'>
-          <%= t("activerecord.attributes.course_membership.statuses.#{course_membership.status}") %>
+          <% course_membership.course_labels.each do |label| %>
+            <span class="label label-default accent-orange"><%= label.name %></span>
+          <% end %>
         </td>
         <td class="actions">
           <%= render partial: 'course_membership_buttons',

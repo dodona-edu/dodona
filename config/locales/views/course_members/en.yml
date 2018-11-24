@@ -8,3 +8,5 @@ en:
     form:
       course_labels: "Labels"
       labels_delimiter: "Use a comma to delimit labels"
+    members_table:
+      labels: "Labels"

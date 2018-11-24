@@ -1,6 +1,6 @@
 <% content_for :meta_tags do %>
   <% if @post.first_paragraph.present? %>
-    <meta property="og:content" content="<%= @post.first_paragraph %>">
+    <meta property="og:description" content="<%= @post.first_paragraph %>">
   <% end %>
   <% if @post.first_image.present? %>
     <meta property="og:image" content="<%= rails_blob_url(@post.first_image) %>">

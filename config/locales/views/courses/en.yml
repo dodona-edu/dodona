@@ -23,7 +23,7 @@ en:
     show:
       course: Course
       invitation_link: Subscription link
-      invitation_link_help: 'This URL links to a page where the user is promted to register.'
+      invitation_link_help: 'This URL links to a page where the user is prompted to register.'
       visibility-visible-info_html: 'This course is <strong>visible</strong>: everyone can access this course from the course overview and the contents are visible for anyone.'
       visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and to register, users need the registration link. The contents is only visible for registered members.'
       registration-open-info_html: 'Registrations are <strong>open</strong>: users are immediately registered when they click on the register button.'

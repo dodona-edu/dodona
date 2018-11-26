@@ -2,20 +2,19 @@
 #
 # Table name: courses
 #
-#  id                :integer          not null, primary key
-#  name              :string(255)
-#  year              :string(255)
-#  secret            :string(255)
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  description       :text(65535)
-#  visibility        :integer          default("visible")
-#  registration      :integer          default("open")
-#  correct_solutions :integer
-#  color             :integer
-#  teacher           :string(255)      default("")
-#  institution_id    :bigint(8)
-#  search            :string(4096)
+#  id             :integer          not null, primary key
+#  name           :string(255)
+#  year           :string(255)
+#  secret         :string(255)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  description    :text(65535)
+#  visibility     :integer          default("visible")
+#  registration   :integer          default("open")
+#  color          :integer
+#  teacher        :string(255)      default("")
+#  institution_id :bigint(8)
+#  search         :string(4096)
 #
 
 require 'test_helper'

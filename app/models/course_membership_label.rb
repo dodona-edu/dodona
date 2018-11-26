@@ -10,11 +10,4 @@
 class CourseMembershipLabel < ApplicationRecord
   belongs_to :course_membership
   belongs_to :course_label
-  after_destroy :delete_unused_course_labels
-
-  def delete_unused_course_labels
-    CourseLabel.includes(:course_membership_labels)
-        .where(:course_membership_labels => {:course_label_id => nil})
-        .destroy_all
-  end
 end

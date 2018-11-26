@@ -244,7 +244,9 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function submissionFailed(request) {
         let message = I18n.t("js.submission-failed");
-        if (request.status === 422) {
+        if (request.readyState === 0) {
+            message = I18n.t("js.submission-network");
+        } else if (request.status === 422) {
             try {
                 let response = JSON.parse(request.responseText);
                 let errors = response.errors;

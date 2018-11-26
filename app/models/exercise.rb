@@ -197,7 +197,7 @@ class Exercise < ApplicationRecord
   def update_config
     return unless ok?
 
-    labels_to_write = labels.map {|l| l.name} - (merged_dirconfig['labels'] || [])
+    labels_to_write = labels.map(&:name) - (merged_dirconfig['labels'] || [])
 
     c = config
     c.delete('visibility')

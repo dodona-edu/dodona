@@ -77,7 +77,6 @@
   table.diff {
     overflow: auto;
     font-size: 13px;
-    list-style: none;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -103,14 +102,24 @@
       padding-right: 5px;
       word-wrap: break-word;
       word-break: break-all;
-      white-space: normal;
+      white-space: pre-wrap;
       font-family: @font-family-monospace;
+      strong {
+        font-weight: normal;
+        border-radius: 0.2em;
+      }
     }
     .ins {
       background: #B9F6CA;
     }
     .del {
       background: #FFCDD2;
+    }
+    .ins strong {
+      background: #69F0AE;
+    }
+    .del strong {
+      background: #FF8A80;
     }
     .line-nr {
       background: @grey-50;
@@ -130,16 +139,6 @@
       padding: 0;
       margin: 0;
       line-height: 1.0;
-    }
-    .ins strong {
-      font-weight: normal;
-      background: #69F0AE;
-      border-radius: 0.2em;
-    }
-    .del strong {
-      font-weight: normal;
-      background: #FF8A80;
-      border-radius: 0.2em;
     }
   }
   .diffs .unified-diff {

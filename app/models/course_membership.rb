@@ -25,6 +25,7 @@ class CourseMembership < ApplicationRecord
 
   before_create {self.status ||= :student}
   after_update :invalidate_caches
+  after_update :delete_unused_course_labels
   before_destroy :invalidate_caches
 
   scope :by_permission, ->(permission) {where(user: User.by_permission(permission))}
@@ -48,5 +49,11 @@ class CourseMembership < ApplicationRecord
 
   def invalidate_caches
     course.invalidate_subscribed_members_count_cache
+  end
+
+  def delete_unused_course_labels
+    CourseLabel.includes(:course_membership_labels)
+        .where(:course_membership_labels => {:course_label_id => nil})
+        .destroy_all
   end
 end

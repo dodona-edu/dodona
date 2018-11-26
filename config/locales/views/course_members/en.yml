@@ -10,3 +10,9 @@ en:
       labels_delimiter: "Use a comma to delimit labels"
     members_table:
       labels: "Labels"
+    index:
+      close: "Close"
+      upload: "Upload"
+      edit_all_labels: "Edit all labels"
+      first_download_labels: "Download a listing of all users and their labels as a CSV file."
+      then_edit: "Edit the file you just downloaded (only changes to the labels column will be used). Note that the labels are in one field, seperated by semicolons. If you are satisfied with your changes, upload the file below."

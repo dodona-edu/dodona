@@ -8,7 +8,7 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @course.name %></h2>
         <div class="card-title-fab">
-          <%= render 'fab_button', form: "edit_course_#{@course.id}", icon: 'done' %>
+          <%= render 'application/fab_button', form: "edit_course_#{@course.id}", icon: 'done' %>
         </div>
       </div>
       <div class="card-supporting-text">
@@ -25,7 +25,7 @@
                           class: 'col-sm-3 control-label' %>
             <div class="col-sm-7">
               <div class="input-group" id="registration_link">
-                <%= render partial: 'token_field',
+                <%= render partial: 'application/token_field',
                            locals: {
                                name: :registration_link,
                                value: registration_course_url(@course, @course.secret),

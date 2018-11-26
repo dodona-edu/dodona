@@ -170,10 +170,9 @@ class Repository < ApplicationRecord
     ex.access = config['access'] if config['access']
     ex.access ||= :private
     ex.status = :ok
+    ex.labels = labels
 
     ex.save
-
-    ex.labels = labels
   end
 
   def github_url(path = nil)

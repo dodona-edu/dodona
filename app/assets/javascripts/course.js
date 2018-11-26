@@ -8,48 +8,82 @@ function loadUsers(_baseUrl, _status) {
     initFilter(baseUrl + "?status=" + status, true);
 }
 
-function initUserTabs() {
-    const $userTabs = $("#user-tabs");
-    if ($userTabs.length > 0) {
-        const baseUrl = $userTabs.data("baseurl");
-
-        // Select tab and load users
-        const selectTab = $tab => {
-            if ($tab.parent().hasClass("active")) {
-                // The current tab is already loaded, nothing to do
-                return;
-            }
-            const $kebab = $("#kebab-menu");
-            const status = $tab.attr("href").substr(1);
-            if (status === "pending") {
-                $kebab.show();
-            } else {
-                $kebab.hide();
-            }
-            loadUsers(baseUrl, status);
-            $("#user-tabs li.active").removeClass("active");
-            $tab.parent().addClass("active");
-        };
-
-        // Switch to clicked tab
-        $("#user-tabs li a").click(function () {
-            selectTab($(this));
-        });
-
-        // Determine which tab to show first
-        const hash = window.location.hash;
-        let $tab = $("a[href='" + hash + "']");
-        if ($tab.length === 0) {
-            // Default to enrolled (subscribed)
-            $tab = $("a[href='#enrolled']");
-        }
-        selectTab($tab);
-    }
-}
-
 function initCourseMembers() {
-    $("#kebab-menu").hide();
-    initUserTabs();
+    function init() {
+        initUserTabs();
+        initLabelsEditModal();
+    }
+
+    function initUserTabs() {
+        const $userTabs = $("#user-tabs");
+        if ($userTabs.length > 0) {
+            const baseUrl = $userTabs.data("baseurl");
+
+            // Select tab and load users
+            const selectTab = $tab => {
+                const $kebab = $("#kebab-menu");
+                const status = $tab.attr("href").substr(1);
+                const $kebabItems = $kebab.find("li a.action");
+                let anyShown = false;
+                for (const item of $kebabItems) {
+                    const $item = $(item);
+                    if ($item.data("type") && $item.data("type") !== status) {
+                        $item.hide();
+                    } else {
+                        $item.show();
+                        anyShown = true;
+                    }
+                }
+                if (anyShown) {
+                    $kebab.show();
+                } else {
+                    $kebab.hide();
+                }
+                if ($tab.parent().hasClass("active")) {
+                    // The current tab is already loaded, nothing to do
+                    return;
+                }
+                loadUsers(baseUrl, status);
+                $("#user-tabs li.active").removeClass("active");
+                $tab.parent().addClass("active");
+            };
+
+            // Switch to clicked tab
+            $("#user-tabs li a").click(function () {
+                selectTab($(this));
+            });
+
+            // Determine which tab to show first
+            const hash = window.location.hash;
+            let $tab = $("a[href='" + hash + "']");
+            if ($tab.length === 0) {
+                // Default to enrolled (subscribed)
+                $tab = $("a[href='#enrolled']");
+            }
+            selectTab($tab);
+        }
+    }
+
+    function initLabelsEditModal() {
+        $("#labelsUploadButton").click(() => {
+            const $modal = $("#labelsUploadModal");
+            const $input = $("#newCsvFileInput")[0];
+            const formData = new FormData();
+            formData.append("file", $input.files[0]);
+            $.post({
+                url: `/courses/${$modal.data("course_id")}/members/upload_labels_csv`,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function () {
+                    $modal.modal("hide");
+                    loadUsers();
+                },
+            });
+        });
+    }
+
+    init();
 }
 
 

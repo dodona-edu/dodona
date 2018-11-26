@@ -7,7 +7,6 @@ class CourseMembersController < ApplicationController
   has_scope :by_course_labels, as: 'course_labels', type: :array
 
   def index
-    authorize @course, :members?
     statuses = if %w[unsubscribed pending].include? params[:status]
                  params[:status]
                else
@@ -59,10 +58,31 @@ class CourseMembersController < ApplicationController
     end
   end
 
+  def download_labels_csv
+    csv = @course.labels_csv
+    send_data csv[:data],
+              type: 'application/csv',
+              filename: csv[:filename],
+              disposition: 'attachment',
+              x_sendfile: true
+  end
+
+  def upload_labels_csv
+    CSV.foreach(params[:file].path, headers: true) do |row|
+      row = row.to_hash
+      cm = CourseMembership.find_by(user_id: row["id"], course: @course)
+      if cm.present?
+        labels = row["labels"].split(';').map {|name| CourseLabel.find_by(name: name.strip, course: @course) || CourseLabel.create(name: name.strip, course: @course)}
+        cm.update(course_labels: labels)
+      end
+    end
+  end
+
   private
 
   def set_course
     @course = Course.find(params[:course_id])
+    authorize @course, :members?
   end
 
   def set_course_membership_and_user

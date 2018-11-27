@@ -14,6 +14,7 @@
 #
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
+  SUBMISSION_MATRIX_CACHE_STRING = "/courses/%{course_id}/user/%{user_id}/submissions_matrix".freeze
   has_one_attached :code
   has_one_attached :result
 
@@ -190,32 +191,24 @@ class Submission < ApplicationRecord
   end
 
   def update_aggregate
-    pathname = File.join('data', 'aggregates', "#{course_id}_#{user_id}.json")
-
-    if File.exist?(pathname)
-      submissions_matrix = JSON.parse File.read pathname # Because apparently this is not possible with the 'r+' mode or the 'w+' mode?
-      # Open the file, update the object
-      File.open(pathname, 'r+') do |f|
-        day = created_at.wday > 0 ? created_at.wday - 1 : 6
-        key = "#{day}, #{created_at.hour}"
-        submissions_matrix.key?(key) ? submissions_matrix[key] += 1 : submissions_matrix[key] = 1
-        f.write(submissions_matrix.to_json)
-      end
-    else
-      Submission.calculate_submissions_matrix pathname, user_id, course_id
+    global_matrix = Submission.get_submissions_matrix(user, nil)
+    global_matrix["#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"] += 1
+    Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: 'global', user_id: user.id}, global_matrix)
+    if course.present?
+      course_matrix = Submission.get_submissions_matrix(user, course)
+      course_matrix["#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"] += 1
+      Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.id, user_id: user.id}, course_matrix)
     end
   end
 
-  def self.calculate_submissions_matrix(pathname, user_id, course_id)
-    submissions_matrix = Submission.where(user_id: user_id).where(course_id: course_id).pluck(:created_at)
-                             .map{|d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"}
-                             .group_by(&:itself).transform_values(&:count)
-
-    f = File.new(pathname, 'w')
-    f.write(submissions_matrix.to_json)
-    f.close
-
-    submissions_matrix
+  def self.get_submissions_matrix(user, course)
+    Rails.cache.fetch(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}) do
+      submissions = Submission.of_user(user)
+      submissions = submissions.in_course(course) if course.present?
+      submissions.pluck(:created_at)
+          .map {|d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"}
+          .group_by(&:itself).transform_values(&:count)
+    end
   end
 
 

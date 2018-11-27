@@ -15,4 +15,5 @@ nl:
       upload: "Uploaden"
       edit_all_labels: "Alle labels bewerken"
       first_download_labels: "Download een oplijsting van alle gebruikers en hun labels als een CSV file."
-      then_edit: "Pas het bestand dat je net gedownload hebt aan (enkel veranderingen in de labels kolom zullen toegepast worden). Merk op dat de labels in één veld zitten, gescheiden met puntkommas. Als je tevreden bent met je aanpassingen, upload hieronder dan de file."
+      then_edit: "Pas het bestand dat je net gedownload hebt aan (enkel veranderingen in de labels kolom zullen toegepast worden). Merk op dat de labels in één veld zitten, gescheiden met puntkommas."
+      finally_upload: "Als je tevreden bent met je aanpassingen, upload hieronder dan de file."

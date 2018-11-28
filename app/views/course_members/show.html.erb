@@ -106,6 +106,6 @@
 <script type="text/javascript">
     $(dodona.initCourseShow);
     $(function () {
-        dodona.initPunchcard("<%= punchcard_path(:user_id => @user.id, :course_id => @course.id) %>");
+        dodona.initPunchcard("<%= raw punchcard_path(:user_id => @user.id, :course_id => @course.id) %>");
     });
 </script>

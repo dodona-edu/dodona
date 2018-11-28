@@ -122,6 +122,7 @@ en:
           course_admin: Course admin
           pending: Pending
           student: Student
+        course_labels: Labels
       programming_language:
         name: Name
         editor_name: Editor mode

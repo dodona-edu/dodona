@@ -20,29 +20,79 @@
             <li role="presentation"><a href="#unsubscribed"><%= t 'courses.show.unsubscribed' %></a></li>
           </ul>
         </div>
+        <% content_for :modal do %>
+          <div class="modal fade" id="labelsUploadModal" tabindex="-1" role="dialog" data-course_id="<%= @course.id %>">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="<%= t(".close") %>">
+                    <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title"><%= t(".edit_all_labels") %></h4>
+                </div>
+                <div class="modal-body">
+                  <ol>
+                    <li>
+                      <p>
+                        <%= t ".first_download_labels" %>
+                      </p>
+                      <p>
+                        <a class="btn btn-primary" href="<%= download_labels_csv_course_members_path(@course) %>"><i class="material-icons md-18">cloud_download</i> <%= t ".download" %>
+                        </a>
+                      </p>
+                    </li>
+                    <li>
+                      <p>
+                        <%= t ".then_edit" %>
+                      </p>
+                    </li>
+                    <li>
+                      <p>
+                        <%= t ".finally_upload" %>
+                      </p>
+                      <input type="file" id="newCsvFileInput"/>
+                    </li>
+                  </ol>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal"><%= t(".close") %></button>
+                  <button id="labelsUploadButton" type="button" class="btn btn-primary"><%= t(".upload") %></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
         <%= render partial: 'layouts/searchbar',
                    locals: {
                        init_filter: true,
                        eager: false,
                        actions: [
                            {
-                               icon: 'ok',
+                               icon: 'done',
                                text: t("courses.show.accept_all"),
                                confirm: t("courses.show.confirm_accept_all"),
                                action: mass_accept_pending_course_path(@course),
+                               type: 'pending'
                            },
                            {
                                icon: 'remove',
                                text: t("courses.show.decline_all"),
                                confirm: t("courses.show.confirm_decline_all"),
                                action: mass_decline_pending_course_path(@course),
+                               type: 'pending'
+                           },
+                           {
+                               icon: 'style',
+                               text: t(".edit_all_labels"),
+                               js: '$("#labelsUploadModal").modal("show")',
+                               type: 'enrolled'
                            }
-                       ]
+                       ],
+                       course_labels: @course_labels
                    } %>
         <div id="users-table-wrapper">
-          <%= render partial: 'users/users_table',
+          <%= render partial: 'members_table',
                      locals: {
-                         users: @users,
+                         course_memberships: @course_memberships,
                          pagination_opts: @pagination_opts
                      } %>
         </div>

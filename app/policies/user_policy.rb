@@ -20,13 +20,6 @@ class UserPolicy < ApplicationPolicy
     false
   end
 
-  def show_in_course?
-    return false unless user
-    return true if user.zeus?
-    return true if user.id == record.id
-    (record.subscribed_courses & user.administrating_courses).any?
-  end
-
   def update?
     return false unless user
     return true if user.zeus?

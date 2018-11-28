@@ -1,10 +1,10 @@
-import * as d3 from 'd3'
+import * as d3 from "d3";
 
 const containerSelector = "#punchcard-container";
 const margin = {top: 10, right: 10, bottom: 20, left: 70};
 const labelsX = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
-let initPunchcard = function (url) {
+function initPunchcard(url, timezoneOffset) {
     // If this is defined outside of a function, the locale always defaults to "en".
     const labelsY = ["js.monday", "js.tuesday", "js.wednesday", "js.thursday", "js.friday", "js.saturday", "js.sunday"].map(k => I18n.t(k));
 
@@ -30,7 +30,26 @@ let initPunchcard = function (url) {
         .domain([0, 6])
         .range([unitSize / 2, innerHeight - unitSize / 2]);
 
-    d3.json(url).then(data => renderCard(d3.entries(data), unitSize, chart, x, y));
+    d3.json(url).then(data => {
+        const transform = {};
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                const split = key.split(", ");
+                let day = parseInt(split[0]);
+                let hour = parseInt(split[1]);
+                hour += timezoneOffset;
+                if (hour < 0) {
+                    hour += 24;
+                    day = (day + 6) % 7;
+                } else if (hour > 23) {
+                    hour -= 24;
+                    day = (day + 1) % 7;
+                }
+                transform[`${day}, ${hour}`] = data[key];
+            }
+        }
+        renderCard(d3.entries(transform), unitSize, chart, x, y);
+    });
 
     const xAxis = d3.axisBottom(x)
         .ticks(24)
@@ -44,7 +63,7 @@ let initPunchcard = function (url) {
         .tickPadding(10);
 
     renderAxes(xAxis, yAxis, chart, innerHeight);
-};
+}
 
 function renderAxes(xAxis, yAxis, chart, innerHeight) {
     chart.append("g")

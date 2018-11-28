@@ -16,7 +16,15 @@ class Label < ApplicationRecord
 
   scope :by_name, ->(name) {where('name LIKE ?', "%#{name}%")}
 
+  before_save :downcase_name
+
   after_initialize do
     self.color ||= :purple
+  end
+
+  private
+
+  def downcase_name
+    self.name.downcase!
   end
 end

@@ -59,7 +59,9 @@
                 <%= t ".no_labels" %>
               <% end %>
               <% if policy(@course_membership).update? %>
-                <span class="material-icons md-inherit" data-toggle="modal" data-target="#labelsEditModal">edit</span>
+                <button class="btn btn-sm btn-text" data-toggle="modal" data-target="#labelsEditModal">
+                  <span class="material-icons md-inherit">edit</span>
+                </button>
                 <% content_for :modal do %>
                   <div class="modal fade" id="labelsEditModal" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
@@ -81,8 +83,8 @@
                   </div>
                 <% end %>
               <% end %>
-            </p>
-          </div>
+              </p>
+              </div>
         </div>
       </div>
       <div class="card-supporting-text" id="series-listing">

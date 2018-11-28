@@ -143,9 +143,9 @@ class Exercise < ApplicationRecord
         .compact # remove nil entries
         .push(config) # add exercise config file
         .reduce do |h1, h2|
-      h1.deep_merge(h2) do |_, v1, v2|
-        if v1.is_a?(Array) && v2.is_a?(Array)
-          (v1 + v2).uniq
+      h1.deep_merge(h2) do |k, v1, v2|
+        if k == "labels"
+          (v1 + v2).map(&:downcase).uniq
         else
           v2
         end
@@ -158,9 +158,9 @@ class Exercise < ApplicationRecord
         .map {|dir| read_dirconfig dir} # try reading their dirconfigs
         .compact # remove nil entries
         .reduce do |h1, h2|
-      h1.deep_merge(h2) do |_, v1, v2|
-        if v1.is_a?(Array) && v2.is_a?(Array)
-          (v1 + v2).uniq
+      h1.deep_merge(h2) do |k, v1, v2|
+        if k == "labels"
+          (v1 + v2).map(&:downcase).uniq
         else
           v2
         end

@@ -7,7 +7,7 @@ class StatisticsController < ApplicationController
       user = course_membership.user
       course = course_membership.course
     else
-      user = User.find(user_id: params[:user_id])
+      user = User.find(params[:user_id])
     end
     result = Submission.get_submissions_matrix(user, course)
     Submission.delay(queue: 'statistics').update_submissions_matrix(user, course, result[:latest])

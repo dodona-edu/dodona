@@ -196,7 +196,7 @@ class Submission < ApplicationRecord
       submissions = submissions.pluck(:id, :created_at)
       {
           latest: submissions.first[0],
-          matrix: submissions.map {|_, d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"}
+          matrix: submissions.map {|_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}"}
                       .group_by(&:itself).transform_values(&:count)
       }
     end
@@ -208,7 +208,7 @@ class Submission < ApplicationRecord
     submissions = submissions.where('id > ?', latest_id)
     submissions = submissions.pluck(:id, :created_at)
     if submissions.any?
-      to_merge = submissions.map {|_, d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"}
+      to_merge = submissions.map {|_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}"}
                      .group_by(&:itself).transform_values(&:count)
       old = get_submissions_matrix(user, course)
       result = {

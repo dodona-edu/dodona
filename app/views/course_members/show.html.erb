@@ -59,7 +59,7 @@
                 <%= t ".no_labels" %>
               <% end %>
               <% if policy(@course_membership).update? %>
-                <button class="btn btn-sm btn-text" data-toggle="modal" data-target="#labelsEditModal">
+                <button class="btn btn-sm btn-default" data-toggle="modal" data-target="#labelsEditModal">
                   <span class="material-icons md-inherit">edit</span>
                 </button>
                 <% content_for :modal do %>

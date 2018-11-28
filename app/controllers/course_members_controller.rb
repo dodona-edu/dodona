@@ -48,7 +48,7 @@ class CourseMembersController < ApplicationController
       unless course_labels.is_a?(Array)
         course_labels = course_labels.split(',')
       end
-      attributes[:course_labels] = course_labels&.map {|name| CourseLabel.find_by(course: @course, name: name) || CourseLabel.create(course: @course, name: name)}
+      attributes[:course_labels] = course_labels&.map(&:downcase)&.uniq&.map {|name| CourseLabel.find_by(course: @course, name: name) || CourseLabel.create(course: @course, name: name)}
     end
 
     if @course_membership.update(attributes)
@@ -72,7 +72,7 @@ class CourseMembersController < ApplicationController
       row = row.to_hash
       cm = CourseMembership.find_by(user_id: row["id"], course: @course)
       if cm.present?
-        labels = row["labels"].split(';').map {|name| CourseLabel.find_by(name: name.strip, course: @course) || CourseLabel.create(name: name.strip, course: @course)}
+        labels = row["labels"].split(';').map(&:downcase).uniq.map {|name| CourseLabel.find_by(name: name.strip, course: @course) || CourseLabel.create(name: name.strip, course: @course)}
         cm.update(course_labels: labels)
       end
     end

@@ -7,7 +7,7 @@
 #  name           :string(255)
 #  description    :text(65535)
 #  visibility     :integer
-#  order          :integer
+#  order          :integer          default(0), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  deadline       :datetime

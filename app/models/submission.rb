@@ -51,6 +51,7 @@ class Submission < ApplicationRecord
       scopes.any? ? self.merge(scopes.reduce(&:or)) : self
     end.reduce(&:merge)
   end
+  scope :by_course_labels, ->(labels, course_id) {where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map {|cm| cm.user})}
 
   scope :most_recent, -> {
     submissions = select('MAX(submissions.id) as id')

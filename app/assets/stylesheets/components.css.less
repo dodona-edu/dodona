@@ -21,7 +21,16 @@
   box-shadow: none;
 }
 
-.btn .material-icons {
+.btn:not(.btn-sm) .material-icons {
+  vertical-align: middle;
+  line-height: inherit;
+
+  &.md-18 {
+    top: -2px;
+  }
+}
+
+.btn-sm .material-icons {
   margin-top: 4px;
 }
 
@@ -392,6 +401,14 @@ a.card-title-link:hover {
   transition: background-color 0.2s cubic-bezier(.4, 0, .2, 1);
 }
 
+.btn-text.btn-sm {
+  height: 24px;
+  min-width: 24px;
+  font-size: 12px;
+  line-height: 1.5px;
+  padding: 1px 4px;
+}
+
 .btn-text:hover {
   text-decoration: none;
   color: @accent-500;
@@ -736,8 +753,13 @@ a.anchor {
   height: auto;
   z-index: 1;
 
-  #exercise_labels.form-control {
+  .form-control {
     height: auto;
+  }
+
+  #course_membership_course_labels-tokenfield {
+    height: auto;
+    padding: 0;
   }
 
   #exercise_labels-tokenfield {

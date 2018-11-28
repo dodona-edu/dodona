@@ -15,34 +15,77 @@
             <% end %>
           <% end %>
         </p>
-        <p>
-          <strong><%= User.human_attribute_name("first_name") %>:</strong> <%= @user.first_name %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("last_name") %>:</strong> <%= @user.last_name %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("username") %>:</strong> <%= @user.username %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("ugent_id") %>:</strong> <%= @user.ugent_id %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("time_zone") %>:</strong> <%= @user.time_zone %>
-        </p>
-        <p>
-          <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises(@course) %>
-        </p>
-        <p>
-          <strong><%= t ".unfinished" %>:</strong> <%= @user.unfinished_exercises(@course) %>
-        </p>
-        <p>
-          <strong><%= t ".solutions" %>
-            :</strong> <%= link_to @user.submissions.in_course(@course).count, user_submissions_path(@user, course_id: @course.id) %>
-        </p>
+        <div class="row">
+          <div class="col-lg-6 col-xs-12">
+            <p>
+              <strong><%= User.human_attribute_name("first_name") %>:</strong> <%= @user.first_name %>
+            </p>
+            <p>
+              <strong><%= User.human_attribute_name("last_name") %>:</strong> <%= @user.last_name %>
+            </p>
+            <p>
+              <strong><%= User.human_attribute_name("username") %>:</strong> <%= @user.username %>
+            </p>
+            <% if @course.institution == Institution.first %>
+              <p>
+                <strong><%= User.human_attribute_name("ugent_id") %>:</strong> <%= @user.ugent_id %>
+              </p>
+            <% end %>
+            <p>
+              <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
+            </p>
+            <p>
+              <strong><%= User.human_attribute_name("time_zone") %>:</strong> <%= @user.time_zone %>
+            </p>
+          </div>
+          <div class="col-lg-6 col-xs-12">
+            <p>
+              <strong><%= t "users.show.correctly_solved" %>:</strong> <%= @user.correct_exercises(@course) %>
+            </p>
+            <p>
+              <strong><%= t "users.show.unfinished" %>:</strong> <%= @user.unfinished_exercises(@course) %>
+            </p>
+            <p>
+              <strong><%= t "users.show.solutions" %>
+                :</strong> <%= link_to @user.submissions.in_course(@course).count, user_submissions_path(@user, course_id: @course.id) %>
+            </p>
+            <p>
+              <strong><%= t ".labels" %>:</strong>
+              <% if @course_membership.course_labels.any? %>
+                <% @course_membership.course_labels.each do |label| %>
+                  <span class="label label-default accent-orange"><%= label.name %></span>
+                <% end %>
+              <% else %>
+                <%= t ".no_labels" %>
+              <% end %>
+              <% if policy(@course_membership).update? %>
+                <button class="btn btn-sm btn-default" data-toggle="modal" data-target="#labelsEditModal">
+                  <span class="material-icons md-inherit">edit</span>
+                </button>
+                <% content_for :modal do %>
+                  <div class="modal fade" id="labelsEditModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="<%= t(".close") %>">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title"><%= t "crumbs.edit" %></h4>
+                        </div>
+                        <div class="modal-body">
+                          <%= render 'form', course: @course, user: @user, course_membership: @course_membership %>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal"><%= t(".close") %></button>
+                          <button type="submit" class="btn btn-primary" form="<%= "edit_course_membership_#{@course_membership.id}" %>"><%= t(".save") %></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+              </p>
+              </div>
+        </div>
       </div>
       <div class="card-supporting-text" id="series-listing">
         <% @series.first(@series_loaded).each do |series| %>

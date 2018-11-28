@@ -1,0 +1,63 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource">
+    <thead>
+    <tr>
+      <th class='status-icon'></th>
+      <th><%= User.human_attribute_name("name") %></th>
+      <th><%= User.human_attribute_name("email") %></th>
+      <th class='text-right'><%= t("users.index.progress") %></th>
+      <th class='text-right'><%= t(".labels") %></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% course_memberships.each do |course_membership| %>
+      <% user = course_membership.user %>
+      <tr>
+        <td>
+          <% if course_membership.course_admin? %>
+            <i class="material-icons md-18" title='<%= t "users.users_table.course_admin" %>'>school</i>
+          <% end %>
+          <% if user.username.blank? %>
+            <i class="material-icons md-18" title='<%= t "users.users_table.no_ugent" %>'>warning</i>
+          <% end %>
+        </td>
+        <% if course_membership.pending? || course_membership.unsubscribed? %>
+          <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
+        <% else %>
+          <td><%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %></td>
+        <% end %>
+        <td><%= user.email %></td>
+        <td class='text-right'>
+          <%= link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user) %>
+        </td>
+        <td class='text-right course-membership-labels'>
+          <% course_membership.course_labels.each do |label| %>
+            <span class="label label-default accent-orange"><%= label.name %></span>
+          <% end %>
+        </td>
+        <td class="actions">
+          <%= render partial: 'course_membership_buttons',
+                     locals: {course: @course, user: user, membership_status: course_membership.status} %>
+          <% if policy(user).impersonate? %>
+            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
+              <i class="material-icons md-18">person</i>
+            <% end %>
+          <% end %>
+          <% if policy(user).edit? %>
+            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
+              <i class="material-icons md-18">edit</i>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<% if course_memberships.empty? %>
+  <p class="text-center text-muted lead table-placeholder"><%= t 'users.index.no_users' %></p>
+<% end %>
+<center>
+  <%= page_navigation_links course_memberships, false, 'course_members' %>
+</center>

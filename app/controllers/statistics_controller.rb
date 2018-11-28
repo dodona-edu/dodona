@@ -9,6 +9,8 @@ class StatisticsController < ApplicationController
     else
       user = User.find(user_id: params[:user_id])
     end
-    render json: Submission.get_submissions_matrix(user, course)
+    result = Submission.get_submissions_matrix(user, course)
+    Submission.delay(queue: 'statistics').update_submissions_matrix(user, course, result[:latest])
+    render json: result[:matrix]
   end
 end

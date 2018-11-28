@@ -32,7 +32,6 @@ class Submission < ApplicationRecord
 
   after_update :invalidate_caches
   after_create :evaluate_delayed, if: :evaluate?
-  after_create :update_aggregate
 
   default_scope {order(id: :desc)}
   scope :of_user, ->(user) {where user_id: user.id}
@@ -190,26 +189,34 @@ class Submission < ApplicationRecord
     user.invalidate_cache(course)
   end
 
-  def update_aggregate
-    global_matrix = Submission.get_submissions_matrix(user, nil)
-    global_matrix["#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"] += 1
-    Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: 'global', user_id: user.id}, global_matrix)
-    if course.present?
-      course_matrix = Submission.get_submissions_matrix(user, course)
-      course_matrix["#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"] += 1
-      Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.id, user_id: user.id}, course_matrix)
-    end
-  end
-
   def self.get_submissions_matrix(user, course)
     Rails.cache.fetch(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}) do
       submissions = Submission.of_user(user)
       submissions = submissions.in_course(course) if course.present?
-      submissions.pluck(:created_at)
-          .map {|d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"}
-          .group_by(&:itself).transform_values(&:count)
+      submissions = submissions.pluck(:id, :created_at)
+      {
+          latest: submissions.first[0],
+          matrix: submissions.map {|_, d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"}
+                      .group_by(&:itself).transform_values(&:count)
+      }
     end
   end
 
+  def self.update_submissions_matrix(user, course, latest_id)
+    submissions = Submission.of_user(user)
+    submissions = submissions.in_course(course) if course.present?
+    submissions = submissions.where('id > ?', latest_id)
+    submissions = submissions.pluck(:id, :created_at)
+    if submissions.any?
+      to_merge = submissions.map {|_, d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}"}
+                     .group_by(&:itself).transform_values(&:count)
+      old = get_submissions_matrix(user, course)
+      result = {
+          latest: submissions.first[0],
+          matrix: old[:matrix].merge(to_merge) {|_k, v1, v2| v1 + v2}
+      }
+      Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}, result)
+    end
+  end
 
 end

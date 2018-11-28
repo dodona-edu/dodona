@@ -157,7 +157,7 @@ class Repository < ApplicationRecord
       programming_language ||= ProgrammingLanguage.create(name: programming_language_name)
     end
 
-    labels = config['labels']&.map do |name|
+    labels = config['labels']&.uniq&.map do |name|
       Label.find_by(name: name) || Label.create(name: name)
     end || []
 

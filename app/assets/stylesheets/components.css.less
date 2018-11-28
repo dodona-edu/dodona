@@ -21,7 +21,16 @@
   box-shadow: none;
 }
 
-.btn .material-icons {
+.btn:not(.btn-sm) .material-icons {
+  vertical-align: middle;
+  line-height: inherit;
+
+  &.md-18 {
+    top: -2px;
+  }
+}
+
+.btn-sm .material-icons {
   margin-top: 4px;
 }
 

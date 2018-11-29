@@ -4,6 +4,7 @@ function initSubmissionShow() {
     function init() {
         initDiffSwitchButtons();
         initTabLinks();
+        initHideCorrect();
     }
 
     function initDiffSwitchButtons() {
@@ -17,6 +18,17 @@ function initSubmissionShow() {
             diffs.removeClass("show-split");
             diffs.removeClass("show-unified");
             diffs.addClass(button.data("show_class"));
+        });
+    }
+
+    function initHideCorrect() {
+        const checkbox = $("#hideCorrect");
+        checkbox.change(e => {
+            if (e.target.checked) {
+                $(".group.correct").hide();
+            } else {
+                $(".group.correct").show();
+            }
         });
     }
 

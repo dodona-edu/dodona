@@ -22,12 +22,16 @@ function initSubmissionShow() {
     }
 
     function initHideCorrect() {
-        const checkbox = $("#hideCorrect");
-        checkbox.change(e => {
-            if (e.target.checked) {
-                $(".group.correct").hide();
+        const buttons = $(".correct-switch-buttons .btn");
+        buttons.click(e => {
+            const button = $(e.target);
+            const tab = button.parents(".tab-pane");
+            buttons.removeClass("active");
+            button.addClass("active");
+            if (button.data("show")) {
+                tab.find(".group.correct").show();
             } else {
-                $(".group.correct").show();
+                tab.find(".group.correct").hide();
             }
         });
     }

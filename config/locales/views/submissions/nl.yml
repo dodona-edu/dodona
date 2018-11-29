@@ -37,7 +37,10 @@ nl:
       edit: Wijzig oplossing
       in: "in"
       output: Uitvoer
-      hide_correct: Verberg correcte testen
+      correct_tests: Correcte testen
       diff:
         split: naast elkaar
         unified: onder elkaar
+      correct:
+        shown: zichtbaar
+        hidden: verborgen

@@ -37,7 +37,10 @@ en:
       edit: Edit submission
       in: "in"
       output: Output
-      hide_correct: Hide correct tests
+      correct_tests: Correct tests
       diff:
         split: split
         unified: unified
+      correct:
+        shown: shown
+        hidden: hidden

@@ -108,16 +108,23 @@ class FeedbackTableRenderer
     @diff_type = determine_tab_diff_type(t)
     @builder.div(class: "feedback-table-options") do
       if show_hide_correct_switch t
-        @builder.span(class: "checkbox") do
-          @builder.label do
-            @builder.input(type: "checkbox", id: "hideCorrect")
-            @builder << I18n.t("submissions.show.hide_correct")
+        @builder.span(class: "correct-switch-buttons switch-buttons") do
+          @builder.span do
+            @builder << I18n.t("submissions.show.correct_tests")
+          end
+          @builder.div(class: "btn-group") do
+            @builder.button(class: "btn btn-secondary active", 'data-show': 'true') do
+              @builder << I18n.t("submissions.show.correct.shown")
+            end
+            @builder.button(class: "btn btn-secondary ", 'data-show': 'false') do
+              @builder << I18n.t("submissions.show.correct.hidden")
+            end
           end
         end
       end
       @builder.span(class: "flex-spacer") {}
       if show_diff_type_switch t
-        @builder.span(class: "diff-switch-buttons") do
+        @builder.span(class: "diff-switch-buttons switch-buttons") do
           @builder.span do
             @builder << I18n.t("submissions.show.output")
           end

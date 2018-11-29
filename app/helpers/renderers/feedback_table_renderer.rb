@@ -47,11 +47,8 @@ class FeedbackTableRenderer
   end
 
   def show_hide_correct_switch(tab)
-    tab[:groups]&.compact # Groups
-        &.flat_map {|t| t[:groups]}&.compact # Testcases
-        &.flat_map {|t| t[:tests]}&.compact # Tests
-        &.reject {|t| t[:accepted]}
-        &.any?
+    tests = tab[:groups]&.compact
+    tests&.reject {|t| t[:accepted]}&.any? && tests&.select {|t| t[:accepted]}&.any?
   end
 
   def tabs(submission)

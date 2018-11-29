@@ -36,6 +36,8 @@ en:
       expected: Expected output
       edit: Edit submission
       in: "in"
+      output: Output
+      hide_correct: Hide correct tests
       diff:
-        split: Split
-        unified: Unified
+        split: split
+        unified: unified

@@ -10,7 +10,7 @@
       <div class="card-supporting-text">
         <p>
           <% if policy(@user).impersonate? %>
-            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %>
+            <%= link_to impersonate_user_path(@user), class: "btn btn-default with-text" do %>
               <i class="material-icons md-18">person</i> <%= t("layout.impersonate.impersonate") %>
             <% end %>
           <% end %>

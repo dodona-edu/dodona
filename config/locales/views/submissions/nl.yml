@@ -39,8 +39,8 @@ nl:
       output: Uitvoer
       correct_tests: Correcte testen
       diff:
-        split: naast elkaar
-        unified: onder elkaar
+        split: Naast elkaar
+        unified: Onder elkaar
       correct:
-        shown: zichtbaar
-        hidden: verborgen
+        shown: Zichtbaar
+        hidden: Verborgen

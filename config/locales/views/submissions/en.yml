@@ -39,8 +39,8 @@ en:
       output: Output
       correct_tests: Correct tests
       diff:
-        split: split
-        unified: unified
+        split: Split
+        unified: Unified
       correct:
-        shown: shown
-        hidden: hidden
+        shown: Shown
+        hidden: Hidden

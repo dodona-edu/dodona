@@ -113,27 +113,30 @@ class FeedbackTableRenderer
             @builder << I18n.t("submissions.show.correct_tests")
           end
           @builder.div(class: "btn-group") do
-            @builder.button(class: "btn btn-secondary active", 'data-show': 'true') do
-              @builder << I18n.t("submissions.show.correct.shown")
+            @builder.button(class: "btn btn-secondary active", 'data-show': 'true', title: I18n.t("submissions.show.correct.shown")) do
+              @builder.i(class: "material-icons md-18") do
+                @builder << "visibility"
+              end
             end
-            @builder.button(class: "btn btn-secondary ", 'data-show': 'false') do
-              @builder << I18n.t("submissions.show.correct.hidden")
+            @builder.button(class: "btn btn-secondary ", 'data-show': 'false', title: I18n.t("submissions.show.correct.hidden")) do
+              @builder.i(class: "material-icons md-18") do
+                @builder << "visibility_off"
+              end
             end
           end
         end
       end
-      @builder.span(class: "flex-spacer") {}
       if show_diff_type_switch t
         @builder.span(class: "diff-switch-buttons switch-buttons") do
           @builder.span do
             @builder << I18n.t("submissions.show.output")
           end
           @builder.div(class: "btn-group") do
-            @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split') do
-              @builder << I18n.t("submissions.show.diff.split")
+            @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t("submissions.show.diff.split")) do
+              @builder.i(class: "mdi mdi-18 mdi-arrow-split-vertical") {}
             end
-            @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified') do
-              @builder << I18n.t("submissions.show.diff.unified")
+            @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t("submissions.show.diff.unified")) do
+              @builder.i(class: "mdi mdi-18 mdi-arrow-split-horizontal") {}
             end
           end
         end

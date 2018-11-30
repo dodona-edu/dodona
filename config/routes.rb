@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
   root 'pages#home'
 
-  match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
+  authenticated :user, -> user {user.zeus?} do
+    mount DelayedJobWeb, at: '/dj'
+  end
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 

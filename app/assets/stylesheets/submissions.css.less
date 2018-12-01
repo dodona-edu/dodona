@@ -153,8 +153,22 @@
   .diffs.show-split .split-diff {
     display: table;
   }
-  .diff-switch-buttons {
-    margin-bottom: 1rem;
+
+  .feedback-table-options {
+    margin-bottom: 1em;
+    width: 100%;
+    display: flex;
+
+    .switch-buttons {
+      margin-left: 1em;
+      span {
+        margin-right: .5em;
+      }
+    }
+
+    .diff-switch-buttons {
+      align-self: flex-end;
+    }
   }
   .diff ul {
     overflow: auto;

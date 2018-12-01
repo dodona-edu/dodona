@@ -36,6 +36,11 @@ nl:
       expected: Verwachte uitvoer
       edit: Wijzig oplossing
       in: "in"
+      output: Uitvoer
+      correct_tests: Correcte testen
       diff:
-        split: Gescheiden # TODO: Better translations
-        unified: Eengemaakt
+        split: Naast elkaar
+        unified: Onder elkaar
+      correct:
+        shown: Zichtbaar
+        hidden: Verborgen

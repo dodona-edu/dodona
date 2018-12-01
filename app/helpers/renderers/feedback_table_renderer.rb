@@ -107,6 +107,7 @@ class FeedbackTableRenderer
   def tab_content(t)
     @diff_type = determine_tab_diff_type(t)
     @builder.div(class: "feedback-table-options") do
+      @builder.span(class: "flex-spacer") {}
       if show_hide_correct_switch t
         @builder.span(class: "correct-switch-buttons switch-buttons") do
           @builder.span do

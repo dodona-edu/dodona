@@ -122,7 +122,7 @@ class RepositoriesController < ApplicationController
           pusher = params['pusher']
           @repository.delay.process_exercises_email_errors(name: pusher['name'], email: pusher['email'])
         else
-          @repository.delay.process_exercises
+          @repository.delay.process_exercises_email_errors(user: @repository.admins.first)
         end
       end
     end

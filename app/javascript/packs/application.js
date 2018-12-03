@@ -21,7 +21,7 @@ window.jquery = jQuery;
 window.$ = jQuery;
 
 import "polyfills.js";
-import "drawer.js";
+import "drawer";
 import {showNotification} from "notifications.js";
 import {checkTimeZone, initClipboard, initCSRF} from "util.js";
 

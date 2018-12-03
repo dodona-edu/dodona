@@ -31,7 +31,7 @@ function initPunchcard(url, timezoneOffset) {
         .range([unitSize / 2, innerHeight - unitSize / 2]);
 
     d3.json(url)
-        .then(data => Promise.resolve(applyTimezone(data, timezoneOffset)))
+        .then(data => applyTimezone(data, timezoneOffset))
         .then(data => renderCard(d3.entries(data), unitSize, chart, x, y));
 
     const xAxis = d3.axisBottom(x)

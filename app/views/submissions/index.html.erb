@@ -5,16 +5,25 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
-          <% if @course %>
-            <%= "#{@course.name} - " %>
-          <% end %>
-          <%= t ".title" %>
-          <% if @exercise %>
-            <%= t ".for" %> <%= @exercise.name %>
-          <% end %>
-          <% if @user %>
-            <%= t ".from" %>&nbsp;<%= link_to @user.full_name, user_path(@user) %>
-          <% end %>
+          <span>
+            <% if @course %>
+              <%= "#{@course.name} - " %>
+            <% end %>
+            <%= t ".title" %>
+            <% if @exercise %>
+              <%= t ".for" %> <%= @exercise.name %>
+            <% end %>
+            <% if @user %>
+              <%= t ".from" %>
+              <% if @course_membership.present? && policy(@course_membership).show? %>
+                <%= link_to @user.full_name, course_member_path(@course, @user) %>
+              <% elsif policy(@user).show? %>
+                <%= link_to @user.full_name, user_path(@user) %>
+              <% else %>
+                <%= @user.full_name %>
+              <% end %>
+            <% end %>
+          </span>
         </h2>
       </div>
       <div class="card-supporting-text">

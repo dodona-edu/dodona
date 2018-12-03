@@ -144,6 +144,10 @@ class SubmissionsController < ApplicationController
       @submissions = @submissions.in_course(@course) if current_user&.member_of?(@course)
     end
 
+    if @user.present? && @course.present?
+      @course_membership = CourseMembership.find_by(user: @user, course: @course)
+    end
+
     # this cannot use has_scope, because we need the scopes in this method
     # to be applied before this one
     if params[:most_recent_correct_per_user]

@@ -30,26 +30,9 @@ function initPunchcard(url, timezoneOffset) {
         .domain([0, 6])
         .range([unitSize / 2, innerHeight - unitSize / 2]);
 
-    d3.json(url).then(data => {
-        const transform = {};
-        for (const key in data) {
-            if (data.hasOwnProperty(key)) {
-                const split = key.split(", ");
-                let day = parseInt(split[0]);
-                let hour = parseInt(split[1]);
-                hour += timezoneOffset;
-                if (hour < 0) {
-                    hour += 24;
-                    day = (day + 6) % 7;
-                } else if (hour > 23) {
-                    hour -= 24;
-                    day = (day + 1) % 7;
-                }
-                transform[`${day}, ${hour}`] = data[key];
-            }
-        }
-        renderCard(d3.entries(transform), unitSize, chart, x, y);
-    });
+    d3.json(url)
+        .then(data => Promise.resolve(applyTimezone(data, timezoneOffset)))
+        .then(data => renderCard(d3.entries(data), unitSize, chart, x, y));
 
     const xAxis = d3.axisBottom(x)
         .ticks(24)
@@ -99,6 +82,27 @@ function renderCard(data, unitSize, chart, x, y) {
         .append("svg:title")
         .text(d => d.value);
     circles.exit().remove();
+}
+
+function applyTimezone(data, timezoneOffset) {
+    const transform = {};
+    for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+            const split = key.split(", ");
+            let day = parseInt(split[0]);
+            let hour = parseInt(split[1]);
+            hour += timezoneOffset;
+            if (hour < 0) {
+                hour += 24;
+                day = (day + 6) % 7;
+            } else if (hour > 23) {
+                hour -= 24;
+                day = (day + 1) % 7;
+            }
+            transform[`${day}, ${hour}`] = data[key];
+        }
+    }
+    return transform;
 }
 
 export {initPunchcard};

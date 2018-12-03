@@ -14,6 +14,7 @@
 #
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
+  SUBMISSION_MATRIX_CACHE_STRING = "/courses/%{course_id}/user/%{user_id}/submissions_matrix".freeze
   has_one_attached :code
   has_one_attached :result
 
@@ -61,7 +62,7 @@ class Submission < ApplicationRecord
     HEREDOC
   }
 
-  scope :most_recent_correct_per_user, -> (*) {
+  scope :most_recent_correct_per_user, ->(*) {
     correct.group(:user_id).most_recent
   }
 
@@ -187,4 +188,35 @@ class Submission < ApplicationRecord
     exercise.invalidate_cache(course)
     user.invalidate_cache(course)
   end
+
+  def self.get_submissions_matrix(user, course)
+    Rails.cache.fetch(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}) do
+      submissions = Submission.of_user(user)
+      submissions = submissions.in_course(course) if course.present?
+      submissions = submissions.pluck(:id, :created_at)
+      {
+          latest: submissions.first[0],
+          matrix: submissions.map {|_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}"}
+                      .group_by(&:itself).transform_values(&:count)
+      }
+    end
+  end
+
+  def self.update_submissions_matrix(user, course, latest_id)
+    submissions = Submission.of_user(user)
+    submissions = submissions.in_course(course) if course.present?
+    submissions = submissions.where('id > ?', latest_id)
+    submissions = submissions.pluck(:id, :created_at)
+    if submissions.any?
+      to_merge = submissions.map {|_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}"}
+                     .group_by(&:itself).transform_values(&:count)
+      old = get_submissions_matrix(user, course)
+      result = {
+          latest: submissions.first[0],
+          matrix: old[:matrix].merge(to_merge) {|_k, v1, v2| v1 + v2}
+      }
+      Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}, result)
+    end
+  end
+
 end

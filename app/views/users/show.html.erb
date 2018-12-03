@@ -56,12 +56,12 @@
           <% if @user.subscribed_courses.empty? %>
             <%= t ".no_courses" %>
           <% else %>
-          <ul>
-            <% @user.subscribed_courses.each do |course| %>
-              <li><%= link_to course.name, course %></li>
-            <% end %>
-          </ul>
-        <% end %>
+            <ul>
+              <% @user.subscribed_courses.each do |course| %>
+                <li><%= link_to course.name, course %></li>
+              <% end %>
+            </ul>
+          <% end %>
         </p>
         <p>
           <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
@@ -74,5 +74,7 @@
         </p>
       </div>
     </div>
+    <%= render partial: 'visualizations/punchcard' %>
   </div>
 </div>
+

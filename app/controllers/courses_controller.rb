@@ -11,7 +11,7 @@ class CoursesController < ApplicationController
   def index
     authorize Course
     @courses = policy_scope(Course.all)
-    @courses = apply_scopes(@courses).paginate(page: params[:page])
+    @courses = apply_scopes(@courses).paginate(page: parse_pagination_param(params[:page]))
     @grouped_courses = @courses.group_by(&:year)
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @title = I18n.t('courses.index.title')

@@ -87,6 +87,9 @@
               </div>
         </div>
       </div>
+      <div class="card-supporting-text" id="punchcard-containter">
+        <%= render partial: 'visualizations/punchcard' %>
+      </div>
       <div class="card-supporting-text" id="series-listing">
         <% @series.first(@series_loaded).each do |series| %>
           <%= render(partial: 'series/series', locals: {series: series, loaded: true, user: @user}) %>
@@ -95,6 +98,7 @@
           <%= render(partial: 'series/series', locals: {series: series, loaded: false, user: @user}) %>
         <% end %>
       </div>
+
     </div>
   </div>
 </div>

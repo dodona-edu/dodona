@@ -27,3 +27,10 @@ en:
     institutions: Institutions
     course_labels: Member labels
     label-undeletable: This label can't be deleted because it was set in the dirconfig file of a parent directory of the exercise.
+    monday: Monday
+    tuesday: Tuesday
+    wednesday: Wednesday
+    thursday: Thursday
+    friday: Friday
+    saturday: Saturday
+    sunday: Sunday

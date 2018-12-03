@@ -6,6 +6,7 @@
         "ace-builds": "^1.4.1",
         "actiontext": "https://github.com/rails/actiontext",
         "clipboard": "^2.0.1",
+        "d3": "^5.7.0",
         "dragula": "^3.7.2",
         "jquery": "^3.3.1",
         "rails-ujs": "^5.2.1",

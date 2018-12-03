@@ -7,6 +7,10 @@ class CourseMembershipPolicy < ApplicationPolicy
     user&.course_admin?(record.course)
   end
 
+  def punchcard?
+    show?
+  end
+
   def permitted_attributes
     if user&.course_admin?(record.course)
       %i[course_labels]

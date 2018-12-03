@@ -32,7 +32,7 @@ class ExercisesController < ApplicationController
 
     @exercises = apply_scopes(@exercises)
 
-    @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: params[:page])
+    @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)
     @repositories = policy_scope(Repository.all)
@@ -46,7 +46,7 @@ class ExercisesController < ApplicationController
     @exercises = policy_scope(Exercise)
     @exercises = @exercises.or(Exercise.where(repository: @course.usable_repositories))
     @exercises = apply_scopes(@exercises)
-    @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: params[:page])
+    @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
   end
 
   def show
@@ -63,7 +63,7 @@ class ExercisesController < ApplicationController
       @submissions = @submissions.in_course(@course)
     end
     @submissions = @submissions.of_user(current_user) if current_user
-    @submissions = policy_scope(@submissions).paginate(page: params[:page])
+    @submissions = policy_scope(@submissions).paginate(page: parse_pagination_param(params[:page]))
     if params[:edit_submission]
       @edit_submission = Submission.find(params[:edit_submission])
       authorize @edit_submission, :edit?

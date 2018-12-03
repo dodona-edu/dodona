@@ -43,6 +43,11 @@ class ApplicationController < ActionController::Base
     request.format.js? || request.format.json?
   end
 
+  def parse_pagination_param(page)
+    # This doesn't work for negative numbers, but we don't need to handle negative numbers here anyway
+    page.to_s.match(/^\d+$/) ? page.to_i : nil
+  end
+
   private
 
   def user_not_authorized

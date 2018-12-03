@@ -18,7 +18,7 @@ class SubmissionsController < ApplicationController
 
   def index
     authorize Submission
-    @submissions = @submissions.paginate(page: params[:page])
+    @submissions = @submissions.paginate(page: parse_pagination_param(params[:page]))
     @title = I18n.t('submissions.index.title')
     @crumbs = []
     if @user

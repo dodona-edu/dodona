@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   def index
     authorize Post
-    @posts = policy_scope(Post).paginate(page: params[:page], per_page: 5)
+    @posts = policy_scope(Post).paginate(page: parse_pagination_param(params[:page]), per_page: 5)
     @crumbs = [[I18n.t('posts.index.title'), '#']]
   end
 

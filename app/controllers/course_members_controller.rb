@@ -19,7 +19,7 @@ class CourseMembersController < ApplicationController
                               .order(Arel.sql('users.permission ASC'))
                               .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
                               .where(status: statuses)
-                              .paginate(page: params[:page])
+                              .paginate(page: parse_pagination_param(params[:page]))
 
     @title = I18n.t("courses.index.users")
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]

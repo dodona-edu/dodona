@@ -195,7 +195,7 @@ class Submission < ApplicationRecord
       submissions = submissions.in_course(course) if course.present?
       submissions = submissions.pluck(:id, :created_at)
       {
-          latest: submissions.first[0],
+          latest: submissions.first.present? ? submissions.first[0] : 0,
           matrix: submissions.map {|_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}"}
                       .group_by(&:itself).transform_values(&:count)
       }

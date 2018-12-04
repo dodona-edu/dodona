@@ -22,7 +22,8 @@
     "**/*.spec.ts",
     "node_modules",
     "vendor",
-    "public"
+    "public",
+    "data"
   ],
   "compileOnSave": false
 }

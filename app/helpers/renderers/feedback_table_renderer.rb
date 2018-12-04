@@ -46,6 +46,11 @@ class FeedbackTableRenderer
         &.any?
   end
 
+  def show_hide_correct_switch(tab)
+    tests = tab[:groups]&.compact
+    tests&.reject {|t| t[:accepted]}&.any? && tests&.select {|t| t[:accepted]}&.any?
+  end
+
   def tabs(submission)
     @builder.div(class: 'card card-nav') do
       @builder.div(class: 'card-title card-title-colored') do
@@ -101,13 +106,40 @@ class FeedbackTableRenderer
 
   def tab_content(t)
     @diff_type = determine_tab_diff_type(t)
-    if show_diff_type_switch t
-      @builder.div(class: "btn-group diff-switch-buttons") do
-        @builder.button(class: "btn btn-primary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split') do
-          @builder << I18n.t("submissions.show.diff.split")
+    @builder.div(class: "feedback-table-options") do
+      @builder.span(class: "flex-spacer") {}
+      if show_hide_correct_switch t
+        @builder.span(class: "correct-switch-buttons switch-buttons") do
+          @builder.span do
+            @builder << I18n.t("submissions.show.correct_tests")
+          end
+          @builder.div(class: "btn-group") do
+            @builder.button(class: "btn btn-secondary active", 'data-show': 'true', title: I18n.t("submissions.show.correct.shown")) do
+              @builder.i(class: "material-icons md-18") do
+                @builder << "visibility"
+              end
+            end
+            @builder.button(class: "btn btn-secondary ", 'data-show': 'false', title: I18n.t("submissions.show.correct.hidden")) do
+              @builder.i(class: "material-icons md-18") do
+                @builder << "visibility_off"
+              end
+            end
+          end
         end
-        @builder.button(class: "btn btn-primary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified') do
-          @builder << I18n.t("submissions.show.diff.unified")
+      end
+      if show_diff_type_switch t
+        @builder.span(class: "diff-switch-buttons switch-buttons") do
+          @builder.span do
+            @builder << I18n.t("submissions.show.output")
+          end
+          @builder.div(class: "btn-group") do
+            @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t("submissions.show.diff.split")) do
+              @builder.i(class: "mdi mdi-18 mdi-arrow-split-vertical") {}
+            end
+            @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t("submissions.show.diff.unified")) do
+              @builder.i(class: "mdi mdi-18 mdi-arrow-split-horizontal") {}
+            end
+          end
         end
       end
     end

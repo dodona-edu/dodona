@@ -4,6 +4,7 @@ function initSubmissionShow() {
     function init() {
         initDiffSwitchButtons();
         initTabLinks();
+        initHideCorrect();
     }
 
     function initDiffSwitchButtons() {
@@ -17,6 +18,21 @@ function initSubmissionShow() {
             diffs.removeClass("show-split");
             diffs.removeClass("show-unified");
             diffs.addClass(button.data("show_class"));
+        });
+    }
+
+    function initHideCorrect() {
+        const buttons = $(".correct-switch-buttons .btn");
+        buttons.click(e => {
+            const button = $(e.target);
+            const tab = button.parents(".tab-pane");
+            buttons.removeClass("active");
+            button.addClass("active");
+            if (button.data("show")) {
+                tab.find(".group.correct").show();
+            } else {
+                tab.find(".group.correct").hide();
+            }
         });
     }
 

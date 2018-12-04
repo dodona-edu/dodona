@@ -1,6 +1,6 @@
 /* globals I18n,Bloodhound,dodona */
 import {showNotification} from "./notifications.js";
-import {delay, updateURLParameter, updateArrayURLParameter, getURLParameter, getArrayURLParameter} from "./util.js";
+import {delay, getArrayURLParameter, getURLParameter, updateArrayURLParameter, updateURLParameter} from "./util.js";
 
 const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
@@ -123,12 +123,12 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
     function initActions() {
         let $actions = $(".table-toolbar-tools .actions");
         let searchOptions = actions.filter(action => action.search);
-        let searchActions = actions.filter(action => action.action);
+        let searchActions = actions.filter(action => action.action || action.js);
         $actions.removeClass("hidden");
         if (searchOptions.length > 0) {
             $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.filter-options") + "</li>");
             searchOptions.forEach(function (action) {
-                let $link = $(`<a class="action" href='#'><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
+                let $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""}><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 $link.click(() => {
@@ -140,13 +140,20 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
         if (searchActions.length > 0) {
             $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
             searchActions.forEach(function (action) {
-                let $link = $(`<a class="action" href='#'><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
+                let $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""}><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
-                $link.click(() => {
-                    performAction(action);
-                    return false;
-                });
+                if (action.action) {
+                    $link.click(() => {
+                        performAction(action);
+                        return false;
+                    });
+                } else {
+                    $link.click(() => {
+                        eval(action.js);
+                        return false;
+                    });
+                }
             });
         }
     }

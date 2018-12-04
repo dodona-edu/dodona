@@ -14,40 +14,22 @@
     <% users.each do |user| %>
       <tr>
         <td>
-          <% unless @course %>
-            <% if user.zeus? %>
-              <i class="material-icons md-18" title='<%= t ".zeus" %>'>supervisor_account</i>
-            <% end %>
-            <% if user.staff? %>
-              <i class="material-icons md-18" title='<%= t ".staff" %>'>perm_identity</i>
-            <% end %>
+          <% if user.zeus? %>
+            <i class="material-icons md-18" title='<%= t ".zeus" %>'>supervisor_account</i>
           <% end %>
-          <% if @course && user.administrating_courses.include?(@course) %>
-            <i class="material-icons md-18" title='<%= t ".course_admin" %>'>school</i>
+          <% if user.staff? %>
+            <i class="material-icons md-18" title='<%= t ".staff" %>'>perm_identity</i>
           <% end %>
           <% if user.username.blank? %>
             <i class="material-icons md-18" title='<%= t ".no_ugent" %>'>warning</i>
           <% end %>
         </td>
-        <% if @course && user.member_of?(@course) %>
-          <td><%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %></td>
-        <% else %>
-          <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
-        <% end %>
+        <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
         <td><%= user.email %></td>
         <td class='text-right'>
-          <%= link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user) %>
+          <%= link_to "#{user.correct_exercises}/#{user.attempted_exercises}", user_submissions_path(user) %>
         </td>
-        <% if @course %>
-          <td class='text-right'>
-            <%= t("activerecord.attributes.course_membership.statuses.#{user.membership_status_for(@course)}") %>
-          </td>
-        <% end %>
         <td class="actions">
-          <% if @course %>
-            <%= render partial: 'courses/course_membership_buttons',
-                       locals: {course: @course, user: user} %>
-          <% end %>
           <% if policy(user).impersonate? %>
             <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
               <i class="material-icons md-18">person</i>

@@ -25,6 +25,15 @@ class Post < ApplicationRecord
     end
   end
 
+  def first_paragraph
+    paragraphs = content.to_plain_text&.split '\n' || []
+    paragraphs.reject(&:empty?).first
+  end
+
+  def first_image
+    content.embeds.first
+  end
+
   def title
     if I18n.locale == :nl
       title_nl

@@ -1,0 +1,20 @@
+en:
+  course_members:
+    show:
+      labels: Labels
+      no_labels: No labels
+      close: "Close"
+      save: "Save"
+    form:
+      course_labels: "Labels"
+      labels_delimiter: "Use a comma to delimit labels"
+    members_table:
+      labels: "Labels"
+    index:
+      close: "Close"
+      upload: "Upload"
+      edit_all_labels: "Edit all labels"
+      first_download_labels: "Download a listing of all users and their labels as a CSV file."
+      then_edit: "Edit the file you just downloaded (only changes to the labels column will be used). Note that the labels are in one field, separated by semicolons."
+      finally_upload: "If you are satisfied with your changes, upload the changed file below."
+      download: "Download"

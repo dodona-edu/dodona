@@ -82,31 +82,31 @@ class Submission < ApplicationRecord
 
   old_code = instance_method(:code)
   define_method(:code) do
-    as_code = old_code.bind(self).()
-    if as_code.attached?
-      as_code.blob.download.force_encoding('UTF-8')
-    else
-      submission_detail.code
-    end
+    #as_code = old_code.bind(self).()
+    #if as_code.attached?
+    #  as_code.blob.download.force_encoding('UTF-8')
+    #else
+    submission_detail.code
+    #end
   end
 
   define_method(:"code=") do |code|
-    old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code.force_encoding('UTF-8')), filename: "code", content_type: 'text/plain'))
+    #old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code.force_encoding('UTF-8')), filename: "code", content_type: 'text/plain'))
     submission_detail.code = code if submission_detail
   end
 
   old_result = instance_method(:result)
   define_method(:result) do
-    as_result = old_result.bind(self).()
-    if as_result.attached?
-      ActiveSupport::Gzip.decompress(as_result.blob.download).force_encoding('UTF-8')
-    else
-      submission_detail.result
-    end
+    #as_result = old_result.bind(self).()
+    #if as_result.attached?
+    #  ActiveSupport::Gzip.decompress(as_result.blob.download).force_encoding('UTF-8')
+    #else
+    submission_detail.result
+    #end
   end
 
   define_method(:"result=") do |result|
-    old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8'))), filename: "result.json.gz", content_type: 'application/json'))
+    #old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8'))), filename: "result.json.gz", content_type: 'application/json'))
     submission_detail.result = result if submission_detail
   end
 

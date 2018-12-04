@@ -23,7 +23,7 @@
         <% end %>
         <p>
           <% if policy(@user).impersonate? %>
-            <%= link_to impersonate_user_path(@user), class: "btn btn-default" do %>
+            <%= link_to impersonate_user_path(@user), class: "btn with-text btn-default" do %>
               <i class="material-icons md-18">person</i> <%= t("layout.impersonate.impersonate") %>
             <% end %>
           <% end %>
@@ -56,12 +56,12 @@
           <% if @user.subscribed_courses.empty? %>
             <%= t ".no_courses" %>
           <% else %>
-          <ul>
-            <% @user.subscribed_courses.each do |course| %>
-              <li><%= link_to course.name, course %></li>
-            <% end %>
-          </ul>
-        <% end %>
+            <ul>
+              <% @user.subscribed_courses.each do |course| %>
+                <li><%= link_to course.name, course %></li>
+              <% end %>
+            </ul>
+          <% end %>
         </p>
         <p>
           <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
@@ -74,5 +74,7 @@
         </p>
       </div>
     </div>
+    <%= render partial: 'visualizations/punchcard' %>
   </div>
 </div>
+

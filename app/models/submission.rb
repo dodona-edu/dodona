@@ -14,6 +14,7 @@
 #
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
+  SUBMISSION_MATRIX_CACHE_STRING = "/courses/%{course_id}/user/%{user_id}/submissions_matrix".freeze
   has_one_attached :code
   has_one_attached :result
 
@@ -51,6 +52,7 @@ class Submission < ApplicationRecord
       scopes.any? ? self.merge(scopes.reduce(&:or)) : self
     end.reduce(&:merge)
   end
+  scope :by_course_labels, ->(labels, course_id) {where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map {|cm| cm.user})}
 
   scope :most_recent, -> {
     submissions = select('MAX(submissions.id) as id')
@@ -60,7 +62,7 @@ class Submission < ApplicationRecord
     HEREDOC
   }
 
-  scope :most_recent_correct_per_user, -> (*) {
+  scope :most_recent_correct_per_user, ->(*) {
     correct.group(:user_id).most_recent
   }
 
@@ -80,31 +82,31 @@ class Submission < ApplicationRecord
 
   old_code = instance_method(:code)
   define_method(:code) do
-    #as_code = old_code.bind(self).()
-    #if as_code.attached?
-    #  as_code.blob.download
-    #else
-    submission_detail.code
-    #end
+    as_code = old_code.bind(self).()
+    if as_code.attached?
+      as_code.blob.download
+    else
+      submission_detail.code
+    end
   end
 
   define_method(:"code=") do |code|
-    #old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code), filename: "code", content_type: 'text/plain'))
+    old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code), filename: "code", content_type: 'text/plain'))
     submission_detail.code = code if submission_detail
   end
 
   old_result = instance_method(:result)
   define_method(:result) do
-    #as_result = old_result.bind(self).()
-    #if as_result.attached?
-    #  ActiveSupport::Gzip.decompress(as_result.blob.download)
-    #else
-    submission_detail.result
-    #end
+    as_result = old_result.bind(self).()
+    if as_result.attached?
+      ActiveSupport::Gzip.decompress(as_result.blob.download)
+    else
+      submission_detail.result
+    end
   end
 
   define_method(:"result=") do |result|
-    #old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(ActiveSupport::Gzip.compress(result)), filename: "result.json.gz", content_type: 'application/json'))
+    old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(ActiveSupport::Gzip.compress(result)), filename: "result.json.gz", content_type: 'application/json'))
     submission_detail.result = result if submission_detail
   end
 
@@ -186,4 +188,35 @@ class Submission < ApplicationRecord
     exercise.invalidate_cache(course)
     user.invalidate_cache(course)
   end
+
+  def self.get_submissions_matrix(user, course)
+    Rails.cache.fetch(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}) do
+      submissions = Submission.of_user(user)
+      submissions = submissions.in_course(course) if course.present?
+      submissions = submissions.pluck(:id, :created_at)
+      {
+          latest: submissions.first[0],
+          matrix: submissions.map {|_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}"}
+                      .group_by(&:itself).transform_values(&:count)
+      }
+    end
+  end
+
+  def self.update_submissions_matrix(user, course, latest_id)
+    submissions = Submission.of_user(user)
+    submissions = submissions.in_course(course) if course.present?
+    submissions = submissions.where('id > ?', latest_id)
+    submissions = submissions.pluck(:id, :created_at)
+    if submissions.any?
+      to_merge = submissions.map {|_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}"}
+                     .group_by(&:itself).transform_values(&:count)
+      old = get_submissions_matrix(user, course)
+      result = {
+          latest: submissions.first[0],
+          matrix: old[:matrix].merge(to_merge) {|_k, v1, v2| v1 + v2}
+      }
+      Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}, result)
+    end
+  end
+
 end

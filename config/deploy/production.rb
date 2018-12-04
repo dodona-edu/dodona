@@ -12,7 +12,7 @@ set :branch, 'master'
 
 set :delayed_job_pools_per_server, {
     'dodona' => {
-        'default' => 2,
+        'default,statistics' => 2,
     },
     'sisyphus' => {
         'submissions,low_priority_submissions,high_priority_submissions' => 6,

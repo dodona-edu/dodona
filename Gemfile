@@ -123,6 +123,9 @@ gem 'possibly'
 # bootstrap tokenizer
 gem 'bootstrap_tokenfield_rails'
 
+# memcache
+gem 'dalli'
+
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha'

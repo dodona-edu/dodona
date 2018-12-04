@@ -113,16 +113,17 @@ class RepositoriesController < ApplicationController
 
   def hook
     success, msg = @repository.reset
+    payload = params.key?('payload') ? JSON.parse(params['payload']) : params
     if success
-      if !params.key?('commits') || params['forced'] ||
-          !params['commits'].reject {|commit| commit['committer']['name'] == 'Dodona Server'}.empty?
+      if !payload.key?('commits') || payload['forced'] ||
+          !payload['commits'].reject {|commit| commit['committer']['name'] == 'Dodona Server'}.empty?
         if current_user
           @repository.delay.process_exercises_email_errors(user: current_user)
-        elsif params['pusher']
-          pusher = params['pusher']
+        elsif payload.key?('pusher')
+          pusher = payload['pusher']
           @repository.delay.process_exercises_email_errors(name: pusher['name'], email: pusher['email'])
         else
-          @repository.delay.process_exercises
+          @repository.delay.process_exercises_email_errors(user: @repository.admins.first)
         end
       end
     end

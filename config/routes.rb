@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
   root 'pages#home'
 
-  match '/dj' => DelayedJobWeb, :anchor => false, via: %i[get post]
+  authenticated :user, -> user {user.zeus?} do
+    mount DelayedJobWeb, at: '/dj'
+  end
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
@@ -47,7 +49,10 @@ Rails.application.routes.draw do
       end
       resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
       resources :submissions, only: [:index]
-      resources :members, only: [:index, :show], controller: :course_members
+      resources :members, only: [:index, :show, :edit, :update], controller: :course_members do
+        get 'download_labels_csv', on: :collection
+        post 'upload_labels_csv', on: :collection
+      end
       member do
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
@@ -107,6 +112,10 @@ Rails.application.routes.draw do
     resources :labels
     resources :programming_languages
     resources :posts
+
+    scope 'stats', controller: 'statistics' do
+      get 'punchcard', to: 'statistics#punchcard'
+    end
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

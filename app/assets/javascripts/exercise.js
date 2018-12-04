@@ -193,11 +193,13 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
     }
 
-    function feedbackLoaded() {
+    function feedbackLoaded(submissionId) {
         ga("send", "pageview");
         $("#feedback").removeClass("hidden");
-        $("#exercise-feedback-link").removeClass("hidden");
-        $("#exercise-feedback-link").tab("show");
+        const $exerciseFeedbackLink = $("#exercise-feedback-link");
+        $exerciseFeedbackLink.removeClass("hidden");
+        $exerciseFeedbackLink.tab("show");
+        $exerciseFeedbackLink.attr("data-submission_id", submissionId);
     }
 
     function feedbackTableLoaded(userId) {
@@ -216,6 +218,9 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 lastTimeout = 0;
                 if ($("#exercise-submission-link").parent().hasClass("active")) {
                     $submissionRow.find(".load-submission").get(0).click();
+                } else if ($("#exercise-feedback-link").parent().hasClass("active") &&
+                    $("#exercise-feedback-link").data("submission_id") === lastSubmission) {
+                    $.get(`/submissions/${lastSubmission}.js`);
                 }
                 setTimeout(enableSubmitButton, 100);
                 showNotification(I18n.t("js.submission-processed"));

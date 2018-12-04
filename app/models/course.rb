@@ -41,6 +41,8 @@ class Course < ApplicationRecord
 
   has_many :usable_repositories, through: :course_repositories, source: :repository
 
+  has_many :course_labels, dependent: :destroy
+
   enum visibility: %i[visible hidden]
   enum registration: %i[open moderated closed]
   enum color: %i[red pink purple deep-purple indigo teal
@@ -209,6 +211,22 @@ class Course < ApplicationRecord
         csv << row
       end
     end
+  end
+
+  def labels_csv
+    sorted_course_memberships = course_memberships
+                                    .where.not(status: %i[unsubscribed pending])
+                                    .includes(:user)
+                                    .order(status: :asc)
+                                    .order(Arel.sql('users.permission ASC'))
+                                    .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
+    data = CSV.generate(force_quotes: true) do |csv|
+      csv << %w[id username last_name first_name email labels]
+      sorted_course_memberships.each do |cm|
+        csv << [cm.user.id, cm.user.username, cm.user.last_name, cm.user.first_name, cm.user.email, cm.course_labels.map(&:name).join(';')]
+      end
+    end
+    {filename: "#{name}-users-labels.csv", data: data}
   end
 
   def self.format_year year

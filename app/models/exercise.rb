@@ -52,6 +52,7 @@ class Exercise < ApplicationRecord
   before_create :generate_id
   before_create :generate_token
   before_save :check_validity
+  before_save :check_memory_limit
   before_update :update_config
 
   scope :in_repository, ->(repository) {where repository: repository}
@@ -184,12 +185,13 @@ class Exercise < ApplicationRecord
     file.basename.to_s == DIRCONFIG_FILE
   end
 
-  def store_config(new_config)
+  def store_config(new_config, message = nil)
     return if new_config == config
+    message ||= "updated config for #{name}"
     config_file.write(JSON.pretty_generate(new_config))
-    success, error = repository.commit "updated config for #{name}"
+    success, error = repository.commit message
     unless success || error.empty?
-      errors.add(:base, "commiting changes failed: #{error}")
+      errors.add(:base, "committing changes failed: #{error}")
       throw :abort
     end
   end
@@ -303,6 +305,17 @@ class Exercise < ApplicationRecord
                   else
                     :ok
                   end
+  end
+
+  def check_memory_limit
+    if merged_config.fetch(:evaluation, {}).fetch(:memory_limit, 0) > 50_000_000 # 50MB
+      c = config
+      c['evaluation'] ||= {}
+      c['evaluation']['memory_limit'] = 50_000_000
+      store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " +
+          "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " +
+          "bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.")
+    end
   end
 
   def self.convert_visibility_to_access(visibility)

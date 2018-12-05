@@ -15,8 +15,7 @@
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
   SUBMISSION_MATRIX_CACHE_STRING = "/courses/%{course_id}/user/%{user_id}/submissions_matrix".freeze
-  has_one_attached :code
-  has_one_attached :result
+  BASE_PATH = Rails.root.join("data", "storage", "submissions")
 
   enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
 
@@ -32,6 +31,8 @@ class Submission < ApplicationRecord
 
   after_update :invalidate_caches
   after_create :evaluate_delayed, if: :evaluate?
+  after_destroy :clear_fs
+  after_rollback :clear_fs
 
   default_scope {order(id: :desc)}
   scope :of_user, ->(user) {where user_id: user.id}
@@ -73,45 +74,53 @@ class Submission < ApplicationRecord
   }
 
   def initialize(params)
-    raise 'please explicitly tell wheter you want to evaluate this submission' unless params.has_key? :evaluate
+    raise 'please explicitly tell whether you want to evaluate this submission' unless params.has_key? :evaluate
     @skip_rate_limit_check = params.delete(:skip_rate_limit_check) {false}
     @evaluate = params.delete(:evaluate)
-    super
+    code = params.delete(:code)
+    result = params.delete(:result)
+    super(params)
+    # We need to do this after the rest of the fields are initialized, because we depend on the course_id, user_id, ...
+    self.code = code.to_s unless code.nil?
+    self.result = result.to_s unless result.nil?
     self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
   end
 
-  old_code = instance_method(:code)
-  define_method(:code) do
-    #as_code = old_code.bind(self).()
-    #if as_code.attached?
-    #  as_code.blob.download.force_encoding('UTF-8')
-    #else
-    submission_detail.code
-    #end
+  def code
+    if File.exists?(File.join(fs_path, 'code'))
+      File.read(File.join(fs_path, 'code')).force_encoding('UTF-8')
+    else
+      submission_detail.code
+    end
   end
 
-  define_method(:"code=") do |code|
-    #old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code.force_encoding('UTF-8')), filename: "code", content_type: 'text/plain'))
+  def code=(code)
+    File.write(File.join(fs_path, 'code'), code.force_encoding('UTF-8'))
     submission_detail.code = code if submission_detail
   end
 
-  old_result = instance_method(:result)
-  define_method(:result) do
-    #as_result = old_result.bind(self).()
-    #if as_result.attached?
-    #  ActiveSupport::Gzip.decompress(as_result.blob.download).force_encoding('UTF-8')
-    #else
-    submission_detail.result
-    #end
+  def result
+    if File.exists?(File.join(fs_path, 'result.json.gz'))
+      ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, 'result.json.gz')).force_encoding('UTF-8'))
+    else
+      submission_detail.result
+    end
   end
 
-  define_method(:"result=") do |result|
-    #old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8'))), filename: "result.json.gz", content_type: 'application/json'))
+  def result=(result)
+    File.open(File.join(fs_path, 'result.json.gz'), "wb") {|f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))}
     submission_detail.result = result if submission_detail
   end
 
-  define_method(:"copied_to_activestorage?") do
-    old_code.bind(self).().attached? && old_result.bind(self).().attached?
+  def clear_fs
+    # If we were destroyed or if we were never saved to the database, delete this submission's directory
+    if self.destroyed? || self.new_record?
+      FileUtils.remove_entry_secure(fs_path) if File.exists?(fs_path)
+    end
+  end
+
+  def on_filesystem?
+    File.exists?(File.join(fs_path, 'result.json.gz')) && File.exists?(File.join(fs_path, 'code'))
   end
 
   def evaluate?
@@ -170,6 +179,29 @@ class Submission < ApplicationRecord
       time_since_previous = Time.now - previous.created_at
       errors.add(:submission, 'rate limited') if time_since_previous < SECONDS_BETWEEN_SUBMISSIONS.seconds
     end
+  end
+
+  def fs_path
+    path = File.join(BASE_PATH, (course_id.present? ? course_id.to_s : 'no_course'), user_id.to_s, exercise_id.to_s, fs_key)
+    FileUtils.mkdir_p path
+    path
+  end
+
+  def fs_key
+    unless self[:fs_key].present?
+      loop do
+        key = Random.new.alphanumeric(24)
+        unless Submission.find_by(fs_key: key).present?
+          self.fs_key = key
+          break
+        end
+      end
+      unless self.new_record?
+        # We don't want to trigger callbacks (and invalidate the cache as a result)
+        self.update_column(:fs_key, self[:fs_key])
+      end
+    end
+    self[:fs_key]
   end
 
   def self.rejudge(submissions, priority = :low)

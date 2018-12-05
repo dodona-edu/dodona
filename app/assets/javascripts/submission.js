@@ -1,3 +1,4 @@
+/* globals ace */
 function initSubmissionShow() {
     let currentMarkerId;
 

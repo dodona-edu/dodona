@@ -161,9 +161,9 @@ class SubmissionRunner
     container.delete
 
     # handling judge output
-    if stdout.bytesize + stderr.bytesize > 5 * 1024 * 1024
+    if stdout.bytesize + stderr.bytesize > 10 * 1024 * 1024
       return build_error 'internal error', 'internal error', [
-          build_message('Judge generated more than 5MiB of output.', 'staff', 'plain'),
+          build_message('Judge generated more than 10MiB of output.', 'staff', 'plain'),
           build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
           build_message("Standard Error #{stderr.bytesize} Bytes:", 'staff', 'plain'),
           build_message(truncate(stderr, 15_000), 'staff'),

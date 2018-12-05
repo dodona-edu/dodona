@@ -10,7 +10,7 @@ function initSubmissionShow() {
     function initDiffSwitchButtons() {
         const buttons = $(".diff-switch-buttons .btn");
         buttons.click(e => {
-            const button = $(e.target);
+            const button = $(e.currentTarget);
             const tab = button.parents(".tab-pane");
             buttons.removeClass("active");
             button.addClass("active");
@@ -24,7 +24,7 @@ function initSubmissionShow() {
     function initHideCorrect() {
         const buttons = $(".correct-switch-buttons .btn");
         buttons.click(e => {
-            const button = $(e.target);
+            const button = $(e.currentTarget);
             const tab = button.parents(".tab-pane");
             buttons.removeClass("active");
             button.addClass("active");
@@ -55,7 +55,7 @@ function initSubmissionShow() {
                 if (typeof currentMarkerId !== "undefined") {
                     editor.getSession().removeMarker(currentMarkerId);
                 }
-                currentMarkerId = editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line");
+                currentMarkerId = editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line", true);
             }
             return false;
         });

@@ -15,7 +15,7 @@
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
   SUBMISSION_MATRIX_CACHE_STRING = "/courses/%{course_id}/user/%{user_id}/submissions_matrix".freeze
-  BASE_PATH = Rails.root.join("data", "storage", "submissions")
+  BASE_PATH = Rails.application.config.submissions_storage_path
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
 
@@ -97,7 +97,7 @@ class Submission < ApplicationRecord
   end
 
   def code=(code)
-    FileUtils.mkdir_p path unless File.exists?(path)
+    FileUtils.mkdir_p fs_path unless File.exists?(fs_path)
     File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
     submission_detail.code = code if submission_detail
   end
@@ -111,7 +111,7 @@ class Submission < ApplicationRecord
   end
 
   def result=(result)
-    FileUtils.mkdir_p path unless File.exists?(path)
+    FileUtils.mkdir_p fs_path unless File.exists?(fs_path)
     File.open(File.join(fs_path, RESULT_FILENAME), "wb") {|f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))}
     submission_detail.result = result if submission_detail
   end

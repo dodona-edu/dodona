@@ -138,4 +138,6 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.deliver_later_queue_name = 'default'
+
+  config.submissions_storage_path = Rails.root.join('data', 'storage', 'submission')
 end

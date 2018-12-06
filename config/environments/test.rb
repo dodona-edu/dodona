@@ -46,4 +46,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   Delayed::Worker.delay_jobs = ->(job) {job.queue != 'default'}
+
+  config.submissions_storage_path = Rails.root.join('tmp', 'data', 'storage', 'submission')
 end

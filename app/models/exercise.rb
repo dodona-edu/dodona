@@ -308,7 +308,8 @@ class Exercise < ApplicationRecord
   end
 
   def check_memory_limit
-    if merged_config.fetch(:evaluation, {}).fetch(:memory_limit, 0) > 500_000_000 # 500MB
+    return unless ok?
+    if merged_config.fetch("evaluation", {}).fetch("memory_limit", 0) > 500_000_000 # 500MB
       c = config
       c['evaluation'] ||= {}
       c['evaluation']['memory_limit'] = 500_000_000

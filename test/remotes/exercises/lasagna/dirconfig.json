@@ -1,4 +1,9 @@
 {
   "root_config": "set",
-  "labels": ["label1"]
+  "labels": [
+    "label1"
+  ],
+  "evaluation": {
+    "memory_limit": 500000000000
+  }
 }

@@ -83,7 +83,7 @@ class Submission < ApplicationRecord
     # We need to do this after the rest of the fields are initialized, because we depend on the course_id, user_id, ...
     self.code = code.to_s unless code.nil?
     self.result = result.to_s unless result.nil?
-    self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
+    self.submission_detail = SubmissionDetail.new(id: id, code: code, result: result)
   end
 
   def code

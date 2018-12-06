@@ -308,10 +308,10 @@ class Exercise < ApplicationRecord
   end
 
   def check_memory_limit
-    if merged_config.fetch(:evaluation, {}).fetch(:memory_limit, 0) > 50_000_000 # 50MB
+    if merged_config.fetch(:evaluation, {}).fetch(:memory_limit, 0) > 500_000_000 # 500MB
       c = config
       c['evaluation'] ||= {}
-      c['evaluation']['memory_limit'] = 50_000_000
+      c['evaluation']['memory_limit'] = 500_000_000
       store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " +
           "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " +
           "bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.")

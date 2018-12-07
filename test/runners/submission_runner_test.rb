@@ -85,7 +85,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
           network_enabled: false
         }.to_json)
     # Overide something
-    @exercise.stubs(:config).returns({
+    @exercise.stubs(:merged_config).returns({
       evaluation: { network_enabled: true }.stringify_keys
     }.stringify_keys)
     mock = docker_mock

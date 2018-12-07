@@ -360,7 +360,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   test 'should push changes' do
     @exercise.update access: 'private'
     config = JSON.parse(
-      File.read(File.join(@remote.path, @exercise.path, 'config.json'))
+        File.read(File.join(@remote.path, @exercise.path, 'config.json'))
     )
     assert_equal 'private', config['access']
   end
@@ -437,5 +437,9 @@ class LasagneConfigTest < ActiveSupport::TestCase
 
   test 'should merge label arrays' do
     assert_equal 4, @exercise.labels.count
+  end
+
+  test 'should update child configs if dirconfig has a memory limit that is too high' do
+    assert_equal 500_000_000, @exercise.config['evaluation']['memory_limit']
   end
 end

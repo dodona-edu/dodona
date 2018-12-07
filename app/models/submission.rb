@@ -246,5 +246,4 @@ class Submission < ApplicationRecord
       Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}, result)
     end
   end
-
 end

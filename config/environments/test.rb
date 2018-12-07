@@ -47,5 +47,5 @@ Rails.application.configure do
 
   Delayed::Worker.delay_jobs = ->(job) {job.queue != 'default'}
 
-  config.submissions_storage_path = Rails.root.join('tmp', 'data', 'storage', 'submission')
+  config.submissions_storage_path = Rails.root.join('tmp', 'data', 'storage', 'submissions')
 end

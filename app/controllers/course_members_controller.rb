@@ -70,9 +70,13 @@ class CourseMembersController < ApplicationController
   def upload_labels_csv
     CSV.foreach(params[:file].path, headers: true) do |row|
       row = row.to_hash
-      cm = CourseMembership.find_by(user_id: row["id"], course: @course)
+      cm = CourseMembership.find_by(user_id: row['id'], course: @course)
       if cm.present?
-        labels = row["labels"].split(';').map(&:downcase).uniq.map {|name| CourseLabel.find_by(name: name.strip, course: @course) || CourseLabel.create(name: name.strip, course: @course)}
+        if row['labels'].nil?
+          @error = I18n.t('course_members.index.could_not_find_labels_column', user_id: row["id"])
+          break
+        end
+        labels = row['labels'].split(';').map(&:downcase).uniq.map {|name| CourseLabel.find_by(name: name.strip, course: @course) || CourseLabel.create(name: name.strip, course: @course)}
         cm.update(course_labels: labels)
       end
     end

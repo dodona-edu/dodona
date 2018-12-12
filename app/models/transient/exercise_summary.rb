@@ -74,7 +74,7 @@ class ExerciseSummary
 
   def query_timely_submission
     if deadline
-      query_submissions.where('submissions.created_at < ?', series.deadline).first
+      query_submissions.find_by('submissions.created_at < ?', series.deadline)
     else
       latest_submission
     end

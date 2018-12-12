@@ -137,7 +137,7 @@ class User < ApplicationRecord
   end
 
   def attempted_exercises(course = nil)
-    Rails.cache.fetch(ATTEMPTED_EXERCISES_CACHE_STRING % {course_id: course.present? ? course.id : 'global', id: id}) do
+    Rails.cache.fetch(format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: course.present? ? course.id : 'global', id: id), expires_in: 1.hour) do
       s = submissions
       s = s.in_course(course) if course
       s.select('distinct exercise_id').count
@@ -145,20 +145,11 @@ class User < ApplicationRecord
   end
 
   def correct_exercises(course = nil)
-    Rails.cache.fetch(CORRECT_EXERCISES_CACHE_STRING % {course_id: course.present? ? course.id : 'global', id: id}) do
+    Rails.cache.fetch(format(CORRECT_EXERCISES_CACHE_STRING, course_id: course.present? ? course.id : 'global', id: id), expires_in: 1.hour) do
       s = submissions
       s = s.in_course(course) if course
       s.select('distinct exercise_id').where(status: :correct).count
     end
-  end
-
-  def invalidate_cache(course = nil)
-    if course.present?
-      Rails.cache.delete(ATTEMPTED_EXERCISES_CACHE_STRING % {course_id: course.id, id: id})
-      Rails.cache.delete(CORRECT_EXERCISES_CACHE_STRING % {course_id: course.id, id: id})
-    end
-    Rails.cache.delete(ATTEMPTED_EXERCISES_CACHE_STRING % {course_id: 'global', id: id})
-    Rails.cache.delete(CORRECT_EXERCISES_CACHE_STRING % {course_id: 'global', id: id})
   end
 
   def unfinished_exercises(course = nil)

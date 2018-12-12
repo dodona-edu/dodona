@@ -48,6 +48,13 @@ class Course < ApplicationRecord
   enum color: %i[red pink purple deep-purple indigo teal
                  orange brown blue-grey]
 
+  has_many :visible_exercises,
+           lambda {
+             where(series: {visibility: %i[open hidden]}).distinct
+           },
+           through: :series,
+           source: :exercises
+
   has_many :subscribed_members,
            lambda {
              where.not course_memberships:
@@ -136,31 +143,27 @@ class Course < ApplicationRecord
   end
 
   def invalidate_subscribed_members_count_cache
-    Rails.cache.delete(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING % {id: id})
+    Rails.cache.delete(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id: id))
   end
 
   def subscribed_members_count
-    Rails.cache.fetch(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING % {id: id}) do
+    Rails.cache.fetch(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id: id)) do
       subscribed_members.count
     end
   end
 
   def invalidate_exercises_count_cache
-    Rails.cache.delete(EXERCISES_COUNT_CACHE_STRING % {id: id})
+    Rails.cache.delete(format(EXERCISES_COUNT_CACHE_STRING, id: id))
   end
 
   def exercises_count
-    Rails.cache.fetch(EXERCISES_COUNT_CACHE_STRING % {id: id}) do
+    Rails.cache.fetch(format(EXERCISES_COUNT_CACHE_STRING, id: id)) do
       exercises.count
     end
   end
 
-  def invalidate_correct_solutions_cache
-    Rails.cache.delete(CORRECT_SOLUTIONS_CACHE_STRING % {id: id})
-  end
-
   def correct_solutions
-    Rails.cache.fetch(CORRECT_SOLUTIONS_CACHE_STRING % {id: id}) do
+    Rails.cache.fetch(format(CORRECT_SOLUTIONS_CACHE_STRING, id: id), expires_in: 1.hour) do
       Submission.where(status: 'correct',
                        course: self)
           .select(:exercise_id,

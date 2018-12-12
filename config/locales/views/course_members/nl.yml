@@ -18,3 +18,4 @@ nl:
       then_edit: "Pas het bestand dat je net gedownload hebt aan (enkel veranderingen in de labels kolom zullen toegepast worden). Merk op dat de labels in één veld zitten, gescheiden met puntkommas."
       finally_upload: "Als je tevreden bent met je aanpassingen, upload hieronder dan het aangepaste bestand."
       download: "Download"
+      could_not_find_labels_column: "We konden de labels kolom van de gebruiker met ID %{user_id} niet vinden. Controleer of het bestand dat je upload aan de voorwaarden voldoet."

@@ -1,5 +1,5 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,I18n,initStrip */
-import {showNotification} from "./notifications.js";
+import {showNotification} from "./notifications.ts";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};

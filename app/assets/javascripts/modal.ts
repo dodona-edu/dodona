@@ -1,5 +1,5 @@
-function showInfoModal(title, content, options) {
-    var options = options || {};
+function showInfoModal(title, content, _options) {
+    const options = _options || {};
     if (options.allowFullscreen) {
         $("#info-modal .modal-header #fullscreen-button").css("display", "inline");
     } else {

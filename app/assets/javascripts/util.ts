@@ -43,22 +43,22 @@ function updateURLParameter(url, param, paramVal) {
     let i;
 
     if (additionalURL) {
-        var tmpAnchor = additionalURL.split("#");
-        var TheParams = tmpAnchor[0];
+        const tmpAnchor = additionalURL.split("#");
+        const TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
         if (TheAnchor) {
             additionalURL = TheParams;
         }
         tempArray = additionalURL.split("&");
         for (i = 0; i < tempArray.length; i++) {
-            if (tempArray[i].split("=")[0] != param) {
+            if (tempArray[i].split("=")[0] !== `${param}`) {
                 newAdditionalURL += temp + tempArray[i];
                 temp = "&";
             }
         }
     } else {
-        var tmpAnchor = baseURL.split("#");
-        var TheParams = tmpAnchor[0];
+        const tmpAnchor = baseURL.split("#");
+        const TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
 
         if (TheParams) {
@@ -173,7 +173,7 @@ function initCSRF() {
     $(() => {
         $.ajaxSetup({
             "headers": {
-                "X-CSRF-Token": $("meta[name='csrf-token']").attr("content")
+                "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
             },
         });
     });
@@ -188,5 +188,5 @@ export {
     getArrayURLParameter,
     logToGoogle,
     checkTimeZone,
-    initCSRF
+    initCSRF,
 };

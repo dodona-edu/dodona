@@ -1,5 +1,5 @@
-import {showInfoModal} from "./modal.js";
-import {logToGoogle} from "./util.js";
+import {showInfoModal} from "./modal";
+import {logToGoogle} from "./util.ts";
 
 function initPythiaSubmissionShow(submissionCode) {
     function init() {

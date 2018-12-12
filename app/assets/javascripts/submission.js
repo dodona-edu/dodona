@@ -13,7 +13,8 @@ function initSubmissionShow() {
         buttons.click(e => {
             const button = $(e.currentTarget);
             const tab = button.parents(".tab-pane");
-            buttons.removeClass("active");
+            const tabButtons = tab.find(".diff-switch-buttons .btn");
+            tabButtons.removeClass("active");
             button.addClass("active");
             const diffs = tab.find(".diffs");
             diffs.removeClass("show-split");
@@ -27,7 +28,8 @@ function initSubmissionShow() {
         buttons.click(e => {
             const button = $(e.currentTarget);
             const tab = button.parents(".tab-pane");
-            buttons.removeClass("active");
+            const tabButtons = tab.find(".correct-switch-buttons .btn");
+            tabButtons.removeClass("active");
             button.addClass("active");
             if (button.data("show")) {
                 tab.find(".group.correct").show();

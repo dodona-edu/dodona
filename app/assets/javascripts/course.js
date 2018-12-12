@@ -76,7 +76,6 @@ function initCourseMembers() {
                 processData: false,
                 data: formData,
                 success: function () {
-                    $modal.modal("hide");
                     loadUsers();
                 },
             });

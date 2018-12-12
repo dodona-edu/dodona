@@ -48,6 +48,13 @@ class Course < ApplicationRecord
   enum color: %i[red pink purple deep-purple indigo teal
                  orange brown blue-grey]
 
+  has_many :visible_exercises,
+           lambda {
+             where(series: {visibility: %i[open hidden]}).distinct
+           },
+           through: :series,
+           source: :exercises
+
   has_many :subscribed_members,
            lambda {
              where.not course_memberships:

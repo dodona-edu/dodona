@@ -31,7 +31,6 @@ class Submission < ApplicationRecord
   validate :maximum_code_length, on: :create
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
-  after_update :invalidate_caches
   after_create :evaluate_delayed, if: :evaluate?
   after_destroy :clear_fs
   after_rollback :clear_fs
@@ -209,12 +208,6 @@ class Submission < ApplicationRecord
     return 'wrong' if s == 'wrong answer'
     return s if s.in?(statuses)
     'unknown'
-  end
-
-  def invalidate_caches
-    course.invalidate_correct_solutions_cache if course.present?
-    exercise.invalidate_cache(course)
-    user.invalidate_cache(course)
   end
 
   def self.get_submissions_matrix(user, course)

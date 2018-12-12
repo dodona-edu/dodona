@@ -222,9 +222,9 @@ class Exercise < ApplicationRecord
   def accessible?(user, course)
     if course.present?
       if user&.course_admin? course
-        return false unless course.exercises.exists?(self.id)
+        return false unless course.exercises.pluck(:id).include? self.id
       else
-        return false unless course.visible_exercises.exists?(self.id)
+        return false unless course.visible_exercises.pluck(:id).include? self.id
       end
       return true if user&.repository_admin? repository
       return false unless access_public? || repository.allowed_courses.include?(course)

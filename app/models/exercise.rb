@@ -235,7 +235,7 @@ class Exercise < ApplicationRecord
   end
 
   def users_correct(course = nil)
-    Rails.cache.fetch(USERS_CORRECT_CACHE_STRING % {course_id: course ? course.id : 'global', id: id}) do
+    Rails.cache.fetch(format(USERS_CORRECT_CACHE_STRING, course_id: course ? course.id : 'global', id: id), expires_in: 1.hour) do
       subs = submissions.where(status: :correct)
       subs = subs.in_course(course) if course
       subs.distinct.count(:user_id)
@@ -243,20 +243,11 @@ class Exercise < ApplicationRecord
   end
 
   def users_tried(course = nil)
-    Rails.cache.fetch(USERS_TRIED_CACHE_STRING % {course_id: course ? course.id : 'global', id: id}) do
+    Rails.cache.fetch(format(USERS_TRIED_CACHE_STRING, course_id: course ? course.id : 'global', id: id), expires_in: 1.hour) do
       subs = submissions.all
       subs = subs.in_course(course) if course
       subs.distinct.count(:user_id)
     end
-  end
-
-  def invalidate_cache(course = nil)
-    if course.present?
-      Rails.cache.delete(USERS_CORRECT_CACHE_STRING % {course_id: course.id, id: id})
-      Rails.cache.delete(USERS_TRIED_CACHE_STRING % {course_id: course.id, id: id})
-    end
-    Rails.cache.delete(USERS_CORRECT_CACHE_STRING % {course_id: 'global', id: id})
-    Rails.cache.delete(USERS_TRIED_CACHE_STRING % {course_id: 'global', id: id})
   end
 
   def best_is_last_submission?(user, deadline = nil, course = nil)

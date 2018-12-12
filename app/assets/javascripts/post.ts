@@ -1,9 +1,9 @@
-/* global flatpickr,I18n */
+import flatpickr from "flatpickr";
 
 function initPostForm() {
     function init() {
         if (I18n.locale === "nl") {
-            let Dutch = {
+            flatpickr.localize({
                 weekdays: {
                     shorthand: ["zo", "ma", "di", "wo", "do", "vr", "za"],
                     longhand: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"],
@@ -21,10 +21,9 @@ function initPostForm() {
                     if (nth === 1 || nth === 8 || nth >= 20) return "ste";
                     return "de";
                 },
-            };
-            flatpickr.localize(Dutch);
+            });
         }
-        $("#release-group").flatpickr();
+        flatpickr($("#release-group").get(0));
     }
 
     init();

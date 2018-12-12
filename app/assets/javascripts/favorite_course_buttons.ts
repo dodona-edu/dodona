@@ -1,9 +1,8 @@
-/* globals I18n */
 import {showNotification} from "./notifications";
 
 function initFavoriteButtons() {
     function init() {
-        $(".favorite-button").click(toggleFavorite);
+        $(".favorite-button").on("click", toggleFavorite);
     }
 
     function toggleFavorite() {

@@ -1,3 +1,3 @@
-import {initPunchcard} from "punchcard.js";
+import {initPunchcard} from "punchcard";
 
 window.dodona.initPunchcard = initPunchcard;

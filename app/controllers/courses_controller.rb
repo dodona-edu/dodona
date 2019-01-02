@@ -81,6 +81,9 @@ class CoursesController < ApplicationController
     end
   end
 
+  def statistics
+  end
+
   def update_membership
     user = User.find params[:user]
     respond_to do |format|

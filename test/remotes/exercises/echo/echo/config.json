@@ -1,5 +1,11 @@
 {
-  "labels": ["label1", "label2", "label3"],
+  "labels": [
+    "label1",
+    "label2",
+    "label3",
+    "Label1",
+    "label1"
+  ],
   "access": "public",
   "description": {
     "handler": "default",

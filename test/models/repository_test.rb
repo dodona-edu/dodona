@@ -87,6 +87,10 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 3, Label.count
   end
 
+  test 'should dedupe label arrays' do
+    assert_equal 3, @echo.labels.count
+  end
+
   test 'should not create new labels when they are already present' do
     Label.create(name: 'label4')
     @remote.update_json(@echo.path + '/config.json') do |json|

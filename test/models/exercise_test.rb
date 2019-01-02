@@ -58,46 +58,46 @@ class ExerciseTest < ActiveSupport::TestCase
     users_all = create_list(:user, 5, courses: [course1, course2])
 
     assert_equal 0, e.users_tried
-    assert_equal 0, e.users_tried(course1)
-    assert_equal 0, e.users_tried(course2)
+    assert_equal 0, e.users_tried(course: course1)
+    assert_equal 0, e.users_tried(course: course2)
 
     create :submission, user: users_c1[0], course: course1, exercise: e
 
     assert_equal 1, e.users_tried
-    assert_equal 1, e.users_tried(course1)
-    assert_equal 0, e.users_tried(course2)
+    assert_equal 1, e.users_tried(course: course1)
+    assert_equal 0, e.users_tried(course: course2)
 
     create :submission, user: users_c2[0], course: course2, exercise: e
 
     assert_equal 2, e.users_tried
-    assert_equal 1, e.users_tried(course1)
-    assert_equal 1, e.users_tried(course2)
+    assert_equal 1, e.users_tried(course: course1)
+    assert_equal 1, e.users_tried(course: course2)
 
     create :submission, user: users_all[0], exercise: e
 
     assert_equal 3, e.users_tried
-    assert_equal 1, e.users_tried(course1)
-    assert_equal 1, e.users_tried(course2)
+    assert_equal 1, e.users_tried(course: course1)
+    assert_equal 1, e.users_tried(course: course2)
 
     users_c1.each do |user|
       create :submission, user: user, course: course1, exercise: e
     end
     assert_equal 7, e.users_tried
-    assert_equal 5, e.users_tried(course1)
-    assert_equal 1, e.users_tried(course2)
+    assert_equal 5, e.users_tried(course: course1)
+    assert_equal 1, e.users_tried(course: course2)
 
     users_c2.each do |user|
       create :submission, user: user, course: course2, exercise: e
     end
     assert_equal 11, e.users_tried
-    assert_equal 5, e.users_tried(course1)
-    assert_equal 5, e.users_tried(course2)
+    assert_equal 5, e.users_tried(course: course1)
+    assert_equal 5, e.users_tried(course: course2)
     users_all.each do |user|
       create :submission, user: user, exercise: e
     end
     assert_equal 15, e.users_tried
-    assert_equal 5, e.users_tried(course1)
-    assert_equal 5, e.users_tried(course2)
+    assert_equal 5, e.users_tried(course: course1)
+    assert_equal 5, e.users_tried(course: course2)
   end
 
   test 'users correct' do
@@ -112,38 +112,38 @@ class ExerciseTest < ActiveSupport::TestCase
     user_all = create :user, courses: [course1, course2]
 
     assert_equal 0, e.users_correct
-    assert_equal 0, e.users_correct(course1)
-    assert_equal 0, e.users_correct(course2)
+    assert_equal 0, e.users_correct(course: course1)
+    assert_equal 0, e.users_correct(course: course2)
 
     create :wrong_submission, user: user_c1, course: course1, exercise: e
     assert_equal 0, e.users_correct
-    assert_equal 0, e.users_correct(course1)
-    assert_equal 0, e.users_correct(course2)
+    assert_equal 0, e.users_correct(course: course1)
+    assert_equal 0, e.users_correct(course: course2)
 
     create :correct_submission, user: user_c1, course: course1, exercise: e
     assert_equal 1, e.users_correct
-    assert_equal 1, e.users_correct(course1)
-    assert_equal 0, e.users_correct(course2)
+    assert_equal 1, e.users_correct(course: course1)
+    assert_equal 0, e.users_correct(course: course2)
 
     create :wrong_submission, user: user_c2, course: course2, exercise: e
     assert_equal 1, e.users_correct
-    assert_equal 1, e.users_correct(course1)
-    assert_equal 0, e.users_correct(course2)
+    assert_equal 1, e.users_correct(course: course1)
+    assert_equal 0, e.users_correct(course: course2)
 
     create :correct_submission, user: user_c2, course: course2, exercise: e
     assert_equal 2, e.users_correct
-    assert_equal 1, e.users_correct(course1)
-    assert_equal 1, e.users_correct(course2)
+    assert_equal 1, e.users_correct(course: course1)
+    assert_equal 1, e.users_correct(course: course2)
 
     create :wrong_submission, user: user_all, exercise: e
     assert_equal 2, e.users_correct
-    assert_equal 1, e.users_correct(course1)
-    assert_equal 1, e.users_correct(course2)
+    assert_equal 1, e.users_correct(course: course1)
+    assert_equal 1, e.users_correct(course: course2)
 
     create :correct_submission, user: user_all, exercise: e
     assert_equal 3, e.users_correct
-    assert_equal 1, e.users_correct(course1)
-    assert_equal 1, e.users_correct(course2)
+    assert_equal 1, e.users_correct(course: course1)
+    assert_equal 1, e.users_correct(course: course2)
   end
 
   test 'last submission' do

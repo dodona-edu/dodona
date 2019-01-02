@@ -40,7 +40,7 @@
           </div>
           <div class="col-lg-6 col-xs-12">
             <p>
-              <strong><%= t "users.show.correctly_solved" %>:</strong> <%= @user.correct_exercises(@course) %>
+              <strong><%= t "users.show.correctly_solved" %>:</strong> <%= @user.correct_exercises(course: @course) %>
             </p>
             <p>
               <strong><%= t "users.show.unfinished" %>:</strong> <%= @user.unfinished_exercises(@course) %>

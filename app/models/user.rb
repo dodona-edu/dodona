@@ -23,6 +23,7 @@ require 'securerandom'
 class User < ApplicationRecord
   include Filterable
   include StringHelper
+  include Cacheable
 
   ATTEMPTED_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/attempted_exercises".freeze
   CORRECT_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/correct_exercises".freeze
@@ -136,24 +137,24 @@ class User < ApplicationRecord
     zeus? || repositories.include?(repository)
   end
 
-  def attempted_exercises(course = nil)
-    Rails.cache.fetch(format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: course.present? ? course.id : 'global', id: id), expires_in: 1.hour) do
-      s = submissions
-      s = s.in_course(course) if course
-      s.select('distinct exercise_id').count
-    end
-  end
+  create_cacheable(:attempted_exercises,
+                   ->(this, options) {format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)},
+                   lambda {|this, options|
+                     s = this.submissions
+                     s = s.in_course(options[:course]) if options[:course].present?
+                     s.select('distinct exercise_id').count
+                   })
 
-  def correct_exercises(course = nil)
-    Rails.cache.fetch(format(CORRECT_EXERCISES_CACHE_STRING, course_id: course.present? ? course.id : 'global', id: id), expires_in: 1.hour) do
-      s = submissions
-      s = s.in_course(course) if course
-      s.select('distinct exercise_id').where(status: :correct).count
-    end
-  end
+  create_cacheable(:correct_exercises,
+                   ->(this, options) {format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)},
+                   lambda {|this, options|
+                     s = this.submissions
+                     s = s.in_course(options[:course]) if options[:course].present?
+                     s.select('distinct exercise_id').where(status: :correct).count
+                   })
 
   def unfinished_exercises(course = nil)
-    attempted_exercises(course) - correct_exercises(course)
+    attempted_exercises(course: course) - correct_exercises(course: course)
   end
 
   def recent_exercises(limit = 3)
@@ -198,7 +199,7 @@ class User < ApplicationRecord
     end
   end
 
-  # update and return user using an omniauth authentication hash
+# update and return user using an omniauth authentication hash
   def update_from_oauth(oauth_hash)
     auth_inst = Institution.from_identifier(oauth_hash.info.institution)
     tap do |user|
@@ -243,4 +244,5 @@ class User < ApplicationRecord
   def set_time_zone
     self.time_zone = 'Seoul' if email&.match?(/ghent.ac.kr$/)
   end
+
 end

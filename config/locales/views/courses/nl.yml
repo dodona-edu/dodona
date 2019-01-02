@@ -5,6 +5,7 @@ nl:
       members: Ingeschreven gebruikers
       edit: Cursus bewerken
       submissions: Oplossingen voor dit vak
+      statistics: "Statistieken voor dit vak"
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
@@ -84,3 +85,5 @@ nl:
     unfavorite:
       succeeded: "Cursus uit favorieten verwijderd"
       failed: "Cursus uit favorieten verwijderen mislukt"
+    statistics:
+      statistics: "Statistieken"

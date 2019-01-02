@@ -51,11 +51,11 @@ class ExerciseSummary
   end
 
   def users_correct
-    exercise.users_correct(series_membership&.course)
+    exercise.users_correct(course: series_membership&.course)
   end
 
   def users_tried
-    exercise.users_tried(series_membership&.course)
+    exercise.users_tried(course: series_membership&.course)
   end
 
   private

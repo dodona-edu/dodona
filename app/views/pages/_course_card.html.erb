@@ -62,7 +62,7 @@
         </div>
         <div class="col-xs-6">
           <%= link_to course_path(course), class: 'card-title-link' do %>
-            <h1><%= number_with_delimiter current_user.correct_exercises(course), delimiter: " " %></h1>
+            <h1><%= number_with_delimiter current_user.correct_exercises(course: course), delimiter: " " %></h1>
             <%= t ".correct-exercises" %>
           <% end %>
         </div>

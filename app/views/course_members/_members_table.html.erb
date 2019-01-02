@@ -29,7 +29,7 @@
         <% end %>
         <td><%= user.email %></td>
         <td class='text-right'>
-          <%= link_to "#{user.correct_exercises(@course)}/#{user.attempted_exercises(@course)}", user_submissions_path(user) %>
+          <%= link_to "#{user.correct_exercises(course: @course)}/#{user.attempted_exercises(course: @course)}", user_submissions_path(user) %>
         </td>
         <td class='text-right course-membership-labels'>
           <% course_membership.course_labels.each do |label| %>

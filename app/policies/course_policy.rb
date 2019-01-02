@@ -56,6 +56,10 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def statistics?
+    course_admin?
+  end
+
   def update_membership?
     course_admin?
   end
@@ -105,6 +109,10 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def reorder_series?
+    course_admin?
+  end
+
+  def punchcard?
     course_admin?
   end
 

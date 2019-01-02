@@ -82,6 +82,8 @@ class CoursesController < ApplicationController
   end
 
   def statistics
+    @title = I18n.t('courses.statistics.statistics')
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.statistics.statistics'), "#"]]
   end
 
   def update_membership

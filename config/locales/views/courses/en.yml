@@ -5,6 +5,7 @@ en:
       members: Subscribed members
       edit: Edit course
       submissions: Submissions for this course
+      statistics: "Statistics of this course"
     form:
       description-help: A description is optional. Markdown formatting can be used.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
@@ -87,3 +88,5 @@ en:
     unfavorite:
       succeeded: "Unfavorited course"
       failed: "Failed unfavoriting course"
+    statistics:
+      statistics: "Statistics"

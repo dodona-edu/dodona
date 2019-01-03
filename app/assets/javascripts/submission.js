@@ -62,7 +62,7 @@ function initSubmissionShow() {
                 if (typeof currentMarkerId !== "undefined") {
                     editor.getSession().removeMarker(currentMarkerId);
                 }
-                currentMarkerId = editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line", true);
+                currentMarkerId = editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line", false);
             }
             return false;
         });

@@ -22,7 +22,7 @@ function initSubmissionShow() {
             diffs.removeClass("show-split");
             diffs.removeClass("show-unified");
             diffs.addClass(button.data("show_class"));
-            logToGoogle("feedback", "switch", "diff", button.data("show_class"));
+            logToGoogle("feedback", "diff", button.data("show_class"));
         });
     }
 
@@ -39,7 +39,7 @@ function initSubmissionShow() {
             } else {
                 tab.find(".group.correct").hide();
             }
-            logToGoogle("feedback", "switch", "correct", `${button.data("show")}`);
+            logToGoogle("feedback", "correct", `${button.data("show")}`);
         });
     }
 

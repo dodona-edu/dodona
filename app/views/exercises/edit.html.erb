@@ -11,6 +11,20 @@
       <div class="card-supporting-text">
         <%= render 'form', exercise: @exercise %>
       </div>
+      <div class="card-supporting-text card-border">
+        <h4 class="card-subtitle"><%= t('.courses') %></h4>
+        <ul>
+          <% @exercise.courses.each do |c| %>
+            <li>
+              <% if policy(c).show? %>
+                <%= link_to c.name, c %>
+              <% else %>
+                <%= c.name %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

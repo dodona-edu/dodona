@@ -81,6 +81,11 @@ class CoursesController < ApplicationController
     end
   end
 
+  def statistics
+    @title = I18n.t('courses.statistics.statistics')
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.statistics.statistics'), "#"]]
+  end
+
   def update_membership
     user = User.find params[:user]
     respond_to do |format|

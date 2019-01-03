@@ -37,11 +37,6 @@ nl:
       exercise_series: Oefeningenreeksen
       users: Gebruikers
       series: reeksen
-      subscribed_users: Geregistreerde gebruikers
-      exercise_count: Aantal oefeningen
-      average_progress: Gemiddelde voortgang
-      average_progress_info: Gemiddeld percentage opgeloste oefeningen per gebruiker
-      submitted_solutions: Ingediende oplossingen
       download_scoresheet: Scoresheet downloaden
       subscribed: Geregistreerd
       pending: Op de wachtlijst
@@ -87,3 +82,9 @@ nl:
       failed: "Cursus uit favorieten verwijderen mislukt"
     statistics:
       statistics: "Statistieken"
+    user_stats:
+      subscribed_users: Geregistreerde gebruikers
+      exercise_count: Aantal oefeningen
+      average_progress: Gemiddelde voortgang
+      average_progress_info: Gemiddeld percentage opgeloste oefeningen per gebruiker
+      submitted_solutions: Ingediende oplossingen

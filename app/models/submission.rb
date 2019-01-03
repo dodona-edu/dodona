@@ -211,8 +211,9 @@ class Submission < ApplicationRecord
   end
 
   def self.get_submissions_matrix(user, course)
-    Rails.cache.fetch(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}) do
-      submissions = Submission.of_user(user)
+    Rails.cache.fetch(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'}) do
+      submissions = Submission.all
+      submissions = submissions.of_user(user) if user.present?
       submissions = submissions.in_course(course) if course.present?
       submissions = submissions.pluck(:id, :created_at)
       {
@@ -224,7 +225,8 @@ class Submission < ApplicationRecord
   end
 
   def self.update_submissions_matrix(user, course, latest_id)
-    submissions = Submission.of_user(user)
+    submissions = Submission.all
+    submissions = submissions.of_user(user) if user.present?
     submissions = submissions.in_course(course) if course.present?
     submissions = submissions.where('id > ?', latest_id)
     submissions = submissions.pluck(:id, :created_at)
@@ -236,7 +238,7 @@ class Submission < ApplicationRecord
           latest: submissions.first[0],
           matrix: old[:matrix].merge(to_merge) {|_k, v1, v2| v1 + v2}
       }
-      Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}, result)
+      Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'}, result)
     end
   end
 end

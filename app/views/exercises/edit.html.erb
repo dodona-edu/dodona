@@ -13,18 +13,7 @@
       </div>
       <div class="card-supporting-text card-border">
         <h4 class="card-subtitle"><%= t('.courses') %></h4>
-        <ul>
-          <% @exercise.courses.each do |c| %>
-            <li>
-              <% if policy(c).show? %>
-                <%= link_to c.name, c %>
-              <% else %>
-                <%= c.name %>
-              <% end %>
-              (<%= c.teacher %> - <%= c.year %>)
-            </li>
-          <% end %>
-        </ul>
+        <%= render 'courses/courses_table', courses: @exercise.courses %>
       </div>
     </div>
   </div>

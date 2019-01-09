@@ -69,7 +69,7 @@ nl:
       explanation_html: 'Dit is de registratiepagina voor het vak <strong>%{course_name}</strong>.'
       instruction: 'Klik op de knop om je te registreren voor deze cursus.'
       closed: Deze cursus is gesloten en aanvaardt geen nieuwe registraties.
-      sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je registratie accepteerd.
+      sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je registratie accepteert.
       subscribed_successfully: Registratie succesvol
       unsubscribed_successfully: Uitschrijving successvol
       subscription_failed: Registratie mislukt

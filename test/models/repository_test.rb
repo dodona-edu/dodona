@@ -233,4 +233,16 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.process_exercises
     assert_equal 500_000_000, JSON.parse(File.read(File.join(@remote.path, @echo.path, 'config.json')))['evaluation']['memory_limit']
   end
+
+  test 'should catch invalid dirconfig files' do
+    @remote.write_file('dirconfig.json') do
+      '{"invalid json",,}'
+    end
+    @repository.reset
+    assert_raises(AggregatedConfigErrors) do
+      @repository.process_exercises
+    end
+    @echo.reload
+    assert_equal 'not_valid', @echo.status
+  end
 end

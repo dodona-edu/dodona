@@ -223,4 +223,16 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     echo2 = Exercise.find_by(path: new_dir)
     assert_not_equal @echo.token, echo2.config['internals']['token']
   end
+
+  test 'should catch invalid dirconfig files' do
+    @remote.write_file('dirconfig.json') do
+      '{"invalid json",,}'
+    end
+    @repository.reset
+    assert_raises(AggregatedConfigErrors) do
+      @repository.process_exercises
+    end
+    @echo.reload
+    assert_equal 'not_valid', @echo.status
+  end
 end

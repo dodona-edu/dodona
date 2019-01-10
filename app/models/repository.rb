@@ -73,6 +73,9 @@ class Repository < ApplicationRecord
     errors = []
 
     exercise_dirs_and_configs = dirs.map do |d|
+      Pathname.new('./').join(exercise_relative_path(d)).parent.descend.each do |p|
+        read_config_file(full_path.join(p, Exercise::DIRCONFIG_FILE))
+      end
       [d, read_config_file(Exercise.config_file(d))]
     rescue ConfigParseError => e
       errors.push e

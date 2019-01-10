@@ -87,6 +87,10 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 3, Label.count
   end
 
+  test 'should dedupe label arrays' do
+    assert_equal 3, @echo.labels.count
+  end
+
   test 'should not create new labels when they are already present' do
     Label.create(name: 'label4')
     @remote.update_json(@echo.path + '/config.json') do |json|
@@ -218,5 +222,17 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.process_exercises
     echo2 = Exercise.find_by(path: new_dir)
     assert_not_equal @echo.token, echo2.config['internals']['token']
+  end
+
+  test 'should catch invalid dirconfig files' do
+    @remote.write_file('dirconfig.json') do
+      '{"invalid json",,}'
+    end
+    @repository.reset
+    assert_raises(AggregatedConfigErrors) do
+      @repository.process_exercises
+    end
+    @echo.reload
+    assert_equal 'not_valid', @echo.status
   end
 end

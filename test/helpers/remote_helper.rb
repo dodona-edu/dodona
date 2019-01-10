@@ -41,6 +41,14 @@ class TempRepository < GitRepository
     commit msg
   end
 
+  def write_file(rel_path, msg = nil)
+    File.open(File.join(@path, rel_path), 'w') do |f|
+      f.write(yield)
+    end
+    msg ||= "create #{rel_path}"
+    commit msg
+  end
+
   def rename_dir(from_path, to_path)
     FileUtils.move(File.join(@path, from_path), File.join(@path, to_path))
   end

@@ -22,7 +22,7 @@ function initSubmissionShow() {
             diffs.removeClass("show-split");
             diffs.removeClass("show-unified");
             diffs.addClass(button.data("show_class"));
-            logToGoogle("feedback", "switch", "diff", button.data("show_class"));
+            logToGoogle("feedback", "diff", button.data("show_class"));
         });
     }
 
@@ -39,7 +39,7 @@ function initSubmissionShow() {
             } else {
                 tab.find(".group.correct").hide();
             }
-            logToGoogle("feedback", "switch", "correct", `${button.data("show")}`);
+            logToGoogle("feedback", "correct", `${button.data("show")}`);
         });
     }
 
@@ -62,7 +62,7 @@ function initSubmissionShow() {
                 if (typeof currentMarkerId !== "undefined") {
                     editor.getSession().removeMarker(currentMarkerId);
                 }
-                currentMarkerId = editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line", true);
+                currentMarkerId = editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line", false);
             }
             return false;
         });

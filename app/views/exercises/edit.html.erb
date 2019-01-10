@@ -11,6 +11,10 @@
       <div class="card-supporting-text">
         <%= render 'form', exercise: @exercise %>
       </div>
+      <div class="card-supporting-text card-border">
+        <h4 class="card-subtitle"><%= t('.courses') %></h4>
+        <%= render 'courses/courses_table', courses: @exercise.courses %>
+      </div>
     </div>
   </div>
 </div>

@@ -44,6 +44,7 @@ class Exercise < ApplicationRecord
   has_many :submissions
   has_many :series_memberships
   has_many :series, through: :series_memberships
+  has_many :courses, -> {distinct}, through: :series
   has_many :exercise_labels, dependent: :destroy
   has_many :labels, through: :exercise_labels
 

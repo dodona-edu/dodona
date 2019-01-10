@@ -34,10 +34,9 @@ class SubmissionDjPlugin < Delayed::Plugin
             ]
         })
         Delayed::Worker.logger.debug("Set failed status on submission #{sub.id}")
-
-        if Rails.env.production?
-          ExceptionNotifier.notify_exception(job.last_error, notifiers: Rails.configuration.exception_notification_notifiers)
-        end
+      end
+      if Rails.env.production?
+        ExceptionNotifier.notify_exception(job.last_error, notifiers: Rails.configuration.exception_notification_notifiers)
       end
     rescue Exception
       # This must not fail in any case.

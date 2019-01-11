@@ -129,8 +129,8 @@ class ExercisesController < ApplicationController
   def set_series
     return if params[:series_id].nil?
     @series = Series.find(params[:series_id])
-    if @series.hidden?
-      @crumbs << [@series.name, series_path(@series)]
+    if @series.hidden? && !current_user&.course_admin?(@series.course)
+      @crumbs << [@series.name, series_path(@series, token: @series.access_token)]
     else
       @crumbs << [@series.name, course_path(@series.course, anchor: @series.anchor)]
     end

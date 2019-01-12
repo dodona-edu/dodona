@@ -9,7 +9,7 @@ function initPunchcard(url, timezoneOffset) {
     const labelsY = ["js.monday", "js.tuesday", "js.wednesday", "js.thursday", "js.friday", "js.saturday", "js.sunday"].map(k => I18n.t(k));
 
     const container = d3.select(containerSelector);
-    const width = container.node().getBoundingClientRect().width;
+    const width = (<Element>container.node()).getBoundingClientRect().width;
     const innerWidth = width - margin.left - margin.right;
     const unitSize = innerWidth / 24;
     const innerHeight = unitSize * 7;
@@ -37,7 +37,7 @@ function initPunchcard(url, timezoneOffset) {
     const xAxis = d3.axisBottom(x)
         .ticks(24)
         .tickSize(0)
-        .tickFormat((d, i) => labelsX[i])
+        .tickFormat((d, i) => `${labelsX[i]}`)
         .tickPadding(10);
     const yAxis = d3.axisLeft(y)
         .ticks(7)
@@ -62,7 +62,7 @@ function renderAxes(xAxis, yAxis, chart, innerHeight) {
         .style("display", "none");
 }
 
-function renderCard(data, unitSize, chart, x, y) {
+function renderCard(data: ArrayLike<{ key: string, value: number }>, unitSize, chart, x, y) {
     const maxVal = d3.max(data, d => d.value);
     const radius = d3.scaleSqrt()
         .domain([0, maxVal])

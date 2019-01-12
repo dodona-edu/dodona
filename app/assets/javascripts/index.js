@@ -1,6 +1,6 @@
 /* globals I18n,Bloodhound,dodona */
-import {showNotification} from "./notifications.js";
-import {delay, getArrayURLParameter, getURLParameter, updateArrayURLParameter, updateURLParameter} from "./util.js";
+import {showNotification} from "./notifications.ts";
+import {delay, getArrayURLParameter, getURLParameter, updateArrayURLParameter, updateURLParameter} from "./util.ts";
 
 const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
@@ -258,7 +258,6 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
         }
 
         dodona.addTokenToSearch = addTokenToSearch;
-
     }
 
     init();

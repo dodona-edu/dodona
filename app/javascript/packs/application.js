@@ -22,8 +22,9 @@ window.$ = jQuery;
 
 import "polyfills.js";
 import "drawer";
-import {showNotification} from "notifications.js";
-import {checkTimeZone, initClipboard, initCSRF} from "util.js";
+import {showNotification} from "notifications";
+// We need to write "util.ts" because otherwise it is imported from the util package in node_modules
+import {checkTimeZone, initClipboard, initCSRF} from "util.ts";
 
 // Initialize clipboard.js
 initClipboard();
@@ -31,7 +32,7 @@ initClipboard();
 // Adds the CSRF token to each ajax request
 initCSRF();
 
-// Use a global dodona object to prevent polluting the global na
+// Use a global dodona object to prevent polluting the global namespace
 let dodona = {};
 dodona.checkTimeZone = checkTimeZone;
 dodona.showNotification = showNotification;

@@ -41,8 +41,9 @@ module ExerciseHelper
     # Regex used for replacing these relative paths:
     # 1: opening quotation marks
     # 2: optional ./ (discarded)
-    # 3: media url and closing quotation marks
-    MEDIA_ATTR_MATCH = %r{(=['"])(\.\/)?(media\/.*?['"])}
+    # 3: media url
+    # 4: closing quotation marks
+    MEDIA_ATTR_MATCH = %r{(=['"])(\.\/)?(media\/.*?)(['"])}
 
     # Replace each occurence of a relative media path with a
     # path relative to the context (base URL).
@@ -57,10 +58,10 @@ module ExerciseHelper
     #  => <img src='/nl/exercises/xxxx/media/photo.jpg'>
     # <a href='./media/page.html'>link</a>
     #  => <a href='/nl/exercises/xxxx/media/page.html'>
-    def contextualize_media_paths(html, path)
+    def contextualize_media_paths(html, path, token)
       path += '/' unless path.ends_with? '/'
       html.gsub(MEDIA_TAG_MATCH) do |match|
-        match.gsub MEDIA_ATTR_MATCH, "\\1#{path}\\3"
+        match.gsub MEDIA_ATTR_MATCH, token.present? ? "\\1#{path}\\3?token=#{token}\\4" : "\\1#{path}\\3\\4"
       end
     end
 
@@ -104,7 +105,7 @@ module ExerciseHelper
 
     # Rewrite all media urls
     def rewrite_media_urls
-      @description = contextualize_media_paths @description, exercise_path(nil, @exercise)
+      @description = contextualize_media_paths @description, exercise_path(nil, @exercise), @exercise.access_private? ? @exercise.access_token : ''
     end
 
     # Rewrite relative url's to absulute

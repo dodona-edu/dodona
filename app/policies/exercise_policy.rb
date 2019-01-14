@@ -28,8 +28,12 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def media?
-    return true if Current.ip_address == "157.193.231.96"
-    show?
+    return true if Current.ip_address&.start_with? Rails.application.config.tutor_docker_network_prefix
+    return true if user&.admin?
+    return true if record.ok?
+    return false unless user
+    return true if record.number_of_submissions_for(user).nonzero?
+    false
   end
 
   def submit?

@@ -52,6 +52,7 @@ class Exercise < ApplicationRecord
 
   before_create :generate_id
   before_create :generate_token
+  before_create :generate_access_token
   before_save :check_validity
   before_save :check_memory_limit
   before_update :update_config
@@ -338,6 +339,12 @@ class Exercise < ApplicationRecord
       new_token = Base64.strict_encode64 SecureRandom.random_bytes(48)
     end until Exercise.find_by(token: new_token).nil?
     self.token ||= new_token
+  end
+
+  def generate_access_token
+    self.access_token = SecureRandom.urlsafe_base64(12)
+    # We don't want to trigger callbacks, this doesn't have an influence on the config file
+    update_column(:access_token, self[:access_token]) unless new_record?
   end
 
   def self.move_relations(from, to)

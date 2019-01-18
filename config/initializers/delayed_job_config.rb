@@ -47,3 +47,7 @@ end
 # rubocop:enable RescueException, HandleExceptions
 
 Delayed::Worker.plugins << SubmissionDjPlugin
+
+Delayed::Backend::ActiveRecord.configure do |config|
+  config.reserve_sql_strategy = :default_sql
+end

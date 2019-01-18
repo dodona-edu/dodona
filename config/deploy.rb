@@ -120,7 +120,7 @@ namespace :tutor do
   task :tutor do
     on roles(:web) do
       execute :screen, "-S tutor -X quit", raise_on_non_zero_exit: false
-      execute :screen, "-S tutor -dm docker run --rm --memory=500m -p 8080:8080 python-tutor-webservice"
+      execute :screen, "-S tutor -dm docker run --rm --memory=500m --memory-swap=500m -p 8080:8080 python-tutor-webservice"
     end
   end
 end

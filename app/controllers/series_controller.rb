@@ -95,8 +95,12 @@ class SeriesController < ApplicationController
   end
 
   def download_solutions
-    if params[:user_id] && current_user&.course_admin?(@series.course)
-      send_zip User.find(params[:user_id])
+    if current_user&.course_admin?(@series.course)
+      if params[:user_id].present?
+        send_zip User.find(params[:user_id])
+      else
+        send_zip nil
+      end
     else
       send_zip current_user
     end
@@ -192,7 +196,11 @@ class SeriesController < ApplicationController
 
   # Generate and send a zip with solutions
   def send_zip(user, **opts)
-    zip = @series.zip_solutions(user, opts)
+    if user.present?
+      zip = @series.zip_solutions_for_user(user, opts)
+    else
+      zip = @series.zip_solutions(opts)
+    end
     send_data zip[:data],
               type: 'application/zip',
               filename: zip[:filename],

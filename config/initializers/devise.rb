@@ -322,6 +322,7 @@ Devise.setup do |config|
     settings.certificate = IO.read('/home/dodona/cert.pem') if File.file?('/home/dodona/cert.pem')
     settings.private_key = IO.read('/home/dodona/key.pem') if File.file?('/home/dodona/key.pem')
     settings.security[:authn_requests_signed] = true
+    settings.security[:embed_sign] = true
     settings.idp_slo_target_url = 'https://ideq.ugent.be/simplesaml/saml2/idp/SingleLogoutService.php'
     settings.idp_sso_target_url = 'https://ideq.ugent.be/simplesaml/saml2/idp/SSOService.php'
     settings.idp_cert = <<~CERT.chomp

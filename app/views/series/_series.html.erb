@@ -40,43 +40,43 @@
           <i class="material-icons">more_vert</i>
         </a>
         <ul class="dropdown-menu dropdown-menu-right">
-          <% if policy(series).edit? %>
-            <li>
-              <%= link_to edit_series_path(series) do %>
-                <i class='material-icons md-18'>edit</i> <%= t("series.edit.title") %>
-              <% end %>
-            </li>
-          <% end %>
-          <% if policy(series).destroy? %>
-            <li>
-              <%= link_to series_path(series), method: :delete, data: {confirm: t("series.delete.confirm")} do %>
-                <i class='material-icons md-18'>delete</i> <%= t("series.delete.title") %>
-              <% end %>
-            </li>
-          <% end %>
-          <% if policy(series).edit? && !series.open? %>
-            <li>
-              <%= link_to series_path(series, token: series.access_token) do %>
-                <i class="material-icons md-18">link</i>
-                <%= t 'series.show.token_link' %>
-              <% end %>
-            </li>
-          <% end %>
-          <% if policy(series).scoresheet? %>
-            <li>
-              <%= link_to scoresheet_series_path(series) do %>
-                <i class='material-icons md-18'>view_list</i> <%= t("series.show.series_scoresheet") %>
-              <% end %>
-            </li>
-          <% end %>
-          <% if policy(series).mass_rejudge? %>
-            <li>
-              <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: {confirm: t("submissions.index.confirm_reevaluate_submissions")} do %>
-                <i class='material-icons md-18'>replay</i> <%= t("submissions.index.reevaluate_submissions") %>
-              <% end %>
-            </li>
-          <% end %>
-          <% if policy(series).edit? %>
+          <% if current_user&.course_admin?(series.course) %>
+            <% if policy(series).edit? %>
+              <li>
+                <%= link_to edit_series_path(series) do %>
+                  <i class='material-icons md-18'>edit</i> <%= t("series.edit.title") %>
+                <% end %>
+              </li>
+            <% end %>
+            <% if policy(series).destroy? %>
+              <li>
+                <%= link_to series_path(series), method: :delete, data: {confirm: t("series.delete.confirm")} do %>
+                  <i class='material-icons md-18'>delete</i> <%= t("series.delete.title") %>
+                <% end %>
+              </li>
+            <% end %>
+            <% if policy(series).edit? && !series.open? %>
+              <li>
+                <%= link_to series_path(series, token: series.access_token) do %>
+                  <i class="material-icons md-18">link</i>
+                  <%= t 'series.show.token_link' %>
+                <% end %>
+              </li>
+            <% end %>
+            <% if policy(series).scoresheet? %>
+              <li>
+                <%= link_to scoresheet_series_path(series) do %>
+                  <i class='material-icons md-18'>view_list</i> <%= t("series.show.series_scoresheet") %>
+                <% end %>
+              </li>
+            <% end %>
+            <% if policy(series).mass_rejudge? %>
+              <li>
+                <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: {confirm: t("submissions.index.confirm_reevaluate_submissions")} do %>
+                  <i class='material-icons md-18'>replay</i> <%= t("submissions.index.reevaluate_submissions") %>
+                <% end %>
+              </li>
+            <% end %>
             <li role="separator" class="divider"></li>
           <% end %>
           <% if policy(series).show? %>

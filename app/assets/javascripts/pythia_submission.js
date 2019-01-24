@@ -123,7 +123,7 @@ function initPythiaSubmissionShow(submissionCode) {
 
         $.ajax({
             type: "POST",
-            url: "http://naos.ugent.be/cgi-bin/build_trace.py",
+            url: "https://naos.ugent.be/tutor/cgi-bin/build_trace.py",
             dataType: "json",
             data: {
                 exercise_id: exercise_id,

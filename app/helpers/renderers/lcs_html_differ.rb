@@ -173,6 +173,7 @@ class LCSHtmlDiffer
   private
 
   def diff_strings(generated, expected)
+    return [generated, expected] if generated.length > 200 || expected.length > 200
     exp_result = ""
     gen_result = ""
     in_exp_strong = false

@@ -28,7 +28,7 @@ class ExercisePolicy < ApplicationPolicy
   end
 
   def media?
-    return true if Current.ip_address == "157.193.231.157"
+    return true if Current.ip_address == "157.193.231.96"
     show?
   end
 

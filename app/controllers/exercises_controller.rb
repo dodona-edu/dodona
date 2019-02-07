@@ -102,6 +102,12 @@ class ExercisesController < ApplicationController
   end
 
   def media
+    if params.key?(:token)
+      raise Pundit::NotAuthorizedError, "Not allowed" unless @exercise.access_token == params[:token]
+    elsif !@exercise.accessible?(current_user, @course)
+      raise Pundit::NotAuthorizedError, "Not allowed"
+    end
+
     file = File.join(@exercise.media_path, params[:media])
     unless File.file? file
       file = File.join(@exercise.repository.media_path, params[:media])

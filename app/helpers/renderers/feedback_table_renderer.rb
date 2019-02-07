@@ -20,6 +20,7 @@ class FeedbackTableRenderer
     @course = submission.course
     @builder = Builder::XmlMarkup.new
     @code = submission.code
+    @exercise = submission.exercise
     @exercise_id = submission.exercise_id
     @programming_language = submission.exercise.programming_language&.name
   end

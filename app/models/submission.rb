@@ -32,6 +32,7 @@ class Submission < ApplicationRecord
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
   after_create :evaluate_delayed, if: :evaluate?
+  after_update :invalidate_caches
   after_destroy :clear_fs
   after_rollback :clear_fs
 
@@ -208,6 +209,21 @@ class Submission < ApplicationRecord
     return 'wrong' if s == 'wrong answer'
     return s if s.in?(statuses)
     'unknown'
+  end
+
+  def invalidate_caches
+    exercise.invalidate_users_correct
+    exercise.invalidate_users_tried
+    user.invalidate_attempted_exercises
+    user.invalidate_correct_exercises
+
+    if course.present?
+      course.invalidate_correct_solutions
+      exercise.invalidate_users_correct(course: course)
+      exercise.invalidate_users_tried(course: course)
+      user.invalidate_attempted_exercises(course: course)
+      user.invalidate_correct_exercises(course: course)
+    end
   end
 
   def self.get_submissions_matrix(user, course)

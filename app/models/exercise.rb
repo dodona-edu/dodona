@@ -242,21 +242,23 @@ class Exercise < ApplicationRecord
     end
   end
 
+  def users_correct(options)
+    subs = submissions.where(status: :correct)
+    subs = subs.in_course(options[:course]) if options[:course].present?
+    subs.distinct.count(:user_id)
+  end
+
   create_cacheable(:users_correct,
-                   ->(this, options) {format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)},
-                   lambda {|this, options|
-                     subs = this.submissions.where(status: :correct)
-                     subs = subs.in_course(options[:course]) if options[:course].present?
-                     subs.distinct.count(:user_id)
-                   })
+                   ->(this, options) {format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)})
+
+  def users_tried(options)
+    subs = submissions.all
+    subs = subs.in_course(options[:course]) if options[:course].present?
+    subs.distinct.count(:user_id)
+  end
 
   create_cacheable(:users_tried,
-                   ->(this, options) {format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id)},
-                   lambda {|this, options|
-                     subs = this.submissions.all
-                     subs = subs.in_course(options[:course]) if options[:course].present?
-                     subs.distinct.count(:user_id)
-                   })
+                   ->(this, options) {format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id)})
 
   def best_is_last_submission?(user, deadline = nil, course = nil)
     last_correct = last_correct_submission(user, deadline, course)

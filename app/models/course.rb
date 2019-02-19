@@ -163,16 +163,14 @@ class Course < ApplicationRecord
     end
   end
 
-  create_cacheable(:correct_solutions,
-                   ->(this, _options) {format(CORRECT_SOLUTIONS_CACHE_STRING, id: this.id)},
-                   lambda {|this, _options|
-                     Submission.where(status: 'correct',
-                                      course: this)
-                         .select(:exercise_id,
-                                 :user_id)
-                         .distinct
-                         .count
-                   })
+  def correct_solutions(_options = {})
+    Submission.where(status: 'correct', course: self)
+        .select(:exercise_id, :user_id)
+        .distinct
+        .count
+  end
+
+  create_cacheable(:correct_solutions, ->(this, _options) {format(CORRECT_SOLUTIONS_CACHE_STRING, id: this.id)})
 
   def average_progress
     avg = ((100 * correct_solutions).to_d / (users.count * exercises_count).to_d)

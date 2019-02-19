@@ -137,21 +137,23 @@ class User < ApplicationRecord
     zeus? || repositories.include?(repository)
   end
 
+  def attempted_exercises(options)
+    s = submissions
+    s = s.in_course(options[:course]) if options[:course].present?
+    s.select('distinct exercise_id').count
+  end
+
   create_cacheable(:attempted_exercises,
-                   ->(this, options) {format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)},
-                   lambda {|this, options|
-                     s = this.submissions
-                     s = s.in_course(options[:course]) if options[:course].present?
-                     s.select('distinct exercise_id').count
-                   })
+                   ->(this, options) {format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)})
+
+  def correct_exercises(options)
+    s = submissions
+    s = s.in_course(options[:course]) if options[:course].present?
+    s.select('distinct exercise_id').where(status: :correct).count
+  end
 
   create_cacheable(:correct_exercises,
-                   ->(this, options) {format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)},
-                   lambda {|this, options|
-                     s = this.submissions
-                     s = s.in_course(options[:course]) if options[:course].present?
-                     s.select('distinct exercise_id').where(status: :correct).count
-                   })
+                   ->(this, options) {format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)})
 
   def unfinished_exercises(course = nil)
     attempted_exercises(course: course) - correct_exercises(course: course)

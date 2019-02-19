@@ -44,6 +44,9 @@
           <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
         </p>
         <p>
+          <strong><%= User.human_attribute_name("institution") %>:</strong> <<%= @user.institution&.name %>
+        </p>
+        <p>
           <strong><%= User.human_attribute_name("time_zone") %>:</strong> <%= @user.time_zone %>
         </p>
         <% if current_user.admin? %>

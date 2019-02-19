@@ -8,7 +8,7 @@ module Cacheable
     def create_cacheable(name, cache_string)
       calculator = instance_method(name)
       define_method(name) do |options = {}|
-        if Random.rand < CACHE_BYPASS_CHANCE
+        if Random.rand < CACHE_BYPASS_CHANCE || options[:force]
           value = calculator.bind(self).(options)
           Rails.cache.write(cache_string.call(self, options), [false, value])
           return value

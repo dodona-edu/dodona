@@ -25,6 +25,7 @@ include ActionView::Helpers::DateHelper
 class Exercise < ApplicationRecord
   include Filterable
   include StringHelper
+  include Cacheable
 
   USERS_CORRECT_CACHE_STRING = "/course/%{course_id}/exercise/%{id}/users_correct".freeze
   USERS_TRIED_CACHE_STRING = "/course/%{course_id}/exercise/%{id}/users_tried".freeze
@@ -142,10 +143,10 @@ class Exercise < ApplicationRecord
 
   def merged_config
     hash = Pathname.new('./' + path).parent.descend # all parent directories
-        .map {|dir| read_dirconfig dir} # try reading their dirconfigs
-        .compact # remove nil entries
-        .push(config) # add exercise config file
-        .reduce do |h1, h2|
+               .map {|dir| read_dirconfig dir} # try reading their dirconfigs
+               .compact # remove nil entries
+               .push(config) # add exercise config file
+               .reduce do |h1, h2|
       h1.deep_merge(h2) do |k, v1, v2|
         if k == "labels"
           (v1 + v2)
@@ -160,9 +161,9 @@ class Exercise < ApplicationRecord
 
   def merged_dirconfig
     hash = Pathname.new('./' + path).parent.descend # all parent directories
-        .map {|dir| read_dirconfig dir} # try reading their dirconfigs
-        .compact # remove nil entries
-        .reduce do |h1, h2|
+               .map {|dir| read_dirconfig dir} # try reading their dirconfigs
+               .compact # remove nil entries
+               .reduce do |h1, h2|
       h1.deep_merge(h2) do |k, v1, v2|
         if k == "labels"
           (v1 + v2).map(&:downcase).uniq
@@ -242,21 +243,23 @@ class Exercise < ApplicationRecord
     end
   end
 
-  def users_correct(course = nil)
-    Rails.cache.fetch(format(USERS_CORRECT_CACHE_STRING, course_id: course ? course.id : 'global', id: id), expires_in: 1.hour) do
-      subs = submissions.where(status: :correct)
-      subs = subs.in_course(course) if course
-      subs.distinct.count(:user_id)
-    end
+  def users_correct(options)
+    subs = submissions.where(status: :correct)
+    subs = subs.in_course(options[:course]) if options[:course].present?
+    subs.distinct.count(:user_id)
   end
 
-  def users_tried(course = nil)
-    Rails.cache.fetch(format(USERS_TRIED_CACHE_STRING, course_id: course ? course.id : 'global', id: id), expires_in: 1.hour) do
-      subs = submissions.all
-      subs = subs.in_course(course) if course
-      subs.distinct.count(:user_id)
-    end
+  create_cacheable(:users_correct,
+                   ->(this, options) {format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)})
+
+  def users_tried(options)
+    subs = submissions.all
+    subs = subs.in_course(options[:course]) if options[:course].present?
+    subs.distinct.count(:user_id)
   end
+
+  create_cacheable(:users_tried,
+                   ->(this, options) {format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id)})
 
   def best_is_last_submission?(user, deadline = nil, course = nil)
     last_correct = last_correct_submission(user, deadline, course)

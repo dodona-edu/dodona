@@ -238,7 +238,7 @@ class User < ApplicationRecord
   private
 
   def set_token
-    if username.present?
+    if institution.present?
       self.token = nil
     elsif token.blank?
       self.token = SecureRandom.urlsafe_base64(16)

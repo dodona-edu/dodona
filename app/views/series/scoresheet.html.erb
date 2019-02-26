@@ -7,31 +7,15 @@
         </h2>
       </div>
       <div class="card-supporting-text">
-        <table class="table scoresheet-table">
-          <thead>
-          <tr>
-            <th></th>
-            <% @exercises.each do |exercise| %>
-              <th class="status-icon-header"><%= exercise.name %></th>
-            <% end %>
-          </tr>
-          </thead>
-          <tbody>
-          <% @course.users.each do |student| %>
-            <tr>
-              <td><%= link_to student.full_name, user_submissions_path(student), title: student.full_name, class: "ellipsis-overflow" %></td>
-              <% @exercises.each do |exercise| %>
-                <% submission = exercise.last_submission(student, @series.deadline, @course) %>
-                <td class="status-icon">
-                  <% if submission.present? %>
-                    <%= link_to submission_status_icon(submission), submission, title: Submission.human_enum_name(:status, submission.status) %>
-                  <% end %>
-                </td>
-              <% end %>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
+        <%= render partial: 'layouts/searchbar', locals: {
+            actions: [
+                {icon: 'done', text: t('.at_least_one_started'), search: {at_least_one_started: true}}
+            ],
+            course_labels: @course_labels
+        } %>
+        <div id="scoresheet-table-wrapper">
+          <%= render "scoresheet_table", course: @course, series: @series, exercises: @exercises, users: @users %>
+        </div>
       </div>
     </div>
   </div>

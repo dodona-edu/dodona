@@ -43,6 +43,7 @@ en:
       ago: ago
     scoresheet:
       user: User
+      at_least_one_started: "Only show users that started at least one exercise"
     series_status:
       completed_after_deadline_missed: You finished all exercises but not before the deadline.
       wrong_after_deadline_missed: You missed the deadline and there are still some unfinished exercises.

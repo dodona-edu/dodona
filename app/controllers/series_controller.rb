@@ -4,6 +4,14 @@ class SeriesController < ApplicationController
 
   before_action :check_token, only: %i[show overview download_solutions]
 
+  has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
+    scope.at_least_one_started(Series.find(controller.params[:id]))
+  end
+  has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
+    scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
+  end
+  has_scope :by_filter, as: 'filter', only: :scoresheet
+
   # GET /series
   # GET /series.json
   def index
@@ -172,6 +180,8 @@ class SeriesController < ApplicationController
     @course = @series.course
     @title = @series.name
     @exercises = @series.exercises
+    @users = apply_scopes(@course.users)
+    @course_labels = CourseLabel.where(course: @course)
     @crumbs = [[@course.name, course_path(@course)], [@series.name, series_path(@series)], [I18n.t("crumbs.overview"), "#"]]
   end
 

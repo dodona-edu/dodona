@@ -43,6 +43,7 @@ nl:
       ago: geleden
     scoresheet:
       user: Gebruiker
+      at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:

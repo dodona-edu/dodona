@@ -14,7 +14,7 @@
             course_labels: @course_labels
         } %>
         <div id="scoresheet-table-wrapper">
-          <%= render "scoresheet_table", course: @course, series: @series, exercises: @exercises, users: @users %>
+          <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, exercises: @exercises, users: @users, submission_hash: @submission_hash} %>
         </div>
       </div>
     </div>

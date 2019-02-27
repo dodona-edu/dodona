@@ -114,6 +114,7 @@ nl:
         last_name: Familienaam
         name: Naam
         email: Email
+        institution: Onderwijsinstelling
         time_zone: Tijdzone
         permission: Rechten
       course_membership:

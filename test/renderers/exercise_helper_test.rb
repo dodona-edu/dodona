@@ -84,7 +84,7 @@ class MediaPathContextualizerTest < ActiveSupport::TestCase
                 "<img alt='nottosubstitute' src='mediaz.png'>\n" \
                 "<a href='http://google.com'>Google</a>\n" \
                 "<a href='./media/path/to/stuff.png'>stuff</a>\n"
-    res = @renderer.contextualize_media_paths test_html, @path
+    res = @renderer.contextualize_media_paths test_html, @path, nil
     expected = "<img alt='eend' src='#{@path}/media/duck.jpg'>\n" \
                "<a href='#{@path}/media/page.html'>Text</a>\n" \
                "<a href=\"#{@path}/media/page.html\">Text</a>\n" \
@@ -116,7 +116,7 @@ class MediaPathContextualizerTest < ActiveSupport::TestCase
         "<img alt=\"ISBN\"\n data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \"\n src=\"#{@path}/media/ISBN.gif\"\n title=\"ISBN\"\n height=\"140\">"
     }.stringify_keys
     testcases.each do |tag, expected|
-      res = @renderer.contextualize_media_paths tag, @path
+      res = @renderer.contextualize_media_paths tag, @path, nil
       assert_equal expected, res
     end
   end
@@ -134,7 +134,7 @@ class MediaPathContextualizerTest < ActiveSupport::TestCase
       'Put your files in the ./media/stuff.folder'
     ]
     testcases.each do |tag|
-      res = @renderer.contextualize_media_paths tag, @path
+      res = @renderer.contextualize_media_paths tag, @path, nil
       assert_equal tag, res
     end
   end
@@ -142,7 +142,7 @@ class MediaPathContextualizerTest < ActiveSupport::TestCase
   test 'multiple paths should be substituted' do
     testcase = '<img data-large="media/cromwell.jpg" src="media/cromwell.thumb.jpg" alt="Oliver Cromwell" title="Oliver Cromwell" height="55px">'
     expected = "<img data-large=\"#{@path}/media/cromwell.jpg\" src=\"#{@path}/media/cromwell.thumb.jpg\" alt=\"Oliver Cromwell\" title=\"Oliver Cromwell\" height=\"55px\">"
-    res = @renderer.contextualize_media_paths testcase, @path
+    res = @renderer.contextualize_media_paths testcase, @path, nil
     assert_equal expected, res
   end
 end

@@ -116,6 +116,36 @@ class Submission < ApplicationRecord
     submission_detail.result = result if submission_detail
   end
 
+  def clean_messages(messages, levels)
+    messages.select {|m| !m.is_a?(Hash) || levels.include?(m[:permission])}
+  end
+
+  def safe_result(user)
+    json = JSON.parse(result, symbolize_names: true)
+    return json if user.zeus?
+    if user.staff? || (course.present? && user.course_admin?(course))
+      levels = %w[student staff]
+    else
+      levels = %w[student]
+      json[:groups] = json[:groups].reject {|tab| tab[:hidden]} if json[:groups].present?
+    end
+    json[:messages] = clean_messages(json[:messages], levels) if json[:messages].present?
+    json[:groups]&.each do |tab|
+      tab[:messages] = clean_messages(tab[:messages], levels) if tab[:messages].present?
+      tab[:groups]&.each do |context|
+        context[:messages] = clean_messages(context[:messages], levels) if context[:messages].present?
+        context[:groups]&.each do |testcase|
+          testcase[:messages] = clean_messages(testcase[:messages], levels) if testcase[:messages].present?
+          testcase[:tests]&.each do |test|
+            test[:messages] = clean_messages(test[:messages], levels) if test[:messages].present?
+          end
+        end
+      end
+    end
+    # Make this in to a string again to keep compatibility with Submission#result
+    json.to_json
+  end
+
   def clear_fs
     # If we were destroyed or if we were never saved to the database, delete this submission's directory
     if self.destroyed? || self.new_record?

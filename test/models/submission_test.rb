@@ -16,6 +16,8 @@
 require 'test_helper'
 
 class SubmissionTest < ActiveSupport::TestCase
+  FILE_LOCATION = Rails.root.join('test', 'files', 'output.json')
+
   test 'factory should create submission' do
     assert_not_nil create(:submission)
   end
@@ -65,6 +67,39 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, result: result
     assert_equal result, ActiveSupport::Gzip.decompress(File.read(File.join(submission.fs_path, Submission::RESULT_FILENAME)))
     assert_equal result, submission.submission_detail.result
+  end
+
+  test 'safe_result should remove hidden tabs for students' do
+    json = FILE_LOCATION.read
+    submission = create :submission, result: json
+    user = create :user, permission: :student
+    result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+    assert_equal 1, result[:groups].count
+  end
+
+  test 'safe_result should remove staff and zeus messages for students' do
+    json = FILE_LOCATION.read
+    submission = create :submission, result: json
+    user = create :user, permission: :student
+    result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+    assert_equal 1, result[:messages].count
+    assert_equal 1, result[:groups][0][:messages].count
+    assert_equal 1, result[:groups][0][:groups][0][:messages].count
+    assert_equal 1, result[:groups][0][:groups][0][:groups][0][:messages].count
+    assert_equal 1, result[:groups][0][:groups][0][:groups][0][:tests][0][:messages].count
+  end
+
+  test 'safe_result should remove zeus message for staff' do
+    json = FILE_LOCATION.read
+    submission = create :submission, result: json
+    user = create :user, permission: :staff
+    result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+    assert_equal 2, result[:groups].count
+    assert_equal 2, result[:messages].count
+    assert_equal 2, result[:groups][0][:messages].count
+    assert_equal 2, result[:groups][0][:groups][0][:messages].count
+    assert_equal 2, result[:groups][0][:groups][0][:groups][0][:messages].count
+    assert_equal 2, result[:groups][0][:groups][0][:groups][0][:tests][0][:messages].count
   end
 
 end

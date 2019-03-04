@@ -64,24 +64,6 @@ function initFilter(baseUrl, eager, _filterCollections) {
         $queryFilter.typeahead("val", param);
     }
 
-    const allTokens = [];
-    for (let type in filterCollections) {
-        if (filterCollections.hasOwnProperty(type)) {
-            if (filterCollections[type].multi) {
-                const enabledElements = getArrayURLParameter(filterCollections[type].param);
-                const mapped = filterCollections[type].data.filter(el => enabledElements.includes(`${filterCollections[type].paramVal(el)}`));
-                allTokens.push(...mapped);
-            } else {
-                const enabledElement = getURLParameter(filterCollections[type].param);
-                if (enabledElement) {
-                    const mapped = filterCollections[type].data.filter(el => `${filterCollections[type].paramVal(el)}` === enabledElement)[0];
-                    allTokens.push(mapped);
-                }
-            }
-        }
-    }
-    $tokensFilter.tokenfield("setTokens", allTokens);
-
     if (eager) {
         doSearch();
     }
@@ -162,9 +144,9 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
     function initTokens() {
         const $field = $(TOKENS_FILTER_ID);
 
-        function doSearch() {
+        let doSearch = function () {
             search(baseUrl, "", filterCollections);
-        }
+        };
 
         function validateLabel(e) {
             const collection = filterCollections[e.attrs.type];
@@ -259,6 +241,28 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
 
         dodona.addTokenToSearch = addTokenToSearch;
 
+        // Temporarily disable automatic searching when adding new labels
+        const temp = doSearch;
+        doSearch = () => {
+        };
+        const allTokens = [];
+        for (let type in filterCollections) {
+            if (filterCollections.hasOwnProperty(type)) {
+                if (filterCollections[type].multi) {
+                    const enabledElements = getArrayURLParameter(filterCollections[type].param);
+                    const mapped = filterCollections[type].data.filter(el => enabledElements.includes(`${filterCollections[type].paramVal(el)}`));
+                    allTokens.push(...mapped);
+                } else {
+                    const enabledElement = getURLParameter(filterCollections[type].param);
+                    if (enabledElement) {
+                        const mapped = filterCollections[type].data.filter(el => `${filterCollections[type].paramVal(el)}` === enabledElement)[0];
+                        allTokens.push(mapped);
+                    }
+                }
+            }
+        }
+        $field.tokenfield("setTokens", allTokens);
+        doSearch = temp;
     }
 
     init();

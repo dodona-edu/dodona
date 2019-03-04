@@ -100,7 +100,7 @@ class Exercise < ApplicationRecord
   end
 
   def description
-    description_localized || description_nl || description_en || ''
+    (description_localized || description_nl || description_en || '').force_encoding('UTF-8')
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)

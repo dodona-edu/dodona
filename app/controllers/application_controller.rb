@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
 
   before_action :look_for_token, unless: :current_user
 
+  before_action :ensure_trailing_slash
+
   around_action :user_time_zone, if: :current_user
 
   before_action :set_time_zone_offset
@@ -85,7 +87,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_trailing_slash
-    redirect_to url_for(trailing_slash: true), status: 301 unless trailing_slash? || request.format == :json
+    redirect_to url_for(trailing_slash: true), status: :permanent_redirect unless trailing_slash? || request.format == :json
   end
 
   def trailing_slash?

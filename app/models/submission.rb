@@ -122,7 +122,7 @@ class Submission < ApplicationRecord
 
   def safe_result(user)
     json = JSON.parse(result, symbolize_names: true)
-    return json if user.zeus?
+    return json.to_json if user.zeus?
     if user.staff? || (course.present? && user.course_admin?(course))
       levels = %w[student staff]
     else

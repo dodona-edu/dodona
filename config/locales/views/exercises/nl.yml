@@ -47,3 +47,5 @@ nl:
       alert_removed: Deze oefening is niet meer beschikbaar, maar je kan nog steeds je oude oplossingen bekijken.
     series_exercises_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
+    edit:
+      courses: "Cursussen die deze oefening gebruiken"

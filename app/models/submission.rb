@@ -15,8 +15,9 @@
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
   SUBMISSION_MATRIX_CACHE_STRING = "/courses/%{course_id}/user/%{user_id}/submissions_matrix".freeze
-  has_one_attached :code
-  has_one_attached :result
+  BASE_PATH = Rails.application.config.submissions_storage_path
+  CODE_FILENAME = 'code'.freeze
+  RESULT_FILENAME = 'result.json.gz'.freeze
 
   enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
 
@@ -31,6 +32,9 @@ class Submission < ApplicationRecord
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
   after_create :evaluate_delayed, if: :evaluate?
+  after_update :invalidate_caches
+  after_destroy :clear_fs
+  after_rollback :clear_fs
 
   default_scope {order(id: :desc)}
   scope :of_user, ->(user) {where user_id: user.id}
@@ -72,45 +76,85 @@ class Submission < ApplicationRecord
   }
 
   def initialize(params)
-    raise 'please explicitly tell wheter you want to evaluate this submission' unless params.has_key? :evaluate
+    raise 'please explicitly tell whether you want to evaluate this submission' unless params.has_key? :evaluate
     @skip_rate_limit_check = params.delete(:skip_rate_limit_check) {false}
     @evaluate = params.delete(:evaluate)
-    super
-    self.submission_detail = SubmissionDetail.new(id: id, code: params[:code], result: params[:result])
+    code = params.delete(:code)
+    result = params.delete(:result)
+    super(params)
+    # We need to do this after the rest of the fields are initialized, because we depend on the course_id, user_id, ...
+    self.code = code.to_s unless code.nil?
+    self.result = result.to_s unless result.nil?
+    self.submission_detail = SubmissionDetail.new(id: id, code: code, result: result)
   end
 
-  old_code = instance_method(:code)
-  define_method(:code) do
-    #as_code = old_code.bind(self).()
-    #if as_code.attached?
-    #  as_code.blob.download.force_encoding('UTF-8')
-    #else
-    submission_detail.code
-    #end
+  def code
+    if File.exists?(File.join(fs_path, CODE_FILENAME))
+      File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
+    else
+      submission_detail.code
+    end
   end
 
-  define_method(:"code=") do |code|
-    #old_code.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(code.force_encoding('UTF-8')), filename: "code", content_type: 'text/plain'))
+  def code=(code)
+    FileUtils.mkdir_p fs_path unless File.exists?(fs_path)
+    File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
     submission_detail.code = code if submission_detail
   end
 
-  old_result = instance_method(:result)
-  define_method(:result) do
-    #as_result = old_result.bind(self).()
-    #if as_result.attached?
-    #  ActiveSupport::Gzip.decompress(as_result.blob.download).force_encoding('UTF-8')
-    #else
-    submission_detail.result
-    #end
+  def result
+    if File.exists?(File.join(fs_path, RESULT_FILENAME))
+      ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
+    else
+      submission_detail.result
+    end
   end
 
-  define_method(:"result=") do |result|
-    #old_result.bind(self).().attach(ActiveStorage::Blob.create_after_upload!(io: StringIO.new(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8'))), filename: "result.json.gz", content_type: 'application/json'))
+  def result=(result)
+    FileUtils.mkdir_p fs_path unless File.exists?(fs_path)
+    File.open(File.join(fs_path, RESULT_FILENAME), "wb") {|f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))}
     submission_detail.result = result if submission_detail
   end
 
-  define_method(:"copied_to_activestorage?") do
-    old_code.bind(self).().attached? && old_result.bind(self).().attached?
+  def clean_messages(messages, levels)
+    messages.select {|m| !m.is_a?(Hash) || levels.include?(m[:permission])}
+  end
+
+  def safe_result(user)
+    json = JSON.parse(result, symbolize_names: true)
+    return json if user.zeus?
+    if user.staff? || (course.present? && user.course_admin?(course))
+      levels = %w[student staff]
+    else
+      levels = %w[student]
+      json[:groups] = json[:groups].reject {|tab| tab[:hidden]} if json[:groups].present?
+    end
+    json[:messages] = clean_messages(json[:messages], levels) if json[:messages].present?
+    json[:groups]&.each do |tab|
+      tab[:messages] = clean_messages(tab[:messages], levels) if tab[:messages].present?
+      tab[:groups]&.each do |context|
+        context[:messages] = clean_messages(context[:messages], levels) if context[:messages].present?
+        context[:groups]&.each do |testcase|
+          testcase[:messages] = clean_messages(testcase[:messages], levels) if testcase[:messages].present?
+          testcase[:tests]&.each do |test|
+            test[:messages] = clean_messages(test[:messages], levels) if test[:messages].present?
+          end
+        end
+      end
+    end
+    # Make this in to a string again to keep compatibility with Submission#result
+    json.to_json
+  end
+
+  def clear_fs
+    # If we were destroyed or if we were never saved to the database, delete this submission's directory
+    if self.destroyed? || self.new_record?
+      FileUtils.remove_entry_secure(fs_path) if File.exists?(fs_path)
+    end
+  end
+
+  def on_filesystem?
+    File.exists?(File.join(fs_path, RESULT_FILENAME)) && File.exists?(File.join(fs_path, CODE_FILENAME))
   end
 
   def evaluate?
@@ -171,6 +215,21 @@ class Submission < ApplicationRecord
     end
   end
 
+  def fs_path
+    File.join(BASE_PATH, (course_id.present? ? course_id.to_s : 'no_course'), user_id.to_s, exercise_id.to_s, fs_key)
+  end
+
+  def fs_key
+    return self[:fs_key] if self[:fs_key].present?
+    begin
+      key = Random.new.alphanumeric(24)
+    end while Submission.find_by(fs_key: key).present?
+    self.fs_key = key
+    # We don't want to trigger callbacks (and invalidate the cache as a result)
+    self.update_column(:fs_key, self[:fs_key]) unless self.new_record?
+    key
+  end
+
   def self.rejudge(submissions, priority = :low)
     submissions.each {|s| s.evaluate_delayed(priority)}
   end
@@ -182,9 +241,25 @@ class Submission < ApplicationRecord
     'unknown'
   end
 
+  def invalidate_caches
+    exercise.invalidate_users_correct
+    exercise.invalidate_users_tried
+    user.invalidate_attempted_exercises
+    user.invalidate_correct_exercises
+
+    if course.present?
+      course.invalidate_correct_solutions
+      exercise.invalidate_users_correct(course: course)
+      exercise.invalidate_users_tried(course: course)
+      user.invalidate_attempted_exercises(course: course)
+      user.invalidate_correct_exercises(course: course)
+    end
+  end
+
   def self.get_submissions_matrix(user, course)
-    Rails.cache.fetch(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}) do
-      submissions = Submission.of_user(user)
+    Rails.cache.fetch(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'}) do
+      submissions = Submission.all
+      submissions = submissions.of_user(user) if user.present?
       submissions = submissions.in_course(course) if course.present?
       submissions = submissions.pluck(:id, :created_at)
       {
@@ -196,7 +271,8 @@ class Submission < ApplicationRecord
   end
 
   def self.update_submissions_matrix(user, course, latest_id)
-    submissions = Submission.of_user(user)
+    submissions = Submission.all
+    submissions = submissions.of_user(user) if user.present?
     submissions = submissions.in_course(course) if course.present?
     submissions = submissions.where('id > ?', latest_id)
     submissions = submissions.pluck(:id, :created_at)
@@ -208,8 +284,7 @@ class Submission < ApplicationRecord
           latest: submissions.first[0],
           matrix: old[:matrix].merge(to_merge) {|_k, v1, v2| v1 + v2}
       }
-      Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.id}, result)
+      Rails.cache.write(SUBMISSION_MATRIX_CACHE_STRING % {course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'}, result)
     end
   end
-
 end

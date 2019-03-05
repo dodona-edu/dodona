@@ -47,3 +47,5 @@ en:
       alert_removed: This exercise is no longer available, but can still see your old submissions.
     series_exercises_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
+    edit:
+      courses: "Courses using this exercise"

@@ -12,6 +12,10 @@
                   title: t('.submissions'),
                   custom_icon: 'submissions',
                   if: current_user&.course_admin?(@course) %>
+  <%= navbar_link url: statistics_course_path(@course),
+                  title: t('.statistics'),
+                  icon: 'trending_up',
+                  if: current_user&.course_admin?(@course) %>
   <%= navbar_link url: edit_course_path(@course),
                   title: t('.edit'),
                   icon: 'edit',

@@ -4,6 +4,14 @@ class SeriesController < ApplicationController
 
   before_action :check_token, only: %i[show overview download_solutions]
 
+  has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
+    scope.at_least_one_started(Series.find(controller.params[:id]))
+  end
+  has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
+    scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
+  end
+  has_scope :by_filter, as: 'filter', only: :scoresheet
+
   # GET /series
   # GET /series.json
   def index
@@ -95,8 +103,12 @@ class SeriesController < ApplicationController
   end
 
   def download_solutions
-    if params[:user_id] && current_user&.course_admin?(@series.course)
-      send_zip User.find(params[:user_id])
+    if current_user&.course_admin?(@series.course)
+      if params[:user_id].present?
+        send_zip User.find(params[:user_id])
+      else
+        send_zip nil
+      end
     else
       send_zip current_user
     end
@@ -168,6 +180,11 @@ class SeriesController < ApplicationController
     @course = @series.course
     @title = @series.name
     @exercises = @series.exercises
+    @users = apply_scopes(@course.users)
+    @course_labels = CourseLabel.where(course: @course)
+    @submission_hash = Submission.in_series(@series).where(user: @users)
+    @submission_hash = @submission_hash.before_deadline(@series.deadline) if @series.deadline.present?
+    @submission_hash = @submission_hash.group([:user_id, :exercise_id]).most_recent.map {|s| [[s.user_id, s.exercise_id], s]}.to_h
     @crumbs = [[@course.name, course_path(@course)], [@series.name, series_path(@series)], [I18n.t("crumbs.overview"), "#"]]
   end
 
@@ -192,7 +209,11 @@ class SeriesController < ApplicationController
 
   # Generate and send a zip with solutions
   def send_zip(user, **opts)
-    zip = @series.zip_solutions(user, opts)
+    if user.present?
+      zip = @series.zip_solutions_for_user(user, opts)
+    else
+      zip = @series.zip_solutions(opts)
+    end
     send_data zip[:data],
               type: 'application/zip',
               filename: zip[:filename],

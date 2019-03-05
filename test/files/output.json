@@ -1,24 +1,103 @@
 {
   "accepted": true,
+  "messages": [
+    {
+      "permission": "student",
+      "description": "test",
+      "format": "plain"
+    },
+    {
+      "permission": "staff",
+      "description": "test",
+      "format": "plain"
+    },
+    {
+      "permission": "zeus",
+      "description": "test",
+      "format": "plain"
+    }
+  ],
   "groups": [
     {
       "badgeCount": 1,
-      "groups": [
+      "messages": [
         {
-          "accepted": true
+          "permission": "student",
+          "description": "test",
+          "format": "plain"
         },
+        {
+          "permission": "staff",
+          "description": "test",
+          "format": "plain"
+        },
+        {
+          "permission": "zeus",
+          "description": "test",
+          "format": "plain"
+        }
+      ],
+      "groups": [
         {
           "accepted": true,
           "description": "Some testcases",
-          "groups": [
+          "messages": [
             {
-              "accepted": true
+              "permission": "student",
+              "description": "test",
+              "format": "plain"
             },
             {
+              "permission": "staff",
+              "description": "test",
+              "format": "plain"
+            },
+            {
+              "permission": "zeus",
+              "description": "test",
+              "format": "plain"
+            }
+          ],
+          "groups": [
+            {
               "accepted": false,
+              "messages": [
+                {
+                  "permission": "student",
+                  "description": "test",
+                  "format": "plain"
+                },
+                {
+                  "permission": "staff",
+                  "description": "test",
+                  "format": "plain"
+                },
+                {
+                  "permission": "zeus",
+                  "description": "test",
+                  "format": "plain"
+                }
+              ],
               "tests": [
                 {
-                  "accepted": true
+                  "accepted": true,
+                  "messages": [
+                    {
+                      "permission": "student",
+                      "description": "test",
+                      "format": "plain"
+                    },
+                    {
+                      "permission": "staff",
+                      "description": "test",
+                      "format": "plain"
+                    },
+                    {
+                      "permission": "zeus",
+                      "description": "test",
+                      "format": "plain"
+                    }
+                  ]
                 },
                 {
                   "accepted": true,
@@ -85,13 +164,20 @@
                     "generated": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>"
                 }
               ]
+            },
+            {
+              "accepted": true
             }
           ]
+        },
+        {
+          "accepted": true
         }
       ]
     },
     {
       "description": "another tab",
+      "hidden": true,
       "groups": [
         {
           "accepted": false,

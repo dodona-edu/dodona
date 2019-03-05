@@ -24,7 +24,7 @@ Rails.application.configure do
 
     config.action_mailer.perform_caching = false
 
-    config.cache_store = :mem_cache_store
+    config.cache_store = :mem_cache_store, {namespace: :"1"}
     config.public_file_server.headers = {
         'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
@@ -89,4 +89,6 @@ Rails.application.configure do
   # }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
+
+  config.submissions_storage_path = Rails.root.join('data', 'storage', 'submissions')
 end

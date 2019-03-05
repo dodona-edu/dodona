@@ -70,6 +70,13 @@
                 <% end %>
               </li>
             <% end %>
+            <% if policy(series).download_solutions? && current_user.course_admin?(series.course) %>
+              <li>
+                <%= link_to download_solutions_series_path(series, token: (series.access_token if series.hidden?)) do %>
+                  <i class='material-icons md-18'>cloud_download</i> <%= t("series.show.download_all_solutions") %>
+                <% end %>
+              </li>
+            <% end %>
             <% if policy(series).mass_rejudge? %>
               <li>
                 <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: {confirm: t("submissions.index.confirm_reevaluate_submissions")} do %>

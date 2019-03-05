@@ -114,7 +114,12 @@
             {
               "accepted": true,
               "data": {
-                "files": "euh"
+                "files": [
+                  {
+                    "location": "href",
+                    "content": "https://een-link.be"
+                  }
+                ]
               }
             }
           ]

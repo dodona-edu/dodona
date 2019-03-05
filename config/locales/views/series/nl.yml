@@ -18,6 +18,7 @@ nl:
       series: Reeks
       exercises: Oefeningen
       download_solutions: Oplossingen downloaden
+      download_all_solutions: Alle oplossingen downloaden
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
       missed_deadline: deadline gemist
@@ -42,6 +43,7 @@ nl:
       ago: geleden
     scoresheet:
       user: Gebruiker
+      at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:

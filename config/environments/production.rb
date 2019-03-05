@@ -73,7 +73,7 @@ Rails.application.configure do
   end
 
   # Use a different cache store in production.
-  config.cache_store = :mem_cache_store, 'elysium.ugent.be'
+  config.cache_store = :mem_cache_store, 'elysium.ugent.be', {namespace: :"1"}
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
@@ -138,4 +138,6 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.deliver_later_queue_name = 'default'
+
+  config.submissions_storage_path = Rails.root.join('data', 'storage', 'submissions')
 end

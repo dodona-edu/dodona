@@ -2,7 +2,6 @@ class ExercisesController < ApplicationController
   before_action :set_exercise, only: %i[show edit update media]
   before_action :set_course, only: %i[show edit update]
   before_action :set_series, only: %i[show edit update]
-  before_action :ensure_trailing_slash, only: :show
   skip_before_action :verify_authenticity_token, only: [:media]
 
   has_scope :by_filter, as: 'filter'
@@ -102,6 +101,12 @@ class ExercisesController < ApplicationController
   end
 
   def media
+    if params.key?(:token)
+      raise Pundit::NotAuthorizedError, "Not allowed" unless @exercise.access_token == params[:token]
+    elsif !@exercise.accessible?(current_user, @course)
+      raise Pundit::NotAuthorizedError, "Not allowed"
+    end
+
     file = File.join(@exercise.media_path, params[:media])
     unless File.file? file
       file = File.join(@exercise.repository.media_path, params[:media])
@@ -129,8 +134,8 @@ class ExercisesController < ApplicationController
   def set_series
     return if params[:series_id].nil?
     @series = Series.find(params[:series_id])
-    if @series.hidden?
-      @crumbs << [@series.name, series_path(@series)]
+    if @series.hidden? && !current_user&.course_admin?(@series.course)
+      @crumbs << [@series.name, series_path(@series, token: @series.access_token)]
     else
       @crumbs << [@series.name, course_path(@series.course, anchor: @series.anchor)]
     end

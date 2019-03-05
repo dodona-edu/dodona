@@ -25,6 +25,7 @@ include ActionView::Helpers::DateHelper
 class Exercise < ApplicationRecord
   include Filterable
   include StringHelper
+  include Cacheable
 
   USERS_CORRECT_CACHE_STRING = "/course/%{course_id}/exercise/%{id}/users_correct".freeze
   USERS_TRIED_CACHE_STRING = "/course/%{course_id}/exercise/%{id}/users_tried".freeze
@@ -44,6 +45,7 @@ class Exercise < ApplicationRecord
   has_many :submissions
   has_many :series_memberships
   has_many :series, through: :series_memberships
+  has_many :courses, -> {distinct}, through: :series
   has_many :exercise_labels, dependent: :destroy
   has_many :labels, through: :exercise_labels
 
@@ -51,7 +53,9 @@ class Exercise < ApplicationRecord
 
   before_create :generate_id
   before_create :generate_token
+  before_create :generate_access_token
   before_save :check_validity
+  before_save :check_memory_limit
   before_update :update_config
 
   scope :in_repository, ->(repository) {where repository: repository}
@@ -139,10 +143,10 @@ class Exercise < ApplicationRecord
 
   def merged_config
     hash = Pathname.new('./' + path).parent.descend # all parent directories
-        .map {|dir| read_dirconfig dir} # try reading their dirconfigs
-        .compact # remove nil entries
-        .push(config) # add exercise config file
-        .reduce do |h1, h2|
+               .map {|dir| read_dirconfig dir} # try reading their dirconfigs
+               .compact # remove nil entries
+               .push(config) # add exercise config file
+               .reduce do |h1, h2|
       h1.deep_merge(h2) do |k, v1, v2|
         if k == "labels"
           (v1 + v2)
@@ -157,9 +161,9 @@ class Exercise < ApplicationRecord
 
   def merged_dirconfig
     hash = Pathname.new('./' + path).parent.descend # all parent directories
-        .map {|dir| read_dirconfig dir} # try reading their dirconfigs
-        .compact # remove nil entries
-        .reduce do |h1, h2|
+               .map {|dir| read_dirconfig dir} # try reading their dirconfigs
+               .compact # remove nil entries
+               .reduce do |h1, h2|
       h1.deep_merge(h2) do |k, v1, v2|
         if k == "labels"
           (v1 + v2).map(&:downcase).uniq
@@ -188,12 +192,13 @@ class Exercise < ApplicationRecord
     file.basename.to_s == DIRCONFIG_FILE
   end
 
-  def store_config(new_config)
+  def store_config(new_config, message = nil)
     return if new_config == config
+    message ||= "updated config for #{name}"
     config_file.write(JSON.pretty_generate(new_config))
-    success, error = repository.commit "updated config for #{name}"
+    success, error = repository.commit message
     unless success || error.empty?
-      errors.add(:base, "commiting changes failed: #{error}")
+      errors.add(:base, "committing changes failed: #{error}")
       throw :abort
     end
   end
@@ -238,21 +243,23 @@ class Exercise < ApplicationRecord
     end
   end
 
-  def users_correct(course = nil)
-    Rails.cache.fetch(format(USERS_CORRECT_CACHE_STRING, course_id: course ? course.id : 'global', id: id), expires_in: 1.hour) do
-      subs = submissions.where(status: :correct)
-      subs = subs.in_course(course) if course
-      subs.distinct.count(:user_id)
-    end
+  def users_correct(options)
+    subs = submissions.where(status: :correct)
+    subs = subs.in_course(options[:course]) if options[:course].present?
+    subs.distinct.count(:user_id)
   end
 
-  def users_tried(course = nil)
-    Rails.cache.fetch(format(USERS_TRIED_CACHE_STRING, course_id: course ? course.id : 'global', id: id), expires_in: 1.hour) do
-      subs = submissions.all
-      subs = subs.in_course(course) if course
-      subs.distinct.count(:user_id)
-    end
+  create_cacheable(:users_correct,
+                   ->(this, options) {format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)})
+
+  def users_tried(options)
+    subs = submissions.all
+    subs = subs.in_course(options[:course]) if options[:course].present?
+    subs.distinct.count(:user_id)
   end
+
+  create_cacheable(:users_tried,
+                   ->(this, options) {format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id)})
 
   def best_is_last_submission?(user, deadline = nil, course = nil)
     last_correct = last_correct_submission(user, deadline, course)
@@ -300,6 +307,18 @@ class Exercise < ApplicationRecord
                   end
   end
 
+  def check_memory_limit
+    return unless ok?
+    if merged_config.fetch("evaluation", {}).fetch("memory_limit", 0) > 500_000_000 # 500MB
+      c = config
+      c['evaluation'] ||= {}
+      c['evaluation']['memory_limit'] = 500_000_000
+      store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " +
+          "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " +
+          "bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.")
+    end
+  end
+
   def self.convert_visibility_to_access(visibility)
     return 'public' if visibility == 'visible'
     return 'public' if visibility == 'open'
@@ -323,6 +342,12 @@ class Exercise < ApplicationRecord
       new_token = Base64.strict_encode64 SecureRandom.random_bytes(48)
     end until Exercise.find_by(token: new_token).nil?
     self.token ||= new_token
+  end
+
+  def generate_access_token
+    self.access_token = SecureRandom.urlsafe_base64(12)
+    # We don't want to trigger callbacks, this doesn't have an influence on the config file
+    update_column(:access_token, self[:access_token]) unless new_record?
   end
 
   def self.move_relations(from, to)

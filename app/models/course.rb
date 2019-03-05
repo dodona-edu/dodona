@@ -22,6 +22,7 @@ require 'csv'
 
 class Course < ApplicationRecord
   include Filterable
+  include Cacheable
 
   SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = "/courses/%{id}/subscribed_members_count".freeze
   EXERCISES_COUNT_CACHE_STRING = "/courses/%{id}/exercises_count".freeze
@@ -162,16 +163,14 @@ class Course < ApplicationRecord
     end
   end
 
-  def correct_solutions
-    Rails.cache.fetch(format(CORRECT_SOLUTIONS_CACHE_STRING, id: id), expires_in: 1.hour) do
-      Submission.where(status: 'correct',
-                       course: self)
-          .select(:exercise_id,
-                  :user_id)
-          .distinct
-          .count
-    end
+  def correct_solutions(_options = {})
+    Submission.where(status: 'correct', course: self)
+        .select(:exercise_id, :user_id)
+        .distinct
+        .count
   end
+
+  create_cacheable(:correct_solutions, ->(this, _options) {format(CORRECT_SOLUTIONS_CACHE_STRING, id: this.id)})
 
   def average_progress
     avg = ((100 * correct_solutions).to_d / (users.count * exercises_count).to_d)

@@ -1,0 +1,25 @@
+<table class="table scoresheet-table">
+  <thead>
+  <tr>
+    <th></th>
+    <% exercises.each do |exercise| %>
+      <th class="status-icon-header"><%= exercise.name %></th>
+    <% end %>
+  </tr>
+  </thead>
+  <tbody>
+  <% users.each do |student| %>
+    <tr>
+      <td><%= link_to student.full_name, course_member_path(course, student), title: student.full_name, class: "ellipsis-overflow" %></td>
+      <% exercises.each do |exercise| %>
+        <% submission = submission_hash[[student.id, exercise.id]] %>
+        <td class="status-icon">
+          <% if submission.present? %>
+            <%= link_to submission_status_icon(submission), submission, title: Submission.human_enum_name(:status, submission.status) %>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -121,12 +121,7 @@ class Submission < ApplicationRecord
   end
 
   def safe_result(user)
-    begin
-      JSON.parse(result, symbolize_names: true)
-    rescue JsonParseError => e
-      logger.debug(result)
-      logger.debug(e)
-    end
+    return '' if result.empty?
     json = JSON.parse(result, symbolize_names: true)
     return json.to_json if user.zeus?
     if user.staff? || (course.present? && user.course_admin?(course))

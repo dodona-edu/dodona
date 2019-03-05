@@ -5,6 +5,7 @@ en:
       members: Subscribed members
       edit: Edit course
       submissions: Submissions for this course
+      statistics: "Statistics of this course"
     form:
       description-help: A description is optional. Markdown formatting can be used.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
@@ -35,11 +36,6 @@ en:
       exercise_series: Exercise series
       users: Users
       series: series
-      subscribed_users: Registered users
-      submitted_solutions: Submitted solutions
-      exercise_count: Exercise count
-      average_progress: Average progress
-      average_progress_info: Average percentage of solved exercises per user
       download_scoresheet: Download scoresheet
       subscribed: Registered
       pending: Pending
@@ -87,3 +83,11 @@ en:
     unfavorite:
       succeeded: "Unfavorited course"
       failed: "Failed unfavoriting course"
+    statistics:
+      statistics: "Statistics"
+    user_stats:
+      subscribed_users: Registered users
+      submitted_solutions: Submitted solutions
+      exercise_count: Exercise count
+      average_progress: Average progress
+      average_progress_info: Average percentage of solved exercises per user

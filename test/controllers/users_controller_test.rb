@@ -56,7 +56,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'user token should log in' do
     sign_out :user
-    token_user = create :user, username: nil
+    token_user = create :user, institution: nil
     token = token_user.token
 
     get token_sign_in_user_url token_user, token: token

@@ -113,6 +113,7 @@ en:
         last_name: Last name
         name: Name
         email: Email
+        institution: Institution
         time_zone: Time zone
         permission: Permission
       course_membership:

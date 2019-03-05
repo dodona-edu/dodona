@@ -224,6 +224,16 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_not_equal @echo.token, echo2.config['internals']['token']
   end
 
+  test 'should overwrite memory limit that is too high' do
+    @remote.update_json(@echo.path + '/config.json', 'set a ridiculous memory limit') do |json|
+      json['evaluation']['memory_limit'] = 500_000_000_000
+      json
+    end
+    @repository.reset
+    @repository.process_exercises
+    assert_equal 500_000_000, JSON.parse(File.read(File.join(@remote.path, @echo.path, 'config.json')))['evaluation']['memory_limit']
+  end
+
   test 'should catch invalid dirconfig files' do
     @remote.write_file('dirconfig.json') do
       '{"invalid json",,}'

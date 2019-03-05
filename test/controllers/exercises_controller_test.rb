@@ -14,17 +14,14 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should show exercise' do
     get exercise_url(@instance)
-    assert_redirected_to @instance
-    # follow redirect caused by 'ensure_trailing_slash'
-    get response.headers['Location']
     assert_response :success
   end
 
   test 'should rescue from exercise not found' do
-    not_id = Random.rand
+    not_id = Random.rand(10000)
     begin
       loop do
-        not_id = Random.rand
+        not_id = Random.rand(10000)
         Exercise.find not_id
       end
     rescue ActiveRecord::RecordNotFound
@@ -167,10 +164,6 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     Submission.expects(:find).with(submission.id.to_s).returns(submission)
 
     get exercise_url(@instance),
-        params: { edit_submission: submission }
-    assert_redirected_to exercise_url(@instance)
-    # follow redirect cause by 'ensure_trailing_slash'
-    get response.headers['Location'],
         params: { edit_submission: submission.id }
     assert_response :success
   end

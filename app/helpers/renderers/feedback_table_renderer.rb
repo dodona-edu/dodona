@@ -15,11 +15,12 @@ class FeedbackTableRenderer
   end
 
   def initialize(submission, user)
-    @submission = JSON.parse(submission.result, symbolize_names: true)
+    @submission = JSON.parse(submission.safe_result(user), symbolize_names: true)
     @current_user = user
     @course = submission.course
     @builder = Builder::XmlMarkup.new
     @code = submission.code
+    @exercise = submission.exercise
     @exercise_id = submission.exercise_id
     @programming_language = submission.exercise.programming_language&.name
   end
@@ -55,7 +56,7 @@ class FeedbackTableRenderer
     @builder.div(class: 'card card-nav') do
       @builder.div(class: 'card-title card-title-colored') do
         @builder.ul(class: 'nav nav-tabs') do
-          submission[:groups]&.select {|t| @current_user&.course_admin?(@course) || !t[:hidden]}&.each_with_index do |t, i|
+          submission[:groups]&.each_with_index do |t, i|
             @builder.li(class: ('active' if i.zero?)) do
               @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
                 @builder.text!((t[:description] || 'Test').upcase_first + ' ')
@@ -249,10 +250,6 @@ class FeedbackTableRenderer
   def message(m)
     return if m.nil?
     m = {format: 'plain', description: m} if m.is_a? String
-    if m[:permission]
-      return if m[:permission] == 'staff' && !@current_user.course_admin?(@course)
-      return if m[:permission] == 'zeus' && !@current_user.zeus?
-    end
     output_message(m)
   end
 

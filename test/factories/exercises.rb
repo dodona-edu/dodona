@@ -58,6 +58,10 @@ FactoryBot.define do
       end
     end
 
+    after :build do |exercise|
+      exercise.stubs(:merged_config).returns({'evaluation' => {}})
+    end
+
     trait :nameless do
       name_nl { nil }
       name_en { nil }

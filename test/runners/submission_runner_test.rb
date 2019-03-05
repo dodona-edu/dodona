@@ -29,11 +29,11 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
   def docker_mock(**params)
     default_params = {
-      status_code: 0,
-      output: {
-        accepted: true,
-        status: 'correct'
-      }
+        status_code: 0,
+        output: {
+            accepted: true,
+            status: 'correct'
+        }
     }
 
     params = default_params.merge(params)
@@ -62,8 +62,8 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     if message_includes
       result = JSON.parse(@submission.result)
       messages = result['messages']
-      message_contents = messages.map { |m| m['description'] }
-      included = message_contents.any? { |m| m.include?(message_includes) }
+      message_contents = messages.map {|m| m['description']}
+      included = message_contents.any? {|m| m.include?(message_includes)}
       assert included,
              "Expected to find the text \n\"#{message_includes}\"\n" \
              "In one of the following messages of result:\n" \
@@ -79,15 +79,10 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     # Stub global config
     File.stubs(:read)
         .with(Rails.root.join('app', 'runners', 'config.json'))
-        .returns({
-          memory_limit: 100,
-          time_limit: 42,
-          network_enabled: false
-        }.to_json)
-    # Overide something
-    @exercise.stubs(:config).returns({
-      evaluation: { network_enabled: true }.stringify_keys
-    }.stringify_keys)
+        .returns({memory_limit: 100, time_limit: 42, network_enabled: false}.to_json)
+    @submission.stubs(:code).returns(Random.new.alphanumeric(100))
+    # Override something
+    @exercise.stubs(:merged_config).returns({evaluation: {network_enabled: true}.stringify_keys}.stringify_keys)
     mock = docker_mock
     mock.unstub(:attach)
     config = {}
@@ -117,9 +112,9 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   test 'correct submission should be accepted and correct' do
     summary = 'Wow. Such code. Many variables.'
     evaluate_with_stubbed_docker output: {
-      accepted: true,
-      status: 'correct',
-      description: summary
+        accepted: true,
+        status: 'correct',
+        description: summary
     }
     assert_submission status: 'correct', summary: summary, accepted: true
   end
@@ -127,9 +122,9 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   test 'compilation error should not be accepted' do
     summary = 'Something something lifetimes.'
     evaluate_with_stubbed_docker output: {
-      accepted: false,
-      status: 'compilation error',
-      description: summary
+        accepted: false,
+        status: 'compilation error',
+        description: summary
     }
     assert_submission status: 'compilation error', summary: summary, accepted: false
   end
@@ -137,9 +132,9 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   test 'runtime error should not be accepted' do
     summary = 'Could not compile exe.java'
     evaluate_with_stubbed_docker output: {
-      accepted: false,
-      status: 'runtime error',
-      description: summary
+        accepted: false,
+        status: 'runtime error',
+        description: summary
     }
     assert_submission status: 'runtime error', summary: summary, accepted: false
   end

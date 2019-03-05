@@ -67,10 +67,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def punchcard?
-    return false unless user
-    return true if user.zeus?
-    return true if user.id == record.id
-    false
+    show?
   end
 
   def permitted_attributes

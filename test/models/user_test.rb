@@ -26,7 +26,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user without username should have token' do
-    user = create :user, username: nil
+    user = create :user, institution: nil
     assert_not_nil user.token
   end
 

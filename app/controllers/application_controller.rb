@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   before_action :look_for_token, unless: :current_user
 
-  before_action :ensure_trailing_slash
+  before_action :ensure_trailing_slash, except: [:media, :office365, :smartschool, :failure]
 
   around_action :user_time_zone, if: :current_user
 

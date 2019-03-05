@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_trailing_slash
-    redirect_to url_for(trailing_slash: true), status: :permanent_redirect unless trailing_slash? || request.format == :json
+    redirect_to url_for(trailing_slash: true), status: :permanent_redirect unless trailing_slash? || request.format == :json || request.format == :js
   end
 
   def trailing_slash?

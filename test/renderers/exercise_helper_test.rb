@@ -85,35 +85,35 @@ class MediaPathContextualizerTest < ActiveSupport::TestCase
                 "<a href='http://google.com'>Google</a>\n" \
                 "<a href='./media/path/to/stuff.png'>stuff</a>\n"
     res = @renderer.contextualize_media_paths test_html, @path, nil
-    expected = "<img alt='eend' src='#{@path}/media/duck.jpg'>\n" \
-               "<a href='#{@path}/media/page.html'>Text</a>\n" \
-               "<a href=\"#{@path}/media/page.html\">Text</a>\n" \
+    expected = "<img alt='eend' src='#{@path}media/duck.jpg'>\n" \
+               "<a href='#{@path}media/page.html'>Text</a>\n" \
+               "<a href=\"#{@path}media/page.html\">Text</a>\n" \
                "<img alt='nottosubstitute' src='mediaz.png'>\n" \
                "<a href='http://google.com'>Google</a>\n" \
-               "<a href='#{@path}/media/path/to/stuff.png'>stuff</a>\n"
+               "<a href='#{@path}media/path/to/stuff.png'>stuff</a>\n"
     assert_equal expected, res
   end
 
   test 'media paths should be substituted' do
     testcases = {
       "<img src=\"media/path/to/photo1.jpg\" alt=\"photo\" width=\"300\">":
-        "<img src=\"#{@path}/media/path/to/photo1.jpg\" alt=\"photo\" width=\"300\">",
+          "<img src=\"#{@path}media/path/to/photo1.jpg\" alt=\"photo\" width=\"300\">",
       "<img src='media/path/to/photo.jpg' alt='photo' width='300'>":
-        "<img src='#{@path}/media/path/to/photo.jpg' alt='photo' width='300'>",
+          "<img src='#{@path}media/path/to/photo.jpg' alt='photo' width='300'>",
       "<img src=\"media/path/to/photo.jpg\" alt=\"photo\" width=\"300\">":
-        "<img src=\"#{@path}/media/path/to/photo.jpg\" alt=\"photo\" width=\"300\">",
+          "<img src=\"#{@path}media/path/to/photo.jpg\" alt=\"photo\" width=\"300\">",
       "<a href='media/link.html'><sup>LINK</sup></a>":
-        "<a href='#{@path}/media/link.html'><sup>LINK</sup></a>",
+          "<a href='#{@path}media/link.html'><sup>LINK</sup></a>",
       "<img src='./media/path/to/photo.jpg' alt='photo' width='300'>":
-        "<img src='#{@path}/media/path/to/photo.jpg' alt='photo' width='300'>",
+          "<img src='#{@path}media/path/to/photo.jpg' alt='photo' width='300'>",
       "<a href='./media/link.html'><sup>LINK</sup></a>":
-        "<a href='#{@path}/media/link.html'><sup>LINK</sup></a>",
+          "<a href='#{@path}media/link.html'><sup>LINK</sup></a>",
       "<a href='./media/link.html' disabled><sup>LINK</sup></a>":
-        "<a href='#{@path}/media/link.html' disabled><sup>LINK</sup></a>",
+          "<a href='#{@path}media/link.html' disabled><sup>LINK</sup></a>",
       "<img alt=\"ISBN\" data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \" src=\"media/ISBN.gif\" title=\"ISBN\" height=\"140\">":
-        "<img alt=\"ISBN\" data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \" src=\"#{@path}/media/ISBN.gif\" title=\"ISBN\" height=\"140\">",
+          "<img alt=\"ISBN\" data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \" src=\"#{@path}media/ISBN.gif\" title=\"ISBN\" height=\"140\">",
       "<img alt=\"ISBN\"\n data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \"\n src=\"media/ISBN.gif\"\n title=\"ISBN\"\n height=\"140\">":
-        "<img alt=\"ISBN\"\n data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \"\n src=\"#{@path}/media/ISBN.gif\"\n title=\"ISBN\"\n height=\"140\">"
+          "<img alt=\"ISBN\"\n data-caption=\" <div class=&quot;thumbcaption&quot;> ISBN in tekst en streepjescode</div> \"\n src=\"#{@path}media/ISBN.gif\"\n title=\"ISBN\"\n height=\"140\">"
     }.stringify_keys
     testcases.each do |tag, expected|
       res = @renderer.contextualize_media_paths tag, @path, nil
@@ -141,7 +141,7 @@ class MediaPathContextualizerTest < ActiveSupport::TestCase
 
   test 'multiple paths should be substituted' do
     testcase = '<img data-large="media/cromwell.jpg" src="media/cromwell.thumb.jpg" alt="Oliver Cromwell" title="Oliver Cromwell" height="55px">'
-    expected = "<img data-large=\"#{@path}/media/cromwell.jpg\" src=\"#{@path}/media/cromwell.thumb.jpg\" alt=\"Oliver Cromwell\" title=\"Oliver Cromwell\" height=\"55px\">"
+    expected = "<img data-large=\"#{@path}media/cromwell.jpg\" src=\"#{@path}media/cromwell.thumb.jpg\" alt=\"Oliver Cromwell\" title=\"Oliver Cromwell\" height=\"55px\">"
     res = @renderer.contextualize_media_paths testcase, @path, nil
     assert_equal expected, res
   end

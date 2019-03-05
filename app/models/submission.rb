@@ -121,29 +121,7 @@ class Submission < ApplicationRecord
   end
 
   def safe_result(user)
-    json = JSON.parse(result, symbolize_names: true)
-    return json.to_json if user.zeus?
-    if user.staff? || (course.present? && user.course_admin?(course))
-      levels = %w[student staff]
-    else
-      levels = %w[student]
-      json[:groups] = json[:groups].reject {|tab| tab[:hidden]} if json[:groups].present?
-    end
-    json[:messages] = clean_messages(json[:messages], levels) if json[:messages].present?
-    json[:groups]&.each do |tab|
-      tab[:messages] = clean_messages(tab[:messages], levels) if tab[:messages].present?
-      tab[:groups]&.each do |context|
-        context[:messages] = clean_messages(context[:messages], levels) if context[:messages].present?
-        context[:groups]&.each do |testcase|
-          testcase[:messages] = clean_messages(testcase[:messages], levels) if testcase[:messages].present?
-          testcase[:tests]&.each do |test|
-            test[:messages] = clean_messages(test[:messages], levels) if test[:messages].present?
-          end
-        end
-      end
-    end
-    # Make this in to a string again to keep compatibility with Submission#result
-    json.to_json
+    result
   end
 
   def clear_fs

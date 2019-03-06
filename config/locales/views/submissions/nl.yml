@@ -44,3 +44,4 @@ nl:
       correct:
         shown: Zichtbaar
         hidden: Verborgen
+      judge_output_too_long: "De judge heeft te veel uitvoer gegenereerd. Dit gebeurt meestal als je indiening zelf te veel output genereerde. Probeer de hoeveelheid uitvoer van je indiening te verminderen."

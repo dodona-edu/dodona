@@ -117,7 +117,7 @@ class Submission < ApplicationRecord
   end
 
   def clean_messages(messages, levels)
-    messages.select {|m| !m.is_a?(Hash) || levels.include?(m[:permission])}
+    messages.select {|m| !m.is_a?(Hash) || !m.key?(:permission) || levels.include?(m[:permission])}
   end
 
   def safe_result(user)

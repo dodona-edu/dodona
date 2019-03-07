@@ -82,11 +82,11 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = create :submission, result: json
     user = create :user, permission: :student
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
-    assert_equal 1, result[:messages].count
-    assert_equal 1, result[:groups][0][:messages].count
-    assert_equal 1, result[:groups][0][:groups][0][:messages].count
-    assert_equal 1, result[:groups][0][:groups][0][:groups][0][:messages].count
-    assert_equal 1, result[:groups][0][:groups][0][:groups][0][:tests][0][:messages].count
+    assert_equal 2, result[:messages].count
+    assert_equal 2, result[:groups][0][:messages].count
+    assert_equal 2, result[:groups][0][:groups][0][:messages].count
+    assert_equal 2, result[:groups][0][:groups][0][:groups][0][:messages].count
+    assert_equal 2, result[:groups][0][:groups][0][:groups][0][:tests][0][:messages].count
   end
 
   test 'safe_result should remove zeus message for staff' do
@@ -95,11 +95,11 @@ class SubmissionTest < ActiveSupport::TestCase
     user = create :user, permission: :staff
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 2, result[:groups].count
-    assert_equal 2, result[:messages].count
-    assert_equal 2, result[:groups][0][:messages].count
-    assert_equal 2, result[:groups][0][:groups][0][:messages].count
-    assert_equal 2, result[:groups][0][:groups][0][:groups][0][:messages].count
-    assert_equal 2, result[:groups][0][:groups][0][:groups][0][:tests][0][:messages].count
+    assert_equal 3, result[:messages].count
+    assert_equal 3, result[:groups][0][:messages].count
+    assert_equal 3, result[:groups][0][:groups][0][:messages].count
+    assert_equal 3, result[:groups][0][:groups][0][:groups][0][:messages].count
+    assert_equal 3, result[:groups][0][:groups][0][:groups][0][:tests][0][:messages].count
   end
 
 end

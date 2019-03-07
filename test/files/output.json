@@ -7,6 +7,10 @@
       "format": "plain"
     },
     {
+      "description": "test",
+      "format": "plain"
+    },
+    {
       "permission": "staff",
       "description": "test",
       "format": "plain"
@@ -23,6 +27,10 @@
       "messages": [
         {
           "permission": "student",
+          "description": "test",
+          "format": "plain"
+        },
+        {
           "description": "test",
           "format": "plain"
         },
@@ -48,6 +56,10 @@
               "format": "plain"
             },
             {
+              "description": "test",
+              "format": "plain"
+            },
+            {
               "permission": "staff",
               "description": "test",
               "format": "plain"
@@ -68,6 +80,10 @@
                   "format": "plain"
                 },
                 {
+                  "description": "test",
+                  "format": "plain"
+                },
+                {
                   "permission": "staff",
                   "description": "test",
                   "format": "plain"
@@ -84,6 +100,10 @@
                   "messages": [
                     {
                       "permission": "student",
+                      "description": "test",
+                      "format": "plain"
+                    },
+                    {
                       "description": "test",
                       "format": "plain"
                     },

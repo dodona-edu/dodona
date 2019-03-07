@@ -5,7 +5,6 @@ json.extract! exercise,
               :boilerplate,
               :programming_language
 if current_user
-  json.last_solution_correct exercise.best_is_last_submission?(current_user)
   json.last_solution_is_best exercise.best_is_last_submission?(current_user)
   json.has_solution exercise.last_submission(current_user).present?
   json.has_correct_solution exercise.last_correct_submission(current_user).present?

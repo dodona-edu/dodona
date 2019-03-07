@@ -168,7 +168,8 @@ class SubmissionRunner
           build_message("Standard Error #{stderr.bytesize} Bytes:", 'staff', 'plain'),
           build_message(truncate(stderr, 15_000), 'staff'),
           build_message("Standard Output #{stdout.bytesize} Bytes:", 'staff', 'plain'),
-          build_message(truncate(stdout, 15_000), 'staff')
+          build_message(truncate(stdout, 15_000), 'staff'),
+          build_message(I18n.t('submissions.show.judge_output_too_long', locale: @submission.user.lang), 'student', 'plain'),
       ]
     end
 

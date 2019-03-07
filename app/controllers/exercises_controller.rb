@@ -2,6 +2,7 @@ class ExercisesController < ApplicationController
   before_action :set_exercise, only: %i[show edit update media]
   before_action :set_course, only: %i[show edit update]
   before_action :set_series, only: %i[show edit update]
+  before_action :ensure_trailing_slash, only: :show
   skip_before_action :verify_authenticity_token, only: [:media]
 
   has_scope :by_filter, as: 'filter'

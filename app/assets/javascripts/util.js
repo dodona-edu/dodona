@@ -179,6 +179,12 @@ function initCSRF() {
     });
 }
 
+function initTooltips() {
+    $(() => {
+        $("[data-toggle=\"tooltip\"]").tooltip();
+    });
+}
+
 export {
     initClipboard,
     delay,
@@ -188,5 +194,6 @@ export {
     getArrayURLParameter,
     logToGoogle,
     checkTimeZone,
-    initCSRF
+    initCSRF,
+    initTooltips,
 };

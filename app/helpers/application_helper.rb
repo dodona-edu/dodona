@@ -62,6 +62,8 @@ module ApplicationHelper
       options[:class] ||= ''
       options[:class] += ' active'
     end
+    options[:'data-toggle'] = 'tooltip'
+    options[:'data-placement'] = 'bottom'
 
     locals = {
         title: options.delete(:title),

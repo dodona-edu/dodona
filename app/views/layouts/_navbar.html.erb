@@ -24,10 +24,10 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons md-24">account_circle</i>
-            <span class="dropdown-title"><%= t 'layout.menu.profile' %></span>
+            <span class="dropdown-title"><%= current_user.full_name %></span>
             <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu dropdown-menu-right">
             <li class="dropdown-header"><%= current_user.full_name %></li>
             <li><%= link_to t("layout.menu.profile"), current_user %></li>
             <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
@@ -45,7 +45,7 @@
           <i class='material-icons md-24'>language</i>
           <span class="dropdown-title"><%= I18n.locale.to_s.upcase %></span>
           <span class="caret"></span></a>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu dropdown-menu-right">
           <li><%= link_to 'English', params.to_unsafe_h.merge(locale: "en") %></li>
           <li><%= link_to 'Nederlands', params.to_unsafe_h.merge(locale: "nl") %></li>
         </ul>

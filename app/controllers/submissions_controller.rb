@@ -1,6 +1,7 @@
 class SubmissionsController < ApplicationController
   before_action :set_submission, only: %i[show download evaluate edit media]
   before_action :set_submissions, only: %i[index mass_rejudge]
+  before_action :ensure_trailing_slash, only: :show
 
   skip_before_action :verify_authenticity_token, only: [:create]
 

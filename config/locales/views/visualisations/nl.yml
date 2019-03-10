@@ -2,3 +2,4 @@ nl:
   visualizations:
     punchcard:
       punchcard: "Punchcard"
+      punchcard_details: "Deze grafiek geeft weer wanneer oplossingen werden ingediend."

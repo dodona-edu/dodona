@@ -22,6 +22,7 @@ en:
         other: "Re-evaluating %{count} submissions"
     show:
       submission: Submission
+      submission_results: Submission results
       user: User
       exercise: Exercise
       course: Course
@@ -36,6 +37,8 @@ en:
       expected: Expected output
       edit: Edit submission
       in: "in"
+      by: "by"
+      submission_for: "Submission for"
       output: Output
       correct_tests: Correct tests
       diff:

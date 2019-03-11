@@ -2,3 +2,4 @@ en:
   visualizations:
     punchcard:
       punchcard: "Punchcard"
+      punchcard_details: "This graph shows you when submissions have taken place."

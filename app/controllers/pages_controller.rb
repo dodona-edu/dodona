@@ -19,6 +19,9 @@ class PagesController < ApplicationController
   def about;
   end
 
+  def data 
+  end
+
   def contact
     @contact_form = ContactForm.new
     @title = I18n.t("pages.contact.title")

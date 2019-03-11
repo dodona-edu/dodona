@@ -10,7 +10,7 @@
       <%= link_to submission.exercise.name, exercise_path(submission.exercise) %>
     <% else %>
       <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise) %>
-    <% end %> 
+    <% end %>
     <% if current_user.course_admin?(submission.course) %>
       <%= t "submissions.show.by" %>
       <% if submission.course.present? %>
@@ -18,14 +18,14 @@
       <% else %>
         <%= link_to submission.user.full_name, user_path(submission.user) %>
       <% end %>
-    <% end %> 
+    <% end %>
     <% unless submission.course.nil? %>
       <%= t "submissions.show.in" %> <%= link_to submission.course.name, course_path(submission.course) %>
     <% end %>
   </span>
   <span class='status-icon pull-left'><%= submission_status_icon(submission, 36) %></span>
   <span class="status-line">
-    <%= Submission.human_enum_name(:status, submission.status) %> 
+    <%= Submission.human_enum_name(:status, submission.status) %>
     <% if submission.summary.present? and submission.summary != Submission.human_enum_name(:status, submission.status) %>
       &middot; <span class='text-muted'><%= submission.summary %></span>
     <% end %>

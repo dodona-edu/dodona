@@ -32,6 +32,7 @@ en:
       log_out: Log out
     footer:
       ugent: Ghent University
+      your_data: Your data
     search:
       search: search
   crumbs:

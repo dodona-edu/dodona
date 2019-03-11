@@ -32,6 +32,7 @@ nl:
       log_out: Afmelden
     footer:
       ugent: Universiteit Gent
+      your_data: Jouw data
     search:
       search: zoeken
   crumbs:

@@ -2,32 +2,39 @@
   <%= javascript_pack_tag 'submission' %>
   <%= javascript_pack_tag 'pythia_submission' if submission.judge.renderer == PythiaRenderer %>
 <% end %>
-<p>
-  <% if current_user.course_admin?(submission.course) %>
-    <b><%= t "submissions.show.user" %>:</b>
-    <% if submission.course.present? %>
-      <%= link_to submission.user.full_name, course_member_path(submission.course, submission.user) %>
+
+<div class="submission-summary">
+  <span class="description">
+    <%= t "submissions.show.submission_for" %>
+    <% if submission.course.nil? %>
+      <%= link_to submission.exercise.name, exercise_path(submission.exercise) %>
     <% else %>
-      <%= link_to submission.user.full_name, user_path(submission.user) %>
+      <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise) %>
+    <% end %> 
+    <% if current_user.course_admin?(submission.course) %>
+      <%= t "submissions.show.by" %>
+      <% if submission.course.present? %>
+        <%= link_to submission.user.full_name, course_member_path(submission.course, submission.user) %>
+      <% else %>
+        <%= link_to submission.user.full_name, user_path(submission.user) %>
+      <% end %>
+    <% end %> 
+    <% unless submission.course.nil? %>
+      <%= t "submissions.show.in" %> <%= link_to submission.course.name, course_path(submission.course) %>
     <% end %>
-    <br/>
-  <% end %>
-  <b><%= t "submissions.show.exercise" %>:</b>
-  <% if submission.course.nil? %>
-    <%= link_to submission.exercise.name, exercise_path(submission.exercise) %>
-  <% else %>
-    <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise) %>
-  <% end %>
-  <br/>
-  <% unless submission.course.nil? %>
-    <b><%= t "submissions.show.course" %>:</b> <%= link_to submission.course.name, course_path(submission.course) %>
-    <br/>
-  <% end %>
-  <b><%= t "submissions.show.handed_in" %>:</b>
-  <span title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span><br/>
-  <b><%= t "submissions.show.status" %>:</b> <%= Submission.human_enum_name(:status, submission.status) %><br/>
-  <b><%= t "submissions.submissions_table.summary" %>:</b> <%= submission.summary or "N/A" %><br/>
-</p>
+  </span>
+  <span class='status-icon pull-left'><%= submission_status_icon(submission, 36) %></span>
+  <span class="status-line">
+    <%= Submission.human_enum_name(:status, submission.status) %> 
+    <% if submission.summary.present? and submission.summary != Submission.human_enum_name(:status, submission.status) %>
+      &middot; <span class='text-muted'><%= submission.summary %></span>
+    <% end %>
+  </span>
+  <span class="by-line">
+    <span class="text-muted small" title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span>
+  </span>
+</div>
+
 <% unless submission.queued? or submission.running? %>
   <p><%= submission.judge.renderer.new(submission, current_user).parse %></p>
 <% end %>

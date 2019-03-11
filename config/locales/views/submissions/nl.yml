@@ -22,6 +22,7 @@ nl:
         other: "%{count} oplossingen worden geherevalueerd"
     show:
       submission: Oplossing
+      submission_results: Resultaten
       user: Gebruiker
       exercise: Opgave
       course: Cursus
@@ -36,6 +37,8 @@ nl:
       expected: Verwachte uitvoer
       edit: Wijzig oplossing
       in: "in"
+      by: "door"
+      submission_for: "Oplossing voor"
       output: Uitvoer
       correct_tests: Correcte testen
       diff:

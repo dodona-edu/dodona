@@ -68,9 +68,6 @@ function renderCard(data, unitSize, chart, x, y) {
         .domain([0, maxVal])
         .range([0, unitSize / 2]);
 
-    const gradient = d3.scaleSequential(d3.interpolateGreys)
-        .domain([0, maxVal]);
-
     const circles = chart.selectAll("circle")
         .data(data);
 
@@ -78,7 +75,8 @@ function renderCard(data, unitSize, chart, x, y) {
     updates.attr("cx", d => x(parseInt(d.key.split(",")[1])))
         .attr("cy", d => y(parseInt(d.key.split(",")[0])))
         .attr("r", d => radius(d.value))
-        .style("fill", d => gradient(d.value))
+        .style("fill", "black")
+        .style("fill-opacity", "0.87")
         .append("svg:title")
         .text(d => d.value);
     circles.exit().remove();

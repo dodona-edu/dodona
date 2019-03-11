@@ -68,7 +68,14 @@ class FeedbackTableRenderer
           end
           if show_code_tab
             @builder.li(class: ('active' unless submission[:groups].present?)) do
-              @builder.a(I18n.t('submissions.show.code'), href: '#code-tab', 'data-toggle': 'tab')
+              @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
+                @builder.text!(I18n.t('submissions.show.code') + ' ')
+                if submission.key?(:annotations) && submission[:annotations].count.positive?
+                  @builder.span(class: 'badge') do
+                    @builder << submission[:annotations].count.to_s
+                  end
+                end
+              end
             end
           end
         end

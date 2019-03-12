@@ -6,7 +6,7 @@ class SubmissionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create]
 
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
-    scope.by_filter(value, controller.params[:user_id].present?, controller.params[:exercise_id].present?, controller.params[:most_recent_correct_per_user].present?)
+    scope.by_filter(value, controller.params[:user_id].present?, controller.params[:exercise_id].present?)
   end
 
   has_scope :by_status, as: 'status'

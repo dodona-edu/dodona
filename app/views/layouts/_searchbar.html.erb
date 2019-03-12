@@ -31,7 +31,9 @@
             paramVal: function(l) { return l.name; },
             multi: true,
             data: <%= raw render template: 'labels/index', formats: :json %>,
-            color: function(label) { return label.color; },
+            color: function (label) {
+                return label.color;
+            },
         };
         <% end %>
         <% if local_assigns.fetch :programming_languages, false %>
@@ -40,7 +42,9 @@
             paramVal: function(p) { return p.name; },
             multi: false,
             data: <%= raw render template: 'programming_languages/index', formats: :json %>,
-            color: function() { return "teal"; },
+            color: function () {
+                return "teal";
+            },
         };
         <% end %>
         <% if local_assigns.fetch :repositories, false %>
@@ -49,7 +53,9 @@
             paramVal: function(r) { return r.id; },
             multi: false,
             data: <%= raw render template: 'repositories/index', formats: :json %>,
-            color: function() { return "blue-grey"; },
+            color: function () {
+                return "blue-grey";
+            },
         };
         <% end %>
         <% if local_assigns.fetch :institutions, false %>
@@ -58,7 +64,9 @@
             paramVal: function(i) { return i.id; },
             multi: false,
             data: <%= raw local_assigns.fetch(:institutions, []).map{|i| {id: i.id, name: i.name}}.to_json %>,
-            color: function() { return "pink"; },
+            color: function () {
+                return "pink";
+            },
         };
         <% end %>
         <% if local_assigns.fetch :course_labels, false %>
@@ -71,6 +79,19 @@
             data: <%= raw local_assigns.fetch(:course_labels, []).map{|cl| {id: cl.id, name: cl.name}}.to_json %>,
             color: function () {
                 return "orange";
+            },
+        };
+        <% end %>
+        <% if local_assigns.fetch :statuses, false %>
+        filterCollections["statuses"] = {
+            param: "status",
+            paramVal: function (s) {
+                return s.id;
+            },
+            multi: false,
+            data: <%= raw local_assigns.fetch(:statuses, []).map{|s| {id: s, name: Submission.human_enum_name(:status, s)}}.to_json %>,
+            color: function () {
+                return "indigo";
             },
         };
         <% end %>

@@ -9,6 +9,8 @@ class SubmissionsController < ApplicationController
     scope.by_filter(value, controller.params[:user_id].present?, controller.params[:exercise_id].present?, controller.params[:most_recent_correct_per_user].present?)
   end
 
+  has_scope :by_status, as: 'status'
+
   has_scope :by_course_labels, as: 'course_labels', type: :array do |controller, scope, value|
     if controller.params[:course_id].present? && controller.params[:user_id].nil?
       scope.by_course_labels(value, controller.params[:course_id])

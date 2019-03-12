@@ -26,6 +26,7 @@ nl:
     repositories: Repository's
     institutions: Onderwijsinstellingen
     course_labels: Gebruikerlabels
+    statuses: Statussen
     label-undeletable: Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.
     monday: Maandag
     tuesday: Dinsdag

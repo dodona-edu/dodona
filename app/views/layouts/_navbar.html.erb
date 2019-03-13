@@ -1,61 +1,67 @@
 <nav class="dodona-navbar hidden-print" role="navigation">
   <div class="left flex">
-    <% if user_signed_in? %>
-      <button type="button" class="drawer-toggle" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
-        <span class="sr-only">Toggle drawer</span>
-        <i class="material-icons">menu</i>
-      </button>
-    <% end %>
-    <%= link_to root_path, class: "brand" do %>
-      <span class="hidden-xs">Dodona</span>
-      <i class="visible-xs material-icons">home</i>
-    <% end %>
+    <div class="content">
+      <% if user_signed_in? %>
+        <button type="button" class="drawer-toggle" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
+          <span class="sr-only">Toggle drawer</span>
+          <i class="material-icons">menu</i>
+        </button>
+      <% end %>
+      <%= link_to root_path, class: "brand" do %>
+        <span class="hidden-xs">Dodona</span>
+        <i class="visible-xs material-icons">home</i>
+      <% end %>
+    </div>
   </div>
   <div class="center flex">
-    <%= render 'layouts/breadcrumbs' %>
-    <ul class="actions">
-      <%= content_for :navbar %>
-    </ul>
+    <div class="content">
+      <%= render 'layouts/breadcrumbs' %>
+      <ul class="actions">
+        <%= content_for :navbar %>
+      </ul>
+    </div>
   </div>
   <div class="right flex">
-    <ul id="navbar" class="dropdown-nav collapse">
-      <%= content_for :navbar %>
-      <% if user_signed_in? %>
+    <div class="content">
+      <ul id="navbar" class="dropdown-nav collapse">
+        <%= content_for :navbar %>
+        <% if user_signed_in? %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="material-icons md-24">account_circle</i>
+              <span class="dropdown-title"><%= current_user.full_name %></span>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li class="dropdown-header"><%= current_user.full_name %></li>
+              <li><%= link_to t("layout.menu.profile"), current_user %></li>
+              <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
+              <li role="separator" class="divider"></li>
+              <li>
+                <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete %>
+              </li>
+            </ul>
+          </li>
+        <% else %>
+          <li class="sign-in"><%= link_to t("layout.menu.log_in"), sign_in_path %></li>
+        <% end %>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <i class="material-icons md-24">account_circle</i>
-            <span class="dropdown-title"><%= current_user.full_name %></span>
-            <span class="caret"></span>
-          </a>
+            <i class='material-icons md-24'>language</i>
+            <span class="dropdown-title"><%= I18n.locale.to_s.upcase %></span>
+            <span class="caret"></span></a>
           <ul class="dropdown-menu dropdown-menu-right">
-            <li class="dropdown-header"><%= current_user.full_name %></li>
-            <li><%= link_to t("layout.menu.profile"), current_user %></li>
-            <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
-            <li role="separator" class="divider"></li>
-            <li>
-              <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete %>
-            </li>
+            <li><%= link_to 'English', params.to_unsafe_h.merge(locale: "en") %></li>
+            <li><%= link_to 'Nederlands', params.to_unsafe_h.merge(locale: "nl") %></li>
           </ul>
         </li>
-      <% else %>
-        <li class="sign-in"><%= link_to t("layout.menu.log_in"), sign_in_path %></li>
-      <% end %>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-          <i class='material-icons md-24'>language</i>
-          <span class="dropdown-title"><%= I18n.locale.to_s.upcase %></span>
-          <span class="caret"></span></a>
-        <ul class="dropdown-menu dropdown-menu-right">
-          <li><%= link_to 'English', params.to_unsafe_h.merge(locale: "en") %></li>
-          <li><%= link_to 'Nederlands', params.to_unsafe_h.merge(locale: "nl") %></li>
-        </ul>
-      </li>
-    </ul>
-    <button type="button" class="dodona-navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-      <span class="sr-only">Toggle navigation</span>
-      <i class="material-icons">
-        more_vert
-      </i>
-    </button>
+      </ul>
+      <button type="button" class="dodona-navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <i class="material-icons">
+          more_vert
+        </i>
+      </button>
+    </div>
   </div>
 </nav>

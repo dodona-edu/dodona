@@ -18,14 +18,15 @@ function initSeriesEdit() {
 
     function initAddButtons() {
         $("a.add-exercise").click(function () {
-            const exerciseId = $(this).data("exercise_id");
-            const exerciseName = $(this).data("exercise_name");
-            const seriesId = $(this).data("series_id");
-            const confirmMessage = $(this).data("confirm");
+            const $addButton = $(this);
+            const exerciseId = $addButton.data("exercise_id");
+            const exerciseName = $addButton.data("exercise_name");
+            const seriesId = $addButton.data("series_id");
+            const confirmMessage = $addButton.data("confirm");
             if (confirmMessage && !confirm(confirmMessage)) {
                 return false;
             }
-            const $row = $(this).parents("tr").clone();
+            const $row = $addButton.parents("tr").clone();
             $row.addClass("new");
             $row.children("td:first").html("<div class='drag-handle'><i class='material-icons md-18'>reorder</i></div>");
             $row.children("td.actions").html("<a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><i class='material-icons md-18'>delete</i></a>");
@@ -36,12 +37,11 @@ function initSeriesEdit() {
                 exercise_id: exerciseId,
             })
                 .done(function () {
-                    exerciseAdded($row);
+                    exerciseAdded($row, $addButton);
                 })
                 .fail(function () {
                     addingExerciseFailed($row);
                 });
-            $(this).remove();
             return false;
         });
     }
@@ -83,7 +83,6 @@ function initSeriesEdit() {
 
     function removeExercise() {
         let exerciseId = $(this).data("exercise_id");
-        let exerciseName = $(this).data("exercise_name");
         let seriesId = $(this).data("series_id");
         let $row = $(this).parents("tr").addClass("pending");
         $.post("/series/" + seriesId + "/remove_exercise.js", {
@@ -98,10 +97,11 @@ function initSeriesEdit() {
         return false;
     }
 
-    function exerciseAdded($row) {
+    function exerciseAdded($row, $addButton) {
         showNotification(I18n.t("js.exercise-added-success"));
         $row.find("a.remove-exercise").click(removeExercise);
         $row.removeClass("pending");
+        $addButton.addClass("hidden");
     }
 
     function addingExerciseFailed($row) {
@@ -118,7 +118,7 @@ function initSeriesEdit() {
             $row.remove();
         }, 500);
         showNotification(I18n.t("js.exercise-removed-success"));
-        $(".pagination .active a").get(0).click();
+        $(`a.add-exercise[data-exercise_id="${$row.find("a.remove-exercise").data("exercise_id")}"]`).removeClass("hidden");
     }
 
     function removingExerciseFailed($row) {

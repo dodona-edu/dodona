@@ -32,7 +32,7 @@ function initPunchcard(url, timezoneOffset) {
 
     chart.append("text")
         .attr("class", "loading-text")
-        .text("Loading...")
+        .text(I18n.t("js.loading"))
         .attr("x", innerWidth / 2)
         .attr("y", innerHeight / 2)
         .style("text-anchor", "middle");

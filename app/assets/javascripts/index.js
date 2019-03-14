@@ -98,23 +98,55 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
         }
     }
 
-    function performSearch(action) {
-        search(baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, action.search);
+    function urlContainsSearchOpt(searchOption) {
+        const url = baseUrl || window.location.href;
+        // If the parameters were already contained, the length shouldn't change.
+        // Note that we can't just compare the urls, since the position of the parameters might change.
+        return addParametersToUrl(url, undefined, undefined, searchOption.search).length === url.length;
     }
 
     function initActions() {
         let $actions = $(".table-toolbar-tools .actions");
         let searchOptions = actions.filter(action => action.search);
         let searchActions = actions.filter(action => action.action || action.js);
+
+        function performSearch() {
+            const extraParams = {};
+            searchOptions.forEach((opt, id) => {
+                if ($(`a.action[data-search_opt_id="${id}"]`).parent().hasClass("active")) {
+                    for (let key in opt.search) {
+                        if (opt.search.hasOwnProperty(key)) {
+                            extraParams[key] = opt.search[key];
+                        }
+                    }
+                } else {
+                    for (let key in opt.search) {
+                        if (opt.search.hasOwnProperty(key)) {
+                            extraParams[key] = null;
+                        }
+                    }
+                }
+            });
+            search(baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, extraParams);
+        }
+
         $actions.removeClass("hidden");
         if (searchOptions.length > 0) {
             $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.filter-options") + "</li>");
-            searchOptions.forEach(function (action) {
-                let $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""}><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
+            searchOptions.forEach(function (action, id) {
+                let $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""} data-search_opt_id="${id}"}><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
+                if (urlContainsSearchOpt(action)) {
+                    $link.parent().addClass("active");
+                }
                 $link.click(() => {
-                    performSearch(action);
+                    if (!$link.parent().hasClass("active")) {
+                        $link.parent().addClass("active");
+                    } else {
+                        $link.parent().removeClass("active");
+                    }
+                    performSearch();
                     return false;
                 });
             });

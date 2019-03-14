@@ -1,29 +1,29 @@
 <div class="row">
   <div class="col-xs-6 admin-card-stat">
-    <%= t ".subscribed_users" %>
     <h1>
-      <%= @course.subscribed_members_count %>
+      <%= link_to @course.subscribed_members_count, course_members_path(@course), class: 'card-title-link' %>
     </h1>
+    <%= t ".subscribed_users" %>
   </div>
   <div class="col-xs-6 admin-card-stat">
-    <%= t ".exercise_count" %>
     <h1>
-      <%= @course.exercises_count %>
+      <%= link_to @course.exercises_count, course_path(@course), class: 'card-title-link' %>
     </h1>
+    <%= t ".exercise_count" %>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-6 admin-card-stat">
-    <%= t ".submitted_solutions" %>
     <h1>
-      <%= number_with_delimiter @course.submissions.count, delimiter: " " %>
+      <%= link_to (number_with_delimiter @course.submissions.count, delimiter: " "), course_submissions_path(@course), class: 'card-title-link' %>
     </h1>
+    <%= t ".submitted_solutions" %>
   </div>
   <div class="col-xs-6 admin-card-stat"
        title="<%= t '.average_progress_info' %>">
-    <%= t ".average_progress" %>
     <h1>
       <%= number_to_percentage @course.average_progress, precision: 1 %>
     </h1>
+    <%= t ".average_progress" %>
   </div>
 </div>

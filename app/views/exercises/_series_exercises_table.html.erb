@@ -49,13 +49,13 @@
         </div>
       </td>
       <td class="actions">
-        <% if !series.exercises.include? exercise %>
-          <a href="#" class="btn btn-icon add-exercise" title="<%= t "series.edit.add_exercise" %>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>" data-confirm="<%= t('.course_added_to_usable') unless exercise.usable_by? @series.course %>">
-            <i class="material-icons md-18">add</i>
-          </a>
-        <% elsif local_assigns.fetch(:show_buttons_for_present, false) %>
+        <% if local_assigns.fetch(:show_buttons_for_present, false) %>
           <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>">
             <i class="material-icons md-18">delete</i>
+          </a>
+        <% else %>
+          <a href="#" class="btn btn-icon add-exercise <%= "hidden" if series.exercises.include? exercise %>" title="<%= t "series.edit.add_exercise" %>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>" data-confirm="<%= t('.course_added_to_usable') unless exercise.usable_by? @series.course %>">
+            <i class="material-icons md-18">add</i>
           </a>
         <% end %>
       </td>

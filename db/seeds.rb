@@ -41,7 +41,6 @@ if Rails.env.development?
     User.create first_name: first_name,
                 last_name: last_name,
                 username: username,
-                ugent_id: Faker::Number.number(8).to_s,
                 email: "#{first_name}.#{last_name}.#{username}@UGent.BE".downcase,
                 permission: :student,
                 institution: ugent

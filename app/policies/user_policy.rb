@@ -72,7 +72,7 @@ class UserPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.admin?
-      %i[username ugent_id first_name last_name email permission time_zone]
+      %i[username first_name last_name email permission time_zone]
     else
       %i[time_zone]
     end

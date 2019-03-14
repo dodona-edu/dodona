@@ -453,7 +453,7 @@ DEPENDENCIES
   puma (~> 3.11)
   pundit
   rack-protection!
-  rails (~> 5.2.1)
+  rails (~> 5.2.2, >= 5.2.2.1)
   rails-controller-testing
   rails-i18n
   rails_server_timings

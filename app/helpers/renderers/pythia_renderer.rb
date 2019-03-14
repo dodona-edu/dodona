@@ -149,21 +149,21 @@ class PythiaRenderer < FeedbackTableRenderer
         end
         @builder.tbody do
           diff.each do |diff_line|
-            if !diff_line[4] && diff_line[2]
-              @builder.tr do
-                @builder.td(diff_line[0], class: 'line-nr')
-                @builder.td(class: 'line-nr')
-                @builder.td(class: 'ins') do
-                  @builder << strip_outer_html(diff_line[2])
-                end
-              end
-            end
             if !diff_line[4] && diff_line[3]
               @builder.tr do
                 @builder.td(class: 'line-nr')
                 @builder.td(diff_line[1], class: 'line-nr')
                 @builder.td(class: 'del') do
                   @builder << strip_outer_html(diff_line[3])
+                end
+              end
+            end
+            if !diff_line[4] && diff_line[2]
+              @builder.tr do
+                @builder.td(diff_line[0], class: 'line-nr')
+                @builder.td(class: 'line-nr')
+                @builder.td(class: 'ins') do
+                  @builder << strip_outer_html(diff_line[2])
                 end
               end
             end

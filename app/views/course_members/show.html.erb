@@ -26,11 +26,6 @@
             <p>
               <strong><%= User.human_attribute_name("username") %>:</strong> <%= @user.username %>
             </p>
-            <% if @course.institution == Institution.first %>
-              <p>
-                <strong><%= User.human_attribute_name("ugent_id") %>:</strong> <%= @user.ugent_id %>
-              </p>
-            <% end %>
             <p>
               <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
             </p>

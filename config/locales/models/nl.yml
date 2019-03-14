@@ -109,7 +109,6 @@ nl:
         color: Kleur
       user:
         username: Gebruikersnaam
-        ugent_id: Studentennummer
         first_name: Voornaam
         last_name: Familienaam
         name: Naam

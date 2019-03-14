@@ -30,6 +30,13 @@ function initPunchcard(url, timezoneOffset) {
         .domain([0, 6])
         .range([unitSize / 2, innerHeight - unitSize / 2]);
 
+    chart.append("text")
+        .attr("class", "loading-text")
+        .text(I18n.t("js.loading"))
+        .attr("x", innerWidth / 2)
+        .attr("y", innerHeight / 2)
+        .style("text-anchor", "middle");
+
     d3.json(url)
         .then(data => applyTimezone(data, timezoneOffset))
         .then(data => renderCard(d3.entries(data), unitSize, chart, x, y));
@@ -67,6 +74,8 @@ function renderCard(data, unitSize, chart, x, y) {
     const radius = d3.scaleSqrt()
         .domain([0, maxVal])
         .range([0, unitSize / 2]);
+
+    chart.selectAll("text.loading-text").remove();
 
     const circles = chart.selectAll("circle")
         .data(data);

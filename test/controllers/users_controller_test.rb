@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers User, attrs: %i[username ugent_id first_name last_name email permission time_zone]
+  crud_helpers User, attrs: %i[username first_name last_name email permission time_zone]
 
   setup do
     @instance = create(:zeus)

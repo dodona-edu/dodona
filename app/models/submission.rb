@@ -25,9 +25,7 @@ class Submission < ApplicationRecord
   belongs_to :user
   belongs_to :course, optional: true
   has_one :judge, through: :exercise
-  has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
 
-  validate :code_cannot_contain_emoji, on: :create
   validate :maximum_code_length, on: :create
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
@@ -84,35 +82,24 @@ class Submission < ApplicationRecord
     # We need to do this after the rest of the fields are initialized, because we depend on the course_id, user_id, ...
     self.code = code.to_s unless code.nil?
     self.result = result.to_s unless result.nil?
-    self.submission_detail = SubmissionDetail.new(id: id, code: code, result: result)
   end
 
   def code
-    if File.exists?(File.join(fs_path, CODE_FILENAME))
-      File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
-    else
-      submission_detail.code
-    end
+    File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
   end
 
   def code=(code)
-    FileUtils.mkdir_p fs_path unless File.exists?(fs_path)
+    FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
     File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
-    submission_detail.code = code if submission_detail
   end
 
   def result
-    if File.exists?(File.join(fs_path, RESULT_FILENAME))
-      ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
-    else
-      submission_detail.result
-    end
+    ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
   end
 
   def result=(result)
-    FileUtils.mkdir_p fs_path unless File.exists?(fs_path)
+    FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
     File.open(File.join(fs_path, RESULT_FILENAME), "wb") {|f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))}
-    submission_detail.result = result if submission_detail
   end
 
   def clean_messages(messages, levels)
@@ -149,12 +136,12 @@ class Submission < ApplicationRecord
   def clear_fs
     # If we were destroyed or if we were never saved to the database, delete this submission's directory
     if self.destroyed? || self.new_record?
-      FileUtils.remove_entry_secure(fs_path) if File.exists?(fs_path)
+      FileUtils.remove_entry_secure(fs_path) if File.exist?(fs_path)
     end
   end
 
   def on_filesystem?
-    File.exists?(File.join(fs_path, RESULT_FILENAME)) && File.exists?(File.join(fs_path, CODE_FILENAME))
+    File.exist?(File.join(fs_path, RESULT_FILENAME)) && File.exist?(File.join(fs_path, CODE_FILENAME))
   end
 
   def evaluate?
@@ -194,11 +181,6 @@ class Submission < ApplicationRecord
     self.accepted = result_hash[:accepted]
     self.summary = result_hash[:description]
     save
-  end
-
-  def code_cannot_contain_emoji
-    no_emoji_found = code.chars.all? {|c| c.bytes.length < 4}
-    errors.add(:code, 'emoji found') unless no_emoji_found
   end
 
   def maximum_code_length

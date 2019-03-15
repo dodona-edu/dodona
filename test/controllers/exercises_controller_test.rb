@@ -158,8 +158,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get edit submission with show' do
-    submission = create :submission
-    @instance.submissions << submission
+    submission = create :submission, exercise: @instance
 
     Submission.expects(:find).with(submission.id.to_s).returns(submission)
 

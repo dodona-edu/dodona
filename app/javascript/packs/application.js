@@ -23,13 +23,15 @@ window.$ = jQuery;
 import "polyfills.js";
 import "drawer";
 import {showNotification} from "notifications.js";
-import {checkTimeZone, initClipboard, initCSRF} from "util.js";
+import {checkTimeZone, initClipboard, initCSRF, initTooltips} from "util.js";
 
 // Initialize clipboard.js
 initClipboard();
 
 // Adds the CSRF token to each ajax request
 initCSRF();
+
+initTooltips();
 
 // Use a global dodona object to prevent polluting the global na
 let dodona = {};

@@ -21,7 +21,7 @@
           </h3>
         <% end %>
       </div>
-      <div class="card-supporting-text card-border row">
+      <div class="card-supporting-text card-border row course-description">
         <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
           <%= markdown(@course.description) %>
           <% if current_user&.member_of? @course %>

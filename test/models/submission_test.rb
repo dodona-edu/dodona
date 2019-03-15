@@ -55,18 +55,16 @@ class SubmissionTest < ActiveSupport::TestCase
     assert submission.valid?
   end
 
-  test 'new submissions should have code in the database and on the filesystem' do
+  test 'new submissions should have code on the filesystem' do
     code = Random.new.alphanumeric(n = 100)
     submission = build :submission, code: code
     assert_equal code, File.read(File.join(submission.fs_path, Submission::CODE_FILENAME))
-    assert_equal code, submission.submission_detail.code
   end
 
-  test 'new submissions should have result in the database and on the filesystem' do
+  test 'new submissions should have result on the filesystem' do
     result = Random.new.alphanumeric(n = 100)
     submission = build :submission, result: result
     assert_equal result, ActiveSupport::Gzip.decompress(File.read(File.join(submission.fs_path, Submission::RESULT_FILENAME)))
-    assert_equal result, submission.submission_detail.result
   end
 
   test 'safe_result should remove hidden tabs for students' do

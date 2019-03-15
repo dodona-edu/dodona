@@ -15,15 +15,6 @@ class PythiaRenderer < FeedbackTableRenderer
     @submission[:groups].none? {|t| t[:data][:source_annotations]}
   end
 
-  def show_diff_type_switch(tab)
-    tab[:groups]&.compact # Groups
-        &.flat_map {|t| t[:groups]}&.compact # Testcases
-        &.flat_map {|t| t[:tests]}&.compact # Tests
-        &.reject {|t| t[:accepted]}
-        &.select {|t| t[:data][:diff].nil?}
-        &.any?
-  end
-
   def tab_content(t)
     if t[:data][:source_annotations]
       linting(t[:data][:source_annotations], @code)
@@ -131,12 +122,107 @@ class PythiaRenderer < FeedbackTableRenderer
     end
   end
 
+  def strip_outer_html(diff_line_item)
+    diff_line_item
+        .gsub(%r{<li[^>]*>(.*)</li>}, '\\1')
+        .gsub(%r{<ins>(.*)</ins>}, '\\1')
+        .gsub(%r{<del>(.*)</del>}, '\\1')
+        .gsub(%r{<span>(.*)</span>}, '\\1')
+  end
+
   def pythia_diff(diff)
-    @builder.div(class: 'diff') do
-      @builder.ul do
-        diff.each do |diff_line|
-          @builder << (diff_line[2] || '')
-          @builder << (diff_line[3] || '') unless diff_line[4]
+    @builder.div(class: "diffs show-#{@diff_type}") do
+      @builder.table(class: 'unified-diff diff') do
+        @builder.colgroup do
+          @builder.col(class: 'line-nr')
+          @builder.col(class: 'line-nr')
+          @builder.col(class: 'output')
+        end
+        @builder.thead do
+          @builder.th(class: 'line-nr', title: I18n.t('submissions.show.your_output')) do
+            @builder.i(class: 'mdi mdi-18 mdi-file-account')
+          end
+          @builder.th(class: 'line-nr', title: I18n.t('submissions.show.expected')) do
+            @builder.i(class: 'mdi mdi-18 mdi-file-check')
+          end
+          @builder.th
+        end
+        @builder.tbody do
+          diff.each do |diff_line|
+            if !diff_line[4] && diff_line[3]
+              @builder.tr do
+                @builder.td(class: 'line-nr')
+                @builder.td(diff_line[1], class: 'line-nr')
+                @builder.td(class: 'del') do
+                  @builder << strip_outer_html(diff_line[3])
+                end
+              end
+            end
+            if !diff_line[4] && diff_line[2]
+              @builder.tr do
+                @builder.td(diff_line[0], class: 'line-nr')
+                @builder.td(class: 'line-nr')
+                @builder.td(class: 'ins') do
+                  @builder << strip_outer_html(diff_line[2])
+                end
+              end
+            end
+            if diff_line[4]
+              @builder.td(diff_line[0], class: 'line-nr')
+              @builder.td(diff_line[1], class: 'line-nr')
+              @builder.td(class: 'unchanged') do
+                @builder << strip_outer_html(diff_line[2])
+              end
+            end
+          end
+        end
+      end
+      @builder.table(class: 'split-diff diff') do
+        @builder.colgroup do
+          @builder.col(class: 'line-nr')
+          @builder.col(class: 'del-output')
+          @builder.col(class: 'line-nr')
+          @builder.col(class: 'ins-output')
+        end
+        @builder.thead do
+          @builder.th(class: 'line-nr', title: I18n.t('submissions.show.your_output')) do
+            @builder.i(class: 'mdi mdi-18 mdi-file-account')
+          end
+          @builder.th do
+            @builder << I18n.t('submissions.show.your_output')
+          end
+          @builder.th(class: 'line-nr', title: I18n.t("submissions.show.expected")) do
+            @builder.i(class: 'mdi mdi-18 mdi-file-check')
+          end
+          @builder.th do
+            @builder << I18n.t("submissions.show.expected")
+          end
+        end
+        @builder.tbody do
+          diff.each do |diff_line|
+            @builder.tr do
+              @builder.td(diff_line[1], class: 'line-nr')
+              if !diff_line[4] && diff_line[3]
+                @builder.td(class: 'del') do
+                  @builder << strip_outer_html(diff_line[3])
+                end
+              elsif diff_line[4]
+                @builder.td(class: 'unchanged') do
+                  @builder << strip_outer_html(diff_line[3])
+                end
+              end
+              @builder.td(diff_line[0], class: 'line-nr')
+              if !diff_line[4] && diff_line[2]
+                @builder.td(class: 'ins') do
+                  @builder << strip_outer_html(diff_line[2])
+                end
+              elsif diff_line[4]
+                @builder.td(class: 'unchanged') do
+                  @builder << strip_outer_html(diff_line[3])
+                end
+              end
+            end
+          end
         end
       end
     end
@@ -193,5 +279,18 @@ class PythiaRenderer < FeedbackTableRenderer
         type: convert_lint_type(message[:type]),
         text: message[:description]
     }
+  end
+
+  def determine_diff_type(test)
+    if test[:data][:diff]
+      test[:data][:diff].each do |diff_line|
+        # Not perfect, since there might be html in the diff_line items
+        return 'unified' if strip_outer_html(diff_line[2]).length >= 55
+        return 'unified' if strip_outer_html(diff_line[3]).length >= 55
+      end
+      'split'
+    else
+      super
+    end
   end
 end

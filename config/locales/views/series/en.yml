@@ -30,9 +30,12 @@ en:
       title: Edit series
       add_exercises: Add exercises
       exercises_in_series: Exercises in this series
+      exercises_in_series_info: Use the drag handle in front of each row to reorder the exercises.
       manage_exercises: Manage exercises
-      manage_exercises_info: Add, remove, and reorder exercises. Changes made here will be saved instantly.
+      manage_exercises_info: Changes made here will be saved instantly.
       add_exercise: add exercise
+      no_exercises: This series currently contains no exericises.
+      no_exercises_bis: Get started by using the search box below.
       remove_exercise: remove exercise
       confidential: Confidential information
       indianio-help: Copy this token and paste it in Indianio to allow Indianio to download students' submissions for this series.

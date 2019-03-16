@@ -60,7 +60,9 @@
           </div>
         </div>
       <% end %>
-      <% if policy(@series).modify_exercises? %>
+    </div>
+    <% if policy(@series).modify_exercises? %>
+      <div class="card">
         <div class="card-supporting-text card-border">
           <div class="col-xs-12">
             <div class="page-subtitle">
@@ -85,8 +87,8 @@
             </div>
           </div>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
 </div>
 <script type="text/javascript">

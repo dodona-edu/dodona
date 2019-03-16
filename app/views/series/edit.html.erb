@@ -76,7 +76,11 @@
             </div>
             <p class="h3-info-text"><%= t ".manage_exercises_info" %></p>
             <h4><%= t ".exercises_in_series" %></h4>
+            <p class="h4-info-text"><%= t ".exercises_in_series_info" %></p>
             <div class="series-exercise-list">
+              <% if @series.exercises.empty? %>
+                <p id="no-exercises" class="text-center"><%= t ".no_exercises" %><br><span class="small"><%= t ".no_exercises_bis" %></span></p>
+              <% end %>
               <%= render partial: 'exercises/series_exercises_table', locals: {exercises: @series.exercises, series: @series, paginate: false, show_buttons_for_present: true} %>
             </div>
           </div>

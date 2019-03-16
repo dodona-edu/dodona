@@ -2,7 +2,7 @@ nl:
   series:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
-      visibility-help: Een verborgen reeks wordt niet op de vakpagina getoond en is enkel toegankelijk via de geheime link.
+      visibility-help_html: Enkel <b>open</b> reeksen worden op de cursuspagina getoond. Een <b>gesloten</b> reeks is nooit toegankelijk voor studenten, een <b>verborgen</b> reeks enkel via de geheime link (zie hieronder).
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
       indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
     index:
@@ -24,7 +24,7 @@ nl:
       missed_deadline: deadline gemist
       deadline_in: binnen
       series_scoresheet: Statusoverzicht
-      best_is_not_last: Jouw beste oplossing is niet jouw laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
+      best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
       show_overview: Alle oefeningbeschrijvingen
     edit:
       title: Reeks bewerken
@@ -40,7 +40,7 @@ nl:
       confidential: Geheime links en tokens
       indianio-help: Kopieer dit token en plak het in Indianio om Indianio toe te laten oplossingen van studenten te downloaden voor deze reeks.
       access-link: Geheime link
-      access-help: Met deze geheime link krijgen studenten toegang tot deze reeks (als de reeks verborgen is).
+      access-help: Als de zichtbaarheid van de reeks op verborgen staat ingesteld, dan krijgen studenten met deze geheime link toegang.
     delete:
       title: Reeks verwijderen
       confirm: Bent u zeker dat u deze reeks wilt verwijderen?

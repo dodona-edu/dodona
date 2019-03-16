@@ -63,10 +63,10 @@
     </div>
     <% if policy(@series).modify_exercises? %>
       <div class="card">
-        <div class="card-supporting-text card-border">
+        <div class="card-supporting-text">
           <div class="col-xs-12">
             <div class="page-subtitle">
-              <h4><%= t ".exercises_in_series" %></h4>
+              <h3><%= t ".manage_exercises" %></h3>
               <div class="flex-spacer"></div>
               <div>
                 <a href="#add-exercises" title="<%= t(".add_exercises") %>" class="btn btn-primary btn-fab-extended">
@@ -74,6 +74,8 @@
                 </a>
               </div>
             </div>
+            <p class="h3-info-text"><%= t ".manage_exercises_info" %></p>
+            <h4><%= t ".exercises_in_series" %></h4>
             <div class="series-exercise-list">
               <%= render partial: 'exercises/series_exercises_table', locals: {exercises: @series.exercises, series: @series, paginate: false, show_buttons_for_present: true} %>
             </div>

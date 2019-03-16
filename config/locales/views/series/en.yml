@@ -30,6 +30,8 @@ en:
       title: Edit series
       add_exercises: Add exercises
       exercises_in_series: Exercises in this series
+      manage_exercises: Manage exercises
+      manage_exercises_info: Add, remove, and reorder exercises. Changes made here will be saved instantly.
       add_exercise: add exercise
       remove_exercise: remove exercise
       confidential: Confidential information

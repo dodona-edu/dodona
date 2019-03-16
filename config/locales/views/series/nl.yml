@@ -29,6 +29,8 @@ nl:
     edit:
       title: Reeks bewerken
       add_exercises: Oefeningen toevoegen
+      manage_exercises: Oefeningen beheren
+      manage_exercises_info: Oefeningen toevoegen, verwijderen, en de volgorde veranderen. Aanpassingen die hier gemaakt worden, worden ogenblikkelijk opgeslagen.
       exercises_in_series: Oefeningen in deze reeks
       add_exercise: oefening toevoegen
       remove_exercise: oefening verwijderen

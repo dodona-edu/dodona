@@ -1,7 +1,6 @@
 en:
   users:
     form:
-      username-help: Creating an account without a username will result in the generation of a sign in token. Afterwards, a username can be added.
     index:
       title: All users
       no_users: No users found

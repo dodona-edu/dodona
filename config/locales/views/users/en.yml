@@ -20,13 +20,18 @@ en:
     new:
       title: Create user
     show:
+      edit: Edit
       courses: Courses
-      no_courses: no courses found
+      my_courses: My courses
+      no_courses: "You aren't registered for a course yet."
       correctly_solved: Correct exercises
       unfinished: Unfinished exercises
       solutions: Number of submissions
+      submissions: Submissions
       sign_in: Sign in
-      token_sign_in: 'This user has no username and can only sign in using this link:'
+      token_sign_in: 'This account was created manually and can only sign in using this link:'
+      timezone: Your timezone is set to
+      stats: Statistics
     users_table:
       staff: Staff
       zeus: Zeus

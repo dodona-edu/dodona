@@ -20,13 +20,18 @@ nl:
     new:
       title: Gebruiker aanmaken
     show:
+      edit: Aanpassen
       courses: Cursussen
-      no_courses: geen cursussen gevonden
+      my_courses: Mijn Cursussen
+      no_courses: Je bent nog voor geen enkele cursus geregistreerd.
       correctly_solved: Correcte oefeningen
       unfinished: Onafgewerkte oefeningen
       solutions: Oplossingen ingediend
-      sign_in: Inloggen
-      token_sign_in: 'Deze gebruiker heeft geen gebruikersnaam en kan enkel inloggen via deze link:'
+      submissions: Oplossingen
+      sign_in: Aanmelden
+      token_sign_in: 'Deze account werd handmatig aangemaakt en kan enkel inloggen via deze link:'
+      timezone: Je tijdzone staat ingesteld op
+      stats: Statistieken
     users_table:
       staff: Beheerder
       zeus: Zeus

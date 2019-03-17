@@ -54,6 +54,9 @@
             </div>
           </div>
         </div>
+        <div id="punchcard-containter">
+          <%= render partial: 'visualizations/punchcard' %>
+        </div>
       </div>
       <% if policy(@course_membership).update? or policy(@user).impersonate? %>
         <div class="card-actions card-border">
@@ -87,10 +90,6 @@
           <% end %>
         </div>
       <% end %>
-    </div>
-
-    <div id="punchcard-containter">
-      <%= render partial: 'visualizations/punchcard' %>
     </div>
 
     <h2><%= t(".course_overview") + @user.full_name %></h2>

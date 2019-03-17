@@ -38,7 +38,7 @@
         <% end %>
         <div class="row">
           <div class="col-sm-12 col-md-6">
-            <h5><%= t ".stats" %></h5>
+            <h4><%= t ".stats" %></h4>
             <div class="row">
               <div class="col-xs-6 stat">
                 <a class="card-title-link" href="<%= user_submissions_path(@user) %>">
@@ -61,7 +61,7 @@
             </div>
           </div>
           <div class="col-sm-12 col-md-offset-1 col-md-5">
-            <h5><%= t ".my_courses" %></h5>
+            <h4><%= t ".my_courses" %></h4>
             <% if @user.subscribed_courses.empty? %>
               <%= t ".no_courses" %>
             <% else %>

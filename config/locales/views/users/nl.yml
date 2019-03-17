@@ -1,7 +1,6 @@
 nl:
   users:
     form:
-      username-help: Als je een account aanmaakt zonder gebruikersnaam, dan zal er een inlog token gegenereerd worden. Later kan dan een gebruikersnaam toegevoegd worden.
     index:
       title: Alle gebruikers
       no_users: Geen gebruikers gevonden

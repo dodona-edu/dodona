@@ -34,8 +34,8 @@
 }
 
 .exercise-description .dodona-centered-group img {
-  margin-left: 0px;
-  margin-right: 0px;
+  margin-left: 0;
+  margin-right: 0;
   vertical-align: middle;
 }
 
@@ -93,43 +93,6 @@ center img {
   height: 300px;
 }
 
-// feedback table
-.feedback-row {
-  white-space: pre-wrap;
-  /* preserve white space in feedback rows */
-  word-break: break-all;
-  /* prevent wide table rows */
-  word-break: break-word;
-}
-
-.feedback-row.danger td {
-  background-color: @danger-100 !important;
-}
-
-.feedback-row.success td {
-  background-color: @success-100 !important;
-}
-
-.feedback-row.statement {
-  font-weight: bold;
-  /* use bold face for feedback statements */
-}
-
-.feedback-row .icon {
-  width: 10px;
-  /* use fixed width for icon in feedback rows */
-}
-
-.feedback-row .added {
-  color: @success-800;
-  background-color: rgba(0, 255, 0, 0.2);
-}
-
-.feedback-row .removed {
-  color: @danger-800;
-  background-color: rgba(255, 0, 0, 0.2);
-}
-
 // white background for transparent images
 .strp-content-element {
   background-color: @content-bg;
@@ -145,35 +108,4 @@ center img {
   color: @text-secondary;
 }
 
-.exercise-table-skeleton {
-  width: 100%;
-  .skeleton-head {
-    border-bottom: solid 1px #ddd;
-    height: 33px;
-    background-repeat: no-repeat;
-    background-image: linear-gradient(@grey-300 100%, transparent 0),
-    linear-gradient(@grey-300 100%, transparent 0);
-    background-size: 56px 12px,
-    115px 12px;
-    background-position: 58px 10px,
-    ~'calc(100% - 75px)' 10px;
-  }
-  .skeleton-row {
-    border-top: solid 1px #ddd;
-    height: 40px;
-    background-repeat: no-repeat;
-    background-image: linear-gradient(@grey-300 100%, transparent 0),
-    linear-gradient(@grey-300 100%, transparent 0),
-    linear-gradient(@grey-300 100%, transparent 0),
-    linear-gradient(@grey-300 100%, transparent 0);
-    background-size: 90px 12px,
-    24px 12px,
-    90px 12px,
-    8px 12px;
-    background-position: 58px 15px,
-    ~'calc(100% - 210px)' 15px,
-    ~'calc(100% - 100px)' 15px,
-    ~'calc(100% - 25px)' 15px;
-    padding-right: 8px;
-  }
-}
+

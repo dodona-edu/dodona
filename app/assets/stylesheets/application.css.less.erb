@@ -1,8 +1,8 @@
-@import "variables.css.less";
-@import "colors.css.less";
+@import "theme/colors.css.less";
 @import "mixins.css.less";
 @import "vendor.less";
 @import "dragula.css.less";
+@import "theme/theme.css.less";
 @import "bootstrap_overrides.css.less";
 @import "img.css.less";
 @import "material_design_icons.css.less";
@@ -23,9 +23,9 @@
 @import "drawer.css.less";
 @import "navbar.css.less";
 <% if Rails.env.development? || Rails.env.test? %>
-@import "development.css.less";
+@import "theme/development.css.less";
 <% end %>
-@import "rouge.css.less";
+@import "theme/rouge.css.less";
 @import "actiontext.css.less";
 
 .field_with_errors input {

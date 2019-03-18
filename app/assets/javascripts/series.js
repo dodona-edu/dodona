@@ -37,6 +37,7 @@ function initSeriesEdit() {
                 exercise_id: exerciseId,
             })
                 .done(function () {
+                    $("#no-exercises").remove();
                     exerciseAdded($row, $addButton);
                 })
                 .fail(function () {

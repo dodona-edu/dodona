@@ -1,8 +1,8 @@
 en:
   series:
     form:
-      description-help: A description is optional. Markdown formatting can be used.
-      visibility-help: A hidden series is not shown on the course page and is only accessible using the secret link.
+      description-help: Adding a description is optional. Markdown formatting is supported.
+      visibility-help_html: Only <b>open</b> series are shown on the course page. A <b>closed</b> series is never accessible for students, a <b>hidden</b> series only using the secret link (see below).
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
       indianio-support-help: Allow students' solutions to be extracted by Indianio.
     index:
@@ -30,12 +30,17 @@ en:
       title: Edit series
       add_exercises: Add exercises
       exercises_in_series: Exercises in this series
+      exercises_in_series_info: Use the drag handle in front of each row to reorder the exercises.
+      manage_exercises: Manage exercises
+      manage_exercises_info: Changes made here will be saved instantly.
       add_exercise: add exercise
+      no_exercises: This series currently contains no exericises.
+      no_exercises_bis: Get started by using the search box below.
       remove_exercise: remove exercise
       confidential: Confidential information
       indianio-help: Copy this token and paste it in Indianio to allow Indianio to download students' submissions for this series.
       access-link: Secret link
-      access-help: Students who follow this link will receive access to this series (if the series is hidden).
+      access-help: If the visibility of the series is set to hidden, students will get access to it when using this secret link.
     delete:
       title: Delete series
       confirm: Please confirm you want to delete this series.

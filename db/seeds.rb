@@ -81,12 +81,12 @@ if Rails.env.development?
 
   # Other judges
 
-  #  biopythia-judge = Judge.create name: 'biopythia', image: 'dodona-biopythia', remote: 'git@github.ugent.be:dodona/judge-biopythia.git', renderer: PythiaRenderer
+  # biopythia-judge = Judge.create name: 'biopythia', image: 'dodona-biopythia', remote: 'git@github.ugent.be:dodona/judge-biopythia.git', renderer: PythiaRenderer
 
-  #  prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.ugent.be:dodona/judge-prolog.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  #  bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.ugent.be:dodona/judge-bash.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.ugent.be:dodona/judge-java.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  #  javascript-judge = Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.ugent.be:dodona/dodona-javascript.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.ugent.be:dodona/judge-prolog.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.ugent.be:dodona/judge-bash.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.ugent.be:dodona/judge-java.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # javascript-judge = Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.ugent.be:dodona/dodona-javascript.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
 
   puts 'Create & clone exercise repository'
 
@@ -96,8 +96,8 @@ if Rails.env.development?
   big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
 
   Dir.glob("#{big_exercise_repo.full_path}/*")
-     .select{ |f| File.directory? f }
-     .each do |dir|
+      .select {|f| File.directory? f}
+      .each do |dir|
     100.times do |i|
       FileUtils.cp_r(dir, dir + i.to_s)
     end
@@ -140,10 +140,10 @@ if Rails.env.development?
       series_exercises.each do |exercise|
         course.enrolled_members.sample(5).each do |student|
           status = if rand() < 0.5
-            :correct
-          else
-            :wrong
-          end
+                     :correct
+                   else
+                     :wrong
+                   end
           Submission.create user: student,
                             course: s.course,
                             exercise: exercise,
@@ -171,34 +171,37 @@ if Rails.env.development?
 
   status_exercises = statuses.each_with_index.map do |before, i|
     afters = statuses.each_with_index.map do |after, j|
-      exercise = Exercise.offset(statuses.count*i + j).first
+      exercise = Exercise.offset(statuses.count * i + j).first
       if before != :none
         Submission.create user: zeus,
-          exercise: exercise,
-          evaluate: false,
-          skip_rate_limit_check: true,
-          course: status_test,
-          status: before,
-          accepted: before == :correct,
-          created_at: before_deadline,
-          code: code
+                          exercise: exercise,
+                          evaluate: false,
+                          skip_rate_limit_check: true,
+                          course: status_test,
+                          status: before,
+                          accepted: before == :correct,
+                          created_at: before_deadline,
+                          code: code
       end
       if after != :none
         Submission.create user: zeus,
-          exercise: exercise,
-          evaluate: false,
-          skip_rate_limit_check: true,
-          course: status_test,
-          status: after,
-          accepted: after == :correct,
-          created_at: after_deadline,
-          code: code
+                          exercise: exercise,
+                          evaluate: false,
+                          skip_rate_limit_check: true,
+                          course: status_test,
+                          status: after,
+                          accepted: after == :correct,
+                          created_at: after_deadline,
+                          code: code
       end
       [after, exercise]
     end
     [before, afters.to_h]
   end.to_h
 
+  Series.create name: "Ongebruikte oefeningen",
+                course: status_test,
+                exercises: [status_exercises[:none][:wrong], status_exercises[:wrong][:none], status_exercises[:wrong][:wrong]]
 
   Series.create name: "Onbegonnen zonder deadline",
                 course: status_test,
@@ -260,5 +263,4 @@ if Rails.env.development?
                 course: status_test,
                 deadline: deadline,
                 exercises: [status_exercises[:none][:correct], status_exercises[:none][:none]]
-
 end

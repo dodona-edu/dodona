@@ -91,7 +91,7 @@
 
 .card-title.card-title-colored {
   color: rgb(0, 0, 0);
-  background-color: @primary-500;
+  background-color: @header-bg;
 }
 
 a.card-title-link,
@@ -101,10 +101,10 @@ a.card-title-link:hover {
 }
 
 .card-title.card-colored-accent {
-  color: @white-text;
+  color: @header-fg;
   .card-subtitle-text {
     margin-top: 3px;
-    color: @white-secondary;
+    color: @header-fg-secondary;
   }
   .card-subtitle-text + .card-subtitle-text {
     margin-top: 10px;
@@ -156,7 +156,7 @@ a.card-title-link:hover {
 }
 
 .card-title.card-border {
-  border-bottom: 1px solid @black-divider;
+  border-bottom: 1px solid @divider-color;
 }
 
 .card-title-text {
@@ -181,12 +181,12 @@ a.card-title-link:hover {
 
 .card-title-colored .card-title-text,
 .card-title-colored .card-title-text a {
-  color: @white-text;
+  color: @header-fg;
 }
 
 .card-title-image {
   background: rgba(0, 0, 0, 0.5);
-  color: @white-text;
+  color: @header-fg;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   height: 61px;
   margin-top: -61px;
@@ -208,7 +208,7 @@ a.card-title-link:hover {
 
 .card-title-colored .card-subtitle-text,
 .card-title-colored .card-subtitle-text a {
-  color: @white-secondary;
+  color: @header-fg-secondary;
 }
 
 .card-supporting-text {
@@ -230,7 +230,7 @@ a.card-title-link:hover {
 
 .card-supporting-text.card-border,
 .card-actions.card-border {
-  border-top: 1px solid @black-divider;
+  border-top: 1px solid @divider-color;
 }
 
 .card-title + .card-border {
@@ -305,7 +305,7 @@ a.card-title-link:hover {
   margin-right: 10px;
   height: 55px;
   border: none;
-  border-bottom: 5px solid @accent-500;
+  border-bottom: 5px solid @header-accent;
   font-size: 18px;
   .transition-duration(0.2s);
   .transition-property('height');
@@ -315,7 +315,7 @@ a.card-title-link:hover {
 .card-title-colored .nav-tabs li a,
 .card-title-colored .nav-tabs li a:hover,
 .card-title-colored .nav-tabs li a:focus {
-  color: @white-text;
+  color: @header-fg;
 }
 
 .card-tab .nav-tabs li a {
@@ -335,7 +335,7 @@ a.card-title-link:hover {
 .card-title .nav-tabs li a:focus {
   border: none;
   background: inherit;
-  border-bottom: 5px solid @accent-500;
+  border-bottom: 5px solid @header-accent;
   height: 50px;
 }
 
@@ -351,7 +351,7 @@ a.card-title-link:hover {
 
 .card-nav .badge {
   margin-left: 3px;
-  background-color: @accent-500;
+  background-color: @header-accent;
 }
 
 .nav-tabs .badge {
@@ -375,23 +375,12 @@ a.card-title-link:hover {
   top: 48px;
 }
 
-.card-progress-bar {
-  background-color: @primary-100;
-  height: 5px;
-  width: 100%;
-
-  .progress {
-    height: 100%;
-    background-color: @accent-500;
-  }
-}
-
 // text button
 .btn-text {
   background: 0 0;
   border: none;
   border-radius: 2px;
-  color: @accent-500;
+  color: @btn-accent;
   display: block;
   position: relative;
   height: 36px;
@@ -412,12 +401,11 @@ a.card-title-link:hover {
   transition: background-color 0.2s cubic-bezier(.4, 0, .2, 1);
 }
 .btn-primary.btn-text {
-  background-color: @accent-500;
+  background-color: @btn-accent;
   color: white;
   .shadow-z1();
 }
 .btn-primary.btn-text:hover {
-  background-color: @accent-500;
   color: white;
   .shadow-z3();
 }
@@ -431,9 +419,7 @@ a.card-title-link:hover {
 }
 
 .btn-text:hover {
-  text-decoration: none;
-  color: @accent-500;
-  background-color: rgba(158, 158, 158, .2);
+  background-color: @btn-hover-background;
 }
 
 .btn-fab {
@@ -499,13 +485,13 @@ a.btn-fab .material-icons {
 
 .btn-toggle {
   .btn {
-    border: 1px solid @grey-300;
+    border: 1px solid @toggle-btn-border;
     box-shadow: none;
     outline: none;
   }
   .btn.active {
-    border-color: @grey-400;
-    background-color: @grey-200;
+    border-color: @toggle-btn-active-border;
+    background-color: @toggle-btn-active-bg;
   }
   .btn:focus, .btn:active:focus {
     outline: none;
@@ -552,7 +538,7 @@ a.btn-fab .material-icons {
 }
 
 .spinner {
-  background-color: #DDD;
+  background-color: @spinner-bg;
   border-radius: 100%;
   animation: scaleout 1.5s infinite ease-in-out;
 }
@@ -575,7 +561,7 @@ a.anchor {
 }
 
 .alert a {
-  color: @white-text;
+  color: @alert-fg;
   font-weight: bold;
 }
 
@@ -651,25 +637,25 @@ a.anchor {
 .label.accent-red {
   background-color: @color-red;
   border-color: darken(@color-red, 20%);
-  color: @grey-100;
+  color: @label-text;
 }
 
 .label.accent-pink {
   background-color: @color-pink;
   border-color: darken(@color-pink, 20%);
-  color: @grey-100;
+  color: @label-text;
 }
 
 .label.accent-purple {
   background-color: @color-purple;
   border-color: darken(@color-purple, 20%);
-  color: @grey-100;
+  color: @label-text;
 }
 
 .label.accent-deep-purple {
   background-color: @color-deep-purple;
   border-color: darken(@color-deep-purple, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -679,7 +665,7 @@ a.anchor {
 .label.accent-indigo {
   background-color: @color-indigo;
   border-color: darken(@color-indigo, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -689,7 +675,7 @@ a.anchor {
 .label.accent-teal {
   background-color: @color-teal;
   border-color: darken(@color-teal, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -699,13 +685,13 @@ a.anchor {
 .label.accent-orange {
   background-color: @color-orange;
   border-color: darken(@color-orange, 20%);
-  color: @grey-100;
+  color: @label-text;
 }
 
 .label.accent-brown {
   background-color: @color-brown;
   border-color: darken(@color-brown, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -715,7 +701,7 @@ a.anchor {
 .label.accent-blue-grey {
   background-color: @color-blue-grey;
   border-color: darken(@color-blue-grey, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -725,25 +711,25 @@ a.anchor {
 .token.accent-red {
   background-color: @color-red;
   border-color: darken(@color-red, 20%);
-  color: @grey-100;
+  color: @label-text;
 }
 
 .token.accent-pink {
   background-color: @color-pink;
   border-color: darken(@color-pink, 20%);
-  color: @grey-100;
+  color: @label-text;
 }
 
 .token.accent-purple {
   background-color: @color-purple;
   border-color: darken(@color-purple, 20%);
-  color: @grey-100;
+  color: @label-text;
 }
 
 .token.accent-deep-purple {
   background-color: @color-deep-purple;
   border-color: darken(@color-deep-purple, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -753,7 +739,7 @@ a.anchor {
 .token.accent-indigo {
   background-color: @color-indigo;
   border-color: darken(@color-indigo, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -763,7 +749,7 @@ a.anchor {
 .token.accent-teal {
   background-color: @color-teal;
   border-color: darken(@color-teal, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -773,13 +759,13 @@ a.anchor {
 .token.accent-orange {
   background-color: @color-orange;
   border-color: darken(@color-orange, 20%);
-  color: @grey-100;
+  color: @label-text;
 }
 
 .token.accent-brown {
   background-color: @color-brown;
   border-color: darken(@color-brown, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -789,7 +775,7 @@ a.anchor {
 .token.accent-blue-grey {
   background-color: @color-blue-grey;
   border-color: darken(@color-blue-grey, 20%);
-  color: @grey-100;
+  color: @label-text;
 
   a.close {
     color: @white-text;
@@ -820,12 +806,10 @@ a.anchor {
     margin-top: 2px;
     padding: 5px 0;
     background-color: @content-bg;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid @divider-color;
     *border-right-width: 2px;
     *border-bottom-width: 2px;
     border-radius: 6px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     background-clip: padding-box;
   }
 
@@ -873,7 +857,7 @@ a.anchor {
   }
 
   .twitter-typeahead .token-input.tt-hint {
-    color: #999999;
+    color: @text-secondary;
     margin-top: 7px;
     margin-bottom: 6px;
     margin-left: 12px;
@@ -910,7 +894,7 @@ a.action .material-icons {
 }
 
 .dodona-progress > .progressbar {
-  background-color: @accent-A100;
+  background-color: @progress-bar-bg;
   z-index: 1;
   left: 0;
 }
@@ -926,7 +910,7 @@ a.action .material-icons {
 }
 
 .dodona-progress.dodona-progress-indeterminate > .bar1, .dodona-progress.dodona-progress-indeterminate > .bar3 {
-  background-color: @accent-A100;
+  background-color: @progress-bar-bg;
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
@@ -976,7 +960,7 @@ a.action .material-icons {
 .callout {
   padding: 20px;
   margin: 20px 0;
-  border: 1px solid #eee;
+  border: 1px solid @callout-border;
   border-left-width: 5px;
   border-radius: 3px;
 }
@@ -1002,25 +986,25 @@ a.action .material-icons {
 
 /* Variations */
 .callout-danger {
-  border-left-color: @danger-500;
+  border-left-color: @brand-danger;
 }
 
 .callout-danger h4 {
-  color: @danger-500;
+  color: @brand-danger;
 }
 
 .callout-warning {
-  border-left-color: @warning-500;
+  border-left-color: @brand-warning;
 }
 
 .callout-warning h4 {
-  color: @warning-500;
+  color: @brand-warning;
 }
 
 .callout-info {
-  border-left-color: @info-500;
+  border-left-color: @brand-info;
 }
 
 .callout-info h4 {
-  color: @info-500;
+  color: @brand-info;
 }

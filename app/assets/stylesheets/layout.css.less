@@ -30,12 +30,12 @@ body {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  align-items: left;
+  align-items: flex-start;
   flex-shrink: 0;
   width: 100%;
   padding: 32px;
-  color: #9e9e9e;
-  background-color: #424242;
+  color: @footer-fg;
+  background-color: @footer-bg;
   height: 80px;
 }
 
@@ -50,7 +50,7 @@ body {
   flex-wrap: nowrap;
   flex-shrink: 0;
   align-self: stretch;
-  align-items: left;
+  align-items: flex-start;
 }
 
 .footer-block > * {
@@ -67,7 +67,7 @@ body {
 }
 
 .footer-version a:hover {
-  color: @white-text;
+  color: @footer-fg-hover;
   text-decoration: none;
 }
 
@@ -84,10 +84,10 @@ body {
 }
 
 .notifications .notification {
-  background-color: #323232;
+  background-color: @notification-bg;
   border-radius: 3px;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
-  color: @white-text;
+  box-shadow: 0 0 2px @notification-inner-shadow, 0 2px 4px @notification-outer-shadow;
+  color: @notification-fg;
   display: inline-block;
   line-height: 20px;
   margin-top: 8px;
@@ -111,5 +111,5 @@ body {
   height: 20px;
   float: right;
   margin-left: 10px;
-  background-color: #fff;
+  background-color: @notification-spinner-bg;
 }

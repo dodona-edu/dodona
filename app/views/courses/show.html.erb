@@ -21,20 +21,18 @@
           </h3>
         <% end %>
       </div>
-      <div class="card-supporting-text card-border row course-description">
-        <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
-          <%= markdown(@course.description) %>
-          <% if current_user&.member_of? @course %>
-            <%= button_to t('.unsubscribe'),
-                          unsubscribe_course_path(@course),
-                          class: 'btn-text pull-right',
-                          data: {confirm: t('general.are_you_sure')} %>
+
+      <% if @course.description.present? or current_user&.member_of?(@course).! %>
+        <div class="card-supporting-text card-border row course-description">
+          <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
+            <%= markdown(@course.description) %>
+          </div>
+          <% if current_user&.member_of?(@course).! %>
+            <%= render partial: 'not_a_member_card' %>
           <% end %>
         </div>
-        <% if current_user&.member_of?(@course).! %>
-          <%= render partial: 'not_a_member_card' %>
-        <% end %>
-      </div>
+      <% end %>
+
       <% if current_user&.course_admin?(@course) %>
         <div class="card-supporting-text card-border">
           <div class="row">
@@ -45,7 +43,7 @@
               <p>
                 <%= t ".invitation_link" %>
                 <i title="<%= t ".invitation_link_help" %>" class="material-icons md-18 material-icons-info">info</i>
-              <div class="input-group input-group-sm">
+              <div class="input-group">
                 <%= text_field_tag :registration_link, registration_course_url(@course, @course.secret), readonly: true, class: 'form-control' %>
                 <span class="input-group-btn">
                     <%= clipboard_button_for :registration_link %>
@@ -62,11 +60,20 @@
             </div>
           </div>
           </span>
+        </div>
+      <% end %>
+      
+      <% if policy(@course).scoresheet? or current_user&.member_of? %>
+        <div class="card-actions card-border">
           <% if policy(@course).scoresheet? %>
-            <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text pull-right' %>
+            <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text' %>
+          <% end %>
+          <% if current_user&.member_of? @course %>
+            <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn-text', data: {confirm: t('general.are_you_sure')} %>
           <% end %>
         </div>
       <% end %>
+
     </div>
     <% if policy(@course).show_series? %>
       <div class="page-subtitle">

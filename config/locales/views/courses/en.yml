@@ -60,7 +60,7 @@ en:
       not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
       registration_closed: Registrations are closed for this course.
     registration:
-      registration-tooltip: Registering only influeces your status on this website, not within the UGent.
+      registration-tooltip: Registering only influeces your status on this website, not within your institution.
       page_title: Registration
       not_a_member: You are not a member of this course.
       already_a_member: You are a member of this course.

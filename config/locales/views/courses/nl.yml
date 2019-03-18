@@ -57,7 +57,7 @@ nl:
       taught_by_at: "Gegeven door %{teacher} aan %{institution}."
       taught_at: "Gegeven aan %{institution}."
     registration:
-      registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen de UGent.
+      registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       page_title: Registratie
       not_a_member: Je bent niet geregistreerd voor deze cursus.
       already_a_member: Je bent al geregistreerd.

@@ -1,25 +1,19 @@
 <div class="col-sm-6 col-xs-12">
-  <div class="card">
-    <div class="card-supporting-text">
-      <% if @course.closed? %>
-        <p>
-          <strong><%= t 'layout.messages.danger' %>!</strong>
-          <%= t 'courses.registration.closed' %>
+  <div class="callout callout-info">
+    <% if @course.closed? %>
+      <p><%= t 'courses.registration.closed' %></p>
+    <% else %>
+      <% if @current_membership&.pending? %>
+        <p><%= t 'courses.registration.pending' %></p>
       <% else %>
-        <% if @current_membership&.pending? %>
-          <p><%= t 'courses.registration.pending' %>
-        <% else %>
-          <p><%= t 'courses.registration.not_a_member' %>
-        <% end %>
-        <% if @course.moderated? %>
-          <p><%= t 'courses.registration.moderated' %>
-        <% end %>
+        <p><%= t 'courses.registration.not_a_member' %></p>
       <% end %>
-    </div>
+      <% if @course.moderated? %>
+        <p><%= t 'courses.registration.moderated' %></p>
+      <% end %>
+    <% end %>
     <% unless @course.closed? %>
-      <div class="card-actions card-border">
-        <%= registration_action_for course: @course, membership: @current_membership %>
-      </div>
+      <%= registration_action_for course: @course, membership: @current_membership %>
     <% end %>
   </div>
 </div>

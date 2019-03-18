@@ -53,45 +53,41 @@ class FeedbackTableRenderer
   end
 
   def tabs(submission)
-    @builder.div(class: 'card card-nav') do
-      @builder.div(class: 'card-title card-title-colored') do
-        @builder.ul(class: 'nav nav-tabs') do
-          submission[:groups]&.each_with_index do |t, i|
-            @builder.li(class: ('active' if i.zero?)) do
-              @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
-                @builder.text!((t[:description] || 'Test').upcase_first + ' ')
-                @builder.span(class: 'badge') do
-                  @builder << tab_count(t)
-                end
+    @builder.div(class: 'card-tab') do
+      @builder.ul(class: 'nav nav-tabs') do
+        submission[:groups]&.each_with_index do |t, i|
+          @builder.li(class: ('active' if i.zero?)) do
+            @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
+              @builder.text!((t[:description] || 'Test').upcase_first + ' ')
+              @builder.span(class: 'badge') do
+                @builder << tab_count(t)
               end
             end
           end
-          if show_code_tab
-            @builder.li(class: ('active' unless submission[:groups].present?)) do
-              @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
-                @builder.text!(I18n.t('submissions.show.code') + ' ')
-                if submission.key?(:annotations) && submission[:annotations].count.positive?
-                  @builder.span(class: 'badge') do
-                    @builder << submission[:annotations].count.to_s
-                  end
+        end
+        if show_code_tab
+          @builder.li(class: ('active' unless submission[:groups].present?)) do
+            @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
+              @builder.text!(I18n.t('submissions.show.code') + ' ')
+              if submission.key?(:annotations) && submission[:annotations].count.positive?
+                @builder.span(class: 'badge') do
+                  @builder << submission[:annotations].count.to_s
                 end
               end
             end
           end
         end
       end
-      @builder.div(class: 'card-supporting-text') do
-        @builder.div(class: 'tab-content') do
-          @submission[:groups].each_with_index {|t, i| tab(t, i)} if submission[:groups]
-          if show_code_tab
-            @builder.div(class: "tab-pane #{'active' unless submission[:groups].present?}", id: 'code-tab') do
-              if submission[:annotations]
-                @builder.div(class: 'linter') do
-                  source(@code, submission[:annotations])
-                end
-              else
-                source(@code, [])
+      @builder.div(class: 'tab-content') do
+        @submission[:groups].each_with_index {|t, i| tab(t, i)} if submission[:groups]
+        if show_code_tab
+          @builder.div(class: "tab-pane #{'active' unless submission[:groups].present?}", id: 'code-tab') do
+            if submission[:annotations]
+              @builder.div(class: 'linter') do
+                source(@code, submission[:annotations])
               end
+            else
+              source(@code, [])
             end
           end
         end

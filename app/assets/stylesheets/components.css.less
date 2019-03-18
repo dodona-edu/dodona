@@ -272,7 +272,6 @@ a.card-title-link:hover {
   overflow: visible;
 }
 
-.card-nav .card-tab,
 .card-nav .card-title {
   padding-bottom: 0;
   padding-top: 11px;
@@ -295,11 +294,7 @@ a.card-title-link:hover {
 }
 
 .card-tab .nav {
-  margin-bottom: 9.5px;
-}
-
-.card-tab .nav-tabs li a {
-  font-weight: 300;
+  margin-bottom: 16px;
 }
 
 .card-tab .nav-tabs li a,
@@ -323,6 +318,9 @@ a.card-title-link:hover {
   color: @white-text;
 }
 
+.card-tab .nav-tabs li a {
+  color: @text-muted;
+}
 .card-tab .nav-tabs li.active a,
 .card-tab .nav-tabs li a:hover,
 .card-tab .nav-tabs li a:focus {
@@ -353,6 +351,13 @@ a.card-title-link:hover {
 
 .card-nav .badge {
   margin-left: 3px;
+  background-color: @accent-500;
+}
+
+.nav-tabs .badge {
+  background-color: @text-muted;
+}
+.nav-tabs .active .badge {
   background-color: @accent-500;
 }
 

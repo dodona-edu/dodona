@@ -4,13 +4,15 @@ nl:
       show: Cursus bekijken
       members: Ingeschreven gebruikers
       edit: Cursus bewerken
-      submissions: Oplossingen voor dit vak
-      statistics: "Statistieken voor dit vak"
+      submissions: Oplossingen voor deze cursus
+      statistics: "Statistieken voor deze cursus"
     form:
-      description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
+      teacher-help: Optioneel. Kan gebruikers helpen om je cursus te vinden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
-      visibility-help: Zichtbare vakken zijn zichtbaar in het cursusoverzicht. Verborgen vakken worden niet opgelijst in het overzicht en vereisen een speciale registratielink.
-      registration-help: Bij open vakken worden registraties direct geaccepteerd. Bij gemoderereerde vakken moet elke registratie goedgekeurd worden door een cursusbeheerder. Wanneer een vak gesloten is kan niemand zich nog registreren.
+      institution-help_html: Een onderwijsinstelling selecteren zal de cursusregistraties <b>niet</b> beperken, maar kan gebruikers helpen om je cursus te vinden.
+      visibility-help_html: <b>Zichtbare</b> vakken zijn voor iedereen zichtbaar in het cursusoverzicht. <b>Verborgen</b> vakken worden niet opgelijst en vereisen een speciale toegangslink.
+      registration-help_html: Bij <b>open</b> vakken worden registraties automatisch geaccepteerd. Bij <b>gemodereerde</b> vakken moet elke registratie goedgekeurd worden door een cursusbeheerder. Bij <b>gesloten</b> vakken zijn nieuwe registraties niet mogelijk.
+      description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       no_institution: "Geen onderwijsinstelling"
     index:
       title: Alle cursussen
@@ -19,7 +21,7 @@ nl:
       title: Cursus aanmaken
     edit:
       confidential: Confidentieel
-      series_in_course: "Reeksen in dit vak"
+      series_in_course: "Reeksen in deze cursus"
       series_reordering_help: "Je kan de reeksen herordenen door ze te slepen met het icoon aan de linkerkant van de tabel. Hou rekening met het feit dat de volgorde die voor jou het handigst is niet noodzakelijk de volgorde is die voor jouw studenten het handigst is."
     show:
       course: Cursus

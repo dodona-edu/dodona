@@ -21,11 +21,11 @@
 }
 
 .deadline-passed {
-  color: @danger-800;
+  color: @danger-fg;
 }
 
 .deadline-ok {
-  color: @success-800;
+  color: @success-fg;
 }
 
 .scoresheet-table {
@@ -42,7 +42,7 @@
 
 .submission-status-button {
   a {
-    color: @accent-500;
+    color: @btn-accent;
   }
 }
 
@@ -64,12 +64,15 @@
     position: relative;
     margin-bottom: 16px;
   }
+
   .card-subtitle h4 {
     line-height: 20px;
   }
+
   .card-subtitle h4 small {
     font-size: 65%;
   }
+
   .card-title-icon {
     min-width: 40px;
     width: 40px;
@@ -82,10 +85,10 @@
     font-size: 22px;
     margin-right: 16px;
     border-radius: 50%;
-    background-color: @grey-300;
+    background-color: @series-summary-icon-bg;
 
     &.deadline-missed:after {
-      color: @danger-800;
+      color: @brand-danger;
       background-color: @content-bg;
       position: absolute;
       font-size: 18px;
@@ -97,7 +100,7 @@
     }
 
     &.deadline-met:not(.completed):after {
-      color: @success-500;
+      color: @brand-success;
       background-color: @content-bg;
       position: absolute;
       font-size: 18px;
@@ -109,33 +112,35 @@
     }
 
     i {
-      color: @grey-300;
+      color: @series-summary-icon-bg;
       background: #fff;
       border-radius: 50%;
       border: 5px solid #fff;
     }
 
     &.wrong {
-      background-color: @danger-500;
+      background-color: @brand-danger;
+
       i {
-        color: @danger-500;
+        color: @brand-danger;
       }
     }
 
     &.started, &.completed.deadline-missed {
-      background-color: @success-500;
+      background-color: @brand-success;
+
       i {
-        color: @success-500;
+        color: @brand-success;
       }
     }
 
     &.completed:not(.deadline-missed) {
-      @red: #F44336;
-      @orange: #FF9800;
-      @yellow: #FFEB3B;
-      @green: #4CAF50;
-      @blue: #2196F3;
-      @purple: #9C27B0;
+      @red: @red-500;
+      @orange: @orange-500;
+      @yellow: @yellow-500;
+      @green: @green-500;
+      @blue: @blue-500;
+      @purple: @purple-500;
 
       @p1: 10%;
       @p2: 25%;
@@ -180,11 +185,11 @@
   width: 100%;
 
   .skeleton-head {
-    border-bottom: solid 1px #ddd;
+    border-bottom: solid 1px @skeleton-unloaded;
     height: 33px;
     background-repeat: no-repeat;
-    background-image: linear-gradient(@grey-300 100%, transparent 0),
-    linear-gradient(@grey-300 100%, transparent 0);
+    background-image: linear-gradient(@skeleton-unloaded 100%, transparent 0),
+    linear-gradient(@skeleton-unloaded 100%, transparent 0);
     background-size: 56px 12px,
     115px 12px;
     background-position: 58px 10px,
@@ -192,13 +197,13 @@
   }
 
   .skeleton-row {
-    border-top: solid 1px #ddd;
+    border-top: solid 1px @skeleton-unloaded;
     height: 40px;
     background-repeat: no-repeat;
-    background-image: linear-gradient(@grey-300 100%, transparent 0),
-    linear-gradient(@grey-300 100%, transparent 0),
-    linear-gradient(@grey-300 100%, transparent 0),
-    linear-gradient(@grey-300 100%, transparent 0);
+    background-image: linear-gradient(@skeleton-unloaded 100%, transparent 0),
+    linear-gradient(@skeleton-unloaded 100%, transparent 0),
+    linear-gradient(@skeleton-unloaded 100%, transparent 0),
+    linear-gradient(@skeleton-unloaded 100%, transparent 0);
     background-size: 90px 12px,
     24px 12px,
     90px 12px,

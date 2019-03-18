@@ -2,7 +2,7 @@ en:
   courses:
     navbar_links:
       show: Show course
-      members: Subscribed members
+      members: Registered members
       edit: Edit course
       submissions: Submissions for this course
       statistics: "Statistics of this course"
@@ -11,7 +11,7 @@ en:
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
       institution-help_html: Asigning an institution wil <b>not</b> limit course registrations, but can help users find your course.
       visibility-help_html: <b>Visible</b> courses are visible for everyone in the course overview. <b>Hidden</b> courses are unlisted and require a special access link.
-      registration-help_html: <b>Open</b> courses give direct access upon subscription. For <b>moderated</b> courses, a course administrator has to approve each registration. For <b>closed</b> course, new registrations are disabled.
+      registration-help_html: <b>Open</b> courses give direct access upon registration. For <b>moderated</b> courses, a course administrator has to approve each registration. For <b>closed</b> course, new registrations are disabled.
       description-help: A description is optional. Markdown formatting can be used.
       no_institution: "No institution"
     index:
@@ -20,13 +20,13 @@ en:
     new:
       title: Create course
     edit:
-      confidential: Confidential
+      confidential: Secret links
       series_in_course: "Series in this course"
-      series_reordering_help: "You can reorder series by dragging them using the icon at the left of the table. Keep in mind that a logical order for you might not be the most logical order for your students."
+      series_reordering_help_html: "You can reorder the series by dragging the icons at the left of the table. For students, a <b>reverse chronological</b> order is probably the easiest. This way, the most recent series is at the top and the students don't have to scroll down each time."
     show:
       course: Course
-      invitation_link: Subscription link
-      invitation_link_help: 'This URL links to a page where the user is prompted to register.'
+      invitation_link: Registration link
+      invitation_link_help: 'This URL links to a page where users can directly register for this course.'
       visibility-visible-info_html: 'This course is <strong>visible</strong>: everyone can access this course from the course overview and the contents are visible for anyone.'
       visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and to register, users need the registration link. The contents is only visible for registered members.'
       registration-open-info_html: 'Registrations are <strong>open</strong>: users are immediately registered when they click on the register button.'

@@ -1,80 +1,101 @@
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @user.full_name %></h2>
-        <% if policy(@user).edit? %>
-          <div class="card-title-fab">
-            <%= render 'fab_link', url: edit_user_path(@user), icon: 'edit' %>
-          </div>
-        <% end %>
-      </div>
+    <div class="card profile">
       <div class="card-supporting-text">
-        <% unless @user.token.blank? %>
-          <div class="card">
-            <div class="card-title card-title-colored">
-              <h2 class="card-title-text"><%= t ".sign_in" %></h2>
-            </div>
-            <div class="card-supporting-text">
-              <p><%= t ".token_sign_in" %></p>
-              <p><%= token_sign_in_user_url(@user, @user.token) %></p>
-            </div>
+        <div>
+          <span class="user-icon pull-left"><i class="material-icons md-36" title="<%= @user.permission %>">
+            <% if @user.permission == "student" %>
+              person
+            <% elsif @user.permission == "staff" %>
+              school
+            <% else %>
+              android
+            <% end %>
+          </i></span>
+          <span class="profile-line">
+            <span class="name">
+              <%= @user.full_name %>
+            </span>
+            <span>(<%= @user.username %>)</span>
+          </span>
+          <span class="profile-byline text-muted">
+            <%= @user.institution&.name %>
+            <% if @user.institution&.name.present? and @user.email.present? %>
+              &middot;
+            <% end %>
+            <%= @user.email %>
+          </span>
+          <p class="timezone">
+            <%= t ".timezone" %> <b><%= @user.time_zone %></b>.
+          </p>
+        </div>
+        <% if @user.token.present? %>
+          <div class="callout callout-warning">
+            <h4><%= t ".sign_in" %></h4>
+            <p><%= t ".token_sign_in" %></p>
+            <p><%= token_sign_in_user_url(@user, @user.token) %></p>
           </div>
         <% end %>
-        <p>
-          <% if policy(@user).impersonate? %>
-            <%= link_to impersonate_user_path(@user), class: "btn with-text btn-default" do %>
-              <i class="material-icons md-18">person</i> <%= t("layout.impersonate.impersonate") %>
-            <% end %>
-          <% end %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("first_name") %>:</strong> <%= @user.first_name %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("last_name") %>:</strong> <%= @user.last_name %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("username") %>:</strong> <%= @user.username %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("email") %>:</strong> <%= @user.email %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("institution") %>:</strong> <%= @user.institution&.name %>
-        </p>
-        <p>
-          <strong><%= User.human_attribute_name("time_zone") %>:</strong> <%= @user.time_zone %>
-        </p>
-        <% if current_user.admin? %>
-          <p>
-            <strong><%= User.human_attribute_name("permission") %>:</strong> <%= @user.permission %>
-          </p>
-        <% end %>
-        <p>
-          <strong><%= t ".courses" %>:</strong>
-          <% if @user.subscribed_courses.empty? %>
-            <%= t ".no_courses" %>
-          <% else %>
-            <ul>
+        <div class="row">
+          <div class="col-sm-12 col-md-6">
+            <h4><%= t ".stats" %></h4>
+            <div class="row">
+              <div class="col-xs-6 stat">
+                <a class="card-title-link" href="<%= user_submissions_path(@user) %>">
+                  <h1><%= @user.submissions.count %></h1>
+                  <%= t ".submissions" %>
+                </a>
+              </div>
+              <div class="col-xs-6 stat">
+                <h1><%= @user.subscribed_courses.count %></h1>
+                <%= t ".courses" %>
+              </div>
+              <div class="col-xs-6 stat">
+                <h1><%= @user.correct_exercises %></h1>
+                <%= t ".correctly_solved" %>
+              </div>
+              <div class="col-xs-6 stat">
+                <h1><%= @user.unfinished_exercises %></h1>
+                <%= t ".unfinished" %>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-offset-1 col-md-5">
+            <h4><%= t ".my_courses" %></h4>
+            <% if @user.subscribed_courses.empty? %>
+              <%= t ".no_courses" %>
+            <% else %>
               <% @user.subscribed_courses.each do |course| %>
-                <li><%= link_to course.name, course %></li>
+                <p>
+                  <div>
+                    <%= link_to course.name, course, class: "course-link", title: course.name %>
+                    <% if course.teacher.present? %>
+                      <span class="text-muted"> &middot; <%= course.teacher %></span>
+                    <% end %>
+                  </div>
+                  <span class="small text-muted"><%= course.year %></span>
+                </p>
               <% end %>
-            </ul>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% if policy(@user).edit? or policy(@user).impersonate? %>
+        <div class="card-actions card-border">
+          <% if policy(@user).impersonate? %>
+            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text"  %>
           <% end %>
-        </p>
-        <p>
-          <strong><%= t ".correctly_solved" %>:</strong> <%= @user.correct_exercises %>
-        </p>
-        <p>
-          <strong><%= t ".unfinished" %>:</strong> <%= @user.unfinished_exercises %>
-        </p>
-        <p>
-          <strong><%= t ".solutions" %>:</strong> <%= link_to @user.submissions.count, user_submissions_path(@user) %>
-        </p>
+          <% if policy(@user).edit? %>
+            <%= link_to t(".edit"), edit_user_path(@user), class: "btn-text btn-primary"  %>
+        <% end %>
+        </div>
+      <% end %>
+    </div>
+    <div class="card">
+      <div class="card-supporting-text">
+        <%= render partial: 'visualizations/punchcard' %>
       </div>
     </div>
-    <%= render partial: 'visualizations/punchcard' %>
   </div>
 </div>
 

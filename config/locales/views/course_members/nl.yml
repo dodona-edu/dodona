@@ -1,10 +1,12 @@
 nl:
   course_members:
     show:
+      edit_labels: Labels bewerken
       labels: Labels
       no_labels: Geen labels
       close: "Sluiten"
       save: "Opslaan"
+      course_overview: "Cursusoverzicht voor "
     form:
       course_labels: "Labels"
       labels_delimiter: "Gebruik een komma om labels te scheiden"

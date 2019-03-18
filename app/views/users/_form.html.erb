@@ -16,7 +16,6 @@
     <div class="field form-group">
       <%= f.label :username, :class => "col-sm-4 control-label" %>
       <div class="col-sm-8"><%= f.text_field :username, class: "form-control", disabled: !f.permission?(:username) %></div>
-      <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".username-help" if current_user.admin? %></span>
     </div>
     <div class="field form-group">
       <%= f.label :first_name, :class => "col-sm-4 control-label" %>

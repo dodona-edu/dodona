@@ -7,10 +7,12 @@ en:
       submissions: Submissions for this course
       statistics: "Statistics of this course"
     form:
-      description-help: A description is optional. Markdown formatting can be used.
+      teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
-      visibility-help: Visible courses are visible for anyone. Hidden courses do not show up in the course overview, they require a special invite link to be able to register.
-      registration-help: Open courses give direct access upon subscription. For moderated courses, a course administrator has to approve each registration. Registrations are disabled with closed courses.
+      institution-help_html: Asigning an institution wil <b>not</b> limit course registrations, but can help users find your course.
+      visibility-help_html: <b>Visible</b> courses are visible for everyone in the course overview. <b>Hidden</b> courses are unlisted and require a special access link.
+      registration-help_html: <b>Open</b> courses give direct access upon subscription. For <b>moderated</b> courses, a course administrator has to approve each registration. For <b>closed</b> course, new registrations are disabled.
+      description-help: A description is optional. Markdown formatting can be used.
       no_institution: "No institution"
     index:
       title: All courses

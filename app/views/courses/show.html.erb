@@ -88,6 +88,9 @@
           <% end %>
         </div>
       </div>
+      <% if @series.empty? %>
+        <p class="lead text-center"><%= t ".no_series_yet" %></p>
+      <% end %>
       <div id="series-listing">
         <% @series.first(@series_loaded).each do |series| %>
           <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>

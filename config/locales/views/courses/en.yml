@@ -36,6 +36,7 @@ en:
       request_registration: request registration
       unsubscribe: unregister
       exercise_series: Exercise series
+      no_series_yet: This course currently contains no exercises nor series. Click the create series button to get started!
       users: Users
       series: series
       download_scoresheet: Download scoresheet

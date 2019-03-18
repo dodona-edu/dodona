@@ -285,8 +285,8 @@ class PythiaRenderer < FeedbackTableRenderer
     if test[:data][:diff]
       test[:data][:diff].each do |diff_line|
         # Not perfect, since there might be html in the diff_line items
-        return 'unified' if strip_outer_html(diff_line[2]).length >= 55
-        return 'unified' if strip_outer_html(diff_line[3]).length >= 55
+        return 'unified' if !diff_line[2].nil? && strip_outer_html(diff_line[2]).length >= 55
+        return 'unified' if !diff_line[3].nil? && strip_outer_html(diff_line[3]).length >= 55
       end
       'split'
     else

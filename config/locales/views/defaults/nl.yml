@@ -12,7 +12,6 @@ nl:
       danger: Oh nee
       info: Ter info
       success: Geweldig
-      no_institution: Je account heeft geen onderwijsinstelling. Als je ondertussen een account hebt gekregen van je onderwijsinstelling, contacteer dan zo snel mogelijk een assistent.
       time_zone_html: Je tijdzone staat momenteel ingesteld op <strong>%{time_zone}</strong>, maar dit lijkt niet overeen te komen met je lokale tijd. Je kan van tijdzone wisselen op je <a href='%{profile_edit}'>profielpagina</a>.
     menu:
       manual: Gebruikershandleiding

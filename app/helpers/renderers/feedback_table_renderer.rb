@@ -121,7 +121,7 @@ class FeedbackTableRenderer
           @builder.span do
             @builder << I18n.t("submissions.show.correct_tests")
           end
-          @builder.div(class: "btn-group") do
+          @builder.div(class: "btn-group btn-toggle") do
             @builder.button(class: "btn btn-secondary active", 'data-show': 'true', title: I18n.t("submissions.show.correct.shown")) do
               @builder.i(class: "material-icons md-18") do
                 @builder << "visibility"
@@ -140,7 +140,7 @@ class FeedbackTableRenderer
           @builder.span do
             @builder << I18n.t("submissions.show.output")
           end
-          @builder.div(class: "btn-group") do
+          @builder.div(class: "btn-group btn-toggle") do
             @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t("submissions.show.diff.split")) do
               @builder.i(class: "mdi mdi-18 mdi-arrow-split-vertical") {}
             end

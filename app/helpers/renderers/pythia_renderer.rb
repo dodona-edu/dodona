@@ -210,6 +210,8 @@ class PythiaRenderer < FeedbackTableRenderer
                 @builder.td(class: 'unchanged') do
                   @builder << strip_outer_html(diff_line[3])
                 end
+              else
+                @builder.td
               end
               @builder.td(diff_line[0], class: 'line-nr')
               if !diff_line[4] && diff_line[2]
@@ -220,6 +222,8 @@ class PythiaRenderer < FeedbackTableRenderer
                 @builder.td(class: 'unchanged') do
                   @builder << strip_outer_html(diff_line[3])
                 end
+              else
+                @builder.td
               end
             end
           end

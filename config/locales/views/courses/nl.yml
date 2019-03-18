@@ -8,10 +8,10 @@ nl:
       statistics: "Statistieken voor deze cursus"
     form:
       teacher-help: Optioneel. Kan gebruikers helpen om je cursus te vinden.
-      year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
+      year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je cursus correct gesorteerd zal worden.
       institution-help_html: Een onderwijsinstelling selecteren zal de cursusregistraties <b>niet</b> beperken, maar kan gebruikers helpen om je cursus te vinden.
-      visibility-help_html: <b>Zichtbare</b> vakken zijn voor iedereen zichtbaar in het cursusoverzicht. <b>Verborgen</b> vakken worden niet opgelijst en vereisen een speciale toegangslink.
-      registration-help_html: Bij <b>open</b> vakken worden registraties automatisch geaccepteerd. Bij <b>gemodereerde</b> vakken moet elke registratie goedgekeurd worden door een cursusbeheerder. Bij <b>gesloten</b> vakken zijn nieuwe registraties niet mogelijk.
+      visibility-help_html: <b>Zichtbare</b> cursussen zijn voor iedereen zichtbaar in het cursusoverzicht. <b>Verborgen</b> cursussen worden niet opgelijst en vereisen een speciale toegangslink.
+      registration-help_html: Bij <b>open</b> cursussen worden registraties automatisch geaccepteerd. Bij <b>gemodereerde</b> cursussen moet elke registratie goedgekeurd worden door een cursusbeheerder. Bij <b>gesloten</b> cursussen zijn nieuwe registraties niet mogelijk.
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       no_institution: "Geen onderwijsinstelling"
     index:
@@ -63,8 +63,8 @@ nl:
       already_a_member: Je bent al geregistreerd.
       pending: Je staat op de wachtlijst.
       remove_from_pending: Registratieverzoek annuleren
-      moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot dit vak.
-      explanation_html: 'Dit is de registratiepagina voor het vak <strong>%{course_name}</strong>.'
+      moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot deze cursus.
+      explanation_html: 'Dit is de registratiepagina voor de cursus <strong>%{course_name}</strong>.'
       instruction: 'Klik op de knop om je te registreren voor deze cursus.'
       closed: Deze cursus is gesloten en aanvaardt geen nieuwe registraties.
       sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je registratie accepteert.

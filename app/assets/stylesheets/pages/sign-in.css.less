@@ -1,0 +1,82 @@
+.sign-in-wrapper a {
+  border-radius: 2px;
+  display: block;
+}
+
+// sign in page
+.sign-in-dialog-wrapper {
+  margin: auto;
+  // 1 column
+  @media (max-width: 768px) {
+    width: 350px;
+  }
+  // 2 columns
+  @media (min-width: 768px) and (max-width: 1200px) {
+    width: 750px;
+  }
+  // 3 columns
+  @media (min-width: 1200px) {
+    width: 1150px;
+  }
+}
+
+.sign-in-dialog-wrapper h1 {
+  line-height: 1;
+  margin-bottom: 15px;
+}
+
+.sign-in-dialog-wrapper h1 small {
+  line-height: 2;
+  font-size: 50%;
+}
+
+.sign-in-dialog-header {
+  padding: 15px;
+}
+
+.institution {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 12px;
+  background-color: @content-bg;
+  border-radius: 2px;
+  transition: box-shadow 0.1s cubic-bezier(.4, 0, .2, 1);
+  .shadow-z2();
+  cursor: pointer;
+}
+
+.institution:hover {
+  .shadow-z4();
+}
+
+a.institution-sign-in {
+  color: @text-color;
+}
+
+a.institution-sign-in:link,
+a.institution-sign-in:visited,
+a.institution-sign-in:hover,
+a.institution-sign-in:active {
+  text-decoration: none;
+}
+
+.institution-logo {
+  img {
+    width: 70px;
+    height: 70px;
+    object-position: 50% 50%;
+    object-fit: contain;
+  }
+
+  margin-right: 12px;
+}
+
+.institution-name {
+  flex-grow: 1;
+}
+
+.institution-name h3 {
+  line-height: 1;
+}

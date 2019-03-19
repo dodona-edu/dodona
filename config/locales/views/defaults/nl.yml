@@ -45,5 +45,5 @@ nl:
   errors:
     no_rights: Sorry, je hebt geen toegangsrechten tot deze pagina.
     validation_errors:
-      one: 'Één fout verhindert het opslaan:'
-      other: '%{count} fouten verhinderen het opslaan:'
+      one: 'Één fout verhindert het opslaan'
+      other: '%{count} fouten verhinderen het opslaan'

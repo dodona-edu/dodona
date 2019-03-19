@@ -1,9 +1,15 @@
 <% filter_institutions = current_user&.institution.present? && current_user&.institution.courses.any? %>
 <div class="row">
   <div class="col-xs-12">
-    <div class="card">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t '.title' %></h2>
+    <div class="page-subtitle">
+      <h2><%= t '.title' %></h2>
+      <div class="flex-spacer"></div>
+      <div>
+        <% if policy(Course).new? %>
+          <%= link_to new_course_path, title: t("courses.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
+            <i class="material-icons icon">add</i><span class='text'><%= t("courses.new.title") %></span>
+          <% end %>
+        <% end %>
       </div>
     </div>
     <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: !filter_institutions} %>

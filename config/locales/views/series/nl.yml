@@ -25,17 +25,17 @@ nl:
       deadline_in: binnen
       series_scoresheet: Statusoverzicht
       best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
-      show_overview: Alle oefeningbeschrijvingen
+      show_overview: Alle opgaven bekijken
     edit:
       title: Reeks bewerken
       add_exercises: Oefeningen toevoegen
       manage_exercises: Oefeningen beheren
       manage_exercises_info: Aanpassingen hieronder worden ogenblikkelijk opgeslagen.
       exercises_in_series: Oefeningen in deze reeks
-      exercises_in_series_info: Versleep het icoontje link van een rij om de oefening te herordenen.
+      exercises_in_series_info: Versleep het icoontje links van een rij om de oefening te herordenen.
       add_exercise: oefening toevoegen
       no_exercises: Deze reeks bevat nog geen oefeningen.
-      no_exercises_bis: Gebruik de zoekfunctie hieronder om van slag te gaan.
+      no_exercises_bis: Gebruik de zoekfunctie hieronder om aan de slag te gaan.
       remove_exercise: oefening verwijderen
       confidential: Geheime links en tokens
       indianio-help: Kopieer dit token en plak het in Indianio om Indianio toe te laten oplossingen van studenten te downloaden voor deze reeks.

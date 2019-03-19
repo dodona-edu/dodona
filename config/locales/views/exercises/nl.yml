@@ -42,7 +42,7 @@ nl:
       not_found: Sorry, we kunnen deze oefening niet vinden.
       not_accessible: Deze oefening is niet toegankelijk voor studenten.
       not_visible: Deze oefening is niet zichtbaar voor studenten zonder de correcte link.
-      not_a_member: Je bekijkt deze oefening binnen een vak waar je geen lid van bent. Je zult niet verschijnen op de puntenlijst van de lesgever tot je bent geregistreerd.
+      not_a_member: Je bekijkt deze oefening binnen een cursus waar je geen lid van bent. Je zult niet verschijnen op de puntenlijst van de lesgever tot je bent geregistreerd.
       alert_not_valid: Er is iets fout met deze oefening. Je kan momenteel niet indienen, maar je kan wel je oude oplossingen bekijken.
       alert_removed: Deze oefening is niet meer beschikbaar, maar je kan nog steeds je oude oplossingen bekijken.
     series_exercises_table:

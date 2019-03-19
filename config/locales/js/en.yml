@@ -19,8 +19,10 @@ en:
     actions: Actions
     favorite-course-succeeded: Favorited course
     favorite-course-failed: Favoriting course failed
+    favorite-course-do: Favorite
     unfavorite-course-succeeded: Unfavorited course
     unfavorite-course-failed: Unfavoriting course failed
+    unfavorite-course-do: Unfavorite
     labels: Labels
     programming_languages: Programming Languages
     repositories: Repositories

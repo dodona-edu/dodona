@@ -1,8 +1,8 @@
 <% if summary.series&.deadline&.past? %>
   <% if summary.solved_before_deadline? %>
-    <i class="material-icons md-18 colored-correct" title="<%= t 'exercises.exercise.deadline_met' %>">alarm</i>
+    <i class="material-icons md-18 colored-correct" title="<%= t 'exercises.exercise.deadline_met' %>" data-toggle="tooltip" data-placement="right">alarm</i>
   <% else %>
-    <i class="material-icons md-18 colored-wrong" title="<%= t 'exercises.exercise.deadline_missed' %>">alarm_off</i>
+    <i class="material-icons md-18 colored-wrong" title="<%= t 'exercises.exercise.deadline_missed' %>" data-toggle="tooltip" data-placement="right">alarm_off</i>
   <% end %>
 <% else %>
   <% if summary.solved? %>

@@ -165,7 +165,7 @@ class SeriesController < ApplicationController
 
   def remove_exercise
     @exercise = Exercise.find(params[:exercise_id])
-    @series.exercises.delete(@exercise)
+    @series.exercises.destroy(@exercise)
   end
 
   def reorder_exercises

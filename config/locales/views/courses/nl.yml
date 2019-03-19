@@ -37,7 +37,7 @@ nl:
       request_registration: registratieverzoek indienen
       unsubscribe: uitschrijven
       exercise_series: Oefeningenreeksen
-      no_series_yet: 'Deze cursus bevat momenteel nog geen oefeningen. Klik op de "reeks aanmaken"-knop om van slag te gaan!'
+      no_series_yet: 'Deze cursus bevat nog geen reeksen met oefeningen. Klik op de knop "reeks aanmaken" om aan de slag te gaan.'
       users: Gebruikers
       series: reeksen
       download_scoresheet: Scoresheet downloaden

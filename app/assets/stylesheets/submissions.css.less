@@ -90,8 +90,8 @@
       font-weight: normal;
       padding-left: 5px;
       padding-right: 5px;
-      background: @feedback-table-header-bg;
-      color: @feedback-table-header-fg;
+      background: @feedback-diff-table-header-bg;
+      color: @feedback-diff-table-header-fg;
       vertical-align: center;
     }
     .del,
@@ -110,20 +110,20 @@
       }
     }
     .ins {
-      background: @feedback-table-ins;
+      background: @feedback-diff-table-ins;
     }
     .del {
-      background: @feedback-table-del;
+      background: @feedback-diff-table-del;
     }
     .ins strong {
-      background: @feedback-table-ins-strong;
+      background: @feedback-diff-table-ins-strong;
     }
     .del strong {
-      background: @feedback-table-del-strong;
+      background: @feedback-diff-table-del-strong;
     }
     .line-nr {
-      background: @feedback-table-header-bg;
-      color: @feedback-table-header-fg;
+      background: @feedback-diff-table-header-bg;
+      color: @feedback-diff-table-header-fg;
       padding-left: 10px;
       padding-right: 10px;
     }
@@ -174,7 +174,7 @@
     border: none;
   }
   .linter pre.lineno {
-    border-right: 1px solid @lint-lineno-border;
+    border-right: 1px solid @divider-color;
     padding-right: 25px;
   }
   .linter td.code {

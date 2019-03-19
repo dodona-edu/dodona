@@ -45,5 +45,5 @@ en:
   errors:
     no_rights: Sorry, you are not allowed to access this page.
     validation_errors:
-      one: 'one error prevents saving:'
-      other: '%{count} errors prevent saving:'
+      one: 'One error prevents saving'
+      other: '%{count} errors prevent saving'

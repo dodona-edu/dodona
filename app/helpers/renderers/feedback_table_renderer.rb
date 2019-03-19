@@ -118,12 +118,12 @@ class FeedbackTableRenderer
             @builder << I18n.t("submissions.show.correct_tests")
           end
           @builder.div(class: "btn-group btn-toggle") do
-            @builder.button(class: "btn btn-secondary active", 'data-show': 'true', title: I18n.t("submissions.show.correct.shown")) do
+            @builder.button(class: "btn btn-secondary active", 'data-show': 'true', title: I18n.t("submissions.show.correct.shown"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
               @builder.i(class: "material-icons md-18") do
                 @builder << "visibility"
               end
             end
-            @builder.button(class: "btn btn-secondary ", 'data-show': 'false', title: I18n.t("submissions.show.correct.hidden")) do
+            @builder.button(class: "btn btn-secondary ", 'data-show': 'false', title: I18n.t("submissions.show.correct.hidden"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
               @builder.i(class: "material-icons md-18") do
                 @builder << "visibility_off"
               end
@@ -137,10 +137,10 @@ class FeedbackTableRenderer
             @builder << I18n.t("submissions.show.output")
           end
           @builder.div(class: "btn-group btn-toggle") do
-            @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t("submissions.show.diff.split")) do
+            @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t("submissions.show.diff.split"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
               @builder.i(class: "mdi mdi-18 mdi-arrow-split-vertical") {}
             end
-            @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t("submissions.show.diff.unified")) do
+            @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t("submissions.show.diff.unified"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
               @builder.i(class: "mdi mdi-18 mdi-arrow-split-horizontal") {}
             end
           end

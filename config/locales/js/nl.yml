@@ -19,8 +19,10 @@ nl:
     actions: Acties
     favorite-course-succeeded: Cursus toegevoegd aan favorieten
     favorite-course-failed: Cursus aan favorieten toevoegen mislukt
+    favorite-course-do: "Voeg toe aan favorieten"
     unfavorite-course-succeeded: Cursus verwijderd uit favorieten
     unfavorite-course-failed: Cursus uit favorieten verwijderen mislukt
+    unfavorite-course-do: "Verwijder uit favorieten"
     labels: Labels
     programming_languages: Programmeertalen
     repositories: Repository's

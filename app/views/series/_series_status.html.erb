@@ -39,7 +39,7 @@
                  end
                end
   %>
-  <div class="card-title-icon <%= summary.full_status %>" title="<%= tooltip %>">
+  <div class="card-title-icon <%= summary.full_status %>" title="<%= tooltip %>" data-toggle="tooltip" data-placement="top">
     <i class="material-icons">
       <% if summary.completed? %>
         done

@@ -63,7 +63,7 @@
         </div>
       <% end %>
       
-      <% if policy(@course).scoresheet? or current_user&.member_of? %>
+      <% if policy(@course).scoresheet? or current_user&.member_of? @course %>
         <div class="card-actions card-border">
           <% if policy(@course).scoresheet? %>
             <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text' %>

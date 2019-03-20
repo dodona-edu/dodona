@@ -26,7 +26,7 @@
   <span class='status-icon pull-left'><%= submission_status_icon(submission, 36) %></span>
   <span class="status-line">
     <%= Submission.human_enum_name(:status, submission.status) %>
-    <% if submission.summary.present? and submission.summary != Submission.human_enum_name(:status, submission.status) %>
+    <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>
       &middot; <span class='text-muted'><%= submission.summary %></span>
     <% end %>
   </span>

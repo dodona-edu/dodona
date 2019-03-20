@@ -50,19 +50,18 @@
                   </span>
               </div>
               <div class="admin-card-info">
-                  <span class="help-block">
-                    <%= t ".visibility-#{@course.visibility}-info_html" %>
-                  </span>
                 <span class="help-block">
-                    <%= t ".registration-#{@course.registration}-info_html" %>
-                  </span>
+                  <%= t ".visibility-#{@course.visibility}-info_html" %>
+                </span>
+                <span class="help-block">
+                  <%= t ".registration-#{@course.registration}-info_html" %>
+                </span>
               </div>
             </div>
           </div>
-          </span>
         </div>
       <% end %>
-      
+
       <% if policy(@course).scoresheet? or current_user&.member_of? @course %>
         <div class="card-actions card-border">
           <% if policy(@course).scoresheet? %>

@@ -16,7 +16,10 @@ Take a look at [the wiki](https://github.ugent.be/dodona/dodona/wiki) for more i
 3. Create dodona user (with password 'dodona') with create database permissions.
 4. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
 5. [Start the server](#starting-the-server). The simplest way is with `rails s`.
-6. Because CAS authentication does not work in development, you have to log in manually. You can do this by writing the line `sign_in User.first`in the beginning of the `set_locale` function in `app/controllers/application_controller.rb`. When you reload the page you should be logged in. **Do not forget to remove this line, so you don't accidentally commit this change.**
+6. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database form step 4)
+   - `http://localhost:3000/nl/users/1/token/zeus`
+   - `http://localhost:3000/nl/users/2/token/staff`
+   - `http://localhost:3000/nl/users/3/token/student`
 
 ## Evaluating exercises
 These steps are not required to run the server, but you need docker to actually evaluate exercises.

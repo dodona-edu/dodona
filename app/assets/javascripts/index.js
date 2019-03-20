@@ -50,7 +50,7 @@ function search(baseUrl, _query, _filterCollections, extraParams) {
         window.history.replaceState(null, "Dodona", url);
     }
     $("#progress-filter").css("visibility", "visible");
-    fetch(url, {
+    fetch(updateURLParameter(url, "format", "js"), {
         headers: {
             "accept": "text/javascript",
             "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),

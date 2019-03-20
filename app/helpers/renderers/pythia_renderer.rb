@@ -236,35 +236,8 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def linting(lint_messages, code)
     @builder.div(class: 'linter') do
-      lint_messages(lint_messages)
-      source(code, lint_messages.map {|m| convert_lint_message(m)})
+      source(code, lint_messages.map(&method(:convert_lint_message)))
     end
-  end
-
-  def lint_messages(messages)
-    @builder.ul(class: 'lint-errors') do
-      messages.each do |msg|
-        @builder.li(class: 'lint-msg') do
-          lint_icon(msg[:type])
-          @builder.text! "#{I18n.t('submissions.show.line')} #{msg[:line]}: "
-          format_lint_message(msg[:description])
-        end
-      end
-    end
-  end
-
-  def format_lint_message(message)
-    lines = message.split("\n")
-    @builder.text! lines[0]
-    return unless lines.length > 1
-    @builder.br
-    @builder.div(class: 'code') do
-      @builder.text! lines.drop(1).join("\n")
-    end
-  end
-
-  def lint_icon(type)
-    send('icon_' + convert_lint_type(type))
   end
 
   def convert_lint_type(type)
@@ -273,7 +246,7 @@ class PythiaRenderer < FeedbackTableRenderer
     elsif type.in? ['warning']
       'warning'
     elsif type.in? %w[refactor convention]
-      'error'
+      'info'
     else
       'warning'
     end

@@ -3,7 +3,7 @@
   <%= javascript_pack_tag 'pythia_submission' if submission.judge.renderer == PythiaRenderer %>
 <% end %>
 
-<div class="submission-summary">
+<div class="submission-summary clearfix">
   <span class="description">
     <%= t "submissions.show.submission_for" %>
     <% if submission.course.nil? %>
@@ -36,5 +36,5 @@
 </div>
 
 <% unless submission.queued? or submission.running? %>
-  <p><%= submission.judge.renderer.new(submission, current_user).parse %></p>
+  <%= submission.judge.renderer.new(submission, current_user).parse %>
 <% end %>

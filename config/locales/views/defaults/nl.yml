@@ -1,7 +1,7 @@
 nl:
   layout:
     head:
-      description: Oefeningenwebsite voor de programmeervakken aan de UGent.
+      description: Online leren programmeren voor secundair en hoger onderwijs.
     impersonate:
       impersonate: Account overnemen
       impersonating_user: Je speelt momenteel

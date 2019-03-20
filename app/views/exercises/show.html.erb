@@ -29,6 +29,9 @@
       <div class="card-title card-title-colored">
         <% if policy(@exercise).submit? %>
           <div class="card-title-fab">
+            <button class="btn btn-primary btn-fab" id="easteregg-skip" data-user_id="<%= current_user.id %>">
+              <i class="material-icons md-36">fast_forward</i>
+            </button>
             <button class="btn btn-primary btn-fab" id="editor-process-btn" data-user_id="<%= current_user.id %>">
               <i class="material-icons md-36">play_arrow</i>
             </button>

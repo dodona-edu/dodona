@@ -34,7 +34,9 @@ class PythiaRenderer < FeedbackTableRenderer
   def test_accepted(t)
     if t[:data][:diff]
       @builder.div(class: 'test-accepted') do
-        diff(t)
+        @builder.span(class: 'output') do
+          @builder << t[:data][:diff].map {|l| strip_outer_html(l[2])}.reduce {|l1, l2| "#{l1}\n#{l2}"}
+        end
       end
     else
       super

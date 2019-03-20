@@ -180,9 +180,7 @@ function initCSRF() {
 }
 
 function initTooltips() {
-    $(() => {
-        $("[data-toggle=\"tooltip\"]").tooltip();
-    });
+    $("[data-toggle=\"tooltip\"]").tooltip();
 }
 
 export {

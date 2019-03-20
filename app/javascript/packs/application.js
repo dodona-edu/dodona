@@ -31,10 +31,11 @@ initClipboard();
 // Adds the CSRF token to each ajax request
 initCSRF();
 
-initTooltips();
+$(initTooltips);
 
 // Use a global dodona object to prevent polluting the global na
 let dodona = {};
 dodona.checkTimeZone = checkTimeZone;
 dodona.showNotification = showNotification;
+dodona.initTooltips = initTooltips;
 window.dodona = dodona;

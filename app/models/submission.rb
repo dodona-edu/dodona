@@ -30,7 +30,8 @@ class Submission < ApplicationRecord
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
   after_create :evaluate_delayed, if: :evaluate?
-  after_update :invalidate_caches
+  after_save :invalidate_caches
+  after_destroy :invalidate_caches
   after_destroy :clear_fs
   after_rollback :clear_fs
 

@@ -42,7 +42,7 @@
             <div class="col-md-6">
               <p>
                 <%= t ".invitation_link" %>
-                <i title="<%= t ".invitation_link_help" %>" class="material-icons md-18 material-icons-info">info</i>
+                <i title="<%= t ".invitation_link_help" %>" data-toggle="tooltip" data-placement="right" class="material-icons md-18 material-icons-info">info</i>
               <div class="input-group">
                 <%= text_field_tag :registration_link, registration_course_url(@course, @course.secret), readonly: true, class: 'form-control' %>
                 <span class="input-group-btn">

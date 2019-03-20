@@ -16,7 +16,9 @@
             <span class="name">
               <%= @user.full_name %>
             </span>
-            <span>(<%= @user.username %>)</span>
+            <% if @user.username.present? %>
+              <span>(<%= @user.username %>)</span>
+            <% end %>
           </span>
           <span class="profile-byline text-muted">
             <%= @user.institution&.name %>

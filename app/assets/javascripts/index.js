@@ -1,10 +1,14 @@
 /* globals I18n,Bloodhound,dodona */
 import {showNotification} from "./notifications.js";
 import {delay, getArrayURLParameter, getURLParameter, updateArrayURLParameter, updateURLParameter} from "./util.js";
+import fetch from "isomorphic-fetch";
 
 const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
+
+let searchIndex = 0;
+let appliedIndex = 0;
 
 function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
     const filterCollections = _filterCollections || {};
@@ -19,8 +23,7 @@ function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
             if (filterCollections[type].multi) {
                 url = updateArrayURLParameter(url, filterCollections[type].param, tokens
                     .filter(el => el.type === type)
-                    .map(e => filterCollections[type].paramVal(e))
-                );
+                    .map(e => filterCollections[type].paramVal(e)));
             } else {
                 const elem = tokens.filter(e => e.type === type)[0];
                 url = updateURLParameter(url, filterCollections[type].param, elem ? filterCollections[type].paramVal(elem) : "");
@@ -41,16 +44,28 @@ function search(baseUrl, _query, _filterCollections, extraParams) {
     let url = addParametersToUrl(baseUrl, _query, _filterCollections, extraParams);
     url = updateURLParameter(url, "page", 1);
 
+    const localIndex = ++searchIndex;
+
     if (!baseUrl) {
         window.history.replaceState(null, "Dodona", url);
     }
     $("#progress-filter").css("visibility", "visible");
-    $.get(url, {
-        format: "js",
-    }, function (data) {
-        eval(data);
-        $("#progress-filter").css("visibility", "hidden");
-    });
+    fetch(url, {
+        headers: {
+            "accept": "text/javascript",
+            "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+            "x-requested-with": "XMLHttpRequest",
+        },
+        credentials: "same-origin",
+    })
+        .then(resp => resp.text())
+        .then(data => {
+            if (appliedIndex < localIndex) {
+                appliedIndex = localIndex;
+                eval(data);
+            }
+            $("#progress-filter").css("visibility", "hidden");
+        });
 }
 
 function initFilter(baseUrl, eager, _filterCollections) {

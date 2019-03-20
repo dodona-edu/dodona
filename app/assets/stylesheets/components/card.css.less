@@ -6,7 +6,7 @@
   z-index: 1;
   position: relative;
   background: @content-bg;
-  border-radius: 2px;
+  border-radius: @border-radius-base;
   transition: box-shadow 0.2s cubic-bezier(.4, 0, .2, 1);
   .shadow-z2();
   margin-bottom: 24px;
@@ -42,6 +42,8 @@
 .card-title.card-title-colored {
   color: rgb(0, 0, 0);
   background-color: @header-bg;
+  border-top-left-radius: @border-radius-base;
+  border-top-right-radius: @border-radius-base;
 }
 
 a.card-title-link,
@@ -52,6 +54,8 @@ a.card-title-link:hover {
 
 .card-title.card-colored-accent {
   color: @header-fg;
+  border-top-left-radius: @border-radius-base;
+  border-top-right-radius: @border-radius-base;
 
   .card-subtitle-text {
     margin-top: 3px;

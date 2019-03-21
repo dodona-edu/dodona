@@ -35,6 +35,9 @@
 
             <% content_for :modal do %>
               <style>
+
+
+
                 #paidSolutionModal ul,
                 #paidSolutionModal li {
                   display: block;
@@ -55,36 +58,52 @@
                 #paidSolutionModal .product {
                   display: block;
                   width: 100%;
-                  height: 8em;
-                  border: 2px gray solid;
-                  border-radius: 10px;
-                  padding: 60px 5px 10px;
+                  height: 7em;
+                  border-radius: 1em;
+                  padding: 1em 5px 10px;
                   text-align: center;
                   font-size: 160%;
                   position: relative;
                   overflow: hidden;
+                  background: #F5F5F5;
+                  cursor: pointer;
                 }
 
                 #paidSolutionModal .product .price {
-                  position: absolute;
-                  bottom: 5px;
-                  width: 100%;
                 }
 
                 #paidSolutionModal .product .korting {
                   position: absolute;
-                  top: 30px;
-                  right: -38px;
+                  top: 12px;
+                  right: -53px;
                   width: 160px;
                   height: 25px;
                   font-size: 18px;
                   transform: rotate(45deg);
-                  background: red;
+                  background: linear-gradient(#F70505 0%, #8F0808 100%);
+                  color: white;
+                  box-shadow: 0 1px 2px -5px rgba(0, 0, 0, 1);
                 }
 
                 #paidSolutionModal input[type=radio]:checked + label .product {
-                  border: 2px red solid;
+                  background: #68df68;
                 }
+
+
+.product > .material-icons {
+
+    display: block;
+    font-size: 3em;
+    color: green;
+
+}
+
+#paidSolutionModal input[type=radio]:checked + label .product > .material-icons {
+
+    color: white;
+
+}
+
               </style>
               <div class="modal fade" id="paidSolutionModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -92,7 +111,10 @@
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">TEST</h4>
+                      <h4 class="modal-title">
+                        <i class="material-icons">add_shopping_cart</i>
+                        Dodona Premium
+                      </h4>
                     </div>
                     <div class="modal-body">
                       Koop jouw correcte antwoorden!
@@ -101,6 +123,7 @@
                           <input type="radio" name="paidPlan" value="oef" id="paidPlan_oef">
                           <label for="paidPlan_oef">
                             <div class="product">
+                                <i class="material-icons">done</i>
                               een oefening
                               <div class="price">€5</div>
                             </div>
@@ -110,9 +133,13 @@
                           <input type="radio" name="paidPlan" value="oef" id="paidPlan_ree">
                           <label for="paidPlan_ree">
                             <div class="product">
-                              <span class="korting">20% korting!</span>
+                              <span class="korting">-20%</span>
+                                <i class="material-icons">done_all</i>
                               een reeks
-                              <div class="price"><s>€25</s> -> €20</div>
+                              <div class="price"><s>€25</s>
+
+                                <i class="material-icons">arrow_right_alt</i>
+                                €20</div>
                             </div>
                           </label>
                         </li>
@@ -120,16 +147,21 @@
                           <input type="radio" name="paidPlan" value="oef" id="paidPlan_cur">
                           <label for="paidPlan_cur">
                             <div class="product">
-                              <span class="korting">50% korting!</span>
+                              <span class="korting">-50%</span>
+                                <i class="material-icons">done_outline</i>
                               een cursus
-                              <div class="price"><s>€80</s> -> €40</div>
+                              <div class="price"><s>€80</s>
+                                <i class="material-icons">arrow_right_alt</i>
+                              €40</div>
                             </div>
                           </label>
                         </li>
                       </ul>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn-text btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#quoteModal">Bestel</button>
+                      <button type="submit" class="btn-text" data-dismiss="modal" data-toggle="modal" data-target="#quoteModal">
+                        Bestel
+                      </button>
                     </div>
                   </div>
                 </div>

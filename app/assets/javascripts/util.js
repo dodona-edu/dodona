@@ -157,7 +157,7 @@ window.requestAnimFrame = (function () {
  * Logs data to Google Analytics
  */
 function logToGoogle(category, action, label, value) {
-    if (typeof(ga) !== "undefined") {
+    if (typeof (ga) !== "undefined") {
         ga("send", "event", category, action, label, value);
     }
 }
@@ -173,14 +173,14 @@ function initCSRF() {
     $(() => {
         $.ajaxSetup({
             "headers": {
-                "X-CSRF-Token": $("meta[name='csrf-token']").attr("content")
+                "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
             },
         });
     });
 }
 
 function initTooltips() {
-    $("[data-toggle=\"tooltip\"]").tooltip();
+    $("[data-toggle=\"tooltip\"]").tooltip({container: "body"});
 }
 
 export {

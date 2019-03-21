@@ -27,8 +27,10 @@ class FeedbackTableRenderer
 
   def parse
     @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
-      @builder.div(class: 'row feedback-table-messages') do
-        messages(@submission[:messages])
+      if @submission[:messages].present?
+        @builder.div(class: 'row feedback-table-messages') do
+          messages(@submission[:messages])
+        end
       end
       tabs(@submission)
       init_js
@@ -110,38 +112,42 @@ class FeedbackTableRenderer
 
   def tab_content(t)
     @diff_type = determine_tab_diff_type(t)
-    @builder.div(class: "feedback-table-options") do
-      @builder.span(class: "flex-spacer") {}
-      if show_hide_correct_switch t
-        @builder.span(class: "correct-switch-buttons switch-buttons") do
-          @builder.span do
-            @builder << I18n.t("submissions.show.correct_tests")
-          end
-          @builder.div(class: "btn-group btn-toggle") do
-            @builder.button(class: "btn btn-secondary active", 'data-show': 'true', title: I18n.t("submissions.show.correct.shown"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-              @builder.i(class: "material-icons md-18") do
-                @builder << "visibility"
-              end
+    show_hide_correct = show_hide_correct_switch t
+    show_diff_type = show_diff_type_switch t
+    if show_hide_correct || show_diff_type
+      @builder.div(class: "feedback-table-options") do
+        @builder.span(class: "flex-spacer") {}
+        if show_hide_correct
+          @builder.span(class: "correct-switch-buttons switch-buttons") do
+            @builder.span do
+              @builder << I18n.t("submissions.show.correct_tests")
             end
-            @builder.button(class: "btn btn-secondary ", 'data-show': 'false', title: I18n.t("submissions.show.correct.hidden"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-              @builder.i(class: "material-icons md-18") do
-                @builder << "visibility_off"
+            @builder.div(class: "btn-group btn-toggle") do
+              @builder.button(class: "btn btn-secondary active", 'data-show': 'true', title: I18n.t("submissions.show.correct.shown"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: "material-icons md-18") do
+                  @builder << "visibility"
+                end
+              end
+              @builder.button(class: "btn btn-secondary ", 'data-show': 'false', title: I18n.t("submissions.show.correct.hidden"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: "material-icons md-18") do
+                  @builder << "visibility_off"
+                end
               end
             end
           end
         end
-      end
-      if show_diff_type_switch t
-        @builder.span(class: "diff-switch-buttons switch-buttons") do
-          @builder.span do
-            @builder << I18n.t("submissions.show.output")
-          end
-          @builder.div(class: "btn-group btn-toggle") do
-            @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t("submissions.show.diff.split"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-              @builder.i(class: "mdi mdi-18 mdi-arrow-split-vertical") {}
+        if show_diff_type
+          @builder.span(class: "diff-switch-buttons switch-buttons") do
+            @builder.span do
+              @builder << I18n.t("submissions.show.output")
             end
-            @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t("submissions.show.diff.unified"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-              @builder.i(class: "mdi mdi-18 mdi-arrow-split-horizontal") {}
+            @builder.div(class: "btn-group btn-toggle") do
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t("submissions.show.diff.split"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: "mdi mdi-18 mdi-arrow-split-vertical") {}
+              end
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t("submissions.show.diff.unified"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: "mdi mdi-18 mdi-arrow-split-horizontal") {}
+              end
             end
           end
         end
@@ -212,7 +218,7 @@ class FeedbackTableRenderer
   end
 
   def messages(msgs)
-    return if msgs.nil?
+    return unless msgs.present?
     @builder.div(class: 'messages') do
       msgs.each do |msg|
         @builder.div(class: 'message') do
@@ -224,7 +230,6 @@ class FeedbackTableRenderer
 
   def test_accepted(t)
     @builder.div(class: 'test-accepted') do
-      # icon_correct
       @builder.span(t[:generated], class: 'output')
     end
   end

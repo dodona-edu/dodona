@@ -10,24 +10,10 @@
 // @linkColor: #ff0000;
 //
 //
-// color overrides
-@hairlinegray: @black-divider;
-@brand-info: @info-500;
-@brand-primary: @accent-500;
-@brand-success: @success-500;
-@brand-danger: @danger-500;
-@brand-warning: @warning-500;
-@body-bg: @grey-50;
-@text-color: @black-text;
-@link-color: @accent-800;
-@code-bg: @grey-200;
-@code-color: @text-color;
-@page-header-border-color: @black-divider;
-@panel-primary-heading-bg: @primary-500;
-@panel-primary-border: @primary-500;
+// Color overrides are in theme/theme.css.less
 
 // other values
-@border-radius-base: 2px;
+@border-radius-base: 6px;
 
 // font stuff
 @font-family-sans-serif: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -45,33 +31,11 @@ h1, h2, h3, h4, h5 {
 @blockquote-font-size: @font-size-base;
 
 // nav bar
-@navbar-default-bg: @primary-500;
-@navbar-default-color: @white-text;
-@navbar-default-link-color: @white-text;
-@navbar-default-link-hover-color: @white-secondary;
-@navbar-default-border: transparent;
 .navbar {
   border: none;
 }
 
-@navbar-default-link-active-bg: lighten(@navbar-default-bg, 6.5%);
-@navbar-default-toggle-icon-bar-bg: @white-text;
-@navbar-default-toggle-border-color: @white-secondary;
-@navbar-default-toggle-hover-bg: @primary-300;
-
 // alerts
-@state-info-bg: @brand-info;
-@state-info-border: @brand-info;
-@state-info-text: white;
-@state-danger-bg: @brand-danger;
-@state-danger-border: @brand-danger;
-@state-danger-text: white;
-@state-warning-bg: @brand-warning;
-@state-warning-border: @brand-warning;
-@state-warning-text: white;
-@state-success-bg: @brand-success;
-@state-success-border: @brand-success;
-@state-success-text: white;
 .alert {
   .shadow-z2();
 }
@@ -81,23 +45,16 @@ h1, h2, h3, h4, h5 {
 }
 
 .alert button.close {
-  color: @white-secondary;
+  color: @alert-secondary;
   opacity: 1;
   text-shadow: initial;
 }
 
 .alert button.close:hover {
-  color: @white-text;
+  color: @alert-fg;
 }
 
-// modals
-@modal-backdrop-bg: white;
-@modal-backdrop-opacity: 0.35;
-@modal-content-border-color: white;
-
 // popovers
-@popover-border-color: @grey-100;
-@popover-title-bg: @grey-100;
 .popover {
   border-radius: 2px;
   padding: 0px;
@@ -147,7 +104,7 @@ h1, h2, h3, h4, h5 {
   line-height: 24px;
   letter-spacing: 0;
   font-size: 12px;
-  color: rgba(0, 0, 0, .54);
+  color: @text-secondary;
   padding-bottom: 8px;
 }
 
@@ -169,7 +126,7 @@ h1, h2, h3, h4, h5 {
 .help-block {
   font-size: 12px;
   line-height: 14px;
-  color: @black-secondary;
+  color: @text-secondary;
 }
 
 // panels
@@ -181,7 +138,7 @@ h1, h2, h3, h4, h5 {
 // mark
 mark,
 .mark {
-  background-color: @primary-300;
+  background-color: @mark-bg;
 }
 
 // fix position errors

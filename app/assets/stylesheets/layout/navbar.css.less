@@ -4,7 +4,7 @@
 
 .dodona-navbar {
   .shadow-z3();
-  background: @primary-500;
+  background: @header-bg;
 
   height: @navbar-height;
 
@@ -80,7 +80,7 @@
       border: none;
       outline: none;
       background: none;
-      color: white;
+      color: @header-fg;
     }
 
     .brand {
@@ -134,7 +134,7 @@
         border-radius: 50%;
         border: 1px solid white;
         display: inline-block;
-        background-color: @deep-orange-A400;
+        background-color: @pending-color;
         position: relative;
         margin-left: -15px;
         left: 30px;
@@ -206,7 +206,7 @@
 
         .dropdown-menu {
           li, a {
-            color: #fff;
+            color: @header-fg;
           }
 
           position: relative;
@@ -217,7 +217,7 @@
           background-color: transparent;
           border: 0;
           box-shadow: none;
-          color: #fff;
+          color: @header-fg;
           width: 100%;
         }
       }
@@ -233,7 +233,7 @@
     right: 10px;
     border: none;
     background: none;
-    color: #fff;
+    color: @header-fg;
 
     i {
       line-height: @navbar-height;
@@ -257,7 +257,7 @@
       right: 0;
       width: fit-content;
       height: fit-content;
-      background: @primary-500;
+      background-color: @header-bg;
 
       li {
         display: block;
@@ -281,7 +281,7 @@
   }
 
   a {
-    color: #fff;
+    color: @header-fg;
     text-decoration: none;
   }
 
@@ -321,7 +321,7 @@
   }
 
   .crumb, .crumb a, .crumb-separator {
-    color: @white-text;
+    color: @header-fg;
   }
 
   .crumb a:hover {
@@ -329,7 +329,7 @@
   }
 
   .crumb:last-child:not(:first-child), .crumb:last-child:not(:first-child) a {
-    color: @white-secondary;
+    color: @header-fg-secondary;
     pointer-events: none;
     cursor: default;
   }

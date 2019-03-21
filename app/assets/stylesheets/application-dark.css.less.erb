@@ -1,1 +1,6 @@
-@import "application.css.less";
+<% if Rails.env.development? || Rails.env.test? %>
+@import "theme/development.css.less";
+<% end %>
+
+@theme: "dark";
+@import "base.css.less";

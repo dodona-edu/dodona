@@ -84,8 +84,6 @@ function renderCard(data, unitSize, chart, x, y) {
     updates.attr("cx", d => x(parseInt(d.key.split(",")[1])))
         .attr("cy", d => y(parseInt(d.key.split(",")[0])))
         .attr("r", d => radius(d.value))
-        .style("fill", "black")
-        .style("fill-opacity", "0.87")
         .append("svg:title")
         .text(d => d.value);
     circles.exit().remove();

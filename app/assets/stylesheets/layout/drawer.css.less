@@ -1,4 +1,5 @@
-// Drawer
+@drawer-width: 240px;
+
 aside.drawer {
   position: fixed;
   top: 0;
@@ -6,7 +7,6 @@ aside.drawer {
 
   height: 100vh;
 
-  //width: @drawer-width;
   width: 0;
 
   z-index: 2;
@@ -15,7 +15,7 @@ aside.drawer {
     z-index: -1;
     opacity: 0;
     transition: opacity .3s;
-    background: #000;
+    background: @drawer-bg;
     position: fixed;
     top: 0;
     left: 0;
@@ -25,7 +25,6 @@ aside.drawer {
 
   nav {
     position: fixed;
-    //left: 0;
     left: -@drawer-width;
     top: 0;
     height: 100vh;
@@ -39,12 +38,12 @@ aside.drawer {
     flex-direction: column;
 
     border-left: 0;
-    border-right: 1px solid @grey-300;
+    border-right: 1px solid @drawer-border;
 
     overflow-y: auto;
     overflow-x: hidden;
 
-    background: #fff;
+    background: @content-bg;
     .shadow-z5();
     transition: .3s;
   }
@@ -60,16 +59,13 @@ aside.drawer {
       opacity: 0.5;
       width: 100vw;
     }
-
-    //@media (max-width: @screen-lg-min) {
-    //}
   }
 
 }
 
 .drawer-group {
   padding: 8px 8px 8px 0;
-  border-bottom: 1px solid @grey-300;
+  border-bottom: 1px solid @drawer-border;
   flex-shrink: 0;
 
   &.scrollable {
@@ -88,7 +84,7 @@ h1.drawer-group-title {
   font-size: 14px;
   font-weight: 400;
   margin-left: 16px;
-  color: @black-secondary;
+  color: @text-secondary;
 }
 
 ul.drawer-list {
@@ -100,7 +96,7 @@ ul.drawer-list {
   padding: 0;
   line-height: 1.5rem;
   list-style-type: none;
-  color: @black-secondary;
+  color: @text-secondary;
 
   li a {
     display: flex;
@@ -110,17 +106,17 @@ ul.drawer-list {
     position: relative;
     padding: 0 16px;
     outline: none;
-    color: @black-text;
+    color: @text-color;
     text-decoration: none;
     height: 42px;
 
     &.active {
       font-weight: 400;
-      background: @grey-200;
+      background: @drawer-active;
     }
 
     &:hover, &:focus {
-      background: @grey-100;
+      background: @drawer-hover;
     }
 
     span, i {

@@ -22,7 +22,7 @@
 }
 
 #tutorviz {
-  background-color: white;
+  background-color: @content-bg;
   min-height: 200px;
 }
 
@@ -49,7 +49,7 @@
 
 .tutor-strip {
   position: absolute;
-  color: white;
+  color: @content-bg;
   width: 20px;
   z-index: 10;
   top: 0;
@@ -82,14 +82,9 @@
 }
 
 .group.correct .tutor-strip {
-  background-color: @success-500;
+  background-color: @brand-success;
 }
 
 .group.wrong .tutor-strip {
-  background-color: @danger-500;
+  background-color: @brand-danger;
 }
-
-/* Set visibility of fullscreen icon hidden for now */
-/*#tutor .fullscreen {
-    visibility: hidden;
-}*/

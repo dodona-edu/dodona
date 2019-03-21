@@ -6,13 +6,13 @@
     border-radius: 0;
   }
   .label.label-danger {
-    color: @danger-500;
-    border-color: @danger-500;
+    color: @brand-danger;
+    border-color: @brand-danger;
     background-color: white;
   }
   .label.label-success {
-    color: @success-500;
-    border-color: @success-500;
+    color: @brand-success;
+    border-color: @brand-success;
     background-color: white;
   }
   .description {
@@ -25,16 +25,16 @@
     margin: 0px 15px;
   }
   .group {
-    background-color: white;
+    background-color: @content-bg;
     margin-bottom: 12px;
     border-left: 4px solid gray;
     position: relative;
 
     &.correct {
-      border-left-color: @success-500;
+      border-left-color: @brand-success;
     }
     &.wrong {
-      border-left-color: @danger-500;
+      border-left-color: @brand-danger;
     }
   }
   .testcase {
@@ -54,12 +54,12 @@
 
     &.correct {
       .indicator {
-        color: @success-500;
+        color: @brand-success;
       }
     }
     &.wrong {
       .indicator {
-        color: @danger-500;
+        color: @brand-danger;
       }
     }
   }
@@ -90,8 +90,8 @@
       font-weight: normal;
       padding-left: 5px;
       padding-right: 5px;
-      background: @grey-50;
-      color: @black-secondary;
+      background: @feedback-diff-table-header-bg;
+      color: @feedback-diff-table-header-fg;
       vertical-align: center;
     }
     .del,
@@ -110,20 +110,20 @@
       }
     }
     .ins {
-      background: #B9F6CA;
+      background: @feedback-diff-table-ins;
     }
     .del {
-      background: #FFCDD2;
+      background: @feedback-diff-table-del;
     }
     .ins strong {
-      background: #69F0AE;
+      background: @feedback-diff-table-ins-strong;
     }
     .del strong {
-      background: #FF8A80;
+      background: @feedback-diff-table-del-strong;
     }
     .line-nr {
-      background: @grey-50;
-      color: @black-secondary;
+      background: @feedback-diff-table-header-bg;
+      color: @feedback-diff-table-header-fg;
       padding-left: 10px;
       padding-right: 10px;
     }
@@ -174,7 +174,7 @@
     border: none;
   }
   .linter pre.lineno {
-    border-right: 1px solid @black-divider;
+    border-right: 1px solid @divider-color;
     padding-right: 25px;
   }
   .linter td.code {
@@ -207,20 +207,13 @@
     margin-right: 1em;
   }
   .tab-link-marker {
-    background: @warning-500 !important;
+    background: @brand-warning !important;
   }
 }
 
 #editor-result .ace_content {
-  background-color: @grey-100;
+  background-color: @code-light-bg;
   cursor: default;
-}
-
-.modal .code {
-  font-family: @font-family-monospace;
-  font-size: 13px;
-  white-space: pre-wrap;
-  background-color: @grey-50;
 }
 
 iframe.file {
@@ -232,15 +225,15 @@ iframe.file {
 }
 
 .colored-correct {
-  color: @success-500;
+  color: @brand-success;
 }
 
 .colored-wrong {
-  color: @danger-500;
+  color: @brand-danger;
 }
 
 .colored-warning {
-  color: @warning-500;
+  color: @brand-warning;
 }
 
 .submission-summary {

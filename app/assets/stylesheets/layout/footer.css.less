@@ -27,6 +27,16 @@
   flex-shrink: 0;
   align-self: stretch;
   align-items: flex-start;
+
+  a {
+    color: inherit;
+    margin-left: 1em;
+
+    &:hover {
+      color: @footer-fg-hover;
+      text-decoration: none;
+    }
+  }
 }
 
 .footer-block > * {
@@ -37,12 +47,13 @@
   flex-grow: 1;
 }
 
-.footer-version a {
-  margin-left: 1em;
-  color: inherit;
-}
+@media (max-width: @screen-sm-max) {
+  .footer {
+    flex-direction: column;
+    height: 180px;
+  }
 
-.footer-version a:hover {
-  color: @footer-fg-hover;
-  text-decoration: none;
+  .footer-block a {
+    margin-left: 0;
+  }
 }

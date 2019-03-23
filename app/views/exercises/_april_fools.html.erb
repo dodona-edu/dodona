@@ -19,31 +19,30 @@ lang = {
 
 %>
 
-<button class="btn btn-fab btn-default" data-toggle="modal" data-target="#paidSolutionModal">
+<button class="btn btn-fab btn-default" data-toggle="modal" data-target="#paidSolutionOptions">
   <i class="material-icons md-36">attach_money</i>
 </button>
 
 <% content_for :modal do %>
 <style>
-  #paidSolutionModal ul,
-  #paidSolutionModal li {
+  #paidSolutionOptions ul,
+  #paidSolutionOptions li {
     display: block;
     margin: 0;
     padding: 0;
   }
 
-  #paidSolutionModal input[type=radio] {
+  #paidSolutionOptions input[type=radio] {
     display: none;
   }
 
-  #paidSolutionModal input[type=radio]+label {
+  #paidSolutionOptions label {
     display: block;
     width: 100%;
     padding: 5px;
   }
 
-  #paidSolutionModal .product {
-
+  #paidSolutionOptions .paidSolutionProduct {
     display: block;
     width: 100%;
     border-radius: 6px;
@@ -53,25 +52,24 @@ lang = {
     overflow: hidden;
     background: #F5F5F5;
     cursor: pointer;
-
   }
 
-  #paidSolutionModal .price {
+  #paidSolutionOptions .paidSolutionPrice {
     text-align: center;
     width: 100%;
     font-weight: initial;
   }
 
-  #paidSolutionModal .price>*,
-  #paidSolutionModal .modal-title>* {
+  #paidSolutionOptions .paidSolutionPrice>*,
+  #paidSolutionOptions .modal-title>* {
     vertical-align: middle;
   }
 
-  #paidSolutionModal .modal-title .material-icons {
+  #paidSolutionOptions .modal-title .material-icons {
     color: #616161;
   }
 
-  #paidSolutionModal .korting {
+  #paidSolutionOptions .paidSolutionDiscount {
     position: absolute;
     top: 12px;
     right: -53px;
@@ -84,27 +82,24 @@ lang = {
     box-shadow: 0 1px 2px -5px rgba(0, 0, 0, 1);
   }
 
-  #paidSolutionModal input[type=radio]:checked+label .product {
+  #paidSolutionOptions input[type=radio]:checked+label .paidSolutionProduct {
     background: #2E7D32;
     color: white;
   }
 
-  #paidSolutionModal input[type=radio]:checked+label .product>.material-icons {
+  #paidSolutionOptions input[type=radio]:checked+label .paidSolutionProduct>.material-icons {
     color: white;
     background: #A5D6A7;
   }
 
 
-  .product strong {
-
+  #paidSolutionOptions .paidSolutionProduct strong {
     font-weight: normal;
     font-size: 1.75em;
     margin-bottom: 10px;
-
   }
 
-  .product>.material-icons {
-
+  #paidSolutionOptions .paidSolutionProduct>.material-icons {
     display: block;
     font-size: 7em;
     color: #2E7D32;
@@ -117,18 +112,12 @@ lang = {
     margin-bottom: 10px;
   }
 
-  #quoteModal .motivational-quote {
-    font-style: italic;
-    font-size: 140%;
-    text-align: center;
-  }
-
-  .product s {
+  #paidSolutionOptions .paidSolutionProduct s {
     text-decoration: none;
     position: relative;
   }
 
-  .product s::before {
+  #paidSolutionOptions .paidSolutionProduct s::before {
     position: absolute;
     content: "";
     left: -10%;
@@ -139,7 +128,7 @@ lang = {
     width: 120%;
   }
 </style>
-<div class="modal fade" id="paidSolutionModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="paidSolutionOptions" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -156,21 +145,21 @@ lang = {
           <li class="col-sm-4">
             <input type="radio" name="paidPlan" value="exercise" data-price="5" id="paidPlan_oef">
             <label for="paidPlan_oef">
-              <div class="product">
+              <div class="paidSolutionProduct">
                 <i class="material-icons">done</i>
                 <strong>1 <%= I18n.t 'activerecord.models.exercise' %></strong>
-                <div class="price">€5</div>
+                <div class="paidSolutionPrice">€5</div>
               </div>
             </label>
           </li>
           <li class="col-sm-4">
             <input type="radio" name="paidPlan" value="series" data-price="20" id="paidPlan_ree">
             <label for="paidPlan_ree">
-              <div class="product">
-                <span class="korting">-20%</span>
+              <div class="paidSolutionProduct">
+                <span class="paidSolutionDiscount">-20%</span>
                 <i class="material-icons">done_all</i>
                 <strong>1 <%= I18n.t 'activerecord.models.series' %></strong>
-                <div class="price"><s>€25</s>
+                <div class="paidSolutionPrice"><s>€25</s>
 
                   <i class="material-icons">arrow_right_alt</i>
                   €20</div>
@@ -180,11 +169,11 @@ lang = {
           <li class="col-sm-4">
             <input type="radio" name="paidPlan" value="course" data-price="40" id="paidPlan_cur">
             <label for="paidPlan_cur">
-              <div class="product">
-                <span class="korting">-50%</span>
+              <div class="paidSolutionProduct">
+                <span class="paidSolutionDiscount">-50%</span>
                 <i class="material-icons">done_outline</i>
                 <strong>1 <%= I18n.t 'activerecord.models.course' %></strong>
-                <div class="price"><s>€80</s>
+                <div class="paidSolutionPrice"><s>€80</s>
                   <i class="material-icons">arrow_right_alt</i>
                   €40</div>
               </div>
@@ -193,7 +182,7 @@ lang = {
         </ul>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn-text" data-dismiss="modal" data-toggle="modal" data-target="#quoteModal">
+        <button type="submit" class="btn-text" data-dismiss="modal" data-toggle="modal" data-target="#paidSolutionQuote">
           <%= lang[I18n.locale][:order] %>
         </button>
       </div>
@@ -201,7 +190,7 @@ lang = {
   </div>
 </div>
 
-<div class="modal fade" id="quoteModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="paidSolutionQuote" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -225,9 +214,9 @@ lang = {
 <script>
 
   $(function () {
-    $('#quoteModal').on('show.bs.modal', function (event) {
+    $('#paidSolutionQuote').on('show.bs.modal', function () {
       document.body.style.backgroundColor = '#A5D6A7';
-      $('[data-target="#paidSolutionModal"]').remove();
+      $('[data-target="#paidSolutionOptions"]').remove();
 
       var $chosen = $('[name="paidPlan"]:checked');
       if (typeof (ga) !== "undefined") {
@@ -235,8 +224,8 @@ lang = {
         ga("send", "event", "aprilFools", "exercise", "<%= @exercise&.id || "0" %>");
         ga("send", "event", "aprilFools", "type", $chosen.val() || "none", $chosen.data("price") || 0);
       }
-    })
-  })
+    });
+  });
 
 
 </script>

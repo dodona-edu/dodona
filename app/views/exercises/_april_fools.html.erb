@@ -2,18 +2,18 @@
 
 lang = {
   :nl=>{
-    :intro=>"Koop correcte antwoorden",
-    :order=>"Bestel",
-    :thanks=>"Bedankt",
-    :sorry=>"Sorry #{@current_user.first_name}, momenteel kunt u dit product niet kopen. We hebben uw pagina groener gemaakt ter compensatie.",
-    :quote=>"Met geld koop je niets dat de moeite waard is.",
-    :end=>"Verderwerken"},
+    :intro=>"Bespaar jezelf wat tijd en koop de correcte oplossing!",
+    :order=>"Bestellen",
+    :thanks=>"Bedankt voor je aankoop!",
+    :sorry=>"Sorry #{@current_user.first_name}, dit product is niet langer beschikbaar. Ter compensatie hebben we het kleurenschema van de pagina aangepast om je extra te motiveren.",
+    :quote=>"Hard werk en toewijding zijn de sleutel tot succes.",
+    :end=>"Terug aan het werk"},
   :en=>{
-    :intro=>"Buy correct answers",
+    :intro=>"Save yourself some time and buy the correct solution!",
     :order=>"Order",
-    :thanks=>"Thanks",
-    :sorry=>"Sorry #{@current_user.first_name}, the product you have selected is no longer availible. As a compensation we have made a large part of your screen green.",
-    :quote => "Nothing in life comes easy.",
+    :thanks=>"Thank you for your purchase!",
+    :sorry=>"Sorry #{@current_user.first_name}, the product you have selected is no longer available. As a compensation, to put you in a winning mood, we have changed the color scheme of this page.",
+    :quote => "The price of success is hard work and dedication.",
     :end => "Back to work"}
 }
 
@@ -40,6 +40,7 @@ lang = {
     display: block;
     width: 100%;
     padding: 5px;
+    cursor: pointer;
   }
 
   #paidSolutionOptions .paidSolutionProduct {
@@ -136,11 +137,13 @@ lang = {
           <span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">
           <i class="material-icons">add_shopping_cart</i>
-          Dodona Premium
+          Dodona Premium<sup> BETA</sup>
         </h4>
       </div>
       <div class="modal-body">
-        <%= lang[I18n.locale][:intro] %>
+        <p>
+          <%= lang[I18n.locale][:intro] %>
+        </p>
         <ul class="row">
           <li class="col-sm-4">
             <input type="radio" name="paidPlan" value="exercise" data-price="5" id="paidPlan_oef">
@@ -153,7 +156,7 @@ lang = {
             </label>
           </li>
           <li class="col-sm-4">
-            <input type="radio" name="paidPlan" value="series" data-price="20" id="paidPlan_ree">
+            <input type="radio" name="paidPlan" value="series" data-price="20" id="paidPlan_ree" checked>
             <label for="paidPlan_ree">
               <div class="paidSolutionProduct">
                 <span class="paidSolutionDiscount">-20%</span>
@@ -199,10 +202,12 @@ lang = {
         <h4 class="modal-title"><%= lang[I18n.locale][:thanks] %></h4>
       </div>
       <div class="modal-body">
-        <%= lang[I18n.locale][:sorry] %>
-        <blockquote class="blockquote text-right h2">
-          <p class="mb-0"><%= lang[I18n.locale][:quote] %></p>
-          <footer class="blockquote-footer"><cite title="Source Title"><%=@course.teacher%></cite></footer>
+        <p>
+          <%= lang[I18n.locale][:sorry] %>
+        </p>
+        <blockquote class="blockquote text-right">
+          <p class="mb-0 lead"><%= lang[I18n.locale][:quote] %></p>
+          <footer class="blockquote-footer lead"><cite title="Source Title">Prof. April Phish</cite></footer>
         </blockquote>
       </div>
       <div class="modal-footer">

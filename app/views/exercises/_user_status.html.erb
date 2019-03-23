@@ -1,6 +1,9 @@
 <% submission = summary.latest_submission %>
 <% if summary.submitted? %>
   <% if summary.solved? %>
+    <%= link_to submission, class: 'deadline-ok' do %>
+      <%= t 'exercises.exercise.correct' %>
+    <% end %>
     <% unless summary.solved_before_deadline? %>
       <%= link_to summary.accepted_submission,
                   title: t('exercises.exercise.correct_after_deadline', deadline: l(summary.deadline, format: :long)),
@@ -10,10 +13,10 @@
         <i class="material-icons colored-info md-18">info</i>
       <% end %>
     <% end %>
-    <%= link_to submission, class: 'deadline-ok' do %>
-      <%= t 'exercises.exercise.correct' %>
-    <% end %>
   <% else %>
+    <%= link_to submission, class: "colored-wrong" do %>
+      <%= t 'exercises.exercise.wrong' %>
+    <% end %>
     <% if summary.solved_before_deadline? %>
       <%= link_to summary.accepted_submission,
                   title: t('exercises.exercise.wrong_after_deadline', deadline: l(summary.deadline, format: :long)),
@@ -31,10 +34,7 @@
         <i class="material-icons colored-warning md-18">warning</i>
       <% end %>
     <% end %>
-    <%= link_to submission do %>
-      <%= t 'exercises.exercise.wrong' %>
-    <% end %>
   <% end %>
 <% else %>
-  <%= t 'exercises.exercise.not_solved' %>
+  <span class='text-muted'><%= t 'exercises.exercise.not_solved' %></span>
 <% end %>

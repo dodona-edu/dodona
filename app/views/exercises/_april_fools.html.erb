@@ -154,7 +154,7 @@ lang = {
         <%= lang[I18n.locale][:intro] %>
         <ul class="row">
           <li class="col-sm-4">
-            <input type="radio" name="paidPlan" value="oef" id="paidPlan_oef">
+            <input type="radio" name="paidPlan" value="exercise" data-price="5" id="paidPlan_oef">
             <label for="paidPlan_oef">
               <div class="product">
                 <i class="material-icons">done</i>
@@ -164,7 +164,7 @@ lang = {
             </label>
           </li>
           <li class="col-sm-4">
-            <input type="radio" name="paidPlan" value="oef" id="paidPlan_ree">
+            <input type="radio" name="paidPlan" value="series" data-price="20" id="paidPlan_ree">
             <label for="paidPlan_ree">
               <div class="product">
                 <span class="korting">-20%</span>
@@ -178,7 +178,7 @@ lang = {
             </label>
           </li>
           <li class="col-sm-4">
-            <input type="radio" name="paidPlan" value="oef" id="paidPlan_cur">
+            <input type="radio" name="paidPlan" value="course" data-price="40" id="paidPlan_cur">
             <label for="paidPlan_cur">
               <div class="product">
                 <span class="korting">-50%</span>
@@ -226,9 +226,15 @@ lang = {
 
   $(function () {
     $('#quoteModal').on('show.bs.modal', function (event) {
-      console.log("LOG TO G analytics")
-      document.body.style.backgroundColor='#A5D6A7';
+      document.body.style.backgroundColor = '#A5D6A7';
       $('[data-target="#paidSolutionModal"]').remove();
+
+      var $chosen = $('[name="paidPlan"]:checked');
+      if (typeof (ga) !== "undefined") {
+        ga("send", "event", "aprilFools", "course", "<%= @course&.id || "0" %>");
+        ga("send", "event", "aprilFools", "exercise", "<%= @exercise&.id || "0" %>");
+        ga("send", "event", "aprilFools", "type", $chosen.val() || "none", $chosen.data("price") || 0);
+      }
     })
   })
 

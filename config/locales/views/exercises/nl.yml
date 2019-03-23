@@ -6,13 +6,13 @@ nl:
       submissions: Oplossingen voor deze oefening
     exercise:
       count_tooltip: aantal studenten die deze oefening correct hebben
-      correct: correct
+      correct: Correct
       correct_after_deadline: Je hebt de deadline niet gehaald, maar je recentste oplossing (na de deadline) is correct.
-      wrong: verkeerd
+      wrong: Verkeerd
       wrong_after_deadline: Je hebt de deadline gehaald, maar je recentste oplossing (na de deadline) is verkeerd. Klik om naar je laatste correcte oplossing te gaan.
       deadline_missed: Je hebt de deadline niet gehaald (je recentste oplossing voor de deadline is verkeerd)
       deadline_met: Je hebt de deadline gehaald
-      not_solved: niet opgelost
+      not_solved: Nog niet opgelost
     form:
       edit_exercise: Opgave aanpassen
       open_on_github: Open op GitHub

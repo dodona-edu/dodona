@@ -29,8 +29,9 @@
       <div class="card-title card-title-colored">
         <% if policy(@exercise).submit? %>
           <div class="card-title-fab">
-
-            <%= render partial: 'april_fools' %>
+            <% if Time.zone.now.day == 1 && Time.zone.now.month == 4 %>
+              <%= render partial: 'april_fools' %>
+            <% end %>
 
             <button class="btn btn-primary btn-fab" id="editor-process-btn" data-user_id="<%= current_user.id %>">
               <i class="material-icons md-36">play_arrow</i>

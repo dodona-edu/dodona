@@ -52,18 +52,18 @@ nl:
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:
-      completed_after_deadline_missed: Je hebt alle oefeningen afgewerkt maar niet voor de deadline.
-      wrong_after_deadline_missed: Je hebt de deadline gemist en er zijn nog enkele onafgewerkte oefeningen.
-      started_after_deadline_missed: Je hebt de deadline gemist en er zijn nog enkele oefeningen waar je niet aan begonnen bent.
+      completed_after_deadline_missed: Je hebt alle oefeningen correct opgelost, maar helaas niet voor de deadline.
+      wrong_after_deadline_missed: Je hebt de deadline gemist en er zijn nog oefeningen met een verkeerde oplossing.
+      started_after_deadline_missed: Je hebt de deadline gemist en er zijn nog oefeningen waar je niet aan begonnen bent.
       unstarted_after_deadline_missed: Je hebt de deadline gemist er je bent nog niet begonnen aan de oefeningen.
-      completed_after_deadline_met: Je hebt alle oefeningen afgewerkt voor de deadline. Proficiat!
-      wrong_after_deadline_met: Geen zorgen, je hebt alle oefeningen afgewerkt voor de deadline maar na de deadline heb je nog foute oplossingen ingediend.
-      completed_before_deadline: Je hebt alle oefeningen afgewerkt voor de deadline. Proficiat!
-      wrong_before_deadline: Er zijn enkele onafgewerkte oefeningen maar je hebt nog tijd. Success!
-      started_before_deadline: Er zijn enkele oefeningen waar je nog niet aan begonnen bent, maar je hebt nog tijd. Succes!
-      unstarted_before_deadline: Je bent nog niet begonnen aan de oefeningen maar je hebt nog tijd. Succes!
-      completed_no_deadline: Je hebt alle oefeningen afgewerkt. Proficiat!
-      wrong_no_deadline: Er zijn nog enkele onafgewerkte oefeningen.
+      completed_after_deadline_met: Je hebt alle oefeningen correct opgelost voor de deadline. Proficiat!
+      wrong_after_deadline_met: Geen zorgen, je hebt alle oefeningen correct opgelost voor de deadline. Na de deadline heb je echter nog foute oplossingen ingediend.
+      completed_before_deadline: Je hebt alle oefeningen correct opgelost voor de deadline. Proficiat!
+      wrong_before_deadline: Er zijn nog onopgeloste oefeningen, maar je hebt nog tijd. Success!
+      started_before_deadline: Er zijn nog oefeningen waar je nog niet aan begonnen bent, maar je hebt nog tijd. Succes!
+      unstarted_before_deadline: Je bent nog niet begonnen aan de oefeningen, maar je hebt nog tijd. Succes!
+      completed_no_deadline: Je hebt alle oefeningen correct opgelost. Proficiat!
+      wrong_no_deadline: Er zijn nog oefeningen met een verkeerde oplossing.
       started_no_deadline: Er zijn nog enkele oefeningen waar je nog niet aan begonnen bent.
       unstarted_no_deadline: Je bent nog niet begonnen aan de oefeningen.
     course_series_table:

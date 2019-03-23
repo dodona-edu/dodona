@@ -220,8 +220,6 @@ lang = {
 
       var $chosen = $('[name="paidPlan"]:checked');
       if (typeof (ga) !== "undefined") {
-        ga("send", "event", "aprilFools", "course", "<%= @course&.id || "0" %>");
-        ga("send", "event", "aprilFools", "exercise", "<%= @exercise&.id || "0" %>");
         ga("send", "event", "aprilFools", "type", $chosen.val() || "none", $chosen.data("price") || 0);
       }
     });

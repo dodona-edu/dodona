@@ -91,6 +91,5 @@ en:
     user_stats:
       subscribed_users: Registered users
       submitted_solutions: Submitted solutions
-      exercise_count: Exercise count
-      average_progress: Average progress
-      average_progress_info: Average percentage of solved exercises per user
+      exercise_count: Exercises
+      more_statistics: "More statistics >"

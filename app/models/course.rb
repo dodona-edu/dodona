@@ -172,11 +172,6 @@ class Course < ApplicationRecord
 
   create_cacheable(:correct_solutions, ->(this, _options) {format(CORRECT_SOLUTIONS_CACHE_STRING, id: this.id)})
 
-  def average_progress
-    avg = ((100 * correct_solutions).to_d / (users.count * exercises_count).to_d)
-    avg.nan? ? 0 : avg
-  end
-
   def pending_memberships
     CourseMembership.where(course_id: id,
                            status: :pending)

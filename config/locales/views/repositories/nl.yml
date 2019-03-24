@@ -1,31 +1,33 @@
 nl:
   repositories:
     form:
-      remote-help: De SSH clone URL van de repository. Dodona moet toegang hebben tot deze repository.
+      remote-help: "De SSH 'clone url' van de repository waar de oefeningen te vinden zijn. Dodona heeft de juiste rechten nodig om de repository te kunnen clonen."
+      judge-help: "Deze judge zal gebruikt worden als de oefening zelf geen specifieert. Kies 'pythia' voor de standaard python judge."
     index:
-      title: Alle repository's
+      title: Alle oefeningen repository's
       admins: "Beheerders aanpassen"
       courses: "Toegelaten cursussen aanpassen"
       edit: "Aanpassen"
       delete: "Verwijderen"
       admin: "Je bent beheerder van deze repository"
     new:
-      title: Repository aanmaken
+      title: Een repository met oefeningen toevoegen
     show:
       repository: Repository
-      webhook: "Vergeet niet de webhook te triggeren bij elke commit:"
+      webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank'>webhook</a> in zodat de oefeningen op Dodona automatisch geüpdatet wordt bij elke commit:"
       reprocess: Alle oefeningen herverwerken
       exercises: Oefeningen
     admins:
       admins: "Beheerders"
-      admin_explanation: "Repository beheerders kunnen anderen repository beheerder maken, privé oefeningen zien, oefeningen aanpassen en cursussen toelaten om privé oefeningen te gebruiken."
+      admin_explanation: "De gebruikers die hieronder staan opgelijst zijn de beheerders van deze repository. Deze gebruikers kunnen anderen repository beheerder maken, privé oefeningen uit deze repository zien, oefeningen uit deze repository aanpassen en beheren welke cursussen privé oefeningen uit deze repository gebruiken."
+      add_admins: "Beheerders toevoegen"
     reprocess:
       done: Alle oefeningen in deze repository werden opnieuw verwerkt
     courses:
       courses: "Toegelaten cursussen"
       add_courses: "Cursussen toevoegen"
       access_explanation: "<li>Een repository kan <strong>publieke</strong> en <strong>privé oefeningen</strong> bevatten.</li><li><strong>Publieke oefeningen</strong> kunnen in <strong>elke cursus</strong> gebruikt worden.</li><li><strong>Privé oefeningen</strong> kunnen enkel gebruikt worden in cursussen die <strong>expliciete toestemming</strong> hebben gekregen via deze pagina.</li>"
-      short_explanation: "Deze cursussen kunnen privé oefeningen van de %{name} repository gebruiken."
+      short_explanation: "Onderstaande cursussen kunnen privé oefeningen van de %{name} repository gebruiken."
     navbar_links:
       show: "Tonen"
       administrators: "Beheerders aanpassen"

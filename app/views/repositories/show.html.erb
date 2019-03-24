@@ -35,18 +35,14 @@
         </div>
         <% if current_user.repository_admin?(@repository) %>
           <div class="col-sm-6 col-xs-12">
-            <div class="card">
-              <div class="card-title card-title-colored">
-                <h2 class="card-title-text">Webhook</h2>
-              </div>
-              <div class="card-supporting-text">
-                <p><%= t ".webhook" %></p>
-                <div class="input-group intput-froup-sm">
-                  <%= text_field_tag :webhook_link, webhook_repository_url(@repository), readonly: true, class: 'form-control' %>
-                  <span class="input-group-btn">
-                  <%= clipboard_button_for :webhook_link %>
-                </span>
-                </div>
+            <div class="callout callout-info">
+              <h4>Webhook</h4>
+              <p><%= t ".webhook_html" %></p>
+              <div class="input-group intput-froup-sm">
+                <%= text_field_tag :webhook_link, webhook_repository_url(@repository), readonly: true, class: 'form-control' %>
+                <span class="input-group-btn">
+                <%= clipboard_button_for :webhook_link %>
+              </span>
               </div>
             </div>
           </div>

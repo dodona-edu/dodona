@@ -15,7 +15,7 @@ nl:
       edit: 'Aanpassen'
       delete: 'Verwijderen'
       actions: "Acties"
-      institution: "Instituut"
+      institution: "Onderwijsinstelling"
     new:
       title: Gebruiker aanmaken
     show:
@@ -41,4 +41,4 @@ nl:
       active_tokens: Actieve tokens
       create_new_token: Nieuw token aanmaken
     repository_users_table:
-      no_institution: "Geen instituut"
+      no_institution: "Geen onderwijsinstelling"

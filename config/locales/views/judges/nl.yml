@@ -1,11 +1,14 @@
 nl:
   judges:
     form:
-      image-help: De naam van de docker image waarin de judge zal gestart worden. De image zal automatisch gedownload worden van docker hub.
+      remote-help: "De 'clone url' van de repository waar de judge te vinden is. Dodona heeft de juiste rechten nodig om de repository te kunnen clonen."
+      image-help: De naam van de docker image waarin de judge zal gestart worden. De image zal automatisch gedownload worden van docker hub als ze lokaal niet beschikbaar is.
+      renderer-help: "Kies hier voor 'FeedbackTableRenderer' tenzij je in samenwerking met het Dodona team een eigen renderer geschreven hebt."
+      runner-help: "Kies hier voor 'SubmissionRunner' tenzij je in samenwerking met het Dodona team een eigen runner geschreven hebt."
     index:
       title: Alle judges
     new:
       title: Judge aanmaken
     show:
       judge: Judge
-      webhook: "Vergeet niet de webhook te triggeren bij elke commit:"
+      webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank'>webhook</a> in zodat de judge op Dodona automatisch geüpdatet wordt bij elke commit:"

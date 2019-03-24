@@ -87,7 +87,6 @@ nl:
       statistics: "Statistieken"
     user_stats:
       subscribed_users: Geregistreerde gebruikers
-      exercise_count: Aantal oefeningen
-      average_progress: Gemiddelde voortgang
-      average_progress_info: Gemiddeld percentage opgeloste oefeningen per gebruiker
+      exercise_count: Oefeningen
       submitted_solutions: Ingediende oplossingen
+      more_statistics: "Meer statistieken >"

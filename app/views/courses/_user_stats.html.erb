@@ -1,29 +1,28 @@
 <div class="row">
   <div class="col-xs-6 admin-card-stat">
-    <%= t ".subscribed_users" %>
-    <h1>
-      <%= link_to @course.subscribed_members_count, course_members_path(@course), class: 'card-title-link' %>
-    </h1>
+    <%= link_to course_members_path(@course), class: 'card-title-link' do %>
+      <h1><%= number_with_delimiter @course.subscribed_members_count, delimiter: " " %></h1>
+      <%= t ".subscribed_users" %>
+    <% end %>
   </div>
   <div class="col-xs-6 admin-card-stat">
-    <%= t ".exercise_count" %>
-    <h1>
-      <%= link_to @course.exercises_count, course_path(@course), class: 'card-title-link' %>
-    </h1>
+    <%= link_to course_path(@course), class: 'card-title-link' do %>
+      <h1><%= number_with_delimiter @course.exercises_count, delimiter: " " %></h1>
+      <%= t ".exercise_count" %>
+    <% end %>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-6 admin-card-stat">
-    <%= t ".submitted_solutions" %>
-    <h1>
-      <%= link_to (number_with_delimiter @course.submissions.count, delimiter: " "), course_submissions_path(@course), class: 'card-title-link' %>
-    </h1>
+    <%= link_to course_submissions_path(@course), class: 'card-title-link' do %>
+      <h1><%= number_with_delimiter @course.submissions.count, delimiter: " " %></h1>
+      <%= t ".submitted_solutions" %>
+    <% end %>
   </div>
-  <div class="col-xs-6 admin-card-stat"
-       title="<%= t '.average_progress_info' %>">
-    <%= t ".average_progress" %>
-    <h1>
-      <%= number_to_percentage @course.average_progress, precision: 1 %>
-    </h1>
+  <div class="col-xs-6 admin-card-stat">
+    <%= link_to statistics_course_path(@course), class: 'card-title-link' do %>
+      <h1>&nbsp;</h1>
+      <span class="text-muted"><%= t ".more_statistics" %></span>
+    <% end %>
   </div>
 </div>

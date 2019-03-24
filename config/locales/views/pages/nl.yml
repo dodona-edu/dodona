@@ -18,7 +18,7 @@ nl:
       more-courses: Meer cursussen
       favorites: "Favorieten"
     course_card:
-      submissions: Inzendingen
+      submissions: Ingediende oplossingen
       correct-exercises: Correcte oefeningen
       go-to-course: Ga naar deze cursus
       edit-course: Cursus bewerken
@@ -30,7 +30,7 @@ nl:
       course-closed: Gesloten cursus
       favorite: "Favoriete cursus"
     user_card:
-      submissions: Inzendingen
+      submissions: Ingediende oplossingen
       correct-exercises: Correcte oefeningen
       recent-exercises: Recente oefeningen
     getting_started_card:

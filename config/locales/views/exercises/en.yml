@@ -35,6 +35,7 @@ en:
       feedback: Feedback
       solutions: Submissions
       not_logged_in_html: <a href="%{url}">Sign in</a> to test your solution.
+      hand_in_info: You can submit as many times as you want. Only your last submission is taken into account.
       hide_correct: hide correct
       correct: correct
       wrong: wrong

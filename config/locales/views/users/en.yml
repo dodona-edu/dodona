@@ -35,7 +35,7 @@ en:
       staff: Staff
       zeus: Zeus
       course_admin: Course administrator
-      no_ugent: This user has no Ghent University username
+      no_institution: This user has no institution
     edit:
       api_tokens: API tokens
       active_tokens: Active tokens

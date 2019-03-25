@@ -42,9 +42,9 @@ en:
       output: Output
       correct_tests: Correct tests
       diff:
-        split: Split
-        unified: Unified
+        split: Show output side-by-side
+        unified: Show unified output
       correct:
-        shown: Shown
-        hidden: Hidden
+        shown: Show correct tests
+        hidden: Hide correct tests
       judge_output_too_long: "The judge generated too much output. This usually happens when the submission itself generates too much output. Try to reduce how much output your submission generates."

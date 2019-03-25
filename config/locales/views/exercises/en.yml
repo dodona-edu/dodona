@@ -30,6 +30,7 @@ en:
       repository: "Repository"
       path: "Path"
       class_progress: Class progress
+      progress_chart_info_html: "%{users_tried} users started this exercise,<br> %{users_correct} users solved it correctly"
     show:
       code: Code
       handin: Hand in

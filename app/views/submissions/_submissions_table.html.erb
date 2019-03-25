@@ -1,12 +1,12 @@
 <div class="table-scroll-wrapper">
-  <table class="table">
+  <table class="table table-resource">
     <thead>
     <tr>
       <th></th>
       <% if current_user.administrating_courses.any? || current_user.admin? %>
         <th><%= t ".user" %></th>
       <% end %>
-      <% if !exercise %>
+      <% unless exercise.present? %>
         <th><%= t ".exercise" %></th>
       <% end %>
       <th><%= t ".time" %></th>

@@ -1,4 +1,4 @@
-<%
+<%users_total = 15
     users_total += 0.0001
     parts = [
         { percent: users_correct / users_total, class: 'correct' },
@@ -16,6 +16,6 @@
     end
 %>
 
-<svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='class-progress-chart'>
+<svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='class-progress-chart' data-html="true" data-toggle='tooltip' title="<%= t('exercises.index.progress_chart_info_html', users_correct: users_correct, users_tried: users_tried) %>">
     <%=raw parts.join("") %>
 </svg>

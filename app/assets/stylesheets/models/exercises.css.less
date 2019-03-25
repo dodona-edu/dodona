@@ -1,19 +1,35 @@
 // exercise table
-.exercise-table th.status-icon {
-  width: 48px;
+.exercise-table {
+  th.status-icon {
+    width: 48px;
+  }
+
+  td.status-icon {
+    padding-left: 4px;
+  }
+
+  .status {
+    width: 150px;
+  }
+
+  .count {
+    width: 130px;
+  }
+  
+  .class-progress-chart {
+    shape-rendering: crispEdges;
+    .correct {
+      stroke: @brand-success;
+    }
+    .wrong {
+      stroke: @brand-danger;
+    }
+    .not-started {
+      stroke: @hairlinegray;
+    }
+  }
 }
 
-.exercise-table td.status-icon {
-  padding-left: 4px;
-}
-
-.exercise-table .status {
-  width: 150px;
-}
-
-.exercise-table .count {
-  width: 130px;
-}
 
 // exercise
 .exercise-description .card-supporting-text {

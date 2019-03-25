@@ -35,7 +35,7 @@ nl:
       staff: Beheerder
       zeus: Zeus
       course_admin: cursusbeheerder
-      no_ugent: Deze gebruiker heeft geen UGent gebruikersnaam
+      no_institution: Deze gebruiker heeft geen onderwijsinstelling
     edit:
       api_tokens: API tokens
       active_tokens: Actieve tokens

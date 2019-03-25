@@ -19,7 +19,7 @@
             <i class="material-icons md-18" title='<%= t "users.users_table.course_admin" %>'>school</i>
           <% end %>
           <% if user.username.blank? %>
-            <i class="material-icons md-18" title='<%= t "users.users_table.no_ugent" %>'>warning</i>
+            <i class="material-icons md-18" title='<%= t "users.users_table.no_institution" %>'>warning</i>
           <% end %>
         </td>
         <% if course_membership.pending? || course_membership.unsubscribed? %>

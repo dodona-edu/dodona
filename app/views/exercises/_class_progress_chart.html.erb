@@ -1,0 +1,21 @@
+<%
+    users_total += 0.0001
+    parts = [
+        { percent: users_correct / users_total, color: '#4caf50' },
+        { percent: (users_tried - users_correct) / users_total, color: '#f44336' },
+        { percent: 1 - (users_tried / users_total), color: '#dddddd' }
+    ]
+    cumulativePercent = 0
+
+    parts = parts.map do |part|
+        startX, startY = [cumulativePercent, 0.5]
+        cumulativePercent += part[:percent]
+        endX, endY = [cumulativePercent, 0.5]
+        
+        "<line stroke='#{part[:color]}' x1='#{startX}' y1='#{startY}' x2='#{endX}' y2='#{endY}' />"
+    end
+%>
+
+<svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100">
+    <%=raw parts.join("") %>
+</svg>

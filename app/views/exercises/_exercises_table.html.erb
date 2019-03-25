@@ -15,7 +15,7 @@
     <tr>
       <th class='status-icon'></th>
       <th><%= t "exercises.index.exercise" %></th>
-      <th class='count'></th>
+      <th class='count'><%= t "exercises.index.class_progress" %></th>
       <% if user_signed_in? %>
         <th class='status ellipsis-overflow' title="<%= t "exercises.index.status" %>"><%= t "exercises.index.status" %></th>
         <th class='status-icon'></th>
@@ -42,11 +42,11 @@
           <% end %>
         </td>
 
-        <td class='text-right'>
+        <td>
           <% if @course %>
-            <%= render partial: 'exercises/mini_pie_chart', locals: {users_total: @course.subscribed_members_count, users_tried: ex.users_tried, users_correct: ex.users_correct} %>
+            <%= render partial: 'exercises/class_progress_chart', locals: {users_total: @course.subscribed_members_count, users_tried: ex.users_tried, users_correct: ex.users_correct} %>
           <% else %>
-            <%= content_tag :span, title: t('exercises.exercise.count_tooltip'), class: "text-muted" do %>
+            <%= content_tag :span, title: t('exercises.exercise.count_tooltip'), class: "text-right text-muted" do %>
               <%= ex.users_correct %>/<%= ex.users_tried %>
             <% end %>
           <% end %>

@@ -29,6 +29,7 @@ nl:
       labels: "Labels"
       repository: "Repository"
       path: "Pad"
+      class_progress: Voortgang groep
     show:
       code: Code
       handin: Indienen

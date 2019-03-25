@@ -29,6 +29,7 @@ en:
       labels: "Labels"
       repository: "Repository"
       path: "Path"
+      class_progress: Class progress
     show:
       code: Code
       handin: Hand in

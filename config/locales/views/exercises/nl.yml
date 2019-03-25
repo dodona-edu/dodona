@@ -29,6 +29,8 @@ nl:
       labels: "Labels"
       repository: "Repository"
       path: "Pad"
+      class_progress: Voortgang groep
+      progress_chart_info_html: "%{users_tried} gebruikers begonnen aan deze oefening,<br> %{users_correct} gebruikers losten hem correct op"
     show:
       code: Code
       handin: Indienen

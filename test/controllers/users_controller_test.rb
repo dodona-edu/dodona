@@ -87,4 +87,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to sign_in_path
   end
+
+  test 'should render edit page for staff' do
+    user = create(:staff)
+    sign_in user
+    get edit_user_url(user)
+
+    assert_response :success
+  end
 end

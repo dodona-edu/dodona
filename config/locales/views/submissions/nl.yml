@@ -48,3 +48,4 @@ nl:
         shown: Toon correcte tests
         hidden: Verberg correcte tests
       judge_output_too_long: "De judge heeft te veel uitvoer gegenereerd. Dit gebeurt meestal als je ingediende oplossing zelf te veel output genereerde. Probeer de hoeveelheid uitvoer van je ingediende oplossing te verminderen."
+      reading_failed: "Something went wrong while loading your results. Try again later or resubmit your solution if the problem persists."

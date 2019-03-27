@@ -101,7 +101,7 @@ Rails.application.configure do
   # Do not add server timings in production
   config.server_timings.enabled = false
 
-  notifiers = {
+  config.middleware.use ExceptionNotification::Rack, {
       email: {
           email_prefix: '[Dodona] ',
           sender_address: %("Dodona" <dodona@ugent.be>),
@@ -123,10 +123,6 @@ Rails.application.configure do
           }
       }
   }
-
-  config.exception_notification_notifiers = notifiers
-
-  config.middleware.use ExceptionNotification::Rack, notifiers
 
 
   config.action_mailer.delivery_method = :sendmail

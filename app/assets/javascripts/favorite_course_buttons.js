@@ -22,12 +22,19 @@ function initFavoriteButtons() {
                 showNotification(I18n.t("js.favorite-course-succeeded"));
                 element.addClass("favorited");
                 element.html("favorite");
+                element.attr("data-original-title", I18n.t("js.unfavorite-course-do"));
+                element.tooltip("hide");
                 const card = element.parents(".course.card").parent();
                 const favoritesRow = $(".favorites-row");
                 if (favoritesRow.children().length === 0) {
                     $(".page-subtitle.first").removeClass("hidden");
                 }
-                card.clone(true).appendTo(favoritesRow);
+                const clone = card.clone();
+                clone.appendTo(favoritesRow);
+                const cloneFavButton = clone.find(".favorite-button");
+                cloneFavButton.attr("title", I18n.t("js.unfavorite-course-do"));
+                cloneFavButton.tooltip();
+                cloneFavButton.click(toggleFavorite);
             })
             .fail(() => {
                 showNotification(I18n.t("js.favorite-course-failed"));
@@ -42,6 +49,8 @@ function initFavoriteButtons() {
                 const elements = $(`[data-course_id="${courseId}"]`);
                 elements.removeClass("favorited");
                 elements.html("favorite_outline");
+                elements.attr("data-original-title", I18n.t("js.favorite-course-do"));
+                elements.tooltip("hide");
                 $(`.favorites-row [data-course_id="${courseId}"]`).parents(".course.card").parent().remove();
                 if ($(".favorites-row").children().length === 0) {
                     $(".page-subtitle.first").addClass("hidden");

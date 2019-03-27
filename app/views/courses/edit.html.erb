@@ -32,23 +32,25 @@
                                reset_url: reset_token_course_path(@course)
                            } %>
               </div>
-              <small><%= t "courses.show.invitation_link_help" %></small>
+              <span class='help-block'><%= t "courses.show.invitation_link_help" %></span>
             </div>
           </div>
         </div>
       </div>
-      <% if policy(@course).reorder_series? %>
+    </div>
+    <% if policy(@course).reorder_series? %>
+      <div class="card">
         <div class="card-supporting-text card-border">
           <div class="page-subtitle">
-            <h4><%= t '.series_in_course' %></h4>
+            <h3><%= t '.series_in_course' %></h3>
           </div>
-          <small><%= t ".series_reordering_help" %></small>
+          <p class='h3-info-text'><%= t ".series_reordering_help_html" %></p>
           <div class="course-series-list" data-course_id="<%= @course.id %>">
             <%= render partial: 'series/course_series_table', locals: {series: @course.series, course: @course} %>
           </div>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
 </div>
 <script type="text/javascript">

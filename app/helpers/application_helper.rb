@@ -62,6 +62,8 @@ module ApplicationHelper
       options[:class] ||= ''
       options[:class] += ' active'
     end
+    options[:'data-toggle'] = 'tooltip'
+    options[:'data-placement'] = 'bottom'
 
     locals = {
         title: options.delete(:title),
@@ -107,7 +109,7 @@ module ApplicationHelper
     string.gsub('"', '\"')
   end
 
-  def submission_status_icon(submission)
+  def submission_status_icon(submission, size = 18)
     icon, color = {
         nil => %w[remove default],
         'correct' => %w[check correct],
@@ -119,7 +121,7 @@ module ApplicationHelper
         'compilation error' => %w[offline_bolt wrong],
         'memory limit exceeded' => %w[memory wrong]
     }[submission&.status] || %w[warning warning]
-    "<i class=\"material-icons md-18 colored-#{color}\">#{icon}</i>".html_safe
+    "<i class=\"material-icons md-#{size} colored-#{color}\">#{icon}</i>".html_safe
   end
 
   def options_for_enum(object, enum)

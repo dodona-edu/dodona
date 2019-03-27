@@ -15,7 +15,8 @@ class FeedbackTableRenderer
   end
 
   def initialize(submission, user)
-    @submission = JSON.parse(submission.safe_result(user), symbolize_names: true)
+    result = submission.safe_result(user)
+    @submission = result.present? ? JSON.parse(result, symbolize_names: true) : nil
     @current_user = user
     @course = submission.course
     @builder = Builder::XmlMarkup.new
@@ -26,13 +27,23 @@ class FeedbackTableRenderer
   end
 
   def parse
-    @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
-      @builder.div(class: 'row feedback-table-messages') do
-        messages(@submission[:messages])
-      end
-      tabs(@submission)
-      init_js
-    end.html_safe
+    if @submission.present?
+      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
+        if @submission[:messages].present?
+          @builder.div(class: 'row feedback-table-messages') do
+            messages(@submission[:messages])
+          end
+        end
+        tabs(@submission)
+        init_js
+      end.html_safe
+    else
+      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
+        @builder.div(class: 'row feedback-table-messages') do
+          messages([{description: I18n.t('submissions.show.reading_failed'), format: 'plain'}])
+        end
+      end.html_safe
+    end
   end
 
   def show_code_tab
@@ -53,38 +64,41 @@ class FeedbackTableRenderer
   end
 
   def tabs(submission)
-    @builder.div(class: 'card card-nav') do
-      @builder.div(class: 'card-title card-title-colored') do
-        @builder.ul(class: 'nav nav-tabs') do
-          submission[:groups]&.each_with_index do |t, i|
-            @builder.li(class: ('active' if i.zero?)) do
-              @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
-                @builder.text!((t[:description] || 'Test').upcase_first + ' ')
-                @builder.span(class: 'badge') do
-                  @builder << tab_count(t)
-                end
+    @builder.div(class: 'card-tab') do
+      @builder.ul(class: 'nav nav-tabs') do
+        submission[:groups]&.each_with_index do |t, i|
+          @builder.li(class: ('active' if i.zero?)) do
+            @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
+              @builder.text!((t[:description] || 'Test').upcase_first + ' ')
+              @builder.span(class: 'badge') do
+                @builder << tab_count(t)
               end
             end
           end
-          if show_code_tab
-            @builder.li(class: ('active' unless submission[:groups].present?)) do
-              @builder.a(I18n.t('submissions.show.code'), href: '#code-tab', 'data-toggle': 'tab')
+        end
+        if show_code_tab
+          @builder.li(class: ('active' unless submission[:groups].present?)) do
+            @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
+              @builder.text!(I18n.t('submissions.show.code') + ' ')
+              if submission.key?(:annotations) && submission[:annotations].count.positive?
+                @builder.span(class: 'badge') do
+                  @builder << submission[:annotations].count.to_s
+                end
+              end
             end
           end
         end
       end
-      @builder.div(class: 'card-supporting-text') do
-        @builder.div(class: 'tab-content') do
-          @submission[:groups].each_with_index {|t, i| tab(t, i)} if submission[:groups]
-          if show_code_tab
-            @builder.div(class: "tab-pane #{'active' unless submission[:groups].present?}", id: 'code-tab') do
-              if submission[:annotations]
-                @builder.div(class: 'linter') do
-                  source(@code, submission[:annotations])
-                end
-              else
-                source(@code, [])
+      @builder.div(class: 'tab-content') do
+        @submission[:groups].each_with_index {|t, i| tab(t, i)} if submission[:groups]
+        if show_code_tab
+          @builder.div(class: "tab-pane #{'active' unless submission[:groups].present?}", id: 'code-tab') do
+            if submission[:annotations]
+              @builder.div(class: 'linter') do
+                source(@code, submission[:annotations])
               end
+            else
+              source(@code, [])
             end
           end
         end
@@ -107,38 +121,42 @@ class FeedbackTableRenderer
 
   def tab_content(t)
     @diff_type = determine_tab_diff_type(t)
-    @builder.div(class: "feedback-table-options") do
-      @builder.span(class: "flex-spacer") {}
-      if show_hide_correct_switch t
-        @builder.span(class: "correct-switch-buttons switch-buttons") do
-          @builder.span do
-            @builder << I18n.t("submissions.show.correct_tests")
-          end
-          @builder.div(class: "btn-group") do
-            @builder.button(class: "btn btn-secondary active", 'data-show': 'true', title: I18n.t("submissions.show.correct.shown")) do
-              @builder.i(class: "material-icons md-18") do
-                @builder << "visibility"
-              end
+    show_hide_correct = show_hide_correct_switch t
+    show_diff_type = show_diff_type_switch t
+    if show_hide_correct || show_diff_type
+      @builder.div(class: 'feedback-table-options') do
+        @builder.span(class: 'flex-spacer') {}
+        if show_hide_correct
+          @builder.span(class: 'correct-switch-buttons switch-buttons') do
+            @builder.span do
+              @builder << I18n.t('submissions.show.correct_tests')
             end
-            @builder.button(class: "btn btn-secondary ", 'data-show': 'false', title: I18n.t("submissions.show.correct.hidden")) do
-              @builder.i(class: "material-icons md-18") do
-                @builder << "visibility_off"
+            @builder.div(class: 'btn-group btn-toggle') do
+              @builder.button(class: 'btn btn-secondary active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: 'material-icons md-18') do
+                  @builder << 'visibility'
+                end
+              end
+              @builder.button(class: 'btn btn-secondary ', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: 'material-icons md-18') do
+                  @builder << 'visibility_off'
+                end
               end
             end
           end
         end
-      end
-      if show_diff_type_switch t
-        @builder.span(class: "diff-switch-buttons switch-buttons") do
-          @builder.span do
-            @builder << I18n.t("submissions.show.output")
-          end
-          @builder.div(class: "btn-group") do
-            @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t("submissions.show.diff.split")) do
-              @builder.i(class: "mdi mdi-18 mdi-arrow-split-vertical") {}
+        if show_diff_type
+          @builder.span(class: 'diff-switch-buttons switch-buttons') do
+            @builder.span do
+              @builder << I18n.t('submissions.show.output')
             end
-            @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t("submissions.show.diff.unified")) do
-              @builder.i(class: "mdi mdi-18 mdi-arrow-split-horizontal") {}
+            @builder.div(class: 'btn-group btn-toggle') do
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: 'mdi mdi-18 mdi-arrow-split-vertical') {}
+              end
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: 'mdi mdi-18 mdi-arrow-split-horizontal') {}
+              end
             end
           end
         end
@@ -209,7 +227,7 @@ class FeedbackTableRenderer
   end
 
   def messages(msgs)
-    return if msgs.nil?
+    return unless msgs.present?
     @builder.div(class: 'messages') do
       msgs.each do |msg|
         @builder.div(class: 'message') do
@@ -221,7 +239,6 @@ class FeedbackTableRenderer
 
   def test_accepted(t)
     @builder.div(class: 'test-accepted') do
-      # icon_correct
       @builder.span(t[:generated], class: 'output')
     end
   end
@@ -265,7 +282,7 @@ class FeedbackTableRenderer
         @builder.text! m[:description]
       end
     else
-      @builder.span(class: 'code highlighter-rouge') do
+      @builder.span(class: "code highlighter-rouge #{m[:format]}") do
         formatter = Rouge::Formatters::HTML.new(wrap: false)
         lexer = (Rouge::Lexer.find(m[:format].downcase) || Rouge::Lexers::PlainText).new
         @builder << formatter.format(lexer.lex(m[:description]))
@@ -273,7 +290,29 @@ class FeedbackTableRenderer
     end
   end
 
+  def format_lint_message(message)
+    lines = message.split("\n")
+    @builder.text! lines[0]
+    return unless lines.length > 1
+    @builder.br
+    @builder.div(class: 'code') do
+      @builder.text! lines.drop(1).join("\n")
+    end
+  end
+
+
   def source(code, messages)
+    if messages.present?
+      @builder.ul(class: 'lint-errors') do
+        messages.each do |m|
+          @builder.li(class: 'lint-msg') do
+            send('icon_' + m[:type])
+            @builder.text! "#{I18n.t('submissions.show.line')} #{m[:row] + 1}: "
+            format_lint_message(m[:text])
+          end
+        end
+      end
+    end
     @builder.div(id: 'editor-result') do
       @builder.text! code
     end

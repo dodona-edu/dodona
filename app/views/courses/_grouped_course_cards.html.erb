@@ -2,14 +2,6 @@
   <div class="page-subtitle">
     <a class="anchor" id="<%= year.parameterize %>"></a>
     <h3><%= Course.format_year year %></h3>
-    <div class="flex-spacer"></div>
-    <div>
-      <% if policy(Course).new? && grouped_courses.keys.first == year %>
-        <%= link_to new_course_path, title: t("courses.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
-          <i class="material-icons icon">add</i><span class='text'><%= t("courses.new.title") %></span>
-        <% end %>
-      <% end %>
-    </div>
   </div>
   <div class="row">
     <% courses.each do |course| %>

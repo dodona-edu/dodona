@@ -1,6 +1,6 @@
 module UsersHelper
   def editable_permissions
-    perms = User.permissions.clone
+    perms = User.permissions.to_h
     perms.delete('zeus') if current_user.staff?
     perms
   end

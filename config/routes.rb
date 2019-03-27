@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
     get '/institution_not_supported' => 'pages#institution_not_supported'
     get '/about' => 'pages#about'
+    get '/data' => 'pages#data'
 
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'

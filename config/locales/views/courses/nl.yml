@@ -4,13 +4,15 @@ nl:
       show: Cursus bekijken
       members: Ingeschreven gebruikers
       edit: Cursus bewerken
-      submissions: Oplossingen voor dit vak
-      statistics: "Statistieken voor dit vak"
+      submissions: Oplossingen voor deze cursus
+      statistics: "Statistieken voor deze cursus"
     form:
+      teacher-help: Optioneel. Kan gebruikers helpen om je cursus te vinden.
+      year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je cursus correct gesorteerd zal worden.
+      institution-help_html: Een onderwijsinstelling selecteren zal de cursusregistraties <b>niet</b> beperken, maar kan gebruikers helpen om je cursus te vinden.
+      visibility-help_html: <b>Zichtbare</b> cursussen zijn voor iedereen zichtbaar in het cursusoverzicht. <b>Verborgen</b> cursussen worden niet opgelijst en vereisen een speciale toegangslink.
+      registration-help_html: Bij <b>open</b> cursussen worden registraties automatisch geaccepteerd. Bij <b>gemodereerde</b> cursussen moet elke registratie goedgekeurd worden door een cursusbeheerder. Bij <b>gesloten</b> cursussen zijn nieuwe registraties niet mogelijk.
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
-      year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je vak correct gesorteerd zal worden.
-      visibility-help: Zichtbare vakken zijn zichtbaar in het cursusoverzicht. Verborgen vakken worden niet opgelijst in het overzicht en vereisen een speciale registratielink.
-      registration-help: Bij open vakken worden registraties direct geaccepteerd. Bij gemoderereerde vakken moet elke registratie goedgekeurd worden door een cursusbeheerder. Wanneer een vak gesloten is kan niemand zich nog registreren.
       no_institution: "Geen onderwijsinstelling"
     index:
       title: Alle cursussen
@@ -18,13 +20,13 @@ nl:
     new:
       title: Cursus aanmaken
     edit:
-      confidential: Confidentieel
-      series_in_course: "Reeksen in dit vak"
-      series_reordering_help: "Je kan de reeksen herordenen door ze te slepen met het icoon aan de linkerkant van de tabel. Hou rekening met het feit dat de volgorde die voor jou het handigst is niet noodzakelijk de volgorde is die voor jouw studenten het handigst is."
+      confidential: Geheime link
+      series_in_course: "Reeksen in deze cursus"
+      series_reordering_help_html: "Je kan de reeksen herordenen door ze te verslepen met de icoontjes aan de linkerkant van de tabel. Voor studenten is een <b>omgekeerd chronologische</b> volgorde waarschijnlijk het gemakkelijkste. Hierbij staan recente reeksen bovenaan de pagina en hoeven ze niet telkens naar onder te scrollen."
     show:
       course: Cursus
       invitation_link: Registratielink
-      invitation_link_help: 'Met deze link worden gebruikers naar een pagina gebracht waar ze zich kunnen registreren.'
+      invitation_link_help: 'Met deze link worden gebruikers naar een pagina gebracht waar ze zich direct kunnen registreren voor deze cursus.'
       visibility-visible-info_html: 'Deze cursus is <strong>zichtbaar</strong>: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'
       visibility-hidden-info_html: 'Deze cursus is <strong>verborgen</strong>: ze verschijnt niet in het cursusoverzicht en enkel gebruikers met de registratielink kunnen zich registreren.'
       registration-open-info_html: 'De registraties staan <strong>open</strong>: gebruikers die op de registratie-knop klikken zijn onmiddellijk geregistreerd.'
@@ -35,6 +37,7 @@ nl:
       request_registration: registratieverzoek indienen
       unsubscribe: uitschrijven
       exercise_series: Oefeningenreeksen
+      no_series_yet: 'Deze cursus bevat nog geen reeksen met oefeningen. Klik op de knop "reeks aanmaken" om aan de slag te gaan.'
       users: Gebruikers
       series: reeksen
       download_scoresheet: Scoresheet downloaden
@@ -55,14 +58,14 @@ nl:
       taught_by_at: "Gegeven door %{teacher} aan %{institution}."
       taught_at: "Gegeven aan %{institution}."
     registration:
-      registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen de UGent.
+      registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       page_title: Registratie
       not_a_member: Je bent niet geregistreerd voor deze cursus.
       already_a_member: Je bent al geregistreerd.
       pending: Je staat op de wachtlijst.
       remove_from_pending: Registratieverzoek annuleren
-      moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot dit vak.
-      explanation_html: 'Dit is de registratiepagina voor het vak <strong>%{course_name}</strong>.'
+      moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot deze cursus.
+      explanation_html: 'Dit is de registratiepagina voor de cursus <strong>%{course_name}</strong>.'
       instruction: 'Klik op de knop om je te registreren voor deze cursus.'
       closed: Deze cursus is gesloten en aanvaardt geen nieuwe registraties.
       sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je registratie accepteert.
@@ -84,7 +87,6 @@ nl:
       statistics: "Statistieken"
     user_stats:
       subscribed_users: Geregistreerde gebruikers
-      exercise_count: Aantal oefeningen
-      average_progress: Gemiddelde voortgang
-      average_progress_info: Gemiddeld percentage opgeloste oefeningen per gebruiker
+      exercise_count: Oefeningen
       submitted_solutions: Ingediende oplossingen
+      more_statistics: "Meer statistieken >"

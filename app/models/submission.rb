@@ -14,7 +14,7 @@
 #
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
-  SUBMISSION_MATRIX_CACHE_STRING = "/courses/%{course_id}/user/%{user_id}/submissions_matrix".freeze
+  SUBMISSION_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/submissions_matrix'.freeze
   BASE_PATH = Rails.application.config.submissions_storage_path
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
@@ -25,14 +25,13 @@ class Submission < ApplicationRecord
   belongs_to :user
   belongs_to :course, optional: true
   has_one :judge, through: :exercise
-  has_one :submission_detail, foreign_key: 'id', dependent: :delete, autosave: true
 
-  validate :code_cannot_contain_emoji, on: :create
   validate :maximum_code_length, on: :create
   validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
 
   after_create :evaluate_delayed, if: :evaluate?
-  after_update :invalidate_caches
+  after_save :invalidate_caches
+  after_destroy :invalidate_caches
   after_destroy :clear_fs
   after_rollback :clear_fs
 
@@ -46,11 +45,10 @@ class Submission < ApplicationRecord
   scope :by_exercise_name, ->(name) {where(exercise: Exercise.by_name(name))}
   scope :by_status, ->(status) {where(status: status.in?(statuses) ? status : -1)}
   scope :by_username, ->(name) {where(user: User.by_filter(name))}
-  scope :by_filter, ->(filter, skip_user, skip_exercise, skip_status) do
+  scope :by_filter, ->(filter, skip_user, skip_exercise) do
     filter.split(' ').map(&:strip).select(&:present?).map do |part|
       scopes = []
       scopes << by_exercise_name(part) unless skip_exercise
-      scopes << by_status(part) unless skip_status
       scopes << by_username(part) unless skip_user
       scopes.any? ? self.merge(scopes.reduce(&:or)) : self
     end.reduce(&:merge)
@@ -85,35 +83,34 @@ class Submission < ApplicationRecord
     # We need to do this after the rest of the fields are initialized, because we depend on the course_id, user_id, ...
     self.code = code.to_s unless code.nil?
     self.result = result.to_s unless result.nil?
-    self.submission_detail = SubmissionDetail.new(id: id, code: code, result: result)
   end
 
   def code
-    if File.exists?(File.join(fs_path, CODE_FILENAME))
+    begin
       File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
-    else
-      submission_detail.code
+    rescue Errno::ENOENT => e
+      ExceptionNotifier.notify_exception e
+      ''
     end
   end
 
   def code=(code)
-    FileUtils.mkdir_p fs_path unless File.exists?(fs_path)
+    FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
     File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
-    submission_detail.code = code if submission_detail
   end
 
   def result
-    if File.exists?(File.join(fs_path, RESULT_FILENAME))
+    begin
       ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
-    else
-      submission_detail.result
+    rescue Errno::ENOENT, Zlib::GzipFile::Error => e
+      ExceptionNotifier.notify_exception e
+      nil
     end
   end
 
   def result=(result)
-    FileUtils.mkdir_p fs_path unless File.exists?(fs_path)
-    File.open(File.join(fs_path, RESULT_FILENAME), "wb") {|f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))}
-    submission_detail.result = result if submission_detail
+    FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
+    File.open(File.join(fs_path, RESULT_FILENAME), 'wb') {|f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))}
   end
 
   def clean_messages(messages, levels)
@@ -121,8 +118,9 @@ class Submission < ApplicationRecord
   end
 
   def safe_result(user)
-    return '' if result.empty?
-    json = JSON.parse(result, symbolize_names: true)
+    res = result
+    return '' if res.blank?
+    json = JSON.parse(res, symbolize_names: true)
     return json.to_json if user.zeus?
     if user.staff? || (course.present? && user.course_admin?(course))
       levels = %w[student staff]
@@ -150,12 +148,12 @@ class Submission < ApplicationRecord
   def clear_fs
     # If we were destroyed or if we were never saved to the database, delete this submission's directory
     if self.destroyed? || self.new_record?
-      FileUtils.remove_entry_secure(fs_path) if File.exists?(fs_path)
+      FileUtils.remove_entry_secure(fs_path) if File.exist?(fs_path)
     end
   end
 
   def on_filesystem?
-    File.exists?(File.join(fs_path, RESULT_FILENAME)) && File.exists?(File.join(fs_path, CODE_FILENAME))
+    File.exist?(File.join(fs_path, RESULT_FILENAME)) && File.exist?(File.join(fs_path, CODE_FILENAME))
   end
 
   def evaluate?
@@ -195,11 +193,6 @@ class Submission < ApplicationRecord
     self.accepted = result_hash[:accepted]
     self.summary = result_hash[:description]
     save
-  end
-
-  def code_cannot_contain_emoji
-    no_emoji_found = code.chars.all? {|c| c.bytes.length < 4}
-    errors.add(:code, 'emoji found') unless no_emoji_found
   end
 
   def maximum_code_length

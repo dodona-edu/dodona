@@ -4,8 +4,8 @@
 
 <%= form_for(post, :html => {:class => 'form-horizontal'}) do |f| %>
   <% if post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= t("errors.validation_errors", :count => post.errors.count) %></h2>
+    <div class="callout callout-danger" id="error_explanation">
+      <h4><%= t("errors.validation_errors", :count => post.errors.count) %></h4>
       <ul>
         <% post.errors.full_messages.each do |message| %>
           <li><%= message %></li>

@@ -1,7 +1,7 @@
 <%= form_for(course, :html => {:class => 'form-horizontal'}) do |f| %>
   <% if course.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= t('errors.validation_errors', :count => course.errors.count) %></h2>
+    <div class="callout callout-danger" id="error_explanation">
+      <h4><%= t('errors.validation_errors', :count => course.errors.count) %></h4>
       <ul>
         <% course.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -16,6 +16,7 @@
   <div class="field form-group">
     <%= f.label :teacher, :class => "col-sm-3 control-label" %>
     <div class="col-sm-6"><%= f.text_field :teacher, class: "form-control" %></div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".teacher-help" %></span>
   </div>
   <div class="field form-group">
     <%= f.label :year, :class => "col-sm-3 control-label" %>
@@ -26,10 +27,11 @@
     <%= f.label :institution, :class => "col-sm-3 control-label" %>
     <div class="col-sm-6">
       <%= f.select :institution_id,
-                   options_for_select(Institution.all.map {|i| [i.name, i.id]}, @course.institution_id),
+                   options_for_select(Institution.all.sort_by(&:name).map {|i| [i.name, i.id]}, @course.institution_id),
                    {include_blank: t('.no_institution')},
                    {class: 'form-control'} %>
     </div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".institution-help_html" %></span>
   </div>
   <div class="field form-group">
     <%= f.label :visibility, class: 'col-sm-3 control-label' %>
@@ -40,7 +42,7 @@
                    {},
                    {class: 'form-control'} %>
     </div>
-    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-help" %></span>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-help_html" %></span>
   </div>
   <div class="field form-group">
     <%= f.label :registration, class: 'col-sm-3 control-label' %>
@@ -51,7 +53,7 @@
                    {},
                    {class: 'form-control'} %>
     </div>
-    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".registration-help" %></span>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".registration-help_html" %></span>
   </div>
   <div class="field form-group">
     <%= f.label :description, :class => "col-sm-3 control-label" %>

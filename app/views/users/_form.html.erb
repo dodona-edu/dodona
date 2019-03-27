@@ -4,8 +4,8 @@
 <div class="col-md-6 col-md-pull-6">
   <%= form_for(user, :html => {:class => 'form-horizontal'}) do |f| %>
     <% if user.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= t('errors.validation_errors', :count => user.errors.count) %></h2>
+      <div class="callout callout-danger" id="error_explanation">
+        <h4><%= t('errors.validation_errors', :count => user.errors.count) %></h4>
         <ul>
           <% user.errors.full_messages.each do |message| %>
             <li><%= message %></li>
@@ -16,11 +16,6 @@
     <div class="field form-group">
       <%= f.label :username, :class => "col-sm-4 control-label" %>
       <div class="col-sm-8"><%= f.text_field :username, class: "form-control", disabled: !f.permission?(:username) %></div>
-      <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".username-help" if current_user.admin? %></span>
-    </div>
-    <div class="field form-group">
-      <%= f.label :ugent_id, :class => "col-sm-4 control-label" %>
-      <div class="col-sm-8"><%= f.text_field :ugent_id, class: "form-control", disabled: !f.permission?(:ugent_id) %></div>
     </div>
     <div class="field form-group">
       <%= f.label :first_name, :class => "col-sm-4 control-label" %>

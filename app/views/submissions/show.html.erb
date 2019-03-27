@@ -3,7 +3,7 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t ".submission" %> <%= t "submissions.index.for" %> <%= @submission.exercise.name %> <%= "#{ t ".in" } #{@submission.course.name}" unless @submission.course.nil? %></h2>
+        <h2 class="card-title-text"><%= t ".submission_results" %></h2>
         <div class="card-title-fab">
           <% if policy(@submission).create? %>
             <%= link_to edit_submission_path(@submission), class: 'btn btn-primary btn-fab', title: t('.edit') do %>

@@ -1,3 +1,52 @@
+.material-icons.md-12 {
+  font-size: 12px;
+}
+
+.material-icons.md-18 {
+  font-size: 18px;
+}
+
+.material-icons.md-24 {
+  font-size: 24px;
+}
+
+.material-icons.md-36 {
+  font-size: 36px;
+}
+
+.material-icons.md-48 {
+  font-size: 48px;
+}
+
+.material-icons.md-inherit {
+  font-size: inherit;
+  vertical-align: middle;
+}
+
+.material-icons {
+  position: relative;
+}
+
+.material-icons-info {
+  top: 4px;
+}
+
+.material-icons.material-icons-strikethrough:after {
+  position: absolute;
+  top: -11px;
+  left: 11px;
+  content: "|";
+  display: block;
+  font-weight: bold;
+  font-size: 140%;
+  transform: rotate(45deg);
+}
+
+.material-icons.material-icons-strikethrough.md-18:after {
+  top: -7px;
+  left: 9px;
+}
+
 .mdi::before {
   font-size: 24px;
   line-height: 26px;
@@ -98,4 +147,44 @@
   position: relative;
   top: 3px;
   left: -3px
+}
+
+.custom-material-icons {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+
+  &.fix-alignment {
+    position: absolute;
+
+    &.square_edit {
+      top: 9px;
+      right: 10px;
+    }
+  }
+
+  &.md-12 {
+    width: 12px;
+    height: 12px;
+  }
+
+  &.md-18 {
+    width: 18px;
+    height: 18px;
+  }
+
+  &.md-24 {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.md-36 {
+    width: 36px;
+    height: 36px;
+  }
+
+  &.md-48 {
+    width: 48px;
+    height: 48px;
+  }
 }

@@ -1,7 +1,6 @@
 nl:
   users:
     form:
-      username-help: Als je een account aanmaakt zonder gebruikersnaam, dan zal er een inlog token gegenereerd worden. Later kan dan een gebruikersnaam toegevoegd worden.
     index:
       title: Alle gebruikers
       no_users: Geen gebruikers gevonden
@@ -16,25 +15,30 @@ nl:
       edit: 'Aanpassen'
       delete: 'Verwijderen'
       actions: "Acties"
-      institution: "Instituut"
+      institution: "Onderwijsinstelling"
     new:
       title: Gebruiker aanmaken
     show:
+      edit: Aanpassen
       courses: Cursussen
-      no_courses: geen cursussen gevonden
+      my_courses: Mijn Cursussen
+      no_courses: Je bent nog voor geen enkele cursus geregistreerd.
       correctly_solved: Correcte oefeningen
       unfinished: Onafgewerkte oefeningen
       solutions: Oplossingen ingediend
-      sign_in: Inloggen
-      token_sign_in: 'Deze gebruiker heeft geen gebruikersnaam en kan enkel inloggen via deze link:'
+      submissions: Oplossingen
+      sign_in: Aanmelden
+      token_sign_in: 'Deze account werd handmatig aangemaakt en kan enkel inloggen via deze link:'
+      timezone: Je tijdzone staat ingesteld op
+      stats: Statistieken
     users_table:
       staff: Beheerder
       zeus: Zeus
       course_admin: cursusbeheerder
-      no_ugent: Deze gebruiker heeft geen UGent gebruikersnaam
+      no_institution: Deze gebruiker heeft geen onderwijsinstelling
     edit:
       api_tokens: API tokens
       active_tokens: Actieve tokens
       create_new_token: Nieuw token aanmaken
     repository_users_table:
-      no_institution: "Geen instituut"
+      no_institution: "Geen onderwijsinstelling"

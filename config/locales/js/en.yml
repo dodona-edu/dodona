@@ -19,13 +19,16 @@ en:
     actions: Actions
     favorite-course-succeeded: Favorited course
     favorite-course-failed: Favoriting course failed
+    favorite-course-do: Favorite
     unfavorite-course-succeeded: Unfavorited course
     unfavorite-course-failed: Unfavoriting course failed
+    unfavorite-course-do: Unfavorite
     labels: Labels
     programming_languages: Programming Languages
     repositories: Repositories
     institutions: Institutions
     course_labels: Member labels
+    statuses: Statuses
     label-undeletable: This label can't be deleted because it was set in the dirconfig file of a parent directory of the exercise.
     monday: Monday
     tuesday: Tuesday
@@ -34,3 +37,4 @@ en:
     friday: Friday
     saturday: Saturday
     sunday: Sunday
+    loading: Loading...

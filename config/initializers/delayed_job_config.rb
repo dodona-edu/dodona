@@ -19,26 +19,33 @@ Delayed::Worker.queue_attributes = {
 # rubocop:disable RescueException, HandleExceptions
 class SubmissionDjPlugin < Delayed::Plugin
   callbacks do |lifecycle|
-    lifecycle.after(:failure) do |_worker, job, *_args|
+    lifecycle.after(:failure) do |worker, job, *_args|
       if job.payload_object.object.is_a?(Submission)
         sub = job.payload_object.object
         Delayed::Worker.logger.debug("Failed submission #{sub.id} by user #{sub.user_id} for exercise #{sub.exercise_id} after #{job.attempts} attempts (worker #{job.locked_by})")
         Delayed::Worker.logger.debug(job.last_error[0..10_000])
-        sub.save_result ({
-            accepted: false,
-            status: 'internal error',
-            description: 'Dodona Error',
-            messages: [
-                {'format' => 'plain', 'description' => 'Delayed job failed, due to a very unexpected error.', 'permission' => 'staff'},
-                {'format' => 'code', 'description' => job.last_error[0..10_000], 'permission' => 'staff'}
-            ]
-        })
+        begin
+          sub.save_result(
+              {
+                  accepted: false,
+                  status: 'internal error',
+                  description: 'Dodona Error',
+                  messages: [
+                      {'format' => 'plain', 'description' => 'Delayed job failed, due to a very unexpected error.', 'permission' => 'staff'},
+                      {'format' => 'code', 'description' => job.last_error[0..10_000], 'permission' => 'staff'}
+                  ]
+              }
+          )
+        rescue
+          sub.update(status: :'internal error', summary: 'failed to save result', accepted: false)
+        end
         Delayed::Worker.logger.debug("Set failed status on submission #{sub.id}")
       end
       if Rails.env.production?
-        ExceptionNotifier.notify_exception(job.last_error, notifiers: Rails.configuration.exception_notification_notifiers)
+        ExceptionNotifier.notify_exception(job.last_error, data: {worker: worker, queue: job.queue, payload: job.payload_object})
       end
-    rescue Exception
+    rescue Exception => e
+      puts e
       # This must not fail in any case.
       # Raising an error kills the worker.
     end

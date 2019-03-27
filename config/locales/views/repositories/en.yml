@@ -1,24 +1,26 @@
 en:
   repositories:
     form:
-      remote-help: The SSH clone URL of the repository to use. Dodona must have access to this repository.
+      remote-help: "The SSH clone url of the judge repository. Dodona needs access rights to the repository to be able to clone it."
+      judge-help: "This judge will be used when the exercise doesn't specify one. Choose 'Pythia' for the default python judge."
     index:
-      title: All repositories
+      title: All exercise repositories
       admins: "Edit administrators"
       courses: "Edit allowed courses"
       edit: "Edit"
       delete: "Delete"
       admin: "You are an administrator of this repository"
     new:
-      title: Create repository
+      title: Add an exercise repository
     show:
       repository: Repository
-      webhook: "Don't forget to trigger the webhook on each commit:"
+      webhook_html: "If you set up a <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank'>webhook</a> on GitHub, Dodona will automatically update your exercises on each commit:"
       reprocess: Reprocess all exercises
       exercises: Exercises
     admins:
       admins: "Administrators"
-      admin_explanation: "Repository admins can make others repository admins, view private exercises, edit exercises in the repository and allow courses to use private exercises."
+      admin_explanation: "The users listed below are repository administrators. These users can can make others repository admins, view the private exercises in this repository, edit exercises in the repository and manage which courses can use private exercises."
+      add_admins: "Add admins"
     reprocess:
       done: All exercises in this repository were reprocessed
     courses:

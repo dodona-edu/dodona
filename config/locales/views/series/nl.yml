@@ -2,7 +2,7 @@ nl:
   series:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
-      visibility-help: Een verborgen reeks wordt niet op de vakpagina getoond en is enkel toegankelijk via de geheime link.
+      visibility-help_html: Enkel <b>open</b> reeksen worden op de cursuspagina getoond. Een <b>gesloten</b> reeks is nooit toegankelijk voor studenten, een <b>verborgen</b> reeks enkel via de geheime link (zie hieronder).
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
       indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
     index:
@@ -24,18 +24,23 @@ nl:
       missed_deadline: deadline gemist
       deadline_in: binnen
       series_scoresheet: Statusoverzicht
-      best_is_not_last: Jouw beste oplossing is niet jouw laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
-      show_overview: Alle oefeningbeschrijvingen
+      best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
+      show_overview: Alle opgaven bekijken
     edit:
       title: Reeks bewerken
       add_exercises: Oefeningen toevoegen
+      manage_exercises: Oefeningen beheren
+      manage_exercises_info: Aanpassingen hieronder worden ogenblikkelijk opgeslagen.
       exercises_in_series: Oefeningen in deze reeks
+      exercises_in_series_info: Versleep het icoontje links van een rij om de oefening te herordenen.
       add_exercise: oefening toevoegen
+      no_exercises: Deze reeks bevat nog geen oefeningen.
+      no_exercises_bis: Gebruik de zoekfunctie hieronder om aan de slag te gaan.
       remove_exercise: oefening verwijderen
       confidential: Geheime links en tokens
       indianio-help: Kopieer dit token en plak het in Indianio om Indianio toe te laten oplossingen van studenten te downloaden voor deze reeks.
       access-link: Geheime link
-      access-help: Met deze geheime link krijgen studenten toegang tot deze reeks (als de reeks verborgen is).
+      access-help: Als de zichtbaarheid van de reeks op verborgen staat ingesteld, dan krijgen studenten met deze geheime link toegang.
     delete:
       title: Reeks verwijderen
       confirm: Bent u zeker dat u deze reeks wilt verwijderen?
@@ -47,18 +52,18 @@ nl:
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:
-      completed_after_deadline_missed: Je hebt alle oefeningen afgewerkt maar niet voor de deadline.
-      wrong_after_deadline_missed: Je hebt de deadline gemist en er zijn nog enkele onafgewerkte oefeningen.
-      started_after_deadline_missed: Je hebt de deadline gemist en er zijn nog enkele oefeningen waar je niet aan begonnen bent.
+      completed_after_deadline_missed: Je hebt alle oefeningen correct opgelost, maar helaas niet voor de deadline.
+      wrong_after_deadline_missed: Je hebt de deadline gemist en er zijn nog oefeningen met een verkeerde oplossing.
+      started_after_deadline_missed: Je hebt de deadline gemist en er zijn nog oefeningen waar je niet aan begonnen bent.
       unstarted_after_deadline_missed: Je hebt de deadline gemist er je bent nog niet begonnen aan de oefeningen.
-      completed_after_deadline_met: Je hebt alle oefeningen afgewerkt voor de deadline. Proficiat!
-      wrong_after_deadline_met: Geen zorgen, je hebt alle oefeningen afgewerkt voor de deadline maar na de deadline heb je nog foute oplossingen ingediend.
-      completed_before_deadline: Je hebt alle oefeningen afgewerkt voor de deadline. Proficiat!
-      wrong_before_deadline: Er zijn enkele onafgewerkte oefeningen maar je hebt nog tijd. Success!
-      started_before_deadline: Er zijn enkele oefeningen waar je nog niet aan begonnen bent, maar je hebt nog tijd. Succes!
-      unstarted_before_deadline: Je bent nog niet begonnen aan de oefeningen maar je hebt nog tijd. Succes!
-      completed_no_deadline: Je hebt alle oefeningen afgewerkt. Proficiat!
-      wrong_no_deadline: Er zijn nog enkele onafgewerkte oefeningen.
+      completed_after_deadline_met: Je hebt alle oefeningen correct opgelost voor de deadline. Proficiat!
+      wrong_after_deadline_met: Geen zorgen, je hebt alle oefeningen correct opgelost voor de deadline. Na de deadline heb je echter nog foute oplossingen ingediend.
+      completed_before_deadline: Je hebt alle oefeningen correct opgelost voor de deadline. Proficiat!
+      wrong_before_deadline: Er zijn nog onopgeloste oefeningen, maar je hebt nog tijd. Success!
+      started_before_deadline: Er zijn nog oefeningen waar je nog niet aan begonnen bent, maar je hebt nog tijd. Succes!
+      unstarted_before_deadline: Je bent nog niet begonnen aan de oefeningen, maar je hebt nog tijd. Succes!
+      completed_no_deadline: Je hebt alle oefeningen correct opgelost. Proficiat!
+      wrong_no_deadline: Er zijn nog oefeningen met een verkeerde oplossing.
       started_no_deadline: Er zijn nog enkele oefeningen waar je nog niet aan begonnen bent.
       unstarted_no_deadline: Je bent nog niet begonnen aan de oefeningen.
     course_series_table:

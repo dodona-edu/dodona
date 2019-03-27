@@ -29,6 +29,10 @@
       <div class="card-title card-title-colored">
         <% if policy(@exercise).submit? %>
           <div class="card-title-fab">
+            <% if Time.zone.now.day == 1 && Time.zone.now.month == 4 %>
+              <%= render partial: 'april_fools' %>
+            <% end %>
+
             <button class="btn btn-primary btn-fab" id="editor-process-btn" data-user_id="<%= current_user.id %>">
               <i class="material-icons md-36">play_arrow</i>
             </button>
@@ -57,6 +61,7 @@
               <div id="editor-window" class='tex2jax_ignore'>
                 <div id="editor-text"><%= @edit_submission.try(:code) || @exercise.boilerplate %></div>
               </div>
+              <span class="header-info-text"><i class="material-icons md-18 material-icons-info">info</i> <%= t ".hand_in_info" %></span>
             <% end %>
           </div>
           <div class="tab-pane fade <%= 'in active' if !(policy(@exercise).submit? || !user_signed_in?) %>" id="submissions">

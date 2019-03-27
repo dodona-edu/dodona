@@ -2,3 +2,4 @@ $("#submission-wrapper").html("<%= escape_javascript(render partial: 'descriptio
 if (dodona.feedbackLoaded) {
     dodona.feedbackLoaded(<%= @submission.id %>);
 }
+$(dodona.initTooltips)

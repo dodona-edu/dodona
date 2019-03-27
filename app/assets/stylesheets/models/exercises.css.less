@@ -1,0 +1,112 @@
+// exercise table
+.exercise-table {
+  th.status-icon {
+    width: 48px;
+  }
+
+  td.status-icon {
+    padding-left: 4px;
+  }
+
+  .status {
+    width: 150px;
+  }
+
+  .count {
+    width: 130px;
+  }
+  
+  .class-progress-chart {
+    shape-rendering: crispEdges;
+    .correct {
+      stroke: @success-300;
+    }
+    .wrong {
+      stroke: @danger-300;
+    }
+    .not-started {
+      stroke: @hairlinegray;
+    }
+  }
+}
+
+
+// exercise
+.exercise-description .card-supporting-text {
+  margin-top: 15px;
+}
+
+.exercise-description img {
+  cursor: pointer;
+}
+
+.exercise-description .highlighter-rouge .err {
+  border: none;
+}
+
+.exercise-description .dodona-centered-group {
+  margin: 0 auto 9.5px;
+  text-align: center;
+}
+
+.exercise-description .dodona-centered-group img {
+  margin-left: 0;
+  margin-right: 0;
+  vertical-align: middle;
+}
+
+.exercise-description .dodona-centered-group table {
+  width: auto;
+  display: inline-table;
+  vertical-align: middle;
+}
+
+.exercise-description .dodona-centered-group table {
+  text-align: left;
+}
+
+.exercise-description .dodona-centered-group img + img,
+.exercise-description .dodona-centered-group img + table,
+.exercise-description .dodona-centered-group table + img,
+.exercise-description .dodona-centered-group table + table {
+  margin-left: 16px;
+}
+
+center img {
+  vertical-align: top;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+#editor-process-btn.busy .material-icons {
+  animation-name: spin;
+  animation-duration: 800ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+// editor
+#editor-window {
+  padding: 0;
+}
+
+#editor-text {
+  position: relative;
+  height: 300px;
+}
+
+// white background for transparent images
+.strp-content-element {
+  background-color: @content-bg;
+}
+
+

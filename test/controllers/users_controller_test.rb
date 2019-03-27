@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers User, attrs: %i[username ugent_id first_name last_name email permission time_zone]
+  crud_helpers User, attrs: %i[username first_name last_name email permission time_zone]
 
   setup do
     @instance = create(:zeus)
@@ -86,5 +86,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get user_url(@instance)
 
     assert_redirected_to sign_in_path
+  end
+
+  test 'should render edit page for staff' do
+    user = create(:staff)
+    sign_in user
+    get edit_user_url(user)
+
+    assert_response :success
   end
 end

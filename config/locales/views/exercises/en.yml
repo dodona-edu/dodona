@@ -6,13 +6,13 @@ en:
       edit: Edit exercise
     exercise:
       count_tooltip: number of students that solved this exercise correctly
-      correct: correct
+      correct: Correct
       correct_after_deadline: You missed the deadline, but your latest submission (after the deadline) is correct.
-      wrong: wrong
+      wrong: Wrong
       wrong_after_deadline: You met the deadline, but your latest submission (after the deadline) is wrong. Click to go to your last correct solution.
       deadline_missed: You missed the deadline (your last submission before the deadline was wrong)
       deadline_met: You met the deadline
-      not_solved: not solved
+      not_solved: Not yet solved
     form:
       edit_exercise: Edit exercise
       open_on_github: Open on GitHub
@@ -29,12 +29,15 @@ en:
       labels: "Labels"
       repository: "Repository"
       path: "Path"
+      class_progress: Class progress
+      progress_chart_info_html: "%{users_tried} users started this exercise,<br> %{users_correct} users solved it correctly"
     show:
       code: Code
       handin: Hand in
       feedback: Feedback
       solutions: Submissions
       not_logged_in_html: <a href="%{url}">Sign in</a> to test your solution.
+      hand_in_info: You can submit as many times as you want. Only your last submission is taken into account.
       hide_correct: hide correct
       correct: correct
       wrong: wrong

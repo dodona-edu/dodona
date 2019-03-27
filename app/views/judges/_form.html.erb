@@ -1,7 +1,7 @@
 <%= form_for(judge, :html => {:class => 'form-horizontal'}) do |f| %>
   <% if judge.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= t('errors.validation_errors', :count => judge.errors.count) %></h2>
+    <div class="callout callout-danger" id="error_explanation">
+      <h4><%= t('errors.validation_errors', :count => judge.errors.count) %></h4>
       <ul>
         <% judge.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -11,23 +11,26 @@
   <% end %>
   <div class="field form-group">
     <%= f.label :name, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :name, class: "form-control" %></div>
-  </div>
-  <div class="field form-group">
-    <%= f.label :image, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :image, class: "form-control" %></div>
-    <span class="help-block col-sm-offset-3 col-sm-4"><%= t ".image-help" %></span>
+    <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
   </div>
   <div class="field form-group">
     <%= f.label :remote, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-4"><%= f.text_field :remote, class: "form-control" %></div>
+    <div class="col-sm-6"><%= f.text_field :remote, class: "form-control", placeholder: "git@github.ugent.be/..." %></div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".remote-help" %></span>
+  </div>
+  <div class="field form-group">
+    <%= f.label :image, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-6"><%= f.text_field :image, class: "form-control" %></div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".image-help" %></span>
   </div>
   <div class="field form-group">
     <%= f.label :renderer, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-4"><%= f.select :renderer, FeedbackTableRenderer.renderers.map {|r| r.to_s}, {}, {class: "form-control"} %></div>
+    <div class="col-sm-6"><%= f.select :renderer, FeedbackTableRenderer.renderers.map {|r| r.to_s}, {}, {class: "form-control"} %></div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".renderer-help" %></span>
   </div>
   <div class="field form-group">
     <%= f.label :runner, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-4"><%= f.select :runner, SubmissionRunner.runners.map {|r| r.to_s}, {}, {class: "form-control"} %></div>
+    <div class="col-sm-6"><%= f.select :runner, SubmissionRunner.runners.map {|r| r.to_s}, {}, {class: "form-control"} %></div>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".runner-help" %></span>
   </div>
 <% end %>

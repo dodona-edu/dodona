@@ -1,7 +1,6 @@
 json.extract! user,
               :id,
               :username,
-              :ugent_id,
               :first_name,
               :last_name,
               :email,

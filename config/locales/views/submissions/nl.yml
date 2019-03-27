@@ -22,6 +22,7 @@ nl:
         other: "%{count} oplossingen worden geherevalueerd"
     show:
       submission: Oplossing
+      submission_results: Resultaten
       user: Gebruiker
       exercise: Opgave
       course: Cursus
@@ -36,12 +37,15 @@ nl:
       expected: Verwachte uitvoer
       edit: Wijzig oplossing
       in: "in"
+      by: "door"
+      submission_for: "Oplossing voor"
       output: Uitvoer
       correct_tests: Correcte testen
       diff:
-        split: Naast elkaar
-        unified: Onder elkaar
+        split: Toon uitvoer naast elkaar
+        unified: Toon uitvoer onder elkaar
       correct:
-        shown: Zichtbaar
-        hidden: Verborgen
+        shown: Toon correcte tests
+        hidden: Verberg correcte tests
       judge_output_too_long: "De judge heeft te veel uitvoer gegenereerd. Dit gebeurt meestal als je ingediende oplossing zelf te veel output genereerde. Probeer de hoeveelheid uitvoer van je ingediende oplossing te verminderen."
+      reading_failed: "Er ging iets fout bij het laden van je resultaten. Probeer later opnieuw of dien je oplossing opnieuw in."

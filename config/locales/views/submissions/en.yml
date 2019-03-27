@@ -22,6 +22,7 @@ en:
         other: "Re-evaluating %{count} submissions"
     show:
       submission: Submission
+      submission_results: Submission results
       user: User
       exercise: Exercise
       course: Course
@@ -36,12 +37,15 @@ en:
       expected: Expected output
       edit: Edit submission
       in: "in"
+      by: "by"
+      submission_for: "Submission for"
       output: Output
       correct_tests: Correct tests
       diff:
-        split: Split
-        unified: Unified
+        split: Show output side-by-side
+        unified: Show unified output
       correct:
-        shown: Shown
-        hidden: Hidden
+        shown: Show correct tests
+        hidden: Hide correct tests
       judge_output_too_long: "The judge generated too much output. This usually happens when the submission itself generates too much output. Try to reduce how much output your submission generates."
+      reading_failed: "Something went wrong while loading your results. Try again later or resubmit your solution if the problem persists."

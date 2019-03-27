@@ -1,7 +1,7 @@
 en:
   layout:
     head:
-      description: Exercises for the programming courses of Ghent University.
+      description: Learn to code for secondary and higher education.
     impersonate:
       impersonate: Impersonate
       impersonating_user: You are currently impersonating
@@ -12,7 +12,6 @@ en:
       danger: Oh snap
       info: Heads up
       success: Great
-      no_institution: Your account has no institution associated with it. If you already obtained an account at your institution, please contact a teaching assistant as soon as possible.
       time_zone_html: Your time zone is currently set to <strong>%{time_zone}</strong>, but this doesn't seem to match with your local time. You can switch time zones on your <a href='%{profile_edit}'>profile page</a>.
     menu:
       manual: User manual
@@ -32,6 +31,7 @@ en:
       log_out: Log out
     footer:
       ugent: Ghent University
+      your_data: Your data
     search:
       search: search
   crumbs:
@@ -44,5 +44,5 @@ en:
   errors:
     no_rights: Sorry, you are not allowed to access this page.
     validation_errors:
-      one: 'one error prevents saving:'
-      other: '%{count} errors prevent saving:'
+      one: 'One error prevents saving'
+      other: '%{count} errors prevent saving'

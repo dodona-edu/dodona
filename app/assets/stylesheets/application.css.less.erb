@@ -1,121 +1,34 @@
-@import "variables.css.less";
-@import "colors.css.less";
+@import "theme/colors.css.less";
 @import "mixins.css.less";
 @import "vendor.less";
-@import "dragula.css.less";
+@import "theme/theme.css.less";
+<% if Rails.env.development? || Rails.env.test? %>
+@import "theme/development.css.less";
+<% end %>
+@import "theme/rouge.css.less";
 @import "bootstrap_overrides.css.less";
-@import "material_design_icons.css.less";
+@import "libraries.css.less";
+@import "material_icons.css.less";
 @import "components.css.less";
 @import "layout.css.less";
 @import "pages.css.less";
-@import "resources.css.less";
-@import "exercises.css.less";
-@import "series.css.less";
-@import "submissions.css.less";
-@import "pythia_submission.css.less";
-@import "users.css.less";
-@import "course.css.less";
-@import "course_membership.css.less";
+@import "models.css.less";
 @import "print.css.less";
-@import "favorite.css.less";
-@import "repository.css.less";
-@import "drawer.css.less";
-@import "navbar.css.less";
-<% if Rails.env.development? || Rails.env.test? %>
-@import "development.css.less";
-<% end %>
-@import "rouge.css.less";
-@import "actiontext.css.less";
 
 .field_with_errors input {
-  border-color: @danger-800;
-}
-
-.material-icons.md-12 {
-  font-size: 12px;
-}
-
-.material-icons.md-18 {
-  font-size: 18px;
-}
-
-.material-icons.md-24 {
-  font-size: 24px;
-}
-
-.material-icons.md-36 {
-  font-size: 36px;
-}
-
-.material-icons.md-48 {
-  font-size: 48px;
-}
-
-.material-icons.md-inherit {
-  font-size: inherit;
-  vertical-align: middle;
-}
-
-.material-icons {
-  position: relative;
-}
-
-.material-icons.material-icons-strikethrough:after {
-  position: absolute;
-  top: -11px;
-  left: 11px;
-  content: "|";
-  display: block;
-  font-weight: bold;
-  font-size: 140%;
-  transform: rotate(45deg);
-}
-
-.material-icons.material-icons-strikethrough.md-18:after {
-  top: -7px;
-  left: 9px;
+  border-color: @danger-fg;
 }
 
 .colored-info {
-  color: @info-500;
-}
-
-.custom-material-icons {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-
-  &.fix-alignment {
-    position: absolute;
-
-    &.square_edit {
-      top: 9px;
-      right: 10px;
-    }
-  }
-
-  &.md-12 {
-    width: 12px;
-    height: 12px;
-  }
-  &.md-18 {
-    width: 18px;
-    height: 18px;
-  }
-  &.md-24 {
-    width: 24px;
-    height: 24px;
-  }
-  &.md-36 {
-    width: 36px;
-    height: 36px;
-  }
-  &.md-48 {
-    width: 48px;
-    height: 48px;
-  }
+  color: @brand-info;
 }
 
 figcaption {
   margin: 0 10px;
+}
+
+.ellipsis-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

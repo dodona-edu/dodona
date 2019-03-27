@@ -262,7 +262,7 @@ class CoursesController < ApplicationController
     membership.update(status: status).tap do |success|
       if success && membership.unsubscribed?
         membership.favorite = false
-        membership.delete if @course.submissions.where(user: user).empty?
+        membership.destroy if @course.submissions.where(user: user).empty?
       end
     end
   end

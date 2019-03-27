@@ -5,13 +5,7 @@
 <% end %>
 
 <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-  <div class="card series-overview">
-    <div class="card-title card-title-colored">
-      <h2 class="card-title-text">
-        <%= @series.course.name %>
-      </h2>
-    </div>
-  </div>
+  <h2><%= @series.course.name %></h2><br>
   <%= render partial: 'series/series', locals: {
       series: @series,
       get_exercise_path: method(:exercise_anchor),

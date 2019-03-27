@@ -30,6 +30,13 @@ function initPunchcard(url, timezoneOffset) {
         .domain([0, 6])
         .range([unitSize / 2, innerHeight - unitSize / 2]);
 
+    chart.append("text")
+        .attr("class", "loading-text")
+        .text(I18n.t("js.loading"))
+        .attr("x", innerWidth / 2)
+        .attr("y", innerHeight / 2)
+        .style("text-anchor", "middle");
+
     d3.json(url)
         .then(data => applyTimezone(data, timezoneOffset))
         .then(data => renderCard(d3.entries(data), unitSize, chart, x, y));
@@ -68,8 +75,7 @@ function renderCard(data, unitSize, chart, x, y) {
         .domain([0, maxVal])
         .range([0, unitSize / 2]);
 
-    const gradient = d3.scaleSequential(d3.interpolateGreys)
-        .domain([0, maxVal]);
+    chart.selectAll("text.loading-text").remove();
 
     const circles = chart.selectAll("circle")
         .data(data);
@@ -78,7 +84,6 @@ function renderCard(data, unitSize, chart, x, y) {
     updates.attr("cx", d => x(parseInt(d.key.split(",")[1])))
         .attr("cy", d => y(parseInt(d.key.split(",")[0])))
         .attr("r", d => radius(d.value))
-        .style("fill", d => gradient(d.value))
         .append("svg:title")
         .text(d => d.value);
     circles.exit().remove();

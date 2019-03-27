@@ -1,11 +1,12 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'punchcard' %>
 <% end %>
-<div class="card card-supporting-text series">
-  <h4><%= t ".punchcard" %></h4>
-  <div id="punchcard-container">
-  </div>
+<h4><%= t ".punchcard" %></h4>
+<p class="h4-info-text"><%= t ".punchcard_details" %></p>
+
+<div id="punchcard-container">
 </div>
+
 <script type="text/javascript">
     $(function () {
         dodona.initPunchcard('<%= raw punchcard_path(user_id: @user&.id, course_id: @course&.id) %>', <%= @time_zone_offset / -60  %>);

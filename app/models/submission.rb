@@ -14,7 +14,7 @@
 #
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
-  SUBMISSION_MATRIX_CACHE_STRING = "/courses/%{course_id}/user/%{user_id}/submissions_matrix".freeze
+  SUBMISSION_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/submissions_matrix'.freeze
   BASE_PATH = Rails.application.config.submissions_storage_path
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
@@ -86,7 +86,12 @@ class Submission < ApplicationRecord
   end
 
   def code
-    File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
+    begin
+      File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
+    rescue Errno::ENOENT => e
+      ExceptionNotifier.notify_exception e
+      ''
+    end
   end
 
   def code=(code)
@@ -95,12 +100,17 @@ class Submission < ApplicationRecord
   end
 
   def result
-    ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
+    begin
+      ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
+    rescue Errno::ENOENT, Zlib::GzipFile::Error => e
+      ExceptionNotifier.notify_exception e
+      nil
+    end
   end
 
   def result=(result)
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
-    File.open(File.join(fs_path, RESULT_FILENAME), "wb") {|f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))}
+    File.open(File.join(fs_path, RESULT_FILENAME), 'wb') {|f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))}
   end
 
   def clean_messages(messages, levels)
@@ -108,8 +118,9 @@ class Submission < ApplicationRecord
   end
 
   def safe_result(user)
-    return '' if result.empty?
-    json = JSON.parse(result, symbolize_names: true)
+    res = result
+    return '' if res.blank?
+    json = JSON.parse(res, symbolize_names: true)
     return json.to_json if user.zeus?
     if user.staff? || (course.present? && user.course_admin?(course))
       levels = %w[student staff]

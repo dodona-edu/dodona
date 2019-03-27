@@ -48,3 +48,4 @@ en:
         shown: Show correct tests
         hidden: Hide correct tests
       judge_output_too_long: "The judge generated too much output. This usually happens when the submission itself generates too much output. Try to reduce how much output your submission generates."
+      reading_failed: "Something went wrong while trying to read the file containing your results."

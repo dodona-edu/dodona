@@ -15,7 +15,8 @@ class FeedbackTableRenderer
   end
 
   def initialize(submission, user)
-    @submission = JSON.parse(submission.safe_result(user), symbolize_names: true)
+    result = submission.safe_result(user)
+    @submission = result.present? ? JSON.parse(result, symbolize_names: true) : nil
     @current_user = user
     @course = submission.course
     @builder = Builder::XmlMarkup.new
@@ -26,15 +27,23 @@ class FeedbackTableRenderer
   end
 
   def parse
-    @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
-      if @submission[:messages].present?
-        @builder.div(class: 'row feedback-table-messages') do
-          messages(@submission[:messages])
+    if @submission.present?
+      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
+        if @submission[:messages].present?
+          @builder.div(class: 'row feedback-table-messages') do
+            messages(@submission[:messages])
+          end
         end
-      end
-      tabs(@submission)
-      init_js
-    end.html_safe
+        tabs(@submission)
+        init_js
+      end.html_safe
+    else
+      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
+        @builder.div(class: 'row feedback-table-messages') do
+          messages([{description: I18n.t('submissions.show.reading_failed'), format: 'plain'}])
+        end
+      end.html_safe
+    end
   end
 
   def show_code_tab
@@ -115,38 +124,38 @@ class FeedbackTableRenderer
     show_hide_correct = show_hide_correct_switch t
     show_diff_type = show_diff_type_switch t
     if show_hide_correct || show_diff_type
-      @builder.div(class: "feedback-table-options") do
-        @builder.span(class: "flex-spacer") {}
+      @builder.div(class: 'feedback-table-options') do
+        @builder.span(class: 'flex-spacer') {}
         if show_hide_correct
-          @builder.span(class: "correct-switch-buttons switch-buttons") do
+          @builder.span(class: 'correct-switch-buttons switch-buttons') do
             @builder.span do
-              @builder << I18n.t("submissions.show.correct_tests")
+              @builder << I18n.t('submissions.show.correct_tests')
             end
-            @builder.div(class: "btn-group btn-toggle") do
-              @builder.button(class: "btn btn-secondary active", 'data-show': 'true', title: I18n.t("submissions.show.correct.shown"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-                @builder.i(class: "material-icons md-18") do
-                  @builder << "visibility"
+            @builder.div(class: 'btn-group btn-toggle') do
+              @builder.button(class: 'btn btn-secondary active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: 'material-icons md-18') do
+                  @builder << 'visibility'
                 end
               end
-              @builder.button(class: "btn btn-secondary ", 'data-show': 'false', title: I18n.t("submissions.show.correct.hidden"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-                @builder.i(class: "material-icons md-18") do
-                  @builder << "visibility_off"
+              @builder.button(class: 'btn btn-secondary ', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: 'material-icons md-18') do
+                  @builder << 'visibility_off'
                 end
               end
             end
           end
         end
         if show_diff_type
-          @builder.span(class: "diff-switch-buttons switch-buttons") do
+          @builder.span(class: 'diff-switch-buttons switch-buttons') do
             @builder.span do
-              @builder << I18n.t("submissions.show.output")
+              @builder << I18n.t('submissions.show.output')
             end
-            @builder.div(class: "btn-group btn-toggle") do
-              @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t("submissions.show.diff.split"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-                @builder.i(class: "mdi mdi-18 mdi-arrow-split-vertical") {}
+            @builder.div(class: 'btn-group btn-toggle') do
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: 'mdi mdi-18 mdi-arrow-split-vertical') {}
               end
-              @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t("submissions.show.diff.unified"), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-                @builder.i(class: "mdi mdi-18 mdi-arrow-split-horizontal") {}
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: 'mdi mdi-18 mdi-arrow-split-horizontal') {}
               end
             end
           end

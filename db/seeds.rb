@@ -98,7 +98,7 @@ if Rails.env.development?
   Dir.glob("#{big_exercise_repo.full_path}/*")
       .select {|f| File.directory? f}
       .each do |dir|
-    100.times do |i|
+    20.times do |i|
       FileUtils.cp_r(dir, dir + i.to_s)
     end
   end
@@ -149,10 +149,10 @@ if Rails.env.development?
                             exercise: exercise,
                             evaluate: false,
                             skip_rate_limit_check: true,
-                            result: {}.to_json,
                             status: status,
                             accepted: status == :correct,
-                            code: "print(input())\n"
+                            code: "print(input())\n",
+                            result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
         end
       end
     end
@@ -181,7 +181,8 @@ if Rails.env.development?
                           status: before,
                           accepted: before == :correct,
                           created_at: before_deadline,
-                          code: code
+                          code: code,
+                          result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
       end
       if after != :none
         Submission.create user: zeus,
@@ -192,7 +193,8 @@ if Rails.env.development?
                           status: after,
                           accepted: after == :correct,
                           created_at: after_deadline,
-                          code: code
+                          code: code,
+                          result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
       end
       [after, exercise]
     end

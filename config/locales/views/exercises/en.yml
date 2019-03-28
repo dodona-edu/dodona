@@ -30,7 +30,12 @@ en:
       repository: "Repository"
       path: "Path"
       class_progress: Class progress
-      progress_chart_info_html: "%{users_tried} users started this exercise,<br> %{users_correct} users solved it correctly"
+      progress_chart_info_tried:
+        one: "One user started this exercise."
+        other: "%{count} users started this exercise."
+      progress_chart_info_correct:
+        one: "One user solved it correctly."
+        other: "%{count} users solved it correctly."
     show:
       code: Code
       handin: Hand in

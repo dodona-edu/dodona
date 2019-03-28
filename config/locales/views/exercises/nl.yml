@@ -30,14 +30,19 @@ nl:
       repository: "Repository"
       path: "Pad"
       class_progress: Voortgang groep
-      progress_chart_info_html: "%{users_tried} gebruikers begonnen aan deze oefening,<br> %{users_correct} gebruikers losten hem correct op"
+      progress_chart_info_tried:
+        one: "Één gebruiker begon aan deze oefening."
+        other: "%{count} gebruikers begonnen aan deze oefening."
+      progress_chart_info_correct:
+        one: "Één gebruiker loste hem correct op."
+        other: "%{count} gebruikers losten hem correct op."
     show:
       code: Code
       handin: Indienen
       feedback: Feedback
       solutions: Oplossingen
       not_logged_in_html: <a href="%{url}">Log in</a> om je oplossingen te testen.
-      hand_in_info: Je kunt zo vaak indienen als je wenst. Er wordt enkel rekening gebouden met je laatst ingediende oplossing.
+      hand_in_info: Je kunt zo vaak indienen als je wenst. Er wordt enkel rekening gehouden met je laatst ingediende oplossing.
       hide_correct: verberg correct
       correct: correct
       wrong: verkeerd

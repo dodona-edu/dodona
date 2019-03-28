@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_28_092326) do
+ActiveRecord::Schema.define(version: 2019_03_28_130625) do
 
   create_table "action_text_rich_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(version: 2019_03_28_092326) do
     t.datetime "deadline"
     t.string "access_token"
     t.string "indianio_token"
+    t.boolean "progress_enabled", default: true, null: false
     t.index ["access_token"], name: "index_series_on_access_token"
     t.index ["course_id"], name: "index_series_on_course_id"
     t.index ["deadline"], name: "index_series_on_deadline"

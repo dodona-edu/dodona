@@ -11,6 +11,7 @@
 #  status      :integer
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
+#  fs_key      :string(24)
 #
 
 require 'test_helper'

@@ -11,7 +11,9 @@
 #  status      :integer
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
+#  fs_key      :string(24)
 #
+
 class Submission < ApplicationRecord
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
   SUBMISSION_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/submissions_matrix'.freeze

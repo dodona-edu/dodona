@@ -87,7 +87,7 @@ class SeriesPolicy < ApplicationPolicy
   def permitted_attributes
     # record is the Series class on create
     if course_admin? || record == Series
-      %i[name description course_id visibility order deadline indianio_support]
+      %i[name description course_id visibility order deadline indianio_support progress_enabled]
     else
       []
     end

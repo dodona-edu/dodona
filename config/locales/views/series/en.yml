@@ -5,6 +5,8 @@ en:
       visibility-help_html: Only <b>open</b> series are shown on the course page. A <b>closed</b> series is never accessible for students, a <b>hidden</b> series only using the secret link (see below).
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
       indianio-support-help: Allow students' solutions to be extracted by Indianio.
+      class_progress_enable: "Enable class progress statistics for students"
+      class_progress_enable_help: "These statistics are an added value for students, but teachers may wish to disable them for exams."
     index:
       title: All series
       load_more: Load more series

@@ -28,14 +28,14 @@ class SeriesSummary
   end
 
   def progress_status
-    if completed?
+    if !started?
+      'not-yet-begun'
+    elsif completed?
       'completed'
     elsif wrong?
       'wrong'
     elsif started?
       'started'
-    else
-      'not-yet-begun'
     end
   end
 

@@ -1,0 +1,176 @@
+{
+  "status": "wrong answer",
+  "accepted": false,
+  "groups": [
+    {
+      "status": "wrong answer",
+      "accepted": false,
+      "description": "echo",
+      "groups": [
+        {
+          "status": "wrong answer",
+          "accepted": false,
+          "groups": [
+            {
+              "status": "wrong answer",
+              "accepted": false,
+              "description": {
+                "description": "echo(5);",
+                "format": "javascript"
+              },
+              "tests": [
+                {
+                  "status": "wrong answer",
+                  "accepted": false,
+                  "expected": "5",
+                  "data": {
+                    "channel": "return"
+                  },
+                  "generated": "6",
+                  "description": {
+                    "description": "\u003cspan class=\"label label-danger\" style=\"display:block;text-align:left;\"\u003ereturn\u003c/span\u003e",
+                    "format": "html"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "status": "correct answer",
+          "accepted": true,
+          "groups": [
+            {
+              "status": "correct answer",
+              "accepted": true,
+              "description": {
+                "description": "echo(4);",
+                "format": "javascript"
+              },
+              "tests": [
+                {
+                  "status": "correct answer",
+                  "accepted": true,
+                  "expected": "4",
+                  "data": {
+                    "channel": "return"
+                  },
+                  "generated": "4",
+                  "description": {
+                    "description": "\u003cspan class=\"label label-success\" style=\"display:block;text-align:left;\"\u003ereturn\u003c/span\u003e",
+                    "format": "html"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "status": "wrong answer",
+          "accepted": false,
+          "groups": [
+            {
+              "status": "wrong answer",
+              "accepted": false,
+              "description": {
+                "description": "echo(\"4\");",
+                "format": "javascript"
+              },
+              "tests": [
+                {
+                  "status": "wrong answer",
+                  "accepted": false,
+                  "expected": "\"4\"",
+                  "data": {
+                    "channel": "return"
+                  },
+                  "generated": "\"1\"",
+                  "description": {
+                    "description": "\u003cspan class=\"label label-danger\" style=\"display:block;text-align:left;\"\u003ereturn\u003c/span\u003e",
+                    "format": "html"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "status": "wrong answer",
+          "accepted": false,
+          "groups": [
+            {
+              "status": "wrong answer",
+              "accepted": false,
+              "description": {
+                "description": "echo(true);",
+                "format": "javascript"
+              },
+              "tests": [
+                {
+                  "status": "wrong answer",
+                  "accepted": false,
+                  "expected": "true",
+                  "data": {
+                    "channel": "return"
+                  },
+                  "generated": "2",
+                  "description": {
+                    "description": "\u003cspan class=\"label label-danger\" style=\"display:block;text-align:left;\"\u003ereturn\u003c/span\u003e",
+                    "format": "html"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "status": "wrong answer",
+          "accepted": false,
+          "groups": [
+            {
+              "status": "wrong answer",
+              "accepted": false,
+              "description": {
+                "description": "echo(\"Twinkle, twinkle, little star,\\nHow I wonder what you are!\\nUp above the world so high,\\nLike a diamond in the sky.\");",
+                "format": "javascript"
+              },
+              "tests": [
+                {
+                  "status": "wrong answer",
+                  "accepted": false,
+                  "expected": "Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky.",
+                  "data": {
+                    "channel": "return"
+                  },
+                  "generated": "Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky.1",
+                  "description": {
+                    "description": "\u003cspan class=\"label label-danger\" style=\"display:block;text-align:left;\"\u003ereturn\u003c/span\u003e",
+                    "format": "html"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "badgeCount": 4
+    }
+  ],
+  "messages": [
+    {
+      "format": "html",
+      "description": "\u003cstrong\u003eWorker:\u003c/strong\u003e localhost",
+      "permission": "zeus"
+    },
+    {
+      "format": "html",
+      "description": "\u003cstrong\u003eRuntime:\u003c/strong\u003e 0.41 seconds",
+      "permission": "zeus"
+    },
+    {
+      "format": "html",
+      "description": "\u003cstrong\u003eMemory usage:\u003c/strong\u003e 0.00 MiB",
+      "permission": "zeus"
+    }
+  ]
+}

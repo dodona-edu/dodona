@@ -19,7 +19,7 @@
         <div class="row">
           <div class="col-xs-12 col-sm-8 col-lg-7">
             <p>By using Dodona, you also generate additional Dodona-specific data which we store for the correct operation of the platform. For example, we need to keep track of all <b>courses</b> you’re subscribed to and which submissions you made. For each submission, in addition to your <b>submitted code</b>, we also store the <b>result</b> and <b>time of submission</b>.</p>
-            <p>An overview of all submissions can be seen on <%= link_to "this overview page", submissions_path %>. All submissions for exercises within a specific course can also be seen by all teachers of that course. For some exercises, part of the generated feedback is only visible to the teachers.</p>
+            <p>An overview of all your submissions can be seen on <%= link_to "this overview page", current_user.present? ? user_submissions_path(current_user) : submissions_path %>. All submissions for exercises within a specific course can also be seen by all teachers of that course. For some exercises, part of the generated feedback is only visible to the teachers.</p>
           </div>
           <div class="col-sm-4 col-lg-3 col-lg-offset-1 hidden-xs"><%= image_tag "outline-description.svg", class: "img-responsive", style: "width:90%" %></div>
         </div>

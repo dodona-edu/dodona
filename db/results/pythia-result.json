@@ -3,6 +3,8 @@
   "description": "verkeerd antwoord",
   "groups": [
     {
+      "data": {
+      },
       "accepted": false,
       "badgeCount": 2,
       "description": "correctheid",

@@ -58,4 +58,11 @@ class ApplicationPolicy
       scope
     end
   end
+
+  protected
+
+  def zeus?
+    user&.zeus?
+  end
+
 end

@@ -96,6 +96,15 @@
                 <%= t("layout.menu.programming_languages") %>
               <% end %>
           <% end %>
+          <% if policy(Institution).index? %>
+            <li>
+              <%= activatable_link_to institutions_path,
+                                      class: 'drawer-list-item' do %>
+                <i class="material-icons md-24">local_library</i>
+                <%= t('layout.menu.institutions') %>
+              <% end %>
+            </li>
+          <% end %>
           <% if current_user.zeus? %>
             <li>
               <%= activatable_link_to "/dj/overview",

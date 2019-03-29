@@ -135,3 +135,11 @@ nl:
         content_nl: Nederlandstalige inhoud
         release: Releasedatum
         draft: Ontwerp
+      institution:
+        name: Naam
+        short_name: Korte naam
+        provider: Logintype
+        providers:
+          saml: SAML
+          office365: Office 365
+          smartschool: Smartschool

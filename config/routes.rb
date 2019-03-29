@@ -115,6 +115,8 @@ Rails.application.routes.draw do
     resources :programming_languages
     resources :posts
 
+    resources :institutions, only: [:index]
+
     scope 'stats', controller: 'statistics' do
       get 'punchcard', to: 'statistics#punchcard'
     end

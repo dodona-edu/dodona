@@ -134,3 +134,11 @@ en:
         content_nl: Dutch content
         release: Release date
         draft: Draft
+      institution:
+        name: Name
+        short_name: Short name
+        provider: Login type
+        providers:
+          saml: SAML
+          office365: Office 365
+          smartschool: Smartschool

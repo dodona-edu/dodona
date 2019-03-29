@@ -11,11 +11,11 @@
         startX, startY = [cumulativePercent, 0.5]
         cumulativePercent += part[:percent]
         endX, endY = [cumulativePercent, 0.5]
-        
+
         "<line class='#{part[:class]}' x1='#{startX}' y1='#{startY}' x2='#{endX}' y2='#{endY}' />"
     end
 %>
 
-<svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='class-progress-chart' data-html="true" data-toggle='tooltip' title="<%= t('exercises.index.progress_chart_info_html', users_correct: users_correct, users_tried: users_tried) %>">
+<svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='class-progress-chart' data-html="true" data-toggle='tooltip' title="<%= t('exercises.index.progress_chart_info_tried', count: users_tried) %><br/><%= t("exercises.index.progress_chart_info_correct", count: users_correct) %>">
     <%=raw parts.join("") %>
 </svg>

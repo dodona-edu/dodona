@@ -5,6 +5,7 @@ nl:
       image-help: De naam van de docker image waarin de judge zal gestart worden. De image zal automatisch gedownload worden van docker hub als ze lokaal niet beschikbaar is.
       renderer-help: "Kies hier voor 'FeedbackTableRenderer' tenzij je in samenwerking met het Dodona team een eigen renderer geschreven hebt."
       runner-help: "Kies hier voor 'SubmissionRunner' tenzij je in samenwerking met het Dodona team een eigen runner geschreven hebt."
+      remote_cant_be_edited: "De clone URL kan niet aangepast worden nadat de judge werd aangemaakt. Contacteer ons als het toch aangepast moet worden."
     index:
       title: Alle judges
     new:

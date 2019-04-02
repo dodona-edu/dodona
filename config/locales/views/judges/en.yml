@@ -5,6 +5,7 @@ en:
       image-help: "The name of the docker image in which the judge will be started. The image will be fetched from docker hub if it isn't available locally."
       renderer-help: "Pick 'FeedbackTableRenderer' except if you wrote a custom renderer in collaboration with the Dodona team."
       runner-help: "Pick 'SubmissionRunner' except if you wrote a custom runner in collaboration with the Dodona team."
+      remote_cant_be_edited: "The clone URL can't be edited after the judge was created. Contact us if it needs to be changed."
     index:
       title: All judges
     new:

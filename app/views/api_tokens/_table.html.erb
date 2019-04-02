@@ -1,0 +1,28 @@
+<% if user.api_tokens.count.zero? %>
+  <p class="lead text-center"><%= t ".no_tokens_yet" %></p>
+<% else %>
+  <table class="table table-resource">
+    <thead>
+    <tr>
+      <th><%= ApiToken.human_attribute_name("description") %></th>
+      <th><%= ApiToken.human_attribute_name("created_at") %></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% user.api_tokens.each do |token| %>
+      <tr id="api-token-<%= token.id %>">
+        <td><%= token.description %></td>
+        <td><%= l token.created_at %></td>
+        <td class="text-right">
+          <%= button_to api_token_path(token), method: :delete, remote: true, class: 'btn btn-sm btn-danger' do %>
+            <i class="material-icons md-18">delete</i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+<% end %>

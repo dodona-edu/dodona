@@ -15,13 +15,19 @@
   </div>
   <div class="field form-group">
     <%= f.label :remote, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-6" title="<%= t('.remote_cant_be_edited') unless judge.new_record? %>" data-toggle="tooltip" data-placement="right">
+    <div class="col-sm-6">
       <%= f.text_field :remote,
                        class: "form-control",
                        placeholder: "git@github.ugent.be/...",
                        disabled: judge.new_record?.! %>
     </div>
-    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".remote-help" %></span>
+    <span class="help-block col-sm-offset-3 col-sm-6">
+      <% if judge.new_record? %>
+        <%= t ".remote-help" %>
+      <% else %>
+        <%= t('.remote_cant_be_edited_html') %>
+      <% end %>
+    </span>
   </div>
   <div class="field form-group">
     <%= f.label :image, :class => "col-sm-3 control-label" %>

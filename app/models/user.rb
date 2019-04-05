@@ -102,6 +102,7 @@ class User < ApplicationRecord
   before_save :set_time_zone
 
   scope :by_permission, ->(permission) {where(permission: permission)}
+  scope :by_institution, ->(institution) {where(institution: institution)}
 
   scope :in_course, ->(course) {joins(:course_memberships).where('course_memberships.course_id = ?', course.id)}
   scope :by_course_labels, ->(labels, course_id) {where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id))}

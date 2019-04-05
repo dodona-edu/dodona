@@ -105,7 +105,7 @@ class Submission < ApplicationRecord
     begin
       ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
     rescue Errno::ENOENT, Zlib::GzipFile::Error => e
-      ExceptionNotifier.notify_exception e
+      ExceptionNotifier.notify_exception e, data: {submission_id: id, status: status, current_user: Current.user&.id}
       nil
     end
   end

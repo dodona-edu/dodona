@@ -3,16 +3,7 @@
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
-  <nav class="col-md-1 hidden-xs hidden-sm hidden-print series-sidebar">
-    <% if policy(@course).show_series? %>
-      <ul class="nav">
-      <% @series.each do |series| %>
-        <li><%= link_to series.name, course_path(series.course, anchor: series.anchor), class: 'ellipsis-overflow', title: series.name %> </li>
-      <% end %>
-      <ul>
-    <% end %>
-  </nav>
-  <div class="col-sm-10 col-xs-12 col-sm-offset-1 col-md-offset-0">
+  <div class="col-sm-10 col-xs-12 col-sm-offset-1">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
@@ -123,6 +114,15 @@
       </div>
     <% end %>
   </div>
+  <nav class="col-md-1 hidden-xs hidden-sm hidden-print series-sidebar">
+    <% if policy(@course).show_series? %>
+      <ul class="nav">
+      <% @series.each do |series| %>
+        <li><%= link_to series.name, course_path(series.course, anchor: series.anchor), class: 'ellipsis-overflow', title: series.name %> </li>
+      <% end %>
+      <ul>
+    <% end %>
+  </nav>
 </div>
 <script type="text/javascript">
     $(dodona.initCourseShow);

@@ -118,7 +118,7 @@
     <% if policy(@course).show_series? %>
       <ul class="nav affix">
       <% @series.each do |series| %>
-        <li><%= link_to series.name, course_path(series.course, anchor: series.anchor), class: 'ellipsis-overflow', title: series.name %> </li>
+        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
       <% end %>
       <ul>
     <% end %>

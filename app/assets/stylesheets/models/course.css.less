@@ -44,12 +44,21 @@
 
   .nav>li>a {
     display: block;
-    padding: 4px 6px;
+    padding: 6px 6px;
     font-size: 13px;
     font-weight: 500;
     color: @text-disabled;
   }
+  .nav>li.active>a,
+  .nav>li.active>a:hover {
+    border-left: 2px solid @primary-800;
+    padding-left: 4px;
+    color: @text-secondary;
+  }
   .nav>li>a:hover {
+    border-left: 1px solid @primary-800;
+    padding-left: 5px;
+    background-color: none;
     color: @text-secondary;
   }
 }

@@ -2,3 +2,4 @@ nl:
   institutions:
     index:
       title: "Onderwijsinstellingen"
+      number_of_users: "# gebruikers"

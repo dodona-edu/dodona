@@ -29,6 +29,19 @@
 .series-sidebar {
   padding: 0;
 
+  @media (min-width: @screen-md-min) {
+    .nav {
+      width: ~"calc((100% - (@{container-desktop}) / 12 * 10) / 2)";
+    }
+  }
+
+  @media (min-width: @screen-lg-min) {
+    .nav {
+      width: ~"calc((100% - (@{container-large-desktop}) / 12 * 10) / 2)";
+    }
+  }
+
+
   .nav>li>a {
     display: block;
     padding: 4px 6px;

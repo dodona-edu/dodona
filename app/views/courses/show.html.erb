@@ -116,7 +116,7 @@
   </div>
   <nav class="col-md-1 hidden-xs hidden-sm hidden-print series-sidebar">
     <% if policy(@course).show_series? %>
-      <ul class="nav">
+      <ul class="nav affix">
       <% @series.each do |series| %>
         <li><%= link_to series.name, course_path(series.course, anchor: series.anchor), class: 'ellipsis-overflow', title: series.name %> </li>
       <% end %>

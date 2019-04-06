@@ -5,3 +5,5 @@ en:
       new-token-explanation: This is your newly created token. Please copy this token now, since you won't be able to access the token again, once you leave this page.
     form:
       description-placeholder: "Description (ex. 'Dodona CLI')"
+    table:
+      no_tokens_yet: "You do not have any API tokens yet. Click the add button above to create one."

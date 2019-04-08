@@ -37,7 +37,7 @@ class Judge < ApplicationRecord
   end
 
   def config
-    JSON.parse(File.read(File.join(full_path, CONFIG_FILE)))
+    JSON.parse(File.read(File.join(full_path, CONFIG_FILE)).force_encoding('UTF-8').scrub)
   end
 
   def renderer

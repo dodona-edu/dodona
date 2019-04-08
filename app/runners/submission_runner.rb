@@ -46,7 +46,7 @@ class SubmissionRunner
     config.deep_merge!(@judge.config)
 
     # update with exercise configuration
-    config.deep_merge!(@exercise.merged_config['evaluation'])
+    config.deep_merge!(@exercise.merged_config['evaluation'] || {})
 
     # update with submission-specific configuration
     config.deep_merge!('programming_language' => @submission.exercise.programming_language&.name,

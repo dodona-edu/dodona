@@ -2,7 +2,7 @@ en:
   exercises:
     navbar_links:
       show: Show exercise
-      submissions: Submissions dor this exercise
+      submissions: Submissions for this exercise
       edit: Edit exercise
     exercise:
       count_tooltip: number of students that solved this exercise correctly

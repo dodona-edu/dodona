@@ -188,7 +188,7 @@ class Repository < ApplicationRecord
 
   def read_config_file(file)
     file = full_path + file if file.relative?
-    JSON.parse file.read if file.file?
+    JSON.parse file.read.force_encoding('UTF-8').scrub if file.file?
   rescue JSON::ParserError => e
     rel_path = file.relative_path_from(full_path)
     raise ConfigParseError.new(self, rel_path, e.to_s)

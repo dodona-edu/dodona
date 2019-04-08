@@ -41,7 +41,7 @@ class SubmissionDjPlugin < Delayed::Plugin
         end
         Delayed::Worker.logger.debug("Set failed status on submission #{sub.id}")
       end
-      ExceptionNotifier.notify_exception(Exception.new, data: {worker: `hostname`, queue: job.queue, payload: job.payload_object, last_error: job.last_error})
+      ExceptionNotifier.notify_exception(Exception.new("Delayed job failure: #{job.last_error.split("\n").first}"), data: {worker: `hostname`, queue: job.queue, payload: job.payload_object, last_error: job.last_error})
     rescue
       # This must not fail in any case.
       # Raising an error kills the worker.

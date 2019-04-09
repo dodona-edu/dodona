@@ -62,8 +62,11 @@
         </div>
       <% end %>
 
-      <% if policy(@course).scoresheet? or current_user&.member_of? @course %>
+      <% if policy(@course).scoresheet? or current_user&.member_of? @course or policy(@course).copy? %>
         <div class="card-actions card-border">
+          <% if policy(@course).copy? %>
+            <%= link_to t(".copy"), copy_course_url(@course), class: 'btn-text' %>
+          <% end %>
           <% if policy(@course).scoresheet? %>
             <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text' %>
           <% end %>

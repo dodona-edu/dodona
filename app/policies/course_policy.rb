@@ -4,16 +4,10 @@ class CoursePolicy < ApplicationPolicy
       if user&.zeus?
         scope
       elsif user
-        admin = CourseMembership.statuses['course_admin']
-        visible = Course.visibilities['visible']
-        scope.joins(:course_memberships)
-            .where(
-                <<~SQL
-                  courses.visibility             = #{visible}
-                  OR course_memberships.status   = #{admin}
-                  AND course_memberships.user_id = #{user.id}
-        SQL
-        ).distinct
+        @scope = scope.joins(:course_memberships)
+        scope.where(visibility: :visible).or(scope.where(course_memberships: {
+            status: :course_admin, user_id: user.id
+        })).distinct
       else
         scope.where(visibility: :visible)
       end
@@ -38,6 +32,10 @@ class CoursePolicy < ApplicationPolicy
 
   def create?
     user&.admin?
+  end
+
+  def copy?
+    create? && show_series?
   end
 
   def update?

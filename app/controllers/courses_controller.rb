@@ -11,7 +11,17 @@ class CoursesController < ApplicationController
   def index
     authorize Course
     @courses = policy_scope(Course.all)
-    @courses = apply_scopes(@courses).paginate(page: parse_pagination_param(params[:page]))
+    @courses = apply_scopes(@courses)
+    @copy_courses = params[:copy_courses]
+    if @copy_courses && !current_user.zeus?
+      # CoursePolicy#show_series? over all courses in SQL form
+      @courses = @courses.joins(:course_memberships)
+      @courses = @courses.where(course_memberships: {
+          user_id: current_user.id,
+          status: [:student, :course_admin]
+      }).or(@courses.where(registration: :open))
+    end
+    @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
     @grouped_courses = @courses.group_by(&:year)
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @title = I18n.t('courses.index.title')
@@ -33,6 +43,21 @@ class CoursesController < ApplicationController
     @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
   end
 
+  def copy
+    @base = Course.find(params[:id])
+    authorize @base
+    @course = Course.new(
+        name: @base.name,
+        description: @base.description,
+        institution: @base.institution,
+        visibility: @base.visibility,
+        registration: @base.registration,
+        teacher: @base.teacher
+    )
+    @copy_admins = current_user.course_admin?(@base)
+    @title = I18n.t("courses.copy.title", base: @base.name)
+  end
+
   # GET /courses/1/edit
   def edit
     @title = @course.name
@@ -45,13 +70,35 @@ class CoursesController < ApplicationController
     authorize Course
     @course = Course.new(permitted_attributes(Course))
 
+    if params.key? :base_id
+      @copy_admins = params[:copy_admins]
+      @base = Course.find(params[:base_id])
+      authorize @base, :copy?
+
+      @course.series = @base.series.map do |s|
+        Series.new(
+            series_memberships: s.series_memberships.map do |sm|
+              SeriesMembership.new(exercise: sm.exercise, order: sm.order)
+            end,
+            name: s.name,
+            description: s.description,
+            visibility: s.visibility,
+            order: s.order,
+            progress_enabled: s.progress_enabled)
+      end
+
+      if @copy_admins
+        @course.administrating_members = @base.administrating_members
+      end
+    end
+
     respond_to do |format|
       if @course.save
         @course.administrating_members << current_user
         format.html {redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human)}
         format.json {render :show, status: :created, location: @course}
       else
-        format.html {render :new}
+        format.html {render params.key?(:base_id) ? :copy : :new}
         format.json {render json: @course.errors, status: :unprocessable_entity}
       end
     end

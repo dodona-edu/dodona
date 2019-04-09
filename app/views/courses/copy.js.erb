@@ -1,0 +1,4 @@
+$("#course-copy-form-wrapper").html("<%= escape_javascript(render partial: 'form', locals: {course: @course, base: @base, copy_admins: @copy_admins}) %>")
+if (dodona.courseCopyLoaded) {
+    dodona.courseCopyLoaded("<%= @base.name %>");
+}

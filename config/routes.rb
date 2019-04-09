@@ -55,6 +55,7 @@ Rails.application.routes.draw do
         post 'upload_labels_csv', on: :collection
       end
       member do
+        get 'copy'
         get 'statistics'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"

@@ -206,4 +206,35 @@ function initCourseEdit() {
     init();
 }
 
-export {initCourseEdit, initCourseShow, initCourseMembers, loadUsers};
+function initCourseNew() {
+    function init() {
+        initActionButtons();
+        window.dodona.courseCopyLoaded = courseCopyLoaded;
+    }
+
+    function initActionButtons() {
+        $("#empty-link").on("show.bs.tab", function () {
+            $(".btn-fab[form=\"new_course\"]").removeClass("hidden-fab");
+            $(".btn-fab[form=\"copy_course\"]").addClass("hidden-fab");
+        });
+        $("#copy-select-link").on("show.bs.tab", function () {
+            $(".btn-fab[form=\"new_course\"]").addClass("hidden-fab");
+            $(".btn-fab[form=\"copy_course\"]").addClass("hidden-fab");
+        });
+        $("#copy-link").on("show.bs.tab", function () {
+            $(".btn-fab[form=\"new_course\"]").addClass("hidden-fab");
+            $(".btn-fab[form=\"copy_course\"]").removeClass("hidden-fab");
+        });
+    }
+
+    function courseCopyLoaded(name) {
+        $("#copy-list-item").removeClass("hidden");
+        const link = $("#copy-link");
+        link.html(name);
+        link.click();
+    }
+
+    init();
+}
+
+export {initCourseEdit, initCourseNew, initCourseShow, initCourseMembers, loadUsers};

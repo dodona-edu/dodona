@@ -94,7 +94,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        @course.administrating_members << current_user
+        @course.administrating_members << current_user unless @course.administrating_members.include?(current_user)
         format.html {redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human)}
         format.json {render :show, status: :created, location: @course}
       else

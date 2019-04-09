@@ -1,15 +1,39 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'course' %>
+<% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card">
+    <div class="card card-nav">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t '.title' %></h2>
         <div class="card-title-fab">
-          <%= render 'fab_button', form: 'new_course', icon: 'done' %>
+          <%= render 'application/fab_button', form: 'new_course', icon: 'done' %>
+          <%= render 'application/fab_button', form: 'copy_course', icon: 'done', hide: true %>
         </div>
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#empty" id="empty-link" data-toggle="tab"><%= t ".empty" %></a></li>
+          <li><a href="#copy-select" id="copy-select-link" data-toggle="tab"><%= t ".copy" %></a></li>
+          <li id="copy-list-item" class="hidden"><a href="#copy" id="copy-link" data-toggle="tab"></a></li>
+        </ul>
       </div>
       <div class="card-supporting-text">
-        <%= render 'form', course: @course %>
+        <div class="tab-content">
+          <div class="tab-pane fade in active" id="empty">
+            <%= render 'form', course: @course %>
+          </div>
+          <div class="tab-pane fade" id="copy-select">
+            <%= render(partial: 'layouts/searchbar', locals: {baseUrl: courses_path(copy_courses: true), eager: true, institutions: Institution.all}) %>
+            <div id="courses-table-wrapper"></div>
+          </div>
+          <div class="tab-pane fade" id="copy">
+            <div id="course-copy-form-wrapper"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        dodona.initCourseNew();
+    });
+</script>

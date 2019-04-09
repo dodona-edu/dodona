@@ -14,11 +14,14 @@ nl:
       registration-help_html: Bij <b>open</b> cursussen worden registraties automatisch geaccepteerd. Bij <b>gemodereerde</b> cursussen moet elke registratie goedgekeurd worden door een cursusbeheerder. Bij <b>gesloten</b> cursussen zijn nieuwe registraties niet mogelijk.
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       no_institution: "Geen onderwijsinstelling"
+      copy_admins: "Kopieer cursusbeheerders"
     index:
       title: Alle cursussen
       users: Gebruikers
     new:
       title: Cursus aanmaken
+      empty: "Lege cursus"
+      copy: "Kopieer cursus"
     edit:
       confidential: Geheime link
       series_in_course: "Reeksen in deze cursus"
@@ -57,6 +60,7 @@ nl:
       taught_by: "Gegeven door %{teacher}."
       taught_by_at: "Gegeven door %{teacher} aan %{institution}."
       taught_at: "Gegeven aan %{institution}."
+      copy: "Kopieer"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       page_title: Registratie
@@ -90,3 +94,5 @@ nl:
       exercise_count: Oefeningen
       submitted_solutions: Ingediende oplossingen
       more_statistics: "Meer statistieken >"
+    copy:
+      title: "Kopieer %{base}"

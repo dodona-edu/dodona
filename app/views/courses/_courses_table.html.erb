@@ -31,7 +31,9 @@
             <i class="material-icons md-18">block</i>
           <% end %>
         </td>
-        <td title="<%= course.name %>" class="text"><span><%= link_to course.name, course %></span></td>
+        <td title="<%= course.name %>" class="text">
+          <span><%= link_to course.name, course, target: '_blank' %></span>
+        </td>
         <td title="<%= course.teacher %>" class="text"><span><%= course.teacher %></span></td>
         <td><%= course.formatted_year %></td>
         <td><%= course.subscribed_members_count %></td>
@@ -40,6 +42,12 @@
           <td class="repository-course-button-cell" data-course_id="<%= course.id %>" data-repository_id="<%= @repository.id %>">
             <%= render partial: 'repositories/repository_course_buttons',
                        locals: {repository: @repository, course: course, show_delete_button: show_delete_button} %>
+          </td>
+        <% elsif @copy_courses %>
+          <td>
+            <%= link_to copy_course_url(course), 'data-remote': true do %>
+              <i class="material-icons md-18">chevron_right</i>
+            <% end %>
           </td>
         <% else %>
           <td class="actions">
@@ -50,7 +58,6 @@
             <% end %>
           </td>
         <% end %>
-        </td>
       </tr>
     <% end %>
     </tbody>

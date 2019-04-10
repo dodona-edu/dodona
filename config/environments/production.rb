@@ -109,7 +109,6 @@ Rails.application.configure do
       },
       mattermost: {
           webhook_url: 'https://mattermost.zeus.gent/hooks/fh8wjui63p89byf1dp5ecs735h',
-          channel: 'dodona',
           username: 'Dodona-server',
           avatar: 'https://dodona.ugent.be/icon.png'
       },

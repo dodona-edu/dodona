@@ -14,11 +14,11 @@ class JudgePolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin?
+    user&.zeus?
   end
 
   def update?
-    user&.admin?
+    user&.zeus?
   end
 
   def destroy?
@@ -30,7 +30,7 @@ class JudgePolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if user&.admin?
+    if user&.zeus?
       %i[name image renderer runner remote]
     else
       []

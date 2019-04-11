@@ -47,7 +47,7 @@
             <li>
               <%= activatable_link_to users_path,
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24">group</i>
+                <i class="material-icons md-24 material-icons-faaf">group</i>
                 <%= t("layout.menu.users") %>
               <% end %>
             </li>
@@ -56,7 +56,7 @@
             <li>
               <%= activatable_link_to courses_path,
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24">collections_bookmark</i>
+                <i class="material-icons md-24 material-icons-faaf">collections_bookmark</i>
                 <%= t("layout.menu.courses") %>
               <% end %>
             </li>
@@ -65,7 +65,7 @@
             <li>
               <%= activatable_link_to judges_path,
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24">gavel</i>
+                <i class="material-icons md-24 material-icons-faaf">gavel</i>
                 <%= t("layout.menu.judges") %>
               <% end %>
             </li>
@@ -74,7 +74,7 @@
             <li>
               <%= activatable_link_to repositories_path,
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24">storage</i>
+                <i class="material-icons md-24 material-icons-faaf">storage</i>
                 <%= t("layout.menu.repositories") %>
               <% end %>
             </li>
@@ -83,7 +83,7 @@
             <li>
               <%= activatable_link_to labels_path,
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24">style</i>
+                <i class="material-icons md-24 material-icons-faaf">style</i>
                 <%= t('layout.menu.labels') %>
               <% end %>
             </li>
@@ -92,7 +92,7 @@
             <li>
               <%= activatable_link_to programming_languages_path,
                                       class: 'drawer-list-item' do %>
-                <i class='material-icons md-24'>code</i>
+                <i class='material-icons md-24 material-icons-faaf'>code</i>
                 <%= t("layout.menu.programming_languages") %>
               <% end %>
           <% end %>
@@ -100,7 +100,7 @@
             <li>
               <%= activatable_link_to institutions_path,
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24">local_library</i>
+                <i class="material-icons md-24 material-icons-faaf">local_library</i>
                 <%= t('layout.menu.institutions') %>
               <% end %>
             </li>
@@ -109,7 +109,7 @@
             <li>
               <%= activatable_link_to "/dj/overview",
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24">queue</i>
+                <i class="material-icons md-24 material-icons-faaf">queue</i>
                 Job queue
               <% end %>
             </li>
@@ -121,25 +121,25 @@
       <ul class="drawer-list">
         <li><%= activatable_link_to user_path(current_user),
                                     class: 'drawer-list-item' do %>
-            <i class="material-icons md-24">account_circle</i>
+            <i class="material-icons md-24 material-icons-faaf">account_circle</i>
             <%= t("layout.menu.profile") %>
           <% end %>
         </li>
         <li>
           <%= activatable_link_to posts_path, class: 'drawer-list-item' do %>
-            <i class="material-icons md-24">new_releases</i>
+            <i class="material-icons md-24 material-icons-faaf">new_releases</i>
             <%= t('layout.menu.news') %>
           <% end %>
         </li>
         <li>
           <%= link_to 'https://dodona.readthedocs.io/', class: 'drawer-list-item' do %>
-            <i class="material-icons md-24">help</i>
+            <i class="material-icons md-24 material-icons-faaf">help</i>
             <%= t('layout.menu.manual') %>
           <% end %>
         </li>
         <li>
           <%= link_to destroy_user_session_path, method: :delete do %>
-            <i class="material-icons md-24">power_settings_new</i>
+            <i class="material-icons md-24 material-icons-faaf">power_settings_new</i>
             <%= t('layout.menu.log_out') %>
           <% end %>
         </li>

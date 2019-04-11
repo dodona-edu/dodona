@@ -1,4 +1,4 @@
-<%= form_for(course, :html => defined?(base) ? {:id => "copy_course", :class => "form-horizontal"} : {:class => "form-horizontal"}) do |f| %>
+<%= form_for(course, :html => {:class => "form-horizontal"}) do |f| %>
   <% if course.errors.any? %>
     <div class="callout callout-danger" id="error_explanation">
       <h4><%= t('errors.validation_errors', :count => course.errors.count) %></h4>
@@ -10,8 +10,13 @@
     </div>
   <% end %>
 
-  <% if defined? base %>
-    <input type="hidden" name="base_id" id="base_id" value="<%= base.id %>"/>
+  <% if copy_options.present? %>
+    <input type="hidden" name="base_id" id="copy_options[base_id]" value="<%= copy_options[:base_id] %>"/>
+    <%= render partial: 'copy_option', locals: {name: :admins, copy_options: copy_options, explanation: t(".copy_admins")} %>
+    <%= render partial: 'copy_option', locals: {name: :hide_series, copy_options: copy_options, explanation: t(".hide_series")} %>
+    <%= render partial: 'copy_option', locals: {name: :descriptions, copy_options: copy_options, explanation: t(".copy_series_descriptions")} %>
+    <%= render partial: 'copy_option', locals: {name: :exercises, copy_options: copy_options, explanation: t(".copy_exercises")} %>
+    <%= render partial: 'copy_option', locals: {name: :deadlines, copy_options: copy_options, explanation: t(".copy_deadlines")} %>
   <% end %>
 
   <div class="field form-group">
@@ -65,14 +70,6 @@
     <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>
   </div>
-
-  <% if defined? base %>
-    <div class="field form-group">
-      <div class="col-sm-6 col-sm-offset-3">
-        <input type="checkbox" id="copy_admins" name="copy_admins" <%= "checked" if copy_admins %>> <%= t(".copy_admins") %>
-      </div>
-    </div>
-  <% end %>
 
   <% if current_user.zeus? %>
     <div class="field form-group">

@@ -48,7 +48,7 @@
           </td>
         <% elsif @copy_courses %>
           <td>
-            <%= link_to copy_course_url(course), 'data-remote': true do %>
+            <%= link_to new_course_url(copy_options: {base_id: course.id}), 'data-remote': true do %>
               <i class="material-icons md-18">chevron_right</i>
             <% end %>
           </td>

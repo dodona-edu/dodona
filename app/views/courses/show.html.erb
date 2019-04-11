@@ -74,7 +74,7 @@
             <ul class="dropdown-menu dropdown-menu-right">
               <% if policy(@course).copy? %>
                 <li>
-                  <%= link_to t(".copy"), copy_course_url(@course) %>
+                  <%= link_to t(".copy"), new_course_url(copy_options: {base_id: @course.id}) %>
                 </li>
               <% end %>
               <% if policy(@course).scoresheet? %>

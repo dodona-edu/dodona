@@ -208,30 +208,58 @@ function initCourseEdit() {
 
 function initCourseNew() {
     function init() {
-        initActionButtons();
-        window.dodona.courseCopyLoaded = courseCopyLoaded;
+        initPanelLogic();
+        window.dodona.courseFormLoaded = courseFormLoaded;
+
+        // Bootstrap's automatic collapsing of other elements in the parent breaks
+        // when doing manual shows and hides, so we have to do this.
+        $typePanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $choosePanel.find(".panel-collapse").collapse("hide");
+            $formPanel.find(".panel-collapse").collapse("hide");
+        });
+        $choosePanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $typePanel.find(".panel-collapse").collapse("hide");
+            $formPanel.find(".panel-collapse").collapse("hide");
+        });
+        $formPanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $typePanel.find(".panel-collapse").collapse("hide");
+            $choosePanel.find(".panel-collapse").collapse("hide");
+        });
     }
 
-    function initActionButtons() {
-        $("#empty-link").on("show.bs.tab", function () {
-            $(".btn-fab[form=\"new_course\"]").removeClass("hidden-fab");
-            $(".btn-fab[form=\"copy_course\"]").addClass("hidden-fab");
+    const $typePanel = $("#type-panel");
+    const $choosePanel = $("#choose-panel");
+    const $formPanel = $("#form-panel");
+
+    function initPanelLogic() {
+        $("#new-course").change(function () {
+            if ($(this).is(":checked")) {
+                $choosePanel.addClass("hidden");
+            }
+            fetch("/courses/new.js", {
+                headers: {
+                    "accept": "text/javascript",
+                    "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                    "x-requested-with": "XMLHttpRequest",
+                },
+                credentials: "same-origin",
+            })
+                .then(req => req.text())
+                .then(resp => eval(resp));
         });
-        $("#copy-select-link").on("show.bs.tab", function () {
-            $(".btn-fab[form=\"new_course\"]").addClass("hidden-fab");
-            $(".btn-fab[form=\"copy_course\"]").addClass("hidden-fab");
-        });
-        $("#copy-link").on("show.bs.tab", function () {
-            $(".btn-fab[form=\"new_course\"]").addClass("hidden-fab");
-            $(".btn-fab[form=\"copy_course\"]").removeClass("hidden-fab");
+
+        $("#copy-course").change(function () {
+            if ($(this).is(":checked")) {
+                $choosePanel.removeClass("hidden");
+                $choosePanel.find(".panel-collapse").collapse("show");
+                $formPanel.addClass("hidden");
+            }
         });
     }
 
-    function courseCopyLoaded(name) {
-        $("#copy-list-item").removeClass("hidden");
-        const link = $("#copy-link");
-        link.html(name);
-        link.click();
+    function courseFormLoaded() {
+        $formPanel.removeClass("hidden");
+        $formPanel.find(".panel-collapse").collapse("show");
     }
 
     init();

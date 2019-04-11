@@ -38,24 +38,32 @@ class CoursesController < ApplicationController
   # GET /courses/new
   def new
     authorize Course
-    @course = Course.new(institution: current_user.institution)
+    if params[:copy_options]&.fetch(:base_id).present?
+      @copy_options = copy_options
+      @copy_options[:base] = Course.find(@copy_options[:base_id])
+      authorize @copy_options[:base], :copy?
+      @course = Course.new(
+          name: @copy_options[:base].name,
+          description: @copy_options[:base].description,
+          institution: @copy_options[:base].institution,
+          visibility: @copy_options[:base].visibility,
+          registration: @copy_options[:base].registration,
+          teacher: @copy_options[:base].teacher
+      )
+      @copy_options = {
+          admins: current_user.course_admin?(@copy_options[:base]),
+          hide_series: false,
+          descriptions: true,
+          exercises: true,
+          deadlines: false,
+      }.merge(@copy_options)
+    else
+      @copy_options = nil
+      @course = Course.new(institution: current_user.institution)
+    end
+
     @title = I18n.t('courses.new.title')
     @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
-  end
-
-  def copy
-    @base = Course.find(params[:id])
-    authorize @base
-    @course = Course.new(
-        name: @base.name,
-        description: @base.description,
-        institution: @base.institution,
-        visibility: @base.visibility,
-        registration: @base.registration,
-        teacher: @base.teacher
-    )
-    @copy_admins = current_user.course_admin?(@base)
-    @title = I18n.t("courses.copy.title", base: @base.name)
   end
 
   # GET /courses/1/edit
@@ -70,25 +78,37 @@ class CoursesController < ApplicationController
     authorize Course
     @course = Course.new(permitted_attributes(Course))
 
-    if params.key? :base_id
-      @copy_admins = params[:copy_admins]
-      @base = Course.find(params[:base_id])
-      authorize @base, :copy?
+    if params.key? :copy_options
+      @copy_options = copy_options
+      @copy_options[:base] = Course.find(params[:base_id])
+      authorize @copy_options[:base], :copy?
 
-      @course.series = @base.series.map do |s|
+      @copy_options = {
+          admins: current_user.course_admin?(@copy_options[:base]),
+          hide_series: false,
+          descriptions: true,
+          exercises: true,
+          deadlines: false,
+      }.merge(@copy_options)
+
+      @course.series = @copy_options[:base].series.map do |s|
         Series.new(
-            series_memberships: s.series_memberships.map do |sm|
-              SeriesMembership.new(exercise: sm.exercise, order: sm.order)
-            end,
+            series_memberships: @copy_options[:exercises] ?
+                                    s.series_memberships.map do |sm|
+                                      SeriesMembership.new(exercise: sm.exercise, order: sm.order)
+                                    end :
+                                    [],
             name: s.name,
-            description: s.description,
-            visibility: s.visibility,
+            description: @copy_options[:descriptions] ? s.description : '',
+            visibility: @copy_options[:hide_series] ? :hidden : s.visibility,
+            deadline: @copy_options[:deadlines] ? s.deadline : nil,
             order: s.order,
-            progress_enabled: s.progress_enabled)
+            progress_enabled: s.progress_enabled
+        )
       end
 
-      if @copy_admins
-        @course.administrating_members = @base.administrating_members
+      if @copy_options[:admins]
+        @course.administrating_members = @copy_options[:base].administrating_members
       end
     end
 
@@ -98,7 +118,7 @@ class CoursesController < ApplicationController
         format.html {redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human)}
         format.json {render :show, status: :created, location: @course}
       else
-        format.html {render params.key?(:base_id) ? :copy : :new}
+        format.html {render :new}
         format.json {render json: @course.errors, status: :unprocessable_entity}
       end
     end
@@ -339,5 +359,15 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @current_membership = CourseMembership.where(course: @course, user: current_user).first
     authorize @course
+  end
+
+  def copy_options
+    params.require(:copy_options)
+        .permit(:base_id,
+                :admins,
+                :hide_series,
+                :descriptions,
+                :exercises,
+                :deadlines)
   end
 end

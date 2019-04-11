@@ -11,7 +11,11 @@
   <% end %>
 
   <% if copy_options.present? %>
-    <input type="hidden" name="base_id" id="copy_options[base_id]" value="<%= copy_options[:base_id] %>"/>
+    <input type="hidden" name="copy_options[base_id]" id="copy_base_id" value="<%= copy_options[:base_id] %>"/>
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><%= t('.copy_options') %></label>
+      <div class="col-sm-6 control-explanation"><%= t('.copy_options_detail') %></div>
+    </div>
     <%= render partial: 'copy_option', locals: {name: :admins, copy_options: copy_options, explanation: t(".copy_admins")} %>
     <%= render partial: 'copy_option', locals: {name: :hide_series, copy_options: copy_options, explanation: t(".hide_series")} %>
     <%= render partial: 'copy_option', locals: {name: :descriptions, copy_options: copy_options, explanation: t(".copy_series_descriptions")} %>

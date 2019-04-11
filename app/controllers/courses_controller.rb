@@ -56,7 +56,7 @@ class CoursesController < ApplicationController
           descriptions: true,
           exercises: true,
           deadlines: false,
-      }.merge(@copy_options)
+      }.merge(@copy_options).symbolize_keys
     else
       @copy_options = nil
       @course = Course.new(institution: current_user.institution)
@@ -79,17 +79,17 @@ class CoursesController < ApplicationController
     @course = Course.new(permitted_attributes(Course))
 
     if params.key? :copy_options
-      @copy_options = copy_options
-      @copy_options[:base] = Course.find(params[:base_id])
+      @copy_options = copy_options.to_h
+      @copy_options[:base] = Course.find(@copy_options[:base_id])
       authorize @copy_options[:base], :copy?
 
       @copy_options = {
-          admins: current_user.course_admin?(@copy_options[:base]),
+          admins: false,
           hide_series: false,
-          descriptions: true,
-          exercises: true,
+          descriptions: false,
+          exercises: false,
           deadlines: false,
-      }.merge(@copy_options)
+      }.merge(@copy_options).symbolize_keys
 
       @course.series = @copy_options[:base].series.map do |s|
         Series.new(

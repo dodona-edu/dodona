@@ -13,7 +13,7 @@
             </a>
           </h4>
         </div>
-        <div id="type-step" class="panel-collapse collapse <%= "in" if @copy_options.nil? %>" role="tabpanel">
+        <div id="type-step" class="panel-collapse collapse <%= "in" if @copy_options.nil? && @course.errors.blank? %>" role="tabpanel">
           <div class="panel-body">
             <div>
               <input type="radio" name="type" id="new-course"> <%= t('.new_course') %>
@@ -49,7 +49,7 @@
             </a>
           </h4>
         </div>
-        <div id="form-step" class="panel-collapse collapse <%= "in" if @copy_options.present? %>" role="tabpanel">
+        <div id="form-step" class="panel-collapse collapse <%= "in" if @copy_options.present? || @course.errors.present? %>" role="tabpanel">
           <div class="panel-body">
             <div id="course-form-wrapper">
               <%= render 'form', course: @course, copy_options: @copy_options %>

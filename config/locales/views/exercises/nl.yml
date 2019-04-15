@@ -34,8 +34,8 @@ nl:
         one: "Één gebruiker begon aan deze oefening."
         other: "%{count} gebruikers begonnen aan deze oefening."
       progress_chart_info_correct:
-        one: "Één gebruiker loste hem correct op."
-        other: "%{count} gebruikers losten hem correct op."
+        one: "Één gebruiker loste ze correct op."
+        other: "%{count} gebruikers losten ze correct op."
     show:
       code: Code
       handin: Indienen

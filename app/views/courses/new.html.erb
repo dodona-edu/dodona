@@ -15,6 +15,7 @@
         </div>
         <div id="type-step" class="panel-collapse collapse <%= "in" if @copy_options.nil? && @course.errors.blank? %>" role="tabpanel">
           <div class="panel-body">
+            <span class="h4-info-text"><%= t('.new_course_details') %></span>
             <div>
               <input type="radio" name="type" id="new-course"> <%= t('.new_course') %>
             </div>
@@ -41,7 +42,7 @@
         </div>
       </div>
 
-      <div id="form-panel" class="panel panel-default">
+      <div id="form-panel" class="panel panel-default<%= " hidden" unless @copy_options.present? || @course.errors.present? %>">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <a role="button" data-toggle="collapse" href="#form-step">

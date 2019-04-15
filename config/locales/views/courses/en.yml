@@ -15,6 +15,17 @@ en:
       description-help: A description is optional. Markdown formatting can be used.
       no_institution: "No institution"
       copy_admins: "Copy course admins"
+      copy_options: "Copy options"
+      copy_options_details: "These options influence how the elements in the course you're basing yourself on get copied."
+      copy_admins_details: "All course admins in the course you're basing yourself on will be added to the new course. If you're not a course admin in that course you will still be added to the new one."
+      hide_series: "Make the copied series hidden"
+      hide_series_details: "Useful if you want to make your series available week by week, for example."
+      copy_series_descriptions: "Copy the descriptions of series"
+      copy_series_descriptions_details: "If you're going to change your series descriptions anyway, you might want to disable this option."
+      copy_exercises: "Copy the series' exercises"
+      copy_exercises_details: "If you want to keep the general structure of the course but want to give different exercises, you probably want to disable this option."
+      copy_deadlines: "Copy the series' deadlines"
+      copy_deadlines_details: "If you want to give the same course to different groups, it might make sense to enable this option."
     index:
       title: All courses
       users: Users

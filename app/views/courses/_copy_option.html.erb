@@ -3,4 +3,9 @@
     <input type="checkbox" id="copy_<%= name %>" name="copy_options[<%= name %>]" <%= "checked" if copy_options[name] %>>
     <%= explanation %>
   </div>
+  <% if local_assigns.key? :details %>
+  <span class="help-block col-sm-6 col-sm-offset-3">
+    <%= local_assigns[:details] %>
+  </span>
+  <% end %>
 </div>

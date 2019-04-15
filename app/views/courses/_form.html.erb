@@ -14,13 +14,13 @@
     <input type="hidden" name="copy_options[base_id]" id="copy_base_id" value="<%= copy_options[:base_id] %>"/>
     <div class="form-group">
       <label class="col-sm-3 control-label"><%= t('.copy_options') %></label>
-      <div class="col-sm-6 control-explanation"><%= t('.copy_options_detail') %></div>
+      <div class="col-sm-6 control-explanation"><%= t('.copy_options_details') %></div>
     </div>
-    <%= render partial: 'copy_option', locals: {name: :admins, copy_options: copy_options, explanation: t(".copy_admins")} %>
-    <%= render partial: 'copy_option', locals: {name: :hide_series, copy_options: copy_options, explanation: t(".hide_series")} %>
-    <%= render partial: 'copy_option', locals: {name: :descriptions, copy_options: copy_options, explanation: t(".copy_series_descriptions")} %>
-    <%= render partial: 'copy_option', locals: {name: :exercises, copy_options: copy_options, explanation: t(".copy_exercises")} %>
-    <%= render partial: 'copy_option', locals: {name: :deadlines, copy_options: copy_options, explanation: t(".copy_deadlines")} %>
+    <%= render partial: 'copy_option', locals: {name: :admins, copy_options: copy_options, explanation: t(".copy_admins"), details: t(".copy_admins_details")} %>
+    <%= render partial: 'copy_option', locals: {name: :hide_series, copy_options: copy_options, explanation: t(".hide_series"), details: t(".hide_series_details")} %>
+    <%= render partial: 'copy_option', locals: {name: :descriptions, copy_options: copy_options, explanation: t(".copy_series_descriptions"), details: t(".copy_series_descriptions_details")} %>
+    <%= render partial: 'copy_option', locals: {name: :exercises, copy_options: copy_options, explanation: t(".copy_exercises"), details: t(".copy_exercises_details")} %>
+    <%= render partial: 'copy_option', locals: {name: :deadlines, copy_options: copy_options, explanation: t(".copy_deadlines"), details: t(".copy_deadlines_details")} %>
   <% end %>
 
   <div class="field form-group">

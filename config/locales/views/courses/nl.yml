@@ -15,6 +15,17 @@ nl:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       no_institution: "Geen onderwijsinstelling"
       copy_admins: "Kopieer cursusbeheerders"
+      copy_options: "Opties voor het kopieren"
+      copy_options_details: "Deze opties bepalen hoe de elementen uit de cursus waar je je op baseert gekopieerd worden."
+      copy_admins_details: "Alle cursusbeheerders in de cursus waarop je je baseert zullen aan de nieuwe cursus toegevoegd worden. Als je zelf geen cursusbeheerder bent in het originele vak zal je dit nog steeds zijn in het nieuwe vak."
+      hide_series: "Zet de gekopieerde reeksen op verborgen"
+      hide_series_details: "Dit kan nuttig zijn als je bijvoorbeeld je reeksen week per week toegangkelijk wil maken."
+      copy_series_descriptions: "Kopieer de beschrijvingen van reeksen"
+      copy_series_descriptions_details: "Als je toch van plan bent om de beschrijvingen van je reeksen aan te passen, kan het nuttig zijn deze optie af te zetten."
+      copy_exercises: "Kopieer de oefeningen in de reeksen"
+      copy_exercises_details: "Als je de algemene structuur van de cursus wil behouden maar andere oefeningen wil geven, dan wil je deze optie waarschijnlijk afzetten."
+      copy_deadlines: "Kopieer de deadlines van de reeksen"
+      copy_deadlines_details: "Als je dezelfde cursus aan verschillende groepen wil geven, kan het steek houden deze optie aan te zetten."
     index:
       title: Alle cursussen
       users: Gebruikers

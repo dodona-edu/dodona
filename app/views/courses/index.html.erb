@@ -12,7 +12,7 @@
         <% end %>
       </div>
     </div>
-    <div class="card">
+    <div class="card course-search">
       <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: !filter_institutions} %>
     </div>
     <div id="grouped-course-cards-wrapper">

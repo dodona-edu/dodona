@@ -1,0 +1,25 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource">
+    <thead>
+    <tr>
+      <th><%= Event.human_attribute_name("event_type") %></th>
+      <th><%= Event.human_attribute_name("user") %></th>
+      <th><%= Event.human_attribute_name("message") %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% events.each do |event| %>
+      <tr>
+        <td><%= t("activerecord.attributes.event.event_types.#{event.event_type}") %></td>
+        <td><%= link_to event.user.full_name, user_path(event.user) %></td>
+        <td><%= event.message %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<% if local_assigns.fetch(:paginate, true) %>
+  <center>
+    <%= page_navigation_links events, true, 'events' %>
+  </center>
+<% end %>

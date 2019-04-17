@@ -21,6 +21,7 @@ en:
       users: Users
       courses: Courses
       institutions: Institutions
+      events: Events
       judges: Judges
       programming_languages: Programming languages
       repositories: Repositories

@@ -19,6 +19,7 @@ en:
       api_token: API token
       programming_language: Programming Language
       post: Post
+      event: Event
     attributes:
       api_token:
         description: Description
@@ -142,3 +143,9 @@ en:
           saml: SAML
           office365: Office 365
           smartschool: Smartschool
+      event:
+        event_type: Type
+        user: User
+        message: Message
+        event_types:
+          rejudge: "Re-evaluation of submissions"

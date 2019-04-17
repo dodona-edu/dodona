@@ -21,6 +21,7 @@ nl:
       users: Gebruikers
       courses: Cursussen
       institutions: Onderwijsinstellingen
+      events: Events
       judges: Judges
       programming_languages: Programmeertalen
       repositories: Repository's

@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t(".title") %></h2>
+      </div>
+      <div class="card-supporting-text">
+        <div id="events-table-wrapper">
+          <%= render partial: 'events_table', locals: {events: @events} %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

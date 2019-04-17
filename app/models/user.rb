@@ -36,6 +36,7 @@ class User < ApplicationRecord
   has_many :course_memberships
   has_many :repository_admins
   has_many :courses, through: :course_memberships
+  has_many :events
 
   has_many :subscribed_courses,
            lambda {

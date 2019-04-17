@@ -10,6 +10,11 @@ const QUERY_FILTER_ID = "#filter-query-tokenfield";
 let searchIndex = 0;
 let appliedIndex = 0;
 
+window.dodona.index = {};
+window.dodona.index.baseUrl = window.location.href;
+window.dodona.index.doSearch = () => {
+};
+
 function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
     const filterCollections = _filterCollections || {};
     const query = _query || $(QUERY_FILTER_ID).val();
@@ -68,28 +73,34 @@ function search(baseUrl, _query, _filterCollections, extraParams) {
         });
 }
 
-function initFilter(baseUrl, eager, _filterCollections) {
+function setBaseUrl(_baseUrl) {
+    window.dodona.index.baseUrl = _baseUrl;
+    window.dodona.index.doSearch();
+}
+
+
+function initFilter(_baseUrl, eager, _filterCollections) {
+    window.dodona.index.baseUrl = _baseUrl || window.location.href;
     const filterCollections = _filterCollections || {};
     let $queryFilter = $(QUERY_FILTER_ID);
-    let $tokensFilter = $(TOKENS_FILTER_ID);
-    let doSearch = () => search(baseUrl, $queryFilter.typeahead("val"), filterCollections);
-    $queryFilter.keyup(() => delay(doSearch, 300));
+    window.dodona.index.doSearch = () => search(window.dodona.index.baseUrl, $queryFilter.typeahead("val"), filterCollections);
+    $queryFilter.keyup(() => delay(window.dodona.index.doSearch, 300));
     let param = getURLParameter(FILTER_PARAM);
     if (param !== "") {
         $queryFilter.typeahead("val", param);
     }
 
     if (eager) {
-        doSearch();
+        window.dodona.index.doSearch();
     }
 }
 
-function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollections) {
+function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections) {
     function init() {
         initTokens();
 
         if (doInitFilter) {
-            initFilter(baseUrl, eager, filterCollections);
+            initFilter(_baseUrl, eager, filterCollections);
         }
 
         if (actions) {
@@ -107,14 +118,14 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
                 if (data.js) {
                     eval(data.js);
                 } else {
-                    search(baseUrl);
+                    search(window.dodona.index.baseUrl);
                 }
             });
         }
     }
 
     function urlContainsSearchOpt(searchOption) {
-        const url = baseUrl || window.location.href;
+        const url = window.dodona.index.baseUrl || window.location.href;
         // If the parameters were already contained, the length shouldn't change.
         // Note that we can't just compare the urls, since the position of the parameters might change.
         return addParametersToUrl(url, undefined, undefined, searchOption.search).length === url.length;
@@ -142,7 +153,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
                     }
                 }
             });
-            search(baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, extraParams);
+            search(window.dodona.index.baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, extraParams);
         }
 
         $actions.removeClass("hidden");
@@ -192,7 +203,7 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
         const $field = $(TOKENS_FILTER_ID);
 
         let doSearch = function () {
-            search(baseUrl, "", filterCollections);
+            search(window.dodona.index.baseUrl, "", filterCollections);
         };
 
         function validateLabel(e) {
@@ -315,4 +326,4 @@ function initFilterIndex(baseUrl, eager, actions, doInitFilter, filterCollection
     init();
 }
 
-export {initFilterIndex, initFilter, search};
+export {initFilterIndex, initFilter, search, setBaseUrl};

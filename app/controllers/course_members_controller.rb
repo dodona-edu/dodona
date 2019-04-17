@@ -3,6 +3,7 @@ class CourseMembersController < ApplicationController
   before_action :set_course_membership_and_user, only: [:show, :edit, :update]
 
   has_scope :by_permission
+  has_scope :by_institution, as: 'institution_id'
   has_scope :by_filter, as: 'filter'
   has_scope :by_course_labels, as: 'course_labels', type: :array
 

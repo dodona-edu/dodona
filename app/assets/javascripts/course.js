@@ -1,11 +1,11 @@
 /* globals ga, I18n, ace, MathJax, initStrip, Strip */
-import {initFilter} from "./index.js";
+import {setBaseUrl} from "./index.js";
 import dragula from "dragula";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
     const status = _status || window.location.hash.substr(1);
-    initFilter(baseUrl + "?status=" + status, true);
+    setBaseUrl(baseUrl + "?status=" + status);
 }
 
 function initCourseMembers() {

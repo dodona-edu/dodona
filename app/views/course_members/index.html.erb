@@ -63,7 +63,6 @@
         <% end %>
         <%= render partial: 'layouts/searchbar',
                    locals: {
-                       init_filter: true,
                        eager: false,
                        actions: [
                            {
@@ -87,7 +86,8 @@
                                type: 'enrolled'
                            }
                        ],
-                       course_labels: @course_labels
+                       course_labels: @course_labels,
+                       institutions: Institution.all
                    } %>
         <div id="users-table-wrapper">
           <%= render partial: 'members_table',

@@ -29,6 +29,7 @@ en:
     institutions: Institutions
     course_labels: Member labels
     statuses: Statuses
+    event_types: Event types
     label-undeletable: This label can't be deleted because it was set in the dirconfig file of a parent directory of the exercise.
     monday: Monday
     tuesday: Tuesday

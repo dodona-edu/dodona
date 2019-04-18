@@ -29,6 +29,7 @@ nl:
     institutions: Onderwijsinstellingen
     course_labels: Gebruikerlabels
     statuses: Statussen
+    event_types: Event types
     label-undeletable: Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.
     monday: Maandag
     tuesday: Dinsdag

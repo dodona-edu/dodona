@@ -40,6 +40,7 @@ class RepositoriesController < ApplicationController
     @repository = Repository.new(permitted_attributes(Repository))
     saved = @repository.save
     if saved
+      Event.create(event_type: :exercise_repository, user: current_user, message: "#{@repository.name} (id: #{@repository.id})")
       RepositoryAdmin.create(user_id: current_user.id, repository_id: @repository.id)
       @repository.process_exercises
     end

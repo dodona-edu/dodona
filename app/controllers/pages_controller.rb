@@ -19,7 +19,7 @@ class PagesController < ApplicationController
   def about;
   end
 
-  def data 
+  def data
   end
 
   def contact

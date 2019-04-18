@@ -147,5 +147,9 @@ en:
         event_type: Type
         user: User
         message: Message
+        created_at: Created at
         event_types:
           rejudge: "Re-evaluation of submissions"
+          permission_change: Change in permission level
+          exercise_repository: Creation of exercise repository
+          error: Error

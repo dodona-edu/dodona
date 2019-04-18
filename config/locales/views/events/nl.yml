@@ -2,3 +2,5 @@ nl:
   events:
     index:
       title: "Events"
+    events_table:
+      no_user: "Geen gebruiker"

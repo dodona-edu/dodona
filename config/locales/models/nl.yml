@@ -148,5 +148,9 @@ nl:
         event_type: Type
         user: Gebruiker
         message: Bericht
+        created_at: Aangemaakt
         event_types:
-          rejudge: "Herevualeren van oplossingen"
+          rejudge: "Herevalueren van oplossingen"
+          permission_change: Verandering in toegangsniveau
+          exercise_repository: Aanmaak van oefeningenrepository
+          error: Error

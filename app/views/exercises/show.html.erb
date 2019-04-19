@@ -58,6 +58,14 @@
               <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
             <% end %>
             <% if policy(@exercise).submit? || !user_signed_in? %>
+              <% if @series.present? && @series.deadline.present? %>
+                <div id="deadline-info" class="alert alert-info" hidden>
+                  <%= t('.deadline_in_5_minutes', deadline: @series.deadline.strftime("%R")) %>
+                </div>
+                <div id="deadline-warning" class="alert alert-warning" hidden>
+                  <%= t('.deadline_passed', deadline: @series.deadline.today? ? @series.deadline.strftime('%R') : @series.deadline.strftime('%F %R')) %>
+                </div>
+              <% end %>
               <div id="editor-window" class='tex2jax_ignore'>
                 <div id="editor-text"><%= @edit_submission.try(:code) || @exercise.boilerplate %></div>
               </div>
@@ -85,6 +93,13 @@
 </div>
 <script type="text/javascript">
     $(function () {
-        dodona.initExerciseShow(<%= @exercise.id %>, "<%= @exercise.programming_language&.editor_name || "text" %>", <%= user_signed_in? %>, <%= policy(@exercise).submit? || !user_signed_in? %>, <%= @course&.id || "null" %>);
+        dodona.initExerciseShow(
+            <%= @exercise.id %>,
+            "<%= @exercise.programming_language&.editor_name || "text" %>",
+            <%= user_signed_in? %>,
+            <%= policy(@exercise).submit? || !user_signed_in? %>,
+            <%= @course&.id || "null" %>,
+            <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>
+        );
     });
 </script>

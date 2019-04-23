@@ -23,6 +23,7 @@ class User < ApplicationRecord
   include Filterable
   include StringHelper
   include Cacheable
+  include ActiveModel::Dirty
 
   ATTEMPTED_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/attempted_exercises".freeze
   CORRECT_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/correct_exercises".freeze
@@ -36,6 +37,7 @@ class User < ApplicationRecord
   has_many :course_memberships
   has_many :repository_admins
   has_many :courses, through: :course_memberships
+  has_many :events
 
   has_many :subscribed_courses,
            lambda {
@@ -100,6 +102,7 @@ class User < ApplicationRecord
 
   before_save :set_token
   before_save :set_time_zone
+  before_update :check_permission_change
 
   scope :by_permission, ->(permission) {where(permission: permission)}
   scope :by_institution, ->(institution) {where(institution: institution)}
@@ -249,4 +252,7 @@ class User < ApplicationRecord
     self.time_zone = 'Seoul' if email&.match?(/ghent.ac.kr$/)
   end
 
+  def check_permission_change
+    Event.create(event_type: :permission_change, user: self, message: "Granted #{permission}#{Current.user ? " by #{Current.user.full_name} (id: #{Current.user.id})" : ''}") if permission_changed?
+  end
 end

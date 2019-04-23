@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_28_130625) do
+ActiveRecord::Schema.define(version: 2019_04_17_145257) do
 
   create_table "action_text_rich_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -116,6 +116,16 @@ ActiveRecord::Schema.define(version: 2019_03_28_130625) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "event_type", null: false
+    t.integer "user_id"
+    t.string "message", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_type"], name: "index_events_on_event_type"
+    t.index ["user_id"], name: "fk_rails_0cb5590091"
   end
 
   create_table "exercise_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -294,6 +304,7 @@ ActiveRecord::Schema.define(version: 2019_03_28_130625) do
   add_foreign_key "course_repositories", "courses"
   add_foreign_key "course_repositories", "repositories"
   add_foreign_key "courses", "institutions"
+  add_foreign_key "events", "users", on_delete: :cascade
   add_foreign_key "exercise_labels", "exercises"
   add_foreign_key "exercise_labels", "labels"
   add_foreign_key "exercises", "judges"

@@ -95,6 +95,19 @@
             },
         };
         <% end %>
+        <% if local_assigns.fetch :event_types, false %>
+        filterCollections["event_types"] = {
+            param: "type",
+            paramVal: function (s) {
+                return s.id;
+            },
+            multi: false,
+            data: <%= raw local_assigns.fetch(:event_types, []).map{|s| {id: s, name: Event.human_enum_name(:event_type, s)}}.to_json %>,
+            color: function () {
+                return "deep-purple";
+            },
+        };
+        <% end %>
 
         dodona.initFilterIndex("<%= local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%= raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, filterCollections);
     });

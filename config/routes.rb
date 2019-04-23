@@ -116,6 +116,7 @@ Rails.application.routes.draw do
     resources :posts
 
     resources :institutions, only: [:index]
+    resources :events, only: [:index]
 
     scope 'stats', controller: 'statistics' do
       get 'punchcard', to: 'statistics#punchcard'

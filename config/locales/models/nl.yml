@@ -148,7 +148,7 @@ nl:
         event_type: Type
         user: Gebruiker
         message: Bericht
-        created_at: Aangemaakt
+        created_at: Time
         event_types:
           rejudge: "Herevalueren van oplossingen"
           permission_change: Verandering in toegangsniveau

@@ -12,7 +12,7 @@
     <% events.each do |event| %>
       <tr>
         <td><%= t("activerecord.attributes.event.event_types.#{event.event_type}") %></td>
-        <td><%= event.user.present? ? link_to(event.user.full_name, user_path(event.user)) : t(".no_user") %></td>
+        <td><%= event.user.present? ? link_to(event.user.full_name, user_path(event.user)) : "" %></td>
         <td><%= event.message %></td>
         <td><%= l event.created_at %></td>
       </tr>

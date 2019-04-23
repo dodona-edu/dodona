@@ -147,7 +147,7 @@ en:
         event_type: Type
         user: User
         message: Message
-        created_at: Created at
+        created_at: Tijdstip
         event_types:
           rejudge: "Re-evaluation of submissions"
           permission_change: Change in permission level

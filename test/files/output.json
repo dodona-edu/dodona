@@ -154,6 +154,10 @@
                       "description": "# a big message"
                     },
                     {
+                      "format": "callout",
+                      "description": "# a big fancy message"
+                    },
+                    {
                       "format": "code",
                       "description": "while(!(succeed = try()));"
                     },

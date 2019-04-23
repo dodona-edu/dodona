@@ -8,6 +8,7 @@ class CreateEvents < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
+    add_index :events, :event_type
     add_foreign_key :events, :users, on_delete: :cascade
   end
 end

@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_145257) do
     t.string "message", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["user_id"], name: "fk_rails_0cb5590091"
   end
 

@@ -7,18 +7,14 @@
       <div id="type-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
+            <span class="step-circle">1</span>
             <a role="button" data-toggle="collapse" href="#type-step">
               <%= t('.pick_type') %>
             </a>
           </h4>
         </div>
         <div id="type-step" class="panel-collapse collapse <%= "in" if @copy_options.nil? && @course.errors.blank? %>" role="tabpanel">
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-xs-12">
-                <span class="h4-info-text"><%= t('.new_course_details') %></span>
-              </div>
-            </div>
+          <div class="panel-body panel-body-transparent">
             <div class="row">
               <div class="col-sm-6">
                 <div class="option-btn" id="new-course">
@@ -52,6 +48,7 @@
       <div id="choose-panel" class="panel panel-default<%= " hidden" if @copy_options.nil? %>">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
+            <span class="step-circle">2</span>
             <a role="button" data-toggle="collapse" href="#choose-step">
               <%= t('.choose_course') %>
             </a>
@@ -68,6 +65,7 @@
       <div id="form-panel" class="panel panel-default<%= " hidden" unless @copy_options.present? || @course.errors.present? %>">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
+            <span class="step-circle">3</span>
             <a role="button" data-toggle="collapse" href="#form-step">
               <%= t('.data_entry') %>
             </a>
@@ -78,9 +76,9 @@
             <div id="course-form-wrapper">
               <%= render 'form', course: @course, copy_options: @copy_options %>
             </div>
-          </div>
-          <div class="panel-footer stepper-actions">
-            <button type="submit" class="btn btn-text btn-primary" form="new_course"><%= t('.create') %></button>
+            <div class="stepper-actions">
+              <button type="submit" class="btn btn-text btn-primary" form="new_course"><%= t('.create') %></button>
+            </div>
           </div>
         </div>
       </div>

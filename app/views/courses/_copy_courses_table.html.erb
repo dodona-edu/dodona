@@ -1,0 +1,31 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource copy-courses-table">
+    <thead>
+    <tr>
+      <th class="status-icon"></th>
+      <th><%= t('.info') %></th>
+      <th><%= t 'courses.index.users' %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% courses.each do |course| %>
+      <tr data-course_id="<%= course.id %>">
+        <td>
+          <% if course.hidden? %>
+            <i class="material-icons md-18">visibility_off</i>
+          <% end %>
+          <% if course.closed? %>
+            <i class="material-icons md-18">block</i>
+          <% end %>
+        </td>
+        <td>
+          <span><%= link_to course.name, course, target: '_blank' %> (<%= course.formatted_year %>)</span>
+          <br/>
+          <span><%= course.teacher %> - <%= course.institution&.name || t('courses.form.no_institution') %></span>
+        </td>
+        <td><%= course.subscribed_members_count %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

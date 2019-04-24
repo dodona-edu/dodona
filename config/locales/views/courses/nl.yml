@@ -41,6 +41,7 @@ nl:
       pick_type: "Kies hoe je een cursus wil aanmaken"
       choose_course: "Kies de cursus waar je je op baseert"
       data_entry: "Vul het formulier in voor je cursus"
+      create: "Maak aan"
     edit:
       confidential: Geheime link
       series_in_course: "Reeksen in deze cursus"

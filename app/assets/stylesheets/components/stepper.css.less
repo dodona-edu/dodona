@@ -1,16 +1,56 @@
-.stepper h4.panel-title {
-  line-height: 24px;
-}
+.stepper {
+  .panel {
+    .shadow-z0();
+    border-radius: 0;
+    background-color: transparent;
 
-.stepper .panel-body .row + .row {
-  margin-top: 20px;
-}
+    .panel-heading {
+      background: transparent;
+      border: none;
 
-.stepper-actions {
-  font-size: 16px;
-  line-height: normal;
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-  text-align: right;
+      .step-circle {
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        border-radius: 11px;
+        vertical-align: text-bottom;
+        text-align: center;
+        line-height: 21px;
+        font-size: 12px;
+        margin-right: 5px;
+        background-color: @navbar-default-bg;
+        color: @navbar-default-color;
+      }
+
+      h4.panel-title {
+        line-height: 24px;
+      }
+    }
+
+
+    .panel-heading + .panel-collapse > .panel-body {
+      .shadow-z1();
+      background-color: @content-bg;
+      margin-left: 45px;
+      border: none;
+      border-radius: @border-radius-base;
+
+      &.panel-body-transparent {
+        background-color: transparent;
+        .shadow-z0();
+        padding: 0;
+      }
+
+      .row + .row {
+        margin-top: 20px;
+      }
+    }
+
+    .stepper-actions {
+      font-size: 16px;
+      line-height: normal;
+      box-sizing: border-box;
+      text-align: right;
+    }
+  }
 }

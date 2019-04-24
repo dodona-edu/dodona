@@ -257,6 +257,10 @@ GEM
     omniauth (1.8.1)
       hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
+    omniauth-google-oauth2 (0.5.4)
+      jwt (>= 1.5)
+      omniauth (>= 1.1.1)
+      omniauth-oauth2 (>= 1.5)
     omniauth-oauth2 (1.5.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.2)
@@ -446,6 +450,7 @@ DEPENDENCIES
   mocha
   mysql2 (~> 0.5.2)
   nokogiri
+  omniauth-google-oauth2
   omniauth-oauth2
   possibly
   premailer-rails

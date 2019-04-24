@@ -18,7 +18,7 @@
 
 class Institution < ApplicationRecord
   NEW_INSTITUTION_NAME = "n/a"
-  enum provider: %i[smartschool office365 saml]
+  enum provider: %i[smartschool office365 saml google_oauth2]
 
   has_many :users
   has_many :courses

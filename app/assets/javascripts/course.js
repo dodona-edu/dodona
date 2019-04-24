@@ -251,6 +251,7 @@ function initCourseNew() {
         $("#copy-course").click(function () {
             $choosePanel.removeClass("hidden");
             $choosePanel.find(".panel-collapse").collapse("show");
+            $choosePanel.find("input[type=\"radio\"]").val(false);
             $formPanel.addClass("hidden");
             $formPanel.find(".step-circle").html("3");
         });

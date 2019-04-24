@@ -31,7 +31,10 @@
     .panel-heading + .panel-collapse > .panel-body {
       .shadow-z1();
       background-color: @content-bg;
-      margin-left: 45px;
+
+      @media (min-width: @screen-sm-min) {
+        margin-left: 45px;
+      }
       border: none;
       border-radius: @border-radius-base;
 
@@ -44,13 +47,13 @@
       .row + .row {
         margin-top: 20px;
       }
-    }
 
-    .stepper-actions {
-      font-size: 16px;
-      line-height: normal;
-      box-sizing: border-box;
-      text-align: right;
+      .stepper-actions {
+        font-size: 16px;
+        line-height: normal;
+        box-sizing: border-box;
+        text-align: right;
+      }
     }
   }
 }

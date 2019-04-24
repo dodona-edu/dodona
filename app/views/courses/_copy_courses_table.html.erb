@@ -2,6 +2,7 @@
   <table class="table table-index table-resource copy-courses-table">
     <thead>
     <tr>
+      <th></th>
       <th class="status-icon"></th>
       <th><%= t('.info') %></th>
       <th><%= t 'courses.index.users' %></th>
@@ -10,6 +11,9 @@
     <tbody>
     <% courses.each do |course| %>
       <tr data-course_id="<%= course.id %>">
+        <td>
+          <input type="radio" name="course-select">
+        </td>
         <td>
           <% if course.hidden? %>
             <i class="material-icons md-18">visibility_off</i>

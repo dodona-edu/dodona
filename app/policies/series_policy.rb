@@ -29,7 +29,9 @@ class SeriesPolicy < ApplicationPolicy
     return false if record.closed?
     return false if record.hidden? && user.nil?
     course = record.course
-    course.visible? || user&.member_of?(course)
+    course.visible_for_all? ||
+        (course.visible_for_institution? && course.institution == user.institution) ||
+        user&.member_of?(course)
   end
 
   def overview?

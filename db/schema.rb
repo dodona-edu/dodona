@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_17_145257) do
+ActiveRecord::Schema.define(version: 2019_04_24_072139) do
 
   create_table "action_text_rich_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_145257) do
     t.string "teacher", default: ""
     t.bigint "institution_id"
     t.string "search", limit: 4096
+    t.boolean "moderated", default: false, null: false
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 

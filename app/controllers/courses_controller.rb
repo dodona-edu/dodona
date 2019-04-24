@@ -190,18 +190,30 @@ class CoursesController < ApplicationController
         format.html {redirect_to(@course)}
         format.json {render json: {errors: ['already subscribed']}, status: :unprocessable_entity}
       else
+        status = nil
+        success_method = method(:subscription_succeeded_response)
+        if @course.moderated
+          status = 'pending'
+          success_method = method(:signup_succeeded_response)
+        end
+
         case @course.registration
-        when 'open'
-          if try_to_subscribe_current_user
-            subscription_succeeded_response format
+        when 'open_for_all'
+          if try_to_subscribe_current_user status: status
+            success_method.call(format)
           else
             subscription_failed_response format
           end
-        when 'moderated'
-          if try_to_subscribe_current_user status: 'pending'
-            signup_succeeded_response format
+        when 'open_for_institution'
+          if @course.institution == current_user.institution
+            if try_to_subscribe_current_user status: status
+              success_method.call(format)
+            else
+              subscription_failed_response format
+            end
           else
-            subscription_failed_response format
+            format.html {redirect_to(@course, alert: I18n.t('courses.registration.closed'))}
+            format.json {render json: {errors: ['course closed']}, status: :unprocessable_entity}
           end
         when 'closed'
           format.html {redirect_to(@course, alert: I18n.t('courses.registration.closed'))}

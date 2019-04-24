@@ -21,8 +21,9 @@ FactoryBot.define do
   factory :course do
     name { "#{Faker::Hacker.adjective.titlecase} Programming" }
     description { Faker::Hacker.say_something_smart }
-    visibility { 'visible' }
-    registration { 'open' }
+    visibility {'visible_for_all'}
+    registration {'open_for_all'}
+    moderated {false}
     teacher { "Prof. #{Faker::Name.first_name} #{Faker::Name.last_name}" }
 
     transient do

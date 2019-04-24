@@ -44,8 +44,8 @@ class Course < ApplicationRecord
 
   has_many :course_labels, dependent: :destroy
 
-  enum visibility: %i[visible hidden]
-  enum registration: %i[open moderated closed]
+  enum visibility: %i[visible_for_all visible_for_institution hidden]
+  enum registration: %i[open_for_all open_for_institution closed]
   enum color: %i[red pink purple deep-purple indigo teal
                  orange brown blue-grey]
 

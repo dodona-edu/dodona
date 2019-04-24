@@ -255,7 +255,9 @@ Devise.setup do |config|
                   Rails.application.secrets.office365_client_id,
                   Rails.application.secrets.office365_client_secret
 
-  config.omniauth :google_oath2, 'CLIENT_ID', 'CLIENT_SECRET'
+  config.omniauth :google_oath2,
+                  Rails.application.secrets.google_client_id,
+                  Rails.application.secrets.google_client_secret
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

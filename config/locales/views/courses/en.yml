@@ -33,7 +33,6 @@ en:
       title: Create course
       empty: "Empty course"
       copy: "Copy course"
-      new_course_details: "When creating a course, you can choose between creating a new course or copying an existing course. A new course will create a blank course. There will be no series or exercises yet, and only you will be added as a course admin. If you choose to copy a course, all series will be copied (by default with their exercises). You can also choose whether the course admins get copied. All fields in the form to create the course will be prefilled with the values of the course you are copying."
       new_course: "Empty"
       new_course_subtitle: "Start with an empty course"
       copied_course: "Existing course"
@@ -117,5 +116,3 @@ en:
       submitted_solutions: Submitted solutions
       exercise_count: Exercises
       more_statistics: "More statistics >"
-    copy:
-      title: "Copy %{base}"

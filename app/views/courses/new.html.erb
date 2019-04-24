@@ -3,7 +3,6 @@
 <% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-
     <div id="stepper" class="panel-group stepper" role="tablist">
       <div id="type-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
@@ -15,12 +14,36 @@
         </div>
         <div id="type-step" class="panel-collapse collapse <%= "in" if @copy_options.nil? && @course.errors.blank? %>" role="tabpanel">
           <div class="panel-body">
-            <span class="h4-info-text"><%= t('.new_course_details') %></span>
-            <div>
-              <input type="radio" name="type" id="new-course"> <%= t('.new_course') %>
+            <div class="row">
+              <div class="col-xs-12">
+                <span class="h4-info-text"><%= t('.new_course_details') %></span>
+              </div>
             </div>
-            <div>
-              <input type="radio" name="type" id="copy-course"> <%= t('.copied_course') %>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="option-btn" id="new-course">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= t('.new_course') %>
+                      <br>
+                      <small><%= t('.new_course_subtitle') %></small>
+                    </h3>
+                  </div>
+                  <div><i class="material-icons">chevron_right</i></div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="option-btn" id="copy-course">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= t('.copied_course') %>
+                      <br>
+                      <small><%= t('.copied_course_subtitle') %></small>
+                    </h3>
+                  </div>
+                  <div><i class="material-icons">chevron_right</i></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

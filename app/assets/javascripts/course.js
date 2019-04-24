@@ -232,10 +232,8 @@ function initCourseNew() {
     const $formPanel = $("#form-panel");
 
     function initPanelLogic() {
-        $("#new-course").change(function () {
-            if ($(this).is(":checked")) {
-                $choosePanel.addClass("hidden");
-            }
+        $("#new-course").click(function () {
+            $choosePanel.addClass("hidden");
             fetch("/courses/new.js", {
                 headers: {
                     "accept": "text/javascript",
@@ -248,12 +246,10 @@ function initCourseNew() {
                 .then(resp => eval(resp));
         });
 
-        $("#copy-course").change(function () {
-            if ($(this).is(":checked")) {
-                $choosePanel.removeClass("hidden");
-                $choosePanel.find(".panel-collapse").collapse("show");
-                $formPanel.addClass("hidden");
-            }
+        $("#copy-course").click(function () {
+            $choosePanel.removeClass("hidden");
+            $choosePanel.find(".panel-collapse").collapse("show");
+            $formPanel.addClass("hidden");
         });
     }
 

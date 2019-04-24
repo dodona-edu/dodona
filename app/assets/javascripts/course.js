@@ -210,6 +210,7 @@ function initCourseNew() {
     function init() {
         initPanelLogic();
         window.dodona.courseFormLoaded = courseFormLoaded;
+        window.dodona.copyCoursesLoaded = copyCoursesLoaded;
 
         // Bootstrap's automatic collapsing of other elements in the parent breaks
         // when doing manual shows and hides, so we have to do this.
@@ -234,6 +235,7 @@ function initCourseNew() {
     function initPanelLogic() {
         $("#new-course").click(function () {
             $choosePanel.addClass("hidden");
+            $formPanel.find(".step-circle").html("2");
             fetch("/courses/new.js", {
                 headers: {
                     "accept": "text/javascript",
@@ -250,6 +252,26 @@ function initCourseNew() {
             $choosePanel.removeClass("hidden");
             $choosePanel.find(".panel-collapse").collapse("show");
             $formPanel.addClass("hidden");
+            $formPanel.find(".step-circle").html("3");
+        });
+    }
+
+    function copyCoursesLoaded() {
+        $("[data-course_id]").click(function () {
+            fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`, {
+                headers: {
+                    "accept": "text/javascript",
+                    "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                    "x-requested-with": "XMLHttpRequest",
+                },
+                credentials: "same-origin",
+            })
+                .then(req => req.text())
+                .then(resp => eval(resp));
+        });
+
+        $("[data-course_id] a").click(function (e) {
+            e.stopPropagation();
         });
     }
 

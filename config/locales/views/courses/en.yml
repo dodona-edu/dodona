@@ -41,6 +41,7 @@ en:
       pick_type: "Pick how you want to create a course"
       choose_course: "Choose the course to base your new one on"
       data_entry: "Fill out the form for your course"
+      create: "Create"
     edit:
       confidential: Secret links
       series_in_course: "Series in this course"

@@ -46,12 +46,6 @@
             <%= render partial: 'repositories/repository_course_buttons',
                        locals: {repository: @repository, course: course, show_delete_button: show_delete_button} %>
           </td>
-        <% elsif @copy_courses %>
-          <td>
-            <%= link_to new_course_url(copy_options: {base_id: course.id}), 'data-remote': true do %>
-              <i class="material-icons md-18">chevron_right</i>
-            <% end %>
-          </td>
         <% else %>
           <td class="actions">
             <% if policy(course).edit? %>

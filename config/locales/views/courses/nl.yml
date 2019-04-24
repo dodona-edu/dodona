@@ -33,7 +33,6 @@ nl:
       title: Cursus aanmaken
       empty: "Lege cursus"
       copy: "Kopieer cursus"
-      new_course_details: "Bij het aanmaken van een cursus kan je kiezen om een nieuwe cursus aan te maken of een bestaande cursus te kopiëren. Een nieuwe cursus zal een lege cursus aanmaken. Er zullen nog geen reeksen of oefeningen zijn, en enkel jij wordt als cursusbeheerder toegevoegd. Als je er voor kiest om een cursus te kopiëren zullen alle reeksen gekopieerd worden (standaard met hun oefeningen). Je kan ook kiezen of de cursusbeheerders gekopieerd worden. Alle velden in het formulier om een cursus aan te maken zullen ingevuld worden met de waarden van de cursus die je gaat kopiëren."
       new_course: "Lege cursus"
       new_course_subtitle: "Starten met een lege cursus"
       copied_course: "Bestaande cursus"
@@ -114,5 +113,3 @@ nl:
       exercise_count: Oefeningen
       submitted_solutions: Ingediende oplossingen
       more_statistics: "Meer statistieken >"
-    copy:
-      title: "Kopieer %{base}"

@@ -72,6 +72,8 @@ gem 'devise_saml_authenticatable', '~> 1.5.0'
 
 # omniauth
 gem 'omniauth-oauth2'
+gem 'omniauth-google-oauth2'
+
 gem 'jwt'
 
 # contact mail form

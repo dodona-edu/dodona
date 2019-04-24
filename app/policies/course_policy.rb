@@ -5,9 +5,10 @@ class CoursePolicy < ApplicationPolicy
         scope
       elsif user
         @scope = scope.joins(:course_memberships)
-        scope.where(visibility: :visible).or(scope.where(course_memberships: {
-            status: :course_admin, user_id: user.id
-        })).distinct
+        scope.where(visibility: :visible_for_all)
+            .or(scope.where(institution: user.institution, visibility: :visible_for_institution))
+            .or(scope.where(course_memberships: {status: :course_admin, user_id: user.id}))
+            .distinct
       else
         scope.where(visibility: :visible)
       end
@@ -27,7 +28,10 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def show_series?
-    user&.zeus? || record.open? || user&.member_of?(record)
+    user&.zeus? ||
+        record.open_for_all? ||
+        (record.open_for_institution? && record.institution == user.institution) ||
+        user&.member_of?(record)
   end
 
   def create?

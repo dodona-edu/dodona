@@ -83,6 +83,13 @@
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".registration-help_html" %></span>
     </div>
     <div class="field form-group">
+      <div class="col-sm-offset-3 col-sm-6">
+        <%= f.check_box :moderated %>
+        <%= f.label :moderated, class: 'checkbox-label' %>
+      </div>
+      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-help_html" %></span>
+    </div>
+    <div class="field form-group">
       <%= f.label :description, :class => "col-sm-3 control-label" %>
       <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>

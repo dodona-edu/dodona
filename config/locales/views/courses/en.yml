@@ -83,7 +83,8 @@ en:
       not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
       registration_closed: Registrations are closed for this course.
     registration:
-      registration-tooltip: Registering only influeces your status on this website, not within your institution.
+      registration-tooltip: Registering only influences your status on this website, not within your institution.
+      registration-closed: You are currently not able to subscribe to this course.
       page_title: Registration
       not_a_member: You are not a member of this course.
       already_a_member: You are a member of this course.
@@ -92,7 +93,7 @@ en:
       remove_from_pending: Withdraw registration request
       explanation_html: 'This is the registration page of <strong>%{course_name}</strong>'
       instruction: 'Register by clicking the button.'
-      closed: This course is closed and does not accept new registrations at this time.
+      closed: You are currently not able to subscribe to this course.
       sign_up_successfully: You were succesfully registered. Wait until a course administrator approves your registration
       subscribed_successfully: Registered successfully
       unsubscribed_successfully: Unregistered successfully

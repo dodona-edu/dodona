@@ -12,7 +12,7 @@
         <p><%= t 'courses.registration.moderated' %></p>
       <% end %>
     <% end %>
-    <% unless @course.closed? %>
+    <% unless @course.closed? || (@course.open_for_institution? && @course.institution != current_user&.institution) %>
       <%= registration_action_for course: @course, membership: @current_membership %>
     <% end %>
   </div>

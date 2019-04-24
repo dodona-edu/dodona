@@ -81,6 +81,7 @@ nl:
       copy: "Deze cursus kopiëren"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
+      registration-closed: Je kan momenteel niet registreren voor deze cursus.
       page_title: Registratie
       not_a_member: Je bent niet geregistreerd voor deze cursus.
       already_a_member: Je bent al geregistreerd.
@@ -89,7 +90,7 @@ nl:
       moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot deze cursus.
       explanation_html: 'Dit is de registratiepagina voor de cursus <strong>%{course_name}</strong>.'
       instruction: 'Klik op de knop om je te registreren voor deze cursus.'
-      closed: Deze cursus is gesloten en aanvaardt geen nieuwe registraties.
+      closed: Je kan momenteel niet registreren voor deze cursus.
       sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je registratie accepteert.
       subscribed_successfully: Registratie succesvol
       unsubscribed_successfully: Uitschrijving successvol

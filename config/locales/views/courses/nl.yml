@@ -79,7 +79,7 @@ nl:
       taught_by: "Gegeven door %{teacher}."
       taught_by_at: "Gegeven door %{teacher} aan %{institution}."
       taught_at: "Gegeven aan %{institution}."
-      copy: "Kopieer"
+      copy: "Deze cursus kopiëren"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       page_title: Registratie

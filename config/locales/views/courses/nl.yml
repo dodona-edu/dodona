@@ -113,3 +113,5 @@ nl:
       exercise_count: Oefeningen
       submitted_solutions: Ingediende oplossingen
       more_statistics: "Meer statistieken >"
+    create:
+      added_private_exercises: "Er werden privé oefeningen toegevoegd tijdens het aanmaken van de cursus. Om deze oefeningen te kunnen gebruiken zal deze cursus toestemming moeten krijgen van de relevante repository's."

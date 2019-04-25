@@ -25,7 +25,7 @@
         <td>
           <span><%= link_to course.name, course, target: '_blank' %> (<%= course.formatted_year %>)</span>
           <br/>
-          <span><%= course.teacher %> - <%= course.institution&.name || t('courses.form.no_institution') %></span>
+          <small class="text-muted"><%= [course.teacher, course.institution&.name].filter(&:present?).join(" - ") %></small>
         </td>
         <td><%= course.subscribed_members_count %></td>
       </tr>

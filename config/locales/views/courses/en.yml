@@ -116,3 +116,5 @@ en:
       submitted_solutions: Submitted solutions
       exercise_count: Exercises
       more_statistics: "More statistics >"
+    create:
+      added_private_exercises: "Private exercises were added while creating this course. To use these exercises the course will need to be granted permission from the relevant repositories."

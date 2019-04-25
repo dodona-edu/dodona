@@ -114,6 +114,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
+        flash[:alert] = I18n.t('courses.create.added_private_exercises') unless @course.exercises.where(access: :private).count.zero?
         @course.administrating_members << current_user unless @course.administrating_members.include?(current_user)
         format.html {redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human)}
         format.json {render :show, status: :created, location: @course}

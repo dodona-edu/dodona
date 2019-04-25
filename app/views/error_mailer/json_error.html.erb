@@ -13,7 +13,9 @@
           <%= github_link err.repository, err.path %>:
           <%= err.error_type %>:
         </span>
-        <div class="error-json"><%= err.json %></div>
+        <% formatter = Rouge::Formatters::HTML.new %>
+        <% lexer = Rouge::Lexer.find("json").new %>
+        <div class="error-json highlighter-rouge"><%= raw formatter.format(lexer.lex(err.json)) %></div>
       </div>
     <% end %>
   </div>

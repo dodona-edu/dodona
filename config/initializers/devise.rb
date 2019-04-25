@@ -255,7 +255,7 @@ Devise.setup do |config|
                   Rails.application.secrets.office365_client_id,
                   Rails.application.secrets.office365_client_secret
 
-  config.omniauth :google_oath2,
+  config.omniauth :google_oauth2,
                   Rails.application.secrets.google_client_id,
                   Rails.application.secrets.google_client_secret
 

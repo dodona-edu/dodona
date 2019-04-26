@@ -14,21 +14,21 @@ nl:
       registration-help_html: Bij <b>open</b> cursussen worden registraties automatisch geaccepteerd. Bij <b>gemodereerde</b> cursussen moet elke registratie goedgekeurd worden door een cursusbeheerder. Bij <b>gesloten</b> cursussen zijn nieuwe registraties niet mogelijk.
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       no_institution: "Geen onderwijsinstelling"
-      copy_admins: "Kopieer cursusbeheerders"
+      copy_admins: "Cursusbeheerders"
       copy_options: "Opties voor het kopieren"
-      copy_options_details: "Deze opties bepalen hoe de elementen uit de cursus waar je je op baseert gekopieerd worden."
+      copy_options_details: "Welke items wil je overnemen van de geselecteerde cursus?"
       copy_admins_details: "Alle cursusbeheerders in de cursus waarop je je baseert zullen aan de nieuwe cursus toegevoegd worden. Als je zelf geen cursusbeheerder bent in het originele vak zal je dit nog steeds zijn in het nieuwe vak."
       hide_series: "Zet de gekopieerde reeksen op verborgen"
       hide_series_details: "Dit kan nuttig zijn als je bijvoorbeeld je reeksen week per week toegangkelijk wil maken."
-      copy_series_descriptions: "Kopieer de beschrijvingen van reeksen"
+      copy_series_descriptions: "Beschrijvingen van reeksen"
       copy_series_descriptions_details: "Als je toch van plan bent om de beschrijvingen van je reeksen aan te passen, kan het nuttig zijn deze optie af te zetten."
-      copy_exercises: "Kopieer de oefeningen in de reeksen"
+      copy_exercises: "Oefeningen"
       copy_exercises_details: "Als je de algemene structuur van de cursus wil behouden maar andere oefeningen wil geven, dan wil je deze optie waarschijnlijk afzetten."
-      copy_deadlines: "Kopieer de deadlines van de reeksen"
+      copy_deadlines: "Deadlines"
       copy_deadlines_details: "Als je dezelfde cursus aan verschillende groepen wil geven, kan het steek houden deze optie aan te zetten."
     index:
       title: Alle cursussen
-      users: Gebruikers
+      users: "# gebruikers"
     new:
       title: Cursus aanmaken
       empty: "Lege cursus"
@@ -37,10 +37,10 @@ nl:
       new_course_subtitle: "Starten met een lege cursus"
       copied_course: "Bestaande cursus"
       copied_course_subtitle: "Starten met een kopie van een bestaande cursus"
-      pick_type: "Kies hoe je een cursus wil aanmaken"
-      choose_course: "Kies de cursus waar je je op baseert"
-      data_entry: "Vul het formulier in voor je cursus"
-      create: "Maak aan"
+      pick_type: "Hoe wil je een nieuwe cursus aanmaken?"
+      choose_course: "Welke cursus wil je je op baseren?"
+      data_entry: "Hoe moet je cursus er uit zien?"
+      create: "Cursus aanmaken"
     edit:
       confidential: Geheime link
       series_in_course: "Reeksen in deze cursus"
@@ -115,3 +115,5 @@ nl:
       more_statistics: "Meer statistieken >"
     create:
       added_private_exercises: "Er werden privé oefeningen toegevoegd tijdens het aanmaken van de cursus. Om deze oefeningen te kunnen gebruiken zal deze cursus toestemming moeten krijgen van de relevante repository's."
+    copy_courses_table:
+      info: "Cursus"

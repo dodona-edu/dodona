@@ -14,21 +14,21 @@ en:
       registration-help_html: <b>Open</b> courses give direct access upon registration. For <b>moderated</b> courses, a course administrator has to approve each registration. For <b>closed</b> course, new registrations are disabled.
       description-help: A description is optional. Markdown formatting can be used.
       no_institution: "No institution"
-      copy_admins: "Copy course admins"
+      copy_admins: "Course admins"
       copy_options: "Copy options"
-      copy_options_details: "These options influence how the elements in the course you're basing yourself on get copied."
+      copy_options_details: "What elements do you want to copy from the selected course?"
       copy_admins_details: "All course admins in the course you're basing yourself on will be added to the new course. If you're not a course admin in that course you will still be added to the new one."
       hide_series: "Make the copied series hidden"
       hide_series_details: "Useful if you want to make your series available week by week, for example."
-      copy_series_descriptions: "Copy the descriptions of series"
+      copy_series_descriptions: "Series descriptions"
       copy_series_descriptions_details: "If you're going to change your series descriptions anyway, you might want to disable this option."
-      copy_exercises: "Copy the series' exercises"
+      copy_exercises: "Exercises"
       copy_exercises_details: "If you want to keep the general structure of the course but want to give different exercises, you probably want to disable this option."
-      copy_deadlines: "Copy the series' deadlines"
+      copy_deadlines: "Deadlines"
       copy_deadlines_details: "If you want to give the same course to different groups, it might make sense to enable this option."
     index:
       title: All courses
-      users: Users
+      users: "# users"
     new:
       title: Create course
       empty: "Empty course"
@@ -37,10 +37,10 @@ en:
       new_course_subtitle: "Start with an empty course"
       copied_course: "Existing course"
       copied_course_subtitle: "Start with a copy of an existing course"
-      pick_type: "Pick how you want to create a course"
-      choose_course: "Choose the course to base your new one on"
-      data_entry: "Fill out the form for your course"
-      create: "Create"
+      pick_type: "How do you want to create a new course?"
+      choose_course: "Which course do you want to base your new one on?"
+      data_entry: "What should your new course look like?"
+      create: "Create course"
     edit:
       confidential: Secret links
       series_in_course: "Series in this course"
@@ -118,3 +118,5 @@ en:
       more_statistics: "More statistics >"
     create:
       added_private_exercises: "Private exercises were added while creating this course. To use these exercises the course will need to be granted permission from the relevant repositories."
+    copy_courses_table:
+      info: "Course"

@@ -3,7 +3,6 @@
     <thead>
     <tr>
       <th></th>
-      <th class="status-icon"></th>
       <th><%= t('.info') %></th>
       <th><%= t 'courses.index.users' %></th>
     </tr>
@@ -13,14 +12,6 @@
       <tr data-course_id="<%= course.id %>">
         <td>
           <input type="radio" name="course-select">
-        </td>
-        <td>
-          <% if course.hidden? %>
-            <i class="material-icons md-18">visibility_off</i>
-          <% end %>
-          <% if course.closed? %>
-            <i class="material-icons md-18">block</i>
-          <% end %>
         </td>
         <td>
           <span><%= link_to course.name, course, target: '_blank' %> (<%= course.formatted_year %>)</span>

@@ -26,6 +26,9 @@ en:
       copy_exercises_details: "If you want to keep the general structure of the course but want to give different exercises, you probably want to disable this option."
       copy_deadlines: "Deadlines"
       copy_deadlines_details: "If you want to give the same course to different groups, it might make sense to enable this option."
+      other_copy_options: "Other settings"
+      copy_series: "Series"
+      copy_series_details: "The series' titles are always copied. Beneath you can choose whether you want to copy the exercises and the deadlines."
     index:
       title: All courses
       users: "Users"

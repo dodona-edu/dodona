@@ -53,7 +53,6 @@ class CoursesController < ApplicationController
       @copy_options = {
           admins: current_user.course_admin?(@copy_options[:base]),
           hide_series: false,
-          descriptions: true,
           exercises: true,
           deadlines: false,
       }.merge(@copy_options).symbolize_keys
@@ -86,7 +85,6 @@ class CoursesController < ApplicationController
       @copy_options = {
           admins: false,
           hide_series: false,
-          descriptions: false,
           exercises: false,
           deadlines: false,
       }.merge(@copy_options).symbolize_keys
@@ -99,7 +97,7 @@ class CoursesController < ApplicationController
                                     end :
                                     [],
             name: s.name,
-            description: @copy_options[:descriptions] ? s.description : '',
+            description: s.description,
             visibility: @copy_options[:hide_series] ? :hidden : s.visibility,
             deadline: @copy_options[:deadlines] ? s.deadline : nil,
             order: s.order,
@@ -367,7 +365,6 @@ class CoursesController < ApplicationController
         .permit(:base_id,
                 :admins,
                 :hide_series,
-                :descriptions,
                 :exercises,
                 :deadlines)
   end

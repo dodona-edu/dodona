@@ -26,6 +26,9 @@ nl:
       copy_exercises_details: "Als je de algemene structuur van de cursus wil behouden maar andere oefeningen wil geven, dan wil je deze optie waarschijnlijk afzetten."
       copy_deadlines: "Deadlines"
       copy_deadlines_details: "Als je dezelfde cursus aan verschillende groepen wil geven, kan het steek houden deze optie aan te zetten."
+      other_copy_options: "Andere instellingen"
+      copy_series: "Oefeningenreeksen"
+      copy_series_details: "De titels van de oefeningenreeksen worden altijd gekopieerd. Hieronder kan je aangeven of je ook de oefeningen zelf en de deadlines wil kopiëren."
     index:
       title: Alle cursussen
       users: "Gebruikers"

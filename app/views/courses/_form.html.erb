@@ -14,13 +14,23 @@
     <% if copy_options.present? %>
       <input type="hidden" name="copy_options[base_id]" id="copy_base_id" value="<%= copy_options[:base_id] %>"/>
       <div class="form-group">
-        <label class="col-sm-3 control-label"><%= t('.copy_options') %></label>
-        <div class="col-sm-6 control-explanation"><%= t('.copy_options_details') %></div>
+        <strong class="col-sm-offset-3 col-sm-6"><%= t('.copy_options_details') %></strong>
       </div>
+      <div class="field form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+          <input id="copy_series" type="checkbox" checked disabled>
+          <label for="copy_series" class="checkbox-label"><%= t('.copy_series') %></label>
+        </div>
+        <span class="help-block col-sm-6 col-sm-offset-3">
+          <%= t('.copy_series_details') %>
+        </span>
+      </div>
+      <%= render partial: 'copy_option', locals: {name: :exercises, copy_options: copy_options, explanation: t(".copy_exercises")} %>
+      <%= render partial: 'copy_option', locals: {name: :deadlines, copy_options: copy_options, explanation: t(".copy_deadlines")} %>
       <%= render partial: 'copy_option', locals: {name: :admins, copy_options: copy_options, explanation: t(".copy_admins"), details: t(".copy_admins_details")} %>
-      <%= render partial: 'copy_option', locals: {name: :descriptions, copy_options: copy_options, explanation: t(".copy_series_descriptions"), details: t(".copy_series_descriptions_details")} %>
-      <%= render partial: 'copy_option', locals: {name: :exercises, copy_options: copy_options, explanation: t(".copy_exercises"), details: t(".copy_exercises_details")} %>
-      <%= render partial: 'copy_option', locals: {name: :deadlines, copy_options: copy_options, explanation: t(".copy_deadlines"), details: t(".copy_deadlines_details")} %>
+      <div class="form-group">
+        <strong class="col-sm-push-3 col-sm-6"><%= t('.other_copy_options') %></strong>
+      </div>
       <%= render partial: 'copy_option', locals: {name: :hide_series, copy_options: copy_options, explanation: t(".hide_series"), details: t(".hide_series_details")} %>
     <% end %>
   </div>

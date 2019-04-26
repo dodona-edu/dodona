@@ -28,7 +28,7 @@ nl:
       copy_deadlines_details: "Als je dezelfde cursus aan verschillende groepen wil geven, kan het steek houden deze optie aan te zetten."
     index:
       title: Alle cursussen
-      users: "# gebruikers"
+      users: "Gebruikers"
     new:
       title: Cursus aanmaken
       empty: "Lege cursus"
@@ -117,3 +117,4 @@ nl:
       added_private_exercises: "Er werden privé oefeningen toegevoegd tijdens het aanmaken van de cursus. Om deze oefeningen te kunnen gebruiken zal deze cursus toestemming moeten krijgen van de relevante repository's."
     copy_courses_table:
       info: "Cursus"
+      users: "# gebruikers"

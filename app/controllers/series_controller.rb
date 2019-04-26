@@ -185,7 +185,7 @@ class SeriesController < ApplicationController
     @submission_hash = Submission.in_series(@series).where(user: @users)
     @submission_hash = @submission_hash.before_deadline(@series.deadline) if @series.deadline.present?
     @submission_hash = @submission_hash.group([:user_id, :exercise_id]).most_recent.map {|s| [[s.user_id, s.exercise_id], s]}.to_h
-    @crumbs = [[@course.name, course_path(@course)], [@series.name, series_path(@series)], [I18n.t("crumbs.overview"), "#"]]
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t("crumbs.overview"), "#"]]
   end
 
   def mass_rejudge

@@ -280,6 +280,7 @@ function initCourseNew() {
     function courseFormLoaded() {
         $formPanel.removeClass("hidden");
         $formPanel.find(".panel-collapse").collapse("show");
+        window.scrollTo(0, 0);
     }
 
     init();

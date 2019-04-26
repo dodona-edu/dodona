@@ -57,8 +57,10 @@
         </div>
         <div id="choose-step" class="panel-collapse collapse" role="tabpanel">
           <div class="panel-body">
-            <%= render(partial: 'layouts/searchbar', locals: {baseUrl: courses_path(copy_courses: true), eager: true, institutions: Institution.all}) %>
-            <div id="courses-table-wrapper"></div>
+            <div class="stepper-part">
+              <%= render(partial: 'layouts/searchbar', locals: {baseUrl: courses_path(copy_courses: true), eager: true, institutions: Institution.all}) %>
+              <div id="courses-table-wrapper"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -77,7 +79,7 @@
             <div id="course-form-wrapper">
               <%= render 'form', course: @course, copy_options: @copy_options %>
             </div>
-            <div class="stepper-actions">
+            <div class="stepper-actions stepper-border">
               <button type="submit" class="btn btn-text btn-primary" form="new_course"><%= t('.create') %></button>
             </div>
           </div>

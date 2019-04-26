@@ -28,7 +28,7 @@ en:
       copy_deadlines_details: "If you want to give the same course to different groups, it might make sense to enable this option."
     index:
       title: All courses
-      users: "# users"
+      users: "Users"
     new:
       title: Create course
       empty: "Empty course"
@@ -120,3 +120,4 @@ en:
       added_private_exercises: "Private exercises were added while creating this course. To use these exercises the course will need to be granted permission from the relevant repositories."
     copy_courses_table:
       info: "Course"
+      users: "# users"

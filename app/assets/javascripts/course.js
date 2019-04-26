@@ -236,6 +236,7 @@ function initCourseNew() {
         $("#new-course").click(function () {
             $choosePanel.addClass("hidden");
             $formPanel.find(".step-circle").html("2");
+            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
             fetch("/courses/new.js", {
                 headers: {
                     "accept": "text/javascript",
@@ -254,12 +255,14 @@ function initCourseNew() {
             $choosePanel.find("input[type=\"radio\"]").prop("checked", false);
             $formPanel.addClass("hidden");
             $formPanel.find(".step-circle").html("3");
+            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
         });
     }
 
     function copyCoursesLoaded() {
         $("[data-course_id]").click(function () {
             $(this).find("input[type=\"radio\"]").prop("checked", true);
+            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
             fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`, {
                 headers: {
                     "accept": "text/javascript",

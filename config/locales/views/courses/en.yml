@@ -33,7 +33,7 @@ en:
       title: Create course
       empty: "Empty course"
       copy: "Copy course"
-      new_course: "Empty"
+      new_course: "Empty course"
       new_course_subtitle: "Start with an empty course"
       copied_course: "Existing course"
       copied_course_subtitle: "Start with a copy of an existing course"

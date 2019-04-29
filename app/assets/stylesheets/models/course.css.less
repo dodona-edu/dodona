@@ -31,10 +31,15 @@
 
   @media (min-width: @screen-md-min) {
     .nav {
-      width: ~"calc((100% - (@{container-desktop}) / 12 * 10) / 2)";
-      max-height: 100%;
-      overflow-y: scroll;
-      padding-bottom: 155px;
+      width: ~"calc((100vw - (@{container-desktop}) / 12 * 10) / 2)";
+      height: ~"calc(100vh - (@{navbar-height} + 20px))";
+      overflow-y: auto;
+
+      &.affix-bottom {
+        height: ~"calc(100vh - (@{navbar-height} + 120px))";
+        position: fixed;
+        top: 70px !important;
+      }
     }
   }
 
@@ -44,23 +49,26 @@
     }
   }
 
-  .nav>li.header {
+  .nav > li.header {
     color: @text-secondary;
   }
-  .nav>li>a {
+
+  .nav > li > a {
     display: block;
     padding: 6px 6px;
     font-size: 13px;
     font-weight: 500;
     color: @text-disabled;
   }
-  .nav>li.active>a,
-  .nav>li.active>a:hover {
+
+  .nav > li.active > a,
+  .nav > li.active > a:hover {
     border-left: 2px solid @primary-800;
     padding-left: 4px;
     color: @text-secondary;
   }
-  .nav>li>a:hover {
+
+  .nav > li > a:hover {
     border-left: 1px solid @primary-800;
     padding-left: 5px;
     background-color: none;

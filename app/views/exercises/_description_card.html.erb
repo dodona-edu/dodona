@@ -4,7 +4,12 @@
   <% elsif exercise.not_valid? %>
     <div class="alert alert-info"><%= t "exercises.show.alert_not_valid" %></div>
   <% else %>
-    <% description, footnotes = exercise_description_and_footnotes(exercise) %>
+    <% description, footnotes, first_image = exercise_description_footnotes_and_first_image(exercise) %>
+    <% content_for :meta_tags do %>
+      <% if first_image.present? %>
+        <meta property="og:image" content="<%= first_image %>">
+      <% end %>
+    <% end %>
     <%= description %>
   <% end %>
   <footer class="footnote-links visible-print">

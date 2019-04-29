@@ -9,9 +9,9 @@ module ExerciseHelper
 
   # returns a list with as the first item the description of an execise
   # and as second item a hash of footnote indexes mapped on their url
-  def exercise_description_and_footnotes(exercise)
+  def exercise_description_footnotes_and_first_image(exercise)
     renderer = DescriptionRenderer.new(exercise, request)
-    [renderer.description_html, renderer.footnote_urls]
+    [renderer.description_html, renderer.footnote_urls, renderer.first_image]
   end
 
   class DescriptionRenderer
@@ -19,6 +19,7 @@ module ExerciseHelper
     include Rails.application.routes.url_helpers
 
     attr_reader :footnote_urls
+    attr_reader :first_image
 
     def initialize(exercise, request)
       @exercise = exercise
@@ -78,6 +79,7 @@ module ExerciseHelper
       @description = with_nokogiri(@description) do |doc|
         add_media_captions doc
         process_url_footnotes doc
+        search_for_first_image doc
       end
     end
 
@@ -136,6 +138,15 @@ module ExerciseHelper
           i += 1
         end
       end
+    end
+
+    # Look for the first image in the document with a src attribute
+    def search_for_first_image(doc)
+      @first_image = doc.css('img')
+                         .map {|i| i.attribute('src')}
+                         .compact
+                         .map(&method(:absolutize_url))
+                         .first
     end
   end
 end

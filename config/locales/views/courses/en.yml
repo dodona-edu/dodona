@@ -18,6 +18,8 @@ en:
       copy_options: "Copy options"
       copy_options_details: "What elements do you want to copy from the selected course?"
       copy_admins_details: "In new courses you are always added as a course admin. With this setting you can add the course admins from the original course as well."
+      copy_exercises: "Exercises"
+      copy_deadlines: "Deadlines"
       hide_series: "Make the copied series hidden"
       hide_series_details: "Useful if you want to make the series available week by week, for example."
       other_copy_options: "Other settings"

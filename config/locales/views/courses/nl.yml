@@ -18,6 +18,8 @@ nl:
       copy_options: "Opties voor het kopieren"
       copy_options_details: "Welke items wil je overnemen van de geselecteerde cursus?"
       copy_admins_details: "Bij nieuwe cursussen word je zelf altijd toegevoegd als cursusbeheerder. Met deze instelling kan je aanvullend de cursusbeheerders uit het originele vak toevoegen."
+      copy_exercises: "Oefeningen"
+      copy_deadlines: "Deadlines"
       hide_series: "Zet de gekopieerde reeksen op verborgen"
       hide_series_details: "Dit kan nuttig zijn als je bijvoorbeeld de reeksen week per week toegangkelijk wil maken."
       other_copy_options: "Andere instellingen"

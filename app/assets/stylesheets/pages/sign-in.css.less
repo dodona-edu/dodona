@@ -34,23 +34,6 @@
   padding: 15px;
 }
 
-.institution {
-  height: 90px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-  padding: 12px;
-  background-color: @content-bg;
-  border-radius: 2px;
-  transition: box-shadow 0.1s cubic-bezier(.4, 0, .2, 1);
-  .shadow-z2();
-  cursor: pointer;
-}
-
-.institution:hover {
-  .shadow-z4();
-}
-
 a.institution-sign-in {
   color: @text-color;
 }
@@ -60,23 +43,4 @@ a.institution-sign-in:visited,
 a.institution-sign-in:hover,
 a.institution-sign-in:active {
   text-decoration: none;
-}
-
-.institution-logo {
-  img {
-    width: 70px;
-    height: 70px;
-    object-position: 50% 50%;
-    object-fit: contain;
-  }
-
-  margin-right: 12px;
-}
-
-.institution-name {
-  flex-grow: 1;
-}
-
-.institution-name h3 {
-  line-height: 1;
 }

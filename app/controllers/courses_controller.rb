@@ -11,7 +11,17 @@ class CoursesController < ApplicationController
   def index
     authorize Course
     @courses = policy_scope(Course.all)
-    @courses = apply_scopes(@courses).paginate(page: parse_pagination_param(params[:page]))
+    @courses = apply_scopes(@courses)
+    @copy_courses = params[:copy_courses]
+    if @copy_courses && !current_user.zeus?
+      # CoursePolicy#show_series? over all courses in SQL form
+      @courses = @courses.joins(:course_memberships)
+      @courses = @courses.where(course_memberships: {
+          user_id: current_user.id,
+          status: [:student, :course_admin]
+      }).or(@courses.where(registration: :open))
+    end
+    @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
     @grouped_courses = @courses.group_by(&:year)
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @title = I18n.t('courses.index.title')
@@ -28,7 +38,29 @@ class CoursesController < ApplicationController
   # GET /courses/new
   def new
     authorize Course
-    @course = Course.new(institution: current_user.institution)
+    if params[:copy_options]&.fetch(:base_id).present?
+      @copy_options = copy_options
+      @copy_options[:base] = Course.find(@copy_options[:base_id])
+      authorize @copy_options[:base], :copy?
+      @course = Course.new(
+          name: @copy_options[:base].name,
+          description: @copy_options[:base].description,
+          institution: @copy_options[:base].institution,
+          visibility: @copy_options[:base].visibility,
+          registration: @copy_options[:base].registration,
+          teacher: @copy_options[:base].teacher
+      )
+      @copy_options = {
+          admins: current_user.course_admin?(@copy_options[:base]),
+          hide_series: false,
+          exercises: true,
+          deadlines: false,
+      }.merge(@copy_options).symbolize_keys
+    else
+      @copy_options = nil
+      @course = Course.new(institution: current_user.institution)
+    end
+
     @title = I18n.t('courses.new.title')
     @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
   end
@@ -45,9 +77,43 @@ class CoursesController < ApplicationController
     authorize Course
     @course = Course.new(permitted_attributes(Course))
 
+    if params.key? :copy_options
+      @copy_options = copy_options.to_h
+      @copy_options[:base] = Course.find(@copy_options[:base_id])
+      authorize @copy_options[:base], :copy?
+
+      @copy_options = {
+          admins: false,
+          hide_series: false,
+          exercises: false,
+          deadlines: false,
+      }.merge(@copy_options).symbolize_keys
+
+      @course.series = @copy_options[:base].series.map do |s|
+        Series.new(
+            series_memberships: @copy_options[:exercises] ?
+                                    s.series_memberships.map do |sm|
+                                      SeriesMembership.new(exercise: sm.exercise, order: sm.order)
+                                    end :
+                                    [],
+            name: s.name,
+            description: s.description,
+            visibility: @copy_options[:hide_series] ? :hidden : s.visibility,
+            deadline: @copy_options[:deadlines] ? s.deadline : nil,
+            order: s.order,
+            progress_enabled: s.progress_enabled
+        )
+      end
+
+      if @copy_options[:admins]
+        @course.administrating_members = @copy_options[:base].administrating_members
+      end
+    end
+
     respond_to do |format|
       if @course.save
-        @course.administrating_members << current_user
+        flash[:alert] = I18n.t('courses.create.added_private_exercises') unless @course.exercises.where(access: :private).count.zero?
+        @course.administrating_members << current_user unless @course.administrating_members.include?(current_user)
         format.html {redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human)}
         format.json {render :show, status: :created, location: @course}
       else
@@ -292,5 +358,14 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @current_membership = CourseMembership.where(course: @course, user: current_user).first
     authorize @course
+  end
+
+  def copy_options
+    params.require(:copy_options)
+        .permit(:base_id,
+                :admins,
+                :hide_series,
+                :exercises,
+                :deadlines)
   end
 end

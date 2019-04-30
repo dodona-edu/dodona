@@ -1,0 +1,26 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource copy-courses-table">
+    <thead>
+    <tr>
+      <th></th>
+      <th><%= t('.info') %></th>
+      <th><%= t '.users' %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% courses.each do |course| %>
+      <tr data-course_id="<%= course.id %>" data-answer="<%= course.name %>">
+        <td>
+          <input type="radio" name="course-select">
+        </td>
+        <td>
+          <span><%= link_to course.name, course, target: '_blank' %> (<%= course.formatted_year %>)</span>
+          <br/>
+          <small class="text-muted"><%= [course.teacher, course.institution&.name].select(&:present?).join(" - ") %></small>
+        </td>
+        <td><%= course.subscribed_members_count %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

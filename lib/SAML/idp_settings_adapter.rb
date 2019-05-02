@@ -19,8 +19,9 @@ class MyIdPSettingsAdapter
       params[:idp]
     elsif params[:SAMLResponse]
       OneLogin::RubySaml::Response.new(
-        params[:SAMLResponse],
-        allowed_clock_drift: Devise.allowed_clock_drift_in_seconds
+          params[:SAMLResponse],
+          settings: Devise.saml_config,
+          allowed_clock_drift: Devise.allowed_clock_drift_in_seconds
       ).issuers.first
     end
   end

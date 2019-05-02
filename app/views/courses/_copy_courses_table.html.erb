@@ -5,6 +5,7 @@
       <th></th>
       <th><%= t('.info') %></th>
       <th><%= t '.users' %></th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -14,11 +15,16 @@
           <input type="radio" name="course-select">
         </td>
         <td>
-          <span><%= link_to course.name, course, target: '_blank' %> (<%= course.formatted_year %>)</span>
+          <span><%= link_to course.name, '#' %> (<%= course.formatted_year %>)</span>
           <br/>
           <small class="text-muted"><%= [course.teacher, course.institution&.name].select(&:present?).join(" - ") %></small>
         </td>
         <td><%= course.subscribed_members_count %></td>
+        <td class="actions">
+          <%= link_to course_path(course), target: '_blank', class: 'btn btn-sm btn-default' do %>
+            <i class="material-icons md-18">open_in_new</i>
+          <% end %>
+        </td>
       </tr>
     <% end %>
     </tbody>

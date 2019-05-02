@@ -131,6 +131,7 @@ function initCourseShow() {
     let series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
 
     function init() {
+        $("body").scrollspy({target: ".series-sidebar"});
         $(window).scroll(scroll);
         gotoHashSeries();
         window.addEventListener("hashchange", gotoHashSeries);

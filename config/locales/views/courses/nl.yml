@@ -37,7 +37,7 @@ nl:
       copied_course: "Bestaande cursus"
       copied_course_subtitle: "Starten met een kopie van een bestaande cursus"
       pick_type: "Hoe wil je een nieuwe cursus aanmaken?"
-      choose_course: "Welke cursus wil je je op baseren?"
+      choose_course: "Op welke cursus wil je je baseren?"
       data_entry: "Hoe moet je cursus er uit zien?"
       create: "Cursus aanmaken"
     edit:

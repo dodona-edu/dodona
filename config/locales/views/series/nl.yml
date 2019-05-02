@@ -5,7 +5,7 @@ nl:
       visibility-help_html: Enkel <b>open</b> reeksen worden op de cursuspagina getoond. Een <b>gesloten</b> reeks is nooit toegankelijk voor studenten, een <b>verborgen</b> reeks enkel via de geheime link (zie hieronder).
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
       indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
-      class_progress_enable: "Toon de \"Voortgang groep\" visualisatie aan studenten"
+      class_progress_enable: "Toon de \"Voortgang groep\" visualisatie ook aan studenten"
       class_progress_enable_help: "Deze visualisatie is een meerwaarde voor studenten, maar lesgevers willen ze misschien uitschakelen voor examens"
     index:
       title: Alle reeksen

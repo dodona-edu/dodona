@@ -133,7 +133,6 @@ class ResultConstructor
       @judgement[:description] = status[:human]
     end
     @testcase[:accepted] &&= @test[:accepted]
-    @tab[:badgeCount] += 1 unless @test[:accepted]
     (@testcase[:tests] ||= []) << @test
     @test = nil
     @level = :testcase
@@ -142,6 +141,7 @@ class ResultConstructor
   def close_testcase(accepted: nil)
     check_level(:testcase, 'testcase closed')
     @testcase[:accepted] = accepted unless accepted.nil?
+    @tab[:badgeCount] += 1 unless @testcase[:accepted]
     @context[:accepted] &&= @testcase[:accepted]
     (@context[:groups] ||= []) << @testcase
     @testcase = nil

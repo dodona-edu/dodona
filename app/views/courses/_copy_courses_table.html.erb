@@ -15,7 +15,7 @@
           <input type="radio" name="course-select">
         </td>
         <td>
-          <span><%= link_to course.name, '#' %> (<%= course.formatted_year %>)</span>
+          <span><%= course.name %> <span class="text-muted">(<%= course.formatted_year %>)</span></span>
           <br/>
           <small class="text-muted"><%= [course.teacher, course.institution&.name].select(&:present?).join(" - ") %></small>
         </td>

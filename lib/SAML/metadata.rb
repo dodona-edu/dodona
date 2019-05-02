@@ -44,7 +44,7 @@ module OneLogin
         for sp_cert in [cert, cert_new]
           next unless sp_cert
           cert_text = Base64.encode64(sp_cert.to_der).delete("\n")
-          kd = sp_sso.add_element 'md:KeyDescriptor', 'use' => 'signing'
+          kd = sp_sso.add_element 'md:KeyDescriptor'
           ki = kd.add_element 'ds:KeyInfo', 'xmlns:ds' => 'http://www.w3.org/2000/09/xmldsig#'
           xd = ki.add_element 'ds:X509Data'
           xc = xd.add_element 'ds:X509Certificate'

@@ -10,7 +10,7 @@
     </thead>
     <tbody>
     <% courses.each do |course| %>
-      <tr data-course_id="<%= course.id %>" data-answer="<%= course.name %>">
+      <tr class="copy-course-row" data-course_id="<%= course.id %>" data-answer="<%= course.name %>">
         <td>
           <input type="radio" name="course-select">
         </td>

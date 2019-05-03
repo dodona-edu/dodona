@@ -276,7 +276,7 @@ function initCourseNew() {
                 .then(resp => eval(resp));
         });
 
-        $("[data-course_id] a").click(function (e) {
+        $("[data-course_id] .nested-link").click(function (e) {
             e.stopPropagation();
         });
     }

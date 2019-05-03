@@ -10,6 +10,7 @@
           { "$ref": "#/definitions/start-test" },
           { "$ref": "#/definitions/append-message" },
           { "$ref": "#/definitions/annotate-code" },
+          { "$ref": "#/definitions/escalate-status" },
           { "$ref": "#/definitions/close-test" },
           { "$ref": "#/definitions/close-testcase" },
           { "$ref": "#/definitions/close-context" },
@@ -84,6 +85,15 @@
             "type":    { "$ref": "#/definitions/severity" },
             "rows":    { "$ref": "#/definitions/index" },
             "columns": { "$ref": "#/definitions/index" }
+        }
+    },
+    "escalate-status": {
+        "type": "object",
+        "description": "Change the global status for the worse.",
+        "required": ["command", "status"],
+        "properties": {
+            "command": { "enum": ["escalate-status"] },
+            "status":  { "$ref": "#/definitions/status" }
         }
     },
     "close-test": {

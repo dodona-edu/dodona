@@ -228,6 +228,45 @@ class ResultConstructorTest < ActiveSupport::TestCase
     assert_equal(0, result[:groups][2][:badgeCount])
   end
 
+  test 'statuses should escalate' do
+    result = construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "start-tab", "title": "Tab One" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "start-test", "expected": "SOMETHING" }',
+      '{ "command": "close-test", "generated": "SOMETHING", "status": { "enum": "correct", "human": "Correct" }, "accepted": false }',
+      '{ "command": "close-testcase" }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong" } }',
+      '{ "command": "close-judgement" }'
+    ])
+    assert_equal('wrong', result[:status])
+    result = construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong 1" } }',
+      '{ "command": "escalate-status", "status": { "enum": "correct", "human": "Correct" } }',
+      '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong 2" } }',
+      '{ "command": "close-judgement" }'
+    ])
+    assert_equal('wrong', result[:status])
+    assert_equal('Wrong 1', result[:description])
+    result = construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong" } }',
+      '{ "command": "escalate-status", "status": { "enum": "internal error", "human": "Internal Error" } }',
+      '{ "command": "close-judgement" }'
+    ])
+    assert_equal('internal error', result[:status])
+    result = construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong" } }',
+      '{ "command": "close-judgement", "status": { "enum": "runtime error", "human": "Runtime" } }'
+    ])
+    assert_equal('runtime error', result[:status])
+  end
+
   private
 
   def construct_result(food, locale: 'en', timeout: false)

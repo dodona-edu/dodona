@@ -118,20 +118,22 @@ class ResultConstructor
     }
   end
 
-  def close_test(generated: nil, accepted: nil, status: nil)
-    check_level(:test, 'test closed')
-    @test[:generated] = generated
+  def escalate_status(status: nil)
     status[:enum] = Submission.normalize_status(status[:enum])
-    @test[:accepted] = if accepted.nil?
-    then
-                         status[:enum] == 'correct'
-                       else
-                         accepted
-                       end
     if worse?(@judgement[:status], status[:enum])
       @judgement[:status] = status[:enum]
       @judgement[:description] = status[:human]
     end
+  end
+
+  def close_test(generated: nil, accepted: nil, status: nil)
+    check_level(:test, 'test closed')
+    @test[:generated] = generated
+    escalate_status(status: status)
+    @test[:accepted] = if accepted.nil?
+                       then status[:enum] == 'correct'
+                       else accepted
+                       end
     @testcase[:accepted] &&= @test[:accepted]
     (@testcase[:tests] ||= []) << @test
     @test = nil

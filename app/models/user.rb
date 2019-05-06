@@ -103,6 +103,7 @@ class User < ApplicationRecord
   before_save :set_token
   before_save :set_time_zone
   before_update :check_permission_change
+  before_save :nullify_empty_username
 
   scope :by_permission, ->(permission) {where(permission: permission)}
   scope :by_institution, ->(institution) {where(institution: institution)}
@@ -254,5 +255,9 @@ class User < ApplicationRecord
 
   def check_permission_change
     Event.create(event_type: :permission_change, user: self, message: "Granted #{permission}#{Current.user ? " by #{Current.user.full_name} (id: #{Current.user.id})" : ''}") if permission_changed?
+  end
+
+  def nullify_empty_username
+    self.username = nil if username.blank?
   end
 end

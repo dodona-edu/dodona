@@ -101,6 +101,7 @@ class User < ApplicationRecord
 
   before_save :set_token
   before_save :set_time_zone
+  before_save :nullify_empty_username
 
   scope :by_permission, ->(permission) {where(permission: permission)}
 
@@ -249,4 +250,7 @@ class User < ApplicationRecord
     self.time_zone = 'Seoul' if email&.match?(/ghent.ac.kr$/)
   end
 
+  def nullify_empty_username
+    self.username = nil if username.blank?
+  end
 end

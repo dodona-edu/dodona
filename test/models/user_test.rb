@@ -193,4 +193,23 @@ class UserTest < ActiveSupport::TestCase
     user.email = nil
     assert user.valid?
   end
+
+  test 'should transform empty username into nil' do
+    saml = create :saml_institution
+
+    user = create :user, institution: saml
+    user.update(username: '')
+
+    assert_nil user.username
+  end
+
+  test 'should allow two users with empty usernames' do
+    saml = create :saml_institution
+
+    user1 = create :user, institution: saml
+    user2 = create :user, institution: saml
+
+    assert user1.update(username: '')
+    assert user2.update(username: '')
+  end
 end

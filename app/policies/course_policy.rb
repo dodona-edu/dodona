@@ -10,7 +10,7 @@ class CoursePolicy < ApplicationPolicy
             .or(scope.where(course_memberships: {status: :course_admin, user_id: user.id}))
             .distinct
       else
-        scope.where(visibility: :visible)
+        scope.where(visibility: :visible_for_all)
       end
     end
   end

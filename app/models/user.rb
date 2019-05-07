@@ -115,7 +115,7 @@ class User < ApplicationRecord
 
   def email_only_blank_if_smartschool
     if email.blank? && !institution&.smartschool?
-      errors.add(:email, 'should not be blank when intitution does not use smartschool')
+      errors.add(:email, 'should not be blank when institution does not use smartschool')
     end
   end
 

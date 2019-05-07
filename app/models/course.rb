@@ -98,6 +98,8 @@ class Course < ApplicationRecord
 
   validates :name, presence: true
   validates :year, presence: true
+  validate :should_have_institution_when_visible_for_institution
+  validate :should_have_institution_when_open_for_institution
 
   scope :by_name, ->(name) {where('name LIKE ?', "%#{name}%")}
   scope :by_teacher, ->(teacher) {where('teacher LIKE ?', "%#{teacher}%")}
@@ -232,6 +234,20 @@ class Course < ApplicationRecord
 
   def set_search
     self.search = "#{teacher || ''} #{name || ''} #{year || ''}"
+  end
+
+  private
+
+  def should_have_institution_when_visible_for_institution
+    if visible_for_institution? && institution.blank?
+      errors.add(:institution, 'should not be blank when only visible for institution')
+    end
+  end
+
+  def should_have_institution_when_open_for_institution
+    if open_for_institution? && institution.blank?
+      errors.add(:institution, 'should not be blank when only open for institution')
+    end
   end
 
 end

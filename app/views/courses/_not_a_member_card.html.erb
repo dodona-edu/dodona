@@ -8,7 +8,7 @@
       <% else %>
         <p><%= t 'courses.registration.not_a_member' %></p>
       <% end %>
-      <% if @course.moderated? %>
+      <% if @course.moderated %>
         <p><%= t 'courses.registration.moderated' %></p>
       <% end %>
     <% end %>

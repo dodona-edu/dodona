@@ -32,12 +32,14 @@ nl:
         secret: Secret
         visibility: Zichtbaarheid
         registration: Registratie
+        moderated: Moderated
         visibilities:
-          visible: Zichtbaar
+          visible: Zichtbaar voor iedereen
+          visible_for_all: Zichtbaar voor gebruikers van de ingestelde onderwijsinstelling
           hidden: Verborgen
         registrations:
-          open: Open
-          moderated: Gemodereerd
+          open_for_all: Open voor iedereen
+          open_for_institution: Enkel open voor gebruikers van de ingestelde onderwijsinstelling
           closed: Gesloten
         color: Kleur
         colors:

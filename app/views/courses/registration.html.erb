@@ -7,7 +7,7 @@
       <div class="card-supporting-text row">
         <div class="col-sm-12">
           <p><%= t '.explanation_html', course_name: @course.name %>
-            <% if @course.moderated? %>
+            <% if @course.moderated %>
             <p><%= t '.moderated' %>
           <% end %>
         </div>

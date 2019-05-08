@@ -12,6 +12,7 @@ en:
       institution-help_html: Asigning an institution wil <b>not</b> limit course registrations, but can help users find your course.
       visibility-help_html: <b>Visible</b> courses are visible for everyone in the course overview. <b>Hidden</b> courses are unlisted and require a special access link.
       registration-help_html: <b>Open</b> courses give direct access upon registration. For <b>moderated</b> courses, a course administrator has to approve each registration. For <b>closed</b> course, new registrations are disabled.
+      moderated-help_html: <b>Open</b> courses give direct access upon registration. For <b>moderated</b> courses, a course administrator has to approve each registration. For <b>closed</b> course, new registrations are disabled.
       description-help: A description is optional. Markdown formatting can be used.
       no_institution: "No institution"
       copy_admins: "Course admins"
@@ -50,9 +51,11 @@ en:
       invitation_link_help: 'This URL links to a page where users can directly register for this course.'
       visibility-visible-info_html: 'This course is <strong>visible</strong>: everyone can access this course from the course overview and the contents are visible for anyone.'
       visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and to register, users need the registration link. The contents is only visible for registered members.'
-      registration-open-info_html: 'Registrations are <strong>open</strong>: users are immediately registered when they click on the register button.'
-      registration-moderated-info_html: 'Registrations are <strong>moderated</strong>: users who register become pending and a course administrator has to accept them before they are listed within the course.'
+      registration-open_for_all-info_html: 'Registrations are <strong>open for everyone</strong>: all users are immediately registered when they click on the register button.'
+      registration-open_for_institution-info_html: 'Registrations are <strong>open for members of the configured institution</strong>: members of the configured institution are immediately registered when they click on the register button.'
       registration-closed-info_html: 'Registrations are <strong>closed</strong>: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
+      moderated-true-info_html: ''
+      moderated-false-info_html: ''
       subscribe: register
       request_registration: request registration
       unsubscribe: unregister

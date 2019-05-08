@@ -34,8 +34,8 @@ nl:
         registration: Registratie
         moderated: Moderated
         visibilities:
-          visible: Zichtbaar voor iedereen
-          visible_for_all: Zichtbaar voor gebruikers van de ingestelde onderwijsinstelling
+          visible_for_all: Zichtbaar voor iedereen
+          visible_for_institution: Zichtbaar voor gebruikers van de ingestelde onderwijsinstelling
           hidden: Verborgen
         registrations:
           open_for_all: Open voor iedereen

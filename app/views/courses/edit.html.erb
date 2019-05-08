@@ -11,9 +11,7 @@
           <%= render 'application/fab_button', form: "edit_course_#{@course.id}", icon: 'done' %>
         </div>
       </div>
-      <div class="card-supporting-text">
-        <%= render 'form', course: @course %>
-      </div>
+      <%= render 'form', course: @course %>
       <div class="card-supporting-text card-border">
         <div class="page-subtitle">
           <h4><%= t '.confidential' %></h4>

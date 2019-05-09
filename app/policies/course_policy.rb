@@ -20,17 +20,13 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def show?
-    if record.hidden?
-      user&.zeus? || user&.member_of?(record)
-    else
-      true
-    end
+    true
   end
 
   def show_series?
     user&.zeus? ||
-        record.open_for_all? ||
-        (record.open_for_institution? && record.institution == user.institution) ||
+        record.visible_for_all? ||
+        (record.visible_for_institution? && record.institution == user&.institution) ||
         user&.member_of?(record)
   end
 

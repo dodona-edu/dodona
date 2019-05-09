@@ -41,12 +41,12 @@
             </div>
             <div class="col-md-6">
               <p>
-                <%= t ".invitation_link" %>
+                <%= t ".hidden_show_link" %>
                 <i title="<%= t ".invitation_link_help" %>" data-toggle="tooltip" data-placement="right" class="material-icons md-18 material-icons-info">info</i>
               <div class="input-group">
-                <%= text_field_tag :registration_link, registration_course_url(@course, @course.secret), readonly: true, class: 'form-control' %>
+                <%= text_field_tag :hidden_show_link, course_url(@course, secret: @course.secret), readonly: true, class: 'form-control' %>
                 <span class="input-group-btn">
-                    <%= clipboard_button_for :registration_link %>
+                    <%= clipboard_button_for :hidden_show_link %>
                   </span>
               </div>
               <div class="admin-card-info">
@@ -56,9 +56,11 @@
                 <span class="help-block">
                   <%= t ".registration-#{@course.registration}-info_html" %>
                 </span>
-                <span class="help-block">
-                  <%= t ".moderated-#{@course.moderated}-info_html" %>
-                </span>
+                <% if @course.moderated %>
+                  <span class="help-block">
+                    <%= t ".moderated-info_html" %>
+                  </span>
+                <% end %>
               </div>
             </div>
           </div>
@@ -120,10 +122,10 @@
   <nav class="col-md-1 hidden-xs hidden-sm hidden-print series-sidebar">
     <% if policy(@course).show_series? %>
       <ul class="nav" data-spy="affix" data-offset-bottom="80">
-      <li class="header"><%= t ".exercise_series" %></li>
-      <% @series.each do |series| %>
-        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
-      <% end %>
+        <li class="header"><%= t ".exercise_series" %></li>
+        <% @series.each do |series| %>
+          <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
+        <% end %>
       </ul>
     <% end %>
   </nav>

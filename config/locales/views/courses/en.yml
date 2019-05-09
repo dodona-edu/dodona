@@ -10,9 +10,9 @@ en:
       teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
       institution-help_html: Asigning an institution wil <b>not</b> limit course registrations, but can help users find your course.
-      visibility-help_html: <b>Visible</b> courses are visible for everyone in the course overview. <b>Hidden</b> courses are unlisted and require a special access link.
-      registration-help_html: <b>Open</b> courses give direct access upon registration. For <b>moderated</b> courses, a course administrator has to approve each registration. For <b>closed</b> course, new registrations are disabled.
-      moderated-help_html: <b>Open</b> courses give direct access upon registration. For <b>moderated</b> courses, a course administrator has to approve each registration. For <b>closed</b> course, new registrations are disabled.
+      visibility-help_html: <b>Visible</b> courses are visible for everyone in the course overview. You can limit this visibility to just members of the course's configured institution. <b>Hidden</b> courses are unlisted for everyone and require a special access link.
+      registration-help_html: <b>Open</b> courses allow anyone to register. You can limit the group of people able to register to just members of the course's configured institution. For <b>closed</b> courses, new registrations are disabled.
+      moderated-help_html: Users registering for <b>moderated</b> courses will require explicit approval by a course admin before they can participate in the course. They will be able to see as much as an unregistered user.
       description-help: A description is optional. Markdown formatting can be used.
       no_institution: "No institution"
       copy_admins: "Course admins"
@@ -47,15 +47,15 @@ en:
       series_reordering_help_html: "You can reorder the series by dragging the icons at the left of the table. For students, a <b>reverse chronological</b> order is probably the easiest. This way, the most recent series is at the top and the students don't have to scroll down each time."
     show:
       course: Course
-      invitation_link: Registration link
+      hidden_show_link: 'Secret link'
       invitation_link_help: 'This URL links to a page where users can directly register for this course.'
-      visibility-visible-info_html: 'This course is <strong>visible</strong>: everyone can access this course from the course overview and the contents are visible for anyone.'
-      visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and to register, users need the registration link. The contents is only visible for registered members.'
-      registration-open_for_all-info_html: 'Registrations are <strong>open for everyone</strong>: all users are immediately registered when they click on the register button.'
-      registration-open_for_institution-info_html: 'Registrations are <strong>open for members of the configured institution</strong>: members of the configured institution are immediately registered when they click on the register button.'
+      visibility-visible_for_all-info_html: 'This course is <strong>visible</strong> for everyone: everyone can access this course from the course overview and the contents are visible for everyone.'
+      visibility-visible_for_institution-info_html: 'This course is <strong>visible</strong> for members of the configured institution: they can access this course from the course overview and see its contents. Members of other institutions need the secret link.'
+      visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and users need the secret link to access the course.'
+      registration-open_for_all-info_html: 'Registrations are <strong>open for everyone</strong>: all users can register for the course.'
+      registration-open_for_institution-info_html: 'Registrations are <strong>open for members of the configured institution</strong>: only members of the configured institution can register for the course.'
       registration-closed-info_html: 'Registrations are <strong>closed</strong>: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
-      moderated-true-info_html: ''
-      moderated-false-info_html: ''
+      moderated-info_html: 'This course is <b>moderated</b>. Users who register will have to be explicitly approved by a course admin.'
       subscribe: register
       request_registration: request registration
       unsubscribe: unregister

@@ -2,6 +2,7 @@
     "name": "dodona",
     "private": true,
     "dependencies": {
+      "@mdi/font": "^3.6.95",
         "@rails/webpacker": "3.5",
         "@types/jquery": "^3.3.22",
         "ace-builds": "^1.4.1",

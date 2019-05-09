@@ -1,10 +1,17 @@
 <div class="card home-summary-card">
   <div class="card-supporting-text">
-    <% if I18n.locale.to_s == "en" %>
-      <% privacy_statement = 'https://www.ugent.be/en/ghentuniv/privacy/privacystatement' %>
-    <% else %>
-      <% privacy_statement = 'https://www.ugent.be/nl/univgent/privacy/privacyverklaring' %>
-    <% end %>
-    <%= t ".text_html", your_data: data_url, privacy_statement: privacy_statement %>
+    <div class="row">
+      <div class="col-xs-1">
+        <i class="mdi mdi-48 mdi-shield-check"></i>
+      </div>
+      <div class="col-xs-11">
+        <% if I18n.locale.to_s == "en" %>
+          <% privacy_statement = 'https://www.ugent.be/en/ghentuniv/privacy/privacystatement' %>
+        <% else %>
+          <% privacy_statement = 'https://www.ugent.be/nl/univgent/privacy/privacyverklaring' %>
+        <% end %>
+        <%= t ".text_html", your_data: data_url, privacy_statement: privacy_statement %>
+      </div>
+    </div>
   </div>
 </div>

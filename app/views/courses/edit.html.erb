@@ -18,15 +18,15 @@
         </div>
         <div class="form-horizontal">
           <div class="field form-group">
-            <%= label_tag :registration_link,
-                          t('courses.show.invitation_link'),
+            <%= label_tag :hidden_show_link,
+                          t('courses.show.hidden_show_link'),
                           class: 'col-sm-3 control-label' %>
             <div class="col-sm-7">
               <div class="input-group" id="registration_link_field">
                 <%= render partial: 'application/token_field',
                            locals: {
-                               name: :registration_link,
-                               value: registration_course_url(@course, @course.secret),
+                               name: :hidden_show_link,
+                               value: course_url(@course, secret: @course.secret),
                                reset_url: reset_token_course_path(@course)
                            } %>
               </div>

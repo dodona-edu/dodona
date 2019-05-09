@@ -33,6 +33,10 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
+    if @course.hidden? || (@course.visible_for_institution? && current_user&.institution != @course.institution)
+      redirect_unless_secret_correct
+      return if performed?
+    end
     @title = @course.name
     @series = policy_scope(@course.series)
     @series_loaded = 3
@@ -227,8 +231,7 @@ class CoursesController < ApplicationController
   end
 
   def registration
-    @secret = params[:secret]
-    redirect_unless_secret_correct
+    redirect_to(@course, secret: params[:secret])
   end
 
   def favorite
@@ -320,9 +323,7 @@ class CoursesController < ApplicationController
   def redirect_unless_secret_correct
     if !current_user
       redirect_back(fallback_location: root_url, notice: I18n.t('courses.registration.not_logged_in'))
-    elsif current_user.member_of?(@course)
-      redirect_to @course
-    elsif current_user.zeus?
+    elsif current_user.member_of?(@course) || current_user.zeus?
       nil
     elsif params[:secret] != @course.secret
       redirect_back(fallback_location: root_url, alert: I18n.t('courses.registration.key_mismatch'))

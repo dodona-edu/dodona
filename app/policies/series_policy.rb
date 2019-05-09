@@ -4,16 +4,10 @@ class SeriesPolicy < ApplicationPolicy
       if user&.zeus?
         scope.all
       elsif user
-        admin = CourseMembership.statuses['course_admin']
-        open = Series.visibilities['open']
-        scope.joins(course: :course_memberships)
-            .where(
-                <<~SQL
-                  series.visibility              = #{open}
-                  OR  course_memberships.status  = #{admin}
-                  AND course_memberships.user_id = #{user.id}
-        SQL
-        ).distinct
+        @scope = scope.joins(course: :course_memberships)
+        scope.where(visibility: :open)
+            .or(scope.where(course_memberships: {status: :course_admin, user: user}))
+            .distinct
       else
         scope.where(visibility: :visible)
       end

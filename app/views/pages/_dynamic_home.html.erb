@@ -5,6 +5,7 @@
   <div class="col-xs-12 col-sm-6 col-lg-8">
     <% if current_user.subscribed_courses.empty? %>
       <%= render "getting_started_card" %>
+      <%= render 'privacy_disclaimer' %>
     <% elsif current_user.full_view? %>
       <div class="row favorites-row">
         <% unless current_user.favorite_courses.empty? %>

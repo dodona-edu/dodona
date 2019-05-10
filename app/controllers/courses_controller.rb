@@ -13,17 +13,6 @@ class CoursesController < ApplicationController
     @courses = policy_scope(Course.all)
     @courses = apply_scopes(@courses)
     @copy_courses = params[:copy_courses]
-    if @copy_courses && !current_user.zeus?
-      # CoursePolicy#show_series? over all courses in SQL form
-      @courses = @courses.joins(:course_memberships)
-      @courses = @courses
-                     .where(course_memberships: {
-                         user_id: current_user.id,
-                         status: [:student, :course_admin]
-                     })
-                     .or(@courses.where(registration: :open_for_all))
-                     .or(@courses.where(institution: current_user.institution, registration: :open_for_institution))
-    end
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
     @grouped_courses = @courses.group_by(&:year)
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]

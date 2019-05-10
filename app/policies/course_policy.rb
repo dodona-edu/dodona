@@ -7,7 +7,7 @@ class CoursePolicy < ApplicationPolicy
         @scope = scope.joins(:course_memberships)
         scope.where(visibility: :visible_for_all)
             .or(scope.where(institution: user.institution, visibility: :visible_for_institution))
-            .or(scope.where(course_memberships: {status: :course_admin, user_id: user.id}))
+            .or(scope.where(course_memberships: {status: %i[student course_admin], user_id: user.id}))
             .distinct
       else
         scope.where(visibility: :visible_for_all)
@@ -23,19 +23,15 @@ class CoursePolicy < ApplicationPolicy
     true
   end
 
-  def show_series?
-    user&.zeus? ||
-        record.visible_for_all? ||
-        (record.visible_for_institution? && record.institution == user&.institution) ||
-        user&.member_of?(record)
-  end
-
   def create?
     user&.admin?
   end
 
   def copy?
-    create? && show_series?
+    create? &&
+        record.visible_for_all? ||
+        (record.visible_for_institution? && record.institution == user&.institution) ||
+        record.subscribed_members.include?(user)
   end
 
   def update?

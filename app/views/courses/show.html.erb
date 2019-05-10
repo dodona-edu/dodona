@@ -93,41 +93,37 @@
       <% end %>
 
     </div>
-    <% if policy(@course).show_series? %>
-      <div class="page-subtitle">
-        <a class="anchor" id="series"></a>
-        <h3><%= t ".exercise_series" %></h3>
-        <div class="flex-spacer"></div>
-        <div>
-          <% if policy(@course).add_series? %>
-            <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
-              <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
-            <% end %>
+    <div class="page-subtitle">
+      <a class="anchor" id="series"></a>
+      <h3><%= t ".exercise_series" %></h3>
+      <div class="flex-spacer"></div>
+      <div>
+        <% if policy(@course).add_series? %>
+          <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
+            <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
           <% end %>
-        </div>
-      </div>
-      <% if @series.empty? %>
-        <p class="lead text-center"><%= t ".no_series_yet" %></p>
-      <% end %>
-      <div id="series-listing">
-        <% @series.first(@series_loaded).each do |series| %>
-          <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
-        <% end %>
-        <% @series.offset(@series_loaded).each do |series| %>
-          <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
         <% end %>
       </div>
+    </div>
+    <% if @series.empty? %>
+      <p class="lead text-center"><%= t ".no_series_yet" %></p>
     <% end %>
+    <div id="series-listing">
+      <% @series.first(@series_loaded).each do |series| %>
+        <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
+      <% end %>
+      <% @series.offset(@series_loaded).each do |series| %>
+        <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
+      <% end %>
+    </div>
   </div>
   <nav class="col-md-1 hidden-xs hidden-sm hidden-print series-sidebar">
-    <% if policy(@course).show_series? %>
-      <ul class="nav" data-spy="affix" data-offset-bottom="80">
-        <li class="header"><%= t ".exercise_series" %></li>
-        <% @series.each do |series| %>
-          <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
-        <% end %>
-      </ul>
-    <% end %>
+    <ul class="nav" data-spy="affix" data-offset-bottom="80">
+      <li class="header"><%= t ".exercise_series" %></li>
+      <% @series.each do |series| %>
+        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
+      <% end %>
+    </ul>
   </nav>
 </div>
 <script type="text/javascript">

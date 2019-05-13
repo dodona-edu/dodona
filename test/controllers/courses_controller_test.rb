@@ -95,11 +95,11 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should get registration page with secret' do
+  test 'should get course page with secret' do
     with_users_signed_in @not_subscribed do |who, user|
       %w[visible_for_all visible_for_institution hidden].product(%w[open_for_all open_for_institution closed], [true, false]).each do |v, r, m|
         @course.update(visibility: v, registration: r, moderated: m)
-        get registration_course_url(@course, @course.secret)
+        get course_url(@course, secret: @course.secret)
         assert_response :success, "#{who} should get registration page"
         # GET should not subscribe
         assert_not user.member_of?(@course), "#{who} should not be registered"
@@ -414,7 +414,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'not admins should not be able to view hidden courses' do
     @course.update(visibility: 'hidden')
-    with_users_signed_in @not_admins do |who|
+    with_users_signed_in @not_subscribed do |who|
       get courses_url, params: { format: :json }
       if response.successful?
         courses = JSON.parse response.body

@@ -6,7 +6,7 @@ class SeriesPolicy < ApplicationPolicy
       elsif user
         @scope = scope.joins(course: :course_memberships)
         scope.where(visibility: :open)
-            .or(scope.where(course_memberships: {status: :course_admin, user_id: user.id}))
+            .or(scope.where(course: {course_memberships: {status: :course_admin, user_id: user.id}}))
             .distinct
       else
         scope.where(visibility: :visible)

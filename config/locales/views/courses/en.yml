@@ -94,8 +94,6 @@ en:
       moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
       pending: Your registration is pending.
       remove_from_pending: Withdraw registration request
-      explanation_html: 'This is the registration page of <strong>%{course_name}</strong>'
-      instruction: 'Register by clicking the button.'
       closed: You are currently not able to subscribe to this course.
       sign_up_successfully: You were succesfully registered. Wait until a course administrator approves your registration
       subscribed_successfully: Registered successfully

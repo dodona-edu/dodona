@@ -2,8 +2,7 @@
   <table class="table table-index table-resource">
     <% if @repository %>
       <colgroup>
-        <col class="col-xs-1"/>
-        <col class="col-xs-3"/>
+        <col class="col-xs-4"/>
         <col class="col-xs-2"/>
         <col class="col-xs-2"/>
         <col class="col-xs-2"/>
@@ -13,7 +12,6 @@
     <% end %>
     <thead>
     <tr>
-      <th class="status-icon"></th>
       <th><%= Course.human_attribute_name("name") %></th>
       <th><%= Course.human_attribute_name("teacher") %></th>
       <th><%= Course.human_attribute_name("year") %></th>
@@ -25,14 +23,6 @@
     <tbody>
     <% courses.each do |course| %>
       <tr>
-        <td>
-          <% if course.hidden? %>
-            <i class="material-icons md-18">visibility_off</i>
-          <% end %>
-          <% if course.closed? %>
-            <i class="material-icons md-18">block</i>
-          <% end %>
-        </td>
         <td title="<%= course.name %>" class="text">
           <span><%= link_to course.name, course, target: '_blank' %></span>
         </td>

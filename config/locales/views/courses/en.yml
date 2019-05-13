@@ -56,9 +56,9 @@ en:
       registration-open_for_institution-info_html: 'Registrations are <strong>open for members of the configured institution</strong>: only members of the configured institution can register for the course.'
       registration-closed-info_html: 'Registrations are <strong>closed</strong>: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
       moderated-info_html: 'This course is <b>moderated</b>. Users who register will have to be explicitly approved by a course admin.'
-      subscribe: register
-      request_registration: request registration
-      unsubscribe: unregister
+      subscribe: Register
+      request_registration: Request registration
+      unsubscribe: Unregister
       exercise_series: Exercise series
       no_series_yet: This course currently contains no exercises nor series. Click the create series button to get started!
       users: Users
@@ -104,6 +104,7 @@ en:
       unsubscription_failed: Unregistration failed
       not_logged_in: You need to be logged in to register
       key_mismatch: "The key didn't match"
+      registration_closed: "Registration closed."
     scoresheet:
       explanation: "Showing the number of correctly solved exercises before the deadline"
     favorite:

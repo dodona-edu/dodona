@@ -6,14 +6,6 @@
           <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><i class='material-icons'>school</i>
           </h2>
         <% end %>
-        <% if course.hidden? %>
-          <h2 class='card-title-text pull-right' title='<%= t ".course-hidden" %>'>
-            <i class="material-icons">visibility_off</i></h2>
-        <% end %>
-        <% if course.closed? %>
-          <h2 class='card-title-text pull-right' title='<%= t ".course-closed" %>'><i class="material-icons">block</i>
-          </h2>
-        <% end %>
       <% elsif local_assigns[:show_membership] and current_user.subscribed_courses.include? course %>
         <h2 class='card-title-text pull-right' title='<%= t ".course-member" %>'><i class='material-icons'>star</i></h2>
       <% end %>

@@ -101,27 +101,31 @@ Rails.application.configure do
   # Do not add server timings in production
   config.server_timings.enabled = false
 
-  config.middleware.use ExceptionNotification::Rack, {
-      email: {
-          email_prefix: '[Dodona] ',
-          sender_address: %("Dodona" <dodona@ugent.be>),
-          exception_recipients: %w[dodona@ugent.be]
-      },
-      mattermost: {
-          webhook_url: 'https://mattermost.zeus.gent/hooks/fh8wjui63p89byf1dp5ecs735h',
-          username: 'Dodona-server',
-          avatar: 'https://dodona.ugent.be/icon.png'
-      },
-      slack: {
-          webhook_url: 'https://hooks.slack.com/services/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',
-          channel: '#dodona',
-          username: 'Dodona-server',
-          additional_parameters: {
-              icon_url: 'https://dodona.ugent.be/icon.png',
-              mrkdwn: true
-          }
-      }
-  }
+  config.middleware.use ExceptionNotification::Rack,
+                        ignore_if: ->(env, exception) {
+                          env['action_controller.instance'].is_a?(PagesController) &&
+                              env['action_controller.instance'].action_name == 'create_contact' &&
+                              exception.is_a?(ActionController::InvalidAuthenticityToken)
+                        },
+                        email: {
+                            email_prefix: '[Dodona] ',
+                            sender_address: %("Dodona" <dodona@ugent.be>),
+                            exception_recipients: %w[dodona@ugent.be]
+                        },
+                        mattermost: {
+                            webhook_url: 'https://mattermost.zeus.gent/hooks/fh8wjui63p89byf1dp5ecs735h',
+                            username: 'Dodona-server',
+                            avatar: 'https://dodona.ugent.be/icon.png'
+                        },
+                        slack: {
+                            webhook_url: 'https://hooks.slack.com/services/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',
+                            channel: '#dodona',
+                            username: 'Dodona-server',
+                            additional_parameters: {
+                                icon_url: 'https://dodona.ugent.be/icon.png',
+                                mrkdwn: true
+                            }
+                        }
 
 
   config.action_mailer.delivery_method = :sendmail

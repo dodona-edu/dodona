@@ -313,7 +313,7 @@ class CoursesController < ApplicationController
     if current_user&.member_of?(@course) || current_user&.zeus?
       nil
     elsif params[:secret] != @course.secret
-      redirect_back(fallback_location: root_url, alert: I18n.t('courses.registration.key_mismatch'))
+      raise Pundit::NotAuthorizedError, I18n.t('courses.registration.key_mismatch')
     end
   end
 

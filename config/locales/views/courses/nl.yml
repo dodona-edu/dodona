@@ -56,9 +56,9 @@ nl:
       registration-open_for_institution-info_html: 'De registraties staan <strong>open</strong> voor gebruikers van de ingestelde onderwijsinstelling: enkel zij kunnen zich registreren voor deze cursus.'
       registration-closed-info_html: 'De registraties zijn <strong>gesloten</strong>: niemand kan zich nog registreren tot de registratie-instelling wordt aangepast. Gebruikers die geregistreerd zijn behouden hun toegang.'
       moderated-info_html: 'Deze cursus is <strong>gemodereerd</strong>: Gebruikers die zich registreren moeten expliciet goedgekeurd worden door een cursusbeheerder.'
-      subscribe: registreren
-      request_registration: registratieverzoek indienen
-      unsubscribe: uitschrijven
+      subscribe: Registreren
+      request_registration: Registratieverzoek indienen
+      unsubscribe: Uitschrijven
       exercise_series: Oefeningenreeksen
       no_series_yet: 'Deze cursus bevat nog geen reeksen met oefeningen. Klik op de knop "reeks aanmaken" om aan de slag te gaan.'
       users: Gebruikers
@@ -100,6 +100,7 @@ nl:
       unsubscription_failed: Uitschrijven mislukt
       not_logged_in: Je moet ingelogd zijn om je te registreren
       key_mismatch: De sleutel kwam niet overeen
+      registration_closed: "Registratie gesloten."
     scoresheet:
       explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
     favorite:

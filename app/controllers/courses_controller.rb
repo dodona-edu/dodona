@@ -28,7 +28,7 @@ class CoursesController < ApplicationController
     end
     @title = @course.name
     @series = policy_scope(@course.series)
-    @series_loaded = 3
+    @series_loaded = params[:secret].present? ? @course.series.count : 3
   end
 
   # GET /courses/new
@@ -208,7 +208,7 @@ class CoursesController < ApplicationController
               subscription_failed_response format
             end
           else
-            format.html {redirect_to(@course, alert: I18n.t('courses.registration.closed'))}
+            format.html {redirect_to(course_url(@course, secret: params[:secret]), alert: I18n.t('courses.registration.closed'))}
             format.json {render json: {errors: ['course closed']}, status: :unprocessable_entity}
           end
         when 'closed'

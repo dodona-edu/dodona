@@ -90,8 +90,6 @@ nl:
       pending: Je staat op de wachtlijst.
       remove_from_pending: Registratieverzoek annuleren
       moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot deze cursus.
-      explanation_html: 'Dit is de registratiepagina voor de cursus <strong>%{course_name}</strong>.'
-      instruction: 'Klik op de knop om je te registreren voor deze cursus.'
       closed: Je kan momenteel niet registreren voor deze cursus.
       sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je registratie accepteert.
       subscribed_successfully: Registratie succesvol

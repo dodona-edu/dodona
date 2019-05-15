@@ -28,7 +28,3 @@ nl:
     updated: "%{model} werd succesvol aangepast."
     update_failed: "%{model} kon niet worden aangepast."
     destroyed: "%{model} werd succesvol verwijderd."
-  layouts:
-    navbar:
-      disable_anonymous_mode: "Anonieme modus afzetten"
-      enable_anonymous_mode: "Anonieme modus aanzetten"

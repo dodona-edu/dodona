@@ -124,37 +124,25 @@ class User < ApplicationRecord
   end
 
   def first_name
-    if Current.anonymous_mode && Current.user != self
-      Faker::Config.random = Random.new(id + (Time.now.to_i / (24 * 60 * 60).seconds).round)
-      Faker::Name.first_name
-    else
-      self[:first_name]
-    end
+    return self[:first_name] unless Current.anonymous_mode && Current.user != self
+    Faker::Config.random = Random.new(id + Date.today.yday)
+    Faker::Name.first_name
   end
 
   def last_name
-    if Current.anonymous_mode && Current.user != self
-      Faker::Config.random = Random.new(id + (Time.now.to_i / (24 * 60 * 60).seconds).round)
-      Faker::Name.last_name
-    else
-      self[:last_name]
-    end
+    return self[:last_name] unless Current.anonymous_mode && Current.user != self
+    Faker::Config.random = Random.new(id + Date.today.yday)
+    Faker::Name.last_name
   end
 
   def username
-    if Current.anonymous_mode
-      (first_name[0] + last_name[0, 7]).downcase
-    else
-      self[:username]
-    end
+    return self[:username] unless Current.anonymous_mode && Current.user != self
+    (first_name[0] + last_name[0, 7]).downcase
   end
 
   def email
-    if Current.anonymous_mode
-      "#{first_name}.#{last_name}@dodona.ugent.be"
-    else
-      self[:email]
-    end
+    return self[:email] unless Current.anonymous_mode && Current.user != self
+    "#{first_name}.#{last_name}@dodona.ugent.be"
   end
 
   def short_name

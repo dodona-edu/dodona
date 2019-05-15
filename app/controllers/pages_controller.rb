@@ -22,6 +22,11 @@ class PagesController < ApplicationController
   def data
   end
 
+  def toggle_demo_mode
+    authorize :pages
+    session[:demo] = !Current.demo_mode
+  end
+
   def contact
     @contact_form = ContactForm.new
     @title = I18n.t("pages.contact.title")

@@ -23,11 +23,8 @@ class PagesController < ApplicationController
   end
 
   def toggle_anonymous_mode
-    if current_user&.zeus?
-      session[:anonymous] = !Current.anonymous_mode
-    else
-      raise Pundit::NotAuthorizedError, "Anonymous mode is only available for zeus"
-    end
+    authorize :pages
+    session[:anonymous] = !Current.anonymous_mode
   end
 
   def contact

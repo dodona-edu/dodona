@@ -36,6 +36,13 @@
               <li class="dropdown-header"><%= current_user.full_name %></li>
               <li><%= link_to t("layout.menu.profile"), current_user %></li>
               <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
+              <% if current_user.zeus? %>
+                <% if Current.anonymous_mode %>
+                  <li><%= link_to t(".disable_anonymous_mode"), toggle_anonymous_mode_path, remote: true, method: "POST" %></li>
+                <% else %>
+                  <li><%= link_to t(".enable_anonymous_mode"), toggle_anonymous_mode_path, remote: true, method: "POST" %></li>
+                <% end %>
+              <% end %>
               <li role="separator" class="divider"></li>
               <li>
                 <%= link_to t("layout.menu.log_out"), destroy_user_session_path, :method => :delete %>

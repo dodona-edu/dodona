@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'
+    post '/toggle_anonymous_mode' => 'pages#toggle_anonymous_mode'
 
     concern :mediable do
       member do

@@ -123,6 +123,28 @@ class User < ApplicationRecord
     first_string_present name, 'n/a'
   end
 
+  def first_name
+    return self[:first_name] unless Current.demo_mode && Current.user != self
+    Faker::Config.random = Random.new(id + Date.today.yday)
+    Faker::Name.first_name
+  end
+
+  def last_name
+    return self[:last_name] unless Current.demo_mode && Current.user != self
+    Faker::Config.random = Random.new(id + Date.today.yday)
+    Faker::Name.last_name
+  end
+
+  def username
+    return self[:username] unless Current.demo_mode && Current.user != self
+    (first_name[0] + last_name[0, 7]).downcase
+  end
+
+  def email
+    return self[:email] unless Current.demo_mode && Current.user != self
+    "#{first_name}.#{last_name}@dodona.ugent.be"
+  end
+
   def short_name
     first_string_present username, first_name, full_name
   end

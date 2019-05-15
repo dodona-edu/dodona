@@ -1,4 +1,8 @@
 en:
+  layouts:
+    navbar:
+      disable_demo_mode: "Disable demo mode"
+      enable_demo_mode: "Enable demo mode"
   layout:
     head:
       description: Learn to code for secondary and higher education.

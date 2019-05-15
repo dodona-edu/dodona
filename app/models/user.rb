@@ -123,6 +123,40 @@ class User < ApplicationRecord
     first_string_present name, 'n/a'
   end
 
+  def first_name
+    if Current.anonymous_mode && Current.user != self
+      Faker::Config.random = Random.new(id + (Time.now.to_i / (24 * 60 * 60).seconds).round)
+      Faker::Name.first_name
+    else
+      self[:first_name]
+    end
+  end
+
+  def last_name
+    if Current.anonymous_mode && Current.user != self
+      Faker::Config.random = Random.new(id + (Time.now.to_i / (24 * 60 * 60).seconds).round)
+      Faker::Name.last_name
+    else
+      self[:last_name]
+    end
+  end
+
+  def username
+    if Current.anonymous_mode
+      (first_name[0] + last_name[0, 7]).downcase
+    else
+      self[:username]
+    end
+  end
+
+  def email
+    if Current.anonymous_mode
+      "#{first_name}.#{last_name}@dodona.ugent.be"
+    else
+      self[:email]
+    end
+  end
+
   def short_name
     first_string_present username, first_name, full_name
   end

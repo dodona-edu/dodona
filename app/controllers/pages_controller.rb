@@ -22,6 +22,14 @@ class PagesController < ApplicationController
   def data
   end
 
+  def toggle_anonymous_mode
+    if current_user&.zeus?
+      session[:anonymous] = !Current.anonymous_mode
+    else
+      raise Pundit::NotAuthorizedError, "Anonymous mode is only available for zeus"
+    end
+  end
+
   def contact
     @contact_form = ContactForm.new
     @title = I18n.t("pages.contact.title")

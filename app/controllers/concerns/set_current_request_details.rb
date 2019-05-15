@@ -2,10 +2,10 @@ module SetCurrentRequestDetails
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_anonymous
+    before_action :set_demo
 
-    def set_anonymous
-      ::Current.anonymous_mode = !!session[:anonymous]
+    def set_demo
+      ::Current.demo_mode = !!session[:demo]
     end
   end
 

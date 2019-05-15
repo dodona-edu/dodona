@@ -1,4 +1,4 @@
 class Current < ActiveSupport::CurrentAttributes
   attribute :user
-  attribute :anonymous_mode
+  attribute :demo_mode
 end

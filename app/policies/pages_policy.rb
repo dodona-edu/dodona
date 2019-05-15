@@ -1,5 +1,5 @@
 class PagesPolicy < ApplicationPolicy
-  def toggle_anonymous_mode?
+  def toggle_demo_mode?
     user&.zeus?
   end
 end

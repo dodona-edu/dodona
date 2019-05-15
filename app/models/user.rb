@@ -124,24 +124,24 @@ class User < ApplicationRecord
   end
 
   def first_name
-    return self[:first_name] unless Current.anonymous_mode && Current.user != self
+    return self[:first_name] unless Current.demo_mode && Current.user != self
     Faker::Config.random = Random.new(id + Date.today.yday)
     Faker::Name.first_name
   end
 
   def last_name
-    return self[:last_name] unless Current.anonymous_mode && Current.user != self
+    return self[:last_name] unless Current.demo_mode && Current.user != self
     Faker::Config.random = Random.new(id + Date.today.yday)
     Faker::Name.last_name
   end
 
   def username
-    return self[:username] unless Current.anonymous_mode && Current.user != self
+    return self[:username] unless Current.demo_mode && Current.user != self
     (first_name[0] + last_name[0, 7]).downcase
   end
 
   def email
-    return self[:email] unless Current.anonymous_mode && Current.user != self
+    return self[:email] unless Current.demo_mode && Current.user != self
     "#{first_name}.#{last_name}@dodona.ugent.be"
   end
 

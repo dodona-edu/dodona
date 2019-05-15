@@ -36,12 +36,12 @@
               <li class="dropdown-header"><%= current_user.full_name %></li>
               <li><%= link_to t("layout.menu.profile"), current_user %></li>
               <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
-              <% if policy(:pages).toggle_anonymous_mode? %>
+              <% if policy(:pages).toggle_demo_mode? %>
                 <li role="separator" class="divider"></li>
-                <% if Current.anonymous_mode %>
-                  <li><%= link_to t(".disable_anonymous_mode"), toggle_anonymous_mode_path, remote: true, method: "POST" %></li>
+                <% if Current.demo_mode %>
+                  <li><%= link_to t(".disable_demo_mode"), toggle_demo_mode_path, remote: true, method: "POST" %></li>
                 <% else %>
-                  <li><%= link_to t(".enable_anonymous_mode"), toggle_anonymous_mode_path, remote: true, method: "POST" %></li>
+                  <li><%= link_to t(".enable_demo_mode"), toggle_demo_mode_path, remote: true, method: "POST" %></li>
                 <% end %>
               <% end %>
               <li role="separator" class="divider"></li>

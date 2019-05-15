@@ -27,7 +27,3 @@ en:
     updated: "%{model} was successfully updated."
     update_failed: "Failed to update %{model}."
     destroyed: "%{model} was successfully destroyed."
-  layouts:
-    navbar:
-      disable_anonymous_mode: "Disable anonymous mode"
-      enable_anonymous_mode: "Enable anonymous mode"

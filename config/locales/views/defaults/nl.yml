@@ -38,6 +38,7 @@ nl:
     footer:
       ugent: Universiteit Gent
       your_data: Jouw data
+      privacy_statement: "Privacyverklaring"
     search:
       search: zoeken
   crumbs:

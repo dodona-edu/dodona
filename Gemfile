@@ -126,6 +126,9 @@ gem 'bootstrap_tokenfield_rails'
 # memcache
 gem 'dalli'
 
+# Generate 'random' values like usernames, emails, ...
+gem 'faker', '~> 1.8'
+
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha'
@@ -135,9 +138,6 @@ group :development, :test do
 
   # test template rendering
   gem 'rails-controller-testing'
-
-  # Generate 'random' values like usernames, emails, ...
-  gem 'faker', '~> 1.8'
 
   # I18N default locale & better test reporter
   # Remove git fork once the original gem is updated

@@ -13,13 +13,21 @@ class PagesController < ApplicationController
     @title = I18n.t("pages.sign_in_page.sign_in")
   end
 
-  def institution_not_supported;
+  def institution_not_supported
   end
 
-  def about;
+  def about
   end
 
-  def data 
+  def data
+  end
+
+  def privacy
+  end
+
+  def toggle_demo_mode
+    authorize :pages
+    session[:demo] = !Current.demo_mode
   end
 
   def contact

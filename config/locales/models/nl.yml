@@ -19,6 +19,7 @@ nl:
       api_token: API Token
       programming_language: Programmeertaal
       post: Post
+      event: Event
     attributes:
       api_token:
         description: Beschrijving
@@ -143,3 +144,13 @@ nl:
           saml: SAML
           office365: Office 365
           smartschool: Smartschool
+      event:
+        event_type: Type
+        user: Gebruiker
+        message: Bericht
+        created_at: Time
+        event_types:
+          rejudge: "Herevalueren van oplossingen"
+          permission_change: Verandering in toegangsniveau
+          exercise_repository: Aanmaak van oefeningenrepository
+          error: Error

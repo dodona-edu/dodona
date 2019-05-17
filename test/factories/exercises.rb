@@ -16,6 +16,7 @@
 #  access                  :integer          default("public"), not null
 #  programming_language_id :bigint(8)
 #  search                  :string(4096)
+#  access_token            :string(16)       not null
 #
 
 require File.dirname(__FILE__) + '/../helpers/stub_helper.rb'

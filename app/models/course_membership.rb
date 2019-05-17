@@ -28,6 +28,7 @@ class CourseMembership < ApplicationRecord
   after_save :delete_unused_course_labels
   after_destroy :invalidate_caches
 
+  scope :by_institution, ->(institution) {where(user: User.by_institution(institution))}
   scope :by_permission, ->(permission) {where(user: User.by_permission(permission))}
   scope :by_filter, ->(filter) {where(user: User.by_filter(filter))}
   scope :by_course_labels, ->(course_labels) do

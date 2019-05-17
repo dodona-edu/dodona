@@ -3,7 +3,7 @@
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
-  <div class="col-sm-offset-1 col-sm-10 col-xs-12">
+  <div class="col-sm-10 col-xs-12 col-sm-offset-1">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
@@ -62,13 +62,27 @@
         </div>
       <% end %>
 
-      <% if policy(@course).scoresheet? or current_user&.member_of? @course %>
+      <% if policy(@course).scoresheet? or current_user&.member_of? @course or policy(@course).copy? %>
         <div class="card-actions card-border">
-          <% if policy(@course).scoresheet? %>
-            <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course), class: 'btn-text' %>
-          <% end %>
           <% if current_user&.member_of? @course %>
             <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn-text', data: {confirm: t('general.are_you_sure')} %>
+          <% end %>
+          <% if policy(@course).scoresheet? or policy(@course).copy? %>
+            <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
+              <i class="material-icons">more_vert</i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <% if policy(@course).scoresheet? %>
+                <li>
+                  <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course) %>
+                </li>
+              <% end %>
+              <% if policy(@course).copy? %>
+                <li>
+                  <%= link_to t(".copy"), new_course_url(copy_options: {base_id: @course.id}) %>
+                </li>
+              <% end %>
+            </ul>
           <% end %>
         </div>
       <% end %>
@@ -100,6 +114,16 @@
       </div>
     <% end %>
   </div>
+  <nav class="col-md-1 hidden-xs hidden-sm hidden-print series-sidebar">
+    <% if policy(@course).show_series? %>
+      <ul class="nav" data-spy="affix" data-offset-bottom="80">
+      <li class="header"><%= t ".exercise_series" %></li>
+      <% @series.each do |series| %>
+        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
+      <% end %>
+      </ul>
+    <% end %>
+  </nav>
 </div>
 <script type="text/javascript">
     $(dodona.initCourseShow);

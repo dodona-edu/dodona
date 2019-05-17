@@ -117,7 +117,7 @@
     },
     "close-tab": {
         "type": "object",
-        "description": "Close the current tab. Badgecount is the number of not-accepted tests, but you can overwrite this.",
+        "description": "Close the current tab. Badgecount is the number of not-accepted testcases, but you can overwrite this.",
         "required": ["command"],
         "properties": {
             "command":    { "enum": ["close-tab"] },
@@ -147,7 +147,7 @@
     },
     "format": {
       "type": "string",
-      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'code' or any programming language (highlighted)."
+      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'callout' (formatted), 'code' or any programming language (highlighted)."
     },
     "permission": {
       "type": "string",

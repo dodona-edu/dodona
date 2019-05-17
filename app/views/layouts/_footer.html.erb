@@ -8,11 +8,7 @@
       <i class="mdi mdi-18 mdi-twitter"></i>
     </a>
     <%= link_to 'Contact', contact_path %>
-    <% if I18n.locale.to_s == "en" %>
-      <%= link_to 'Privacy statement', 'https://www.ugent.be/en/ghentuniv/privacy/privacystatement', target: '_blank' %>
-    <% else %>
-      <%= link_to 'Privacyverklaring', 'https://www.ugent.be/nl/univgent/privacy/privacyverklaring', target: '_blank' %>
-    <% end %>
+    <%= link_to t("layout.footer.privacy_statement"), privacy_path %>
     <%= link_to t("layout.footer.your_data"), data_path %>
     <% version_info = "Dodona #{Dodona::Application::VERSION}" %>
     <% version_info += " (ruby #{RUBY_VERSION} #{`which ruby`})" if Rails.env.development? %>

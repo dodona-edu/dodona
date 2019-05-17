@@ -1,4 +1,8 @@
 nl:
+  layouts:
+    navbar:
+      disable_demo_mode: "Demomodus uitschakelen"
+      enable_demo_mode: "Demomodus inschakelen"
   layout:
     head:
       description: Online leren programmeren voor secundair en hoger onderwijs.
@@ -21,6 +25,7 @@ nl:
       users: Gebruikers
       courses: Cursussen
       institutions: Onderwijsinstellingen
+      events: Events
       judges: Judges
       programming_languages: Programmeertalen
       repositories: Repository's
@@ -33,6 +38,7 @@ nl:
     footer:
       ugent: Universiteit Gent
       your_data: Jouw data
+      privacy_statement: "Privacyverklaring"
     search:
       search: zoeken
   crumbs:

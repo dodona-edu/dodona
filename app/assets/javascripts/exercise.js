@@ -110,7 +110,7 @@ function initExercisesReadonly() {
 }
 
 
-function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId) {
+function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId, _deadline) {
     let editor;
     let lastSubmission;
     let lastTimeout;
@@ -121,6 +121,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
         initExercisesReadonly();
         swapActionButtons();
+        initDeadlineTimeout();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
@@ -267,6 +268,34 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
         $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
         enableSubmitButton();
+    }
+
+    function initDeadlineTimeout() {
+        if (!_deadline) {
+            return;
+        }
+        const $deadlineWarning = $("#deadline-warning");
+        const $deadlineInfo = $("#deadline-info");
+        const deadline = new Date(_deadline);
+        const infoDeadline = new Date(deadline - (5 * 60 * 1000));
+
+        function showDeadlineAlerts() {
+            if (deadline < new Date()) {
+                $deadlineInfo.hide();
+                $deadlineWarning.show();
+            } else if (infoDeadline < new Date()) {
+                $deadlineInfo.show();
+                setTimeout(showDeadlineAlerts, Math.min(
+                    Math.max(10, (deadline - new Date()) / 10),
+                    10 * 60 * 1000));
+            } else {
+                setTimeout(showDeadlineAlerts, Math.min(
+                    Math.max(10, (infoDeadline - new Date()) / 10),
+                    10 * 60 * 1000));
+            }
+        }
+
+        showDeadlineAlerts();
     }
 
     init();

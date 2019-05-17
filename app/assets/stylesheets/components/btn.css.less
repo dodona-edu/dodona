@@ -205,3 +205,39 @@ a.btn-fab .material-icons {
 form.button_to {
   display: inline;
 }
+
+.option-btn {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 12px;
+  background-color: @content-bg;
+  border-radius: 2px;
+  transition: box-shadow 0.1s cubic-bezier(.4, 0, .2, 1);
+  .shadow-z2();
+  cursor: pointer;
+
+  .option-btn-img {
+    margin-right: 12px;
+
+    img {
+      width: 70px;
+      height: 70px;
+      object-position: 50% 50%;
+      object-fit: contain;
+    }
+  }
+
+  .option-btn-title {
+    flex-grow: 1;
+
+    h3 {
+      line-height: 1;
+    }
+  }
+}
+
+.option-btn:hover {
+  .shadow-z4();
+}

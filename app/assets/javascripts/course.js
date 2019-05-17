@@ -1,11 +1,11 @@
 /* globals ga, I18n, ace, MathJax, initStrip, Strip */
-import {initFilter} from "./index.js";
+import {setBaseUrl} from "./index.js";
 import dragula from "dragula";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
     const status = _status || window.location.hash.substr(1);
-    initFilter(baseUrl + "?status=" + status, true);
+    setBaseUrl(baseUrl + "?status=" + status);
 }
 
 function initCourseMembers() {
@@ -131,6 +131,7 @@ function initCourseShow() {
     let series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
 
     function init() {
+        $("body").scrollspy({target: ".series-sidebar"});
         $(window).scroll(scroll);
         gotoHashSeries();
         window.addEventListener("hashchange", gotoHashSeries);
@@ -206,4 +207,87 @@ function initCourseEdit() {
     init();
 }
 
-export {initCourseEdit, initCourseShow, initCourseMembers, loadUsers};
+function initCourseNew() {
+    function init() {
+        initPanelLogic();
+        window.dodona.courseFormLoaded = courseFormLoaded;
+        window.dodona.copyCoursesLoaded = copyCoursesLoaded;
+
+        // Bootstrap's automatic collapsing of other elements in the parent breaks
+        // when doing manual shows and hides, so we have to do this.
+        $typePanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $choosePanel.find(".panel-collapse").collapse("hide");
+            $formPanel.find(".panel-collapse").collapse("hide");
+        });
+        $choosePanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $typePanel.find(".panel-collapse").collapse("hide");
+            $formPanel.find(".panel-collapse").collapse("hide");
+        });
+        $formPanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $typePanel.find(".panel-collapse").collapse("hide");
+            $choosePanel.find(".panel-collapse").collapse("hide");
+        });
+    }
+
+    const $typePanel = $("#type-panel");
+    const $choosePanel = $("#choose-panel");
+    const $formPanel = $("#form-panel");
+
+    function initPanelLogic() {
+        $("#new-course").click(function () {
+            $choosePanel.addClass("hidden");
+            $formPanel.find(".step-circle").html("2");
+            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
+            fetch("/courses/new.js", {
+                headers: {
+                    "accept": "text/javascript",
+                    "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                    "x-requested-with": "XMLHttpRequest",
+                },
+                credentials: "same-origin",
+            })
+                .then(req => req.text())
+                .then(resp => eval(resp));
+        });
+
+        $("#copy-course").click(function () {
+            $choosePanel.removeClass("hidden");
+            $choosePanel.find(".panel-collapse").collapse("show");
+            $choosePanel.find("input[type=\"radio\"]").prop("checked", false);
+            $formPanel.addClass("hidden");
+            $formPanel.find(".step-circle").html("3");
+            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
+        });
+    }
+
+    function copyCoursesLoaded() {
+        $("[data-course_id]").click(function () {
+            $(this).find("input[type=\"radio\"]").prop("checked", true);
+            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
+            fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`, {
+                headers: {
+                    "accept": "text/javascript",
+                    "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                    "x-requested-with": "XMLHttpRequest",
+                },
+                credentials: "same-origin",
+            })
+                .then(req => req.text())
+                .then(resp => eval(resp));
+        });
+
+        $(".copy-course-row .nested-link").click(function (e) {
+            e.stopPropagation();
+        });
+    }
+
+    function courseFormLoaded() {
+        $formPanel.removeClass("hidden");
+        $formPanel.find(".panel-collapse").collapse("show");
+        window.scrollTo(0, 0);
+    }
+
+    init();
+}
+
+export {initCourseEdit, initCourseNew, initCourseShow, initCourseMembers, loadUsers};

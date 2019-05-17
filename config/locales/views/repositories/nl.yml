@@ -3,6 +3,7 @@ nl:
     form:
       remote-help: "De SSH 'clone url' van de repository waar de oefeningen te vinden zijn. Dodona heeft de juiste rechten nodig om de repository te kunnen clonen."
       judge-help: "Deze judge zal gebruikt worden als de oefening zelf geen specifieert. Kies 'pythia' voor de standaard python judge."
+      remote_cant_be_edited_html: De clone URL kan niet aangepast worden nadat de repository werd aangemaakt. Contacteer <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> als het toch aangepast moet worden.
     index:
       title: Alle oefeningen repository's
       admins: "Beheerders aanpassen"
@@ -14,7 +15,7 @@ nl:
       title: Een repository met oefeningen toevoegen
     show:
       repository: Repository
-      webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank'>webhook</a> in zodat de oefeningen op Dodona automatisch geüpdatet wordt bij elke commit:"
+      webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank'>webhook</a> in zodat de oefeningen op Dodona automatisch geüpdatet worden bij elke commit:"
       reprocess: Alle oefeningen herverwerken
       exercises: Oefeningen
     admins:

@@ -2,7 +2,7 @@ en:
   exercises:
     navbar_links:
       show: Show exercise
-      submissions: Submissions dor this exercise
+      submissions: Submissions for this exercise
       edit: Edit exercise
     exercise:
       count_tooltip: number of students that solved this exercise correctly
@@ -53,6 +53,8 @@ en:
       not_a_member: You are viewing this exercise within a course of which you are not a member. You won't show up on your teacher's scoresheets until you register.
       alert_not_valid: There's something wrong with this exercise. You can't hand in solutions for the moment, but can still see your old submissions.
       alert_removed: This exercise is no longer available, but can still see your old submissions.
+      deadline_passed: "The deadline for this exercise was at %{deadline}. You can still submit, but your submissions may not be accounted for."
+      deadline_in_5_minutes: "The deadline for this exercise is at %{deadline}, which is less than 5 minutes away."
     series_exercises_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
     edit:

@@ -1,0 +1,105 @@
+{
+  "accepted": false,
+  "description": "verkeerd antwoord",
+  "groups": [
+    {
+      "data": {
+      },
+      "accepted": false,
+      "badgeCount": 2,
+      "description": "correctheid",
+      "groups": [
+        {
+          "accepted": false,
+          "data": {
+            "stdin": "proscribable\n"
+          },
+          "groups": [
+            {
+              "accepted": false,
+              "data": {
+                "stdin": "proscribable"
+              },
+              "description": {
+                "description": "\u003cspan class=\"code\"\u003eproscribable\u003c/span\u003e",
+                "format": "html"
+              },
+              "status": "wrong answer",
+              "tests": [
+                {
+                  "accepted": false,
+                  "data": {
+                    "channel": "stdout"
+                  },
+                  "expected": "proscribable\n",
+                  "generated": "a\n",
+                  "status": "wrong answer"
+                }
+              ]
+            }
+          ],
+          "status": "wrong answer"
+        },
+        {
+          "accepted": false,
+          "data": {
+            "stdin": "crystallisation\n"
+          },
+          "groups": [
+            {
+              "accepted": false,
+              "data": {
+                "stdin": "crystallisation"
+              },
+              "description": {
+                "description": "\u003cspan class=\"code\"\u003ecrystallisation\u003c/span\u003e",
+                "format": "html"
+              },
+              "status": "wrong answer",
+              "tests": [
+                {
+                  "accepted": false,
+                  "data": {
+                    "channel": "stdout"
+                  },
+                  "expected": "crystallisation\n",
+                  "generated": "a\n",
+                  "status": "wrong answer"
+                }
+              ]
+            }
+          ],
+          "status": "wrong answer"
+        }
+      ],
+      "status": "wrong answer"
+    },
+    {
+      "accepted": true,
+      "badgeCount": 0,
+      "data": {
+        "source_annotations": []
+      },
+      "description": "code",
+      "status": "correct answer"
+    }
+  ],
+  "status": "wrong answer",
+  "messages": [
+    {
+      "format": "html",
+      "description": "\u003cstrong\u003eWorker:\u003c/strong\u003e localhost",
+      "permission": "zeus"
+    },
+    {
+      "format": "html",
+      "description": "\u003cstrong\u003eRuntime:\u003c/strong\u003e 1.76 seconds",
+      "permission": "zeus"
+    },
+    {
+      "format": "html",
+      "description": "\u003cstrong\u003eMemory usage:\u003c/strong\u003e 0.00 MiB",
+      "permission": "zeus"
+    }
+  ]
+}

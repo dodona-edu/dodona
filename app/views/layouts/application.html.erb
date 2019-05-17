@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#">
+<html prefix="og: http://ogp.me/ns#" lang="<%= I18n.locale.to_s %>">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Language" content="<%= I18n.locale.to_s %>">
   <meta name="description" content="<%= t "layout.head.description" %>">
   <meta name="author" content="<%= t "layout.footer.ugent" %>">
   <meta name="application-name" content="Dodona">
@@ -14,6 +13,7 @@
   <meta property="og:url" content="<%= request.original_url %>">
   <meta property="og:title" content="<%= @title || 'Dodona' %>">
   <%= yield :meta_tags %>
+  <meta property="og:image" content="<%= root_url(locale: nil) %>icon.png">
   <meta name="msapplication-TileColor" content="#2196F3"/>
   <meta name="msapplication-TileImage" content="/icon.png"/>
   <link rel="apple-touch-icon-precomposed" href="/icon.png"/>
@@ -23,8 +23,6 @@
   <title>Dodona<%= " - #{@title}" if @title %></title>
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        rel="stylesheet">
-  <link href="https://cdn.materialdesignicons.com/3.0.39/css/materialdesignicons.min.css"
         rel="stylesheet">
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= javascript_pack_tag 'application' %>

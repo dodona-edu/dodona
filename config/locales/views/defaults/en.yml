@@ -1,4 +1,8 @@
 en:
+  layouts:
+    navbar:
+      disable_demo_mode: "Disable demo mode"
+      enable_demo_mode: "Enable demo mode"
   layout:
     head:
       description: Learn to code for secondary and higher education.
@@ -21,6 +25,7 @@ en:
       users: Users
       courses: Courses
       institutions: Institutions
+      events: Events
       judges: Judges
       programming_languages: Programming languages
       repositories: Repositories
@@ -33,6 +38,7 @@ en:
     footer:
       ugent: Ghent University
       your_data: Your data
+      privacy_statement: "Privacy statement"
     search:
       search: search
   crumbs:

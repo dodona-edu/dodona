@@ -5,3 +5,5 @@ nl:
       new-token-explanation: Dit is je nieuwe token. Kopieer dit token nu. Je zult dit token niet meer kunnen zien nadat je deze pagina verlaat.
     form:
       description-placeholder: "Beschrijving (vb. 'Dodona CLI')"
+    table:
+      no_tokens_yet: "Je hebt nog geen API tokens. Klik op de toevoegknop hierboven om er een aan te maken."

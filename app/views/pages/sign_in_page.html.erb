@@ -9,167 +9,167 @@
       <% @institutions.saml.each do |institution| %>
         <%= link_to sign_in_path(idp: institution.short_name), class: 'institution-sign-in' do %>
           <div class="col-sm-6 col-lg-4">
-            <div class="institution">
-              <div class="institution-logo">
+            <div class="option-btn">
+              <div class="option-btn-img">
                 <%= image_tag "idp/#{institution.logo}", class: "img-responsive" %>
               </div>
-              <div class="institution-name">
+              <div class="option-btn-title">
                 <h3><%= institution.short_name %><br>
                   <small><%= institution.name %></small>
                 </h3>
               </div>
-              <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+              <div><i class="material-icons">chevron_right</i></div>
             </div>
           </div>
         <% end %>
       <% end %>
       <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/collegewaregem.png', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>Sint-Paulusschool Campus College<br>
                 <small>Inloggen met Office 365</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>
       <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/sbhg.jpg', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>Sint-Bavohumaniora<br>
                 <small>Inloggen met Office 365</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>
       <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/collegeieper.png', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>College Ieper<br>
                 <small>Inloggen met Smartschool</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>
       <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/mska-roeselare.jpg', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>MSKA Roeselare<br>
                 <small>Inloggen met Smartschool</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>
       <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/dbc-kortrijk.png', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>Don Bosco College Kortrijk<br>
                 <small>Inloggen met Smartschool</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>
       <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/scheppersinstituut.png', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>Scheppersinstituut Wetteren<br>
                 <small>Inloggen met Office 365</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>
       <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/ucll.png', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>UC Leuven Limburg<br>
                 <small>Inloggen met Office 365</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>
       <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/sjc-aalst.png', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>Sint-Jozefscollege Aalst<br>
                 <small>Inloggen met Smartschool</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>
       <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/dering.png', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>Atheneum De Ring Leuven<br>
                 <small>Inloggen met Smartschool</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>
       <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
-          <div class="institution">
-            <div class="institution-logo">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/artevelde.png', class: "img-responsive" %>
             </div>
-            <div class="institution-name">
+            <div class="option-btn-title">
               <h3>Arteveldehogeschool<br>
                 <small>Inloggen met Office 365</small>
               </h3>
             </div>
-            <div class="institution-go"><i class="material-icons">chevron_right</i></div>
+            <div><i class="material-icons">chevron_right</i></div>
           </div>
         </div>
       <% end %>

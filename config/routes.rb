@@ -14,9 +14,11 @@ Rails.application.routes.draw do
     get '/institution_not_supported' => 'pages#institution_not_supported'
     get '/about' => 'pages#about'
     get '/data' => 'pages#data'
+    get '/privacy' => 'pages#privacy'
 
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'
+    post '/toggle_demo_mode' => 'pages#toggle_demo_mode'
 
     concern :mediable do
       member do
@@ -116,6 +118,7 @@ Rails.application.routes.draw do
     resources :posts
 
     resources :institutions, only: [:index]
+    resources :events, only: [:index]
 
     scope 'stats', controller: 'statistics' do
       get 'punchcard', to: 'statistics#punchcard'

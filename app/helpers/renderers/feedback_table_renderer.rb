@@ -277,6 +277,10 @@ class FeedbackTableRenderer
       @builder << m[:description]
     elsif m[:format].in?(%w[markdown md])
       @builder << markdown(m[:description])
+    elsif m[:format].in?(%w[callout])
+      @builder.div(class: 'callout callout-info') do
+        @builder << markdown(m[:description])
+      end
     elsif m[:format].in?(%w[code])
       @builder.span(class: 'code') do
         @builder.text! m[:description]

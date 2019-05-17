@@ -194,6 +194,40 @@ class ResultConstructorTest < ActiveSupport::TestCase
     ]))
   end
 
+  test 'badgeCount counts the testcases' do
+    result = construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "start-tab", "title": "Tab One" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "start-tab", "title": "Tab Two" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "start-testcase", "description": "case 2" }',
+      '{ "command": "close-testcase", "accepted": true }',
+      '{ "command": "start-testcase", "description": "case 3" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "start-testcase", "description": "case 4" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "start-tab", "title": "Tab Three" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": true }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "close-judgement", "accepted": true }'
+    ])
+    assert_equal(1, result[:groups][0][:badgeCount])
+    assert_equal(3, result[:groups][1][:badgeCount])
+    assert_equal(0, result[:groups][2][:badgeCount])
+  end
+
   private
 
   def construct_result(food, locale: 'en', timeout: false)

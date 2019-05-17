@@ -4,7 +4,6 @@
 #
 #  id             :integer          not null, primary key
 #  username       :string(255)
-#  ugent_id       :string(255)
 #  first_name     :string(255)
 #  last_name      :string(255)
 #  email          :string(255)
@@ -24,6 +23,7 @@ class User < ApplicationRecord
   include Filterable
   include StringHelper
   include Cacheable
+  include ActiveModel::Dirty
 
   ATTEMPTED_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/attempted_exercises".freeze
   CORRECT_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/correct_exercises".freeze
@@ -37,6 +37,7 @@ class User < ApplicationRecord
   has_many :course_memberships
   has_many :repository_admins
   has_many :courses, through: :course_memberships
+  has_many :events
 
   has_many :subscribed_courses,
            lambda {
@@ -101,9 +102,11 @@ class User < ApplicationRecord
 
   before_save :set_token
   before_save :set_time_zone
+  before_update :check_permission_change
   before_save :nullify_empty_username
 
   scope :by_permission, ->(permission) {where(permission: permission)}
+  scope :by_institution, ->(institution) {where(institution: institution)}
 
   scope :in_course, ->(course) {joins(:course_memberships).where('course_memberships.course_id = ?', course.id)}
   scope :by_course_labels, ->(labels, course_id) {where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id))}
@@ -118,6 +121,28 @@ class User < ApplicationRecord
   def full_name
     name = (first_name || '') + ' ' + (last_name || '')
     first_string_present name, 'n/a'
+  end
+
+  def first_name
+    return self[:first_name] unless Current.demo_mode && Current.user != self
+    Faker::Config.random = Random.new(id + Date.today.yday)
+    Faker::Name.first_name
+  end
+
+  def last_name
+    return self[:last_name] unless Current.demo_mode && Current.user != self
+    Faker::Config.random = Random.new(id + Date.today.yday)
+    Faker::Name.last_name
+  end
+
+  def username
+    return self[:username] unless Current.demo_mode && Current.user != self
+    (first_name[0] + last_name[0, 7]).downcase
+  end
+
+  def email
+    return self[:email] unless Current.demo_mode && Current.user != self
+    "#{first_name}.#{last_name}@dodona.ugent.be"
   end
 
   def short_name
@@ -248,6 +273,10 @@ class User < ApplicationRecord
 
   def set_time_zone
     self.time_zone = 'Seoul' if email&.match?(/ghent.ac.kr$/)
+  end
+
+  def check_permission_change
+    Event.create(event_type: :permission_change, user: self, message: "Granted #{permission}#{Current.user ? " by #{Current.user.full_name} (id: #{Current.user.id})" : ''}") if permission_changed?
   end
 
   def nullify_empty_username

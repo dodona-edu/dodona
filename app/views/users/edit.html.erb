@@ -10,9 +10,13 @@
       <div class="card-supporting-text">
         <%= render 'form', user: @user %>
       </div>
+
+    </div>
+    <div class="card">
       <div class="card-supporting-text card-border">
         <div class="col-xs-12">
           <h4><%= t '.api_tokens' %></h4>
+          <p class="h4-info-text"><%= t ".token_help_html" %></p>
           <div id="fresh-token">
           </div>
           <h5><%= t '.create_new_token' %></h5>
@@ -20,18 +24,9 @@
             <%= render 'api_tokens/form', user: @user %>
           </div>
           <h5><%= t '.active_tokens' %></h5>
-          <table class="table table-resource">
-            <thead>
-            <tr>
-              <th><%= ApiToken.human_attribute_name("description") %></th>
-              <th><%= ApiToken.human_attribute_name("created_at") %></th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody id="token-list">
-            <%= render 'api_tokens/list', user: @user %>
-            </tbody>
-          </table>
+          <div id="token-table-placeholder">
+            <%= render 'api_tokens/table', user: @user %>
+          </div>
         </div>
       </div>
     </div>

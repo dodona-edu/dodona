@@ -2,17 +2,18 @@
 #
 # Table name: series
 #
-#  id             :integer          not null, primary key
-#  course_id      :integer
-#  name           :string(255)
-#  description    :text(65535)
-#  visibility     :integer
-#  order          :integer          default(0), not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  deadline       :datetime
-#  access_token   :string(255)
-#  indianio_token :string(255)
+#  id               :integer          not null, primary key
+#  course_id        :integer
+#  name             :string(255)
+#  description      :text(65535)
+#  visibility       :integer
+#  order            :integer          default(0), not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  deadline         :datetime
+#  access_token     :string(255)
+#  indianio_token   :string(255)
+#  progress_enabled :boolean          default(TRUE), not null
 #
 
 require 'test_helper'

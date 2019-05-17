@@ -14,11 +14,32 @@ nl:
       registration-help_html: Bij <b>open</b> cursussen worden registraties automatisch geaccepteerd. Bij <b>gemodereerde</b> cursussen moet elke registratie goedgekeurd worden door een cursusbeheerder. Bij <b>gesloten</b> cursussen zijn nieuwe registraties niet mogelijk.
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       no_institution: "Geen onderwijsinstelling"
+      copy_admins: "Cursusbeheerders"
+      copy_options: "Opties voor het kopieren"
+      copy_options_details: "Welke items wil je overnemen van de geselecteerde cursus?"
+      copy_admins_details: "Bij nieuwe cursussen word je zelf altijd toegevoegd als cursusbeheerder. Met deze instelling kan je aanvullend de cursusbeheerders uit het originele vak toevoegen."
+      copy_exercises: "Oefeningen"
+      copy_deadlines: "Deadlines"
+      hide_series: "Zet de gekopieerde reeksen op verborgen"
+      hide_series_details: "Dit kan nuttig zijn als je bijvoorbeeld de reeksen week per week toegangkelijk wil maken."
+      other_copy_options: "Andere instellingen"
+      copy_series: "Oefeningenreeksen"
+      copy_series_details: "De titel en beschrijving van de oefeningenreeksen worden altijd gekopieerd. Hieronder kan je aangeven of je ook de oefeningen zelf en de deadlines wil kopiëren."
     index:
       title: Alle cursussen
-      users: Gebruikers
+      users: "Gebruikers"
     new:
       title: Cursus aanmaken
+      empty: "Lege cursus"
+      copy: "Kopieer cursus"
+      new_course: "Lege cursus"
+      new_course_subtitle: "Starten met een lege cursus"
+      copied_course: "Bestaande cursus"
+      copied_course_subtitle: "Starten met een kopie van een bestaande cursus"
+      pick_type: "Hoe wil je een nieuwe cursus aanmaken?"
+      choose_course: "Op welke cursus wil je je baseren?"
+      data_entry: "Hoe moet je cursus er uit zien?"
+      create: "Cursus aanmaken"
     edit:
       confidential: Geheime link
       series_in_course: "Reeksen in deze cursus"
@@ -57,6 +78,7 @@ nl:
       taught_by: "Gegeven door %{teacher}."
       taught_by_at: "Gegeven door %{teacher} aan %{institution}."
       taught_at: "Gegeven aan %{institution}."
+      copy: "Deze cursus kopiëren"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       page_title: Registratie
@@ -90,3 +112,8 @@ nl:
       exercise_count: Oefeningen
       submitted_solutions: Ingediende oplossingen
       more_statistics: "Meer statistieken >"
+    create:
+      added_private_exercises: "Er werden privé oefeningen toegevoegd tijdens het aanmaken van de cursus. Om deze oefeningen te kunnen gebruiken zal deze cursus toestemming moeten krijgen van de relevante repository's."
+    copy_courses_table:
+      info: "Cursus"
+      users: "# gebruikers"

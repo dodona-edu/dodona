@@ -58,4 +58,4 @@ nl:
       captcha_failed: reCAPTCHA kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."
     privacy_disclaimer:
-      text_html: "Jouw privacy is belangrijk voor ons. Op de <a href=\"\">jouw data</a> pagina leggen we in mensentaal uit welke data we verzamelen en hoe we die gebruiken. De legaal bindende versie kan je in onze <a href=\"%{privacy_statement}\">privacyverklaring</a> vinden."
+      text_html: "Jouw privacy is belangrijk voor ons. Op de <a href=\"\">jouw data</a> pagina leggen we in mensentaal uit welke data we verzamelen en hoe we die gebruiken. De juridisch bindende versie kan je in onze <a href=\"%{privacy_statement}\">privacyverklaring</a> vinden."

@@ -21,10 +21,10 @@ nl:
       copy_exercises: "Oefeningen"
       copy_deadlines: "Deadlines"
       hide_series: "Zet de gekopieerde reeksen op verborgen"
-      hide_series_details: "Dit kan nuttig zijn als je bijvoorbeeld de reeksen week per week toegangkelijk wil maken."
+      hide_series_details: "Dit kan nuttig zijn als je bijvoorbeeld de reeksen week per week toegankelijk wil maken."
       other_copy_options: "Andere instellingen"
       copy_series: "Oefeningenreeksen"
-      copy_series_details: "De titel en beschrijving van de oefeningenreeksen worden altijd gekopieerd. Hieronder kan je aangeven of je ook de oefeningen zelf en de deadlines wil kopiëren."
+      copy_series_details: "De titel en beschrijving van de oefeningenreeksen worden altijd gekopieerd. Hieronder kan je aangeven of je ook de oefeningen zelf en de deadlines wil overnemen."
     index:
       title: Alle cursussen
       users: "Gebruikers"

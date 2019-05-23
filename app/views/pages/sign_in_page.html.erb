@@ -27,6 +27,51 @@
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
+              <%= image_tag 'idp/Howest.jpg', class: "img-responsive" %>
+            </div>
+            <div class="option-btn-title">
+              <h3>Hogeschool West-Vlaanderen<br>
+                <small>Inloggen met Office 365</small>
+              </h3>
+            </div>
+            <div><i class="material-icons">chevron_right</i></div>
+          </div>
+        </div>
+      <% end %>
+      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+        <div class="col-sm-6 col-lg-4">
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag 'idp/ucll.png', class: "img-responsive" %>
+            </div>
+            <div class="option-btn-title">
+              <h3>UC Leuven Limburg<br>
+                <small>Inloggen met Office 365</small>
+              </h3>
+            </div>
+            <div><i class="material-icons">chevron_right</i></div>
+          </div>
+        </div>
+      <% end %>
+      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+        <div class="col-sm-6 col-lg-4">
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag 'idp/artevelde.png', class: "img-responsive" %>
+            </div>
+            <div class="option-btn-title">
+              <h3>Arteveldehogeschool<br>
+                <small>Inloggen met Office 365</small>
+              </h3>
+            </div>
+            <div><i class="material-icons">chevron_right</i></div>
+          </div>
+        </div>
+      <% end %>
+      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+        <div class="col-sm-6 col-lg-4">
+          <div class="option-btn">
+            <div class="option-btn-img">
               <%= image_tag 'idp/collegewaregem.png', class: "img-responsive" %>
             </div>
             <div class="option-btn-title">
@@ -113,21 +158,6 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/ucll.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>UC Leuven Limburg<br>
-                <small>Inloggen met Office 365</small>
-              </h3>
-            </div>
-            <div><i class="material-icons">chevron_right</i></div>
-          </div>
-        </div>
-      <% end %>
       <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
@@ -152,21 +182,6 @@
             <div class="option-btn-title">
               <h3>Atheneum De Ring Leuven<br>
                 <small>Inloggen met Smartschool</small>
-              </h3>
-            </div>
-            <div><i class="material-icons">chevron_right</i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/artevelde.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Arteveldehogeschool<br>
-                <small>Inloggen met Office 365</small>
               </h3>
             </div>
             <div><i class="material-icons">chevron_right</i></div>

@@ -193,8 +193,6 @@ function initCourseForm() {
 
         function changeListener() {
             if (!institutionSelect.val()) {
-                console.log(visibilitySelect.val());
-                console.log(registrationSelect.val());
                 if (visibilitySelect.val() === "visible_for_institution") {
                     visibilitySelect.val("visible_for_all");
                 }

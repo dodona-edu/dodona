@@ -32,7 +32,7 @@ nl:
         secret: Secret
         visibility: Zichtbaarheid
         registration: Registratie
-        moderated: Moderated
+        moderated: Gemodereerd
         visibilities:
           visible_for_all: Zichtbaar voor iedereen
           visible_for_institution: Zichtbaar voor gebruikers van de ingestelde onderwijsinstelling

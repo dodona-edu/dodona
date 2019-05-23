@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'course' %>
+<% end %>
 <%= form_for(course, :html => {:class => "form-horizontal"}) do |f| %>
   <% if course.errors.any? %>
     <div class="<%= course.new_record? ? "stepper-part" : "card-supporting-text" %>">
@@ -116,3 +119,6 @@
     </div>
   </div>
 <% end %>
+<script>
+  dodona.initCourseForm();
+</script>

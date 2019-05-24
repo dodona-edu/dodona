@@ -102,6 +102,7 @@ class User < ApplicationRecord
 
   before_save :set_token
   before_save :set_time_zone
+  before_save :split_last_name, unless: :first_name?, if: :last_name?
   before_update :check_permission_change
   before_save :nullify_empty_username
 
@@ -281,5 +282,13 @@ class User < ApplicationRecord
 
   def nullify_empty_username
     self.username = nil if username.blank?
+  end
+
+  def split_last_name
+    parts = last_name.split(' ', 2)
+    if parts.count == 2
+      self.first_name = parts[0]
+      self.last_name = parts[1]
+    end
   end
 end

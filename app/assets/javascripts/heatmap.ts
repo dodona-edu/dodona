@@ -28,22 +28,29 @@ function initHeatmap(url: string, year: string | undefined) {
 
         let keys = Object.keys(data);
 
-        if (year && year.match(/[0-9]{4}-[0-9]{4}/)) {
+        let firstDay;
+        let lastDay;
+        if (year && /[0-9]{4}-[0-9]{4}/.test(year)) {
             const split = year.split("-");
-            const firstDay = setToAYStart(moment.utc(`${split[0]}-01-01`)).format(isoDateFormat);
-            const lastDay = setToAYStart(moment.utc(`${split[1]}-01-01`)).format(isoDateFormat);
+            firstDay = setToAYStart(moment.utc(`${split[0]}-01-01`));
+            lastDay = moment.min([
+                setToAYStart(moment.utc(`${split[1]}-01-01`)),
+                moment.utc(moment().format(isoDateFormat)).add(1, "day"),
+            ]);
+            const fdFormat = firstDay.format(isoDateFormat);
+            const ldFormat = lastDay.format(isoDateFormat);
             keys = keys.filter(k => {
-                return k >= firstDay && k < lastDay;
+                return k >= fdFormat && k < ldFormat;
             });
+        } else if (keys.length > 0) {
+            firstDay = firstDayOfAY(moment.utc(keys[0]));
+            lastDay = moment.utc(moment().format(isoDateFormat)).add(1, "day");
+        } else {
+            firstDay = firstDayOfAY(moment.utc(moment().format(isoDateFormat)));
+            lastDay = moment.utc(moment().format(isoDateFormat)).add(1, "day");
         }
 
         keys = keys.sort();
-
-        const firstDay = firstDayOfAY(moment.utc(keys[0]));
-        const lastDay = moment.min([
-            firstDayOfAY(moment.utc(keys[keys.length - 1]).add(1, "year")),
-            moment.utc(moment().format(isoDateFormat)).add(1, "day"),
-        ]);
 
         for (let date = firstDay.clone(); date < lastDay; date.add(1, "day")) {
             if (!keys.includes(date.format(isoDateFormat))) {

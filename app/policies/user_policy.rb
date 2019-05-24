@@ -70,6 +70,10 @@ class UserPolicy < ApplicationPolicy
     show?
   end
 
+  def heatmap?
+    show?
+  end
+
   def permitted_attributes
     if user&.admin?
       %i[username first_name last_name email permission time_zone]

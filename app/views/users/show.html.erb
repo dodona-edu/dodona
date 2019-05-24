@@ -69,13 +69,13 @@
             <% else %>
               <% @user.subscribed_courses.each do |course| %>
                 <p>
-                  <div>
-                    <%= link_to course.name, course, class: "course-link", title: course.name %>
-                    <% if course.teacher.present? %>
-                      <span class="text-muted"> &middot; <%= course.teacher %></span>
-                    <% end %>
-                  </div>
-                  <span class="small text-muted"><%= course.year %></span>
+                <div>
+                  <%= link_to course.name, course, class: "course-link", title: course.name %>
+                  <% if course.teacher.present? %>
+                    <span class="text-muted"> &middot; <%= course.teacher %></span>
+                  <% end %>
+                </div>
+                <span class="small text-muted"><%= course.year %></span>
                 </p>
               <% end %>
             <% end %>
@@ -85,17 +85,18 @@
       <% if policy(@user).edit? or policy(@user).impersonate? %>
         <div class="card-actions card-border">
           <% if policy(@user).impersonate? %>
-            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text"  %>
+            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text" %>
           <% end %>
           <% if policy(@user).edit? %>
-            <%= link_to t(".edit"), edit_user_path(@user), class: "btn-text btn-primary"  %>
-        <% end %>
+            <%= link_to t(".edit"), edit_user_path(@user), class: "btn-text btn-primary" %>
+          <% end %>
         </div>
       <% end %>
     </div>
     <div class="card">
       <div class="card-supporting-text">
-        <%= render partial: 'visualizations/punchcard' %>
+        <%= render partial: 'visualizations/punchcard', locals: {user: @user} %>
+        <%= render partial: 'visualizations/heatmap', locals: {user: @user} %>
       </div>
     </div>
   </div>

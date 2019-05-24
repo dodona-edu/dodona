@@ -26,7 +26,7 @@ function initHeatmap(url: string, year: string | undefined) {
     d3.json(url).then(data => {
         d3.select(`${selector} *`).remove();
 
-        let keys = Object.keys(data);
+        let keys = Object.keys(data).sort();
 
         let firstDay;
         let lastDay;
@@ -44,13 +44,14 @@ function initHeatmap(url: string, year: string | undefined) {
             });
         } else if (keys.length > 0) {
             firstDay = firstDayOfAY(moment.utc(keys[0]));
-            lastDay = moment.utc(moment().format(isoDateFormat)).add(1, "day");
+            lastDay = moment.min([
+                firstDayOfAY(moment.utc(keys[keys.length - 1]).add(1, "year")),
+                moment.utc(moment().format(isoDateFormat)).add(1, "day"),
+            ]);
         } else {
             firstDay = firstDayOfAY(moment.utc(moment().format(isoDateFormat)));
             lastDay = moment.utc(moment().format(isoDateFormat)).add(1, "day");
         }
-
-        keys = keys.sort();
 
         for (let date = firstDay.clone(); date < lastDay; date.add(1, "day")) {
             if (!keys.includes(date.format(isoDateFormat))) {

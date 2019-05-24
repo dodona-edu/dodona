@@ -1,40 +1,35 @@
 class StatisticsController < ApplicationController
+  before_action :set_course_and_user, only: [:punchcard, :heatmap]
+
   def punchcard
-    course = nil
-    if params.key?(:course_id) && params.key?(:user_id)
-      course_membership = CourseMembership.find_by(user_id: params[:user_id], course_id: params[:course_id])
-      authorize course_membership
-      user = course_membership.user
-      course = course_membership.course
-    elsif params.key?(:course_id)
-      course = Course.find(params[:course_id])
-      authorize course
-    elsif params.key?(:user_id)
-      user = User.find(params[:user_id])
-      authorize user
-    end
-    result = Submission.get_punchcard_matrix(user, course)
-    Submission.delay(queue: 'statistics').update_punchcard_matrix(user, course)
+    result = Submission.get_punchcard_matrix(@user, @course)
+    Submission.delay(queue: 'statistics').update_punchcard_matrix(@user, @course)
     render json: result[:matrix]
   end
 
   def heatmap
-    course = nil
+    result = Submission.get_heatmap_matrix(@user, @course)
+    Submission.delay(queue: 'statistics').update_heatmap_matrix(@user, @course)
+    render json: result[:matrix]
+  end
+
+  private
+
+  def set_course_and_user
+    @user = nil
+    @course = nil
     if params.key?(:course_id) && params.key?(:user_id)
       course_membership = CourseMembership.find_by(user_id: params[:user_id], course_id: params[:course_id])
       authorize course_membership
-      user = course_membership.user
-      course = course_membership.course
+      @user = course_membership.user
+      @course = course_membership.course
     elsif params.key?(:course_id)
-      course = Course.find(params[:course_id])
-      authorize course
+      @course = Course.find(params[:course_id])
+      authorize @course
     elsif params.key?(:user_id)
-      user = User.find(params[:user_id])
-      authorize user
+      @user = User.find(params[:user_id])
+      authorize @user
     end
-    result = Submission.get_heatmap_matrix(user, course)
-    Submission.delay(queue: 'statistics').update_heatmap_matrix(user, course)
-    render json: result[:matrix]
   end
 
 end

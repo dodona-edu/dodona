@@ -56,12 +56,13 @@
             </div>
           </div>
         </div>
-        <%= render partial: 'visualizations/punchcard' %>
+        <%= render partial: 'visualizations/punchcard', locals: {course: @course, user: @user} %>
+        <%= render partial: 'visualizations/heatmap', locals: {course: @course, user: @user} %>
       </div>
       <% if policy(@course_membership).update? or policy(@user).impersonate? %>
         <div class="card-actions card-border">
           <% if policy(@user).impersonate? %>
-            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text"  %>
+            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text" %>
           <% end %>
           <% if policy(@course_membership).update? %>
             <button class="btn-text" data-toggle="modal" data-target="#labelsEditModal">

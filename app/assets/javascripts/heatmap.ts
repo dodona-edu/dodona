@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import * as moment from "moment";
 
 const selector = "#heatmap-container";
-const margin = {top: 50, right: 10, bottom: 30, left: 30};
+const margin = {top: 60, right: 10, bottom: 20, left: 30};
 const isoDateFormat = "YYYY-MM-DD";
 
 function firstDayOfAY(day: moment.Moment): moment.Moment {
@@ -153,8 +153,8 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         })
         .on("mousemove", () => {
             tooltip
-                .style("left", `${d3.mouse(chartBox.node())[0]}px`)
-                .style("top", `${d3.mouse(chartBox.node())[1] - tooltip.node().getBoundingClientRect().height}px`);
+                .style("left", `${d3.mouse(chartBox.node())[0] + 10}px`)
+                .style("top", `${d3.mouse(chartBox.node())[1] - tooltip.node().getBoundingClientRect().height - 10}px`);
         })
         .on("mouseover", d => {
             tooltip.transition().duration(200).style("opacity", .9);

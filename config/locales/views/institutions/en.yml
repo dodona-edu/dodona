@@ -3,3 +3,7 @@ en:
     index:
       title: "Institutions"
       number_of_users: "# users"
+      edit: "Edit"
+    show:
+      staff: "Staff"
+      edit: "Edit"

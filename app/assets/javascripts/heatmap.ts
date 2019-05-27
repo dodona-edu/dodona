@@ -12,13 +12,7 @@ function firstDayOfAY(day: moment.Moment): moment.Moment {
 }
 
 function setToAYStart(day: moment.Moment): moment.Moment {
-    day.month(8).date(30);
-    if (day.isoWeekday() >= 5) {
-        day.isoWeekday(1);
-    } else {
-        day.subtract(1, "week").isoWeekday(1);
-    }
-    return day;
+    return day.month(8).date(1);
 }
 
 function initHeatmap(url: string, year: string | undefined) {
@@ -126,7 +120,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         })
         .text(d => d[1]);
 
-    const firstMonth = firstAY.clone().add(1, "months").date(1);
+    const firstMonth = firstAY.clone().date(1);
     const lastMonth = lastDay.clone().date(1);
     const months = [firstMonth];
     const numMonths = moment.duration(lastMonth.diff(firstMonth)).asMonths() - 1;

@@ -15,8 +15,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def failure
     reason = request.params['error_message'] \
-               || request.params['error_description'] \
-               || t('devise.omniauth_callbacks.unknown_failure')
+                 || request.params['error_description'] \
+                 || t('devise.omniauth_callbacks.unknown_failure')
     if is_navigational_format?
       set_flash_message :notice,
                         :failure,
@@ -47,7 +47,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def institution_matches?(user)
     return true if user.institution.nil?
     if user.institution&.identifier != institution_identifier \
-        || user.institution&.provider != provider
+          || user.institution&.provider != provider
       user.errors.add(:institution, 'mismatch')
       false
     else
@@ -68,12 +68,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         try_login!(user)
       else
         institution = Institution.from_identifier(institution_identifier)
-        if institution.present?
-          user = User.from_institution(oauth_hash, institution)
-          try_login!(user)
-        else
-          institution_not_supported!
+        if institution.blank?
+          institution = Institution.create(name: 'Unknown institution', short_name: 'Unknown', provider: provider, identifier: institution_identifier)
+          institution_created
         end
+        user = User.from_institution(oauth_hash, institution)
+        try_login!(user)
       end
     end
   end
@@ -129,17 +129,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
-  def institution_not_supported!
-    logger.info "OAuth login using #{provider} with identifier " \
-      "#{institution_identifier} rejected (not whitelisted). " \
+  def institution_created
+    logger.info "Institution with identifier #{institution_identifier} created (#{provider}). " \
       "See below for more info about the request:\n" \
       "#{oauth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: oauth_hash)
-        .login_rejected
+        .institution_created
         .deliver_later
-
-    session[:provider] = provider
-    redirect_to institution_not_supported_path
   end
 end

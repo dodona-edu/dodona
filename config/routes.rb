@@ -117,7 +117,7 @@ Rails.application.routes.draw do
     resources :programming_languages
     resources :posts
 
-    resources :institutions, only: [:index]
+    resources :institutions, only: [:index, :show, :edit, :update]
     resources :events, only: [:index]
 
     scope 'stats', controller: 'statistics' do

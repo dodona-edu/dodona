@@ -1,0 +1,32 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource">
+    <thead>
+    <tr>
+      <th><%= User.human_attribute_name("name") %></th>
+      <th><%= User.human_attribute_name("email") %></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% staff.each do |user| %>
+      <tr>
+        <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
+        <td><%= user.email %></td>
+        <td class="actions">
+          <% if policy(user).impersonate? %>
+            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
+              <i class="material-icons md-18">person</i>
+            <% end %>
+          <% end %>
+          <% if policy(user).edit? %>
+            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
+              <i class="material-icons md-18">edit</i>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+

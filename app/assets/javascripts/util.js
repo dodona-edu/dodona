@@ -183,6 +183,9 @@ function initTooltips() {
     $("[data-toggle=\"tooltip\"]").tooltip({container: "body"});
 }
 
+const primary50 = "#E3F2FD";
+const primary900 = "#0D47A1";
+
 export {
     initClipboard,
     delay,
@@ -194,4 +197,6 @@ export {
     checkTimeZone,
     initCSRF,
     initTooltips,
+    primary50,
+    primary900,
 };

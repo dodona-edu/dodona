@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import * as moment from "moment";
+import {primary50, primary900} from "util.js";
 
 const selector = "#heatmap-container";
 const margin = {top: 60, right: 10, bottom: 20, left: 30};
@@ -98,7 +99,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
     const height = (innerHeight + margin.top + margin.bottom) * years;
 
     const max = Math.max(...data.map(d => d[1]));
-    const opacityScale = d3.scaleLinear().domain([0, max]).range([0, 1]);
+    const colorRange = d3.scaleSequential(d3.interpolate(primary50, primary900)).domain([0, max]);
 
     chartBox.attr("viewBox", `0,0,${width},${height}`);
 
@@ -164,7 +165,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         .transition().duration(500)
         .attr("width", unitSize - 2)
         .attr("height", unitSize - 2)
-        .attr("fill-opacity", d => d[1] === 0 ? 1 : opacityScale(d[1]))
+        .attr("fill", d => d[1] === 0 ? "" : colorRange(d[1]))
         .attr("x", d => {
             const ayStart = firstDayOfAY(d[0]);
             return moment.duration(d[0].clone().isoWeekday(1).diff(ayStart.clone().isoWeekday(1))).asWeeks() * unitSize + 1;

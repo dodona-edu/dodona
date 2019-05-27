@@ -3,3 +3,7 @@ nl:
     index:
       title: "Onderwijsinstellingen"
       number_of_users: "# gebruikers"
+      edit: "Aanpassen"
+    show:
+      staff: "Beheerders"
+      edit: "Aanpassen"

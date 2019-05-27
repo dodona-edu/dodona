@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card profile">
+      <div class="card-supporting-text">
+        <div>
+          <span class="profile-line">
+            <span class="name"><%= @institution.name %></span> (<%= @institution.short_name %>)
+          </span>
+          <span class="profile-byline text-muted">
+            <%= t("activerecord.attributes.institution.providers.#{@institution.provider}") %>
+          </span>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <h4><%= t ".staff" %></h4>
+            <%= render partial: 'staff_table', locals: {staff: @staff} %>
+          </div>
+        </div>
+      </div>
+      <% if policy(@institution).edit? %>
+        <div class="card-actions card-border">
+          <% if policy(@institution).edit? %>
+            <%= link_to t(".edit"), edit_institution_path(@institution), class: "btn-text btn-primary"  %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

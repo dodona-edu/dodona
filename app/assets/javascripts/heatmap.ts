@@ -112,7 +112,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
     yearsLabels.enter().append("text").attr("class", "academic-year")
         .attr("x", innerWidth / 2 - 30)
         .attr("y", (d, i) => {
-            return i * (innerHeight + margin.top + margin.bottom) - 30;
+            return (years - i - 1) * (innerHeight + margin.top + margin.bottom) - 30;
         })
         .text(d => d);
 
@@ -121,7 +121,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         .attr("x", -20)
         .attr("y", (d, i) => {
             const graphOffset = ((i % 4) * 2 + 1) * unitSize - (unitSize - 10) / 2;
-            const yearOffset = d[0] * (innerHeight + margin.top + margin.bottom);
+            const yearOffset = (years - d[0] - 1) * (innerHeight + margin.top + margin.bottom);
             return graphOffset + yearOffset;
         })
         .text(d => d[1]);
@@ -148,7 +148,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         })
         .attr("y", d => {
             const ayStart = firstDayOfAY(d);
-            return (ayStart.year() - firstAY.year()) * (innerHeight + margin.top + margin.bottom) - 5;
+            return (years - (ayStart.year() - firstAY.year()) - 1) * (innerHeight + margin.top + margin.bottom) - 5;
         });
 
     const dayCells = chart.selectAll(".day-cell").data(data, d => d[0]);
@@ -176,7 +176,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         })
         .attr("y", d => {
             const ayStart = firstDayOfAY(d[0]);
-            return (ayStart.year() - firstAY.year()) * (innerHeight + margin.top + margin.bottom) + (d[0].isoWeekday() - 1) * unitSize + 1;
+            return (years - (ayStart.year() - firstAY.year()) - 1) * (innerHeight + margin.top + margin.bottom) + (d[0].isoWeekday() - 1) * unitSize + 1;
         });
 }
 

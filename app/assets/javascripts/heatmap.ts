@@ -146,7 +146,8 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         });
 
     const dayCells = chart.selectAll(".day-cell").data(data, d => d[0]);
-    dayCells.enter().append("rect").attr("class", d => d[1] === 0 ? "day-cell empty" : "day-cell")
+    dayCells.enter().append("rect").attr("class", "day-cell")
+        .classed("empty", d => d[1] === 0)
         .attr("fill", "#fff")
         .on("mouseout", () => {
             tooltip.transition().duration(200).style("opacity", 0);

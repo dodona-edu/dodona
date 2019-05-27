@@ -86,16 +86,16 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
             maxWeeks = weeks;
         }
         weekdaysData.push(...[
-            [weekdaysData.length / 4, weekdayNames[0]],
-            [weekdaysData.length / 4, weekdayNames[2]],
-            [weekdaysData.length / 4, weekdayNames[4]],
-            [weekdaysData.length / 4, weekdayNames[6]],
+            [weekdaysData.length / 3, weekdayNames[0]],
+            [weekdaysData.length / 3, weekdayNames[2]],
+            [weekdaysData.length / 3, weekdayNames[4]],
         ]);
         yearsData.push(`${y.format("YYYY")}-${next.format("YYYY")}`);
     }
 
     const unitSize = Math.min(innerWidth / (maxWeeks), 50);
-    const innerHeight = 7 * unitSize;
+    const weekendOffset = 3;
+    const innerHeight = 7 * unitSize + weekendOffset;
     const height = (innerHeight + margin.top + margin.bottom) * years;
 
     const max = Math.max(...data.map(d => d[1]));
@@ -115,7 +115,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
     weekdays.enter().append("text").attr("class", "week-day")
         .attr("x", -20)
         .attr("y", (d, i) => {
-            const graphOffset = ((i % 4) * 2 + 1) * unitSize - (unitSize - 10) / 2;
+            const graphOffset = ((i % 3) * 2 + 1) * unitSize - (unitSize - 10) / 2;
             const yearOffset = (years - d[0] - 1) * (innerHeight + margin.top + margin.bottom);
             return graphOffset + yearOffset;
         })
@@ -172,7 +172,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         })
         .attr("y", d => {
             const ayStart = firstDayOfAY(d[0]);
-            return (years - (ayStart.year() - firstAY.year()) - 1) * (innerHeight + margin.top + margin.bottom) + (d[0].isoWeekday() - 1) * unitSize + 1;
+            return (years - (ayStart.year() - firstAY.year()) - 1) * (innerHeight + margin.top + margin.bottom) + (d[0].isoWeekday() - 1) * unitSize + 1 + (d[0].isoWeekday() > 5 ? weekendOffset : 0);
         });
 }
 

@@ -6,7 +6,7 @@ const labelsX = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1
 
 function initPunchcard(url, timezoneOffset) {
     // If this is defined outside of a function, the locale always defaults to "en".
-    const labelsY = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(k => I18n.t(`js.weekdays.${k}`));
+    const labelsY = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(k => I18n.t(`js.weekdays.long.${k}`));
 
     const container = d3.select(containerSelector);
     const width = container.node().getBoundingClientRect().width;

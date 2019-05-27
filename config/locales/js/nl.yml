@@ -32,24 +32,49 @@ nl:
     event_types: Event types
     label-undeletable: Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.
     loading: Aan het laden...
+    submissions_on: ingediende oplossingen op
     months:
-      jan: Januari
-      feb: Februari
-      mar: Maart
-      apr: April
-      may: Mei
-      jun: Juni
-      jul: Juli
-      aug: Augustus
-      sep: September
-      oct: October
-      nov: November
-      dec: December
+      long:
+        jan: Januari
+        feb: Februari
+        mar: Maart
+        apr: April
+        may: Mei
+        jun: Juni
+        jul: Juli
+        aug: Augustus
+        sep: September
+        oct: Oktober
+        nov: November
+        dec: December
+      short:
+        jan: Jan
+        feb: Feb
+        mar: Maa
+        apr: Apr
+        may: Mei
+        jun: Jun
+        jul: Jul
+        aug: Aug
+        sep: Sep
+        oct: Okt
+        nov: Nov
+        dec: Dec
     weekdays:
-      mon: Maandag
-      tue: Dinsdag
-      wed: Woensdag
-      thu: Donderdag
-      fri: Vrijdag
-      sat: Zaterdag
-      sun: Zondag
+      long:
+        mon: Maandag
+        tue: Dinsdag
+        wed: Woensdag
+        thu: Donderdag
+        fri: Vrijdag
+        sat: Zaterdag
+        sun: Zondag
+      short:
+        mon: Ma
+        tue: Di
+        wed: Wo
+        thu: Do
+        fri: Vr
+        sat: Za
+        sun: Zo
+

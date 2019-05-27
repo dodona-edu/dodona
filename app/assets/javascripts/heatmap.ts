@@ -64,7 +64,9 @@ function initHeatmap(url: string, year: string | undefined) {
 }
 
 function drawHeatmap(data: Array<[moment.Moment, number]>) {
-    const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"].map(k => I18n.t(`js.months.${k}`));
+    const longMonthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"].map(k => I18n.t(`js.months.long.${k}`));
+    const shortMonthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"].map(k => I18n.t(`js.months.short.${k}`));
+    const weekdayNames = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(k => I18n.t(`js.weekdays.short.${k}`));
 
     const container = d3.select(selector);
     const tooltip = container.append("div").attr("class", "d3-tooltip").style("opacity", 0);
@@ -88,7 +90,12 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         if (weeks > maxWeeks) {
             maxWeeks = weeks;
         }
-        weekdaysData.push(...[[weekdaysData.length / 4, "M"], [weekdaysData.length / 4, "W"], [weekdaysData.length / 4, "V"], [weekdaysData.length / 4, "Z"]]);
+        weekdaysData.push(...[
+            [weekdaysData.length / 4, weekdayNames[0]],
+            [weekdaysData.length / 4, weekdayNames[2]],
+            [weekdaysData.length / 4, weekdayNames[4]],
+            [weekdaysData.length / 4, weekdayNames[6]],
+        ]);
         yearsData.push(`${y.format("YYYY")}-${next.format("YYYY")}`);
     }
 
@@ -102,19 +109,17 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
 
     chartBox.attr("viewBox", `0,0,${width},${height}`);
 
-    if (years > 1) {
-        const yearsLabels = chart.selectAll("text.academic-year").data(yearsData);
-        yearsLabels.enter().append("text").attr("class", "academic-year")
-            .attr("x", innerWidth / 2 - 30)
-            .attr("y", (d, i) => {
-                return i * (innerHeight + margin.top + margin.bottom) - 30;
-            })
-            .text(d => d);
-    }
+    const yearsLabels = chart.selectAll("text.academic-year").data(yearsData);
+    yearsLabels.enter().append("text").attr("class", "academic-year")
+        .attr("x", innerWidth / 2 - 30)
+        .attr("y", (d, i) => {
+            return i * (innerHeight + margin.top + margin.bottom) - 30;
+        })
+        .text(d => d);
 
     const weekdays = chart.selectAll(".week-day").data(weekdaysData);
     weekdays.enter().append("text").attr("class", "week-day")
-        .attr("x", -14)
+        .attr("x", -20)
         .attr("y", (d, i) => {
             const graphOffset = ((i % 4) * 2 + 1) * unitSize - (unitSize - 10) / 2;
             const yearOffset = d[0] * (innerHeight + margin.top + margin.bottom);
@@ -135,7 +140,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         .append("text")
         .attr("class", "month")
         .style("opacity", 0)
-        .text((d: moment.Moment) => monthNames[d.month()])
+        .text((d: moment.Moment) => shortMonthNames[d.month()])
         .transition().duration(500)
         .style("opacity", 1)
         .attr("x", d => {
@@ -160,7 +165,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         })
         .on("mouseover", d => {
             tooltip.transition().duration(200).style("opacity", .9);
-            tooltip.html(`${d[0].format("DD")} ${monthNames[d[0].month()].toLowerCase()} ${d[0].format("YYYY")}: ${d[1]}`);
+            tooltip.html(`${d[1]} ${I18n.t("js.submissions_on")} ${d[0].format("D")} ${longMonthNames[d[0].month()].toLowerCase()} ${d[0].format("YYYY")}`);
         })
         .transition().duration(500)
         .attr("width", unitSize - 2)

@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import * as moment from "moment";
 
 const selector = "#heatmap-container";
-const margin = {top: 50, right: 10, bottom: 60, left: 30};
+const margin = {top: 50, right: 10, bottom: 30, left: 30};
 const isoDateFormat = "YYYY-MM-DD";
 
 function firstDayOfAY(day: moment.Moment): moment.Moment {
@@ -105,7 +105,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
 
     const max = Math.max(...data.map(d => d[1]));
     const colorRange = d3.scaleSequential(d3.interpolateBlues);
-    colorRange.domain([1, max]);
+    colorRange.domain([0, max]);
 
     chartBox.attr("viewBox", `0,0,${width},${height}`);
 

@@ -1,8 +1,18 @@
 #heatmap-container {
   position: relative;
 
-  svg text {
-    font-size: 10px;
+  svg {
+    text {
+      font-size: 10px;
+    }
+
+    .day-cell {
+      fill: @heatmap-fg;
+
+      &.empty {
+        fill: @heatmap-empty-fg;
+      }
+    }
   }
 
 }

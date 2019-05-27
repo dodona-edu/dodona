@@ -104,8 +104,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
     const height = (innerHeight + margin.top + margin.bottom) * years;
 
     const max = Math.max(...data.map(d => d[1]));
-    const colorRange = d3.scaleSequential(d3.interpolateBlues);
-    colorRange.domain([0, max]);
+    const opacityScale = d3.scaleLinear().domain([0, max]).range([0, 1]);
 
     chartBox.attr("viewBox", `0,0,${width},${height}`);
 
@@ -153,7 +152,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         });
 
     const dayCells = chart.selectAll(".day-cell").data(data, d => d[0]);
-    dayCells.enter().append("rect").attr("class", "day-cell")
+    dayCells.enter().append("rect").attr("class", d => d[1] === 0 ? "day-cell empty" : "day-cell")
         .attr("fill", "#fff")
         .on("mouseout", () => {
             tooltip.transition().duration(200).style("opacity", 0);
@@ -170,7 +169,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         .transition().duration(500)
         .attr("width", unitSize - 2)
         .attr("height", unitSize - 2)
-        .attr("fill", d => d[1] === 0 ? "#fbfbfb" : colorRange(d[1]))
+        .attr("fill-opacity", d => d[1] === 0 ? 1 : opacityScale(d[1]))
         .attr("x", d => {
             const ayStart = firstDayOfAY(d[0]);
             return moment.duration(d[0].clone().isoWeekday(1).diff(ayStart.clone().isoWeekday(1))).asWeeks() * unitSize + 1;

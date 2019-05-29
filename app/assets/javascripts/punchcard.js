@@ -83,6 +83,10 @@ function renderCard(data, unitSize, chart, x, y) {
     const updates = circles.enter().append("circle");
     updates.attr("cx", d => x(parseInt(d.key.split(",")[1])))
         .attr("cy", d => y(parseInt(d.key.split(",")[0])))
+        .transition()
+        .delay(1000)
+        .duration(500)
+        .ease(d3.easeBackOut)
         .attr("r", d => radius(d.value))
         .append("svg:title")
         .text(d => d.value);

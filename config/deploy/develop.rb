@@ -5,7 +5,7 @@ server 'naos.ugent.be', user: 'dodona', roles: %i[web app db worker], ssh_option
     port: 4840
 }
 
-set :branch, ENV['BRANCH'] || 'develop'
+set :branch, ENV['BRANCH'] || 'feature/popping-punchcard'
 set :rails_env, :development
 
 set :delayed_job_workers, 3

@@ -4,8 +4,8 @@ nl:
       show: Cursus bekijken
       members: Ingeschreven gebruikers
       edit: Cursus bewerken
-      submissions: Oplossingen voor deze cursus
-      statistics: "Statistieken voor deze cursus"
+      submissions: Ingediende oplossingen
+      statistics: Statistieken
     form:
       teacher-help: Optioneel. Kan gebruikers helpen om je cursus te vinden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je cursus correct gesorteerd zal worden.

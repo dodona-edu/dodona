@@ -84,7 +84,7 @@ function renderCard(data, unitSize, chart, x, y) {
     updates.attr("cx", d => x(parseInt(d.key.split(",")[1])))
         .attr("cy", d => y(parseInt(d.key.split(",")[0])))
         .transition()
-        .delay(1000)
+        .delay(d => 1000 + 20 * (parseInt(d.key.split(",")[0]) + parseInt(d.key.split(",")[1])))
         .duration(1000)
         .ease(d3.easeBackOut)
         .attr("r", d => radius(d.value));

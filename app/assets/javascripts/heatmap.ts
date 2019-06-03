@@ -3,8 +3,10 @@ import * as moment from "moment";
 import {primary50, primary900} from "util.js";
 
 const selector = "#heatmap-container";
-const margin = {top: 60, right: 10, bottom: 20, left: 30};
+const margin = {top: 50, right: 10, bottom: 20, left: 30};
 const isoDateFormat = "YYYY-MM-DD";
+const monthKeys = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+const dayKeys = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 function firstDayOfAY(day: moment.Moment): moment.Moment {
     const prevYearStart = setToAYStart(day.clone().subtract(1, "year"));
@@ -59,9 +61,9 @@ function initHeatmap(url: string, year: string | undefined) {
 }
 
 function drawHeatmap(data: Array<[moment.Moment, number]>) {
-    const longMonthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"].map(k => I18n.t(`js.months.long.${k}`));
-    const shortMonthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"].map(k => I18n.t(`js.months.short.${k}`));
-    const weekdayNames = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(k => I18n.t(`js.weekdays.short.${k}`));
+    const longMonthNames = monthKeys.map(k => I18n.t(`js.months.long.${k}`));
+    const shortMonthNames = monthKeys.map(k => I18n.t(`js.months.short.${k}`));
+    const weekdayNames = dayKeys.map(k => I18n.t(`js.weekdays.short.${k}`));
 
     const container = d3.select(selector);
     const tooltip = container.append("div").attr("class", "d3-tooltip").style("opacity", 0);
@@ -90,11 +92,11 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
             [weekdaysData.length / 3, weekdayNames[2]],
             [weekdaysData.length / 3, weekdayNames[4]],
         ]);
-        yearsData.push(`${y.format("YYYY")}-${next.format("YYYY")}`);
+        yearsData.push(`${y.format("YYYY")}–${next.format("YYYY")}`);
     }
 
     const unitSize = Math.min(innerWidth / (maxWeeks), 50);
-    const weekendOffset = 3;
+    const weekendOffset = 2;
     const innerHeight = 7 * unitSize + weekendOffset;
     const height = (innerHeight + margin.top + margin.bottom) * years;
 
@@ -165,7 +167,6 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         .transition().duration(500)
         .attr("width", unitSize - 2)
         .attr("height", unitSize - 2)
-        .attr("fill", d => d[1] === 0 ? "" : colorRange(d[1]))
         .attr("x", d => {
             const ayStart = firstDayOfAY(d[0]);
             return moment.duration(d[0].clone().isoWeekday(1).diff(ayStart.clone().isoWeekday(1))).asWeeks() * unitSize + 1;
@@ -173,7 +174,9 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         .attr("y", d => {
             const ayStart = firstDayOfAY(d[0]);
             return (years - (ayStart.year() - firstAY.year()) - 1) * (innerHeight + margin.top + margin.bottom) + (d[0].isoWeekday() - 1) * unitSize + 1 + (d[0].isoWeekday() > 5 ? weekendOffset : 0);
-        });
+        })
+        .transition().duration(500)
+        .attr("fill", d => d[1] === 0 ? "" : colorRange(d[1]));
 }
 
 export {initHeatmap};

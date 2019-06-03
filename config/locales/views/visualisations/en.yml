@@ -2,7 +2,7 @@ en:
   visualizations:
     punchcard:
       punchcard: "Punchcard"
-      punchcard_details: "This graph shows you when submissions have taken place."
+      punchcard_details: "This graph shows you on which moment in the week submissions have taken place."
     heatmap:
       heatmap: "Heatmap"
       heatmap_details: "This graph shows you on which days most submissions took place."

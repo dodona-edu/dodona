@@ -6,6 +6,19 @@
           <h2 class='card-title-text pull-right' title='<%= t ".course-admin" %>'><i class='material-icons'>school</i>
           </h2>
         <% end %>
+        <% if !course.open_for_all? || course.moderated %>
+          <% title = [] %>
+          <% title.push t("courses.show.registration-#{course.registration}-info") unless course.open_for_all? %>
+          <% title.push t("courses.show.moderated-info") if course.moderated %>
+          <h2 class='card-title-text pull-right' title='<%= title.join(" ") %>'>
+            <i class="mdi mdi-account-remove-outline"></i>
+          </h2>
+        <% end %>
+        <% unless course.visible_for_all? %>
+          <h2 class='card-title-text pull-right' title='<%= t "courses.show.visibility-#{course.visibility}-info" %>'>
+            <i class="mdi mdi-eye-off-outline"></i>
+          </h2>
+        <% end %>
       <% elsif local_assigns[:show_membership] and current_user.subscribed_courses.include? course %>
         <h2 class='card-title-text pull-right' title='<%= t ".course-member" %>'><i class='material-icons'>star</i></h2>
       <% end %>

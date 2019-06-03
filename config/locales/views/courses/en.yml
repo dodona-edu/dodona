@@ -54,13 +54,13 @@ en:
       course: Course
       hidden_show_link: 'Secret link'
       invitation_link_help: "This URL allows anyone to view the course page, even if they don't have the correct permissions."
-      visibility-visible_for_all-info_html: 'This course is <strong>visible</strong> for everyone: everyone can access this course from the course overview and the contents are visible for everyone.'
-      visibility-visible_for_institution-info_html: 'This course is <strong>visible</strong> for members of the configured institution: they can access this course from the course overview and see its contents. Members of other institutions need the secret link.'
-      visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and users need the secret link to access the course.'
-      registration-open_for_all-info_html: 'Registrations are <strong>open for everyone</strong>: all users can register for the course.'
-      registration-open_for_institution-info_html: 'Registrations are <strong>open for members of the configured institution</strong>: only members of the configured institution can register for the course.'
-      registration-closed-info_html: 'Registrations are <strong>closed</strong>: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
-      moderated-info_html: 'This course is <b>moderated</b>. Users who register will have to be explicitly approved by a course admin.'
+      visibility-visible_for_all-info: 'This course is visible for everyone: everyone can access this course from the course overview and the contents are visible for everyone.'
+      visibility-visible_for_institution-info: 'This course is visible for members of the configured institution: they can access this course from the course overview and see its contents. Members of other institutions need the secret link.'
+      visibility-hidden-info: 'This course is hidden: it is not listed in the course overview and users need the secret link to access the course.'
+      registration-open_for_all-info: 'Registrations are open for everyone: all users can register for the course.'
+      registration-open_for_institution-info: 'Registrations are open for members of the configured institution: only members of the configured institution can register for the course.'
+      registration-closed-info: 'Registrations are closed: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
+      moderated-info: 'This course is moderated. Users who register will have to be explicitly approved by a course admin.'
       subscribe: Register
       request_registration: Request registration
       unsubscribe: Unregister

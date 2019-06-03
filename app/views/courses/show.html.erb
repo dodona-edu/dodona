@@ -6,6 +6,19 @@
   <div class="col-sm-10 col-xs-12 col-sm-offset-1">
     <div class="card">
       <div class="card-title card-title-colored">
+        <% if !@course.open_for_all? || @course.moderated %>
+          <% title = [] %>
+          <% title.push t("courses.show.registration-#{@course.registration}-info") unless @course.open_for_all? %>
+          <% title.push t("courses.show.moderated-info") if @course.moderated %>
+          <h2 class='card-title-text pull-right' title='<%= title.join(" ") %>'>
+            <i class="mdi mdi-account-remove-outline"></i>
+          </h2>
+        <% end %>
+        <% unless @course.visible_for_all? %>
+          <h2 class='card-title-text pull-right' title='<%= t "courses.show.visibility-#{@course.visibility}-info" %>'>
+            <i class="mdi mdi-eye-off-outline"></i>
+          </h2>
+        <% end %>
         <h2 class="card-title-text">
           <%= @course.name %> (<%= @course.formatted_year %>)
         </h2>
@@ -36,32 +49,8 @@
       <% if current_user&.course_admin?(@course) %>
         <div class="card-supporting-text card-border">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-12">
               <%= render 'user_stats' %>
-            </div>
-            <div class="col-md-6">
-              <p>
-                <%= t ".hidden_show_link" %>
-                <i title="<%= t ".invitation_link_help" %>" data-toggle="tooltip" data-placement="right" class="material-icons md-18 material-icons-info">info</i>
-              <div class="input-group">
-                <%= text_field_tag :hidden_show_link, course_url(@course, secret: @course.secret), readonly: true, class: 'form-control' %>
-                <span class="input-group-btn">
-                    <%= clipboard_button_for :hidden_show_link %>
-                  </span>
-              </div>
-              <div class="admin-card-info">
-                <span class="help-block">
-                  <%= t ".visibility-#{@course.visibility}-info_html" %>
-                </span>
-                <span class="help-block">
-                  <%= t ".registration-#{@course.registration}-info_html" %>
-                </span>
-                <% if @course.moderated %>
-                  <span class="help-block">
-                    <%= t ".moderated-info_html" %>
-                  </span>
-                <% end %>
-              </div>
             </div>
           </div>
         </div>

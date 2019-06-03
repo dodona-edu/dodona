@@ -26,6 +26,7 @@ en:
       other_copy_options: "Other settings"
       copy_series: "Series"
       copy_series_details: "The series' title and description are always copied. Beneath you can choose whether you want to copy the exercises and the deadlines."
+      access: "Access"
     index:
       title: All courses
       users: "Users"

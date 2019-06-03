@@ -26,6 +26,7 @@ nl:
       other_copy_options: "Andere instellingen"
       copy_series: "Oefeningenreeksen"
       copy_series_details: "De titel en beschrijving van de oefeningenreeksen worden altijd gekopieerd. Hieronder kan je aangeven of je ook de oefeningen zelf en de deadlines wil overnemen."
+      access: "Toegang"
     index:
       title: Alle cursussen
       users: "Gebruikers"

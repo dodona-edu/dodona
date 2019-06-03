@@ -10,8 +10,12 @@ nl:
       teacher-help: Optioneel. Kan gebruikers helpen om je cursus te vinden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je cursus correct gesorteerd zal worden.
       institution-help_html: Een onderwijsinstelling selecteren zal de cursusregistraties <b>niet</b> beperken, maar kan gebruikers helpen om je cursus te vinden.
-      visibility-help_html: <b>Zichtbare</b> cursussen zijn voor iedereen zichtbaar in het cursusoverzicht. Je kan de groep gebruikers die de cursus kan zien reduceren tot enkel leden van de onderwijsinstelling die ingesteld is voor de cursus. <b>Verborgen</b> cursussen worden voor niemand opgelijst en vereisen een speciale toegangslink.
-      registration-help_html: Bij <b>open</b> cursussen kan iedereen registreren. Je kan de groep gebruikers die kunnen registreren reduceren tot enkel leden van de onderwijsinstelling die ingesteld is voor de cursus. Bij <b>gesloten</b> cursussen zijn nieuwe registraties niet mogelijk.
+      visibility-visible_for_all-help_html: Iedereen kan deze cursus zien in het cursusoverzicht en hem openen.
+      visibility-visible_for_institution-help_html: Enkel gebruikers van de ingestelde onderwijsinstelling kunnen deze cursus zien in het cursusoverzicht en hem openen. Anderen kunnen de cursus openen via de geheime link.
+      visibility-hidden-help_html: Enkel geregistreerde gebruikers kunnen deze cursus zien in het cursusoverzicht en de cursus openen. Anderen kunnen de cursus openen via de geheime link.
+      registration-open_for_all-help_html: Iedereen kan voor deze cursus registreren.
+      registration-open_for_institution-help_html: Enkele gebruikers van de ingestelde onderwijsinstelling kunnen voor deze cursus registreren.
+      registration-closed-help_html: Er zijn geen nieuwe registraties mogelijk.
       moderated-help_html: Gebruikers die registeren voor een <b>gemodereerde</b> cursus moeten expliciet toegelaten worden tot de cursus door een cursusbeheerder. Een gebruiker die een registratieverzoek heeft ingediend zal evenveel van de cursus kunnen zien als een gebruiker die niet geregistreerd is.
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       no_institution: "Geen onderwijsinstelling"

@@ -188,24 +188,26 @@ function initCourseForm() {
 
     function initInstitutionRelatedSelects() {
         const institutionSelect = $("#course_institution_id");
-        const visibilitySelect = $("#course_visibility");
-        const registrationSelect = $("#course_registration");
+        const visibleForAll = $("#course_visibility_visible_for_all");
+        const visibleForInstitution = $("#course_visibility_visible_for_institution");
+        const registrationForAll = $("#course_registration_open_for_all");
+        const registrationForInstitution = $("#course_registration_open_for_institution");
 
         function changeListener() {
             if (!institutionSelect.val()) {
-                if (visibilitySelect.val() === "visible_for_institution") {
-                    visibilitySelect.val("visible_for_all");
+                if (visibleForInstitution.is(":checked")) {
+                    visibleForAll.prop("checked", true);
                 }
 
-                if (registrationSelect.val() === "open_for_institution") {
-                    registrationSelect.val("open_for_all");
+                if (registrationForInstitution.is(":checked")) {
+                    registrationForAll.prop("checked", true);
                 }
 
-                visibilitySelect.find("[value=\"visible_for_institution\"]").attr("disabled", true);
-                registrationSelect.find("[value=\"open_for_institution\"]").attr("disabled", true);
+                visibleForInstitution.attr("disabled", true);
+                registrationForInstitution.attr("disabled", true);
             } else {
-                visibilitySelect.find("[value=\"visible_for_institution\"]").removeAttr("disabled");
-                registrationSelect.find("[value=\"open_for_institution\"]").removeAttr("disabled");
+                visibleForInstitution.removeAttr("disabled");
+                registrationForInstitution.removeAttr("disabled");
             }
         }
 

@@ -10,9 +10,13 @@ en:
       teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
       institution-help_html: Asigning an institution wil <b>not</b> limit course registrations, but can help users find your course.
-      visibility-help_html: <b>Visible</b> courses are visible for everyone in the course overview. You can limit this visibility to just members of the course's configured institution. <b>Hidden</b> courses are unlisted for everyone and require a special access link.
-      registration-help_html: <b>Open</b> courses allow anyone to register. You can limit the group of people able to register to just members of the course's configured institution. For <b>closed</b> courses, new registrations are disabled.
-      moderated-help_html: Users registering for <b>moderated</b> courses will require explicit approval by a course admin before they can participate in the course. They will be able to see as much as an unregistered user.
+      visibility-visible_for_all-help_html: Everyone will be able to see this course in the course overview and open the course.
+      visibility-visible_for_institution-help_html: Only members of the configured institution will be able to see this course in the course overview and be able to open the course. Others can open the course via the secret link.
+      visibility-hidden-help_html: Only registered members will be able to see this course in the course overview and open the course. Others can open the course via the secret link.
+      registration-open_for_all-help_html: Anyone can register for this course.
+      registration-open_for_institution-help_html: Only members of the configured institution can register for this course.
+      registration-closed-help_html: All new registrations are disabled.
+      moderated-help_html: Users registering for <b>moderated</b> courses will require explicit approval by a course admin before they can participate in the course.
       description-help: A description is optional. Markdown formatting can be used.
       no_institution: "No institution"
       copy_admins: "Course admins"
@@ -49,7 +53,7 @@ en:
     show:
       course: Course
       hidden_show_link: 'Secret link'
-      invitation_link_help: 'This URL links to a page where users can directly register for this course.'
+      invitation_link_help: "This URL allows anyone to view the course page, even if they don't have the correct permissions."
       visibility-visible_for_all-info_html: 'This course is <strong>visible</strong> for everyone: everyone can access this course from the course overview and the contents are visible for everyone.'
       visibility-visible_for_institution-info_html: 'This course is <strong>visible</strong> for members of the configured institution: they can access this course from the course overview and see its contents. Members of other institutions need the secret link.'
       visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and users need the secret link to access the course.'

@@ -69,8 +69,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       else
         institution = Institution.from_identifier(institution_identifier)
         if institution.blank?
-          institution = Institution.create(name: 'Unknown institution',
-                                           short_name: 'Unknown',
+          institution = Institution.create(name: 'n/a',
+                                           short_name: 'n/a',
                                            provider: provider,
                                            identifier: institution_identifier)
           institution_created

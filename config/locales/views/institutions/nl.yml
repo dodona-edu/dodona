@@ -5,5 +5,5 @@ nl:
       number_of_users: "# gebruikers"
       edit: "Aanpassen"
     show:
-      staff: "Beheerders"
+      staff: "Lesgevers"
       edit: "Aanpassen"

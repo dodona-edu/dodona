@@ -13,6 +13,7 @@
               <th><%= Institution.human_attribute_name(:short_name) %></th>
               <th><%= t('.number_of_users') %></th>
               <th><%= Institution.human_attribute_name(:provider) %></th>
+              <th><%= Institution.human_attribute_name(:identifier) %></th>
               <th class="actions"></th>
             </tr>
             </thead>
@@ -23,6 +24,7 @@
                 <td><%= institution.short_name %></td>
                 <td><%= link_to institution.users.count, users_url(institution_id: institution.id) %></td>
                 <td><%= t("activerecord.attributes.institution.providers.#{institution.provider}") %></td>
+                <td><%= institution.saml? ? institution.entity_id : institution.identifier %></td>
                 <td class="actions">
                   <% if policy(institution).edit? %>
                     <%= link_to edit_institution_path(institution), title: t("institutions.index.edit"), class: "btn btn-sm btn-default" do %>

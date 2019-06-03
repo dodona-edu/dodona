@@ -36,7 +36,7 @@
                         <%= t ".first_download_labels" %>
                       </p>
                       <p>
-                        <a class="btn btn-primary with-text" href="<%= download_labels_csv_course_members_path(@course) %>"><i class="material-icons md-18">cloud_download</i> <%= t ".download" %>
+                        <a class="btn btn-primary btn-text with-text" href="<%= download_labels_csv_course_members_path(@course) %>"><i class="material-icons md-18">cloud_download</i> <%= t ".download" %>
                         </a>
                       </p>
                     </li>
@@ -54,8 +54,7 @@
                   </ol>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal"><%= t(".close") %></button>
-                  <button id="labelsUploadButton" type="button" class="btn btn-primary"><%= t(".upload") %></button>
+                  <button id="labelsUploadButton" type="button" class="btn btn-text btn-primary"><%= t(".upload") %></button>
                 </div>
               </div>
             </div>

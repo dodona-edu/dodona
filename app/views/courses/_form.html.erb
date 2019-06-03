@@ -88,6 +88,9 @@
   </div>
 
   <div class="<%= course.new_record? ? "stepper-part stepper-border" : "card-supporting-text card-border" %>">
+    <div class="page-subtitle">
+      <h4><%= t('.access') %></h4>
+    </div>
     <div class="field form-group">
       <%= f.label :visibility, class: 'col-sm-3 control-label' %>
       <div class="col-sm-6">
@@ -117,8 +120,29 @@
       </div>
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-help_html" %></span>
     </div>
+
+    <% unless course.new_record? %>
+      <div class="form-horizontal">
+        <div class="field form-group">
+          <%= label_tag :hidden_show_link,
+                        t('courses.show.hidden_show_link'),
+                        class: 'col-sm-3 control-label' %>
+          <div class="col-sm-7">
+            <div class="input-group" id="registration_link_field">
+              <%= render partial: 'application/token_field',
+                         locals: {
+                             name: :hidden_show_link,
+                             value: course_url(@course, secret: @course.secret),
+                             reset_url: reset_token_course_path(@course)
+                         } %>
+            </div>
+            <span class='help-block'><%= t "courses.show.invitation_link_help" %></span>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
 <% end %>
 <script>
-  dodona.initCourseForm();
+    dodona.initCourseForm();
 </script>

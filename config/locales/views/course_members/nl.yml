@@ -14,7 +14,7 @@ nl:
       labels: "Labels"
     index:
       close: "Sluiten"
-      upload: "Labels uploaden"
+      upload: "Aanpassingen uploaden"
       edit_all_labels: "Alle labels bewerken"
       first_download_labels: "Download een lijst van alle gebruikers en hun labels als een CSV bestand."
       then_edit: "Open het tekstbestand dat je net gedownload hebt, en pas de labels aan. Enkel wijzigingen aan de labels kolom zullen doorgevoerd worden. Merk op dat de labels in één veld zitten, gescheiden met puntkommas."

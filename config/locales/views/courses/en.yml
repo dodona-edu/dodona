@@ -86,6 +86,7 @@ en:
       taught_by_at: "Taught by %{teacher} at %{institution}."
       taught_at: "Taught at %{institution}."
       copy: "Copy this course"
+      manage_series: "Manage series"
     not_a_member_card:
       not_a_member: You are not a member of this course. Do you wish to register?
       not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to the course.

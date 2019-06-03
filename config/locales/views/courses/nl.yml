@@ -86,6 +86,7 @@ nl:
       taught_by_at: "Gegeven door %{teacher} aan %{institution}."
       taught_at: "Gegeven aan %{institution}."
       copy: "Deze cursus kopiëren"
+      manage_series: "Reeksen beheren"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       registration-closed: Je kan momenteel niet registreren voor deze cursus.

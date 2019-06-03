@@ -8,14 +8,14 @@
       <div class="card-title card-title-colored">
         <% if !@course.open_for_all? || @course.moderated %>
           <% title = [] %>
-          <% title.push t("courses.show.registration-#{@course.registration}-info") unless @course.open_for_all? %>
-          <% title.push t("courses.show.moderated-info") if @course.moderated %>
+          <% title.push t(".registration-#{@course.registration}-info") unless @course.open_for_all? %>
+          <% title.push t(".moderated-info") if @course.moderated %>
           <h2 class='card-title-text pull-right' title='<%= title.join(" ") %>'>
             <i class="mdi mdi-account-remove-outline"></i>
           </h2>
         <% end %>
         <% unless @course.visible_for_all? %>
-          <h2 class='card-title-text pull-right' title='<%= t "courses.show.visibility-#{@course.visibility}-info" %>'>
+          <h2 class='card-title-text pull-right' title='<%= t ".visibility-#{@course.visibility}-info" %>'>
             <i class="mdi mdi-eye-off-outline"></i>
           </h2>
         <% end %>
@@ -69,6 +69,40 @@
               <% if policy(@course).scoresheet? %>
                 <li>
                   <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course) %>
+                </li>
+              <% end %>
+              <% if policy(@course).reorder_series? %>
+                <% content_for :modal do %>
+                  <% content_for :javascripts do %>
+                    <%= javascript_pack_tag 'course' %>
+                  <% end %>
+                  <div class="modal fade" id="series-reorder-modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title">
+                            <%= t(".manage_series") %>
+                          </h4>
+                        </div>
+                        <div class="modal-body">
+                          <p class='header-info-text'><%= t "courses.edit.series_reordering_help_html" %></p>
+                          <div class="course-series-list" data-course_id="<%= @course.id %>">
+                            <%= render partial: 'series/course_series_table', locals: {series: @course.series, course: @course} %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <script type="text/javascript">
+                      $(function () {
+                          dodona.initSeriesReorder();
+                      });
+                  </script>
+                <% end %>
+                <li>
+                  <a data-toggle="modal" data-target="#series-reorder-modal"><%= t('.manage_series') %></a>
                 </li>
               <% end %>
               <% if policy(@course).copy? %>

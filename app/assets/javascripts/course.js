@@ -218,9 +218,10 @@ function initCourseForm() {
     init();
 }
 
-function initCourseEdit() {
+function initSeriesReorder() {
     function init() {
         initDragAndDrop();
+        initRefreshOnModalClose();
     }
 
     function initDragAndDrop() {
@@ -239,6 +240,10 @@ function initCourseEdit() {
                 order: JSON.stringify(order),
             });
         });
+    }
+
+    function initRefreshOnModalClose() {
+        $("#series-reorder-modal").on("hide.bs.modal", () => window.location.reload());
     }
 
     init();
@@ -327,4 +332,4 @@ function initCourseNew() {
     init();
 }
 
-export {initCourseEdit, initCourseForm, initCourseNew, initCourseShow, initCourseMembers, loadUsers};
+export {initSeriesReorder, initCourseForm, initCourseNew, initCourseShow, initCourseMembers, loadUsers};

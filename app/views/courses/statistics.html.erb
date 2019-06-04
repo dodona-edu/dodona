@@ -24,7 +24,9 @@
         </div>
       </div>
 
-      <%= render 'visualizations/punchcard' %>
+      <%= render partial: 'visualizations/punchcard', locals: {course: @course} %>
+
+      <%= render partial: 'visualizations/heatmap', locals: {course: @course} %>
     </div>
   </div>
 </div>

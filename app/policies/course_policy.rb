@@ -111,7 +111,11 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def punchcard?
-    course_admin?
+    statistics?
+  end
+
+  def heatmap?
+    statistics?
   end
 
   def permitted_attributes

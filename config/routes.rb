@@ -121,6 +121,7 @@ Rails.application.routes.draw do
     resources :events, only: [:index]
 
     scope 'stats', controller: 'statistics' do
+      get 'heatmap', to: 'statistics#heatmap'
       get 'punchcard', to: 'statistics#punchcard'
     end
   end

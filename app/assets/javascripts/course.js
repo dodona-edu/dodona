@@ -205,9 +205,11 @@ function initCourseForm() {
 
                 visibleForInstitution.attr("disabled", true);
                 registrationForInstitution.attr("disabled", true);
+                $(".fill-institution").html(I18n.t("js.configured-institution"));
             } else {
                 visibleForInstitution.removeAttr("disabled");
                 registrationForInstitution.removeAttr("disabled");
+                $(".fill-institution").html(institutionSelect.find("option:selected").html());
             }
         }
 

@@ -9,15 +9,24 @@ en:
     form:
       teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
-      institution-help_html: Asigning an institution wil <b>not</b> limit course registrations, but can help users find your course.
+      institution-help_html: Asigning an institution can help users find your course and can be used to limit the visibility of and registrations for this course.
       visibility-visible_for_all-help_html: Everyone will be able to see this course in the course overview and open the course.
-      visibility-visible_for_institution-help_html: Only members of the configured institution will be able to see this course in the course overview and be able to open the course. Others can open the course via the secret link.
+      visibility-visible_for_institution-help_html: Only members of <span class="fill-institution">the configured institution</span> will be able to see this course in the course overview and be able to open the course. Others can open the course via the secret link.
       visibility-hidden-help_html: Only registered members will be able to see this course in the course overview and open the course. Others can open the course via the secret link.
       registration-open_for_all-help_html: Anyone can register for this course.
-      registration-open_for_institution-help_html: Only members of the configured institution can register for this course.
+      registration-open_for_institution-help_html: Only members of <span class="fill-institution">the configured institution</span> can register for this course.
       registration-closed-help_html: All new registrations are disabled.
       moderated-help_html: Users registering for <b>moderated</b> courses will require explicit approval by a course admin before they can participate in the course.
       description-help: A description is optional. Markdown formatting can be used.
+      visibility-label: For whom is the course visible?
+      registration-label: Who can register for the course?
+      moderated-label: Should registrations be moderated?
+      visibility-visible_for_all_html: Everyone
+      visibility-visible_for_institution_html: Users of <span class="fill-institution">the configured institution</span>
+      visibility-hidden_html: Only registered users
+      registration-open_for_all_html: Everyone
+      registration-open_for_institution_html: Users of <span class="fill-institution">the configured institution</span>
+      registration-closed_html: Nobody
       no_institution: "No institution"
       copy_admins: "Course admins"
       copy_options: "Copy options"
@@ -30,7 +39,9 @@ en:
       other_copy_options: "Other settings"
       copy_series: "Series"
       copy_series_details: "The series' title and description are always copied. Beneath you can choose whether you want to copy the exercises and the deadlines."
-      access: "Access"
+      access: "Access rights"
+      yes: "Yes"
+      no: "No"
     index:
       title: All courses
       users: "Users"
@@ -50,15 +61,15 @@ en:
       confidential: Secret links
       series_in_course: "Series in this course"
       series_reordering_help_html: "You can reorder the series by dragging the icons at the left of the table. For students, a <b>reverse chronological</b> order is probably the easiest. This way, the most recent series is at the top and the students don't have to scroll down each time."
+      update: "Update"
     show:
       course: Course
       hidden_show_link: 'Secret link'
-      invitation_link_help: "This URL allows anyone to view the course page, even if they don't have the correct permissions."
       visibility-visible_for_all-info: 'This course is visible for everyone: everyone can access this course from the course overview and the contents are visible for everyone.'
-      visibility-visible_for_institution-info: 'This course is visible for members of the configured institution: they can access this course from the course overview and see its contents. Members of other institutions need the secret link.'
+      visibility-visible_for_institution-info: 'This course is visible for members of %{institution}: they can access this course from the course overview and see its contents. Members of other institutions need the secret link.'
       visibility-hidden-info: 'This course is hidden: it is not listed in the course overview and users need the secret link to access the course.'
       registration-open_for_all-info: 'Registrations are open for everyone: all users can register for the course.'
-      registration-open_for_institution-info: 'Registrations are open for members of the configured institution: only members of the configured institution can register for the course.'
+      registration-open_for_institution-info: 'Registrations are open for members of %{institution}: only they can register for the course.'
       registration-closed-info: 'Registrations are closed: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
       moderated-info: 'This course is moderated. Users who register will have to be explicitly approved by a course admin.'
       subscribe: Register

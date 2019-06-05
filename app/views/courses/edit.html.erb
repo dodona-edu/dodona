@@ -13,5 +13,12 @@
         <button type="submit" class="btn btn-text btn-primary" form="<%= "edit_course_#{@course.id}" %>"><%= t('.update') %></button>
       </div>
     </div>
+    <% if policy(@course).reorder_series? %>
+      <div class="card">
+        <div class="card-supporting-text card-border">
+          <p><%= t ".series_reordering_moved_help_html", course_url: course_url(@course) %></p>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

@@ -223,7 +223,6 @@ function initCourseForm() {
 function initSeriesReorder() {
     function init() {
         initDragAndDrop();
-        initRefreshOnModalClose();
     }
 
     function initDragAndDrop() {
@@ -242,10 +241,6 @@ function initSeriesReorder() {
                 order: JSON.stringify(order),
             });
         });
-    }
-
-    function initRefreshOnModalClose() {
-        $("#series-reorder-modal").on("hide.bs.modal", () => window.location.reload());
     }
 
     init();

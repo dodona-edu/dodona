@@ -61,6 +61,7 @@ Rails.application.routes.draw do
         get 'statistics'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
+        get 'manage_series'
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'

@@ -107,6 +107,10 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def manage_series?
+    course_admin?
+  end
+
   def punchcard?
     statistics?
   end

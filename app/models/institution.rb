@@ -17,6 +17,7 @@
 #
 
 class Institution < ApplicationRecord
+  NEW_INSTITUTION_NAME = "n/a"
   enum provider: %i[smartschool office365 saml]
 
   has_many :users

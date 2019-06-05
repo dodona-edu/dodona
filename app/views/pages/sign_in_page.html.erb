@@ -68,6 +68,50 @@
           </div>
         </div>
       <% end %>
+    </div>
+    <div class="sign-in-divider row">
+      <div class="col-xs-12">
+        <div class="divider"></div>
+      </div>
+    </div>
+    <div class="sign-in-dialog-institutions row">
+      <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
+        <div class="col-sm-6 col-lg-4">
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag 'idp/smartschool.png', class: "img-responsive" %>
+            </div>
+            <div class="option-btn-title">
+              <h3>Smartschool<br>
+                <small>Inloggen met Smartschool</small>
+              </h3>
+            </div>
+            <div><i class="material-icons">chevron_right</i></div>
+          </div>
+        </div>
+      <% end %>
+      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+        <div class="col-sm-6 col-lg-4">
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag 'idp/office365.png', class: "img-responsive" %>
+            </div>
+            <div class="option-btn-title">
+              <h3>Office 365<br>
+                <small>Inloggen met Office 365</small>
+              </h3>
+            </div>
+            <div><i class="material-icons">chevron_right</i></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="sign-in-divider row">
+      <div class="col-xs-12">
+        <div class="divider"></div>
+      </div>
+    </div>
+    <div class="sign-in-dialog-institutions row">
       <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
@@ -182,36 +226,6 @@
             <div class="option-btn-title">
               <h3>Atheneum De Ring Leuven<br>
                 <small>Inloggen met Smartschool</small>
-              </h3>
-            </div>
-            <div><i class="material-icons">chevron_right</i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/smartschool.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Smartschool<br>
-                <small>Inloggen met Smartschool</small>
-              </h3>
-            </div>
-            <div><i class="material-icons">chevron_right</i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/office365.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Office 365<br>
-                <small>Inloggen met Office 365</small>
               </h3>
             </div>
             <div><i class="material-icons">chevron_right</i></div>

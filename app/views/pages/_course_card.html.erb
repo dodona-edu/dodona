@@ -11,7 +11,7 @@
           <% title = [] %>
           <% title.push t("courses.show.registration-#{course.registration}-info", institution: course.institution&.name) unless course.open_for_all? %>
           <% title.push t("courses.show.moderated-info") if course.moderated %>
-          <h2 class='card-title-text pull-right' title='<%= title.join(" ") %>'>
+          <h2 class='card-title-text pull-right' title='<%= title.join("\n") %>'>
             <i class="mdi mdi-account-remove-outline"></i>
           </h2>
         <% end %>

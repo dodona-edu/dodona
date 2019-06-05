@@ -1,0 +1,31 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'course' %>
+<% end %>
+<%= render partial: 'courses/navbar_links' %>
+<div class="row">
+  <div class="col-sm-10 col-xs-12 col-sm-offset-1">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">
+          <%= @course.name %>
+        </h2>
+        <% if policy(@course).add_series? %>
+          <div class="card-title-fab">
+            <%= render 'application/fab_link', url: new_course_series_path(@course), icon: 'add' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <p class='header-info-text'><%= t "courses.edit.series_reordering_help_html" %></p>
+        <div class="course-series-list" data-course_id="<%= @course.id %>">
+          <%= render partial: 'series/course_series_table', locals: {series: @course.series, course: @course} %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        dodona.initSeriesReorder();
+    });
+</script>

@@ -62,7 +62,7 @@ en:
       series_in_course: "Series in this course"
       series_reordering_help_html: "You can reorder the series by dragging the icons at the left of the table. For students, a <b>reverse chronological</b> order is probably the easiest. This way, the most recent series is at the top and the students don't have to scroll down each time."
       update: "Update"
-      series_reordering_moved_help_html: "Looking to reorder the series in this course? This functionality has moved to the <a href=\"%{course_url}\">main course page</a>."
+      series_reordering_moved_help_html: "Looking to reorder the series in this course? This functionality has moved to a <a href=\"%{course_url}\">separate page</a>."
     show:
       course: Course
       hidden_show_link: 'Secret link'

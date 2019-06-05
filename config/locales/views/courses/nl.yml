@@ -62,7 +62,7 @@ nl:
       series_in_course: "Reeksen in deze cursus"
       series_reordering_help_html: "Je kan de reeksen herordenen door ze te verslepen met de icoontjes aan de linkerkant van de tabel. Voor studenten is een <b>omgekeerd chronologische</b> volgorde waarschijnlijk het gemakkelijkste. Hierbij staan recente reeksen bovenaan de pagina en hoeven ze niet telkens naar onder te scrollen."
       update: "Aanpassen"
-      series_reordering_moved_help_html: "Wou je de reeksen in dit vak herordenen? Deze functionaliteit is verplaatst naar de <a href=\"%{course_url}\">cursuspagina</a>."
+      series_reordering_moved_help_html: "Wou je de reeksen in dit vak herordenen? Deze functionaliteit is verplaatst naar een <a href=\"%{course_url}\">aparte pagina</a>."
     show:
       course: Cursus
       hidden_show_link: 'Geheime link'

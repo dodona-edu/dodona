@@ -286,6 +286,10 @@ class CoursesController < ApplicationController
     }
   end
 
+  def manage_series
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.show.manage_series'), '#']]
+  end
+
   def reorder_series
     order = JSON.parse(params[:order])
     @course.series.each do |s|

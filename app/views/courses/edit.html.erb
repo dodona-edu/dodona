@@ -16,7 +16,7 @@
     <% if policy(@course).reorder_series? %>
       <div class="card">
         <div class="card-supporting-text card-border">
-          <p><%= t ".series_reordering_moved_help_html", course_url: course_url(@course) %></p>
+          <span><%= t ".series_reordering_moved_help_html", course_url: manage_series_course_url(@course) %></span>
         </div>
       </div>
     <% end %>

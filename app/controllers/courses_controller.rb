@@ -278,9 +278,10 @@ class CoursesController < ApplicationController
   def reset_token
     @course.generate_secret
     @course.save
-    render partial: 'token_field', locals: {
-        name: :registration_link,
-        value: registration_course_url(@course, @course.secret),
+    render partial: 'application/token_field', locals: {
+        container_name: :hidden_show_link_field,
+        name: :hidden_show_link,
+        value: course_url(@course, secret: @course.secret),
         reset_url: reset_token_course_path(@course)
     }
   end

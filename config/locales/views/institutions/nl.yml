@@ -3,7 +3,7 @@ nl:
     index:
       title: "Onderwijsinstellingen"
       number_of_users: "# gebruikers"
-      edit: "Aanpassen"
+      edit: "Onderwijsinstelling aanpassen"
     show:
       staff: "Lesgevers"
-      edit: "Aanpassen"
+      edit: "Onderwijsinstelling aanpassen"

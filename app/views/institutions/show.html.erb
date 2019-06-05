@@ -7,7 +7,7 @@
             <span class="name"><%= @institution.name %></span> (<%= @institution.short_name %>)
           </span>
           <span class="profile-byline text-muted">
-            <%= t("activerecord.attributes.institution.providers.#{@institution.provider}") %>
+            <%= t("activerecord.attributes.institution.providers.#{@institution.provider}") %> (<%= @institution.saml? ? @institution.entity_id : @institution.identifier %>)
           </span>
         </div>
         <div class="row">

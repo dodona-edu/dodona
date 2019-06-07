@@ -89,7 +89,7 @@ class CoursesController < ApplicationController
           deadlines: false,
       }.merge(@copy_options).symbolize_keys
 
-      @course.series = @copy_options[:base].series.map do |s|
+      @course.series = policy_scope(@copy_options[:base].series).map do |s|
         Series.new(
             series_memberships: @copy_options[:exercises] ?
                                     s.series_memberships.map do |sm|

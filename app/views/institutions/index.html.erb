@@ -13,15 +13,24 @@
               <th><%= Institution.human_attribute_name(:short_name) %></th>
               <th><%= t('.number_of_users') %></th>
               <th><%= Institution.human_attribute_name(:provider) %></th>
+              <th class="actions"></th>
             </tr>
             </thead>
             <tbody>
             <% @institutions.each do |institution| %>
               <tr>
-                <td><%= institution.name %></td>
+                <% institution_identifier = institution.saml? ? institution.entity_id : institution.identifier %>
+                <td><%= link_to institution.name == Institution.NEW_INSTITUTION_NAME ? institution_identifier : institution.name, institution %></td>
                 <td><%= institution.short_name %></td>
                 <td><%= link_to institution.users.count, users_url(institution_id: institution.id) %></td>
                 <td><%= t("activerecord.attributes.institution.providers.#{institution.provider}") %></td>
+                <td class="actions">
+                  <% if policy(institution).edit? %>
+                    <%= link_to edit_institution_path(institution), title: t("institutions.index.edit"), class: "btn btn-sm btn-default" do %>
+                      <i class="material-icons md-18">edit</i>
+                    <% end %>
+                  <% end %>
+                </td>
               </tr>
             <% end %>
             </tbody>

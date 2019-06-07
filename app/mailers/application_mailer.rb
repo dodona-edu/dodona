@@ -2,7 +2,7 @@ class ApplicationMailer < ActionMailer::Base
   default from: Rails.application.config.dodona_email
   layout 'mailer'
 
-  def login_rejected
+  def institution_created
     @authinfo = params[:authinfo]
     uid = @authinfo['uid']
     provider = @authinfo['provider']
@@ -10,8 +10,8 @@ class ApplicationMailer < ActionMailer::Base
     institution = @authinfo['info']['institution']
 
     mail to: Rails.application.config.dodona_email,
-         subject: "Login op Dodona geweigerd voor #{uid} (#{email}) "\
-                  "via #{provider} van een onbekende instelling (#{institution})",
+         subject: "Onderwijsinstelling aangemaakt voor #{uid} (#{email}) "\
+                  "via #{provider} (#{institution})",
          content_type: 'text/plain',
          body: "Authenticatie-info:\n#{@authinfo.pretty_inspect}\n"
   end

@@ -75,7 +75,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def create_institution
-    Institution.from_identifier(institution_identifier)
+    institution = Institution.from_identifier(institution_identifier)
     if institution.blank?
       institution = Institution.new(name: Institution::NEW_INSTITUTION_NAME,
                                     short_name: Institution::NEW_INSTITUTION_NAME,

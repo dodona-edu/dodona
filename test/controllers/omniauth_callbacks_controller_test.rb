@@ -105,14 +105,16 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     user = build :user, institution: institution
     omniauth_mock_user user
 
-    assert_difference 'User.count', 0 do
-      get user_smartschool_omniauth_authorize_url
-      follow_redirect!
+    assert_difference 'User.count', 1 do
+      assert_difference 'Institution.count', 1 do
+        get user_smartschool_omniauth_authorize_url
+        follow_redirect!
+      end
     end
     assert_enqueued_jobs 1 # an email should be sent
 
-    assert_redirected_to institution_not_supported_path
-    assert_nil @controller.current_user
+    assert_redirected_to root_path
+    assert_not_nil @controller.current_user
   end
 
   test 'failure' do

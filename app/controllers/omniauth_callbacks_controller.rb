@@ -67,17 +67,27 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       if user.present?
         try_login!(user)
       else
-        institution = Institution.from_identifier(institution_identifier)
-        if institution.blank?
-          institution = Institution.create(name: Institution::NEW_INSTITUTION_NAME,
-                                           short_name: Institution::NEW_INSTITUTION_NAME,
-                                           logo: "#{provider}.png",
-                                           provider: provider,
-                                           identifier: institution_identifier)
-          institution_created
-        end
+        institution = create_institution
         user = User.from_institution(oauth_hash, institution)
         try_login!(user)
+      end
+    end
+  end
+
+  def create_institution
+    Institution.from_identifier(institution_identifier)
+    if institution.blank?
+      institution = Institution.new(name: Institution::NEW_INSTITUTION_NAME,
+                                    short_name: Institution::NEW_INSTITUTION_NAME,
+                                    logo: "#{provider}.png",
+                                    provider: provider,
+                                    identifier: institution_identifier)
+      if institution.save
+        institution_created
+        institution
+      else
+        institution_creation_failed institution.errors
+        nil
       end
     end
   end
@@ -140,6 +150,17 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     ApplicationMailer.with(authinfo: oauth_hash)
         .institution_created
+        .deliver_later
+  end
+
+  def institution_creation_failed(errors)
+    logger.info "Failed to created institution with identifier #{institution_identifier} (#{provider}). " \
+      "See below for more info about the request:\n" \
+      "#{oauth_hash.pretty_inspect}" \
+      "#{errors}"
+
+    ApplicationMailer.with(authinfo: oauth_hash, errors: errors)
+        .institution_creation_failed
         .deliver_later
   end
 end

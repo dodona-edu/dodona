@@ -471,4 +471,16 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert course.subscribed_members.include?(user)
   end
 
+  test 'a course copied by a regular student should not include hidden/closed series' do
+    user = @students.first
+    user.update(permission: :staff)
+    course = create :course
+    series = create :series, course: course, visibility: :hidden
+
+    sign_in user
+    new_course = build :course
+    post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: {base_id: course.id}, format: :json }
+    assert_equal 0, Course.find(JSON.parse(response.body)["id"]).series.count
+  end
+
 end

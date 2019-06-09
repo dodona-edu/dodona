@@ -15,7 +15,7 @@ en:
       title: Add an exercise repository
     show:
       repository: Repository
-      webhook_html: "If you set up a <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank'>webhook</a> on GitHub, Dodona will automatically update your exercises on each commit:"
+      webhook_html: "If you set up a <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel="noopener">webhook</a> on GitHub, Dodona will automatically update your exercises on each commit:"
       reprocess: Reprocess all exercises
       exercises: Exercises
     admins:

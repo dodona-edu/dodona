@@ -73,6 +73,9 @@ function initSubmissionShow() {
 
 function loadResultEditor(programmingLanguage, annotations) {
     let editor = ace.edit("editor-result");
+    if (window.dodona.darkMode) {
+        editor.setTheme("ace/theme/twilight");
+    }
     editor.getSession().setMode("ace/mode/" + programmingLanguage);
     editor.setOptions({
         showPrintMargin: false,

@@ -145,6 +145,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             editor.resize(true);
         });
 
+        // secure external links
+        $(".exercise-description a[target='_blank']").each(function () {
+            $(this).attr("rel", "noopener");
+        });
+
         // export function
         window.dodona.feedbackLoaded = feedbackLoaded;
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;

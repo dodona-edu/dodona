@@ -4,7 +4,7 @@ class PagesPolicy < ApplicationPolicy
   end
 
   def toggle_dark_mode?
-    user&.zeus?
+    true
   end
 end
 

@@ -1,10 +1,10 @@
 nl:
   layouts:
     navbar:
-      disable_demo_mode: "Demomodus uitschakelen"
-      enable_demo_mode: "Demomodus inschakelen"
-      disable_dark_mode: "Dark mode uitschakelen"
-      enable_dark_mode: "Dark mode inschakelen"
+      disable_demo_mode: "Demo modus uitschakelen"
+      enable_demo_mode: "Demo modus inschakelen"
+      disable_dark_mode: "Donkere modus uitschakelen"
+      enable_dark_mode: "Donkere modus inschakelen"
   layout:
     head:
       description: Online leren programmeren voor secundair en hoger onderwijs.

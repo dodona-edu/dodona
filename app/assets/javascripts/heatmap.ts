@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import * as moment from "moment";
-import {primary50, primary900} from "util.js";
 
 const selector = "#heatmap-container";
 const margin = {top: 50, right: 10, bottom: 20, left: 30};
@@ -61,6 +60,11 @@ function initHeatmap(url: string, year: string | undefined) {
 }
 
 function drawHeatmap(data: Array<[moment.Moment, number]>) {
+    const darkMode = window.dodona.darkMode;
+    const emptyColor = darkMode ? "#37474F" : "white";
+    const lowColor = darkMode ? "#01579B" : "#E3F2FD";
+    const highColor = darkMode ? "#039BE5" : "#0D47A1";
+
     const longMonthNames = monthKeys.map(k => I18n.t(`js.months.long.${k}`));
     const shortMonthNames = monthKeys.map(k => I18n.t(`js.months.short.${k}`));
     const weekdayNames = dayKeys.map(k => I18n.t(`js.weekdays.short.${k}`));
@@ -101,7 +105,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
     const height = (innerHeight + margin.top + margin.bottom) * years;
 
     const max = Math.max(...data.map(d => d[1]));
-    const colorRange = d3.scaleSequential(d3.interpolate(primary50, primary900)).domain([0, max]);
+    const colorRange = d3.scaleSequential(d3.interpolate(lowColor, highColor)).domain([0, max]);
 
     chartBox.attr("viewBox", `0,0,${width},${height}`);
 
@@ -111,6 +115,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         .attr("y", (d, i) => {
             return (years - i - 1) * (innerHeight + margin.top + margin.bottom) - 30;
         })
+        .attr("fill", "currentColor")
         .text(d => d);
 
     const weekdays = chart.selectAll(".week-day").data(weekdaysData);
@@ -121,6 +126,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
             const yearOffset = (years - d[0] - 1) * (innerHeight + margin.top + margin.bottom);
             return graphOffset + yearOffset;
         })
+        .attr("fill", "currentColor")
         .text(d => d[1]);
 
     const firstMonth = firstAY.clone().date(1);
@@ -135,6 +141,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
     monthLabels.enter()
         .append("text")
         .attr("class", "month")
+        .attr("fill", "currentColor")
         .style("opacity", 0)
         .text((d: moment.Moment) => shortMonthNames[d.month()])
         .transition().duration(500)
@@ -151,7 +158,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
     const dayCells = chart.selectAll(".day-cell").data(data, d => d[0]);
     dayCells.enter().append("rect").attr("class", "day-cell")
         .classed("empty", d => d[1] === 0)
-        .attr("fill", "#fff")
+        .attr("fill", emptyColor)
         .on("mouseout", () => {
             tooltip.transition().duration(200).style("opacity", 0);
         })

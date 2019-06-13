@@ -88,11 +88,9 @@
   </div>
 
   <div class="<%= course.new_record? ? "stepper-part stepper-border" : "card-supporting-text card-border" %>">
-    <div class="page-subtitle">
-      <h4><%= t('.access') %></h4>
-    </div>
+    <h4><%= t('.access') %></h4>
     <div class="form-group">
-      <strong class="col-sm-offset-3 col-sm-6"><%= t('.visibility-label') %></strong>
+      <strong class="col-xs-12"><%= t('.visibility-label') %></strong>
     </div>
     <div class="field form-group">
       <% Course.visibilities.keys.each.with_index do |v, i| %>
@@ -103,25 +101,20 @@
         <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-#{v}-help_html" %></span>
       <% end %>
     </div>
-    <% unless course.new_record? %>
-      <div class="form-group">
-        <strong class="col-sm-offset-3 col-sm-6"><%= t('courses.show.hidden_show_link') %></strong>
-      </div>
-      <div class="field form-group">
-        <div class="col-sm-offset-3 col-sm-6">
-          <div class="input-group" id="hidden_show_link_field">
-            <%= render partial: 'application/token_field',
-                       locals: {
-                           name: :hidden_show_link,
-                           value: course_url(@course, secret: @course.secret),
-                           reset_url: reset_token_course_path(@course)
-                       } %>
-          </div>
+    <div class="field form-group">
+      <div class="col-sm-offset-3 col-sm-6">
+        <div class="input-group" id="hidden_show_link_field">
+          <%= render partial: 'application/token_field', formats: [:html],
+                     locals: {
+                         name: :hidden_show_link,
+                         value: @course.new_record? ? t('.secret-link-placeholder') : course_url(@course, secret: @course.secret),
+                         reset_url: @course.new_record? ? '' : reset_token_course_path(@course)
+                     } %>
         </div>
       </div>
-    <% end %>
+    </div>
     <div class="form-group">
-      <strong class="col-sm-offset-3 col-sm-6"><%= t('.registration-label') %></strong>
+      <strong class="col-xs-12"><%= t('.registration-label') %></strong>
     </div>
     <div class="field form-group">
       <% Course.registrations.keys.each.with_index do |r, i| %>
@@ -133,18 +126,19 @@
       <% end %>
     </div>
     <div class="form-group">
-      <strong class="col-sm-offset-3 col-sm-6"><%= t('.moderated-label') %></strong>
-      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-help_html" %></span>
+      <strong class="col-xs-12"><%= t('.moderated-label') %></strong>
     </div>
     <div class="field form-group">
       <div class="col-sm-offset-3 col-sm-6">
-        <%= f.radio_button :moderated, true %>
-        <%= f.label :moderated, t('.yes'), value: true, class: 'checkbox-label' %>
-      </div>
-      <div class="col-sm-offset-3 col-sm-6">
         <%= f.radio_button :moderated, false %>
-        <%= f.label :moderated, t('.no'), value: false, class: 'checkbox-label' %>
+        <%= f.label :moderated, t('.automatically'), value: false, class: 'checkbox-label' %>
       </div>
+      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-automatically-help" %></span>
+      <div class="col-sm-offset-3 col-sm-6">
+        <%= f.radio_button :moderated, true %>
+        <%= f.label :moderated, t('.moderated'), value: true, class: 'checkbox-label' %>
+      </div>
+      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-moderated-help" %></span>
     </div>
   </div>
 <% end %>

@@ -10,22 +10,21 @@ nl:
       teacher-help: Optioneel. Kan gebruikers helpen om je cursus te vinden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je cursus correct gesorteerd zal worden.
       institution-help_html: Een onderwijsinstelling selecteren kan gebruikers helpen om je cursus te vinden en kan ook gebruikt worden om de zichtbaarheid van en registraties voor deze cursus te beperken.
-      visibility-visible_for_all-help_html: Iedereen kan deze cursus zien in het cursusoverzicht en hem openen.
-      visibility-visible_for_institution-help_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> kunnen deze cursus zien in het cursusoverzicht en hem openen. Anderen kunnen de cursus openen via de geheime link.
-      visibility-hidden-help_html: Enkel geregistreerde gebruikers kunnen deze cursus zien in het cursusoverzicht en de cursus openen. Anderen kunnen de cursus openen via de geheime link.
-      registration-open_for_all-help_html: Iedereen kan voor deze cursus registreren.
-      registration-open_for_institution-help_html: Enkele gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> kunnen voor deze cursus registreren.
+      visibility-visible_for_all-help_html: De cursus wordt opgenomen in het publieke cursusoverzicht en iedereen kan de inhoud bekijken.
+      visibility-visible_for_institution-help_html: De cursus is enkel toegankelijk voor gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> en via onderstaande directe link.
+      visibility-hidden-help_html: De cursus wordt niet opgenomen in het publieke cursusoverzicht en is enkel toegankelijk via onderstaande directe link.
+      registration-open_for_all-help_html: Iedereen kan zich voor deze cursus registreren.
+      registration-open_for_institution-help_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> kunnen voor deze cursus registreren.
       registration-closed-help_html: Er zijn geen nieuwe registraties mogelijk.
-      moderated-help_html: Gebruikers die registeren voor een <b>gemodereerde</b> cursus moeten expliciet toegelaten worden tot de cursus door een cursusbeheerder.
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
       visibility-label: Voor wie is de cursus zichtbaar?
       registration-label: Wie kan zich registreren voor de cursus?
-      moderated-label: Moeten registraties gemodereerd zijn?
+      moderated-label: Hoe wil je nieuwe registraties goedkeuren?
       visibility-visible_for_all_html: Iedereen
-      visibility-visible_for_institution_html: Gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span>
+      visibility-visible_for_institution_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span>
       visibility-hidden_html: Enkel geregistreerde gebruikers
       registration-open_for_all_html: Iedereen
-      registration-open_for_institution_html: Gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span>
+      registration-open_for_institution_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span>
       registration-closed_html: Niemand
       no_institution: "Geen onderwijsinstelling"
       copy_admins: "Cursusbeheerders"
@@ -40,8 +39,11 @@ nl:
       copy_series: "Oefeningenreeksen"
       copy_series_details: "De titel en beschrijving van de oefeningenreeksen worden altijd gekopieerd. Hieronder kan je aangeven of je ook de oefeningen zelf en de deadlines wil overnemen."
       access: "Toegangsrechten"
-      yes: "Ja"
-      no: "Nee"
+      moderated: "Gemodereerd"
+      automatically: "Automatisch"
+      moderated-moderated-help: Geregistreerde gebruikers worden automatisch goedgekeurd.
+      moderated-automatically-help: Geregistreerde gebruikers moeten worden goedgekeurd door een cursusbeheerder.
+      secret-link-placeholder: "De link wordt gegenereerd na aanmaak van de cursus"
     index:
       title: Alle cursussen
       users: "Gebruikers"
@@ -67,7 +69,7 @@ nl:
       course: Cursus
       hidden_show_link: 'Geheime link'
       visibility-visible_for_all-info: 'Deze cursus is zichtbaar voor iedereen: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'
-      visibility-visible_for_institution-info: 'Deze cursus is zichtbaar voor leden van %{institution}: voor hen wordt de cursus opgelijst in het cursusoverzicht en is de inhoud zichtbaar. Anderen kunnen enkel de inhoud van de cursus zien via de geheime link'
+      visibility-visible_for_institution-info: 'Deze cursus is zichtbaar voor leden van %{institution}: voor hen wordt de cursus opgelijst in het cursusoverzcht en is de inhoud zichtbaar. Anderen kunnen enkel de inhoud van de cursus zien via de geheime link'
       visibility-hidden-info: 'Deze cursus is verborgen: ze verschijnt niet in het cursusoverzicht en gebruikers kunnen de cursus enkel zien via de geheime link.'
       registration-open_for_all-info: 'De registraties staan open voor iedereen: gebruikers die op de registratie-knop klikken worden geregistreerd.'
       registration-open_for_institution-info: 'De registraties staan open voor gebruikers van %{institution}: enkel zij kunnen zich registreren voor deze cursus.'

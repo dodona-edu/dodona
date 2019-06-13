@@ -213,7 +213,7 @@ function initCourseForm() {
             }
         }
 
-        changeListener();
+        setTimeout(changeListener);
         institutionSelect.on("change", changeListener);
     }
 

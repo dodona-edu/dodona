@@ -1,12 +1,14 @@
 <%= text_field_tag name, value, readonly: true, class: 'form-control' %>
 <span class="input-group-btn">
   <%= clipboard_button_for name %>
-  <%= link_to reset_url,
-              title: t('general.generate_token'),
-              method: :post,
-              data: {confirm: t('general.confirm_reset_token')},
-              remote: true,
-              class: 'btn btn-default' do %>
-    <i class="material-icons md-18">refresh</i>
+  <% if reset_url.present? %>
+    <%= link_to reset_url,
+                title: t('general.generate_token'),
+                method: :post,
+                data: {confirm: t('general.confirm_reset_token')},
+                remote: true,
+                class: 'btn btn-default' do %>
+      <i class="material-icons md-18">refresh</i>
+    <% end %>
   <% end %>
 </span>

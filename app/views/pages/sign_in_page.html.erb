@@ -105,6 +105,21 @@
           </div>
         </div>
       <% end %>
+      <%= link_to user_google_oauth2_omniauth_authorize_path, class: 'institution-sign-in' do %>
+        <div class="col-sm-6 col-lg-4">
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag 'idp/google_oauth2.png', class: "img-responsive" %>
+            </div>
+            <div class="option-btn-title">
+              <h3>Google<br>
+                <small>Inloggen met Google</small>
+              </h3>
+            </div>
+            <div><i class="material-icons">chevron_right</i></div>
+          </div>
+        </div>
+      <% end %>
     </div>
     <div class="sign-in-divider row">
       <div class="col-xs-12">

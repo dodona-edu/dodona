@@ -4,18 +4,22 @@
 <%= render partial: 'courses/navbar_links' %>
 <div class="row">
   <div class="col-sm-10 col-xs-12 col-sm-offset-1">
-    <div class="card">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text">
-          <%= @course.name %>
-        </h2>
+    <div class="page-subtitle">
+      <h2><%= @course.name %></h2>
+      <div class="flex-spacer"></div>
+      <div>
         <% if policy(@course).add_series? %>
-          <div class="card-title-fab">
-            <%= render 'application/fab_link', url: new_course_series_path(@course), icon: 'add' %>
-          </div>
+          <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
+            <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
+          <% end %>
         <% end %>
       </div>
+    </div>
+  </div>
+  <div class="col-sm-10 col-xs-12 col-sm-offset-1">
+    <div class="card">
       <div class="card-supporting-text">
+        <h4><%= t('courses.show.manage_series') %></h4>
         <p class='header-info-text'><%= t "courses.edit.series_reordering_help_html" %></p>
         <div class="course-series-list" data-course_id="<%= @course.id %>">
           <%= render partial: 'series/course_series_table', locals: {series: @course.series, course: @course} %>

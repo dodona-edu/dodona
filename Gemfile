@@ -71,10 +71,10 @@ gem 'devise'
 gem 'devise_saml_authenticatable', '~> 1.5.0'
 
 # omniauth
-gem 'omniauth-oauth2'
-gem 'omniauth-google-oauth2'
+gem 'omniauth-oauth2', '~> 1.6.0'
+gem 'omniauth-google-oauth2', '~> 0.7.0'
 
-gem 'jwt'
+gem 'jwt', '~> 2.0'
 
 # contact mail form
 gem 'recaptcha', require: 'recaptcha/rails'

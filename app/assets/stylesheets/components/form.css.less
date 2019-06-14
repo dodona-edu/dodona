@@ -1,10 +1,16 @@
-.checkbox-label {
-  font-weight: normal;
-  margin-left: 6px;
-  cursor: pointer;
-}
+input[type="radio"], input[type="checkbox"] {
+  vertical-align: bottom;
 
-input:disabled + .checkbox-label {
-  color: @text-disabled;
-  cursor: no-drop;
+  + .checkbox-label {
+    font-weight: normal;
+    margin-left: 6px;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+
+  &:disabled + .checkbox-label {
+    color: @text-disabled;
+    cursor: no-drop;
+  }
+
 }

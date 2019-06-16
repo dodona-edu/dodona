@@ -1,4 +1,4 @@
-//= depend_on theme/theme-light.css.less
+//= depend_on theme/theme-dark.css.less
 //= depend_on theme/development.css.less
 //= depend_on theme/production.css.less
 
@@ -8,5 +8,8 @@
 @mode: "production";
 <% end %>
 
-@theme: "light";
+// temporarily use production mode in development
+@mode: "production";
+
+@theme: "dark";
 @import "base.css.less";

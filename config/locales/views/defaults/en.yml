@@ -3,6 +3,8 @@ en:
     navbar:
       disable_demo_mode: "Disable demo mode"
       enable_demo_mode: "Enable demo mode"
+      disable_dark_mode: "Disable dark mode"
+      enable_dark_mode: "Enable dark mode"
   layout:
     head:
       description: Learn to code for secondary and higher education.

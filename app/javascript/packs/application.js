@@ -51,7 +51,7 @@ initCSRF();
 $(initTooltips);
 
 // Use a global dodona object to prevent polluting the global na
-let dodona = {};
+let dodona = window.dodona || {};
 dodona.checkTimeZone = checkTimeZone;
 dodona.showNotification = showNotification;
 dodona.initTooltips = initTooltips;

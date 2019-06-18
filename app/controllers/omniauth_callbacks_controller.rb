@@ -13,6 +13,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     oauth_login
   end
 
+  def google_oauth2
+    oauth_hash[:info][:institution] = oauth_hash.extra[:raw_info][:hd]
+    oauth_login
+  end
+
   def failure
     reason = request.params['error_message'] \
                  || request.params['error_description'] \
@@ -56,11 +61,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def oauth_login
-    raise 'No institution found' if institution_identifier.blank?
-
     # Blacklist: institutions who should use another
     # login method
-    if BLACKLIST.include?(institution_identifier)
+    if institution_identifier.blank?
+      no_institution_found!
+    elsif BLACKLIST.include?(institution_identifier)
       handle_blacklisted_institutions!
     else
       user = User.from_email(oauth_email)
@@ -95,7 +100,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def try_login!(user)
     raise 'User should not be nil here' if user.nil?
     if institution_matches?(user)
-      user.update_from_oauth(oauth_hash)
+      user.update_from_oauth(oauth_hash, Institution.from_identifier(institution_identifier))
       if user.errors.none?
         sign_in_and_redirect user, event: :authentication
         if is_navigational_format?
@@ -162,5 +167,14 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     ApplicationMailer.with(authinfo: oauth_hash, errors: errors)
         .institution_creation_failed
         .deliver_later
+  end
+
+  def no_institution_found!
+    set_flash_message \
+        :notice,
+        :failure,
+        kind: provider,
+        reason: I18n.t('pages.sign_in_page.has_to_have_institution')
+    redirect_to sign_in_path
   end
 end

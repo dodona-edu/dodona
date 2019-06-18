@@ -10,15 +10,15 @@ en:
       teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
       institution-help_html: Asigning an institution can help users find your course and can be used to limit the visibility of and registrations for this course.
-      visibility-visible_for_all-help_html: The course is part of the public course overview and everyone can see the contents.
+      visibility-visible_for_all-help_html: This course is part of the public course overview and everyone can see the contents.
       visibility-visible_for_institution-help_html: This course is only accessible for users of <span class="fill-institution">the configured institution</span> and via the direct link below.
-      visibility-hidden-help_html: The course will not be part of the public course overview and is only accessible via the direct link below.
+      visibility-hidden-help_html: This course will not be part of the public course overview and is only accessible via the direct link below.
       registration-open_for_all-help_html: Anyone can register for this course.
       registration-open_for_institution-help_html: Only members of <span class="fill-institution">the configured institution</span> can register for this course.
       registration-closed-help_html: All new registrations are disabled.
       description-help: A description is optional. Markdown formatting can be used.
-      visibility-label: For whom is the course visible?
-      registration-label: Who can register for the course?
+      visibility-label: For whom is this course visible?
+      registration-label: Who can register for this course?
       moderated-label: How do you want to approve new registrations
       visibility-visible_for_all_html: Everyone
       visibility-visible_for_institution_html: Only users of <span class="fill-institution">the configured institution</span>
@@ -41,8 +41,8 @@ en:
       access: "Access rights"
       moderated: "Moderated"
       automatically: "Automatically"
-      moderated-moderated-help: Users registering for <b>moderated</b> courses will require explicit approval by a course admin before they can participate in the course.
-      moderated-automatically-help: Users registering for <b>moderated</b> courses will require explicit approval by a course admin before they can participate in the course.
+      moderated-automatically-help: Registered users are approved automatically.
+      moderated-moderated-help: Registered users need to be approved by a course admin.
       secret-link-placeholder: "This link will be generated after creation"
     index:
       title: All courses
@@ -70,9 +70,9 @@ en:
       hidden_show_link: 'Secret link'
       visibility-visible_for_all-info: 'This course is visible for everyone: everyone can access this course from the course overview and the contents are visible for everyone.'
       visibility-visible_for_institution-info: 'This course is visible for members of %{institution}: they can access this course from the course overview and see its contents. Members of other institutions need the secret link.'
-      visibility-hidden-info: 'This course is hidden: it is not listed in the course overview and users need the secret link to access the course.'
-      registration-open_for_all-info: 'Registrations are open for everyone: all users can register for the course.'
-      registration-open_for_institution-info: 'Registrations are open for members of %{institution}: only they can register for the course.'
+      visibility-hidden-info: 'This course is hidden: it is not listed in the course overview and users need the secret link to access this course.'
+      registration-open_for_all-info: 'Registrations are open for everyone: all users can register for this course.'
+      registration-open_for_institution-info: 'Registrations are open for members of %{institution}: only they can register for this course.'
       registration-closed-info: 'Registrations are closed: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
       moderated-info: 'This course is moderated. Users who register will have to be explicitly approved by a course admin.'
       subscribe: Register
@@ -103,7 +103,7 @@ en:
       manage_series: "Manage series"
     not_a_member_card:
       not_a_member: You are not a member of this course. Do you wish to register?
-      not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
+      not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to this course.
       registration_closed: Registrations are closed for this course.
     registration:
       registration-tooltip: Registering only influences your status on this website, not within your institution.
@@ -111,7 +111,7 @@ en:
       page_title: Registration
       not_a_member: You are not a member of this course.
       already_a_member: You are a member of this course.
-      moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
+      moderated: Your registration needs to be approved by a course administrator before you gain access to this course.
       pending: Your registration is pending.
       remove_from_pending: Withdraw registration request
       closed: You are currently not able to subscribe to this course.
@@ -139,7 +139,7 @@ en:
       exercise_count: Exercises
       more_statistics: "More statistics >"
     create:
-      added_private_exercises: "Private exercises were added while creating this course. To use these exercises the course will need to be granted permission from the relevant repositories."
+      added_private_exercises: "Private exercises were added while creating this course. To use these exercises this course will need to be granted permission from the relevant repositories."
     copy_courses_table:
       info: "Course"
       users: "# users"

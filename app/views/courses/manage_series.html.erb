@@ -10,7 +10,7 @@
       <div>
         <% if policy(@course).add_series? %>
           <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
-            <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
+            <i class="mdi mdi-plus icon"></i><span class='text'><%= t("series.new.title") %></span>
           <% end %>
         <% end %>
       </div>
@@ -20,7 +20,7 @@
     <div class="card">
       <div class="card-supporting-text">
         <h4><%= t('courses.show.manage_series') %></h4>
-        <p class='header-info-text'><%= t "courses.edit.series_reordering_help_html" %></p>
+        <p class='h4-info-text'><%= t "courses.edit.series_reordering_help_html" %></p>
         <div class="course-series-list" data-course_id="<%= @course.id %>">
           <%= render partial: 'series/course_series_table', locals: {series: @course.series, course: @course} %>
         </div>

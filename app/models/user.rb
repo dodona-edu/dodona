@@ -94,7 +94,7 @@ class User < ApplicationRecord
            source: :repository
 
   devise :saml_authenticatable
-  devise :omniauthable, omniauth_providers: %i[smartschool office365]
+  devise :omniauthable, omniauth_providers: %i[smartschool office365 google_oauth2]
 
   validates :username, uniqueness: {case_sensitive: false, allow_blank: true, scope: :institution}
   validates :email, uniqueness: {case_sensitive: false, allow_blank: true}
@@ -231,8 +231,7 @@ class User < ApplicationRecord
   end
 
 # update and return user using an omniauth authentication hash
-  def update_from_oauth(oauth_hash)
-    auth_inst = Institution.from_identifier(oauth_hash.info.institution)
+  def update_from_oauth(oauth_hash, auth_inst)
     tap do |user|
       user.username = oauth_hash.uid
       user.email = oauth_hash.info.email

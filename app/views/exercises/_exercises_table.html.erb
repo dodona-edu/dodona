@@ -39,6 +39,8 @@
         <td>
           <% if ex.exercise.accessible?(current_user, @course) %>
             <%= link_to ex.exercise.name, get_exercise_path.call(ex.exercise) %>
+          <% elsif ex.exercise.access_public? %>
+            <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
           <% else %>
             <%= ex.exercise.name %>
           <% end %>

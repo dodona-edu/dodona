@@ -9,10 +9,23 @@ en:
     form:
       teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
-      institution-help_html: Asigning an institution wil <b>not</b> limit course registrations, but can help users find your course.
-      visibility-help_html: <b>Visible</b> courses are visible for everyone in the course overview. <b>Hidden</b> courses are unlisted and require a special access link.
-      registration-help_html: <b>Open</b> courses give direct access upon registration. For <b>moderated</b> courses, a course administrator has to approve each registration. For <b>closed</b> course, new registrations are disabled.
+      institution-help_html: Asigning an institution can help users find your course and can be used to limit the visibility of and registrations for this course.
+      visibility-visible_for_all-help_html: This course is part of the public course overview and everyone can see the contents.
+      visibility-visible_for_institution-help_html: This course is only accessible for users of <span class="fill-institution">the configured institution</span> and via the direct link below.
+      visibility-hidden-help_html: This course will not be part of the public course overview and is only accessible via the direct link below.
+      registration-open_for_all-help_html: Anyone can register for this course.
+      registration-open_for_institution-help_html: Only members of <span class="fill-institution">the configured institution</span> can register for this course.
+      registration-closed-help_html: All new registrations are disabled.
       description-help: A description is optional. Markdown formatting can be used.
+      visibility-label: For whom is this course visible?
+      registration-label: Who can register for this course?
+      moderated-label: How do you want to approve new registrations
+      visibility-visible_for_all_html: Everyone
+      visibility-visible_for_institution_html: Only users of <span class="fill-institution">the configured institution</span>
+      visibility-hidden_html: Only registered users
+      registration-open_for_all_html: Everyone
+      registration-open_for_institution_html: Only users of <span class="fill-institution">the configured institution</span>
+      registration-closed_html: Nobody
       no_institution: "No institution"
       copy_admins: "Course admins"
       copy_options: "Copy options"
@@ -25,6 +38,12 @@ en:
       other_copy_options: "Other settings"
       copy_series: "Series"
       copy_series_details: "The series' title and description are always copied. Beneath you can choose whether you want to copy the exercises and the deadlines."
+      access: "Access rights"
+      moderated: "Moderated"
+      automatically: "Automatically"
+      moderated-automatically-help: Registered users are approved automatically.
+      moderated-moderated-help: Registered users need to be approved by a course admin.
+      secret-link-placeholder: "This link will be generated after creation"
     index:
       title: All courses
       users: "Users"
@@ -44,18 +63,21 @@ en:
       confidential: Secret links
       series_in_course: "Series in this course"
       series_reordering_help_html: "You can reorder the series by dragging the icons at the left of the table. For students, a <b>reverse chronological</b> order is probably the easiest. This way, the most recent series is at the top and the students don't have to scroll down each time."
+      update: "Update"
+      series_reordering_moved_help_html: "Looking to reorder the series in this course? This functionality has moved to a <a href=\"%{course_url}\">separate page</a>."
     show:
       course: Course
-      invitation_link: Registration link
-      invitation_link_help: 'This URL links to a page where users can directly register for this course.'
-      visibility-visible-info_html: 'This course is <strong>visible</strong>: everyone can access this course from the course overview and the contents are visible for anyone.'
-      visibility-hidden-info_html: 'This course is <strong>hidden</strong>: it is not listed in the course overview and to register, users need the registration link. The contents is only visible for registered members.'
-      registration-open-info_html: 'Registrations are <strong>open</strong>: users are immediately registered when they click on the register button.'
-      registration-moderated-info_html: 'Registrations are <strong>moderated</strong>: users who register become pending and a course administrator has to accept them before they are listed within the course.'
-      registration-closed-info_html: 'Registrations are <strong>closed</strong>: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
-      subscribe: register
-      request_registration: request registration
-      unsubscribe: unregister
+      hidden_show_link: 'Secret link'
+      visibility-visible_for_all-info: 'This course is visible for everyone: everyone can access this course from the course overview and the contents are visible for everyone.'
+      visibility-visible_for_institution-info: 'This course is visible for members of %{institution}: they can access this course from the course overview and see its contents. Members of other institutions need the secret link.'
+      visibility-hidden-info: 'This course is hidden: it is not listed in the course overview and users need the secret link to access this course.'
+      registration-open_for_all-info: 'Registrations are open for everyone: all users can register for this course.'
+      registration-open_for_institution-info: 'Registrations are open for members of %{institution}: only they can register for this course.'
+      registration-closed-info: 'Registrations are closed: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
+      moderated-info: 'This course is moderated. Users who register will have to be explicitly approved by a course admin.'
+      subscribe: Register
+      request_registration: Request registration
+      unsubscribe: Unregister
       exercise_series: Exercise series
       no_series_yet: This course currently contains no exercises nor series. Click the create series button to get started!
       users: Users
@@ -78,21 +100,21 @@ en:
       taught_by_at: "Taught by %{teacher} at %{institution}."
       taught_at: "Taught at %{institution}."
       copy: "Copy this course"
+      manage_series: "Manage series"
     not_a_member_card:
       not_a_member: You are not a member of this course. Do you wish to register?
-      not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
+      not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to this course.
       registration_closed: Registrations are closed for this course.
     registration:
-      registration-tooltip: Registering only influeces your status on this website, not within your institution.
+      registration-tooltip: Registering only influences your status on this website, not within your institution.
+      registration-closed: You are currently not able to subscribe to this course.
       page_title: Registration
       not_a_member: You are not a member of this course.
       already_a_member: You are a member of this course.
-      moderated: Your registration needs to be approved by a course administrator before you gain access to the course.
+      moderated: Your registration needs to be approved by a course administrator before you gain access to this course.
       pending: Your registration is pending.
       remove_from_pending: Withdraw registration request
-      explanation_html: 'This is the registration page of <strong>%{course_name}</strong>'
-      instruction: 'Register by clicking the button.'
-      closed: This course is closed and does not accept new registrations at this time.
+      closed: You are currently not able to subscribe to this course.
       sign_up_successfully: You were succesfully registered. Wait until a course administrator approves your registration
       subscribed_successfully: Registered successfully
       unsubscribed_successfully: Unregistered successfully
@@ -100,6 +122,7 @@ en:
       unsubscription_failed: Unregistration failed
       not_logged_in: You need to be logged in to register
       key_mismatch: "The key didn't match"
+      registration_closed: "Registration closed."
     scoresheet:
       explanation: "Showing the number of correctly solved exercises before the deadline"
     favorite:
@@ -116,7 +139,7 @@ en:
       exercise_count: Exercises
       more_statistics: "More statistics >"
     create:
-      added_private_exercises: "Private exercises were added while creating this course. To use these exercises the course will need to be granted permission from the relevant repositories."
+      added_private_exercises: "Private exercises were added while creating this course. To use these exercises this course will need to be granted permission from the relevant repositories."
     copy_courses_table:
       info: "Course"
       users: "# users"

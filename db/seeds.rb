@@ -50,12 +50,13 @@ if Rails.env.development?
 
   courses = []
 
-  courses << Course.create(description: 'This is a test course.', name: 'Open Test Course', year: '2017-2018', registration: 'open', visibility: 'visible', teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Moderated Test Course', year: '2017-2018', registration: 'moderated', visibility: 'visible', teacher: 'Prof. Barabas')
-  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2017-2018', registration: 'open', visibility: 'hidden', teacher: 'Prof. Kumulus')
-  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2017-2018', registration: 'closed', visibility: 'hidden', teacher: 'Graaf van Rommelgem')
-  courses << Course.create(description: 'This is a test course.', name: 'Old Open Test Course', year: '2016-2017', registration: 'open', visibility: 'visible', teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Very Old Open Test Course', year: '2015-2016', registration: 'open', visibility: 'visible', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Open for All Test Course', year: '2017-2018', registration: 'open_for_all', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: '2017-2018', registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
+  courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: '2017-2018', registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')
+  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2017-2018', registration: 'open_for_all', visibility: 'hidden', moderated: false, teacher: 'Prof. Kumulus')
+  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2017-2018', registration: 'closed', visibility: 'hidden', moderated: false, teacher: 'Graaf van Rommelgem')
+  courses << Course.create(description: 'This is a test course.', name: 'Old Open for All Test Course', year: '2016-2017', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Very Old Open for All Test Course', year: '2015-2016', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
 
   puts 'Adding users to courses'
 
@@ -68,12 +69,13 @@ if Rails.env.development?
   end
 
   courses[0].enrolled_members << student
-  courses[1].pending_members << student
-  courses[2].enrolled_members << student
+  courses[1].enrolled_members << student
+  courses[2].pending_members << student
+  courses[3].enrolled_members << student
 
   # add some students to the moderated course
   pending = students.sample(60)
-  courses[1].pending_members.concat(pending - courses[1].enrolled_members)
+  courses[2].pending_members.concat(pending - courses[2].enrolled_members)
 
   puts 'Create & clone judge'
 
@@ -160,7 +162,7 @@ if Rails.env.development?
 
   puts 'Create Status Test course'
 
-  status_test = Course.create(name: 'Status Test', year: '2018-2019', registration: 'open', visibility: 'visible', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
+  status_test = Course.create(name: 'Status Test', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
 
   deadline = Time.now - 1.day
   after_deadline = deadline + 1.hour

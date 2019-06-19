@@ -95,14 +95,14 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should get registration page with secret' do
+  test 'should get course page with secret' do
     with_users_signed_in @not_subscribed do |who, user|
-      %w[visible hidden].product(%w[open moderated closed]).each do |v, r|
-        @course.update(visibility: v, registration: r)
-        get registration_course_url(@course, @course.secret)
+      %w[visible_for_all visible_for_institution hidden].product(%w[open_for_all open_for_institution closed], [true, false]).each do |v, r, m|
+        @course.update(visibility: v, registration: r, moderated: m)
+        get course_url(@course, secret: @course.secret)
         assert_response :success, "#{who} should get registration page"
         # GET should not subscribe
-        assert_not user.member_of?(@course), "#{who} should not be logged in"
+        assert_not user.member_of?(@course), "#{who} should not be registered"
       end
     end
   end
@@ -156,7 +156,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should not subscribe to closed course' do
     @course.update(registration: 'closed')
     with_users_signed_in @not_subscribed do |who, user|
-      @course.update(visibility: 'visible')
+      @course.update(visibility: 'visible_for_all')
       post subscribe_course_url(@course)
       assert !user.member_of?(@course), "#{who} should not be subscribed"
 
@@ -169,7 +169,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should not be on pending list with closed course' do
     @course.update(registration: 'closed')
     with_users_signed_in @externals do |who, user|
-      @course.update(visibility: 'visible')
+      @course.update(visibility: 'visible_for_all')
       post subscribe_course_url(@course)
       assert !@course.users.include?(user), "#{who} should not have a membership"
 
@@ -180,7 +180,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should be on pending list with moderated course' do
-    @course.update(registration: 'moderated')
+    @course.update(moderated: true)
     with_users_signed_in @not_subscribed do |who, user|
       post subscribe_course_url(@course)
       assert @course.pending_members.include?(user), "#{who} should be pending"
@@ -188,7 +188,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should be able to withdraw registration request' do
-    @course.update(registration: 'moderated')
+    @course.update(moderated: true)
     with_users_signed_in @pending do |who, user|
       post unsubscribe_course_url(@course)
       assert_not @course.pending_members.include?(user), "#{who} should not be pending anymore"
@@ -196,7 +196,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should be on pending list with moderated and hidden course' do
-    @course.update(registration: 'moderated', visibility: 'hidden')
+    @course.update(moderated: 'true', visibility: 'hidden')
     with_users_signed_in @not_subscribed do |who, user|
       post subscribe_course_url(@course, secret: @course.secret)
       assert @course.pending_members.include?(user), "#{who} should be pending"
@@ -414,7 +414,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'not admins should not be able to view hidden courses' do
     @course.update(visibility: 'hidden')
-    with_users_signed_in @not_admins do |who|
+    with_users_signed_in @not_subscribed do |who|
       get courses_url, params: { format: :json }
       if response.successful?
         courses = JSON.parse response.body
@@ -462,7 +462,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'subscribing to a moderated course when already subscribed should not change status' do
     user = @students.first
-    course = create :course, registration: :moderated
+    course = create :course, moderated: true
     course.subscribed_members << user
 
     sign_in user

@@ -9,12 +9,13 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  description    :text(65535)
-#  visibility     :integer          default("visible")
-#  registration   :integer          default("open")
+#  visibility     :integer          default("visible_for_all")
+#  registration   :integer          default("open_for_all")
 #  color          :integer
 #  teacher        :string(255)      default("")
 #  institution_id :bigint(8)
 #  search         :string(4096)
+#  moderated      :boolean          default(FALSE), not null
 #
 
 require 'securerandom'
@@ -44,8 +45,8 @@ class Course < ApplicationRecord
 
   has_many :course_labels, dependent: :destroy
 
-  enum visibility: %i[visible hidden]
-  enum registration: %i[open moderated closed]
+  enum visibility: %i[visible_for_all visible_for_institution hidden]
+  enum registration: %i[open_for_all open_for_institution closed]
   enum color: %i[red pink purple deep-purple indigo teal
                  orange brown blue-grey]
 
@@ -98,6 +99,8 @@ class Course < ApplicationRecord
 
   validates :name, presence: true
   validates :year, presence: true
+  validate :should_have_institution_when_visible_for_institution
+  validate :should_have_institution_when_open_for_institution
 
   scope :by_name, ->(name) {where('name LIKE ?', "%#{name}%")}
   scope :by_teacher, ->(teacher) {where('teacher LIKE ?', "%#{teacher}%")}
@@ -108,8 +111,8 @@ class Course < ApplicationRecord
 
   # Default year & enum values
   after_initialize do |course|
-    self.visibility ||= 'visible'
-    self.registration ||= 'open'
+    self.visibility ||= 'visible_for_all'
+    self.registration ||= 'open_for_all'
     self.color ||= Course.colors.keys.sample
     unless year
       now = Time.zone.now
@@ -232,6 +235,20 @@ class Course < ApplicationRecord
 
   def set_search
     self.search = "#{teacher || ''} #{name || ''} #{year || ''}"
+  end
+
+  private
+
+  def should_have_institution_when_visible_for_institution
+    if visible_for_institution? && institution.blank?
+      errors.add(:institution, 'should not be blank when only visible for institution')
+    end
+  end
+
+  def should_have_institution_when_open_for_institution
+    if open_for_institution? && institution.blank?
+      errors.add(:institution, 'should not be blank when only open for institution')
+    end
   end
 
 end

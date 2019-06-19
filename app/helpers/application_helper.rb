@@ -68,6 +68,7 @@ module ApplicationHelper
     locals = {
         title: options.delete(:title),
         icon: options.delete(:icon),
+        mdi_icon: options.delete(:mdi_icon),
         custom_icon_name: options.delete(:custom_icon),
         url: url,
         link_options: options
@@ -94,6 +95,7 @@ module ApplicationHelper
     selector = selector.to_s
     selector.prepend('#') unless selector.starts_with?('#')
     button_tag class: 'btn btn-default',
+               type: 'button',
                title: t('js.copy-to-clipboard'),
                data: {clipboard_target: selector} do
       tag.i(class: 'material-icons md-18') {'assignment'}

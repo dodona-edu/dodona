@@ -1,7 +1,4 @@
 <%= render partial: 'navbar_links' %>
-<% content_for :javascripts do %>
-  <%= javascript_pack_tag 'course' %>
-<% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
@@ -11,50 +8,15 @@
           <%= render 'application/fab_button', form: "edit_course_#{@course.id}", icon: 'done' %>
         </div>
       </div>
-      <div class="card-supporting-text">
-        <%= render 'form', course: @course %>
-      </div>
-      <div class="card-supporting-text card-border">
-        <div class="page-subtitle">
-          <h4><%= t '.confidential' %></h4>
-        </div>
-        <div class="form-horizontal">
-          <div class="field form-group">
-            <%= label_tag :registration_link,
-                          t('courses.show.invitation_link'),
-                          class: 'col-sm-3 control-label' %>
-            <div class="col-sm-7">
-              <div class="input-group" id="registration_link_field">
-                <%= render partial: 'application/token_field',
-                           locals: {
-                               name: :registration_link,
-                               value: registration_course_url(@course, @course.secret),
-                               reset_url: reset_token_course_path(@course)
-                           } %>
-              </div>
-              <span class='help-block'><%= t "courses.show.invitation_link_help" %></span>
-            </div>
-          </div>
-        </div>
+      <%= render 'form', course: @course %>
+      <div class="card-actions card-border">
+        <button type="submit" class="btn btn-text btn-primary" form="<%= "edit_course_#{@course.id}" %>"><%= t('.update') %></button>
       </div>
     </div>
     <% if policy(@course).reorder_series? %>
-      <div class="card">
-        <div class="card-supporting-text card-border">
-          <div class="page-subtitle">
-            <h3><%= t '.series_in_course' %></h3>
-          </div>
-          <p class='h3-info-text'><%= t ".series_reordering_help_html" %></p>
-          <div class="course-series-list" data-course_id="<%= @course.id %>">
-            <%= render partial: 'series/course_series_table', locals: {series: @course.series, course: @course} %>
-          </div>
-        </div>
+      <div class="callout callout-info">
+        <p><%= t ".series_reordering_moved_help_html", course_url: manage_series_course_url(@course) %></p>
       </div>
     <% end %>
   </div>
 </div>
-<script type="text/javascript">
-    $(function () {
-        dodona.initCourseEdit();
-    });
-</script>

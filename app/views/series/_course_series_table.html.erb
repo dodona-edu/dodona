@@ -13,6 +13,7 @@
     <th><%= t ".name" %></th>
     <th><%= t ".deadline" %></th>
     <th><%= t ".num_exercises", {count: '#'} %></th>
+    <th class="actions"></th>
   </tr>
   </thead>
   <tbody>
@@ -46,6 +47,18 @@
       </td>
       <td>
         <%= t ".num_exercises", {count: s.exercises.count} %>
+      </td>
+      <td class="actions">
+        <% if policy(s).edit? %>
+          <%= link_to edit_series_url(s), class: "btn btn-sm btn-default", title: t("series.edit.title") do %>
+            <i class="mdi mdi-18 mdi-pencil"></i>
+          <% end %>
+        <% end %>
+        <% if policy(s).destroy? %>
+          <%= link_to s, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger", title: t("series.delete.title") do %>
+            <i class="mdi mdi-18 mdi-delete"></i>
+          <% end %>
+        <% end %>
       </td>
     </tr>
   <% end %>

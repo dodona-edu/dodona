@@ -6,7 +6,8 @@
       <div>
         <% if policy(Post).new? %>
           <%= link_to new_post_path, title: t("posts.new.title"), class: "btn btn-primary btn-fab-extended" do %>
-            <i class="material-icons icon">add</i><span class="text"><%= t("posts.new.title") %></span>
+            <i class="mdi mdi-plus icon"></i>
+            <span class="text"><%= t("posts.new.title") %></span>
           <% end %>
         <% end %>
       </div>

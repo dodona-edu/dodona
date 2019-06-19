@@ -1,6 +1,9 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'course' %>
+<% end %>
 <%= form_for(course, :html => {:class => "form-horizontal"}) do |f| %>
-  <div class="stepper-part">
-    <% if course.errors.any? %>
+  <% if course.errors.any? %>
+    <div class="<%= course.new_record? ? "stepper-part" : "card-supporting-text" %>">
       <div class="callout callout-danger" id="error_explanation">
         <h4><%= t('errors.validation_errors', :count => course.errors.count) %></h4>
         <ul>
@@ -9,9 +12,12 @@
           <% end %>
         </ul>
       </div>
-    <% end %>
+    </div>
+  <% end %>
 
-    <% if defined?(copy_options) && copy_options.present? %>
+  <% needs_border = false %>
+  <% if defined?(copy_options) && copy_options.present? %>
+    <div class="<%= "stepper-part#{needs_border ? " stepper-border" : ""}" %>">
       <input type="hidden" name="copy_options[base_id]" id="copy_base_id" value="<%= copy_options[:base_id] %>"/>
       <div class="form-group">
         <strong class="col-sm-offset-3 col-sm-6"><%= t('.copy_options_details') %></strong>
@@ -32,10 +38,11 @@
         <strong class="col-sm-push-3 col-sm-6"><%= t('.other_copy_options') %></strong>
       </div>
       <%= render partial: 'copy_option', locals: {name: :hide_series, copy_options: copy_options, explanation: t(".hide_series"), details: t(".hide_series_details")} %>
-    <% end %>
-  </div>
+    </div>
+    <% needs_border = true %>
+  <% end %>
 
-  <div class="<%= "stepper-part#{copy_options.present? ? " stepper-border" : ""}" if defined?(copy_options) %>">
+  <div class="<%= course.new_record? ? "stepper-part#{needs_border ? " stepper-border" : ""}" : "card-supporting-text" %>">
     <div class="field form-group">
       <%= f.label :name, :class => "col-sm-3 control-label" %>
       <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
@@ -54,33 +61,11 @@
       <%= f.label :institution, :class => "col-sm-3 control-label" %>
       <div class="col-sm-6">
         <%= f.select :institution_id,
-                     options_for_select(Institution.all.sort_by(&:name).map {|i| [i.name, i.id]}, @course.institution_id),
+                     options_for_select(Institution.all.sort_by(&:name).map {|i| [i.name, i.id]}, course.institution_id),
                      {include_blank: t('.no_institution')},
                      {class: 'form-control'} %>
       </div>
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".institution-help_html" %></span>
-    </div>
-    <div class="field form-group">
-      <%= f.label :visibility, class: 'col-sm-3 control-label' %>
-      <div class="col-sm-6">
-        <%= f.select :visibility,
-                     options_for_select(Course.visibilities.keys.map {|k| [t("activerecord.attributes.course.visibilities.#{k}"), k]},
-                                        @course.visibility),
-                     {},
-                     {class: 'form-control'} %>
-      </div>
-      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-help_html" %></span>
-    </div>
-    <div class="field form-group">
-      <%= f.label :registration, class: 'col-sm-3 control-label' %>
-      <div class="col-sm-6">
-        <%= f.select :registration,
-                     options_for_select(Course.registrations.keys.map {|k| [t("activerecord.attributes.course.registrations.#{k}"), k]},
-                                        @course.registration),
-                     {},
-                     {class: 'form-control'} %>
-      </div>
-      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".registration-help_html" %></span>
     </div>
     <div class="field form-group">
       <%= f.label :description, :class => "col-sm-3 control-label" %>
@@ -94,11 +79,69 @@
         <div class="col-sm-6">
           <%= f.select :color,
                        options_for_select(Course.colors.keys.map {|k| [t("activerecord.attributes.course.colors.#{k}"), k]},
-                                          @course.color),
+                                          course.color),
                        {},
                        {class: 'form-control'} %>
         </div>
       </div>
     <% end %>
   </div>
+
+  <div class="<%= course.new_record? ? "stepper-part stepper-border" : "card-supporting-text card-border" %>">
+    <h4><%= t('.access') %></h4>
+    <div class="form-group">
+      <strong class="col-xs-12"><%= t('.visibility-label') %></strong>
+    </div>
+    <div class="field form-group">
+      <% Course.visibilities.keys.each.with_index do |v, i| %>
+        <div class="col-sm-6 col-sm-offset-3">
+          <%= f.radio_button :visibility, v %>
+          <%= f.label :visibility, t(".visibility-#{v}_html"), value: v, class: "checkbox-label" %>
+        </div>
+        <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-#{v}-help_html" %></span>
+      <% end %>
+    </div>
+    <div class="field form-group">
+      <div class="col-sm-offset-3 col-sm-6">
+        <div class="input-group" id="hidden_show_link_field">
+          <%= render partial: 'application/token_field', formats: [:html],
+                     locals: {
+                         name: :hidden_show_link,
+                         value: @course.new_record? ? t('.secret-link-placeholder') : course_url(@course, secret: @course.secret),
+                         reset_url: @course.new_record? ? '' : reset_token_course_path(@course)
+                     } %>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <strong class="col-xs-12"><%= t('.registration-label') %></strong>
+    </div>
+    <div class="field form-group">
+      <% Course.registrations.keys.each.with_index do |r, i| %>
+        <div class="col-sm-6 col-sm-offset-3">
+          <%= f.radio_button :registration, r %>
+          <%= f.label :registration, t(".registration-#{r}_html"), value: r, class: "checkbox-label" %>
+        </div>
+        <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".registration-#{r}-help_html" %></span>
+      <% end %>
+    </div>
+    <div class="form-group">
+      <strong class="col-xs-12"><%= t('.moderated-label') %></strong>
+    </div>
+    <div class="field form-group">
+      <div class="col-sm-offset-3 col-sm-6">
+        <%= f.radio_button :moderated, false %>
+        <%= f.label :moderated, t('.automatically'), value: false, class: 'checkbox-label' %>
+      </div>
+      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-automatically-help" %></span>
+      <div class="col-sm-offset-3 col-sm-6">
+        <%= f.radio_button :moderated, true %>
+        <%= f.label :moderated, t('.moderated'), value: true, class: 'checkbox-label' %>
+      </div>
+      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-moderated-help" %></span>
+    </div>
+  </div>
 <% end %>
+<script>
+    dodona.initCourseForm();
+</script>

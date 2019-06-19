@@ -7,104 +7,106 @@ const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
 
-let searchIndex = 0;
-let appliedIndex = 0;
 
 window.dodona.index = {};
 window.dodona.index.baseUrl = window.location.href;
 window.dodona.index.doSearch = () => {
 };
 
-function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
-    const filterCollections = _filterCollections || {};
-    const query = _query || $(QUERY_FILTER_ID).val();
-    const extraParams = _extraParams || {};
-
-    let url = updateURLParameter(baseUrl || window.location.href, FILTER_PARAM, query);
-
-    const tokens = $(TOKENS_FILTER_ID).tokenfield("getTokens");
-    for (let type in filterCollections) {
-        if (filterCollections.hasOwnProperty(type)) {
-            if (filterCollections[type].multi) {
-                url = updateArrayURLParameter(url, filterCollections[type].param, tokens
-                    .filter(el => el.type === type)
-                    .map(e => filterCollections[type].paramVal(e)));
-            } else {
-                const elem = tokens.filter(e => e.type === type)[0];
-                url = updateURLParameter(url, filterCollections[type].param, elem ? filterCollections[type].paramVal(elem) : "");
-            }
-        }
-    }
-
-    for (let key in extraParams) {
-        if (extraParams.hasOwnProperty(key)) {
-            url = updateURLParameter(url, key, extraParams[key]);
-        }
-    }
-
-    return url;
-}
-
-function search(baseUrl, _query, _filterCollections, extraParams) {
-    let url = addParametersToUrl(baseUrl, _query, _filterCollections, extraParams);
-    url = updateURLParameter(url, "page", 1);
-
-    const localIndex = ++searchIndex;
-
-    if (!baseUrl) {
-        window.history.replaceState(null, "Dodona", url);
-    }
-    $("#progress-filter").css("visibility", "visible");
-    fetch(updateURLParameter(url, "format", "js"), {
-        headers: {
-            "accept": "text/javascript",
-            "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-            "x-requested-with": "XMLHttpRequest",
-        },
-        credentials: "same-origin",
-    })
-        .then(resp => resp.text())
-        .then(data => {
-            if (appliedIndex < localIndex) {
-                appliedIndex = localIndex;
-                eval(data);
-            }
-            $("#progress-filter").css("visibility", "hidden");
-        });
-}
-
 function setBaseUrl(_baseUrl) {
     window.dodona.index.baseUrl = _baseUrl;
     window.dodona.index.doSearch();
 }
 
-
-function initFilter(_baseUrl, eager, _filterCollections) {
-    window.dodona.index.baseUrl = _baseUrl || window.location.href;
-    const filterCollections = _filterCollections || {};
-    let $queryFilter = $(QUERY_FILTER_ID);
-    window.dodona.index.doSearch = () => search(window.dodona.index.baseUrl, $queryFilter.typeahead("val"), filterCollections);
-    $queryFilter.keyup(() => delay(window.dodona.index.doSearch, 300));
-    let param = getURLParameter(FILTER_PARAM);
-    if (param !== "") {
-        $queryFilter.typeahead("val", param);
-    }
-
-    if (eager) {
-        window.dodona.index.doSearch();
-    }
-}
-
 function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections) {
+    let updateAddressBar = !_baseUrl;
+
     function init() {
         initTokens();
 
         if (doInitFilter) {
-            initFilter(_baseUrl, eager, filterCollections);
+            initFilter(updateAddressBar, _baseUrl, eager, filterCollections);
         }
 
         if (actions) {
             initActions();
+        }
+    }
+
+    function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
+        const filterCollections = _filterCollections || {};
+        const query = _query || $(QUERY_FILTER_ID).val();
+        const extraParams = _extraParams || {};
+
+        let url = updateURLParameter(baseUrl || window.location.href, FILTER_PARAM, query);
+
+        const tokens = $(TOKENS_FILTER_ID).tokenfield("getTokens");
+        for (let type in filterCollections) {
+            if (filterCollections.hasOwnProperty(type)) {
+                if (filterCollections[type].multi) {
+                    url = updateArrayURLParameter(url, filterCollections[type].param, tokens
+                        .filter(el => el.type === type)
+                        .map(e => filterCollections[type].paramVal(e)));
+                } else {
+                    const elem = tokens.filter(e => e.type === type)[0];
+                    url = updateURLParameter(url, filterCollections[type].param, elem ? filterCollections[type].paramVal(elem) : "");
+                }
+            }
+        }
+
+        for (let key in extraParams) {
+            if (extraParams.hasOwnProperty(key)) {
+                url = updateURLParameter(url, key, extraParams[key]);
+            }
+        }
+
+        return url;
+    }
+
+    let searchIndex = 0;
+    let appliedIndex = 0;
+
+    function search(updateAddressBar, baseUrl, _query, _filterCollections, extraParams) {
+        let url = addParametersToUrl(baseUrl, _query, _filterCollections, extraParams);
+        url = updateURLParameter(url, "page", 1);
+
+        const localIndex = ++searchIndex;
+
+        if (updateAddressBar) {
+            window.history.replaceState(null, "Dodona", url);
+        }
+        $("#progress-filter").css("visibility", "visible");
+        fetch(updateURLParameter(url, "format", "js"), {
+            headers: {
+                "accept": "text/javascript",
+                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                "x-requested-with": "XMLHttpRequest",
+            },
+            credentials: "same-origin",
+        })
+            .then(resp => resp.text())
+            .then(data => {
+                if (appliedIndex < localIndex) {
+                    appliedIndex = localIndex;
+                    eval(data);
+                }
+                $("#progress-filter").css("visibility", "hidden");
+            });
+    }
+
+    function initFilter(updateAddressBar, _baseUrl, eager, _filterCollections) {
+        window.dodona.index.baseUrl = _baseUrl || window.location.href;
+        const filterCollections = _filterCollections || {};
+        let $queryFilter = $(QUERY_FILTER_ID);
+        window.dodona.index.doSearch = () => search(updateAddressBar, window.dodona.index.baseUrl, $queryFilter.typeahead("val"), filterCollections);
+        $queryFilter.keyup(() => delay(window.dodona.index.doSearch, 300));
+        let param = getURLParameter(FILTER_PARAM);
+        if (param !== "") {
+            $queryFilter.typeahead("val", param);
+        }
+
+        if (eager) {
+            window.dodona.index.doSearch();
         }
     }
 
@@ -118,7 +120,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 if (data.js) {
                     eval(data.js);
                 } else {
-                    search(window.dodona.index.baseUrl);
+                    search(updateAddressBar, window.dodona.index.baseUrl);
                 }
             });
         }
@@ -153,14 +155,14 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                     }
                 }
             });
-            search(window.dodona.index.baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, extraParams);
+            search(updateAddressBar, window.dodona.index.baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, extraParams);
         }
 
         $actions.removeClass("hidden");
         if (searchOptions.length > 0) {
             $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.filter-options") + "</li>");
             searchOptions.forEach(function (action, id) {
-                let $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""} data-search_opt_id="${id}"}><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
+                let $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""} data-search_opt_id="${id}"><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (urlContainsSearchOpt(action)) {
@@ -203,7 +205,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         const $field = $(TOKENS_FILTER_ID);
 
         let doSearch = function () {
-            search(window.dodona.index.baseUrl, "", filterCollections);
+            search(updateAddressBar, window.dodona.index.baseUrl, "", filterCollections);
         };
 
         function validateLabel(e) {
@@ -326,4 +328,4 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     init();
 }
 
-export {initFilterIndex, initFilter, search, setBaseUrl};
+export {initFilterIndex, setBaseUrl};

@@ -23,7 +23,11 @@
 <% if filter_institutions %>
   <script type="text/javascript">
       $(function () {
-          dodona.addTokenToSearch("institutions", "<%= current_user.institution.name %>");
+          <% if @institution.present? %>
+            dodona.addTokenToSearch("institutions", "<%= @institution.name %>");
+          <% else %>
+            dodona.addTokenToSearch("institutions", "<%= current_user.institution.name %>");
+          <% end %>
       });
   </script>
 <% end %>

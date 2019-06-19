@@ -69,7 +69,7 @@ class SubmissionsController < ApplicationController
       can_submit &&= @submission.exercise.accessible?(current_user, @submission.course)
     end
     if can_submit && @submission.save
-      render json: {status: 'ok', id: @submission.id, url: submission_url(@submission, format: :json)}
+      render json: {status: 'ok', id: @submission.id, exercise_id: @submission.exercise_id, course_id: @submission.course_id, url: submission_url(@submission, format: :json)}
     else
       @submission.errors.add(:exercise, :not_permitted) unless can_submit
       render json: {status: 'failed', errors: @submission.errors}, status: :unprocessable_entity
@@ -138,14 +138,14 @@ class SubmissionsController < ApplicationController
     if @exercise
       @submissions = @submissions.of_exercise(@exercise)
       if @course
-        @submissions = @submissions.in_course(@course) if current_user&.member_of?(@course)
+        @submissions = @submissions.in_course(@course)
       elsif @series
-        @submissions = @submissions.in_course(@series.course) if current_user&.member_of?(@series.course)
+        @submissions = @submissions.in_course(@series.course)
       end
     elsif @series
-      @submissions = @submissions.in_series(@series) if current_user&.member_of?(@series.course)
+      @submissions = @submissions.in_series(@series)
     elsif @course
-      @submissions = @submissions.in_course(@course) if current_user&.member_of?(@course)
+      @submissions = @submissions.in_course(@course)
     end
 
     if @user.present? && @course.present?

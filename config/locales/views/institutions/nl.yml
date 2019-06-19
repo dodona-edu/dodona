@@ -2,7 +2,8 @@ nl:
   institutions:
     index:
       title: "Onderwijsinstellingen"
-      number_of_users: "# gebruikers"
+      number_of_users: "Gebruikers"
+      number_of_courses: "Cursussen"
       edit: "Onderwijsinstelling aanpassen"
     show:
       staff: "Lesgevers"

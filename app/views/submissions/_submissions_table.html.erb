@@ -21,4 +21,4 @@
   </table>
 </div>
 
-<center><%= page_navigation_links submissions, true, 'submissions', {exercise_id: exercise.try(:id)} %></center>
+<center><%= page_navigation_links submissions, true, 'submissions', {exercise_id: exercise.try(:id), user_id: local_assigns[:user].try(:id)} %></center>

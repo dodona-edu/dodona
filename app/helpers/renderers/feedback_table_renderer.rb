@@ -23,7 +23,7 @@ class FeedbackTableRenderer
     @code = submission.code
     @exercise = submission.exercise
     @exercise_id = submission.exercise_id
-    @programming_language = submission.exercise.programming_language&.name
+    @programming_language = submission.exercise.programming_language&.editor_name
   end
 
   def parse
@@ -320,7 +320,7 @@ class FeedbackTableRenderer
     @builder.div(id: 'editor-result') do
       @builder.text! code
     end
-    @builder << "<script>$(function () {dodona.loadResultEditor('#{@programming_language}', #{messages.to_json});});</script>"
+    @builder << "<script>$(function () {dodona.loadResultEditor('#{@programming_language || 'text'}', #{messages.to_json});});</script>"
   end
 
   def init_js

@@ -16,6 +16,7 @@ class CoursesController < ApplicationController
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
     @grouped_courses = @courses.group_by(&:year)
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
+    @institution = Institution.find(params[:institution_id]) if params[:institution_id]
     @title = I18n.t('courses.index.title')
   end
 

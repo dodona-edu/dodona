@@ -2,7 +2,8 @@ en:
   institutions:
     index:
       title: "Institutions"
-      number_of_users: "# users"
+      number_of_users: "Users"
+      number_of_courses: "Courses"
       edit: "Edit institution"
     show:
       staff: "Staff"

@@ -109,7 +109,7 @@
   </div>
   <nav class="col-md-1 hidden-xs hidden-sm hidden-print series-sidebar">
     <ul class="nav" data-spy="affix" data-offset-bottom="80">
-      <li class="header"><%= t ".exercise_series" %></li>
+      <li class="header ellipsis-overflow"><%= t ".exercise_series" %></li>
       <% @series.each do |series| %>
         <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
       <% end %>

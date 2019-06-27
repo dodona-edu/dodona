@@ -20,6 +20,7 @@ nl:
       programming_language: Programmeertaal
       post: Post
       event: Event
+      institution: Onderwijsinstelling
     attributes:
       api_token:
         description: Beschrijving

@@ -126,6 +126,7 @@ class SeriesController < ApplicationController
           series_url(@series, token: @series.access_token)
         end
     render partial: 'application/token_field', locals: {
+        container_name: :access_token_field,
         name: type,
         value: value,
         reset_url: reset_token_series_path(@series, type: type)

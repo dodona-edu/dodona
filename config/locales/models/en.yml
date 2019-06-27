@@ -20,6 +20,7 @@ en:
       programming_language: Programming Language
       post: Post
       event: Event
+      institution: Institution
     attributes:
       api_token:
         description: Description

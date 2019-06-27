@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'
     post '/toggle_demo_mode' => 'pages#toggle_demo_mode'
+    post '/toggle_dark_mode' => 'pages#toggle_dark_mode'
 
     concern :mediable do
       member do
@@ -60,6 +61,7 @@ Rails.application.routes.draw do
         get 'statistics'
         get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
+        get 'manage_series'
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'
@@ -121,6 +123,7 @@ Rails.application.routes.draw do
     resources :events, only: [:index]
 
     scope 'stats', controller: 'statistics' do
+      get 'heatmap', to: 'statistics#heatmap'
       get 'punchcard', to: 'statistics#punchcard'
     end
   end

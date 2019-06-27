@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'punchcard' %>
+  <%= javascript_pack_tag 'visualisations' %>
 <% end %>
 <h4><%= t ".punchcard" %></h4>
 <p class="h4-info-text"><%= t ".punchcard_details" %></p>
@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
     $(function () {
-        dodona.initPunchcard('<%= raw punchcard_path(user_id: @user&.id, course_id: @course&.id) %>', <%= @time_zone_offset / -60  %>);
+        dodona.initPunchcard('<%= raw punchcard_path(user_id: local_assigns[:user]&.id, course_id: local_assigns[:course]&.id) %>', <%= @time_zone_offset / -60  %>);
     });
 </script>
 

@@ -15,7 +15,7 @@ nl:
       title: Een repository met oefeningen toevoegen
     show:
       repository: Repository
-      webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank'>webhook</a> in zodat de oefeningen op Dodona automatisch geüpdatet worden bij elke commit:"
+      webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> in zodat de oefeningen op Dodona automatisch geüpdatet worden bij elke commit:"
       reprocess: Alle oefeningen herverwerken
       exercises: Oefeningen
     admins:

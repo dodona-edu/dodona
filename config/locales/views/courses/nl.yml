@@ -4,15 +4,28 @@ nl:
       show: Cursus bekijken
       members: Ingeschreven gebruikers
       edit: Cursus bewerken
-      submissions: Oplossingen voor deze cursus
-      statistics: "Statistieken voor deze cursus"
+      submissions: Ingediende oplossingen
+      statistics: Statistieken
     form:
       teacher-help: Optioneel. Kan gebruikers helpen om je cursus te vinden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je cursus correct gesorteerd zal worden.
-      institution-help_html: Een onderwijsinstelling selecteren zal de cursusregistraties <b>niet</b> beperken, maar kan gebruikers helpen om je cursus te vinden.
-      visibility-help_html: <b>Zichtbare</b> cursussen zijn voor iedereen zichtbaar in het cursusoverzicht. <b>Verborgen</b> cursussen worden niet opgelijst en vereisen een speciale toegangslink.
-      registration-help_html: Bij <b>open</b> cursussen worden registraties automatisch geaccepteerd. Bij <b>gemodereerde</b> cursussen moet elke registratie goedgekeurd worden door een cursusbeheerder. Bij <b>gesloten</b> cursussen zijn nieuwe registraties niet mogelijk.
+      institution-help_html: Een onderwijsinstelling selecteren kan gebruikers helpen om je cursus te vinden en kan ook gebruikt worden om de zichtbaarheid van en registraties voor deze cursus te beperken.
+      visibility-visible_for_all-help_html: Deze cursus wordt opgenomen in het publieke cursusoverzicht en iedereen kan de inhoud bekijken.
+      visibility-visible_for_institution-help_html: Deze cursus is enkel toegankelijk voor gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> en via onderstaande directe link.
+      visibility-hidden-help_html: Deze cursus wordt niet opgenomen in het publieke cursusoverzicht en is enkel toegankelijk via onderstaande directe link.
+      registration-open_for_all-help_html: Iedereen kan zich voor deze cursus registreren.
+      registration-open_for_institution-help_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> kunnen zich voor deze cursus registreren.
+      registration-closed-help_html: Er zijn geen nieuwe registraties mogelijk.
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
+      visibility-label: Voor wie is deze cursus zichtbaar?
+      registration-label: Wie kan zich registreren voor deze cursus?
+      moderated-label: Hoe wil je nieuwe registraties goedkeuren?
+      visibility-visible_for_all_html: Iedereen
+      visibility-visible_for_institution_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span>
+      visibility-hidden_html: Enkel geregistreerde gebruikers
+      registration-open_for_all_html: Iedereen
+      registration-open_for_institution_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span>
+      registration-closed_html: Niemand
       no_institution: "Geen onderwijsinstelling"
       copy_admins: "Cursusbeheerders"
       copy_options: "Opties voor het kopieren"
@@ -21,10 +34,16 @@ nl:
       copy_exercises: "Oefeningen"
       copy_deadlines: "Deadlines"
       hide_series: "Zet de gekopieerde reeksen op verborgen"
-      hide_series_details: "Dit kan nuttig zijn als je bijvoorbeeld de reeksen week per week toegangkelijk wil maken."
+      hide_series_details: "Dit kan nuttig zijn als je bijvoorbeeld de reeksen week per week toegankelijk wil maken."
       other_copy_options: "Andere instellingen"
       copy_series: "Oefeningenreeksen"
-      copy_series_details: "De titel en beschrijving van de oefeningenreeksen worden altijd gekopieerd. Hieronder kan je aangeven of je ook de oefeningen zelf en de deadlines wil kopiëren."
+      copy_series_details: "De titel en beschrijving van de oefeningenreeksen worden altijd gekopieerd. Hieronder kan je aangeven of je ook de oefeningen zelf en de deadlines wil overnemen."
+      access: "Toegangsrechten"
+      moderated: "Gemodereerd"
+      automatically: "Automatisch"
+      moderated-automatically-help: Geregistreerde gebruikers worden automatisch goedgekeurd.
+      moderated-moderated-help: Geregistreerde gebruikers moeten worden goedgekeurd door een cursusbeheerder.
+      secret-link-placeholder: "De link wordt gegenereerd na aanmaak van deze cursus"
     index:
       title: Alle cursussen
       users: "Gebruikers"
@@ -44,19 +63,21 @@ nl:
       confidential: Geheime link
       series_in_course: "Reeksen in deze cursus"
       series_reordering_help_html: "Je kan de reeksen herordenen door ze te verslepen met de icoontjes aan de linkerkant van de tabel. Voor studenten is een <b>omgekeerd chronologische</b> volgorde waarschijnlijk het gemakkelijkste. Hierbij staan recente reeksen bovenaan de pagina en hoeven ze niet telkens naar onder te scrollen."
+      update: "Aanpassen"
+      series_reordering_moved_help_html: "Wou je de reeksen in dit vak herordenen? Deze functionaliteit is verplaatst naar een <a href=\"%{course_url}\">aparte pagina</a>."
     show:
       course: Cursus
-      invitation_link: Registratielink
-      invitation_link_help: 'Met deze link worden gebruikers naar een pagina gebracht waar ze zich direct kunnen registreren voor deze cursus.'
-      visibility-visible-info_html: 'Deze cursus is <strong>zichtbaar</strong>: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'
-      visibility-hidden-info_html: 'Deze cursus is <strong>verborgen</strong>: ze verschijnt niet in het cursusoverzicht en enkel gebruikers met de registratielink kunnen zich registreren.'
-      registration-open-info_html: 'De registraties staan <strong>open</strong>: gebruikers die op de registratie-knop klikken zijn onmiddellijk geregistreerd.'
-      registration-moderated-info_html: 'De registraties worden <strong>gemodereerd</strong>: gebruikers die zich registreren komen op de wachtlijst terecht en moeten goedgekeurd worden door een cursusbeheerder voor ze geregistreerd zijn.'
-      registration-closed-info_html: 'De registraties zijn <strong>gesloten</strong>: niemand kan zich nog registreren tot de registratie-instelling wordt aangepast. Gebruikers die geregistreerd zijn behouden hun toegang.'
-
-      subscribe: registreren
-      request_registration: registratieverzoek indienen
-      unsubscribe: uitschrijven
+      hidden_show_link: 'Geheime link'
+      visibility-visible_for_all-info: 'Deze cursus is zichtbaar voor iedereen: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'
+      visibility-visible_for_institution-info: 'Deze cursus is zichtbaar voor leden van %{institution}: voor hen wordt deze cursus opgelijst in het cursusoverzcht en is de inhoud zichtbaar. Anderen kunnen enkel de inhoud van deze cursus zien via de geheime link'
+      visibility-hidden-info: 'Deze cursus is verborgen: ze verschijnt niet in het cursusoverzicht en gebruikers kunnen deze cursus enkel zien via de geheime link.'
+      registration-open_for_all-info: 'De registraties staan open voor iedereen: gebruikers die op de registratie-knop klikken worden geregistreerd.'
+      registration-open_for_institution-info: 'De registraties staan open voor gebruikers van %{institution}: enkel zij kunnen zich registreren voor deze cursus.'
+      registration-closed-info: 'De registraties zijn gesloten: niemand kan zich nog registreren tot de registratie-instelling wordt aangepast. Gebruikers die geregistreerd zijn behouden hun toegang.'
+      moderated-info: 'Deze cursus is gemodereerd: Gebruikers die zich registreren moeten expliciet goedgekeurd worden door een cursusbeheerder.'
+      subscribe: Registreren
+      request_registration: Registratieverzoek indienen
+      unsubscribe: Uitschrijven
       exercise_series: Oefeningenreeksen
       no_series_yet: 'Deze cursus bevat nog geen reeksen met oefeningen. Klik op de knop "reeks aanmaken" om aan de slag te gaan.'
       users: Gebruikers
@@ -79,24 +100,25 @@ nl:
       taught_by_at: "Gegeven door %{teacher} aan %{institution}."
       taught_at: "Gegeven aan %{institution}."
       copy: "Deze cursus kopiëren"
+      manage_series: "Reeksen beheren"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
+      registration-closed: Je kan momenteel niet registreren voor deze cursus.
       page_title: Registratie
       not_a_member: Je bent niet geregistreerd voor deze cursus.
       already_a_member: Je bent al geregistreerd.
       pending: Je staat op de wachtlijst.
       remove_from_pending: Registratieverzoek annuleren
       moderated: Je registratie moet goedgekeurd worden door een cursusbeheerder voor je toegang krijgt tot deze cursus.
-      explanation_html: 'Dit is de registratiepagina voor de cursus <strong>%{course_name}</strong>.'
-      instruction: 'Klik op de knop om je te registreren voor deze cursus.'
-      closed: Deze cursus is gesloten en aanvaardt geen nieuwe registraties.
-      sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot de cursus zodra een cursusbeheerder je registratie accepteert.
+      closed: Je kan momenteel niet registreren voor deze cursus.
+      sign_up_successfully: Je bent geregistreerd op de wachtlijst. Je krijgt toegang tot deze cursus zodra een cursusbeheerder je registratie accepteert.
       subscribed_successfully: Registratie succesvol
       unsubscribed_successfully: Uitschrijving successvol
       subscription_failed: Registratie mislukt
       unsubscription_failed: Uitschrijven mislukt
       not_logged_in: Je moet ingelogd zijn om je te registreren
       key_mismatch: De sleutel kwam niet overeen
+      registration_closed: "Registratie gesloten."
     scoresheet:
       explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
     favorite:
@@ -113,7 +135,7 @@ nl:
       submitted_solutions: Ingediende oplossingen
       more_statistics: "Meer statistieken >"
     create:
-      added_private_exercises: "Er werden privé oefeningen toegevoegd tijdens het aanmaken van de cursus. Om deze oefeningen te kunnen gebruiken zal deze cursus toestemming moeten krijgen van de relevante repository's."
+      added_private_exercises: "Er werden privé oefeningen toegevoegd tijdens het aanmaken van deze cursus. Om deze oefeningen te kunnen gebruiken zal deze cursus toestemming moeten krijgen van de relevante repository's."
     copy_courses_table:
       info: "Cursus"
       users: "# gebruikers"

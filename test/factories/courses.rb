@@ -9,20 +9,22 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  description    :text(65535)
-#  visibility     :integer          default("visible")
-#  registration   :integer          default("open")
+#  visibility     :integer          default("visible_for_all")
+#  registration   :integer          default("open_for_all")
 #  color          :integer
 #  teacher        :string(255)      default("")
 #  institution_id :bigint(8)
 #  search         :string(4096)
+#  moderated      :boolean          default(FALSE), not null
 #
 
 FactoryBot.define do
   factory :course do
     name { "#{Faker::Hacker.adjective.titlecase} Programming" }
     description { Faker::Hacker.say_something_smart }
-    visibility { 'visible' }
-    registration { 'open' }
+    visibility {'visible_for_all'}
+    registration {'open_for_all'}
+    moderated {false}
     teacher { "Prof. #{Faker::Name.first_name} #{Faker::Name.last_name}" }
 
     transient do

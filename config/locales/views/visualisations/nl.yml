@@ -2,4 +2,7 @@ nl:
   visualizations:
     punchcard:
       punchcard: "Punchcard"
-      punchcard_details: "Deze grafiek geeft weer wanneer oplossingen werden ingediend."
+      punchcard_details: "Deze grafiek geeft weer op welk moment van de week oplossingen werden ingediend."
+    heatmap:
+      heatmap: "Heatmap"
+      heatmap_details: "Deze grafiek geeft weer op welke dagen er het meest werd ingediend."

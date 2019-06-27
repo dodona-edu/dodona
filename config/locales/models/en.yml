@@ -20,6 +20,7 @@ en:
       programming_language: Programming Language
       post: Post
       event: Event
+      institution: Institution
     attributes:
       api_token:
         description: Description
@@ -31,12 +32,14 @@ en:
         secret: Secret
         visibility: Visibility
         registration: Registration
+        moderated: Moderated
         visibilities:
-          visible: Visible
+          visible_for_all: Visible for everyone
+          visible_for_institution: Only visible for members of the configured institution
           hidden: Hidden
         registrations:
-          open: Open
-          moderated: Moderated
+          open_for_all: Open for everyone
+          open_for_institution: Only open for members of the configured institution
           closed: Closed
         color: Color
         colors:
@@ -143,6 +146,7 @@ en:
           saml: SAML
           office365: Office 365
           smartschool: Smartschool
+          google_oauth2: G Suite
       event:
         event_type: Type
         user: User

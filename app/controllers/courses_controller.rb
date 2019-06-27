@@ -13,26 +13,23 @@ class CoursesController < ApplicationController
     @courses = policy_scope(Course.all)
     @courses = apply_scopes(@courses)
     @copy_courses = params[:copy_courses]
-    if @copy_courses && !current_user.zeus?
-      # CoursePolicy#show_series? over all courses in SQL form
-      @courses = @courses.joins(:course_memberships)
-      @courses = @courses.where(course_memberships: {
-          user_id: current_user.id,
-          status: [:student, :course_admin]
-      }).or(@courses.where(registration: :open))
-    end
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
     @grouped_courses = @courses.group_by(&:year)
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
+    @institution = Institution.find(params[:institution_id]) if params[:institution_id]
     @title = I18n.t('courses.index.title')
   end
 
   # GET /courses/1
   # GET /courses/1.json
   def show
+    if @course.hidden? || (@course.visible_for_institution? && current_user&.institution != @course.institution)
+      redirect_unless_secret_correct
+      return if performed?
+    end
     @title = @course.name
     @series = policy_scope(@course.series)
-    @series_loaded = 3
+    @series_loaded = params[:secret].present? ? @course.series.count : 3
   end
 
   # GET /courses/new
@@ -190,18 +187,30 @@ class CoursesController < ApplicationController
         format.html {redirect_to(@course)}
         format.json {render json: {errors: ['already subscribed']}, status: :unprocessable_entity}
       else
+        status = nil
+        success_method = method(:subscription_succeeded_response)
+        if @course.moderated
+          status = 'pending'
+          success_method = method(:signup_succeeded_response)
+        end
+
         case @course.registration
-        when 'open'
-          if try_to_subscribe_current_user
-            subscription_succeeded_response format
+        when 'open_for_all'
+          if try_to_subscribe_current_user status: status
+            success_method.call(format)
           else
             subscription_failed_response format
           end
-        when 'moderated'
-          if try_to_subscribe_current_user status: 'pending'
-            signup_succeeded_response format
+        when 'open_for_institution'
+          if @course.institution == current_user.institution
+            if try_to_subscribe_current_user status: status
+              success_method.call(format)
+            else
+              subscription_failed_response format
+            end
           else
-            subscription_failed_response format
+            format.html {redirect_to(course_url(@course, secret: params[:secret]), alert: I18n.t('courses.registration.closed'))}
+            format.json {render json: {errors: ['course closed']}, status: :unprocessable_entity}
           end
         when 'closed'
           format.html {redirect_to(@course, alert: I18n.t('courses.registration.closed'))}
@@ -212,8 +221,7 @@ class CoursesController < ApplicationController
   end
 
   def registration
-    @secret = params[:secret]
-    redirect_unless_secret_correct
+    redirect_to(@course, secret: params[:secret])
   end
 
   def favorite
@@ -271,11 +279,16 @@ class CoursesController < ApplicationController
   def reset_token
     @course.generate_secret
     @course.save
-    render partial: 'token_field', locals: {
-        name: :registration_link,
-        value: registration_course_url(@course, @course.secret),
+    render partial: 'application/token_field', locals: {
+        container_name: :hidden_show_link_field,
+        name: :hidden_show_link,
+        value: course_url(@course, secret: @course.secret),
         reset_url: reset_token_course_path(@course)
     }
+  end
+
+  def manage_series
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.show.manage_series'), '#']]
   end
 
   def reorder_series
@@ -303,14 +316,10 @@ class CoursesController < ApplicationController
   end
 
   def redirect_unless_secret_correct
-    if !current_user
-      redirect_back(fallback_location: root_url, notice: I18n.t('courses.registration.not_logged_in'))
-    elsif current_user.member_of?(@course)
-      redirect_to @course
-    elsif current_user.zeus?
+    if current_user&.member_of?(@course) || current_user&.zeus?
       nil
     elsif params[:secret] != @course.secret
-      redirect_back(fallback_location: root_url, alert: I18n.t('courses.registration.key_mismatch'))
+      raise Pundit::NotAuthorizedError, I18n.t('courses.registration.key_mismatch')
     end
   end
 

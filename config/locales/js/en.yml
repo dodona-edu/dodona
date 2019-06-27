@@ -31,11 +31,50 @@ en:
     statuses: Statuses
     event_types: Event types
     label-undeletable: This label can't be deleted because it was set in the dirconfig file of a parent directory of the exercise.
-    monday: Monday
-    tuesday: Tuesday
-    wednesday: Wednesday
-    thursday: Thursday
-    friday: Friday
-    saturday: Saturday
-    sunday: Sunday
+    configured-institution: the configured institution
     loading: Loading...
+    submissions_on: "submissions on"
+    months:
+      long:
+        jan: January
+        feb: February
+        mar: March
+        apr: April
+        may: May
+        jun: June
+        jul: July
+        aug: August
+        sep: September
+        oct: October
+        nov: November
+        dec: December
+      short:
+        jan: Jan
+        feb: Feb
+        mar: Mar
+        apr: Apr
+        may: May
+        jun: Jun
+        jul: Jul
+        aug: Aug
+        sep: Sep
+        oct: Oct
+        nov: Nov
+        dec: Dec
+    weekdays:
+      long:
+        mon: Monday
+        tue: Tuesday
+        wed: Wednesday
+        thu: Thursday
+        fri: Friday
+        sat: Saturday
+        sun: Sunday
+      short:
+        mon: Mo
+        tue: Tu
+        wed: We
+        thu: Th
+        fri: Fr
+        sat: Sa
+        sun: Su

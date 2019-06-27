@@ -181,7 +181,46 @@ function initCourseShow() {
     init();
 }
 
-function initCourseEdit() {
+function initCourseForm() {
+    function init() {
+        initInstitutionRelatedSelects();
+    }
+
+    function initInstitutionRelatedSelects() {
+        const institutionSelect = $("#course_institution_id");
+        const visibleForAll = $("#course_visibility_visible_for_all");
+        const visibleForInstitution = $("#course_visibility_visible_for_institution");
+        const registrationForAll = $("#course_registration_open_for_all");
+        const registrationForInstitution = $("#course_registration_open_for_institution");
+
+        function changeListener() {
+            if (!institutionSelect.val()) {
+                if (visibleForInstitution.is(":checked")) {
+                    visibleForAll.prop("checked", true);
+                }
+
+                if (registrationForInstitution.is(":checked")) {
+                    registrationForAll.prop("checked", true);
+                }
+
+                visibleForInstitution.attr("disabled", true);
+                registrationForInstitution.attr("disabled", true);
+                $(".fill-institution").html(I18n.t("js.configured-institution"));
+            } else {
+                visibleForInstitution.removeAttr("disabled");
+                registrationForInstitution.removeAttr("disabled");
+                $(".fill-institution").html(institutionSelect.find("option:selected").html());
+            }
+        }
+
+        setTimeout(changeListener);
+        institutionSelect.on("change", changeListener);
+    }
+
+    init();
+}
+
+function initSeriesReorder() {
     function init() {
         initDragAndDrop();
     }
@@ -290,4 +329,4 @@ function initCourseNew() {
     init();
 }
 
-export {initCourseEdit, initCourseNew, initCourseShow, initCourseMembers, loadUsers};
+export {initSeriesReorder, initCourseForm, initCourseNew, initCourseShow, initCourseMembers, loadUsers};

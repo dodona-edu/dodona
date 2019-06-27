@@ -3,7 +3,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # who should use another sign in method
   UGENT_TID = 'd7811cde-ecef-496c-8f91-a1786241b99c'.freeze
   WAREGEM_TID = '9fdf506a-3be0-4f07-9e03-908ceeae50b4'.freeze
-  BLACKLIST = [UGENT_TID, WAREGEM_TID].freeze
+  TSM_TID = 'https://tsm.smartschool.be'.freeze
+  CVO_TSM_TID = 'https://cvotsm.smartschool.be'.freeze
+  BLACKLIST = [UGENT_TID, WAREGEM_TID, TSM_TID, CVO_TSM_TID].freeze
 
   def smartschool
     oauth_login
@@ -13,10 +15,15 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     oauth_login
   end
 
+  def google_oauth2
+    oauth_hash[:info][:institution] = oauth_hash.extra[:raw_info][:hd]
+    oauth_login
+  end
+
   def failure
     reason = request.params['error_message'] \
-                 || request.params['error_description'] \
-                 || t('devise.omniauth_callbacks.unknown_failure')
+                  || request.params['error_description'] \
+                  || t('devise.omniauth_callbacks.unknown_failure')
     if is_navigational_format?
       set_flash_message :notice,
                         :failure,
@@ -47,7 +54,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def institution_matches?(user)
     return true if user.institution.nil?
     if user.institution&.identifier != institution_identifier \
-          || user.institution&.provider != provider
+           || user.institution&.provider != provider
       user.errors.add(:institution, 'mismatch')
       false
     else
@@ -56,11 +63,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def oauth_login
-    raise 'No institution found' if institution_identifier.blank?
-
     # Blacklist: institutions who should use another
     # login method
-    if BLACKLIST.include?(institution_identifier)
+    if institution_identifier.blank?
+      no_institution_found!
+    elsif BLACKLIST.include?(institution_identifier)
       handle_blacklisted_institutions!
     else
       user = User.from_email(oauth_email)
@@ -95,7 +102,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def try_login!(user)
     raise 'User should not be nil here' if user.nil?
     if institution_matches?(user)
-      user.update_from_oauth(oauth_hash)
+      user.update_from_oauth(oauth_hash, Institution.from_identifier(institution_identifier))
       if user.errors.none?
         sign_in_and_redirect user, event: :authentication
         if is_navigational_format?
@@ -140,6 +147,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # If an UGent-user logs in using office365,
       # redirect to saml login
       redirect_to sign_in_path(idp: 'UGent')
+    elsif institution_identifier == TSM_TID || institution_identifier == CVO_TSM_TID
+      redirect_to user_office365_omniauth_authorize_path
     end
   end
 
@@ -162,5 +171,14 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     ApplicationMailer.with(authinfo: oauth_hash, errors: errors)
         .institution_creation_failed
         .deliver_later
+  end
+
+  def no_institution_found!
+    set_flash_message \
+        :notice,
+        :failure,
+        kind: provider,
+        reason: I18n.t('pages.sign_in_page.has_to_have_institution')
+    redirect_to sign_in_path
   end
 end

@@ -2,5 +2,7 @@ smartschool_client_id: foo
 smartschool_client_secret: bar
 office365_client_id: baz
 office365_client_secret: qux
+google_client_id: baz
+google_client_secret: qux
 recaptcha_site_key: quux
 recaptcha_secret_key: corge

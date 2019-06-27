@@ -5,11 +5,12 @@ class CoursePolicy < ApplicationPolicy
         scope
       elsif user
         @scope = scope.joins(:course_memberships)
-        scope.where(visibility: :visible).or(scope.where(course_memberships: {
-            status: :course_admin, user_id: user.id
-        })).distinct
+        scope.where(visibility: :visible_for_all)
+            .or(scope.where(institution: user.institution, visibility: :visible_for_institution))
+            .or(scope.where(course_memberships: {status: %i[student course_admin], user_id: user.id}))
+            .distinct
       else
-        scope.where(visibility: :visible)
+        scope.where(visibility: :visible_for_all)
       end
     end
   end
@@ -19,15 +20,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def show?
-    if record.hidden?
-      user&.zeus? || user&.member_of?(record)
-    else
-      true
-    end
-  end
-
-  def show_series?
-    user&.zeus? || record.open? || user&.member_of?(record)
+    true
   end
 
   def create?
@@ -35,7 +28,11 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def copy?
-    create? && show_series?
+    create? &&
+        user&.zeus? ||
+        record.visible_for_all? ||
+        (record.visible_for_institution? && record.institution == user&.institution) ||
+        record.subscribed_members.include?(user)
   end
 
   def update?
@@ -110,14 +107,22 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
-  def punchcard?
+  def manage_series?
     course_admin?
+  end
+
+  def punchcard?
+    statistics?
+  end
+
+  def heatmap?
+    statistics?
   end
 
   def permitted_attributes
     # record is the Course class on create
     if course_admin? || (record == Course && user&.admin?)
-      %i[name year description visibility registration color teacher institution_id]
+      %i[name year description visibility registration color teacher institution_id moderated]
     else
       []
     end

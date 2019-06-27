@@ -3,6 +3,8 @@ en:
     navbar:
       disable_demo_mode: "Disable demo mode"
       enable_demo_mode: "Enable demo mode"
+      disable_dark_mode: "Disable dark mode"
+      enable_dark_mode: "Enable dark mode"
   layout:
     head:
       description: Learn to code for secondary and higher education.
@@ -34,7 +36,7 @@ en:
       news: News
       my_courses: My courses
       log_in: Sign in
-      log_out: Log out
+      log_out: Sign out
     footer:
       ugent: Ghent University
       your_data: Your data

@@ -6,6 +6,19 @@
   <div class="col-sm-10 col-xs-12 col-sm-offset-1">
     <div class="card">
       <div class="card-title card-title-colored">
+        <% if !@course.open_for_all? || @course.moderated %>
+          <% title = [] %>
+          <% title.push t(".registration-#{@course.registration}-info", institution: @course.institution&.name) unless @course.open_for_all? %>
+          <% title.push t(".moderated-info") if @course.moderated %>
+          <h2 class='card-title-text pull-right' title='<%= title.join("\n") %>'>
+            <i class="mdi mdi-account-remove-outline"></i>
+          </h2>
+        <% end %>
+        <% unless @course.visible_for_all? %>
+          <h2 class='card-title-text pull-right' title='<%= t ".visibility-#{@course.visibility}-info", institution: @course.institution&.name %>'>
+            <i class="mdi mdi-eye-off-outline"></i>
+          </h2>
+        <% end %>
         <h2 class="card-title-text">
           <%= @course.name %> (<%= @course.formatted_year %>)
         </h2>
@@ -36,27 +49,8 @@
       <% if current_user&.course_admin?(@course) %>
         <div class="card-supporting-text card-border">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-12">
               <%= render 'user_stats' %>
-            </div>
-            <div class="col-md-6">
-              <p>
-                <%= t ".invitation_link" %>
-                <i title="<%= t ".invitation_link_help" %>" data-toggle="tooltip" data-placement="right" class="material-icons md-18 material-icons-info">info</i>
-              <div class="input-group">
-                <%= text_field_tag :registration_link, registration_course_url(@course, @course.secret), readonly: true, class: 'form-control' %>
-                <span class="input-group-btn">
-                    <%= clipboard_button_for :registration_link %>
-                  </span>
-              </div>
-              <div class="admin-card-info">
-                <span class="help-block">
-                  <%= t ".visibility-#{@course.visibility}-info_html" %>
-                </span>
-                <span class="help-block">
-                  <%= t ".registration-#{@course.registration}-info_html" %>
-                </span>
-              </div>
             </div>
           </div>
         </div>
@@ -88,41 +82,38 @@
       <% end %>
 
     </div>
-    <% if policy(@course).show_series? %>
-      <div class="page-subtitle">
-        <a class="anchor" id="series"></a>
-        <h3><%= t ".exercise_series" %></h3>
-        <div class="flex-spacer"></div>
-        <div>
-          <% if policy(@course).add_series? %>
-            <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
-              <i class="material-icons icon">add</i><span class='text'><%= t("series.new.title") %></span>
-            <% end %>
+    <div class="page-subtitle">
+      <a class="anchor" id="series"></a>
+      <h3><%= t ".exercise_series" %></h3>
+      <div class="flex-spacer"></div>
+      <div>
+        <% if policy(@course).manage_series? %>
+          <%= link_to manage_series_course_path(@course), title: t(".manage_series"), class: "btn with-text btn-primary btn-fab-extended" do %>
+            <i class="mdi mdi-playlist-edit icon"></i>
+            <span class='text'><%= t(".manage_series") %></span>
           <% end %>
-        </div>
-      </div>
-      <% if @series.empty? %>
-        <p class="lead text-center"><%= t ".no_series_yet" %></p>
-      <% end %>
-      <div id="series-listing">
-        <% @series.first(@series_loaded).each do |series| %>
-          <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
-        <% end %>
-        <% @series.offset(@series_loaded).each do |series| %>
-          <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
         <% end %>
       </div>
+    </div>
+    <% if @series.empty? %>
+      <p class="lead text-center"><%= t ".no_series_yet" %></p>
     <% end %>
+    <div id="series-listing">
+      <% @series.first(@series_loaded).each do |series| %>
+        <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
+      <% end %>
+      <% @series.offset(@series_loaded).each do |series| %>
+        <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
+      <% end %>
+    </div>
   </div>
   <nav class="col-md-1 hidden-xs hidden-sm hidden-print series-sidebar">
-    <% if policy(@course).show_series? %>
-      <ul class="nav" data-spy="affix" data-offset-bottom="80">
-      <li class="header"><%= t ".exercise_series" %></li>
+    <ul class="nav" data-spy="affix" data-offset-bottom="80">
+      <li class="header ellipsis-overflow"><%= t ".exercise_series" %></li>
       <% @series.each do |series| %>
         <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
       <% end %>
-      </ul>
-    <% end %>
+    </ul>
   </nav>
 </div>
 <script type="text/javascript">

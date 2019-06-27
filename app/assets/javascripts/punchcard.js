@@ -6,7 +6,7 @@ const labelsX = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1
 
 function initPunchcard(url, timezoneOffset) {
     // If this is defined outside of a function, the locale always defaults to "en".
-    const labelsY = ["js.monday", "js.tuesday", "js.wednesday", "js.thursday", "js.friday", "js.saturday", "js.sunday"].map(k => I18n.t(k));
+    const labelsY = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(k => I18n.t(`js.weekdays.long.${k}`));
 
     const container = d3.select(containerSelector);
     const width = container.node().getBoundingClientRect().width;
@@ -83,8 +83,12 @@ function renderCard(data, unitSize, chart, x, y) {
     const updates = circles.enter().append("circle");
     updates.attr("cx", d => x(parseInt(d.key.split(",")[1])))
         .attr("cy", d => y(parseInt(d.key.split(",")[0])))
-        .attr("r", d => radius(d.value))
-        .append("svg:title")
+        .transition()
+        .delay(d => 500 + 20 * (parseInt(d.key.split(",")[0]) + parseInt(d.key.split(",")[1])))
+        .duration(800)
+        .ease(d3.easeBackOut)
+        .attr("r", d => radius(d.value));
+    updates.append("svg:title")
         .text(d => d.value);
     circles.exit().remove();
 }

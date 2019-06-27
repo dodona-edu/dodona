@@ -7,7 +7,8 @@
       <div>
         <% if policy(Course).new? %>
           <%= link_to new_course_path, title: t("courses.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
-            <i class="material-icons icon">add</i><span class='text'><%= t("courses.new.title") %></span>
+            <i class="mdi mdi-plus icon"></i>
+            <span class='text'><%= t("courses.new.title") %></span>
           <% end %>
         <% end %>
       </div>
@@ -22,7 +23,11 @@
 <% if filter_institutions %>
   <script type="text/javascript">
       $(function () {
-          dodona.addTokenToSearch("institutions", "<%= current_user.institution.name %>");
+          <% if @institution.present? %>
+            dodona.addTokenToSearch("institutions", "<%= @institution.name %>");
+          <% else %>
+            dodona.addTokenToSearch("institutions", "<%= current_user.institution.name %>");
+          <% end %>
       });
   </script>
 <% end %>

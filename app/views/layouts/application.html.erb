@@ -24,8 +24,13 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
-  <link href='https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css' rel='stylesheet' type='text/css'>
-  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <link href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css"
+        rel="stylesheet" type='text/css'>
+  <%= stylesheet_link_tag "application#{session[:dark] ? '-dark' : ''}", media: 'all' %>
+  <script>
+      window.dodona = window.dodona || {};
+      window.dodona.darkMode = <%= session.include?(:dark) && session[:dark] %>;
+  </script>
   <%= javascript_pack_tag 'application' %>
   <%= javascript_include_tag 'application' %>
   <%= yield :javascripts %>

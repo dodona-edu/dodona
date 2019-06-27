@@ -145,6 +145,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             editor.resize(true);
         });
 
+        // secure external links
+        $(".exercise-description a[target='_blank']").each(function () {
+            $(this).attr("rel", "noopener");
+        });
+
         // export function
         window.dodona.feedbackLoaded = feedbackLoaded;
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
@@ -154,6 +159,9 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         // init editor
         editor = ace.edit("editor-text");
         editor.getSession().setMode("ace/mode/" + programmingLanguage);
+        if (window.dodona.darkMode) {
+            editor.setTheme("ace/theme/twilight");
+        }
         editor.setOptions({
             showPrintMargin: false,
             enableBasicAutocompletion: true,
@@ -203,7 +211,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $exerciseFeedbackLink.attr("data-submission_id", submissionId);
     }
 
-    function feedbackTableLoaded(userId) {
+    function feedbackTableLoaded(userId, exerciseId, courseId) {
         $("a.load-submission").attr("data-remote", "true");
         if (lastSubmission) {
             let $submissionRow = $("#submission_" + lastSubmission);
@@ -213,7 +221,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     lastTimeout = (lastTimeout || 0) + 1000;
                     lastTimeout = lastTimeout >= 5000 ? 4000 : lastTimeout;
                     ga("send", "pageview");
-                    $.get(`submissions.js?user_id=${userId}`);
+                    let url = `/submissions.js?user_id=${userId}&exercise_id=${exerciseId}`;
+                    if (courseId !== undefined) {
+                        url += `&course_id=${courseId}`;
+                    }
+                    $.get(url);
                 }, (lastTimeout || 0) + 1000);
             } else {
                 lastTimeout = 0;
@@ -244,7 +256,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         lastSubmission = data.id;
         showNotification(I18n.t("js.submission-saved"));
         ga("send", "pageview");
-        $.get(`submissions.js?user_id=${userId}`);
+        let url = `/submissions.js?user_id=${userId}&exercise_id=${data.exercise_id}`;
+        if (data.course_id) {
+            url += `&course_id=${data.course_id}`;
+        }
+        $.get(url);
         $("#exercise-submission-link").tab("show");
     }
 

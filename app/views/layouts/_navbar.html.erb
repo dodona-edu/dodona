@@ -36,12 +36,21 @@
               <li class="dropdown-header"><%= current_user.full_name %></li>
               <li><%= link_to t("layout.menu.profile"), current_user %></li>
               <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
-              <% if policy(:pages).toggle_demo_mode? %>
+              <% if policy(:pages).toggle_demo_mode? || policy(:pages).toggle_dark_mode? %>
                 <li role="separator" class="divider"></li>
+              <% end %>
+              <% if policy(:pages).toggle_demo_mode? %>
                 <% if Current.demo_mode %>
                   <li><%= link_to t(".disable_demo_mode"), toggle_demo_mode_path, remote: true, method: "POST" %></li>
                 <% else %>
                   <li><%= link_to t(".enable_demo_mode"), toggle_demo_mode_path, remote: true, method: "POST" %></li>
+                <% end %>
+              <% end %>
+              <% if policy(:pages).toggle_dark_mode? %>
+                <% if session[:dark] %>
+                  <li><%= link_to t(".disable_dark_mode"), toggle_dark_mode_path, remote: true, method: "POST" %></li>
+                <% else %>
+                  <li><%= link_to t(".enable_dark_mode"), toggle_dark_mode_path, remote: true, method: "POST" %></li>
                 <% end %>
               <% end %>
               <li role="separator" class="divider"></li>

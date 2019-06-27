@@ -3,6 +3,10 @@ nl:
     sign_in_page:
       select-institution: "Selecteer je onderwijsinstelling"
       sign_in: "Aanmelden"
+      has_to_have_institution: "Enkel accounts die gelinkt zijn aan een onderwijsinstelling worden ondersteund."
+      sign-in-with-smartschool: "Inloggen met Smartschool"
+      sign-in-with-office-365: "Inloggen met Office 365"
+      sign-in-with-g-suite: "Inloggen met G Suite"
     about:
       intro_html: "De Dodona-leeromgeving bevat honderden programmeeroefeningen die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen. Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl. Dodona is nog volop in ontwikkeling, eventuele bugs of suggesties mogen dus zeker gemeld worden via het <a href='/contact'>contactformulier</a>."
       sign-in: Aanmelden
@@ -46,6 +50,7 @@ nl:
       <p>Indien je graag toegang wenst voor jouw onderwijsinstelling, neem dan contact met ons op."
       more_info: Meer info over Dodona
       smartschool: 'Smartschool'
+      google_oauth2: 'G Suite'
       office365: 'Office 365'
       unknown: 'onbekende'
     contact:

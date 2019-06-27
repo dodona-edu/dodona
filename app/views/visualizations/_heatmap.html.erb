@@ -1,0 +1,17 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'visualisations' %>
+<% end %>
+<h4><%= t ".heatmap" %></h4>
+<p class="h4-info-text"><%= t ".heatmap_details" %></p>
+
+<div id="heatmap-container">
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        dodona.initHeatmap(
+            '<%= raw heatmap_path(user_id: local_assigns[:user]&.id, course_id: local_assigns[:course]&.id) %>',
+            <%= raw local_assigns[:course].present? ? "'#{course.year}'" : "undefined" %>
+        );
+    });
+</script>

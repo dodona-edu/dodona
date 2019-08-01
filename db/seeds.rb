@@ -79,23 +79,23 @@ if Rails.env.development?
 
   puts 'Create & clone judge'
 
-  pythia_judge = Judge.create name: 'pythia', image: 'dodona-anaconda3', remote: 'git@github.ugent.be:dodona/judge-pythia.git', renderer: PythiaRenderer, runner: SubmissionRunner
+  pythia_judge = Judge.create name: 'pythia', image: 'dodona-anaconda3', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer, runner: SubmissionRunner
 
   # Other judges
 
-  # biopythia-judge = Judge.create name: 'biopythia', image: 'dodona-biopythia', remote: 'git@github.ugent.be:dodona/judge-biopythia.git', renderer: PythiaRenderer
+  # biopythia-judge = Judge.create name: 'biopythia', image: 'dodona-biopythia', remote: 'git@github.com:dodona-edu/judge-biopythia.git', renderer: PythiaRenderer
 
-  # prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.ugent.be:dodona/judge-prolog.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  # bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.ugent.be:dodona/judge-bash.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  # junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.ugent.be:dodona/judge-java.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.ugent.be:dodona/judge-javascript.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.com:dodona-edu/judge-prolog.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.com:dodona-edu/judge-bash.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.com:dodona-edu/judge-java.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.com:dodona-edu/judge-javascript.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
 
   puts 'Create & clone exercise repository'
 
-  exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
+  exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: pythia_judge
   exercise_repo.process_exercises
 
-  big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
+  big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: pythia_judge
 
   Dir.glob("#{big_exercise_repo.full_path}/*")
       .select {|f| File.directory? f}

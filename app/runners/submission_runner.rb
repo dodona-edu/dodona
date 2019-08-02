@@ -138,12 +138,12 @@ class SubmissionRunner
     timer = Thread.new do
       while Time.now - before_time < time_limit
         sleep 1
+        next if Rails.env.test?
         # Check if container is still alive
-        if Docker::Container.all.select {|c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id)}.any? && container.refresh!.info["State"]["Running"]
-          stats = container.stats
-          # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
-          memory = stats["memory_stats"]["max_usage"] / (1024.0 * 1024.0) if stats["memory_stats"]&.fetch("max_usage", nil)
-        end
+        next unless Docker::Container.all.select {|c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id)}.any? && container.refresh!.info["State"]["Running"]
+        stats = container.stats
+        # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
+        memory = stats["memory_stats"]["max_usage"] / (1024.0 * 1024.0) if stats["memory_stats"]&.fetch("max_usage", nil)
       end
       container.stop
       true

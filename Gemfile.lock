@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/rails/actiontext.git
-  revision: 18974137be2c4027dfcf430668edd712e7ec011b
+  revision: cfe4674d3637c746cdb3c2b5131e2de498775529
+  branch: archive
   specs:
     actiontext (0.1.0)
       nokogiri

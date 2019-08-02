@@ -7,7 +7,7 @@ references:
       RAILS_ENV: "test"
       DATABASE_URL: "mysql2://dodona:dodona@127.0.0.1:3306/dodona_test"
   docker_db_config: &docker_db_config
-    image: mariadb:10.4.6
+    image: circleci/mariadb:10.4.6
     environment:
       MYSQL_DATABASE: "dodona_test"
       MYSQL_USER: "dodona"

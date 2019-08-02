@@ -1,9 +1,58 @@
 version: 2
 jobs:
   test:
+    docker:
+      - image: circleci/ruby:2.5.1
+        environment:
+          RAILS_ENV: "test"
+      - image: mariadb:10.4.6
+        environment:
+          MYSQL_DATABASE: "dodona"
+          MYSQL_USER: "dodona"
+          MYSQL_PASSWORD: "dodona"
+          MYSQL_HOST: "localhost"
     working_directory: ~/repo
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - dodona-bundle-{{ checksum "Gemfile.lock" }}
+            - dodona-bundle-
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+      - save_cache:
+          key: dodona-bundle-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - restore_cache:
+          keys:
+            - dodona-yarn-{{ checksum "yarn.lock" }}
+            - dodona-yarn-
+      - run:
+          name: Yarn install
+          command: yarn install --cache-folder ~/.cache/yarn
+      - save_cache:
+          key: rails-demo-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load --trace
+      - run:
+          command: |
+            mkdir /tmp/test-results
+            TESTFILES=$(circleci tests glob "test/**/*_test.rb" | circleci tests split --split-by=timings)
+            bundle exec rails test $TESTFILES --ci-dir=/tmp/test-results
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+
   lint:
     working_directory: ~/repo
     steps:

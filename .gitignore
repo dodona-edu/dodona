@@ -45,3 +45,6 @@ coverage
 /node_modules
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore test reports
+test/reports/

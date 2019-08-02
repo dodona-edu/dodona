@@ -60,6 +60,7 @@ jobs:
             git config --global user.name Dodona
             git config --global user.email "dodona@ugent.be"
       - run:
+          name: Run tests
           command: |
             mkdir /tmp/test-results
             TESTFILES=$(circleci tests glob "test/**/*_test.rb" | circleci tests split --split-by=timings)

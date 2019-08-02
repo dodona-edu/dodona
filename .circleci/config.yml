@@ -11,6 +11,7 @@ references:
       MYSQL_DATABASE: "dodona"
       MYSQL_USER: "dodona"
       MYSQL_PASSWORD: "dodona"
+      MYSQL_RANDOM_ROOT_PASSWORD: true
       MYSQL_HOST: "localhost"
 
 

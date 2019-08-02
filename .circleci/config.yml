@@ -2,7 +2,7 @@ version: 2
 
 references:
   docker_ruby_config: &docker_ruby_config
-    image: circleci/ruby:2.5.1
+    image: circleci/ruby:2.5.1-node
     environment:
       RAILS_ENV: "test"
   docker_db_config: &docker_db_config

@@ -8,7 +8,7 @@ references:
   docker_db_config: &docker_db_config
     image: mariadb:10.4.6
     environment:
-      MYSQL_DATABASE: "dodona"
+      MYSQL_DATABASE: "dodona_test"
       MYSQL_USER: "dodona"
       MYSQL_PASSWORD: "dodona"
       MYSQL_RANDOM_ROOT_PASSWORD: true

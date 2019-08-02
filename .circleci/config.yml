@@ -60,15 +60,9 @@ jobs:
             git config --global user.email "dodona@ugent.be"
       - run:
           name: Run tests
-          command: |
-            mkdir /tmp/test-results
-            TESTFILES=$(circleci tests glob "test/**/*_test.rb" | circleci tests split --split-by=timings)
-            bundle exec rails test $TESTFILES --ci-dir=/tmp/test-results/minitest
+          command: bundle exec rails test --ci-dir=/tmp/test-results/minitest
       - store_test_results:
           path: /tmp/test-results
-      - store_artifacts:
-          path: /tmp/test-results
-          destination: test-results
 
   lint:
     docker:

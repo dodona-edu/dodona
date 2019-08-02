@@ -7,7 +7,6 @@ references:
       RAILS_ENV: "test"
       DATABASE_URL: "mysql2://dodona:dodona@127.0.0.1:3306/dodona_test"
       BUNDLE_PATH: vendor/bundle
-      TESTOPTS: "--ci-dir=/tmp/test-results/minitest"
   docker_db_config: &docker_db_config
     image: circleci/mariadb:10.4.6
     environment:
@@ -64,7 +63,7 @@ jobs:
           command: |
             mkdir /tmp/test-results
             TESTFILES=$(circleci tests glob "test/**/*_test.rb" | circleci tests split --split-by=timings)
-            bundle exec rails test $TESTFILES
+            bundle exec rails test $TESTFILES --ci-dir=/tmp/test-results/minitest
       - store_test_results:
           path: /tmp/test-results
       - store_artifacts:

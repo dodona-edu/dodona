@@ -1,16 +1,24 @@
 version: 2
+
+references:
+  docker_ruby_config: &docker_ruby_config
+    image: circleci/ruby:2.5.1
+    environment:
+      RAILS_ENV: "test"
+  docker_db_config: &docker_db_config
+    image: mariadb:10.4.6
+    environment:
+      MYSQL_DATABASE: "dodona"
+      MYSQL_USER: "dodona"
+      MYSQL_PASSWORD: "dodona"
+      MYSQL_HOST: "localhost"
+
+
 jobs:
   test:
     docker:
-      - image: circleci/ruby:2.5.1
-        environment:
-          RAILS_ENV: "test"
-      - image: mariadb:10.4.6
-        environment:
-          MYSQL_DATABASE: "dodona"
-          MYSQL_USER: "dodona"
-          MYSQL_PASSWORD: "dodona"
-          MYSQL_HOST: "localhost"
+      - *docker_ruby_config
+      - *docker_db_config
     working_directory: ~/repo
     steps:
       - checkout
@@ -54,6 +62,8 @@ jobs:
           destination: test-results
 
   lint:
+    docker:
+      - *docker_ruby_config
     working_directory: ~/repo
     steps:
       - checkout

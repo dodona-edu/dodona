@@ -67,3 +67,12 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint
+  test:
+    jobs:
+      - test

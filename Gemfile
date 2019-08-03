@@ -156,6 +156,7 @@ end
 group :test do
   # for measuring coverage
   gem 'simplecov', require: false
+  gem 'minitest-ci'
 end
 
 group :development do
@@ -181,5 +182,5 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 # interfacing with docker
 gem 'docker-api'
 
-gem "actiontext", github: "rails/actiontext", require: "action_text"
+gem "actiontext", github: "rails/actiontext", require: "action_text", branch: "archive"
 gem "image_processing", "~> 1.2" # for Active Storage variants

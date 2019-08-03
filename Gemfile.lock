@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/rails/actiontext.git
-  revision: 18974137be2c4027dfcf430668edd712e7ec011b
+  revision: cfe4674d3637c746cdb3c2b5131e2de498775529
+  branch: archive
   specs:
     actiontext (0.1.0)
       nokogiri
@@ -234,6 +235,8 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
+    minitest-ci (3.4.0)
+      minitest (>= 5.0.6)
     mocha (1.7.0)
       metaclass (~> 0.0.1)
     msgpack (1.2.4)
@@ -446,6 +449,7 @@ DEPENDENCIES
   letter_opener
   listen (>= 3.0.5, < 3.2)
   mail_form
+  minitest-ci
   minitest-utils!
   mocha
   mysql2 (~> 0.5.2)

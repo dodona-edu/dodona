@@ -1,10 +1,81 @@
 version: 2
+
+references:
+  docker_ruby_config: &docker_ruby_config
+    image: circleci/ruby:2.5.1-node
+    environment:
+      RAILS_ENV: "test"
+      DATABASE_URL: "mysql2://dodona:dodona@127.0.0.1:3306/dodona_test"
+      BUNDLE_PATH: vendor/bundle
+  docker_db_config: &docker_db_config
+    image: circleci/mariadb:10.4.6
+    environment:
+      MYSQL_DATABASE: "dodona_test"
+      MYSQL_USER: "dodona"
+      MYSQL_PASSWORD: "dodona"
+      MYSQL_RANDOM_ROOT_PASSWORD: true
+      MYSQL_HOST: "localhost"
+
+
 jobs:
   test:
+    docker:
+      - *docker_ruby_config
+      - *docker_db_config
     working_directory: ~/repo
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - dodona-bundle-{{ checksum "Gemfile.lock" }}
+            - dodona-bundle-
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+      - save_cache:
+          key: dodona-bundle-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - restore_cache:
+          keys:
+            - dodona-yarn-{{ checksum "yarn.lock" }}
+            - dodona-yarn-
+      - run:
+          name: Yarn install
+          command: yarn install --cache-folder ~/.cache/yarn
+      - save_cache:
+          key: dodona-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load --trace
+      - run:
+          name: Setup git config
+          command: |
+            git config --global user.name Dodona
+            git config --global user.email "dodona@ugent.be"
+      - run:
+          name: Run tests
+          command: bundle exec rails test --ci-dir=/tmp/test-results/minitest
+      - store_test_results:
+          path: /tmp/test-results
+
   lint:
+    docker:
+      - *docker_ruby_config
     working_directory: ~/repo
     steps:
       - checkout
+
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint
+  test:
+    jobs:
+      - test

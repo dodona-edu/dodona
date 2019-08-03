@@ -20,7 +20,7 @@ FactoryBot.define do
   factory :judge do
     sequence(:name) { |n| "python-#{n}" }
     sequence(:image) { |n| "dodona-python#{n}" }
-    sequence(:remote) { |n| "git@github.ugent.be:dodona/judge-python#{n}.git" }
+    sequence(:remote) { |n| "git@github.com:dodona-edu/judge-python#{n}.git" }
 
     renderer { FeedbackTableRenderer }
     runner { SubmissionRunner }

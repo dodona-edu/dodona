@@ -15,4 +15,10 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     get course_url(@course, format: :json)
     assert_response :forbidden
   end
+
+  test 'page zero should return page one' do
+    sign_in @user
+    get courses_path(page: 0)
+    assert_response :ok
+  end
 end

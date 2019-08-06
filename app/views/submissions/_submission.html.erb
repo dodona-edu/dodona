@@ -2,7 +2,7 @@
   <td><%= submission_status_icon(submission) %></td>
   <% if current_user.administrating_courses.any? || current_user.admin? %>
     <td>
-      <%= link_to submission.user.full_name, user_submissions_path(submission.user, course_id: @course&.id, exercise_id: @exercise&.id), title: submission.user.full_name, class: "ellipsis-overflow" %>
+      <%= link_to submission.user.full_name, course_member_path(submission.course, submission.user), title: submission.user.full_name, class: "ellipsis-overflow" %>
     </td>
   <% end %>
   <% if !exercise %>

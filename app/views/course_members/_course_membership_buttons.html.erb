@@ -43,6 +43,14 @@
                   class: 'btn btn-sm btn-default' do %>
       <i class="material-icons md-18 material-icons-strikethrough" aria-hidden='true'>school</i>
     <% end %>
+    <%= button_to update_membership_course_path(course),
+                  remote: true,
+                  params: {user: user.id, status: 'unsubscribed'},
+                  title: t('users.index.unsubscribe'),
+                  data: {confirm: t('general.are_you_sure')},
+                  class: 'btn btn-sm btn-default' do %>
+      <i class="material-icons md-18" aria-hidden='true'>delete</i>
+    <% end %>
   <% end %>
 <% when 'unsubscribed' %>
   <%= button_to update_membership_course_path(course),

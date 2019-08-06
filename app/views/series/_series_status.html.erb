@@ -40,16 +40,10 @@
                end
   %>
   <div class="card-title-icon <%= summary.full_status %>" title="<%= tooltip %>" data-toggle="tooltip" data-placement="top">
-    <i class="material-icons">
-      <% if !summary.started? %>
-        school
-      <% elsif summary.completed? %>
-        done
-      <% elsif summary.wrong? %>
-        close
-      <% elsif summary.started? %>
-        thumb_up
-      <% end %>
+    <i class="mdi <%= !(summary.started?) ? "mdi-school" : 
+        summary.completed? ? "mdi-check" : 
+        summary.wrong? ? "mdi-close" :
+        summary.started? ? "mdi-thumb-up" : "" %>">
     </i>
   </div>
 <% else %>

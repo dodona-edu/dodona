@@ -37,19 +37,21 @@
   top: 4px;
 }
 
-.course-mdi-icon.material-icons-strikethrough:after {
-  position: relative;
-  top: -26px;
-  left: 19px;
-  width: 0;
-  height: 0;
+.material-icons.material-icons-strikethrough:after {
+  position: absolute;
+  top: -11px;
+  left: 11px;
   content: "|";
   display: block;
   font-weight: bold;
-  font-size: 200%;
+  font-size: 140%;
   transform: rotate(45deg);
 }
 
+.material-icons.material-icons-strikethrough.md-18:after {
+  top: -7px;
+  left: 9px;
+}
 
 .mdi::before {
   font-size: 24px;
@@ -81,6 +83,19 @@
   line-height: 50px;
 }
 
+.mdi.mdi-icons-strikethrough.mdi-18:after {
+  position: relative;
+  top: -26px;
+  left: 19px;
+  width: 0;
+  height: 0;
+  content: "|";
+  display: block;
+  font-weight: bold;
+  font-size: 200%;
+  transform: rotate(45deg);
+}
+
 .btn .mdi::before {
   position: relative;
   margin-top: 2px;
@@ -94,11 +109,6 @@
 .btn-sm .mdi::before {
   font-size: 18px;
   margin-top: 3px;
-}
-
-.btn .course-mdi-icon::before {
-  margin-top: -2px;
-  margin-bottom: -2px;
 }
 
 .dropdown-menu .mdi {

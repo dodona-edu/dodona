@@ -245,12 +245,14 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function enableSubmitButton() {
         $("#editor-process-btn").prop("disabled", false).removeClass("busy");
-        $("#editor-process-btn .material-icons").html("play_arrow");
+        $("#editor-process-btn .mdi").removeClass("mdi-timer-sand-empty");
+        $("#editor-process-btn .mdi").addClass("mdi-play");
     }
 
     function disableSubmitButton() {
         $("#editor-process-btn").prop("disabled", true).addClass("busy");
-        $("#editor-process-btn .material-icons").html("hourglass_empty");
+        $("#editor-process-btn .mdi").removeClass("mdi-play");
+        $("#editor-process-btn .mdi").addClass("mdi-timer-sand-empty");
     }
 
     function submissionSuccessful(data, userId) {

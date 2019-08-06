@@ -177,7 +177,6 @@ GEM
       thor (~> 0.19.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    grease (0.3.1)
     has_scope (0.7.2)
       actionpack (>= 4.1)
       activesupport (>= 4.1)
@@ -205,12 +204,10 @@ GEM
       addressable (~> 2.3)
     less (2.6.0)
       commonjs (~> 0.2.7)
-    less-rails (3.0.0)
-      actionpack (>= 4.0)
-      grease
+    less-rails (4.0.0)
+      actionpack (>= 4)
       less (~> 2.6.0)
-      sprockets (> 2, < 4)
-      tilt
+      sprockets (>= 2)
     letter_opener (1.6.0)
       launchy (~> 2.2)
     libv8 (3.16.14.19)
@@ -381,7 +378,7 @@ GEM
       ref
     thor (0.19.4)
     thread_safe (0.3.6)
-    tilt (2.0.8)
+    tilt (2.0.9)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uglifier (4.1.18)
@@ -445,7 +442,7 @@ DEPENDENCIES
   json-schema
   jwt (~> 2.0)
   kramdown
-  less-rails (~> 3.0)
+  less-rails (~> 4.0)
   letter_opener
   listen (>= 3.0.5, < 3.2)
   mail_form

@@ -9,8 +9,8 @@ gem 'rails', '~> 5.2.3'
 gem 'mysql2', '~> 0.5.2'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
-# Use SCSS for stylesheets
-gem 'less-rails', '~> 3.0'
+# Use less for stylesheets
+gem 'less-rails', '~> 4.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.18'
 # This needs to be here for less :(

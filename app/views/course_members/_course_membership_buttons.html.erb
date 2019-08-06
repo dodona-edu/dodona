@@ -31,7 +31,7 @@
                 title: t('users.index.unsubscribe'),
                 data: {confirm: t('general.are_you_sure')},
                 class: 'btn btn-sm btn-default' do %>
-    <i class="material-icons md-18" aria-hidden="true">delete</i>
+    <i class="course-mdi-icon mdi mdi-delete md-18" aria-hidden="true"></i>
   <% end %>
 <% when 'course_admin' %>
   <% if policy(course).update_course_admin_membership? %>
@@ -49,7 +49,7 @@
                   title: t('users.index.unsubscribe'),
                   data: {confirm: t('general.are_you_sure')},
                   class: 'btn btn-sm btn-default' do %>
-      <i class="material-icons md-18" aria-hidden='true'>delete</i>
+      <i class="course-mdi-icon mdi mdi-delete" aria-hidden='true'></i>
     <% end %>
   <% end %>
 <% when 'unsubscribed' %>

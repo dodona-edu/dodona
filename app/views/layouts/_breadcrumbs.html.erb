@@ -12,7 +12,7 @@
     <% @crumbs.each do |name, path| %>
       <% unless is_first %>
         <div class="crumb-separator">
-          <i class="material-icons">chevron_right</i>
+          <i class="mdi mdi-chevron_right"></i>
         </div>
       <% end %>
       <div class="crumb"><%= link_to name, path, title: name %></div>

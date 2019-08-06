@@ -29,9 +29,6 @@
             <strong><%= Judge.human_attribute_name("renderer") %>:</strong> <%= @judge.renderer %>
           </p>
           <p>
-            <strong><%= Judge.human_attribute_name("runner") %>:</strong> <%= @judge.runner %>
-          </p>
-          <p>
             <strong><%= t ".all-submissions" %>:</strong> <%= link_to Submission.of_judge(@judge).count, judge_submissions_path(@judge), title: @judge.name, class: "ellipsis-overflow"  %>
           </p>
         </div>

@@ -73,7 +73,6 @@ nl:
         image: Docker image
         path: Padnaam
         renderer: Renderklasse
-        runner: Uitvoerder
       repository:
         name: Naam
         remote: Clone URL

@@ -5,19 +5,9 @@ require 'docker' # docker client
 require 'timeout' # to kill the docker after a certain time
 require 'pathname' # better than File
 
-# base class for runners that handle Dodona submissions
+# Handles the execution of submissions
 class SubmissionRunner
   DEFAULT_CONFIG_PATH = Rails.root.join('app', 'runners', 'config.json').freeze
-
-  @runners = [SubmissionRunner]
-
-  def self.inherited(this_class)
-    @runners << this_class
-  end
-
-  class << self
-    attr_reader :runners
-  end
 
   def initialize(submission)
     # definition of submission

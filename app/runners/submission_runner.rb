@@ -88,9 +88,6 @@ class SubmissionRunner
     copy_or_create(@exercise.full_path + 'workdir', @mountsrc + 'workdir')
     copy_or_create(@exercise.full_path + 'evaluation', @mountsrc + @hidden_path + 'resources')
     copy_or_create(@judge.full_path, @mountsrc + @hidden_path + 'judge')
-
-    # ensure logs directory exist before mounting
-    (@mountsrc + @hidden_path + 'logs').mkpath
   end
 
   def execute
@@ -108,22 +105,20 @@ class SubmissionRunner
         # TODO: move entry point to docker container definition
         Cmd: ['/main.sh',
               # judge entry point
-              (@mountdst + @hidden_path + 'judge' + 'run').to_path,
-              # directory for logging output
-              (@mountdst + @hidden_path + 'logs').to_path],
-        Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
-        name: "dodona-#{@submission.id}", # assuming unique during execution
-        OpenStdin: true,
-        StdinOnce: true, # closes stdin after first disconnect
-        NetworkDisabled: !@config['network_enabled'],
-        HostConfig: {
-          Memory: memory_limit,
-          MemorySwap: memory_limit, # memory including swap
-          BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }],
-          PidsLimit: 256,
-          Binds: ["#{@mountsrc}:#{@mountdst}",
-                  "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
-        }
+              (@mountdst + @hidden_path + 'judge' + 'run').to_path],
+          Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
+          name: "dodona-#{@submission.id}", # assuming unique during execution
+          OpenStdin: true,
+          StdinOnce: true, # closes stdin after first disconnect
+          NetworkDisabled: !@config['network_enabled'],
+          HostConfig: {
+              Memory: memory_limit,
+              MemorySwap: memory_limit, # memory including swap
+              BlkioDeviceWriteBps: [{Path: '/dev/sda', Rate: 1024 * 1024}],
+              PidsLimit: 256,
+              Binds: ["#{@mountsrc}:#{@mountdst}",
+                      "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
+          }
       )
     rescue StandardError => e
       return build_error 'internal error', 'internal error', [

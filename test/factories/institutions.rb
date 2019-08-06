@@ -25,10 +25,10 @@ FactoryBot.define do
 
   factory :institution, aliases: [:saml_institution], parent: :base_institution do
     domain = Faker::Internet.domain_name
-    sso_url { Faker::Internet.url(domain, '/SSO') }
-    slo_url { Faker::Internet.url(domain, '/SLO') }
+    sso_url { Faker::Internet.url(host: domain, path: '/SSO') }
+    slo_url { Faker::Internet.url(host: domain, path: '/SLO') }
     certificate { Faker::Crypto.sha256 }
-    entity_id { Faker::Internet.url(domain, '/entity') }
+    entity_id { Faker::Internet.url(host: domain, path: '/entity') }
     provider { :saml }
   end
 

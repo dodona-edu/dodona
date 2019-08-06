@@ -19,7 +19,7 @@
 FactoryBot.define do
   factory :series do
     sequence(:name) { |n| "Series #{n}" }
-    description { Faker::DrWho.quote }
+    description { Faker::TvShows::DrWho.quote }
     visibility { :open }
     course
 

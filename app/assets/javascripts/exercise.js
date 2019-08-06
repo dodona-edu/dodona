@@ -246,6 +246,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     function enableSubmitButton() {
         $("#editor-process-btn").prop("disabled", false).removeClass("busy");
         $("#editor-process-btn .mdi").removeClass("mdi-timer-sand-empty");
+        $("#editor-process-btn .mdi").removeClass("mdi-spin");
         $("#editor-process-btn .mdi").addClass("mdi-play");
     }
 
@@ -253,6 +254,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $("#editor-process-btn").prop("disabled", true).addClass("busy");
         $("#editor-process-btn .mdi").removeClass("mdi-play");
         $("#editor-process-btn .mdi").addClass("mdi-timer-sand-empty");
+        $("#editor-process-btn .mdi").addClass("mdi-spin");
     }
 
     function submissionSuccessful(data, userId) {

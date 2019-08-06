@@ -28,8 +28,8 @@ function initSeriesEdit() {
             }
             const $row = $addButton.parents("tr").clone();
             $row.addClass("new");
-            $row.children("td:first").html("<div class='drag-handle'><i class='material-icons md-18'>reorder</i></div>");
-            $row.children("td.actions").html("<a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><i class='material-icons md-18'>delete</i></a>");
+            $row.children("td:first").html("<div class='drag-handle'><i class='mdi mdi-reorder-horizontal mdi-18'></i></div>");
+            $row.children("td.actions").html("<a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><i class='mdi mdi-delete mdi-18'></i></a>");
             $(".series-exercise-list tbody").append($row);
             $row.css("opacity"); // trigger paint
             $row.removeClass("new").addClass("pending");

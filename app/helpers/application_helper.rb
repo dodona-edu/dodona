@@ -116,17 +116,17 @@ module ApplicationHelper
 
   def submission_status_icon(submission, size = 18)
     icon, color = {
-      nil => %w[remove default],
-      'correct' => %w[check correct],
-      'wrong' => %w[close wrong],
-      'time limit exceeded' => %w[alarm wrong],
-      'running' => %w[hourglass_empty default],
-      'queued' => %w[hourglass_empty default],
-      'runtime error' => %w[flash_on wrong],
-      'compilation error' => %w[offline_bolt wrong],
-      'memory limit exceeded' => %w[memory wrong]
+        nil => %w[remove default],
+        'correct' => %w[check correct],
+        'wrong' => %w[close wrong],
+        'time limit exceeded' => %w[alarm wrong],
+        'running' => %w[hourglass-empty default],
+        'queued' => %w[hourglass-empty default],
+        'runtime error' => %w[flash-on wrong],
+        'compilation error' => %w[flash-circle wrong],
+        'memory limit exceeded' => %w[memory wrong]
     }[submission&.status] || %w[warning warning]
-    "<i class=\"material-icons md-#{size} colored-#{color}\">#{icon}</i>".html_safe
+    "<i class=\"mdi mdi-#{icon} mdi-#{size} colored-#{color}\"></i>".html_safe
   end
 
   def options_for_enum(object, enum)

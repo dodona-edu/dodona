@@ -19,8 +19,8 @@ function initFavoriteButtons() {
         $.post(`/courses/${courseId}/favorite.js`)
             .done(() => {
                 showNotification(I18n.t("js.favorite-course-succeeded"));
-                element.addClass("favorited");
-                element.html("favorite");
+                element.removeClass("mdi mdi-heart-outline");
+                element.addClass("favorited mdi mdi-heart");
                 element.attr("data-original-title", I18n.t("js.unfavorite-course-do"));
                 element.tooltip("hide");
                 const card = element.parents(".course.card").parent();
@@ -46,11 +46,14 @@ function initFavoriteButtons() {
             .done(() => {
                 showNotification(I18n.t("js.unfavorite-course-succeeded"));
                 const elements = $(`[data-course_id="${courseId}"]`);
-                elements.removeClass("favorited");
-                elements.html("favorite_outline");
+                element.removeClass("favorited mdi mdi-heart");
+                element.addClass("mdi mdi-heart-outline");
                 elements.attr("data-original-title", I18n.t("js.favorite-course-do"));
                 elements.tooltip("hide");
-                $(`.favorites-row [data-course_id="${courseId}"]`).parents(".course.card").parent().remove();
+                $(`.favorites-row [data-course_id="${courseId}"]`)
+                    .parents(".course.card")
+                    .parent()
+                    .remove();
                 if ($(".favorites-row").children().length === 0) {
                     $(".page-subtitle.first").addClass("hidden");
                 }

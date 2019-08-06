@@ -99,17 +99,12 @@
     <% end %>
     <% if not local_assigns[:course_index] and current_user.full_view? %>
       <div class="pull-left">
-        <i class="favorite-button material-icons <%= "favorited" if current_user.favorite_courses.include? course %>"
+        <i class="favorite-button <%= current_user.favorite_courses.include?(course)? "favorited mdi mdi-heart" : "mdi mdi-heart-outline" %>"
            data-course_id="<%= course.id %>"
            title="<%= current_user.favorite_courses.include?(course) ? t('js.unfavorite-course-do') : t('js.favorite-course-do') %>"
            data-toggle="tooltip"
            data-placement="bottom"
         >
-          <% if current_user.favorite_courses.include? course %>
-            favorite
-          <% else %>
-            favorite_outline
-          <% end %>
         </i>
       </div>
     <% end %>

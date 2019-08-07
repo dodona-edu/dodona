@@ -7,7 +7,7 @@
 
   <%= navbar_link url: exercise_scoped_path(exercise: @exercise, course: @course, series: @series),
                   title: t('.show'),
-                  icon: 'assignment',
+                  mdi_icon: 'clipboard-text',
                   if: policy(@exercise).edit? || can_view_submissions %>
   <%= navbar_link url: submissions_scoped_path(exercise: @exercise, course: @course, series: @series),
                   title: t('.submissions'),
@@ -15,6 +15,6 @@
                   if: can_view_submissions %>
   <%= navbar_link url: edit_exercise_scoped_path(exercise: @exercise, course: @course, series: @series),
                   title: t('.edit'),
-                  icon: 'edit',
+                  mdi_icon: 'pencil',
                   if: policy(@exercise).edit? %>
 <% end %>

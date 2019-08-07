@@ -6,6 +6,7 @@
 function initFilterButtons(){
 
     function init(){
+        console.log("all buttons will receive click-thing");
         $(".filter-submissions").click(filter);
     }
 
@@ -15,6 +16,8 @@ function initFilterButtons(){
         console.log(element.data("filter"));
         searchbar.val(element.data("filter"));
     }
+
+    init();
 }
 
 export {initFilterButtons}

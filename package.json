@@ -2,7 +2,7 @@
     "name": "dodona",
     "private": true,
     "dependencies": {
-        "@rails/webpacker": "3.5",
+        "@rails/webpacker": "4.0.7",
         "@types/d3": "^5.7.2",
         "@types/jquery": "^3.3.22",
         "ace-builds": "^1.4.1",
@@ -16,7 +16,7 @@
         "jquery": "^3.3.22",
         "moment": "^2.24.0",
         "rails-ujs": "^5.2.1",
-        "ts-loader": "3.5.0",
+        "ts-loader": "6.0.4",
         "typeahead.js": "^0.11.1",
         "typescript": "^3.2.1"
     },
@@ -24,6 +24,6 @@
         "eslint": "^5.5.0",
         "eslint-config-google": "^0.9.1",
         "webpack-cli": "^3.1.0",
-        "webpack-dev-server": "2.11.2"
+        "webpack-dev-server": "3.7.2"
     }
 }

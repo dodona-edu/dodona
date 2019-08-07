@@ -4,7 +4,7 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @post.title %></h2>
         <div class="card-title-fab">
-          <%= render 'application/fab_button', form: "edit_post_#{@post.id}", icon: 'done' %>
+          <%= render 'application/fab_button', form: "edit_post_#{@post.id}", mdi_icon: 'check' %>
           <% if policy(@post).destroy? %>
             <%= link_to @post, method: :delete, class: "btn btn-primary btn-fab hidden-print" do %>
               <i class="mdi mdi-delete mdi-36"></i>

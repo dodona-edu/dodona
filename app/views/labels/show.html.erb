@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= @label.name %></h2>
         <% if policy(Label).edit? %>
           <div class="card-title-fab">
-            <%= render 'application/fab_link', url: edit_label_path(@label), icon: 'edit' %>
+            <%= render 'application/fab_link', url: edit_label_path(@label), mdi_icon: 'pencil' %>
           </div>
         <% end %>
       </div>

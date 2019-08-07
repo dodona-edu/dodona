@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(Repository).new? %>
           <div class="card-title-fab">
-            <%= render 'application/fab_link', url: new_repository_path, icon: 'plus' %>
+            <%= render 'application/fab_link', url: new_repository_path, mdi_icon: 'plus' %>
           </div>
         <% end %>
       </div>

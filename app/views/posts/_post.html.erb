@@ -5,7 +5,7 @@
       <h3 class="card-subtitle-text"><%= post.release %></h3>
       <div class="card-title-fab card-subtitle-fab">
         <% if policy(post).update? %>
-          <%= render 'application/fab_link', url: edit_post_path(post), icon: 'edit' %>
+          <%= render 'application/fab_link', url: edit_post_path(post), mdi_icon: 'pencil' %>
         <% end %>
       </div>
     </div>

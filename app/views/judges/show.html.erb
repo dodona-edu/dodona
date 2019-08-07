@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= @judge.name %></h2>
         <% if policy(@judge).edit? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: edit_judge_path(@judge), icon: 'edit' %>
+            <%= render 'fab_link', url: edit_judge_path(@judge), mdi_icon: 'pencil' %>
           </div>
         <% end %>
       </div>

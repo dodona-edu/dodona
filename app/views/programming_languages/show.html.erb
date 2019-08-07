@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= @programming_language.name %></h2>
         <% if policy(@programming_language).edit? %>
           <div class="card-title-fab">
-            <%= render 'application/fab_link', url: edit_programming_language_path(@programming_language), icon: 'edit' %>
+            <%= render 'application/fab_link', url: edit_programming_language_path(@programming_language), mdi_icon: 'pencil' %>
           </div>
         <% end %>
       </div>

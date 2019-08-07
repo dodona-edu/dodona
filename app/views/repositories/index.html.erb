@@ -29,7 +29,7 @@
               <tr>
                 <td>
                   <% if current_user.repositories.include? repository %>
-                    <span title="<%= t(".admin") %>"><i class="material-icons md-18">perm_identity</i></span>
+                    <span title="<%= t(".admin") %>"><i class="mdi mdi-account-outline mdi-18"></i></span>
                   <% end %>
                 </td>
                 <td><%= link_to repository.name, repository %></td>
@@ -41,12 +41,12 @@
                 <td class="actions">
                   <% if policy(repository).admins? %>
                     <%= link_to admins_repository_path(repository), class: "btn btn-sm btn-default", title: t(".admins") do %>
-                      <i class="material-icons md-18">group</i>
+                      <i class="mdi mdi-account-multiple mdi-18"></i>
                     <% end %>
                   <% end %>
                   <% if policy(repository).courses? %>
                     <%= link_to courses_repository_path(repository), class: "btn btn-sm btn-default", title: t(".courses") do %>
-                      <i class="material-icons md-18">collections_bookmark</i>
+                      <i class="mdi mdi-book-multiple mdi-18">collections_bookmark</i>
                     <% end %>
                   <% end %>
                   <% if policy(repository).edit? %>

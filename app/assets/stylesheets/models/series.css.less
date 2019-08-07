@@ -87,6 +87,26 @@
     border-radius: 50%;
     background-color: @series-summary-icon-bg;
 
+    &.deadline-missed .mdi-alarm-off {
+      color: @brand-danger;
+      background-color: @content-bg;
+      position: absolute;
+      font-size: 18px;
+      font-weight: bold;
+      top: 20px;
+      left: 20px;
+    }
+
+    &.deadline-met .mdi-alarm {
+      color: @brand-success;
+      background-color: @content-bg;
+      position: absolute;
+      font-size: 18px;
+      font-weight: bold;
+      top: 20px;
+      left: 20px;
+    }
+
     i {
       color: @series-summary-icon-bg;
       background: @content-bg;

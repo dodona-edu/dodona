@@ -1,16 +1,17 @@
-AllCops:
-  Include:
-    - ''
-  Exclude:
-    - 'db/schema.rb'
-    - 'config/**'
-    - 'bin/**'
-    - 'db/migrate/**'
-    - 'node_modules/**/*'
-  TargetRubyVersion: 2.5
+require: rubocop-rails
 
-Rails:
-  Enabled: true
+AllCops:
+  Exclude:
+    - "db/schema.rb"
+    - "config/**/*"
+    - "bin/**/*"
+    - "data/**/*"
+    - "lib/**/*"
+    - "log/**/*"
+    - "tmp/**/*"
+    - "db/**/*"
+    - "node_modules/**/*"
+  TargetRubyVersion: 2.5
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -20,21 +21,20 @@ Style/ClassAndModuleChildren:
   Enabled: false
 Metrics/LineLength:
   Enabled: false
-Rails/OutputSafety:
-  Enabled: false
 
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   EnforcedStyle: consistent
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   EnforcedStyle: consistent
+
+Rails/HelperInstanceVariable:
+  Enabled: false
 
 # disable for now
 # Lint/NestedMethodDefinition:
 #   Enabled: false
 # Style/ClassVars:
 #   Enabled: false
-Style/Documentation:
-  Enabled: false
 # Style/RescueModifier:
 #   Enabled: false
 # Style/AccessorMethodName:

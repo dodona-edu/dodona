@@ -15,7 +15,7 @@
         <td class="actions">
           <% if policy(user).impersonate? %>
             <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
-              <i class="material-icons md-18">person</i>
+              <i class="mdi mdi-account mdi-18"></i>
             <% end %>
           <% end %>
           <% if policy(user).edit? %>

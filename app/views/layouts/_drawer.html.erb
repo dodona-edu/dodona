@@ -83,7 +83,7 @@
             <li>
               <%= activatable_link_to labels_path,
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24 material-icons-faaf">style</i>
+                <i class="mdi mdi-palette-swatch mdi-24"></i>
                 <%= t('layout.menu.labels') %>
               <% end %>
             </li>
@@ -92,7 +92,7 @@
             <li>
               <%= activatable_link_to programming_languages_path,
                                       class: 'drawer-list-item' do %>
-                <i class='material-icons md-24 material-icons-faaf'>code</i>
+                <i class='mdi mdi-code-tags mdi-24'></i>
                 <%= t("layout.menu.programming_languages") %>
               <% end %>
           <% end %>
@@ -100,7 +100,7 @@
             <li>
               <%= activatable_link_to institutions_path,
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24 material-icons-faaf">local_library</i>
+                <i class="mdi mdi-library mdi-24"></i>
                 <%= t('layout.menu.institutions') %>
               <% end %>
             </li>
@@ -109,7 +109,7 @@
             <li>
               <%= activatable_link_to events_path,
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24 material-icons-faaf">event</i>
+                <i class="mdi mdi-calendar mdi-24"></i>
                 <%= t('layout.menu.events') %>
               <% end %>
             </li>
@@ -118,7 +118,7 @@
             <li>
               <%= activatable_link_to "/dj/overview",
                                       class: 'drawer-list-item' do %>
-                <i class="material-icons md-24 material-icons-faaf">queue</i>
+                <i class="mdi mdi-library-plus mdi-24"></i>
                 Job queue
               <% end %>
             </li>
@@ -136,19 +136,19 @@
         </li>
         <li>
           <%= activatable_link_to posts_path, class: 'drawer-list-item' do %>
-            <i class="material-icons md-24 material-icons-faaf">new_releases</i>
+            <i class="mdi mdi-alert-decagram mdi-24"></i>
             <%= t('layout.menu.news') %>
           <% end %>
         </li>
         <li>
           <%= link_to 'https://dodona.readthedocs.io/', class: 'drawer-list-item' do %>
-            <i class="material-icons md-24 material-icons-faaf">help</i>
+            <i class="mdi mdi-help-circle mdi-24"></i>
             <%= t('layout.menu.manual') %>
           <% end %>
         </li>
         <li>
           <%= link_to destroy_user_session_path, method: :delete do %>
-            <i class="material-icons md-24 material-icons-faaf">power_settings_new</i>
+            <i class="mdi mdi-power mdi-24"></i>
             <%= t('layout.menu.log_out') %>
           <% end %>
         </li>

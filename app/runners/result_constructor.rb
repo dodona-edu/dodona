@@ -121,10 +121,10 @@ class ResultConstructor
 
   def escalate_status(status: nil)
     status[:enum] = Submission.normalize_status(status[:enum])
-    if worse?(@judgement[:status], status[:enum])
-      @judgement[:status] = status[:enum]
-      @judgement[:description] = status[:human]
-    end
+    return unless worse?(@judgement[:status], status[:enum])
+
+    @judgement[:status] = status[:enum]
+    @judgement[:description] = status[:human]
   end
 
   def close_test(generated: nil, accepted: nil, status: nil)

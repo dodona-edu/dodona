@@ -121,13 +121,13 @@ class SeriesSummary
 
   private
 
-  def mk_exercise_summary(ex, **kwargs)
+  def mk_exercise_summary(exercise, **kwargs)
     ExerciseSummary.new(
-      exercise: ex,
+      exercise: exercise,
       user: user,
-      latest_submission: @latest_submissions[ex.id],
-      accepted_submission: @accepted_submissions[ex.id],
-      timely_submission: @timely_submissions[ex.id],
+      latest_submission: @latest_submissions[exercise.id],
+      accepted_submission: @accepted_submissions[exercise.id],
+      timely_submission: @timely_submissions[exercise.id],
       **kwargs
     )
   end

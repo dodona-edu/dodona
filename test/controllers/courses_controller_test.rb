@@ -27,8 +27,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @course = create :course
-    zeus_extern = create :zeus
-    zeus_intern = create :zeus
+    _zeus_extern = create :zeus
+    _zeus_intern = create :zeus
 
     @course.administrating_members.concat(create_normies)
 
@@ -421,7 +421,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
         courses = JSON.parse response.body
         assert_not courses.any? { |c| c['id'] == @course.id }, "#{who} should not be able to see a hidden course"
       else
-        assert (response.forbidden? || response.unauthorized?)
+        assert response.forbidden? || response.unauthorized?
       end
     end
   end
@@ -476,7 +476,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     user = @students.first
     user.update(permission: :staff)
     course = create :course
-    series = create :series, course: course, visibility: :hidden
+    _series = create :series, course: course, visibility: :hidden
 
     sign_in user
     new_course = build :course

@@ -206,10 +206,10 @@ class Submission < ApplicationRecord
     return if user.nil?
 
     previous = user.submissions.most_recent.first
-    if previous.present?
-      time_since_previous = Time.zone.now - previous.created_at
-      errors.add(:submission, 'rate limited') if time_since_previous < SECONDS_BETWEEN_SUBMISSIONS.seconds
-    end
+    return if previous.blank?
+
+    time_since_previous = Time.zone.now - previous.created_at
+    errors.add(:submission, 'rate limited') if time_since_previous < SECONDS_BETWEEN_SUBMISSIONS.seconds
   end
 
   def fs_path
@@ -232,10 +232,10 @@ class Submission < ApplicationRecord
     submissions.each { |s| s.evaluate_delayed(priority) }
   end
 
-  def self.normalize_status(s)
-    return 'correct' if s == 'correct answer'
-    return 'wrong' if s == 'wrong answer'
-    return s if s.in?(statuses)
+  def self.normalize_status(status)
+    return 'correct' if status == 'correct answer'
+    return 'wrong' if status == 'wrong answer'
+    return status if status.in?(statuses)
 
     'unknown'
   end
@@ -246,13 +246,13 @@ class Submission < ApplicationRecord
     user.invalidate_attempted_exercises
     user.invalidate_correct_exercises
 
-    if course.present?
-      course.invalidate_correct_solutions
-      exercise.invalidate_users_correct(course: course)
-      exercise.invalidate_users_tried(course: course)
-      user.invalidate_attempted_exercises(course: course)
-      user.invalidate_correct_exercises(course: course)
-    end
+    return if course.blank?
+
+    course.invalidate_correct_solutions
+    exercise.invalidate_users_correct(course: course)
+    exercise.invalidate_users_tried(course: course)
+    user.invalidate_attempted_exercises(course: course)
+    user.invalidate_correct_exercises(course: course)
   end
 
   def self.get_punchcard_matrix(user, course)
@@ -276,15 +276,16 @@ class Submission < ApplicationRecord
     submissions = submissions.in_course(course) if course.present?
     submissions = submissions.where('id > ?', old.present? ? old[:latest] : 0)
     submissions = submissions.pluck(:id, :created_at)
-    if submissions.any?
-      to_merge = submissions.map { |_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}" }
-                            .group_by(&:itself).transform_values(&:count)
-      result = {
-        latest: submissions.first[0],
-        matrix: old[:matrix].merge(to_merge) { |_k, v1, v2| v1 + v2 }
-      }
-      Rails.cache.write(format(PUNCHCARD_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), result)
-    end
+
+    return unless submission.any?
+
+    to_merge = submissions.map { |_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}" }
+                          .group_by(&:itself).transform_values(&:count)
+    result = {
+      latest: submissions.first[0],
+      matrix: old[:matrix].merge(to_merge) { |_k, v1, v2| v1 + v2 }
+    }
+    Rails.cache.write(format(PUNCHCARD_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), result)
   end
 
   def self.get_heatmap_matrix(user, course)
@@ -307,13 +308,14 @@ class Submission < ApplicationRecord
     submissions = submissions.in_course(course) if course.present?
     submissions = submissions.where('id > ?', old.present? ? old[:latest] : 0)
     submissions = submissions.pluck(:id, :created_at)
-    if submissions.any?
-      to_merge = submissions.map { |_, d| d.strftime('%Y-%m-%d') }.group_by(&:itself).transform_values(&:count)
-      result = {
-        latest: submissions.first[0],
-        matrix: old[:matrix].merge(to_merge) { |_k, v1, v2| v1 + v2 }
-      }
-      Rails.cache.write(format(HEATMAP_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), result)
-    end
+
+    return unless submissions.any?
+
+    to_merge = submissions.map { |_, d| d.strftime('%Y-%m-%d') }.group_by(&:itself).transform_values(&:count)
+    result = {
+      latest: submissions.first[0],
+      matrix: old[:matrix].merge(to_merge) { |_k, v1, v2| v1 + v2 }
+    }
+    Rails.cache.write(format(HEATMAP_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), result)
   end
 end

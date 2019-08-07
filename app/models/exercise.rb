@@ -21,9 +21,9 @@
 
 require 'pathname'
 require 'action_view'
-include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
+  include ActionView::Helpers::DateHelper
   include Filterable
   include StringHelper
   include Cacheable
@@ -200,10 +200,11 @@ class Exercise < ApplicationRecord
     message ||= "updated config for #{name}"
     config_file.write(JSON.pretty_generate(new_config))
     success, error = repository.commit message
-    unless success || error.empty?
-      errors.add(:base, "committing changes failed: #{error}")
-      throw :abort
-    end
+
+    return if success || error.empty?
+
+    errors.add(:base, "committing changes failed: #{error}")
+    throw :abort
   end
 
   def update_config

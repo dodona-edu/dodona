@@ -213,7 +213,7 @@ class User < ApplicationRecord
   end
 
   def full_view?
-    subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count > 0
+    subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count.positive?
   end
 
   def member_of?(course)
@@ -289,9 +289,9 @@ class User < ApplicationRecord
 
   def split_last_name
     parts = last_name.split(' ', 2)
-    if parts.count == 2
-      self.first_name = parts[0]
-      self.last_name = parts[1]
-    end
+    return unless parts.count == 2
+
+    self.first_name = parts[0]
+    self.last_name = parts[1]
   end
 end

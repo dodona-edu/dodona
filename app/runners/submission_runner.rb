@@ -11,8 +11,8 @@ class SubmissionRunner
 
   @runners = [SubmissionRunner]
 
-  def self.inherited(cl)
-    @runners << cl
+  def self.inherited(this_class)
+    @runners << this_class
   end
 
   class << self
@@ -208,7 +208,7 @@ class SubmissionRunner
     result[:messages] ||= []
     result[:messages] << build_message("<strong>Worker:</strong> #{`hostname`.strip}", 'zeus', 'html')
     result[:messages] << build_message(format('<strong>Runtime:</strong> %.2f seconds', (after_time - before_time)), 'zeus', 'html')
-    result[:messages] << build_message('<strong>Memory usage:</strong> %.2f MiB' % memory, 'zeus', 'html')
+    result[:messages] << build_message(format('<strong>Memory usage:</strong> %.2f MiB', memory), 'zeus', 'html')
     result
   end
 

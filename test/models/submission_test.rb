@@ -56,13 +56,13 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'new submissions should have code on the filesystem' do
-    code = Random.new.alphanumeric(n = 100)
+    code = Random.new.alphanumeric(100)
     submission = build :submission, code: code
     assert_equal code, File.read(File.join(submission.fs_path, Submission::CODE_FILENAME))
   end
 
   test 'new submissions should have result on the filesystem' do
-    result = Random.new.alphanumeric(n = 100)
+    result = Random.new.alphanumeric(100)
     submission = build :submission, result: result
     assert_equal result, ActiveSupport::Gzip.decompress(File.read(File.join(submission.fs_path, Submission::RESULT_FILENAME)))
   end

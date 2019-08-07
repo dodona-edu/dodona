@@ -1,58 +1,3 @@
-.material-icons.md-12 {
-  font-size: 12px;
-}
-
-.material-icons.md-18 {
-  font-size: 18px;
-}
-
-.material-icons.md-24 {
-  font-size: 24px;
-}
-
-.material-icons.md-36 {
-  font-size: 36px;
-}
-
-.material-icons.md-48 {
-  font-size: 48px;
-}
-
-.material-icons.md-inherit {
-  font-size: inherit;
-  vertical-align: middle;
-}
-
-// Firefox Android alignment fix
-.material-icons-faaf {
-  width: 24px;
-  height: 24px;
-}
-
-.material-icons {
-  position: relative;
-}
-
-.material-icons-info {
-  top: 4px;
-}
-
-.material-icons.material-icons-strikethrough:after {
-  position: absolute;
-  top: -11px;
-  left: 11px;
-  content: "|";
-  display: block;
-  font-weight: bold;
-  font-size: 140%;
-  transform: rotate(45deg);
-}
-
-.material-icons.material-icons-strikethrough.md-18:after {
-  top: -7px;
-  left: 9px;
-}
-
 .mdi::before {
   font-size: 24px;
   line-height: 26px;
@@ -83,6 +28,10 @@
   line-height: 50px;
 }
 
+.visible-xs.mdi::before {
+  margin-top: 12px;
+}
+
 .mdi.mdi-icons-strikethrough.mdi-18:after {
   position: relative;
   top: -26px;
@@ -109,6 +58,11 @@
 .btn-sm .mdi::before {
   font-size: 18px;
   margin-top: 3px;
+}
+
+.mdi-spin.mdi-timer-sand-empty::before{
+  right: 2px;
+  top: -1px;
 }
 
 .btn-fab .mdi-pencil::before {

@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(User).new? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: new_user_path, icon: 'add' %>
+            <%= render 'fab_link', url: new_user_path, icon: 'plus' %>
           </div>
         <% end %>
       </div>

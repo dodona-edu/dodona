@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(Repository).new? %>
           <div class="card-title-fab">
-            <%= render 'application/fab_link', url: new_repository_path, icon: 'add' %>
+            <%= render 'application/fab_link', url: new_repository_path, icon: 'plus' %>
           </div>
         <% end %>
       </div>
@@ -51,7 +51,7 @@
                   <% end %>
                   <% if policy(repository).edit? %>
                     <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default", title: t(".edit") do %>
-                      <i class="material-icons md-18">edit</i>
+                      <i class="mdi mdi-pencil mdi-18"></i>
                     <% end %>
                   <% end %>
                   <% if policy(repository).destroy? %>

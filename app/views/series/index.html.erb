@@ -21,7 +21,7 @@
               <td class="actions">
                 <% if policy(series).edit? %>
                   <%= link_to edit_series_path(series), class: "btn btn-sm btn-default" do %>
-                    <i class="material-icons md-18">edit</i>
+                    <i class="mdi mdi-pencil mdi-18"></i>
                   <% end %>
                 <% end %>
                 <% if policy(series).destroy? %>

@@ -1,6 +1,6 @@
 <tr id="submission_<%= submission.id %>" data-status="<%= submission.status %>">
   <td><%= submission_status_icon(submission) %></td>
-  <% if current_user.administrating_courses.any? || current_user.admin? %>
+  <% if (current_user.administrating_courses.any? || current_user.admin?) && !submission.course.nil? %>
     <td>
       <%= link_to submission.user.full_name, course_member_path(submission.course, submission.user), title: submission.user.full_name, class: "ellipsis-overflow" %>
     </td>

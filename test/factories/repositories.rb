@@ -16,7 +16,7 @@ using StubHelper
 
 FactoryBot.define do
   factory :repository do
-    name { Faker::Lorem.word + Faker::Number.unique.number(8).to_s }
+    name { Faker::Lorem.word + Faker::Number.unique.number(digits: 8).to_s }
     remote { "git@github.com:dodona-edu/#{name}.git" }
     association :judge, factory: %i[judge git_stubbed]
 

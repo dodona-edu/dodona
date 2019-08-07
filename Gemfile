@@ -4,24 +4,22 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.2', '>= 5.2.2.1'
+gem 'rails', '~> 5.2.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.2'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
-# Use SCSS for stylesheets
-gem 'less-rails', '~> 3.0'
+# Use less for stylesheets
+gem 'less-rails', '~> 4.0'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 4.1.18'
+gem 'uglifier', '>= 4.1.20'
 # This needs to be here for less :(
 gem 'therubyracer', platforms: :ruby
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
 
-gem 'webpacker', '~> 3.5.5'
+gem 'webpacker', '~> 4.0.7'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.7'
+gem 'jbuilder', '~> 2.9.1'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -31,156 +29,154 @@ gem 'jbuilder', '~> 2.7'
 # gem 'mini_magick', '~> 4.8'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.1.0', require: false
+gem 'bootsnap', '~> 1.4.4', require: false
 
 # used to validate container responses
-gem 'json-schema'
+gem 'json-schema', '~> 2.8.1'
 
 # delayed jobs
-gem 'delayed_job_active_record'
+gem 'delayed_job_active_record', '~> 4.1.3'
+
 # start workers in the background
-gem 'daemons'
+gem 'daemons', '~>1.3'
+
 # dashboard
-github 'sinatra/sinatra' do
-  gem 'rack-protection'
-  gem 'sinatra'
-end
-gem 'delayed_job_web'
+gem 'sinatra', '~>2.0.5'
+gem 'delayed_job_web', '~>1.4.3'
 
 # pagination
-gem 'will_paginate'
+gem 'will_paginate', '~>3.1.7'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown'
+gem 'kramdown', '~>2.1.0'
+gem 'kramdown-parser-gfm', '~>1.1.0'
 gem 'rouge', '1.10.1'
 
 # feedback table builder
-gem 'builder'
+gem 'builder', '~>3.2.3'
 
 # generate diffs
-gem 'diff-lcs'
+gem 'diff-lcs', '~>1.3'
 
 # code editor
-gem 'ace-rails-ap'
+gem 'ace-rails-ap', '~>4.2'
 
 # auto css prefixer
-gem 'autoprefixer-rails'
+gem 'autoprefixer-rails', '~>9.6.1'
 
 # saml authentication
-gem 'devise'
+gem 'devise', '~>4.6.2'
 gem 'devise_saml_authenticatable', '~> 1.5.0'
 
 # omniauth
 gem 'omniauth-oauth2', '~> 1.6.0'
 gem 'omniauth-google-oauth2', '~> 0.7.0'
 
-gem 'jwt', '~> 2.0'
+gem 'jwt', '~> 2.2.1'
 
 # contact mail form
-gem 'recaptcha', require: 'recaptcha/rails'
-gem 'mail_form'
-
+gem 'recaptcha', '~> 5.1.0', require: 'recaptcha/rails'
+gem 'mail_form', '~> 1.7.1'
 
 # authorization
-gem 'pundit'
+gem 'pundit', '~> 2.0.1'
 
 # impersonate users
-gem 'pretender'
+gem 'pretender', '~> 0.3.4'
 
 # db annotations
-gem 'annotate'
+gem 'annotate', '~> 2.7.5'
 
 # Use Capistrano for deployment
-gem 'capistrano-passenger', group: :development
-gem 'capistrano-rails', group: :development
-gem 'capistrano-rvm', group: :development
-gem 'capistrano-yarn'
-gem 'capistrano3-delayed-job', '~> 1.0'
+gem 'capistrano-passenger', '~> 0.2.0', group: :development
+gem 'capistrano-rails', '~> 1.4.0', group: :development
+gem 'capistrano-rvm', '~> 0.1.2', group: :development
+gem 'capistrano-yarn', '~> 2.0.2'
+gem 'capistrano3-delayed-job', '~> 1.7.6'
 
 # i18n
-gem 'i18n-js', '~> 3.0.0.rc14'
-gem 'rails-i18n'
+gem 'i18n-js', '~> 3.3.0'
+gem 'rails-i18n', '~> 5.1.3'
 
 # email exceptions
-gem 'exception_notification'
-gem 'httparty'
-gem 'slack-notifier'
+gem 'exception_notification', '~> 4.3.0'
+gem 'httparty', '~> 0.17.0'
+gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
-gem 'nokogiri'
-gem 'premailer-rails'
+gem 'nokogiri', '~> 1.10.3'
+gem 'premailer-rails', '~> 1.10.3'
 
 # filtering
-gem 'has_scope'
+gem 'has_scope', '~> 0.7.2'
 
 # generating zip files
-gem 'rubyzip'
+gem 'rubyzip', '~> 1.2.3'
 
 # add request server timings to the devtools
-gem 'rails_server_timings'
+gem 'rails_server_timings', '~> 1.0.8'
 
 # Maybe in Ruby
-gem 'possibly'
+gem 'possibly', '~> 1.0.1'
 
 # bootstrap tokenizer
-gem 'bootstrap_tokenfield_rails'
+gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli'
+gem 'dalli', '~> 2.7.10'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 1.8'
+gem 'faker', '~> 2.1.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha'
+  gem 'mocha', '~> 1.9.0'
   # Factory bot for factories
-  gem 'factory_bot'
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '~> 5.0.2'
 
   # test template rendering
-  gem 'rails-controller-testing'
+  gem 'rails-controller-testing', '~> 1.0.4'
 
   # I18N default locale & better test reporter
-  # Remove git fork once the original gem is updated
-  gem 'minitest-utils', git: 'https://github.com/rien/minitest-utils.git'
+  gem 'minitest-utils', '~> 0.4.4'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'byebug', '~> 11.0.1', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
+  gem 'capybara', '~> 3.28.0'
+  gem 'selenium-webdriver', '~> 3.142.3'
 end
 
 group :test do
   # for measuring coverage
-  gem 'simplecov', require: false
-  gem 'minitest-ci'
+  gem 'simplecov', '~> 0.17.0', require: false
+  gem 'minitest-ci', '~> 3.4.0'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'web-console', '>= 3.3.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'rb-readline' # require for irb
-  gem 'rubocop'
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'listen', '~> 3.1.5'
+  gem 'web-console', '~> 3.7.0'
+  # Spring speeds up development by keeping your application running in the background. 
+  # Read more: https://github.com/rails/spring
+  gem 'rb-readline', '~> 0.5.5' # require for irb
+  gem 'rubocop-rails', '~> 2.2.1'
+  gem 'spring', '~> 2.1.0'
+  gem 'spring-watcher-listen', '~> 2.0.1'
 
   # Manage processes (webpack, rails, delayed_job, ...)
-  gem 'foreman'
+  gem 'foreman', '~> 0.85.0'
 
   # for opening letters
-  gem 'letter_opener'
+  gem 'letter_opener', '~> 1.7.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
-gem 'docker-api'
+gem 'docker-api', '~> 1.34.2'
 
 gem "actiontext", github: "rails/actiontext", require: "action_text", branch: "archive"
 gem "image_processing", "~> 1.2" # for Active Storage variants

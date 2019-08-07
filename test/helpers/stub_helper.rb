@@ -17,4 +17,7 @@ module StubHelper
   refine FactoryBot::SyntaxRunner do
     include StubHelper
   end
+
+  # somehow we need to set this to false for use with factory bot 5
+  FactoryBot.use_parent_strategy = false
 end

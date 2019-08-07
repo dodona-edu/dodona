@@ -51,14 +51,14 @@
             <% if policy(series).destroy? %>
               <li>
                 <%= link_to series_path(series), method: :delete, data: {confirm: t("series.delete.confirm")} do %>
-                  <i class='material-icons md-18'>delete</i> <%= t("series.delete.title") %>
+                  <i class='mdi mdi-delete mdi-18'></i> <%= t("series.delete.title") %>
                 <% end %>
               </li>
             <% end %>
             <% if policy(series).edit? && !series.open? %>
               <li>
                 <%= link_to series_path(series, token: series.access_token) do %>
-                  <i class="material-icons md-18">link</i>
+                  <i class="mdi mdi-link mdi-18"></i>
                   <%= t 'series.show.token_link' %>
                 <% end %>
               </li>
@@ -66,21 +66,21 @@
             <% if policy(series).scoresheet? %>
               <li>
                 <%= link_to scoresheet_series_path(series) do %>
-                  <i class='material-icons md-18'>view_list</i> <%= t("series.show.series_scoresheet") %>
+                  <i class='mdi mdi-view-list mdi-18'></i> <%= t("series.show.series_scoresheet") %>
                 <% end %>
               </li>
             <% end %>
             <% if policy(series).download_solutions? && current_user.course_admin?(series.course) %>
               <li>
                 <%= link_to download_solutions_series_path(series, token: (series.access_token if series.hidden?)) do %>
-                  <i class='material-icons md-18'>cloud_download</i> <%= t("series.show.download_all_solutions") %>
+                  <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_all_solutions") %>
                 <% end %>
               </li>
             <% end %>
             <% if policy(series).mass_rejudge? %>
               <li>
                 <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: {confirm: t("submissions.index.confirm_reevaluate_submissions")} do %>
-                  <i class='material-icons md-18'>replay</i> <%= t("submissions.index.reevaluate_submissions") %>
+                  <i class='mdi mdi-replay mdi-18'></i> <%= t("submissions.index.reevaluate_submissions") %>
                 <% end %>
               </li>
             <% end %>
@@ -89,14 +89,14 @@
           <% if policy(series).show? %>
             <li>
               <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
-                <i class='material-icons md-18'>visibility</i> <%= t("series.show.show_overview") %>
+                <i class='mdi mdi-eye mdi-18'></i> <%= t("series.show.show_overview") %>
               <% end %>
             </li>
           <% end %>
           <% if policy(series).download_solutions? %>
             <li>
               <%= link_to download_solutions_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
-                <i class='material-icons md-18'>cloud_download</i> <%= t("series.show.download_solutions") %>
+               <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_solutions") %>
               <% end %>
             </li>
           <% end %>

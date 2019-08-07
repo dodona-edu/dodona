@@ -18,9 +18,9 @@
       </td>
       <td class="status-icon">
         <span class="pull-right">
-          <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.private")}'>visibility_off</i>" if exercise.access_private? %>
-          <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.removed")}'>delete</i>" if exercise.removed? %>
-          <%= raw "<i class='material-icons md-18' title='#{t("exercises.index.invalid")}'>error</i>" if exercise.not_valid? %>
+          <%= raw "<i class='mdi mdi-eye-off mdi-18' title='#{t("exercises.index.private")}'></i>" if exercise.access_private? %>
+          <%= raw "<i class='mdi mdi-delete mdi-18' title='#{t("exercises.index.removed")}'>delete</i>" if exercise.removed? %>
+          <%= raw "<i class='mdi mdi-alert-circle mdi-18' title='#{t("exercises.index.invalid")}'></i>" if exercise.not_valid? %>
         </span>
       </td>
       <td>
@@ -50,11 +50,11 @@
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>
           <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>">
-            <i class="material-icons md-18">delete</i>
+            <i class="mdi mdi-delete mdi-18"></i>
           </a>
         <% else %>
           <a href="#" class="btn btn-icon add-exercise <%= "hidden" if series.exercises.include? exercise %>" title="<%= t "series.edit.add_exercise" %>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>" data-confirm="<%= t('.course_added_to_usable') unless exercise.usable_by? @series.course %>">
-            <i class="material-icons md-18">add</i>
+            <i class="mdi mdi-plus mdi-18"></i>
           </a>
         <% end %>
       </td>

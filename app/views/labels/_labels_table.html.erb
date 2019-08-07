@@ -25,7 +25,7 @@
           <% end %>
           <% if policy(Label).destroy? %>
             <%= link_to label, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
-              <i class="material-icons md-18">delete</i>
+              <i class="mdi mdi-delete mdi-18"></i>
             <% end %>
           <% end %>
         </td>

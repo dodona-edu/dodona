@@ -19,7 +19,7 @@
       <td class="status-icon">
         <span class="pull-right">
           <%= raw "<i class='mdi mdi-eye-off mdi-18' title='#{t("exercises.index.private")}'></i>" if exercise.access_private? %>
-          <%= raw "<i class='mdi mdi-delete mdi-18' title='#{t("exercises.index.removed")}'>delete</i>" if exercise.removed? %>
+          <%= raw "<i class='mdi mdi-delete mdi-18' title='#{t("exercises.index.removed")}'></i>" if exercise.removed? %>
           <%= raw "<i class='mdi mdi-alert-circle mdi-18' title='#{t("exercises.index.invalid")}'></i>" if exercise.not_valid? %>
         </span>
       </td>

@@ -1,3 +1,6 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'filter_buttons' %>
+<% end %>
 <div class="table-scroll-wrapper">
   <table class="table table-resource">
     <thead>
@@ -30,6 +33,6 @@
 <center><%= page_navigation_links submissions, true, 'submissions', params %></center>
 <script type="text/javascript">
       $(function () {
-          //dodona.initFilterButtons(); -- will 
+          dodona.initFilterButtons();
       });
   </script>

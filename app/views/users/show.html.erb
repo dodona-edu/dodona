@@ -3,15 +3,10 @@
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <span class="user-icon pull-left"><i class="material-icons md-36" title="<%= @user.permission %>">
-            <% if @user.permission == "student" %>
-              person
-            <% elsif @user.permission == "staff" %>
-              school
-            <% else %>
-              android
-            <% end %>
-          </i></span>
+          <span class="user-icon pull-left">
+            <i class="mdi <%=@user.permission == "student" ? "mdi-account" : (@user.permission == "staff" ? "mdi-school" : "mdi-android")%> mdi-36" title="<%= @user.permission %>">
+            </i>
+            </span>
           <span class="profile-line">
             <span class="name">
               <%= @user.full_name %>

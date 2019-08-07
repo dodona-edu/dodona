@@ -1,8 +1,15 @@
 <tr id="submission_<%= submission.id %>" data-status="<%= submission.status %>">
   <td><%= submission_status_icon(submission) %></td>
-  <% if (current_user.administrating_courses.any? || current_user.admin?) && !submission.course.nil? %>
+  <% if current_user.administrating_courses.any? || current_user.admin? %>
     <td>
-      <%= link_to submission.user.full_name, course_member_path(submission.course, submission.user), title: submission.user.full_name, class: "ellipsis-overflow" %>
+      <% if submission.course.nil? %>
+        <%= submission.user.full_name %>
+      <% else %>
+        <%= link_to submission.user.full_name, course_member_path(submission.course, submission.user), title: submission.user.full_name, class: "ellipsis-overflow" %>
+      <% end %>
+      <i class="mdi mdi-filter-outline mdi-12 filter-submissions"
+         data-filter="<%= submission.user.full_name %>"
+      ></i>
     </td>
   <% end %>
   <% if !exercise %>
@@ -12,6 +19,9 @@
       <% else %>
         <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise) %>
       <% end %>
+      <i class="mdi mdi-filter-outline mdi-12 filter-submissions"
+         data-filter="<%= submission.exercise.name %>"
+      ></i>
     </td>
   <% end %>
   <td>

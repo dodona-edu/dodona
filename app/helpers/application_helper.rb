@@ -69,12 +69,11 @@ module ApplicationHelper
     options[:'data-placement'] = 'bottom'
 
     locals = {
-      title: options.delete(:title),
-      icon: options.delete(:icon),
-      mdi_icon: options.delete(:mdi_icon),
-      custom_icon_name: options.delete(:custom_icon),
-      url: url,
-      link_options: options
+        title: options.delete(:title),
+        icon: options.delete(:icon),
+        custom_icon_name: options.delete(:custom_icon),
+        url: url,
+        link_options: options
     }
 
     render partial: 'navbar_link', locals: locals

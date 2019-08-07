@@ -1,16 +1,16 @@
 <% content_for :navbar do %>
   <%= navbar_link url: evaluate_submission_path(@submission),
                   title: t('submissions.show.reevaluate'),
-                  mdi_icon: 'refresh',
+                  icon: 'refresh',
                   if: policy(@submission).evaluate? %>
   <%= navbar_link url: download_submission_path(@submission),
                   title: 'Download',
-                  mdi_icon: 'download',
+                  icon: 'download',
                   target: '_blank',
                   download: '',
                   if: policy(@submission).download? %>
   <%= navbar_link url: edit_submission_path(@submission),
                   title: t('submissions.show.edit'),
-                  mdi_icon: 'pencil',
+                  icon: 'pencil',
                   if: policy(@submission).create? %>
 <% end %>

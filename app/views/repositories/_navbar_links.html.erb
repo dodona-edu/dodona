@@ -1,6 +1,6 @@
 <%= content_for :navbar do %>
-  <%= navbar_link url: repository_path(@repository), title: t('.show'), mdi_icon: 'code-tags', if: policy(@repository).show? %>
-  <%= navbar_link url: admins_repository_path(@repository), title: t('.administrators'), mdi_icon: 'account-multiple', if: policy(@repository).admins? %>
-  <%= navbar_link url: courses_repository_path(@repository), title: t('.courses'), mdi_icon: 'book-multiple', if: policy(@repository).courses? %>
-  <%= navbar_link url: edit_repository_path(@repository), title: t('.edit'), mdi_icon: 'pencil', if: policy(@repository).edit? %>
+  <%= navbar_link url: repository_path(@repository), title: t('.show'), icon: 'code-tags', if: policy(@repository).show? %>
+  <%= navbar_link url: admins_repository_path(@repository), title: t('.administrators'), icon: 'account-multiple', if: policy(@repository).admins? %>
+  <%= navbar_link url: courses_repository_path(@repository), title: t('.courses'), icon: 'book-multiple', if: policy(@repository).courses? %>
+  <%= navbar_link url: edit_repository_path(@repository), title: t('.edit'), icon: 'pencil', if: policy(@repository).edit? %>
 <% end %>

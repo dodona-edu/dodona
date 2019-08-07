@@ -57,7 +57,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   def assert_submission(status: nil, summary: nil, message_includes: nil, accepted: true)
     assert_not_nil @submission.result, 'There should always be a result'
     assert_equal status, @submission.status, 'Wrong submission status'
-    summary ||= I18n.t("activerecord.attributes.submission.statuses.#{status}")
+    summary ||= I18n.t("activerecord.attributes.submission.statuses.#{status}", locale: @submission.user.lang)
     assert_equal summary, @submission.summary, 'Wrong submission summary'
     if message_includes
       result = JSON.parse(@submission.result)

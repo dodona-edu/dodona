@@ -16,7 +16,6 @@ references:
       MYSQL_RANDOM_ROOT_PASSWORD: true
       MYSQL_HOST: "localhost"
 
-
 jobs:
   test:
     docker:
@@ -70,6 +69,12 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run:
+          name: Install RuboCop
+          command: gem install rubocop-rails
+      - run:
+          name: Run RuboCop
+          command: rubocop
 
 workflows:
   version: 2

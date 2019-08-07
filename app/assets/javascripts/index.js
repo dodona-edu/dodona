@@ -1,17 +1,21 @@
 /* globals Bloodhound */
 import { showNotification } from "./notifications.js";
-import { delay, getArrayURLParameter, getURLParameter, updateArrayURLParameter, updateURLParameter } from "./util.js";
+import {
+    delay,
+    getArrayURLParameter,
+    getURLParameter,
+    updateArrayURLParameter,
+    updateURLParameter,
+} from "./util.js";
 import fetch from "isomorphic-fetch";
 
 const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
 
-
 window.dodona.index = {};
 window.dodona.index.baseUrl = window.location.href;
-window.dodona.index.doSearch = () => {
-};
+window.dodona.index.doSearch = () => { };
 
 function setBaseUrl(_baseUrl) {
     window.dodona.index.baseUrl = _baseUrl;
@@ -43,9 +47,11 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         const tokens = $(TOKENS_FILTER_ID).tokenfield("getTokens");
         Object.entries(filterCollections).forEach(([type, value]) => {
             if (value.multi) {
-                url = updateArrayURLParameter(url, value.param, tokens
-                    .filter(el => el.type === type)
-                    .map(e => value.paramVal(e)));
+                url = updateArrayURLParameter(
+                    url,
+                    value.param,
+                    tokens.filter(el => el.type === type).map(e => value.paramVal(e))
+                );
             } else {
                 const elem = tokens.filter(e => e.type === type)[0];
                 url = updateURLParameter(url, value.param, elem ? value.paramVal(elem) : "");
@@ -93,7 +99,13 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         window.dodona.index.baseUrl = _baseUrl || window.location.href;
         const filterCollections = _filterCollections || {};
         const $queryFilter = $(QUERY_FILTER_ID);
-        window.dodona.index.doSearch = () => search(updateAddressBar, window.dodona.index.baseUrl, $queryFilter.typeahead("val"), filterCollections);
+        window.dodona.index.doSearch = () =>
+            search(
+                updateAddressBar,
+                window.dodona.index.baseUrl,
+                $queryFilter.typeahead("val"),
+                filterCollections
+            );
         $queryFilter.keyup(() => delay(window.dodona.index.doSearch, 300));
         const param = getURLParameter(FILTER_PARAM);
         if (param !== "") {
@@ -107,17 +119,25 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 
     function performAction(action) {
         if (action.confirm === undefined || window.confirm(action.confirm)) {
-            const url = addParametersToUrl(action.action, $(QUERY_FILTER_ID).val(), filterCollections);
-            $.post(url, {
-                format: "json",
-            }, function (data) {
-                showNotification(data.message);
-                if (data.js) {
-                    eval(data.js);
-                } else {
-                    search(updateAddressBar, window.dodona.index.baseUrl);
+            const url = addParametersToUrl(
+                action.action,
+                $(QUERY_FILTER_ID).val(),
+                filterCollections
+            );
+            $.post(
+                url,
+                {
+                    format: "json",
+                },
+                function (data) {
+                    showNotification(data.message);
+                    if (data.js) {
+                        eval(data.js);
+                    } else {
+                        search(updateAddressBar, window.dodona.index.baseUrl);
+                    }
                 }
-            });
+            );
         }
     }
 
@@ -125,7 +145,9 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         const url = window.dodona.index.baseUrl || window.location.href;
         // If the parameters were already contained, the length shouldn't change.
         // Note that we can't just compare the urls, since the position of the parameters might change.
-        return addParametersToUrl(url, undefined, undefined, searchOption.search).length === url.length;
+        return (
+            addParametersToUrl(url, undefined, undefined, searchOption.search).length === url.length
+        );
     }
 
     function initActions() {
@@ -136,7 +158,11 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         function performSearch() {
             const extraParams = {};
             searchOptions.forEach((opt, id) => {
-                if ($(`a.action[data-search_opt_id="${id}"]`).parent().hasClass("active")) {
+                if (
+                    $(`a.action[data-search_opt_id="${id}"]`)
+                        .parent()
+                        .hasClass("active")
+                ) {
                     Object.entries(opt.search).forEach(([key, value]) => {
                         extraParams[key] = value;
                     });
@@ -146,14 +172,28 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                     });
                 }
             });
-            search(updateAddressBar, window.dodona.index.baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, extraParams);
+            search(
+                updateAddressBar,
+                window.dodona.index.baseUrl,
+                $(QUERY_FILTER_ID).val(),
+                filterCollections,
+                extraParams
+            );
         }
 
         $actions.removeClass("hidden");
         if (searchOptions.length > 0) {
-            $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.filter-options") + "</li>");
+            $actions
+                .find("ul")
+                .append("<li class='dropdown-header'>" + I18n.t("js.filter-options") + "</li>");
             searchOptions.forEach(function (action, id) {
-                const $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""} data-search_opt_id="${id}"><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
+                const $link = $(
+                    `<a class="action" href='#' ${
+                        action.type ? "data-type=" + action.type : ""
+                    } data-search_opt_id="${id}"><i class='mdi mdi-${action.icon} mdi-18'></i>${
+                        action.text
+                    }</a>`
+                );
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (urlContainsSearchOpt(action)) {
@@ -171,9 +211,15 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             });
         }
         if (searchActions.length > 0) {
-            $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
+            $actions
+                .find("ul")
+                .append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
             searchActions.forEach(function (action) {
-                const $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""}><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
+                const $link = $(
+                    `<a class="action" href='#' ${
+                        action.type ? "data-type=" + action.type : ""
+                    }><i class='mdi mdi-${action.icon} mdi-18'></i>${action.text}</a>`
+                );
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (action.action) {
@@ -190,7 +236,6 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             });
         }
     }
-
 
     function initTokens() {
         const $field = $(TOKENS_FILTER_ID);
@@ -220,7 +265,11 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 const tokens = $field.tokenfield("getTokens");
                 const newTokens = tokens
                     .filter(el => el.type !== e.attrs.type || el.name === e.attrs.name)
-                    .filter((el, i, arr) => arr.map(el2 => `${el2.type}${el2.id}`).indexOf(`${el.type}${el.id}`) === i);
+                    .filter(
+                        (el, i, arr) =>
+                            arr.map(el2 => `${el2.type}${el2.id}`).indexOf(`${el.type}${el.id}`) ===
+                            i
+                    );
                 if (newTokens.length !== tokens.length) {
                     $field.tokenfield("setTokens", newTokens);
                 }
@@ -239,10 +288,12 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             return result;
         }
 
-        const typeAheadOpts = [{
-            highlight: true,
-            minLength: 0,
-        }];
+        const typeAheadOpts = [
+            {
+                highlight: true,
+                minLength: 0,
+            },
+        ];
 
         Object.entries(filterCollections).forEach(([type, value]) => {
             for (const elem of value.data) {
@@ -292,18 +343,21 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 
         // Temporarily disable automatic searching when adding new labels
         const temp = doSearch;
-        doSearch = () => {
-        };
+        doSearch = () => { };
         const allTokens = [];
         Object.values(filterCollections).forEach(value => {
             if (value.multi) {
                 const enabledElements = getArrayURLParameter(value.param);
-                const mapped = value.data.filter(el => enabledElements.includes(`${value.paramVal(el)}`));
+                const mapped = value.data.filter(el =>
+                    enabledElements.includes(`${value.paramVal(el)}`)
+                );
                 allTokens.push(...mapped);
             } else {
                 const enabledElement = getURLParameter(value.param);
                 if (enabledElement) {
-                    const mapped = value.data.filter(el => `${value.paramVal(el)}` === enabledElement)[0];
+                    const mapped = value.data.filter(
+                        el => `${value.paramVal(el)}` === enabledElement
+                    )[0];
                     allTokens.push(mapped);
                 }
             }

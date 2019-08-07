@@ -84,7 +84,6 @@ function initCourseMembers() {
     init();
 }
 
-
 const TABLE_WRAPPER_SELECTOR = ".series-exercises-table-wrapper";
 const SKELETON_TABLE_SELECTOR = ".exercise-table-skeleton";
 
@@ -115,8 +114,7 @@ class Series {
         return !this.loaded && !this.loading;
     }
 
-    load(callback = () => {
-    }) {
+    load(callback = () => { }) {
         this.loading = true;
         $.get(this.url).done(() => {
             this.loading = false;
@@ -143,7 +141,8 @@ function initCourseShow() {
         const lastVisibleIdx = series.findIndex(s => screenBottom < s.top);
         const lastToLoad = lastVisibleIdx == -1 ? series.length : lastVisibleIdx;
 
-        series.slice(firstToLoad, lastToLoad + 1)
+        series
+            .slice(firstToLoad, lastToLoad + 1)
             .filter(s => s.needsLoading())
             .forEach(s => s.load());
     }
@@ -199,14 +198,18 @@ function initSeriesReorder() {
         const tableBody = $(".course-series-list tbody").get(0);
         dragula([tableBody], {
             moves: function (el, source, handle, sibling) {
-                return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
+                return (
+                    $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length
+                );
             },
             mirrorContainer: tableBody,
         }).on("drop", () => {
             const courseId = $(".course-series-list").data("course_id");
-            const order = $(".course-series-list tbody .series-name").map(function () {
-                return $(this).data("series_id");
-            }).get();
+            const order = $(".course-series-list tbody .series-name")
+                .map(function () {
+                    return $(this).data("series_id");
+                })
+                .get();
             $.post(`/courses/${courseId}/reorder_series.js`, {
                 order: JSON.stringify(order),
             });
@@ -246,7 +249,10 @@ function initCourseNew() {
         $("#new-course").click(function () {
             $choosePanel.addClass("hidden");
             $formPanel.find(".step-circle").html("2");
-            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
+            $(this)
+                .closest(".panel")
+                .find(".answer")
+                .html($(this).data("answer"));
             fetch("/courses/new.js", {
                 headers: {
                     "accept": "text/javascript",
@@ -265,14 +271,22 @@ function initCourseNew() {
             $choosePanel.find("input[type=\"radio\"]").prop("checked", false);
             $formPanel.addClass("hidden");
             $formPanel.find(".step-circle").html("3");
-            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
+            $(this)
+                .closest(".panel")
+                .find(".answer")
+                .html($(this).data("answer"));
         });
     }
 
     function copyCoursesLoaded() {
         $("[data-course_id]").click(function () {
-            $(this).find("input[type=\"radio\"]").prop("checked", true);
-            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
+            $(this)
+                .find("input[type=\"radio\"]")
+                .prop("checked", true);
+            $(this)
+                .closest(".panel")
+                .find(".answer")
+                .html($(this).data("answer"));
             fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`, {
                 headers: {
                     "accept": "text/javascript",
@@ -299,4 +313,11 @@ function initCourseNew() {
     init();
 }
 
-export { initSeriesReorder, initCourseForm, initCourseNew, initCourseShow, initCourseMembers, loadUsers };
+export {
+    initSeriesReorder,
+    initCourseForm,
+    initCourseNew,
+    initCourseShow,
+    initCourseMembers,
+    loadUsers,
+};

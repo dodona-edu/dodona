@@ -13,10 +13,10 @@
       <tr>
         <td>
           <% if user.zeus? %>
-            <i class="material-icons md-18" title='<%= t "users.users_table.zeus" %>'>android</i>
+            <i class="mdi mdi-adroid mdi-18" title='<%= t "users.users_table.zeus" %>'></i>
           <% end %>
           <% if user.staff? %>
-            <i class="material-icons md-18" title='<%= t "users.users_table.staff" %>'>school</i>
+            <i class="mdi mdi-school mdi-18" title='<%= t "users.users_table.staff" %>'></i>
           <% end %>
         </td>
         <td><%= user.full_name %></td>

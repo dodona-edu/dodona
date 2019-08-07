@@ -21,13 +21,13 @@
     <tr>
       <td>
         <div class="drag-handle">
-          <i class="material-icons mdi-18">reorder</i>
+          <i class="mdi mdi-reorder-horizontal mdi-18"></i>
         </div>
       </td>
       <td class="status-icon">
       <span class="pull-right">
         <% if s.hidden? %>
-        <i class="material-icons md-18" title="<%= t "activerecord.attributes.series.visibilities.hidden" %>">visibility_off</i>
+        <i class="mdi mdi-eye-off mdi-18" title="<%= t "activerecord.attributes.series.visibilities.hidden" %>"></i>
         <% elsif s.closed? %>
         <i class="material-icons md-18" title="<%= t "activerecord.attributes.series.visibilities.closed" %>">block</i>
         <% end %>

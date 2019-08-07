@@ -138,7 +138,6 @@ group :development, :test do
   gem 'rails-controller-testing', '~> 1.0.4'
 
   # I18N default locale & better test reporter
-  # Remove git fork once the original gem is updated
   gem 'minitest-utils', '~> 0.4.4'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

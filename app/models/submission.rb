@@ -149,9 +149,11 @@ class Submission < ApplicationRecord
 
   def clear_fs
     # If we were destroyed or if we were never saved to the database, delete this submission's directory
+    # rubocop:disable Style/GuardClause
     if destroyed? || new_record?
       FileUtils.remove_entry_secure(fs_path) if File.exist?(fs_path)
     end
+    # rubocop:enable Style/GuardClause
   end
 
   def on_filesystem?
@@ -224,7 +226,9 @@ class Submission < ApplicationRecord
     end while Submission.find_by(fs_key: key).present?
     self.fs_key = key
     # We don't want to trigger callbacks (and invalidate the cache as a result)
+    # rubocop:disable Rails/SkipsModelValidations
     update_column(:fs_key, self[:fs_key]) unless new_record?
+    # rubocop:enable Rails/SkipsModelValidations
     key
   end
 

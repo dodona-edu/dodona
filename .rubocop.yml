@@ -25,6 +25,8 @@ Metrics/AbcSize:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
+Metric/BlockNesting:
+  Max: 4
 Metrics/ClassLength:
   Enabled: false
 Metrics/CyclomaticComplexity:
@@ -54,6 +56,8 @@ Style/ClassAndModuleChildren:
   Enabled: false
 Style/Documentation:
   Enabled: false
+Style/FormatStringToken:
+  EnforcedStyle: template
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/NumericPredicate:

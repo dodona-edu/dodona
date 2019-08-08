@@ -87,6 +87,7 @@ class CoursesController < ApplicationController
       }.merge(@copy_options).symbolize_keys
 
       @course.series = policy_scope(@copy_options[:base].series).map do |s|
+        # rubocop:disable Style/MultilineTernaryOperator
         Series.new(
           series_memberships: @copy_options[:exercises] ?
                                   s.series_memberships.map do |sm|
@@ -100,6 +101,7 @@ class CoursesController < ApplicationController
           order: s.order,
           progress_enabled: s.progress_enabled
         )
+        # rubocop:enable Style/MultilineTernaryOperator
       end
 
       @course.administrating_members = @copy_options[:base].administrating_members if @copy_options[:admins]

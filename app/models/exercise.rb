@@ -355,7 +355,9 @@ class Exercise < ApplicationRecord
   def generate_access_token
     self.access_token = SecureRandom.urlsafe_base64(12)
     # We don't want to trigger callbacks, this doesn't have an influence on the config file
+    # rubocop:disable Rails/SkipsModelValidations
     update_column(:access_token, self[:access_token]) unless new_record?
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def self.move_relations(from, to)

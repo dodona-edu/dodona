@@ -372,7 +372,7 @@ function initFilterButtons(){
     function filter(){
         const $element = $(this);
         const $searchbar = $(QUERY_FILTER_ID);
-        $searchbar.val($element.data(FILTER_DATA)); // search for value requested by user
+        $searchbar.typeahead("val", $element.data(FILTER_DATA)); // search for value requested by user
         window.dodona.index.doSearch();
     }
 

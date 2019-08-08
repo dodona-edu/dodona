@@ -34,6 +34,8 @@ class SubmissionsController < ApplicationController
       @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
     elsif @course
       @crumbs << [@course.name, course_path(@course)]
+    elsif @judge
+      @crumbs << [@judge.name, judge_path(@judge)]
     end
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] if @exercise
     @crumbs << [I18n.t('submissions.index.title'), '#']
@@ -124,8 +126,10 @@ class SubmissionsController < ApplicationController
       @course = Course.find(params[:course_id])
       @course_labels = CourseLabel.where(course: @course) if @user.blank?
     end
+
     @series = Series.find(params[:series_id]) if params[:series_id]
     @exercise = Exercise.find(params[:exercise_id]) if params[:exercise_id]
+    @judge = Judge.find(params[:judge_id]) if params[:judge_id]
 
     if @exercise
       @submissions = @submissions.of_exercise(@exercise)
@@ -138,6 +142,8 @@ class SubmissionsController < ApplicationController
       @submissions = @submissions.in_series(@series)
     elsif @course
       @submissions = @submissions.in_course(@course)
+    elsif @judge
+      @submissions = @submissions.of_judge(@judge)
     end
 
     @course_membership = CourseMembership.find_by(user: @user, course: @course) if @user.present? && @course.present?

@@ -27,7 +27,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should create repository admin on create' do
-    assert_difference('RepositoryAdmin.count', 1, "creating a repository should create a repository admin") do
+    assert_difference('RepositoryAdmin.count', 1, 'creating a repository should create a repository admin') do
       create_request
     end
   end
@@ -35,17 +35,17 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   test 'zeus and repository admin should be able to edit repository admins' do
     user = create :user
 
-    assert_difference("@instance.admins.count", 1, "zeus should always be able to add a repository admin") do
+    assert_difference('@instance.admins.count', 1, 'zeus should always be able to add a repository admin') do
       post add_admin_repository_url(@instance, user_id: user.id)
     end
 
     sign_in user
 
-    assert_difference("@instance.admins.count", 1, "repo admin should be able to add a repository admin") do
+    assert_difference('@instance.admins.count', 1, 'repo admin should be able to add a repository admin') do
       post add_admin_repository_url(@instance, user_id: @admin.id)
     end
 
-    assert_difference("@instance.admins.count", -1, "repo admin should be able to remove a repository admin") do
+    assert_difference('@instance.admins.count', -1, 'repo admin should be able to remove a repository admin') do
       post remove_admin_repository_url(@instance, user_id: @admin.id)
     end
 
@@ -54,7 +54,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
     sign_in @admin
 
-    assert_difference("@instance.admins.count", -1, "zeus should be able to remove a repository admin") do
+    assert_difference('@instance.admins.count', -1, 'zeus should be able to remove a repository admin') do
       post remove_admin_repository_url(@instance, user_id: user.id)
     end
 
@@ -62,11 +62,11 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
     @instance.admins << @admin
 
-    assert_difference("@instance.admins.count", 0, "user should not be able to remove a repository admin") do
+    assert_difference('@instance.admins.count', 0, 'user should not be able to remove a repository admin') do
       post remove_admin_repository_url(@instance, user_id: user2.id)
     end
 
-    assert_difference("@instance.admins.count", 0, "user should not be able to add a repository admin") do
+    assert_difference('@instance.admins.count', 0, 'user should not be able to add a repository admin') do
       post add_admin_repository_url(@instance, user_id: user.id)
     end
   end
@@ -81,11 +81,11 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   test 'zeus and repository admin should be able to edit allowed courses' do
     course = create :course
 
-    assert_difference('@instance.allowed_courses.count',1, 'zeus should be able to add an allowed course') do
+    assert_difference('@instance.allowed_courses.count', 1, 'zeus should be able to add an allowed course') do
       post add_course_repository_url(@instance, course_id: course.id)
     end
 
-    assert_difference('@instance.allowed_courses.count',-1, 'zeus should be able to remove an allowed course') do
+    assert_difference('@instance.allowed_courses.count', -1, 'zeus should be able to remove an allowed course') do
       post remove_course_repository_url(@instance, course_id: course.id)
     end
 
@@ -94,11 +94,11 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
     sign_in user
 
-    assert_difference('@instance.allowed_courses.count',1, 'repository admin should be able to add an allowed course') do
+    assert_difference('@instance.allowed_courses.count', 1, 'repository admin should be able to add an allowed course') do
       post add_course_repository_url(@instance, course_id: course.id)
     end
 
-    assert_difference('@instance.allowed_courses.count',-1, 'repository admin should be able to remove an allowed course') do
+    assert_difference('@instance.allowed_courses.count', -1, 'repository admin should be able to remove an allowed course') do
       post remove_course_repository_url(@instance, course_id: course.id)
     end
   end
@@ -151,28 +151,40 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'private', find_echo.access
   end
 
-  test 'webhook with commit info should update exercises' do
-    commit_info = [
-      {
-          message: 'make echo private',
-          author: {
-          name: 'Deter Pawyndt',
-          email: 'deter.pawyndt@ugent.be',
-          username: 'dpawyndt'
-        },
-          committer: {
-              name: 'Deter Pawyndt',
-              email: 'deter.pawyndt@ugent.be',
-              username: 'dpawyndt'
-          },
-          added: [],
-          removed: [],
-          modified: [
-          'echo/config.json'
-        ]
-      }
-    ]
-    post webhook_repository_path(@repository), params: { commits: commit_info }
+  test 'github webhook with commit info should update exercises' do
+    commit_info = [{
+                       message: 'make echo private',
+                       author: {
+                           name: 'Deter Pawyndt',
+                           email: 'deter.pawyndt@ugent.be',
+                           username: 'dpawyndt'
+                       },
+                       committer: {
+                           name: 'Deter Pawyndt',
+                           email: 'deter.pawyndt@ugent.be',
+                           username: 'dpawyndt'
+                       },
+                       added: [],
+                       removed: [],
+                       modified: ['echo/config.json']
+                   }]
+    post webhook_repository_path(@repository), params: {commits: commit_info}, headers: {"X-GitHub-Event": 'push'}
+    assert_equal 'private', find_echo.access
+  end
+
+  test 'gitlab webhook with commit info should update exercises' do
+    commit_info = [{
+                       message: 'make echo private',
+                       author: {
+                           name: 'Deter Pawyndt',
+                           email: 'deter.pawyndt@ugent.be',
+                           username: 'dpawyndt'
+                       },
+                       added: [],
+                       removed: [],
+                       modified: ['echo/config.json']
+                   }]
+    post webhook_repository_path(@repository), params: {commits: commit_info}, headers: {"X-Gitlab-Event": 'push'}
     assert_equal 'private', find_echo.access
   end
 end

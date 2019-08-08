@@ -13,9 +13,16 @@ const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
 
+/* As defined in app/views/submissions/_submission.html.erb */
+const FILTER_ICONS_CLASS = ".filter-submissions"; 
+const FILTER_DATA = "filter";
+
 window.dodona.index = {};
 window.dodona.index.baseUrl = window.location.href;
 window.dodona.index.doSearch = () => { };
+
+/* Make sure the init function is callable every time a partial table is rendered*/
+window.dodona.initFilterButtons = initFilterButtons;
 
 function setBaseUrl(_baseUrl) {
     window.dodona.index.baseUrl = _baseUrl;
@@ -27,7 +34,6 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 
     function init() {
         initTokens();
-
         if (doInitFilter) {
             initFilter(updateAddressBar, _baseUrl, eager, filterCollections);
         }
@@ -41,7 +47,6 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         const filterCollections = _filterCollections || {};
         const query = _query || $(QUERY_FILTER_ID).val();
         const extraParams = _extraParams || {};
-
         let url = updateURLParameter(baseUrl || window.location.href, FILTER_PARAM, query);
 
         const tokens = $(TOKENS_FILTER_ID).tokenfield("getTokens");
@@ -70,7 +75,6 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     function search(updateAddressBar, baseUrl, _query, _filterCollections, extraParams) {
         let url = addParametersToUrl(baseUrl, _query, _filterCollections, extraParams);
         url = updateURLParameter(url, "page", 1);
-
         const localIndex = ++searchIndex;
 
         if (updateAddressBar) {
@@ -364,6 +368,18 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     }
 
     init();
+}
+
+function initFilterButtons(){
+    
+    function filter(){
+        const element = $(this);
+        const searchbar = $(QUERY_FILTER_ID);
+        searchbar.val(element.data(FILTER_DATA)); // search for value requested by user
+        window.dodona.index.doSearch();
+    }
+
+    $(FILTER_ICONS_CLASS).click(filter);
 }
 
 export { initFilterIndex, setBaseUrl };

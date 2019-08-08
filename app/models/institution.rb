@@ -30,4 +30,9 @@ class Institution < ApplicationRecord
   def self.from_identifier(identifier)
     find_by(identifier: identifier) if identifier.present?
   end
+
+  def self.of_course(course_id)
+    includes(:courses).where(courses: { id: course.id})
+  end
+
 end

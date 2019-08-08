@@ -19,7 +19,7 @@ FactoryBot.define do
     code { Faker::Lorem.paragraph }
     evaluate { true }
     skip_rate_limit_check { true }
-    result {nil}
+    result { nil }
 
     transient do
       status { nil }

@@ -16,7 +16,7 @@ class RepositoriesController < ApplicationController
   # GET /repositories/1.json
   def show
     @title = @repository.name
-    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, "#"]]
+    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, '#']]
   end
 
   # GET /repositories/new
@@ -24,13 +24,13 @@ class RepositoriesController < ApplicationController
     authorize Repository
     @repository = Repository.new
     @title = I18n.t('repositories.new.title')
-    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [I18n.t('repositories.new.title'), "#"]]
+    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [I18n.t('repositories.new.title'), '#']]
   end
 
   # GET /repositories/1/edit
   def edit
     @title = @repository.name
-    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t("crumbs.edit"), "#"]]
+    @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t('crumbs.edit'), '#']]
   end
 
   # POST /repositories
@@ -83,7 +83,7 @@ class RepositoriesController < ApplicationController
   def admins
     @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t('repositories.admins.admins'), '#']]
     @users = apply_scopes(@repository.admins)
-                 .order(last_name: :asc, first_name: :asc)
+             .order(last_name: :asc, first_name: :asc)
   end
 
   def add_admin
@@ -99,7 +99,7 @@ class RepositoriesController < ApplicationController
   def courses
     @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, repository_path(@repository)], [I18n.t('repositories.courses.courses'), '#']]
     @courses = apply_scopes(@repository.allowed_courses)
-                   .order(year: :desc, name: :asc)
+               .order(year: :desc, name: :asc)
   end
 
   def add_course
@@ -124,7 +124,7 @@ class RepositoriesController < ApplicationController
     do_reprocess = false
     if request.headers.key? 'X-GitHub-Event'
       if !payload.key?('commits') || payload['forced'] ||
-          !payload['commits'].reject { |commit| commit['committer']['name'] == 'Dodona Server' }.empty?
+         !payload['commits'].reject { |commit| commit['committer']['name'] == 'Dodona Server' }.empty?
         do_reprocess = true
         if current_user
           user_hash[:user] = current_user
@@ -174,12 +174,12 @@ class RepositoriesController < ApplicationController
       if success
         notification = t('controllers.updated', model: model.model_name.human)
         format.json { head :no_content }
-        format.js { render locals: {notification: notification} }
+        format.js { render locals: { notification: notification } }
         format.html { redirect_to return_path, notice: notification }
       else
         alert = t('controllers.update_failed', model: model.model_name.human)
         format.json { head :unprocessable_entity }
-        format.js { render status: 400, locals: {notification: alert} }
+        format.js { render status: :bad_request, locals: { notification: alert } }
         format.html { redirect_to return_path, alert: alert }
       end
     end

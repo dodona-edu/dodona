@@ -21,15 +21,15 @@
 
 require 'pathname'
 require 'action_view'
-include ActionView::Helpers::DateHelper
 
 class Exercise < ApplicationRecord
+  include ActionView::Helpers::DateHelper
   include Filterable
   include StringHelper
   include Cacheable
 
-  USERS_CORRECT_CACHE_STRING = "/course/%{course_id}/exercise/%{id}/users_correct".freeze
-  USERS_TRIED_CACHE_STRING = "/course/%{course_id}/exercise/%{id}/users_tried".freeze
+  USERS_CORRECT_CACHE_STRING = '/course/%{course_id}/exercise/%{id}/users_correct'.freeze
+  USERS_TRIED_CACHE_STRING = '/course/%{course_id}/exercise/%{id}/users_tried'.freeze
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
@@ -43,14 +43,14 @@ class Exercise < ApplicationRecord
   belongs_to :repository
   belongs_to :judge
   belongs_to :programming_language, optional: true
-  has_many :submissions
-  has_many :series_memberships
+  has_many :submissions, dependent: :restrict_with_error
+  has_many :series_memberships, dependent: :restrict_with_error
   has_many :series, through: :series_memberships
-  has_many :courses, -> {distinct}, through: :series
+  has_many :courses, -> { distinct }, through: :series
   has_many :exercise_labels, dependent: :destroy
   has_many :labels, through: :exercise_labels
 
-  validates :path, uniqueness: {scope: :repository_id, case_sensitive: false}, allow_nil: true
+  validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
 
   before_create :generate_id
   before_create :generate_token
@@ -59,16 +59,17 @@ class Exercise < ApplicationRecord
   before_save :check_memory_limit
   before_update :update_config
 
-  scope :in_repository, ->(repository) {where repository: repository}
+  scope :in_repository, ->(repository) { where repository: repository }
 
-  scope :by_name, ->(name) {where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%")}
-  scope :by_status, ->(status) {where(status: status.in?(statuses) ? status : -1)}
-  scope :by_access, ->(access) {where(access: access.in?(accesses) ? access : -1)}
-  scope :by_labels, ->(labels) {includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length)}
-  scope :by_programming_language, ->(programming_language) {includes(:programming_language).where(programming_languages: {name: programming_language})}
+  scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+  scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
+  scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
+  scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
+  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
 
   def full_path
     return '' unless path
+
     Pathname.new File.join(repository.full_path, path)
   end
 
@@ -144,35 +145,35 @@ class Exercise < ApplicationRecord
 
   def merged_config
     hash = Pathname.new('./' + path).parent.descend # all parent directories
-               .map {|dir| read_dirconfig dir} # try reading their dirconfigs
-               .compact # remove nil entries
-               .push(config) # add exercise config file
-               .reduce do |h1, h2|
+                   .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+                   .compact # remove nil entries
+                   .push(config) # add exercise config file
+                   .reduce do |h1, h2| # reduce into single hash
       h1.deep_merge(h2) do |k, v1, v2|
-        if k == "labels"
+        if k == 'labels'
           (v1 + v2)
         else
           v2
         end
       end
-    end # reduce into single hash
+    end
     hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
     hash
   end
 
   def merged_dirconfig
     hash = Pathname.new('./' + path).parent.descend # all parent directories
-               .map {|dir| read_dirconfig dir} # try reading their dirconfigs
-               .compact # remove nil entries
-               .reduce do |h1, h2|
+                   .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+                   .compact # remove nil entries
+                   .reduce do |h1, h2| # reduce into single hash
       h1.deep_merge(h2) do |k, v1, v2|
-        if k == "labels"
+        if k == 'labels'
           (v1 + v2).map(&:downcase).uniq
         else
           v2
         end
       end
-    end || {} # reduce into single hash
+    end || {}
     hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
     hash
   end
@@ -195,13 +196,15 @@ class Exercise < ApplicationRecord
 
   def store_config(new_config, message = nil)
     return if new_config == config
+
     message ||= "updated config for #{name}"
     config_file.write(JSON.pretty_generate(new_config))
     success, error = repository.commit message
-    unless success || error.empty?
-      errors.add(:base, "committing changes failed: #{error}")
-      throw :abort
-    end
+
+    return if success || error.empty?
+
+    errors.add(:base, "committing changes failed: #{error}")
+    throw :abort
   end
 
   def update_config
@@ -217,9 +220,7 @@ class Exercise < ApplicationRecord
     c['internals'] = {}
     c['internals']['token'] = token
     c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
-    if (labels_to_write & (merged_config['labels'] || [])) != labels_to_write || labels_to_write == []
-      c['labels'] = labels_to_write
-    end
+    c['labels'] = labels_to_write if (labels_to_write & (merged_config['labels'] || [])) != labels_to_write || labels_to_write == []
     store_config c
   end
 
@@ -230,16 +231,18 @@ class Exercise < ApplicationRecord
   def accessible?(user, course)
     if course.present?
       if user&.course_admin? course
-        return false unless course.exercises.pluck(:id).include? self.id
+        return false unless course.exercises.pluck(:id).include? id
       else
-        return false unless course.visible_exercises.pluck(:id).include? self.id
+        return false unless course.visible_exercises.pluck(:id).include? id
       end
       return true if user&.repository_admin? repository
       return false unless access_public? || repository.allowed_courses.include?(course)
       return true if course.open_for_all? || (course.open_for_institution? && course.institution == user&.institution)
+
       user&.member_of? course
     else
       return true if user&.repository_admin? repository
+
       access_public?
     end
   end
@@ -251,7 +254,7 @@ class Exercise < ApplicationRecord
   end
 
   create_cacheable(:users_correct,
-                   ->(this, options) {format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)})
+                   ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def users_tried(options)
     subs = submissions.all
@@ -260,11 +263,12 @@ class Exercise < ApplicationRecord
   end
 
   create_cacheable(:users_tried,
-                   ->(this, options) {format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id)})
+                   ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id) })
 
   def best_is_last_submission?(user, deadline = nil, course = nil)
     last_correct = last_correct_submission(user, deadline, course)
     return true if last_correct.nil?
+
     last_correct == last_submission(user, deadline, course)
   end
 
@@ -281,6 +285,7 @@ class Exercise < ApplicationRecord
 
   def last_submission(user, deadline = nil, course = nil)
     raise 'Second argument is a deadline, not a course' if deadline.is_a? Course
+
     s = submissions.of_user(user)
     s = s.in_course(course) if course
     s = s.before_deadline(deadline) if deadline
@@ -299,6 +304,7 @@ class Exercise < ApplicationRecord
 
   def check_validity
     return unless ok?
+
     self.status = if !(name_nl || name_en)
                     :not_valid
                   elsif !(description_nl || description_en)
@@ -310,14 +316,14 @@ class Exercise < ApplicationRecord
 
   def check_memory_limit
     return unless ok?
-    if merged_config.fetch("evaluation", {}).fetch("memory_limit", 0) > 500_000_000 # 500MB
-      c = config
-      c['evaluation'] ||= {}
-      c['evaluation']['memory_limit'] = 500_000_000
-      store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " +
-          "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " +
-          "bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.")
-    end
+    return unless merged_config.fetch('evaluation', {}).fetch('memory_limit', 0) > 500_000_000 # 500MB
+
+    c = config
+    c['evaluation'] ||= {}
+    c['evaluation']['memory_limit'] = 500_000_000
+    store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " \
+        "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " \
+        'bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.')
   end
 
   def self.convert_visibility_to_access(visibility)
@@ -326,6 +332,7 @@ class Exercise < ApplicationRecord
     return 'private' if visibility == 'invisible'
     return 'private' if visibility == 'hidden'
     return 'private' if visibility == 'closed'
+
     visibility
   end
 
@@ -348,18 +355,21 @@ class Exercise < ApplicationRecord
   def generate_access_token
     self.access_token = SecureRandom.urlsafe_base64(12)
     # We don't want to trigger callbacks, this doesn't have an influence on the config file
+    # rubocop:disable Rails/SkipsModelValidations
     update_column(:access_token, self[:access_token]) unless new_record?
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def self.move_relations(from, to)
-    from.submissions.each {|s| s.update(exercise: to)}
-    from.series_memberships.each {|sm| sm.update(exercise: to) unless SeriesMembership.find_by(exercise: to, series: sm.series)}
+    from.submissions.each { |s| s.update(exercise: to) }
+    from.series_memberships.each { |sm| sm.update(exercise: to) unless SeriesMembership.find_by(exercise: to, series: sm.series) }
   end
 
   def safe_destroy
     return unless removed?
     return if submissions.any?
     return if series_memberships.any?
+
     destroy
   end
 

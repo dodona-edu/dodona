@@ -37,14 +37,14 @@ module ExerciseHelper
     # starting with 'media' or './media'
     # The trailing 'm' makes this regex multiline,
     # so newlines between attributes are handled correctly
-    MEDIA_TAG_MATCH = %r{<.*?=['"](\.\/)?media\/.*?['"].*?>}m
+    MEDIA_TAG_MATCH = %r{<.*?=['"](\.\/)?media\/.*?['"].*?>}m.freeze
 
     # Regex used for replacing these relative paths:
     # 1: opening quotation marks
     # 2: optional ./ (discarded)
     # 3: media url
     # 4: closing quotation marks
-    MEDIA_ATTR_MATCH = %r{(=['"])(\.\/)?(media\/.*?)(['"])}
+    MEDIA_ATTR_MATCH = %r{(=['"])(\.\/)?(media\/.*?)(['"])}.freeze
 
     # Replace each occurence of a relative media path with a
     # path relative to the context (base URL).
@@ -90,7 +90,7 @@ module ExerciseHelper
                              input: 'GFM',
                              hard_wrap: false, syntax_highlighter:
                                  'rouge',
-                             math_engine_opts: {preview: true}).to_html.html_safe
+                             math_engine_opts: { preview: true }).to_html.html_safe
     end
 
     def add_media_captions(doc)
@@ -126,9 +126,9 @@ module ExerciseHelper
       i = 1
       doc.css('a').each do |anchor|
         Maybe(anchor.attribute('href')) # get href attribute
-            .map(&:value) # get its value
-            .map {|u| absolutize_url u} # absolutize it
-            .map do |url|
+          .map(&:value) # get its value
+          .map { |u| absolutize_url u } # absolutize it
+          .map do |url|
           # If any of the steps above returned nil, this block isn't executed
 
           ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"
@@ -143,10 +143,10 @@ module ExerciseHelper
     # Look for the first image in the document with a src attribute
     def search_for_first_image(doc)
       @first_image = doc.css('img')
-                         .map {|i| i.attribute('src')}
-                         .compact
-                         .map(&method(:absolutize_url))
-                         .first
+                        .map { |i| i.attribute('src') }
+                        .compact
+                        .map(&method(:absolutize_url))
+                        .first
     end
   end
 end

@@ -7,6 +7,7 @@ module Gitable
 
   def pull
     return reset unless Rails.env.production?
+
     _out, error, status = Open3.capture3('git pull -f', chdir: full_path.to_path)
     [status.success?, error]
   end

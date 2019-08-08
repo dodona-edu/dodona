@@ -20,7 +20,7 @@ class ApiTokensControllerTest < ActionDispatch::IntegrationTest
                     except: %i[create_redirect destroy_redirect]
 
   test 'should get index for user' do
-    get user_api_tokens_url(@instance.user), params: {format: :json}
+    get user_api_tokens_url(@instance.user), params: { format: :json }
     assert_response :success
   end
 

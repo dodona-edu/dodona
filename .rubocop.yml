@@ -13,43 +13,54 @@ AllCops:
     - "node_modules/**/*"
   TargetRubyVersion: 2.5
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
-Style/Documentation:
-  Enabled: false
-Style/ClassAndModuleChildren:
-  Enabled: false
-Metrics/LineLength:
-  Enabled: false
-
 Layout/IndentFirstArrayElement:
   EnforcedStyle: consistent
 Layout/IndentFirstHashElement:
   EnforcedStyle: consistent
 
-Rails/HelperInstanceVariable:
+Lint/Loop:
   Enabled: false
 
-# disable for now
-# Lint/NestedMethodDefinition:
-#   Enabled: false
-# Style/ClassVars:
-#   Enabled: false
-# Style/RescueModifier:
-#   Enabled: false
-# Style/AccessorMethodName:
-#   Enabled: false
-# Style/PredicateName:
-#   Enabled: false
 Metrics/AbcSize:
-  Enabled: false
-Metrics/ClassLength:
-  Enabled: false
-Metrics/MethodLength:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
-Metrics/PerceivedComplexity:
+Metrics/BlockNesting:
+  Max: 4
+Metrics/ClassLength:
   Enabled: false
 Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/LineLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
+Rails/Date:
+  Enabled: false
+Rails/HelperInstanceVariable:
+  Enabled: false
+Rails/OutputSafety:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/FormatStringToken:
+  EnforcedStyle: template
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/MultilineBlockChain:
+  Enabled: false
+Style/NumericPredicate:
   Enabled: false

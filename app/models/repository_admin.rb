@@ -15,6 +15,7 @@ class RepositoryAdmin < ApplicationRecord
 
   def at_least_one_admin_per_repository
     return if RepositoryAdmin.where(repository_id: repository_id).count > 1
+
     errors.add :base, 'Cannot delete last repository admin'
     throw(:abort)
   end

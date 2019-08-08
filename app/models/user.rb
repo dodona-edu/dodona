@@ -25,24 +25,24 @@ class User < ApplicationRecord
   include Cacheable
   include ActiveModel::Dirty
 
-  ATTEMPTED_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/attempted_exercises".freeze
-  CORRECT_EXERCISES_CACHE_STRING = "/courses/%{course_id}/user/%{id}/correct_exercises".freeze
+  ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%{course_id}/user/%{id}/attempted_exercises'.freeze
+  CORRECT_EXERCISES_CACHE_STRING = '/courses/%{course_id}/user/%{id}/correct_exercises'.freeze
 
   enum permission: %i[student staff zeus]
 
   belongs_to :institution, optional: true
 
-  has_many :api_tokens
-  has_many :submissions
-  has_many :course_memberships
-  has_many :repository_admins
+  has_many :api_tokens, dependent: :restrict_with_error
+  has_many :submissions, dependent: :restrict_with_error
+  has_many :course_memberships, dependent: :restrict_with_error
+  has_many :repository_admins, dependent: :restrict_with_error
   has_many :courses, through: :course_memberships
-  has_many :events
+  has_many :events, dependent: :restrict_with_error
 
   has_many :subscribed_courses,
            lambda {
              where.not course_memberships:
-                           {status: %i[pending unsubscribed]}
+                           { status: %i[pending unsubscribed] }
            },
            through: :course_memberships,
            source: :course
@@ -50,9 +50,9 @@ class User < ApplicationRecord
   has_many :favorite_courses,
            lambda {
              where.not course_memberships:
-                           {status: %i[pending unsubscribed]}
+                           { status: %i[pending unsubscribed] }
              where course_memberships:
-                       {favorite: true}
+                       { favorite: true }
            },
            through: :course_memberships,
            source: :course
@@ -60,7 +60,7 @@ class User < ApplicationRecord
   has_many :administrating_courses,
            lambda {
              where course_memberships:
-                       {status: :course_admin}
+                       { status: :course_admin }
            },
            through: :course_memberships,
            source: :course
@@ -68,7 +68,7 @@ class User < ApplicationRecord
   has_many :enrolled_courses,
            lambda {
              where course_memberships:
-                       {status: :student}
+                       { status: :student }
            },
            through: :course_memberships,
            source: :course
@@ -76,7 +76,7 @@ class User < ApplicationRecord
   has_many :pending_courses,
            lambda {
              where course_memberships:
-                       {status: :pending}
+                       { status: :pending }
            },
            through: :course_memberships,
            source: :course
@@ -84,7 +84,7 @@ class User < ApplicationRecord
   has_many :unsubscribed_courses,
            lambda {
              where course_memberships:
-                       {status: :unsubscribed}
+                       { status: :unsubscribed }
            },
            through: :course_memberships,
            source: :course
@@ -96,8 +96,8 @@ class User < ApplicationRecord
   devise :saml_authenticatable
   devise :omniauthable, omniauth_providers: %i[smartschool office365 google_oauth2]
 
-  validates :username, uniqueness: {case_sensitive: false, allow_blank: true, scope: :institution}
-  validates :email, uniqueness: {case_sensitive: false, allow_blank: true}
+  validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
+  validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
   validate :email_only_blank_if_smartschool
 
   before_save :set_token
@@ -106,17 +106,15 @@ class User < ApplicationRecord
   before_update :check_permission_change
   before_save :nullify_empty_username
 
-  scope :by_permission, ->(permission) {where(permission: permission)}
-  scope :by_institution, ->(institution) {where(institution: institution)}
+  scope :by_permission, ->(permission) { where(permission: permission) }
+  scope :by_institution, ->(institution) { where(institution: institution) }
 
-  scope :in_course, ->(course) {joins(:course_memberships).where('course_memberships.course_id = ?', course.id)}
-  scope :by_course_labels, ->(labels, course_id) {where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id))}
-  scope :at_least_one_started, ->(series) {where(id: Submission.where(course_id: series.course_id, exercise_id: series.exercises).select('DISTINCT(user_id)'))}
+  scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
+  scope :by_course_labels, ->(labels, course_id) { where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id)) }
+  scope :at_least_one_started, ->(series) { where(id: Submission.where(course_id: series.course_id, exercise_id: series.exercises).select('DISTINCT(user_id)')) }
 
   def email_only_blank_if_smartschool
-    if email.blank? && !institution&.smartschool?
-      errors.add(:email, 'should not be blank when institution does not use smartschool')
-    end
+    errors.add(:email, 'should not be blank when institution does not use smartschool') if email.blank? && !institution&.smartschool?
   end
 
   def full_name
@@ -126,23 +124,27 @@ class User < ApplicationRecord
 
   def first_name
     return self[:first_name] unless Current.demo_mode && Current.user != self
+
     Faker::Config.random = Random.new(id + Date.today.yday)
     Faker::Name.first_name
   end
 
   def last_name
     return self[:last_name] unless Current.demo_mode && Current.user != self
+
     Faker::Config.random = Random.new(id + Date.today.yday)
     Faker::Name.last_name
   end
 
   def username
     return self[:username] unless Current.demo_mode && Current.user != self
+
     (first_name[0] + last_name[0, 7]).downcase
   end
 
   def email
     return self[:email] unless Current.demo_mode && Current.user != self
+
     "#{first_name}.#{last_name}@dodona.ugent.be"
   end
 
@@ -158,7 +160,7 @@ class User < ApplicationRecord
     zeus? || admin_of?(course)
   end
 
-  def is_a_course_admin?
+  def a_course_admin?
     admin? || administrating_courses.any?
   end
 
@@ -173,7 +175,7 @@ class User < ApplicationRecord
   end
 
   create_cacheable(:attempted_exercises,
-                   ->(this, options) {format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)})
+                   ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def correct_exercises(options)
     s = submissions
@@ -182,7 +184,7 @@ class User < ApplicationRecord
   end
 
   create_cacheable(:correct_exercises,
-                   ->(this, options) {format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id)})
+                   ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def unfinished_exercises(course = nil)
     attempted_exercises(course: course) - correct_exercises(course: course)
@@ -193,24 +195,25 @@ class User < ApplicationRecord
   end
 
   def pending_series
-    courses.map {|c| c.pending_series(self)}.flatten.sort_by(&:deadline)
+    courses.map { |c| c.pending_series(self) }.flatten.sort_by(&:deadline)
   end
 
   def homepage_series
-    subscribed_courses.map {|c| c.homepage_series(0)}.flatten.sort_by(&:deadline)
+    subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
   end
 
   def recent_courses(number_of_years)
-    grouped_recent_courses(number_of_years).map {|a| a[1]}.flatten
+    grouped_recent_courses(number_of_years).map { |a| a[1] }.flatten
   end
 
   def grouped_recent_courses(number_of_years)
     return [] if subscribed_courses.empty?
+
     subscribed_courses.group_by(&:year).first(number_of_years)
   end
 
   def full_view?
-    subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count > 0
+    subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count.positive?
   end
 
   def member_of?(course)
@@ -230,7 +233,7 @@ class User < ApplicationRecord
     end
   end
 
-# update and return user using an omniauth authentication hash
+  # update and return user using an omniauth authentication hash
   def update_from_oauth(oauth_hash, auth_inst)
     tap do |user|
       user.username = oauth_hash.uid
@@ -254,6 +257,7 @@ class User < ApplicationRecord
 
   def self.from_email(email)
     return nil if email.blank?
+
     find_by(email: email)
   end
 
@@ -285,9 +289,9 @@ class User < ApplicationRecord
 
   def split_last_name
     parts = last_name.split(' ', 2)
-    if parts.count == 2
-      self.first_name = parts[0]
-      self.last_name = parts[1]
-    end
+    return unless parts.count == 2
+
+    self.first_name = parts[0]
+    self.last_name = parts[1]
   end
 end

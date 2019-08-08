@@ -1,6 +1,5 @@
 class EventsController < ApplicationController
-
-  has_scope :by_type, as: "type"
+  has_scope :by_type, as: 'type'
 
   def index
     authorize Event

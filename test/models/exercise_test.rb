@@ -313,7 +313,6 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
     @exercise = @repository.exercises.first
-
   end
 
   teardown do
@@ -361,7 +360,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   test 'should push changes' do
     @exercise.update access: 'private'
     config = JSON.parse(
-        File.read(File.join(@remote.path, @exercise.path, 'config.json'))
+      File.read(File.join(@remote.path, @exercise.path, 'config.json'))
     )
     assert_equal 'private', config['access']
   end

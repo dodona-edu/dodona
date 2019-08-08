@@ -19,11 +19,13 @@ class ExercisePolicy < ApplicationPolicy
     return true if record.ok?
     return false unless user
     return true if record.number_of_submissions_for(user).nonzero?
+
     false
   end
 
   def update?
     return false unless record.ok?
+
     user&.repository_admin?(record.repository)
   end
 
@@ -32,14 +34,16 @@ class ExercisePolicy < ApplicationPolicy
     return true if record.ok?
     return false unless user
     return true if record.number_of_submissions_for(user).nonzero?
+
     false
   end
 
   def submit?
     return false if record.removed?
-    return false unless user.present?
+    return false if user.blank?
     return true if user.admin?
     return true if record.ok?
+
     false
   end
 

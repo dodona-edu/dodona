@@ -13,7 +13,7 @@
 class ProgrammingLanguage < ApplicationRecord
   before_save :fill_fields
 
-  has_many :exercises
+  has_many :exercises, dependent: :restrict_with_error
 
   def fill_fields
     self.editor_name ||= name

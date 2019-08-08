@@ -35,9 +35,7 @@ FactoryBot.define do
 
       exercise_submission_count { 0 }
       exercise_submission_users do
-        if exercise_submission_count.positive?
-          create_list :user, 2, courses: [course]
-        end
+        create_list :user, 2, courses: [course] if exercise_submission_count.positive?
       end
     end
 

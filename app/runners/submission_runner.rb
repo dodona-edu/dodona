@@ -11,8 +11,8 @@ class SubmissionRunner
 
   @runners = [SubmissionRunner]
 
-  def self.inherited(cl)
-    @runners << cl
+  def self.inherited(this_class)
+    @runners << this_class
   end
 
   class << self
@@ -105,56 +105,57 @@ class SubmissionRunner
     # TODO: set the workdir with the -w option
     begin
       container = Docker::Container.create(
-          # TODO: move entry point to docker container definition
-          Cmd: ['/main.sh',
-                # judge entry point
-                (@mountdst + @hidden_path + 'judge' + 'run').to_path,
-                # directory for logging output
-                (@mountdst + @hidden_path + 'logs').to_path],
-          Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
-          name: "dodona-#{@submission.id}", # assuming unique during execution
-          OpenStdin: true,
-          StdinOnce: true, # closes stdin after first disconnect
-          NetworkDisabled: !@config['network_enabled'],
-          HostConfig: {
-              Memory: memory_limit,
-              MemorySwap: memory_limit, # memory including swap
-              BlkioDeviceWriteBps: [{Path: '/dev/sda', Rate: 1024 * 1024}],
-              PidsLimit: 256,
-              Binds: ["#{@mountsrc}:#{@mountdst}",
-                      "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
-          }
+        # TODO: move entry point to docker container definition
+        Cmd: ['/main.sh',
+              # judge entry point
+              (@mountdst + @hidden_path + 'judge' + 'run').to_path,
+              # directory for logging output
+              (@mountdst + @hidden_path + 'logs').to_path],
+        Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
+        name: "dodona-#{@submission.id}", # assuming unique during execution
+        OpenStdin: true,
+        StdinOnce: true, # closes stdin after first disconnect
+        NetworkDisabled: !@config['network_enabled'],
+        HostConfig: {
+          Memory: memory_limit,
+          MemorySwap: memory_limit, # memory including swap
+          BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }],
+          PidsLimit: 256,
+          Binds: ["#{@mountsrc}:#{@mountdst}",
+                  "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
+        }
       )
     rescue StandardError => e
       return build_error 'internal error', 'internal error', [
-          build_message("Error creating docker: #{e}", 'staff', 'plain'),
-          build_message(e.backtrace.join("\n"), 'staff')
+        build_message("Error creating docker: #{e}", 'staff', 'plain'),
+        build_message(e.backtrace.join("\n"), 'staff')
       ]
     end
 
     # run the container with a timeout.
     memory = 0
-    before_time = Time.now
+    before_time = Time.zone.now
     timer = Thread.new do
-      while Time.now - before_time < time_limit
+      while Time.zone.now - before_time < time_limit
         sleep 1
         next if Rails.env.test?
         # Check if container is still alive
-        next unless Docker::Container.all.select {|c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id)}.any? && container.refresh!.info["State"]["Running"]
+        next unless Docker::Container.all.select { |c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id) }.any? && container.refresh!.info['State']['Running']
+
         stats = container.stats
         # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
-        memory = stats["memory_stats"]["max_usage"] / (1024.0 * 1024.0) if stats["memory_stats"]&.fetch("max_usage", nil)
+        memory = stats['memory_stats']['max_usage'] / (1024.0 * 1024.0) if stats['memory_stats']&.fetch('max_usage', nil)
       end
       container.stop
       true
     end
     outlines, errlines = container.tap(&:start).attach(
-        stdin: StringIO.new(@config.to_json),
-        stdout: true,
-        stderr: true
+      stdin: StringIO.new(@config.to_json),
+      stdout: true,
+      stderr: true
     )
     timeout = timer.tap(&:kill).value
-    after_time = Time.now
+    after_time = Time.zone.now
     stdout = outlines.join.force_encoding('utf-8')
     stderr = errlines.join.force_encoding('utf-8')
     exit_status = container.wait(1)['StatusCode']
@@ -163,23 +164,23 @@ class SubmissionRunner
     # handling judge output
     if stdout.bytesize + stderr.bytesize > 10 * 1024 * 1024
       return build_error 'internal error', 'internal error', [
-          build_message('Judge generated more than 10MiB of output.', 'staff', 'plain'),
-          build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
-          build_message("Standard Error #{stderr.bytesize} Bytes:", 'staff', 'plain'),
-          build_message(truncate(stderr, 15_000), 'staff'),
-          build_message("Standard Output #{stdout.bytesize} Bytes:", 'staff', 'plain'),
-          build_message(truncate(stdout, 15_000), 'staff'),
-          build_message(I18n.t('submissions.show.judge_output_too_long', locale: @submission.user.lang), 'student', 'plain'),
+        build_message('Judge generated more than 10MiB of output.', 'staff', 'plain'),
+        build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
+        build_message("Standard Error #{stderr.bytesize} Bytes:", 'staff', 'plain'),
+        build_message(truncate(stderr, 15_000), 'staff'),
+        build_message("Standard Output #{stdout.bytesize} Bytes:", 'staff', 'plain'),
+        build_message(truncate(stdout, 15_000), 'staff'),
+        build_message(I18n.t('submissions.show.judge_output_too_long', locale: @submission.user.lang), 'student', 'plain')
       ]
     end
 
     if [0, 137, 143].exclude? exit_status
       return build_error 'internal error', 'internal error', [
-          build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
-          build_message('Standard Error:', 'staff', 'plain'),
-          build_message(stderr, 'staff'),
-          build_message('Standard Output:', 'staff', 'plain'),
-          build_message(stdout, 'staff')
+        build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
+        build_message('Standard Error:', 'staff', 'plain'),
+        build_message(stderr, 'staff'),
+        build_message('Standard Output:', 'staff', 'plain'),
+        build_message(stdout, 'staff')
       ]
     end
 
@@ -187,36 +188,35 @@ class SubmissionRunner
       rc = ResultConstructor.new @submission.user.lang
       rc.feed(stdout.force_encoding('utf-8'))
       rc.result(timeout)
-    rescue ResultConstructorError => e
-      if [137, 143].include? exit_status
-        description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
-        build_error description, description, [
-            build_message("Judge exited with <strong>status code #{exit_status}.</strong>", 'staff', 'html'),
-            build_message('<strong>Standard Error:</strong>', 'staff', 'html'),
-            build_message(stderr, 'staff'),
-            build_message('<strong>Standard Output:</strong>', 'staff', 'html'),
-            build_message(stdout, 'staff')
-        ]
-      else
-        messages = [build_message(e.title, 'staff', 'plain')]
-        messages << build_message(e.description, 'staff') unless e.description.nil?
-        build_error 'internal error', 'internal error', messages
-      end
+             rescue ResultConstructorError => e
+               if [137, 143].include? exit_status
+                 description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
+                 build_error description, description, [
+                   build_message("Judge exited with <strong>status code #{exit_status}.</strong>", 'staff', 'html'),
+                   build_message('<strong>Standard Error:</strong>', 'staff', 'html'),
+                   build_message(stderr, 'staff'),
+                   build_message('<strong>Standard Output:</strong>', 'staff', 'html'),
+                   build_message(stdout, 'staff')
+                 ]
+               else
+                 messages = [build_message(e.title, 'staff', 'plain')]
+                 messages << build_message(e.description, 'staff') unless e.description.nil?
+                 build_error 'internal error', 'internal error', messages
+               end
     end
 
     result[:messages] ||= []
     result[:messages] << build_message("<strong>Worker:</strong> #{`hostname`.strip}", 'zeus', 'html')
-    result[:messages] << build_message("<strong>Runtime:</strong> %.2f seconds" % (after_time - before_time), 'zeus', 'html')
-    result[:messages] << build_message("<strong>Memory usage:</strong> %.2f MiB" % memory, 'zeus', 'html')
+    result[:messages] << build_message(format('<strong>Runtime:</strong> %.2f seconds', (after_time - before_time)), 'zeus', 'html')
+    result[:messages] << build_message(format('<strong>Memory usage:</strong> %.2f MiB', memory), 'zeus', 'html')
     result
   end
 
-  def add_runtime_metrics(result)
-    ;
-  end
+  def add_runtime_metrics(result); end
 
   def finalize
     return if @mountsrc.nil?
+
     # remove path on file system used as temporary working directory for processing the submission
     FileUtils.remove_entry_secure(@mountsrc, verbose: true)
     @mountsrc = nil
@@ -227,7 +227,7 @@ class SubmissionRunner
     result = execute
   rescue StandardError => e
     result = build_error 'internal error', 'internal error', [
-        build_message(e.message + "\n" + e.backtrace.inspect, 'staff')
+      build_message(e.message + "\n" + e.backtrace.inspect, 'staff')
     ]
   ensure
     finalize
@@ -241,18 +241,18 @@ class SubmissionRunner
 
   def build_error(status = 'internal error', description = 'internal error', messages = [])
     {
-        accepted: false,
-        status: status,
-        description: I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
-        messages: messages
+      accepted: false,
+      status: status,
+      description: I18n.t("activerecord.attributes.submission.statuses.#{description}", locale: @submission.user.lang),
+      messages: messages
     }
   end
 
   def build_message(description = '', permission = 'zeus', format = 'code')
     {
-        format: format,
-        description: description,
-        permission: permission
+      format: format,
+      description: description,
+      permission: permission
     }
   end
 

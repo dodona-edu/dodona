@@ -39,7 +39,7 @@ class ApplicationPolicy
   end
 
   def permits_attributes?(*attrs)
-    attrs.all? {|e| permitted_attributes.include?(e)}
+    attrs.all? { |e| permitted_attributes.include?(e) }
   end
 
   def permits_attribute?(attr)
@@ -64,5 +64,4 @@ class ApplicationPolicy
   def zeus?
     user&.zeus?
   end
-
 end

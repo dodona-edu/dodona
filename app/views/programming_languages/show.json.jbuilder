@@ -1,1 +1,1 @@
-json.partial! "programming_languages/programming_language", programming_language: @programming_language
+json.partial! 'programming_languages/programming_language', programming_language: @programming_language

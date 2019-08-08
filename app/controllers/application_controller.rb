@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_action :store_current_location,
                 except: %i[media sign_in_page institution_not_supported],
-                unless: -> {devise_controller? || remote_request?}
+                unless: -> { devise_controller? || remote_request? }
 
   before_action :set_locale
 
@@ -57,16 +57,14 @@ class ApplicationController < ActionController::Base
       else
         head :forbidden
       end
+    elsif current_user.nil?
+      redirect_to sign_in_path
     else
-      if current_user.nil?
-        redirect_to sign_in_path
+      flash[:alert] = I18n.t('errors.no_rights')
+      if request.referer.present? && URI.parse(request.referer).host == request.host
+        redirect_to(request.referer)
       else
-        flash[:alert] = I18n.t('errors.no_rights')
-        if request.referer.present? && URI.parse(request.referer).host == request.host
-          redirect_to(request.referer)
-        else
-          redirect_to(root_path)
-        end
+        redirect_to(root_path)
       end
     end
   end
@@ -81,7 +79,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    {locale: I18n.locale, trailing_slash: true}
+    { locale: I18n.locale, trailing_slash: true }
   end
 
   def ensure_trailing_slash

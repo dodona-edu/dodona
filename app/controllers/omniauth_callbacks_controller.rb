@@ -53,6 +53,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def institution_matches?(user)
     return true if user.institution.nil?
+
     if user.institution&.identifier != institution_identifier \
            || user.institution&.provider != provider
       user.errors.add(:institution, 'mismatch')
@@ -71,36 +72,35 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       handle_blacklisted_institutions!
     else
       user = User.from_email(oauth_email)
-      if user.present?
-        try_login!(user)
-      else
+      if user.blank?
         institution = create_institution
         user = User.from_institution(oauth_hash, institution)
-        try_login!(user)
       end
+      try_login!(user)
     end
   end
 
   def create_institution
     institution = Institution.from_identifier(institution_identifier)
-    if institution.blank?
-      institution = Institution.new(name: Institution::NEW_INSTITUTION_NAME,
-                                    short_name: Institution::NEW_INSTITUTION_NAME,
-                                    logo: "#{provider}.png",
-                                    provider: provider,
-                                    identifier: institution_identifier)
-      if institution.save
-        institution_created
-        institution
-      else
-        institution_creation_failed institution.errors
-        nil
-      end
+    return if institution.present?
+
+    institution = Institution.new(name: Institution::NEW_INSTITUTION_NAME,
+                                  short_name: Institution::NEW_INSTITUTION_NAME,
+                                  logo: "#{provider}.png",
+                                  provider: provider,
+                                  identifier: institution_identifier)
+    if institution.save
+      institution_created
+      institution
+    else
+      institution_creation_failed institution.errors
+      nil
     end
   end
 
   def try_login!(user)
     raise 'User should not be nil here' if user.nil?
+
     if institution_matches?(user)
       user.update_from_oauth(oauth_hash, Institution.from_identifier(institution_identifier))
       if user.errors.none?
@@ -158,8 +158,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{oauth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: oauth_hash)
-        .institution_created
-        .deliver_later
+                     .institution_created
+                     .deliver_later
   end
 
   def institution_creation_failed(errors)
@@ -169,16 +169,16 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{errors}"
 
     ApplicationMailer.with(authinfo: oauth_hash, errors: errors)
-        .institution_creation_failed
-        .deliver_later
+                     .institution_creation_failed
+                     .deliver_later
   end
 
   def no_institution_found!
     set_flash_message \
-        :notice,
-        :failure,
-        kind: provider,
-        reason: I18n.t('pages.sign_in_page.has_to_have_institution')
+      :notice,
+      :failure,
+      kind: provider,
+      reason: I18n.t('pages.sign_in_page.has_to_have_institution')
     redirect_to sign_in_path
   end
 end

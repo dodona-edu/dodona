@@ -14,7 +14,7 @@ class JudgesController < ApplicationController
   # GET /judges/1.json
   def show
     @title = @judge.name
-    @crumbs = [[I18n.t('judges.index.title'), judges_path], [@judge.name, "#"]]
+    @crumbs = [[I18n.t('judges.index.title'), judges_path], [@judge.name, '#']]
   end
 
   # GET /judges/new
@@ -22,13 +22,13 @@ class JudgesController < ApplicationController
     authorize Judge
     @judge = Judge.new
     @title = I18n.t('judges.new.title')
-    @crumbs = [[I18n.t('judges.index.title'), judges_path], [I18n.t('judges.new.title'), "#"]]
+    @crumbs = [[I18n.t('judges.index.title'), judges_path], [I18n.t('judges.new.title'), '#']]
   end
 
   # GET /judges/1/edit
   def edit
     @title = @judge.name
-    @crumbs = [[I18n.t('judges.index.title'), judges_path], [@judge.name, judge_path(@judge)], [I18n.t('crumbs.edit'), "#"]]
+    @crumbs = [[I18n.t('judges.index.title'), judges_path], [@judge.name, judge_path(@judge)], [I18n.t('crumbs.edit'), '#']]
   end
 
   # POST /judges
@@ -39,11 +39,11 @@ class JudgesController < ApplicationController
 
     respond_to do |format|
       if @judge.save
-        format.html {redirect_to @judge, notice: I18n.t('controllers.created', model: Judge.model_name.human)}
-        format.json {render :show, status: :created, location: @judge}
+        format.html { redirect_to @judge, notice: I18n.t('controllers.created', model: Judge.model_name.human) }
+        format.json { render :show, status: :created, location: @judge }
       else
-        format.html {render :new}
-        format.json {render json: @judge.errors, status: :unprocessable_entity}
+        format.html { render :new }
+        format.json { render json: @judge.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -53,11 +53,11 @@ class JudgesController < ApplicationController
   def update
     respond_to do |format|
       if @judge.update(permitted_attributes(Judge))
-        format.html {redirect_to @judge, notice: I18n.t('controllers.updated', model: Judge.model_name.human)}
-        format.json {render :show, status: :ok, location: @judge}
+        format.html { redirect_to @judge, notice: I18n.t('controllers.updated', model: Judge.model_name.human) }
+        format.json { render :show, status: :ok, location: @judge }
       else
-        format.html {render :edit}
-        format.json {render json: @judge.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @judge.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -67,8 +67,8 @@ class JudgesController < ApplicationController
   def destroy
     @judge.destroy
     respond_to do |format|
-      format.html {redirect_to judges_url, notice: I18n.t('controllers.destroyed', model: Judge.model_name.human)}
-      format.json {head :no_content}
+      format.html { redirect_to judges_url, notice: I18n.t('controllers.destroyed', model: Judge.model_name.human) }
+      format.json { head :no_content }
     end
   end
 

@@ -40,18 +40,18 @@ class CoursesController < ApplicationController
       @copy_options[:base] = Course.find(@copy_options[:base_id])
       authorize @copy_options[:base], :copy?
       @course = Course.new(
-          name: @copy_options[:base].name,
-          description: @copy_options[:base].description,
-          institution: @copy_options[:base].institution,
-          visibility: @copy_options[:base].visibility,
-          registration: @copy_options[:base].registration,
-          teacher: @copy_options[:base].teacher
+        name: @copy_options[:base].name,
+        description: @copy_options[:base].description,
+        institution: @copy_options[:base].institution,
+        visibility: @copy_options[:base].visibility,
+        registration: @copy_options[:base].registration,
+        teacher: @copy_options[:base].teacher
       )
       @copy_options = {
-          admins: current_user.course_admin?(@copy_options[:base]),
-          hide_series: false,
-          exercises: true,
-          deadlines: false,
+        admins: current_user.course_admin?(@copy_options[:base]),
+        hide_series: false,
+        exercises: true,
+        deadlines: false
       }.merge(@copy_options).symbolize_keys
     else
       @copy_options = nil
@@ -59,13 +59,13 @@ class CoursesController < ApplicationController
     end
 
     @title = I18n.t('courses.new.title')
-    @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), "#"]]
+    @crumbs = [[I18n.t('courses.index.title'), courses_path], [I18n.t('courses.new.title'), '#']]
   end
 
   # GET /courses/1/edit
   def edit
     @title = @course.name
-    @crumbs = [[@course.name, course_path(@course)], [I18n.t('crumbs.edit'), "#"]]
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('crumbs.edit'), '#']]
   end
 
   # POST /courses
@@ -80,42 +80,42 @@ class CoursesController < ApplicationController
       authorize @copy_options[:base], :copy?
 
       @copy_options = {
-          admins: false,
-          hide_series: false,
-          exercises: false,
-          deadlines: false,
+        admins: false,
+        hide_series: false,
+        exercises: false,
+        deadlines: false
       }.merge(@copy_options).symbolize_keys
 
       @course.series = policy_scope(@copy_options[:base].series).map do |s|
+        # rubocop:disable Style/MultilineTernaryOperator
         Series.new(
-            series_memberships: @copy_options[:exercises] ?
-                                    s.series_memberships.map do |sm|
-                                      SeriesMembership.new(exercise: sm.exercise, order: sm.order)
-                                    end :
-                                    [],
-            name: s.name,
-            description: s.description,
-            visibility: @copy_options[:hide_series] ? :hidden : s.visibility,
-            deadline: @copy_options[:deadlines] ? s.deadline : nil,
-            order: s.order,
-            progress_enabled: s.progress_enabled
+          series_memberships: @copy_options[:exercises] ?
+                                  s.series_memberships.map do |sm|
+                                    SeriesMembership.new(exercise: sm.exercise, order: sm.order)
+                                  end :
+                                  [],
+          name: s.name,
+          description: s.description,
+          visibility: @copy_options[:hide_series] ? :hidden : s.visibility,
+          deadline: @copy_options[:deadlines] ? s.deadline : nil,
+          order: s.order,
+          progress_enabled: s.progress_enabled
         )
+        # rubocop:enable Style/MultilineTernaryOperator
       end
 
-      if @copy_options[:admins]
-        @course.administrating_members = @copy_options[:base].administrating_members
-      end
+      @course.administrating_members = @copy_options[:base].administrating_members if @copy_options[:admins]
     end
 
     respond_to do |format|
       if @course.save
         flash[:alert] = I18n.t('courses.create.added_private_exercises') unless @course.exercises.where(access: :private).count.zero?
         @course.administrating_members << current_user unless @course.administrating_members.include?(current_user)
-        format.html {redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human)}
-        format.json {render :show, status: :created, location: @course}
+        format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
+        format.json { render :show, status: :created, location: @course }
       else
-        format.html {render :new}
-        format.json {render json: @course.errors, status: :unprocessable_entity}
+        format.html { render :new }
+        format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -125,11 +125,11 @@ class CoursesController < ApplicationController
   def update
     respond_to do |format|
       if @course.update(permitted_attributes(@course))
-        format.html {redirect_to @course, notice: I18n.t('controllers.updated', model: Course.model_name.human)}
-        format.json {render :show, status: :ok, location: @course}
+        format.html { redirect_to @course, notice: I18n.t('controllers.updated', model: Course.model_name.human) }
+        format.json { render :show, status: :ok, location: @course }
       else
-        format.html {render :edit}
-        format.json {render json: @course.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @course.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -139,14 +139,14 @@ class CoursesController < ApplicationController
   def destroy
     @course.destroy
     respond_to do |format|
-      format.html {redirect_to courses_url, notice: I18n.t('controllers.destroyed', model: Course.model_name.human)}
-      format.json {head :no_content}
+      format.html { redirect_to courses_url, notice: I18n.t('controllers.destroyed', model: Course.model_name.human) }
+      format.json { head :no_content }
     end
   end
 
   def statistics
     @title = I18n.t('courses.statistics.statistics')
-    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.statistics.statistics'), "#"]]
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.statistics.statistics'), '#']]
   end
 
   def update_membership
@@ -154,14 +154,14 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if update_membership_status_for user, params[:status]
         notification = t('controllers.updated', model: CourseMembership.model_name.human)
-        format.html {redirect_back fallback_location: root_url, notice: notification}
-        format.json {head :ok}
-        format.js {render 'reload_users', locals: {notification: notification}}
+        format.html { redirect_back fallback_location: root_url, notice: notification }
+        format.json { head :ok }
+        format.js { render 'reload_users', locals: { notification: notification } }
       else
         alert = t('controllers.update_failed', model: CourseMembership.model_name.human)
-        format.html {redirect_back(fallback_location: root_url, alert: alert)}
-        format.json {head :unprocessable_entity}
-        format.js {render 'reload_users', locals: {notification: alert}}
+        format.html { redirect_back(fallback_location: root_url, alert: alert) }
+        format.json { head :unprocessable_entity }
+        format.js { render 'reload_users', locals: { notification: alert } }
       end
     end
   end
@@ -170,8 +170,8 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if update_membership_status_for current_user,
                                       :unsubscribed
-        format.html {redirect_to root_url, notice: I18n.t('courses.registration.unsubscribed_successfully')}
-        format.json {head :ok}
+        format.html { redirect_to root_url, notice: I18n.t('courses.registration.unsubscribed_successfully') }
+        format.json { head :ok }
       else
         unsubscription_failed_response format
       end
@@ -184,8 +184,8 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if current_user.member_of? @course
-        format.html {redirect_to(@course)}
-        format.json {render json: {errors: ['already subscribed']}, status: :unprocessable_entity}
+        format.html { redirect_to(@course) }
+        format.json { render json: { errors: ['already subscribed'] }, status: :unprocessable_entity }
       else
         status = nil
         success_method = method(:subscription_succeeded_response)
@@ -209,12 +209,12 @@ class CoursesController < ApplicationController
               subscription_failed_response format
             end
           else
-            format.html {redirect_to(course_url(@course, secret: params[:secret]), alert: I18n.t('courses.registration.closed'))}
-            format.json {render json: {errors: ['course closed']}, status: :unprocessable_entity}
+            format.html { redirect_to(course_url(@course, secret: params[:secret]), alert: I18n.t('courses.registration.closed')) }
+            format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
           end
         when 'closed'
-          format.html {redirect_to(@course, alert: I18n.t('courses.registration.closed'))}
-          format.json {render json: {errors: ['course closed']}, status: :unprocessable_entity}
+          format.html { redirect_to(@course, alert: I18n.t('courses.registration.closed')) }
+          format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
         end
       end
     end
@@ -228,14 +228,13 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @current_membership
         @current_membership.update(favorite: true)
-        format.html {redirect_to(@course, alert: I18n.t('courses.favorite.succeeded'))}
-        format.json {render :show, status: :created, location: @course}
-        format.js
+        format.html { redirect_to(@course, alert: I18n.t('courses.favorite.succeeded')) }
+        format.json { render :show, status: :created, location: @course }
       else
-        format.html {redirect_to(@course, alert: I18n.t('courses.favorite.failed'))}
-        format.json {render json: {errors: ['not subscribed to course']}, status: :unprocessable_entity}
-        format.js
+        format.html { redirect_to(@course, alert: I18n.t('courses.favorite.failed')) }
+        format.json { render json: { errors: ['not subscribed to course'] }, status: :unprocessable_entity }
       end
+      format.js
     end
   end
 
@@ -243,14 +242,13 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @current_membership
         @current_membership.update(favorite: false)
-        format.html {redirect_to(@course, alert: I18n.t('courses.unfavorite.succeeded'))}
-        format.json {head :ok}
-        format.js
+        format.html { redirect_to(@course, alert: I18n.t('courses.unfavorite.succeeded')) }
+        format.json { head :ok }
       else
-        format.html {redirect_to(@course, alert: I18n.t('courses.unfavorite.failed'))}
-        format.json {render json: {errors: ['not subscribed to course']}, status: :unprocessable_entity}
-        format.js
+        format.html { redirect_to(@course, alert: I18n.t('courses.unfavorite.failed')) }
+        format.json { render json: { errors: ['not subscribed to course'] }, status: :unprocessable_entity }
       end
+      format.js
     end
   end
 
@@ -264,7 +262,7 @@ class CoursesController < ApplicationController
     @accepted = @course.accept_all_pending
     respond_to do |f|
       f.json
-      f.html {redirect_back(fallback_location: course_url(@course))}
+      f.html { redirect_back(fallback_location: course_url(@course)) }
     end
   end
 
@@ -272,7 +270,7 @@ class CoursesController < ApplicationController
     @declined = @course.decline_all_pending
     respond_to do |f|
       f.json
-      f.html {redirect_back(fallback_location: course_url(@course))}
+      f.html { redirect_back(fallback_location: course_url(@course)) }
     end
   end
 
@@ -280,10 +278,10 @@ class CoursesController < ApplicationController
     @course.generate_secret
     @course.save
     render partial: 'application/token_field', locals: {
-        container_name: :hidden_show_link_field,
-        name: :hidden_show_link,
-        value: course_url(@course, secret: @course.secret),
-        reset_url: reset_token_course_path(@course)
+      container_name: :hidden_show_link_field,
+      name: :hidden_show_link,
+      value: course_url(@course, secret: @course.secret),
+      reset_url: reset_token_course_path(@course)
     }
   end
 
@@ -326,13 +324,12 @@ class CoursesController < ApplicationController
   def update_membership_status_for(user, status)
     membership = CourseMembership.where(user: user, course: @course).first
     return false unless membership
+
     if membership.course_admin?
       authorize @course, :update_course_admin_membership? unless user == current_user
     end
 
-    if status == 'course_admin'
-      authorize @course, :update_course_admin_membership?
-    end
+    authorize @course, :update_course_admin_membership? if status == 'course_admin'
 
     membership.update(status: status).tap do |success|
       if success && membership.unsubscribed?
@@ -343,23 +340,23 @@ class CoursesController < ApplicationController
   end
 
   def signup_succeeded_response(format)
-    format.html {redirect_back fallback_location: root_url, notice: I18n.t('courses.registration.sign_up_successfully')}
-    format.json {render :show, status: :created, location: @course}
+    format.html { redirect_back fallback_location: root_url, notice: I18n.t('courses.registration.sign_up_successfully') }
+    format.json { render :show, status: :created, location: @course }
   end
 
   def subscription_succeeded_response(format)
-    format.html {redirect_to @course, notice: I18n.t('courses.registration.subscribed_successfully')}
-    format.json {render :show, status: :created, location: @course}
+    format.html { redirect_to @course, notice: I18n.t('courses.registration.subscribed_successfully') }
+    format.json { render :show, status: :created, location: @course }
   end
 
   def subscription_failed_response(format)
-    format.html {redirect_back fallback_location: root_url, alert: I18n.t('courses.registration.subscription_failed')}
-    format.json {render json: @course.errors, status: :unprocessable_entity}
+    format.html { redirect_back fallback_location: root_url, alert: I18n.t('courses.registration.subscription_failed') }
+    format.json { render json: @course.errors, status: :unprocessable_entity }
   end
 
   def unsubscription_failed_response(format)
-    format.html {redirect_back fallback_location: root_url, alert: I18n.t('courses.registration.unsubscription_failed')}
-    format.json {render json: @course.errors, status: :unprocessable_entity}
+    format.html { redirect_back fallback_location: root_url, alert: I18n.t('courses.registration.unsubscription_failed') }
+    format.json { render json: @course.errors, status: :unprocessable_entity }
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -371,10 +368,10 @@ class CoursesController < ApplicationController
 
   def copy_options
     params.require(:copy_options)
-        .permit(:base_id,
-                :admins,
-                :hide_series,
-                :exercises,
-                :deadlines)
+          .permit(:base_id,
+                  :admins,
+                  :hide_series,
+                  :exercises,
+                  :deadlines)
   end
 end

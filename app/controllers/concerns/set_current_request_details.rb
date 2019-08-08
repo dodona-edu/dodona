@@ -5,7 +5,7 @@ module SetCurrentRequestDetails
     before_action :set_demo
 
     def set_demo
-      ::Current.demo_mode = !!session[:demo]
+      ::Current.demo_mode = session[:demo]
     end
   end
 

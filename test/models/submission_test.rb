@@ -29,7 +29,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, :rate_limited, user: user
     assert_not submission.valid?
 
-    later = Time.now + 10.seconds
+    later = Time.zone.now + 10.seconds
 
     Time.stubs(:now).returns(later)
 
@@ -50,20 +50,19 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not submission.valid?
   end
 
-
   test 'submissions that are short enough should not be rejected' do
     submission = build :submission, code: Random.new.alphanumeric(64.kilobytes - 1)
     assert submission.valid?
   end
 
   test 'new submissions should have code on the filesystem' do
-    code = Random.new.alphanumeric(n = 100)
+    code = Random.new.alphanumeric(100)
     submission = build :submission, code: code
     assert_equal code, File.read(File.join(submission.fs_path, Submission::CODE_FILENAME))
   end
 
   test 'new submissions should have result on the filesystem' do
-    result = Random.new.alphanumeric(n = 100)
+    result = Random.new.alphanumeric(100)
     submission = build :submission, result: result
     assert_equal result, ActiveSupport::Gzip.decompress(File.read(File.join(submission.fs_path, Submission::RESULT_FILENAME)))
   end
@@ -100,5 +99,4 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal 3, result[:groups][0][:groups][0][:groups][0][:messages].count
     assert_equal 3, result[:groups][0][:groups][0][:groups][0][:tests][0][:messages].count
   end
-
 end

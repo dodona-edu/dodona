@@ -14,7 +14,7 @@ class Label < ApplicationRecord
   enum color: %i[red pink purple deep-purple indigo teal
                  orange brown blue-grey]
 
-  scope :by_name, ->(name) {where('name LIKE ?', "%#{name}%")}
+  scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
 
   before_save :downcase_name
 
@@ -25,6 +25,6 @@ class Label < ApplicationRecord
   private
 
   def downcase_name
-    self.name.downcase!
+    name.downcase!
   end
 end

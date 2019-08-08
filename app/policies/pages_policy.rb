@@ -7,4 +7,3 @@ class PagesPolicy < ApplicationPolicy
     true
   end
 end
-

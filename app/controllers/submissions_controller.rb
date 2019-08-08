@@ -38,7 +38,7 @@ class SubmissionsController < ApplicationController
       @crumbs << [@judge.name, judge_path(@judge)]
     end
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] if @exercise
-    @crumbs << [I18n.t('submissions.index.title'), '#']
+    @crumbs << [I18n.t('submissions.index.title'), "#"]
   end
 
   def show

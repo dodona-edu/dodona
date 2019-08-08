@@ -21,6 +21,32 @@
   box-shadow: none;
 }
 
+.btn:not(.btn-sm) .mdi {
+  vertical-align: middle;
+  line-height: inherit;
+}
+
+.btn.with-text:not(.btn-sm) .mdi {
+  vertical-align: middle;
+  line-height: inherit;
+
+  &.md-18 {
+    top: -2px;
+  }
+}
+
+.btn-sm .mdi {
+  margin-top: 4px;
+}
+
+.input-group-sm .btn .mdi {
+  margin-top: 0;
+}
+
+.btn-sm .mdi {
+  margin-top: 2px;
+}
+
 .btn-down {
   box-shadow: none;
   color: @text-disabled;

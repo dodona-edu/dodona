@@ -47,11 +47,11 @@ class RepositoriesController < ApplicationController
 
     respond_to do |format|
       if saved
-        format.html {redirect_to @repository, notice: I18n.t('controllers.created', model: Repository.model_name.human)}
-        format.json {render :show, status: :created, location: @repository}
+        format.html { redirect_to @repository, notice: I18n.t('controllers.created', model: Repository.model_name.human) }
+        format.json { render :show, status: :created, location: @repository }
       else
-        format.html {render :new}
-        format.json {render json: @repository.errors, status: :unprocessable_entity}
+        format.html { render :new }
+        format.json { render json: @repository.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -61,11 +61,11 @@ class RepositoriesController < ApplicationController
   def update
     respond_to do |format|
       if @repository.update(permitted_attributes(Repository))
-        format.html {redirect_to @repository, notice: I18n.t('controllers.updated', model: Repository.model_name.human)}
-        format.json {render :show, status: :ok, location: @repository}
+        format.html { redirect_to @repository, notice: I18n.t('controllers.updated', model: Repository.model_name.human) }
+        format.json { render :show, status: :ok, location: @repository }
       else
-        format.html {render :edit}
-        format.json {render json: @repository.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @repository.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -75,8 +75,8 @@ class RepositoriesController < ApplicationController
   def destroy
     @repository.destroy
     respond_to do |format|
-      format.html {redirect_to repositories_url, notice: I18n.t('controllers.destroyed', model: Repository.model_name.human)}
-      format.json {head :no_content}
+      format.html { redirect_to repositories_url, notice: I18n.t('controllers.destroyed', model: Repository.model_name.human) }
+      format.json { head :no_content }
     end
   end
 
@@ -115,21 +115,45 @@ class RepositoriesController < ApplicationController
   def hook
     success, msg = @repository.reset
     payload = params.key?('payload') ? JSON.parse(params['payload']) : params
-    if success
+    unless success
+      render plain: msg, status: :internal_server_error
+      return
+    end
+
+    user_hash = {}
+    do_reprocess = false
+    if request.headers.key? 'X-GitHub-Event'
       if !payload.key?('commits') || payload['forced'] ||
-          !payload['commits'].reject {|commit| commit['committer']['name'] == 'Dodona Server'}.empty?
+          !payload['commits'].reject { |commit| commit['committer']['name'] == 'Dodona Server' }.empty?
+        do_reprocess = true
         if current_user
-          @repository.delay.process_exercises_email_errors(user: current_user)
+          user_hash[:user] = current_user
         elsif payload.key?('pusher')
           pusher = payload['pusher']
-          @repository.delay.process_exercises_email_errors(name: pusher['name'], email: pusher['email'])
+          user_hash[:name] = pusher['name']
+          user_hash[:email] = pusher['email']
         else
-          @repository.delay.process_exercises_email_errors(user: @repository.admins.first)
+          user_hash[:user] = @repository.admins.first
         end
       end
+    elsif request.headers.key? 'X-Gitlab-Event'
+      # Gitlab doesn't tell us if the push was forced, so no fancy check if the reprocess is necessary.
+      do_reprocess = true
+      if current_user
+        user_hash[:user] = current_user
+      elsif payload.key?('user_name') && payload.key?('user_email')
+        user_hash[:name] = payload['user_name']
+        user_hash[:email] = payload['user_email']
+      else
+        user_hash[:user] = @repository.admins.first
+      end
+    else
+      do_reprocess = true
+      user_hash[:user] = @repository.admins.first
     end
-    status = success ? 200 : 500
-    render plain: msg, status: status
+    @repository.delay.process_exercises_email_errors(user: user_hash[:user], name: user_hash[:name], email: user_hash[:email]) if do_reprocess
+
+    render plain: msg, status: :ok
   end
 
   def reprocess
@@ -149,14 +173,14 @@ class RepositoriesController < ApplicationController
     respond_to do |format|
       if success
         notification = t('controllers.updated', model: model.model_name.human)
-        format.json {head :no_content}
-        format.js {render locals: {notification: notification}}
-        format.html {redirect_to return_path, notice: notification}
+        format.json { head :no_content }
+        format.js { render locals: {notification: notification} }
+        format.html { redirect_to return_path, notice: notification }
       else
         alert = t('controllers.update_failed', model: model.model_name.human)
-        format.json {head :unprocessable_entity}
-        format.js {render status: 400, locals: {notification: alert}}
-        format.html {redirect_to return_path, alert: alert}
+        format.json { head :unprocessable_entity }
+        format.js { render status: 400, locals: {notification: alert} }
+        format.html { redirect_to return_path, alert: alert }
       end
     end
   end

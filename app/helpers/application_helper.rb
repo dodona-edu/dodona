@@ -124,7 +124,7 @@ module ApplicationHelper
         'runtime error' => %w[flash wrong],
         'compilation error' => %w[flash-circle wrong],
         'memory limit exceeded' => %w[memory wrong]
-    }[submission&.status] || %w[warning warning]
+    }[submission&.status] || %w[alert warning]
     "<i class=\"mdi mdi-#{icon} mdi-#{size} colored-#{color}\"></i>".html_safe
   end
 

@@ -6,11 +6,11 @@ function initFavoriteButtons() {
     }
 
     function toggleFavorite() {
-        const element = $(this);
-        if (element.hasClass("favorited")) {
-            unfavoriteCourse(element);
+        const $element = $(this);
+        if ($element.hasClass("favorited")) {
+            unfavoriteCourse($element);
         } else {
-            favoriteCourse(element);
+            favoriteCourse($element);
         }
     }
 

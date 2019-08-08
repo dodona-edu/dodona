@@ -17,8 +17,8 @@ class ApiToken < ApplicationRecord
 
   validates :description,
             presence: true,
-            length: {minimum: 3, maximum: 255},
-            uniqueness: {scope: :user_id}
+            length: { minimum: 3, maximum: 255 },
+            uniqueness: { scope: :user_id }
 
   # This token will only be different than nil
   # when it is newly created, not when fetched
@@ -43,6 +43,7 @@ class ApiToken < ApplicationRecord
   # If the token is empy, returns nil
   def self.find_token(token)
     return nil if token.blank?
+
     ApiToken.find_by(token_digest: ApiToken.digest(token))
   end
 

@@ -14,11 +14,11 @@ class SeriesSummary
 
     if series
       @series_memberships =
-          if exercises
-            series.series_memberships.where(exercise: exercises).includes(:exercise)
-          else
-            series.series_memberships.includes(:exercise)
-          end
+        if exercises
+          series.series_memberships.where(exercise: exercises).includes(:exercise)
+        else
+          series.series_memberships.includes(:exercise)
+        end
       @exercises ||= @series_memberships.map(&:exercise)
     end
 
@@ -123,12 +123,12 @@ class SeriesSummary
 
   def mk_exercise_summary(ex, **kwargs)
     ExerciseSummary.new(
-        exercise: ex,
-        user: user,
-        latest_submission: @latest_submissions[ex.id],
-        accepted_submission: @accepted_submissions[ex.id],
-        timely_submission: @timely_submissions[ex.id],
-        **kwargs
+      exercise: ex,
+      user: user,
+      latest_submission: @latest_submissions[ex.id],
+      accepted_submission: @accepted_submissions[ex.id],
+      timely_submission: @timely_submissions[ex.id],
+      **kwargs
     )
   end
 
@@ -140,17 +140,20 @@ class SeriesSummary
 
   def query_latest_submissions
     return {} unless user
+
     query_submissions.exercise_hash
   end
 
   def query_accepted_submissions
     return {} unless user
+
     query_submissions.where(accepted: true).exercise_hash
   end
 
   def query_timely_submissions
     return {} unless user
     return @latest_submissions unless series&.deadline
+
     query_submissions.before_deadline(series.deadline).exercise_hash
   end
 end

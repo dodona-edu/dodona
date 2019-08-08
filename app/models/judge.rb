@@ -19,7 +19,7 @@ class Judge < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
   JUDGE_LOCATIONS = Rails.root.join('data', 'judges')
 
-  validates :name, presence: true, uniqueness: {case_sensitive: false}
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :image, presence: true
   validates :remote, presence: true
 

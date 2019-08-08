@@ -1,6 +1,6 @@
 class CourseMembersController < ApplicationController
   before_action :set_course
-  before_action :set_course_membership_and_user, only: [:show, :edit, :update]
+  before_action :set_course_membership_and_user, only: %i[show edit update]
 
   has_scope :by_permission
   has_scope :by_institution, as: 'institution_id'
@@ -15,15 +15,15 @@ class CourseMembersController < ApplicationController
                end
 
     @course_memberships = apply_scopes(@course.course_memberships)
-                              .includes(:user)
-                              .order(status: :asc)
-                              .order(Arel.sql('users.permission ASC'))
-                              .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
-                              .where(status: statuses)
-                              .paginate(page: parse_pagination_param(params[:page]))
+                          .includes(:user)
+                          .order(status: :asc)
+                          .order(Arel.sql('users.permission ASC'))
+                          .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
+                          .where(status: statuses)
+                          .paginate(page: parse_pagination_param(params[:page]))
 
-    @title = I18n.t("courses.index.users")
-    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), "#"]]
+    @title = I18n.t('courses.index.users')
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), '#']]
     @course_labels = CourseLabel.where(course: @course)
   end
 
@@ -37,7 +37,7 @@ class CourseMembersController < ApplicationController
 
   def edit
     @title = @user.full_name
-    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), course_members_path(@course)], [@user.full_name, course_member_path(@course, @user)], [I18n.t("crumbs.edit"), '#']]
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), course_members_path(@course)], [@user.full_name, course_member_path(@course, @user)], [I18n.t('crumbs.edit'), '#']]
     @course_labels = CourseLabel.where(course: @course)
   end
 
@@ -46,14 +46,12 @@ class CourseMembersController < ApplicationController
 
     course_labels = attributes[:course_labels]
     if course_labels
-      unless course_labels.is_a?(Array)
-        course_labels = course_labels.split(',')
-      end
-      attributes[:course_labels] = course_labels&.map(&:downcase)&.uniq&.map {|name| CourseLabel.find_by(course: @course, name: name) || CourseLabel.create(course: @course, name: name)}
+      course_labels = course_labels.split(',') unless course_labels.is_a?(Array)
+      attributes[:course_labels] = course_labels&.map(&:downcase)&.uniq&.map { |name| CourseLabel.find_by(course: @course, name: name) || CourseLabel.create(course: @course, name: name) }
     end
 
     if @course_membership.update(attributes)
-      redirect_to course_member_path(@course, @user), flash: {success: I18n.t('controllers.updated', model: CourseMembership.model_name.human)}
+      redirect_to course_member_path(@course, @user), flash: { success: I18n.t('controllers.updated', model: CourseMembership.model_name.human) }
     else
       render :edit
     end
@@ -74,10 +72,10 @@ class CourseMembersController < ApplicationController
       cm = CourseMembership.find_by(user_id: row['id'], course: @course)
       if cm.present?
         if row['labels'].nil?
-          @error = I18n.t('course_members.index.could_not_find_labels_column', user_id: row["id"])
+          @error = I18n.t('course_members.index.could_not_find_labels_column', user_id: row['id'])
           break
         end
-        labels = row['labels'].split(';').map(&:downcase).uniq.map {|name| CourseLabel.find_by(name: name.strip, course: @course) || CourseLabel.create(name: name.strip, course: @course)}
+        labels = row['labels'].split(';').map(&:downcase).uniq.map { |name| CourseLabel.find_by(name: name.strip, course: @course) || CourseLabel.create(name: name.strip, course: @course) }
         cm.update(course_labels: labels)
       end
     end

@@ -53,6 +53,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def institution_matches?(user)
     return true if user.institution.nil?
+
     if user.institution&.identifier != institution_identifier \
            || user.institution&.provider != provider
       user.errors.add(:institution, 'mismatch')
@@ -101,6 +102,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def try_login!(user)
     raise 'User should not be nil here' if user.nil?
+
     if institution_matches?(user)
       user.update_from_oauth(oauth_hash, Institution.from_identifier(institution_identifier))
       if user.errors.none?
@@ -158,8 +160,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{oauth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: oauth_hash)
-        .institution_created
-        .deliver_later
+                     .institution_created
+                     .deliver_later
   end
 
   def institution_creation_failed(errors)
@@ -169,16 +171,16 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{errors}"
 
     ApplicationMailer.with(authinfo: oauth_hash, errors: errors)
-        .institution_creation_failed
-        .deliver_later
+                     .institution_creation_failed
+                     .deliver_later
   end
 
   def no_institution_found!
     set_flash_message \
-        :notice,
-        :failure,
-        kind: provider,
-        reason: I18n.t('pages.sign_in_page.has_to_have_institution')
+      :notice,
+      :failure,
+      kind: provider,
+      reason: I18n.t('pages.sign_in_page.has_to_have_institution')
     redirect_to sign_in_path
   end
 end

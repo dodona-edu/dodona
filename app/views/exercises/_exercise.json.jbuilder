@@ -10,4 +10,4 @@ if current_user
   json.has_correct_solution exercise.last_correct_submission(current_user).present?
 end
 json.description exercise.description_localized
-json.url exercise_scoped_url(exercise: exercise, series: series, course: course, options: {format: :json})
+json.url exercise_scoped_url(exercise: exercise, series: series, course: course, options: { format: :json })

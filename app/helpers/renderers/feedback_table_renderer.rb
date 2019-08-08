@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 class FeedbackTableRenderer
   include ApplicationHelper
 
@@ -40,7 +39,7 @@ class FeedbackTableRenderer
     else
       @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
         @builder.div(class: 'row feedback-table-messages') do
-          messages([{description: I18n.t('submissions.show.reading_failed'), format: 'plain'}])
+          messages([{ description: I18n.t('submissions.show.reading_failed'), format: 'plain' }])
         end
       end.html_safe
     end
@@ -52,15 +51,15 @@ class FeedbackTableRenderer
 
   def show_diff_type_switch(tab)
     tab[:groups]&.compact # Groups
-        &.flat_map {|t| t[:groups]}&.compact # Testcases
-        &.flat_map {|t| t[:tests]}&.compact # Tests
-        &.reject {|t| t[:accepted]}
+        &.flat_map { |t| t[:groups] }&.compact # Testcases
+        &.flat_map { |t| t[:tests] }&.compact # Tests
+        &.reject { |t| t[:accepted] }
         &.any?
   end
 
   def show_hide_correct_switch(tab)
     tests = tab[:groups]&.compact
-    tests&.reject {|t| t[:accepted]}&.any? && tests&.select {|t| t[:accepted]}&.any?
+    tests&.reject { |t| t[:accepted] }&.any? && tests&.select { |t| t[:accepted] }&.any?
   end
 
   def tabs(submission)
@@ -77,7 +76,7 @@ class FeedbackTableRenderer
           end
         end
         if show_code_tab
-          @builder.li(class: ('active' unless submission[:groups].present?)) do
+          @builder.li(class: ('active' if submission[:groups].blank?)) do
             @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
               @builder.text!(I18n.t('submissions.show.code') + ' ')
               if submission.key?(:annotations) && submission[:annotations].count.positive?
@@ -90,9 +89,9 @@ class FeedbackTableRenderer
         end
       end
       @builder.div(class: 'tab-content') do
-        @submission[:groups].each_with_index {|t, i| tab(t, i)} if submission[:groups]
+        @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
         if show_code_tab
-          @builder.div(class: "tab-pane #{'active' unless submission[:groups].present?}", id: 'code-tab') do
+          @builder.div(class: "tab-pane #{'active' if submission[:groups].blank?}", id: 'code-tab') do
             if submission[:annotations]
               @builder.div(class: 'linter') do
                 source(@code, submission[:annotations])
@@ -110,6 +109,7 @@ class FeedbackTableRenderer
     return '' if t[:badgeCount].nil?
     return '' if t[:badgeCount].zero?
     return '' if t[:badgeCount] == '0'
+
     t[:badgeCount].to_s
   end
 
@@ -164,7 +164,7 @@ class FeedbackTableRenderer
     end
     messages(t[:messages])
     @builder.div(class: 'groups') do
-      t[:groups]&.each {|g| group(g)}
+      t[:groups]&.each { |g| group(g) }
     end
   end
 
@@ -176,13 +176,11 @@ class FeedbackTableRenderer
         end
       end
       messages(g[:messages])
-      g[:groups]&.each {|tc| testcase(tc)}
+      g[:groups]&.each { |tc| testcase(tc) }
     end
   end
 
-  def testcase_icons(tc)
-    ;
-  end
+  def testcase_icons(tc); end
 
   def testcase(tc)
     @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
@@ -198,7 +196,7 @@ class FeedbackTableRenderer
       end
       message(tc[:description]) if tc[:description]
     end
-    tc[:tests]&.each {|t| test(t)}
+    tc[:tests]&.each { |t| test(t) }
     @builder.div(class: 'col-xs-12') do
       messages(tc[:messages])
     end
@@ -227,7 +225,8 @@ class FeedbackTableRenderer
   end
 
   def messages(msgs)
-    return unless msgs.present?
+    return if msgs.blank?
+
     @builder.div(class: 'messages') do
       msgs.each do |msg|
         @builder.div(class: 'message') do
@@ -266,7 +265,8 @@ class FeedbackTableRenderer
 
   def message(m)
     return if m.nil?
-    m = {format: 'plain', description: m} if m.is_a? String
+
+    m = { format: 'plain', description: m } if m.is_a? String
     output_message(m)
   end
 
@@ -298,12 +298,12 @@ class FeedbackTableRenderer
     lines = message.split("\n")
     @builder.text! lines[0]
     return unless lines.length > 1
+
     @builder.br
     @builder.div(class: 'code') do
       @builder.text! lines.drop(1).join("\n")
     end
   end
-
 
   def source(code, messages)
     if messages.present?

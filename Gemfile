@@ -41,8 +41,8 @@ gem 'delayed_job_active_record', '~> 4.1.3'
 gem 'daemons', '~>1.3'
 
 # dashboard
-gem 'sinatra', '~>2.0.5'
 gem 'delayed_job_web', '~>1.4.3'
+gem 'sinatra', '~>2.0.5'
 
 # pagination
 gem 'will_paginate', '~>3.1.7'
@@ -69,14 +69,14 @@ gem 'devise', '~>4.6.2'
 gem 'devise_saml_authenticatable', '~> 1.5.0'
 
 # omniauth
-gem 'omniauth-oauth2', '~> 1.6.0'
 gem 'omniauth-google-oauth2', '~> 0.7.0'
+gem 'omniauth-oauth2', '~> 1.6.0'
 
 gem 'jwt', '~> 2.2.1'
 
 # contact mail form
-gem 'recaptcha', '~> 5.1.0', require: 'recaptcha/rails'
 gem 'mail_form', '~> 1.7.1'
+gem 'recaptcha', '~> 5.1.0', require: 'recaptcha/rails'
 
 # authorization
 gem 'pundit', '~> 2.0.1'
@@ -150,15 +150,15 @@ end
 
 group :test do
   # for measuring coverage
-  gem 'simplecov', '~> 0.17.0', require: false
   gem 'minitest-ci', '~> 3.4.0'
+  gem 'simplecov', '~> 0.17.0', require: false
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.1.5'
   gem 'web-console', '~> 3.7.0'
-  # Spring speeds up development by keeping your application running in the background. 
+  # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-rails', '~> 2.2.1'
@@ -178,5 +178,5 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 # interfacing with docker
 gem 'docker-api', '~> 1.34.2'
 
-gem "actiontext", github: "rails/actiontext", require: "action_text", branch: "archive"
-gem "image_processing", "~> 1.2" # for Active Storage variants
+gem 'actiontext', github: 'rails/actiontext', require: 'action_text', branch: 'archive'
+gem 'image_processing', '~> 1.2' # for Active Storage variants

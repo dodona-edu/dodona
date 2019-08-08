@@ -15,9 +15,9 @@ class UsersController < ApplicationController
   def available_for_repository
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     respond_to do |format|
-      format.html {redirect_to @repository}
-      format.json {render :available_for_repository}
-      format.js {render :available_for_repository}
+      format.html { redirect_to @repository }
+      format.json { render :available_for_repository }
+      format.js { render :available_for_repository }
     end
   end
 
@@ -32,13 +32,13 @@ class UsersController < ApplicationController
     authorize User
     @user = User.new
     @title = I18n.t('users.new.title')
-    @crumbs = [[I18n.t('users.index.title'), users_path], [I18n.t('users.new.title'), "#"]]
+    @crumbs = [[I18n.t('users.index.title'), users_path], [I18n.t('users.new.title'), '#']]
   end
 
   # GET /users/1/edit
   def edit
     @title = @user.full_name
-    @crumbs = [[@user.full_name, user_path(@user)], [I18n.t('crumbs.edit'), "#"]]
+    @crumbs = [[@user.full_name, user_path(@user)], [I18n.t('crumbs.edit'), '#']]
   end
 
   # POST /users
@@ -49,11 +49,11 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html {redirect_to @user, flash: {success: I18n.t('controllers.created', model: User.model_name.human)}}
-        format.json {render :show, status: :created, location: @user}
+        format.html { redirect_to @user, flash: { success: I18n.t('controllers.created', model: User.model_name.human) } }
+        format.json { render :show, status: :created, location: @user }
       else
-        format.html {render :new}
-        format.json {render json: @user.errors, status: :unprocessable_entity}
+        format.html { render :new }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -63,11 +63,11 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(permitted_attributes(@user))
-        format.html {redirect_to @user, notice: I18n.t('controllers.updated', model: User.model_name.human)}
-        format.json {render :show, status: :ok, location: @user}
+        format.html { redirect_to @user, notice: I18n.t('controllers.updated', model: User.model_name.human) }
+        format.json { render :show, status: :ok, location: @user }
       else
-        format.html {render :edit}
-        format.json {render json: @user.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -77,8 +77,8 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html {redirect_to users_url, notice: I18n.t('controllers.destroyed', model: User.model_name.human)}
-      format.json {head :no_content}
+      format.html { redirect_to users_url, notice: I18n.t('controllers.destroyed', model: User.model_name.human) }
+      format.json { head :no_content }
     end
   end
 

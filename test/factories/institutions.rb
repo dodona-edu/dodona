@@ -33,7 +33,7 @@ FactoryBot.define do
   end
 
   factory :smartschool_institution, parent: :base_institution do
-    identifier { "https://#{short_name}.smartschool.be"  }
+    identifier { "https://#{short_name}.smartschool.be" }
     provider { :smartschool }
   end
 

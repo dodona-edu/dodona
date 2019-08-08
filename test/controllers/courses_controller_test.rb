@@ -55,6 +55,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   # if a user is nil, nobody is signed in
   def with_users_signed_in(users)
     raise 'argument array should not be empty' if users.empty?
+
     users.each do |user|
       who = if user
               "#{user.permission}:#{user.membership_status_for(@course)}"
@@ -136,20 +137,20 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_in zeus
 
     get registration_course_url(@course, @course.secret)
-    assert_redirected_to @course, "zeus should be redirected"
+    assert_redirected_to @course, 'zeus should be redirected'
   end
 
   test 'should not subscribe to hidden course with invalid, empty or absent secret' do
     @course.update(visibility: 'hidden')
     with_users_signed_in @not_subscribed do |who, user|
       post subscribe_course_url(@course, secret: 'the cake is a lie')
-      assert !user.member_of?(@course), "#{who} with invalid secret"
+      assert_not user.member_of?(@course), "#{who} with invalid secret"
 
       post subscribe_course_url(@course, secret: '')
-      assert !user.member_of?(@course), "#{who} with empty secret"
+      assert_not user.member_of?(@course), "#{who} with empty secret"
 
       post subscribe_course_url(@course)
-      assert !user.member_of?(@course), "#{who} without secret"
+      assert_not user.member_of?(@course), "#{who} without secret"
     end
   end
 
@@ -158,11 +159,11 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @not_subscribed do |who, user|
       @course.update(visibility: 'visible_for_all')
       post subscribe_course_url(@course)
-      assert !user.member_of?(@course), "#{who} should not be subscribed"
+      assert_not user.member_of?(@course), "#{who} should not be subscribed"
 
       @course.update(visibility: 'hidden')
       post subscribe_course_url(@course, secret: @course.secret)
-      assert !user.member_of?(@course), "#{who} should not be subscribed"
+      assert_not user.member_of?(@course), "#{who} should not be subscribed"
     end
   end
 
@@ -171,11 +172,11 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @externals do |who, user|
       @course.update(visibility: 'visible_for_all')
       post subscribe_course_url(@course)
-      assert !@course.users.include?(user), "#{who} should not have a membership"
+      assert_not @course.users.include?(user), "#{who} should not have a membership"
 
       @course.update(visibility: 'hidden')
       post subscribe_course_url(@course, secret: @course.secret)
-      assert !@course.users.include?(user), "#{who} should not have a membership"
+      assert_not @course.users.include?(user), "#{who} should not have a membership"
     end
   end
 
@@ -396,7 +397,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'not-admins should not be able to view members in course except themselves' do
     with_users_signed_in @not_admins do |who, signed_in|
-      @course.users.reject{|u| u == signed_in}.each do |view|
+      @course.users.reject { |u| u == signed_in }.each do |view|
         get course_member_url(@course, view), xhr: true
         assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to view #{view}"
       end
@@ -479,8 +480,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     sign_in user
     new_course = build :course
-    post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: {base_id: course.id}, format: :json }
-    assert_equal 0, Course.find(JSON.parse(response.body)["id"]).series.count
+    post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: { base_id: course.id }, format: :json }
+    assert_equal 0, Course.find(JSON.parse(response.body)['id']).series.count
   end
-
 end

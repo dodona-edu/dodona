@@ -23,7 +23,7 @@ class InstitutionPolicy < ApplicationPolicy
 
   def permitted_attributes
     if zeus?
-      [:name, :short_name]
+      %i[name short_name]
     else
       []
     end

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_action :store_current_location,
                 except: %i[media sign_in_page institution_not_supported],
-                unless: -> {devise_controller? || remote_request?}
+                unless: -> { devise_controller? || remote_request? }
 
   before_action :set_locale
 
@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    {locale: I18n.locale, trailing_slash: true}
+    { locale: I18n.locale, trailing_slash: true }
   end
 
   def ensure_trailing_slash

@@ -17,13 +17,13 @@
 #
 
 class Institution < ApplicationRecord
-  NEW_INSTITUTION_NAME = "n/a"
+  NEW_INSTITUTION_NAME = 'n/a'.freeze
   enum provider: %i[smartschool office365 saml google_oauth2]
 
   has_many :users
   has_many :courses
 
-  validates :identifier, uniqueness: {allow_blank: true}
+  validates :identifier, uniqueness: { allow_blank: true }
   validates :logo, :short_name, :provider, presence: true
   validates :sso_url, :slo_url, :certificate, :entity_id, presence: true, if: :saml?
 

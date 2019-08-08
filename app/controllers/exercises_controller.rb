@@ -6,7 +6,7 @@ class ExercisesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:media]
 
   has_scope :by_filter, as: 'filter'
-  has_scope :by_labels, as: 'labels', type: :array, if: ->(this) {this.params[:labels].is_a?(Array)}
+  has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }
   has_scope :by_programming_language, as: 'programming_language'
   has_scope :in_repository, as: 'repository_id'
 
@@ -52,16 +52,12 @@ class ExercisesController < ApplicationController
   def show
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     # We still need to check access because an unauthenticated user should be able to see public exercises
-    unless @exercise.accessible?(current_user, @course)
-      raise Pundit::NotAuthorizedError, "Not allowed"
-    end
+    raise Pundit::NotAuthorizedError, 'Not allowed' unless @exercise.accessible?(current_user, @course)
 
     @series = Series.find_by(id: params[:series_id])
     flash.now[:alert] = I18n.t('exercises.show.not_a_member') if @course && !current_user&.member_of?(@course)
     @submissions = @exercise.submissions
-    if @course.present? && current_user&.member_of?(@course)
-      @submissions = @submissions.in_course(@course)
-    end
+    @submissions = @submissions.in_course(@course) if @course.present? && current_user&.member_of?(@course)
     @submissions = @submissions.of_user(current_user) if current_user
     @submissions = policy_scope(@submissions).paginate(page: parse_pagination_param(params[:page]))
     if params[:edit_submission]
@@ -83,36 +79,33 @@ class ExercisesController < ApplicationController
 
     labels = params[:exercise][:labels]
     if labels
-      unless labels.is_a?(Array)
-        labels = labels&.split(',')
-      end
+      labels = labels&.split(',') unless labels.is_a?(Array)
       labels = (labels + (@exercise.merged_dirconfig[:labels] || []))
-      attributes[:labels] = labels&.map(&:downcase).uniq.map {|name| Label.find_by(name: name) || Label.create(name: name)}
+      attributes[:labels] = labels&.map(&:downcase).uniq.map { |name| Label.find_by(name: name) || Label.create(name: name) }
     end
 
     respond_to do |format|
       if @exercise.update(attributes)
-        format.html {redirect_to helpers.exercise_scoped_path(exercise: @exercise, course: @course, series: @series), flash: {success: I18n.t('controllers.updated', model: Exercise.model_name.human)}}
-        format.json {render :show, status: :ok, location: @exercise}
+        format.html { redirect_to helpers.exercise_scoped_path(exercise: @exercise, course: @course, series: @series), flash: { success: I18n.t('controllers.updated', model: Exercise.model_name.human) } }
+        format.json { render :show, status: :ok, location: @exercise }
       else
-        format.html {render :edit}
-        format.json {render json: @exercise.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @exercise.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def media
     if params.key?(:token)
-      raise Pundit::NotAuthorizedError, "Not allowed" unless @exercise.access_token == params[:token]
+      raise Pundit::NotAuthorizedError, 'Not allowed' unless @exercise.access_token == params[:token]
     elsif !@exercise.accessible?(current_user, @course)
-      raise Pundit::NotAuthorizedError, "Not allowed"
+      raise Pundit::NotAuthorizedError, 'Not allowed'
     end
 
     file = File.join(@exercise.media_path, params[:media])
-    unless File.file? file
-      file = File.join(@exercise.repository.media_path, params[:media])
-    end
+    file = File.join(@exercise.repository.media_path, params[:media]) unless File.file? file
     raise ActionController::RoutingError, 'Not Found' unless File.file? file
+
     send_file file, disposition: 'inline'
   end
 
@@ -127,6 +120,7 @@ class ExercisesController < ApplicationController
   def set_course
     @crumbs = []
     return if params[:course_id].nil?
+
     @course = Course.find(params[:course_id])
     @crumbs << [@course.name, course_path(@course)]
     authorize @course
@@ -134,12 +128,13 @@ class ExercisesController < ApplicationController
 
   def set_series
     return if params[:series_id].nil?
+
     @series = Series.find(params[:series_id])
-    if @series.hidden? && !current_user&.course_admin?(@series.course)
-      @crumbs << [@series.name, series_path(@series, token: @series.access_token)]
-    else
-      @crumbs << [@series.name, course_path(@series.course, anchor: @series.anchor)]
-    end
+    @crumbs << if @series.hidden? && !current_user&.course_admin?(@series.course)
+                 [@series.name, series_path(@series, token: @series.access_token)]
+               else
+                 [@series.name, course_path(@series.course, anchor: @series.anchor)]
+               end
     authorize @series
   end
 end

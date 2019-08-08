@@ -1,5 +1,5 @@
 class ProgrammingLanguagesController < ApplicationController
-  before_action :set_programming_language, only: [:show, :edit, :update, :destroy]
+  before_action :set_programming_language, only: %i[show edit update destroy]
 
   def index
     authorize ProgrammingLanguage
@@ -22,9 +22,9 @@ class ProgrammingLanguagesController < ApplicationController
   def edit
     @title = @programming_language.name
     @crumbs = [
-        [I18n.t('programming_languages.index.title'), programming_languages_path],
-        [@programming_language.name, programming_language_path(@programming_language)],
-        [I18n.t('programming_languages.edit.title'), '#']
+      [I18n.t('programming_languages.index.title'), programming_languages_path],
+      [@programming_language.name, programming_language_path(@programming_language)],
+      [I18n.t('programming_languages.edit.title'), '#']
     ]
   end
 
@@ -33,11 +33,11 @@ class ProgrammingLanguagesController < ApplicationController
 
     respond_to do |format|
       if @programming_language.save
-        format.html {redirect_to @programming_language, notice: I18n.t('controllers.created', model: ProgrammingLanguage.model_name.human)}
-        format.json {render :show, status: :created, location: @programming_language}
+        format.html { redirect_to @programming_language, notice: I18n.t('controllers.created', model: ProgrammingLanguage.model_name.human) }
+        format.json { render :show, status: :created, location: @programming_language }
       else
-        format.html {render :new}
-        format.json {render json: @programming_language.errors, status: :unprocessable_entity}
+        format.html { render :new }
+        format.json { render json: @programming_language.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -45,11 +45,11 @@ class ProgrammingLanguagesController < ApplicationController
   def update
     respond_to do |format|
       if @programming_language.update(permitted_attributes(@programming_language))
-        format.html {redirect_to @programming_language, notice: I18n.t('controllers.updated', model: ProgrammingLanguage.model_name.human)}
-        format.json {render :show, status: :ok, location: @programming_language}
+        format.html { redirect_to @programming_language, notice: I18n.t('controllers.updated', model: ProgrammingLanguage.model_name.human) }
+        format.json { render :show, status: :ok, location: @programming_language }
       else
-        format.html {render :edit}
-        format.json {render json: @programming_language.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @programming_language.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -57,8 +57,8 @@ class ProgrammingLanguagesController < ApplicationController
   def destroy
     @programming_language.destroy
     respond_to do |format|
-      format.html {redirect_to programming_languages_url, notice: I18n.t('controllers.destroyed', model: ProgrammingLanguage.model_name.human)}
-      format.json {head :no_content}
+      format.html { redirect_to programming_languages_url, notice: I18n.t('controllers.destroyed', model: ProgrammingLanguage.model_name.human) }
+      format.json { head :no_content }
     end
   end
 

@@ -11,6 +11,7 @@ class PostPolicy < ApplicationPolicy
 
   def show?
     return true if user&.zeus?
+
     !record.draft
   end
 

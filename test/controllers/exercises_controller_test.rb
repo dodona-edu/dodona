@@ -18,10 +18,10 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should rescue from exercise not found' do
-    not_id = Random.rand(10000)
+    not_id = Random.rand(10_000)
     begin
       loop do
-        not_id = Random.rand(10000)
+        not_id = Random.rand(10_000)
         Exercise.find not_id
       end
     rescue ActiveRecord::RecordNotFound
@@ -71,9 +71,9 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     result_exercises = JSON.parse response.body
 
-    assert result_exercises.any?{ |ex| ex['id'] == @instance.id }, 'should contain exercise usable by course'
-    assert result_exercises.any?{ |ex| ex['id'] == other_exercise.id }, 'should contain exercise usable by repo admin'
-    assert result_exercises.any?{ |ex| ex['id'] == series_exercise.id }, 'should also contain exercises already used by series'
+    assert result_exercises.any? { |ex| ex['id'] == @instance.id }, 'should contain exercise usable by course'
+    assert result_exercises.any? { |ex| ex['id'] == other_exercise.id }, 'should contain exercise usable by repo admin'
+    assert result_exercises.any? { |ex| ex['id'] == series_exercise.id }, 'should also contain exercises already used by series'
     assert_equal 3, result_exercises.count, 'should only contain available exercises'
   end
 
@@ -103,8 +103,8 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     result_exercises = JSON.parse response.body
 
-    assert result_exercises.any?{ |ex| ex['id'] == @instance.id }, 'should contain exercise with label'
-    assert result_exercises.all?{ |ex| ex['id'] != other_exercise.id }, 'should not contain exercise without label'
+    assert result_exercises.any? { |ex| ex['id'] == @instance.id }, 'should contain exercise with label'
+    assert result_exercises.all? { |ex| ex['id'] != other_exercise.id }, 'should not contain exercise without label'
   end
 
   test 'should get available exercises for course with programming language' do
@@ -133,8 +133,8 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     result_exercises = JSON.parse response.body
 
-    assert result_exercises.any?{ |ex| ex['id'] == @instance.id }, 'should contain exercise with programming language'
-    assert result_exercises.all?{ |ex| ex['id'] != other_exercise.id }, 'should not contain exercise with other programming language'
+    assert result_exercises.any? { |ex| ex['id'] == @instance.id }, 'should contain exercise with programming language'
+    assert result_exercises.all? { |ex| ex['id'] != other_exercise.id }, 'should not contain exercise with other programming language'
   end
 
   test 'should not get available exercises as student' do
@@ -151,10 +151,10 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
-  def assert_response_contains_exercise(exercise, msg=nil)
+  def assert_response_contains_exercise(exercise, msg = nil)
     assert_response :success
     result_exercises = JSON.parse response.body
-    assert result_exercises.any?{ |ex| ex['id'] == exercise.id }, msg
+    assert result_exercises.any? { |ex| ex['id'] == exercise.id }, msg
   end
 
   test 'should get edit submission with show' do
@@ -316,7 +316,7 @@ class ExerciseErrorMailerTest < ActionDispatch::IntegrationTest
     }
 
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
-      post webhook_repository_path(@repository, pusher: @pusher), headers: {"X-GitHub-Event": "push"}
+      post webhook_repository_path(@repository, pusher: @pusher), headers: { "X-GitHub-Event": 'push' }
     end
     email = ActionMailer::Base.deliveries.last
 

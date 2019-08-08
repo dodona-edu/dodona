@@ -45,6 +45,7 @@ module CRUDHelper
     attr_hash.each do |attr_name, value|
       actual = obj.send(attr_name)
       next if value == actual
+
       not_equal << <<~MSG
         Attribute #{attr_name}
           Expected: \"#{value}\"

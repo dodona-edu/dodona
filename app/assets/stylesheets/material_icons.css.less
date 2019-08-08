@@ -75,9 +75,13 @@ a.btn-fab .mdi::before{
   left: -8px;
 }
 
-.dodona-navbar .mdi::before {
-  vertical-align: text-bottom;
-  line-height: 30px;
+.dodona-navbar {
+  .actions , .dropdown {
+    .mdi::before {
+      vertical-align: text-bottom;
+      line-height: 30px;
+    }
+  }
 }
 
 .nav .mdi::before {

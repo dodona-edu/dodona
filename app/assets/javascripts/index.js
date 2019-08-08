@@ -31,6 +31,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 
     function init() {
         initTokens();
+
         if (doInitFilter) {
             initFilter(updateAddressBar, _baseUrl, eager, filterCollections);
         }
@@ -44,6 +45,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         const filterCollections = _filterCollections || {};
         const query = _query || $(QUERY_FILTER_ID).val();
         const extraParams = _extraParams || {};
+
         let url = updateURLParameter(baseUrl || window.location.href, FILTER_PARAM, query);
 
         const tokens = $(TOKENS_FILTER_ID).tokenfield("getTokens");
@@ -72,6 +74,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     function search(updateAddressBar, baseUrl, _query, _filterCollections, extraParams) {
         let url = addParametersToUrl(baseUrl, _query, _filterCollections, extraParams);
         url = updateURLParameter(url, "page", 1);
+
         const localIndex = ++searchIndex;
 
         if (updateAddressBar) {

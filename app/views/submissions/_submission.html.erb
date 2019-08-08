@@ -2,7 +2,7 @@
   <td><%= submission_status_icon(submission) %></td>
   <% if current_user.administrating_courses.any? || current_user.admin? %>
     <td>
-      <i class="mdi mdi-filter-outline mdi-12 filter-submissions"
+      <i class="mdi mdi-filter-outline mdi-12 filter-icon"
          data-filter="<%= submission.user.full_name %>">
       </i>
       <% if submission.course.nil? %>
@@ -14,7 +14,7 @@
   <% end %>
   <% if !exercise %>
     <td>
-      <i class="mdi mdi-filter-outline mdi-12 filter-submissions"
+      <i class="mdi mdi-filter-outline mdi-12 filter-icon"
          data-filter="<%= submission.exercise.name %>">
       </i>
       <% if submission.course.nil? %>

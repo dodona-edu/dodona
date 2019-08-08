@@ -58,7 +58,7 @@
             },
         };
         <% end %>
-        <% if local_assigns.fetch :institutions, false %>
+        <% if local_assigns.fetch(:institutions, []).length > 1 %>
         filterCollections["institutions"] = {
             param: "institution_id",
             paramVal: function(i) { return i.id; },

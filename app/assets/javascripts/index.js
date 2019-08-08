@@ -21,9 +21,6 @@ window.dodona.index = {};
 window.dodona.index.baseUrl = window.location.href;
 window.dodona.index.doSearch = () => { };
 
-/* Make sure the init function is callable every time a partial table is rendered*/
-window.dodona.initFilterButtons = initFilterButtons;
-
 function setBaseUrl(_baseUrl) {
     window.dodona.index.baseUrl = _baseUrl;
     window.dodona.index.doSearch();
@@ -382,4 +379,4 @@ function initFilterButtons(){
     $(FILTER_ICONS_CLASS).click(filter);
 }
 
-export { initFilterIndex, setBaseUrl };
+export { initFilterButtons, initFilterIndex, setBaseUrl };

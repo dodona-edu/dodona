@@ -11,7 +11,7 @@
 
 class CourseLabel < ApplicationRecord
   belongs_to :course
-  has_many :course_membership_labels
+  has_many :course_membership_labels, dependent: :restrict_with_error
   has_many :course_memberships, through: :course_membership_labels
 
   before_save :downcase_name

@@ -32,12 +32,12 @@ class User < ApplicationRecord
 
   belongs_to :institution, optional: true
 
-  has_many :api_tokens
-  has_many :submissions
-  has_many :course_memberships
-  has_many :repository_admins
+  has_many :api_tokens, dependent: :restrict_with_error
+  has_many :submissions, dependent: :restrict_with_error
+  has_many :course_memberships, dependent: :restrict_with_error
+  has_many :repository_admins, dependent: :restrict_with_error
   has_many :courses, through: :course_memberships
-  has_many :events
+  has_many :events, dependent: :restrict_with_error
 
   has_many :subscribed_courses,
            lambda {

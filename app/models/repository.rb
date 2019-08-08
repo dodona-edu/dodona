@@ -27,12 +27,12 @@ class Repository < ApplicationRecord
   before_create :clone_repo
 
   belongs_to :judge
-  has_many :exercises
-  has_many :repository_admins
+  has_many :exercises, dependent: :restrict_with_error
+  has_many :repository_admins, dependent: :restrict_with_error
   has_many :admins,
            through: :repository_admins,
            source: :user
-  has_many :course_repositories
+  has_many :course_repositories, dependent: :restrict_with_error
   has_many :allowed_courses,
            through: :course_repositories,
            source: :course

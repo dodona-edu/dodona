@@ -31,14 +31,14 @@ class Course < ApplicationRecord
 
   belongs_to :institution, optional: true
 
-  has_many :course_memberships
-  has_many :series
-  has_many :course_repositories
+  has_many :course_memberships, dependent: :restrict_with_error
+  has_many :series, dependent: :restrict_with_error
+  has_many :course_repositories, dependent: :restrict_with_error
 
   has_many :exercises, -> { distinct }, through: :series
   has_many :series_memberships, through: :series
 
-  has_many :submissions
+  has_many :submissions, dependent: :restrict_with_error
   has_many :users, through: :course_memberships
 
   has_many :usable_repositories, through: :course_repositories, source: :repository

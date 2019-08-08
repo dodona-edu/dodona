@@ -29,8 +29,8 @@ class Judge < ApplicationRecord
 
   before_create :clone_repo
 
-  has_many :repositories
-  has_many :exercises
+  has_many :repositories, dependent: :restrict_with_error
+  has_many :exercises, dependent: :restrict_with_error
 
   def full_path
     Pathname.new File.join(JUDGE_LOCATIONS, path)

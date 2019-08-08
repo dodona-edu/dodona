@@ -43,8 +43,8 @@ class Exercise < ApplicationRecord
   belongs_to :repository
   belongs_to :judge
   belongs_to :programming_language, optional: true
-  has_many :submissions
-  has_many :series_memberships
+  has_many :submissions, dependent: :restrict_with_error
+  has_many :series_memberships, dependent: :restrict_with_error
   has_many :series, through: :series_memberships
   has_many :courses, -> { distinct }, through: :series
   has_many :exercise_labels, dependent: :destroy

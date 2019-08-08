@@ -32,7 +32,7 @@ class Institution < ApplicationRecord
   end
 
   def self.of_course(course_id)
-    includes(:courses).where(courses: { id: course.id})
+    includes(:courses).where(courses: { id: course_id})
   end
 
 end

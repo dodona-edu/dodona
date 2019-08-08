@@ -91,7 +91,4 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   config.submissions_storage_path = Rails.root.join('data', 'storage', 'submissions')
-
-  config.require_master_key = true
-
 end

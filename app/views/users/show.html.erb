@@ -4,9 +4,15 @@
       <div class="card-supporting-text">
         <div>
           <span class="user-icon pull-left">
-            <i class="mdi <%=@user.permission == "student" ? "mdi-account" : (@user.permission == "staff" ? "mdi-school" : "mdi-android")%> mdi-36" title="<%= @user.permission %>">
-            </i>
-            </span>
+            <% if @user.permission == "student" %>
+              <i class="mdi mdi-account mdi-36" title="<%= @user.permission %>">
+            <% elsif @user.permission == "staff" %>
+              <i class="mdi mdi-school mdi-36" title="<%= @user.permission %>">
+            <% else %>
+              <i class="mdi mdi-android mdi-36" title="<%= @user.permission %>">
+            <% end %>
+              </i>
+          </span>
           <span class="profile-line">
             <span class="name">
               <%= @user.full_name %>

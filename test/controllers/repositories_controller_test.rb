@@ -121,7 +121,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 end
 
-class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
+class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
   # TODO: get rid of this duplication (models/repository_test.rb)
   setup do
     @remote = local_remote('exercises/echo')
@@ -149,6 +149,18 @@ class RepositoryWebhookControllerTest < ActionDispatch::IntegrationTest
   test 'webhook without commit info should update exercises' do
     post webhook_repository_path(@repository)
     assert_equal 'private', find_echo.access
+  end
+
+  test 'should email during repository creation' do
+    user = create :staff
+    judge = create :judge, :git_stubbed
+    sign_in user
+    @remote.update_file('echo/config.json', 'break config') { '(╯°□°)╯︵ ┻━┻' }
+    assert_difference 'ActionMailer::Base.deliveries.size', +1 do
+      post repositories_path, params: {repository: {name: "test", remote: @remote.path, judge_id: judge.id}}
+    end
+    email = ActionMailer::Base.deliveries.last
+    assert_equal [user.email], email.to
   end
 
   test 'github webhook with commit info should update exercises' do

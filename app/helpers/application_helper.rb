@@ -121,7 +121,7 @@ module ApplicationHelper
         'time limit exceeded' => %w[alarm wrong],
         'running' => %w[hourglass-empty default],
         'queued' => %w[hourglass-empty default],
-        'runtime error' => %w[flash-on wrong],
+        'runtime error' => %w[flash wrong],
         'compilation error' => %w[flash-circle wrong],
         'memory limit exceeded' => %w[memory wrong]
     }[submission&.status] || %w[warning warning]

@@ -20,6 +20,8 @@ default: &default
 development:
   <<: *default
   database: dodona
+  username: <%= Rails.application.credentials[:db_user] %>
+  password: <%= Rails.application.credentials[:db_password] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -52,5 +54,5 @@ production:
   <<: *default
   host: lethe.ugent.be
   database: dodona
-  username: Rails.application.credentials[:db_user]
-  password: Rails.application.credentials[:db_password]
+  username: <%= Rails.application.credentials[:db_user] %>
+  password: <%= Rails.application.credentials[:db_password] %>

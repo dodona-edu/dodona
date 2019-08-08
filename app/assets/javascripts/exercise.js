@@ -244,15 +244,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function enableSubmitButton() {
-        $("#editor-process-btn").prop("disabled", false).removeClass("busy");
-        $("#editor-process-btn .mdi").removeClass("mdi-timer-sand-empty mdi-spin");
-        $("#editor-process-btn .mdi").addClass("mdi-play");
+        $("#editor-process-btn").prop("disabled", false).removeClass("busy mdi-timer-sand-empty mdi-spin").addClass("mdi-play");
     }
 
     function disableSubmitButton() {
-        $("#editor-process-btn").prop("disabled", true).addClass("busy");
-        $("#editor-process-btn .mdi").removeClass("mdi-play");
-        $("#editor-process-btn .mdi").addClass("mdi-timer-sand-empty mdi-spin");
+        $("#editor-process-btn").prop("disabled", true).removeClass("mdi-play").addClass("busy mdi-timer-sand-empty mdi-spin");
     }
 
     function submissionSuccessful(data, userId) {

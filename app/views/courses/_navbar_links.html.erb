@@ -1,7 +1,7 @@
 <%= content_for :navbar do %>
   <%= navbar_link url: course_path(@course),
                   title: t('.show'),
-                  icon: "book",
+                  icon: 'book',
                   if: policy(@course).edit? || policy(@course).members? %>
   <%= navbar_link url: course_members_path(@course),
                   title: t('.members'),

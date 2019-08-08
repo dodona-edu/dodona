@@ -111,4 +111,5 @@
 
         dodona.initFilterIndex("<%= local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%= raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, filterCollections);
     });
+    console.log(<%=raw local_assigns.fetch(:institutions, []).map{|i| {id: i.id, name: i.name}}.to_json %>)
 </script>

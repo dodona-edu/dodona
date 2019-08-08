@@ -32,7 +32,7 @@ class Institution < ApplicationRecord
   end
 
   def self.of_course(course)
-    joins(users: :courses).where(courses: {id: course.id}).distinct
+    includes(users: :courses).where(courses: {id: course.id}).distinct
   end
 
 end

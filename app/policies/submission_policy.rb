@@ -36,7 +36,7 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def mass_rejudge?
-    user&.is_a_course_admin?
+    user&.a_course_admin?
   end
 
   def media?

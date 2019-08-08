@@ -148,7 +148,7 @@ class Exercise < ApplicationRecord
                    .map { |dir| read_dirconfig dir } # try reading their dirconfigs
                    .compact # remove nil entries
                    .push(config) # add exercise config file
-                   .reduce do |h1, h2|
+                   .reduce do |h1, h2| # reduce into single hash
       h1.deep_merge(h2) do |k, v1, v2|
         if k == 'labels'
           (v1 + v2)
@@ -156,7 +156,7 @@ class Exercise < ApplicationRecord
           v2
         end
       end
-    end # reduce into single hash
+    end
     hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
     hash
   end
@@ -165,7 +165,7 @@ class Exercise < ApplicationRecord
     hash = Pathname.new('./' + path).parent.descend # all parent directories
                    .map { |dir| read_dirconfig dir } # try reading their dirconfigs
                    .compact # remove nil entries
-                   .reduce do |h1, h2|
+                   .reduce do |h1, h2| # reduce into single hash
       h1.deep_merge(h2) do |k, v1, v2|
         if k == 'labels'
           (v1 + v2).map(&:downcase).uniq
@@ -173,7 +173,7 @@ class Exercise < ApplicationRecord
           v2
         end
       end
-    end || {} # reduce into single hash
+    end || {}
     hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
     hash
   end

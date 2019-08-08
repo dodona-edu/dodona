@@ -160,7 +160,7 @@ class User < ApplicationRecord
     zeus? || admin_of?(course)
   end
 
-  def is_a_course_admin?
+  def a_course_admin?
     admin? || administrating_courses.any?
   end
 

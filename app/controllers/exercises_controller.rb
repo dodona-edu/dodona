@@ -81,7 +81,7 @@ class ExercisesController < ApplicationController
     if labels
       labels = labels&.split(',') unless labels.is_a?(Array)
       labels = (labels + (@exercise.merged_dirconfig[:labels] || []))
-      attributes[:labels] = labels&.map(&:downcase).uniq.map { |name| Label.find_by(name: name) || Label.create(name: name) }
+      attributes[:labels] = labels&.map(&:downcase)&.uniq&.map { |name| Label.find_by(name: name) || Label.create(name: name) }
     end
 
     respond_to do |format|

@@ -25,7 +25,7 @@ Metrics/AbcSize:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
-Metric/BlockNesting:
+Metrics/BlockNesting:
   Max: 4
 Metrics/ClassLength:
   Enabled: false
@@ -59,6 +59,8 @@ Style/Documentation:
 Style/FormatStringToken:
   EnforcedStyle: template
 Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/MultilineBlockChain:
   Enabled: false
 Style/NumericPredicate:
   Enabled: false

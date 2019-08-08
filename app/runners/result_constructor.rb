@@ -161,6 +161,8 @@ class ResultConstructor
     @level = :tab
   end
 
+  # rubocop:disable Naming/VariableName
+  # This variable has to be camelCase because it is taken straight from JSON
   def close_tab(badgeCount: nil)
     check_level(:tab, 'tab closed')
     @tab[:badgeCount] = badgeCount unless badgeCount.nil?
@@ -168,6 +170,7 @@ class ResultConstructor
     @tab = nil
     @level = :judgement
   end
+  # rubocop:enable Naming/VariableName
 
   def close_judgement(accepted: nil, status: nil)
     check_level(:judgement, 'judgement closed')

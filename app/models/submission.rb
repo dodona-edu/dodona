@@ -30,7 +30,7 @@ class Submission < ApplicationRecord
   has_one :judge, through: :exercise
 
   validate :maximum_code_length, on: :create
-  validate :is_not_rate_limited, on: :create, unless: :skip_rate_limit_check?
+  validate :not_rate_limited?, on: :create, unless: :skip_rate_limit_check?
 
   after_create :evaluate_delayed, if: :evaluate?
   after_save :invalidate_caches
@@ -204,7 +204,7 @@ class Submission < ApplicationRecord
     errors.add(:code, 'too long') if code.bytesize >= 64.kilobytes
   end
 
-  def is_not_rate_limited
+  def not_rate_limited?
     return if user.nil?
 
     previous = user.submissions.most_recent.first

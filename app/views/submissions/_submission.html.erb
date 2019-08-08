@@ -2,8 +2,12 @@
   <td><%= submission_status_icon(submission) %></td>
   <% if current_user.administrating_courses.any? || current_user.admin? %>
     <td>
-      <i class="mdi mdi-filter-outline mdi-12 filter-icon"
-         data-filter="<%= submission.user.full_name %>">
+      <i class="mdi mdi-filter-outline mdi-18 filter-icon"
+         title="<%= t('.filter-submissions-by-user') %>"
+         data-filter="<%= submission.user.full_name %>"
+         data-toggle="tooltip"
+         data-placement="left"
+      >
       </i>
       <% if submission.course.nil? %>
         <%= submission.user.full_name %>
@@ -14,8 +18,12 @@
   <% end %>
   <% if !exercise %>
     <td>
-      <i class="mdi mdi-filter-outline mdi-12 filter-icon"
-         data-filter="<%= submission.exercise.name %>">
+      <i class="mdi mdi-filter-outline mdi-18 filter-icon"
+         title="<%= t('.filter-submissions-by-exercise') %>"
+         data-filter="<%= submission.exercise.name %>"
+         data-toggle="tooltip"
+         data-placement="left"
+      >
       </i>
       <% if submission.course.nil? %>
         <%= link_to submission.exercise.name, exercise_path(submission.exercise) %>

@@ -370,9 +370,9 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 function initFilterButtons(){
     
     function filter(){
-        const element = $(this);
-        const searchbar = $(QUERY_FILTER_ID);
-        searchbar.val(element.data(FILTER_DATA)); // search for value requested by user
+        const $element = $(this);
+        const $searchbar = $(QUERY_FILTER_ID);
+        $searchbar.val($element.data(FILTER_DATA)); // search for value requested by user
         window.dodona.index.doSearch();
     }
 

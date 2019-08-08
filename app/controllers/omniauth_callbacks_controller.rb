@@ -72,31 +72,29 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       handle_blacklisted_institutions!
     else
       user = User.from_email(oauth_email)
-      if user.present?
-        try_login!(user)
-      else
+      if user.blank?
         institution = create_institution
         user = User.from_institution(oauth_hash, institution)
-        try_login!(user)
       end
+      try_login!(user)
     end
   end
 
   def create_institution
     institution = Institution.from_identifier(institution_identifier)
-    if institution.blank?
-      institution = Institution.new(name: Institution::NEW_INSTITUTION_NAME,
-                                    short_name: Institution::NEW_INSTITUTION_NAME,
-                                    logo: "#{provider}.png",
-                                    provider: provider,
-                                    identifier: institution_identifier)
-      if institution.save
-        institution_created
-        institution
-      else
-        institution_creation_failed institution.errors
-        nil
-      end
+    return if institution.present?
+
+    institution = Institution.new(name: Institution::NEW_INSTITUTION_NAME,
+                                  short_name: Institution::NEW_INSTITUTION_NAME,
+                                  logo: "#{provider}.png",
+                                  provider: provider,
+                                  identifier: institution_identifier)
+    if institution.save
+      institution_created
+      institution
+    else
+      institution_creation_failed institution.errors
+      nil
     end
   end
 

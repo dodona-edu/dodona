@@ -30,12 +30,10 @@ class SubmissionsController < ApplicationController
                  else
                    [@user.full_name, user_path(@user)]
                  end
-    else
-      if @series
-        @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
-      elsif @course
-        @crumbs << [@course.name, course_path(@course)]
-      end
+    elsif @series
+      @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
+    elsif @course
+      @crumbs << [@course.name, course_path(@course)]
     end
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] if @exercise
     @crumbs << [I18n.t('submissions.index.title'), '#']

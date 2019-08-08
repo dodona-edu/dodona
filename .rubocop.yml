@@ -18,6 +18,9 @@ Layout/IndentFirstArrayElement:
 Layout/IndentFirstHashElement:
   EnforcedStyle: consistent
 
+Lint/Loop:
+  Enabled: false
+
 Metrics/AbcSize:
   Enabled: false
 Metrics/BlockLength:
@@ -40,6 +43,8 @@ Naming/HeredocDelimiterNaming:
 Naming/UncommunicativeMethodParamName:
   Enabled: false
 
+Rails/Date:
+  Enabled: false
 Rails/HelperInstanceVariable:
   Enabled: false
 Rails/OutputSafety:
@@ -50,4 +55,6 @@ Style/ClassAndModuleChildren:
 Style/Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/NumericPredicate:
   Enabled: false

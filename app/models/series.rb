@@ -67,7 +67,7 @@ class Series < ApplicationRecord
   end
 
   def indianio_support=(value)
-    value = false if value == '0' || value == 0 || value == 'false'
+    value = false if ['0', 0, 'false'].include? value
     if indianio_token.nil? && value
       generate_token :indianio_token
     elsif !value

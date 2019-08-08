@@ -316,15 +316,14 @@ class Exercise < ApplicationRecord
 
   def check_memory_limit
     return unless ok?
+    return unless merged_config.fetch('evaluation', {}).fetch('memory_limit', 0) > 500_000_000 # 500MB
 
-    if merged_config.fetch('evaluation', {}).fetch('memory_limit', 0) > 500_000_000 # 500MB
-      c = config
-      c['evaluation'] ||= {}
-      c['evaluation']['memory_limit'] = 500_000_000
-      store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " \
-          "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " \
-          'bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.')
-    end
+    c = config
+    c['evaluation'] ||= {}
+    c['evaluation']['memory_limit'] = 500_000_000
+    store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " \
+        "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " \
+        'bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.')
   end
 
   def self.convert_visibility_to_access(visibility)

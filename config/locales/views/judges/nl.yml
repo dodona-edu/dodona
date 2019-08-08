@@ -13,3 +13,4 @@ nl:
     show:
       judge: Judge
       webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> in zodat de judge op Dodona automatisch geüpdatet wordt bij elke commit:"
+      all-submissions: "Alle inzendingen voor deze judge"

@@ -44,6 +44,7 @@ class Submission < ApplicationRecord
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
+  scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
 
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }

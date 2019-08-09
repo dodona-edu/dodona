@@ -77,6 +77,7 @@ Rails.application.routes.draw do
     resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable]
 
     resources :judges do
+      resources :submissions, only: [:index]
       member do
         match 'hook', via: %i[get post], to: 'judges#hook', as: 'webhook'
       end

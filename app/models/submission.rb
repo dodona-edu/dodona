@@ -282,7 +282,7 @@ class Submission < ApplicationRecord
     submissions = submissions.where('id > ?', old.present? ? old[:latest] : 0)
     submissions = submissions.pluck(:id, :created_at)
 
-    return unless submission.any?
+    return unless submissions.any?
 
     to_merge = submissions.map { |_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}" }
                           .group_by(&:itself).transform_values(&:count)

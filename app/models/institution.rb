@@ -27,10 +27,9 @@ class Institution < ApplicationRecord
   validates :logo, :short_name, :provider, presence: true
   validates :sso_url, :slo_url, :certificate, :entity_id, presence: true, if: :saml?
 
-  scope :of_course_by_members, ->(course) {joins(users: :courses).where(courses: {id: course.id}).distinct}
-  
+  scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
+
   def self.from_identifier(identifier)
     find_by(identifier: identifier) if identifier.present?
   end
-
 end

@@ -41,16 +41,32 @@
               <% end %>
               <% if policy(:pages).toggle_demo_mode? %>
                 <% if Current.demo_mode %>
-                  <li><%= link_to t(".disable_demo_mode"), toggle_demo_mode_path, remote: true, method: "POST" %></li>
+                  <li>
+                    <%= link_to toggle_demo_mode_path, remote: true, method: "POST" do %>
+                    <i class="mdi mdi-checkbox-marked-outline mdi-18"></i><%= t(".disable_demo_mode") %>
+                    <% end %>
+                  </li>
                 <% else %>
-                  <li><%= link_to t(".enable_demo_mode"), toggle_demo_mode_path, remote: true, method: "POST" %></li>
+                  <li>
+                    <%= link_to toggle_demo_mode_path, remote: true, method: "POST" do %>
+                    <i class="mdi mdi-checkbox-blank-outline mdi-18"></i> <%= t(".enable_demo_mode") %>
+                    <% end %>
+                  </li>
                 <% end %>
               <% end %>
               <% if policy(:pages).toggle_dark_mode? %>
                 <% if session[:dark] %>
-                  <li><%= link_to t(".disable_dark_mode"), toggle_dark_mode_path, remote: true, method: "POST" %></li>
+                  <li>
+                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST" do %>
+                    <i class="mdi mdi-checkbox-marked-outline mdi-18"></i> <%= t(".disable_dark_mode") %>
+                    <% end %>
+                  </li>
                 <% else %>
-                  <li><%= link_to t(".enable_dark_mode"), toggle_dark_mode_path, remote: true, method: "POST" %></li>
+                  <li>
+                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST" do %>
+                    <i class="mdi mdi-checkbox-blank-outline mdi-18"></i> <%= t(".disable_dark_mode") %>
+                    <% end %>
+                  </li>
                 <% end %>
               <% end %>
               <li role="separator" class="divider"></li>
@@ -80,3 +96,9 @@
     </div>
   </div>
 </nav>
+<script type="text/javascript">
+    $(function () {
+        dodona.initModeButtons(<%= policy(:pages).toggle_demo_mode? =>, <%= policy(:pages).toggle_dark_mode? =>);
+    });
+</script>
+

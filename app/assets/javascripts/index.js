@@ -22,6 +22,19 @@ function setBaseUrl(_baseUrl) {
     window.dodona.index.doSearch();
 }
 
+function initModeButtons(demo_mode, darkmode){
+    let links = $(".dropdown-menu a .mdi");
+    links.each(function(index, link){
+        link.click( () => {
+            if (link.hasClass("mdi-checkbox-marked-outline")){
+                link.removeClass("mdi-checkbox-marked-outline").addClass("mdi-checkbox-blank-outline");
+            } else {
+                link.removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
+            }
+        })
+    })
+}
+
 function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections) {
     const updateAddressBar = !_baseUrl;
 

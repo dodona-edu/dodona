@@ -1,14 +1,25 @@
-/* globals flatpickr */
-import dragula from "dragula";
+/* globals dodona,flatpickr,I18n */
 
-import { showNotification } from "./notifications.js";
+import {showNotification} from "./notifications.js";
+import {initDragAndDrop} from "./drag_and_drop.js";
+
+const DRAG_AND_DROP_ARGS = {
+    table_selector: ".series-exercise-list tbody",
+    item_selector: ".series-exercise-list a.remove-exercise",
+    item_data_selector: "series_id",
+    order_selector: ".series-exercise-list a.remove-exercise",
+    order_data_selector: "exercise_id",
+    url_from_id: function(seriesId){
+        return `/series/${seriesId}/reorder_exercises.js`;
+    }
+}
 
 function initSeriesEdit() {
     function init() {
         initAddButtons();
         initTokenClickables();
         initRemoveButtons();
-        initDragAndDrop();
+        initDragAndDrop(DRAG_AND_DROP_ARGS);
         // export function
         dodona.seriesEditExercisesLoaded = () => {
             initAddButtons();
@@ -62,45 +73,6 @@ function initSeriesEdit() {
 
     function initRemoveButtons() {
         $("a.remove-exercise").click(removeExercise);
-    }
-
-    function copyWidth(clone, original, tag=undefined){
-        if(clone && original && original.getBoundingClientRect){
-            $(clone).width(original.getBoundingClientRect().width); // getBoundingClientRect.width is more accurate than jQuery-width()
-            let cloneChildren, originalChildren;
-            if(tag){
-                cloneChildren = clone.getElementsByTagName(tag);
-                originalChildren = original.getElementsByTagName(tag);
-            } else {
-                cloneChildren = clone.childNodes;
-                originalChildren = original.childNodes;
-            }
-            for(let i = 0; i < cloneChildren.length; i++){ // recursively make all children equally big
-                copyWidth(cloneChildren[i], originalChildren[i]);
-            }
-        }
-    }
-
-    function initDragAndDrop() {
-        const tableBody = $(".series-exercise-list tbody").get(0);
-        dragula([tableBody], {
-            moves: function (el, source, handle, sibling) {
-                return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
-            },
-            mirrorContainer: tableBody,
-        })
-        .on("cloned", function(clone, original, type){
-            copyWidth(clone, original, "td");
-        })
-        .on("drop", function () {
-            let seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
-            let order = $(".series-exercise-list a.remove-exercise").map(function () {
-                return $(this).data("exercise_id");
-            }).get();
-            $.post("/series/" + seriesId + "/reorder_exercises.js", {
-                order: JSON.stringify(order),
-            });
-        });
     }
 
     function removeExercise() {

@@ -52,5 +52,5 @@ production:
   <<: *default
   host: lethe.ugent.be
   database: dodona
-  username: dodona
-  password: dodona
+  username: <%= Rails.application.credentials[:db_user] %>
+  password: <%= Rails.application.credentials[:db_password] %>

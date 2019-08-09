@@ -92,7 +92,9 @@
     }
 
     &.deadline-missed .mdi-alarm-off {
-      color: @brand-danger;
+      &::before{
+        color: @brand-danger;
+      }
       background-color: @content-bg;
       position: absolute;
       top: 24px;
@@ -100,8 +102,10 @@
       border: 1px solid @content-bg;
     }
 
-    &.deadline-met .mdi-alarm {
-      color: @brand-success;
+    &.deadline-met .mdi-alarm-check {
+      &::before{
+        color: @brand-success;
+      }
       background-color: @content-bg;
       position: absolute;
       top: 24px;

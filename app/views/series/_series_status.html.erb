@@ -49,6 +49,12 @@
     <% elsif summary.started? %>
       <i class="mdi mdi-thumb-up"></i>
     <% end %>
+      <% if summary.deadline_met? && !summary.completed? %>
+        <i class="mdi mdi-alarm-check mdi-18"></i>
+      <% elsif summary.deadline_missed? %>
+        <i class="mdi mdi-alarm-off mdi-18"></i>
+      <% end %>
+      </i>
   </div>
 <% else %>
   <div class="card-title-icon skeleton">

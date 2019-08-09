@@ -64,6 +64,23 @@ function initSeriesEdit() {
         $("a.remove-exercise").click(removeExercise);
     }
 
+    function copyWidth(clone, original, tag=undefined){
+        if(clone && original && original.getBoundingClientRect){
+            $(clone).width(original.getBoundingClientRect().width); // getBoundingClientRect.width is more accurate than jQuery-width()
+            let cloneChildren, originalChildren;
+            if(tag){
+                cloneChildren = clone.getElementsByTagName(tag);
+                originalChildren = original.getElementsByTagName(tag);
+            } else {
+                cloneChildren = clone.childNodes;
+                originalChildren = original.childNodes;
+            }
+            for(let i = 0; i < cloneChildren.length; i++){ // recursively make all children equally big
+                copyWidth(cloneChildren[i], originalChildren[i]);
+            }
+        }
+    }
+
     function initDragAndDrop() {
         const tableBody = $(".series-exercise-list tbody").get(0);
         dragula([tableBody], {
@@ -71,9 +88,13 @@ function initSeriesEdit() {
                 return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
             },
             mirrorContainer: tableBody,
-        }).on("drop", function () {
-            const seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
-            const order = $(".series-exercise-list a.remove-exercise").map(function () {
+        })
+        .on("cloned", function(clone, original, type){
+            copyWidth(clone, original, "td");
+        })
+        .on("drop", function () {
+            let seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
+            let order = $(".series-exercise-list a.remove-exercise").map(function () {
                 return $(this).data("exercise_id");
             }).get();
             $.post("/series/" + seriesId + "/reorder_exercises.js", {

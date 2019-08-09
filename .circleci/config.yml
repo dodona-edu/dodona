@@ -80,7 +80,7 @@ jobs:
           command: yarn install
       - run:
           name: Run eslint
-          command: yarn lint --quiet --format junit --output-file ~/reports/eslint.xml
+          command: yarn lint --quiet --format junit --output-file ~/reports/eslint/result.xml
 
       - store_test_results:
           path: ~/reports

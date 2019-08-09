@@ -10,8 +10,7 @@
  *       shown. Default is false.
  * @return {Notification} $notification
  */
-function showNotification(content, properties) {
-    properties = properties || {};
+function showNotification(content, properties = {}) {
     const autoHide = properties.autoHide === undefined ? true : properties.autoHide;
     const loading = properties.loading === undefined ? false : properties.loading;
 

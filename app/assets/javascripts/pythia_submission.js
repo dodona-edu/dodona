@@ -1,3 +1,4 @@
+/* globals fullScreenApi */
 import { showInfoModal } from "./modal.js";
 import { logToGoogle } from "./util.js";
 
@@ -32,10 +33,9 @@ function initPythiaSubmissionShow(submissionCode) {
             $group.find(".contains-file").each(function () {
                 const content = $(this).data("files");
 
-                for (const key in content) {
-                    const value = content[key];
+                Object.values(content).forEach(value => {
                     files[value["location"]][value["name"]] = value["content"];
-                }
+                });
             });
 
             loadTutor(exerciseId, submissionCode, statements, stdin, files["inline"], files["href"]);
@@ -69,6 +69,7 @@ function initPythiaSubmissionShow(submissionCode) {
             const lines = data.split("\n");
             const maxLines = 200;
             if (lines.length > maxLines) {
+                // eslint-disable-next-line no-param-reassign
                 data = lines.slice(0, maxLines).join("\n") + "\n...";
             }
             $("#file-" + random).html(data);

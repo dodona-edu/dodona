@@ -25,6 +25,7 @@
     "d3": "readonly",
     "$": "readonly",
     "jQuery": "readonly",
-    "I18n": "readonly"
+    "I18n": "readonly",
+    "dodona": "readonly"
   }
 }

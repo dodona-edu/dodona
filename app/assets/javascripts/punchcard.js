@@ -95,22 +95,20 @@ function renderCard(data, unitSize, chart, x, y) {
 
 function applyTimezone(data, timezoneOffset) {
     const transform = {};
-    for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-            const split = key.split(", ");
-            let day = parseInt(split[0]);
-            let hour = parseInt(split[1]);
-            hour += timezoneOffset;
-            if (hour < 0) {
-                hour += 24;
-                day = (day + 6) % 7;
-            } else if (hour > 23) {
-                hour -= 24;
-                day = (day + 1) % 7;
-            }
-            transform[`${day}, ${hour}`] = data[key];
+    Object.entries(data).forEach(([key, value]) => {
+        const split = key.split(", ");
+        let day = parseInt(split[0]);
+        let hour = parseInt(split[1]);
+        hour += timezoneOffset;
+        if (hour < 0) {
+            hour += 24;
+            day = (day + 6) % 7;
+        } else if (hour > 23) {
+            hour -= 24;
+            day = (day + 1) % 7;
         }
-    }
+        transform[`${day}, ${hour}`] = value;
+    });
     return transform;
 }
 

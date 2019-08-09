@@ -1,4 +1,3 @@
-/* globals I18n */
 import { showNotification } from "./notifications";
 
 function initFavoriteButtons() {

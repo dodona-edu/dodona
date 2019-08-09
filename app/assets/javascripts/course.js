@@ -132,36 +132,7 @@ function initCourseShow() {
     function init() {
         $("body").scrollspy({ target: ".series-sidebar" });
         $(window).scroll(scroll);
-        gotoHashSeries();
-        window.addEventListener("hashchange", gotoHashSeries);
-        scroll(); // Also load series
-    }
-
-    function gotoHashSeries() {
-        const hash = window.location.hash;
-
-        if ($(hash).length > 0) {
-            // The current series is already loaded
-            // and we should have scrolled to it
-            return;
-        }
-
-        const hashSplit = hash.split("-");
-        const seriesId = +hashSplit[1];
-
-        if (hashSplit[0] === "#series" && !isNaN(seriesId)) {
-            let loading = true;
-            $(".load-more-series").button("loading");
-            $.get(`?format=js&offset=${seriesShown}&series=${seriesId}`)
-                .done(() => {
-                    seriesShown = $(".series").length;
-                    $(hash)[0].scrollIntoView();
-                })
-                .always(() => {
-                    loading = false;
-                    $(".load-more-series").button("reset");
-                });
-        }
+        scroll(); // Load series visible on pageload
     }
 
     function scroll() {

@@ -1,4 +1,4 @@
-/* globals dodona,flatpickr */
+/* globals flatpickr */
 import dragula from "dragula";
 
 import { showNotification } from "./notifications.js";

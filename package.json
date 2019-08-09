@@ -1,6 +1,9 @@
 {
   "name": "dodona",
   "private": true,
+  "scripts": {
+    "lint": "eslint app"
+  },
   "dependencies": {
     "@rails/webpacker": "4.0.7",
     "@types/d3": "^5.7.2",

@@ -1,5 +1,5 @@
 <div class="table-scroll-wrapper">
-  <table class="table table-index table-resource">
+  <table class="table member-table table-index table-resource">
     <thead>
     <tr>
       <th class='status-icon'></th>
@@ -23,11 +23,22 @@
             <i class="mdi mdi-alert mdi-18" title='<%= t "users.users_table.no_institution" %>'></i>
           <% end %>
         </td>
+        <td>
         <% if course_membership.pending? || course_membership.unsubscribed? %>
-          <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
+          <%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %>
         <% else %>
-          <td><%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %></td>
+          <%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %>
         <% end %>
+        <div class="text-muted ellipsis-overflow">
+          <small>
+              <%= render partial: 'course_members/member_progress_chart', locals: { 
+                exercises_total: @course.exercises_count,
+                exercises_tried: user.attempted_exercises({ course: @course }),
+                exercises_correct: user.correct_exercises({ course: @course })
+                } %>
+          </small>
+        </div>
+        </td>
         <td><%= user.email %></td>
         <td><%= user.institution&.name %></td>
         <td class='text-right'>

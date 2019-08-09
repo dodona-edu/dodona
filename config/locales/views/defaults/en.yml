@@ -13,6 +13,10 @@ en:
       impersonating_user: You are currently impersonating
       switch_back: Switch back
       your_account: to your account.
+    demo_mode:
+      demo_mode_enabled: Your are currently in demo mode.
+      switch_back: Turn off
+      demo_mode_off: demo mode.
     messages:
       warning: Warning
       danger: Oh snap

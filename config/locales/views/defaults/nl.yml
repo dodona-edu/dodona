@@ -13,6 +13,10 @@ nl:
       impersonating_user: Je speelt momenteel
       switch_back: Keer terug
       your_account: naar jouw account.
+    demo_mode:
+      demo_mode_enabled: Je bent momenteel in demo mode.
+      switch_back: Schakel
+      demo_mode_off: demo mode uit.
     messages:
       warning: Opgepast
       danger: Oh nee

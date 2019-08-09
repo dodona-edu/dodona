@@ -10,10 +10,10 @@
  */
 function showNotification(content, properties) {
     var properties = properties || {};
-    let autoHide = properties.autoHide === undefined ? true : properties.autoHide;
-    let loading = properties.loading === undefined ? false : properties.loading;
+    const autoHide = properties.autoHide === undefined ? true : properties.autoHide;
+    const loading = properties.loading === undefined ? false : properties.loading;
 
-    let $notification = getNotificationHTML(content);
+    const $notification = getNotificationHTML(content);
     $(".notifications").prepend($notification);
 
     if (autoHide) {
@@ -43,4 +43,4 @@ function showNotification(content, properties) {
     }
 }
 
-export {showNotification};
+export { showNotification };

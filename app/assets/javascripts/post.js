@@ -3,7 +3,7 @@
 function initPostForm() {
     function init() {
         if (I18n.locale === "nl") {
-            let Dutch = {
+            const Dutch = {
                 weekdays: {
                     shorthand: ["zo", "ma", "di", "wo", "do", "vr", "za"],
                     longhand: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"],
@@ -30,4 +30,4 @@ function initPostForm() {
     init();
 }
 
-export {initPostForm};
+export { initPostForm };

@@ -1,5 +1,5 @@
-import {showInfoModal} from "./modal.js";
-import {logToGoogle} from "./util.js";
+import { showInfoModal } from "./modal.js";
+import { logToGoogle } from "./util.js";
 
 function initPythiaSubmissionShow(submissionCode) {
     function init() {
@@ -15,7 +15,7 @@ function initPythiaSubmissionShow(submissionCode) {
     function initTutorLinks() {
         // add disabled to tutorlinks that are not valid
         $(".tutorlink").each(function () {
-            let $group = $(this).parents(".group");
+            const $group = $(this).parents(".group");
             if (!($group.data("statements") || $group.data("stdin"))) {
                 $(this).remove();
             }
@@ -23,17 +23,17 @@ function initPythiaSubmissionShow(submissionCode) {
 
         $(".tutorlink").click(function () {
             logToGoogle("tutor", "start", document.title);
-            let exercise_id = $(".feedback-table").data("exercise_id");
-            let $group = $(this).parents(".group");
-            let stdin = $group.data("stdin").slice(0, -1);
-            let statements = $group.data("statements");
-            let files = {"inline": {}, "href": {}};
+            const exercise_id = $(".feedback-table").data("exercise_id");
+            const $group = $(this).parents(".group");
+            const stdin = $group.data("stdin").slice(0, -1);
+            const statements = $group.data("statements");
+            const files = { "inline": {}, "href": {} };
 
             $group.find(".contains-file").each(function () {
-                let content = $(this).data("files");
+                const content = $(this).data("files");
 
-                for (let key in content) {
-                    let value = content[key];
+                for (const key in content) {
+                    const value = content[key];
                     files[value["location"]][value["name"]] = value["content"];
                 }
             });
@@ -45,10 +45,10 @@ function initPythiaSubmissionShow(submissionCode) {
 
     function initFileViewers() {
         $("a.file-link").click(function () {
-            let fileName = $(this).text();
-            let $tc = $(this).parents(".testcase.contains-file");
+            const fileName = $(this).text();
+            const $tc = $(this).parents(".testcase.contains-file");
             if ($tc.length === 0) return;
-            let file = $tc.data("files")[fileName];
+            const file = $tc.data("files")[fileName];
             if (file.location === "inline") {
                 showInlineFile(fileName, file.content);
             } else if (file.location === "href") {
@@ -63,11 +63,11 @@ function initPythiaSubmissionShow(submissionCode) {
     }
 
     function showRealFile(name, path) {
-        let random = Math.floor((Math.random() * 10000) + 1);
+        const random = Math.floor((Math.random() * 10000) + 1);
         showInfoModal(name + " <a href='" + path + "' title='Download' download><i class='material-icons'>save_alt</i></a>", "<div class='code' id='file-" + random + "'>Loading...</div>");
         $.get(path, function (data) {
-            let lines = data.split("\n");
-            let maxLines = 200;
+            const lines = data.split("\n");
+            const maxLines = 200;
             if (lines.length > maxLines) {
                 data = lines.slice(0, maxLines).join("\n") + "\n...";
             }
@@ -79,7 +79,7 @@ function initPythiaSubmissionShow(submissionCode) {
         $(document).bind(fullScreenApi.fullScreenEventName, resizeFullScreen);
 
         $("#tutor #fullscreen-button").click(function () {
-            let elem = $("#tutor").get(0);
+            const elem = $("#tutor").get(0);
             if (fullScreenApi.isFullScreen()) {
                 fullScreenApi.cancelFullScreen(elem);
             } else {
@@ -89,7 +89,7 @@ function initPythiaSubmissionShow(submissionCode) {
     }
 
     function resizeFullScreen() {
-        let $tutor = $("#tutor");
+        const $tutor = $("#tutor");
         if (!fullScreenApi.isFullScreen()) {
             $tutor.removeClass("fullscreen");
             $("#tutorviz").height($("#tutorviz").data("standardheight"));
@@ -100,11 +100,11 @@ function initPythiaSubmissionShow(submissionCode) {
     }
 
     function loadTutor(exercise_id, studentCode, statements, stdin, inlineFiles, hrefFiles) {
-        let lines = studentCode.split("\n");
+        const lines = studentCode.split("\n");
         // find and remove main
         let i = 0;
         let remove = false;
-        let source_array = [];
+        const source_array = [];
         while (i < lines.length) {
             if (remove && !(lines[i].match(/^\s+.*/g))) {
                 remove = false;
@@ -119,7 +119,7 @@ function initPythiaSubmissionShow(submissionCode) {
         }
         source_array.push(statements);
 
-        let source_code = source_array.join("\n");
+        const source_code = source_array.join("\n");
 
         $.ajax({
             type: "POST",
@@ -141,12 +141,12 @@ function initPythiaSubmissionShow(submissionCode) {
         });
 
         const createTutor = function (codeTrace) {
-            showInfoModal("Python Tutor", "<div id=\"tutorcontent\"><div class=\"progress\"><div class=\"progress-bar progress-bar-striped progress-bar-info active\" role=\"progressbar\" style=\"width: 100%\">Loading</div></div></div>", {"allowFullscreen": true});
+            showInfoModal("Python Tutor", "<div id=\"tutorcontent\"><div class=\"progress\"><div class=\"progress-bar progress-bar-striped progress-bar-info active\" role=\"progressbar\" style=\"width: 100%\">Loading</div></div></div>", { "allowFullscreen": true });
 
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html("<iframe id=\"tutorviz\" width=\"100%\" frameBorder=\"0\" src=\"/tutorviz/tutorviz.html\"></iframe>");
                 $("#tutorviz").on("load", function () {
-                    let content = $("#tutorviz").get(0).contentWindow;
+                    const content = $("#tutorviz").get(0).contentWindow;
                     content.load(codeTrace);
                     $("#tutorviz").data("standardheight", content.document.body.scrollHeight);
                     $("#tutorviz").height($("#tutorviz").data("standardheight"));
@@ -155,8 +155,8 @@ function initPythiaSubmissionShow(submissionCode) {
 
             $("#tutor #info-modal").on("hidden.bs.modal", function () {
                 if (fullScreenApi.isFullScreen()) {
-                    let $tutor = $("#tutor");
-                    let elem = $tutor.get(0);
+                    const $tutor = $("#tutor");
+                    const elem = $tutor.get(0);
                     fullScreenApi.cancelFullScreen(elem);
                 }
             });
@@ -166,4 +166,4 @@ function initPythiaSubmissionShow(submissionCode) {
     init();
 }
 
-export {initPythiaSubmissionShow};
+export { initPythiaSubmissionShow };

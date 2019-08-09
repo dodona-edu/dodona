@@ -22,15 +22,15 @@ window.$ = jQuery;
 
 import "polyfills.js";
 import "drawer";
-import {showNotification} from "notifications.js";
-import {checkTimeZone, initClipboard, initCSRF, initTooltips} from "util.js";
+import { showNotification } from "notifications.js";
+import { checkTimeZone, initClipboard, initCSRF, initTooltips } from "util.js";
 
 
 import * as firebase from "firebase/app";
 import "firebase/performance";
 
 if (window.location.hostname === "dodona.ugent.be") {
-    let firebaseConfig = {
+    const firebaseConfig = {
         apiKey: "AIzaSyA9thyrC9D8q5CdnZG3p25BDTQQ9AeFndI",
         authDomain: "dodona-cea23.firebaseapp.com",
         databaseURL: "https://dodona-cea23.firebaseio.com",
@@ -51,7 +51,7 @@ initCSRF();
 $(initTooltips);
 
 // Use a global dodona object to prevent polluting the global na
-let dodona = window.dodona || {};
+const dodona = window.dodona || {};
 dodona.checkTimeZone = checkTimeZone;
 dodona.showNotification = showNotification;
 dodona.initTooltips = initTooltips;

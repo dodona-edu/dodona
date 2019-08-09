@@ -1,7 +1,7 @@
 /* globals dodona,flatpickr,I18n */
 import dragula from "dragula";
 
-import {showNotification} from "./notifications.js";
+import { showNotification } from "./notifications.js";
 
 function initSeriesEdit() {
     function init() {
@@ -72,8 +72,8 @@ function initSeriesEdit() {
             },
             mirrorContainer: tableBody,
         }).on("drop", function () {
-            let seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
-            let order = $(".series-exercise-list a.remove-exercise").map(function () {
+            const seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
+            const order = $(".series-exercise-list a.remove-exercise").map(function () {
                 return $(this).data("exercise_id");
             }).get();
             $.post("/series/" + seriesId + "/reorder_exercises.js", {
@@ -83,9 +83,9 @@ function initSeriesEdit() {
     }
 
     function removeExercise() {
-        let exerciseId = $(this).data("exercise_id");
-        let seriesId = $(this).data("series_id");
-        let $row = $(this).parents("tr").addClass("pending");
+        const exerciseId = $(this).data("exercise_id");
+        const seriesId = $(this).data("series_id");
+        const $row = $(this).parents("tr").addClass("pending");
         $.post("/series/" + seriesId + "/remove_exercise.js", {
             exercise_id: exerciseId,
         })
@@ -133,7 +133,7 @@ function initSeriesEdit() {
 function initSeriesForm() {
     function init() {
         if (I18n.locale === "nl") {
-            let Dutch = {
+            const Dutch = {
                 weekdays: {
                     shorthand: ["zo", "ma", "di", "wo", "do", "vr", "za"],
                     longhand: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"],
@@ -160,4 +160,4 @@ function initSeriesForm() {
     init();
 }
 
-export {initSeriesEdit, initSeriesForm};
+export { initSeriesEdit, initSeriesForm };

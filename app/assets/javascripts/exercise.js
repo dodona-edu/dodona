@@ -1,9 +1,9 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,I18n,initStrip */
-import {showNotification} from "./notifications.js";
+import { showNotification } from "./notifications.js";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
-    for (let label of labels) {
+    for (const label of labels) {
         colorMap[label.name] = label.color;
         label.value = label.name;
     }
@@ -12,7 +12,7 @@ function initLabelsEdit(labels, undeletableLabels) {
         local: labels,
         identify: d => d.id,
         datumTokenizer: d => {
-            let result = Bloodhound.tokenizers.whitespace(d.name);
+            const result = Bloodhound.tokenizers.whitespace(d.name);
             $.each(result, (i, val) => {
                 for (let i = 1; i < val.length; i++) {
                     result.push(val.substr(i, val.length));
@@ -58,11 +58,11 @@ function initLightboxes() {
     initStrip();
 
     let index = 1;
-    let images = [];
+    const images = [];
     $(".exercise-description img, a.dodona-lightbox").each(function () {
-        let imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
-        let altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
-        let imageObject = {
+        const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
+        const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
+        const imageObject = {
             url: imagesrc,
             caption: altText,
         };
@@ -127,7 +127,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $("#editor-process-btn").click(function () {
             if (!loggedIn) return;
             // test submitted source code
-            let source = editor.getValue();
+            const source = editor.getValue();
             disableSubmitButton();
             submitSolution(source)
                 .done(data => submissionSuccessful(data, $("#editor-process-btn").data("user_id")))
@@ -135,7 +135,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         $("#submission-copy-btn").click(function () {
-            let submissionSource = ace.edit("editor-result").getValue();
+            const submissionSource = ace.edit("editor-result").getValue();
             editor.setValue(submissionSource, 1);
             $("#exercise-handin-link").tab("show");
         });
@@ -214,8 +214,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     function feedbackTableLoaded(userId, exerciseId, courseId) {
         $("a.load-submission").attr("data-remote", "true");
         if (lastSubmission) {
-            let $submissionRow = $("#submission_" + lastSubmission);
-            let status = $submissionRow.data("status");
+            const $submissionRow = $("#submission_" + lastSubmission);
+            const status = $submissionRow.data("status");
             if (status === "queued" || status === "running") {
                 setTimeout(function () {
                     lastTimeout = (lastTimeout || 0) + 1000;
@@ -270,8 +270,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             message = I18n.t("js.submission-network");
         } else if (request.status === 422) {
             try {
-                let response = JSON.parse(request.responseText);
-                let errors = response.errors;
+                const response = JSON.parse(request.responseText);
+                const errors = response.errors;
                 if (errors.code && errors.code[0] === "emoji found") {
                     message = I18n.t("js.submission-emoji");
                 } else if (errors.submission && errors.submission[0] === "rate limited") {
@@ -317,4 +317,4 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-export {initExerciseShow, initExercisesReadonly, initLabelsEdit};
+export { initExerciseShow, initExercisesReadonly, initLabelsEdit };

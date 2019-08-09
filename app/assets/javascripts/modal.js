@@ -15,4 +15,4 @@ function showInfoModal(title, content, options) {
     $("#info-modal").modal("show");
 }
 
-export {showInfoModal};
+export { showInfoModal };

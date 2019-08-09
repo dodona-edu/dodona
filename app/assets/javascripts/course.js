@@ -1,5 +1,5 @@
 /* globals ga, I18n, ace, MathJax, initStrip, Strip */
-import {setBaseUrl} from "./index.js";
+import { setBaseUrl } from "./index.js";
 import dragula from "dragula";
 
 function loadUsers(_baseUrl, _status) {
@@ -91,7 +91,7 @@ const SKELETON_TABLE_SELECTOR = ".exercise-table-skeleton";
 
 class Series {
     static findAll(cards_selector = ".series.card") {
-        let $cards = $(cards_selector);
+        const $cards = $(cards_selector);
         return $.map($cards, card => new Series(card));
     }
 
@@ -128,10 +128,10 @@ class Series {
 }
 
 function initCourseShow() {
-    let series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
+    const series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
 
     function init() {
-        $("body").scrollspy({target: ".series-sidebar"});
+        $("body").scrollspy({ target: ".series-sidebar" });
         $(window).scroll(scroll);
         gotoHashSeries();
         window.addEventListener("hashchange", gotoHashSeries);
@@ -233,8 +233,8 @@ function initSeriesReorder() {
             },
             mirrorContainer: tableBody,
         }).on("drop", () => {
-            let courseId = $(".course-series-list").data("course_id");
-            let order = $(".course-series-list tbody .series-name").map(function () {
+            const courseId = $(".course-series-list").data("course_id");
+            const order = $(".course-series-list tbody .series-name").map(function () {
                 return $(this).data("series_id");
             }).get();
             $.post(`/courses/${courseId}/reorder_series.js`, {
@@ -329,4 +329,4 @@ function initCourseNew() {
     init();
 }
 
-export {initSeriesReorder, initCourseForm, initCourseNew, initCourseShow, initCourseMembers, loadUsers};
+export { initSeriesReorder, initCourseForm, initCourseNew, initCourseShow, initCourseMembers, loadUsers };

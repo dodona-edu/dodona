@@ -1,5 +1,5 @@
 /* globals ace */
-import {logToGoogle} from "util.js";
+import { logToGoogle } from "util.js";
 
 function initSubmissionShow() {
     let currentMarkerId;
@@ -72,7 +72,7 @@ function initSubmissionShow() {
 }
 
 function loadResultEditor(programmingLanguage, annotations) {
-    let editor = ace.edit("editor-result");
+    const editor = ace.edit("editor-result");
     if (window.dodona.darkMode) {
         editor.setTheme("ace/theme/twilight");
     }
@@ -96,4 +96,4 @@ function loadResultEditor(programmingLanguage, annotations) {
     }
 }
 
-export {initSubmissionShow, loadResultEditor};
+export { initSubmissionShow, loadResultEditor };

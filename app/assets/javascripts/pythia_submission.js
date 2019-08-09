@@ -23,7 +23,7 @@ function initPythiaSubmissionShow(submissionCode) {
 
         $(".tutorlink").click(function () {
             logToGoogle("tutor", "start", document.title);
-            const exercise_id = $(".feedback-table").data("exercise_id");
+            const exerciseId = $(".feedback-table").data("exercise_id");
             const $group = $(this).parents(".group");
             const stdin = $group.data("stdin").slice(0, -1);
             const statements = $group.data("statements");
@@ -38,7 +38,7 @@ function initPythiaSubmissionShow(submissionCode) {
                 }
             });
 
-            loadTutor(exercise_id, submissionCode, statements, stdin, files["inline"], files["href"]);
+            loadTutor(exerciseId, submissionCode, statements, stdin, files["inline"], files["href"]);
             return false;
         });
     }
@@ -99,12 +99,12 @@ function initPythiaSubmissionShow(submissionCode) {
         }
     }
 
-    function loadTutor(exercise_id, studentCode, statements, stdin, inlineFiles, hrefFiles) {
+    function loadTutor(exerciseId, studentCode, statements, stdin, inlineFiles, hrefFiles) {
         const lines = studentCode.split("\n");
         // find and remove main
         let i = 0;
         let remove = false;
-        const source_array = [];
+        const sourceArray = [];
         while (i < lines.length) {
             if (remove && !(lines[i].match(/^\s+.*/g))) {
                 remove = false;
@@ -113,21 +113,21 @@ function initPythiaSubmissionShow(submissionCode) {
                 remove = true;
             }
             if (!remove) {
-                source_array.push(lines[i]);
+                sourceArray.push(lines[i]);
             }
             i += 1;
         }
-        source_array.push(statements);
+        sourceArray.push(statements);
 
-        const source_code = source_array.join("\n");
+        const sourceCode = sourceArray.join("\n");
 
         $.ajax({
             type: "POST",
             url: "https://pandora.ugent.be/tutor/cgi-bin/build_trace.py",
             dataType: "json",
             data: {
-                exercise_id: exercise_id,
-                code: source_code,
+                exercise_id: exerciseId,
+                code: sourceCode,
                 input: JSON.stringify(stdin.split("\n")),
                 inlineFiles: JSON.stringify(inlineFiles),
                 hrefFiles: JSON.stringify(hrefFiles),

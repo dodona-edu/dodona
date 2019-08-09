@@ -1,4 +1,4 @@
-/* global flatpickr,I18n */
+/* global flatpickr */
 
 function initPostForm() {
     function init() {

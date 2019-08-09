@@ -24,6 +24,7 @@
   "globals": {
     "d3": "readonly",
     "$": "readonly",
+    "jQuery": "readonly",
     "I18n": "readonly"
   }
 }

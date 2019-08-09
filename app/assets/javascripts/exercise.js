@@ -1,4 +1,4 @@
-/* globals Bloodhound,Strip,MathJax,ace,ga,I18n,initStrip */
+/* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
 import { showNotification } from "./notifications.js";
 
 function initLabelsEdit(labels, undeletableLabels) {
@@ -88,6 +88,7 @@ function centerImagesAndTables() {
 function initMathJax() {
     // configure MathJax if loaded
     if (typeof MathJax !== "undefined") {
+        // eslint-disable-next-line new-cap
         MathJax.Hub.Config({
             tex2jax: {
                 inlineMath: [

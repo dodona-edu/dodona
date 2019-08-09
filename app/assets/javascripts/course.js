@@ -1,4 +1,3 @@
-/* globals ga, I18n, ace, MathJax, initStrip, Strip */
 import { setBaseUrl } from "./index.js";
 import dragula from "dragula";
 

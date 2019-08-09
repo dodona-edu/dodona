@@ -1,3 +1,5 @@
+/* globals ga */
+
 import ClipboardJS from "clipboard";
 
 function initClipboard() {
@@ -43,8 +45,8 @@ function updateURLParameter(url, param, paramVal) {
     let i;
 
     if (additionalURL) {
-        var tmpAnchor = additionalURL.split("#");
-        var TheParams = tmpAnchor[0];
+        const tmpAnchor = additionalURL.split("#");
+        const TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
         if (TheAnchor) {
             additionalURL = TheParams;
@@ -57,8 +59,8 @@ function updateURLParameter(url, param, paramVal) {
             }
         }
     } else {
-        var tmpAnchor = baseURL.split("#");
-        var TheParams = tmpAnchor[0];
+        const tmpAnchor = baseURL.split("#");
+        const TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
 
         if (TheParams) {

@@ -1,15 +1,17 @@
+/* globals requestAnimFrame */
 /**
  * Shows a notification in the bottom left corner
  *
- * @param <String> content The string to show
- * @param <Boolean> properties.autoHide Whether to automatically hide the
+ * @param {string} content The string to show
+ * @param {object} properties The properties
+ * @param {boolean} properties.autoHide Whether to automatically hide the
  *       notification. Default is true.
- * @param <Boolean> properties.loading Whether a loading indicator should be
+ * @param {boolean} properties.loading Whether a loading indicator should be
  *       shown. Default is false.
- * @return <Notification> $notification
+ * @return {Notification} $notification
  */
 function showNotification(content, properties) {
-    var properties = properties || {};
+    properties = properties || {};
     const autoHide = properties.autoHide === undefined ? true : properties.autoHide;
     const loading = properties.loading === undefined ? false : properties.loading;
 

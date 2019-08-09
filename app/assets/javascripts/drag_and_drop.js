@@ -2,7 +2,7 @@ import dragula from "dragula";
 
 function copyWidth(clone, original, tag=undefined){
     if(clone && original && original.getBoundingClientRect){
-        $(clone).width(original.getBoundingClientRect().width); // getBoundingClientRect.width is more accurate than jQuery-width()
+        $(clone).width($(original).width());
         let cloneChildren, originalChildren;
         if(tag){
             cloneChildren = clone.getElementsByTagName(tag);

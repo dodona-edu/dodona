@@ -86,7 +86,7 @@
                            }
                        ],
                        course_labels: @course_labels,
-                       institutions: Institution.all
+                       institutions: Institution.of_course_by_members(@course)
                    } %>
         <div id="users-table-wrapper">
           <%= render partial: 'members_table',

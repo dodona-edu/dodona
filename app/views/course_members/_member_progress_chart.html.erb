@@ -16,6 +16,6 @@
     end
 %>
 
-<svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='member-progress-chart' data-html="true" data-toggle='tooltip' title="<%= t('exercises.index.progress_chart_info_tried', count: exercises_tried) %><br/><%= t("exercises.index.progress_chart_info_correct", count: exercises_correct) %>">
+<svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='member-progress-chart' data-html="true" data-toggle='tooltip' title="<%= t('course_members.members_table.member_progress_chart_info_tried', count: exercises_tried) %><br/><%= t("course_members.members_table.member_progress_chart_info_correct", count: exercises_correct) %>">
     <%=raw parts.join("") %>
 </svg>

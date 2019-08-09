@@ -12,6 +12,12 @@ en:
       labels_delimiter: "Use a comma to delimit labels"
     members_table:
       labels: "Labels"
+      member_progress_chart_info_tried:
+        one: "Started one exercise of this course."
+        other: "Started %{count} exercises of this course."
+      member_progress_chart_info_correct:
+        one: "Solved one exercise."
+        other: "Solved %{count} exercises."
     index:
       close: "Close"
       upload: "Upload changes"

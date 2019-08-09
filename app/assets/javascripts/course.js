@@ -1,6 +1,6 @@
 /* globals ga, I18n, ace, MathJax, initStrip, Strip */
 import {setBaseUrl} from "./index.js";
-import dragula from "dragula";
+import {initDragAndDrop} from "./drag_and_drop.js";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
@@ -220,30 +220,19 @@ function initCourseForm() {
     init();
 }
 
+const DRAG_AND_DROP_ARGS = {
+    table_selector: ".course-series-list tbody",
+    item_selector: ".course-series-list",
+    item_data_selector: "course_id",
+    order_selector: ".course-series-list tbody .series-name",
+    order_data_selector: "series_id",
+    url_from_id: function(courseId){
+        return `/courses/${courseId}/reorder_series.js`
+    }
+}
+
 function initSeriesReorder() {
-    function init() {
-        initDragAndDrop();
-    }
-
-    function initDragAndDrop() {
-        const tableBody = $(".course-series-list tbody").get(0);
-        dragula([tableBody], {
-            moves: function (el, source, handle, sibling) {
-                return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
-            },
-            mirrorContainer: tableBody,
-        }).on("drop", () => {
-            let courseId = $(".course-series-list").data("course_id");
-            let order = $(".course-series-list tbody .series-name").map(function () {
-                return $(this).data("series_id");
-            }).get();
-            $.post(`/courses/${courseId}/reorder_series.js`, {
-                order: JSON.stringify(order),
-            });
-        });
-    }
-
-    init();
+    initDragAndDrop(DRAG_AND_DROP_ARGS);
 }
 
 function initCourseNew() {

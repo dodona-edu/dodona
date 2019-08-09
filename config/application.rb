@@ -4,20 +4,6 @@ require 'rails/all'
 
 require 'English'
 
-# If no keyfile exists, copy the example file
-# (with fake values) and generate a new base secret.
-
-keyfile_example = 'config/keys.yml.example'
-keyfile = 'config/keys.yml'
-
-unless File.exist? keyfile
-  example = YAML.load_file keyfile_example
-  example['secret_key_base'] = SecureRandom.hex(64)
-  File.write(keyfile, example.to_yaml)
-end
-
-SECRET_KEYS = YAML.load_file keyfile
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

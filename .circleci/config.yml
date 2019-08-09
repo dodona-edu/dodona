@@ -75,6 +75,12 @@ jobs:
       - run:
           name: Run RuboCop
           command: rubocop
+      - run:
+          name: Install eslint
+          command: yarn install
+      - run:
+          name: Run eslint
+          command: yarn lint
 
 workflows:
   version: 2

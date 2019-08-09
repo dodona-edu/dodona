@@ -6,6 +6,7 @@
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th><%= User.human_attribute_name("institution") %></th>
+      <th><%= t("courses.user_stats.exercise_count")%></th>
       <th class='text-right'><%= t(".labels") %></th>
       <th></th>
     </tr>
@@ -28,18 +29,16 @@
         <% else %>
           <%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %>
         <% end %>
-        <div class="text-muted ellipsis-overflow">
-          <small>
-              <%= render partial: 'course_members/member_progress_chart', locals: { 
-                exercises_total: @course.exercises_count,
-                exercises_tried: user.attempted_exercises({ course: @course }),
-                exercises_correct: user.correct_exercises({ course: @course })
-                } %>
-          </small>
-        </div>
         </td>
         <td><%= user.email %></td>
         <td><%= user.institution&.name %></td>
+        <td class="hidden-xs">
+          <%= render partial: 'course_members/member_progress_chart', locals: { 
+            exercises_total: @course.exercises_count,
+            exercises_tried: user.attempted_exercises({ course: @course }),
+            exercises_correct: user.correct_exercises({ course: @course })
+            } %>
+        </td>
         <td class='text-right course-membership-labels'>
           <% course_membership.course_labels.each do |label| %>
             <span class="label label-default accent-orange"><%= label.name %></span>

@@ -6,7 +6,6 @@
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th><%= User.human_attribute_name("institution") %></th>
-      <th class='text-right'><%= t("users.index.progress") %></th>
       <th class='text-right'><%= t(".labels") %></th>
       <th></th>
     </tr>
@@ -41,9 +40,6 @@
         </td>
         <td><%= user.email %></td>
         <td><%= user.institution&.name %></td>
-        <td class='text-right'>
-          <%= link_to "#{user.correct_exercises(course: @course)}/#{user.attempted_exercises(course: @course)}", course_submissions_path(@course, user_id: user.id) %>
-        </td>
         <td class='text-right course-membership-labels'>
           <% course_membership.course_labels.each do |label| %>
             <span class="label label-default accent-orange"><%= label.name %></span>

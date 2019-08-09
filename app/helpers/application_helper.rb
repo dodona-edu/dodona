@@ -69,12 +69,12 @@ module ApplicationHelper
     options[:'data-placement'] = 'bottom'
 
     locals = {
-                title: options.delete(:title),
-                icon: options.delete(:icon),
-                custom_icon_name: options.delete(:custom_icon),
-                url: url,
-                link_options: options
-              }
+      title: options.delete(:title),
+      icon: options.delete(:icon),
+      custom_icon_name: options.delete(:custom_icon),
+      url: url,
+      link_options: options
+    }
 
     render partial: 'navbar_link', locals: locals
   end
@@ -115,16 +115,16 @@ module ApplicationHelper
 
   def submission_status_icon(submission, size = 18)
     icon, color = {
-                    nil => %w[remove default],
-                    'correct' => %w[check correct],
-                    'wrong' => %w[close wrong],
-                    'time limit exceeded' => %w[alarm wrong],
-                    'running' => %w[hourglass-empty default],
-                    'queued' => %w[hourglass-empty default],
-                    'runtime error' => %w[flash wrong],
-                    'compilation error' => %w[flash-circle wrong],
-                    'memory limit exceeded' => %w[memory wrong]
-                    }[submission&.status] || %w[alert warning]
+      nil => %w[remove default],
+      'correct' => %w[check correct],
+      'wrong' => %w[close wrong],
+      'time limit exceeded' => %w[alarm wrong],
+      'running' => %w[hourglass-empty default],
+      'queued' => %w[hourglass-empty default],
+      'runtime error' => %w[flash wrong],
+      'compilation error' => %w[flash-circle wrong],
+      'memory limit exceeded' => %w[memory wrong]
+    }[submission&.status] || %w[alert warning]
     "<i class=\"mdi mdi-#{icon} mdi-#{size} colored-#{color}\"></i>".html_safe
   end
 

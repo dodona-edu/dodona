@@ -1,4 +1,4 @@
-import {initSeriesReorder, initCourseMembers, initCourseForm, initCourseNew, initCourseShow, loadUsers} from "course.js";
+import { initSeriesReorder, initCourseMembers, initCourseForm, initCourseNew, initCourseShow, loadUsers } from "course.js";
 
 window.dodona.initSeriesReorder = initSeriesReorder;
 window.dodona.initCourseForm = initCourseForm;

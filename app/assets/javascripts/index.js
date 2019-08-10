@@ -1,6 +1,6 @@
-/* globals I18n,Bloodhound,dodona */
-import {showNotification} from "./notifications.js";
-import {delay, getArrayURLParameter, getURLParameter, updateArrayURLParameter, updateURLParameter} from "./util.js";
+/* globals Bloodhound */
+import { showNotification } from "./notifications.js";
+import { delay, getArrayURLParameter, getURLParameter, updateArrayURLParameter, updateURLParameter } from "./util.js";
 import fetch from "isomorphic-fetch";
 
 const FILTER_PARAM = "filter";
@@ -19,7 +19,7 @@ function setBaseUrl(_baseUrl) {
 }
 
 function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections) {
-    let updateAddressBar = !_baseUrl;
+    const updateAddressBar = !_baseUrl;
 
     function init() {
         initTokens();
@@ -41,24 +41,19 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         let url = updateURLParameter(baseUrl || window.location.href, FILTER_PARAM, query);
 
         const tokens = $(TOKENS_FILTER_ID).tokenfield("getTokens");
-        for (let type in filterCollections) {
-            if (filterCollections.hasOwnProperty(type)) {
-                if (filterCollections[type].multi) {
-                    url = updateArrayURLParameter(url, filterCollections[type].param, tokens
-                        .filter(el => el.type === type)
-                        .map(e => filterCollections[type].paramVal(e)));
-                } else {
-                    const elem = tokens.filter(e => e.type === type)[0];
-                    url = updateURLParameter(url, filterCollections[type].param, elem ? filterCollections[type].paramVal(elem) : "");
-                }
+        Object.entries(filterCollections).forEach(([type, value]) => {
+            if (value.multi) {
+                url = updateArrayURLParameter(url, value.param, tokens
+                    .filter(el => el.type === type)
+                    .map(e => value.paramVal(e)));
+            } else {
+                const elem = tokens.filter(e => e.type === type)[0];
+                url = updateURLParameter(url, value.param, elem ? value.paramVal(elem) : "");
             }
-        }
-
-        for (let key in extraParams) {
-            if (extraParams.hasOwnProperty(key)) {
-                url = updateURLParameter(url, key, extraParams[key]);
-            }
-        }
+        });
+        Object.entries(extraParams).forEach(([key, value]) => {
+            url = updateURLParameter(url, key, value);
+        });
 
         return url;
     }
@@ -97,10 +92,10 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     function initFilter(updateAddressBar, _baseUrl, eager, _filterCollections) {
         window.dodona.index.baseUrl = _baseUrl || window.location.href;
         const filterCollections = _filterCollections || {};
-        let $queryFilter = $(QUERY_FILTER_ID);
+        const $queryFilter = $(QUERY_FILTER_ID);
         window.dodona.index.doSearch = () => search(updateAddressBar, window.dodona.index.baseUrl, $queryFilter.typeahead("val"), filterCollections);
         $queryFilter.keyup(() => delay(window.dodona.index.doSearch, 300));
-        let param = getURLParameter(FILTER_PARAM);
+        const param = getURLParameter(FILTER_PARAM);
         if (param !== "") {
             $queryFilter.typeahead("val", param);
         }
@@ -112,7 +107,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 
     function performAction(action) {
         if (action.confirm === undefined || window.confirm(action.confirm)) {
-            let url = addParametersToUrl(action.action, $(QUERY_FILTER_ID).val(), filterCollections);
+            const url = addParametersToUrl(action.action, $(QUERY_FILTER_ID).val(), filterCollections);
             $.post(url, {
                 format: "json",
             }, function (data) {
@@ -134,25 +129,21 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     }
 
     function initActions() {
-        let $actions = $(".table-toolbar-tools .actions");
-        let searchOptions = actions.filter(action => action.search);
-        let searchActions = actions.filter(action => action.action || action.js);
+        const $actions = $(".table-toolbar-tools .actions");
+        const searchOptions = actions.filter(action => action.search);
+        const searchActions = actions.filter(action => action.action || action.js);
 
         function performSearch() {
             const extraParams = {};
             searchOptions.forEach((opt, id) => {
                 if ($(`a.action[data-search_opt_id="${id}"]`).parent().hasClass("active")) {
-                    for (let key in opt.search) {
-                        if (opt.search.hasOwnProperty(key)) {
-                            extraParams[key] = opt.search[key];
-                        }
-                    }
+                    Object.entries(opt.search).forEach(([key, value]) => {
+                        extraParams[key] = value;
+                    });
                 } else {
-                    for (let key in opt.search) {
-                        if (opt.search.hasOwnProperty(key)) {
-                            extraParams[key] = null;
-                        }
-                    }
+                    Object.keys(opt.search).forEach(key => {
+                        extraParams[key] = null;
+                    });
                 }
             });
             search(updateAddressBar, window.dodona.index.baseUrl, $(QUERY_FILTER_ID).val(), filterCollections, extraParams);
@@ -162,7 +153,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         if (searchOptions.length > 0) {
             $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.filter-options") + "</li>");
             searchOptions.forEach(function (action, id) {
-                let $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""} data-search_opt_id="${id}"><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
+                const $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""} data-search_opt_id="${id}"><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (urlContainsSearchOpt(action)) {
@@ -182,7 +173,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         if (searchActions.length > 0) {
             $actions.find("ul").append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
             searchActions.forEach(function (action) {
-                let $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""}><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
+                const $link = $(`<a class="action" href='#' ${action.type ? "data-type=" + action.type : ""}><i class='material-icons md-18'>${action.icon}</i>${action.text}</a>`);
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (action.action) {
@@ -253,29 +244,27 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             minLength: 0,
         }];
 
-        for (let type in filterCollections) {
-            if (filterCollections.hasOwnProperty(type)) {
-                for (let elem of filterCollections[type].data) {
-                    elem.type = type;
-                    elem.value = elem.name;
-                }
-
-                const engine = new Bloodhound({
-                    local: filterCollections[type].data,
-                    identify: d => d.id,
-                    datumTokenizer: d => customWhitespaceTokenizer(d.name),
-                    queryTokenizer: Bloodhound.tokenizers.whitespace,
-                });
-
-                typeAheadOpts.push({
-                    source: engine,
-                    display: d => d.name,
-                    templates: {
-                        header: `<strong class="tt-header">${I18n.t(`js.${type}`)}</strong>`,
-                    },
-                });
+        Object.entries(filterCollections).forEach(([type, value]) => {
+            for (const elem of value.data) {
+                elem.type = type;
+                elem.value = elem.name;
             }
-        }
+
+            const engine = new Bloodhound({
+                local: value.data,
+                identify: d => d.id,
+                datumTokenizer: d => customWhitespaceTokenizer(d.name),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+            });
+
+            typeAheadOpts.push({
+                source: engine,
+                display: d => d.name,
+                templates: {
+                    header: `<strong class="tt-header">${I18n.t(`js.${type}`)}</strong>`,
+                },
+            });
+        });
 
         $field.on("tokenfield:createtoken", validateLabel);
         $field.on("tokenfield:createdtoken", enableLabel);
@@ -306,21 +295,19 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         doSearch = () => {
         };
         const allTokens = [];
-        for (let type in filterCollections) {
-            if (filterCollections.hasOwnProperty(type)) {
-                if (filterCollections[type].multi) {
-                    const enabledElements = getArrayURLParameter(filterCollections[type].param);
-                    const mapped = filterCollections[type].data.filter(el => enabledElements.includes(`${filterCollections[type].paramVal(el)}`));
-                    allTokens.push(...mapped);
-                } else {
-                    const enabledElement = getURLParameter(filterCollections[type].param);
-                    if (enabledElement) {
-                        const mapped = filterCollections[type].data.filter(el => `${filterCollections[type].paramVal(el)}` === enabledElement)[0];
-                        allTokens.push(mapped);
-                    }
+        Object.values(filterCollections).forEach(value => {
+            if (value.multi) {
+                const enabledElements = getArrayURLParameter(value.param);
+                const mapped = value.data.filter(el => enabledElements.includes(`${value.paramVal(el)}`));
+                allTokens.push(...mapped);
+            } else {
+                const enabledElement = getURLParameter(value.param);
+                if (enabledElement) {
+                    const mapped = value.data.filter(el => `${value.paramVal(el)}` === enabledElement)[0];
+                    allTokens.push(mapped);
                 }
             }
-        }
+        });
         $field.tokenfield("setTokens", allTokens);
         doSearch = temp;
     }
@@ -328,4 +315,4 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     init();
 }
 
-export {initFilterIndex, setBaseUrl};
+export { initFilterIndex, setBaseUrl };

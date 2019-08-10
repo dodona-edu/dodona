@@ -1,3 +1,3 @@
-import {initFilterIndex} from "index.js";
+import { initFilterIndex } from "index.js";
 
 window.dodona.initFilterIndex = initFilterIndex;

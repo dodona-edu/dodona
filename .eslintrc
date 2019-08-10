@@ -1,36 +1,31 @@
 {
-    "parserOptions": {
-        "ecmaVersion": 6,
-            "sourceType": "module"
-    },
-        "extends": ["eslint:recommended", "google"],
-        //"plugins": ["import"],
-        "rules": {
-            "arrow-parens": ["error", "as-needed"],
-            "no-underscore-dangle": "off",
-            "no-use-before-define": "off",
-            "no-confusing-arrow": "off",
-            "no-unused-vars": "off",
-            "no-plusplus": "off",
-            "no-else-return": "off",
-            "one-var": "off",
-            "require-jsdoc": "off",
-            "valid-jsdoc": "off",
-            "space-before-function-paren": ["error", {"anonymous": "always", "named": "never", "asyncArrow": "always"}],
-            "no-param-reassign": ["error", { "props": false }],
-            "indent": ["error", 4],
-            "max-len": "off",
-            "quotes": ["error", "double"],
-            "new-cap": "off",
-            "no-invalid-this": "off",
-            "no-console": "off",
-        },
-        "env": {
-            "browser": true
-        },
-        "globals": {
-            "d3": false,
-            "$": false,
-            "Promise": true
-        }
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "extends": ["eslint:recommended", "google"],
+  "rules": {
+    "arrow-parens": ["error", "as-needed"],
+    "indent": ["error", 4],
+    "max-len": ["warn", { "code": 100 }],
+    "no-invalid-this": "warn",
+    "no-param-reassign": ["error", { "props": false }],
+    "object-curly-spacing": ["error", "always"],
+    "quotes": ["error", "double"],
+    "require-jsdoc": "off",
+    "space-before-function-paren": [
+      "error",
+      { "anonymous": "always", "named": "never", "asyncArrow": "always" }
+    ]
+  },
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "d3": "readonly",
+    "$": "readonly",
+    "jQuery": "readonly",
+    "I18n": "readonly",
+    "dodona": "readonly"
+  }
 }

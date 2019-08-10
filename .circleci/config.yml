@@ -75,6 +75,17 @@ jobs:
       - run:
           name: Run RuboCop
           command: rubocop
+      - run:
+          name: Install eslint
+          command: yarn install
+      - run:
+          name: Run eslint
+          command: yarn lint --quiet --format junit --output-file ~/reports/eslint/result.xml
+
+      - store_test_results:
+          path: ~/reports
+      - store_artifacts:
+          path: ~/reports
 
 workflows:
   version: 2

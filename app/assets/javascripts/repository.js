@@ -146,4 +146,4 @@ function initCoursesEdit() {
     init();
 }
 
-export {initAdminsEdit, initCoursesEdit};
+export { initAdminsEdit, initCoursesEdit };

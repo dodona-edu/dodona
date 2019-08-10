@@ -1,5 +1,4 @@
-/* globals I18n */
-import {showNotification} from "./notifications";
+import { showNotification } from "./notifications";
 
 function initFavoriteButtons() {
     function init() {
@@ -16,7 +15,7 @@ function initFavoriteButtons() {
     }
 
     function favoriteCourse(element) {
-        let courseId = element.data("course_id");
+        const courseId = element.data("course_id");
         $.post(`/courses/${courseId}/favorite.js`)
             .done(() => {
                 showNotification(I18n.t("js.favorite-course-succeeded"));
@@ -42,7 +41,7 @@ function initFavoriteButtons() {
     }
 
     function unfavoriteCourse(element) {
-        let courseId = element.data("course_id");
+        const courseId = element.data("course_id");
         $.post(`/courses/${courseId}/unfavorite.js`)
             .done(() => {
                 showNotification(I18n.t("js.unfavorite-course-succeeded"));
@@ -64,4 +63,4 @@ function initFavoriteButtons() {
     init();
 }
 
-export {initFavoriteButtons};
+export { initFavoriteButtons };

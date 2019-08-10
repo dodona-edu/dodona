@@ -1,6 +1,8 @@
 en:
   layouts:
     navbar:
+      demo_mode: "Demo mode"
+      dark_mode: "Dark mode"
       disable_demo_mode: "Disable demo mode"
       enable_demo_mode: "Enable demo mode"
       disable_dark_mode: "Disable dark mode"
@@ -14,9 +16,8 @@ en:
       switch_back: Switch back
       your_account: to your account.
     demo_mode:
-      demo_mode_enabled: Your are currently in demo mode.
-      switch_back: Turn off
-      demo_mode_off: demo mode.
+      demo_mode_enabled: Demo mode enabled
+      info:  Dodona now conceals all real names.
     messages:
       warning: Warning
       danger: Oh snap

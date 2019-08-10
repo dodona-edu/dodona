@@ -44,10 +44,10 @@ function initFavoriteButtons() {
         $.post(`/courses/${courseId}/unfavorite.js`)
             .done(() => {
                 showNotification(I18n.t("js.unfavorite-course-succeeded"));
-                const elements = $(`[data-course_id="${courseId}"]`);
-                element.removeClass("favorited mdi-heart").addClass("mdi-heart-outline");
-                elements.attr("data-original-title", I18n.t("js.favorite-course-do"));
-                elements.tooltip("hide");
+                const $elements = $(`[data-course_id="${courseId}"]`);
+                $elements.removeClass("favorited mdi-heart").addClass("mdi-heart-outline");
+                $elements.attr("data-original-title", I18n.t("js.favorite-course-do"));
+                $elements.tooltip("hide");
                 $(`.favorites-row [data-course_id="${courseId}"]`)
                     .parents(".course.card")
                     .parent()

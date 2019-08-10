@@ -126,9 +126,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             );
             $.post(
                 url,
-                {
-                    format: "json",
-                },
+                { format: "json" },
                 function (data) {
                     showNotification(data.message);
                     if (data.js) {
@@ -267,8 +265,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                     .filter(el => el.type !== e.attrs.type || el.name === e.attrs.name)
                     .filter(
                         (el, i, arr) =>
-                            arr.map(el2 => `${el2.type}${el2.id}`).indexOf(`${el.type}${el.id}`) ===
-                            i
+                            i === arr.map(el2 => `${el2.type}${el2.id}`).indexOf(`${el.type}${el.id}`)
                     );
                 if (newTokens.length !== tokens.length) {
                     $field.tokenfield("setTokens", newTokens);

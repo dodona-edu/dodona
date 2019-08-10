@@ -44,11 +44,11 @@
         <p>
           <% if submission.course.nil? %>
             <%= link_to exercise_submissions_path(submission.exercise), class: 'btn-icon pull-right' do %>
-              <i class="material-icons md-18">chevron_right</i>
+              <i class="mdi mdi-chevron-right mdi-18"></i>
             <% end %>
           <% else %>
             <%= link_to course_exercise_submissions_path(submission.course, submission.exercise), class: 'btn-icon pull-right' do %>
-              <i class="material-icons md-18">chevron_right</i>
+              <i class="mdi mdi-chevron-right mdi-18"></i>
             <% end %>
           <% end %>
           <span class='pull-left'><%= submission_status_icon(submission) %></span>

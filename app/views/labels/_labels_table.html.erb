@@ -20,12 +20,12 @@
         <td>
           <% if policy(Label).edit? %>
             <%= link_to edit_label_path(label), class: "btn btn-sm btn-default" do %>
-              <i class="material-icons md-18">edit</i>
+              <i class="mdi mdi-pencil mdi-18"></i>
             <% end %>
           <% end %>
           <% if policy(Label).destroy? %>
             <%= link_to label, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
-              <i class="material-icons md-18">delete</i>
+              <i class="mdi mdi-delete mdi-18"></i>
             <% end %>
           <% end %>
         </td>

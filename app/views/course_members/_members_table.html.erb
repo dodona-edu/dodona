@@ -17,10 +17,10 @@
       <tr>
         <td>
           <% if course_membership.course_admin? %>
-            <i class="material-icons md-18" title='<%= t "users.users_table.course_admin" %>'>school</i>
+            <i class="mdi mdi-school course-mdi-icon mdi-18" title='<%= t "users.users_table.course_admin" %>'></i>
           <% end %>
           <% if user.username.blank? %>
-            <i class="material-icons md-18" title='<%= t "users.users_table.no_institution" %>'>warning</i>
+            <i class="mdi mdi-alert mdi-18" title='<%= t "users.users_table.no_institution" %>'></i>
           <% end %>
         </td>
         <% if course_membership.pending? || course_membership.unsubscribed? %>
@@ -43,12 +43,12 @@
                      locals: {course: @course, user: user, membership_status: course_membership.status} %>
           <% if policy(user).impersonate? %>
             <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
-              <i class="material-icons md-18">person</i>
+              <i class="mdi mdi-account mdi-18"></i>
             <% end %>
           <% end %>
           <% if policy(user).edit? %>
             <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
-              <i class="material-icons md-18">edit</i>
+              <i class="mdi mdi-pencil mdi-18"></i>
             <% end %>
           <% end %>
         </td>

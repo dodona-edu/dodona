@@ -71,7 +71,6 @@ module ApplicationHelper
     locals = {
       title: options.delete(:title),
       icon: options.delete(:icon),
-      mdi_icon: options.delete(:mdi_icon),
       custom_icon_name: options.delete(:custom_icon),
       url: url,
       link_options: options
@@ -101,7 +100,7 @@ module ApplicationHelper
                type: 'button',
                title: t('js.copy-to-clipboard'),
                data: { clipboard_target: selector } do
-      tag.i(class: 'material-icons md-18') { 'assignment' }
+      tag.i(class: 'mdi mdi-clipboard-text mdi-18')
     end
   end
 
@@ -120,13 +119,13 @@ module ApplicationHelper
       'correct' => %w[check correct],
       'wrong' => %w[close wrong],
       'time limit exceeded' => %w[alarm wrong],
-      'running' => %w[hourglass_empty default],
-      'queued' => %w[hourglass_empty default],
-      'runtime error' => %w[flash_on wrong],
-      'compilation error' => %w[offline_bolt wrong],
+      'running' => %w[hourglass-empty default],
+      'queued' => %w[hourglass-empty default],
+      'runtime error' => %w[flash wrong],
+      'compilation error' => %w[flash-circle wrong],
       'memory limit exceeded' => %w[memory wrong]
-    }[submission&.status] || %w[warning warning]
-    "<i class=\"material-icons md-#{size} colored-#{color}\">#{icon}</i>".html_safe
+    }[submission&.status] || %w[alert warning]
+    "<i class=\"mdi mdi-#{icon} mdi-#{size} colored-#{color}\"></i>".html_safe
   end
 
   def options_for_enum(object, enum)

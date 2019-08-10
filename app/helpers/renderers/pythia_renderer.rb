@@ -69,7 +69,7 @@ class PythiaRenderer < FeedbackTableRenderer
                    "data-stdin": (g[:data][:stdin]).to_s) do
         @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
           @builder.div(class: 'tutor-strip-icon') do
-            @builder.i('launch', class: 'material-icons md-18')
+            @builder.i('', class: 'mdi mdi-launch mdi-18')
           end
         end
         if g[:description]
@@ -117,10 +117,10 @@ class PythiaRenderer < FeedbackTableRenderer
             @builder.div(class: 'modal-header') do
               @builder.div(class: 'icons') do
                 @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-xs') do
-                  @builder.i('fullscreen', class: 'material-icons md-18')
+                  @builder.i('', class: 'mdi mdi-fullscreen mdi-18')
                 end
                 @builder.button(type: 'button', class: 'btn btn-link btn-xs', "data-dismiss": 'modal') do
-                  @builder.i('close', class: 'material-icons md-18')
+                  @builder.i('', class: 'mdi mdi-close mdi-18')
                 end
               end
               @builder.h4(class: 'modal-title')

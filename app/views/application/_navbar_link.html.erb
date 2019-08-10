@@ -1,9 +1,7 @@
 <li class="action">
   <%= link_to url, link_options.merge(title: title) do %>
     <% if defined?(icon) && icon.present? %>
-      <i class='material-icons md-24 material-icons-faaf'><%= icon %></i>
-    <% elsif defined?(mdi_icon) && mdi_icon.present? %>
-      <i class='mdi mdi-24 mdi-<%= mdi_icon %>'></i>
+      <i class='mdi mdi-24 mdi-<%= icon %>'></i>
     <% elsif defined?(custom_icon_name) %>
       <%= custom_icon custom_icon_name %>
     <% end %>

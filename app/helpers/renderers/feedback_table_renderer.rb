@@ -133,14 +133,10 @@ class FeedbackTableRenderer
             end
             @builder.div(class: 'btn-group btn-toggle') do
               @builder.button(class: 'btn btn-secondary active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-                @builder.i(class: 'material-icons md-18') do
-                  @builder << 'visibility'
-                end
+                @builder.i('', class: 'mdi mdi-eye mdi-18')
               end
               @builder.button(class: 'btn btn-secondary ', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-                @builder.i(class: 'material-icons md-18') do
-                  @builder << 'visibility_off'
-                end
+                @builder.i('', class: 'mdi mdi-eye-off mdi-18')
               end
             end
           end
@@ -354,22 +350,22 @@ class FeedbackTableRenderer
   end
 
   def icon_correct
-    @builder.i('done', class: 'material-icons md-18')
+    @builder.i('', class: 'mdi mdi-check mdi-18')
   end
 
   def icon_wrong
-    @builder.i('close', class: 'material-icons md-18')
+    @builder.i('', class: 'mdi-close mdi mdi-18')
   end
 
   def icon_warning
-    @builder.i('warning', class: 'material-icons md-18')
+    @builder.i('', class: 'mdi mdi-alert mdi-18')
   end
 
   def icon_error
-    @builder.i('error', class: 'material-icons md-18')
+    @builder.i('', class: 'mdi mdi-alert-circle mdi-18')
   end
 
   def icon_info
-    @builder.i('info', class: 'material-icons md-18')
+    @builder.i('', class: 'mdi mdi-alert-circle mdi-18')
   end
 end

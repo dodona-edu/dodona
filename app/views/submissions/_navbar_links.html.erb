@@ -5,12 +5,12 @@
                   if: policy(@submission).evaluate? %>
   <%= navbar_link url: download_submission_path(@submission),
                   title: 'Download',
-                  icon: 'save_alt',
+                  icon: 'download',
                   target: '_blank',
                   download: '',
                   if: policy(@submission).download? %>
   <%= navbar_link url: edit_submission_path(@submission),
                   title: t('submissions.show.edit'),
-                  icon: 'edit',
+                  icon: 'pencil',
                   if: policy(@submission).create? %>
 <% end %>

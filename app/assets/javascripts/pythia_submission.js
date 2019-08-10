@@ -28,7 +28,7 @@ function initPythiaSubmissionShow(submissionCode) {
             const $group = $(this).parents(".group");
             const stdin = $group.data("stdin").slice(0, -1);
             const statements = $group.data("statements");
-            const files = { "inline": {}, "href": {} };
+            const files = { inline: {}, href: {} };
 
             $group.find(".contains-file").each(function () {
                 const content = $(this).data("files");
@@ -38,7 +38,14 @@ function initPythiaSubmissionShow(submissionCode) {
                 });
             });
 
-            loadTutor(exerciseId, submissionCode, statements, stdin, files["inline"], files["href"]);
+            loadTutor(
+                exerciseId,
+                submissionCode,
+                statements,
+                stdin,
+                files["inline"],
+                files["href"]
+            );
             return false;
         });
     }
@@ -63,8 +70,13 @@ function initPythiaSubmissionShow(submissionCode) {
     }
 
     function showRealFile(name, path) {
-        const random = Math.floor((Math.random() * 10000) + 1);
-        showInfoModal(name + " <a href='" + path + "' title='Download' download><i class='material-icons'>save_alt</i></a>", "<div class='code' id='file-" + random + "'>Loading...</div>");
+        const random = Math.floor(Math.random() * 10000 + 1);
+        showInfoModal(
+            name +
+            " <a href='" + path +
+            "' title='Download' download><i class='mdi mdi-download'></i></a>",
+            "<div class='code' id='file-" + random + "'>Loading...</div>"
+        );
         $.get(path, function (data) {
             const lines = data.split("\n");
             const maxLines = 200;
@@ -107,7 +119,7 @@ function initPythiaSubmissionShow(submissionCode) {
         let remove = false;
         const sourceArray = [];
         while (i < lines.length) {
-            if (remove && !(lines[i].match(/^\s+.*/g))) {
+            if (remove && !lines[i].match(/^\s+.*/g)) {
                 remove = false;
             }
             if (lines[i].match(/if\s+__name__\s*==\s*(['"])__main__\s*\1:\s*/g)) {
@@ -137,15 +149,27 @@ function initPythiaSubmissionShow(submissionCode) {
                 createTutor(data);
             },
             error: function (data) {
-                $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" + I18n.t("js.tutor-failed") + "</div>").insertBefore(".feedback-table").show("fast");
+                $(
+                    "<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" +
+                    I18n.t("js.tutor-failed") +
+                    "</div>"
+                )
+                    .insertBefore(".feedback-table")
+                    .show("fast");
             },
         });
 
         const createTutor = function (codeTrace) {
-            showInfoModal("Python Tutor", "<div id=\"tutorcontent\"><div class=\"progress\"><div class=\"progress-bar progress-bar-striped progress-bar-info active\" role=\"progressbar\" style=\"width: 100%\">Loading</div></div></div>", { "allowFullscreen": true });
+            showInfoModal(
+                "Python Tutor",
+                "<div id=\"tutorcontent\"><div class=\"progress\"><div class=\"progress-bar progress-bar-striped progress-bar-info active\" role=\"progressbar\" style=\"width: 100%\">Loading</div></div></div>",
+                { allowFullscreen: true }
+            );
 
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
-                $("#tutorcontent").html("<iframe id=\"tutorviz\" width=\"100%\" frameBorder=\"0\" src=\"/tutorviz/tutorviz.html\"></iframe>");
+                $("#tutorcontent").html(
+                    "<iframe id=\"tutorviz\" width=\"100%\" frameBorder=\"0\" src=\"/tutorviz/tutorviz.html\"></iframe>"
+                );
                 $("#tutorviz").on("load", function () {
                     const content = $("#tutorviz").get(0).contentWindow;
                     content.load(codeTrace);

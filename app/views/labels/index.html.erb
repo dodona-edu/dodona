@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(Label).new? %>
           <div class="card-title-fab">
-            <%= render 'application/fab_link', url: new_label_path, icon: 'add' %>
+            <%= render 'application/fab_link', url: new_label_path, icon: 'plus' %>
           </div>
         <% end %>
       </div>

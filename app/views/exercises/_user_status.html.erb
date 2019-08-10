@@ -10,7 +10,7 @@
                   class: 'btn btn-icon',
                   'data-toggle': 'tooltip',
                   'data-placement': 'right' do %>
-        <i class="material-icons colored-info md-18">info</i>
+        <i class="mdi mdi-information colored-info mdi-18"></i>
       <% end %>
     <% end %>
   <% else %>
@@ -22,14 +22,14 @@
                   title: t('exercises.exercise.wrong_after_deadline', deadline: l(summary.deadline, format: :long)),
                   'data-toggle': 'tooltip',
                   'data-placement': 'right' do %>
-        <i class="material-icons colored-info md-18">info</i>
+        <i class="mdi mdi-information colored-info mdi-18"></i>
       <% end %>
     <% elsif summary.accepted_submission_exists? %>
       <%= link_to summary.accepted_submission,
                   title: t('series.show.best_is_not_last'),
                   'data-toggle': 'tooltip',
                   'data-placement': 'right' do %>
-        <i class="material-icons colored-warning md-18">warning</i>
+        <i class="mdi mdi-alert colored-warning mdi-18"></i>
       <% end %>
     <% end %>
   <% end %>

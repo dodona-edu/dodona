@@ -1,5 +1,5 @@
 /* globals Bloodhound */
-import { Notification } from "./notifications.js";
+import { Notification } from "./notification";
 import {
     delay,
     getArrayURLParameter,

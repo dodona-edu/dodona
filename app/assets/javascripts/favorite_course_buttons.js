@@ -1,4 +1,4 @@
-import { Notification } from "./notifications";
+import { Notification } from "./notification";
 
 function initFavoriteButtons() {
     function init() {

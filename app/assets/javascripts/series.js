@@ -1,6 +1,6 @@
 /* globals flatpickr */
 
-import { Notification } from "./notifications.js";
+import { Notification } from "./notification";
 import { initDragAndDrop } from "./drag_and_drop.js";
 
 const DRAG_AND_DROP_ARGS = {

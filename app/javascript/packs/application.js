@@ -22,7 +22,7 @@ window.$ = jQuery;
 
 import "polyfills.js";
 import { Drawer } from "drawer";
-import { Notification } from "notifications.js";
+import { Notification } from "notification";
 import { checkTimeZone, initClipboard, initCSRF, initTooltips } from "util.js";
 
 

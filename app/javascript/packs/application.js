@@ -21,7 +21,7 @@ window.jquery = jQuery;
 window.$ = jQuery;
 
 import "polyfills.js";
-import "drawer";
+import { Drawer } from "drawer";
 import { showNotification } from "notifications.js";
 import { checkTimeZone, initClipboard, initCSRF, initTooltips } from "util.js";
 
@@ -44,6 +44,8 @@ if (window.location.hostname === "dodona.ugent.be") {
 }
 // Initialize clipboard.js
 initClipboard();
+
+$(() => new Drawer());
 
 // Adds the CSRF token to each ajax request
 initCSRF();

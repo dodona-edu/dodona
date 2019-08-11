@@ -1,35 +1,25 @@
-import * as jQuery from "jquery";
-
-const $ = jQuery;
-
-export default class Drawer {
-    $drawer: JQuery<HTMLElement>;
-    $handle: JQuery<HTMLElement>;
-    $toggle: JQuery<HTMLElement>;
-    $background: JQuery<HTMLElement>;
+export class Drawer {
+    drawer: Element;
 
     constructor(toggleSelector = ".drawer-toggle",
                 drawerSelector = "#drawer",
-                handleSelector = ".drawer-handle",
                 backgroundSelector = ".drawer-background") {
 
-        this.$drawer = $(drawerSelector);
-        this.$handle = $(handleSelector);
-        this.$toggle = $(toggleSelector);
-        this.$background = $(backgroundSelector);
+        this.drawer = document.querySelector(drawerSelector);
 
-        this.$toggle.on('click', () => this.toggle());
-        this.$handle.on('click', () => this.toggle());
-        this.$background.on('click', () => this.hide());
+        document
+          .querySelector(toggleSelector)
+          .addEventListener("click", () => this.toggle());
+        document
+          .querySelector(backgroundSelector)
+          .addEventListener("click", () => this.hide());
     }
 
     toggle() {
-        this.$drawer.toggleClass("active");
+        this.drawer.classList.toggle("active");
     }
 
     hide() {
-        this.$drawer.removeClass("active");
+        this.drawer.classList.remove("active");
     }
 }
-
-$(() => new Drawer());

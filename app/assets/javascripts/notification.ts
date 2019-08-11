@@ -1,26 +1,12 @@
-interface NotificationProperties {
-    autoHide: boolean;
-    loading: boolean;
-}
-
 /**
- * Shows a notification in the bottom left corner
+ * Shows a notification in the bottom left corner. By default, hides it after 3 seconds.
  */
 export class Notification {
 
-    content: string;
-    autoHide: boolean;
-    loading: boolean;
-    notification: Element;
+    readonly notification: Element;
 
-    constructor(content: string, properties: NotificationProperties = { autoHide: true, loading: false }) {
-        this.content = content;
-
-        this.autoHide = properties.autoHide === undefined ? true : properties.autoHide;
-        this.loading = properties.loading === undefined ? false : properties.loading;
-
+    constructor(readonly content: string, readonly autoHide = true, readonly loading = false) {
         this.notification = this.generateNotificationHTML(this.content, this.loading);
-
         this.show();
 
         if (this.autoHide) {

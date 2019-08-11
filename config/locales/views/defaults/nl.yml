@@ -16,8 +16,9 @@ nl:
       switch_back: Keer terug
       your_account: naar jouw account.
     demo_mode:
-      demo_mode_enabled: Demo modus staat aan
-      info: Dodona verbergt nu alle echte namen. 
+      demo_mode_enabled: Demo modus ingeschakeld
+      info: in demo modus verbergt Dodona de echte namen van alle gebruikers.
+      switch_back: Demo modus uitschakelen. 
     messages:
       warning: Opgepast
       danger: Oh nee

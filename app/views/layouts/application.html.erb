@@ -82,8 +82,9 @@
       <% end %>
       <% if user_signed_in? && Current.demo_mode %>
         <div class='alert alert-info'>
-          <%= link_to(t("layout.demo_mode.demo_mode_enabled"), toggle_demo_mode_path, remote: true, method: "POST") %>: 
+          <b><%= t("layout.demo_mode.demo_mode_enabled") %>:</b>
           <%= t("layout.demo_mode.info") %>
+          <%= link_to(t("layout.demo_mode.switch_back"), toggle_demo_mode_path, remote: true, method: "POST") %>
         </div>
       <% end %>
     </div>

@@ -1,6 +1,6 @@
 /* globals flatpickr */
 
-import { showNotification } from "./notifications.js";
+import { Notification } from "./notifications.js";
 import { initDragAndDrop } from "./drag_and_drop.js";
 
 const DRAG_AND_DROP_ARGS = {
@@ -92,14 +92,14 @@ function initSeriesEdit() {
     }
 
     function exerciseAdded($row, $addButton) {
-        showNotification(I18n.t("js.exercise-added-success"));
+        new Notification(I18n.t("js.exercise-added-success"));
         $row.find("a.remove-exercise").click(removeExercise);
         $row.removeClass("pending");
         $addButton.addClass("hidden");
     }
 
     function addingExerciseFailed($row) {
-        showNotification(I18n.t("js.exercise-added-failed"));
+        new Notification(I18n.t("js.exercise-added-failed"));
         $row.addClass("new").removeClass("pending");
         setTimeout(function () {
             $row.remove();
@@ -111,13 +111,13 @@ function initSeriesEdit() {
         setTimeout(function () {
             $row.remove();
         }, 500);
-        showNotification(I18n.t("js.exercise-removed-success"));
+        new Notification(I18n.t("js.exercise-removed-success"));
         $(`a.add-exercise[data-exercise_id="${$row.find("a.remove-exercise").data("exercise_id")}"]`).removeClass("hidden");
     }
 
     function removingExerciseFailed($row) {
         $row.removeClass("pending");
-        showNotification(I18n.t("js.exercise-removed-failed"));
+        new Notification(I18n.t("js.exercise-removed-failed"));
     }
 
     init();

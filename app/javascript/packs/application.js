@@ -22,7 +22,7 @@ window.$ = jQuery;
 
 import "polyfills.js";
 import { Drawer } from "drawer";
-import { showNotification } from "notifications.js";
+import { Notification } from "notifications.js";
 import { checkTimeZone, initClipboard, initCSRF, initTooltips } from "util.js";
 
 
@@ -55,6 +55,6 @@ $(initTooltips);
 // Use a global dodona object to prevent polluting the global na
 const dodona = window.dodona || {};
 dodona.checkTimeZone = checkTimeZone;
-dodona.showNotification = showNotification;
+dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 window.dodona = dodona;

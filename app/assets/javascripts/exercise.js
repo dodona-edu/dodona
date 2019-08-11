@@ -1,5 +1,5 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
-import { showNotification } from "./notifications.js";
+import { Notification } from "./notifications.js";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -237,7 +237,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     $.get(`/submissions/${lastSubmission}.js`);
                 }
                 setTimeout(enableSubmitButton, 100);
-                showNotification(I18n.t("js.submission-processed"));
+                new Notification(I18n.t("js.submission-processed"));
                 lastSubmission = null;
             }
         }
@@ -253,7 +253,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function submissionSuccessful(data, userId) {
         lastSubmission = data.id;
-        showNotification(I18n.t("js.submission-saved"));
+        new Notification(I18n.t("js.submission-saved"));
         ga("send", "pageview");
         let url = `/submissions.js?user_id=${userId}&exercise_id=${data.exercise_id}`;
         if (data.course_id) {

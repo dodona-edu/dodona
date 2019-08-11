@@ -9,38 +9,43 @@
  *       shown. Default is false.
  * @return {Notification} $notification
  */
-function showNotification(content, properties = {}) {
-    const autoHide = properties.autoHide === undefined ? true : properties.autoHide;
-    const loading = properties.loading === undefined ? false : properties.loading;
+export class Notification {
+    constructor(content, properties = {}) {
+        this.content = content;
 
-    const $notification = getNotificationHTML(content);
-    $(".notifications").prepend($notification);
+        this.autoHide = properties.autoHide === undefined ? true : properties.autoHide;
+        this.loading = properties.loading === undefined ? false : properties.loading;
 
-    if (autoHide) {
-        setTimeout(hide, 3000);
+        this.$notification = this.generateNotificationHTML(this.content, this.loading);
+
+        this.show();
+
+        if (this.autoHide) {
+            setTimeout(() => {
+                this.hide();
+            }, 3000);
+        }
     }
-    if (loading) {
-        $notification.append("<div class='spinner'></div>");
+
+    show() {
+        $(".notifications").prepend(this.$notification);
+        window.requestAnimationFrame(() => {
+            this.$notification.removeClass("notification-show");
+        });
     }
 
-    window.requestAnimationFrame(function () {
-        $notification.removeClass("notification-show");
-    });
-
-    return {
-        hide: hide,
-    };
-
-    function hide(delayed) {
-        $notification.addClass("notification-hide");
-        setTimeout(function () {
-            $notification.remove();
+    hide() {
+        this.$notification.addClass("notification-hide");
+        setTimeout(() => {
+            this.$notification.remove();
         }, 1000);
     }
 
-    function getNotificationHTML(content) {
-        return $("<br><div class='notification notification-show'>" + content + "</div>");
+    generateNotificationHTML(content, loading) {
+        const $element = $("<br><div class='notification notification-show'>" + content + "</div>");
+        if (loading) {
+            $element.append("<div class='spinner'></div>");
+        }
+        return $element;
     }
 }
-
-export { showNotification };

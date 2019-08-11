@@ -114,16 +114,16 @@ if Rails.env.development?
   courses.each do |course|
     series = []
     series << Series.create(name: 'Verborgen reeks',
-                            description: Faker::Lorem.paragraph(25),
+                            description: Faker::Lorem.paragraph(sentence_count: 25),
                             course: course,
                             visibility: :hidden)
     series << Series.create(name: 'Gesloten reeks',
-                            description: Faker::Lorem.paragraph(25),
+                            description: Faker::Lorem.paragraph(sentence_count: 25),
                             course: course,
                             visibility: :closed)
     20.times do |i|
       s = Series.create(name: "Reeks #{i}",
-                        description: Faker::Lorem.paragraph(25),
+                        description: Faker::Lorem.paragraph(sentence_count: 25),
                         course: course)
       if Random.rand < 0.1
         t = if Random.rand < 0.3

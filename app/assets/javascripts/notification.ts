@@ -11,7 +11,7 @@ export class Notification {
     content: string;
     autoHide: boolean;
     loading: boolean;
-    $notification: JQuery<HTMLElement>;
+    notification: Element;
 
     constructor(content: string, properties: NotificationProperties = { autoHide: true, loading: false }) {
         this.content = content;
@@ -19,7 +19,7 @@ export class Notification {
         this.autoHide = properties.autoHide === undefined ? true : properties.autoHide;
         this.loading = properties.loading === undefined ? false : properties.loading;
 
-        this.$notification = this.generateNotificationHTML(this.content, this.loading);
+        this.notification = this.generateNotificationHTML(this.content, this.loading);
 
         this.show();
 
@@ -31,24 +31,30 @@ export class Notification {
     }
 
     private show() {
-        $(".notifications").prepend(this.$notification);
+        document.querySelector(".notifications").prepend(this.notification);
         window.requestAnimationFrame(() => {
-            this.$notification.removeClass("notification-show");
+            this.notification.classList.remove("notification-show");
         });
     }
 
     hide() {
-        this.$notification.addClass("notification-hide");
+        this.notification.classList.add("notification-hide");
         setTimeout(() => {
-            this.$notification.remove();
+            this.notification.remove();
         }, 1000);
     }
 
-    private generateNotificationHTML(content: string, loading: boolean) {
-        const $element = $("<br><div class='notification notification-show'>" + content + "</div>");
+    private generateNotificationHTML(content: string, loading: boolean): Element {
+        const element = this.htmlToElement(`<div class='notification notification-show'>${content}</div>`);
         if (loading) {
-            $element.append("<div class='spinner'></div>");
+            element.appendChild(this.htmlToElement("<div class='spinner'></div>"));
         }
-        return $element;
+        return element;
+    }
+
+    private htmlToElement(html: string): Element {
+        const template = document.createElement('template');
+        template.innerHTML = html.trim();
+        return <Element>template.content.firstChild;
     }
 }

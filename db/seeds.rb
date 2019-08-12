@@ -46,6 +46,15 @@ if Rails.env.development?
                 institution: ugent
   end
 
+  puts 'Creating API tokens'
+
+  [zeus, staff, jelix, mart, student].each do |user|
+    token = user.token || user.username
+    ApiToken.create description: format('Seeded token (= %s)', token),
+                    token_digest: ApiToken.digest(token),
+                    user: user
+  end
+
   puts 'Creating courses'
 
   courses = []

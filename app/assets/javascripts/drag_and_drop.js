@@ -39,8 +39,8 @@ function initDragAndDrop(args) {
         copyWidth(clone, original, "td");
     })
     .on("drop", function () {
-        let id = $(args.item_selector).data(args.item_data_selector);
-        let order = $(args.order_selector).map(function () {
+        const id = $(args.item_selector).data(args.item_data_selector);
+        const order = $(args.order_selector).map(function () {
             return $(this).data(args.order_data_selector);
         }).get();
         $.post(args.url_from_id(id), {

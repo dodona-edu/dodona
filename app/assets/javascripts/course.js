@@ -1,6 +1,5 @@
-/* globals ga, I18n, ace, MathJax, initStrip, Strip */
-import {setBaseUrl} from "./index.js";
-import {initDragAndDrop} from "./drag_and_drop.js";
+import { setBaseUrl } from "./index.js";
+import { initDragAndDrop } from "./drag_and_drop.js";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
@@ -198,8 +197,8 @@ const DRAG_AND_DROP_ARGS = {
     order_data_selector: "series_id",
     url_from_id: function(courseId){
         return `/courses/${courseId}/reorder_series.js`
-    }
-}
+    },
+};
 
 function initSeriesReorder() {
     initDragAndDrop(DRAG_AND_DROP_ARGS);

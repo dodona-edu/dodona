@@ -1,4 +1,4 @@
-/* globals dodona,flatpickr,I18n */
+/* globals flatpickr */
 
 import {showNotification} from "./notifications.js";
 import {initDragAndDrop} from "./drag_and_drop.js";

@@ -47,4 +47,4 @@ function initDragAndDrop(args) {
         });
 }
 
-export {initDragAndDrop};
+export { initDragAndDrop };

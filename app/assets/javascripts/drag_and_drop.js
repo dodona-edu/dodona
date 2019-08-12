@@ -2,7 +2,8 @@ import dragula from "dragula";
 
 function copyWidth(clone, original, tag=undefined) {
     $(clone).width($(original).width());
-    let cloneChildren, originalChildren;
+    let cloneChildren;
+    let originalChildren;
     if (tag) {
         cloneChildren = clone.getElementsByTagName(tag);
         originalChildren = original.getElementsByTagName(tag);

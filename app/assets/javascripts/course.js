@@ -195,8 +195,8 @@ const DRAG_AND_DROP_ARGS = {
     item_data_selector: "course_id",
     order_selector: ".course-series-list tbody .series-name",
     order_data_selector: "series_id",
-    url_from_id: function(courseId){
-        return `/courses/${courseId}/reorder_series.js`
+    url_from_id: function (courseId) {
+        return `/courses/${courseId}/reorder_series.js`;
     },
 };
 

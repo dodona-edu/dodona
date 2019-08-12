@@ -1,7 +1,7 @@
 /* globals flatpickr */
 
-import {showNotification} from "./notifications.js";
-import {initDragAndDrop} from "./drag_and_drop.js";
+import { showNotification } from "./notifications.js";
+import { initDragAndDrop } from "./drag_and_drop.js";
 
 const DRAG_AND_DROP_ARGS = {
     table_selector: ".series-exercise-list tbody",
@@ -9,7 +9,7 @@ const DRAG_AND_DROP_ARGS = {
     item_data_selector: "series_id",
     order_selector: ".series-exercise-list a.remove-exercise",
     order_data_selector: "exercise_id",
-    url_from_id: function(seriesId){
+    url_from_id: function (seriesId) {
         return `/series/${seriesId}/reorder_exercises.js`;
     },
 };

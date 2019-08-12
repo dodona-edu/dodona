@@ -49,7 +49,7 @@ if Rails.env.development?
   puts 'Creating API tokens'
 
   [zeus, staff, jelix, mart, student].each do |user|
-    token = user.username
+    token = user.token || user.username
     ApiToken.create description: format('Seeded token (= %s)', token),
                     token_digest: ApiToken.digest(token),
                     user: user

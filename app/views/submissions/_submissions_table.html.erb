@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course]} %>
+    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course], allow_filter: defined? allow_filter} %>
     </tbody>
   </table>
 </div>
@@ -28,8 +28,10 @@
 %>
 
 <center><%= page_navigation_links submissions, true, 'submissions', params %></center>
-<script type="text/javascript">
-    $(function () {
-        dodona.initFilterButtons();
-    });
-</script>
+<% if defined? allow_filter %>
+  <script type="text/javascript">
+      $(function () {
+          dodona.initFilterButtons();
+      });
+  </script>
+<% end %>

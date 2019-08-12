@@ -1,8 +1,10 @@
+/* eslint @typescript-eslint/no-use-before-define: "off" */
+
 import * as d3 from "d3";
 import * as moment from "moment";
 
 const selector = "#heatmap-container";
-const margin = {top: 50, right: 10, bottom: 20, left: 30};
+const margin = { top: 50, right: 10, bottom: 20, left: 30 };
 const isoDateFormat = "YYYY-MM-DD";
 const monthKeys = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 const dayKeys = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
@@ -17,7 +19,7 @@ function setToAYStart(day: moment.Moment): moment.Moment {
     return day.month(8).date(1);
 }
 
-function initHeatmap(url: string, year: string | undefined) {
+function initHeatmap(url: string, year: string | undefined): void {
     d3.select(selector).attr("class", "text-center").append("span").text(I18n.t("js.loading"));
     d3.json(url).then(data => {
         d3.select(`${selector} *`).remove();
@@ -55,11 +57,17 @@ function initHeatmap(url: string, year: string | undefined) {
             }
         }
 
-        drawHeatmap(keys.sort().map(k => (<[moment.Moment, number]>[moment.utc(k), data[k] || 0])));
+        drawHeatmap(
+            keys
+                .sort()
+                .map(
+                    k => [moment.utc(k), data[k] || 0] as [moment.Moment, number]
+                )
+        );
     });
 }
 
-function drawHeatmap(data: Array<[moment.Moment, number]>) {
+function drawHeatmap(data: [moment.Moment, number][]): void {
     const darkMode = window.dodona.darkMode;
     const emptyColor = darkMode ? "#37474F" : "white";
     const lowColor = darkMode ? "#01579B" : "#E3F2FD";
@@ -71,7 +79,7 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
 
     const container = d3.select(selector);
     const tooltip = container.append("div").attr("class", "d3-tooltip").style("opacity", 0);
-    const width = (<Element>container.node()).getBoundingClientRect().width;
+    const width = (container.node() as Element).getBoundingClientRect().width;
     const innerWidth = width - margin.left - margin.right;
     const chartBox = container.append("svg");
     const chart = chartBox.append("g")
@@ -85,17 +93,23 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
     let maxWeeks = 0;
     const weekdaysData = [];
     const yearsData = [];
-    for (let y = firstAY.clone(); y < setToAYStart(lastAY.clone().add(1, "year")); y = setToAYStart(y.add(1, "year"))) {
+    for (
+        let y = firstAY.clone();
+        y < setToAYStart(lastAY.clone().add(1, "year"));
+        y = setToAYStart(y.add(1, "year"))
+    ) {
         const next = setToAYStart(y.clone().add(1, "year"));
         const weeks = moment.duration(next.diff(y)).asWeeks() + 1;
         if (weeks > maxWeeks) {
             maxWeeks = weeks;
         }
-        weekdaysData.push(...[
-            [weekdaysData.length / 3, weekdayNames[0]],
-            [weekdaysData.length / 3, weekdayNames[2]],
-            [weekdaysData.length / 3, weekdayNames[4]],
-        ]);
+        weekdaysData.push(
+            ...[
+                [weekdaysData.length / 3, weekdayNames[0]],
+                [weekdaysData.length / 3, weekdayNames[2]],
+                [weekdaysData.length / 3, weekdayNames[4]],
+            ]
+        );
         yearsData.push(`${y.format("YYYY")}–${next.format("YYYY")}`);
     }
 
@@ -186,4 +200,4 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         .attr("fill", d => d[1] === 0 ? "" : colorRange(d[1]));
 }
 
-export {initHeatmap};
+export { initHeatmap };

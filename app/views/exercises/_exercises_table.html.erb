@@ -18,7 +18,7 @@
       <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
         <th class='count hidden-xs'>
           <%= t "exercises.index.class_progress" if @course %>
-          <% unless series.progress_enabled? %>
+          <% if defined? series && !series.progress_enabled %>
             <i class="mdi mdi-eye-off mdi-12 progress_visibility"
                data-toggle="tooltip"
                data-placement="top"

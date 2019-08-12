@@ -16,7 +16,12 @@
       <th class='status-icon'></th>
       <th><%= t "exercises.index.exercise" %></th>
       <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
-        <th class='count hidden-xs'><%= t "exercises.index.class_progress" if @course %></th>
+        <th class='count hidden-xs'>
+          <%= t "exercises.index.class_progress" if @course %>
+          <% unless series.progress_enabled? %>
+            <i class='mdi mdi-eye-off mdi-12'></i>
+          <% end %>
+        </th>
       <% end %>
       <% if user_signed_in? %>
         <th class='status ellipsis-overflow' title="<%= t "exercises.index.status" %>"><%= t "exercises.index.status" %></th>

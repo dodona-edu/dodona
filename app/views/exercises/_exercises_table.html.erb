@@ -19,7 +19,12 @@
         <th class='count hidden-xs'>
           <%= t "exercises.index.class_progress" if @course %>
           <% unless series.progress_enabled? %>
-            <i class='mdi mdi-eye-off mdi-12'></i>
+            <i class="mdi mdi-eye-off mdi-12 progress_visibility"
+               data-toggle="tooltip"
+               data-placement="top"
+               title="<%= t('exercises.index.class_progress_visibility_disabled') %>"
+            >
+            </i>
           <% end %>
         </th>
       <% end %>

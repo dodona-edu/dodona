@@ -11,8 +11,8 @@ function copyWidth(clone, original, tag=undefined){
             cloneChildren = clone.childNodes;
             originalChildren = original.childNodes;
         }
-        for(let i = 0; i < cloneChildren.length; i++){ // recursively make all children equally big
-            copyWidth(cloneChildren[i], originalChildren[i]);
+        for(let i = 0; i < cloneChildren.length; i++){
+            $(cloneChildren[i]).width($(originalChildren[i]).width());
         }
     }
 }

@@ -27,5 +27,18 @@
     "jQuery": "readonly",
     "I18n": "readonly",
     "dodona": "readonly"
-  }
+  },
+  "overrides": [
+    {
+      "extends": ["plugin:@typescript-eslint/recommended"],
+      "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        // this seems to be extremely slow
+        // without 1.5s, with 22s
+        //"project": "./tsconfig.json"
+      },
+      "plugins": ["@typescript-eslint"]
+    }
+  ]
 }

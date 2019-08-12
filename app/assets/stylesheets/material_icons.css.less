@@ -127,11 +127,13 @@ a.btn-fab .mdi::before{
 
 .filter-icon {
   color: @text-secondary;
+  letter-spacing: -2px; // make sure the tooltip is displayed correctly
 }
 
 td i { 
   position: relative;
-  top: 4px;
+  top: 3px; // move icons downwards in table row
+  margin-right: 3px; // add spacing between text and prevent tooltip from overflowing off screen
 }
 
 .filter-icon:hover {

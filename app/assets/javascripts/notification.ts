@@ -15,14 +15,14 @@ export class Notification {
         }
     }
 
-    private show() {
+    private show(): void {
         document.querySelector(".notifications").prepend(this.notification);
         window.requestAnimationFrame(() => {
             this.notification.classList.remove("notification-show");
         });
     }
 
-    hide() {
+    hide(): void {
         this.notification.classList.add("notification-hide");
         setTimeout(() => {
             this.notification.remove();
@@ -30,7 +30,9 @@ export class Notification {
     }
 
     private generateNotificationHTML(content: string, loading: boolean): Element {
-        const element = this.htmlToElement(`<div class='notification notification-show'>${content}</div>`);
+        const element = this.htmlToElement(
+            `<div class='notification notification-show'>${content}</div>`
+        );
         if (loading) {
             element.appendChild(this.htmlToElement("<div class='spinner'></div>"));
         }
@@ -40,6 +42,6 @@ export class Notification {
     private htmlToElement(html: string): Element {
         const template = document.createElement("template");
         template.innerHTML = html.trim();
-        return <Element>template.content.firstChild;
+        return template.content.firstChild as Element;
     }
 }

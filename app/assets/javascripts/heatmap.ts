@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import * as moment from "moment";
 
 const selector = "#heatmap-container";
-const margin = {top: 50, right: 10, bottom: 20, left: 30};
+const margin = { top: 50, right: 10, bottom: 20, left: 30 };
 const isoDateFormat = "YYYY-MM-DD";
 const monthKeys = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 const dayKeys = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
@@ -59,7 +59,7 @@ function initHeatmap(url: string, year: string | undefined) {
     });
 }
 
-function drawHeatmap(data: Array<[moment.Moment, number]>) {
+function drawHeatmap(data: [moment.Moment, number][]) {
     const darkMode = window.dodona.darkMode;
     const emptyColor = darkMode ? "#37474F" : "white";
     const lowColor = darkMode ? "#01579B" : "#E3F2FD";
@@ -186,4 +186,4 @@ function drawHeatmap(data: Array<[moment.Moment, number]>) {
         .attr("fill", d => d[1] === 0 ? "" : colorRange(d[1]));
 }
 
-export {initHeatmap};
+export { initHeatmap };

@@ -2,7 +2,6 @@
  * Shows a notification in the bottom left corner. By default, hides it after 3 seconds.
  */
 export class Notification {
-
     readonly notification: Element;
 
     constructor(readonly content: string, readonly autoHide = true, readonly loading = false) {
@@ -39,7 +38,7 @@ export class Notification {
     }
 
     private htmlToElement(html: string): Element {
-        const template = document.createElement('template');
+        const template = document.createElement("template");
         template.innerHTML = html.trim();
         return <Element>template.content.firstChild;
     }

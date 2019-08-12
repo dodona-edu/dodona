@@ -4,7 +4,6 @@ export class Drawer {
     constructor(drawerSelector = "#drawer",
         toggleSelector = ".drawer-toggle",
         backgroundSelector = ".drawer-background") {
-
         this.drawer = document.querySelector(drawerSelector);
 
         document

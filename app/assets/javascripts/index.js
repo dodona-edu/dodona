@@ -14,7 +14,7 @@ const TOKENS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
 
 /* constants for element-keys that are used when filtering */
-const FILTER_ICONS_CLASS = ".filter-icon"; 
+const FILTER_ICONS_CLASS = ".filter-icon";
 const FILTER_DATA = "filter";
 
 window.dodona.index = {};
@@ -370,9 +370,8 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     init();
 }
 
-function initFilterButtons(){
-    
-    function filter(){
+function initFilterButtons() {
+    function filter() {
         const $element = $(this);
         const $searchbar = $(QUERY_FILTER_ID);
         $searchbar.typeahead("val", $element.data(FILTER_DATA)); // search for value requested by user

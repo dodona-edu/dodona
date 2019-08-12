@@ -16,20 +16,17 @@
     width: 130px;
   }
 }
-.exercise-table, .member-table {
-  .class, .member{
-    &-progress-chart{
-      shape-rendering: crispEdges;
-      .correct {
-        stroke: @success-300;
-      }
-      .wrong {
-        stroke: @danger-300;
-      }
-      .not-started {
-        stroke: @hairlinegray;
-      }
-    }
+
+.table-progress-chart {
+  shape-rendering: crispEdges;
+  .correct {
+    stroke: @success-300;
+  }
+  .wrong {
+    stroke: @danger-300;
+  }
+  .not-started {
+    stroke: @hairlinegray;
   }
 }
 

@@ -1,19 +1,17 @@
 import dragula from "dragula";
 
 function copyWidth(clone, original, tag=undefined){
-    if(clone && original && original.getBoundingClientRect){
-        $(clone).width($(original).width());
-        let cloneChildren, originalChildren;
-        if(tag){
-            cloneChildren = clone.getElementsByTagName(tag);
-            originalChildren = original.getElementsByTagName(tag);
-        } else {
-            cloneChildren = clone.childNodes;
-            originalChildren = original.childNodes;
-        }
-        for(let i = 0; i < cloneChildren.length; i++){
-            $(cloneChildren[i]).width($(originalChildren[i]).width());
-        }
+    $(clone).width($(original).width());
+    let cloneChildren, originalChildren;
+    if (tag) {
+        cloneChildren = clone.getElementsByTagName(tag);
+        originalChildren = original.getElementsByTagName(tag);
+    } else {
+        cloneChildren = clone.childNodes;
+        originalChildren = original.childNodes;
+    }
+    for(let i = 0; i < cloneChildren.length; i++){ // recursively make all children equally big
+        $(cloneChildren[i]).width($(originalChildren[i]).width());
     }
 }
 
@@ -39,8 +37,8 @@ function initDragAndDrop(args) {
         copyWidth(clone, original, "td");
     })
     .on("drop", function () {
-        const id = $(args.item_selector).data(args.item_data_selector);
-        const order = $(args.order_selector).map(function () {
+        let id = $(args.item_selector).data(args.item_data_selector);
+        let order = $(args.order_selector).map(function () {
             return $(this).data(args.order_data_selector);
         }).get();
         $.post(args.url_from_id(id), {

@@ -12,7 +12,7 @@ const DRAG_AND_DROP_ARGS = {
     url_from_id: function(seriesId){
         return `/series/${seriesId}/reorder_exercises.js`;
     }
-}
+};
 
 function initSeriesEdit() {
     function init() {

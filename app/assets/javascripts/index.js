@@ -371,14 +371,21 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 }
 
 function initFilterButtons() {
+    function init() {
+        const $filterButtons = $(FILTER_ICONS_CLASS);
+        $filterButtons.click(filter);
+        $filterButtons.tooltip(); // initialize the tooltips of the buttons
+    }
+
     function filter() {
         const $element = $(this);
         const $searchbar = $(QUERY_FILTER_ID);
         $searchbar.typeahead("val", $element.data(FILTER_DATA)); // search for value requested by user
+        $(".tooltip").tooltip("hide"); // prevent tooltip from displaying when table is re-rendered
         window.dodona.index.doSearch();
     }
 
-    $(FILTER_ICONS_CLASS).click(filter);
+    init();
 }
 
 export { initFilterButtons, initFilterIndex, setBaseUrl };

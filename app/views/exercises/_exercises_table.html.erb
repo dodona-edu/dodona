@@ -17,14 +17,16 @@
       <th><%= t "exercises.index.exercise" %></th>
       <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
         <th class='count hidden-xs'>
-          <%= t "exercises.index.class_progress" if @course %>
-          <% if defined? series && !series.progress_enabled %>
-            <i class="mdi mdi-eye-off mdi-12 progress_visibility"
+          <% if @course %>
+            <%= t "exercises.index.class_progress" %>
+            <% unless series.progress_enabled %>
+              <i class="mdi mdi-eye-off mdi-12 progress_visibility"
                data-toggle="tooltip"
                data-placement="top"
                title="<%= t('exercises.index.class_progress_visibility_disabled') %>"
-            >
-            </i>
+              >
+              </i>
+            <% end %>
           <% end %>
         </th>
       <% end %>

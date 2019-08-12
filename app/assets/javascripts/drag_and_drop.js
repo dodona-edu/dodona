@@ -1,6 +1,6 @@
 import dragula from "dragula";
 
-function copyWidth(clone, original, tag=undefined){
+function copyWidth(clone, original, tag=undefined) {
     $(clone).width($(original).width());
     let cloneChildren, originalChildren;
     if (tag) {
@@ -10,14 +10,14 @@ function copyWidth(clone, original, tag=undefined){
         cloneChildren = clone.childNodes;
         originalChildren = original.childNodes;
     }
-    for(let i = 0; i < cloneChildren.length; i++){ // recursively make all children equally big
+    for (let i = 0; i < cloneChildren.length; i++) { // recursively make all children equally big
         $(cloneChildren[i]).width($(originalChildren[i]).width());
     }
 }
 
 /**
  * Initializes drag and drop on the page
- * @param args: a JSON with the following keys:
+ * @param { Object } args: a JSON with the following keys:
  * --table_selector: the id used to find the table that is used for drag and drop
  * --item_selector: the id used to find the selected item
  * --item_data_selector: the key used to retrieve data of the item
@@ -33,18 +33,18 @@ function initDragAndDrop(args) {
         },
         mirrorContainer: tableBody,
     })
-    .on("cloned", function(clone, original, type){
-        copyWidth(clone, original, "td");
-    })
-    .on("drop", function () {
-        let id = $(args.item_selector).data(args.item_data_selector);
-        let order = $(args.order_selector).map(function () {
-            return $(this).data(args.order_data_selector);
-        }).get();
-        $.post(args.url_from_id(id), {
-            order: JSON.stringify(order),
+        .on("cloned", function (clone, original, type) {
+            copyWidth(clone, original, "td");
+        })
+        .on("drop", function () {
+            const id = $(args.item_selector).data(args.item_data_selector);
+            const order = $(args.order_selector).map(function () {
+                return $(this).data(args.order_data_selector);
+            }).get();
+            $.post(args.url_from_id(id), {
+                order: JSON.stringify(order),
+            });
         });
-    });
 }
 
-export {initDragAndDrop}
+export {initDragAndDrop};

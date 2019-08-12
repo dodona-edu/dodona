@@ -11,7 +11,7 @@ const DRAG_AND_DROP_ARGS = {
     order_data_selector: "exercise_id",
     url_from_id: function(seriesId){
         return `/series/${seriesId}/reorder_exercises.js`;
-    }
+    },
 };
 
 function initSeriesEdit() {

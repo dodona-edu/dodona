@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-import { setBaseUrl } from "./index.js";
-import dragula from "dragula";
-=======
 /* globals ga, I18n, ace, MathJax, initStrip, Strip */
 import {setBaseUrl} from "./index.js";
 import {initDragAndDrop} from "./drag_and_drop.js";
->>>>>>> Moved javascript code around to prevent duplication
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");

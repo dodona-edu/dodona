@@ -167,10 +167,11 @@
       li a {
         padding-left: 8px;
       }
-      li a .mdi::before {
-        float: right;
-        top: -2px;
-        left: 6px;
+      li a .dropdown-box::before {
+        float: right; // position to right of text
+        top: -6px;
+        left: 10px;
+        position: relative; // required to use top and left
       }
 
       .action {

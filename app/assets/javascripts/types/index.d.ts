@@ -1,6 +1,4 @@
 declare interface Window {
-    requestAnimFrame: (fun: Function) => void;
-    mozRequestAnimationFrame: (fun: Function) => void;
     dodona: any;
 }
 
@@ -11,5 +9,3 @@ declare module I18n {
 }
 
 declare var dodona;
-
-declare function requestAnimFrame(fun: Function): void;

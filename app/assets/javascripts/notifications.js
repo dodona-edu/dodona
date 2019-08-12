@@ -1,4 +1,3 @@
-/* globals requestAnimFrame */
 /**
  * Shows a notification in the bottom left corner
  *
@@ -24,7 +23,7 @@ function showNotification(content, properties = {}) {
         $notification.append("<div class='spinner'></div>");
     }
 
-    requestAnimFrame(function () {
+    window.requestAnimationFrame(function () {
         $notification.removeClass("notification-show");
     });
 

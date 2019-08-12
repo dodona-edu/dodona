@@ -30,6 +30,7 @@ en:
       repository: "Repository"
       path: "Path"
       class_progress: Class progress
+      class_progress_visibility_disabled: "The class progress is not visible for students."
       progress_chart_info_tried:
         one: "One user started this exercise."
         other: "%{count} users started this exercise."

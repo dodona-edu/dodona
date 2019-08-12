@@ -6,7 +6,7 @@
          title="<%= t('.filter-submissions-by-user') %>"
          data-filter="<%= submission.user.full_name %>"
          data-toggle="tooltip"
-         data-placement="bottom"
+         data-placement="top"
       >
       </i>
       <% if submission.course.nil? %>
@@ -22,7 +22,7 @@
          title="<%= t('.filter-submissions-by-exercise') %>"
          data-filter="<%= submission.exercise.name %>"
          data-toggle="tooltip"
-         data-placement="bottom"
+         data-placement="top"
       >
       </i>
       <% if submission.course.nil? %>

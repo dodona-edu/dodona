@@ -1,5 +1,5 @@
 /* globals Bloodhound */
-import { showNotification } from "./notifications.js";
+import { Notification } from "./notification";
 import {
     delay,
     getArrayURLParameter,
@@ -128,7 +128,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 url,
                 { format: "json" },
                 function (data) {
-                    showNotification(data.message);
+                    new Notification(data.message);
                     if (data.js) {
                         eval(data.js);
                     } else {

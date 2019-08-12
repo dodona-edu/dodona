@@ -1,4 +1,4 @@
-import { showNotification } from "./notifications";
+import { Notification } from "./notification";
 
 function initFavoriteButtons() {
     function init() {
@@ -18,7 +18,7 @@ function initFavoriteButtons() {
         const courseId = element.data("course_id");
         $.post(`/courses/${courseId}/favorite.js`)
             .done(() => {
-                showNotification(I18n.t("js.favorite-course-succeeded"));
+                new Notification(I18n.t("js.favorite-course-succeeded"));
                 element.removeClass("mdi-heart-outline").addClass("favorited mdi-heart");
                 element.attr("data-original-title", I18n.t("js.unfavorite-course-do"));
                 element.tooltip("hide");
@@ -35,7 +35,7 @@ function initFavoriteButtons() {
                 cloneFavButton.click(toggleFavorite);
             })
             .fail(() => {
-                showNotification(I18n.t("js.favorite-course-failed"));
+                new Notification(I18n.t("js.favorite-course-failed"));
             });
     }
 
@@ -43,7 +43,7 @@ function initFavoriteButtons() {
         const courseId = element.data("course_id");
         $.post(`/courses/${courseId}/unfavorite.js`)
             .done(() => {
-                showNotification(I18n.t("js.unfavorite-course-succeeded"));
+                new Notification(I18n.t("js.unfavorite-course-succeeded"));
                 const $elements = $(`[data-course_id="${courseId}"]`);
                 $elements.removeClass("favorited mdi-heart").addClass("mdi-heart-outline");
                 $elements.attr("data-original-title", I18n.t("js.favorite-course-do"));
@@ -57,7 +57,7 @@ function initFavoriteButtons() {
                 }
             })
             .fail(() => {
-                showNotification(I18n.t("js.unfavorite-course-failed"));
+                new Notification(I18n.t("js.unfavorite-course-failed"));
             });
     }
 

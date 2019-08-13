@@ -15,7 +15,7 @@ class CourseMembersController < ApplicationController
                end
 
     @course_memberships = apply_scopes(@course.course_memberships)
-                          .includes(:user)
+                          .includes(user: [:institution])
                           .order(status: :asc)
                           .order(Arel.sql('users.permission ASC'))
                           .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))

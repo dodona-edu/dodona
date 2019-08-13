@@ -71,7 +71,7 @@ jobs:
       - checkout
       - run:
           name: Install RuboCop
-          command: gem install rubocop-rails
+          command: gem install rubocop-rails -v 2.2.1
       - run:
           name: Run RuboCop
           command: rubocop

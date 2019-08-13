@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 references:
   docker_ruby_config: &docker_ruby_config
@@ -16,12 +16,9 @@ references:
       MYSQL_RANDOM_ROOT_PASSWORD: true
       MYSQL_HOST: "localhost"
 
-jobs:
-  test:
-    docker:
-      - *docker_ruby_config
-      - *docker_db_config
-    working_directory: ~/repo
+commands:
+  setup:
+    description: "Set up repo and dependencies"
     steps:
       - checkout
       - restore_cache:
@@ -46,6 +43,14 @@ jobs:
           key: dodona-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+jobs:
+  test_ruby:
+    docker:
+      - *docker_ruby_config
+      - *docker_db_config
+    working_directory: ~/repo
+    steps:
+      - setup
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://localhost:3306 -timeout 1m
@@ -63,28 +68,35 @@ jobs:
       - store_test_results:
           path: /tmp/test-results
 
+  test_js:
+    docker:
+      - *docker_ruby_config
+    working_directory: ~/repo
+    steps:
+      - setup
+      - run:
+          name: Run tests
+          command: yarn test --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/jest/js-test-results.xml"
+      - store_test_results:
+          path: reports/jest
+      - store_artifacts:
+          path: reports/jest
+
   lint:
     docker:
       - *docker_ruby_config
     working_directory: ~/repo
     steps:
-      - checkout
-      - run:
-          name: Install RuboCop
-          command: gem install rubocop-rails -v 2.2.1
+      - setup
       - run:
           name: Run RuboCop
-          command: rubocop
-      - run:
-          name: Install eslint
-          command: yarn install
+          command: bundle exec rubocop -c ./.rubocop.yml ~/repo/app
       - run:
           name: Run eslint
           command: yarn lint --quiet --format junit --output-file ~/reports/eslint/result.xml
-
       - store_test_results:
-          path: ~/reports
-      - store_artifacts:
           path: ~/reports
 
 workflows:
@@ -94,4 +106,5 @@ workflows:
       - lint
   test:
     jobs:
-      - test
+      - test_ruby
+      - test_js

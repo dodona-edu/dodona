@@ -2,7 +2,8 @@
   "name": "dodona",
   "private": true,
   "scripts": {
-    "lint": "eslint  --ext '.js' --ext '.ts' app/javascript app/assets/javascripts"
+    "lint": "eslint  --ext '.js' --ext '.ts' app/javascript app/assets/javascripts",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@rails/webpacker": "4.0.7",
@@ -23,10 +24,15 @@
     "typescript": "^3.5.3"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.17",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^6.1.0",
     "eslint-config-google": "^0.13.0",
+    "eslint-plugin-jest": "^22.15.1",
+    "jest": "^24.8.0",
+    "jest-junit": "^7.0.0",
+    "ts-jest": "^24.0.2",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "3.7.2"
   }

@@ -36,8 +36,8 @@
           <%= render partial: 'application/progress_chart',
               locals: { 
                 total: @course.exercises_count,
-                tried: user.attempted_exercises({ course: @course }),
-                correct: user.correct_exercises({ course: @course }),
+                tried: user.attempted_exercises(course: @course),
+                correct: user.correct_exercises(course: @course),
                 info_tried: 'course_members.members_table.member_progress_chart_info_tried',
                 info_correct: 'course_members.members_table.member_progress_chart_info_correct'
               } 

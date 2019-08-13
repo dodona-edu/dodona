@@ -62,13 +62,13 @@
           <td class="hidden-xs">
             <% if @course %>
               <%= render partial: 'application/progress_chart',
-               locals: {
-                 total: @course.subscribed_members_count,
-                 tried: ex.users_tried,
-                 correct: ex.users_correct,
-                 info_tried: 'exercises.index.progress_chart_info_tried',
-                 info_correct: 'exercises.index.progress_chart_info_correct'
-              }
+                locals: {
+                  total: @course.subscribed_members_count,
+                  tried: ex.users_tried,
+                  correct: ex.users_correct,
+                  info_tried: 'exercises.index.progress_chart_info_tried',
+                  info_correct: 'exercises.index.progress_chart_info_correct'
+                }
               %>
             <% else %>
               <%= content_tag :span, title: t('exercises.exercise.count_tooltip'), class: "text-right text-muted" do %>

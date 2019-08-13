@@ -13,8 +13,8 @@ nl:
     members_table:
       labels: "Labels"
       member_progress_chart_info_tried:
-        one: "Begonnen aan één oefening van deze cursus."
-        other: "Begonnen aan %{count} oefeningen van deze cursus."
+        one: "Begonnen aan één oefening."
+        other: "Begonnen aan %{count} oefeningen."
       member_progress_chart_info_correct:
         one: "Één oefening correct opgelost."
         other: "%{count} oefeningen correct opgelost."

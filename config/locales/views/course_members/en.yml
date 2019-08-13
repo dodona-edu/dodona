@@ -13,8 +13,8 @@ en:
     members_table:
       labels: "Labels"
       member_progress_chart_info_tried:
-        one: "Started one exercise of this course."
-        other: "Started %{count} exercises of this course."
+        one: "Started one exercise."
+        other: "Started %{count} exercises."
       member_progress_chart_info_correct:
         one: "Solved one exercise."
         other: "Solved %{count} exercises."

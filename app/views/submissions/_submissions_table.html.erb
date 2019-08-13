@@ -3,7 +3,7 @@
     <thead>
     <tr>
       <th></th>
-      <% if (current_user.administrating_courses.any? || current_user.admin?) && table_type != 'personal' %>
+      <% if (current_user.administrating_courses.any? || current_user.admin?) && !(local_assigns.has_key? :user) %>
         <th><%= t ".user" %></th>
       <% end %>
       <% unless exercise.present? %>
@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course], table_type: table_type} %>
+    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course], user: (local_assigns.has_key? :user) } %>
     </tbody>
   </table>
 </div>
@@ -28,7 +28,7 @@
 %>
 
 <center><%= page_navigation_links submissions, true, 'submissions', params %></center>
-<% if defined? allow_filter %>
+<% unless local_assigns.has_key? :user %>
   <script type="text/javascript">
       $(function () {
           dodona.initFilterButtons();

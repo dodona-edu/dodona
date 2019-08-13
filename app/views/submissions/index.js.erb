@@ -1,4 +1,4 @@
-$("#submissions-table-wrapper").html("<%= escape_javascript(render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, remote_links: false, table_type: 'index'}) %>");
+$("#submissions-table-wrapper").html("<%= escape_javascript(render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, remote_links: false}) %>");
 if (dodona.feedbackTableLoaded) {
     dodona.feedbackTableLoaded(
         <%= raw "#{current_user&.id || 'undefined'}" %>,

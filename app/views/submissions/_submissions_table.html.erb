@@ -3,7 +3,7 @@
     <thead>
     <tr>
       <th></th>
-      <% if current_user.administrating_courses.any? || current_user.admin? %>
+      <% if (current_user.administrating_courses.any? || current_user.admin?) && table_type != 'personal' %>
         <th><%= t ".user" %></th>
       <% end %>
       <% unless exercise.present? %>
@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course], allow_filter: defined? allow_filter} %>
+    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course], table_type: table_type} %>
     </tbody>
   </table>
 </div>

@@ -2,6 +2,10 @@
  * Shows a notification in the bottom left corner. By default, hides it after 3 seconds.
  */
 export class Notification {
+    static readonly hideDelay = 3000;
+    static readonly removeDelay = 1000;
+    static readonly notificationsContainer = ".notifications";
+
     readonly notification: Element;
 
     constructor(readonly content: string, readonly autoHide = true, readonly loading = false) {
@@ -11,12 +15,12 @@ export class Notification {
         if (this.autoHide) {
             setTimeout(() => {
                 this.hide();
-            }, 3000);
+            }, Notification.hideDelay);
         }
     }
 
     private show(): void {
-        document.querySelector(".notifications").prepend(this.notification);
+        document.querySelector(Notification.notificationsContainer).prepend(this.notification);
         window.requestAnimationFrame(() => {
             this.notification.classList.remove("notification-show");
         });
@@ -26,7 +30,7 @@ export class Notification {
         this.notification.classList.add("notification-hide");
         setTimeout(() => {
             this.notification.remove();
-        }, 1000);
+        }, Notification.removeDelay);
     }
 
     private generateNotificationHTML(content: string, loading: boolean): Element {

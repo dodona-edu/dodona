@@ -7,5 +7,5 @@ module.exports = {
             },
         },
     },
-    roots: ["app/javascript/", "app/assets/javascripts/"],
+    roots: ["test/javascript/"],
 };

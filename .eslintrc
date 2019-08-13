@@ -1,9 +1,10 @@
 {
+  "plugins": ["jest"],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "extends": ["eslint:recommended", "google"],
+  "extends": ["eslint:recommended", "google", "plugin:jest/recommended"],
   "rules": {
     "arrow-parens": ["error", "as-needed"],
     "indent": ["error", 4],
@@ -19,7 +20,8 @@
     ]
   },
   "env": {
-    "browser": true
+    "browser": true,
+    "jest/globals": true
   },
   "globals": {
     "d3": "readonly",

@@ -22,7 +22,7 @@ en:
       token_link: "Secret link"
       series: Series
       exercises: Exercises
-      download_solutions: Download my solutions
+      download_submissions: Download my solutions
       download_all_solutions: Download all solutions
       series_not_visible: This series is only visible for students using the secret link!
       series_not_accessible: This series is not accessible to students!

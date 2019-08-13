@@ -36,7 +36,6 @@ Rails.application.routes.draw do
       resources :exercises, only: [:index]
       member do
         get 'available_exercises', to: 'exercises#available'
-        get 'download_solutions'
         get 'overview'
         get 'scoresheet'
         get 'scoresheet_download'
@@ -48,6 +47,15 @@ Rails.application.routes.draw do
       end
     end
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
+
+    scope '/export' do
+      get '/series/:id', to: 'export#download_submissions_from_series', as: 'export_series'
+      post '/series/:id', to: 'export#start_download_from_series'
+      get '/courses/:id', to: 'export#download_submissions_from_course', as: 'export_course'
+      post '/courses/:id', to: 'export#start_download_from_course'
+      get '/users/:id', to: 'export#download_submissions_from_user', as: 'export_user'
+      post '/users/:id', to: 'export#start_download_from_user'
+    end
 
     resources :courses do
       resources :series, only: [:new, :index] do

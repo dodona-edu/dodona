@@ -1,0 +1,28 @@
+en:
+  export:
+    download_submissions:
+      title: Download submissions
+      choose_exercises: From which exercises do you want to download submissions?
+      choose_series: From which series do you want to download submissions?
+      choose_courses: From which courses do you want to download submissions?
+      next_step: Next step
+      start_download: Start download
+      choose_options: Select any extra options you wish to apply to your download.
+      only_last_submission_label: Only include the last submission?
+      only_last_submission_label_help: If checked, only the last submission from a student for an exercise will be included. Otherwise, all submissions will be downloaded.
+      deadline_label: Take the deadline into account?
+      deadline_label_help: If checked, only submissions before the deadline will be downloaded. Otherwise, submissions sent in after the deadline will also be present.
+      group_submissions_label: How to group submissions in the download?
+      group_by_student_help: Result contains a folder per student containing their submission(s) per exercise.
+      group_by_exercise_help: Result contains a folder per exercise containing the submission(s) per student.
+      all_students_label: Include all students in the download?
+      all_students_label_help: If checked, even students without submissions (for an exercise or in general) will be included in the folder.
+      with_info_label: Include an informative CSV-file in the download?
+      with_info_label_help: The result will contain a CSV-file with information about the students, the exercises and the submissions.
+      exercise: Exercise
+      course: Course
+      series: Series
+      no_series: no-series
+    start_download:
+      no_selection: You must select at least one item before being able to download solutions.
+      unknown_grouping_option: Unknown grouping option supplied

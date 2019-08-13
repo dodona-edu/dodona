@@ -1,8 +1,7 @@
-require 'zip'
 class SeriesController < ApplicationController
   before_action :set_series, except: %i[index new create indianio_download]
 
-  before_action :check_token, only: %i[show overview download_solutions]
+  before_action :check_token, only: %i[show overview]
 
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
     scope.at_least_one_started(Series.find(controller.params[:id]))
@@ -97,18 +96,6 @@ class SeriesController < ApplicationController
     end
   end
 
-  def download_solutions
-    if current_user&.course_admin?(@series.course)
-      if params[:user_id].present?
-        send_zip User.find(params[:user_id])
-      else
-        send_zip nil
-      end
-    else
-      send_zip current_user
-    end
-  end
-
   def reset_token
     type = params[:type].to_sym
     @series.generate_token(type)
@@ -139,7 +126,8 @@ class SeriesController < ApplicationController
     else
       user = User.find_by(email: email)
       if user
-        send_zip user, with_info: true
+        options = { deadline: true, only_last_submission: true, with_info: true, all_students: true, indianio: true }
+        send_zip Export.new(item: @series, list: @series.exercises, users: [user], options: options).bundle
       else
         render json: { errors: ['Unknown email'] }, status: :not_found
       end
@@ -209,18 +197,5 @@ class SeriesController < ApplicationController
     raise Pundit::NotAuthorizedError if @series.hidden? &&
                                         !current_user&.course_admin?(@series.course) &&
                                         @series.access_token != params[:token]
-  end
-
-  # Generate and send a zip with solutions
-  def send_zip(user, **opts)
-    zip = if user.present?
-            @series.zip_solutions_for_user(user, opts)
-          else
-            @series.zip_solutions(opts)
-          end
-    send_data zip[:data],
-              type: 'application/zip',
-              filename: zip[:filename],
-              disposition: 'attachment', x_sendfile: true
   end
 end

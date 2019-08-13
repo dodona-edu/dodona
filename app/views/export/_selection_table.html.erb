@@ -1,0 +1,50 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource copy-table">
+    <thead>
+    <tr>
+      <th>
+        <input type="checkbox" id="check-all">
+      </th>
+      <th>
+        <%= data[:table_header_type] %>
+      </th>
+      <% if data[:type] == 'series' %>
+        <th class='count hidden-xs'>
+            <%= t "exercises.index.class_progress" %>
+        </th>
+      <% end %>
+      <th>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <% data[:list].each_with_index do |el, index| %>
+      <% if policy(el).show? %>
+        <tr>
+          <td>
+            <input type="checkbox" class="selection-checkbox" value="<%= el.id %>">
+          </td>
+          <td>
+            <span> <%= el.name %> </span>
+          </td>
+          <% if data[:type] == 'series' %>
+            <td class="hidden-xs">
+              <%= render partial: 'application/progress_chart',
+                  locals: {
+                      total: data[:course].subscribed_members_count,
+                      tried: data[:summary].exercise_summaries[index].users_tried,
+                      correct: data[:summary].exercise_summaries[index].users_correct,
+                      info_tried: 'exercises.index.progress_chart_info_tried',
+                      info_correct: 'exercises.index.progress_chart_info_correct'
+                  }
+              %>
+            </td>
+          <% end %>
+          <td>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+</div>

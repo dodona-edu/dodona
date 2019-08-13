@@ -51,6 +51,7 @@ FactoryBot.define do
       e.submission_count.times do
         create :submission,
                exercise: exercise,
+               course: e.series&.first&.course,
                user: e.submission_users.sample
       end
       if e.description_html_stubbed

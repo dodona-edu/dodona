@@ -22,7 +22,7 @@ nl:
       token_link: 'Geheime link'
       series: Reeks
       exercises: Oefeningen
-      download_solutions: Mijn oplossingen downloaden
+      download_submissions: Mijn oplossingen downloaden
       download_all_solutions: Alle oplossingen downloaden
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
@@ -81,3 +81,4 @@ nl:
         other: "%{count} oefeningen"
       name: "Naam"
       deadline: "Deadline"
+  

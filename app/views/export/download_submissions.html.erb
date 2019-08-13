@@ -1,0 +1,124 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'export' %>
+<% end %>
+
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <h2><%= t '.title' %></h2>
+    <div id="errors-wrapper" class="hidden">
+        <div class="card-supporting-text">
+          <div class="callout callout-danger" id="error_explanation">
+            <h4 id="warning-message-wrapper">
+            </h4>
+          </div>
+      </div>
+    </div>
+
+    <div id="stepper" class="panel-group stepper" role="tablist">
+      <div id="choose-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">1</span>
+            <a role="button" data-toggle="collapse" href="#choose-step">
+              <%= @data[:choose_step_text] %>
+            </a>
+          </h4>
+        </div>
+        <div id="choose-step" class="panel-collapse collapse in" role="tabpanel">
+          <div class="panel-body">
+            <div class="stepper-part">
+              <%= render partial: 'selection_table', locals: { data: @data } %>
+            </div>
+            <div class="stepper-actions stepper-border">
+              <button id="next_step" class="btn btn-text btn-primary"><%= t('.next_step') %></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%= form_with class: "form-horizontal", id: "download_submissions" do |form| %>
+        <div id="choose-options-panel" class="panel panel-default hidden">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <span class="step-circle">2</span>
+              <a role="button" data-toggle="collapse" href="#choose-options-step" id="show-panel">
+                <%= t('.choose_options') %>
+              </a>
+            </h4>
+          </div>
+          <div id="choose-options-step" class="panel-collapse collapse in" role="tabpanel">
+            <div class="panel-body">
+              <div class="stepper-part">
+                <input type="hidden" id="all_submissions" name="all" value="false">
+                <div class="form-group">
+                  <strong class="col-xs-12"><%= t '.only_last_submission_label' %></strong>
+                </div>
+                <div class="field form-group">
+                  <div class="col-sm-6 col-sm-offset-3">
+                    <input type="checkbox" checked value="true" name="only_last_submission">
+                  </div>
+                  <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.only_last_submission_label_help' %></span>
+                </div>
+                <div class="form-group">
+                  <strong class="col-xs-12"><%= t '.deadline_label' %></strong>
+                </div>
+                <div class="field form-group">
+                  <div class="col-sm-6 col-sm-offset-3">
+                    <input type="checkbox" checked value="true" name="deadline">
+                  </div>
+                  <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.deadline_label_help' %></span>
+                </div>
+                <% if @user.present? %> 
+                  <input type="hidden" name="user_id" value="<%= @user.id %>">
+                  <input type="hidden" name="group_by" value="personal">
+                <% else %>
+                  <div class="form-group">
+                    <strong class="col-xs-12"><%= t '.group_submissions_label' %></strong>
+                  </div>
+                  <div class="field form-group">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <input type="radio" name="group_by" checked value="user">
+                    </div>
+                    <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.group_by_student_help' %></span>
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <input type="radio" name="group_by" value="exercise">
+                    </div>
+                    <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.group_by_exercise_help' %></span>
+                  </div>
+
+                  <div class="form-group">
+                    <strong class="col-xs-12"><%= t '.all_students_label' %></strong>
+                  </div>
+                  <div class="field form-group">
+                    <div class="col-sm-6 col-sm-offset-3">
+                      <input type="checkbox" checked value="true" name="all_students">
+                    </div>
+                    <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.all_students_label_help' %></span>
+                  </div>
+                <% end %>
+                
+                <div class="form-group">
+                  <strong class="col-xs-12"><%= t '.with_info_label' %></strong>
+                </div>
+                <div class="field form-group">
+                  <div class="col-sm-6 col-sm-offset-3">
+                    <input type="checkbox" value="true" name="with_info">
+                  </div>
+                  <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.with_info_label_help' %></span>
+                </div>
+                
+              </div>
+              <div class="stepper-actions stepper-border">
+                <button type="submit" form="download_submissions" class="btn btn-text btn-primary"><%= t('.start_download') %></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    $(dodona.initSelection());
+</script>

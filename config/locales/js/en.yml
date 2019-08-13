@@ -36,6 +36,7 @@ en:
     configured-institution: the configured institution
     loading: Loading...
     submissions_on: "submissions on"
+    no_selection: You must select at least one item before being able to download solutions.
     months:
       long:
         jan: January

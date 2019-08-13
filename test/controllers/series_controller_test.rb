@@ -58,13 +58,6 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to course_url(course)
   end
 
-  test 'should download solutions' do
-    series = create(:series, :with_submissions)
-    get download_solutions_series_path(series)
-    assert_response :success
-    assert_zip response.body, with_info: false
-  end
-
   test 'should generate scoresheet' do
     series = create(:series, :with_submissions)
     get scoresheet_series_path(series)
@@ -281,7 +274,9 @@ class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_zip response.body,
                with_info: true,
-               solution_count: @series.exercises.count
+               solution_count: @series.exercises.count,
+               group_by: 'exercise',
+               data: { exercises: @series.exercises }
   end
 
   test 'should download solutions even when user does not have submissions' do
@@ -293,7 +288,9 @@ class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_zip response.body,
                with_info: true,
-               solution_count: @series.exercises.count
+               solution_count: @series.exercises.count,
+               group_by: 'exercise',
+               data: { exercises: @series.exercises }
   end
 
   test 'should return 404 when email does not exist' do

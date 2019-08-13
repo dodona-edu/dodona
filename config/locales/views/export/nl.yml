@@ -1,0 +1,28 @@
+nl:
+  export:
+    download_submissions:
+      title: Oplossingen downloaden
+      choose_exercises: Van welke oefeningen wil je oplossingen downloaden?
+      choose_series: Van welke reeksen wil je oplossingen downloaden?
+      choose_courses: Van welke cursussen wil je oplossingen downloaden?
+      next_step: Volgende stap
+      start_download: Start download
+      choose_options: Selecteer de opties die je wenst toe te passen op uw download.
+      only_last_submission_label: Enkel de laatste oplossingen downloaden?
+      only_last_submission_label_help: Indien aangevinkt zal enkel de laatste inzending van een student per oefening aanwezig zijn. Anders zullen alle oplossingen gedownload worden.
+      deadline_label: Rekening houden met de deadline?
+      deadline_label_help: Indien aangevinkt zullen enkel oplossingen voor de deadline in rekening gebracht worden. Indien niet, dan zullen ook oplossingen na de deadline mee in rekening gebracht worden.
+      group_submissions_label: Hoe moeten de oplossingen gegroepeerd worden?
+      group_by_student_help: Resultaat bevat een map per student met zijn oplossingen per oefening.
+      group_by_exercise_help: Resultaat bevat een map per oefening met de oplossingen per student.
+      all_students_label: Alle studenten in rekening brengen bij het downloaden?
+      all_students_label_help: Indien aangeduid worden ook studenten zonder oplossingen vermeld in het resultaat.
+      with_info_label: Informatief CSV-bestand meesturen?
+      with_info_label_help: Het resultaat zal een CSV-bestand bevatten met informatie over de studenten, de oefeningen en de oplossingen.
+      exercise: Oefening
+      course: Cursus
+      series: Reeks
+      no_series: geen-reeks
+    start_download:
+      no_selection: Er moet ten minste één keuze aangeduid worden om oplossingen te kunnen downloaden.
+      unknown_grouping_option: Onbekende groepeeroptie meegegeven

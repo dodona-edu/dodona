@@ -1,8 +1,7 @@
 <tr id="submission_<%= submission.id %>" data-status="<%= submission.status %>">
   <td><%= submission_status_icon(submission) %></td>
-  <% if (current_user.administrating_courses.any? || current_user.admin?) && !user %>
+  <% if (current_user.administrating_courses.any? || current_user.admin?) && user.nil? %>
     <td>
-      <%= print local_assigns %>
       <i class="mdi mdi-filter-outline mdi-18 filter-icon"
          title="<%= t('.filter-submissions-by-user') %>"
          data-filter="<%= submission.user.full_name %>"
@@ -19,15 +18,13 @@
   <% end %>
   <% if !exercise %>
     <td>
-      <% unless user %>
-        <i class="mdi mdi-filter-outline mdi-18 filter-icon"
-          title="<%= t('.filter-submissions-by-exercise') %>"
-          data-filter="<%= submission.exercise.name %>"
-          data-toggle="tooltip"
-          data-placement="top"
-        >
-        </i>
-      <% end %> 
+      <i class="mdi mdi-filter-outline mdi-18 filter-icon"
+        title="<%= t('.filter-submissions-by-exercise') %>"
+        data-filter="<%= submission.exercise.name %>"
+        data-toggle="tooltip"
+        data-placement="top"
+      >
+      </i>
       <% if submission.course.nil? %>
         <%= link_to submission.exercise.name, exercise_path(submission.exercise) %>
       <% else %>

@@ -6,7 +6,7 @@
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th><%= User.human_attribute_name("institution") %></th>
-      <th><%= t("courses.user_stats.exercise_count")%></th>
+      <th class='text-right'><%= t("users.index.progress") %></th>
       <th class='text-right'><%= t(".labels") %></th>
       <th></th>
     </tr>
@@ -24,11 +24,11 @@
           <% end %>
         </td>
         <td>
-        <% if course_membership.pending? || course_membership.unsubscribed? %>
-          <%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %>
-        <% else %>
-          <%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %>
-        <% end %>
+          <% if course_membership.pending? || course_membership.unsubscribed? %>
+            <%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %>
+          <% else %>
+            <%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %>
+          <% end %>
         </td>
         <td><%= user.email %></td>
         <td><%= user.institution&.name %></td>

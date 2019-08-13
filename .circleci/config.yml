@@ -43,6 +43,14 @@ commands:
           key: dodona-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+jobs:
+  test_ruby:
+    docker:
+      - *docker_ruby_config
+      - *docker_db_config
+    working_directory: ~/repo
+    steps:
+      - setup
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://localhost:3306 -timeout 1m
@@ -54,14 +62,6 @@ commands:
           command: |
             git config --global user.name Dodona
             git config --global user.email "dodona@ugent.be"
-jobs:
-  test_ruby:
-    docker:
-      - *docker_ruby_config
-      - *docker_db_config
-    working_directory: ~/repo
-    steps:
-      - setup
       - run:
           name: Run tests
           command: bundle exec rails test --ci-dir=/tmp/test-results/minitest
@@ -71,7 +71,6 @@ jobs:
   test_js:
     docker:
       - *docker_ruby_config
-      - *docker_db_config
     working_directory: ~/repo
     steps:
       - setup
@@ -88,7 +87,6 @@ jobs:
   lint:
     docker:
       - *docker_ruby_config
-      - *docker_db_config
     working_directory: ~/repo
     steps:
       - setup

@@ -87,6 +87,7 @@ en:
         visibility: Visibility
         order: Order
         deadline: Deadline
+        exercises_visible: Exercises visible
         visibilities:
           open: Open
           hidden: Hidden

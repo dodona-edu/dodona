@@ -7,6 +7,7 @@ nl:
       indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
       class_progress_enable: "Toon de \"Voortgang groep\" visualisatie ook aan studenten"
       class_progress_enable_help: "Deze visualisatie is een meerwaarde voor studenten, maar lesgevers willen ze misschien uitschakelen voor examens"
+      exercises-visible: Oefeningen zijn zichtbaar voor studenten.
     index:
       title: Alle reeksen
       load_more: Meer reeksen laden

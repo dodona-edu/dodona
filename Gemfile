@@ -79,7 +79,7 @@ gem 'mail_form', '~> 1.7.1'
 gem 'recaptcha', '~> 5.1.0', require: 'recaptcha/rails'
 
 # authorization
-gem 'pundit', '~> 2.0.1'
+gem 'pundit', '~> 2.1.0'
 
 # impersonate users
 gem 'pretender', '~> 0.3.4'

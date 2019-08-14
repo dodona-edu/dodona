@@ -45,10 +45,9 @@ class Course < ApplicationRecord
 
   has_many :course_labels, dependent: :destroy
 
-  enum visibility: %i[visible_for_all visible_for_institution hidden]
-  enum registration: %i[open_for_all open_for_institution closed]
-  enum color: %i[red pink purple deep-purple indigo teal
-                 orange brown blue-grey]
+  enum visibility: { visible_for_all: 0, visible_for_institution: 1, hidden: 2 }
+  enum registration: { open_for_all: 0, open_for_institution: 1, closed: 2 }
+  enum color: { red: 0, pink: 1, purple: 2, "deep-purple": 3, indigo: 4, teal: 5, orange: 6, brown: 7, "blue-grey": 8 }
 
   has_many :visible_exercises,
            lambda {

@@ -16,14 +16,14 @@
   <% end %>
 
   <%= f.hidden_field :course_id, class: "form-control", value: (series.course_id || params[:course_id]) %>
-  <div class="stepper-part">
+  <div class="card-supporting-text">
     <div class="field form-group">
-      <%= f.label :name, :class => "col-sm-4 control-label" %>
-      <div class="col-sm-8"><%= f.text_field :name, class: "form-control" %></div>
+      <%= f.label :name, :class => "col-sm-3 control-label" %>
+      <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
     </div>
     <div class="field form-group">
-      <%= f.label :deadline, :class => "col-sm-4 control-label" %>
-      <div class='col-sm-8'>
+      <%= f.label :deadline, :class => "col-sm-3 control-label" %>
+      <div class='col-sm-6'>
         <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>
           <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
           <span class="input-group-btn">
@@ -32,31 +32,31 @@
           </span>
         </div>
       </div>
-      <span class="help-block col-sm-offset-4 col-sm-8"><%= t(".deadline-help", time_zone: current_user.time_zone) %></span>
+      <span class="help-block col-sm-offset-3 col-sm-6"><%= t(".deadline-help", time_zone: current_user.time_zone) %></span>
     </div>
     <div class="field form-group">
-      <%= f.label :visibility, :class => "col-sm-4 control-label" %>
-      <div class="col-sm-8"><%= f.select :visibility, Series.visibilities.map {|key, value| [Series.human_enum_name(:visibility, key), key]}, {}, {:class => 'form-control'} %></div>
-      <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".visibility-help_html" %></span>
+      <%= f.label :visibility, :class => "col-sm-3 control-label" %>
+      <div class="col-sm-6"><%= f.select :visibility, Series.visibilities.map {|key, value| [Series.human_enum_name(:visibility, key), key]}, {}, {:class => 'form-control'} %></div>
+      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-help_html" %></span>
     </div>
     <div class="field form-group">
-      <%= f.label :description, :class => "col-sm-4 control-label" %>
-      <div class="col-sm-8"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
-      <span class="help-block col-sm-offset-4 col-sm-8"><%= t ".description-help" %></span>
+      <%= f.label :description, :class => "col-sm-3 control-label" %>
+      <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
+      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>
     </div>
   </div>
-  <div class="stepper-part stepper-border">
+  <div class="card-supporting-text card-border">
     <div class="field form-group">
-      <div class="col-sm-offset-4 col-sm-8">
+      <div class="col-sm-offset-3 col-sm-6">
         <%= f.check_box :progress_enabled %> <%= f.label :progress_enabled, t('.class_progress_enable'), class: 'checkbox-label' %>
       </div>
-      <span class="help-block col-sm-offset-4 col-sm-8">
+      <span class="help-block col-sm-offset-3 col-sm-6">
         <%= t('.class_progress_enable_help') %>
       </span>
     </div>
     <% if series.course.institution == Institution.first %>
     <div class="field form-group">
-      <div class="col-sm-8 col-sm-offset-4">
+      <div class="col-sm-6 col-sm-offset-3">
         <div class="checkbox">
           <%= f.label :indianio_support do %>
             <%= f.check_box :indianio_support %>
@@ -64,13 +64,13 @@
           <% end %>
         </div>
       </div>
-      <span class="help-block col-sm-offset-4 col-sm-8">
+      <span class="help-block col-sm-offset-3 col-sm-6">
         <%= t '.indianio-support-help' %>
       </span>
     </div>
   <% end %>
   <div class="field form-group">
-      <div class="col-sm-8 col-sm-offset-4">
+      <div class="col-sm-6 col-sm-offset-3">
         <div class="checkbox">
           <%= f.label :exercises_visible do %>
             <%= f.check_box :exercises_visible %>
@@ -78,7 +78,7 @@
           <% end %>
         </div>
       </div>
-      <span class="help-block col-sm-offset-4 col-sm-8">
+      <span class="help-block col-sm-offset-3 col-sm-6">
         <%= t '.exercises-visible' %>
       </span>
     </div>

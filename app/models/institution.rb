@@ -18,7 +18,7 @@
 
 class Institution < ApplicationRecord
   NEW_INSTITUTION_NAME = 'n/a'.freeze
-  enum provider: %i[smartschool office365 saml google_oauth2]
+  enum provider: { smartschool: 0, office365: 1, saml: 2, google_oauth2: 3 }
 
   has_many :users, dependent: :restrict_with_error
   has_many :courses, dependent: :restrict_with_error

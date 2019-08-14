@@ -22,7 +22,7 @@ class Submission < ApplicationRecord
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
 
-  enum status: [:unknown, :correct, :wrong, :'time limit exceeded', :running, :queued, :'runtime error', :'compilation error', :'memory limit exceeded', :'internal error']
+  enum status: { unknown: 0, correct: 1, wrong: 2, "time limit exceeded": 3, running: 4, queued: 5, "runtime error": 6, "compilation error": 7, "memory limit exceeded": 8, "internal error": 9 }
 
   belongs_to :exercise
   belongs_to :user

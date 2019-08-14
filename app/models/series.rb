@@ -19,7 +19,7 @@
 require 'csv'
 
 class Series < ApplicationRecord
-  enum visibility: %i[open hidden closed]
+  enum visibility: { open: 0, hidden: 1, closed: 2 }
 
   belongs_to :course
   has_many :series_memberships, dependent: :destroy

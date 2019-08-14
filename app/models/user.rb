@@ -28,7 +28,7 @@ class User < ApplicationRecord
   ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%{course_id}/user/%{id}/attempted_exercises'.freeze
   CORRECT_EXERCISES_CACHE_STRING = '/courses/%{course_id}/user/%{id}/correct_exercises'.freeze
 
-  enum permission: %i[student staff zeus]
+  enum permission: { student: 0, staff: 1, zeus: 2 }
 
   belongs_to :institution, optional: true
 

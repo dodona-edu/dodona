@@ -37,8 +37,8 @@ class Exercise < ApplicationRecord
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
   # We need to prefix, otherwise Rails can't generate the public? method
-  enum access: %i[public private], _prefix: true
-  enum status: %i[ok not_valid removed]
+  enum access: { public: 0, private: 1 }, _prefix: true
+  enum status: { ok: 0, not_valid: 1, removed: 2 }
 
   belongs_to :repository
   belongs_to :judge

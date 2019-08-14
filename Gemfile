@@ -179,4 +179,4 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'docker-api', '~> 1.34.2'
 
 gem 'actiontext', github: 'rails/actiontext', require: 'action_text', branch: 'archive'
-gem 'image_processing', '~> 1.2' # for Active Storage variants
+gem 'image_processing', '~> 1.9' # for Active Storage variants

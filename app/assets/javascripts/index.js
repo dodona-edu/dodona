@@ -13,6 +13,10 @@ const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
 
+/* constants for element-keys that are used when filtering */
+const FILTER_ICONS_CLASS = ".filter-icon";
+const FILTER_DATA = "filter";
+
 window.dodona.index = {};
 window.dodona.index.baseUrl = window.location.href;
 window.dodona.index.doSearch = () => { };
@@ -366,4 +370,22 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     init();
 }
 
-export { initFilterIndex, setBaseUrl };
+function initFilterButtons() {
+    function init() {
+        const $filterButtons = $(FILTER_ICONS_CLASS);
+        $filterButtons.click(filter);
+        $filterButtons.tooltip(); // initialize the tooltips of the buttons
+    }
+
+    function filter() {
+        const $element = $(this);
+        const $searchbar = $(QUERY_FILTER_ID);
+        $searchbar.typeahead("val", $element.data(FILTER_DATA)); // search for value requested by user
+        $(".tooltip").tooltip("hide"); // prevent tooltip from displaying when table is re-rendered
+        window.dodona.index.doSearch();
+    }
+
+    init();
+}
+
+export { initFilterButtons, initFilterIndex, setBaseUrl };

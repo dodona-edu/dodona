@@ -3,6 +3,8 @@ nl:
     submission:
       ago: geleden
       view_solution: Oplossing bekijken
+      filter-submissions-by-user: "Toon enkel inzendingen van deze gebruiker"
+      filter-submissions-by-exercise: "Toon enkel inzendingen voor deze oefening"
     submissions_table:
       user: Gebruiker
       exercise: Oefening

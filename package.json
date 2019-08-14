@@ -9,7 +9,7 @@
     "@rails/webpacker": "4.0.7",
     "@types/d3": "^5.7.2",
     "@types/jquery": "^3.3.31",
-    "actiontext": "https://github.com/rails/actiontext",
+    "actiontext": "https://github.com/rails/actiontext#archive",
     "clipboard": "^2.0.4",
     "d3": "^5.9.7",
     "dragula": "^3.7.2",

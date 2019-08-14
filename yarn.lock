@@ -1725,18 +1725,9 @@ acorn@^6.0.7, acorn@^6.2.1:
   integrity sha512-JD0xT5FCRDNyjDda3Lrg/IxFscp9q4tiYtxE1/nOzlKCk7hIRuYjhq1kCNkbPjMRMZuFq20HNQn1I9k8Oj0E+Q==
 
 "actiontext@https://github.com/rails/actiontext":
-  version "0.1.0"
-  resolved "https://github.com/rails/actiontext#18974137be2c4027dfcf430668edd712e7ec011b"
-  dependencies:
-    activestorage ">=5.2.0"
-    trix ">=1.0.0"
-
-activestorage@>=5.2.0:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/activestorage/-/activestorage-5.2.1.tgz#b4be57fbedc25c6c361802707fc5e8884766f6a1"
-  integrity sha512-n3LcwiC3EV5zkVAvay5yprXTBb8vzT2Qef1GCfC8feJTVWEadzNW9zYaOweDpshqzJHx+zdaps6uiHDJQbdCdA==
-  dependencies:
-    spark-md5 "^3.0.0"
+  version "0.0.0"
+  uid b67ab5bc62c630c6d58c49eaa2282e186431d760
+  resolved "https://github.com/rails/actiontext#b67ab5bc62c630c6d58c49eaa2282e186431d760"
 
 ajv-errors@^1.0.0:
   version "1.0.1"
@@ -9078,11 +9069,6 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.1:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
-spark-md5@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/spark-md5/-/spark-md5-3.0.0.tgz#3722227c54e2faf24b1dc6d933cc144e6f71bfef"
-  integrity sha1-NyIifFTi+vJLHcbZM8wUTm9xv+8=
-
 spdx-correct@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/spdx-correct/-/spdx-correct-3.0.0.tgz#05a5b4d7153a195bc92c3c425b69f3b2a9524c82"
@@ -9619,11 +9605,6 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
-
-trix@>=1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/trix/-/trix-1.0.0.tgz#e9cc98cf6030c908f8d54e317b5b072f927b0c6b"
-  integrity sha512-feli9QVXe6gzZOCUfpPGpNDURW9jMciIRVQ5gkDudOctcA1oMtI5K/qEbsL2rFCoGl1rSoeRt+HPhIFGyQscKg==
 
 "true-case-path@^1.0.2":
   version "1.0.3"

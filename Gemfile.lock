@@ -223,7 +223,6 @@ GEM
     multipart-post (2.1.1)
     mustermann (1.0.3)
     mysql2 (0.5.2)
-    mysql2 (0.5.2-x64-mingw32)
     net-scp (2.0.0)
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
@@ -371,8 +370,6 @@ GEM
     tilt (2.0.9)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    tzinfo-data (1.2019.2)
-      tzinfo (>= 1.0.0)
     uglifier (4.1.20)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.6.0)
@@ -396,7 +393,6 @@ GEM
 
 PLATFORMS
   ruby
-  x64-mingw32
 
 DEPENDENCIES
   ace-rails-ap (~> 4.2)
@@ -476,4 +472,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.17.3
+   1.16.6

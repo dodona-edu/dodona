@@ -61,7 +61,15 @@
         <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
           <td class="hidden-xs">
             <% if @course %>
-              <%= render partial: 'exercises/class_progress_chart', locals: {users_total: @course.subscribed_members_count, users_tried: ex.users_tried, users_correct: ex.users_correct} %>
+              <%= render partial: 'application/progress_chart',
+                locals: {
+                  total: @course.subscribed_members_count,
+                  tried: ex.users_tried,
+                  correct: ex.users_correct,
+                  info_tried: 'exercises.index.progress_chart_info_tried',
+                  info_correct: 'exercises.index.progress_chart_info_correct'
+                }
+              %>
             <% else %>
               <%= content_tag :span, title: t('exercises.exercise.count_tooltip'), class: "text-right text-muted" do %>
                 <%= ex.users_correct %>/<%= ex.users_tried %>

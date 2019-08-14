@@ -23,15 +23,25 @@
             <i class="mdi mdi-alert mdi-18" title='<%= t "users.users_table.no_institution" %>'></i>
           <% end %>
         </td>
-        <% if course_membership.pending? || course_membership.unsubscribed? %>
-          <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
-        <% else %>
-          <td><%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %></td>
-        <% end %>
+        <td>
+          <% if course_membership.pending? || course_membership.unsubscribed? %>
+            <%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %>
+          <% else %>
+            <%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %>
+          <% end %>
+        </td>
         <td><%= user.email %></td>
         <td><%= user.institution&.name %></td>
-        <td class='text-right'>
-          <%= link_to "#{user.correct_exercises(course: @course)}/#{user.attempted_exercises(course: @course)}", course_submissions_path(@course, user_id: user.id) %>
+        <td class="hidden-xs">
+          <%= render partial: 'application/progress_chart',
+              locals: { 
+                total: @course.exercises_count,
+                tried: user.attempted_exercises(course: @course),
+                correct: user.correct_exercises(course: @course),
+                info_tried: 'course_members.members_table.member_progress_chart_info_tried',
+                info_correct: 'course_members.members_table.member_progress_chart_info_correct'
+              } 
+            %>
         </td>
         <td class='text-right course-membership-labels'>
           <% course_membership.course_labels.each do |label| %>

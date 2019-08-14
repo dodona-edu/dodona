@@ -86,7 +86,7 @@
             <% end %>
             <li role="separator" class="divider"></li>
           <% end %>
-          <% if policy(series).show? %>
+          <% if policy(series).overview? %>
             <li>
               <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
                 <i class='mdi mdi-eye mdi-18'></i> <%= t("series.show.show_overview") %>
@@ -114,7 +114,7 @@
     <%= markdown(series.description) %>
   </div>
 
-  <% if series.exercises.length > 0 %>
+  <% if policy(series).overview? && series.exercises.length > 0 %>
     <div class="series-exercises-table-wrapper">
       <% if loaded %>
         <%= render partial: 'exercises/exercises_table', locals: {

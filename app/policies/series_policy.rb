@@ -30,7 +30,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def overview?
-    show?
+    show? && (record.exercises_visible || course_admin?)
   end
 
   def create?

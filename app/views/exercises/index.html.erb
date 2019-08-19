@@ -6,8 +6,9 @@
       </div>
       <div class="card-supporting-text">
         <%= render partial: 'layouts/searchbar', locals: {labels: @labels, programming_languages: @programming_languages, repositories: @repositories} %>
-        <div id="exercises-table-wrapper">
-          <%= render partial: 'exercises_table', locals: {exercises: @exercises} %>
+        <%-# The id is used in index.js.erb to fill in search results, this if prevents results from being shown -%>
+        <div id="<%= policy(@series).overview? ? "exercises-table-wrapper" : "" %>">
+          <%= render partial: 'exercises_table', locals: {exercises: policy(@series).overview? ? @exercises : [] } %>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ en:
       indianio-support-help: Allow students' solutions to be extracted by Indianio.
       class_progress_enable: "Also enable the \"Class progress\" visualisation for students"
       class_progress_enable_help: "This visualisation is an added value for students, but teachers may wish to disable it for exams."
-      exercises-visible: Exercises are visible to students.
+      exercises-visible-help: This setting only influences whether exercises in this series are shown to students. The description will always be visible. This allows teachers to release learning material early but keep students from actually starting the exercises.
       advanced_settings: Advanced settings
     index:
       title: All series

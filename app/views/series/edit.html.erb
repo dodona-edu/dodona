@@ -10,9 +10,7 @@
           <%= render 'fab_button', form: "edit_series_#{@series.id}", icon: 'check' %>
         </div>
       </div>
-      <div class="card-supporting-text row">
-        <%= render 'form', series: @series %>
-      </div>
+      <%= render 'form', series: @series %>
       <% if @series.indianio_token || !@series.open? %>
         <div class="card-supporting-text card-border">
           <h4><%= t '.confidential' %></h4>

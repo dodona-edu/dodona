@@ -110,6 +110,9 @@
   <% if current_user&.course_admin?(series.course) && series.closed? %>
     <div class="alert alert-info hidden-print"><%= t "series.show.series_not_accessible" %></div>
   <% end %>
+  <% if current_user&.course_admin?(series.course) && !series.exercises_visible %>
+    <div class="alert alert-info hidden-print"><%= t "series.show.exercises_not_visible" %></div>
+  <% end %>
   <div class="series-description">
     <%= markdown(series.description) %>
   </div>

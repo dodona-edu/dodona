@@ -19,7 +19,7 @@ class ExercisesController < ApplicationController
 
     @exercises = if params[:series_id]
                    @series = Series.find(params[:series_id])
-                   authorize @series, :show?
+                   authorize @series, :overview?
                    @series.exercises
                  else
                    policy_scope(Exercise)

@@ -50,10 +50,12 @@
     <h4><%= t('.advanced_settings') %></h4>
     <div class="field form-group">
       <div class="col-sm-offset-3 col-sm-6">
-        <%= f.check_box :progress_enabled %> <%= f.label :progress_enabled, t('.class_progress_enable'), class: 'checkbox-label' %>
+        <input type="hidden" value="1" name="series[progress_enabled]">
+        <%= check_box_tag "series[progress_enabled]", "0", !@series.progress_enabled %>
+        <%= f.label :progress_enabled, t('.class_progress_disable'), class: 'checkbox-label' %>
       </div>
       <span class="help-block col-sm-offset-3 col-sm-6">
-        <%= t('.class_progress_enable_help') %>
+        <%= t('.class_progress_disable_help') %>
       </span>
     </div>
   <% if series.course.institution == Institution.first %>

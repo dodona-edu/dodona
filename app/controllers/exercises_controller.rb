@@ -20,7 +20,7 @@ class ExercisesController < ApplicationController
     @exercises = if params[:series_id]
                    @series = Series.find(params[:series_id])
                    authorize @series, :show?
-                   @series.exercises
+                   policy(@series).overview? ? @series.exercises : []
                  else
                    policy_scope(Exercise)
                  end
@@ -30,9 +30,10 @@ class ExercisesController < ApplicationController
       @exercises = @exercises.in_repository(@repository)
     end
 
-    @exercises = apply_scopes(@exercises)
-
-    @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
+    unless @exercises.empty?
+      @exercises = apply_scopes(@exercises)
+      @exercises = @exercises.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
+    end
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)
     @repositories = policy_scope(Repository.all)

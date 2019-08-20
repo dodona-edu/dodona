@@ -74,14 +74,15 @@
   <div class="field form-group">
       <div class="col-sm-6 col-sm-offset-3">
         <div class="checkbox">
-          <%= f.label :exercises_visible do %>
-            <%= f.check_box :exercises_visible %>
-            <%= Series.human_attribute_name(:exercises_visible) %>
+          <%= f.label :exercises_visible, class: 'checkbox-label' do %>
+            <input type="hidden" value="1" name="series[exercises_visible">
+            <%= check_box_tag "series[exercises_visible]", "0", !@series.exercises_visible %>
+            <%= t '.hide_exercises' %>
           <% end %>
         </div>
       </div>
       <span class="help-block col-sm-offset-3 col-sm-6">
-        <%= t '.exercises-visible-help' %>
+        <%= t '.hide_exercises_help' %>
       </span>
     </div>
   </div>

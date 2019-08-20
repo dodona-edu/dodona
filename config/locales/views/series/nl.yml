@@ -7,7 +7,8 @@ nl:
       indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
       class_progress_enable: "Toon de \"Voortgang groep\" visualisatie ook aan studenten"
       class_progress_enable_help: "Deze visualisatie is een meerwaarde voor studenten, maar lesgevers willen ze misschien uitschakelen voor examens"
-      exercises-visible-help: Deze instelling bepaalt enkel of oefeningen in deze reeks zichtbaar zijn voor studenten of niet. De beschrijving is altijd zichtbaar. Dit laat leerkrachten toe om leerstof vroegtijdig beschikbaar te stellen, zonder dat studenten aan de oefeningen kunnen beginnen.
+      hide_exercises: Verberg oefeningen
+      hide_exercises_help: "Als de oefeningen verborgen zijn, zal enkel de beschrijving van deze reeks getoond worden. Leerkrachten kunnen deze instelling gebruiken om vroegtijdig de leerstof van de reeks beschikbaar te stellen, zonder oefeningen vrij te geven."
       advanced_settings: Geavanceerde instellingen
     index:
       title: Alle reeksen

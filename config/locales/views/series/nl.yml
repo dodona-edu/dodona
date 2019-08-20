@@ -8,7 +8,7 @@ nl:
       class_progress_enable: "Toon de \"Voortgang groep\" visualisatie ook aan studenten"
       class_progress_enable_help: "Deze visualisatie is een meerwaarde voor studenten, maar lesgevers willen ze misschien uitschakelen voor examens"
       hide_exercises: Verberg oefeningen
-      hide_exercises_help: "Als de oefeningen verborgen zijn, zal enkel de beschrijving van deze reeks getoond worden. Leerkrachten kunnen deze instelling gebruiken om vroegtijdig de leerstof van de reeks beschikbaar te stellen, zonder oefeningen vrij te geven."
+      hide_exercises_help: "Als de oefeningen verborgen zijn, dan zal enkel de beschrijving van deze reeks getoond worden. Lesgevers kunnen deze instelling gebruiken om bijvoorbeeld de leerstof van de reeks vooraf beschikbaar te stellen, zonder de oefeningen al vrij te geven."
       advanced_settings: Geavanceerde instellingen
     index:
       title: Alle reeksen
@@ -26,7 +26,7 @@ nl:
       download_all_solutions: Alle oplossingen downloaden
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
-      exercises_not_visible: Oefeningen in deze reeks zijn niet zichtbaar voor studenten!
+      exercises_not_visible: De oefeningen in deze reeks zijn niet zichtbaar voor studenten!
       missed_deadline: deadline gemist
       deadline_in: binnen
       series_scoresheet: Statusoverzicht

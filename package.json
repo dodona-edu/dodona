@@ -11,7 +11,7 @@
     "@types/jquery": "^3.3.31",
     "actiontext": "https://github.com/rails/actiontext#archive",
     "clipboard": "^2.0.4",
-    "d3": "^5.9.7",
+    "d3": "^5.10.0",
     "dragula": "^3.7.2",
     "firebase": "^6.4.0",
     "first-input-delay": "^0.1.3",

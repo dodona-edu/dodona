@@ -19,28 +19,16 @@ function setToAYStart(day: moment.Moment): moment.Moment {
     return day.month(8).date(1);
 }
 
-function initHeatmap(url: string, year: string | undefined): void {
+function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined): void {
     d3.select(selector).attr("class", "text-center").append("span").text(I18n.t("js.loading"));
     d3.json(url).then(data => {
         d3.select(`${selector} *`).remove();
 
-        let keys = Object.keys(data).sort();
+        const keys = Object.keys(data).sort();
 
         let firstDay;
         let lastDay;
-        if (year && /[0-9]{4}-[0-9]{4}/.test(year)) {
-            const split = year.split("-");
-            firstDay = setToAYStart(moment.utc(`${split[0]}-01-01`));
-            lastDay = moment.min([
-                setToAYStart(moment.utc(`${split[1]}-01-01`)),
-                moment.utc(moment().format(isoDateFormat)).add(1, "day"),
-            ]);
-            const fdFormat = firstDay.format(isoDateFormat);
-            const ldFormat = lastDay.format(isoDateFormat);
-            keys = keys.filter(k => {
-                return k >= fdFormat && k < ldFormat;
-            });
-        } else if (keys.length > 0) {
+        if (keys.length > 0) {
             firstDay = firstDayOfAY(moment.utc(keys[0]));
             lastDay = moment.min([
                 firstDayOfAY(moment.utc(keys[keys.length - 1]).add(1, "year")),
@@ -56,18 +44,19 @@ function initHeatmap(url: string, year: string | undefined): void {
                 keys.push(date.format(isoDateFormat));
             }
         }
-
         drawHeatmap(
             keys
                 .sort()
                 .map(
                     k => [moment.utc(k), data[k] || 0] as [moment.Moment, number]
-                )
+                ),
+            oldestFirst,
+            year
         );
     });
 }
 
-function drawHeatmap(data: [moment.Moment, number][]): void {
+function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year: string | undefined): void {
     const darkMode = window.dodona.darkMode;
     const emptyColor = darkMode ? "#37474F" : "white";
     const lowColor = darkMode ? "#01579B" : "#E3F2FD";
@@ -90,6 +79,14 @@ function drawHeatmap(data: [moment.Moment, number][]): void {
     const lastAY = firstDayOfAY(lastDay);
 
     const years = lastAY.year() - firstAY.year() + 1;
+
+    function yearOffset(i: number): number {
+        if (oldestFirst) {
+            return i * (innerHeight + margin.top + margin.bottom);
+        }
+        return (years - i - 1) * (innerHeight + margin.top + margin.bottom);
+    }
+
     let maxWeeks = 0;
     const weekdaysData = [];
     const yearsData = [];
@@ -127,9 +124,10 @@ function drawHeatmap(data: [moment.Moment, number][]): void {
     yearsLabels.enter().append("text").attr("class", "academic-year")
         .attr("x", innerWidth / 2 - 30)
         .attr("y", (d, i) => {
-            return (years - i - 1) * (innerHeight + margin.top + margin.bottom) - 30;
+            return yearOffset(i) - 30;
         })
         .attr("fill", "currentColor")
+        .attr("font-weight", d => d === year && years > 1 ? "bold" : "normal")
         .text(d => d);
 
     const weekdays = chart.selectAll(".week-day").data(weekdaysData);
@@ -137,8 +135,7 @@ function drawHeatmap(data: [moment.Moment, number][]): void {
         .attr("x", -20)
         .attr("y", (d, i) => {
             const graphOffset = ((i % 3) * 2 + 1) * unitSize - (unitSize - 10) / 2;
-            const yearOffset = (years - d[0] - 1) * (innerHeight + margin.top + margin.bottom);
-            return graphOffset + yearOffset;
+            return graphOffset + yearOffset(d[0]);
         })
         .attr("fill", "currentColor")
         .text(d => d[1]);
@@ -166,7 +163,7 @@ function drawHeatmap(data: [moment.Moment, number][]): void {
         })
         .attr("y", d => {
             const ayStart = firstDayOfAY(d);
-            return (years - (ayStart.year() - firstAY.year()) - 1) * (innerHeight + margin.top + margin.bottom) - 5;
+            return yearOffset(ayStart.year() - firstAY.year()) - 5;
         });
 
     const dayCells = chart.selectAll(".day-cell").data(data, d => d[0]);
@@ -194,7 +191,7 @@ function drawHeatmap(data: [moment.Moment, number][]): void {
         })
         .attr("y", d => {
             const ayStart = firstDayOfAY(d[0]);
-            return (years - (ayStart.year() - firstAY.year()) - 1) * (innerHeight + margin.top + margin.bottom) + (d[0].isoWeekday() - 1) * unitSize + 1 + (d[0].isoWeekday() > 5 ? weekendOffset : 0);
+            return yearOffset(ayStart.year() - firstAY.year()) + (d[0].isoWeekday() - 1) * unitSize + 1 + (d[0].isoWeekday() > 5 ? weekendOffset : 0);
         })
         .transition().duration(500)
         .attr("fill", d => d[1] === 0 ? "" : colorRange(d[1]));

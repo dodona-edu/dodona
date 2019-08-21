@@ -5,15 +5,14 @@ references:
     image: circleci/ruby:2.5.1-node
     environment:
       RAILS_ENV: "test"
-      DATABASE_URL: "mysql2://dodona:dodona@127.0.0.1:3306/dodona_test"
+      PARALLEL_WORKERS: "8"
+      DATABASE_URL: "mysql2://root:dodona@127.0.0.1:3306/dodona_test"
       BUNDLE_PATH: vendor/bundle
   docker_db_config: &docker_db_config
     image: circleci/mariadb:10.4.6
     environment:
       MYSQL_DATABASE: "dodona_test"
-      MYSQL_USER: "dodona"
-      MYSQL_PASSWORD: "dodona"
-      MYSQL_RANDOM_ROOT_PASSWORD: true
+      MYSQL_ROOT_PASSWORD: "dodona"
       MYSQL_HOST: "localhost"
 
 commands:

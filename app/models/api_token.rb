@@ -18,7 +18,7 @@ class ApiToken < ApplicationRecord
   validates :description,
             presence: true,
             length: { minimum: 3, maximum: 255 },
-            uniqueness: { scope: :user_id }
+            uniqueness: { scope: :user_id, case_sensitive: false }
 
   # This token will only be different than nil
   # when it is newly created, not when fetched

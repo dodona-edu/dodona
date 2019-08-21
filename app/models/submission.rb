@@ -61,7 +61,7 @@ class Submission < ApplicationRecord
 
   scope :most_recent, lambda {
     submissions = select('MAX(submissions.id) as id')
-    Submission.joins <<~HEREDOC
+    Submission.unscoped.joins <<~HEREDOC
       JOIN (#{submissions.to_sql}) most_recent
       ON submissions.id = most_recent.id
     HEREDOC

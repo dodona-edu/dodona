@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.3'
+gem 'rails', '~> 6.0.0'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.2'
 # Use Puma as the app server
@@ -25,8 +25,8 @@ gem 'jbuilder', '~> 2.9.1'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# Use ActiveStorage variant
-# gem 'mini_magick', '~> 4.8'
+# Use Active Storage variant
+gem 'image_processing', '~> 1.9.2'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '~> 1.4.4', require: false
@@ -35,7 +35,7 @@ gem 'bootsnap', '~> 1.4.4', require: false
 gem 'json-schema', '~> 2.8.1'
 
 # delayed jobs
-gem 'delayed_job_active_record', '~> 4.1.3'
+gem 'delayed_job_active_record', '~> 4.1.4'
 
 # start workers in the background
 gem 'daemons', '~>1.3'
@@ -75,7 +75,7 @@ gem 'omniauth-oauth2', '~> 1.6.0'
 gem 'jwt', '~> 2.2.1'
 
 # contact mail form
-gem 'mail_form', '~> 1.7.1'
+gem 'mail_form', '~> 1.8.0'
 gem 'recaptcha', '~> 5.1.0', require: 'recaptcha/rails'
 
 # authorization
@@ -96,7 +96,7 @@ gem 'capistrano3-delayed-job', '~> 1.7.6'
 
 # i18n
 gem 'i18n-js', '~> 3.3.0'
-gem 'rails-i18n', '~> 5.1.3'
+gem 'rails-i18n', '~> 6.0.0'
 
 # email exceptions
 gem 'exception_notification', '~> 4.4.0'
@@ -166,7 +166,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.1'
 
   # Manage processes (webpack, rails, delayed_job, ...)
-  gem 'foreman', '~> 0.85.0'
+  gem 'foreman', github: 'andrewmcodes/foreman'
 
   # for opening letters
   gem 'letter_opener', '~> 1.7.0'
@@ -177,6 +177,3 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
 gem 'docker-api', '~> 1.34.2'
-
-gem 'actiontext', github: 'rails/actiontext', require: 'action_text', branch: 'archive'
-gem 'image_processing', '~> 1.2' # for Active Storage variants

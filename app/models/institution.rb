@@ -23,7 +23,7 @@ class Institution < ApplicationRecord
   has_many :users, dependent: :restrict_with_error
   has_many :courses, dependent: :restrict_with_error
 
-  validates :identifier, uniqueness: { allow_blank: true }
+  validates :identifier, uniqueness: { allow_blank: true, case_sensitive: false }
   validates :logo, :short_name, :provider, presence: true
   validates :sso_url, :slo_url, :certificate, :entity_id, presence: true, if: :saml?
 

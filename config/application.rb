@@ -11,7 +11,7 @@ Bundler.require(*Rails.groups)
 module Dodona
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 6.0
 
     config.dodona_email = 'dodona@ugent.be'
     config.tutor_docker_network_prefix = '192.168.'
@@ -20,17 +20,22 @@ module Dodona
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    Rails.application.config.time_zone = 'Brussels'
+    config.time_zone = 'Brussels'
 
-    Rails.application.config.i18n.available_locales = %w[en nl]
-    Rails.application.config.i18n.default_locale = :nl
-    Rails.application.config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    config.i18n.available_locales = %w[en nl]
+    config.i18n.default_locale = :nl
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
-    Rails.application.config.autoload_paths += Dir[Rails.root.join('app', 'helpers', 'renderers')]
-    Rails.application.config.autoload_paths += Dir[Rails.root.join('app', 'models', 'transient')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'helpers', 'renderers')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'models', 'transient')]
 
-    Rails.application.config.middleware.use I18n::JS::Middleware
+    config.middleware.use I18n::JS::Middleware
 
-    Rails.application.config.active_job.queue_adapter = :delayed_job
+    config.active_job.queue_adapter = :delayed_job
+
+    config.active_storage.queues.analysis = :default
+    config.active_storage.queues.purge    = :default
+
+    config.action_view.default_form_builder = "StandardFormBuilder"
   end
 end

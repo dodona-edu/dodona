@@ -5,6 +5,7 @@ references:
     image: circleci/ruby:2.5.1-node
     environment:
       RAILS_ENV: "test"
+      PARALLEL_WORKERS: "1"
       DATABASE_URL: "mysql2://dodona:dodona@127.0.0.1:3306/dodona_test"
       BUNDLE_PATH: vendor/bundle
   docker_db_config: &docker_db_config

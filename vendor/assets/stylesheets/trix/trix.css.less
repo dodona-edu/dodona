@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*
-Trix 1.0.0
-Copyright © 2018 Basecamp, LLC
+Trix 1.2.0
+Copyright © 2019 Basecamp, LLC
 http://trix-editor.org/*/
 trix-editor {
   border: 1px solid #bbb;
@@ -133,6 +133,12 @@ trix-toolbar .trix-button--icon.trix-active::before {
 
 trix-toolbar .trix-button--icon:disabled::before {
   opacity: 0.125;
+}
+
+trix-toolbar .trix-button--icon-attach::before {
+  background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M16.5%206v11.5a4%204%200%201%201-8%200V5a2.5%202.5%200%200%201%205%200v10.5a1%201%200%201%201-2%200V6H10v9.5a2.5%202.5%200%200%200%205%200V5a4%204%200%201%200-8%200v12.5a5.5%205.5%200%200%200%2011%200V6h-1.5z%22%2F%3E%3C%2Fsvg%3E);
+  top: 8%;
+  bottom: 4%;
 }
 
 trix-toolbar .trix-button--icon-bold::before {

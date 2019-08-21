@@ -8,10 +8,11 @@
 // layout file, like app/views/layouts/application.html.erb
 
 
-import Rails from "rails-ujs";
-import "actiontext";
+import { start as startRails } from "@rails/ujs";
+import { start as startActiveStorage } from "@rails/activestorage";
 
-Rails.start();
+startRails();
+startActiveStorage();
 
 import jQuery from "jquery";
 

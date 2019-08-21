@@ -9,6 +9,9 @@ set :rails_env, :development
 
 set :delayed_job_workers, 3
 
+# Development mode doesn't use the `secret_key_base` stored in the credentials, but we would still like a stable key.
+set :linked_files, fetch(:linked_files, []).push('tmp/development_secret.txt')
+
 # Perform yarn install before precompiling the assets in order to pass the
 # integrity check.
 namespace :deploy do

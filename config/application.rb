@@ -35,5 +35,7 @@ module Dodona
 
     config.active_storage.queues.analysis = :default
     config.active_storage.queues.purge    = :default
+
+    config.action_view.default_form_builder = "StandardFormBuilder"
   end
 end

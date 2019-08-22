@@ -20,7 +20,7 @@ en:
       exercises: Exercises
     admins:
       admins: "Administrators"
-      admin_explanation: "The users listed below are repository administrators. These users can can make others repository admins, view the private exercises in this repository, edit exercises in the repository and manage which courses can use private exercises."
+      admin_explanation: "The users listed below are repository administrators. These users can make others repository admins, view the private exercises in this repository, edit exercises in the repository and manage which courses can use private exercises."
       add_admins: "Add admins"
     reprocess:
       done: All exercises in this repository were reprocessed

@@ -69,7 +69,7 @@ gem 'devise', '~>4.7.0'
 gem 'devise_saml_authenticatable', '~> 1.5.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 0.7.0'
+gem 'omniauth-google-oauth2', '~> 0.8.0'
 gem 'omniauth-oauth2', '~> 1.6.0'
 
 gem 'jwt', '~> 2.2.1'

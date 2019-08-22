@@ -12,7 +12,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions
 
-  test 'staff should not be able to make theirself zeus' do
+  test 'staff should not be able to make themself zeus' do
     sign_out :user
 
     staff = create(:staff)

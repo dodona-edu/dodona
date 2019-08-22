@@ -77,8 +77,6 @@ class UserPolicy < ApplicationPolicy
   def permitted_attributes
     if user&.zeus?
       %i[username first_name last_name email permission time_zone]
-    elsif user&.admin?
-      %i[username first_name last_name email time_zone]
     else
       %i[time_zone]
     end

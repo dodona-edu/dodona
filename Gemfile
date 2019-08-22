@@ -42,7 +42,7 @@ gem 'daemons', '~>1.3'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.3'
-gem 'sinatra', '~>2.0.5'
+gem 'sinatra', '~>2.0.7'
 
 # pagination
 gem 'will_paginate', '~>3.1.8'

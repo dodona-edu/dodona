@@ -12,6 +12,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions
 
+  test 'staff should not be able to make theirself zeus' do
+    sign_out :user
+
+    staff = create(:staff)
+    sign_in staff
+
+    put user_url(staff), params: { user: { permission: :zeus } }
+
+    assert_not staff.reload.zeus?
+  end
+
   test 'json representation should contain courses' do
     # create distractions
     other_user = create(:student)

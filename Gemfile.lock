@@ -386,11 +386,11 @@ GEM
     unicode-display_width (1.6.0)
     warden (1.2.8)
       rack (>= 2.0.6)
-    web-console (3.7.0)
-      actionview (>= 5.0)
-      activemodel (>= 5.0)
+    web-console (4.0.1)
+      actionview (>= 6.0.0)
+      activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
-      railties (>= 5.0)
+      railties (>= 6.0.0)
     webpacker (4.0.7)
       activesupport (>= 4.2)
       rack-proxy (>= 0.6.1)
@@ -475,7 +475,7 @@ DEPENDENCIES
   therubyracer
   tzinfo-data
   uglifier (>= 4.1.20)
-  web-console (~> 3.7.0)
+  web-console (~> 4.0.1)
   webpacker (~> 4.0.7)
   will_paginate (~> 3.1.8)
 

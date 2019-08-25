@@ -49,10 +49,10 @@ en:
       wrong: wrong
       hand_in_tooltip: Click the play button to hand in and test your solution.
       not_found: Sorry, we can't find this exercise.
-      not_accessible: This exercise isn't accessible for students.
+      not_accessible: This exercise isn't accessible to students.
       not_visible: This exercise isn't visible for students without the correct link.
       not_a_member: You are viewing this exercise within a course of which you are not a member. You won't show up on your teacher's scoresheets until you register.
-      alert_not_valid: There's something wrong with this exercise. You can't hand in solutions for the moment, but can still see your old submissions.
+      alert_not_valid: There's something wrong with this exercise. You can't hand in new solutions but can still see your old submissions.
       alert_removed: This exercise is no longer available, but can still see your old submissions.
       deadline_passed: "The deadline for this exercise was at %{deadline}. You can still submit, but your submissions may not be accounted for."
       deadline_in_5_minutes: "The deadline for this exercise is at %{deadline}, which is less than 5 minutes away."

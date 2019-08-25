@@ -5,7 +5,7 @@ en:
       visibility-help_html: Only <b>open</b> series are shown on the course page. A <b>closed</b> series is never accessible to students, a <b>hidden</b> series only using the secret link (see below).
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
       indianio-support-help: Allow students' solutions to be extracted by Indianio.
-      class_progress_disable: "Hide the \"Class progress\" visualisation for students"
+      class_progress_disable: 'Hide the "Class progress" visualisation for students'
       class_progress_disable_help: "This visualisation is an added value for students, but teachers may wish to disable it for exams."
       hide_exercises: "Hide exercises"
       hide_exercises_help: "Hiding exercises will only show the description for this series. Teachers can use this setting to release the course material for a series early while holding back the exercises."
@@ -17,9 +17,9 @@ en:
     new:
       title: Create series
     show:
-      copy: 'To copy to clipboard: Ctrl+c, Enter'
-      indianio_token: 'Indianio token'
-      token_link: 'Secret link'
+      copy: "To copy to clipboard: Ctrl+c, Enter"
+      indianio_token: "Indianio token"
+      token_link: "Secret link"
       series: Series
       exercises: Exercises
       download_solutions: Download my solutions
@@ -57,9 +57,9 @@ en:
       at_least_one_started: "Only show users that started at least one exercise"
     series_status:
       completed_after_deadline_missed: You solved all exercises, but unfortunately not before the deadline.
-      wrong_after_deadline_missed: You missed the deadline and there are still some incorrect exercises.
-      started_after_deadline_missed: You missed the deadline and there are still some unstarted exercises.
-      unstarted_after_deadline_missed: You missed the deadline and you haven't started any exercises yet.
+      wrong_after_deadline_missed: You missed the deadline, and there are still some incorrect exercises.
+      started_after_deadline_missed: You missed the deadline, and there are still some unstarted exercises.
+      unstarted_after_deadline_missed: You missed the deadline, and you haven't started any exercises yet.
       completed_after_deadline_met: You solved all the exercises before the deadline. Congratulations!
       wrong_after_deadline_met: Don't worry, you correctly solved all the exercises before the deadline, but submitted at least one wrong solution after the deadline.
       completed_before_deadline: You solved all the exercises before the deadline. Congratulations!

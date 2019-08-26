@@ -39,6 +39,7 @@ FactoryBot.define do
     transient do
       name { nil }
       description_html_stubbed { nil }
+      description_md_stubbed { nil }
 
       submission_count { 0 }
       submission_users do
@@ -56,6 +57,10 @@ FactoryBot.define do
         exercise.description_format = 'html'
         stub_status(exercise, 'ok')
         exercise.stubs(:description_localized).returns(e.description_html_stubbed)
+      elsif e.description_md_stubbed
+        exercise.description_format = 'md'
+        stub_status(exercise, 'ok')
+        exercise.stubs(:description_localized).returns(e.description_md_stubbed)
       end
     end
 

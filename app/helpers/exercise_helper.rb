@@ -14,6 +14,22 @@ module ExerciseHelper
     [renderer.description_html, renderer.footnote_urls, renderer.first_image]
   end
 
+  def description_iframe(exercise)
+    id = "exercise-description-#{exercise.id}"
+    resizeframe = %{
+      window.iFrameResize({
+          log: #{Rails.env.development?},
+          heightCalculationMethod: 'bodyScroll'
+        },
+        '##{id}')
+    }
+    tag.iframe id: id,
+               scrolling: 'no',
+               onload: resizeframe,
+               src: description_exercise_url(exercise,
+                                             token: exercise.access_token)
+  end
+
   class DescriptionRenderer
     require 'nokogiri'
     include Rails.application.routes.url_helpers

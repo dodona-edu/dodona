@@ -70,7 +70,9 @@ class ExercisesController < ApplicationController
   end
 
   def description
-    render layout: false
+    raise Pundit::NotAuthorizedError, 'Not allowed' unless @exercise.access_token == params[:token]
+
+    render layout: 'frame'
   end
 
   def edit

@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
                 unless: -> { devise_controller? || remote_request? }
 
   before_action :enable_sandbox,
-                if: -> { request.host == Rails.configuration.sandbox_host }
+                if: :sandbox?
 
   before_action :set_locale
 
@@ -59,6 +59,10 @@ class ApplicationController < ActionController::Base
     response.headers['X-Frame-Options'] = "allow-from #{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
   end
 
+  def sandbox?
+    request.host == Rails.configuration.sandbox_host
+  end
+
   private
 
   def enable_sandbox
@@ -67,9 +71,10 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    if remote_request?
+    if remote_request? || sandbox?
       if current_user.nil?
-        head :unauthorized
+        render status: :unauthorized,
+               inline: 'You are not authorized to view this page.'
       else
         head :forbidden
       end

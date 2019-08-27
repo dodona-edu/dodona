@@ -1,5 +1,4 @@
 <% content_for :javascripts do %>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
   <%= javascript_pack_tag 'exercise' %>
   <%= javascript_pack_tag 'submission' %>
   <%= javascript_pack_tag 'pythia_submission' if @exercise.judge.renderer == PythiaRenderer %>
@@ -18,8 +17,7 @@
           <%= @exercise.name %>
         </h2>
       </div>
-      <%# render partial: 'description_card', locals: {exercise: @exercise} %>
-      <%= tag :iframe, src: description_exercise_url(@exercise) %>
+      <%= tag.iframe id: 'description-frame', scrolling: 'no', src: description_exercise_url(@exercise, token: @exercise.access_token), onload: "window.iFrameResize({ log: #{Rails.env.development?.to_s} }, '#description-frame')" %>
     </div>
   </div>
 </div>

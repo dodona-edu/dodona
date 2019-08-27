@@ -391,10 +391,10 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     stub_status(Exercise.any_instance, 'ok')
   end
 
-  test 'exercise description should be present in the page' do
+  test 'iframe to exercise description should be present in the page' do
     get exercise_url(@exercise).concat('/')
 
-    assert_includes response.body, 'What is the airspeed of an unladen swallow?'
+    assert_includes response.body, description_exercise_url(@exercise, token: @exercise.access_token)
   end
 
   test 'script in exercise description should not be present in the page' do

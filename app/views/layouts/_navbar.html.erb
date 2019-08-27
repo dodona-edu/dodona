@@ -57,13 +57,13 @@
               <% if policy(:pages).toggle_dark_mode? %>
                 <% if session[:dark] %>
                   <li>
-                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST" do %>
+                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle" do %>
                       <i class="mdi mdi-checkbox-marked-outline mdi-18 dropdown-box"></i> <%= t(".dark_mode") %>
                     <% end %>
                   </li>
                 <% else %>
                   <li>
-                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST" do %>
+                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle" do %>
                       <i class="mdi mdi-checkbox-blank-outline mdi-18 dropdown-box"></i> <%= t(".dark_mode") %>
                     <% end %>
                   </li>

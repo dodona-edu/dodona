@@ -2,6 +2,7 @@
   <%= javascript_pack_tag 'description' %>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 <% end %>
+<div class="exercise-description">
 <div class="card-supporting-text">
   <% if @exercise.removed? %>
     <div class="alert alert-info"><%= t "exercises.show.alert_removed" %></div>
@@ -25,3 +26,7 @@
     <% end %>
   </footer>
 </div>
+</div>
+<script>
+$(function(){window.dodona.initExercisesReadonly();});
+</script>

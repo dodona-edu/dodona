@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
                 except: %i[media sign_in_page institution_not_supported],
                 unless: -> { devise_controller? || remote_request? }
 
+  before_action :enable_sandbox,
+                if: -> { request.host == Rails.configuration.sandbox_host }
+
   before_action :set_locale
 
   before_action :look_for_token, unless: :current_user
@@ -48,7 +51,20 @@ class ApplicationController < ActionController::Base
     page.to_s.match(/^\d+$/) ? [page.to_i, 1].max : nil
   end
 
+  def skip_session
+    request.session_options[:skip] = true
+  end
+
+  def allow_iframe
+    response.headers['X-Frame-Options'] = "allow-from #{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
+  end
+
   private
+
+  def enable_sandbox
+    allow_iframe
+    skip_session
+  end
 
   def user_not_authorized
     if remote_request?

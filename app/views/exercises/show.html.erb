@@ -18,7 +18,8 @@
           <%= @exercise.name %>
         </h2>
       </div>
-      <%= render partial: 'description_card', locals: {exercise: @exercise} %>
+      <%# render partial: 'description_card', locals: {exercise: @exercise} %>
+      <%= tag :iframe, src: description_exercise_url(@exercise) %>
     </div>
   </div>
 </div>

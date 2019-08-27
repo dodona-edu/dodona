@@ -1,7 +1,7 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: %i[show description edit update media]
-  before_action :set_course, only: %i[show description edit update]
-  before_action :set_series, only: %i[show description edit update]
+  before_action :set_course, only: %i[show edit update]
+  before_action :set_series, only: %i[show edit update]
   before_action :ensure_trailing_slash, only: :show
   skip_before_action :verify_authenticity_token, only: [:media]
 
@@ -70,8 +70,7 @@ class ExercisesController < ApplicationController
   end
 
   def description
-    byebug
-    raise Pundit::NotAuthorizedError, 'Not allowed' unless @exercise.accessible?(current_user, @course)
+    render layout: false
   end
 
   def edit

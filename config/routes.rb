@@ -74,7 +74,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable]
+    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable] do
+      constraints host: Rails.configuration.sandbox_host do
+        get 'description'
+      end
+    end
 
     resources :judges do
       resources :submissions, only: [:index]

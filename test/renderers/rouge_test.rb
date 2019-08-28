@@ -5,7 +5,7 @@ class RougeTest < ActiveSupport::TestCase
   include ApplicationHelper
 
   test 'markdown output should be equal' do
-    input = %q(
+    input = "
     >>> hex2letter = leet2letter('leet.txt')
     >>> hex2letter
     {'0': {'O'}, '1': {'I'}, '2': {'Z', 'R'}, '3': {'E'}, '5': {'S'}, '6': {'G'}, '7': {'L', 'Y', 'T'}, '9': {'P'}}
@@ -42,8 +42,8 @@ class RougeTest < ActiveSupport::TestCase
     >>> kleur('REBECCA', letter2hex)
     Traceback (most recent call last):
     AssertionError: ongeldige kleur
-    )
-    expected = %q(
+    "
+    expected = "
 <pre><code>&gt;&gt;&gt; hex2letter = leet2letter('leet.txt')
 &gt;&gt;&gt; hex2letter
 {'0': {'O'}, '1': {'I'}, '2': {'Z', 'R'}, '3': {'E'}, '5': {'S'}, '6': {'G'}, '7': {'L', 'Y', 'T'}, '9': {'P'}}
@@ -82,7 +82,7 @@ Traceback (most recent call last):
 AssertionError: ongeldige kleur
 </code></pre>
 
-)
+"
     assert_equal expected, markdown(input), 'markdown output is incorrect'
   end
 end

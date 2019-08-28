@@ -25,7 +25,7 @@ module ExerciseHelper
     tag.iframe id: id,
                scrolling: 'no',
                onload: resizeframe,
-               allow: 'fullscreen https://www.youtube.com www.youtube-nocookie.com https://player.vimeo.com/ ',
+               allow: 'fullscreen https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com/ ',
                src: description_exercise_url(exercise,
                                              token: exercise.access_token,
                                              dark: session[:dark])

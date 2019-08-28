@@ -28,7 +28,7 @@ class PagesController < ApplicationController
 
   def toggle_dark_mode
     authorize :pages
-    session[:dark] = !session[:dark]
+    session[:dark] = params[:dark].nil? ? !session[:dark] : ActiveModel::Type::Boolean.new.cast(params[:dark])
   end
 
   def contact

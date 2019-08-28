@@ -24,10 +24,45 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
   <link href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css"
         rel="stylesheet" type='text/css'>
-  <%= stylesheet_link_tag "application#{session[:dark] ? '-dark' : ''}", media: 'all' %>
+  <% if session[:dark].nil? %>
+    <%= stylesheet_link_tag "application-dark", media: '(prefers-color-scheme: dark)' %>
+    <%= stylesheet_link_tag "application", media: '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)' %>
+  <% else %>
+    <%= stylesheet_link_tag "application#{session[:dark] ? '-dark' : ''}", media: 'all' %>
+  <% end %>
   <script>
       window.dodona = window.dodona || {};
       window.dodona.darkMode = <%= session.include?(:dark) && session[:dark] %>;
+      <% if session[:dark].nil? %>
+      const lightModeCSS = '<%= stylesheet_link_tag "application", media: "all" %>';
+      const darkModeCSS = '<%= stylesheet_link_tag "application-dark", media: "all" %>';
+
+      // Make sure browser supports dark mode settings
+      document.addEventListener("DOMContentLoaded", () => {
+          if (window.matchMedia("(prefers-color-scheme)").media !== "not all") {
+              const listener = e => {
+                  const darkModeLink = document.getElementById("dark-mode-toggle");
+                  darkModeLink.href = `<%= toggle_dark_mode_path %>?dark=${!e.matches}`;
+                  const iconClassList = darkModeLink.getElementsByClassName("dropdown-box")[0].classList;
+                  window.dodona.darkMode = e.matches;
+                  if (e.matches) {
+                      document.head.insertAdjacentHTML("beforeend", darkModeCSS);
+                      iconClassList.remove("mdi-checkbox-blank-outline");
+                      iconClassList.add("mdi-checkbox-marked-outline");
+                  } else {
+                      document.head.insertAdjacentHTML("beforeend", lightModeCSS);
+                      iconClassList.remove("mdi-checkbox-marked-outline");
+                      iconClassList.add("mdi-checkbox-blank-outline");
+                  }
+              };
+              const matcher = window.matchMedia("(prefers-color-scheme: dark)");
+              listener(matcher);
+              matcher.addEventListener("change", listener);
+          } else {
+              document.head.insertAdjacentHTML("beforeend", lightModeCSS);
+          }
+      });
+      <% end %>
   </script>
   <%= javascript_pack_tag 'application' %>
   <%= javascript_include_tag 'application' %>

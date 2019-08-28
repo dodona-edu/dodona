@@ -78,6 +78,7 @@ Rails.application.routes.draw do
       member do
         constraints host: Rails.configuration.sandbox_host do
           get 'description'
+          get 'description/media/*media', to: 'exercises#media', constraints: {media: /.*/}
         end
       end
     end

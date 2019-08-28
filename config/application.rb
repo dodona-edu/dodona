@@ -20,8 +20,17 @@ module Dodona
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    # Appilcation hosts
+
+    # The main webapp
     config.default_host = 'dodona.localhost'
+
+    # The sandboxed host with user provided content, without authentication
     config.sandbox_host = 'sandbox.localhost'
+
+    # Where we host our assets (a single domain, for caching)
+    # Port is needed somehow...
+    config.action_controller.asset_host = 'dodona.localhost:3000'
 
     config.time_zone = 'Brussels'
 

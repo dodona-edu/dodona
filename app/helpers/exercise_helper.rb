@@ -27,7 +27,8 @@ module ExerciseHelper
                scrolling: 'no',
                onload: resizeframe,
                src: description_exercise_url(exercise,
-                                             token: exercise.access_token)
+                                             token: exercise.access_token,
+                                             dark: session[:dark])
   end
 
   class DescriptionRenderer

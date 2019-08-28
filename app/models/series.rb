@@ -19,6 +19,8 @@
 require 'csv'
 
 class Series < ApplicationRecord
+  include ActionView::Helpers::SanitizeHelper
+
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
   belongs_to :course
@@ -148,6 +150,10 @@ class Series < ApplicationRecord
     raise 'unknown token type' unless %i[indianio_token access_token].include? type
 
     self[type] = SecureRandom.urlsafe_base64(16).tr('1lL0oO', '')
+  end
+
+  def description
+    sanitize self[:description]
   end
 
   private

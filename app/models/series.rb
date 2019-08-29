@@ -152,10 +152,6 @@ class Series < ApplicationRecord
     self[type] = SecureRandom.urlsafe_base64(16).tr('1lL0oO', '')
   end
 
-  def description
-    sanitize self[:description]
-  end
-
   private
 
   def set_access_token

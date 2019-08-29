@@ -104,9 +104,19 @@ module ApplicationHelper
     end
   end
 
-  def markdown(source)
+  def markdown_unsafe(source)
     source ||= ''
-    Kramdown::Document.new(source, input: 'GFM', hard_wrap: false, syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe
+    Kramdown::Document.new(source,
+                           input: 'GFM',
+                           hard_wrap: false,
+                           syntax_highlighter: 'rouge',
+                           math_engine_opts: { preview: true })
+                      .to_html
+                      .html_safe
+  end
+
+  def markdown(source)
+    ActionController::Base.helpers.sanitize markdown_unsafe(source)
   end
 
   def escape_double_quotes(string)

@@ -218,10 +218,6 @@ class Course < ApplicationRecord
     self.search = "#{teacher || ''} #{name || ''} #{year || ''}"
   end
 
-  def description
-    sanitize self[:description]
-  end
-
   private
 
   def should_have_institution_when_visible_for_institution

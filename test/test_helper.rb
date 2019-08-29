@@ -29,7 +29,7 @@ class ActiveSupport::TestCase
   include SeriesZipHelper
 
   # Run tests in parallel with specified workers
-  parallelize(workers: :number_of_processors)
+  parallelize(workers: :number_of_processors) unless ENV['TEST_SERIAL']
 end
 
 class ActionDispatch::IntegrationTest

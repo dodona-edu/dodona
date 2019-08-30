@@ -76,7 +76,7 @@ GEM
       execjs
     bcrypt (3.1.13)
     bindex (0.8.1)
-    bootsnap (1.4.4)
+    bootsnap (1.4.5)
       msgpack (~> 1.0)
     bootstrap_tokenfield_rails (0.12.1)
     builder (3.2.3)
@@ -410,7 +410,7 @@ DEPENDENCIES
   ace-rails-ap (~> 4.2)
   annotate (~> 2.7.5)
   autoprefixer-rails (~> 9.6.1)
-  bootsnap (~> 1.4.4)
+  bootsnap (~> 1.4.5)
   bootstrap_tokenfield_rails (~> 0.12.1)
   builder (~> 3.2.3)
   byebug (~> 11.0.1)

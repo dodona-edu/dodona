@@ -53,7 +53,7 @@ class Exercise < ApplicationRecord
   validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
 
   before_create :generate_id
-  before_create :generate_token
+  before_create :generate_repository_token
   before_create :generate_access_token
   before_save :check_validity
   before_save :check_memory_limit
@@ -218,7 +218,7 @@ class Exercise < ApplicationRecord
     c['description']['names']['nl'] = name_nl if name_nl.present? || c['description']['names']['nl'].present?
     c['description']['names']['en'] = name_en if name_en.present? || c['description']['names']['en'].present?
     c['internals'] = {}
-    c['internals']['token'] = token
+    c['internals']['token'] = repository_token
     c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
     c['labels'] = labels_to_write if (labels_to_write & (merged_config['labels'] || [])) != labels_to_write || labels_to_write == []
     store_config c
@@ -345,11 +345,11 @@ class Exercise < ApplicationRecord
   end
 
   # not private so we can use this in the migration
-  def generate_token
+  def generate_repository_token
     begin
       new_token = Base64.strict_encode64 SecureRandom.random_bytes(48)
-    end until Exercise.find_by(token: new_token).nil?
-    self.token ||= new_token
+    end until Exercise.find_by(repository_token: new_token).nil?
+    self.repository_token ||= new_token
   end
 
   def generate_access_token

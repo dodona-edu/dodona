@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_29_143205) do
+ActiveRecord::Schema.define(version: 2019_08_30_135724) do
 
   create_table "action_text_rich_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -146,7 +146,6 @@ ActiveRecord::Schema.define(version: 2019_08_29_143205) do
     t.integer "repository_id"
     t.integer "judge_id"
     t.integer "status", default: 0
-    t.string "token", limit: 64
     t.integer "access", default: 0, null: false
     t.bigint "programming_language_id"
     t.string "search", limit: 4096
@@ -159,7 +158,6 @@ ActiveRecord::Schema.define(version: 2019_08_29_143205) do
     t.index ["repository_id"], name: "index_exercises_on_repository_id"
     t.index ["repository_token"], name: "index_exercises_on_repository_token", unique: true
     t.index ["status"], name: "index_exercises_on_status"
-    t.index ["token"], name: "index_exercises_on_token", unique: true
   end
 
   create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

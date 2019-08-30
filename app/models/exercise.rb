@@ -58,6 +58,7 @@ class Exercise < ApplicationRecord
   before_save :check_validity
   before_save :check_memory_limit
   before_update :update_config
+  after_update :generate_access_token
 
   scope :in_repository, ->(repository) { where repository: repository }
 

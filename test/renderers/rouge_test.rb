@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'builder'
 
 class RougeTest < ActiveSupport::TestCase
   include Rails.application.routes.url_helpers
@@ -11,6 +12,22 @@ class RougeTest < ActiveSupport::TestCase
 
     [input_python, input_java, input_javascript].each do |input|
       assert markdown(input).include? 'class'
+    end
+  end
+
+  test 'Rouge formatter and lexers should add classes' do
+    input_python = { format: 'python', description: 'mysum(3, 5, 7)' }
+    input_javascript = { format: 'javascript', description: "return fetch(url)\n       .then(response => response.text())\n       .then(console.log)\n       .catch(handleError);\n" }
+    input_java = { format: 'java', description: 'int x = mySum(7, 9, 42);' }
+
+    [input_java, input_python, input_javascript].each do |input|
+      builder = Builder::XmlMarkup.new
+      builder.span(class: "code highlighter-rouge #{input[:format]}") do
+        formatter = Rouge::Formatters::HTML.new(wrap: false)
+        lexer = (Rouge::Lexer.find(input[:format].downcase) || Rouge::Lexers::PlainText).new
+        builder << formatter.format(lexer.lex(input[:description]))
+      end
+      assert builder.html_safe.include? 'class'
     end
   end
 end

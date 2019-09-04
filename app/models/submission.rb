@@ -130,7 +130,7 @@ class Submission < ApplicationRecord
              else
                %w[student]
              end
-    json[:groups] = json[:groups].reject { |tab| levels.include? tab[:permission] } if json[:groups].present?
+    json[:groups] = json[:groups].select { |tab| levels.include?(tab[:permission] || 'student') } if json[:groups].present?
     json[:messages] = clean_messages(json[:messages], levels) if json[:messages].present?
     json[:groups]&.each do |tab|
       tab[:messages] = clean_messages(tab[:messages], levels) if tab[:messages].present?

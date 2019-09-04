@@ -201,7 +201,7 @@
     },
     {
       "description": "another tab",
-      "hidden": true,
+      "permission": "staff",
       "groups": [
         {
           "accepted": false,

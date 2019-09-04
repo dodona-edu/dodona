@@ -67,12 +67,28 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal result, ActiveSupport::Gzip.decompress(File.read(File.join(submission.fs_path, Submission::RESULT_FILENAME)))
   end
 
-  test 'safe_result should remove hidden tabs for students' do
+  test 'safe_result should remove staff tabs for students' do
     json = FILE_LOCATION.read
     submission = create :submission, result: json
     user = create :user, permission: :student
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 1, result[:groups].count
+  end
+
+  test 'safe_result should remove zeus tabs for staff' do
+    json = FILE_LOCATION.read
+    submission = create :submission, result: json
+    user = create :user, permission: :staff
+    result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+    assert_equal 2, result[:groups].count
+  end
+
+  test 'safe_result should display all tabs to zeus' do
+    json = FILE_LOCATION.read
+    submission = create :submission, result: json
+    user = create :zeus
+    result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+    assert_equal 3, result[:groups].count
   end
 
   test 'safe_result should remove staff and zeus messages for students' do

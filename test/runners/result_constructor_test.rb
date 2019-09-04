@@ -54,6 +54,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       groups: [{
         description: 'Tab One',
         badgeCount: 1,
+        permission: 'student',
         groups: [{
           accepted: true,
           groups: [{
@@ -106,6 +107,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       groups: [{
         description: 'Tab One',
         badgeCount: 0,
+        permission: 'student',
         groups: [{
           accepted: true,
           groups: [{
@@ -151,6 +153,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       groups: [{
         description: 'Tab One',
         badgeCount: 42,
+        permission: 'student',
         groups: [{
           accepted: false,
           groups: [{

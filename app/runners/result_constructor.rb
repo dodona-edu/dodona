@@ -75,7 +75,7 @@ class ResultConstructor
     @tab = {}
     @tab[:description] = title
     @tab[:badgeCount] = 0
-    @tab[:hidden] = hidden || false
+    @hiddentab = hidden || false
     @level = :tab
   end
 
@@ -155,7 +155,7 @@ class ResultConstructor
     check_level(:context, 'context closed')
     @context[:accepted] = accepted unless accepted.nil?
     @judgement[:accepted] &&= @context[:accepted]
-    @tab[:hidden] &&= @context[:accepted]
+    @hiddentab &&= @context[:accepted]
     (@tab[:groups] ||= []) << @context
     @context = nil
     @level = :tab
@@ -166,6 +166,7 @@ class ResultConstructor
   def close_tab(badgeCount: nil)
     check_level(:tab, 'tab closed')
     @tab[:badgeCount] = badgeCount unless badgeCount.nil?
+    @tab[:hidden] = true if @hiddentab
     (@judgement[:groups] ||= []) << @tab
     @tab = nil
     @level = :judgement

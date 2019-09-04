@@ -33,7 +33,8 @@
         "properties": {
             "command": { "enum": ["start-tab"] },
             "title":   { "type": "string" },
-            "hidden":  { "type": "boolean" }
+            "hidden":  { "type": "boolean" },
+            "permission":  { "$ref": "#/definitions/permission" }
         }
     },
     "start-context": {

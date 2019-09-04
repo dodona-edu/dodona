@@ -5,7 +5,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   WAREGEM_TID = '9fdf506a-3be0-4f07-9e03-908ceeae50b4'.freeze
   TSM_TID = 'https://tsm.smartschool.be'.freeze
   CVO_TSM_TID = 'https://cvotsm.smartschool.be'.freeze
-  BLACKLIST = [UGENT_TID, WAREGEM_TID, TSM_TID, CVO_TSM_TID].freeze
+  MAERLANT_TID = 'https://kabl-sgr25.smartschool.be'.freeze
+  BLACKLIST = [UGENT_TID, WAREGEM_TID, TSM_TID, CVO_TSM_TID, MAERLANT_TID].freeze
 
   def smartschool
     oauth_login
@@ -149,6 +150,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to sign_in_path(idp: 'UGent')
     elsif institution_identifier == TSM_TID || institution_identifier == CVO_TSM_TID
       redirect_to user_office365_omniauth_authorize_path
+    elsif institution_identifier == MAERLANT_TID
+      redirect_to user_google_oauth2_omniauth_authorize_path
     end
   end
 

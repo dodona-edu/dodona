@@ -127,7 +127,7 @@
     },
     "close-tab": {
         "type": "object",
-        "description": "Close the current tab. Badgecount is the number of not-accepted testcases, but you can overwrite this. If hidden, only a course admin can see the tab.",
+        "description": "Close the current tab. Badgecount is the number of not-accepted testcases, but you can overwrite this.",
         "required": ["command"],
         "properties": {
             "command":    { "enum": ["close-tab"] },

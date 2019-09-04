@@ -166,8 +166,7 @@ class ResultConstructor
   def close_tab(badgeCount: nil)
     check_level(:tab, 'tab closed')
     @tab[:badgeCount] = badgeCount unless badgeCount.nil?
-    @tab[:hidden] = true if @hiddentab
-    (@judgement[:groups] ||= []) << @tab
+    (@judgement[:groups] ||= []) << @tab unless @hiddentab
     @tab = nil
     @level = :judgement
   end

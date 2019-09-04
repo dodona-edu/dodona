@@ -179,10 +179,12 @@ class PythiaRenderer < FeedbackTableRenderer
             end
             next unless diff_line[4]
 
-            @builder.td(diff_line[0], class: 'line-nr')
-            @builder.td(diff_line[1], class: 'line-nr')
-            @builder.td(class: 'unchanged') do
-              @builder << strip_outer_html(diff_line[2])
+            @builder.tr do
+              @builder.td(diff_line[0], class: 'line-nr')
+              @builder.td(diff_line[1], class: 'line-nr')
+              @builder.td(class: 'unchanged') do
+                @builder << strip_outer_html(diff_line[2])
+              end
             end
           end
         end

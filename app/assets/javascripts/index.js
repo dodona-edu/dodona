@@ -200,20 +200,14 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (urlContainsSearchOpt(action)) {
-                    $($link.children()[0]).removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");;
+                    $($link.children()[0]).removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
                 }
                 $link.click(() => {
-                    console.log($link);
-                    let child = $($link.children()[0]);
-                    console.log(child);
+                    const child = $($link.children()[0]);
                     if (child.hasClass("mdi-checkbox-blank-outline")) {
-                        console.log("help1");
                         child.removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
-                        console.log("help2");
                     } else {
-                        console.log("help3");
-                        child.removeClass("mdi-checkbox-marked-outline").addClass("mdi-checkbox-blank-outline");;
-                        console.log("help4");
+                        child.removeClass("mdi-checkbox-marked-outline").addClass("mdi-checkbox-blank-outline");
                     }
                     performSearch();
                     return false;
@@ -245,7 +239,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 }
             });
         }
-        if (searchLinks.length > 0){
+        if (searchLinks.length > 0) {
             $actions
                 .find("ul")
                 .append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");

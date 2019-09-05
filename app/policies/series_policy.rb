@@ -73,6 +73,10 @@ class SeriesPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def scoresheet_download?
+    course_admin?
+  end
+
   def mass_rejudge?
     course_admin?
   end

@@ -185,6 +185,9 @@ class SeriesController < ApplicationController
     @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
   end
 
+  def scoresheet_download
+  end
+
   def mass_rejudge
     @submissions = Submission.in_series(@series)
     Submission.rejudge(@submissions)

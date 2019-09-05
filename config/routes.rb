@@ -38,6 +38,7 @@ Rails.application.routes.draw do
         get 'download_solutions'
         get 'overview'
         get 'scoresheet'
+        get 'scoresheet_download'
         post 'add_exercise'
         post 'mass_rejudge'
         post 'remove_exercise'

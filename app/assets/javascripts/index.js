@@ -162,9 +162,9 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             const extraParams = {};
             searchOptions.forEach((opt, id) => {
                 if (
-                    $(`a.action[data-search_opt_id="${id}"]`)
-                        .parent()
-                        .hasClass("active")
+                    $($(`a.action[data-search_opt_id="${id}"]`)
+                        .children()[0])
+                        .hasClass("mdi-checkbox-marked-outline")
                 ) {
                     Object.entries(opt.search).forEach(([key, value]) => {
                         extraParams[key] = value;
@@ -193,20 +193,27 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 const $link = $(
                     `<a class="action" href='#' ${
                         action.type ? "data-type=" + action.type : ""
-                    } data-search_opt_id="${id}"><i class='mdi mdi-${action.icon} mdi-18'></i>${
+                    } data-search_opt_id="${id}"><i class='mdi mdi-checkbox-blank-outline mdi-18'></i>${
                         action.text
                     }</a>`
                 );
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (urlContainsSearchOpt(action)) {
-                    $link.parent().addClass("active");
+                    $($link.children()[0]).removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");;
                 }
                 $link.click(() => {
-                    if (!$link.parent().hasClass("active")) {
-                        $link.parent().addClass("active");
+                    console.log($link);
+                    let child = $($link.children()[0]);
+                    console.log(child);
+                    if (child.hasClass("mdi-checkbox-blank-outline")) {
+                        console.log("help1");
+                        child.removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
+                        console.log("help2");
                     } else {
-                        $link.parent().removeClass("active");
+                        console.log("help3");
+                        child.removeClass("mdi-checkbox-marked-outline").addClass("mdi-checkbox-blank-outline");;
+                        console.log("help4");
                     }
                     performSearch();
                     return false;
@@ -252,7 +259,6 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 $link.wrap("<li></li>");
             });
         }
-
     }
 
     function initTokens() {

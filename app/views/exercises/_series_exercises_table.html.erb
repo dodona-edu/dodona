@@ -53,11 +53,11 @@
       </td>
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>
-          <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-series_id="<%= series.id %>" data-course_id="<%= series.course.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>">
+          <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_exercise_path(series.course, series, exercise)%>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>">
             <i class="mdi mdi-delete mdi-18"></i>
           </a>
         <% else %>
-          <a href="#" class="btn btn-icon add-exercise <%= "hidden" if series.exercises.include? exercise %>" title="<%= t "series.edit.add_exercise" %>" data-series_id="<%= series.id %>" data-course_id="<%= series.course.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>" data-confirm="<%= t('.course_added_to_usable') unless exercise.usable_by? @series.course %>">
+          <a href="#" class="btn btn-icon add-exercise <%= "hidden" if series.exercises.include? exercise %>" title="<%= t "series.edit.add_exercise" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_exercise_path(series.course, series, exercise) %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>" data-confirm="<%= t('.course_added_to_usable') unless exercise.usable_by? @series.course %>">
             <i class="mdi mdi-plus mdi-18"></i>
           </a>
         <% end %>

@@ -81,7 +81,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       }]
     }, construct_result([
       '{ "command": "start-judgement" }',
-      '{ "command": "start-tab", "title": "Tab One" }',
+      '{ "command": "start-tab", "title": "Tab One", "permission": "student" }',
       '{ "command": "start-context" }',
       '{ "command": "start-testcase", "description": "case 1" }',
       '{ "command": "start-test", "expected": "SOMETHING" }',
@@ -129,7 +129,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
     }, construct_result([
       '{ "command": "start-judgement" }',
       '{ "command": "append-message", "message": "judgement" }',
-      '{ "command": "start-tab", "title": "Tab One" }',
+      '{ "command": "start-tab", "title": "Tab One", "permission": "student" }',
       '{ "command": "append-message", "message": "tab" }',
       '{ "command": "start-context" }',
       '{ "command": "append-message", "message": "context" }',
@@ -153,7 +153,6 @@ class ResultConstructorTest < ActiveSupport::TestCase
       groups: [{
         description: 'Tab One',
         badgeCount: 42,
-        permission: 'student',
         groups: [{
           accepted: false,
           groups: [{

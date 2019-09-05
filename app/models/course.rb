@@ -205,7 +205,9 @@ class Course < ApplicationRecord
       sorted_users.each do |user|
         row = [user.first_name, user.last_name, user.username, user.email]
         sorted_series.each do |s|
-          row << s.exercises.map { |ex| ex.accepted_for(user, s.deadline, self) }.count(true)
+          latest_subs = Submission.where(user_id: user.id, course_id: id, exercise_id: s.exercises.map(&:id)).select('MAX(id) as id')
+          latest_subs = latest_subs.before_deadline(s.deadline) unless s.deadline.nil?
+          row << Submission.where(id: latest_subs.group(:exercise_id), accepted: true).count
         end
         csv << row
       end

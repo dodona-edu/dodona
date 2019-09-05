@@ -31,9 +31,9 @@
         "description": "Start on a new tab with given title. Hidden if all contexts are accepted iff hidden.",
         "required": ["command", "title"],
         "properties": {
-            "command": { "enum": ["start-tab"] },
-            "title":   { "type": "string" },
-            "hidden":  { "type": "boolean" },
+            "command":     { "enum": ["start-tab"] },
+            "title":       { "type": "string" },
+            "hidden":      { "type": "boolean" },
             "permission":  { "$ref": "#/definitions/permission" }
         }
     },

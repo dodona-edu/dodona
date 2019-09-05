@@ -70,12 +70,12 @@ class ResultConstructor
                                       locale: @locale)
   end
 
-  def start_tab(title: nil, hidden: nil, permission: 'student')
+  def start_tab(title: nil, hidden: nil, permission: nil)
     check_level(:judgement, 'tab started')
     @tab = {}
     @tab[:description] = title
     @tab[:badgeCount] = 0
-    @tab[:permission] = permission
+    @tab[:permission] = permission unless permission.nil?
     @hiddentab = hidden || false
     @level = :tab
   end

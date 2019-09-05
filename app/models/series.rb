@@ -77,9 +77,9 @@ class Series < ApplicationRecord
 
   def scoresheet
     sorted_users = course.enrolled_members.order('course_memberships.status ASC')
-                                          .order(permission: :asc)
-                                          .order(last_name: :asc, first_name: :asc)
-    CSV.generate do |csv|
+                         .order(permission: :asc)
+                         .order(last_name: :asc, first_name: :asc)
+    CSV.generate() do |csv|
       csv << [I18n.t('courses.scoresheet.explanation')]
       csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), name]
       csv << ['Maximum', '', '', '', exercises.count]

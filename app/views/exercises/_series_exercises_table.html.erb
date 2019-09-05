@@ -23,7 +23,7 @@
           <%= raw "<i class='mdi mdi-alert-circle mdi-18' title='#{t("exercises.index.invalid")}'></i>" if exercise.not_valid? %>
         </span>
       </td>
-      <td>
+      <td class="link">
         <span class="ellipsis-overflow" title="<%= exercise.name %>">
           <% if local_assigns.fetch(:show_buttons_for_present, false) %>
             <%= link_to exercise.name, course_series_exercise_path(series.course, series, exercise), target: "_blank" %>

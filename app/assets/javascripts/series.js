@@ -33,6 +33,7 @@ function initSeriesEdit() {
             const exerciseId = $addButton.data("exercise_id");
             const exerciseName = $addButton.data("exercise_name");
             const seriesId = $addButton.data("series_id");
+            const courseId = $addButton.data("course_id");
             const confirmMessage = $addButton.data("confirm");
             if (confirmMessage && !confirm(confirmMessage)) {
                 return false;
@@ -40,7 +41,8 @@ function initSeriesEdit() {
             const $row = $addButton.parents("tr").clone();
             $row.addClass("new");
             $row.children("td:first").html("<div class='drag-handle'><i class='mdi mdi-reorder-horizontal mdi-18'></i></div>");
-            $row.children("td.actions").html("<a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><i class='mdi mdi-delete mdi-18'></i></a>");
+            $row.children("td.link").children("span.ellipsis-overflow").html(`<a target='_blank' href='/courses/${courseId}/series/${seriesId}/exercises/${exerciseId}'>${exerciseName}</a>`);
+            $row.children("td.actions").html(`<a href='#' class='btn btn-icon remove-exercise' data-exercise_id='${exerciseId}' data-exercise_name='${exerciseName}' data-series_id='${seriesId }'><i class='mdi mdi-delete mdi-18'></i></a>`);
             $(".series-exercise-list tbody").append($row);
             $row.css("opacity"); // trigger paint
             $row.removeClass("new").addClass("pending");

@@ -268,6 +268,47 @@ class ResultConstructorTest < ActiveSupport::TestCase
     assert_equal('runtime error', result[:status])
   end
 
+  test 'correct permissions should be present in result' do
+    result = construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "start-tab", "title": "Tab One", "permission": "zeus" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "start-tab", "title": "Tab Two", "permission": "staff" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "start-testcase", "description": "case 2" }',
+      '{ "command": "close-testcase", "accepted": true }',
+      '{ "command": "start-testcase", "description": "case 3" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "start-testcase", "description": "case 4" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "start-tab", "title": "Tab Three", "permission": "student" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": true }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "start-tab", "title": "Tab Four" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": true }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "close-judgement", "accepted": true }'
+    ])
+    %w[zeus staff student].each_with_index do |perm, index|
+      assert_equal(perm, result[:groups][index][:permission])
+    end
+    assert_nil result[:groups][3][:permission]
+  end
+
   private
 
   def construct_result(food, locale: 'en', timeout: false)

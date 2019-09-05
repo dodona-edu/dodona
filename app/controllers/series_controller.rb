@@ -186,6 +186,9 @@ class SeriesController < ApplicationController
   end
 
   def scoresheet_download
+    sheet = @series.scoresheet
+    filename = "scoresheet-#{@series.name.parameterize}.csv"
+    send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
   end
 
   def mass_rejudge

@@ -125,12 +125,12 @@ class Submission < ApplicationRecord
     json = JSON.parse(res, symbolize_names: true)
     return json.to_json if user.zeus?
 
-    if user.staff? || (course.present? && user.course_admin?(course))
-      levels = %w[student staff]
-    else
-      levels = %w[student]
-      json[:groups] = json[:groups].reject { |tab| tab[:hidden] } if json[:groups].present?
-    end
+    levels = if user.staff? || (course.present? && user.course_admin?(course))
+               %w[student staff]
+             else
+               %w[student]
+             end
+    json[:groups] = json[:groups].select { |tab| levels.include?(tab[:permission] || 'student') } if json[:groups].present?
     json[:messages] = clean_messages(json[:messages], levels) if json[:messages].present?
     json[:groups]&.each do |tab|
       tab[:messages] = clean_messages(tab[:messages], levels) if tab[:messages].present?

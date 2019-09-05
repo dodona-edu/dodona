@@ -155,8 +155,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     function initActions() {
         const $actions = $(".table-toolbar-tools .actions");
         const searchOptions = actions.filter(action => action.search);
-        const searchActions = actions.filter(action => action.action || action.js);
-        const searchLinks = actions.filter(action => action.url);
+        const searchActions = actions.filter(action => action.url || action.action || action.js);
 
         function performSearch() {
             const extraParams = {};
@@ -220,7 +219,9 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 .append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
             searchActions.forEach(function (action) {
                 const $link = $(
-                    `<a class="action" href='#' ${
+                    `<a class="action" href=${
+                        action.url ? action.url : "#"
+                    } ${
                         action.type ? "data-type=" + action.type : ""
                     }><i class='mdi mdi-${action.icon} mdi-18'></i>${action.text}</a>`
                 );
@@ -231,26 +232,12 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                         performAction(action);
                         return false;
                     });
-                } else {
+                } else if (action.js) {
                     $link.click(() => {
                         eval(action.js);
                         return false;
                     });
                 }
-            });
-        }
-        if (searchLinks.length > 0) {
-            $actions
-                .find("ul")
-                .append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
-            searchLinks.forEach(function (action) {
-                const $link = $(
-                    `<a class="action" href=${action.url} ${
-                        action.type ? "data-type=" + action.type : ""
-                    }><i class='mdi mdi-${action.icon} mdi-18'></i>${action.text}</a>`
-                );
-                $link.appendTo($actions.find("ul"));
-                $link.wrap("<li></li>");
             });
         }
     }

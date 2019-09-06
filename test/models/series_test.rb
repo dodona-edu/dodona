@@ -106,29 +106,29 @@ class SeriesTest < ActiveSupport::TestCase
           case i
           when 0 # Wrong submission before deadline
             create :wrong_submission,
-                  exercise: exercise,
-                  user: u,
-                  created_at: (deadline - 2.minutes)
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline - 2.minutes)
           when 1 # Correct submission before deadline
             create :correct_submission,
-                  exercise: exercise,
-                  user: u,
-                  created_at: (deadline - 2.minutes)
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline - 2.minutes)
           when 2 # Wrong submission after deadline
             create :wrong_submission,
-                  exercise: exercise,
-                  user: u,
-                  created_at: (deadline + 2.minutes)
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline + 2.minutes)
           when 3 # Correct submission after deadline
             create :correct_submission,
-                  exercise: exercise,
-                  user: u,
-                  created_at: (deadline + 2.minutes)
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline + 2.minutes)
           end
         end
       end
     end
-    course.series.each do | series| 
+    course.series.each do |series|
       scoresheet = series.scoresheet
       kommas = (3 + 1 + series.exercises.count) * (2 + users.count)
       assert_equal kommas, scoresheet.count(',')

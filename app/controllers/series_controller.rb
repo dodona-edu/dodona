@@ -177,7 +177,9 @@ class SeriesController < ApplicationController
     @course = @series.course
     @title = @series.name
     @exercises = @series.exercises
-    @users = apply_scopes(@course.enrolled_members).order(permission: :asc).order(last_name: :asc, first_name: :asc)
+    @users = apply_scopes(@course.enrolled_members).order('course_memberships.status ASC')
+                                                   .order(permission: :asc)
+                                                   .order(last_name: :asc, first_name: :asc)
     @course_labels = CourseLabel.where(course: @course)
     @submission_hash = Submission.in_series(@series).where(user: @users)
     @submission_hash = @submission_hash.before_deadline(@series.deadline) if @series.deadline.present?

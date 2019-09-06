@@ -68,20 +68,6 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should get scoresheet as admin' do
-    with_users_signed_in @admins do |who|
-      get scoresheet_course_url(@course)
-      assert_response :success, "#{who} should be able to get scoresheet"
-    end
-  end
-
-  test 'should not get scoresheet as normal user' do
-    with_users_signed_in @not_admins do |who|
-      get scoresheet_course_url(@course)
-      assert_response :redirect, "#{who} should not be able to get scoresheet"
-    end
-  end
-
   test 'should subscribe current_user to course' do
     with_users_signed_in @not_subscribed do |who, user|
       post subscribe_course_url(@course)

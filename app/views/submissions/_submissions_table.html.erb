@@ -30,6 +30,8 @@
 <center><%= page_navigation_links submissions, true, 'submissions', params %></center>
 <script type="text/javascript">
     $(function () {
+      if(dodona.initFilterButtons){
         dodona.initFilterButtons();
+      }
     });
 </script>

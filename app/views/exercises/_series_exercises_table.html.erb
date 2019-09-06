@@ -23,9 +23,13 @@
           <%= raw "<i class='mdi mdi-alert-circle mdi-18' title='#{t("exercises.index.invalid")}'></i>" if exercise.not_valid? %>
         </span>
       </td>
-      <td>
+      <td class="link">
         <span class="ellipsis-overflow" title="<%= exercise.name %>">
-          <%= link_to exercise.name, exercise_path(exercise), target: "_blank" %>
+          <% if local_assigns.fetch(:show_buttons_for_present, false) %>
+            <%= link_to exercise.name, course_series_exercise_path(series.course, series, exercise), target: "_blank" %>
+          <% else %>
+            <%= link_to exercise.name, exercise_path(exercise), target: "_blank" %>
+          <% end %>
         </span>
         <div class="text-muted ellipsis-overflow">
           <small>
@@ -49,11 +53,11 @@
       </td>
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>
-          <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>">
+          <a href="#" class="btn btn-icon remove-exercise" title="<%= t "series.edit.remove_exercise" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_exercise_path(series.course, series, exercise)%>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>">
             <i class="mdi mdi-delete mdi-18"></i>
           </a>
         <% else %>
-          <a href="#" class="btn btn-icon add-exercise <%= "hidden" if series.exercises.include? exercise %>" title="<%= t "series.edit.add_exercise" %>" data-series_id="<%= series.id %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>" data-confirm="<%= t('.course_added_to_usable') unless exercise.usable_by? @series.course %>">
+          <a href="#" class="btn btn-icon add-exercise <%= "hidden" if series.exercises.include? exercise %>" title="<%= t "series.edit.add_exercise" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_exercise_path(series.course, series, exercise) %>" data-exercise_id="<%= exercise.id %>" data-exercise_name="<%= exercise.name %>" data-confirm="<%= t('.course_added_to_usable') unless exercise.usable_by? @series.course %>">
             <i class="mdi mdi-plus mdi-18"></i>
           </a>
         <% end %>

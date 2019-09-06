@@ -82,7 +82,6 @@ en:
       no_series_yet: This course currently contains no exercises nor series. Click the create series button to get started!
       users: Users
       series: series
-      download_scoresheet: Download scoresheet
       subscribed: Registered
       pending: Pending
       unsubscribed: Unregistered
@@ -123,8 +122,6 @@ en:
       not_logged_in: You need to be logged in to register
       key_mismatch: "The key didn't match"
       registration_closed: "Registration closed."
-    scoresheet:
-      explanation: "Showing the number of correctly solved exercises before the deadline"
     favorite:
       succeeded: "Course favorited"
       failed: "Failed favoriting course"

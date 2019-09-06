@@ -193,27 +193,6 @@ class Course < ApplicationRecord
     end
   end
 
-  def scoresheet(options = {})
-    sorted_series = series.reverse
-    sorted_users = enrolled_members.order('course_memberships.status ASC')
-                                   .order(permission: :asc)
-                                   .order(last_name: :asc, first_name: :asc)
-    CSV.generate(options) do |csv|
-      csv << [I18n.t('courses.scoresheet.explanation')]
-      csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')].concat(sorted_series.map(&:name))
-      csv << ['Maximum', '', '', ''].concat(sorted_series.map { |s| s.exercises.count })
-      sorted_users.each do |user|
-        row = [user.first_name, user.last_name, user.username, user.email]
-        sorted_series.each do |s|
-          latest_subs = Submission.where(user_id: user.id, course_id: id, exercise_id: s.exercises.map(&:id)).select('MAX(id) as id')
-          latest_subs = latest_subs.before_deadline(s.deadline) unless s.deadline.nil?
-          row << Submission.where(id: latest_subs.group(:exercise_id), accepted: true).count
-        end
-        csv << row
-      end
-    end
-  end
-
   def labels_csv
     sorted_course_memberships = course_memberships
                                 .where.not(status: %i[unsubscribed pending])

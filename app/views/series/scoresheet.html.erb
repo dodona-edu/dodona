@@ -10,7 +10,7 @@
         <%= render partial: 'layouts/searchbar', locals: {
             actions: [
                 {text: t('.at_least_one_started'), search: {at_least_one_started: true}},
-                {text: t('course.scoresheet.download_scoresheet'), url: scoresheet_download_series_path }
+                {text: t('series.scoresheet.download'), url: scoresheet_download_series_path }
             ],
             course_labels: @course_labels
         } %>

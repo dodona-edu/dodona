@@ -82,7 +82,6 @@ nl:
       no_series_yet: 'Deze cursus bevat nog geen reeksen met oefeningen. Klik op de knop "reeks aanmaken" om aan de slag te gaan.'
       users: Gebruikers
       series: reeksen
-      download_scoresheet: Scoresheet downloaden
       subscribed: Geregistreerd
       pending: Op de wachtlijst
       unsubscribed: Uitgeschreven
@@ -119,8 +118,6 @@ nl:
       not_logged_in: Je moet ingelogd zijn om je te registreren
       key_mismatch: De sleutel kwam niet overeen
       registration_closed: "Registratie gesloten."
-    scoresheet:
-      explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
     favorite:
       succeeded: "Cursus aan favorieten toegevoegd"
       failed: "Cursus aan favorieten toevoegen mislukt"

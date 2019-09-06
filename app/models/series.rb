@@ -82,7 +82,7 @@ class Series < ApplicationRecord
     CSV.generate do |csv|
       csv << [I18n.t('series.scoresheet.explanation')]
       csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), name].concat(exercises.map(&:name))
-      csv << ['Maximum', '', '', '', exercises.count].concat(exercises.map {|| 1 })
+      csv << ['Maximum', '', '', '', exercises.count].concat(exercises.map { 1 })
       sorted_users.each do |user|
         row = [user.first_name, user.last_name, user.username, user.email]
         row << exercises.map { |ex| ex.accepted_for(user, deadline, course) }.count(true)

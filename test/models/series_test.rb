@@ -130,7 +130,7 @@ class SeriesTest < ActiveSupport::TestCase
     end
     course.series.each do | series| 
       scoresheet = series.scoresheet
-      kommas = (3 + 1 + series.exercise_count) * (2 + users.count)
+      kommas = (3 + 1 + series.exercises.count) * (2 + users.count)
       assert_equal kommas, scoresheet.count(',')
     end
   end

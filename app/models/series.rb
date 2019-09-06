@@ -80,7 +80,7 @@ class Series < ApplicationRecord
                          .order(permission: :asc)
                          .order(last_name: :asc, first_name: :asc)
     CSV.generate do |csv|
-      csv << [I18n.t('courses.scoresheet.explanation')]
+      csv << [I18n.t('series.scoresheet.explanation')]
       csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), name].concat(exercises.map(&:name))
       csv << ['Maximum', '', '', '', exercises.count].concat(exercises.map {|| 1 })
       sorted_users.each do |user|

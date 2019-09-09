@@ -279,7 +279,7 @@ class Submission < ApplicationRecord
     submissions = Submission.all
     submissions = submissions.of_user(user) if user.present?
     submissions = submissions.in_course(course) if course.present?
-    submissions = submissions.where('id > ?', old.present? ? old[:latest] : 0)
+    submissions = submissions.where(id: (old.present? ? old[:latest] + 1 : 0)..)
     submissions = submissions.pluck(:id, :created_at)
 
     return unless submissions.any?
@@ -311,7 +311,7 @@ class Submission < ApplicationRecord
     submissions = Submission.all
     submissions = submissions.of_user(user) if user.present?
     submissions = submissions.in_course(course) if course.present?
-    submissions = submissions.where('id > ?', old.present? ? old[:latest] : 0)
+    submissions = submissions.where(id: (old.present? ? old[:latest] + 1 : 0)..)
     submissions = submissions.pluck(:id, :created_at)
 
     return unless submissions.any?

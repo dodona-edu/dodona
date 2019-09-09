@@ -192,7 +192,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 const $link = $(
                     `<a class="action" href='#' ${
                         action.type ? "data-type=" + action.type : ""
-                    } data-search_opt_id="${id}"><i class='mdi mdi-checkbox-blank-outline mdi-18'></i>${
+                    } data-search_opt_id="${id}"><i class='mdi mdi-checkbox-blank-outline mdi-18 mdi-box'></i>${
                         action.text
                     }</a>`
                 );

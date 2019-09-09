@@ -22,7 +22,11 @@
             <% end %>
           </span>
           <span class="profile-byline text-muted">
-            <%= @user.institution&.name %>
+            <% if @user.institution.present? and policy(@user.institution).show?%>
+              <%= link_to(@user.institution&.name, institution_path(@user.institution), class: "text-muted") %>
+            <% else %>
+              <%= @user.institution&.name %>
+            <% end %>
             <% if @user.institution&.name.present? and @user.email.present? %>
               &middot;
             <% end %>

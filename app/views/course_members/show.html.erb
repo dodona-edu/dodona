@@ -23,7 +23,9 @@
             </span>
           </span>
           <span class="profile-byline text-muted">
-            <%= link_to(@user.institution&.name, institution_path(@user.institution), class: "text-muted") %>
+            <% if @user.institution&.name.present? %>
+              <%= link_to(@user.institution&.name, institution_path(@user.institution), class: "text-muted") %>
+            <% end %>
             <% if @user.institution&.name.present? and @user.email.present? %>
               &middot;
             <% end %>

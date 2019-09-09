@@ -219,9 +219,9 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 .append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
             searchActions.forEach(function (action) {
                 const $link = $(
-                    `<a class="action" href=${
+                    `<a class="action" href='${
                         action.url ? action.url : "#"
-                    } ${
+                    }' ${
                         action.type ? "data-type=" + action.type : ""
                     }><i class='mdi mdi-${action.icon} mdi-18'></i>${action.text}</a>`
                 );

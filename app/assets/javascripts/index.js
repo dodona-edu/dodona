@@ -161,8 +161,8 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             const extraParams = {};
             searchOptions.forEach((opt, id) => {
                 if (
-                    $($(`a.action[data-search_opt_id="${id}"]`)
-                        .children()[0])
+                    $(`a.action[data-search_opt_id="${id}"]`)
+                        .find("i")
                         .hasClass("mdi-checkbox-marked-outline")
                 ) {
                     Object.entries(opt.search).forEach(([key, value]) => {
@@ -199,10 +199,10 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (urlContainsSearchOpt(action)) {
-                    $($link.children()[0]).removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
+                    $link.find("i").removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
                 }
                 $link.click(() => {
-                    const child = $($link.children()[0]);
+                    const child = $link.find("i");
                     if (child.hasClass("mdi-checkbox-blank-outline")) {
                         child.removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
                     } else {

@@ -55,7 +55,12 @@
           <% end %>
         <% end %>
         <% if policy(s).destroy? %>
-          <%= link_to s, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger", title: t("series.delete.title") do %>
+          <%= button_to s,
+                method: :delete, 
+                remote: true,
+                data: {confirm: t("general.are_you_sure")}, 
+                class: "btn btn-sm btn-danger", 
+                title: t("series.delete.title") do %>
             <i class="mdi mdi-18 mdi-delete"></i>
           <% end %>
         <% end %>

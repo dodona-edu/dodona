@@ -90,10 +90,9 @@ class SeriesController < ApplicationController
   # DELETE /series/1
   # DELETE /series/1.json
   def destroy
-    course = @series.course
     @series.destroy
     respond_to do |format|
-      format.html { redirect_to request.referrer, notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
+      format.html { redirect_to request.referer, notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
       format.json { head :no_content }
     end
   end

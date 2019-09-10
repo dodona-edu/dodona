@@ -88,9 +88,6 @@ function loadResultEditor(programmingLanguage, annotations) {
     editor.commands.commmandKeyBinding = {};
     editor.getSession().setUseWrapMode(true);
     editor.$blockScrolling = Infinity; // disable warning
-    $("#editor-result .ace_content").click(function () {
-        editor.getSelection().selectAll();
-    });
     if (annotations) {
         editor.session.setAnnotations(annotations);
     }

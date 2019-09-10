@@ -93,9 +93,8 @@ class SeriesController < ApplicationController
     course = @series.course
     @series.destroy
     respond_to do |format|
-      format.html { redirect_to course_url(course), notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
+      format.html { redirect_to request.referrer, notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
       format.json { head :no_content }
-      format.js
     end
   end
 

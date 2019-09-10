@@ -111,7 +111,7 @@ gem 'premailer-rails', '~> 1.10.3'
 gem 'has_scope', '~> 0.7.2'
 
 # generating zip files
-gem 'rubyzip', '~> 1.2.3'
+gem 'rubyzip', '~> 1.2.4'
 
 # add request server timings to the devtools
 gem 'rails_server_timings', '~> 1.0.8'

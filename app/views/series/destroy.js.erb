@@ -1,0 +1,1 @@
+$(".course-series-list").html("<%= escape_javascript(render partial: 'series/course_series_table', locals: {series: @series.course.series, course: @series.course}) %>")

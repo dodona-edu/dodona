@@ -18,7 +18,7 @@ en:
       from: from
       reevaluate_submissions: Re-evaluate submissions
       most_recent_correct: Most recent correct submissions per user
-      confirm_reevaluate_submissions: Are you sure you want te re-evaluate these submissions?
+      confirm_reevaluate_submissions: Are you sure you want to re-evaluate these submissions?
       reevaluating_submissions:
         one: Re-evaluating 1 submission
         other: "Re-evaluating %{count} submissions"

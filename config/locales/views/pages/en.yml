@@ -8,7 +8,7 @@ en:
       sign-in-with-office-365: "Sign in with Office 365"
       sign-in-with-g-suite: "Sign in with G Suite"
     about:
-      intro_html: "The Dodona platform contains hundreds of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with the credentials of your own institution. Dodona is still in active development, any bug report or suggestion is welcome trough the <a href='/contact'>contact form</a>."
+      intro_html: "The Dodona platform contains hundreds of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with the credentials of your institution. Dodona is still in active development, any bug report or suggestion is welcome trough the <a href='/contact'>contact form</a>."
       sign-in: Sign in
       learn-to-code: Learn to code
       higher-education: for secondary and higher education
@@ -17,7 +17,7 @@ en:
       get-feedback: Get feedback
       write-code-text: Subscribe for a course and pick one of the hundreds of programming exercises.
       hand-in-text: Solve the exercise and hand in using the built-in code editor.
-      get-feedback-text: You code is automatically tested. Get your results in seconds!
+      get-feedback-text: Your code is automatically tested. Get your results in seconds!
     dynamic_home:
       more-courses: More courses
       favorites: "Favorites"
@@ -61,7 +61,7 @@ en:
       message: Message
     create_contact:
       mail_sent: "Your message has been sent. Thanks for getting in touch."
-      captcha_failed: reCAPTCHA could not be verified, please try again.
+      captcha_failed: reCAPTCHA could not be verified; please try again.
     privacy_disclaimer:
       text_html: "Your privacy is important to us. On the <a href=\"%{your_data}\">your data</a> page we explain in clear and understandable language what data we collect and how we use it. Our <a href=\"%{privacy_statement}\">privacy statement</a> contains the legally binding version."
 

@@ -92,7 +92,7 @@ class SeriesController < ApplicationController
   def destroy
     @series.destroy
     respond_to do |format|
-      format.html { redirect_to request.referer, notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
+      format.html { redirect_to request.referer || course_path(@series.course), notice: I18n.t('controllers.destroyed', model: Series.model_name.human) }
       format.json { head :no_content }
     end
   end

@@ -2,7 +2,7 @@ version: 2.1
 
 references:
   docker_ruby_config: &docker_ruby_config
-    image: circleci/ruby:2.5.1-node
+    image: circleci/ruby:2.6.4-node
     environment:
       RAILS_ENV: "test"
       PARALLEL_WORKERS: "1"
@@ -24,13 +24,16 @@ commands:
       - checkout
       - restore_cache:
           keys:
-            - dodona-bundle-{{ checksum "Gemfile.lock" }}
+            - v2.6-dodona-bundle-{{ checksum "Gemfile.lock" }}
             - dodona-bundle-
+      - run:
+          name: Install bundler 2.0.2
+          command: gem install bundler:2.0.2
       - run:
           name: Bundle install
           command: bundle check || bundle install
       - save_cache:
-          key: dodona-bundle-{{ checksum "Gemfile.lock" }}
+          key: v2.6-dodona-bundle-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
       - restore_cache:

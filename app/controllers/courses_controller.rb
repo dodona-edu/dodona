@@ -252,12 +252,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def scoresheet
-    sheet = @course.scoresheet
-    filename = "scoresheet-#{@course.name.parameterize}.csv"
-    send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
-  end
-
   def mass_accept_pending
     @accepted = @course.accept_all_pending
     respond_to do |f|

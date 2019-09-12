@@ -56,21 +56,16 @@
         </div>
       <% end %>
 
-      <% if policy(@course).scoresheet? or current_user&.member_of? @course or policy(@course).copy? %>
+      <% if current_user&.member_of? @course or policy(@course).copy? %>
         <div class="card-actions card-border">
           <% if current_user&.member_of? @course %>
             <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn-text', data: {confirm: t('general.are_you_sure')} %>
           <% end %>
-          <% if policy(@course).scoresheet? or policy(@course).copy? %>
+          <% if policy(@course).copy? %>
             <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
               <i class="mdi mdi-dots-vertical"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-right">
-              <% if policy(@course).scoresheet? %>
-                <li>
-                  <%= link_to t(".download_scoresheet"), scoresheet_course_path(@course) %>
-                </li>
-              <% end %>
               <% if policy(@course).copy? %>
                 <li>
                   <%= link_to t(".copy"), new_course_url(copy_options: {base_id: @course.id}) %>

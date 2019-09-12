@@ -9,7 +9,8 @@
       <div class="card-supporting-text">
         <%= render partial: 'layouts/searchbar', locals: {
             actions: [
-                {icon: 'done', text: t('.at_least_one_started'), search: {at_least_one_started: true}}
+                {text: t('.at_least_one_started'), search: {at_least_one_started: true}},
+                {text: t('series.scoresheet.download'), url: scoresheet_download_series_path }
             ],
             course_labels: @course_labels
         } %>

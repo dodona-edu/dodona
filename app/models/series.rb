@@ -75,6 +75,27 @@ class Series < ApplicationRecord
     end
   end
 
+  def scoresheet
+    sorted_users = course.enrolled_members.order('course_memberships.status ASC')
+                         .order(permission: :asc)
+                         .order(last_name: :asc, first_name: :asc)
+    CSV.generate do |csv|
+      csv << [I18n.t('series.scoresheet.explanation')]
+      csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), name].concat(exercises.map(&:name))
+      csv << ['Maximum', '', '', '', exercises.count].concat(exercises.map { 1 })
+      latest_subs = Submission.where(user_id: sorted_users.map(&:id), course_id: course.id, exercise_id: exercises.map(&:id)).select('MAX(id) as id')
+      latest_subs = latest_subs.before_deadline(deadline) unless deadline.nil?
+      latest_subs = Submission.where(id: latest_subs.group(:user_id, :exercise_id), accepted: true).group(:user_id, :exercise_id).count
+      sorted_users.each do |user|
+        row = [user.first_name, user.last_name, user.username, user.email]
+        succeeded_exercises = exercises.map { |ex| latest_subs[[user.id, ex.id]].present? ? 1 : 0 }
+        row << succeeded_exercises.sum
+        row.concat(succeeded_exercises)
+        csv << row
+      end
+    end
+  end
+
   def zip_solutions_for_user(user, with_info: false)
     filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
     stringio = Zip::OutputStream.write_buffer do |zio|

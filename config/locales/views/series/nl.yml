@@ -54,7 +54,9 @@ nl:
       ago: geleden
     scoresheet:
       user: Gebruiker
+      explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
       at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
+      download: Scoresheet downloaden
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:

@@ -176,12 +176,20 @@ class SeriesController < ApplicationController
     @course = @series.course
     @title = @series.name
     @exercises = @series.exercises
-    @users = apply_scopes(@course.enrolled_members)
+    @users = apply_scopes(@course.enrolled_members).order('course_memberships.status ASC')
+                                                   .order(permission: :asc)
+                                                   .order(last_name: :asc, first_name: :asc)
     @course_labels = CourseLabel.where(course: @course)
     @submission_hash = Submission.in_series(@series).where(user: @users)
     @submission_hash = @submission_hash.before_deadline(@series.deadline) if @series.deadline.present?
     @submission_hash = @submission_hash.group(%i[user_id exercise_id]).most_recent.map { |s| [[s.user_id, s.exercise_id], s] }.to_h
     @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
+  end
+
+  def scoresheet_download
+    sheet = @series.scoresheet
+    filename = "scoresheet-#{@series.name.parameterize}.csv"
+    send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
   end
 
   def mass_rejudge

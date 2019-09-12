@@ -92,4 +92,46 @@ class SeriesTest < ActiveSupport::TestCase
     @series.update(visibility: 'closed')
     assert @series.access_token.present?
   end
+
+  test 'series scoresheet should be correct' do
+    course = create :course
+    create_list :series, 4, course: course, exercise_count: 5, deadline: Time.current
+    users = create_list(:user, 4, courses: [course])
+
+    course.series.each do |series|
+      deadline = series.deadline
+      series.exercises.map do |exercise|
+        4.times do |i|
+          u = users[i]
+          case i
+          when 0 # Wrong submission before deadline
+            create :wrong_submission,
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline - 2.minutes)
+          when 1 # Correct submission before deadline
+            create :correct_submission,
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline - 2.minutes)
+          when 2 # Wrong submission after deadline
+            create :wrong_submission,
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline + 2.minutes)
+          when 3 # Correct submission after deadline
+            create :correct_submission,
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline + 2.minutes)
+          end
+        end
+      end
+    end
+    course.series.each do |series|
+      scoresheet = series.scoresheet
+      kommas = (3 + 1 + series.exercises.count) * (2 + users.count)
+      assert_equal kommas, scoresheet.count(',')
+    end
+  end
 end

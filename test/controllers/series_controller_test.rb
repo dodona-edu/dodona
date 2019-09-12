@@ -235,6 +235,18 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
     assert_show_and_overview false
   end
 
+  test 'should get series scoresheet as course admin' do
+    sign_in @course_admin
+    get scoresheet_download_series_url(@series)
+    assert_response :success, "#{@course_admin} should be able to get series scoresheet"
+  end
+
+  test 'should not get series scoresheet as normal user' do
+    sign_in @student
+    get scoresheet_download_series_url(@series)
+    assert_response :redirect, "#{@student} should not be able to get series scoresheet"
+  end
+
   test 'course admin should see hidden and closed series without token' do
     sign_in @course_admin
     @series.update(visibility: :hidden)

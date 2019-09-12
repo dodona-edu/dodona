@@ -155,15 +155,15 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     function initActions() {
         const $actions = $(".table-toolbar-tools .actions");
         const searchOptions = actions.filter(action => action.search);
-        const searchActions = actions.filter(action => action.action || action.js);
+        const searchActions = actions.filter(action => action.url || action.action || action.js);
 
         function performSearch() {
             const extraParams = {};
             searchOptions.forEach((opt, id) => {
                 if (
                     $(`a.action[data-search_opt_id="${id}"]`)
-                        .parent()
-                        .hasClass("active")
+                        .find("i")
+                        .hasClass("mdi-checkbox-marked-outline")
                 ) {
                     Object.entries(opt.search).forEach(([key, value]) => {
                         extraParams[key] = value;
@@ -192,20 +192,21 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 const $link = $(
                     `<a class="action" href='#' ${
                         action.type ? "data-type=" + action.type : ""
-                    } data-search_opt_id="${id}"><i class='mdi mdi-${action.icon} mdi-18'></i>${
+                    } data-search_opt_id="${id}">${
                         action.text
-                    }</a>`
+                    }<i class='mdi mdi-checkbox-blank-outline mdi-18 mdi-box'></i></a>`
                 );
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (urlContainsSearchOpt(action)) {
-                    $link.parent().addClass("active");
+                    $link.find("i").removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
                 }
                 $link.click(() => {
-                    if (!$link.parent().hasClass("active")) {
-                        $link.parent().addClass("active");
+                    const child = $link.find("i");
+                    if (child.hasClass("mdi-checkbox-blank-outline")) {
+                        child.removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
                     } else {
-                        $link.parent().removeClass("active");
+                        child.removeClass("mdi-checkbox-marked-outline").addClass("mdi-checkbox-blank-outline");
                     }
                     performSearch();
                     return false;
@@ -218,7 +219,9 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 .append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
             searchActions.forEach(function (action) {
                 const $link = $(
-                    `<a class="action" href='#' ${
+                    `<a class="action" href='${
+                        action.url ? action.url : "#"
+                    }' ${
                         action.type ? "data-type=" + action.type : ""
                     }><i class='mdi mdi-${action.icon} mdi-18'></i>${action.text}</a>`
                 );
@@ -229,7 +232,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                         performAction(action);
                         return false;
                     });
-                } else {
+                } else if (action.js) {
                     $link.click(() => {
                         eval(action.js);
                         return false;

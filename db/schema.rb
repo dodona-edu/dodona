@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(version: 2019_08_29_143205) do
     t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true
     t.index ["programming_language_id"], name: "fk_rails_f60feebafd"
     t.index ["repository_id"], name: "index_exercises_on_repository_id"
+    t.index ["repository_token"], name: "index_exercises_on_repository_token", unique: true
     t.index ["status"], name: "index_exercises_on_status"
     t.index ["token"], name: "index_exercises_on_token", unique: true
   end

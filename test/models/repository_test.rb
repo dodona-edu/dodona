@@ -211,7 +211,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_exercises
     echo2 = Exercise.find_by(path: new_dir)
-    assert_equal echo2.token, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    assert_equal echo2.repository_token, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
   end
 
   test 'should write new token to config file of copied exercise' do
@@ -221,7 +221,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_exercises
     echo2 = Exercise.find_by(path: new_dir)
-    assert_not_equal @echo.token, echo2.config['internals']['token']
+    assert_not_equal @echo.repository_token, echo2.config['internals']['token']
   end
 
   test 'should overwrite memory limit that is too high' do

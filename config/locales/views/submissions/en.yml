@@ -4,7 +4,7 @@ en:
       ago: ago
       view_solution: View solution
       filter-submissions-by-user: "Only show submissions from this user"
-      filter-submissions-by-exercise: "Only show submissions for this exercice"
+      filter-submissions-by-exercise: "Only show submissions for this exercise"
     submissions_table:
       user: User
       exercise: Exercise

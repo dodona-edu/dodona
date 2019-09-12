@@ -3,10 +3,12 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-server 'dodona.ugent.be', user: 'dodona', port: '4840', roles: %w[app web db worker]
+server 'dodona.ugent.be',   user: 'dodona', port: '4840', roles: %w[app web db worker]
 server 'sisyphus.ugent.be', user: 'dodona', port: '4840', roles: %w[app worker]
 server 'salmoneu.ugent.be', user: 'dodona', port: '4840', roles: %w[app worker]
 server 'tantalus.ugent.be', user: 'dodona', port: '4840', roles: %w[app worker]
+server 'ixion.ugent.be',    user: 'dodona', port: '4840', roles: %w[app worker]
+server 'tityos.ugent.be',   user: 'dodona', port: '4840', roles: %w[app worker]
 
 set :branch, 'master'
 

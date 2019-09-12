@@ -42,17 +42,23 @@
           if (window.matchMedia("(prefers-color-scheme)").media !== "not all") {
               const listener = e => {
                   const darkModeLink = document.getElementById("dark-mode-toggle");
-                  darkModeLink.href = `<%= toggle_dark_mode_path %>?dark=${!e.matches}`;
-                  const iconClassList = darkModeLink.getElementsByClassName("dropdown-box")[0].classList;
+                  if(darkModeLink) {
+                      darkModeLink.href = `<%= toggle_dark_mode_path %>?dark=${!e.matches}`;
+                  }
+                  const darkModeIcon = darkModeLink ? darkModeLink.getElementsByClassName("dropdown-box")[0] : null;
                   window.dodona.darkMode = e.matches;
                   if (e.matches) {
                       document.head.insertAdjacentHTML("beforeend", darkModeCSS);
-                      iconClassList.remove("mdi-checkbox-blank-outline");
-                      iconClassList.add("mdi-checkbox-marked-outline");
+                      if(darkModeIcon) {
+                          darkModeIcon.classList.remove("mdi-checkbox-blank-outline");
+                          darkModeIcon.classList.add("mdi-checkbox-marked-outline");
+                      }
                   } else {
                       document.head.insertAdjacentHTML("beforeend", lightModeCSS);
-                      iconClassList.remove("mdi-checkbox-marked-outline");
-                      iconClassList.add("mdi-checkbox-blank-outline");
+                      if(darkModeIcon) {
+                          darkModeIcon.classList.remove("mdi-checkbox-marked-outline");
+                          darkModeIcon.classList.add("mdi-checkbox-blank-outline");
+                      }
                   }
               };
               const matcher = window.matchMedia("(prefers-color-scheme: dark)");

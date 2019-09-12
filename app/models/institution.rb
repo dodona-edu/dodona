@@ -17,15 +17,17 @@
 #
 
 class Institution < ApplicationRecord
-  NEW_INSTITUTION_NAME = "n/a"
-  enum provider: %i[smartschool office365 saml google_oauth2]
+  NEW_INSTITUTION_NAME = 'n/a'.freeze
+  enum provider: { smartschool: 0, office365: 1, saml: 2, google_oauth2: 3 }
 
-  has_many :users
-  has_many :courses
+  has_many :users, dependent: :restrict_with_error
+  has_many :courses, dependent: :restrict_with_error
 
-  validates :identifier, uniqueness: {allow_blank: true}
+  validates :identifier, uniqueness: { allow_blank: true, case_sensitive: false }
   validates :logo, :short_name, :provider, presence: true
   validates :sso_url, :slo_url, :certificate, :entity_id, presence: true, if: :saml?
+
+  scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
 
   def self.from_identifier(identifier)
     find_by(identifier: identifier) if identifier.present?

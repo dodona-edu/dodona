@@ -3,15 +3,16 @@
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <span class="user-icon pull-left"><i class="material-icons md-36" title="<%= @user.permission %>">
+          <span class="user-icon pull-left">
             <% if @user.permission == "student" %>
-              person
+              <i class="mdi mdi-account mdi-36" title="<%= @user.permission %>">
             <% elsif @user.permission == "staff" %>
-              school
+              <i class="mdi mdi-school mdi-36" title="<%= @user.permission %>">
             <% else %>
-              android
+              <i class="mdi mdi-android mdi-36" title="<%= @user.permission %>">
             <% end %>
-          </i></span>
+              </i>
+          </span>
           <span class="profile-line">
             <span class="name">
               <%= @user.full_name %>
@@ -21,7 +22,11 @@
             <% end %>
           </span>
           <span class="profile-byline text-muted">
-            <%= @user.institution&.name %>
+            <% if @user.institution.present? and policy(@user.institution).show?%>
+              <%= link_to(@user.institution&.name, institution_path(@user.institution), class: "text-muted") %>
+            <% else %>
+              <%= @user.institution&.name %>
+            <% end %>
             <% if @user.institution&.name.present? and @user.email.present? %>
               &middot;
             <% end %>

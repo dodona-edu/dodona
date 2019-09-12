@@ -1,12 +1,30 @@
 <tr id="submission_<%= submission.id %>" data-status="<%= submission.status %>">
   <td><%= submission_status_icon(submission) %></td>
-  <% if current_user.administrating_courses.any? || current_user.admin? %>
+  <% if (current_user.administrating_courses.any? || current_user.admin?) && user.nil? %>
     <td>
-      <%= link_to submission.user.full_name, user_submissions_path(submission.user, course_id: @course&.id, exercise_id: @exercise&.id), title: submission.user.full_name, class: "ellipsis-overflow" %>
+      <i class="mdi mdi-filter-outline mdi-18 filter-icon"
+         title="<%= t('.filter-submissions-by-user') %>"
+         data-filter="<%= submission.user.full_name %>"
+         data-toggle="tooltip"
+         data-placement="top"
+      >
+      </i>
+      <% if submission.course.nil? %>
+        <%= submission.user.full_name %>
+      <% else %>
+        <%= link_to submission.user.full_name, course_member_path(submission.course, submission.user), title: submission.user.full_name, class: "ellipsis-overflow" %>
+      <% end %>
     </td>
   <% end %>
   <% if !exercise %>
     <td>
+      <i class="mdi mdi-filter-outline mdi-18 filter-icon"
+        title="<%= t('.filter-submissions-by-exercise') %>"
+        data-filter="<%= submission.exercise.name %>"
+        data-toggle="tooltip"
+        data-placement="top"
+      >
+      </i>
       <% if submission.course.nil? %>
         <%= link_to submission.exercise.name, exercise_path(submission.exercise) %>
       <% else %>
@@ -26,11 +44,11 @@
   <td>
     <% if remote_links %>
       <%= link_to submission, class: "load-submission", title: t(".view_solution"), 'data-remote' => true do %>
-        <i class="material-icons md-18">chevron_right</i>
+        <i class="mdi mdi-chevron-right mdi-18"></i>
       <% end %>
     <% else %>
       <%= link_to submission, class: "load-submission", title: t(".view_solution") do %>
-        <i class="material-icons md-18">chevron_right</i>
+        <i class="mdi mdi-chevron-right mdi-18"></i>
       <% end %>
     <% end %>
   </td>

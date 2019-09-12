@@ -6,8 +6,8 @@ class SeriesPolicy < ApplicationPolicy
       elsif user
         @scope = scope.joins(course: :course_memberships)
         scope.where(visibility: :open)
-            .or(scope.where(course: {course_memberships: {status: :course_admin, user_id: user.id}}))
-            .distinct
+             .or(scope.where(course: { course_memberships: { status: :course_admin, user_id: user.id } }))
+             .distinct
       else
         scope.where(visibility: :visible)
       end
@@ -22,14 +22,15 @@ class SeriesPolicy < ApplicationPolicy
     return true if course_admin?
     return false if record.closed?
     return false if record.hidden? && user.nil?
+
     course = record.course
     course.visible_for_all? ||
-        (course.visible_for_institution? && course.institution == user&.institution) ||
-        user&.member_of?(course)
+      (course.visible_for_institution? && course.institution == user&.institution) ||
+      user&.member_of?(course)
   end
 
   def overview?
-    show?
+    show? && (record.exercises_visible || course_admin?)
   end
 
   def create?
@@ -83,7 +84,7 @@ class SeriesPolicy < ApplicationPolicy
   def permitted_attributes
     # record is the Series class on create
     if course_admin? || record == Series
-      %i[name description course_id visibility order deadline indianio_support progress_enabled]
+      %i[name description course_id visibility order deadline indianio_support progress_enabled exercises_visible]
     else
       []
     end

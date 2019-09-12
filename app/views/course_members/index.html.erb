@@ -65,28 +65,28 @@
                        eager: false,
                        actions: [
                            {
-                               icon: 'done',
+                               icon: 'check',
                                text: t("courses.show.accept_all"),
                                confirm: t("courses.show.confirm_accept_all"),
                                action: mass_accept_pending_course_path(@course),
                                type: 'pending'
                            },
                            {
-                               icon: 'remove',
+                               icon: 'minus',
                                text: t("courses.show.decline_all"),
                                confirm: t("courses.show.confirm_decline_all"),
                                action: mass_decline_pending_course_path(@course),
                                type: 'pending'
                            },
                            {
-                               icon: 'style',
+                               icon: 'palette-swatch',
                                text: t(".edit_all_labels"),
                                js: '$("#labelsUploadModal").modal("show")',
                                type: 'enrolled'
                            }
                        ],
                        course_labels: @course_labels,
-                       institutions: Institution.all
+                       institutions: Institution.of_course_by_members(@course)
                    } %>
         <div id="users-table-wrapper">
           <%= render partial: 'members_table',

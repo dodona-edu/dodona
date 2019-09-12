@@ -11,7 +11,8 @@
     $(function () {
         dodona.initHeatmap(
             '<%= raw heatmap_path(user_id: local_assigns[:user]&.id, course_id: local_assigns[:course]&.id) %>',
-            <%= raw local_assigns[:course].present? ? "'#{course.year}'" : "undefined" %>
+            <%= raw local_assigns[:course].present? ? "true" : "false" %>,
+            <%= raw local_assigns[:course].present? ? "'#{course.formatted_year}'" : "undefined" %>
         );
     });
 </script>

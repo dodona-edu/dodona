@@ -21,28 +21,28 @@ class JudgeTest < ActiveSupport::TestCase
   end
 
   test 'renderer which is not a subclass of FeedBackTableRenderer should be invalid' do
-    judge = build(:judge, renderer: 'NilClass')
+    judge = build(:judge, :git_stubbed, renderer: 'NilClass')
     assert_not judge.valid?
     assert_equal ['should be a subclass of FeedbackTableRenderer'],
                  judge.errors[:renderer]
   end
 
   test 'renderer which is an unknown class should be invalid' do
-    judge = build(:judge, renderer: 'OnbestaandeKlasse')
+    judge = build(:judge, :git_stubbed, renderer: 'OnbestaandeKlasse')
     assert_not judge.valid?
     assert_equal ['should be a class in scope'],
                  judge.errors[:renderer]
   end
 
   test 'runner which is not a subclass of FeedBackTableRenderer should be invalid' do
-    judge = build(:judge, runner: 'NilClass')
+    judge = build(:judge, :git_stubbed, runner: 'NilClass')
     assert_not judge.valid?
     assert_equal ['should be a subclass of SubmissionRunner'],
                  judge.errors[:runner]
   end
 
   test 'runner which is an unknown class should be invalid' do
-    judge = build(:judge, runner: 'OnbestaandeKlasse')
+    judge = build(:judge, :git_stubbed, runner: 'OnbestaandeKlasse')
     assert_not judge.valid?
     assert_equal ['should be a class in scope'],
                  judge.errors[:runner]

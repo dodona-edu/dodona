@@ -27,6 +27,9 @@ class ActiveSupport::TestCase
   include DelayedJobHelper
   include RemoteHelper
   include SeriesZipHelper
+
+  # Run tests in parallel with specified workers
+  parallelize(workers: :number_of_processors)
 end
 
 class ActionDispatch::IntegrationTest

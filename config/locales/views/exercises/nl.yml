@@ -30,6 +30,7 @@ nl:
       repository: "Repository"
       path: "Pad"
       class_progress: Voortgang groep
+      class_progress_visibility_disabled: "De voortgang van de groep is niet zichtbaar voor studenten."
       progress_chart_info_tried:
         one: "Één gebruiker begon aan deze oefening."
         other: "%{count} gebruikers begonnen aan deze oefening."
@@ -53,7 +54,7 @@ nl:
       not_a_member: Je bekijkt deze oefening binnen een cursus waar je geen lid van bent. Je zult niet verschijnen op de puntenlijst van de lesgever tot je bent geregistreerd.
       alert_not_valid: Er is iets fout met deze oefening. Je kan momenteel niet indienen, maar je kan wel je oude oplossingen bekijken.
       alert_removed: Deze oefening is niet meer beschikbaar, maar je kan nog steeds je oude oplossingen bekijken.
-      deadline_passed: "De deadline voor deze oefening was om %{deadline}. Je kan nog steeds indienen, maar er wordt waarschijnlijk geen rekening meer mee gehouden."
+      deadline_passed: "De deadline voor deze oefening was om %{deadline}. Je kan nog steeds indienen, maar de lesgever houdt er mogelijk geen rekening meer mee."
       deadline_in_5_minutes: "De deadline voor deze oefening is om %{deadline}, wat over minder dan 5 minuten is."
     series_exercises_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"

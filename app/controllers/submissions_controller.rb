@@ -25,32 +25,30 @@ class SubmissionsController < ApplicationController
     @title = I18n.t('submissions.index.title')
     @crumbs = []
     if @user
-      if @course.present?
-        @crumbs << [@user.full_name, course_member_path(@course, @user)]
-      else
-        @crumbs << [@user.full_name, user_path(@user)]
-      end
-    else
-      if @series
-        @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
-      elsif @course
-        @crumbs << [@course.name, course_path(@course)]
-      end
+      @crumbs << if @course.present?
+                   [@user.full_name, course_member_path(@course, @user)]
+                 else
+                   [@user.full_name, user_path(@user)]
+                 end
+    elsif @series
+      @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
+    elsif @course
+      @crumbs << [@course.name, course_path(@course)]
+    elsif @judge
+      @crumbs << [@judge.name, judge_path(@judge)]
     end
-    if @exercise
-      @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)]
-    end
-    @crumbs << [I18n.t('submissions.index.title'), "#"]
+    @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] if @exercise
+    @crumbs << [I18n.t('submissions.index.title'), '#']
   end
 
   def show
     @title = I18n.t('submissions.show.submission')
     course = @submission.course
-    if course.present?
-      @crumbs = [[course.name, course_path(course)], [@submission.exercise.name, course_exercise_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), "#"]]
-    else
-      @crumbs = [[@submission.exercise.name, exercise_path(@submission.exercise)], [I18n.t('submissions.show.submission'), "#"]]
-    end
+    @crumbs = if course.present?
+                [[course.name, course_path(course)], [@submission.exercise.name, course_exercise_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
+              else
+                [[@submission.exercise.name, exercise_path(@submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
+              end
   end
 
   def create
@@ -69,10 +67,10 @@ class SubmissionsController < ApplicationController
       can_submit &&= @submission.exercise.accessible?(current_user, @submission.course)
     end
     if can_submit && @submission.save
-      render json: {status: 'ok', id: @submission.id, exercise_id: @submission.exercise_id, course_id: @submission.course_id, url: submission_url(@submission, format: :json)}
+      render json: { status: 'ok', id: @submission.id, exercise_id: @submission.exercise_id, course_id: @submission.course_id, url: submission_url(@submission, format: :json) }
     else
       @submission.errors.add(:exercise, :not_permitted) unless can_submit
-      render json: {status: 'failed', errors: @submission.errors}, status: :unprocessable_entity
+      render json: { status: 'failed', errors: @submission.errors }, status: :unprocessable_entity
     end
   end
 
@@ -107,7 +105,7 @@ class SubmissionsController < ApplicationController
     authorize Submission
     Event.create(event_type: :rejudge, user: current_user, message: "#{@submissions.count} submissions")
     Submission.rejudge(@submissions)
-    render json: {status: 'ok', message: I18n.t('submissions.index.reevaluating_submissions', count: @submissions.length)}
+    render json: { status: 'ok', message: I18n.t('submissions.index.reevaluating_submissions', count: @submissions.length) }
   end
 
   private
@@ -126,14 +124,12 @@ class SubmissionsController < ApplicationController
     end
     if params[:course_id]
       @course = Course.find(params[:course_id])
-      @course_labels = CourseLabel.where(course: @course) unless @user.present?
+      @course_labels = CourseLabel.where(course: @course) if @user.blank?
     end
-    if params[:series_id]
-      @series = Series.find(params[:series_id])
-    end
-    if params[:exercise_id]
-      @exercise = Exercise.find(params[:exercise_id])
-    end
+
+    @series = Series.find(params[:series_id]) if params[:series_id]
+    @exercise = Exercise.find(params[:exercise_id]) if params[:exercise_id]
+    @judge = Judge.find(params[:judge_id]) if params[:judge_id]
 
     if @exercise
       @submissions = @submissions.of_exercise(@exercise)
@@ -146,16 +142,14 @@ class SubmissionsController < ApplicationController
       @submissions = @submissions.in_series(@series)
     elsif @course
       @submissions = @submissions.in_course(@course)
+    elsif @judge
+      @submissions = @submissions.of_judge(@judge)
     end
 
-    if @user.present? && @course.present?
-      @course_membership = CourseMembership.find_by(user: @user, course: @course)
-    end
+    @course_membership = CourseMembership.find_by(user: @user, course: @course) if @user.present? && @course.present?
 
     # this cannot use has_scope, because we need the scopes in this method
     # to be applied before this one
-    if params[:most_recent_correct_per_user]
-      @submissions = @submissions.most_recent_correct_per_user
-    end
+    @submissions = @submissions.most_recent_correct_per_user if params[:most_recent_correct_per_user]
   end
 end

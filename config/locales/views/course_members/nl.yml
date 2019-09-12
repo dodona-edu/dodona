@@ -12,6 +12,12 @@ nl:
       labels_delimiter: "Gebruik een komma om labels te scheiden"
     members_table:
       labels: "Labels"
+      member_progress_chart_info_tried:
+        one: "Begonnen aan één oefening."
+        other: "Begonnen aan %{count} oefeningen."
+      member_progress_chart_info_correct:
+        one: "Één oefening correct opgelost."
+        other: "%{count} oefeningen correct opgelost."
     index:
       close: "Sluiten"
       upload: "Aanpassingen uploaden"

@@ -1,5 +1,5 @@
 class StatisticsController < ApplicationController
-  before_action :set_course_and_user, only: [:punchcard, :heatmap]
+  before_action :set_course_and_user, only: %i[punchcard heatmap]
 
   def punchcard
     result = Submission.get_punchcard_matrix(@user, @course)
@@ -31,5 +31,4 @@ class StatisticsController < ApplicationController
       authorize @user
     end
   end
-
 end

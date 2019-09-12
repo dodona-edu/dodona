@@ -19,7 +19,7 @@
 require 'csv'
 
 class Series < ApplicationRecord
-  enum visibility: %i[open hidden closed]
+  enum visibility: { open: 0, hidden: 1, closed: 2 }
 
   belongs_to :course
   has_many :series_memberships, dependent: :destroy
@@ -30,9 +30,9 @@ class Series < ApplicationRecord
 
   before_create :set_access_token
 
-  scope :visible, -> {where(visibility: :open)}
-  scope :with_deadline, -> {where.not(deadline: nil)}
-  default_scope {order(order: :asc, id: :desc)}
+  scope :visible, -> { where(visibility: :open) }
+  scope :with_deadline, -> { where.not(deadline: nil) }
+  default_scope { order(order: :asc, id: :desc) }
 
   after_initialize do
     self.visibility ||= 'open'
@@ -51,11 +51,11 @@ class Series < ApplicationRecord
   end
 
   def completed?(user)
-    exercises.all? {|e| e.accepted_for(user)}
+    exercises.all? { |e| e.accepted_for(user) }
   end
 
   def solved_exercises(user)
-    exercises.select {|e| e.accepted_for(user)}
+    exercises.select { |e| e.accepted_for(user) }
   end
 
   def indianio_support
@@ -67,7 +67,7 @@ class Series < ApplicationRecord
   end
 
   def indianio_support=(value)
-    value = false if value == '0' || value == 0 || value == 'false'
+    value = false if ['0', 0, 'false'].include? value
     if indianio_token.nil? && value
       generate_token :indianio_token
     elsif !value
@@ -96,7 +96,7 @@ class Series < ApplicationRecord
     end
     stringio.rewind
     zip_data = stringio.sysread
-    {filename: filename, data: zip_data}
+    { filename: filename, data: zip_data }
   end
 
   def zip_solutions(with_info: false)
@@ -120,11 +120,12 @@ class Series < ApplicationRecord
     end
     stringio.rewind
     zip_data = stringio.sysread
-    {filename: filename, data: zip_data}
+    { filename: filename, data: zip_data }
   end
 
   def generate_token(type)
     raise 'unknown token type' unless %i[indianio_token access_token].include? type
+
     self[type] = SecureRandom.urlsafe_base64(16).tr('1lL0oO', '')
   end
 

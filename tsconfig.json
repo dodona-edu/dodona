@@ -2,28 +2,19 @@
   "compilerOptions": {
     "declaration": false,
     "emitDecoratorMetadata": true,
+    "esModuleInterop": false,
     "experimentalDecorators": true,
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["es7", "dom"],
     "module": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es5",
     "baseUrl": "app",
     "paths": {
-      "*": [
-        "assets/javascripts/*"
-      ]
-    }
+      "*": ["assets/javascripts/*"]
+    },
+    "pretty": true
   },
-  "exclude": [
-    "**/*.spec.ts",
-    "node_modules",
-    "vendor",
-    "public",
-    "data"
-  ],
+  "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public", "data"],
   "compileOnSave": false
 }

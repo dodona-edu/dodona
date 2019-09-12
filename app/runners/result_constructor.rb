@@ -15,8 +15,8 @@ class ResultConstructor
   PART_SCHEMA = JSON.parse(File.read(Rails.root.join('public', 'schemas', 'partial_output.json')))
 
   LEVELSA = %i[judgement tab context testcase test].freeze
-  LEVELSH = {judgement: 0, tab: 1, context: 2, testcase: 3, test: 4}.freeze
-  GATHER = {tab: :groups, context: :groups, testcase: :groups, test: :tests}.freeze
+  LEVELSH = { judgement: 0, tab: 1, context: 2, testcase: 3, test: 4 }.freeze
+  GATHER = { tab: :groups, context: :groups, testcase: :groups, test: :tests }.freeze
 
   def initialize(locale)
     @locale = locale
@@ -26,6 +26,7 @@ class ResultConstructor
 
   def feed(judge_output)
     raise ResultConstructorError, 'No judge output' if judge_output.empty?
+
     split_jsons(judge_output).each do |json|
       if JSON::Validator.validate(PART_SCHEMA, json)
         update(json)
@@ -33,8 +34,8 @@ class ResultConstructor
         @result = json
       else
         raise ResultConstructorError.new(
-            'Judge output is not a valid json',
-            json.to_s
+          'Judge output is not a valid json',
+          json.to_s
         )
       end
     end
@@ -43,9 +44,9 @@ class ResultConstructor
   def result(timeout)
     # prepare status for possible timeout
     reason = timeout ? 'time limit exceeded' : 'memory limit exceeded'
-    status = {enum: reason,
-              human: I18n.t("activerecord.attributes.submission.statuses.#{reason}",
-                            locale: @locale)}
+    status = { enum: reason,
+               human: I18n.t("activerecord.attributes.submission.statuses.#{reason}",
+                             locale: @locale) }
 
     # close the levels left open
     close_test(generated: '', accepted: false, status: status) if @level == :test
@@ -69,11 +70,12 @@ class ResultConstructor
                                       locale: @locale)
   end
 
-  def start_tab(title: nil, hidden: nil)
+  def start_tab(title: nil, hidden: nil, permission: nil)
     check_level(:judgement, 'tab started')
     @tab = {}
     @tab[:description] = title
     @tab[:badgeCount] = 0
+    @tab[:permission] = permission unless permission.nil?
     @hiddentab = hidden || false
     @level = :tab
   end
@@ -109,21 +111,21 @@ class ResultConstructor
 
   def annotate_code(values)
     (@judgement[:annotations] ||= []) << {
-        text: values[:text] || '',
-        type: values[:type] || 'info',
-        row: values[:row] || 0,
-        rows: values[:rows] || 1,
-        column: values[:column] || 0,
-        columns: values[:columns] || 1
+      text: values[:text] || '',
+      type: values[:type] || 'info',
+      row: values[:row] || 0,
+      rows: values[:rows] || 1,
+      column: values[:column] || 0,
+      columns: values[:columns] || 1
     }
   end
 
   def escalate_status(status: nil)
     status[:enum] = Submission.normalize_status(status[:enum])
-    if worse?(@judgement[:status], status[:enum])
-      @judgement[:status] = status[:enum]
-      @judgement[:description] = status[:human]
-    end
+    return unless worse?(@judgement[:status], status[:enum])
+
+    @judgement[:status] = status[:enum]
+    @judgement[:description] = status[:human]
   end
 
   def close_test(generated: nil, accepted: nil, status: nil)
@@ -160,6 +162,8 @@ class ResultConstructor
     @level = :tab
   end
 
+  # rubocop:disable Naming/VariableName
+  # This variable has to be camelCase because it is taken straight from JSON
   def close_tab(badgeCount: nil)
     check_level(:tab, 'tab closed')
     @tab[:badgeCount] = badgeCount unless badgeCount.nil?
@@ -167,6 +171,7 @@ class ResultConstructor
     @tab = nil
     @level = :judgement
   end
+  # rubocop:enable Naming/VariableName
 
   def close_judgement(accepted: nil, status: nil)
     check_level(:judgement, 'judgement closed')
@@ -194,6 +199,7 @@ class ResultConstructor
       end
     end
     raise ResultConstructorError.new('Failed to parse the following JSON', string) if parse_exception.present?
+
     jsons[0...-1]
   end
 
@@ -212,13 +218,13 @@ class ResultConstructor
   end
 
   EVILNESS = [
-      'correct',
-      'wrong',
-      'runtime error',
-      'compilation error',
-      'memory limit exceeded',
-      'time limit exceeded',
-      'internal error'
+    'correct',
+    'wrong',
+    'runtime error',
+    'compilation error',
+    'memory limit exceeded',
+    'time limit exceeded',
+    'internal error'
   ].each_with_index.reduce({}) do |memo, pair|
     memo.merge(pair[0] => pair[1])
   end

@@ -1,3 +1,5 @@
+/* globals ga */
+
 import ClipboardJS from "clipboard";
 
 function initClipboard() {
@@ -7,13 +9,13 @@ function initClipboard() {
         const clip = new ClipboardJS(selector);
         const targetOf = e => $($(e.trigger).data("clipboard-target"));
         clip.on("success", e => {
-            let $t = targetOf(e);
+            const $t = targetOf(e);
             $t.attr("title", I18n.t("js.copy-success"))
                 .tooltip("show");
             setTimeout(() => $t.tooltip("destroy"), delay);
         });
         clip.on("error", e => {
-            let $t = targetOf(e);
+            const $t = targetOf(e);
             $t.attr("title", I18n.t("js.copy-fail"))
                 .tooltip("show");
             setTimeout(() => $t.tooltip("destroy"), delay);
@@ -25,7 +27,7 @@ function initClipboard() {
  * Function to delay some other function until it isn't
  * called for "ms" ms
  */
-let delay = (function () {
+const delay = (function () {
     let timer = 0;
     return function (callback, ms) {
         clearTimeout(timer);
@@ -43,8 +45,8 @@ function updateURLParameter(url, param, paramVal) {
     let i;
 
     if (additionalURL) {
-        var tmpAnchor = additionalURL.split("#");
-        var TheParams = tmpAnchor[0];
+        const tmpAnchor = additionalURL.split("#");
+        const TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
         if (TheAnchor) {
             additionalURL = TheParams;
@@ -57,8 +59,8 @@ function updateURLParameter(url, param, paramVal) {
             }
         }
     } else {
-        var tmpAnchor = baseURL.split("#");
-        var TheParams = tmpAnchor[0];
+        const tmpAnchor = baseURL.split("#");
+        const TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
 
         if (TheParams) {
@@ -76,7 +78,7 @@ function updateURLParameter(url, param, paramVal) {
 }
 
 function updateArrayURLParameter(url, param, _paramVals) {
-    let paramVals = _paramVals;
+    const paramVals = _paramVals;
     let TheAnchor = null;
     let newAdditionalURL = "";
     let tempArray = url.split("?");
@@ -85,8 +87,8 @@ function updateArrayURLParameter(url, param, _paramVals) {
     let temp = "";
 
     if (additionalURL) {
-        let tmpAnchor = additionalURL.split("#");
-        let TheParams = tmpAnchor[0];
+        const tmpAnchor = additionalURL.split("#");
+        const TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
         if (TheAnchor) {
             additionalURL = TheParams;
@@ -99,8 +101,8 @@ function updateArrayURLParameter(url, param, _paramVals) {
             }
         }
     } else {
-        let tmpAnchor = baseURL.split("#");
-        let TheParams = tmpAnchor[0];
+        const tmpAnchor = baseURL.split("#");
+        const TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
 
         if (TheParams) {
@@ -108,7 +110,7 @@ function updateArrayURLParameter(url, param, _paramVals) {
         }
     }
     let rowsTxt = "";
-    for (let paramVal of paramVals) {
+    for (const paramVal of paramVals) {
         rowsTxt += `${temp}${param}%5B%5D=${paramVal}`;
         temp = "&";
     }
@@ -121,8 +123,8 @@ function updateArrayURLParameter(url, param, _paramVals) {
 function getURLParameter(_name, _url) {
     const url = _url || window.location.href;
     const name = _name.replace(/[[\]]/g, "\\$&");
-    let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
+    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+    const results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return "";
     return decodeURIComponent(results[2].replace(/\+/g, " "));
@@ -130,8 +132,8 @@ function getURLParameter(_name, _url) {
 
 function getArrayURLParameter(name, _url) {
     const url = _url || window.location.href;
-    let result = [];
-    for (let part of url.split(/[?&]/)) {
+    const result = [];
+    for (const part of url.split(/[?&]/)) {
         const regResults = new RegExp(`${name}%5B%5D=([^#]+)`).exec(part);
         if (regResults && regResults[1]) {
             result.push(decodeURIComponent(regResults[1]));
@@ -139,19 +141,6 @@ function getArrayURLParameter(name, _url) {
     }
     return result;
 }
-
-/**
- * requestAnimationFrame shim
- * source: http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
- */
-window.requestAnimFrame = (function () {
-    return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        function (callback) {
-            window.setTimeout(callback, 1000 / 60);
-        };
-})();
 
 /*
  * Logs data to Google Analytics
@@ -180,7 +169,7 @@ function initCSRF() {
 }
 
 function initTooltips() {
-    $("[data-toggle=\"tooltip\"]").tooltip({container: "body"});
+    $("[data-toggle=\"tooltip\"]").tooltip({ container: "body" });
 }
 
 export {

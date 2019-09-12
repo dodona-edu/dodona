@@ -10,20 +10,16 @@ class PagesController < ApplicationController
       redirect_to new_user_session_url(idp: params[:idp])
     end
     @institutions = Institution.all
-    @title = I18n.t("pages.sign_in_page.sign_in")
+    @title = I18n.t('pages.sign_in_page.sign_in')
   end
 
-  def institution_not_supported
-  end
+  def institution_not_supported; end
 
-  def about
-  end
+  def about; end
 
-  def data
-  end
+  def data; end
 
-  def privacy
-  end
+  def privacy; end
 
   def toggle_demo_mode
     authorize :pages
@@ -32,12 +28,12 @@ class PagesController < ApplicationController
 
   def toggle_dark_mode
     authorize :pages
-    session[:dark] = !session[:dark]
+    session[:dark] = params[:dark].nil? ? !session[:dark] : ActiveModel::Type::Boolean.new.cast(params[:dark])
   end
 
   def contact
     @contact_form = ContactForm.new
-    @title = I18n.t("pages.contact.title")
+    @title = I18n.t('pages.contact.title')
   end
 
   def create_contact
@@ -56,6 +52,6 @@ class PagesController < ApplicationController
 
   def contact_params
     params.require(:contact_form)
-        .merge(dodona_user: current_user&.inspect)
+          .merge(dodona_user: current_user&.inspect)
   end
 end

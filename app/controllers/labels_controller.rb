@@ -33,11 +33,11 @@ class LabelsController < ApplicationController
 
     respond_to do |format|
       if @label.save
-        format.html {redirect_to @label, notice: I18n.t('controllers.created', model: Label.model_name.human)}
-        format.json {render :show, status: :created, location: @label}
+        format.html { redirect_to @label, notice: I18n.t('controllers.created', model: Label.model_name.human) }
+        format.json { render :show, status: :created, location: @label }
       else
-        format.html {render :new}
-        format.json {render json: @label.errors, status: :unprocessable_entity}
+        format.html { render :new }
+        format.json { render json: @label.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -45,11 +45,11 @@ class LabelsController < ApplicationController
   def update
     respond_to do |format|
       if @label.update(permitted_attributes(@label))
-        format.html {redirect_to @label, notice: I18n.t('controllers.updated', model: Label.model_name.human)}
-        format.json {render :show, status: :ok, location: @label}
+        format.html { redirect_to @label, notice: I18n.t('controllers.updated', model: Label.model_name.human) }
+        format.json { render :show, status: :ok, location: @label }
       else
-        format.html {render :edit}
-        format.json {render json: @label.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @label.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -57,8 +57,8 @@ class LabelsController < ApplicationController
   def destroy
     @label.destroy
     respond_to do |format|
-      format.html {redirect_to labels_url, notice: I18n.t('controllers.destroyed', model: Label.model_name.human)}
-      format.json {head :no_content}
+      format.html { redirect_to labels_url, notice: I18n.t('controllers.destroyed', model: Label.model_name.human) }
+      format.json { head :no_content }
     end
   end
 

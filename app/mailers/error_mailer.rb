@@ -17,9 +17,9 @@ class ErrorMailer < ApplicationMailer
       mail to: %("#{@name}" <#{@email}>),
            cc: Rails.application.config.dodona_email,
            subject: I18n.t(
-               'error_mailer.json_error.subject',
-               count: error.count,
-               repository: error.repository.name
+             'error_mailer.json_error.subject',
+             count: error.count,
+             repository: error.repository.name
            )
     end
   end

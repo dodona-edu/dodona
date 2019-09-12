@@ -1,9 +1,9 @@
-/* globals Bloodhound,Strip,MathJax,ace,ga,I18n,initStrip */
-import {showNotification} from "./notifications.js";
+/* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
+import { Notification } from "./notification";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
-    for (let label of labels) {
+    for (const label of labels) {
         colorMap[label.name] = label.color;
         label.value = label.name;
     }
@@ -12,7 +12,7 @@ function initLabelsEdit(labels, undeletableLabels) {
         local: labels,
         identify: d => d.id,
         datumTokenizer: d => {
-            let result = Bloodhound.tokenizers.whitespace(d.name);
+            const result = Bloodhound.tokenizers.whitespace(d.name);
             $.each(result, (i, val) => {
                 for (let i = 1; i < val.length; i++) {
                     result.push(val.substr(i, val.length));
@@ -58,11 +58,11 @@ function initLightboxes() {
     initStrip();
 
     let index = 1;
-    let images = [];
+    const images = [];
     $(".exercise-description img, a.dodona-lightbox").each(function () {
-        let imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
-        let altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
-        let imageObject = {
+        const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
+        const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
+        const imageObject = {
             url: imagesrc,
             caption: altText,
         };
@@ -88,6 +88,7 @@ function centerImagesAndTables() {
 function initMathJax() {
     // configure MathJax if loaded
     if (typeof MathJax !== "undefined") {
+        // eslint-disable-next-line new-cap
         MathJax.Hub.Config({
             tex2jax: {
                 inlineMath: [
@@ -127,7 +128,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $("#editor-process-btn").click(function () {
             if (!loggedIn) return;
             // test submitted source code
-            let source = editor.getValue();
+            const source = editor.getValue();
             disableSubmitButton();
             submitSolution(source)
                 .done(data => submissionSuccessful(data, $("#editor-process-btn").data("user_id")))
@@ -135,7 +136,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         $("#submission-copy-btn").click(function () {
-            let submissionSource = ace.edit("editor-result").getValue();
+            const submissionSource = ace.edit("editor-result").getValue();
             editor.setValue(submissionSource, 1);
             $("#exercise-handin-link").tab("show");
         });
@@ -214,8 +215,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     function feedbackTableLoaded(userId, exerciseId, courseId) {
         $("a.load-submission").attr("data-remote", "true");
         if (lastSubmission) {
-            let $submissionRow = $("#submission_" + lastSubmission);
-            let status = $submissionRow.data("status");
+            const $submissionRow = $("#submission_" + lastSubmission);
+            const status = $submissionRow.data("status");
             if (status === "queued" || status === "running") {
                 setTimeout(function () {
                     lastTimeout = (lastTimeout || 0) + 1000;
@@ -236,25 +237,23 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     $.get(`/submissions/${lastSubmission}.js`);
                 }
                 setTimeout(enableSubmitButton, 100);
-                showNotification(I18n.t("js.submission-processed"));
+                new Notification(I18n.t("js.submission-processed"));
                 lastSubmission = null;
             }
         }
     }
 
     function enableSubmitButton() {
-        $("#editor-process-btn").prop("disabled", false).removeClass("busy");
-        $("#editor-process-btn .material-icons").html("play_arrow");
+        $("#editor-process-btn").prop("disabled", false).removeClass("busy mdi-timer-sand-empty mdi-spin").addClass("mdi-play");
     }
 
     function disableSubmitButton() {
-        $("#editor-process-btn").prop("disabled", true).addClass("busy");
-        $("#editor-process-btn .material-icons").html("hourglass_empty");
+        $("#editor-process-btn").prop("disabled", true).removeClass("mdi-play").addClass("busy mdi-timer-sand-empty mdi-spin");
     }
 
     function submissionSuccessful(data, userId) {
         lastSubmission = data.id;
-        showNotification(I18n.t("js.submission-saved"));
+        new Notification(I18n.t("js.submission-saved"));
         ga("send", "pageview");
         let url = `/submissions.js?user_id=${userId}&exercise_id=${data.exercise_id}`;
         if (data.course_id) {
@@ -265,13 +264,13 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function submissionFailed(request) {
-        let message = I18n.t("js.submission-failed");
+        let message;
         if (request.readyState === 0) {
             message = I18n.t("js.submission-network");
         } else if (request.status === 422) {
             try {
-                let response = JSON.parse(request.responseText);
-                let errors = response.errors;
+                const response = JSON.parse(request.responseText);
+                const errors = response.errors;
                 if (errors.code && errors.code[0] === "emoji found") {
                     message = I18n.t("js.submission-emoji");
                 } else if (errors.submission && errors.submission[0] === "rate limited") {
@@ -280,6 +279,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     message = I18n.t("js.submission-too-long");
                 }
             } catch (e) {
+                message = I18n.t("js.submission-failed");
             }
         }
         $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
@@ -317,4 +317,4 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-export {initExerciseShow, initExercisesReadonly, initLabelsEdit};
+export { initExerciseShow, initExercisesReadonly, initLabelsEdit };

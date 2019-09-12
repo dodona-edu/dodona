@@ -9,7 +9,7 @@
 <div class="row">
   <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>
     <span class='hidden-sm'><%= t('.handin') %></span><br>
-    <i class="material-icons">expand_more</i>
+    <i class="mdi mdi-chevron-down"></i>
   <% end %>
   <div class="col-sm-10 col-xs-12">
     <div class="card exercise-description">
@@ -33,11 +33,10 @@
               <%= render partial: 'april_fools' %>
             <% end %>
 
-            <button class="btn btn-primary btn-fab" id="editor-process-btn" data-user_id="<%= current_user.id %>">
-              <i class="material-icons md-36">play_arrow</i>
+            <button class="btn btn-primary btn-fab mdi mdi-play mdi-36" id="editor-process-btn" data-user_id="<%= current_user.id %>">
             </button>
             <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">
-              <i class="material-icons md-36">edit</i>
+              <i class="mdi mdi-pencil mdi-36"></i>
             </a>
           </div>
         <% end %>
@@ -69,7 +68,7 @@
               <div id="editor-window" class='tex2jax_ignore'>
                 <div id="editor-text"><%= @edit_submission.try(:code) || @exercise.boilerplate %></div>
               </div>
-              <span class="header-info-text"><i class="material-icons md-18 material-icons-info">info</i> <%= t ".hand_in_info" %></span>
+              <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
             <% end %>
           </div>
           <div class="tab-pane fade <%= 'in active' if !(policy(@exercise).submit? || !user_signed_in?) %>" id="submissions">

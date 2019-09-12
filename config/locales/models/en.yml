@@ -87,6 +87,7 @@ en:
         visibility: Visibility
         order: Order
         deadline: Deadline
+        exercises_visible: Exercises visible
         visibilities:
           open: Open
           hidden: Hidden
@@ -151,7 +152,7 @@ en:
         event_type: Type
         user: User
         message: Message
-        created_at: Tijdstip
+        created_at: Timestamp
         event_types:
           rejudge: "Re-evaluation of submissions"
           permission_change: Change in permission level

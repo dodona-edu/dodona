@@ -1,14 +1,25 @@
-/* globals dodona,flatpickr,I18n */
-import dragula from "dragula";
+/* globals flatpickr */
 
-import {showNotification} from "./notifications.js";
+import { Notification } from "./notification";
+import { initDragAndDrop } from "./drag_and_drop.js";
+
+const DRAG_AND_DROP_ARGS = {
+    table_selector: ".series-exercise-list tbody",
+    item_selector: ".series-exercise-list a.remove-exercise",
+    item_data_selector: "series_id",
+    order_selector: ".series-exercise-list a.remove-exercise",
+    order_data_selector: "exercise_id",
+    url_from_id: function (seriesId) {
+        return `/series/${seriesId}/reorder_exercises.js`;
+    },
+};
 
 function initSeriesEdit() {
     function init() {
         initAddButtons();
         initTokenClickables();
         initRemoveButtons();
-        initDragAndDrop();
+        initDragAndDrop(DRAG_AND_DROP_ARGS);
         // export function
         dodona.seriesEditExercisesLoaded = () => {
             initAddButtons();
@@ -22,14 +33,16 @@ function initSeriesEdit() {
             const exerciseId = $addButton.data("exercise_id");
             const exerciseName = $addButton.data("exercise_name");
             const seriesId = $addButton.data("series_id");
+            const scopedUrl = $addButton.data("scoped_url");
             const confirmMessage = $addButton.data("confirm");
             if (confirmMessage && !confirm(confirmMessage)) {
                 return false;
             }
             const $row = $addButton.parents("tr").clone();
             $row.addClass("new");
-            $row.children("td:first").html("<div class='drag-handle'><i class='material-icons md-18'>reorder</i></div>");
-            $row.children("td.actions").html("<a href='#' class='btn btn-icon remove-exercise' data-exercise_id='" + exerciseId + "' data-exercise_name='" + exerciseName + "' data-series_id='" + seriesId + "'><i class='material-icons md-18'>delete</i></a>");
+            $row.children("td:first").html("<div class='drag-handle'><i class='mdi mdi-reorder-horizontal mdi-18'></i></div>");
+            $row.children("td.link").children("span.ellipsis-overflow").html(`<a target='_blank' href='${scopedUrl}'>${exerciseName}</a>`);
+            $row.children("td.actions").html(`<a href='#' class='btn btn-icon remove-exercise' data-exercise_id='${exerciseId}' data-exercise_name='${exerciseName}' data-series_id='${seriesId }'><i class='mdi mdi-delete mdi-18'></i></a>`);
             $(".series-exercise-list tbody").append($row);
             $row.css("opacity"); // trigger paint
             $row.removeClass("new").addClass("pending");
@@ -64,28 +77,10 @@ function initSeriesEdit() {
         $("a.remove-exercise").click(removeExercise);
     }
 
-    function initDragAndDrop() {
-        const tableBody = $(".series-exercise-list tbody").get(0);
-        dragula([tableBody], {
-            moves: function (el, source, handle, sibling) {
-                return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
-            },
-            mirrorContainer: tableBody,
-        }).on("drop", function () {
-            let seriesId = $(".series-exercise-list a.remove-exercise").data("series_id");
-            let order = $(".series-exercise-list a.remove-exercise").map(function () {
-                return $(this).data("exercise_id");
-            }).get();
-            $.post("/series/" + seriesId + "/reorder_exercises.js", {
-                order: JSON.stringify(order),
-            });
-        });
-    }
-
     function removeExercise() {
-        let exerciseId = $(this).data("exercise_id");
-        let seriesId = $(this).data("series_id");
-        let $row = $(this).parents("tr").addClass("pending");
+        const exerciseId = $(this).data("exercise_id");
+        const seriesId = $(this).data("series_id");
+        const $row = $(this).parents("tr").addClass("pending");
         $.post("/series/" + seriesId + "/remove_exercise.js", {
             exercise_id: exerciseId,
         })
@@ -99,14 +94,14 @@ function initSeriesEdit() {
     }
 
     function exerciseAdded($row, $addButton) {
-        showNotification(I18n.t("js.exercise-added-success"));
+        new Notification(I18n.t("js.exercise-added-success"));
         $row.find("a.remove-exercise").click(removeExercise);
         $row.removeClass("pending");
         $addButton.addClass("hidden");
     }
 
     function addingExerciseFailed($row) {
-        showNotification(I18n.t("js.exercise-added-failed"));
+        new Notification(I18n.t("js.exercise-added-failed"));
         $row.addClass("new").removeClass("pending");
         setTimeout(function () {
             $row.remove();
@@ -118,13 +113,13 @@ function initSeriesEdit() {
         setTimeout(function () {
             $row.remove();
         }, 500);
-        showNotification(I18n.t("js.exercise-removed-success"));
+        new Notification(I18n.t("js.exercise-removed-success"));
         $(`a.add-exercise[data-exercise_id="${$row.find("a.remove-exercise").data("exercise_id")}"]`).removeClass("hidden");
     }
 
     function removingExerciseFailed($row) {
         $row.removeClass("pending");
-        showNotification(I18n.t("js.exercise-removed-failed"));
+        new Notification(I18n.t("js.exercise-removed-failed"));
     }
 
     init();
@@ -133,7 +128,7 @@ function initSeriesEdit() {
 function initSeriesForm() {
     function init() {
         if (I18n.locale === "nl") {
-            let Dutch = {
+            const Dutch = {
                 weekdays: {
                     shorthand: ["zo", "ma", "di", "wo", "do", "vr", "za"],
                     longhand: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"],
@@ -160,4 +155,4 @@ function initSeriesForm() {
     init();
 }
 
-export {initSeriesEdit, initSeriesForm};
+export { initSeriesEdit, initSeriesForm };

@@ -9,8 +9,8 @@ en:
     form:
       teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
-      institution-help_html: Asigning an institution can help users find your course and can be used to limit the visibility of and registrations for this course.
-      visibility-visible_for_all-help_html: This course is part of the public course overview and everyone can see the contents.
+      institution-help_html: Assigning an institution can help users find your course and can be used to limit the visibility of and registrations for this course.
+      visibility-visible_for_all-help_html: This course is part of the public course overview, and everyone can see the contents.
       visibility-visible_for_institution-help_html: This course is only accessible for users of <span class="fill-institution">the configured institution</span> and via the direct link below.
       visibility-hidden-help_html: This course will not be part of the public course overview and is only accessible via the direct link below.
       registration-open_for_all-help_html: Anyone can register for this course.
@@ -30,7 +30,7 @@ en:
       copy_admins: "Course admins"
       copy_options: "Copy options"
       copy_options_details: "What elements do you want to copy from the selected course?"
-      copy_admins_details: "In new courses you are always added as a course admin. With this setting you can add the course admins from the original course as well."
+      copy_admins_details: "In new courses, you are always added as a course admin. With this setting, you can add the course admins from the original course as well."
       copy_exercises: "Exercises"
       copy_deadlines: "Deadlines"
       hide_series: "Make the copied series hidden"
@@ -62,24 +62,24 @@ en:
     edit:
       confidential: Secret links
       series_in_course: "Series in this course"
-      series_reordering_help_html: "You can reorder the series by dragging the icons at the left of the table. For students, a <b>reverse chronological</b> order is probably the easiest. This way, the most recent series is at the top and the students don't have to scroll down each time."
+      series_reordering_help_html: "You can reorder the series by dragging the icons at the left of the table. For students, a <b>reverse chronological</b> order is probably the easiest. This way, the most recent series is at the top, and the students don't have to scroll down each time."
       update: "Update"
-      series_reordering_moved_help_html: "Looking to reorder the series in this course? This functionality has moved to a <a href=\"%{course_url}\">separate page</a>."
+      series_reordering_moved_help_html: 'Looking to reorder the series in this course? This functionality has moved to a <a href="%{course_url}">separate page</a>.'
     show:
       course: Course
-      hidden_show_link: 'Secret link'
-      visibility-visible_for_all-info: 'This course is visible for everyone: everyone can access this course from the course overview and the contents are visible for everyone.'
-      visibility-visible_for_institution-info: 'This course is visible for members of %{institution}: they can access this course from the course overview and see its contents. Members of other institutions need the secret link.'
-      visibility-hidden-info: 'This course is hidden: it is not listed in the course overview and users need the secret link to access this course.'
-      registration-open_for_all-info: 'Registrations are open for everyone: all users can register for this course.'
-      registration-open_for_institution-info: 'Registrations are open for members of %{institution}: only they can register for this course.'
-      registration-closed-info: 'Registrations are closed: it is impossible for users to register until you change the registration settings. Users who are currently registered still have access.'
-      moderated-info: 'This course is moderated. Users who register will have to be explicitly approved by a course admin.'
+      hidden_show_link: "Secret link"
+      visibility-visible_for_all-info: "This course is visible for everyone: everyone can access this course from the course overview, and the contents are visible for everyone."
+      visibility-visible_for_institution-info: "This course is visible for members of %{institution}: they can access this course from the course overview and see its contents. Members of other institutions need the secret link."
+      visibility-hidden-info: "This course is hidden: it is not listed in the course overview, and users need the secret link to access this course."
+      registration-open_for_all-info: "Registrations are open for everyone: all users can register for this course."
+      registration-open_for_institution-info: "Registrations are open for members of %{institution}: only they can register for this course."
+      registration-closed-info: "Registrations are closed: users can't register until you change the registration settings. Users who are currently registered still have access."
+      moderated-info: "This course is moderated. Users who register will have to be explicitly approved by a course admin."
       subscribe: Register
       request_registration: Request registration
       unsubscribe: Unregister
       exercise_series: Exercise series
-      no_series_yet: This course currently contains no exercises nor series. Click the create series button to get started!
+      no_series_yet: This course currently contains no exercises nor series. Click the "Manage series" button to get started!
       users: Users
       series: series
       download_scoresheet: Download scoresheet
@@ -115,7 +115,7 @@ en:
       pending: Your registration is pending.
       remove_from_pending: Withdraw registration request
       closed: You are currently not able to subscribe to this course.
-      sign_up_successfully: You were succesfully registered. Wait until a course administrator approves your registration
+      sign_up_successfully: You were successfully registered. Wait until a course administrator approves your registration
       subscribed_successfully: Registered successfully
       unsubscribed_successfully: Unregistered successfully
       subscription_failed: Registration failed
@@ -139,7 +139,7 @@ en:
       exercise_count: Exercises
       more_statistics: "More statistics >"
     create:
-      added_private_exercises: "Private exercises were added while creating this course. To use these exercises this course will need to be granted permission from the relevant repositories."
+      added_private_exercises: "Private exercises were added while creating this course. To use these exercises, this course will need to be granted permission from the relevant repositories."
     copy_courses_table:
       info: "Course"
       users: "# users"

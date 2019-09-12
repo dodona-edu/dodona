@@ -86,29 +86,31 @@
     margin-right: 16px;
     border-radius: 50%;
     background-color: @series-summary-icon-bg;
-
-    &.deadline-missed:after {
-      color: @brand-danger;
-      background-color: @content-bg;
-      position: absolute;
-      font-size: 18px;
-      font-weight: bold;
-      top: 23px;
-      left: 23px;
-      content: 'alarm_off';
-      font-family: 'Material Icons';
+    
+    & > .mdi::before{
+      line-height: 24px;
     }
 
-    &.deadline-met:not(.completed):after {
-      color: @brand-success;
+    &.deadline-missed .mdi-alarm-off {
+      &::before{
+        color: @brand-danger;
+      }
       background-color: @content-bg;
       position: absolute;
-      font-size: 18px;
-      font-weight: bold;
-      top: 23px;
-      left: 23px;
-      content: 'alarm';
-      font-family: 'Material Icons';
+      top: 24px;
+      left: 24px;
+      border: 1px solid @content-bg;
+    }
+
+    &.deadline-met .mdi-alarm-check {
+      &::before{
+        color: @brand-success;
+      }
+      background-color: @content-bg;
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      border: 1px solid @content-bg;
     }
 
     i {
@@ -173,7 +175,7 @@
   overflow: visible;
 }
 
-.material-icons-alarm.md-12 {
+.mdi-alarm.mdi-12::before {
   top: 2px;
 }
 

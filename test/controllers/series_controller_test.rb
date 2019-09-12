@@ -121,7 +121,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
            exercise_id: exercise.id
          }
     assert_response :success
-    assert !@instance.exercises.include?(exercise)
+    assert_not @instance.exercises.include?(exercise)
   end
 
   test 'repository admin adding private exercise to series should add course to repository\'s allowed courses' do

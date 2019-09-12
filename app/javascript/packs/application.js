@@ -8,10 +8,11 @@
 // layout file, like app/views/layouts/application.html.erb
 
 
-import Rails from "rails-ujs";
-import "actiontext";
+import { start as startRails } from "@rails/ujs";
+import { start as startActiveStorage } from "@rails/activestorage";
 
-Rails.start();
+startRails();
+startActiveStorage();
 
 import jQuery from "jquery";
 
@@ -21,16 +22,16 @@ window.jquery = jQuery;
 window.$ = jQuery;
 
 import "polyfills.js";
-import "drawer";
-import {showNotification} from "notifications.js";
-import {checkTimeZone, initClipboard, initCSRF, initTooltips} from "util.js";
+import { Drawer } from "drawer";
+import { Notification } from "notification";
+import { checkTimeZone, initClipboard, initCSRF, initTooltips } from "util.js";
 
 
 import * as firebase from "firebase/app";
 import "firebase/performance";
 
 if (window.location.hostname === "dodona.ugent.be") {
-    let firebaseConfig = {
+    const firebaseConfig = {
         apiKey: "AIzaSyA9thyrC9D8q5CdnZG3p25BDTQQ9AeFndI",
         authDomain: "dodona-cea23.firebaseapp.com",
         databaseURL: "https://dodona-cea23.firebaseio.com",
@@ -45,14 +46,16 @@ if (window.location.hostname === "dodona.ugent.be") {
 // Initialize clipboard.js
 initClipboard();
 
+$(() => new Drawer());
+
 // Adds the CSRF token to each ajax request
 initCSRF();
 
 $(initTooltips);
 
 // Use a global dodona object to prevent polluting the global na
-let dodona = window.dodona || {};
+const dodona = window.dodona || {};
 dodona.checkTimeZone = checkTimeZone;
-dodona.showNotification = showNotification;
+dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 window.dodona = dodona;

@@ -5,7 +5,7 @@
                   if: policy(@course).edit? || policy(@course).members? %>
   <%= navbar_link url: course_members_path(@course),
                   title: t('.members'),
-                  icon: 'group',
+                  icon: 'account-multiple',
                   class: (@course.pending_members.any? ? 'notification' : ''),
                   if: policy(@course).members? %>
   <%= navbar_link url: course_submissions_path(@course),
@@ -14,10 +14,10 @@
                   if: current_user&.course_admin?(@course) %>
   <%= navbar_link url: statistics_course_path(@course),
                   title: t('.statistics'),
-                  icon: 'trending_up',
+                  icon: 'trending-up',
                   if: current_user&.course_admin?(@course) %>
   <%= navbar_link url: edit_course_path(@course),
                   title: t('.edit'),
-                  icon: 'edit',
+                  icon: 'pencil',
                   if: policy(@course).edit? %>
 <% end %>

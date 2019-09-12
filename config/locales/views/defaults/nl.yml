@@ -1,6 +1,8 @@
 nl:
   layouts:
     navbar:
+      demo_mode: "Demo modus"
+      dark_mode: "Donkere modus"
       disable_demo_mode: "Demo modus uitschakelen"
       enable_demo_mode: "Demo modus inschakelen"
       disable_dark_mode: "Donkere modus uitschakelen"
@@ -13,6 +15,10 @@ nl:
       impersonating_user: Je speelt momenteel
       switch_back: Keer terug
       your_account: naar jouw account.
+    demo_mode:
+      demo_mode_enabled: Demo modus ingeschakeld
+      info: in demo modus verbergt Dodona de echte namen van alle gebruikers.
+      switch_back: Demo modus uitschakelen. 
     messages:
       warning: Opgepast
       danger: Oh nee

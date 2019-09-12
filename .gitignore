@@ -46,5 +46,9 @@ coverage
 yarn-debug.log*
 .yarn-integrity
 
+# Ignore test reports
+test/reports/
+junit.xml
+
 # Ignore master key for decrypting credentials and more.
 /config/master.key

@@ -4,7 +4,7 @@ function initCourseMemberLabelsEdit(labels) {
         local: labels,
         identify: d => d.id,
         datumTokenizer: d => {
-            let result = Bloodhound.tokenizers.whitespace(d.name);
+            const result = Bloodhound.tokenizers.whitespace(d.name);
             $.each(result, (i, val) => {
                 for (let i = 1; i < val.length; i++) {
                     result.push(val.substr(i, val.length));
@@ -32,4 +32,4 @@ function initCourseMemberLabelsEdit(labels) {
     });
 }
 
-export {initCourseMemberLabelsEdit};
+export { initCourseMemberLabelsEdit };

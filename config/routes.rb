@@ -77,6 +77,7 @@ Rails.application.routes.draw do
     resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable]
 
     resources :judges do
+      resources :submissions, only: [:index]
       member do
         match 'hook', via: %i[get post], to: 'judges#hook', as: 'webhook'
       end
@@ -128,7 +129,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   # Serve websocket cable requests in-process
   # mount ActionCable.server => '/cable'

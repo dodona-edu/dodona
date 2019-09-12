@@ -1,3 +1,3 @@
-import {initExercisesReadonly} from "exercise.js";
+import { initExercisesReadonly } from "exercise.js";
 
 window.dodona.initExercisesReadonly = initExercisesReadonly;

@@ -7,12 +7,7 @@
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <span class="user-icon pull-left"><i class="material-icons md-36">
-            <% if @course_membership.course_admin? %>
-              school
-            <% else %>
-              person
-            <% end %>
+          <span class="user-icon pull-left"><i class="mdi mdi-36 <%= @course_membership.course_admin? ? "mdi-school" : "mdi-account" %>">
           </i></span>
           <span class="profile-line">
             <span class="name">
@@ -28,7 +23,11 @@
             </span>
           </span>
           <span class="profile-byline text-muted">
-            <%= @user.institution&.name %>
+            <% if @user.institution.present? and policy(@user.institution).show?%>
+              <%= link_to(@user.institution&.name, institution_path(@user.institution), class: "text-muted") %>
+            <% else %>
+              <%= @user.institution&.name %>
+            <% end %>
             <% if @user.institution&.name.present? and @user.email.present? %>
               &middot;
             <% end %>

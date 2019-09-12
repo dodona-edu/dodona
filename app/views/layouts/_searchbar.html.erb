@@ -3,7 +3,7 @@
 <% end %>
 <div class='table-toolbar'>
   <div class='table-toolbar-tools'>
-    <i class="material-icons">search</i>
+    <i class="mdi mdi-magnify mdi-dark"></i>
     <form class='search' onsubmit="return false;">
       <input type='text' id='filter-query' placeholder='<%= t("layout.search.search") %>' name='filter' autocomplete="off"/>
       <div id="progress-filter" class="dodona-progress dodona-progress-indeterminate">
@@ -14,7 +14,7 @@
     </form>
     <div class="btn-group hidden actions" id="kebab-menu">
       <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
-        <i class="material-icons">more_vert</i>
+        <i class="mdi mdi-dots-vertical"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
       </ul>
@@ -58,7 +58,7 @@
             },
         };
         <% end %>
-        <% if local_assigns.fetch :institutions, false %>
+        <% if local_assigns.fetch(:institutions, []).length > 1 %>
         filterCollections["institutions"] = {
             param: "institution_id",
             paramVal: function(i) { return i.id; },

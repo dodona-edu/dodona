@@ -2,19 +2,19 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_072139) do
+ActiveRecord::Schema.define(version: 2019_08_29_143205) do
 
   create_table "action_text_rich_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
-    t.text "body", limit: 16777215
+    t.text "body", size: :medium
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.datetime "created_at", null: false
@@ -151,11 +151,13 @@ ActiveRecord::Schema.define(version: 2019_04_24_072139) do
     t.bigint "programming_language_id"
     t.string "search", limit: 4096
     t.string "access_token", limit: 16, null: false
+    t.string "repository_token", limit: 64, null: false
     t.index ["judge_id"], name: "index_exercises_on_judge_id"
     t.index ["name_nl"], name: "index_exercises_on_name_nl"
     t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true
     t.index ["programming_language_id"], name: "fk_rails_f60feebafd"
     t.index ["repository_id"], name: "index_exercises_on_repository_id"
+    t.index ["repository_token"], name: "index_exercises_on_repository_token", unique: true
     t.index ["status"], name: "index_exercises_on_status"
     t.index ["token"], name: "index_exercises_on_token", unique: true
   end
@@ -241,6 +243,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_072139) do
     t.string "access_token"
     t.string "indianio_token"
     t.boolean "progress_enabled", default: true, null: false
+    t.boolean "exercises_visible", default: true, null: false
     t.index ["access_token"], name: "index_series_on_access_token"
     t.index ["course_id"], name: "index_series_on_course_id"
     t.index ["deadline"], name: "index_series_on_deadline"

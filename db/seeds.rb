@@ -37,13 +37,22 @@ if Rails.env.development?
   students = Array.new(500) do
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
-    username = Faker::Internet.unique.user_name(5..8)
+    username = Faker::Internet.unique.user_name()
     User.create first_name: first_name,
                 last_name: last_name,
                 username: username,
                 email: "#{first_name}.#{last_name}.#{username}@UGent.BE".downcase,
                 permission: :student,
                 institution: ugent
+  end
+
+  puts 'Creating API tokens'
+
+  [zeus, staff, jelix, mart, student].each do |user|
+    token = user.token || user.username
+    ApiToken.create description: format('Seeded token (= %s)', token),
+                    token_digest: ApiToken.digest(token),
+                    user: user
   end
 
   puts 'Creating courses'
@@ -79,23 +88,23 @@ if Rails.env.development?
 
   puts 'Create & clone judge'
 
-  pythia_judge = Judge.create name: 'pythia', image: 'dodona-anaconda3', remote: 'git@github.ugent.be:dodona/judge-pythia.git', renderer: PythiaRenderer, runner: SubmissionRunner
+  pythia_judge = Judge.create name: 'pythia', image: 'dodona-anaconda3', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer, runner: SubmissionRunner
 
   # Other judges
 
-  # biopythia-judge = Judge.create name: 'biopythia', image: 'dodona-biopythia', remote: 'git@github.ugent.be:dodona/judge-biopythia.git', renderer: PythiaRenderer
+  # biopythia-judge = Judge.create name: 'biopythia', image: 'dodona-biopythia', remote: 'git@github.com:dodona-edu/judge-biopythia.git', renderer: PythiaRenderer
 
-  # prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.ugent.be:dodona/judge-prolog.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  # bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.ugent.be:dodona/judge-bash.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  # junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.ugent.be:dodona/judge-java.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
-  Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.ugent.be:dodona/judge-javascript.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.com:dodona-edu/judge-prolog.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.com:dodona-edu/judge-bash.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  # junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.com:dodona-edu/judge-java.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.com:dodona-edu/judge-javascript.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
 
   puts 'Create & clone exercise repository'
 
-  exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
+  exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: pythia_judge
   exercise_repo.process_exercises
 
-  big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.ugent.be:dodona/example-exercises.git', judge: pythia_judge
+  big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: pythia_judge
 
   Dir.glob("#{big_exercise_repo.full_path}/*")
       .select {|f| File.directory? f}
@@ -114,16 +123,16 @@ if Rails.env.development?
   courses.each do |course|
     series = []
     series << Series.create(name: 'Verborgen reeks',
-                            description: Faker::Lorem.paragraph(25),
+                            description: Faker::Lorem.paragraph(sentence_count: 25),
                             course: course,
                             visibility: :hidden)
     series << Series.create(name: 'Gesloten reeks',
-                            description: Faker::Lorem.paragraph(25),
+                            description: Faker::Lorem.paragraph(sentence_count: 25),
                             course: course,
                             visibility: :closed)
     20.times do |i|
       s = Series.create(name: "Reeks #{i}",
-                        description: Faker::Lorem.paragraph(25),
+                        description: Faker::Lorem.paragraph(sentence_count: 25),
                         course: course)
       if Random.rand < 0.1
         t = if Random.rand < 0.3

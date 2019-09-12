@@ -16,9 +16,9 @@ class SeriesMembership < ApplicationRecord
 
   delegate :course, to: :series
 
-  default_scope {order(order: :asc)}
+  default_scope { order(order: :asc, id: :asc) }
 
-  validates :series_id, uniqueness: {scope: :exercise_id}
+  validates :series_id, uniqueness: { scope: :exercise_id }
   after_create :invalidate_caches
   after_destroy :invalidate_caches
 

@@ -201,7 +201,7 @@
     },
     {
       "description": "another tab",
-      "hidden": true,
+      "permission": "staff",
       "groups": [
         {
           "accepted": false,
@@ -214,6 +214,28 @@
                   "description": "test whether user is screaming",
                   "expected": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                   "generated": "meh"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "a zeus tab",
+      "permission": "zeus",
+      "groups": [
+        {
+          "accepted": false,
+          "groups": [
+            {
+              "accepted": false,
+              "tests": [
+                {
+                  "accepted": false,
+                  "description": "test whether user is reading this message",
+                  "expected": "Of course I am, otherwise I wouldn't respond.",
+                  "generated": "I lost my glasses, maybe later."
                 }
               ]
             }

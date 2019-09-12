@@ -1,6 +1,5 @@
-/* globals ga, I18n, ace, MathJax, initStrip, Strip */
-import {setBaseUrl} from "./index.js";
-import dragula from "dragula";
+import { setBaseUrl } from "./index.js";
+import { initDragAndDrop } from "./drag_and_drop.js";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
@@ -85,13 +84,12 @@ function initCourseMembers() {
     init();
 }
 
-
 const TABLE_WRAPPER_SELECTOR = ".series-exercises-table-wrapper";
 const SKELETON_TABLE_SELECTOR = ".exercise-table-skeleton";
 
 class Series {
     static findAll(cards_selector = ".series.card") {
-        let $cards = $(cards_selector);
+        const $cards = $(cards_selector);
         return $.map($cards, card => new Series(card));
     }
 
@@ -116,8 +114,7 @@ class Series {
         return !this.loaded && !this.loading;
     }
 
-    load(callback = () => {
-    }) {
+    load(callback = () => { }) {
         this.loading = true;
         $.get(this.url).done(() => {
             this.loading = false;
@@ -128,41 +125,12 @@ class Series {
 }
 
 function initCourseShow() {
-    let series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
+    const series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
 
     function init() {
-        $("body").scrollspy({target: ".series-sidebar"});
+        $("body").scrollspy({ target: ".series-sidebar" });
         $(window).scroll(scroll);
-        gotoHashSeries();
-        window.addEventListener("hashchange", gotoHashSeries);
-        scroll(); // Also load series
-    }
-
-    function gotoHashSeries() {
-        const hash = window.location.hash;
-
-        if ($(hash).length > 0) {
-            // The current series is already loaded
-            // and we should have scrolled to it
-            return;
-        }
-
-        const hashSplit = hash.split("-");
-        const seriesId = +hashSplit[1];
-
-        if (hashSplit[0] === "#series" && !isNaN(seriesId)) {
-            let loading = true;
-            $(".load-more-series").button("loading");
-            $.get(`?format=js&offset=${seriesShown}&series=${seriesId}`)
-                .done(() => {
-                    seriesShown = $(".series").length;
-                    $(hash)[0].scrollIntoView();
-                })
-                .always(() => {
-                    loading = false;
-                    $(".load-more-series").button("reset");
-                });
-        }
+        scroll(); // Load series visible on pageload
     }
 
     function scroll() {
@@ -173,7 +141,8 @@ function initCourseShow() {
         const lastVisibleIdx = series.findIndex(s => screenBottom < s.top);
         const lastToLoad = lastVisibleIdx == -1 ? series.length : lastVisibleIdx;
 
-        series.slice(firstToLoad, lastToLoad + 1)
+        series
+            .slice(firstToLoad, lastToLoad + 1)
             .filter(s => s.needsLoading())
             .forEach(s => s.load());
     }
@@ -220,30 +189,19 @@ function initCourseForm() {
     init();
 }
 
+const DRAG_AND_DROP_ARGS = {
+    table_selector: ".course-series-list tbody",
+    item_selector: ".course-series-list",
+    item_data_selector: "course_id",
+    order_selector: ".course-series-list tbody .series-name",
+    order_data_selector: "series_id",
+    url_from_id: function (courseId) {
+        return `/courses/${courseId}/reorder_series.js`;
+    },
+};
+
 function initSeriesReorder() {
-    function init() {
-        initDragAndDrop();
-    }
-
-    function initDragAndDrop() {
-        const tableBody = $(".course-series-list tbody").get(0);
-        dragula([tableBody], {
-            moves: function (el, source, handle, sibling) {
-                return $(handle).hasClass("drag-handle") || $(handle).parents(".drag-handle").length;
-            },
-            mirrorContainer: tableBody,
-        }).on("drop", () => {
-            let courseId = $(".course-series-list").data("course_id");
-            let order = $(".course-series-list tbody .series-name").map(function () {
-                return $(this).data("series_id");
-            }).get();
-            $.post(`/courses/${courseId}/reorder_series.js`, {
-                order: JSON.stringify(order),
-            });
-        });
-    }
-
-    init();
+    initDragAndDrop(DRAG_AND_DROP_ARGS);
 }
 
 function initCourseNew() {
@@ -276,7 +234,10 @@ function initCourseNew() {
         $("#new-course").click(function () {
             $choosePanel.addClass("hidden");
             $formPanel.find(".step-circle").html("2");
-            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
+            $(this)
+                .closest(".panel")
+                .find(".answer")
+                .html($(this).data("answer"));
             fetch("/courses/new.js", {
                 headers: {
                     "accept": "text/javascript",
@@ -295,14 +256,22 @@ function initCourseNew() {
             $choosePanel.find("input[type=\"radio\"]").prop("checked", false);
             $formPanel.addClass("hidden");
             $formPanel.find(".step-circle").html("3");
-            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
+            $(this)
+                .closest(".panel")
+                .find(".answer")
+                .html($(this).data("answer"));
         });
     }
 
     function copyCoursesLoaded() {
         $("[data-course_id]").click(function () {
-            $(this).find("input[type=\"radio\"]").prop("checked", true);
-            $(this).closest(".panel").find(".answer").html($(this).data("answer"));
+            $(this)
+                .find("input[type=\"radio\"]")
+                .prop("checked", true);
+            $(this)
+                .closest(".panel")
+                .find(".answer")
+                .html($(this).data("answer"));
             fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`, {
                 headers: {
                     "accept": "text/javascript",
@@ -329,4 +298,11 @@ function initCourseNew() {
     init();
 }
 
-export {initSeriesReorder, initCourseForm, initCourseNew, initCourseShow, initCourseMembers, loadUsers};
+export {
+    initSeriesReorder,
+    initCourseForm,
+    initCourseNew,
+    initCourseShow,
+    initCourseMembers,
+    loadUsers,
+};

@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(Judge).new? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: new_judge_path, icon: 'add' %>
+            <%= render 'fab_link', url: new_judge_path, icon: 'plus' %>
           </div>
         <% end %>
       </div>
@@ -33,12 +33,12 @@
                 <td class="actions">
                   <% if policy(judge).edit? %>
                     <%= link_to edit_judge_path(judge), class: "btn btn-sm btn-default" do %>
-                      <i class="material-icons md-18">edit</i>
+                      <i class="mdi mdi-pencil mdi-18"></i>
                     <% end %>
                   <% end %>
                   <% if policy(judge).destroy? %>
                     <%= link_to judge, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
-                      <i class="material-icons md-18">delete</i>
+                      <i class="mdi mdi-delete mdi-18"></i>
                     <% end %>
                   <% end %>
                 </td>

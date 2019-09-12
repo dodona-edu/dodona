@@ -16,4 +16,3 @@ json.correct_exercises user.correct_exercises
 json.subscribed_courses do
   json.array! user.subscribed_courses, partial: 'courses/course', as: :course
 end
-

@@ -20,7 +20,7 @@ lang = {
 %>
 
 <button class="btn btn-fab btn-default" data-toggle="modal" data-target="#paidSolutionOptions">
-  <i class="material-icons md-36">attach_money</i>
+  <i class="mdi mdi-currency-usd mdi-36"></i>
 </button>
 
 <% content_for :modal do %>
@@ -66,7 +66,7 @@ lang = {
     vertical-align: middle;
   }
 
-  #paidSolutionOptions .modal-title .material-icons {
+  #paidSolutionOptions .modal-title .mdi {
     color: #616161;
   }
 
@@ -88,7 +88,7 @@ lang = {
     color: white;
   }
 
-  #paidSolutionOptions input[type=radio]:checked+label .paidSolutionProduct>.material-icons {
+  #paidSolutionOptions input[type=radio]:checked+label .paidSolutionProduct>.mdi {
     color: white;
     background: #A5D6A7;
   }
@@ -100,7 +100,7 @@ lang = {
     margin-bottom: 10px;
   }
 
-  #paidSolutionOptions .paidSolutionProduct>.material-icons {
+  #paidSolutionOptions .paidSolutionProduct>.mdi {
     display: block;
     font-size: 7em;
     color: #2E7D32;
@@ -136,7 +136,7 @@ lang = {
         <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">
-          <i class="material-icons">add_shopping_cart</i>
+          <i class="mdi mdi-cart-plus"></i>
           Dodona Premium<sup> BETA</sup>
         </h4>
       </div>
@@ -149,7 +149,7 @@ lang = {
             <input type="radio" name="paidPlan" value="exercise" data-price="5" id="paidPlan_oef">
             <label for="paidPlan_oef">
               <div class="paidSolutionProduct">
-                <i class="material-icons">done</i>
+                <i class="mdi mdi-check"></i>
                 <strong>1 <%= I18n.t 'activerecord.models.exercise' %></strong>
                 <div class="paidSolutionPrice">€5</div>
               </div>
@@ -160,11 +160,11 @@ lang = {
             <label for="paidPlan_ree">
               <div class="paidSolutionProduct">
                 <span class="paidSolutionDiscount">-20%</span>
-                <i class="material-icons">done_all</i>
+                <i class="mdi mdi-check-all"></i>
                 <strong>1 <%= I18n.t 'activerecord.models.series' %></strong>
                 <div class="paidSolutionPrice"><s>€25</s>
 
-                  <i class="material-icons">arrow_right_alt</i>
+                  <i class="mdi mdi-arrow-right"></i>
                   €20</div>
               </div>
             </label>
@@ -174,10 +174,10 @@ lang = {
             <label for="paidPlan_cur">
               <div class="paidSolutionProduct">
                 <span class="paidSolutionDiscount">-50%</span>
-                <i class="material-icons">done_outline</i>
+                <i class="mdi mdi-check-circle-outline"></i>
                 <strong>1 <%= I18n.t 'activerecord.models.course' %></strong>
                 <div class="paidSolutionPrice"><s>€80</s>
-                  <i class="material-icons">arrow_right_alt</i>
+                  <i class="mdi mdi-arrow-right"></i>
                   €40</div>
               </div>
             </label>

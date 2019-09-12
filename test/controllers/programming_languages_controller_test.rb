@@ -9,5 +9,4 @@ class ProgrammingLanguagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test_crud_actions
-
 end

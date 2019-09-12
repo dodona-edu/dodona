@@ -7,6 +7,7 @@ module ApplicationHelper
 
   def exercise_scoped_url(exercise: nil, series: nil, course: nil, options: nil)
     raise 'Exercise should not be nil' if exercise.nil?
+
     if series.present?
       course ||= series.course
       course_series_exercise_url(I18n.locale, course, series, exercise, options)
@@ -19,6 +20,7 @@ module ApplicationHelper
 
   def exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
     raise 'Exercise should not be nil' if exercise.nil?
+
     if series.present?
       course ||= series.course
       course_series_exercise_path(I18n.locale, course, series, exercise, options)
@@ -31,6 +33,7 @@ module ApplicationHelper
 
   def edit_exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
     raise 'Exercise should not be nil' if exercise.nil?
+
     if series.present?
       course ||= series.course
       edit_course_series_exercise_path(I18n.locale, course, series, exercise, options)
@@ -66,12 +69,11 @@ module ApplicationHelper
     options[:'data-placement'] = 'bottom'
 
     locals = {
-        title: options.delete(:title),
-        icon: options.delete(:icon),
-        mdi_icon: options.delete(:mdi_icon),
-        custom_icon_name: options.delete(:custom_icon),
-        url: url,
-        link_options: options
+      title: options.delete(:title),
+      icon: options.delete(:icon),
+      custom_icon_name: options.delete(:custom_icon),
+      url: url,
+      link_options: options
     }
 
     render partial: 'navbar_link', locals: locals
@@ -97,14 +99,14 @@ module ApplicationHelper
     button_tag class: 'btn btn-default',
                type: 'button',
                title: t('js.copy-to-clipboard'),
-               data: {clipboard_target: selector} do
-      tag.i(class: 'material-icons md-18') {'assignment'}
+               data: { clipboard_target: selector } do
+      tag.i(class: 'mdi mdi-clipboard-text mdi-18')
     end
   end
 
   def markdown(source)
     source ||= ''
-    Kramdown::Document.new(source, input: 'GFM', hard_wrap: false, syntax_highlighter: 'rouge', math_engine_opts: {preview: true}).to_html.html_safe
+    Kramdown::Document.new(source, input: 'GFM', hard_wrap: false, syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe
   end
 
   def escape_double_quotes(string)
@@ -113,17 +115,17 @@ module ApplicationHelper
 
   def submission_status_icon(submission, size = 18)
     icon, color = {
-        nil => %w[remove default],
-        'correct' => %w[check correct],
-        'wrong' => %w[close wrong],
-        'time limit exceeded' => %w[alarm wrong],
-        'running' => %w[hourglass_empty default],
-        'queued' => %w[hourglass_empty default],
-        'runtime error' => %w[flash_on wrong],
-        'compilation error' => %w[offline_bolt wrong],
-        'memory limit exceeded' => %w[memory wrong]
-    }[submission&.status] || %w[warning warning]
-    "<i class=\"material-icons md-#{size} colored-#{color}\">#{icon}</i>".html_safe
+      nil => %w[remove default],
+      'correct' => %w[check correct],
+      'wrong' => %w[close wrong],
+      'time limit exceeded' => %w[alarm wrong],
+      'running' => %w[hourglass-empty default],
+      'queued' => %w[hourglass-empty default],
+      'runtime error' => %w[flash wrong],
+      'compilation error' => %w[flash-circle wrong],
+      'memory limit exceeded' => %w[memory wrong]
+    }[submission&.status] || %w[alert warning]
+    "<i class=\"mdi mdi-#{icon} mdi-#{size} colored-#{color}\"></i>".html_safe
   end
 
   def options_for_enum(object, enum)
@@ -158,7 +160,6 @@ module ApplicationHelper
   end
 
   class AjaxLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
-
     def initialize
       # @base_url_params.delete(:format)
     end
@@ -184,9 +185,9 @@ module ApplicationHelper
 
   def page_navigation_links(pages, remote = false, controller = '', params = {}, action = 'index')
     if remote
-      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: {controller: controller, action: action, format: nil}.merge(params))
+      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { controller: controller, action: action, format: nil }.merge(params))
     else
-      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: BootstrapLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: {format: nil}.merge(params))
+      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: BootstrapLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { format: nil }.merge(params))
     end
   end
 end

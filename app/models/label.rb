@@ -11,10 +11,9 @@ class Label < ApplicationRecord
   has_many :exercise_labels, dependent: :restrict_with_error
   has_many :exercises, through: :exercise_labels
 
-  enum color: %i[red pink purple deep-purple indigo teal
-                 orange brown blue-grey]
+  enum color: { red: 0, pink: 1, purple: 2, "deep-purple": 3, indigo: 4, teal: 5, orange: 6, brown: 7, "blue-grey": 8 }
 
-  scope :by_name, ->(name) {where('name LIKE ?', "%#{name}%")}
+  scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
 
   before_save :downcase_name
 
@@ -25,6 +24,6 @@ class Label < ApplicationRecord
   private
 
   def downcase_name
-    self.name.downcase!
+    name.downcase!
   end
 end

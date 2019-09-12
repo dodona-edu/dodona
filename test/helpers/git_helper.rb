@@ -18,6 +18,7 @@ class GitRepository
   def git(*command)
     out, error, status = Open3.capture3('git', *command, chdir: path)
     raise error unless status.success?
+
     out
   end
 

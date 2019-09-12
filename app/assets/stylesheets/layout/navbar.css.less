@@ -152,6 +152,7 @@
           }
         }
       }
+      
     }
   }
 
@@ -165,6 +166,12 @@
 
       li a {
         padding-left: 8px;
+      }
+      li a .dropdown-box::before {
+        float: right; // position to right of text
+        top: -6px;
+        left: 10px;
+        position: relative; // required to use top and left
       }
 
       .action {
@@ -313,7 +320,7 @@
     overflow: hidden;
     flex-shrink: 1;
 
-    .material-icons {
+    .mdi::before{
       line-height: @navbar-height;
       margin-left: 4px;
       margin-right: 4px;

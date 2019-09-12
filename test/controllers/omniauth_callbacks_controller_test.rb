@@ -178,7 +178,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                        uid: 'flipflap',
                        info: {
                          first_name: 'Flip',
-                         last_name:  'Flapstaart'
+                         last_name: 'Flapstaart'
                        }
 
     get user_office365_omniauth_authorize_url

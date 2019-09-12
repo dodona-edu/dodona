@@ -6,6 +6,10 @@
   text-align: right;
 }
 
+tr.gu-mirror { 
+  display: table; // ensure that rows dragged from their table parent still have the correct display-style (Dragula table-row issue)
+}
+
 .table.table-resource td {
   max-width: 33vw;
   white-space: nowrap;
@@ -14,9 +18,5 @@
   vertical-align: middle;
   form {
     display: inline;
-  }
-
-  .material-icons {
-    vertical-align: text-bottom;
   }
 }

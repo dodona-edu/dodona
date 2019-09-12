@@ -1,7 +1,7 @@
 class RepositoryPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user&.is_a_course_admin?
+      if user&.a_course_admin?
         scope.all
       else
         scope.none

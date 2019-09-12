@@ -9,9 +9,9 @@ class ContactForm < MailForm::Base
 
   def headers
     {
-        to: Rails.application.config.dodona_email,
-        subject: "Dodona contact form: #{subject}",
-        from: "#{name} <#{email}>"
+      to: Rails.application.config.dodona_email,
+      subject: "Dodona contact form: #{subject}",
+      from: "#{name} <#{email}>"
     }
   end
 end

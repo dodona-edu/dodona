@@ -12,7 +12,8 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def show_code_tab
     return true unless @submission[:groups]
-    @submission[:groups].none? {|t| t[:data][:source_annotations]}
+
+    @submission[:groups].none? { |t| t[:data][:source_annotations] }
   end
 
   def tab_content(t)
@@ -43,7 +44,7 @@ class PythiaRenderer < FeedbackTableRenderer
             else
               '' # This shouldn't happen, but it's the Python judge, so you never know
             end
-          end.reduce {|l1, l2| "#{l1}\n#{l2}"}
+          end.reduce { |l1, l2| "#{l1}\n#{l2}" }
         end
       end
     else
@@ -68,7 +69,7 @@ class PythiaRenderer < FeedbackTableRenderer
                    "data-stdin": (g[:data][:stdin]).to_s) do
         @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
           @builder.div(class: 'tutor-strip-icon') do
-            @builder.i('launch', class: 'material-icons md-18')
+            @builder.i('', class: 'mdi mdi-launch mdi-18')
           end
         end
         if g[:description]
@@ -77,7 +78,7 @@ class PythiaRenderer < FeedbackTableRenderer
           end
         end
         messages(g[:messages])
-        g[:groups]&.each {|tc| testcase(tc)}
+        g[:groups]&.each { |tc| testcase(tc) }
       end
     else
       super(g)
@@ -86,10 +87,9 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def testcase(tc)
     return super(tc) unless tc[:data] && tc[:data][:files]
+
     jsonfiles = tc[:data][:files].to_a.map do |key, value|
-      if @exercise.access_private? && value[:location] == 'href'
-        value[:content] = "#{value[:content]}?token=#{@exercise.access_token}"
-      end
+      value[:content] = "#{value[:content]}?token=#{@exercise.access_token}" if @exercise.access_private? && value[:location] == 'href'
       [key, value]
     end.to_h.to_json
     @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", "data-files": jsonfiles) do
@@ -117,10 +117,10 @@ class PythiaRenderer < FeedbackTableRenderer
             @builder.div(class: 'modal-header') do
               @builder.div(class: 'icons') do
                 @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-xs') do
-                  @builder.i('fullscreen', class: 'material-icons md-18')
+                  @builder.i('', class: 'mdi mdi-fullscreen mdi-18')
                 end
                 @builder.button(type: 'button', class: 'btn btn-link btn-xs', "data-dismiss": 'modal') do
-                  @builder.i('close', class: 'material-icons md-18')
+                  @builder.i('', class: 'mdi mdi-close mdi-18')
                 end
               end
               @builder.h4(class: 'modal-title')
@@ -134,10 +134,10 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def strip_outer_html(diff_line_item)
     diff_line_item
-        .gsub(%r{<li[^>]*>(.*)</li>}, '\\1')
-        .gsub(%r{<ins>(.*)</ins>}, '\\1')
-        .gsub(%r{<del>(.*)</del>}, '\\1')
-        .gsub(%r{<span>(.*)</span>}, '\\1')
+      .gsub(%r{<li[^>]*>(.*)</li>}, '\\1')
+      .gsub(%r{<ins>(.*)</ins>}, '\\1')
+      .gsub(%r{<del>(.*)</del>}, '\\1')
+      .gsub(%r{<span>(.*)</span>}, '\\1')
   end
 
   def pythia_diff(diff)
@@ -161,8 +161,8 @@ class PythiaRenderer < FeedbackTableRenderer
           diff.each do |diff_line|
             if !diff_line[4] && diff_line[3]
               @builder.tr do
-                @builder.td(class: 'line-nr')
                 @builder.td(diff_line[1], class: 'line-nr')
+                @builder.td(class: 'line-nr')
                 @builder.td(class: 'del') do
                   @builder << strip_outer_html(diff_line[3])
                 end
@@ -170,14 +170,16 @@ class PythiaRenderer < FeedbackTableRenderer
             end
             if !diff_line[4] && diff_line[2]
               @builder.tr do
-                @builder.td(diff_line[0], class: 'line-nr')
                 @builder.td(class: 'line-nr')
+                @builder.td(diff_line[0], class: 'line-nr')
                 @builder.td(class: 'ins') do
                   @builder << strip_outer_html(diff_line[2])
                 end
               end
             end
-            if diff_line[4]
+            next unless diff_line[4]
+
+            @builder.tr do
               @builder.td(diff_line[0], class: 'line-nr')
               @builder.td(diff_line[1], class: 'line-nr')
               @builder.td(class: 'unchanged') do
@@ -201,11 +203,11 @@ class PythiaRenderer < FeedbackTableRenderer
           @builder.th do
             @builder << I18n.t('submissions.show.your_output')
           end
-          @builder.th(class: 'line-nr', title: I18n.t("submissions.show.expected")) do
+          @builder.th(class: 'line-nr', title: I18n.t('submissions.show.expected')) do
             @builder.i(class: 'mdi mdi-18 mdi-file-check')
           end
           @builder.th do
-            @builder << I18n.t("submissions.show.expected")
+            @builder << I18n.t('submissions.show.expected')
           end
         end
         @builder.tbody do
@@ -262,9 +264,9 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def convert_lint_message(message)
     {
-        row: message[:line] - 1,
-        type: convert_lint_type(message[:type]),
-        text: message[:description]
+      row: message[:line] - 1,
+      type: convert_lint_type(message[:type]),
+      text: message[:description]
     }
   end
 

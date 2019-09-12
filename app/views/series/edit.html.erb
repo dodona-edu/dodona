@@ -7,14 +7,10 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @series.name %></h2>
         <div class="card-title-fab">
-          <%= render 'fab_button', form: "edit_series_#{@series.id}", icon: 'done' %>
+          <%= render 'fab_button', form: "edit_series_#{@series.id}", icon: 'check' %>
         </div>
       </div>
-      <div class="card-supporting-text">
-        <div class="col-xs-12 col-sm-8">
-          <%= render 'form', series: @series %>
-        </div>
-      </div>
+      <%= render 'form', series: @series %>
       <% if @series.indianio_token || !@series.open? %>
         <div class="card-supporting-text card-border">
           <h4><%= t '.confidential' %></h4>
@@ -70,7 +66,7 @@
               <div class="flex-spacer"></div>
               <div>
                 <a class="btn btn-down" title="<%= t(".add_exercises") %>" href="#add-exercises">
-                  <i class="material-icons">expand_more</i><span><%= t(".add_exercises") %></span>
+                  <i class="mdi mdi-chevron-down mdi-12"></i><span><%= t(".add_exercises") %></span>
                 </a>
               </div>
             </div>

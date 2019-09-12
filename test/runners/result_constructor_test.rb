@@ -1,4 +1,3 @@
-
 require 'json'
 require 'test_helper'
 require 'result_constructor'
@@ -55,6 +54,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       groups: [{
         description: 'Tab One',
         badgeCount: 1,
+        permission: 'student',
         groups: [{
           accepted: true,
           groups: [{
@@ -81,7 +81,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       }]
     }, construct_result([
       '{ "command": "start-judgement" }',
-      '{ "command": "start-tab", "title": "Tab One" }',
+      '{ "command": "start-tab", "title": "Tab One", "permission": "student" }',
       '{ "command": "start-context" }',
       '{ "command": "start-testcase", "description": "case 1" }',
       '{ "command": "start-test", "expected": "SOMETHING" }',
@@ -107,6 +107,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       groups: [{
         description: 'Tab One',
         badgeCount: 0,
+        permission: 'student',
         groups: [{
           accepted: true,
           groups: [{
@@ -128,7 +129,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
     }, construct_result([
       '{ "command": "start-judgement" }',
       '{ "command": "append-message", "message": "judgement" }',
-      '{ "command": "start-tab", "title": "Tab One" }',
+      '{ "command": "start-tab", "title": "Tab One", "permission": "student" }',
       '{ "command": "append-message", "message": "tab" }',
       '{ "command": "start-context" }',
       '{ "command": "append-message", "message": "context" }',
@@ -265,6 +266,47 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "close-judgement", "status": { "enum": "runtime error", "human": "Runtime" } }'
     ])
     assert_equal('runtime error', result[:status])
+  end
+
+  test 'correct permissions should be present in result' do
+    result = construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "start-tab", "title": "Tab One", "permission": "zeus" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "start-tab", "title": "Tab Two", "permission": "staff" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "start-testcase", "description": "case 2" }',
+      '{ "command": "close-testcase", "accepted": true }',
+      '{ "command": "start-testcase", "description": "case 3" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "start-testcase", "description": "case 4" }',
+      '{ "command": "close-testcase", "accepted": false }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "start-tab", "title": "Tab Three", "permission": "student" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": true }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "start-tab", "title": "Tab Four" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase", "accepted": true }',
+      '{ "command": "close-context" }',
+      '{ "command": "close-tab" }',
+      '{ "command": "close-judgement", "accepted": true }'
+    ])
+    %w[zeus staff student].each_with_index do |perm, index|
+      assert_equal(perm, result[:groups][index][:permission])
+    end
+    assert_nil result[:groups][3][:permission]
   end
 
   private

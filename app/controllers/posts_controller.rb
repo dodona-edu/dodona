@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: %i[show edit update destroy]
 
   def index
     authorize Post
@@ -34,11 +34,11 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html {redirect_to post_url(@post), notice: I18n.t('controllers.created', model: Post.model_name.human)}
-        format.json {render :show, status: :created, location: @post}
+        format.html { redirect_to post_url(@post), notice: I18n.t('controllers.created', model: Post.model_name.human) }
+        format.json { render :show, status: :created, location: @post }
       else
-        format.html {render :new}
-        format.json {render json: @post.errors, status: :unprocessable_entity}
+        format.html { render :new }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -47,19 +47,15 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1.json
   def update
     attributes = permitted_attributes(@post)
-    if attributes[:content_en].present?
-      @post.content_en.embeds.detach
-    end
-    if attributes[:content_nl].present?
-      @post.content_nl.embeds.detach
-    end
+    @post.content_en.embeds.detach if attributes[:content_en].present?
+    @post.content_nl.embeds.detach if attributes[:content_nl].present?
     respond_to do |format|
       if @post.update(permitted_attributes(@post))
-        format.html {redirect_to post_url(@post), notice: I18n.t('controllers.updated', model: Post.model_name.human)}
-        format.json {render :show, status: :ok, location: @post}
+        format.html { redirect_to post_url(@post), notice: I18n.t('controllers.updated', model: Post.model_name.human) }
+        format.json { render :show, status: :ok, location: @post }
       else
-        format.html {render :edit}
-        format.json {render json: @post.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -69,8 +65,8 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     respond_to do |format|
-      format.html {redirect_to posts_url, notice: I18n.t('controllers.destroyed', model: Post.model_name.human)}
-      format.json {head :no_content}
+      format.html { redirect_to posts_url, notice: I18n.t('controllers.destroyed', model: Post.model_name.human) }
+      format.json { head :no_content }
     end
   end
 

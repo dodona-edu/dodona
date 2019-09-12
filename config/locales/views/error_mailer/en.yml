@@ -2,11 +2,11 @@ en:
   error_mailer:
     json_error:
       subject:
-        one: '[Dodona] error on updating %{repository}'
-        other: '[Dodona] %{count} errors on updating %{repository}'
-      greeting: 'Dear %{name},'
+        one: "[Dodona] error on updating %{repository}"
+        other: "[Dodona] %{count} errors on updating %{repository}"
+      greeting: "Dear %{name},"
       error_message_html:
         one: 'Something went wrong during the processing of the exercise repository "%{repository}". You probably made a syntax error in the config file. This was the generated error message:'
-        other: 'Something went wrong during the processing of the exercise repository "%{repository}". You probably made a syntax error in the config file. This were the generated error messages:'
-      regards: 'Kind regards,'
-      auto-generated: ps. This message was generated automatically
+        other: 'Something went wrong during the processing of the exercise repository "%{repository}". You probably made a syntax error in the config file. These were the generated error messages:'
+      regards: "Kind regards,"
+      auto-generated: This message was generated automatically.

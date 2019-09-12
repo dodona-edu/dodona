@@ -1,55 +1,66 @@
+require: rubocop-rails
+
 AllCops:
-  Include:
-    - ''
   Exclude:
-    - 'db/schema.rb'
-    - 'config/**'
-    - 'bin/**'
-    - 'db/migrate/**'
-    - 'node_modules/**/*'
-  TargetRubyVersion: 2.5
+    - "db/schema.rb"
+    - "config/**/*"
+    - "bin/**/*"
+    - "data/**/*"
+    - "lib/**/*"
+    - "log/**/*"
+    - "tmp/**/*"
+    - "db/**/*"
+    - "node_modules/**/*"
+  TargetRubyVersion: 2.6
 
-Rails:
-  Enabled: true
+Layout/IndentFirstArrayElement:
+  EnforcedStyle: consistent
+Layout/IndentFirstHashElement:
+  EnforcedStyle: consistent
 
-Style/FrozenStringLiteralComment:
+Lint/Loop:
   Enabled: false
-Style/Documentation:
+
+Metrics/AbcSize:
   Enabled: false
-Style/ClassAndModuleChildren:
+Metrics/BlockLength:
+  Enabled: false
+Metrics/BlockNesting:
+  Max: 4
+Metrics/ClassLength:
+  Enabled: false
+Metrics/CyclomaticComplexity:
   Enabled: false
 Metrics/LineLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
+Rails/Date:
+  Enabled: false
+Rails/HelperInstanceVariable:
   Enabled: false
 Rails/OutputSafety:
   Enabled: false
 
-Layout/IndentArray:
-  EnforcedStyle: consistent
-Layout/IndentHash:
-  EnforcedStyle: consistent
-
-# disable for now
-# Lint/NestedMethodDefinition:
-#   Enabled: false
-# Style/ClassVars:
-#   Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
 Style/Documentation:
   Enabled: false
-# Style/RescueModifier:
-#   Enabled: false
-# Style/AccessorMethodName:
-#   Enabled: false
-# Style/PredicateName:
-#   Enabled: false
-Metrics/AbcSize:
+Style/FormatStringToken:
+  EnforcedStyle: template
+Style/FrozenStringLiteralComment:
   Enabled: false
-Metrics/ClassLength:
+Style/MultilineBlockChain:
   Enabled: false
-Metrics/MethodLength:
-  Enabled: false
-Metrics/BlockLength:
-  Enabled: false
-Metrics/PerceivedComplexity:
-  Enabled: false
-Metrics/CyclomaticComplexity:
+Style/NumericPredicate:
   Enabled: false

@@ -4,12 +4,12 @@
       <% if user_signed_in? %>
         <button type="button" class="drawer-toggle" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
           <span class="sr-only">Toggle drawer</span>
-          <i class="material-icons">menu</i>
+          <i class="mdi mdi-menu"></i>
         </button>
       <% end %>
       <%= link_to root_path, class: "brand" do %>
         <span class="hidden-xs">Dodona</span>
-        <i class="visible-xs material-icons">home</i>
+        <i class="visible-xs mdi mdi-home"></i>
       <% end %>
     </div>
   </div>
@@ -28,7 +28,7 @@
         <% if user_signed_in? %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="material-icons md-24 material-icons-faaf">account_circle</i>
+              <i class="mdi mdi-24 mdi-account-circle"></i>
               <span class="dropdown-title"><%= current_user.first_name || current_user.last_name %></span>
               <span class="caret"></span>
             </a>
@@ -41,16 +41,32 @@
               <% end %>
               <% if policy(:pages).toggle_demo_mode? %>
                 <% if Current.demo_mode %>
-                  <li><%= link_to t(".disable_demo_mode"), toggle_demo_mode_path, remote: true, method: "POST" %></li>
+                  <li>
+                    <%= link_to toggle_demo_mode_path, remote: true, method: "POST" do %>
+                      <i class="mdi mdi-checkbox-marked-outline mdi-18 dropdown-box"></i><%= t(".demo_mode") %>
+                    <% end %>
+                  </li>
                 <% else %>
-                  <li><%= link_to t(".enable_demo_mode"), toggle_demo_mode_path, remote: true, method: "POST" %></li>
+                  <li>
+                    <%= link_to toggle_demo_mode_path, remote: true, method: "POST" do %>
+                      <i class="mdi mdi-checkbox-blank-outline mdi-18 dropdown-box"></i> <%= t(".demo_mode") %>
+                    <% end %>
+                  </li>
                 <% end %>
               <% end %>
               <% if policy(:pages).toggle_dark_mode? %>
                 <% if session[:dark] %>
-                  <li><%= link_to t(".disable_dark_mode"), toggle_dark_mode_path, remote: true, method: "POST" %></li>
+                  <li>
+                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle" do %>
+                      <i class="mdi mdi-checkbox-marked-outline mdi-18 dropdown-box"></i> <%= t(".dark_mode") %>
+                    <% end %>
+                  </li>
                 <% else %>
-                  <li><%= link_to t(".enable_dark_mode"), toggle_dark_mode_path, remote: true, method: "POST" %></li>
+                  <li>
+                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle" do %>
+                      <i class="mdi mdi-checkbox-blank-outline mdi-18 dropdown-box"></i> <%= t(".dark_mode") %>
+                    <% end %>
+                  </li>
                 <% end %>
               <% end %>
               <li role="separator" class="divider"></li>
@@ -64,7 +80,7 @@
         <% end %>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <i class='material-icons md-24 material-icons-faaf'>language</i>
+            <i class='mdi mdi-24 mdi-web'></i>
             <span class="dropdown-title"><%= I18n.locale.to_s %></span>
             <span class="caret"></span></a>
           <ul class="dropdown-menu dropdown-menu-right">
@@ -75,9 +91,7 @@
       </ul>
       <button type="button" class="dodona-navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
-        <i class="material-icons">
-          more_vert
-        </i>
+        <i class="mdi mdi-dots-vertical"></i>
       </button>
     </div>
   </div>

@@ -17,6 +17,7 @@ class UserPolicy < ApplicationPolicy
     return false unless user
     return true if user.zeus?
     return true if user.id == record.id
+
     false
   end
 
@@ -24,6 +25,7 @@ class UserPolicy < ApplicationPolicy
     return false unless user
     return true if user.zeus?
     return true if user.id == record.id
+
     false
   end
 
@@ -39,6 +41,7 @@ class UserPolicy < ApplicationPolicy
     return false unless user
     return false if user == record
     return true if user.zeus?
+
     false
   end
 

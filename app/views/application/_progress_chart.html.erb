@@ -1,0 +1,21 @@
+<%
+    total += 0.0001
+    parts = [
+        { percent: correct / total, class: 'correct' },
+        { percent: (tried - correct) / total, class: 'wrong' },
+        { percent: 1 - (tried / total), class: 'not-started' }
+    ]
+    cumulativePercent = 0
+
+    parts = parts.map do |part|
+        startX, startY = [cumulativePercent, 0.5]
+        cumulativePercent += part[:percent]
+        endX, endY = [cumulativePercent, 0.5]
+
+        "<line class='#{part[:class]}' x1='#{startX}' y1='#{startY}' x2='#{endX}' y2='#{endY}' />"
+    end
+%>
+
+<svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='progress-chart' data-html="true" data-toggle='tooltip' title="<%= t(info_tried, count: tried) %><br/><%= t(info_correct, count: correct) %>">
+    <%=raw parts.join("") %>
+</svg>

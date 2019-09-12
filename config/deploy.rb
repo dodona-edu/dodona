@@ -2,7 +2,7 @@
 lock '~> 3.9'
 
 set :application, 'dodona'
-set :repo_url, 'git@github.ugent.be:dodona/dodona.git'
+set :repo_url, 'git@github.com:dodona-edu/dodona.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

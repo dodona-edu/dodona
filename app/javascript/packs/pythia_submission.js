@@ -1,3 +1,3 @@
-import {initPythiaSubmissionShow} from "pythia_submission.js";
+import { initPythiaSubmissionShow } from "pythia_submission.js";
 
 window.dodona.initPythiaSubmissionShow = initPythiaSubmissionShow;

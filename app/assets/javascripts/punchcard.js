@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
 const containerSelector = "#punchcard-container";
-const margin = {top: 10, right: 10, bottom: 20, left: 70};
+const margin = { top: 10, right: 10, bottom: 20, left: 70 };
 const labelsX = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
 function initPunchcard(url, timezoneOffset) {
@@ -95,23 +95,21 @@ function renderCard(data, unitSize, chart, x, y) {
 
 function applyTimezone(data, timezoneOffset) {
     const transform = {};
-    for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-            const split = key.split(", ");
-            let day = parseInt(split[0]);
-            let hour = parseInt(split[1]);
-            hour += timezoneOffset;
-            if (hour < 0) {
-                hour += 24;
-                day = (day + 6) % 7;
-            } else if (hour > 23) {
-                hour -= 24;
-                day = (day + 1) % 7;
-            }
-            transform[`${day}, ${hour}`] = data[key];
+    Object.entries(data).forEach(([key, value]) => {
+        const split = key.split(", ");
+        let day = parseInt(split[0]);
+        let hour = parseInt(split[1]);
+        hour += timezoneOffset;
+        if (hour < 0) {
+            hour += 24;
+            day = (day + 6) % 7;
+        } else if (hour > 23) {
+            hour -= 24;
+            day = (day + 1) % 7;
         }
-    }
+        transform[`${day}, ${hour}`] = value;
+    });
     return transform;
 }
 
-export {initPunchcard};
+export { initPunchcard };

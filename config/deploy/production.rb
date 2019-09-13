@@ -25,6 +25,12 @@ set :delayed_job_pools_per_server, {
     'tantalus' => {
         'submissions,low_priority_submissions,high_priority_submissions' => 6,
     },
+    'ixion' => {
+        'submissions,low_priority_submissions,high_priority_submissions' => 6,
+    },
+    'tityos' => {
+        'submissions,low_priority_submissions,high_priority_submissions' => 6,
+    }
 }
 
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value

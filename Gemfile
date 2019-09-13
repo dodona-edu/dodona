@@ -94,8 +94,8 @@ gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
 gem 'capistrano3-delayed-job', '~> 1.7.6'
 
-gem 'ed25519'
 gem 'bcrypt_pbkdf'
+gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 3.3.0'

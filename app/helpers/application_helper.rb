@@ -119,8 +119,8 @@ module ApplicationHelper
       'correct' => %w[check correct],
       'wrong' => %w[close wrong],
       'time limit exceeded' => %w[alarm wrong],
-      'running' => %w[hourglass-empty default],
-      'queued' => %w[hourglass-empty default],
+      'running' => %w[timer-sand-empty default],
+      'queued' => %w[timer-sand-empty default],
       'runtime error' => %w[flash wrong],
       'compilation error' => %w[flash-circle wrong],
       'memory limit exceeded' => %w[memory wrong]

@@ -27,6 +27,20 @@ class SeriesTest < ActiveSupport::TestCase
     assert_not_nil @series
   end
 
+  test 'testing deadline? and pending? with different deadlines' do
+    @series.deadline = Time.current + 2.minutes
+    assert_equal true, @series.deadline?
+    assert_equal true, @series.pending?
+
+    @series.deadline = Time.current - 2.minutes
+    assert_equal true, @series.deadline?
+    assert_equal false, @series.pending?
+
+    @series.deadline = nil
+    assert_equal false, @series.deadline?
+    assert_equal false, @series.pending?
+  end
+
   test 'indianio_token should not be set' do
     assert_nil @series.indianio_token
   end

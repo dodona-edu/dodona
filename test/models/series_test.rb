@@ -185,8 +185,8 @@ class SeriesTest < ActiveSupport::TestCase
 
     4.times do |i|
       user = users[i]
-      assert_equal [1, 3].include?, series.completed?(user)
-      assert_equal [1, 3].include? ? 5 : 0, series.solved_exercises(user).count
+      assert_equal [1, 3].include?(i), series.completed?(user)
+      assert_equal [1, 3].include?(i) ? 5 : 0, series.solved_exercises(user).count
     end
   end
 end

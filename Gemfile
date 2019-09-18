@@ -154,7 +154,7 @@ end
 group :test do
   # for measuring coverage
   gem 'minitest-ci', '~> 3.4.0'
-  gem 'simplecov', '~> 0.17.0', require: false
+  gem 'simplecov', '~> 0.17.1', require: false
 end
 
 group :development do

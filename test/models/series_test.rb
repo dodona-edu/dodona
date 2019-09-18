@@ -148,4 +148,45 @@ class SeriesTest < ActiveSupport::TestCase
       assert_equal kommas, scoresheet.count(',')
     end
   end
+
+  test 'completed? and solved_eercises function' do
+    course = create :course
+    series = create :series, course: course, exercise_count: 5, deadline: Time.current
+    users = create_list(:user, 4, courses: [course])
+
+    deadline = series.deadline
+    series.exercises.map do |exercise|
+      4.times do |i|
+        u = users[i]
+        case i
+        when 0 # Wrong submission before deadline
+          create :wrong_submission,
+                 exercise: exercise,
+                 user: u,
+                 created_at: (deadline - 2.minutes)
+        when 1 # Correct submission before deadline
+          create :correct_submission,
+                 exercise: exercise,
+                 user: u,
+                 created_at: (deadline - 2.minutes)
+        when 2 # Wrong submission after deadline
+          create :wrong_submission,
+                 exercise: exercise,
+                 user: u,
+                 created_at: (deadline + 2.minutes)
+        when 3 # Correct submission after deadline
+          create :correct_submission,
+                 exercise: exercise,
+                 user: u,
+                 created_at: (deadline + 2.minutes)
+        end
+      end
+    end
+
+    4.times do |i|
+      user = users[i]
+      assert_equal [1, 3].include?, series.completed?(user)
+      assert_equal [1, 3].include? ? 5 : 0, series.solved_exercises(user).count
+    end
+  end
 end

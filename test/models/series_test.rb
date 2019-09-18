@@ -27,15 +27,19 @@ class SeriesTest < ActiveSupport::TestCase
     assert_not_nil @series
   end
 
-  test 'testing deadline? and pending? with different deadlines' do
+  test 'deadline? and pending? with deadlines in the future' do
     @series.deadline = Time.current + 2.minutes
     assert_equal true, @series.deadline?
     assert_equal true, @series.pending?
+  end
 
+  test 'deadline? and pending? with deadlines in the past' do
     @series.deadline = Time.current - 2.minutes
     assert_equal true, @series.deadline?
     assert_equal false, @series.pending?
+  end
 
+  test 'deadline? and pending? if there is no deadline' do
     @series.deadline = nil
     assert_equal false, @series.deadline?
     assert_equal false, @series.pending?
@@ -149,52 +153,66 @@ class SeriesTest < ActiveSupport::TestCase
     end
   end
 
-  test 'completed? and solved_eercises function' do
-    course = create :course
-    series = create :series, course: course, exercise_count: 5, deadline: Time.current
-    users = create_list(:user, 4, courses: [course])
+  test 'completed? and solved_eercises with wrong submission before deadline' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
 
     deadline = series.deadline
-    series.exercises.map do |exercise|
-      4.times do |i|
-        u = users[i]
-        case i
-        when 0 # Wrong submission before deadline
-          create :wrong_submission,
-                 exercise: exercise,
-                 user: u,
-                 created_at: (deadline - 2.minutes)
-        when 1 # Correct submission before deadline
-          create :correct_submission,
-                 exercise: exercise,
-                 user: u,
-                 created_at: (deadline - 2.minutes)
-        when 2 # Wrong submission after deadline
-          create :wrong_submission,
-                 exercise: exercise,
-                 user: u,
-                 created_at: (deadline + 2.minutes)
-        when 3 # Correct submission after deadline
-          create :correct_submission,
-                 exercise: exercise,
-                 user: u,
-                 created_at: (deadline + 2.minutes)
-        end
-      end
-    end
-
-    4.times do |i|
-      user = users[i]
-      assert_equal [1, 3].include?(i), series.completed?(user)
-      assert_equal [1, 3].include?(i) ? 5 : 0, series.solved_exercises(user).count
-    end
+    # Wrong submission before deadline
+    create :wrong_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    assert_equal false, series.completed?(user)
+    assert_equal 0, series.solved_exercises(user).count
   end
 
-  test 'zip_solutions(with_info: true) should create a zip' do
-    course = create :course
-    serie = create :series, course: course, exercise_count: 0
-    assert_zip serie.zip_solutions(with_info: true)[:data],
+  test 'completed? and solved_eercises with correct submission before deadline' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Correct submission before deadline
+    create :correct_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    assert_equal true, series.completed?(user)
+    assert_equal 1, series.solved_exercises(user).count
+  end
+
+  test 'completed? and solved_eercises with wrong submission after deadline' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Wrong submission after deadline
+    create :wrong_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline + 2.minutes)
+    assert_equal false, series.completed?(user)
+    assert_equal 0, series.solved_exercises(user).count
+  end
+
+  test 'completed? and solved_eercises with correct submission after deadline' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Correct submission after deadline
+    create :correct_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline + 2.minutes)
+    assert_equal true, series.completed?(user)
+    assert_equal 1, series.solved_exercises(user).count
+  end
+
+  test 'zip_solutions(with_info: true) should create a zip with an info.csv file' do
+    series = create :series, exercise_count: 0
+    assert_zip series.zip_solutions(with_info: true)[:data],
                with_info: true,
-               solution_count: serie.exercises.count
+               solution_count: series.exercises.count
   end
 end

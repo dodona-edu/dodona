@@ -192,7 +192,7 @@ class SeriesTest < ActiveSupport::TestCase
 
   test 'zip_solutions(with_info: true) should create a zip' do
     course = create :course
-    serie = create :series, course: course, exercise_count: 1
+    serie = create :series, course: course, exercise_count: 0
     assert_zip serie.zip_solutions(with_info: true)[:data],
                with_info: true,
                solution_count: serie.exercises.count

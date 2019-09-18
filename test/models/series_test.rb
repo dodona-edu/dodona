@@ -48,7 +48,7 @@ class SeriesTest < ActiveSupport::TestCase
 
   test 'indianio_support should be true when there is a token' do
     @series.indianio_token = 'something'
-    assert_equal true, @series.indianio_support
+    assert_equal true, @series.indianio_support?
   end
 
   test 'disabling indianio_support should set token to nil' do

@@ -61,6 +61,30 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal true, exercise.accessible?(@user, course)
   end
 
+  test 'convert_visibility_to_access should convert "visible" to "public"' do
+    assert_equal 'public', Exercise.convert_visibility_to_access('visible')
+  end
+
+  test 'convert_visibility_to_access should convert "open" to "public"' do
+    assert_equal 'public', Exercise.convert_visibility_to_access('open')
+  end
+
+  test 'convert_visibility_to_access should convert "invisible" to "private"' do
+    assert_equal 'private', Exercise.convert_visibility_to_access('invisible')
+  end
+
+  test 'convert_visibility_to_access should convert "hidden" to "private"' do
+    assert_equal 'private', Exercise.convert_visibility_to_access('hidden')
+  end
+
+  test 'convert_visibility_to_access should convert "closed" to "private"' do
+    assert_equal 'private', Exercise.convert_visibility_to_access('closed')
+  end
+
+  test 'convert_visibility_to_access should convert "other" to "other"' do
+    assert_equal 'other', Exercise.convert_visibility_to_access('other')
+  end
+
   test 'users tried' do
     e = create :exercise
     course1 = create :course

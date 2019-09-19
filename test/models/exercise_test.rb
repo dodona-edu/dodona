@@ -364,6 +364,14 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     )
     assert_equal 'private', config['access']
   end
+
+  test 'dirconfig_file? should return true if the basename is "dirconfig.json"' do
+    assert_equal true, Exercise.dirconfig_file?(@exercise.full_path + '/dirconfig.json')
+  end
+
+  test 'dirconfig_file? should return false if the basename is not "dirconfig.json"' do
+    assert_equal false, Exercise.dirconfig_file?(@exercise.full_path + '/otherconfig.json')
+  end
 end
 
 # multiple layers of configurations; tests merging.

@@ -47,6 +47,20 @@ class ExerciseTest < ActiveSupport::TestCase
     end
   end
 
+  test 'accessible? should return false if user is not a member of the course' do
+    exercise = create :exercise, access: 0
+    course = create :course, registration: 2
+    create :series, course: course, exercises: [exercise]
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return true if user is a member of the course' do
+    exercise = create :exercise, access: 0
+    course = create :course, registration: 2, users: [@user]
+    create :series, course: course, exercises: [exercise]
+    assert_equal true, exercise.accessible?(@user, course)
+  end
+
   test 'users tried' do
     e = create :exercise
     course1 = create :course

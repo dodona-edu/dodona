@@ -15,6 +15,8 @@
 #
 
 class Submission < ApplicationRecord
+  include ActiveModel::Dirty
+
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
   PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/punchcard_matrix'.freeze
   HEATMAP_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/heatmap_matrix'.freeze
@@ -32,6 +34,7 @@ class Submission < ApplicationRecord
   validate :maximum_code_length, on: :create
   validate :not_rate_limited?, on: :create, unless: :skip_rate_limit_check?
 
+  before_update :update_fs
   after_create :evaluate_delayed, if: :evaluate?
   after_save :invalidate_caches
   after_destroy :invalidate_caches
@@ -322,5 +325,24 @@ class Submission < ApplicationRecord
       matrix: old[:matrix].merge(to_merge) { |_k, v1, v2| v1 + v2 }
     }
     Rails.cache.write(format(HEATMAP_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), result)
+  end
+
+  private
+
+  def old_fs_path
+    c_id = course_id_changed? ? course_id_was : course_id
+    e_id = exercise_id_changed? ? exercise_id_was : exercise_id
+    u_id = user_id_changed? ? user_id_was : user_id
+
+    File.join(BASE_PATH, (c_id.present? ? c_id.to_s : 'no_course'), u_id.to_s, e_id.to_s, fs_key)
+  end
+
+  def update_fs
+    old_path = old_fs_path
+    new_path = fs_path
+    return if old_path == new_path
+
+    FileUtils.mkdir_p File.dirname new_path
+    FileUtils.move old_path, new_path
   end
 end

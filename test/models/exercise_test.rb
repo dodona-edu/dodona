@@ -85,6 +85,10 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 'other', Exercise.convert_visibility_to_access('other')
   end
 
+  test 'determine_format should return "md"' do
+    assert_equal 'md', Exercise.determine_format(@exercise.full_path)
+  end
+
   test 'users tried' do
     e = create :exercise
     course1 = create :course

@@ -118,28 +118,34 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'transferring to another course should move the underlying result and code' do
     submission = create :submission, result: 'result', code: 'code'
+    path = submission.fs_path
     new_course = create :course
     submission.update(course: new_course)
     assert_equal 'result', submission.result
     assert_equal 'code', submission.code
     assert File.exist?(submission.fs_path)
+    assert_not File.exist?(path)
   end
 
   test 'transferring to another exercise should move the underlying result and code' do
     submission = create :submission, result: 'result', code: 'code'
+    path = submission.fs_path
     new_exercise = create :exercise
     submission.update(exercise: new_exercise)
     assert_equal 'result', submission.result
     assert_equal 'code', submission.code
     assert File.exist?(submission.fs_path)
+    assert_not File.exist?(path)
   end
 
   test 'transferring to another user should move the underlying result and code' do
     submission = create :submission, result: 'result', code: 'code'
+    path = submission.fs_path
     new_user = create :user
     submission.update(user: new_user)
     assert_equal 'result', submission.result
     assert_equal 'code', submission.code
     assert File.exist?(submission.fs_path)
+    assert_not File.exist?(path)
   end
 end

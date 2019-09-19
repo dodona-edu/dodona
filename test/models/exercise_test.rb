@@ -381,7 +381,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   test 'safe_delete should destroy exercise if status is removed' do
     @exercise.status = 2 # set status to removed
     @exercise.safe_destroy
-    assert_not_equal @repository.exercises.first, @exercise # Should be nil
+    assert_not_equal @repository.exercises.first, @exercise
   end
 
   test 'safe_delete should not destroy exercise if it has submissions' do

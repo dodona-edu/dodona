@@ -502,6 +502,13 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_equal 'set', @exercise.merged_config['root_config']
   end
 
+  test 'should throw ":abort" when commit does not succed and return an error' do
+    @exercise.repository.stubs(:commit).returns([false, ['not empty']])
+    assert_throws :abort do
+      @exercise.store_config(config)
+    end
+  end
+
   # set at top level, overridden by series, not set at exercise
   test 'should not write access if initially not present' do
     assert_equal 'public', @exercise.access

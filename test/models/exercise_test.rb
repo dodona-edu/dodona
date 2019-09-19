@@ -89,6 +89,17 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 'md', Exercise.determine_format(@exercise.full_path)
   end
 
+  test 'move_relations should move submissions from one exercise to the other' do
+    exercise1 = create :exercise
+    create :submission, exercise: exercise1
+    exercise2 = create :exercise
+    assert_equal 1, exercise1.submissions.count
+    assert_equal 0, exercise2.submissions.count
+    Exercise.move_relations(exercise1, exercise2)
+    assert_equal 0, exercise1.submissions.count
+    assert_equal 1, exercise2.submissions.count
+  end
+
   test 'users tried' do
     e = create :exercise
     course1 = create :course

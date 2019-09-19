@@ -27,6 +27,24 @@ class SeriesTest < ActiveSupport::TestCase
     assert_not_nil @series
   end
 
+  test 'deadline? and pending? with deadlines in the future' do
+    @series.deadline = Time.current + 2.minutes
+    assert_equal true, @series.deadline?
+    assert_equal true, @series.pending?
+  end
+
+  test 'deadline? and pending? with deadlines in the past' do
+    @series.deadline = Time.current - 2.minutes
+    assert_equal true, @series.deadline?
+    assert_equal false, @series.pending?
+  end
+
+  test 'deadline? and pending? if there is no deadline' do
+    @series.deadline = nil
+    assert_equal false, @series.deadline?
+    assert_equal false, @series.pending?
+  end
+
   test 'indianio_token should not be set' do
     assert_nil @series.indianio_token
   end
@@ -48,7 +66,7 @@ class SeriesTest < ActiveSupport::TestCase
 
   test 'indianio_support should be true when there is a token' do
     @series.indianio_token = 'something'
-    assert_equal true, @series.indianio_support
+    assert_equal true, @series.indianio_support?
   end
 
   test 'disabling indianio_support should set token to nil' do
@@ -133,5 +151,68 @@ class SeriesTest < ActiveSupport::TestCase
       kommas = (3 + 1 + series.exercises.count) * (2 + users.count)
       assert_equal kommas, scoresheet.count(',')
     end
+  end
+
+  test 'completed? and solved_exercises with wrong submission before deadline' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Wrong submission before deadline
+    create :wrong_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    assert_equal false, series.completed?(user)
+    assert_equal 0, series.solved_exercises(user).count
+  end
+
+  test 'completed? and solved_exercises with correct submission before deadline' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Correct submission before deadline
+    create :correct_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    assert_equal true, series.completed?(user)
+    assert_equal 1, series.solved_exercises(user).count
+  end
+
+  test 'completed? and solved_exercises with wrong submission after deadline' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Wrong submission after deadline
+    create :wrong_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline + 2.minutes)
+    assert_equal false, series.completed?(user)
+    assert_equal 0, series.solved_exercises(user).count
+  end
+
+  test 'completed? and solved_exercises with correct submission after deadline' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Correct submission after deadline
+    create :correct_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline + 2.minutes)
+    assert_equal true, series.completed?(user)
+    assert_equal 1, series.solved_exercises(user).count
+  end
+
+  test 'zip_solutions(with_info: true) should create a zip with an info.csv file' do
+    series = create :series, exercise_count: 0
+    assert_zip series.zip_solutions(with_info: true)[:data],
+               with_info: true,
+               solution_count: series.exercises.count
   end
 end

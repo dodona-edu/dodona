@@ -402,6 +402,15 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     @exercise.safe_destroy
     assert_equal @repository.exercises.first, @exercise
   end
+
+  test 'config_file? should be true if exercise has a config file' do
+    assert_equal true, @exercise.config_file?
+  end
+
+  test 'config_file? should be false if exercise has no config file' do
+    @exercise.path = '/wrong_path'
+    assert_equal false, @exercise.config_file?
+  end
 end
 
 # multiple layers of configurations; tests merging.

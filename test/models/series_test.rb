@@ -153,7 +153,7 @@ class SeriesTest < ActiveSupport::TestCase
     end
   end
 
-  test 'completed? and solved_eercises with wrong submission before deadline' do
+  test 'completed? and solved_exercises with wrong submission before deadline' do
     series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
@@ -167,7 +167,7 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal 0, series.solved_exercises(user).count
   end
 
-  test 'completed? and solved_eercises with correct submission before deadline' do
+  test 'completed? and solved_exercises with correct submission before deadline' do
     series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
@@ -181,7 +181,7 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal 1, series.solved_exercises(user).count
   end
 
-  test 'completed? and solved_eercises with wrong submission after deadline' do
+  test 'completed? and solved_exercises with wrong submission after deadline' do
     series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
@@ -195,7 +195,7 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal 0, series.solved_exercises(user).count
   end
 
-  test 'completed? and solved_eercises with correct submission after deadline' do
+  test 'completed? and solved_exercises with correct submission after deadline' do
     series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 

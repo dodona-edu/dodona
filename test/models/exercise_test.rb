@@ -375,13 +375,13 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
   test 'safe_delete should not destroy exercise if status is not removed' do
     @exercise.safe_destroy
-    assert_not_nil @exercise
+    assert_equal @repository.exercises.first, @exercise
   end
 
   test 'safe_delete should destroy exercise if status is removed' do
     @exercise.status = 2 # set status to removed
     @exercise.safe_destroy
-    assert_not_nil @exercise
+    assert_not_equal @repository.exercises.first, @exercise # Should be nil
   end
 
   test 'safe_delete should not destroy exercise if it has submissions' do
@@ -390,7 +390,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     submission = create :submission, exercise: @exercise, user: user
     @exercise.submissions.concat(submission) # Add a submission
     @exercise.safe_destroy
-    assert_not_nil @exercise
+    assert_equal @repository.exercises.first, @exercise
   end
 
   test 'safe_delete should not destroy exercise if it has series memberships' do
@@ -400,7 +400,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     series.exercises.map { @exercise }
     @exercise.series.concat(series) # Add series membership
     @exercise.safe_destroy
-    assert_not_nil @exercise
+    assert_equal @repository.exercises.first, @exercise
   end
 end
 

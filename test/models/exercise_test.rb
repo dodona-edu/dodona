@@ -372,6 +372,36 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   test 'dirconfig_file? should return false if the basename is not "dirconfig.json"' do
     assert_equal false, Exercise.dirconfig_file?(@exercise.full_path + '/otherconfig.json')
   end
+
+  test 'safe_delete should not destroy exercise if status is not removed' do
+    @exercise.safe_destroy
+    assert_not_nil @exercise
+  end
+
+  test 'safe_delete should destroy exercise if status is removed' do
+    @exercise.status = 2 # set status to removed
+    @exercise.safe_destroy
+    assert_not_nil @exercise
+  end
+
+  test 'safe_delete should not destroy exercise if it has submissions' do
+    @exercise.status = 2 # set status to removed
+    user = create :user
+    submission = create :submission, exercise: @exercise, user: user
+    @exercise.submissions.concat(submission) # Add a submission
+    @exercise.safe_destroy
+    assert_not_nil @exercise
+  end
+
+  test 'safe_delete should not destroy exercise if it has series memberships' do
+    @exercise.status = 2 # set status to removed
+    course = create :course
+    series = create :series, course: course, exercise_count: 1
+    series.exercises.map { @exercise }
+    @exercise.series.concat(series) # Add series membership
+    @exercise.safe_destroy
+    assert_not_nil @exercise
+  end
 end
 
 # multiple layers of configurations; tests merging.

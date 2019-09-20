@@ -47,6 +47,122 @@ class ExerciseTest < ActiveSupport::TestCase
     end
   end
 
+  test 'accessible? should return false if user is course admin of course and exercise not in course' do
+    exercise = create :exercise
+    course = create :course, users: [@user]
+    User.any_instance.stubs(:course_admin?).returns(true)
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return false if user is not course admin of course and exercise is not in course' do
+    exercise = create :exercise
+    course = create :course, users: [@user]
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return false if user is not course admin of course and series is not visible course' do
+    exercise = create :exercise
+    course = create :course, users: [@user]
+    create :series, course: course, visibility: 'closed', exercises: [exercise]
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return true if user is course admin of course, repository admin and exercise is in course' do
+    exercise = create :exercise
+    course = create :course, users: [@user]
+    User.any_instance.stubs(:course_admin?).returns(true)
+    User.any_instance.stubs(:repository_admin?).returns(true)
+    create :series, course: course, exercises: [exercise]
+    assert_equal true, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return true if user is repository admin and series is visible' do
+    exercise = create :exercise
+    course = create :course
+    User.any_instance.stubs(:repository_admin?).returns(true)
+    create :series, course: course, exercises: [exercise]
+    assert_equal true, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return false if series is visible but exercise is private' do
+    exercise = create :exercise, access: 'private'
+    course = create :course
+    create :series, course: course, exercises: [exercise]
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return false if repository allows access to course' do
+    exercise = create :exercise
+    course = create :course
+    create :series, course: course, exercises: [exercise]
+    assert_equal true, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return false if user is not a member of the course' do
+    exercise = create :exercise
+    course = create :course, registration: 'closed'
+    create :series, course: course, exercises: [exercise]
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return true if user is a member of the course' do
+    exercise = create :exercise
+    course = create :course, users: [@user]
+    create :series, course: course, exercises: [exercise]
+    assert_equal true, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return true if user repository admin of repository' do
+    exercise = create :exercise, access: 'private'
+    User.any_instance.stubs(:repository_admin?).returns(true)
+    assert_equal true, exercise.accessible?(@user, nil)
+  end
+
+  test 'accessible? should return true if exercise is public' do
+    exercise = create :exercise
+    assert_equal true, exercise.accessible?(@user, nil)
+  end
+
+  test 'accessible? should return false if exercise is private' do
+    exercise = create :exercise, access: 'private'
+    assert_equal false, exercise.accessible?(@user, nil)
+  end
+
+  test 'convert_visibility_to_access should convert "visible" to "public"' do
+    assert_equal 'public', Exercise.convert_visibility_to_access('visible')
+  end
+
+  test 'convert_visibility_to_access should convert "open" to "public"' do
+    assert_equal 'public', Exercise.convert_visibility_to_access('open')
+  end
+
+  test 'convert_visibility_to_access should convert "invisible" to "private"' do
+    assert_equal 'private', Exercise.convert_visibility_to_access('invisible')
+  end
+
+  test 'convert_visibility_to_access should convert "hidden" to "private"' do
+    assert_equal 'private', Exercise.convert_visibility_to_access('hidden')
+  end
+
+  test 'convert_visibility_to_access should convert "closed" to "private"' do
+    assert_equal 'private', Exercise.convert_visibility_to_access('closed')
+  end
+
+  test 'convert_visibility_to_access should convert "other" to "other"' do
+    assert_equal 'other', Exercise.convert_visibility_to_access('other')
+  end
+
+  test 'move_relations should move submissions from one exercise to the other' do
+    exercise1 = create :exercise
+    create :submission, exercise: exercise1
+    exercise2 = create :exercise
+    assert_equal 1, exercise1.submissions.count
+    assert_equal 0, exercise2.submissions.count
+    Exercise.move_relations(exercise1, exercise2)
+    assert_equal 0, exercise1.submissions.count
+    assert_equal 1, exercise2.submissions.count
+  end
+
   test 'users tried' do
     e = create :exercise
     course1 = create :course
@@ -364,6 +480,53 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     )
     assert_equal 'private', config['access']
   end
+
+  test 'dirconfig_file? should return true if the basename is "dirconfig.json"' do
+    assert_equal true, Exercise.dirconfig_file?(@exercise.full_path + '/dirconfig.json')
+  end
+
+  test 'dirconfig_file? should return false if the basename is not "dirconfig.json"' do
+    assert_equal false, Exercise.dirconfig_file?(@exercise.full_path + '/otherconfig.json')
+  end
+
+  test 'safe_delete should not destroy exercise if status is not removed' do
+    @exercise.safe_destroy
+    assert_equal @repository.exercises.first, @exercise
+  end
+
+  test 'safe_delete should destroy exercise if status is removed' do
+    @exercise.status = 2 # set status to removed
+    @exercise.safe_destroy
+    assert_not_equal @repository.exercises.first, @exercise
+  end
+
+  test 'safe_delete should not destroy exercise if it has submissions' do
+    @exercise.status = 2 # set status to removed
+    user = create :user
+    submission = create :submission, exercise: @exercise, user: user
+    @exercise.submissions.concat(submission) # Add a submission
+    @exercise.safe_destroy
+    assert_equal @repository.exercises.first, @exercise
+  end
+
+  test 'safe_delete should not destroy exercise if it has series memberships' do
+    @exercise.status = 2 # set status to removed
+    course = create :course
+    series = create :series, course: course, exercise_count: 1
+    series.exercises.map { @exercise }
+    @exercise.series.concat(series) # Add series membership
+    @exercise.safe_destroy
+    assert_equal @repository.exercises.first, @exercise
+  end
+
+  test 'config_file? should be true if exercise has a config file' do
+    assert_equal true, @exercise.config_file?
+  end
+
+  test 'config_file? should be false if exercise has no config file' do
+    @exercise.path = '/wrong_path'
+    assert_equal false, @exercise.config_file?
+  end
 end
 
 # multiple layers of configurations; tests merging.
@@ -379,6 +542,15 @@ class LasagneConfigTest < ActiveSupport::TestCase
   teardown do
     @remote.remove
     @repository.git_repository.remove
+  end
+
+  test 'determine_format should return "md" when exercise has and md description' do
+    Dir.stubs(:glob).returns([]) # The search to html descriptions should return no results because description is in md
+    assert_equal 'md', Exercise.determine_format(@exercise.full_path)
+  end
+
+  test 'determine_format should return "html" when exercise has and html description' do
+    assert_equal 'html', Exercise.determine_format(@exercise.full_path)
   end
 
   # set top level, overridden by exercise
@@ -400,6 +572,13 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_not @exercise.config.key? 'root_config'
     assert @exercise.merged_config.key? 'root_config'
     assert_equal 'set', @exercise.merged_config['root_config']
+  end
+
+  test 'should throw ":abort" when commit does not succed and return an error' do
+    @exercise.repository.stubs(:commit).returns([false, ['not empty']])
+    assert_throws :abort do
+      @exercise.store_config(config)
+    end
   end
 
   # set at top level, overridden by series, not set at exercise

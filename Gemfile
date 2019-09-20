@@ -129,7 +129,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.10'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.3.0'
+gem 'faker', '~> 2.4.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

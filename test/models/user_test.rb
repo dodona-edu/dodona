@@ -264,6 +264,14 @@ class UserTest < ActiveSupport::TestCase
     pending_series = create :series, course: course, exercise_count: 2, deadline: Time.current + 2.minutes
     assert_equal [pending_series], user.pending_series
   end
+
+  test 'homepage_series should return the 3 most recent exercises submissions have been submitted' do
+    user = create :user
+    course = create :course, users: [user]
+    create :series, course: course, exercise_count: 2, deadline: Time.current - 2.minutes # Not pending series
+    homepage_series = create :series, course: course, exercise_count: 2, deadline: Time.current + 2.minutes
+    assert_equal [homepage_series], user.homepage_series
+  end
 end
 
 class UserHasManyTest < ActiveSupport::TestCase

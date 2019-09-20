@@ -233,6 +233,13 @@ class UserTest < ActiveSupport::TestCase
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal last_name, user.last_name
   end
+
+  test 'email should return a email that is not equal to actual email of the user when in demo mode' do
+    user = create :user
+    email = user.email
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal email, user.email
+  end
 end
 
 class UserHasManyTest < ActiveSupport::TestCase

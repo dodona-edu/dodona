@@ -322,4 +322,26 @@ class UserHasManyTest < ActiveSupport::TestCase
   test 'unsubscribed_courses should return the courses in which the user is a student' do
     assert_equal [@unsubscribed_course], @user.unsubscribed_courses
   end
+
+  test 'full_view? should return true because user has a course he/she has favorite' do
+    assert_equal true, @user.full_view?
+  end
+
+  test 'full_view? should return false because user is not subscribed to any courses' do
+    user = create :user
+    assert_equal false, user.full_view?
+  end
+
+  test 'full_view? should return true because user is subscribed to more tha four courses' do
+    user = create :user
+    user.courses << create_list(:course, 5)
+    assert_equal true, user.full_view?
+  end
+
+  test 'full_view? should return true because user is subscribed to courses that are in different years' do
+    user = create :user
+    create :course, users: [user], year: '2017-2018'
+    create :course, users: [user], year: '2018-2019'
+    assert_equal true, user.full_view?
+  end
 end

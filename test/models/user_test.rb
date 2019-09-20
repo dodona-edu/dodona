@@ -226,6 +226,13 @@ class UserTest < ActiveSupport::TestCase
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal first_name, user.first_name
   end
+
+  test 'last_name should return a last name that is not equal to actual last name of the user when in demo mode' do
+    user = create :user
+    last_name = user.last_name
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal last_name, user.last_name
+  end
 end
 
 class UserHasManyTest < ActiveSupport::TestCase

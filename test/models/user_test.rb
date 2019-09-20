@@ -212,6 +212,13 @@ class UserTest < ActiveSupport::TestCase
     assert user1.update(username: '')
     assert user2.update(username: '')
   end
+
+  test 'full_name should return a full name that is not equal to actual full name of the user when in demo mode' do
+    user = create :user
+    full_name = user.full_name
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal full_name, user.full_name
+  end
 end
 
 class UserHasManyTest < ActiveSupport::TestCase

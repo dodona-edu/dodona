@@ -272,6 +272,18 @@ class UserTest < ActiveSupport::TestCase
     homepage_series = create :series, course: course, exercise_count: 2, deadline: Time.current + 2.minutes
     assert_equal [homepage_series], user.homepage_series
   end
+
+  test 'split_last_name should split the "De Achternaam"' do
+    user = create :user, last_name: 'De Achternaam', first_name: ''
+    assert_equal 'De', user.first_name
+    assert_equal 'Achternaam', user.last_name
+  end
+
+  test 'split_last_name should not split the "Achternaam"' do
+    user = create :user, last_name: 'Achternaam', first_name: 'Voornaam'
+    assert_equal 'Voornaam', user.first_name
+    assert_equal 'Achternaam', user.last_name
+  end
 end
 
 class UserHasManyTest < ActiveSupport::TestCase

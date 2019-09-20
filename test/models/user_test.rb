@@ -213,3 +213,53 @@ class UserTest < ActiveSupport::TestCase
     assert user2.update(username: '')
   end
 end
+
+class UserHasManyTest < ActiveSupport::TestCase
+  def setup
+    @user = create :user
+    @administrating_course = create :course
+    membership_course_admin = CourseMembership.new(user: @user, course: @administrating_course, status: 'course_admin')
+    @administrating_course.course_memberships.concat(membership_course_admin)
+    @favorite_course = create :course
+    membership_favorite = CourseMembership.new(user: @user, course: @favorite_course, status: 'student', favorite: true)
+    @favorite_course.course_memberships.concat(membership_favorite)
+    @enrolled_course = create :course, users: [@user]
+    @unsubscribed_course = create :course
+    membership_unsubscribed = CourseMembership.new(user: @user, course: @unsubscribed_course, status: 'unsubscribed')
+    @unsubscribed_course.course_memberships.concat(membership_unsubscribed)
+    @pending_course = create :course
+    membership_pending = CourseMembership.new(user: @user, course: @pending_course, status: 'pending')
+    @pending_course.course_memberships.concat(membership_pending)
+  end
+
+  test 'subscribed_courses should return the courses in which the user is a student or course admin' do
+    subscribed_courses = @user.subscribed_courses.pluck(:id)
+    assert_equal true, subscribed_courses.include?(@enrolled_course.id)
+    assert_equal true, subscribed_courses.include?(@administrating_course.id)
+    assert_equal true, subscribed_courses.include?(@favorite_course.id)
+    assert_equal 3, subscribed_courses.count
+  end
+
+  test 'favorite_courses should return the courses in which the user has set as favorite' do
+    assert_equal [@favorite_course], @user.favorite_courses
+  end
+
+  test 'administrating_courses should return the courses in which the user is an admin' do
+    assert_equal [@administrating_course], @user.administrating_courses
+  end
+
+  test 'enrolled_courses should return the courses in which the user is a student' do
+    enrolled_courses = @user.enrolled_courses.pluck(:id)
+    assert_equal true, enrolled_courses.include?(@enrolled_course.id)
+    assert_equal true, enrolled_courses.include?(@favorite_course.id)
+    assert_equal 2, enrolled_courses.count
+  end
+
+  test 'pending_courses should return the courses in which the user is a student' do
+    assert_equal [@pending_course], @user.pending_courses
+  end
+
+  test 'unsubscribed_courses should return the courses in which the user is a student' do
+    assert_equal [@unsubscribed_course], @user.unsubscribed_courses
+  end
+end

@@ -272,6 +272,48 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test 'should get exercise media because recond is ok' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_response :success
+    assert_equal response.content_type, 'image/png'
+  end
+
+  test 'should get exercise media because user has submissions' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:ok?).returns(false)
+    create :submission, exercise: @instance, user: @user
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_response :success
+    assert_equal response.content_type, 'image/png'
+  end
+
+  test 'should get redirected from exercise media to root_url because user has no submissions and exercise is not ok' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:ok?).returns(false)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_redirected_to root_url
+  end
+
+  test 'should get redirected from exercise media to root_url because user is not signed in' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:ok?).returns(false)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    sign_out @user
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_redirected_to sign_in_url
+  end
+
   def create_exercises_return_valid
     create :exercise, :nameless
     create :exercise, access: 'private'

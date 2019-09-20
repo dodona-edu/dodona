@@ -47,18 +47,85 @@ class ExerciseTest < ActiveSupport::TestCase
     end
   end
 
+  test 'accessible? should return false if user is course admin of course and exercise not in course' do
+    exercise = create :exercise
+    course = create :course, users: [@user]
+    User.any_instance.stubs(:course_admin?).returns(true)
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return false if user is not course admin of course and exercise is not in course' do
+    exercise = create :exercise
+    course = create :course, users: [@user]
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return false if user is not course admin of course and series is not visible course' do
+    exercise = create :exercise
+    course = create :course, users: [@user]
+    create :series, course: course, visibility: 'closed', exercises: [exercise]
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return true if user is course admin of course, repository admin and exercise is in course' do
+    exercise = create :exercise
+    course = create :course, users: [@user]
+    User.any_instance.stubs(:course_admin?).returns(true)
+    User.any_instance.stubs(:repository_admin?).returns(true)
+    create :series, course: course, exercises: [exercise]
+    assert_equal true, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return true if user is repository admin and series is visible' do
+    exercise = create :exercise
+    course = create :course
+    User.any_instance.stubs(:repository_admin?).returns(true)
+    create :series, course: course, exercises: [exercise]
+    assert_equal true, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return false if series is visible but exercise is private' do
+    exercise = create :exercise, access: 'private'
+    course = create :course
+    create :series, course: course, exercises: [exercise]
+    assert_equal false, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return false if repository allows access to course' do
+    exercise = create :exercise
+    course = create :course
+    create :series, course: course, exercises: [exercise]
+    assert_equal true, exercise.accessible?(@user, course)
+  end
+
   test 'accessible? should return false if user is not a member of the course' do
-    exercise = create :exercise, access: 0
-    course = create :course, registration: 2
+    exercise = create :exercise
+    course = create :course, registration: 'closed'
     create :series, course: course, exercises: [exercise]
     assert_equal false, exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user is a member of the course' do
-    exercise = create :exercise, access: 0
-    course = create :course, registration: 2, users: [@user]
+    exercise = create :exercise
+    course = create :course, users: [@user]
     create :series, course: course, exercises: [exercise]
     assert_equal true, exercise.accessible?(@user, course)
+  end
+
+  test 'accessible? should return true if user repository admin of repository' do
+    exercise = create :exercise, access: 'private'
+    User.any_instance.stubs(:repository_admin?).returns(true)
+    assert_equal true, exercise.accessible?(@user, nil)
+  end
+
+  test 'accessible? should return true if exercise is public' do
+    exercise = create :exercise
+    assert_equal true, exercise.accessible?(@user, nil)
+  end
+
+  test 'accessible? should return false if exercise is private' do
+    exercise = create :exercise, access: 'private'
+    assert_equal false, exercise.accessible?(@user, nil)
   end
 
   test 'convert_visibility_to_access should convert "visible" to "public"' do

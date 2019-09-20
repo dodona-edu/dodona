@@ -247,6 +247,15 @@ class UserTest < ActiveSupport::TestCase
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal username, user.username
   end
+
+  test 'recent_exercises should return the 3 most recent exercises submissions have been submitted' do
+    user = create :user
+    exercise1 = create :exercise
+    exercise2 = create :exercise
+    create :series, exercises: [exercise1, exercise2]
+    create :submission, user: user, exercise: exercise1
+    assert_equal [exercise1], user.recent_exercises
+  end
 end
 
 class UserHasManyTest < ActiveSupport::TestCase

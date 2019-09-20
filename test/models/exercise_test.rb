@@ -85,10 +85,6 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 'other', Exercise.convert_visibility_to_access('other')
   end
 
-  test 'determine_format should return "md"' do
-    assert_equal 'md', Exercise.determine_format(@exercise.full_path)
-  end
-
   test 'move_relations should move submissions from one exercise to the other' do
     exercise1 = create :exercise
     create :submission, exercise: exercise1
@@ -479,6 +475,15 @@ class LasagneConfigTest < ActiveSupport::TestCase
   teardown do
     @remote.remove
     @repository.git_repository.remove
+  end
+
+  test 'determine_format should return "md" when exercise has and md description' do
+    Dir.stubs(:glob).returns([]) # The search to html descriptions should return no results because description is in md
+    assert_equal 'md', Exercise.determine_format(@exercise.full_path)
+  end
+
+  test 'determine_format should return "html" when exercise has and html description' do
+    assert_equal 'html', Exercise.determine_format(@exercise.full_path)
   end
 
   # set top level, overridden by exercise

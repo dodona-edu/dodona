@@ -212,4 +212,148 @@ class UserTest < ActiveSupport::TestCase
     assert user1.update(username: '')
     assert user2.update(username: '')
   end
+
+  test 'full_name should return a full name that is not equal to actual full name of the user when in demo mode' do
+    user = create :user
+    full_name = user.full_name
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal full_name, user.full_name
+  end
+
+  test 'first_name should return a first_name that is not equal to actual first name of the user when in demo mode' do
+    user = create :user
+    first_name = user.first_name
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal first_name, user.first_name
+  end
+
+  test 'last_name should return a last name that is not equal to actual last name of the user when in demo mode' do
+    user = create :user
+    last_name = user.last_name
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal last_name, user.last_name
+  end
+
+  test 'email should return a email that is not equal to actual email of the user when in demo mode' do
+    user = create :user
+    email = user.email
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal email, user.email
+  end
+
+  test 'username should return a username that is not equal to actual username of the user when in demo mode' do
+    user = create :user
+    username = user.username
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal username, user.username
+  end
+
+  test 'recent_exercises should return the 3 most recent exercises submissions have been submitted' do
+    user = create :user
+    exercise1 = create :exercise
+    exercise2 = create :exercise
+    create :series, exercises: [exercise1, exercise2]
+    create :submission, user: user, exercise: exercise1
+    assert_equal [exercise1], user.recent_exercises
+  end
+
+  test 'pending_series should return all series of the users courses that have a deadline' do
+    user = create :user
+    course = create :course, users: [user]
+    create :series, course: course, exercise_count: 2, deadline: Time.current - 2.minutes # Not pending series
+    pending_series = create :series, course: course, exercise_count: 2, deadline: Time.current + 2.minutes
+    assert_equal [pending_series], user.pending_series
+  end
+
+  test 'homepage_series should return all the series of subscribed courses that should appear on the homepage' do
+    user = create :user
+    course = create :course, users: [user]
+    create :series, course: course, exercise_count: 2, deadline: Time.current - 2.minutes # Not pending series
+    homepage_series = create :series, course: course, exercise_count: 2, deadline: Time.current + 2.minutes
+    assert_equal [homepage_series], user.homepage_series
+  end
+
+  test 'split_last_name should split the "De Achternaam"' do
+    user = create :user, last_name: 'De Achternaam', first_name: ''
+    assert_equal 'De', user.first_name
+    assert_equal 'Achternaam', user.last_name
+  end
+
+  test 'split_last_name should not split the "Achternaam"' do
+    user = create :user, last_name: 'Achternaam', first_name: 'Voornaam'
+    assert_equal 'Voornaam', user.first_name
+    assert_equal 'Achternaam', user.last_name
+  end
+end
+
+class UserHasManyTest < ActiveSupport::TestCase
+  def setup
+    @user = create :user
+    @administrating_course = create :course
+    membership_course_admin = CourseMembership.new(user: @user, course: @administrating_course, status: 'course_admin')
+    @administrating_course.course_memberships.concat(membership_course_admin)
+    @favorite_course = create :course
+    membership_favorite = CourseMembership.new(user: @user, course: @favorite_course, status: 'student', favorite: true)
+    @favorite_course.course_memberships.concat(membership_favorite)
+    @enrolled_course = create :course, users: [@user]
+    @unsubscribed_course = create :course
+    membership_unsubscribed = CourseMembership.new(user: @user, course: @unsubscribed_course, status: 'unsubscribed')
+    @unsubscribed_course.course_memberships.concat(membership_unsubscribed)
+    @pending_course = create :course
+    membership_pending = CourseMembership.new(user: @user, course: @pending_course, status: 'pending')
+    @pending_course.course_memberships.concat(membership_pending)
+  end
+
+  test 'subscribed_courses should return the courses in which the user is a student or course admin' do
+    subscribed_courses = @user.subscribed_courses.pluck(:id)
+    assert_equal true, subscribed_courses.include?(@enrolled_course.id)
+    assert_equal true, subscribed_courses.include?(@administrating_course.id)
+    assert_equal true, subscribed_courses.include?(@favorite_course.id)
+    assert_equal 3, subscribed_courses.count
+  end
+
+  test 'favorite_courses should return the courses in which the user has set as favorite' do
+    assert_equal [@favorite_course], @user.favorite_courses
+  end
+
+  test 'administrating_courses should return the courses in which the user is an admin' do
+    assert_equal [@administrating_course], @user.administrating_courses
+  end
+
+  test 'enrolled_courses should return the courses in which the user is a student' do
+    enrolled_courses = @user.enrolled_courses.pluck(:id)
+    assert_equal true, enrolled_courses.include?(@enrolled_course.id)
+    assert_equal true, enrolled_courses.include?(@favorite_course.id)
+    assert_equal 2, enrolled_courses.count
+  end
+
+  test 'pending_courses should return the courses in which the user is a student' do
+    assert_equal [@pending_course], @user.pending_courses
+  end
+
+  test 'unsubscribed_courses should return the courses in which the user is a student' do
+    assert_equal [@unsubscribed_course], @user.unsubscribed_courses
+  end
+
+  test 'full_view? should return true because user has a course they has favorite' do
+    assert_equal true, @user.full_view?
+  end
+
+  test 'full_view? should return false because user is not subscribed to any courses' do
+    user = create :user
+    assert_equal false, user.full_view?
+  end
+
+  test 'full_view? should return true because user is subscribed to more than four courses' do
+    user = create :user
+    user.courses << create_list(:course, 5)
+    assert_equal true, user.full_view?
+  end
+
+  test 'full_view? should return true because user is subscribed to courses that are in different years' do
+    user = create :user
+    create :course, users: [user], year: '2017-2018'
+    create :course, users: [user], year: '2018-2019'
+    assert_equal true, user.full_view?
+  end
 end

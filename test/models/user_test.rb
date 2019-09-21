@@ -257,7 +257,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [exercise1], user.recent_exercises
   end
 
-  test 'pending_series should return the 3 most recent exercises submissions have been submitted' do
+  test 'pending_series should return all series of the users courses that have a deadline' do
     user = create :user
     course = create :course, users: [user]
     create :series, course: course, exercise_count: 2, deadline: Time.current - 2.minutes # Not pending series
@@ -265,7 +265,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [pending_series], user.pending_series
   end
 
-  test 'homepage_series should return the 3 most recent exercises submissions have been submitted' do
+  test 'homepage_series should return all the series of subscribed courses that should appear on the homepage' do
     user = create :user
     course = create :course, users: [user]
     create :series, course: course, exercise_count: 2, deadline: Time.current - 2.minutes # Not pending series
@@ -335,7 +335,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal [@unsubscribed_course], @user.unsubscribed_courses
   end
 
-  test 'full_view? should return true because user has a course he/she has favorite' do
+  test 'full_view? should return true because user has a course they has favorite' do
     assert_equal true, @user.full_view?
   end
 
@@ -344,7 +344,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal false, user.full_view?
   end
 
-  test 'full_view? should return true because user is subscribed to more tha four courses' do
+  test 'full_view? should return true because user is subscribed to more than four courses' do
     user = create :user
     user.courses << create_list(:course, 5)
     assert_equal true, user.full_view?

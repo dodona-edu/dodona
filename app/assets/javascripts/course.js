@@ -1,9 +1,10 @@
 import { setBaseUrl } from "./index.js";
 import { initDragAndDrop } from "./drag_and_drop.js";
+import { getURLParameter } from "./util.js";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
-    const status = _status || window.location.hash.substr(1);
+    const status = _status || getURLParameter("status");
     setBaseUrl(baseUrl + "?status=" + status);
 }
 

@@ -112,10 +112,14 @@ Rails.application.configure do
                             sender_address: %("Dodona" <dodona@ugent.be>),
                             exception_recipients: %w[dodona@ugent.be]
                         },
-                        mattermost: {
-                            webhook_url: Rails.application.credentials[:mattermost_notifications_url],
+                        slack: {
+                            webhook_url: Rails.application.credentials[:slack_notifications_url],
+                            channel: '#notifications',
                             username: 'Dodona-server',
-                            avatar: 'https://dodona.ugent.be/icon.png'
+                            additional_parameters: {
+                              icon_url: 'https://dodona.ugent.be/icon.png',
+                              mrkdwn: true
+                            }
                         }
 
 

@@ -35,8 +35,10 @@
 .tokenfield.focus {
   border-color: #66afe9;
   outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, 0.6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
 }
 .tokenfield .token {
   -webkit-box-sizing: border-box;
@@ -97,16 +99,17 @@
   vertical-align: top;
 }
 .tokenfield .token .close {
-  font-family: Arial;
   display: inline-block;
-  line-height: 100%;
-  font-size: 1.1em;
-  line-height: 1.49em;
+  font-size: 95%;
   margin-left: 5px;
   float: none;
-  height: 100%;
-  vertical-align: top;
   padding-right: 4px;
+  color: white;
+  opacity: 90%;
+}
+.tokenfield .token .close:hover {
+  opacity: 100%;
+  cursor: pointer;
 }
 .tokenfield .token-input {
   background: none;

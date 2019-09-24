@@ -24,16 +24,12 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
   <link href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css"
         rel="stylesheet" type='text/css'>
-  <% if session[:dark].nil? %>
+  <% if session[:dark].nil? && current_user.present? %>
     <%= stylesheet_link_tag "application-dark", media: '(prefers-color-scheme: dark)' %>
     <%= stylesheet_link_tag "application", media: '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)' %>
-  <% else %>
-    <%= stylesheet_link_tag "application#{session[:dark] ? '-dark' : ''}", media: 'all' %>
-  <% end %>
-  <script>
+    <script>
       window.dodona = window.dodona || {};
-      window.dodona.darkMode = <%= session.include?(:dark) && session[:dark] %>;
-      <% if session[:dark].nil? %>
+      window.dodona.darkMode = false;
       const lightModeCSS = '<%= stylesheet_link_tag "application", media: "all" %>';
       const darkModeCSS = '<%= stylesheet_link_tag "application-dark", media: "all" %>';
 
@@ -42,23 +38,17 @@
           if (window.matchMedia("(prefers-color-scheme)").media !== "not all") {
               const listener = e => {
                   const darkModeLink = document.getElementById("dark-mode-toggle");
-                  if(darkModeLink) {
-                      darkModeLink.href = `<%= toggle_dark_mode_path %>?dark=${!e.matches}`;
-                  }
+                  darkModeLink.href = `<%= toggle_dark_mode_path %>?dark=${!e.matches}`;
                   const darkModeIcon = darkModeLink ? darkModeLink.getElementsByClassName("dropdown-box")[0] : null;
                   window.dodona.darkMode = e.matches;
                   if (e.matches) {
                       document.head.insertAdjacentHTML("beforeend", darkModeCSS);
-                      if(darkModeIcon) {
-                          darkModeIcon.classList.remove("mdi-checkbox-blank-outline");
-                          darkModeIcon.classList.add("mdi-checkbox-marked-outline");
-                      }
+                      darkModeIcon.classList.remove("mdi-checkbox-blank-outline");
+                      darkModeIcon.classList.add("mdi-checkbox-marked-outline");
                   } else {
                       document.head.insertAdjacentHTML("beforeend", lightModeCSS);
-                      if(darkModeIcon) {
-                          darkModeIcon.classList.remove("mdi-checkbox-marked-outline");
-                          darkModeIcon.classList.add("mdi-checkbox-blank-outline");
-                      }
+                      darkModeIcon.classList.remove("mdi-checkbox-marked-outline");
+                      darkModeIcon.classList.add("mdi-checkbox-blank-outline");
                   }
               };
               const matcher = window.matchMedia("(prefers-color-scheme: dark)");
@@ -68,8 +58,15 @@
               document.head.insertAdjacentHTML("beforeend", lightModeCSS);
           }
       });
-      <% end %>
-  </script>
+    </script>
+  <% else %>
+    <%= stylesheet_link_tag "application#{session[:dark] ? '-dark' : ''}", media: 'all' %>
+    <script>
+      window.dodona = window.dodona || {};
+      window.dodona.darkMode = <%= session.include?(:dark) && session[:dark] %>;
+    </script>
+  <% end %>
+
   <%= javascript_pack_tag 'application' %>
   <%= javascript_include_tag 'application' %>
   <%= yield :javascripts %>

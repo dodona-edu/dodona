@@ -115,8 +115,25 @@ module ApplicationHelper
                       .html_safe
   end
 
+  def sanitize(html)
+    tags = Rails::Html::SafeListSanitizer.allowed_tags.to_a
+    tags += %w[table thead tbody tr td]
+    attributes = Rails::Html::SafeListSanitizer.allowed_attributes.to_a
+    attributes += %w[style target]
+    # Filteres allowed tags and attributes
+    sanitized = ActionController::Base.helpers.sanitize html,
+                                                        tags: tags,
+                                                        attributes: attributes
+    # If an anchor has a target, disable the referer
+    doc = Nokogiri::HTML::DocumentFragment.parse(sanitized)
+    doc.css('a[target*=\'_blank\']').each do |a|
+      a['rel'] = 'noopener noreferrer'
+    end
+    doc.to_html.html_safe
+  end
+
   def markdown(source)
-    ActionController::Base.helpers.sanitize markdown_unsafe(source)
+    sanitize markdown_unsafe(source)
   end
 
   def escape_double_quotes(string)

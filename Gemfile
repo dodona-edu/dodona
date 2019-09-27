@@ -85,7 +85,7 @@ gem 'pundit', '~> 2.1.0'
 gem 'pretender', '~> 0.3.4'
 
 # db annotations
-gem 'annotate', '~> 2.7.5'
+gem 'annotate', '~> 3.0.0'
 
 # Use Capistrano for deployment
 gem 'capistrano-passenger', '~> 0.2.0', group: :development

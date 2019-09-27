@@ -4,17 +4,17 @@ Rails.application.configure do
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = true
 
-  # Allow requests on naos
-  config.hosts << "naos.localhost"
-
   # The main webapp
-  config.default_host = 'naos.localhost'
+  config.default_host = 'naos.ugent.be'
 
   # The sandboxed host with user provided content, without authentication
-  config.sandbox_host = 'sandbox-naos.localhost'
+  config.sandbox_host = 'naos.ugent.be'
+
+  # Allowed hostnames
+  config.hosts << config.default_host << config.sandbox_host
 
   # Where we host our assets (a single domain, for caching)
-  config.action_controller.asset_host = 'naos.localhost'
+  config.action_controller.asset_host = 'naos.ugent.be'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

@@ -16,6 +16,17 @@ set :linked_files, fetch(:linked_files, []).push('config/credentials/staging.key
 # Perform yarn install before precompiling the assets in order to pass the
 # integrity check.
 namespace :deploy do
+  namespace :assets do
+    before :precompile, :yarn_install do
+      on release_roles(fetch(:assets_roles)) do
+        within release_path do
+          with rails_env: fetch(:rails_env) do
+            execute :yarn, "install"
+          end
+        end
+      end
+    end
+  end
   before :publishing, :asset_stuff do
     on roles :web do
       within release_path do

@@ -9,6 +9,8 @@ set :rails_env, :staging
 
 set :delayed_job_workers, 3
 
+set :linked_files, fetch(:linked_files, []).push('config/credentials/staging.key')
+
 # Perform yarn install before precompiling the assets in order to pass the
 # integrity check.
 namespace :deploy do

@@ -50,7 +50,7 @@ default: &default
     - .jpeg
     - .jpg
 
-development:
+development: &development
   <<: *default
   compile: true
   # Verifies that correct packages and versions are installed by inspecting package.json, yarn.lock, and node_modules
@@ -74,6 +74,9 @@ development:
       "Access-Control-Allow-Origin": "*"
     watch_options:
       ignored: "**/node_modules/**"
+
+staging:
+  <<: *development
 
 test:
   <<: *default

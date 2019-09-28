@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
   root 'pages#home'
 
+
   authenticated :user, -> user {user.zeus?} do
     mount DelayedJobWeb, at: '/dj'
   end
@@ -77,7 +78,7 @@ Rails.application.routes.draw do
     resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable] do
       member do
         constraints host: Rails.configuration.sandbox_host do
-          root to: 'exercises#description', as: 'description'
+          get 'description'
         end
       end
     end

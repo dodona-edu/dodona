@@ -32,6 +32,9 @@ jobs:
         apt-get update
         apt-get -y --no-install-recommends install nodejs yarn
     - name: Build and test
+      env:
+        CI: true
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       run: |
         gem install bundler:2.0.2
         bundle install --jobs 4 --retry 3
@@ -39,11 +42,6 @@ jobs:
         git config --global user.email "dodona@ugent.be"
         git config --global user.name "Dodona"
         bundle exec rails test
-    - name: Upload coverage to Codecov  
-      uses: codecov/codecov-action@v1.0.2
-      with:
-        token: ${{secrets.CODECOV_TOKEN}} #required
-        file: ./covereagee/coverage.json
   lint:
     runs-on: ubuntu-latest
     container:

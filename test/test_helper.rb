@@ -2,8 +2,8 @@ require 'simplecov'
 SimpleCov.start 'rails'
 
 if ENV['CI'] == 'true'
-  require 'simplecov-json'
-  SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
+  require 'codecov'
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
 end
 
 require_relative '../config/environment'

@@ -32,6 +32,9 @@ jobs:
         apt-get update
         apt-get -y --no-install-recommends install nodejs yarn
     - name: Build and test
+      env:
+        CI: true
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       run: |
         gem install bundler:2.0.2
         bundle install --jobs 4 --retry 3

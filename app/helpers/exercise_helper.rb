@@ -16,6 +16,12 @@ module ExerciseHelper
 
   def description_iframe(exercise)
     id = "exercise-description-#{exercise.id}"
+    url = description_exercise_url(exercise,
+                                   token: exercise.access_token,
+                                   dark: session[:dark])
+    content_for :preload do
+      tag.link rel: 'preload', href: url, as: 'document'
+    end
     resizeframe = %{
       window.iFrameResize({
           heightCalculationMethod: 'bodyScroll'
@@ -26,9 +32,7 @@ module ExerciseHelper
                scrolling: 'no',
                onload: resizeframe,
                allow: 'fullscreen https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com/ ',
-               src: description_exercise_url(exercise,
-                                             token: exercise.access_token,
-                                             dark: session[:dark])
+               src: url
   end
 
   class DescriptionRenderer

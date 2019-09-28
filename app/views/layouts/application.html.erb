@@ -70,6 +70,7 @@
   <%= javascript_pack_tag 'application' %>
   <%= javascript_include_tag 'application' %>
   <%= yield :javascripts %>
+  <%= content_for :preload %>
   <script>
       (function (i, s, o, g, r, a, m) {
           i["GoogleAnalyticsObject"] = r;

@@ -11,6 +11,9 @@ class ApplicationController < ActionController::Base
   before_action :enable_sandbox,
                 if: :sandbox?
 
+  before_action :redirect_to_default_host,
+                if: :sandbox?
+
   before_action :set_locale
 
   before_action :look_for_token, unless: :current_user
@@ -69,6 +72,10 @@ class ApplicationController < ActionController::Base
   def enable_sandbox
     allow_iframe
     skip_session
+  end
+
+  def redirect_to_default_host
+    redirect_to host: Rails.configuration.default_host
   end
 
   def user_not_authorized

@@ -20,7 +20,7 @@ module ExerciseHelper
                                    token: exercise.access_token,
                                    dark: session[:dark])
     content_for :preload do
-      tag.link rel: 'preload', href: url, as: 'document'
+      tag.link rel: 'preload', href: url, as: 'document', crossorigin: true
     end
     resizeframe = %{
       window.iFrameResize({

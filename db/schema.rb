@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_30_135724) do
+ActiveRecord::Schema.define(version: 2019_09_30_135628) do
 
   create_table "action_text_rich_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 2019_08_30_135724) do
     t.string "search", limit: 4096
     t.string "access_token", limit: 16, null: false
     t.string "repository_token", limit: 64, null: false
+    t.boolean "allow_unsafe", default: false, null: false
     t.index ["judge_id"], name: "index_exercises_on_judge_id"
     t.index ["name_nl"], name: "index_exercises_on_name_nl"
     t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true

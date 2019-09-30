@@ -178,39 +178,45 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 0, e.users_tried(course: course1)
     assert_equal 0, e.users_tried(course: course2)
 
-    create :submission, user: users_c1[0], course: course1, exercise: e
+    create :submission, user: users_c1[0], course: course1, exercise: e, status: :wrong
 
     assert_equal 1, e.users_tried
     assert_equal 1, e.users_tried(course: course1)
     assert_equal 0, e.users_tried(course: course2)
 
-    create :submission, user: users_c2[0], course: course2, exercise: e
+    create :submission, user: users_c2[0], course: course2, exercise: e, status: :wrong
 
     assert_equal 2, e.users_tried
     assert_equal 1, e.users_tried(course: course1)
     assert_equal 1, e.users_tried(course: course2)
 
-    create :submission, user: users_all[0], exercise: e
+    create :submission, user: users_all[0], exercise: e, status: :wrong
 
     assert_equal 3, e.users_tried
     assert_equal 1, e.users_tried(course: course1)
     assert_equal 1, e.users_tried(course: course2)
 
     users_c1.each do |user|
-      create :submission, user: user, course: course1, exercise: e
+      create :submission, user: user, course: course1, exercise: e, status: :wrong
     end
     assert_equal 7, e.users_tried
     assert_equal 5, e.users_tried(course: course1)
     assert_equal 1, e.users_tried(course: course2)
 
     users_c2.each do |user|
-      create :submission, user: user, course: course2, exercise: e
+      create :submission, user: user, course: course2, exercise: e, status: :wrong
     end
     assert_equal 11, e.users_tried
     assert_equal 5, e.users_tried(course: course1)
     assert_equal 5, e.users_tried(course: course2)
     users_all.each do |user|
-      create :submission, user: user, exercise: e
+      create :submission, user: user, exercise: e, status: :wrong
+    end
+    assert_equal 15, e.users_tried
+    assert_equal 5, e.users_tried(course: course1)
+    assert_equal 5, e.users_tried(course: course2)
+    users_all.each do |user|
+      create :submission, user: user, exercise: e, status: :running
     end
     assert_equal 15, e.users_tried
     assert_equal 5, e.users_tried(course: course1)

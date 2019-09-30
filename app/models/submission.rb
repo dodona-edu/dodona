@@ -49,6 +49,7 @@ class Submission < ApplicationRecord
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
 
+  scope :judged, -> { where.not(status: %i[running queued]) }
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }

@@ -257,7 +257,7 @@ class Exercise < ApplicationRecord
                    ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def users_tried(options)
-    subs = submissions.all
+    subs = submissions.judged
     subs = subs.in_course(options[:course]) if options[:course].present?
     subs.distinct.count(:user_id)
   end

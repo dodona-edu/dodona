@@ -166,6 +166,9 @@ class UserTest < ActiveSupport::TestCase
 
     create :wrong_submission, user: user, exercise: exercise3
     assert_user_exercises user, 3, 2, 1
+
+    create :submission, user: user, exercise: exercise3
+    assert_user_exercises user, 3, 2, 1
   end
 
   test 'only smartschool users can have blank email' do

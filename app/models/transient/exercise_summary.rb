@@ -61,7 +61,7 @@ class ExerciseSummary
   private
 
   def query_submissions
-    s = Submission.where(user: user, exercise: exercise).reorder(id: :desc)
+    s = Submission.judged.where(user: user, exercise: exercise).reorder(id: :desc)
     s = s.where(course_id: series.course_id) if series
     s
   end

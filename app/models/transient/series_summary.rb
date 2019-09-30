@@ -133,7 +133,7 @@ class SeriesSummary
   end
 
   def query_submissions
-    s = Submission.where(user: user, exercise: exercises)
+    s = Submission.judged.where(user: user, exercise: exercises)
     s = s.where(course_id: series.course_id) if series
     s
   end

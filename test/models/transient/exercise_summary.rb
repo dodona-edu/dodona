@@ -282,6 +282,28 @@ module ExerciseSummaryTests
     end
   end
 
+  class NotYetJudged < ExerciseSummaryTest
+    setup do
+      submit status: :running
+    end
+
+    test 'should not have been submitted' do
+      assert_not summary.submitted?
+    end
+
+    test 'should not be solved' do
+      assert_not summary.solved?
+    end
+
+    test 'should not have been tried' do
+      assert_equal 0, summary.users_tried
+    end
+
+    test 'should not have been completed' do
+      assert_equal 0, summary.users_correct
+    end
+  end
+
   class ExercisesSummaryTest < ExerciseSummaryTest
     setup do
       @series.update deadline: Time.current

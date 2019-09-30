@@ -22,7 +22,7 @@ class FeedbackTableRenderer
     @code = submission.code
     @exercise = submission.exercise
     @exercise_id = submission.exercise_id
-    @programming_language = submission.exercise.programming_language&.editor_name
+    @programming_language = sanitize @exercise.programming_language&.editor_name
   end
 
   def parse
@@ -207,7 +207,7 @@ class FeedbackTableRenderer
       elsif t[:data]&.fetch(:channel, nil)
         @builder.div(class: 'description') do
           @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
-            @builder << t[:data][:channel]
+            @builder << safe(t[:data][:channel])
           end
         end
       end
@@ -263,12 +263,12 @@ class FeedbackTableRenderer
     if m[:format].in?(%w[plain text])
       @builder.text! m[:description]
     elsif m[:format].in?(%w[html])
-      @builder << m[:description]
+      @builder << safe(m[:description])
     elsif m[:format].in?(%w[markdown md])
-      @builder << markdown(m[:description])
+      @builder << safe(markdown(m[:description]))
     elsif m[:format].in?(%w[callout])
       @builder.div(class: 'callout callout-info') do
-        @builder << markdown(m[:description])
+        @builder << safe(markdown(m[:description]))
       end
     elsif m[:format].in?(%w[code])
       @builder.span(class: 'code') do
@@ -278,7 +278,7 @@ class FeedbackTableRenderer
       @builder.span(class: "code highlighter-rouge #{m[:format]}") do
         formatter = Rouge::Formatters::HTML.new(wrap: false)
         lexer = (Rouge::Lexer.find(m[:format].downcase) || Rouge::Lexers::PlainText).new
-        @builder << formatter.format(lexer.lex(m[:description]))
+        @builder << safe(formatter.format(lexer.lex(m[:description])))
       end
     end
   end
@@ -360,5 +360,13 @@ class FeedbackTableRenderer
 
   def icon_info
     @builder.i('', class: 'mdi mdi-alert-circle mdi-18')
+  end
+
+  def safe(html)
+    if @exercise.allow_unsafe?
+      html
+    else
+      sanitize html
+    end
   end
 end

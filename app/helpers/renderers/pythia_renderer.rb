@@ -36,7 +36,7 @@ class PythiaRenderer < FeedbackTableRenderer
     if t[:data][:diff]
       @builder.div(class: 'test-accepted') do
         @builder.span(class: 'output') do
-          @builder << t[:data][:diff].map do |l|
+          html = t[:data][:diff].map do |l|
             if !l[2].nil?
               strip_outer_html(l[2])
             elsif !l[3].nil?
@@ -45,6 +45,7 @@ class PythiaRenderer < FeedbackTableRenderer
               '' # This shouldn't happen, but it's the Python judge, so you never know
             end
           end.reduce { |l1, l2| "#{l1}\n#{l2}" }
+          @builder << safe(html)
         end
       end
     else

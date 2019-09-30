@@ -114,7 +114,9 @@ class ExercisesController < ApplicationController
     file = File.join(@exercise.repository.media_path, params[:media]) unless File.file? file
     raise ActionController::RoutingError, 'Not Found' unless File.file? file
 
-    send_file file, disposition: 'inline'
+    # Support If-Modified-Since caching
+    send_file file, disposition: 'inline' \
+      if stale? last_modified: File.mtime(file)
   end
 
   private

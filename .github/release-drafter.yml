@@ -1,5 +1,5 @@
 categories:
-  - title: "✨ New Features"
+  - title: "🚀 New Features"
     label: "feature"
   - title: "🐛 Bug Fixes"
     label: "bug fix"
@@ -7,9 +7,10 @@ categories:
     label: "chore"
 exclude-labels:
   - "dependencies"
+  - "no-release-notes"
 template: |
+  ## ✨ Changes
   $CHANGES
 change-template: "- $TITLE (#$NUMBER)"
 branches:
-  - feature/release-drafter
-  - develop
+  - master

@@ -13,7 +13,7 @@
 #  registration   :integer          default("open_for_all")
 #  color          :integer
 #  teacher        :string(255)      default("")
-#  institution_id :bigint(8)
+#  institution_id :bigint
 #  search         :string(4096)
 #  moderated      :boolean          default(FALSE), not null
 #

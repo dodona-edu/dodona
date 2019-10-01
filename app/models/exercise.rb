@@ -12,11 +12,11 @@
 #  repository_id           :integer
 #  judge_id                :integer
 #  status                  :integer          default("ok")
-#  token                   :string(64)
 #  access                  :integer          default("public"), not null
-#  programming_language_id :bigint(8)
+#  programming_language_id :bigint
 #  search                  :string(4096)
 #  access_token            :string(16)       not null
+#  repository_token        :string(64)       not null
 #
 
 require 'pathname'

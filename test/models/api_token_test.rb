@@ -2,8 +2,8 @@
 #
 # Table name: api_tokens
 #
-#  id           :bigint(8)        not null, primary key
-#  user_id      :bigint(8)
+#  id           :bigint           not null, primary key
+#  user_id      :bigint
 #  token_digest :string(255)
 #  description  :string(255)
 #  created_at   :datetime         not null

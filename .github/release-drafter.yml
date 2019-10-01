@@ -1,0 +1,15 @@
+categories:
+  - title: "✨ New Features"
+    label: "feature"
+  - title: "🐛 Bug Fixes"
+    label: "bug fix"
+  - title: "🧰 Maintenance"
+    label: "chore"
+exclude-labels:
+  - "dependencies"
+template: |
+  $CHANGES
+change-template: "- $TITLE (#$NUMBER)"
+branches:
+  - feature/release-drafter
+  - develop

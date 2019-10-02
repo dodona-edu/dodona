@@ -145,6 +145,13 @@ class Course < ApplicationRecord
     self.secret = SecureRandom.urlsafe_base64(5)
   end
 
+  def secret_required?(user = nil)
+    return false if visible_for_all?
+    return false if visible_for_institution? && user&.institution == institution
+
+    true
+  end
+
   def invalidate_subscribed_members_count_cache
     Rails.cache.delete(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id: id))
   end

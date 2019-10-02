@@ -13,7 +13,7 @@
       <% end %>
     <% end %>
     <% unless @course.closed? %>
-      <%= registration_action_for course: @course, membership: @current_membership, secret: (@course.secret unless @course.open_for_all?) %>
+      <%= registration_action_for course: @course, membership: @current_membership, secret: (@course.secret if @course.secret_required?(current_user)) %>
     <% end %>
   </div>
 </div>

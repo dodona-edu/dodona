@@ -245,18 +245,11 @@ class FeedbackTableRenderer
   end
 
   def diff(t)
+    differ = LCSHtmlDiffer.new(t[:generated], t[:expected])
     @builder.div(class: "diffs show-#{@diff_type}") do
-      diff_split(t)
-      diff_unified(t)
+      @builder << differ.split
+      @builder << differ.unified
     end
-  end
-
-  def diff_unified(t)
-    @builder << LCSHtmlDiffer.new(t[:generated], t[:expected]).unified
-  end
-
-  def diff_split(t)
-    @builder << LCSHtmlDiffer.new(t[:generated], t[:expected]).split
   end
 
   def message(m)

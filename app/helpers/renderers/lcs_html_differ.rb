@@ -2,7 +2,12 @@ class LCSHtmlDiffer
   require 'builder'
 
   def initialize(generated, expected)
-    @diff = Diff::LCS.sdiff(generated&.split("\n", -1) || [], expected&.split("\n", -1) || [])
+    @generated = generated || ''
+    @expected = expected || ''
+    @generated_linecount = generated&.lines&.count || 0
+    @expected_linecount = expected&.lines&.count || 0
+    @simplified_table = @generated_linecount > 200 || @expected_linecount > 200
+    @diff = Diff::LCS.sdiff(@generated.split("\n", -1), @expected.split("\n", -1)) unless @simplified_table
     @builder = Builder::XmlMarkup.new
   end
 
@@ -23,60 +28,11 @@ class LCSHtmlDiffer
         @builder.th
       end
       @builder.tbody do
-        @diff.each do |chunk|
-          case chunk.action
-          when '-'
-            @builder.tr do
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.old_position + 1).to_s
-              end
-              @builder.td(class: 'line-nr')
-              @builder.td(class: 'del') do
-                @builder << CGI.escape_html(chunk.old_element)
-              end
-            end
-          when '+'
-            @builder.tr do
-              @builder.td(class: 'line-nr')
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.new_position + 1).to_s
-              end
-              @builder.td(class: 'ins') do
-                @builder << CGI.escape_html(chunk.new_element)
-              end
-            end
-          when '='
-            @builder.tr do
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.old_position + 1).to_s
-              end
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.new_position + 1).to_s
-              end
-              @builder.td(class: 'unchanged') do
-                @builder << CGI.escape_html(chunk.old_element)
-              end
-            end
-          when '!'
-            gen_result, exp_result = diff_strings(chunk.old_element, chunk.new_element)
-            @builder.tr do
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.old_position + 1).to_s
-              end
-              @builder.td(class: 'line-nr')
-              @builder.td(class: 'del') do
-                @builder << gen_result
-              end
-            end
-            @builder.tr do
-              @builder.td(class: 'line-nr')
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.new_position + 1).to_s
-              end
-              @builder.td(class: 'ins') do
-                @builder << exp_result
-              end
-            end
+        if @simplified_table
+          unified_simple
+        else
+          @diff.each do |chunk|
+            unified_chunk chunk
           end
         end
         nil
@@ -107,61 +63,11 @@ class LCSHtmlDiffer
         end
       end
       @builder.tbody do
-        @diff.each do |chunk|
-          case chunk.action
-          when '-'
-            @builder.tr do
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.old_position + 1).to_s
-              end
-              @builder.td(class: 'del') do
-                @builder << CGI.escape_html(chunk.old_element)
-              end
-              @builder.td(class: 'line-nr')
-              @builder.td
-            end
-          when '+'
-            @builder.tr do
-              @builder.td(class: 'line-nr')
-              @builder.td
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.new_position + 1).to_s
-              end
-              @builder.td(class: 'ins') do
-                @builder << CGI.escape_html(chunk.new_element)
-              end
-            end
-          when '='
-            @builder.tr do
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.old_position + 1).to_s
-              end
-              @builder.td(class: 'unchanged') do
-                @builder << CGI.escape_html(chunk.old_element)
-              end
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.new_position + 1).to_s
-              end
-              @builder.td(class: 'unchanged') do
-                @builder << CGI.escape_html(chunk.new_element)
-              end
-            end
-          when '!'
-            gen_result, exp_result = diff_strings(chunk.old_element, chunk.new_element)
-            @builder.tr do
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.old_position + 1).to_s
-              end
-              @builder.td(class: 'del') do
-                @builder << gen_result
-              end
-              @builder.td(class: 'line-nr') do
-                @builder << (chunk.new_position + 1).to_s
-              end
-              @builder.td(class: 'ins') do
-                @builder << exp_result
-              end
-            end
+        if @simplified_table
+          split_simple
+        else
+          @diff.each do |chunk|
+            split_chunk chunk
           end
         end
         nil
@@ -170,6 +76,159 @@ class LCSHtmlDiffer
   end
 
   private
+
+  def unified_simple
+    @builder.tr do
+      @builder.td(class: 'line-nr') do
+        @builder << (1..@generated_linecount).to_a.join("\n")
+      end
+      @builder.td(class: 'line-nr')
+      @builder.td(class: 'del') do
+        @builder << CGI.escape_html(@generated)
+      end
+    end
+    @builder.tr do
+      @builder.td(class: 'line-nr')
+      @builder.td(class: 'line-nr') do
+        @builder << (1..@expected_linecount).to_a.join("\n")
+      end
+      @builder.td(class: 'ins') do
+        @builder << CGI.escape_html(@expected)
+      end
+    end
+  end
+
+  def unified_chunk(chunk)
+    case chunk.action
+    when '-'
+      @builder.tr do
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.old_position + 1).to_s
+        end
+        @builder.td(class: 'line-nr')
+        @builder.td(class: 'del') do
+          @builder << CGI.escape_html(chunk.old_element)
+        end
+      end
+    when '+'
+      @builder.tr do
+        @builder.td(class: 'line-nr')
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.new_position + 1).to_s
+        end
+        @builder.td(class: 'ins') do
+          @builder << CGI.escape_html(chunk.new_element)
+        end
+      end
+    when '='
+      @builder.tr do
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.old_position + 1).to_s
+        end
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.new_position + 1).to_s
+        end
+        @builder.td(class: 'unchanged') do
+          @builder << CGI.escape_html(chunk.old_element)
+        end
+      end
+    when '!'
+      gen_result, exp_result = diff_strings(chunk.old_element, chunk.new_element)
+      @builder.tr do
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.old_position + 1).to_s
+        end
+        @builder.td(class: 'line-nr')
+        @builder.td(class: 'del') do
+          @builder << gen_result
+        end
+      end
+      @builder.tr do
+        @builder.td(class: 'line-nr')
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.new_position + 1).to_s
+        end
+        @builder.td(class: 'ins') do
+          @builder << exp_result
+        end
+      end
+    end
+  end
+
+  def split_simple
+    @builder.tr do
+      @builder.td(class: 'line-nr') do
+        @builder << (1..@generated_linecount).to_a.join("\n")
+      end
+      @builder.td(class: 'del') do
+        @builder << CGI.escape_html(@generated)
+      end
+      @builder.td(class: 'line-nr') do
+        @builder << (1..@expected_linecount).to_a.join("\n")
+      end
+      @builder.td(class: 'ins') do
+        @builder << CGI.escape_html(@expected)
+      end
+    end
+  end
+
+  def split_chunk(chunk)
+    case chunk.action
+    when '-'
+      @builder.tr do
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.old_position + 1).to_s
+        end
+        @builder.td(class: 'del') do
+          @builder << CGI.escape_html(chunk.old_element)
+        end
+        @builder.td(class: 'line-nr')
+        @builder.td
+      end
+    when '+'
+      @builder.tr do
+        @builder.td(class: 'line-nr')
+        @builder.td
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.new_position + 1).to_s
+        end
+        @builder.td(class: 'ins') do
+          @builder << CGI.escape_html(chunk.new_element)
+        end
+      end
+    when '='
+      @builder.tr do
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.old_position + 1).to_s
+        end
+        @builder.td(class: 'unchanged') do
+          @builder << CGI.escape_html(chunk.old_element)
+        end
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.new_position + 1).to_s
+        end
+        @builder.td(class: 'unchanged') do
+          @builder << CGI.escape_html(chunk.new_element)
+        end
+      end
+    when '!'
+      gen_result, exp_result = diff_strings(chunk.old_element, chunk.new_element)
+      @builder.tr do
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.old_position + 1).to_s
+        end
+        @builder.td(class: 'del') do
+          @builder << gen_result
+        end
+        @builder.td(class: 'line-nr') do
+          @builder << (chunk.new_position + 1).to_s
+        end
+        @builder.td(class: 'ins') do
+          @builder << exp_result
+        end
+      end
+    end
+  end
 
   def diff_strings(generated, expected)
     return [generated, expected] if generated.length > 200 || expected.length > 200

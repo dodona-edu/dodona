@@ -2,7 +2,7 @@ version: 2.1
 
 references:
   docker_ruby_config: &docker_ruby_config
-    image: circleci/ruby:2.6.4-node
+    image: circleci/ruby:2.6.5-node
     environment:
       RAILS_ENV: "test"
       PARALLEL_WORKERS: "1"

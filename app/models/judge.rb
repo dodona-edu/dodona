@@ -47,10 +47,6 @@ class Judge < ApplicationRecord
     self[:renderer] = klass.to_s
   end
 
-  def runner=(klass)
-    self[:runner] = klass.to_s
-  end
-
   def renderer_is_renderer
     begin
       unless renderer <= FeedbackTableRenderer

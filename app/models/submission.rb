@@ -264,25 +264,15 @@ class Submission < ApplicationRecord
   end
 
   def self.get_punchcard_matrix(user, course)
-    Rails.cache.fetch(format(PUNCHCARD_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global')) do
-      submissions = Submission.all
-      submissions = submissions.of_user(user) if user.present?
-      submissions = submissions.in_course(course) if course.present?
-      submissions = submissions.pluck(:id, :created_at)
-      {
-        latest: submissions.first.present? ? submissions.first[0] : 0,
-        matrix: submissions.map { |_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}" }
-                           .group_by(&:itself).transform_values(&:count)
-      }
-    end
+    Rails.cache.fetch(format(PUNCHCARD_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'))
   end
 
   def self.update_punchcard_matrix(user, course)
-    old = get_punchcard_matrix(user, course)
+    old = get_punchcard_matrix(user, course) || { latest: 0, matrix: {} }
     submissions = Submission.all
     submissions = submissions.of_user(user) if user.present?
     submissions = submissions.in_course(course) if course.present?
-    submissions = submissions.where(id: (old.present? ? old[:latest] + 1 : 0)..)
+    submissions = submissions.where(id: (old[:latest] + 1)..)
     submissions = submissions.pluck(:id, :created_at)
 
     return unless submissions.any?
@@ -297,24 +287,15 @@ class Submission < ApplicationRecord
   end
 
   def self.get_heatmap_matrix(user, course)
-    Rails.cache.fetch(format(HEATMAP_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global')) do
-      submissions = Submission.all
-      submissions = submissions.of_user(user) if user.present?
-      submissions = submissions.in_course(course) if course.present?
-      submissions = submissions.pluck(:id, :created_at)
-      {
-        latest: submissions.first.present? ? submissions.first[0] : 0,
-        matrix: submissions.map { |_, d| d.strftime('%Y-%m-%d') }.group_by(&:itself).transform_values(&:count)
-      }
-    end
+    Rails.cache.fetch(format(HEATMAP_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'))
   end
 
   def self.update_heatmap_matrix(user, course)
-    old = get_heatmap_matrix(user, course)
+    old = get_heatmap_matrix(user, course) || { latest: 0, matrix: {} }
     submissions = Submission.all
     submissions = submissions.of_user(user) if user.present?
     submissions = submissions.in_course(course) if course.present?
-    submissions = submissions.where(id: (old.present? ? old[:latest] + 1 : 0)..)
+    submissions = submissions.where(id: (old[:latest] + 1)..)
     submissions = submissions.pluck(:id, :created_at)
 
     return unless submissions.any?

@@ -21,7 +21,11 @@ function setToAYStart(day: moment.Moment): moment.Moment {
 
 function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined): void {
     d3.select(selector).attr("class", "text-center").append("span").text(I18n.t("js.loading"));
-    d3.json(url).then(data => {
+    const processor = function (data): void {
+        if (data["status"] == "not available yet") {
+            setTimeout(() => d3.json(url).then(processor), 1000);
+            return;
+        }
         d3.select(`${selector} *`).remove();
 
         const keys = Object.keys(data).sort();
@@ -53,7 +57,8 @@ function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined
             oldestFirst,
             year
         );
-    });
+    };
+    d3.json(url).then(processor);
 }
 
 function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year: string | undefined): void {

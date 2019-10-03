@@ -37,9 +37,15 @@ function initPunchcard(url, timezoneOffset) {
         .attr("y", innerHeight / 2)
         .style("text-anchor", "middle");
 
+    const processor = data => {
+        if (data["status"] === "not available yet") {
+            setTimeout(() => d3.json(url).then(processor), 1000);
+            return;
+        }
+        renderCard(d3.entries(applyTimezone(data, timezoneOffset)), unitSize, chart, x, y);
+    };
     d3.json(url)
-        .then(data => applyTimezone(data, timezoneOffset))
-        .then(data => renderCard(d3.entries(data), unitSize, chart, x, y));
+        .then(processor);
 
     const xAxis = d3.axisBottom(x)
         .ticks(24)

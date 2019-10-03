@@ -5,19 +5,9 @@ require 'docker' # docker client
 require 'timeout' # to kill the docker after a certain time
 require 'pathname' # better than File
 
-# base class for runners that handle Dodona submissions
+# Handles the execution of submissions
 class SubmissionRunner
   DEFAULT_CONFIG_PATH = Rails.root.join('app', 'runners', 'config.json').freeze
-
-  @runners = [SubmissionRunner]
-
-  def self.inherited(this_class)
-    @runners << this_class
-  end
-
-  class << self
-    attr_reader :runners
-  end
 
   def initialize(submission)
     # definition of submission
@@ -88,9 +78,6 @@ class SubmissionRunner
     copy_or_create(@exercise.full_path + 'workdir', @mountsrc + 'workdir')
     copy_or_create(@exercise.full_path + 'evaluation', @mountsrc + @hidden_path + 'resources')
     copy_or_create(@judge.full_path, @mountsrc + @hidden_path + 'judge')
-
-    # ensure logs directory exist before mounting
-    (@mountsrc + @hidden_path + 'logs').mkpath
   end
 
   def execute
@@ -108,9 +95,7 @@ class SubmissionRunner
         # TODO: move entry point to docker container definition
         Cmd: ['/main.sh',
               # judge entry point
-              (@mountdst + @hidden_path + 'judge' + 'run').to_path,
-              # directory for logging output
-              (@mountdst + @hidden_path + 'logs').to_path],
+              (@mountdst + @hidden_path + 'judge' + 'run').to_path],
         Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
         name: "dodona-#{@submission.id}", # assuming unique during execution
         OpenStdin: true,

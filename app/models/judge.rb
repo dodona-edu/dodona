@@ -9,7 +9,6 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  renderer   :string(255)      not null
-#  runner     :string(255)      not null
 #  remote     :string(255)
 #
 
@@ -24,7 +23,6 @@ class Judge < ApplicationRecord
   validates :remote, presence: true
 
   validate :renderer_is_renderer
-  validate :runner_is_runner
   validate :repo_is_accessible, on: :create
 
   before_create :clone_repo
@@ -49,6 +47,10 @@ class Judge < ApplicationRecord
     self[:renderer] = klass.to_s
   end
 
+  def runner=(klass)
+    self[:runner] = klass.to_s
+  end
+
   def renderer_is_renderer
     begin
       unless renderer <= FeedbackTableRenderer
@@ -57,28 +59,6 @@ class Judge < ApplicationRecord
       end
     rescue StandardError
       errors.add(:renderer, 'should be a class in scope')
-      return false
-    end
-    true
-  end
-
-  def runner
-    klass = self[:runner]
-    ActiveSupport::Inflector.constantize klass if klass
-  end
-
-  def runner=(klass)
-    self[:runner] = klass.to_s
-  end
-
-  def runner_is_runner
-    begin
-      unless runner <= SubmissionRunner
-        errors.add(:runner, 'should be a subclass of SubmissionRunner')
-        return false
-      end
-    rescue StandardError
-      errors.add(:runner, 'should be a class in scope')
       return false
     end
     true

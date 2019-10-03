@@ -31,7 +31,7 @@ class JudgePolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.zeus?
-      %i[name image renderer runner remote]
+      %i[name image renderer remote]
     else
       []
     end

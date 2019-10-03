@@ -22,7 +22,6 @@ FactoryBot.define do
     sequence(:remote) { |n| "git@github.com:dodona-edu/judge-python#{n}.git" }
 
     renderer { FeedbackTableRenderer }
-    runner { SubmissionRunner }
 
     trait :git_stubbed do
       sequence(:path) { |n| "python-#{n}.git" }

@@ -88,7 +88,7 @@ if Rails.env.development?
 
   puts 'Create & clone judge'
 
-  pythia_judge = Judge.create name: 'pythia', image: 'dodona-anaconda3', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer, runner: SubmissionRunner
+  pythia_judge = Judge.create name: 'pythia', image: 'dodona-anaconda3', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer
 
   # Other judges
 
@@ -97,7 +97,7 @@ if Rails.env.development?
   # prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.com:dodona-edu/judge-prolog.git', renderer: FeedbackTableRenderer
   # bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.com:dodona-edu/judge-bash.git', renderer: FeedbackTableRenderer
   # junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.com:dodona-edu/judge-java.git', renderer: FeedbackTableRenderer
-  Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.com:dodona-edu/judge-javascript.git', renderer: FeedbackTableRenderer, runner: SubmissionRunner
+  Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.com:dodona-edu/judge-javascript.git', renderer: FeedbackTableRenderer
 
   puts 'Create & clone exercise repository'
 

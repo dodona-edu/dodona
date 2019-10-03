@@ -192,8 +192,7 @@ class Submission < ApplicationRecord
   end
 
   def evaluate
-    runner = judge.runner.new(self)
-    save_result runner.run
+    save_result SubmissionRunner.new(self).run
   end
 
   def save_result(result_hash)

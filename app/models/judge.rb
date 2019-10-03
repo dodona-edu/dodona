@@ -9,7 +9,6 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  renderer   :string(255)      not null
-#  runner     :string(255)      not null
 #  remote     :string(255)
 #
 
@@ -27,7 +26,6 @@ class Judge < ApplicationRecord
   validate :repo_is_accessible, on: :create
 
   before_create :clone_repo
-  before_save :set_runner
 
   has_many :repositories, dependent: :restrict_with_error
   has_many :exercises, dependent: :restrict_with_error
@@ -49,6 +47,10 @@ class Judge < ApplicationRecord
     self[:renderer] = klass.to_s
   end
 
+  def runner=(klass)
+    self[:runner] = klass.to_s
+  end
+
   def renderer_is_renderer
     begin
       unless renderer <= FeedbackTableRenderer
@@ -60,17 +62,5 @@ class Judge < ApplicationRecord
       return false
     end
     true
-  end
-
-  def runner
-    SubmissionRunner
-  end
-
-  def runner=(klass)
-    self[:runner] = klass.to_s
-  end
-
-  def set_runner
-    self.runner = SubmissionRunner
   end
 end

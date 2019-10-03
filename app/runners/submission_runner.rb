@@ -96,19 +96,19 @@ class SubmissionRunner
         Cmd: ['/main.sh',
               # judge entry point
               (@mountdst + @hidden_path + 'judge' + 'run').to_path],
-          Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
-          name: "dodona-#{@submission.id}", # assuming unique during execution
-          OpenStdin: true,
-          StdinOnce: true, # closes stdin after first disconnect
-          NetworkDisabled: !@config['network_enabled'],
-          HostConfig: {
-              Memory: memory_limit,
-              MemorySwap: memory_limit, # memory including swap
-              BlkioDeviceWriteBps: [{Path: '/dev/sda', Rate: 1024 * 1024}],
-              PidsLimit: 256,
-              Binds: ["#{@mountsrc}:#{@mountdst}",
-                      "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
-          }
+        Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
+        name: "dodona-#{@submission.id}", # assuming unique during execution
+        OpenStdin: true,
+        StdinOnce: true, # closes stdin after first disconnect
+        NetworkDisabled: !@config['network_enabled'],
+        HostConfig: {
+          Memory: memory_limit,
+          MemorySwap: memory_limit, # memory including swap
+          BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }],
+          PidsLimit: 256,
+          Binds: ["#{@mountsrc}:#{@mountdst}",
+                  "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
+        }
       )
     rescue StandardError => e
       return build_error 'internal error', 'internal error', [

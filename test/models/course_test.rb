@@ -67,5 +67,4 @@ class CourseTest < ActiveSupport::TestCase
     assert_not course.secret_required?(user2)
     assert_not course.secret_required?(user3)
   end
-
 end

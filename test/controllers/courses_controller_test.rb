@@ -495,5 +495,4 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     get course_url(@course, secret: @course.secret)
     assert_not response.body.include?(subscribe_course_path(@course, secret: @course.secret))
   end
-
 end

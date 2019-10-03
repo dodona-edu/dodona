@@ -9,7 +9,6 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  renderer   :string(255)      not null
-#  runner     :string(255)      not null
 #  remote     :string(255)
 #
 

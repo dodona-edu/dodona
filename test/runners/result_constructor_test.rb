@@ -309,6 +309,21 @@ class ResultConstructorTest < ActiveSupport::TestCase
     assert_nil result[:groups][3][:permission]
   end
 
+  test 'wrong partial json is not confused with full json' do
+    assert_raises ResultConstructorError do
+      construct_result([
+        '{ "command": "start-judgement" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        '{ "description": { "format": "code", "description": "..." }, "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }',
+        # the entry below is an invalid partial json, but seems a valid full json
+        # the "command" key is therefore forbidden in full json
+        '{ "generated": "45", "status": "wrong", "accepted": false, "command": "close-test" }'
+      ])
+    end
+  end
+
   private
 
   def construct_result(food, locale: 'en', timeout: false)

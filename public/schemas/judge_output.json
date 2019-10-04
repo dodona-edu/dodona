@@ -14,6 +14,7 @@
         "annotations": { "type": "array", "items": { "$ref": "#/definitions/annotation" } }
       },
       "not": {
+        "required": ["command"],
         "properties": {
           "command": { "type": "string" }
         }

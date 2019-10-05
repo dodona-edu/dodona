@@ -137,6 +137,13 @@
                         "<script>alert('test')</script>",
                         "<script>alert('test')</script>",
                         false
+                      ],
+                      [
+                        1,
+                        1,
+                        "<script>alert('test')</script>",
+                        "<script>alert('test')</script>",
+                        true
                       ]
                     ]
                   }

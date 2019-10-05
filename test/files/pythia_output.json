@@ -112,6 +112,34 @@
                       ]
                     ]
                   }
+                },
+                {
+                  "accepted": true,
+                  "data": {
+                    "diff": [
+                      [
+                        0,
+                        0,
+                        "<script>alert('test')</script>",
+                        "<script>alert('test')</script>",
+                        true
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "accepted": false,
+                  "data": {
+                    "diff": [
+                      [
+                        0,
+                        0,
+                        "<script>alert('test')</script>",
+                        "<script>alert('test')</script>",
+                        false
+                      ]
+                    ]
+                  }
                 }
               ]
             },
@@ -199,7 +227,6 @@
             "description": "ok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\nok\n"
           }
         ]
-
       }
     }
   ]

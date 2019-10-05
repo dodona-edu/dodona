@@ -85,7 +85,7 @@
     },
     "format": {
       "type": "string",
-      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'callout' (formatted), 'code' or any programming language (highlighted)."
+      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'callout' (formatted), 'code' or any programming language (highlighted). Note that HTML output is stripped to prevent XSS issues. Most output that you would expect to be able to output should be fine."
     },
     "permission": {
       "type": "string",

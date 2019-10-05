@@ -27,4 +27,22 @@ class RenderersTest < ActiveSupport::TestCase
     renderer = PythiaRenderer.new(create(:submission), create(:user))
     assert_equal '3309..4264', renderer.strip_outer_html("<li class=\"ins\"><ins>3309..4264\n</ins></li>")
   end
+
+  test 'should not strip for exercise marked unsafe' do
+    json = (FILES_LOCATION + 'output.json').read
+    exercise = create :exercise
+    exercise.update(allow_unsafe: true)
+    submission = create :submission, result: json, user: create(:zeus), exercise: exercise
+
+    assert_match %r{<script>alert.*</script>}, FeedbackTableRenderer.new(submission, submission.user).parse
+  end
+
+  test 'should not strip for exercise marked unsafe (pythia)' do
+    json = (FILES_LOCATION + 'pythia_output.json').read
+    exercise = create :exercise
+    exercise.update(allow_unsafe: true)
+    submission = create :submission, result: json, user: create(:zeus), exercise: exercise
+
+    assert_match %r{<script>alert.*</script>}, PythiaRenderer.new(submission, submission.user).parse
+  end
 end

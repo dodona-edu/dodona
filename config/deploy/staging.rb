@@ -36,16 +36,4 @@ namespace :deploy do
       end
     end
   end
-
-  namespace :assets do
-    before :precompile, :yarn_install do
-      on release_roles(fetch(:assets_roles)) do
-        within release_path do
-          with rails_env: fetch(:rails_env) do
-            execute :yarn, "install"
-          end
-        end
-      end
-    end
-  end
 end

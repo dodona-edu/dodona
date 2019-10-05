@@ -133,7 +133,11 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def strip_outer_html(diff_line_item)
+    # Some pythia diff output includes newlines, which should never
+    # happen, since each diff item represents a line. The newlines
+    # mess up the regexes below.
     diff_line_item
+      .delete("\n")
       .gsub(%r{<li[^>]*>(.*)</li>}, '\\1')
       .gsub(%r{<ins>(.*)</ins>}, '\\1')
       .gsub(%r{<del>(.*)</del>}, '\\1')

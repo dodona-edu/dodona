@@ -22,4 +22,9 @@ class RenderersTest < ActiveSupport::TestCase
   test 'pythia renderer' do
     assert_no_xss run_renderer(PythiaRenderer, 'pythia_output.json')
   end
+
+  test 'pythia\'s strip function should strip newlines' do
+    renderer = PythiaRenderer.new(create(:submission), create(:user))
+    assert_equal '3309..4264', renderer.strip_outer_html("<li class=\"ins\"><ins>3309..4264\n</ins></li>")
+  end
 end

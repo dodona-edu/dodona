@@ -24,7 +24,6 @@ require 'csv'
 class Course < ApplicationRecord
   include Filterable
   include Cacheable
-  include ActionView::Helpers::SanitizeHelper
 
   SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%{id}/subscribed_members_count'.freeze
   EXERCISES_COUNT_CACHE_STRING = '/courses/%{id}/exercises_count'.freeze

@@ -20,8 +20,6 @@
 require 'csv'
 
 class Series < ApplicationRecord
-  include ActionView::Helpers::SanitizeHelper
-
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
   belongs_to :course

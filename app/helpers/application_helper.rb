@@ -115,15 +115,22 @@ module ApplicationHelper
                       .html_safe
   end
 
+  class PermitPruneScrubber < Rails::Html::PermitScrubber
+    def initialize
+      @direction = :top_down
+    end
+
+    def scrub_node(node)
+      node.remove
+    end
+  end
+
   def sanitize(html)
-    tags = Rails::Html::SafeListSanitizer.allowed_tags.to_a
-    tags += %w[table thead tbody tr td th colgroup col style]
-    attributes = Rails::Html::SafeListSanitizer.allowed_attributes.to_a
-    attributes += %w[style target data-toggle data-parent id]
-    # Filteres allowed tags and attributes
-    sanitized = ActionController::Base.helpers.sanitize html,
-                                                        tags: tags,
-                                                        attributes: attributes
+    scrubber = PermitPruneScrubber.new
+    scrubber.tags = Rails::Html::SafeListSanitizer.allowed_tags.to_a + %w[table thead tbody tr td th colgroup col style]
+    scrubber.attributes = Rails::Html::SafeListSanitizer.allowed_attributes.to_a + %w[style target data-toggle data-parent id]
+    # Filters allowed tags and attributes
+    sanitized = ActionController::Base.helpers.sanitize html, scrubber: scrubber
     # If an anchor has a target, disable the referer
     doc = Nokogiri::HTML::DocumentFragment.parse(sanitized)
     doc.css('a[target*=\'_blank\']').each do |a|

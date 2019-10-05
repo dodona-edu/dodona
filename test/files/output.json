@@ -200,6 +200,9 @@
                   "generated": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>"
                 },
                 {
+                  "data": {
+                    "channel": "<script>alert('test');</script>"
+                  },
                   "accepted": true,
                   "description": "test whether the user can XSS",
                   "expected": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>",
@@ -232,7 +235,6 @@
                     "channel": "<script>alert('test');</script>"
                   },
                   "accepted": false,
-                  "description": "test whether user is screaming",
                   "expected": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                   "generated": "meh"
                 }

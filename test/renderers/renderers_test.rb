@@ -7,7 +7,7 @@ class RenderersTest < ActiveSupport::TestCase
 
   def run_renderer(renderer, file_name)
     json = (FILES_LOCATION + file_name).read
-    submission = create :submission, result: json
+    submission = create :submission, result: json, user: create(:zeus)
     renderer.new(submission, submission.user).parse
   end
 

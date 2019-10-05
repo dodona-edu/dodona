@@ -108,7 +108,6 @@ class FeedbackTableRenderer
   def tab_count(t)
     return '' if t[:badgeCount].nil?
     return '' if t[:badgeCount].zero?
-    return '' if t[:badgeCount] == '0'
 
     t[:badgeCount].to_s
   end

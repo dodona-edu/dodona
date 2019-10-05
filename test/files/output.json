@@ -218,7 +218,6 @@
       ]
     },
     {
-      "badgeCount": "<script>alert('test');</script>",
       "description": "another tab",
       "permission": "staff",
       "groups": [

@@ -8,6 +8,12 @@ class ApplicationController < ActionController::Base
                 except: %i[media sign_in_page institution_not_supported],
                 unless: -> { devise_controller? || remote_request? }
 
+  before_action :enable_sandbox,
+                if: :sandbox?
+
+  before_action :redirect_to_default_host,
+                if: :sandbox?
+
   before_action :set_locale
 
   before_action :look_for_token, unless: :current_user
@@ -48,12 +54,35 @@ class ApplicationController < ActionController::Base
     page.to_s.match(/^\d+$/) ? [page.to_i, 1].max : nil
   end
 
+  def skip_session
+    request.session_options[:skip] = true
+  end
+
+  def allow_iframe
+    response.headers['X-Frame-Options'] = "allow-from #{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
+  end
+
+  def sandbox?
+    request.host == Rails.configuration.sandbox_host && \
+      request.host != Rails.configuration.default_host
+  end
+
   private
 
+  def enable_sandbox
+    allow_iframe
+    skip_session
+  end
+
+  def redirect_to_default_host
+    redirect_to host: Rails.configuration.default_host
+  end
+
   def user_not_authorized
-    if remote_request?
+    if remote_request? || sandbox?
       if current_user.nil?
-        head :unauthorized
+        render status: :unauthorized,
+               inline: 'You are not authorized to view this page.'
       else
         head :forbidden
       end
@@ -79,7 +108,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { locale: I18n.locale, trailing_slash: true }
+    { locale: I18n.locale, trailing_slash: true, host: Rails.configuration.default_host }
   end
 
   def ensure_trailing_slash

@@ -425,6 +425,12 @@ class ExerciseTest < ActiveSupport::TestCase
       assert @exercise.accepted_for(@user, nil, course)
     end
   end
+
+  test 'access token should change when access changes' do
+    old_token = @exercise.access_token
+    @exercise.update(access: :private)
+    assert_not_equal @exercise.reload.access_token, old_token
+  end
 end
 
 class ExerciseRemoteTest < ActiveSupport::TestCase

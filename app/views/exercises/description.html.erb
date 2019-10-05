@@ -1,10 +1,15 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'description' %>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<% end %>
+<div class="exercise-description">
 <div class="card-supporting-text">
-  <% if exercise.removed? %>
+  <% if @exercise.removed? %>
     <div class="alert alert-info"><%= t "exercises.show.alert_removed" %></div>
-  <% elsif exercise.not_valid? %>
+  <% elsif @exercise.not_valid? %>
     <div class="alert alert-info"><%= t "exercises.show.alert_not_valid" %></div>
   <% else %>
-    <% description, footnotes, first_image = exercise_description_footnotes_and_first_image(exercise) %>
+    <% description, footnotes, first_image = exercise_description_footnotes_and_first_image(@exercise) %>
     <% content_for :meta_tags do %>
       <% if first_image.present? %>
         <meta property="og:image" content="<%= first_image %>">
@@ -21,3 +26,7 @@
     <% end %>
   </footer>
 </div>
+</div>
+<script>
+$(function(){window.dodona.initExercisesReadonly();});
+</script>

@@ -23,6 +23,10 @@ class ExercisePolicy < ApplicationPolicy
     false
   end
 
+  def description?
+    true
+  end
+
   def update?
     return false unless record.ok?
 

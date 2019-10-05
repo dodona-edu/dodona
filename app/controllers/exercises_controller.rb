@@ -1,9 +1,10 @@
 class ExercisesController < ApplicationController
-  before_action :set_exercise, only: %i[show edit update media]
+  before_action :set_exercise, only: %i[show description edit update media]
   before_action :set_course, only: %i[show edit update]
   before_action :set_series, only: %i[show edit update]
   before_action :ensure_trailing_slash, only: :show
   skip_before_action :verify_authenticity_token, only: [:media]
+  skip_before_action :redirect_to_default_host, only: %i[description media]
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }
@@ -69,6 +70,12 @@ class ExercisesController < ApplicationController
     @crumbs << [@exercise.name, '#']
   end
 
+  def description
+    raise Pundit::NotAuthorizedError, 'Not allowed' unless @exercise.access_token == params[:token]
+
+    render layout: 'frame'
+  end
+
   def edit
     @title = @exercise.name
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] << [I18n.t('crumbs.edit'), '#']
@@ -107,7 +114,9 @@ class ExercisesController < ApplicationController
     file = File.join(@exercise.repository.media_path, params[:media]) unless File.file? file
     raise ActionController::RoutingError, 'Not Found' unless File.file? file
 
-    send_file file, disposition: 'inline'
+    # Support If-Modified-Since caching
+    send_file file, disposition: 'inline' \
+      if stale? last_modified: File.mtime(file)
   end
 
   private

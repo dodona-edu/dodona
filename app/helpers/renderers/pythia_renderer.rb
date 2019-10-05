@@ -26,7 +26,7 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def diff(t)
     if t[:data][:diff]
-      pythia_diff(t[:data][:diff])
+      safe(pythia_diff(t[:data][:diff]))
     else
       super
     end

@@ -22,7 +22,7 @@ class FeedbackTableRenderer
     @code = submission.code
     @exercise = submission.exercise
     @exercise_id = submission.exercise_id
-    @programming_language = sanitize @exercise.programming_language&.editor_name
+    @programming_language = @exercise.programming_language&.editor_name
   end
 
   def parse
@@ -70,7 +70,7 @@ class FeedbackTableRenderer
             @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
               @builder.text!((t[:description] || 'Test').upcase_first + ' ')
               @builder.span(class: 'badge') do
-                @builder << tab_count(t)
+                @builder.text! tab_count(t)
               end
             end
           end
@@ -176,8 +176,6 @@ class FeedbackTableRenderer
     end
   end
 
-  def testcase_icons(tc); end
-
   def testcase(tc)
     @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
       testcase_content(tc)
@@ -187,7 +185,6 @@ class FeedbackTableRenderer
   def testcase_content(tc)
     @builder.div(class: 'col-xs-12 description') do
       @builder.div(class: 'indicator') do
-        testcase_icons(tc)
         tc[:accepted] ? icon_correct : icon_wrong
       end
       message(tc[:description]) if tc[:description]
@@ -207,7 +204,7 @@ class FeedbackTableRenderer
       elsif t[:data]&.fetch(:channel, nil)
         @builder.div(class: 'description') do
           @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
-            @builder << safe(t[:data][:channel])
+            @builder.text! t[:data][:channel]
           end
         end
       end
@@ -265,10 +262,12 @@ class FeedbackTableRenderer
     elsif m[:format].in?(%w[html])
       @builder << safe(m[:description])
     elsif m[:format].in?(%w[markdown md])
-      @builder << safe(markdown(m[:description]))
+      # `markdown` is always safe
+      @builder << markdown(m[:description])
     elsif m[:format].in?(%w[callout])
       @builder.div(class: 'callout callout-info') do
-        @builder << safe(markdown(m[:description]))
+        # `markdown` is always safe
+        @builder << markdown(m[:description])
       end
     elsif m[:format].in?(%w[code])
       @builder.span(class: 'code') do
@@ -290,7 +289,7 @@ class FeedbackTableRenderer
 
     @builder.br
     @builder.div(class: 'code') do
-      @builder.text! lines.drop(1).join("\n")
+      @builder.text! lines[1..].join("\n")
     end
   end
 

@@ -1,6 +1,6 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
-import { Notification } from "./notification";
 import { logToGoogle } from "util.js";
+import { Notification } from "./notification";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -83,7 +83,6 @@ function initLightboxes() {
 function centerImagesAndTables() {
     $(".exercise-description p > img").parent().wrapInner("<center></center>");
     $(".exercise-description > table").wrap("<center></center>");
-    $(".exercise-description > iframe").wrap("<center></center>");
 }
 
 function initMathJax() {
@@ -320,3 +319,4 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 }
 
 export { initExerciseShow, initExercisesReadonly, initLabelsEdit };
+

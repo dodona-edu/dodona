@@ -3,7 +3,7 @@ require 'test_helper'
 class JudgesControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers Judge, attrs: %i[name image renderer runner remote]
+  crud_helpers Judge, attrs: %i[name image renderer remote]
 
   setup do
     stub_git(Judge.any_instance)

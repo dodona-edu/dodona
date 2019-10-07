@@ -1,6 +1,6 @@
 import { iframeResizerContentWindow } from "iframe-resizer";
-import { initExercisesReadonly } from "exercise.js";
+import { initExerciseDescription } from "exercise.js";
 
 window.iframeResizerContentWindow = iframeResizerContentWindow;
-window.dodona.initExercisesReadonly = initExercisesReadonly;
+window.dodona.initExerciseDescription = initExerciseDescription;
 

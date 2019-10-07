@@ -104,7 +104,7 @@ function initMathJax() {
     }
 }
 
-function initExercisesReadonly() {
+function initExerciseDescription() {
     initLightboxes();
     centerImagesAndTables();
     initMathJax();
@@ -120,7 +120,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (editorShown) {
             initEditor();
         }
-        initExercisesReadonly();
         swapActionButtons();
         initDeadlineTimeout();
 
@@ -318,5 +317,4 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-export { initExerciseShow, initExercisesReadonly, initLabelsEdit };
-
+export { initExerciseShow, initExerciseDescription, initLabelsEdit };

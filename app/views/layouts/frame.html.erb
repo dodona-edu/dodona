@@ -8,7 +8,12 @@
   <meta property="og:image" content="<%= root_url(locale: nil) %>icon.png">
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
   <link href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css" rel="stylesheet" type='text/css'>
-  <%= stylesheet_link_tag "application#{'-dark' if params[:dark] == 'true'}", media: 'all' %>
+  <% if params[:dark].nil? %>
+    <%= stylesheet_link_tag "application-dark", media: '(prefers-color-scheme: dark)' %>
+    <%= stylesheet_link_tag "application", media: '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)' %>
+  <% else %>
+    <%= stylesheet_link_tag "application#{params[:dark] ? '-dark' : ''}", media: 'all' %>
+  <% end %>
   <%= javascript_pack_tag 'frame' %>
   <%= javascript_include_tag 'application' %>
   <%= yield :javascripts %>

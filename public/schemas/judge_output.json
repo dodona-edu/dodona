@@ -2,7 +2,7 @@
   "$ref": "#/definitions/feedback",
   "definitions": {
     "feedback": {
-      "description": "Root node of the test hierarchy that contains all tests of the submission.",
+      "description": "Root node of the test hierarchy that contains all tests of the submission. Cannot contain a command key with a string value to avoid confusion with the partial schema.",
       "type": "object",
       "required": ["accepted", "status"],
       "properties": {

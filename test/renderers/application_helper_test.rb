@@ -61,7 +61,6 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     HTML
     clean_html = sanitize dirty_html
     assert_no_match(/<script>/, clean_html)
-    assert_no_match(/alert\(1\)/, clean_html)
     assert_no_match(/onerror/, clean_html)
     assert_match(/<p>Hello/, clean_html)
   end

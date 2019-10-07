@@ -83,6 +83,7 @@ function initLightboxes() {
 function centerImagesAndTables() {
     $(".exercise-description p > img").parent().wrapInner("<center></center>");
     $(".exercise-description > table").wrap("<center></center>");
+    $(".exercise-description > iframe").wrap("<center></center>");
 }
 
 function initMathJax() {

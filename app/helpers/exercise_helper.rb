@@ -30,7 +30,7 @@ module ExerciseHelper
                onload: resizeframe,
                allow: 'fullscreen https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com/ ',
                src: url,
-               height: "500px"
+               height: '500px'
   end
 
   class DescriptionRenderer

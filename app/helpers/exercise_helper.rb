@@ -19,9 +19,6 @@ module ExerciseHelper
     url = description_exercise_url(exercise,
                                    token: exercise.access_token,
                                    dark: session[:dark])
-    content_for :preload do
-      tag.link rel: 'preload', href: url, as: 'document', crossorigin: true
-    end
     resizeframe = %{
       window.iFrameResize({
           heightCalculationMethod: 'bodyScroll'

@@ -117,9 +117,9 @@ module ApplicationHelper
 
   def sanitize(html)
     tags = Rails::Html::SafeListSanitizer.allowed_tags.to_a
-    tags += %w[table thead tbody tr td th colgroup col style]
+    tags += %w[table thead tbody tr td th colgroup col style svg circle line rect]
     attributes = Rails::Html::SafeListSanitizer.allowed_attributes.to_a
-    attributes += %w[style target data-toggle data-parent id]
+    attributes += %w[style target data-toggle data-parent id x1 y1 x2 y2 stroke stroke-width fill cx cy r]
     # Filteres allowed tags and attributes
     sanitized = ActionController::Base.helpers.sanitize html,
                                                         tags: tags,

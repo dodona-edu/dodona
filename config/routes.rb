@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
   root 'pages#home'
 
+
   authenticated :user, -> user {user.zeus?} do
     mount DelayedJobWeb, at: '/dj'
   end
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
         get 'download_solutions'
         get 'overview'
         get 'scoresheet'
+        get 'scoresheet_download'
         post 'add_exercise'
         post 'mass_rejudge'
         post 'remove_exercise'
@@ -59,7 +61,6 @@ Rails.application.routes.draw do
       end
       member do
         get 'statistics'
-        get 'scoresheet'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
         get 'manage_series'
         post 'mass_accept_pending'
@@ -74,7 +75,13 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable]
+    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable] do
+      member do
+        constraints host: Rails.configuration.sandbox_host do
+          get 'description'
+        end
+      end
+    end
 
     resources :judges do
       resources :submissions, only: [:index]

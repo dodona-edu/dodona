@@ -23,7 +23,7 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
-    if @course.hidden? || (@course.visible_for_institution? && current_user&.institution != @course.institution)
+    if @course.secret_required?(current_user)
       redirect_unless_secret_correct
       return if performed?
     end
@@ -179,7 +179,7 @@ class CoursesController < ApplicationController
   end
 
   def subscribe
-    redirect_unless_secret_correct if @course.hidden?
+    redirect_unless_secret_correct if @course.secret_required?(current_user)
     return if performed? # return if redirect happenned
 
     respond_to do |format|
@@ -250,12 +250,6 @@ class CoursesController < ApplicationController
       end
       format.js
     end
-  end
-
-  def scoresheet
-    sheet = @course.scoresheet
-    filename = "scoresheet-#{@course.name.parameterize}.csv"
-    send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
   end
 
   def mass_accept_pending

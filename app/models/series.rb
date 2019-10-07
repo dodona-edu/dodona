@@ -2,23 +2,26 @@
 #
 # Table name: series
 #
-#  id               :integer          not null, primary key
-#  course_id        :integer
-#  name             :string(255)
-#  description      :text(65535)
-#  visibility       :integer
-#  order            :integer          default(0), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deadline         :datetime
-#  access_token     :string(255)
-#  indianio_token   :string(255)
-#  progress_enabled :boolean          default(TRUE), not null
+#  id                :integer          not null, primary key
+#  course_id         :integer
+#  name              :string(255)
+#  description       :text(65535)
+#  visibility        :integer
+#  order             :integer          default(0), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  deadline          :datetime
+#  access_token      :string(255)
+#  indianio_token    :string(255)
+#  progress_enabled  :boolean          default(TRUE), not null
+#  exercises_visible :boolean          default(TRUE), not null
 #
 
 require 'csv'
 
 class Series < ApplicationRecord
+  include ActionView::Helpers::SanitizeHelper
+
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
   belongs_to :course
@@ -72,6 +75,27 @@ class Series < ApplicationRecord
       generate_token :indianio_token
     elsif !value
       self.indianio_token = nil
+    end
+  end
+
+  def scoresheet
+    sorted_users = course.enrolled_members.order('course_memberships.status ASC')
+                         .order(permission: :asc)
+                         .order(last_name: :asc, first_name: :asc)
+    CSV.generate do |csv|
+      csv << [I18n.t('series.scoresheet.explanation')]
+      csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), name].concat(exercises.map(&:name))
+      csv << ['Maximum', '', '', '', exercises.count].concat(exercises.map { 1 })
+      latest_subs = Submission.where(user_id: sorted_users.map(&:id), course_id: course.id, exercise_id: exercises.map(&:id)).select('MAX(id) as id')
+      latest_subs = latest_subs.before_deadline(deadline) unless deadline.nil?
+      latest_subs = Submission.where(id: latest_subs.group(:user_id, :exercise_id), accepted: true).group(:user_id, :exercise_id).count
+      sorted_users.each do |user|
+        row = [user.first_name, user.last_name, user.username, user.email]
+        succeeded_exercises = exercises.map { |ex| latest_subs[[user.id, ex.id]].present? ? 1 : 0 }
+        row << succeeded_exercises.sum
+        row.concat(succeeded_exercises)
+        csv << row
+      end
     end
   end
 

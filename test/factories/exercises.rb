@@ -12,11 +12,11 @@
 #  repository_id           :integer
 #  judge_id                :integer
 #  status                  :integer          default("ok")
-#  token                   :string(64)
 #  access                  :integer          default("public"), not null
-#  programming_language_id :bigint(8)
+#  programming_language_id :bigint
 #  search                  :string(4096)
 #  access_token            :string(16)       not null
+#  repository_token        :string(64)       not null
 #
 
 require File.dirname(__FILE__) + '/../helpers/stub_helper.rb'
@@ -39,6 +39,7 @@ FactoryBot.define do
     transient do
       name { nil }
       description_html_stubbed { nil }
+      description_md_stubbed { nil }
 
       submission_count { 0 }
       submission_users do
@@ -56,6 +57,10 @@ FactoryBot.define do
         exercise.description_format = 'html'
         stub_status(exercise, 'ok')
         exercise.stubs(:description_localized).returns(e.description_html_stubbed)
+      elsif e.description_md_stubbed
+        exercise.description_format = 'md'
+        stub_status(exercise, 'ok')
+        exercise.stubs(:description_localized).returns(e.description_md_stubbed)
       end
     end
 

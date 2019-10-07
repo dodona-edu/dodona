@@ -4,8 +4,17 @@ Rails.application.configure do
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = true
 
-  # Allow requests on naos
-  config.hosts << "naos.ugent.be"
+  # Appilcation hosts
+
+  # The main webapp
+  config.default_host = 'dodona.localhost'
+
+  # The sandboxed host with user provided content, without authentication
+  config.sandbox_host = 'sandbox.localhost'
+
+  # Where we host our assets (a single domain, for caching)
+  # Port is needed somehow...
+  config.action_controller.asset_host = 'dodona.localhost:3000'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

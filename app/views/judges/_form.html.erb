@@ -39,9 +39,4 @@
     <div class="col-sm-6"><%= f.select :renderer, FeedbackTableRenderer.renderers.map {|r| r.to_s}, {}, {class: "form-control"} %></div>
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".renderer-help" %></span>
   </div>
-  <div class="field form-group">
-    <%= f.label :runner, :class => "col-sm-3 control-label" %>
-    <div class="col-sm-6"><%= f.select :runner, SubmissionRunner.runners.map {|r| r.to_s}, {}, {class: "form-control"} %></div>
-    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".runner-help" %></span>
-  </div>
 <% end %>

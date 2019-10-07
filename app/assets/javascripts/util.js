@@ -143,7 +143,7 @@ function getArrayURLParameter(name, _url) {
 }
 
 /*
- * Logs data to Google Analytics
+ * Logs data to Google Analytics. Category and action are mandatory.
  */
 function logToGoogle(category, action, label, value) {
     if (typeof (ga) !== "undefined") {

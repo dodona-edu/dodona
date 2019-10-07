@@ -1,5 +1,6 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
 import { Notification } from "./notification";
+import { logToGoogle } from "util.js";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -127,6 +128,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
             if (!loggedIn) return;
+            logToGoogle("submission", "submitted");
             // test submitted source code
             const source = editor.getValue();
             disableSubmitButton();

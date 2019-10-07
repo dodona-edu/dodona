@@ -234,7 +234,14 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to sign_in_url
   end
 
-  test 'authenticated user should not be able to see private exercise' do
+  test 'unauthenticated user should be able to see public exercise' do
+    sign_out :user
+    @instance = create :exercise
+    show_exercise
+    assert_response :success
+  end
+
+  test 'authenticated user should not be able to see private exercise within series' do
     @instance = create :exercise, access: 'private'
     show_exercise
     assert_redirected_to root_url
@@ -270,6 +277,48 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     @instance.repository.allowed_courses << series.course
     get course_exercise_path(series.course, @instance).concat('/')
     assert_redirected_to root_url
+  end
+
+  test 'should get exercise media because recond is ok' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_response :success
+    assert_equal response.content_type, 'image/png'
+  end
+
+  test 'should get exercise media because user has submissions' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:ok?).returns(false)
+    create :submission, exercise: @instance, user: @user
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_response :success
+    assert_equal response.content_type, 'image/png'
+  end
+
+  test 'should get redirected from exercise media to root_url because user has no submissions and exercise is not ok' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:ok?).returns(false)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_redirected_to root_url
+  end
+
+  test 'should get redirected from exercise media to root_url because user is not signed in' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:ok?).returns(false)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    sign_out @user
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_redirected_to sign_in_url
   end
 
   def create_exercises_return_valid
@@ -326,5 +375,31 @@ class ExerciseErrorMailerTest < ActionDispatch::IntegrationTest
     assert_equal [@pusher[:email]], email.to
     assert_equal [@dodona], email.from
     assert_equal [@dodona], email.cc
+  end
+end
+
+class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
+  setup do
+    desciption_md = <<-DESC
+      <script>alert('What is your favorite colour?')</script>
+      ## Solve this question
+      What is the airspeed of an unladen swallow?
+    DESC
+
+    @exercise = create :exercise, :valid, description_format: 'md'
+    Exercise.any_instance.stubs(:description_localized).returns(desciption_md)
+    stub_status(Exercise.any_instance, 'ok')
+  end
+
+  test 'iframe to exercise description should be present in the page' do
+    get exercise_url(@exercise).concat('/')
+
+    assert_includes response.body, description_exercise_url(@exercise, token: @exercise.access_token)
+  end
+
+  test 'script in exercise description should not be present in the page' do
+    get exercise_url(@exercise).concat('/')
+
+    assert_not_includes response.body, 'What is your favorite colour?'
   end
 end

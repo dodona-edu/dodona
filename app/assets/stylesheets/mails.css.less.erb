@@ -1,6 +1,6 @@
 @import "theme/colors.css.less";
 @import "theme/theme-light.css.less";
-<% if Rails.env.development? %>
+<% if Rails.env.development? || Rails.env.staging? %>
 @import "theme/development.css.less";
 <% end %>
 @import "theme/rouge.css.less";

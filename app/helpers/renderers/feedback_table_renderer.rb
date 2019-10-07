@@ -22,7 +22,7 @@ class FeedbackTableRenderer
     @code = submission.code
     @exercise = submission.exercise
     @exercise_id = submission.exercise_id
-    @programming_language = submission.exercise.programming_language&.editor_name
+    @programming_language = @exercise.programming_language&.editor_name
   end
 
   def parse
@@ -70,7 +70,7 @@ class FeedbackTableRenderer
             @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
               @builder.text!((t[:description] || 'Test').upcase_first + ' ')
               @builder.span(class: 'badge') do
-                @builder << tab_count(t)
+                @builder.text! tab_count(t)
               end
             end
           end
@@ -108,7 +108,6 @@ class FeedbackTableRenderer
   def tab_count(t)
     return '' if t[:badgeCount].nil?
     return '' if t[:badgeCount].zero?
-    return '' if t[:badgeCount] == '0'
 
     t[:badgeCount].to_s
   end
@@ -176,8 +175,6 @@ class FeedbackTableRenderer
     end
   end
 
-  def testcase_icons(tc); end
-
   def testcase(tc)
     @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
       testcase_content(tc)
@@ -187,7 +184,6 @@ class FeedbackTableRenderer
   def testcase_content(tc)
     @builder.div(class: 'col-xs-12 description') do
       @builder.div(class: 'indicator') do
-        testcase_icons(tc)
         tc[:accepted] ? icon_correct : icon_wrong
       end
       message(tc[:description]) if tc[:description]
@@ -207,7 +203,7 @@ class FeedbackTableRenderer
       elsif t[:data]&.fetch(:channel, nil)
         @builder.div(class: 'description') do
           @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
-            @builder << t[:data][:channel]
+            @builder.text! t[:data][:channel]
           end
         end
       end
@@ -245,18 +241,11 @@ class FeedbackTableRenderer
   end
 
   def diff(t)
+    differ = LCSHtmlDiffer.new(t[:generated], t[:expected])
     @builder.div(class: "diffs show-#{@diff_type}") do
-      diff_split(t)
-      diff_unified(t)
+      @builder << differ.split
+      @builder << differ.unified
     end
-  end
-
-  def diff_unified(t)
-    @builder << LCSHtmlDiffer.new(t[:generated], t[:expected]).unified
-  end
-
-  def diff_split(t)
-    @builder << LCSHtmlDiffer.new(t[:generated], t[:expected]).split
   end
 
   def message(m)
@@ -270,11 +259,13 @@ class FeedbackTableRenderer
     if m[:format].in?(%w[plain text])
       @builder.text! m[:description]
     elsif m[:format].in?(%w[html])
-      @builder << m[:description]
+      @builder << safe(m[:description])
     elsif m[:format].in?(%w[markdown md])
+      # `markdown` is always safe
       @builder << markdown(m[:description])
     elsif m[:format].in?(%w[callout])
       @builder.div(class: 'callout callout-info') do
+        # `markdown` is always safe
         @builder << markdown(m[:description])
       end
     elsif m[:format].in?(%w[code])
@@ -285,7 +276,7 @@ class FeedbackTableRenderer
       @builder.span(class: "code highlighter-rouge #{m[:format]}") do
         formatter = Rouge::Formatters::HTML.new(wrap: false)
         lexer = (Rouge::Lexer.find(m[:format].downcase) || Rouge::Lexers::PlainText).new
-        @builder << formatter.format(lexer.lex(m[:description]))
+        @builder << safe(formatter.format(lexer.lex(m[:description])))
       end
     end
   end
@@ -297,7 +288,7 @@ class FeedbackTableRenderer
 
     @builder.br
     @builder.div(class: 'code') do
-      @builder.text! lines.drop(1).join("\n")
+      @builder.text! lines[1..].join("\n")
     end
   end
 
@@ -367,5 +358,13 @@ class FeedbackTableRenderer
 
   def icon_info
     @builder.i('', class: 'mdi mdi-alert-circle mdi-18')
+  end
+
+  def safe(html)
+    if @exercise.allow_unsafe?
+      html
+    else
+      sanitize html
+    end
   end
 end

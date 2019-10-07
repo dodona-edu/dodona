@@ -13,7 +13,7 @@
 #  registration   :integer          default("open_for_all")
 #  color          :integer
 #  teacher        :string(255)      default("")
-#  institution_id :bigint(8)
+#  institution_id :bigint
 #  search         :string(4096)
 #  moderated      :boolean          default(FALSE), not null
 #
@@ -32,43 +32,39 @@ class CourseTest < ActiveSupport::TestCase
     assert_equal '2017–2018', course.formatted_year
   end
 
-  test 'course scoresheet should be correct' do
-    course = create :course
-    create_list :series, 4, course: course, exercise_count: 5, deadline: Time.current
-    users = create_list(:user, 4, courses: [course])
+  test 'hidden course should always require secret' do
+    course = create :course, institution: (create :institution), visibility: :hidden
+    user1 = create :user, institution: nil
+    user2 = create :user, institution: course.institution
+    user3 = create :user, institution: (create :institution)
 
-    course.series.each do |series|
-      deadline = series.deadline
-      series.exercises.map do |exercise|
-        4.times do |i|
-          u = users[i]
-          case i
-          when 0 # Wrong submission before deadline
-            create :wrong_submission,
-                   exercise: exercise,
-                   user: u,
-                   created_at: (deadline - 2.minutes)
-          when 1 # Correct submission before deadline
-            create :correct_submission,
-                   exercise: exercise,
-                   user: u,
-                   created_at: (deadline - 2.minutes)
-          when 2 # Wrong submission after deadline
-            create :wrong_submission,
-                   exercise: exercise,
-                   user: u,
-                   created_at: (deadline + 2.minutes)
-          when 3 # Correct submission after deadline
-            create :correct_submission,
-                   exercise: exercise,
-                   user: u,
-                   created_at: (deadline + 2.minutes)
-          end
-        end
-      end
-    end
-    scoresheet = course.scoresheet
-    kommas = (3 + course.series.count) * (2 + users.count)
-    assert_equal kommas, scoresheet.count(',')
+    assert course.secret_required?
+    assert course.secret_required?(user1)
+    assert course.secret_required?(user2)
+    assert course.secret_required?(user3)
+  end
+
+  test 'visible_for_institution course should not require secret for user of institution' do
+    course = create :course, institution: (create :institution), visibility: :visible_for_institution
+    user1 = create :user, institution: nil
+    user2 = create :user, institution: course.institution
+    user3 = create :user, institution: (create :institution)
+
+    assert course.secret_required?
+    assert course.secret_required?(user1)
+    assert_not course.secret_required?(user2)
+    assert course.secret_required?(user3)
+  end
+
+  test 'visible_for_all course should never require secret' do
+    course = create :course, institution: (create :institution), visibility: :visible_for_all
+    user1 = create :user, institution: nil
+    user2 = create :user, institution: course.institution
+    user3 = create :user, institution: (create :institution)
+
+    assert_not course.secret_required?
+    assert_not course.secret_required?(user1)
+    assert_not course.secret_required?(user2)
+    assert_not course.secret_required?(user3)
   end
 end

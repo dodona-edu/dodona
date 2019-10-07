@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.4'
+ruby '2.6.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -50,7 +50,7 @@ gem 'will_paginate', '~>3.1.8'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.1.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.10.0'
+gem 'rouge', '3.11.1'
 
 # feedback table builder
 gem 'builder', '~>3.2.3'
@@ -76,7 +76,7 @@ gem 'jwt', '~> 2.2.1'
 
 # contact mail form
 gem 'mail_form', '~> 1.8.0'
-gem 'recaptcha', '~> 5.1.0', require: 'recaptcha/rails'
+gem 'recaptcha', '~> 5.1.1', require: 'recaptcha/rails'
 
 # authorization
 gem 'pundit', '~> 2.1.0'
@@ -85,7 +85,7 @@ gem 'pundit', '~> 2.1.0'
 gem 'pretender', '~> 0.3.4'
 
 # db annotations
-gem 'annotate', '~> 2.7.5'
+gem 'annotate', '~> 3.0.2'
 
 # Use Capistrano for deployment
 gem 'capistrano-passenger', '~> 0.2.0', group: :development
@@ -94,13 +94,16 @@ gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
 gem 'capistrano3-delayed-job', '~> 1.7.6'
 
+gem 'bcrypt_pbkdf'
+gem 'ed25519'
+
 # i18n
 gem 'i18n-js', '~> 3.3.0'
 gem 'rails-i18n', '~> 6.0.0'
 
 # email exceptions
 gem 'exception_notification', '~> 4.4.0'
-gem 'httparty', '~> 0.17.0'
+gem 'httparty', '~> 0.17.1'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
@@ -111,7 +114,7 @@ gem 'premailer-rails', '~> 1.10.3'
 gem 'has_scope', '~> 0.7.2'
 
 # generating zip files
-gem 'rubyzip', '~> 1.2.4'
+gem 'rubyzip', '~> 2.0.0'
 
 # add request server timings to the devtools
 gem 'rails_server_timings', '~> 1.0.8'
@@ -126,13 +129,13 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.10'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.2.2'
+gem 'faker', '~> 2.5.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.9.0'
   # Factory bot for factories
-  gem 'factory_bot_rails', '~> 5.0.2'
+  gem 'factory_bot_rails', '~> 5.1.1'
 
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.4'
@@ -145,18 +148,19 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.29.0'
-  gem 'selenium-webdriver', '~> 3.142.4'
+  gem 'selenium-webdriver', '~> 3.142.6'
 end
 
 group :test do
   # for measuring coverage
+  gem 'codecov', '~> 0.1.15', require: false
   gem 'minitest-ci', '~> 3.4.0'
-  gem 'simplecov', '~> 0.17.0', require: false
+  gem 'simplecov', '~> 0.17.1', require: false
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'listen', '~> 3.1.5'
+  gem 'listen', '~> 3.2.0'
   gem 'web-console', '~> 4.0.1'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring

@@ -1,0 +1,16 @@
+categories:
+  - title: "🚀 New Features"
+    label: "feature"
+  - title: "🐛 Bug Fixes"
+    label: "bug fix"
+  - title: "🧰 Maintenance"
+    label: "chore"
+exclude-labels:
+  - "dependencies"
+  - "no-release-notes"
+template: |
+  ## ✨ Changes
+  $CHANGES
+change-template: "- $TITLE (#$NUMBER)"
+branches:
+  - master

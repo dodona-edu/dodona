@@ -22,8 +22,7 @@
           <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
         </h2>
       </div>
-      <%= render partial: 'exercises/description_card',
-                 locals: {exercise: ex.exercise} %>
+      <%= description_iframe ex.exercise %>
       <div class="card-actions card-border hidden-print">
         <% if ex.submitted? || ex.deadline_passed? %>
           <div class="btn-text submission-status-button">

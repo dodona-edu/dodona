@@ -2,9 +2,9 @@
 #
 # Table name: exercise_labels
 #
-#  id          :bigint(8)        not null, primary key
+#  id          :bigint           not null, primary key
 #  exercise_id :integer          not null
-#  label_id    :bigint(8)        not null
+#  label_id    :bigint           not null
 #
 
 FactoryBot.define do

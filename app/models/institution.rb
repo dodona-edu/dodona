@@ -2,7 +2,7 @@
 #
 # Table name: institutions
 #
-#  id          :bigint(8)        not null, primary key
+#  id          :bigint           not null, primary key
 #  name        :string(255)
 #  short_name  :string(255)
 #  logo        :string(255)

@@ -13,7 +13,7 @@
 #  registration   :integer          default("open_for_all")
 #  color          :integer
 #  teacher        :string(255)      default("")
-#  institution_id :bigint(8)
+#  institution_id :bigint
 #  search         :string(4096)
 #  moderated      :boolean          default(FALSE), not null
 #
@@ -24,6 +24,7 @@ require 'csv'
 class Course < ApplicationRecord
   include Filterable
   include Cacheable
+  include ActionView::Helpers::SanitizeHelper
 
   SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%{id}/subscribed_members_count'.freeze
   EXERCISES_COUNT_CACHE_STRING = '/courses/%{id}/exercises_count'.freeze
@@ -145,6 +146,13 @@ class Course < ApplicationRecord
     self.secret = SecureRandom.urlsafe_base64(5)
   end
 
+  def secret_required?(user = nil)
+    return false if visible_for_all?
+    return false if visible_for_institution? && user&.institution == institution
+
+    true
+  end
+
   def invalidate_subscribed_members_count_cache
     Rails.cache.delete(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id: id))
   end
@@ -189,25 +197,6 @@ class Course < ApplicationRecord
         cm.delete
       else
         cm.update(status: :unsubscribed)
-      end
-    end
-  end
-
-  def scoresheet(options = {})
-    sorted_series = series.reverse
-    sorted_users = enrolled_members.order('course_memberships.status ASC')
-                                   .order(permission: :asc)
-                                   .order(last_name: :asc, first_name: :asc)
-    CSV.generate(options) do |csv|
-      csv << [I18n.t('courses.scoresheet.explanation')]
-      csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')].concat(sorted_series.map(&:name))
-      csv << ['Maximum', '', '', ''].concat(sorted_series.map { |s| s.exercises.count })
-      sorted_users.each do |user|
-        row = [user.first_name, user.last_name, user.username, user.email]
-        sorted_series.each do |s|
-          row << s.exercises.map { |ex| ex.accepted_for(user, s.deadline, self) }.count(true)
-        end
-        csv << row
       end
     end
   end

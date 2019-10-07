@@ -1,0 +1,25 @@
+name: JS
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Node
+      uses: actions/setup-node@v1
+    - name: Test
+      run: |
+        yarn install
+        yarn test --ci --runInBand
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Node
+      uses: actions/setup-node@v1
+    - name: Lint
+      run: |
+        yarn install
+        yarn lint --quiet

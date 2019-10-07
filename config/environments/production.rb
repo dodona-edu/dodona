@@ -12,10 +12,21 @@ Rails.application.configure do
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
 
+  # The main webapp
+  config.default_host = 'dodona.ugent.be'
 
-	# Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
-	# or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-	config.require_master_key = true
+  # The sandboxed host with user provided content, without authentication
+  config.sandbox_host = 'medusa.ugent.be'
+
+  # Allowed hostnames
+  config.hosts << config.default_host << config.sandbox_host
+
+  # Where we host our assets (a single domain, for caching)
+  config.action_controller.asset_host = 'dodona.ugent.be'
+
+  # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
+  # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
+  config.require_master_key = true
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local = false

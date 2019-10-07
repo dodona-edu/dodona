@@ -9,7 +9,6 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  renderer   :string(255)      not null
-#  runner     :string(255)      not null
 #  remote     :string(255)
 #
 
@@ -32,19 +31,5 @@ class JudgeTest < ActiveSupport::TestCase
     assert_not judge.valid?
     assert_equal ['should be a class in scope'],
                  judge.errors[:renderer]
-  end
-
-  test 'runner which is not a subclass of FeedBackTableRenderer should be invalid' do
-    judge = build(:judge, :git_stubbed, runner: 'NilClass')
-    assert_not judge.valid?
-    assert_equal ['should be a subclass of SubmissionRunner'],
-                 judge.errors[:runner]
-  end
-
-  test 'runner which is an unknown class should be invalid' do
-    judge = build(:judge, :git_stubbed, runner: 'OnbestaandeKlasse')
-    assert_not judge.valid?
-    assert_equal ['should be a class in scope'],
-                 judge.errors[:runner]
   end
 end

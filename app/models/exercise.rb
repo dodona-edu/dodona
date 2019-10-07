@@ -12,11 +12,11 @@
 #  repository_id           :integer
 #  judge_id                :integer
 #  status                  :integer          default("ok")
-#  token                   :string(64)
 #  access                  :integer          default("public"), not null
-#  programming_language_id :bigint(8)
+#  programming_language_id :bigint
 #  search                  :string(4096)
 #  access_token            :string(16)       not null
+#  repository_token        :string(64)       not null
 #
 
 require 'pathname'
@@ -58,6 +58,7 @@ class Exercise < ApplicationRecord
   before_save :check_validity
   before_save :check_memory_limit
   before_update :update_config
+  after_update :generate_access_token
 
   scope :in_repository, ->(repository) { where repository: repository }
 
@@ -257,7 +258,7 @@ class Exercise < ApplicationRecord
                    ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def users_tried(options)
-    subs = submissions.all
+    subs = submissions.judged
     subs = subs.in_course(options[:course]) if options[:course].present?
     subs.distinct.count(:user_id)
   end

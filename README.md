@@ -1,13 +1,10 @@
-# Dodona
+# Dodona 
 
 The Dodona project aims to provide a solution for the automatic testing of solutions for programming exercises.
 
-Students can sign in with their UGent credentials after which an account is created automatically. On submission, their solutions gets stored on the server and a sandboxed background job is started to test the solution.
+On https://dodona.ugent.be, students can sign in with the credentials of the Smartschool, Office 365, or G Suite account of their school. After signing in, you can subscribe to one of the many courses. Dodona courses consist of several exercise series. Each exercise has a detailed exercise description and an extensive test suite. After submitting a solution to an exercise, a sandboxed background job is started to test the solution, and the result and feedback is displayed within seconds.
 
-* Production version: http://dodona.ugent.be
-* Development version: http://naos.ugent.be
-
-Take a look at [the wiki](https://github.ugent.be/dodona/dodona/wiki) for more information about writing judges and exercises.
+The documentation of this project can be found at https://dodona-edu.github.io.
 
 ## Development Setup
 
@@ -21,11 +18,11 @@ Take a look at [the wiki](https://github.ugent.be/dodona/dodona/wiki) for more i
    - `http://localhost:3000/nl/users/2/token/staff`
    - `http://localhost:3000/nl/users/3/token/student`
 
-## Evaluating exercises
+## Evaluating exercises locally
 These steps are not required to run the server, but you need docker to actually evaluate exercises.
 
 1. Install and start `docker`.
-2. Clone the [docker-images repository](https://github.ugent.be/dodona/docker-images).
+2. Clone the [docker-images repository](https://github.com/dodona-edu/docker-images).
 3. Build a docker image. The `build.sh` scripts builds all images. But with the initial data, only `dodona-anaconda3` is needed. You can build this image with `docker build --pull --force-rm -t "dodona-anaconda3" -f "dodona-anaconda3.dockerfile" .`.
 
 ## Starting the server

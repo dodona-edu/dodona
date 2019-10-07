@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="<%= I18n.locale.to_s %>">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= yield :meta_tags %>
+  <meta property="og:image" content="<%= root_url(locale: nil) %>icon.png">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
+  <link href="https://cdn.materialdesignicons.com/3.6.95/css/materialdesignicons.min.css" rel="stylesheet" type='text/css'>
+  <%= stylesheet_link_tag "application#{'-dark' if params[:dark] == 'true'}", media: 'all' %>
+  <%= javascript_pack_tag 'frame' %>
+  <%= javascript_include_tag 'application' %>
+  <%= yield :javascripts %>
+</head>
+<body class="dodona-frame">
+<%# Open links in the parent window %>
+<base target="_parent">
+  <%= yield %>
+</body>
+</html>

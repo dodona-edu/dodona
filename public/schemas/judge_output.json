@@ -2,7 +2,7 @@
   "$ref": "#/definitions/feedback",
   "definitions": {
     "feedback": {
-      "description": "Root node of the test hierarchy that contains all tests of the submission.",
+      "description": "Root node of the test hierarchy that contains all tests of the submission. Cannot contain a command key with a string value to avoid confusion with the partial schema.",
       "type": "object",
       "required": ["accepted", "status"],
       "properties": {
@@ -12,6 +12,12 @@
         "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } },
         "groups":      { "type": "array", "items": { "$ref": "#/definitions/tab" } },
         "annotations": { "type": "array", "items": { "$ref": "#/definitions/annotation" } }
+      },
+      "not": {
+        "required": ["command"],
+        "properties": {
+          "command": { "type": "string" }
+        }
       }
     },
     "tab": {
@@ -85,7 +91,7 @@
     },
     "format": {
       "type": "string",
-      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'callout' (formatted), 'code' or any programming language (highlighted)."
+      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'callout' (formatted), 'code' or any programming language (highlighted). Note that the HTML output is sanitised to prevent XSS issues. JavaScript, for example, is not allowed, but most other tags should work."
     },
     "permission": {
       "type": "string",

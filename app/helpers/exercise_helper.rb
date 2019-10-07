@@ -14,9 +14,31 @@ module ExerciseHelper
     [renderer.description_html, renderer.footnote_urls, renderer.first_image]
   end
 
+  def description_iframe(exercise)
+    id = "exercise-description-#{exercise.id}"
+    url = description_exercise_url(exercise,
+                                   token: exercise.access_token,
+                                   dark: session[:dark])
+    content_for :preload do
+      tag.link rel: 'preload', href: url, as: 'document', crossorigin: true
+    end
+    resizeframe = %{
+      window.iFrameResize({
+          heightCalculationMethod: 'bodyScroll'
+        },
+        '##{id}')
+    }
+    tag.iframe id: id,
+               scrolling: 'no',
+               onload: resizeframe,
+               allow: 'fullscreen https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com/ ',
+               src: url
+  end
+
   class DescriptionRenderer
     require 'nokogiri'
     include Rails.application.routes.url_helpers
+    include ApplicationHelper
 
     attr_reader :footnote_urls
     attr_reader :first_image
@@ -25,7 +47,7 @@ module ExerciseHelper
       @exercise = exercise
       @request = request
       @description = exercise.description || ''
-      @description = markdown(@description) if exercise.description_format == 'md'
+      @description = markdown_unsafe(@description) if exercise.description_format == 'md'
       process_html
     end
 
@@ -81,16 +103,6 @@ module ExerciseHelper
         process_url_footnotes doc
         search_for_first_image doc
       end
-    end
-
-    # Convert source to html
-    def markdown(source)
-      source ||= ''
-      Kramdown::Document.new(source,
-                             input: 'GFM',
-                             hard_wrap: false, syntax_highlighter:
-                                 'rouge',
-                             math_engine_opts: { preview: true }).to_html.html_safe
     end
 
     def add_media_captions(doc)

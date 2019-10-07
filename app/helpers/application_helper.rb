@@ -104,9 +104,36 @@ module ApplicationHelper
     end
   end
 
-  def markdown(source)
+  def markdown_unsafe(source)
     source ||= ''
-    Kramdown::Document.new(source, input: 'GFM', hard_wrap: false, syntax_highlighter: 'rouge', math_engine_opts: { preview: true }).to_html.html_safe
+    Kramdown::Document.new(source,
+                           input: 'GFM',
+                           hard_wrap: false,
+                           syntax_highlighter: 'rouge',
+                           math_engine_opts: { preview: true })
+                      .to_html
+                      .html_safe
+  end
+
+  def sanitize(html)
+    tags = Rails::Html::SafeListSanitizer.allowed_tags.to_a
+    tags += %w[table thead tbody tr td th colgroup col style]
+    attributes = Rails::Html::SafeListSanitizer.allowed_attributes.to_a
+    attributes += %w[style target data-toggle data-parent id]
+    # Filteres allowed tags and attributes
+    sanitized = ActionController::Base.helpers.sanitize html,
+                                                        tags: tags,
+                                                        attributes: attributes
+    # If an anchor has a target, disable the referer
+    doc = Nokogiri::HTML::DocumentFragment.parse(sanitized)
+    doc.css('a[target*=\'_blank\']').each do |a|
+      a['rel'] = 'noopener noreferrer'
+    end
+    doc.to_html.html_safe
+  end
+
+  def markdown(source)
+    sanitize markdown_unsafe(source)
   end
 
   def escape_double_quotes(string)
@@ -119,8 +146,8 @@ module ApplicationHelper
       'correct' => %w[check correct],
       'wrong' => %w[close wrong],
       'time limit exceeded' => %w[alarm wrong],
-      'running' => %w[hourglass-empty default],
-      'queued' => %w[hourglass-empty default],
+      'running' => %w[timer-sand-empty default],
+      'queued' => %w[timer-sand-empty default],
       'runtime error' => %w[flash wrong],
       'compilation error' => %w[flash-circle wrong],
       'memory limit exceeded' => %w[memory wrong]

@@ -68,20 +68,6 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should get scoresheet as admin' do
-    with_users_signed_in @admins do |who|
-      get scoresheet_course_url(@course)
-      assert_response :success, "#{who} should be able to get scoresheet"
-    end
-  end
-
-  test 'should not get scoresheet as normal user' do
-    with_users_signed_in @not_admins do |who|
-      get scoresheet_course_url(@course)
-      assert_response :redirect, "#{who} should not be able to get scoresheet"
-    end
-  end
-
   test 'should subscribe current_user to course' do
     with_users_signed_in @not_subscribed do |who, user|
       post subscribe_course_url(@course)
@@ -482,5 +468,31 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     new_course = build :course
     post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: { base_id: course.id }, format: :json }
     assert_equal 0, Course.find(JSON.parse(response.body)['id']).series.count
+  end
+
+  test 'hidden course page shown to unsubscribed student should include registration url with secret' do
+    @course.update(visibility: :hidden)
+    user = @externals.first
+    sign_in user
+    get course_url(@course, secret: @course.secret)
+    assert response.body.include?(subscribe_course_path(@course, secret: @course.secret))
+  end
+
+  test 'visible_for_institution course page shown to unsubscribed student of different institution should include registration url with secret' do
+    @course.update(visibility: :visible_for_institution, institution: (create :institution))
+    user = @externals.first
+    user.update(institution: (create :institution))
+    sign_in user
+    get course_url(@course, secret: @course.secret)
+    assert response.body.include?(subscribe_course_path(@course, secret: @course.secret))
+  end
+
+  test 'visible_for_institution course page shown to unsubscribed student of same institution should not include registration url with secret' do
+    @course.update(visibility: :visible_for_institution, institution: (create :institution))
+    user = @externals.first
+    user.update(institution: @course.institution)
+    sign_in user
+    get course_url(@course, secret: @course.secret)
+    assert_not response.body.include?(subscribe_course_path(@course, secret: @course.secret))
   end
 end

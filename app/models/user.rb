@@ -13,7 +13,7 @@
 #  lang           :string(255)      default("nl")
 #  token          :string(255)
 #  time_zone      :string(255)      default("Brussels")
-#  institution_id :bigint(8)
+#  institution_id :bigint
 #  search         :string(4096)
 #
 
@@ -169,7 +169,7 @@ class User < ApplicationRecord
   end
 
   def attempted_exercises(options)
-    s = submissions
+    s = submissions.judged
     s = s.in_course(options[:course]) if options[:course].present?
     s.select('distinct exercise_id').count
   end
@@ -178,9 +178,9 @@ class User < ApplicationRecord
                    ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def correct_exercises(options)
-    s = submissions
+    s = submissions.where(status: :correct)
     s = s.in_course(options[:course]) if options[:course].present?
-    s.select('distinct exercise_id').where(status: :correct).count
+    s.select('distinct exercise_id').count
   end
 
   create_cacheable(:correct_exercises,

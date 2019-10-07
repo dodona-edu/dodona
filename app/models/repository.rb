@@ -206,11 +206,6 @@ class Repository < ApplicationRecord
     end
   end
 
-  def exercise_dir_containing(file)
-    file = file.dirname until exercise_directory?(file) || file == full_path
-    file unless file == full_path
-  end
-
   def exercise_directory?(file)
     Exercise.config_file? file
   end

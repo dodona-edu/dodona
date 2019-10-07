@@ -231,7 +231,7 @@ class LCSHtmlDiffer
   end
 
   def diff_strings(generated, expected)
-    return [generated, expected] if generated.length > 200 || expected.length > 200
+    return [CGI.escape_html(generated), CGI.escape_html(expected)] if generated.length > 200 || expected.length > 200
 
     exp_result = ''
     gen_result = ''

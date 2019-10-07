@@ -150,12 +150,24 @@
                       "description": "<div>a message in a div</div>"
                     },
                     {
+                      "format": "html",
+                      "description": "<div>a message in a div with a script</div><script>alert('test')</script>"
+                    },
+                    {
                       "format": "markdown",
                       "description": "# a big message"
                     },
                     {
+                      "format": "markdown",
+                      "description": "# a big message with a script\n<script>alert('test')</script>"
+                    },
+                    {
                       "format": "callout",
                       "description": "# a big fancy message"
+                    },
+                    {
+                      "format": "callout",
+                      "description": "# a big fancy message with a script\n<script>alert('test')</script>"
                     },
                     {
                       "format": "code",
@@ -182,10 +194,19 @@
                   "generated": "existential angst"
                 },
                 {
-                    "accepted": true,
-                    "description": "test whether the user can XSS",
-                    "expected": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>",
-                    "generated": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>"
+                  "accepted": false,
+                  "description": "test whether the user can XSS",
+                  "expected": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script>",
+                  "generated": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>"
+                },
+                {
+                  "data": {
+                    "channel": "<script>alert('test');</script>"
+                  },
+                  "accepted": true,
+                  "description": "test whether the user can XSS",
+                  "expected": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>",
+                  "generated": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>"
                 }
               ]
             },
@@ -210,8 +231,10 @@
               "accepted": false,
               "tests": [
                 {
+                  "data": {
+                    "channel": "<script>alert('test');</script>"
+                  },
                   "accepted": false,
-                  "description": "test whether user is screaming",
                   "expected": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                   "generated": "meh"
                 }

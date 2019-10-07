@@ -12,7 +12,7 @@
     <%= stylesheet_link_tag "application-dark", media: '(prefers-color-scheme: dark)' %>
     <%= stylesheet_link_tag "application", media: '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)' %>
   <% else %>
-    <%= stylesheet_link_tag "application#{params[:dark] ? '-dark' : ''}", media: 'all' %>
+    <%= stylesheet_link_tag "application#{'-dark' if params[:dark] == 'true'}", media: 'all' %>
   <% end %>
   <%= javascript_pack_tag 'frame' %>
   <%= javascript_include_tag 'application' %>

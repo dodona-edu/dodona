@@ -276,7 +276,7 @@ class FeedbackTableRenderer
       @builder.span(class: "code highlighter-rouge #{m[:format]}") do
         formatter = Rouge::Formatters::HTML.new(wrap: false)
         lexer = (Rouge::Lexer.find(m[:format].downcase) || Rouge::Lexers::PlainText).new
-        @builder << safe(formatter.format(lexer.lex(m[:description])))
+        @builder << formatter.format(lexer.lex(m[:description]))
       end
     end
   end

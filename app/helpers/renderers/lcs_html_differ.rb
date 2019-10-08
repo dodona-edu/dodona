@@ -9,10 +9,12 @@ class LCSHtmlDiffer
     @simplified_table = @generated_linecount > 200 || @expected_linecount > 200
     @diff = unless @simplified_table
               Diff::LCS.sdiff(@generated.split("\n", -1), @expected.split("\n", -1)).map do |chunk|
-                return chunk unless chunk.action == '!'
-
-                gen_result, exp_result = diff_strings(chunk.old_element, chunk.new_element)
-                Diff::LCS::ContextChange.new('!', chunk.old_position, gen_result, chunk.new_position, exp_result)
+                if chunk.action == '!'
+                  gen_result, exp_result = diff_strings(chunk.old_element, chunk.new_element)
+                  Diff::LCS::ContextChange.new('!', chunk.old_position, gen_result, chunk.new_position, exp_result)
+                else
+                  chunk
+                end
               end
             end
   end

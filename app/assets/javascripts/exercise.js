@@ -83,6 +83,7 @@ function initLightboxes() {
 function centerImagesAndTables() {
     $(".exercise-description p > img").parent().wrapInner("<center></center>");
     $(".exercise-description > table").wrap("<center></center>");
+    $(".exercise-description > iframe").wrap("<center></center>");
 }
 
 function initMathJax() {
@@ -104,7 +105,7 @@ function initMathJax() {
     }
 }
 
-function initExercisesReadonly() {
+function initExerciseDescription() {
     initLightboxes();
     centerImagesAndTables();
     initMathJax();
@@ -120,7 +121,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (editorShown) {
             initEditor();
         }
-        initExercisesReadonly();
         swapActionButtons();
         initDeadlineTimeout();
 
@@ -318,5 +318,4 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-export { initExerciseShow, initExercisesReadonly, initLabelsEdit };
-
+export { initExerciseShow, initExerciseDescription, initLabelsEdit };

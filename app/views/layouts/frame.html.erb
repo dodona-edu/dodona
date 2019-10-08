@@ -11,6 +11,14 @@
   <% if params[:dark].nil? %>
     <%= stylesheet_link_tag "application-dark", media: '(prefers-color-scheme: dark)' %>
     <%= stylesheet_link_tag "application", media: '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)' %>
+    <script>
+      const lightModeCSS = '<%= stylesheet_link_tag "application", media: "all" %>';
+      document.addEventListener("DOMContentLoaded", () => {
+        if (window.matchMedia("(prefers-color-scheme)").media === "not all") {
+          document.head.insertAdjacentHTML("beforeend", lightModeCSS);
+        }
+      });
+    </script>
   <% else %>
     <%= stylesheet_link_tag "application#{'-dark' if params[:dark] == 'true'}", media: 'all' %>
   <% end %>

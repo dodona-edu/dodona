@@ -195,6 +195,11 @@
                 },
                 {
                   "accepted": false,
+                  "expected": "a satisfying life\n1\n2",
+                  "generated": "existential angst"
+                },
+                {
+                  "accepted": false,
                   "description": "test whether the user can XSS",
                   "expected": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script><script>alert('test')</script>",
                   "generated": "<script>alert('Your mother was a hamster and your father smelt of elderberries.')</script>"

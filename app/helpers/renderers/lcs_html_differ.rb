@@ -7,14 +7,7 @@ class LCSHtmlDiffer
     @generated_linecount = generated&.lines&.count || 0
     @expected_linecount = expected&.lines&.count || 0
     @simplified_table = @generated_linecount > 200 || @expected_linecount > 200
-    @diff = unless @simplified_table
-              Diff::LCS.sdiff(@generated.split("\n", -1), @expected.split("\n", -1)).map do |chunk|
-                return chunk unless chunk.action == '!'
-
-                gen_result, exp_result = diff_strings(chunk.old_element, chunk.new_element)
-                Diff::LCS::ContextChange.new('!', chunk.old_position, gen_result, chunk.new_position, exp_result)
-              end
-            end
+    @diff = Diff::LCS.sdiff(@generated.split("\n", -1), @expected.split("\n", -1)) unless @simplified_table
   end
 
   def unified
@@ -141,15 +134,14 @@ class LCSHtmlDiffer
         end
       end
     when '!'
-      # The new_element and old_element fields have been preprocessed
-      # in the constructor and therefore don't need to be escaped.
+      gen_result, exp_result = diff_strings(chunk.old_element, chunk.new_element)
       builder.tr do
         builder.td(class: 'line-nr') do
           builder << (chunk.old_position + 1).to_s
         end
         builder.td(class: 'line-nr')
         builder.td(class: 'del') do
-          builder << chunk.old_element
+          builder << gen_result
         end
       end
       builder.tr do
@@ -158,7 +150,7 @@ class LCSHtmlDiffer
           builder << (chunk.new_position + 1).to_s
         end
         builder.td(class: 'ins') do
-          builder << chunk.new_element
+          builder << exp_result
         end
       end
     end
@@ -221,27 +213,26 @@ class LCSHtmlDiffer
         end
       end
     when '!'
-      # The new_element and old_element fields have been preprocessed
-      # in the constructor and therefore don't need to be escaped.
+      gen_result, exp_result = diff_strings(chunk.old_element, chunk.new_element)
       builder.tr do
         builder.td(class: 'line-nr') do
           builder << (chunk.old_position + 1).to_s
         end
         builder.td(class: 'del') do
-          builder << chunk.old_element
+          builder << gen_result
         end
         builder.td(class: 'line-nr') do
           builder << (chunk.new_position + 1).to_s
         end
         builder.td(class: 'ins') do
-          builder << chunk.new_element
+          builder << exp_result
         end
       end
     end
   end
 
   def diff_strings(generated, expected)
-    return [CGI.escape_html(generated), CGI.escape_html(expected)] if generated.length > 100 || expected.length > 100
+    return [CGI.escape_html(generated), CGI.escape_html(expected)] if generated.length > 200 || expected.length > 200
 
     exp_result = ''
     gen_result = ''

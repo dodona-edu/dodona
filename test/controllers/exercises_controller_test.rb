@@ -402,4 +402,28 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
     assert_not_includes response.body, 'What is your favorite colour?'
   end
+
+  test 'exercise page within series should contain extra navigation' do
+    course = create :course
+    exercise = create :exercise
+    other_exercise = create :exercise
+    series = create :series, course: course, exercises: [exercise, other_exercise]
+
+    get course_series_exercise_url(course, series, exercise)
+
+    assert_response :success
+    assert_includes response.body, 'exercise-sidebar'
+  end
+
+  test 'exercise page without series should not contain extra navigation' do
+    course = create :course
+    exercise = create :exercise
+    other_exercise = create :exercise
+    create :series, course: course, exercises: [exercise, other_exercise]
+
+    get exercise_url(exercise)
+
+    assert_response :success
+    assert_not_includes response.body, 'exercise-sidebar'
+  end
 end

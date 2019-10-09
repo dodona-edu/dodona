@@ -275,7 +275,10 @@ class Submission < ApplicationRecord
     submissions = submissions.where(id: (old[:latest] + 1)..)
     submissions = submissions.pluck(:id, :created_at)
 
-    return unless submissions.any?
+    if submissions.empty?
+      Rails.cache.write(format(PUNCHCARD_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), old)
+      return
+    end
 
     to_merge = submissions.map { |_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}" }
                           .group_by(&:itself).transform_values(&:count)
@@ -298,7 +301,10 @@ class Submission < ApplicationRecord
     submissions = submissions.where(id: (old[:latest] + 1)..)
     submissions = submissions.pluck(:id, :created_at)
 
-    return unless submissions.any?
+    if submissions.empty?
+      Rails.cache.write(format(HEATMAP_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), old)
+      return
+    end
 
     to_merge = submissions.map { |_, d| d.strftime('%Y-%m-%d') }.group_by(&:itself).transform_values(&:count)
     result = {

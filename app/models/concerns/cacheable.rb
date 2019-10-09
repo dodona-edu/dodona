@@ -5,7 +5,7 @@ module Cacheable
   CACHE_EXPIRY_TIME = 5.minutes
 
   class_methods do
-    def create_cacheable(name, cache_string)
+    def invalidateable_instance_cacheable(name, cache_string)
       calculator = instance_method(name)
       define_method(name) do |options = {}|
         if Random.rand < CACHE_BYPASS_CHANCE || options[:force]
@@ -23,6 +23,27 @@ module Cacheable
         value = Rails.cache.read(lookup_string)
         Rails.cache.write(lookup_string, [true, value[1]], expires_in: CACHE_EXPIRY_TIME) if value.present? && !value[0]
       end
+
+      define_method("old_#{name}".to_sym, calculator)
+    end
+
+    def updateable_class_cacheable(name, cache_string)
+      updater = method(name)
+      define_singleton_method(name) do |options = {}|
+        Rails.cache.fetch(cache_string.call(options))
+      end
+
+      define_singleton_method("update_#{name}".to_sym) do |options = {}|
+        old = Rails.cache.fetch(cache_string.call(options))
+        updated = if old.present?
+                    updater.call(options, old)
+                  else
+                    updater.call(options)
+                  end
+        Rails.cache.write(cache_string.call(options), updated)
+      end
+
+      define_singleton_method("old_#{name}".to_sym, updater)
     end
   end
 end

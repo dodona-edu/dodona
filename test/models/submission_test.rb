@@ -152,20 +152,20 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'update_heatmap_matrix should always write something to the cache' do
     Rails.cache.expects(:write).once
     Submission.destroy_all
-    Submission.update_heatmap_matrix(nil, nil)
+    Submission.update_heatmap_matrix
 
     create :submission, status: :correct
     Rails.cache.expects(:write).once
-    Submission.update_heatmap_matrix(nil, nil)
+    Submission.update_heatmap_matrix
   end
 
   test 'update_punchcard_matrix should always write something to the cache' do
     Rails.cache.expects(:write).once
     Submission.destroy_all
-    Submission.update_punchcard_matrix(nil, nil)
+    Submission.update_punchcard_matrix(timezone: Time.zone)
 
     create :submission, status: :correct
     Rails.cache.expects(:write).once
-    Submission.update_punchcard_matrix(nil, nil)
+    Submission.update_punchcard_matrix(timezone: Time.zone)
   end
 end

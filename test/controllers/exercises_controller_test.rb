@@ -415,11 +415,11 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'exercise-sidebar'
   end
 
-    test 'exercise page without series should not contain extra navigation' do
+  test 'exercise page without series should not contain extra navigation' do
     course = create :course
     exercise = create :exercise
     other_exercise = create :exercise
-    series = create :series, course: course, exercises: [exercise, other_exercise]
+    create :series, course: course, exercises: [exercise, other_exercise]
 
     get exercise_url(exercise)
 

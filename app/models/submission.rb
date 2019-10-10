@@ -19,7 +19,7 @@ class Submission < ApplicationRecord
   include ActiveModel::Dirty
 
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
-  PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/punchcard_matrix'.freeze
+  PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/timezone/%{timezone}/punchcard_matrix'.freeze
   HEATMAP_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/heatmap_matrix'.freeze
   BASE_PATH = Rails.application.config.submissions_storage_path
   CODE_FILENAME = 'code'.freeze
@@ -277,7 +277,10 @@ class Submission < ApplicationRecord
 
     {
       until: submissions.first[0],
-      value: base[:value].merge(submissions.map { |_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}" }.group_by(&:itself).transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+      value: base[:value].merge(submissions.map { |_, d| d.in_time_zone(options[:timezone]) }
+                                           .map { |d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}" }
+                                           .group_by(&:itself)
+                                           .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
     }
   end
 
@@ -286,7 +289,8 @@ class Submission < ApplicationRecord
     lambda do |options|
       format(PUNCHCARD_MATRIX_CACHE_STRING,
              course_id: options[:course].present? ? options[:course].id : 'global',
-             user_id: options[:user].present? ? options[:user].id : 'global')
+             user_id: options[:user].present? ? options[:user].id : 'global',
+             timezone: options[:timezone].utc_offset)
     end
   )
 

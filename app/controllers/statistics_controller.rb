@@ -2,8 +2,8 @@ class StatisticsController < ApplicationController
   before_action :set_course_and_user, only: %i[punchcard heatmap]
 
   def punchcard
-    result = Submission.punchcard_matrix(user: @user, course: @course)
-    Submission.delay(queue: 'statistics').update_punchcard_matrix(user: @user, course: @course)
+    result = Submission.punchcard_matrix(user: @user, course: @course, timezone: Time.zone)
+    Submission.delay(queue: 'statistics').update_punchcard_matrix(user: @user, course: @course, timezone: Time.zone)
     if result.present?
       render json: result[:value]
     else

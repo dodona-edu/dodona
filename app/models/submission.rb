@@ -294,7 +294,7 @@ class Submission < ApplicationRecord
     end
   )
 
-  def self.heatmap_matrix(options, base = { until: 0, value: {} })
+  def self.heatmap_matrix(options = {}, base = { until: 0, value: {} })
     submissions = submissions_since(base[:until], options).pluck(:id, :created_at)
     return base if submissions.empty?
 

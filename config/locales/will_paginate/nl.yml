@@ -3,7 +3,7 @@ nl:
     previous_label: "&#8592; Vorige"
     next_label: "Volgende &#8594;"
     page_gap: "&hellip;"
-    container_aria_label: "Paginatie"
+    container_aria_label: "Paginering"
     page_aria_label: "Pagina %{page}"
 
     page_entries_info:

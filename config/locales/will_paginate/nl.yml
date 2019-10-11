@@ -1,0 +1,20 @@
+nl:
+  will_paginate:
+    previous_label: "&#8592; Vorige"
+    next_label: "Volgende &#8594;"
+    page_gap: "&hellip;"
+    container_aria_label: "Paginatie"
+    page_aria_label: "Pagina %{page}"
+
+    page_entries_info:
+      single_page:
+        zero:  "Geen %{model} gevonden"
+        one:   "1 %{model} gevonden"
+        other: "Alle %{count} %{model} gevonden"
+      single_page_html:
+        zero:  "Geen %{model} gevonden"
+        one:   "<b>1</b> %{model} gevonden"
+        other: "<b>Alle &nbsp;%{count}</b> %{model} gevonden"
+
+      multi_page: "%{model} %{from} - %{to} van de %{count}"
+      multi_page_html: "%{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> van de <b>%{count}</b>"

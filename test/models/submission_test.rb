@@ -168,4 +168,14 @@ class SubmissionTest < ActiveSupport::TestCase
     Rails.cache.expects(:write).once
     Submission.update_punchcard_matrix(timezone: Time.zone)
   end
+
+  test 'punchcard should take summer time into account' do
+    Time.use_zone('Brussels') do
+      s1 = create :submission, created_at: Time.zone.local(1996, 1, 29, 1, 1, 1)
+      s2 = create :submission, created_at: Time.zone.local(1996, 7, 29, 1, 1, 1)
+      # Just to make sure we don't do something stupid
+      assert_equal s1.created_at.wday, s2.created_at.wday
+      assert_equal 1, Submission.old_punchcard_matrix(timezone: Time.zone)[:value].count
+    end
+  end
 end

@@ -148,4 +148,24 @@ class SubmissionTest < ActiveSupport::TestCase
     assert File.exist?(submission.fs_path)
     assert_not File.exist?(path)
   end
+
+  test 'update_heatmap_matrix should always write something to the cache' do
+    Rails.cache.expects(:write).once
+    Submission.destroy_all
+    Submission.update_heatmap_matrix(nil, nil)
+
+    create :submission, status: :correct
+    Rails.cache.expects(:write).once
+    Submission.update_heatmap_matrix(nil, nil)
+  end
+
+  test 'update_punchcard_matrix should always write something to the cache' do
+    Rails.cache.expects(:write).once
+    Submission.destroy_all
+    Submission.update_punchcard_matrix(nil, nil)
+
+    create :submission, status: :correct
+    Rails.cache.expects(:write).once
+    Submission.update_punchcard_matrix(nil, nil)
+  end
 end

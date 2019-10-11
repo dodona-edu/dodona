@@ -6,7 +6,7 @@ class LCSHtmlDiffer
     @expected = expected || ''
     @generated_linecount = generated&.lines&.count || 0
     @expected_linecount = expected&.lines&.count || 0
-    @simplified_table = @generated_linecount > 200 || @expected_linecount > 200
+    @simplified_table = @generated_linecount > 100 || @expected_linecount > 100
     @diff = unless @simplified_table
               Diff::LCS.sdiff(@generated.split("\n", -1), @expected.split("\n", -1)).map do |chunk|
                 if chunk.action == '!'
@@ -28,13 +28,9 @@ class LCSHtmlDiffer
         builder.col(class: 'output')
       end
       builder.thead do
-        builder.th(class: 'line-nr', title: I18n.t('submissions.show.your_output')) do
-          builder.i(class: 'mdi mdi-18 mdi-file-account')
-        end
-        builder.th(class: 'line-nr', title: I18n.t('submissions.show.expected')) do
-          builder.i(class: 'mdi mdi-18 mdi-file-check')
-        end
-        builder.th
+        builder << "<th class='line-nr' title='#{I18n.t('submissions.show.your_output')}'><i class='mdi mdi-18 mdi-file-account'/></th>"
+        builder << "<th class='line-nr' title='#{I18n.t('submissions.show.expected')}'><i class='mdi mdi-18 mdi-file-check'/></th>"
+        builder << '<th></th>'
       end
       builder.tbody do
         if @simplified_table
@@ -59,18 +55,10 @@ class LCSHtmlDiffer
         builder.col(class: 'ins-output')
       end
       builder.thead do
-        builder.th(class: 'line-nr', title: I18n.t('submissions.show.your_output')) do
-          builder.i(class: 'mdi mdi-18 mdi-file-account')
-        end
-        builder.th do
-          builder << I18n.t('submissions.show.your_output')
-        end
-        builder.th(class: 'line-nr', title: I18n.t('submissions.show.expected')) do
-          builder.i(class: 'mdi mdi-18 mdi-file-check')
-        end
-        builder.th do
-          builder << I18n.t('submissions.show.expected')
-        end
+        builder << "<th class='line-nr' title='#{I18n.t('submissions.show.your_output')}'><i class='mdi mdi-18 mdi-file-account'/></th>"
+        builder << "<th>#{I18n.t('submissions.show.your_output')}</th>"
+        builder << "<th class='line-nr' title='#{I18n.t('submissions.show.expected')}'><i class='mdi mdi-18 mdi-file-check'/></th>"
+        builder << "<th>#{I18n.t('submissions.show.expected')}</th>"
       end
       builder.tbody do
         if @simplified_table
@@ -111,58 +99,36 @@ class LCSHtmlDiffer
   def unified_chunk(builder, chunk)
     case chunk.action
     when '-'
-      builder.tr do
-        builder.td(class: 'line-nr') do
-          builder << (chunk.old_position + 1).to_s
-        end
-        builder.td(class: 'line-nr')
-        builder.td(class: 'del') do
-          builder << CGI.escape_html(chunk.old_element)
-        end
-      end
+      builder << %(<tr>
+                     <td class="line-nr">#{(chunk.old_position + 1)}</td>
+                     <td class="line-nr"></td>
+                     <td class="del">#{CGI.escape_html(chunk.old_element)}</td>
+                   </tr>)
     when '+'
-      builder.tr do
-        builder.td(class: 'line-nr')
-        builder.td(class: 'line-nr') do
-          builder << (chunk.new_position + 1).to_s
-        end
-        builder.td(class: 'ins') do
-          builder << CGI.escape_html(chunk.new_element)
-        end
-      end
+      builder << %(<tr>
+                     <td class="line-nr"></td>
+                     <td class="line-nr">#{(chunk.new_position + 1)}</td>
+                     <td class="ins">#{CGI.escape_html(chunk.new_element)}</td>
+                   </tr>)
     when '='
-      builder.tr do
-        builder.td(class: 'line-nr') do
-          builder << (chunk.old_position + 1).to_s
-        end
-        builder.td(class: 'line-nr') do
-          builder << (chunk.new_position + 1).to_s
-        end
-        builder.td(class: 'unchanged') do
-          builder << CGI.escape_html(chunk.old_element)
-        end
-      end
+      builder << %(<tr>
+                     <td class="line-nr">#{(chunk.old_position + 1)}</td>
+                     <td class="line-nr">#{(chunk.new_position + 1)}</td>
+                     <td class="unchanged">#{CGI.escape_html(chunk.old_element)}</td>
+                   </tr>)
     when '!'
       # The new_element and old_element fields have been preprocessed
       # in the constructor and therefore don't need to be escaped.
-      builder.tr do
-        builder.td(class: 'line-nr') do
-          builder << (chunk.old_position + 1).to_s
-        end
-        builder.td(class: 'line-nr')
-        builder.td(class: 'del') do
-          builder << chunk.old_element
-        end
-      end
-      builder.tr do
-        builder.td(class: 'line-nr')
-        builder.td(class: 'line-nr') do
-          builder << (chunk.new_position + 1).to_s
-        end
-        builder.td(class: 'ins') do
-          builder << chunk.new_element
-        end
-      end
+      builder << %(<tr>
+                     <td class="line-nr">#{(chunk.old_position + 1)}</td>
+                     <td class="line-nr"></td>
+                     <td class="del">#{chunk.old_element}</td>
+                   </tr>
+                   <tr>
+                     <td class="line-nr"></td>
+                     <td class="line-nr">#{(chunk.new_position + 1)}</td>
+                     <td class="ins">#{chunk.new_element}</td>
+                   </tr>)
     end
   end
 
@@ -186,59 +152,35 @@ class LCSHtmlDiffer
   def split_chunk(builder, chunk)
     case chunk.action
     when '-'
-      builder.tr do
-        builder.td(class: 'line-nr') do
-          builder << (chunk.old_position + 1).to_s
-        end
-        builder.td(class: 'del') do
-          builder << CGI.escape_html(chunk.old_element)
-        end
-        builder.td(class: 'line-nr')
-        builder.td
-      end
+      builder << %(<tr>
+                     <td class="line-nr">#{chunk.old_position + 1}</td>
+                     <td class="del">#{CGI.escape_html chunk.old_element}</td>
+                     <td class="line-nr"></td>
+                     <td></td>
+                   </tr>)
     when '+'
-      builder.tr do
-        builder.td(class: 'line-nr')
-        builder.td
-        builder.td(class: 'line-nr') do
-          builder << (chunk.new_position + 1).to_s
-        end
-        builder.td(class: 'ins') do
-          builder << CGI.escape_html(chunk.new_element)
-        end
-      end
+      builder << %(<tr>
+                     <td class="line-nr"></td>
+                     <td></td>
+                     <td class="line-nr">#{chunk.new_position + 1}</td>
+                     <td class="ins">#{CGI.escape_html chunk.new_element}</td>
+                   </tr>)
     when '='
-      builder.tr do
-        builder.td(class: 'line-nr') do
-          builder << (chunk.old_position + 1).to_s
-        end
-        builder.td(class: 'unchanged') do
-          builder << CGI.escape_html(chunk.old_element)
-        end
-        builder.td(class: 'line-nr') do
-          builder << (chunk.new_position + 1).to_s
-        end
-        builder.td(class: 'unchanged') do
-          builder << CGI.escape_html(chunk.new_element)
-        end
-      end
+      builder << %(<tr>
+                     <td class="line-nr">#{chunk.old_position + 1}</td>
+                     <td class="unchanged">#{CGI.escape_html chunk.old_element}</td>
+                     <td class="line-nr">#{chunk.new_position + 1}</td>
+                     <td class="unchanged">#{CGI.escape_html chunk.new_element}</td>
+                   </tr>)
     when '!'
       # The new_element and old_element fields have been preprocessed
       # in the constructor and therefore don't need to be escaped.
-      builder.tr do
-        builder.td(class: 'line-nr') do
-          builder << (chunk.old_position + 1).to_s
-        end
-        builder.td(class: 'del') do
-          builder << chunk.old_element
-        end
-        builder.td(class: 'line-nr') do
-          builder << (chunk.new_position + 1).to_s
-        end
-        builder.td(class: 'ins') do
-          builder << chunk.new_element
-        end
-      end
+      builder << %(<tr>
+                     <td class="line-nr">#{chunk.old_position + 1}</td>
+                     <td class="del">#{chunk.old_element}</td>
+                     <td class="line-nr">#{chunk.new_position + 1}</td>
+                     <td class="ins">#{chunk.new_element}</td>
+                   </tr>)
     end
   end
 

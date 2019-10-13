@@ -96,27 +96,37 @@ class Submission < ApplicationRecord
   end
 
   def code
-    File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
+    before = Time.current
+    val = File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
+    logger.tagged('NFS_TIMING') { logger.info "Reading #{File.join(fs_path, CODE_FILENAME)} took #{Time.current - before} seconds" }
+    val
   rescue Errno::ENOENT => e
     ExceptionNotifier.notify_exception e
     ''
   end
 
   def code=(code)
+    before = Time.current
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
     File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
+    logger.tagged('NFS_TIMING') { logger.info "Writing #{File.join(fs_path, CODE_FILENAME)} took #{Time.current - before} seconds" }
   end
 
   def result
-    ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
+    before = Time.current
+    val = ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
+    logger.tagged('NFS_TIMING') { logger.info "Reading #{File.join(fs_path, RESULT_FILENAME)} took #{Time.current - before} seconds" }
+    val
   rescue Errno::ENOENT, Zlib::GzipFile::Error => e
     ExceptionNotifier.notify_exception e, data: { submission_id: id, status: status, current_user: Current.user&.id }
     nil
   end
 
   def result=(result)
+    before = Time.current
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
     File.open(File.join(fs_path, RESULT_FILENAME), 'wb') { |f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8'))) }
+    logger.tagged('NFS_TIMING') { logger.info "Writing #{File.join(fs_path, RESULT_FILENAME)} took #{Time.current - before} seconds" }
   end
 
   def clean_messages(messages, levels)

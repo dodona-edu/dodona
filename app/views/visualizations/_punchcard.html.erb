@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
     $(function () {
-        dodona.initPunchcard('<%= raw punchcard_path(user_id: local_assigns[:user]&.id, course_id: local_assigns[:course]&.id) %>', <%= @time_zone_offset / -60  %>);
+        dodona.initPunchcard('<%= raw punchcard_path(user_id: local_assigns[:user]&.id, course_id: local_assigns[:course]&.id) %>');
     });
 </script>
 

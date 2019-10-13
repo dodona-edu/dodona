@@ -180,7 +180,7 @@ class Course < ApplicationRecord
               .count
   end
 
-  create_cacheable(:correct_solutions, ->(this, _options) { format(CORRECT_SOLUTIONS_CACHE_STRING, id: this.id) })
+  invalidateable_instance_cacheable(:correct_solutions, ->(this, _options) { format(CORRECT_SOLUTIONS_CACHE_STRING, id: this.id) })
 
   def pending_memberships
     CourseMembership.where(course_id: id,

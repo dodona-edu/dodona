@@ -174,8 +174,8 @@ class User < ApplicationRecord
     s.select('distinct exercise_id').count
   end
 
-  create_cacheable(:attempted_exercises,
-                   ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+  invalidateable_instance_cacheable(:attempted_exercises,
+                                    ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def correct_exercises(options)
     s = submissions.where(status: :correct)
@@ -183,8 +183,8 @@ class User < ApplicationRecord
     s.select('distinct exercise_id').count
   end
 
-  create_cacheable(:correct_exercises,
-                   ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+  invalidateable_instance_cacheable(:correct_exercises,
+                                    ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def unfinished_exercises(course = nil)
     attempted_exercises(course: course) - correct_exercises(course: course)

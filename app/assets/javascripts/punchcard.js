@@ -2,9 +2,9 @@ import * as d3 from "d3";
 
 const containerSelector = "#punchcard-container";
 const margin = { top: 10, right: 10, bottom: 20, left: 70 };
-const labelsX = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+const labelsX = [...Array(24).keys()];
 
-function initPunchcard(url, timezoneOffset) {
+function initPunchcard(url) {
     // If this is defined outside of a function, the locale always defaults to "en".
     const labelsY = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(k => I18n.t(`js.weekdays.long.${k}`));
 
@@ -16,7 +16,7 @@ function initPunchcard(url, timezoneOffset) {
     const height = innerHeight + margin.top + margin.bottom;
 
     const chart = container.append("svg")
-    // When resizing, the svg will scale as well. Doesn't work perfectly.
+        // When resizing, the svg will scale as well. Doesn't work perfectly.
         .attr("viewBox", `0,0,${width},${height}`)
         .style("overflow-x", "scroll")
         .append("g")
@@ -42,7 +42,7 @@ function initPunchcard(url, timezoneOffset) {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;
         }
-        renderCard(d3.entries(applyTimezone(data, timezoneOffset)), unitSize, chart, x, y);
+        renderCard(d3.entries(data), unitSize, chart, x, y);
     };
     d3.json(url)
         .then(processor);
@@ -99,23 +99,5 @@ function renderCard(data, unitSize, chart, x, y) {
     circles.exit().remove();
 }
 
-function applyTimezone(data, timezoneOffset) {
-    const transform = {};
-    Object.entries(data).forEach(([key, value]) => {
-        const split = key.split(", ");
-        let day = parseInt(split[0]);
-        let hour = parseInt(split[1]);
-        hour += timezoneOffset;
-        if (hour < 0) {
-            hour += 24;
-            day = (day + 6) % 7;
-        } else if (hour > 23) {
-            hour -= 24;
-            day = (day + 1) % 7;
-        }
-        transform[`${day}, ${hour}`] = value;
-    });
-    return transform;
-}
-
 export { initPunchcard };
+

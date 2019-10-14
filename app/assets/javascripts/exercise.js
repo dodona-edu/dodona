@@ -1,5 +1,5 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
-import { logToGoogle } from "util.js";
+import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
 import { Notification } from "./notification";
 
 function initLabelsEdit(labels, undeletableLabels) {
@@ -123,6 +123,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
         swapActionButtons();
         initDeadlineTimeout();
+        fixSubmissionTableLinks();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
@@ -153,7 +154,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         // export function
-        window.dodona.feedbackLoaded = feedbackLoaded;
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
@@ -213,8 +213,30 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $exerciseFeedbackLink.attr("data-submission_id", submissionId);
     }
 
+    function loadFeedback(url, submissionId) {
+        fetch(updateURLParameter(url, "format", "js"), {
+            headers: {
+                "accept": "text/javascript",
+                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                "x-requested-with": "XMLHttpRequest",
+            },
+            credentials: "same-origin",
+        }).then(resp => resp.text()).then(data => {
+            $("#submission-wrapper").html(data);
+            feedbackLoaded(submissionId);
+            initTooltips();
+        });
+    }
+
+    function fixSubmissionTableLinks() {
+        $("a.load-submission").off("click").on("click", function (event) {
+            event.preventDefault();
+            loadFeedback($(this).attr("href"), $(this).data("submission_id"));
+        });
+    }
+
     function feedbackTableLoaded(userId, exerciseId, courseId) {
-        $("a.load-submission").attr("data-remote", "true");
+        fixSubmissionTableLinks();
         if (lastSubmission) {
             const $submissionRow = $("#submission_" + lastSubmission);
             const status = $submissionRow.data("status");
@@ -235,7 +257,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     $submissionRow.find(".load-submission").get(0).click();
                 } else if ($("#exercise-feedback-link").parent().hasClass("active") &&
                     $("#exercise-feedback-link").data("submission_id") === lastSubmission) {
-                    $.get(`/submissions/${lastSubmission}.js`);
+                    loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
                 }
                 setTimeout(enableSubmitButton, 100);
                 new Notification(I18n.t("js.submission-processed"));
@@ -319,3 +341,4 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 }
 
 export { initExerciseShow, initExerciseDescription, initLabelsEdit };
+

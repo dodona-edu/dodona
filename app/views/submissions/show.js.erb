@@ -1,5 +1,1 @@
-$("#submission-wrapper").html("<%= escape_javascript(render partial: 'description', locals: {submission: @submission}) %>");
-if (dodona.feedbackLoaded) {
-    dodona.feedbackLoaded(<%= @submission.id %>);
-}
-$(dodona.initTooltips)
+<%= render partial: 'description', locals: {submission: @submission} %>

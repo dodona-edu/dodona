@@ -214,6 +214,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function loadFeedback(url, submissionId) {
+        $("#submission-wrapper").html("<center><i class=\"mdi mdi-loading mdi-spin\"></i></center>");
+        feedbackLoaded(submissionId);
         fetch(updateURLParameter(url, "format", "js"), {
             headers: {
                 "accept": "text/javascript",

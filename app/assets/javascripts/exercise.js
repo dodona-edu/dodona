@@ -123,7 +123,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
         swapActionButtons();
         initDeadlineTimeout();
-        fixSubmissionTableLinks();
+        enableSubmissionTableLinks();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
@@ -229,7 +229,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
     }
 
-    function fixSubmissionTableLinks() {
+    function enableSubmissionTableLinks() {
         $("a.load-submission").on("click", function (event) {
             if (!event.ctrlKey) {
                 event.preventDefault();
@@ -239,7 +239,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function feedbackTableLoaded(userId, exerciseId, courseId) {
-        fixSubmissionTableLinks();
+        enableSubmissionTableLinks();
         if (lastSubmission) {
             const $submissionRow = $("#submission_" + lastSubmission);
             const status = $submissionRow.data("status");

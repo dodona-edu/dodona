@@ -225,15 +225,16 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             credentials: "same-origin",
         }).then(resp => resp.text()).then(data => {
             $("#submission-wrapper").html(data);
-            feedbackLoaded(submissionId);
             initTooltips();
         });
     }
 
     function fixSubmissionTableLinks() {
-        $("a.load-submission").off("click").on("click", function (event) {
-            event.preventDefault();
-            loadFeedback($(this).attr("href"), $(this).data("submission_id"));
+        $("a.load-submission").on("click", function (event) {
+            if (!event.ctrlKey) {
+                event.preventDefault();
+                loadFeedback($(this).attr("href"), $(this).data("submission_id"));
+            }
         });
     }
 

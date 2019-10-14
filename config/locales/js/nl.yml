@@ -7,6 +7,7 @@ nl:
     submission-too-long: "Oeps, er ging iets fout bij het opslaan van je oplossing. Je oplossing is te lang. Maak ze korter en probeer opnieuw."
     submission-network: "Oeps, we kunnen niet verbinden met de server. Controleer je internetverbinding."
     submission-processed: Evaluatie afgerond
+    unknown-error-loading-feedback: "Er is een onbekende fout opgetreden bij het laden van de feedback voor je oplossing"
     exercise-added-success: Oefening toegevoegd
     exercise-added-failed: Oefening toevoegen mislukt
     exercise-removed-success: Oefening verwijderd

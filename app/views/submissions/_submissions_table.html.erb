@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, remote_links: remote_links, course: local_assigns[:course], user: user } %>
+    <%= render partial: 'submissions/submission', collection: submissions, locals: {exercise: exercise, course: local_assigns[:course], user: user } %>
     </tbody>
   </table>
 </div>

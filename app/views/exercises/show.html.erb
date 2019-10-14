@@ -87,7 +87,7 @@
               <% if !user_signed_in? %>
                 <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
               <% elsif @submissions.length > 0 %>
-                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, user: current_user, remote_links: true} %>
+                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, user: current_user} %>
               <% else %>
                 <div class="alert alert-info"><%= t ".hand_in_tooltip" %></div>
               <% end %>

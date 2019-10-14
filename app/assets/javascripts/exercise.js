@@ -223,9 +223,13 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 "x-requested-with": "XMLHttpRequest",
             },
             credentials: "same-origin",
-        }).then(resp => resp.text()).then(data => {
-            $("#submission-wrapper").html(data);
-            initTooltips();
+        }).then(resp => Promise.all([resp.ok, resp.text()])).then(([ok, data]) => {
+            if (ok) {
+                $("#submission-wrapper").html(data);
+                initTooltips();
+            } else {
+                $("#submission-wrapper").html(`<div class="alert alert-danger">${I18n.t("js.unknown-error-loading-feedback")}</div>`);
+            }
         });
     }
 

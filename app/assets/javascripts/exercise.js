@@ -1,5 +1,5 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
-import { logToGoogle } from "util.js";
+import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
 import { Notification } from "./notification";
 
 function initLabelsEdit(labels, undeletableLabels) {
@@ -123,6 +123,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
         swapActionButtons();
         initDeadlineTimeout();
+        enableSubmissionTableLinks();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
@@ -153,7 +154,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         // export function
-        window.dodona.feedbackLoaded = feedbackLoaded;
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
@@ -213,8 +213,38 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $exerciseFeedbackLink.attr("data-submission_id", submissionId);
     }
 
+    function loadFeedback(url, submissionId) {
+        $("#submission-wrapper").html("<center><i class=\"mdi mdi-loading mdi-spin\"></i></center>");
+        feedbackLoaded(submissionId);
+        fetch(updateURLParameter(url, "format", "js"), {
+            headers: {
+                "accept": "text/javascript",
+                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                "x-requested-with": "XMLHttpRequest",
+            },
+            credentials: "same-origin",
+        }).then(resp => Promise.all([resp.ok, resp.text()])).then(([ok, data]) => {
+            if (ok) {
+                $("#submission-wrapper").html(data);
+                initTooltips();
+            } else {
+                $("#submission-wrapper").html(`<div class="alert alert-danger">${I18n.t("js.unknown-error-loading-feedback")}</div>`);
+            }
+        });
+    }
+
+    function enableSubmissionTableLinks() {
+        $("a.load-submission").on("click", function (event) {
+            if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+                return;
+            }
+            event.preventDefault();
+            loadFeedback($(this).attr("href"), $(this).data("submission_id"));
+        });
+    }
+
     function feedbackTableLoaded(userId, exerciseId, courseId) {
-        $("a.load-submission").attr("data-remote", "true");
+        enableSubmissionTableLinks();
         if (lastSubmission) {
             const $submissionRow = $("#submission_" + lastSubmission);
             const status = $submissionRow.data("status");
@@ -235,7 +265,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     $submissionRow.find(".load-submission").get(0).click();
                 } else if ($("#exercise-feedback-link").parent().hasClass("active") &&
                     $("#exercise-feedback-link").data("submission_id") === lastSubmission) {
-                    $.get(`/submissions/${lastSubmission}.js`);
+                    loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
                 }
                 setTimeout(enableSubmitButton, 100);
                 new Notification(I18n.t("js.submission-processed"));
@@ -319,3 +349,4 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 }
 
 export { initExerciseShow, initExerciseDescription, initLabelsEdit };
+

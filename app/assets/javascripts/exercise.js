@@ -235,10 +235,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function enableSubmissionTableLinks() {
         $("a.load-submission").on("click", function (event) {
-            if (!event.ctrlKey) {
-                event.preventDefault();
-                loadFeedback($(this).attr("href"), $(this).data("submission_id"));
+            if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+                return;
             }
+            event.preventDefault();
+            loadFeedback($(this).attr("href"), $(this).data("submission_id"));
         });
     }
 

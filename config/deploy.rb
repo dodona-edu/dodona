@@ -10,6 +10,9 @@ set :repo_url, 'git@github.com:dodona-edu/dodona.git'
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, '/home/dodona/rails'
 
+# RVM is installed globally using apt
+set :rvm_custom_path, '/usr/share/rvm'
+
 # Default value for :scm is :git
 # set :scm, :git
 

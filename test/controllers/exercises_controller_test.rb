@@ -392,9 +392,16 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
   end
 
   test 'iframe to exercise description should be present in the page' do
+    sign_in create :user
     get exercise_url(@exercise).concat('/')
 
     assert_includes response.body, description_exercise_url(@exercise, token: @exercise.access_token)
+  end
+
+  test 'iframe should set dark mode to false when there is no logged in user' do
+    get exercise_url(@exercise).concat('/')
+
+    assert_includes response.body, description_exercise_url(@exercise, token: @exercise.access_token, dark: false)
   end
 
   test 'script in exercise description should not be present in the page' do

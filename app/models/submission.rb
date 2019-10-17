@@ -35,6 +35,7 @@ class Submission < ApplicationRecord
   validate :not_rate_limited?, on: :create, unless: :skip_rate_limit_check?
 
   before_update :update_fs
+  before_save :report_if_internal_error
   after_create :evaluate_delayed, if: :evaluate?
   after_save :invalidate_caches
   after_destroy :invalidate_caches
@@ -341,5 +342,11 @@ class Submission < ApplicationRecord
 
     FileUtils.mkdir_p File.dirname new_path
     FileUtils.move old_path, new_path
+  end
+
+  def report_if_internal_error
+    return unless status_changed? && send(:"internal error?")
+
+    ExceptionNotifier.notify_exception(Exception.new("Submission(#{id}) status was changed to internal error"), data: { host: `hostname`, submission: self })
   end
 end

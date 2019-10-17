@@ -1,8 +1,7 @@
-class ReadonlyCodeRenderer
+class FeedbackCodeRenderer
   require 'json'
 
-  def initialize(code, programming_language, user, messages, builder)
-    @current_user = user
+  def initialize(code, programming_language, messages, builder)
     @programming_language = programming_language
     @code = code
     @builder = builder
@@ -11,7 +10,7 @@ class ReadonlyCodeRenderer
 
   def parse
     line_formatter = Rouge::Formatters::HTML.new
-    table_formatter = Rouge::Formatters::HTMLLineTable.new line_formatter, table_class: 'highlighter-rouge'
+    table_formatter = Rouge::Formatters::HTMLLineTable.new line_formatter, table_class: 'feedback-code-table highlighter-rouge'
 
     lexer = (Rouge::Lexer.find(@programming_language) || Rouge::Lexers::PlainText).new
     lexed_c = lexer.lex(@code)

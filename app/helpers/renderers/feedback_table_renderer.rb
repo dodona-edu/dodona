@@ -282,7 +282,7 @@ class FeedbackTableRenderer
 
   def source(_, messages)
     @builder.div(class: 'code-table') do
-      ReadonlyCodeRenderer.new(@code, @programming_language, @current_user, messages, @builder).parse
+      FeedbackCodeRenderer.new(@code, @programming_language, messages, @builder).parse
     end
   end
 

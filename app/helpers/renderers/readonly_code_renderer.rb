@@ -1,6 +1,5 @@
 class ReadonlyCodeRenderer
-  require 'formatters/dodona_code_table_formatter'
-  require 'formatters/dodona_line_annotated_formatter'
+  require 'json'
 
   def initialize(code, programming_language, user, messages, builder)
     @current_user = user
@@ -12,14 +11,14 @@ class ReadonlyCodeRenderer
 
   def parse
     line_formatter = Rouge::Formatters::HTML.new
-    table_formatter = DodonaLineAnnotatedFormatter.new line_formatter, @messages
+    table_formatter = Rouge::Formatters::HTMLLineTable.new line_formatter, table_class: 'highlighter-rouge'
 
     lexer = (Rouge::Lexer.find(@programming_language) || Rouge::Lexers::PlainText).new
     lexed_c = lexer.lex(@code)
 
-    @builder.style do
-      # TODO: Handle dark mode
-      @builder << Rouge::Themes::Github.render(scope: '.code-table')
+    @builder.script(type: 'application/javascript') do
+      @builder << 'var messages = '
+      @builder << @messages.map { |o| Hash[o.each_pair.to_a] }.to_json
     end
 
     @builder << table_formatter.format(lexed_c)

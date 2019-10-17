@@ -261,4 +261,10 @@ class SubmissionTest < ActiveSupport::TestCase
     50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
     assert_equal 50, Submission.old_heatmap_matrix(course: course)[:value].values.sum
   end
+
+  test 'update to internal error should send exception notification' do
+    submission = create :submission
+    ExceptionNotifier.expects(:notify_exception)
+    submission.update(status: :"internal error")
+  end
 end

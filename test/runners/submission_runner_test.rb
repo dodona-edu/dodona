@@ -213,7 +213,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     Delayed::Backend::ActiveRecord::Job.delete_all
     Rails.env.stubs(:"production?").returns(true)
     Submission.any_instance.stubs(:judge).raises(STRIKE_ERROR)
-    ExceptionNotifier.stubs(:notify_exception).once
+    ExceptionNotifier.stubs(:notify_exception).twice
     Docker::Container.stubs(:create).returns(docker_mock)
     @submission.evaluate_delayed
     Delayed::Worker.max_attempts = 1

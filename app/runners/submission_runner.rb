@@ -123,7 +123,7 @@ class SubmissionRunner
     timeout_mutex = Mutex.new
     timeout = nil
 
-    Thread.new do
+    timer = Thread.new do
       while Time.zone.now - before_time < time_limit
         sleep 1
         next if Rails.env.test?
@@ -148,6 +148,7 @@ class SubmissionRunner
       stderr: true
     )
     timeout_mutex.synchronize do
+      timer.kill
       timeout = false if timeout.nil?
     end
 

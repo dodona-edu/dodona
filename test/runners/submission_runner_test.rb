@@ -175,20 +175,6 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                       accepted: false
   end
 
-  test 'dockers killed by 15 before timeout should result in memory limit exceeded' do
-    Thread.stubs(:new).returns(mock(kill: nil, value: nil))
-    evaluate_with_stubbed_docker output: nil, status_code: 128 + 15
-    assert_submission status: 'memory limit exceeded',
-                      accepted: false
-  end
-
-  test 'dockers killed by 15 at timeout should result in time limit exceeded' do
-    Thread.stubs(:new).returns(mock(kill: nil, value: true))
-    evaluate_with_stubbed_docker output: nil, status_code: 128 + 15
-    assert_submission status: 'time limit exceeded',
-                      accepted: false
-  end
-
   test 'error in docker creation should result in internal error' do
     Docker::Container.stubs(:create).raises(STRIKE_ERROR)
 

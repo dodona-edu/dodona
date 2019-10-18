@@ -205,4 +205,59 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     Delayed::Worker.max_attempts = 1
     Delayed::Worker.new.work_off
   end
+
+  class TimeoutDocker
+    def initialize
+      @running = Mutex.new
+      @running_cond = ConditionVariable.new
+    end
+
+    def start; end
+
+    def stop
+      @running_cond.signal
+    end
+
+    def attach(_)
+      @running.synchronize do
+        @running_cond.wait(@running)
+      end
+      [[''], ['']]
+    end
+
+    def delete; end
+
+    def wait(_)
+      { 'StatusCode' => 143 }
+    end
+  end
+
+  test 'docker killed because of time limit should result in timeout' do
+    Docker::Container.stubs(:create).returns(TimeoutDocker.new)
+    @submission.evaluate
+    assert_equal 'time limit exceeded', @submission.status
+  end
+
+  class MemoryDocker
+    def start; end
+
+    def stop; end
+
+    def attach(_)
+      [[''], ['']]
+    end
+
+    def delete; end
+
+    def wait(_)
+      { 'StatusCode' => 143 }
+    end
+  end
+
+  test 'docker killed but not because of time limit should result in memory limit' do
+    Docker::Container.stubs(:create).returns(MemoryDocker.new)
+    @submission.exercise.stubs(:merged_config).returns('evaluation' => { 'time_limit' => 1000 })
+    @submission.evaluate
+    assert_equal 'memory limit exceeded', @submission.status
+  end
 end

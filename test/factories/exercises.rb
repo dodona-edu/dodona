@@ -65,7 +65,7 @@ FactoryBot.define do
     end
 
     after :build do |exercise|
-      exercise.stubs(:merged_config).returns('evaluation' => {})
+      exercise.stubs(:merged_config).returns('evaluation' => { 'time_limit' => 1 })
     end
 
     trait :nameless do

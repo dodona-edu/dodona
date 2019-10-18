@@ -134,12 +134,10 @@ class SubmissionRunner
         # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
         memory = stats['memory_stats']['max_usage'] / (1024.0 * 1024.0) if stats['memory_stats']&.fetch('max_usage', nil)
       end
-      # :nocov:
       timeout_mutex.synchronize do
         container.stop
         timeout = true if timeout.nil?
       end
-      # :nocov:
     end
 
     outlines, errlines = container.tap(&:start).attach(

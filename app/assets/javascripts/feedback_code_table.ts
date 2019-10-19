@@ -40,8 +40,10 @@ export class FeedbackCodeTable {
 
         const lineNumberOffset = document.createElement("td");
         const annotationLine = document.createElement("td");
-
+        annotationLine.setAttribute("class", "annotation-text");
+        annotationLine.classList.add(message.type);
         annotationLine.innerHTML = message.text;
+
         annotationRow.appendChild(lineNumberOffset);
         annotationRow.appendChild(annotationLine);
         return annotationRow;

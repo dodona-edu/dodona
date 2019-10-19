@@ -15,4 +15,25 @@
   }
 
   background-color: @body-bg;
+
+  .annotation {
+
+    .annotation-text {
+      display: inline-block;
+      margin: 1px 0;
+      padding: 2px 5px;
+      border-radius: 5px;
+    }
+
+    .annotation-text.warning {
+      background-color: @red-400;
+      color: @white-text;
+    }
+
+    .annotation-text.info {
+      background-color: @blue-400;
+      color: @white-text;
+    }
+
+  }
 }

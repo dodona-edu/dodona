@@ -15,9 +15,12 @@ class FeedbackCodeRenderer
     lexer = (Rouge::Lexer.find(@programming_language) || Rouge::Lexers::PlainText).new
     lexed_c = lexer.lex(@code)
 
-    @builder.script(type: 'application/javascript') do
+    @builder.script(type: 'application/javascript', id: 'feedback-code-messages') do
       @builder << 'var messages = '
       @builder << @messages.map { |o| Hash[o.each_pair.to_a] }.to_json
+      @builder << ';'
+
+      @builder << 'console.log(window.dodona.feedbackCodeTableClass);'
     end
 
     @builder << table_formatter.format(lexed_c)

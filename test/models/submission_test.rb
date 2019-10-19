@@ -267,4 +267,10 @@ class SubmissionTest < ActiveSupport::TestCase
     ExceptionNotifier.expects(:notify_exception)
     submission.update(status: :"internal error")
   end
+
+  test 'update to internal error should send exception notification' do
+    submission = create :submission
+    ExceptionNotifier.expects(:notify_exception)
+    submission.update(status: :"internal error")
+  end
 end

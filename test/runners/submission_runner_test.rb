@@ -175,20 +175,6 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                       accepted: false
   end
 
-  test 'dockers killed by 15 before timeout should result in memory limit exceeded' do
-    Thread.stubs(:new).returns(mock(kill: nil, value: nil))
-    evaluate_with_stubbed_docker output: nil, status_code: 128 + 15
-    assert_submission status: 'memory limit exceeded',
-                      accepted: false
-  end
-
-  test 'dockers killed by 15 at timeout should result in time limit exceeded' do
-    Thread.stubs(:new).returns(mock(kill: nil, value: true))
-    evaluate_with_stubbed_docker output: nil, status_code: 128 + 15
-    assert_submission status: 'time limit exceeded',
-                      accepted: false
-  end
-
   test 'error in docker creation should result in internal error' do
     Docker::Container.stubs(:create).raises(STRIKE_ERROR)
 
@@ -213,10 +199,65 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     Delayed::Backend::ActiveRecord::Job.delete_all
     Rails.env.stubs(:"production?").returns(true)
     Submission.any_instance.stubs(:judge).raises(STRIKE_ERROR)
-    ExceptionNotifier.stubs(:notify_exception).once
+    ExceptionNotifier.stubs(:notify_exception).twice
     Docker::Container.stubs(:create).returns(docker_mock)
     @submission.evaluate_delayed
     Delayed::Worker.max_attempts = 1
     Delayed::Worker.new.work_off
+  end
+
+  class TimeoutDocker
+    def initialize
+      @running = Mutex.new
+      @running_cond = ConditionVariable.new
+    end
+
+    def start; end
+
+    def stop
+      @running_cond.signal
+    end
+
+    def attach(_)
+      @running.synchronize do
+        @running_cond.wait(@running)
+      end
+      [[''], ['']]
+    end
+
+    def delete; end
+
+    def wait(_)
+      { 'StatusCode' => 143 }
+    end
+  end
+
+  test 'docker killed because of time limit should result in timeout' do
+    Docker::Container.stubs(:create).returns(TimeoutDocker.new)
+    @submission.evaluate
+    assert_equal 'time limit exceeded', @submission.status
+  end
+
+  class MemoryDocker
+    def start; end
+
+    def stop; end
+
+    def attach(_)
+      [[''], ['']]
+    end
+
+    def delete; end
+
+    def wait(_)
+      { 'StatusCode' => 143 }
+    end
+  end
+
+  test 'docker killed but not because of time limit should result in memory limit' do
+    Docker::Container.stubs(:create).returns(MemoryDocker.new)
+    @submission.exercise.stubs(:merged_config).returns('evaluation' => { 'time_limit' => 1000 })
+    @submission.evaluate
+    assert_equal 'memory limit exceeded', @submission.status
   end
 end

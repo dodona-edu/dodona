@@ -15,10 +15,15 @@ module ExerciseHelper
   end
 
   def description_iframe(exercise)
+    dark = if current_user.present?
+             session[:dark]
+           else
+             false
+           end
     id = "exercise-description-#{exercise.id}"
     url = description_exercise_url(exercise,
                                    token: exercise.access_token,
-                                   dark: session[:dark])
+                                   dark: dark).html_safe
     resizeframe = %{
       window.iFrameResize({
           heightCalculationMethod: 'bodyScroll'

@@ -120,6 +120,9 @@ class SubmissionRunner
     # run the container with a timeout.
     memory = 0
     before_time = Time.zone.now
+    timeout_mutex = Mutex.new
+    timeout = nil
+
     timer = Thread.new do
       while Time.zone.now - before_time < time_limit
         sleep 1
@@ -131,17 +134,22 @@ class SubmissionRunner
         # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
         memory = stats['memory_stats']['max_usage'] / (1024.0 * 1024.0) if stats['memory_stats']&.fetch('max_usage', nil)
       end
-      # :nocov:
-      container.stop
-      true
-      # :nocov:
+      timeout_mutex.synchronize do
+        container.stop
+        timeout = true if timeout.nil?
+      end
     end
+
     outlines, errlines = container.tap(&:start).attach(
       stdin: StringIO.new(@config.to_json),
       stdout: true,
       stderr: true
     )
-    timeout = timer.tap(&:kill).value
+    timeout_mutex.synchronize do
+      timer.kill
+      timeout = false if timeout.nil?
+    end
+
     after_time = Time.zone.now
     stdout = outlines.join.force_encoding('utf-8')
     stderr = errlines.join.force_encoding('utf-8')

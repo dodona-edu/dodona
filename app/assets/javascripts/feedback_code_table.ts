@@ -51,7 +51,8 @@ export class FeedbackCodeTable {
         const annotationLine = document.createElement("td");
         annotationLine.setAttribute("class", "annotation-text");
         annotationLine.classList.add(message.type);
-        annotationLine.innerHTML = message.text;
+
+        annotationLine.innerHTML = message.text.replace(/-*$/, "");
 
         annotationRow.appendChild(lineNumberOffset);
         annotationRow.appendChild(annotationLine);

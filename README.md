@@ -38,3 +38,30 @@ This has one letdown: debugging with `byebug` is broken. You can run `bin/server
 ## Tutor Docker network
 
 Your docker network (for the python tutor) should be in `192.168.0.0/16`. If this is not the case, you should edit `Rails.config.tutor_docker_network_prefix` in `config/application.rb`. Be aware that you should run this application behind a proxy, otherwise users could spoof their IP address via the `X-Forwarder-For` header. (If they spoof their ip addres to one within the docker network, they will be able to access media files of private exercises that they would otherwise not have access to.)
+
+## Running on Windows
+
+Some gems (such as therubyracer) are not supported on Windows. However it is possible to run Dodona using [WSL](https://docs.microsoft.com/en-us/windows/wsl/about). Note: using [WSL2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-index), these steps are probably not necessary.
+
+* Dodona itself must be run in WSL. The Ubuntu WSL distribution is known to work.
+* The database can be run in either Windows or WSL. If you run the database in Windows, you must change `host` from `localhost` to `127.0.0.1` (in `config/database.yml`). Otherwise Ruby will attempt to connect using sockets, which won't work.
+* Running exercises requires Docker.
+
+### Docker
+
+Docker runs in Windows, and requires some tweaks to communicate with WSL.
+
+* Enable the TCP daemon in the [Docker settings](https://docs.docker.com/docker-for-windows/#general).
+* Set the environment variable `DOCKER_URL` to the url of the Docker daemon. Otherwise Ruby will again attempt to connect using sockets.
+* Dodona uses [bind mounts](https://docs.docker.com/storage/bind-mounts/) to share a folder with the container. As Dodona runs in WSL and Docker in Windows, this does not work out of the box.
+  * By default, WSL uses paths of the form `/mnt/c/users/blabla`. However, Docker uses `/c/users/blabla`. You need to change the mount location in WSL. (See also [in this blog post](https://nickjanetakis.com/blog/setting-up-docker-for-windows-and-wsl-to-work-flawlessly#ensure-volume-mounts-work) and the [reference documentation](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#set-wsl-launch-settings).)
+  * Open or create the config file by running `sudo nano /etc/wsl.conf` in WSL and insert this:
+    ```
+    [automount]
+    root = /
+    options = "metadata,umask=22,fmask=11"
+    ```
+    This will also give Windows folders proper permissions in WSL.
+  
+  * There is another problem: Dodona creates a temporary folder in `/tmp` (inside WSL), which is not accessible to Docker. A solution is setting the `TMPDIR` environment variable (in WSL when running Dodona). Set `TMPDIR` to a folder on your Windows drive, like `/c/ubuntu-tmp`. As Dodona will then pass `/c/ubuntu-tmp` to Docker, it will be able to access the folder.
+* This is not specific to Dodona, but when you build Docker images in Windows, you need special care to ensure files have the proper permissions (executable) and have the correct line endings.

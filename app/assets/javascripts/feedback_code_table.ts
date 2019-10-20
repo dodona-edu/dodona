@@ -7,8 +7,9 @@ export class FeedbackCodeTable {
     constructor(messages, feedbackTableSelector = ".feedback-code-table") {
         this.table = document.querySelector(feedbackTableSelector);
 
-        if (this.table == null) {
+        if (this.table === null) {
             console.error("The feedback table could not be found");
+            return;
         }
 
         this.messages = messages;

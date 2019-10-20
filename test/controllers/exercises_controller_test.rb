@@ -433,4 +433,18 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not_includes response.body, 'exercise-sidebar'
   end
+
+  test 'json representation of exercise should contain the sandbox and access token in its description url' do
+    exercise = create :exercise
+
+    get exercise_url(exercise), params: { format: :json }
+
+    assert_response :success
+
+    exercise_json = JSON.parse response.body
+    description_url = exercise_json['description_url']
+
+    assert description_url.include?(Rails.configuration.sandbox_host)
+    assert description_url.include?(exercise.access_token)
+  end
 end

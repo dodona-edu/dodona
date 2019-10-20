@@ -19,7 +19,8 @@ export class FeedbackCodeTable {
 
     private initAnnotations(): void {
         for (const message of this.messages) {
-            const correspondingLine = this.table.querySelector(`#line-${message.row}`);
+            // Linter counts from 0, rouge counts from 1
+            const correspondingLine = this.table.querySelector(`#line-${message.row + 1}`);
             const annotationRow = this.createAnnotation(message, this.annotationCounter);
             message.id = this.annotationCounter;
             this.annotationCounter += 1;

@@ -24,12 +24,20 @@ export class FeedbackCodeTable {
             message.id = this.annotationCounter;
             this.annotationCounter += 1;
 
+            // Decide the location in the list of siblings where we should insert
+            // Skip over any previous annotations to conserve the order
             const parentElement = correspondingLine.parentElement;
             let sibling = correspondingLine.nextElementSibling;
-            while (sibling.classList.contains("annotation")) {
-                sibling = sibling.nextElementSibling;
+
+            // Sibling is either a line in the middle of the code or the last line
+            if (sibling === null) {
+                parentElement.appendChild(annotationRow);
+            } else {
+                while (sibling != null && sibling.classList.contains("annotation")) {
+                    sibling = sibling.nextElementSibling;
+                }
+                parentElement.insertBefore(annotationRow, sibling);
             }
-            parentElement.insertBefore(annotationRow, sibling);
         }
     }
 

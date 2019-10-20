@@ -45,7 +45,6 @@ Some gems (such as therubyracer) are not supported on Windows. However it is pos
 
 * Dodona itself must be run in WSL. The Ubuntu WSL distribution is known to work.
 * The database can be run in either Windows or WSL. If you run the database in Windows, you must change `host` from `localhost` to `127.0.0.1` (in `config/database.yml`). Otherwise Ruby will attempt to connect using sockets, which won't work.
-* Running exercises requires Docker.
 
 ### Docker
 

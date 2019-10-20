@@ -19,21 +19,20 @@
   .annotation {
 
     .annotation-text {
-      display: inline-block;
-      margin: 1px 0;
+      margin: 1px 5px 1px 10px;
       padding: 2px 5px;
       border-radius: 5px;
+      border: 2px solid @gray-lighter;
+      border-left-width: 3px;
+      background: @white-text;
     }
 
     .annotation-text.warning {
-      background-color: @red-400;
-      color: @white-text;
+      border-left-color: @red-400;
     }
 
     .annotation-text.info {
-      background-color: @blue-400;
-      color: @white-text;
+      border-left-color: @blue-400;
     }
-
   }
 }

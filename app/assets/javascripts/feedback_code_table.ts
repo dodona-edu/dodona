@@ -48,14 +48,15 @@ export class FeedbackCodeTable {
         annotationRow.setAttribute("id", `annotation-id-${lineId}`);
         annotationRow.classList.add(`annotation-line-${message.row}`);
 
-        const lineNumberOffset = document.createElement("td");
         const annotationLine = document.createElement("td");
-        annotationLine.setAttribute("class", "annotation-text");
-        annotationLine.classList.add(message.type);
+        annotationLine.setAttribute("colspan", "2");
 
-        annotationLine.innerHTML = message.text.replace(/-*$/, "");
+        const annotationCell = document.createElement("div");
+        annotationCell.innerHTML = message.text.replace(/-*$/, "");
+        annotationCell.setAttribute("class", "annotation-text");
+        annotationCell.classList.add(message.type);
 
-        annotationRow.appendChild(lineNumberOffset);
+        annotationLine.appendChild(annotationCell);
         annotationRow.appendChild(annotationLine);
         return annotationRow;
     }

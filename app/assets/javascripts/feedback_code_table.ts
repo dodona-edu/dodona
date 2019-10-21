@@ -52,9 +52,11 @@ export class FeedbackCodeTable {
         annotationLine.setAttribute("colspan", "2");
 
         const annotationCell = document.createElement("div");
-        annotationCell.innerHTML = message.text.replace(/-*$/, "");
+
+        const textNode = document.createTextNode(message.text.replace(/-*$/, ""));
         annotationCell.setAttribute("class", "annotation-text");
         annotationCell.classList.add(message.type);
+        annotationCell.appendChild(textNode);
 
         annotationLine.appendChild(annotationCell);
         annotationRow.appendChild(annotationLine);

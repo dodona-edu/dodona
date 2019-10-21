@@ -23,6 +23,7 @@ class FeedbackCodeRenderer
       @builder << ';'
 
       @builder << 'var feedbackCodeTable = new window.dodona.feedbackCodeTableClass(messages);'
+      @builder << 'window.dodona.feedbackCodeTable = feedbackCodeTable;'
     end
   end
 end

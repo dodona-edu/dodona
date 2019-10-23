@@ -88,11 +88,9 @@ if Rails.env.development?
 
   puts 'Create & clone judge'
 
-  pythia_judge = Judge.create name: 'pythia', image: 'dodona-anaconda3', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer
+  python_judge = Judge.create name: 'python', image: 'dodona-python', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer
 
   # Other judges
-
-  # biopythia-judge = Judge.create name: 'biopythia', image: 'dodona-biopythia', remote: 'git@github.com:dodona-edu/judge-biopythia.git', renderer: PythiaRenderer
 
   # prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.com:dodona-edu/judge-prolog.git', renderer: FeedbackTableRenderer
   # bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.com:dodona-edu/judge-bash.git', renderer: FeedbackTableRenderer
@@ -101,10 +99,10 @@ if Rails.env.development?
 
   puts 'Create & clone exercise repository'
 
-  exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: pythia_judge
+  exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
   exercise_repo.process_exercises
 
-  big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: pythia_judge
+  big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
 
   Dir.glob("#{big_exercise_repo.full_path}/*")
       .select {|f| File.directory? f}

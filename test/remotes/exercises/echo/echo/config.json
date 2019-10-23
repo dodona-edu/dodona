@@ -19,7 +19,7 @@
     "handler": "default"
   },
   "evaluation": {
-    "handler": "pythia",
+    "handler": "python",
     "pythia_judge": "output",
     "time_limit": 15,
     "memory_limit": 500000000

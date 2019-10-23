@@ -199,8 +199,10 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     # username colission
     omniauth_mock_user user, uid: first_user.username
 
-    get user_office365_omniauth_authorize_url
-    follow_redirect!
+    assert_emails 1 do
+      get user_office365_omniauth_authorize_url
+      follow_redirect!
+    end
 
     user.reload
     assert_redirected_to root_path

@@ -7,8 +7,9 @@
   // Override the normal pre padding & coloring
   pre {
     padding: 0;
-    background-color: @body-bg;
+    background-color: transparent;
     margin-bottom: 0;
+    border: none;
   }
 
   .rouge-gutter {
@@ -49,6 +50,10 @@
         border-left-color: @info-500;
       }
     }
+  }
+
+  .lineno.marked {
+    background-color: @accent-300;;
   }
 }
 

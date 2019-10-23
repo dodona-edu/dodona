@@ -57,12 +57,11 @@ function initSubmissionShow() {
                 $("#element").addClass("tab-link-marker");
             }
             if (line !== undefined) {
-                const Range = ace.require("ace/range").Range;
-                const editor = ace.edit("editor-result");
-                if (typeof currentMarkerId !== "undefined") {
-                    editor.getSession().removeMarker(currentMarkerId);
-                }
-                currentMarkerId = editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line", false);
+                // Reset
+                $(".feedback-code-table tr.lineno.marked").removeClass("marked");
+
+                // Mark
+                $(`.feedback-code-table tr.lineno#line-${line}`).addClass("marked");
             }
             return false;
         });

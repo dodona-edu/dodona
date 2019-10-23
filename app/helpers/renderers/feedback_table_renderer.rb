@@ -34,6 +34,7 @@ class FeedbackTableRenderer
           end
         end
         tabs(@submission)
+        init_js
       end.html_safe
     else
       @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
@@ -277,6 +278,12 @@ class FeedbackTableRenderer
         lexer = (Rouge::Lexer.find(m[:format].downcase) || Rouge::Lexers::PlainText).new
         @builder << formatter.format(lexer.lex(m[:description]))
       end
+    end
+  end
+
+  def init_js
+    @builder.script do
+      @builder << 'dodona.initSubmissionShow();'
     end
   end
 

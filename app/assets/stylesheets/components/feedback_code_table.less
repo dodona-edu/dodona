@@ -24,35 +24,37 @@
 
   background-color: @body-bg;
 
-  .annotation {
-    .user-select(none);
+  .annotation-set {
+    .annotation-cell {
+      .annotation {
+        .user-select(none);
 
-    .annotation-text {
-      margin: 1px 5px 1px 10px;
-      padding: 2px 10px;
-      border-radius: 0 5px 5px 0;
-      border: 2px solid @hairlinegray;
-      border-left-width: 3px;
-      background: @content-bg;
-    }
+        margin: 1px 5px 1px 10px;
+        padding: 2px 10px;
+        border-radius: 0 5px 5px 0;
+        border: 2px solid @hairlinegray;
+        border-left-width: 3px;
+        background: @content-bg;
+      }
 
-    .annotation-text.error {
-      border-left-color: @danger-500;
-    }
+      .annotation.error {
+        border-left-color: @danger-500;
+      }
 
-    .annotation-text.warning {
-      border-left-color: @warning-500;
-    }
+      .annotation.warning {
+        border-left-color: @warning-500;
+      }
 
-    .annotation-text.info {
-      border-left-color: @info-500;
+      .annotation.info {
+        border-left-color: @info-500;
+      }
     }
   }
 }
 
 // Mixin such that this could be reused.
 // TODO: Move to utility css file?
-.user-select(@option){
+.user-select(@option) {
   user-select: @option;
   -moz-user-select: @option;
   -webkit-user-select: @option;

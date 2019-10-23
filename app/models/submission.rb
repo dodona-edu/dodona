@@ -336,6 +336,13 @@ class Submission < ApplicationRecord
   def report_if_internal_error
     return unless status_changed? && send(:"internal error?")
 
-    ExceptionNotifier.notify_exception(Exception.new("Submission(#{id}) status was changed to internal error"), data: { host: `hostname`, submission: self })
+    ExceptionNotifier.notify_exception(
+      Exception.new("Submission(#{id}) status was changed to internal error"),
+      data: {
+        host: `hostname`,
+        submission: inspect,
+        url: Rails.application.routes.url_helpers.submission_url('en', self, host: Rails.application.config.default_host)
+      }
+    )
   end
 end

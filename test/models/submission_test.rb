@@ -264,7 +264,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'update to internal error should send exception notification' do
     submission = create :submission
-    ExceptionNotifier.expects(:notify_exception)
+    ExceptionNotifier.expects(:notify_exception).with { |_e, data| data[:data][:url].present? }
     submission.update(status: :"internal error")
   end
 end

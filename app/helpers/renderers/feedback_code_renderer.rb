@@ -22,8 +22,9 @@ class FeedbackCodeRenderer
       @builder << @messages.map { |o| Hash[o.each_pair.to_a] }.to_json
       @builder << ';'
 
-      @builder << 'var feedbackCodeTable = new window.dodona.feedbackCodeTableClass(messages);'
+      @builder << 'var feedbackCodeTable = new window.dodona.feedbackCodeTableClass();'
       @builder << 'window.dodona.feedbackCodeTable = feedbackCodeTable;'
+      @builder << 'feedbackCodeTable.initAnnotations(messages);'
     end
   end
 end

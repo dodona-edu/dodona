@@ -4,20 +4,16 @@ export class FeedbackCodeTable {
 
     annotationCounter: number = 0;
 
-    constructor(messages, feedbackTableSelector = ".feedback-code-table") {
+    constructor(feedbackTableSelector = ".feedback-code-table") {
         this.table = document.querySelector(feedbackTableSelector);
 
         if (this.table === null) {
             console.error("The feedback table could not be found");
-            return;
         }
-
-        this.messages = messages;
-
-        this.initAnnotations();
     }
 
-    private initAnnotations(): void {
+    private initAnnotations(messages: object[]): void {
+        this.messages = messages;
         for (const message of this.messages) {
             // Linter counts from 0, rouge counts from 1
             const correspondingLine = this.table.querySelector(`#line-${message.row + 1}`);

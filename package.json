@@ -35,7 +35,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jest": "^22.20.0",
     "jest": "^24.9.0",
-    "jest-junit": "^8.0.0",
+    "jest-junit": "^9.0.0",
     "ts-jest": "^24.1.0",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "3.8.2"

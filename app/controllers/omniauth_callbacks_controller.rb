@@ -121,6 +121,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def redirect_with_errors!(user)
+    logger.info "User was unable to login because of reason: '#{user.errors.full_messages.to_sentence}'. More info about the request below:\n" \
+      "#{oauth_hash.pretty_inspect}"
+
+    ApplicationMailer.with(authinfo: oauth_hash, errors: user.errors.inspect)
+                     .user_unable_to_log_in
+                     .deliver_later
+
     if is_navigational_format?
       set_flash_message \
         :notice,
@@ -171,7 +178,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{oauth_hash.pretty_inspect}" \
       "#{errors}"
 
-    ApplicationMailer.with(authinfo: oauth_hash, errors: errors)
+    ApplicationMailer.with(authinfo: oauth_hash, errors: errors.inspect)
                      .institution_creation_failed
                      .deliver_later
   end

@@ -11,7 +11,7 @@ export class FeedbackCodeTable {
         }
     }
 
-    private initAnnotations(messages: object[]): void {
+    initAnnotations(messages: object[]): void {
         this.messages = messages;
         for (const message of this.messages) {
             // Linter counts from 0, rouge counts from 1

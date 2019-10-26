@@ -10,7 +10,7 @@ beforeEach(() => {
 
 test("create feedback table with default settings", () => {
     const feedbackCodeTable = new FeedbackCodeTable();
-    feedbackCodeTable.initAnnotations([
+    feedbackCodeTable.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
         { "text": "Value could be assigned", "row": 2, "type": "warning" },
@@ -21,7 +21,7 @@ test("create feedback table with default settings", () => {
 
 test("feedback table should support more than 1 annotation per row (first and last row)", () => {
     const feedbackCodeTable = new FeedbackCodeTable();
-    feedbackCodeTable.initAnnotations([
+    feedbackCodeTable.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
@@ -35,7 +35,7 @@ test("feedback table should support more than 1 annotation per row (first and la
 
 test("annotation types should be transmitted into the view", () => {
     const feedbackCodeTable = new FeedbackCodeTable();
-    feedbackCodeTable.initAnnotations([
+    feedbackCodeTable.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 1, "type": "warning" },
         { "text": "Division by zero", "row": 2, "type": "error" },

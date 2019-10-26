@@ -31,8 +31,7 @@
   .annotation-set {
     .annotation-cell {
       .annotation {
-        .user-select(none);
-
+        user-select: none;
         margin: 1px 5px 1px 10px;
         padding: 2px 10px;
         border-radius: 0 5px 5px 0;
@@ -60,11 +59,3 @@
   }
 }
 
-// Mixin such that this could be reused.
-// TODO: Move to utility css file?
-.user-select(@option) {
-  user-select: @option;
-  -moz-user-select: @option;
-  -webkit-user-select: @option;
-  -ms-user-select: @option;
-}

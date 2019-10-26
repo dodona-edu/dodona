@@ -1,19 +1,39 @@
+class Message {
+    type: string;
+    text: string;
+    row: number;
+
+    constructor(jsonS: object) {
+        this.type = jsonS["type"];
+        this.text = jsonS["text"];
+        this.row = jsonS["row"];
+    }
+}
+
 export class FeedbackCodeTable {
     table: Element;
-    messages;
+    messages: Message[];
     annotationCounter: number = 0;
+
+    private markingClass: string = "marked";
 
     constructor(feedbackTableSelector = ".feedback-code-table") {
         this.table = document.querySelector(feedbackTableSelector);
+        this.messages = [];
 
         if (this.table === null) {
             console.error("The feedback table could not be found");
         }
     }
 
-    initAnnotations(messages: object[]): void {
-        this.messages = messages;
-        for (const message of this.messages) {
+    addAnnotations(messages: object[]): void {
+        const newMessages: Message[] = [];
+        for (const message of messages) {
+            newMessages.push(new Message(message));
+        }
+        this.messages.push(...newMessages);
+
+        for (const message of newMessages) {
             // Linter counts from 0, rouge counts from 1
             const correspondingLine = this.table.querySelector(`#line-${message.row + 1}`);
             const annotationRow = this.createAnnotation(message);
@@ -38,7 +58,7 @@ export class FeedbackCodeTable {
         };
     }
 
-    private createAnnotation(message): Element {
+    private createAnnotation(message: Message): HTMLTableRowElement {
         let annotationRow: HTMLTableRowElement = this.table.querySelector(`#annotation-row-id-${message.row}`);
         let annotationTD: HTMLTableDataCellElement = null;
 
@@ -61,5 +81,19 @@ export class FeedbackCodeTable {
 
         annotationTD.appendChild(annotationCell);
         return annotationRow;
+    }
+
+    unmarkAllAnnotations(): void {
+        const markedAnnotations = this.table.querySelectorAll(`.tr.lineno.${this.markingClass}`);
+        markedAnnotations.forEach(markedAnnotation => {
+            markedAnnotation.classList.remove(this.markingClass);
+        });
+    }
+
+    setMarkedAnnotations(lineNr: number): void {
+        this.unmarkAllAnnotations();
+
+        const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
+        toMarkAnnotationRow.classList.add(this.markingClass);
     }
 }

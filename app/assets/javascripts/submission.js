@@ -57,11 +57,7 @@ function initSubmissionShow() {
                 $("#element").addClass("tab-link-marker");
             }
             if (line !== undefined) {
-                // Reset
-                $(".feedback-code-table tr.lineno.marked").removeClass("marked");
-
-                // Mark
-                $(`.feedback-code-table tr.lineno#line-${line}`).addClass("marked");
+                dodona.feedbackCodeTable.setMarkedAnnotations(line);
             }
             return false;
         });

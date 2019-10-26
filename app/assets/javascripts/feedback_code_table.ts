@@ -1,24 +1,26 @@
 class Message {
+    id: number;
+
     type: string;
     text: string;
     row: number;
 
-    constructor(jsonS: object) {
+    constructor(jsonS: object, id: number) {
         this.type = jsonS["type"];
         this.text = jsonS["text"];
         this.row = jsonS["row"];
+        this.id = id;
     }
 }
 
 export class FeedbackCodeTable {
-    table: Element;
+    table: HTMLTableElement;
     messages: Message[];
-    annotationCounter: number = 0;
 
     private markingClass: string = "marked";
 
-    constructor(feedbackTableSelector = ".feedback-code-table") {
-        this.table = document.querySelector(feedbackTableSelector);
+    constructor(feedbackTableSelector = "table.feedback-code-table") {
+        this.table = document.querySelector(feedbackTableSelector) as HTMLTableElement;
         this.messages = [];
 
         if (this.table === null) {
@@ -28,52 +30,41 @@ export class FeedbackCodeTable {
 
     addAnnotations(messages: object[]): void {
         const newMessages: Message[] = [];
+        let idOffset: number = this.messages.length;
         for (const message of messages) {
-            newMessages.push(new Message(message));
+            newMessages.push(new Message(message, idOffset + 1));
+            idOffset += 1;
         }
         this.messages.push(...newMessages);
 
         for (const message of newMessages) {
             // Linter counts from 0, rouge counts from 1
-            const correspondingLine = this.table.querySelector(`#line-${message.row + 1}`);
-            const annotationRow = this.createAnnotation(message);
-
-            correspondingLine.parentElement.insertBefore(annotationRow, correspondingLine.nextSibling);
+            const correspondingLine: HTMLTableRowElement = this.table.querySelector(`#line-${message.row + 1}`);
+            this.createAnnotation(message, correspondingLine.rowIndex + 1, message.row + 1);
         }
     }
 
-    private createAnnotationRow(lineNumber: number): object {
-        const annotationRow: HTMLTableRowElement = document.createElement("tr");
+    private createAnnotationRow(lineNumber: number, rougeRow: number): HTMLTableRowElement {
+        const annotationRow: HTMLTableRowElement = this.table.insertRow(lineNumber);
         annotationRow.setAttribute("class", "annotation-set");
-        annotationRow.setAttribute("id", `annotation-row-id-${lineNumber}`);
-
-        const annotationTD: HTMLTableDataCellElement = document.createElement("td");
+        annotationRow.setAttribute("id", `annotation-row-id-${rougeRow}`);
+        const annotationTD: HTMLTableDataCellElement = annotationRow.insertCell();
         annotationTD.setAttribute("colspan", "2");
         annotationTD.setAttribute("class", "annotation-cell");
-
-        annotationRow.appendChild(annotationTD);
-        return {
-            "row": annotationRow,
-            "datacell": annotationTD,
-        };
+        return annotationRow;
     }
 
-    private createAnnotation(message: Message): HTMLTableRowElement {
-        let annotationRow: HTMLTableRowElement = this.table.querySelector(`#annotation-row-id-${message.row}`);
-        let annotationTD: HTMLTableDataCellElement = null;
-
+    private createAnnotation(message: Message, tableIndex: number, rougeRow: number): HTMLTableRowElement {
+        let annotationRow: HTMLTableRowElement = this.table.querySelector(`#annotation-row-id-${message.row + 1}`);
         if (annotationRow === null) {
-            const created: object = this.createAnnotationRow(message.row);
-            annotationRow = created["row"];
-            annotationTD = created["datacell"];
-        } else {
-            annotationTD = annotationRow.firstChild as HTMLTableDataCellElement;
+            annotationRow = this.createAnnotationRow(tableIndex, rougeRow);
         }
+
+        const annotationTD: HTMLTableDataCellElement = annotationRow.firstChild as HTMLTableDataCellElement;
 
         const annotationCell: HTMLDivElement = document.createElement("div");
         annotationCell.setAttribute("class", "annotation");
-        annotationCell.setAttribute("id", `annotation-id-${this.annotationCounter}`);
-        this.annotationCounter += 1;
+        annotationCell.setAttribute("id", `annotation-id-${message.id}`);
 
         const textNode: Text = document.createTextNode(message.text.replace(/-*$/, ""));
         annotationCell.classList.add(message.type);

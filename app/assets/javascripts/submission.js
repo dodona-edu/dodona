@@ -2,8 +2,6 @@
 import { logToGoogle } from "util.js";
 
 function initSubmissionShow() {
-    let currentMarkerId;
-
     function init() {
         initDiffSwitchButtons();
         initTabLinks();

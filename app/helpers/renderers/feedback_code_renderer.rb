@@ -2,10 +2,10 @@ class FeedbackCodeRenderer
   require 'json'
 
   def initialize(code, programming_language, messages, builder)
-    @programming_language = programming_language
     @code = code
-    @builder = builder
+    @programming_language = programming_language
     @messages = messages
+    @builder = builder
   end
 
   def parse

@@ -1,16 +1,9 @@
-class Message {
-    id: number;
+interface Message {
+    id?: number;
 
     type: string;
     text: string;
     row: number;
-
-    constructor(jsonS: object, id: number) {
-        this.type = jsonS["type"];
-        this.text = jsonS["text"];
-        this.row = jsonS["row"];
-        this.id = id;
-    }
 }
 
 export class FeedbackCodeTable {
@@ -28,19 +21,15 @@ export class FeedbackCodeTable {
         }
     }
 
-    addAnnotations(messages: object[]): void {
-        const newMessages: Message[] = [];
+    addAnnotations(messages: Message[]): void {
         let idOffset: number = this.messages.length;
         for (const message of messages) {
-            newMessages.push(new Message(message, idOffset + 1));
+            message.id = idOffset + 1;
             idOffset += 1;
-        }
-        this.messages.push(...newMessages);
-
-        for (const message of newMessages) {
             // Linter counts from 0, rouge counts from 1
             const correspondingLine: HTMLTableRowElement = this.table.querySelector(`#line-${message.row + 1}`);
             this.createAnnotation(message, correspondingLine.rowIndex + 1, message.row + 1);
+            this.messages.push(message);
         }
     }
 
@@ -74,15 +63,15 @@ export class FeedbackCodeTable {
         return annotationRow;
     }
 
-    unmarkAllAnnotations(): void {
+    clearHighlights(): void {
         const markedAnnotations = this.table.querySelectorAll(`.tr.lineno.${this.markingClass}`);
         markedAnnotations.forEach(markedAnnotation => {
             markedAnnotation.classList.remove(this.markingClass);
         });
     }
 
-    setMarkedAnnotations(lineNr: number): void {
-        this.unmarkAllAnnotations();
+    highlightLine(lineNr: number): void {
+        this.clearHighlights();
 
         const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
         toMarkAnnotationRow.classList.add(this.markingClass);

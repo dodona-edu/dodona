@@ -55,7 +55,7 @@ function initSubmissionShow() {
                 $("#element").addClass("tab-link-marker");
             }
             if (line !== undefined) {
-                dodona.feedbackCodeTable.setMarkedAnnotations(line);
+                dodona.feedbackCodeTable.highlightLine(line);
             }
             return false;
         });

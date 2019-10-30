@@ -4,9 +4,6 @@
   overflow-x: auto;
   white-space: nowrap;
 
-  padding-top: 5px;
-  padding-bottom: 5px;
-
   // Override the normal pre padding & coloring
   pre {
     padding: 0;
@@ -15,11 +12,29 @@
     border: none;
   }
 
+  .lineno:first-child {
+    .rouge-code, .rouge-gutter{
+      padding-top: 5px;
+    }
+  }
+
+  .lineno:last-child {
+    .rouge-code, .rouge-gutter{
+      padding-bottom: 5px;
+    }
+  }
+
+  .rouge-code {
+    padding-left: 5px;
+  }
+
   .rouge-gutter {
     min-width: 30px;
     width: 1%;
     padding-right: 10px;
     padding-left: 10px;
+
+    background-color: @gray-lighter;
 
     pre {
       color: @gray-light
@@ -32,10 +47,10 @@
     .annotation-cell {
       .annotation {
         user-select: none;
-        margin: 1px 5px 1px 10px;
+        margin: 3px 5px 3px 10px;
         padding: 2px 10px;
         border-radius: 0 5px 5px 0;
-        border: 2px solid @hairlinegray;
+        border: 1px solid @hairlinegray;
         border-left-width: 3px;
         background: @content-bg;
       }
@@ -55,7 +70,7 @@
   }
 
   .lineno.marked {
-    background-color: @yellow-400;
+    background-color: @warning-500;
   }
 }
 

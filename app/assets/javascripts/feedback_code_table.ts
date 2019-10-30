@@ -37,8 +37,9 @@ export class FeedbackCodeTable {
         const annotationRow: HTMLTableRowElement = this.table.insertRow(lineNumber);
         annotationRow.setAttribute("class", "annotation-set");
         annotationRow.setAttribute("id", `annotation-row-id-${rougeRow}`);
+        const gutterTD: HTMLTableDataCellElement = annotationRow.insertCell();
+        gutterTD.setAttribute("class", "rouge-gutter gl");
         const annotationTD: HTMLTableDataCellElement = annotationRow.insertCell();
-        annotationTD.setAttribute("colspan", "2");
         annotationTD.setAttribute("class", "annotation-cell");
         return annotationRow;
     }
@@ -49,7 +50,7 @@ export class FeedbackCodeTable {
             annotationRow = this.createAnnotationRow(tableIndex, rougeRow);
         }
 
-        const annotationTD: HTMLTableDataCellElement = annotationRow.firstChild as HTMLTableDataCellElement;
+        const annotationTD: HTMLTableDataCellElement = annotationRow.lastChild as HTMLTableDataCellElement;
 
         const annotationCell: HTMLDivElement = document.createElement("div");
         annotationCell.setAttribute("class", "annotation");

@@ -29,7 +29,7 @@
       <div class="card-supporting-text">
         <% if current_user && current_user.course_admin?(@course) %>
           <% actions = []
-             actions << {icon: 'replay', text: t(".reevaluate_submissions"), confirm: t(".confirm_reevaluate_submissions"), action: mass_rejudge_submissions_path(user_id: @user&.id, exercise_id: @exercise&.id, course_id: @course&.id, series_id: @series&.id)} if policy(Submission).mass_rejudge?
+             actions << {icon: 'replay', text: t(".reevaluate_submissions"), confirm: t(".confirm_reevaluate_submissions"), action: mass_rejudge_submissions_path(user_id: @user&.id, exercise_id: @exercise&.id, course_id: @course&.id, series_id: @series&.id, judge_id: @judge&.id)} if policy(Submission).mass_rejudge?
              actions << {icon: 'done', text: t('.most_recent_correct'), search: {most_recent_correct_per_user: true}} if @exercise
           %>
           <%= render partial: 'layouts/searchbar', locals: {actions: actions, course_labels: @course_labels, statuses: Submission.statuses.keys} %>

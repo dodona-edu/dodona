@@ -6,7 +6,7 @@ class ExportController < ApplicationController
     @series = Series.find(params[:id])
     @export = Export.new(item: @series, users: ([@user] if @user))
     authorize(@export)
-    @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, series_path(@series)]]
+    @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, series_path(@series)], [I18n.t('export.title'), '#']]
     @data = { list: @series.exercises,
               course: @series.course,
               summary: SeriesSummary.new(user: @user || current_user, series: @series, exercises: @series.exercises),
@@ -21,7 +21,7 @@ class ExportController < ApplicationController
     @course = Course.find(params[:id])
     @export = Export.new(item: @course, users: ([@user] if @user))
     authorize(@export)
-    @crumbs = [[@course.name, course_path(@course)]]
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('export.title'), '#']]
     @data = { list: policy_scope(@course.series),
               choose_step_text: t('export.download_submissions.choose_series'),
               table_header_type: t('export.download_submissions.series') }
@@ -33,7 +33,7 @@ class ExportController < ApplicationController
     @user = User.find(params[:id])
     @export = Export.new(item: @user)
     authorize(@export)
-    @crumbs = [[@user.full_name, user_path(@user)]]
+    @crumbs = [[@user.full_name, user_path(@user)], [I18n.t('export.title'), '#']]
     @data = { list: @user.courses,
               choose_step_text: t('export.download_submissions.choose_courses'),
               table_header_type: t('export.download_submissions.course') }

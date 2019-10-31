@@ -1,5 +1,6 @@
 en:
   export:
+    title: "Export"
     download_submissions:
       title: Download submissions
       choose_exercises: From which exercises do you want to download submissions?
@@ -8,16 +9,18 @@ en:
       next_step: Next step
       start_download: Start download
       choose_options: Select any extra options you wish to apply to your download.
-      only_last_submission_label: Only include the last submission?
-      only_last_submission_label_help: If checked, only the last submission from a student for an exercise will be included. Otherwise, all submissions will be downloaded.
-      deadline_label: Take the deadline into account?
-      deadline_label_help: If checked, only submissions before the deadline will be downloaded. Otherwise, submissions sent in after the deadline will also be present.
-      group_submissions_label: How to group submissions in the download?
-      group_by_student_help: Result contains a folder per student containing their submission(s) per exercise.
-      group_by_exercise_help: Result contains a folder per exercise containing the submission(s) per student.
-      all_students_label: Include all students in the download?
-      all_students_label_help: If checked, even students without submissions (for an exercise or in general) will be included in the folder.
-      with_info_label: Include an informative CSV-file in the download?
+      only_last_submission_label: Include only the most recent submission for each exercise
+      only_last_submission_label_help: Only the most recent submission of each student will be present (for each exercise). If this option is combined with the option below the last submission before the deadline is selected.
+      deadline_label: Only include submissions before the deadline
+      deadline_label_help: Only submissions made before the deadline are included. If a series doesn't have a deadline this option is ignored.
+      group_submissions_label: How should the submissions be organized?
+      group_by_student: By student
+      group_by_student_help: Result contains a folder per student containing their submissions per exercise.
+      group_by_exercise: By exercise
+      group_by_exercise_help: Result contains a folder per exercise containing the submissions per student.
+      all_students_label: Include students that never submitted
+      all_students_label_help: These students will have empty folders in the resulting ZIP-file and will be mentioned in the CSV file (if requested).
+      with_info_label: Include an informative CSV-file
       with_info_label_help: The result will contain a CSV-file with information about the students, the exercises and the submissions.
       exercise: Exercise
       course: Course

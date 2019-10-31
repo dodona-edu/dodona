@@ -13,6 +13,13 @@ function initSelection() {
     function init() {
         initCheckboxes();
         initContinueButton();
+
+        $choosePanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $chooseOptionsPanel.find(".panel-collapse").collapse("hide");
+        });
+        $chooseOptionsPanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $choosePanel.find(".panel-collapse").collapse("hide");
+        });
     }
 
     function filteredCheckboxes() {
@@ -52,9 +59,10 @@ function initSelection() {
                 $errorWrapper.addClass("hidden");
                 $choosePanel.find(".panel-collapse").collapse("hide");
                 $chooseOptionsPanel.removeClass("hidden");
+                $chooseOptionsPanel.find(".panel-collapse").collapse("show");
                 $form.attr("action", formUrl);
             } else {
-                $choosePanel.find(".panel-collapse").addClass("in");
+                $choosePanel.find(".panel-collapse").collapse("show");
                 $chooseOptionsPanel.addClass("hidden");
                 $errorWrapper.removeClass("hidden");
                 $("#warning-message-wrapper").html(I18n.t("js.no_selection"));
@@ -66,3 +74,4 @@ function initSelection() {
 }
 
 export { initSelection };
+

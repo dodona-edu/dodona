@@ -14,17 +14,17 @@
       </div>
     </div>
 
-    <div id="stepper" class="panel-group stepper" role="tablist">
+    <div id="stepper" class="panel-group stepper" role="tablist" aria-multiselectable="true">
       <div id="choose-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">1</span>
-            <a role="button" data-toggle="collapse" href="#choose-step">
+            <a role="button" data-toggle="collapse" data-parent="#stepper" href="#choose-step"  aria-controls="collapseOne">
               <%= @data[:choose_step_text] %>
             </a>
           </h4>
         </div>
-        <div id="choose-step" class="panel-collapse collapse in" role="tabpanel">
+        <div id="choose-step" class="panel-collapse collapse in" role="tabpanel" aria-expanded="true">
           <div class="panel-body">
             <div class="stepper-part">
               <%= render partial: 'selection_table', locals: { data: @data } %>
@@ -36,89 +36,55 @@
         </div>
       </div>
 
-      <%= form_with class: "form-horizontal", id: "download_submissions" do |form| %>
-        <div id="choose-options-panel" class="panel panel-default hidden">
-          <div class="panel-heading" role="tab">
-            <h4 class="panel-title">
-              <span class="step-circle">2</span>
-              <a role="button" data-toggle="collapse" href="#choose-options-step" id="show-panel">
-                <%= t('.choose_options') %>
-              </a>
-            </h4>
-          </div>
-          <div id="choose-options-step" class="panel-collapse collapse in" role="tabpanel">
-            <div class="panel-body">
-              <div class="stepper-part">
+      <div id="choose-options-panel" class="panel panel-default hidden">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">2</span>
+            <a role="button" data-toggle="collapse" data-parent="#stepper" href="#choose-options-step" id="show-panel" aria-controls="collapseOne">
+              <%= t('.choose_options') %>
+            </a>
+          </h4>
+        </div>
+        <div id="choose-options-step" class="panel-collapse collapse" role="tabpanel" aria-expanded="false">
+          <div class="panel-body">
+            <div class="stepper-part">
+              <%= form_with class: "form-horizontal", id: "download_submissions" do |form| %>
                 <input type="hidden" id="all_submissions" name="all" value="false">
-                <div class="form-group">
-                  <strong class="col-xs-12"><%= t '.only_last_submission_label' %></strong>
-                </div>
-                <div class="field form-group">
-                  <div class="col-sm-6 col-sm-offset-3">
-                    <input type="checkbox" checked value="true" name="only_last_submission">
-                  </div>
-                  <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.only_last_submission_label_help' %></span>
-                </div>
-                <div class="form-group">
-                  <strong class="col-xs-12"><%= t '.deadline_label' %></strong>
-                </div>
-                <div class="field form-group">
-                  <div class="col-sm-6 col-sm-offset-3">
-                    <input type="checkbox" checked value="true" name="deadline">
-                  </div>
-                  <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.deadline_label_help' %></span>
-                </div>
+                <%= render partial: 'option', locals: { name: 'only_last_submission', explanation: t('.only_last_submission_label'), details: t('.only_last_submission_label_help') } %>
+                <%= render partial: 'option', locals: { name: 'deadline', explanation: t('.deadline_label'), details: t('.deadline_label_help') } %>
                 <% if @user.present? %> 
                   <input type="hidden" name="user_id" value="<%= @user.id %>">
                   <input type="hidden" name="group_by" value="personal">
                 <% else %>
                   <div class="form-group">
-                    <strong class="col-xs-12"><%= t '.group_submissions_label' %></strong>
+                    <strong class="col-sm-6 col-sm-offset-3"><%= t '.group_submissions_label' %></strong>
                   </div>
                   <div class="field form-group">
                     <div class="col-sm-6 col-sm-offset-3">
-                        <input type="radio" name="group_by" checked value="user">
+                        <input type="radio" id="group_by_student" name="group_by" checked value="user">
+                        <label class="checkbox-label" for="group_by_student"><%= t '.group_by_student' %>
                     </div>
                     <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.group_by_student_help' %></span>
                     <div class="col-sm-6 col-sm-offset-3">
-                        <input type="radio" name="group_by" value="exercise">
+                        <input type="radio"  id="group_by_exercise" name="group_by" value="exercise">
+                        <label class="checkbox-label" for="group_by_exercise"><%= t '.group_by_exercise' %>
                     </div>
                     <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.group_by_exercise_help' %></span>
                   </div>
-
-                  <div class="form-group">
-                    <strong class="col-xs-12"><%= t '.all_students_label' %></strong>
-                  </div>
-                  <div class="field form-group">
-                    <div class="col-sm-6 col-sm-offset-3">
-                      <input type="checkbox" checked value="true" name="all_students">
-                    </div>
-                    <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.all_students_label_help' %></span>
-                  </div>
+                  <%= render partial: 'option', locals: { name: 'all_students', explanation: t('.all_students_label'), details: t('.all_students_label_help') } %>
                 <% end %>
-                
-                <div class="form-group">
-                  <strong class="col-xs-12"><%= t '.with_info_label' %></strong>
-                </div>
-                <div class="field form-group">
-                  <div class="col-sm-6 col-sm-offset-3">
-                    <input type="checkbox" value="true" name="with_info">
-                  </div>
-                  <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.with_info_label_help' %></span>
-                </div>
-                
-              </div>
-              <div class="stepper-actions stepper-border">
-                <button type="submit" form="download_submissions" class="btn btn-text btn-primary"><%= t('.start_download') %></button>
-              </div>
+                <%= render partial: 'option', locals: { name: 'with_info', explanation: t('.with_info_label'), details: t('.with_info_label_help') } %>
+              <% end %>
+            </div>
+            <div class="stepper-actions stepper-border">
+              <button type="submit" form="download_submissions" class="btn btn-text btn-primary"><%= t('.start_download') %></button>
             </div>
           </div>
         </div>
-      <% end %>
-
+      </div>
     </div>
   </div>
 </div>
 <script type="text/javascript">
-    $(dodona.initSelection());
+    $(dodona.initSelection);
 </script>

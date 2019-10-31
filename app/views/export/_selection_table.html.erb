@@ -2,7 +2,7 @@
   <table class="table table-index table-resource copy-table">
     <thead>
     <tr>
-      <th>
+      <th class="col-md-1">
         <input type="checkbox" id="check-all">
       </th>
       <th>
@@ -21,7 +21,7 @@
     <% data[:list].each_with_index do |el, index| %>
       <% if policy(el).show? %>
         <tr>
-          <td>
+          <td class="col-md-1">
             <input type="checkbox" class="selection-checkbox" value="<%= el.id %>">
           </td>
           <td>

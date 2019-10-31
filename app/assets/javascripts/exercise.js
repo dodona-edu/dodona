@@ -138,8 +138,10 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         $("#submission-copy-btn").click(function () {
-            const submissionSource = ace.edit("editor-result").getValue();
-            editor.setValue(submissionSource, 1);
+            const submissionCode = [];
+            document.querySelectorAll(".lineno .rouge-code")
+                .forEach( codeLine => submissionCode.push(codeLine.textContent));
+            editor.setValue(submissionCode.join(""), 1);
             $("#exercise-handin-link").tab("show");
         });
 

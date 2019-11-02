@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_time_zone_offset
 
+  before_action :prepare_exception_notifier
+
   impersonates :user
 
   def after_sign_in_path_for(_resource)
@@ -150,5 +152,12 @@ class ApplicationController < ActionController::Base
 
   def set_time_zone_offset
     @time_zone_offset = Time.zone.now.utc_offset / -60
+  end
+
+  def prepare_exception_notifier
+    request.env['exception_notifier.exception_data'] = {
+      uuid: request.uuid,
+      user: current_user&.id
+    }
   end
 end

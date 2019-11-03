@@ -138,10 +138,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         $("#submission-copy-btn").click(function () {
-            const submissionCode = [];
-            document.querySelectorAll(".lineno .rouge-code")
-                .forEach( codeLine => submissionCode.push(codeLine.textContent));
-            editor.setValue(submissionCode.join(""), 1);
+            dodona.feedbackCodeTable.setSubmissionEditorCode(editor);
             $("#exercise-handin-link").tab("show");
         });
 

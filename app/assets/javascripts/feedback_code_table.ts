@@ -77,4 +77,11 @@ export class FeedbackCodeTable {
         const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
         toMarkAnnotationRow.classList.add(this.markingClass);
     }
+
+    setSubmissionEditorCode(editor): void {
+        const submissionCode = [];
+        document.querySelectorAll(".lineno .rouge-code")
+            .forEach( codeLine => submissionCode.push(codeLine.textContent));
+        editor.setValue(submissionCode.join(""), 1);
+    }
 }

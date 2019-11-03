@@ -6,18 +6,18 @@ interface Message {
     row: number;
 }
 
-export class FeedbackCodeTable {
-    table: HTMLTableElement;
-    messages: Message[];
+export class CodeListing {
+    private readonly table: HTMLTableElement;
+    private messages: Message[];
 
-    private markingClass: string = "marked";
+    private readonly markingClass: string = "marked";
 
-    constructor(feedbackTableSelector = "table.feedback-code-table") {
+    constructor(feedbackTableSelector = "table.code-listing") {
         this.table = document.querySelector(feedbackTableSelector) as HTMLTableElement;
         this.messages = [];
 
         if (this.table === null) {
-            console.error("The feedback table could not be found");
+            console.error("The code listing could not be found");
         }
     }
 
@@ -72,16 +72,14 @@ export class FeedbackCodeTable {
     }
 
     highlightLine(lineNr: number): void {
-        this.clearHighlights();
-
         const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
         toMarkAnnotationRow.classList.add(this.markingClass);
     }
 
-    setSubmissionEditorCode(editor): void {
+    getCode(): string {
         const submissionCode = [];
         document.querySelectorAll(".lineno .rouge-code")
             .forEach( codeLine => submissionCode.push(codeLine.textContent));
-        editor.setValue(submissionCode.join(""), 1);
+        return submissionCode.join("");
     }
 }

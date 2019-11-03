@@ -1,5 +1,5 @@
 import { initSubmissionShow } from "submission.js";
-import { FeedbackCodeTable } from "feedback_code_table";
+import { CodeListing } from "../../assets/javascripts/code_listing";
 
 window.dodona.initSubmissionShow = initSubmissionShow;
-window.dodona.feedbackCodeTableClass = FeedbackCodeTable;
+window.dodona.codeListingClass = CodeListing;

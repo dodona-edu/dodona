@@ -138,8 +138,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         $("#submission-copy-btn").click(function () {
-            const submissionSource = ace.edit("editor-result").getValue();
-            editor.setValue(submissionSource, 1);
+            const codeString = dodona.codeListing.getCode();
+            editor.setValue(codeString, 1);
             $("#exercise-handin-link").tab("show");
         });
 

@@ -1,9 +1,6 @@
-/* globals ace */
 import { logToGoogle } from "util.js";
 
 function initSubmissionShow() {
-    let currentMarkerId;
-
     function init() {
         initDiffSwitchButtons();
         initTabLinks();
@@ -57,12 +54,8 @@ function initSubmissionShow() {
                 $("#element").addClass("tab-link-marker");
             }
             if (line !== undefined) {
-                const Range = ace.require("ace/range").Range;
-                const editor = ace.edit("editor-result");
-                if (typeof currentMarkerId !== "undefined") {
-                    editor.getSession().removeMarker(currentMarkerId);
-                }
-                currentMarkerId = editor.getSession().addMarker(new Range(line - 1, 0, line, 0), "ace_active-line tab-link-marker", "line", false);
+                dodona.codeListing.clearHighlights();
+                dodona.codeListing.highlightLine(line);
             }
             return false;
         });
@@ -71,26 +64,4 @@ function initSubmissionShow() {
     init();
 }
 
-function loadResultEditor(programmingLanguage, annotations) {
-    const editor = ace.edit("editor-result");
-    if (window.dodona.darkMode) {
-        editor.setTheme("ace/theme/twilight");
-    }
-    editor.getSession().setMode("ace/mode/" + programmingLanguage);
-    editor.setOptions({
-        showPrintMargin: false,
-        maxLines: Infinity,
-        readOnly: true,
-        highlightActiveLine: false,
-        highlightGutterLine: false,
-    });
-    editor.renderer.$cursorLayer.element.style.opacity = 0;
-    editor.commands.commmandKeyBinding = {};
-    editor.getSession().setUseWrapMode(true);
-    editor.$blockScrolling = Infinity; // disable warning
-    if (annotations) {
-        editor.session.setAnnotations(annotations);
-    }
-}
-
-export { initSubmissionShow, loadResultEditor };
+export { initSubmissionShow };

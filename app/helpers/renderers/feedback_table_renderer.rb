@@ -287,38 +287,15 @@ class FeedbackTableRenderer
     end
   end
 
-  def format_lint_message(message)
-    lines = message.split("\n")
-    @builder.text! lines[0]
-    return unless lines.length > 1
-
-    @builder.br
-    @builder.div(class: 'code') do
-      @builder.text! lines[1..].join("\n")
-    end
-  end
-
-  def source(code, messages)
-    if messages.present?
-      @builder.ul(class: 'lint-errors') do
-        messages.each do |m|
-          @builder.li(class: 'lint-msg') do
-            send('icon_' + m[:type])
-            @builder.text! "#{I18n.t('submissions.show.line')} #{m[:row] + 1}: "
-            format_lint_message(m[:text])
-          end
-        end
-      end
-    end
-    @builder.div(id: 'editor-result') do
-      @builder.text! code
-    end
-    @builder << "<script>$(function () {dodona.loadResultEditor('#{@programming_language || 'text'}', #{messages.to_json});});</script>"
-  end
-
   def init_js
     @builder.script do
       @builder << 'dodona.initSubmissionShow();'
+    end
+  end
+
+  def source(_, messages)
+    @builder.div(class: 'code-table') do
+      FeedbackCodeRenderer.new(@code, @programming_language, messages, @builder).parse
     end
   end
 

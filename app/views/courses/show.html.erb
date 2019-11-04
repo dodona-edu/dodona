@@ -76,6 +76,9 @@
                   <%= link_to t(".download_submissions"), export_course_path(@course) %>
                 </li>
               <% end %>
+              <% if (policy(@course).copy? || current_user&.course_admin?(@course)) && policy(@course).download_submissions? %>
+                <li role="separator" class="divider"></li>
+              <% end %>
               <% if policy(@course).download_submissions? %>
                 <li>
                   <%= link_to t(".download_my_submissions"), export_course_path(@course, user_id: current_user.id) %>

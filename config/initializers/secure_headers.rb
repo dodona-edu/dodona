@@ -31,15 +31,19 @@ SecureHeaders::Configuration.named_append(:embeds_iframe) do |request|
   }
 end
 
+SecureHeaders::Configuration.override(:sandbox) do |config|
+  sources = %w('self' 'unsafe-inline' https:)
+  sources << 'http:' if Rails.env.development?
+  config.csp = {
+    default_src: sources,
+    script_src: sources,
+  }
+end
+
 SecureHeaders::Configuration.named_append(:is_embedded) do |request|
-  ancestor = "#{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
-  SecureHeaders.override_x_frame_options(request, "allow-from #{ancestor}")
   {
-    frame_ancestors: [ancestor],
-    script_src: [ancestor],
-    img_src: [ancestor],
-    frame_src: %w(https://www.youtube.com https://www.youtube-nocookie.com
-      https://player.vimeo.com/),
-    style_src: [ancestor],
+    frame_ancestors: [
+      "#{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
+    ]
   }
 end

@@ -58,9 +58,6 @@ class ApplicationController < ActionController::Base
     request.session_options[:skip] = true
   end
 
-  def allow_iframe
-  end
-
   def sandbox?
     request.host == Rails.configuration.sandbox_host && \
       request.host != Rails.configuration.default_host
@@ -69,7 +66,7 @@ class ApplicationController < ActionController::Base
   private
 
   def enable_sandbox
-    use_content_security_policy_named_append(:is_embedded)
+    use_secure_headers_override(:sandbox)
     skip_session
   end
 

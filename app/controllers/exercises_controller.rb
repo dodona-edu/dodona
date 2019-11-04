@@ -74,6 +74,7 @@ class ExercisesController < ApplicationController
   def description
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @exercise.access_token == params[:token]
 
+    use_content_security_policy_named_append(:is_embedded)
     render layout: 'frame'
   end
 

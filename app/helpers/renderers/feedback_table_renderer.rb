@@ -1,5 +1,7 @@
 class FeedbackTableRenderer
+  include Rails.application.routes.url_helpers
   include ApplicationHelper
+  include ExerciseHelper
 
   require 'builder'
 
@@ -255,18 +257,22 @@ class FeedbackTableRenderer
     output_message(m)
   end
 
+  def rewrite_media_urls(html)
+    contextualize_media_paths(html, exercise_path(nil, @exercise), @exercise.access_private? ? @exercise.access_token : '')
+  end
+
   def output_message(m)
     if m[:format].in?(%w[plain text])
       @builder.text! m[:description]
     elsif m[:format].in?(%w[html])
-      @builder << safe(m[:description])
+      @builder << rewrite_media_urls(safe(m[:description]))
     elsif m[:format].in?(%w[markdown md])
       # `markdown` is always safe
-      @builder << markdown(m[:description])
+      @builder << rewrite_media_urls(markdown(m[:description]))
     elsif m[:format].in?(%w[callout])
       @builder.div(class: 'callout callout-info') do
         # `markdown` is always safe
-        @builder << markdown(m[:description])
+        @builder << rewrite_media_urls(markdown(m[:description]))
       end
     elsif m[:format].in?(%w[code])
       @builder.span(class: 'code') do

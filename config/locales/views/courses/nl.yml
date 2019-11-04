@@ -82,7 +82,7 @@ nl:
       no_series_yet: 'Deze cursus bevat nog geen reeksen met oefeningen. Klik op de knop "Reeksen beheren" om aan de slag te gaan.'
       users: Gebruikers
       series: reeksen
-      download_submissions: Oplossingen downloaden
+      download_submissions: Oplossingen van studenten downloaden
       download_my_submissions: Mijn oplossingen downloaden
       subscribed: Geregistreerd
       pending: Op de wachtlijst

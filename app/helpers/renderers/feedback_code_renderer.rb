@@ -18,7 +18,7 @@ class FeedbackCodeRenderer
     @builder << table_formatter.format(lexed_c)
 
     @builder.script(type: 'application/javascript') do
-      @builder << 'var messages = '
+      @builder << 'const messages = '
       @builder << @messages.map { |o| Hash[o.each_pair.to_a] }.to_json
       @builder << ';'
 

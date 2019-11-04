@@ -166,6 +166,10 @@
                       "description": "# a big fancy message"
                     },
                     {
+                      "format": "markdown",
+                      "description": "[Een link](media/file.txt)"
+                    },
+                    {
                       "format": "callout",
                       "description": "# a big fancy message with a script\n<script>alert('test')</script>"
                     },

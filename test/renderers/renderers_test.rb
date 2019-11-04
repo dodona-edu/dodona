@@ -45,4 +45,13 @@ class RenderersTest < ActiveSupport::TestCase
 
     assert_match %r{<script>alert.*</script>}, PythiaRenderer.new(submission, submission.user).parse
   end
+
+  test 'should include exercise token if exercise rendered for is private' do
+    json = (FILES_LOCATION + 'output.json').read
+    exercise = create :exercise
+    exercise.update(access: :private)
+    submission = create :submission, result: json, user: create(:zeus), exercise: exercise
+
+    assert_match exercise.access_token, FeedbackTableRenderer.new(submission, submission.user).parse
+  end
 end

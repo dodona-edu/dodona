@@ -181,3 +181,6 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
 gem 'docker-api', '~> 1.34.2'
+
+# add 'content-security-policy' headers and more
+gem 'secure_headers', '~> 6.1', '>= 6.1.1'

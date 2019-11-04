@@ -35,6 +35,7 @@ class SeriesController < ApplicationController
     @course = @series.course
     @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
     @user = User.find(params[:user_id]) if params[:user_id] && current_user&.course_admin?(@course)
+    use_content_security_policy_named_append(:embeds_iframe)
   end
 
   # GET /series/new

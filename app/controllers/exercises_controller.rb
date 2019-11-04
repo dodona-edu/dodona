@@ -68,6 +68,7 @@ class ExercisesController < ApplicationController
     end
     @title = @exercise.name
     @crumbs << [@exercise.name, '#']
+    use_content_security_policy_named_append(:embeds_iframe)
   end
 
   def description

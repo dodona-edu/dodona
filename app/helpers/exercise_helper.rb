@@ -15,11 +15,7 @@ module ExerciseHelper
   end
 
   def description_iframe(exercise)
-    dark = if current_user.present?
-             session[:dark]
-           else
-             false
-           end
+    dark = current_user.present? && session[:dark]
     id = "exercise-description-#{exercise.id}"
     url = description_exercise_url(exercise,
                                    token: exercise.access_token,

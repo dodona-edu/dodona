@@ -59,7 +59,6 @@ class ApplicationController < ActionController::Base
   end
 
   def allow_iframe
-    response.headers['X-Frame-Options'] = "allow-from #{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
   end
 
   def sandbox?
@@ -70,7 +69,7 @@ class ApplicationController < ActionController::Base
   private
 
   def enable_sandbox
-    allow_iframe
+    use_content_security_policy_named_append(:is_embedded)
     skip_session
   end
 

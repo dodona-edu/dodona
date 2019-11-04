@@ -34,6 +34,7 @@ class PagesController < ApplicationController
   def contact
     @contact_form = ContactForm.new
     @title = I18n.t('pages.contact.title')
+    use_content_security_policy_named_append(:captcha)
   end
 
   def create_contact

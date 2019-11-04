@@ -9,7 +9,7 @@ nl:
       next_step: Volgende stap
       start_download: Start download
       choose_options: Selecteer de opties die je wenst toe te passen op uw download.
-      only_last_submission_label: Download moet enkel de meest recent oplossingen bevatten
+      only_last_submission_label: Download moet enkel de meest recente oplossingen bevatten
       only_last_submission_label_help: Enkel de laatst ingediende oplossing van een student zal aanwezig zijn (per oefeningen). In combinatie met de optie hieronder wordt de laatst ingediende oplossing voor de deadline geselecteerd.
       deadline_label: Download mag enkel oplossingen voor de deadline bevatten
       deadline_label_help: Enkel de oplossingen ingediend voor de deadline worden meegeleverd. Als de reeks geen deadline heeft heeft deze optie geen effect.

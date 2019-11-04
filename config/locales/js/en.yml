@@ -6,6 +6,7 @@ en:
     submission-rate-limit: "Oops, you're submitting too fast! Please wait a moment between each submission."
     submission-too-long: "Oops, something went wrong while saving your solution. Your solution is too long. Try to make it shorter and try again."
     submission-network: "Oops, we're unable to connect to the server. Please check your internet connection."
+    submission-not-allowed: "Oops, you are not allowed to submit a solution to this exercise."
     submission-processed: Evaluation finished
     unknown-error-loading-feedback: An unknown error occurred while loading the feedback for your submission
     exercise-added-success: Exercise added

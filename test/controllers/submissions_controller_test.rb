@@ -70,6 +70,22 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal course, submission.course
   end
 
+  test 'unregistered user submitting to private exercise in moderated course should fail' do
+    attrs = generate_attr_hash
+    course = create :course, moderated: true
+    exercise = Exercise.find(attrs[:exercise_id])
+    exercise.update(access: :private)
+    course.series << create(:series)
+    course.series.first.exercises << exercise
+    attrs[:course_id] = course.id
+    user = create :user
+    sign_in user
+
+    create_request attr_hash: attrs
+
+    assert_response :unprocessable_entity
+  end
+
   test 'should get submission edit page' do
     get edit_submission_path(@instance)
     assert_redirected_to exercise_url(

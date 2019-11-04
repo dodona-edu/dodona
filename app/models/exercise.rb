@@ -238,9 +238,10 @@ class Exercise < ApplicationRecord
       end
       return true if user&.repository_admin? repository
       return false unless access_public? || repository.allowed_courses.include?(course)
-      return true if course.open_for_all? || (course.open_for_institution? && course.institution == user&.institution)
+      return true if user&.member_of? course
+      return false if course.moderated && access_private?
 
-      user&.member_of? course
+      course.open_for_all? || (course.open_for_institution? && course.institution == user&.institution)
     else
       return true if user&.repository_admin? repository
 

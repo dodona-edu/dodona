@@ -4,7 +4,8 @@ SecureHeaders::Configuration.default do |config|
 
     default_src: %w('self'),
     frame_ancestors: %w('none'),
-    connect_src: %w('self' https://pandora.ugent.be),
+    connect_src: %w('self' https://pandora.ugent.be
+      https://dodona-cea23.firebaseio.com https://www.google-analytics.com),
     font_src: %w(data: https://fonts.gstatic.com
       https://cdn.materialdesignicons.com  https://cdnjs.cloudflare.com),
     img_src: %w('self' data: https://cdnjs.cloudflare.com),

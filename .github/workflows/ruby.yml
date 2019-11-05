@@ -31,12 +31,27 @@ jobs:
         curl -sL https://deb.nodesource.com/setup_12.x | bash -
         apt-get update
         apt-get -y --no-install-recommends install nodejs yarn
+    - name: Cache Ruby dependencies
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gem-
+    - name: Cache Yarn dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/.cache/yarn
+        key: ${{ runner.os }}-yarn-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
     - name: Build and test
       env:
         CI: true
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       run: |
         gem install bundler:2.0.2
+        bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
         yarn install
         git config --global user.email "dodona@ugent.be"
@@ -48,6 +63,13 @@ jobs:
       image: ruby:2.6.5
     steps:
     - uses: actions/checkout@v1
+    - name: Cache Ruby dependencies
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gem-
     - name: Lint with rubocop
       env:
         RAILS_ENV: "test"

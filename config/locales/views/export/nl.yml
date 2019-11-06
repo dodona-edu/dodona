@@ -14,7 +14,7 @@ nl:
       only_last_submission_label: Moet de indiengeschiedenis meegeleverd worden?
       only_last_submission: Enkel de laatste ingediende oplossing
       only_last_submission_help: Enkel de meest recente oplossing voor elke oefening worden meegeleverd.
-      all_submissions: All oplossingen
+      all_submissions: Alle oplossingen
       all_submissions_help: De volledige indiengeschiedenis wordt meegeleverd.
       consider_deadline: Welke oplossingen moet er rekening mee gehouden worden?
       with_deadline: Enkel oplossingen van voor de deadline

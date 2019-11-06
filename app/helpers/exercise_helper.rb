@@ -97,7 +97,6 @@ module ExerciseHelper
     end
 
     def process_html
-      rewrite_media_urls
       @description = with_nokogiri(@description) do |doc|
         add_media_captions doc
         process_url_footnotes doc
@@ -115,11 +114,6 @@ module ExerciseHelper
                   "#{text}</figcaption>"
         img.add_next_sibling caption
       end
-    end
-
-    # Rewrite all media urls
-    def rewrite_media_urls
-      @description = contextualize_media_paths @description, exercise_path(nil, @exercise), @exercise.access_private? ? @exercise.access_token : ''
     end
 
     # Rewrite relative url's to absulute

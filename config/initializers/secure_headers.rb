@@ -9,8 +9,8 @@ SecureHeaders::Configuration.default do |config|
     font_src: %w(data: https://fonts.gstatic.com
       https://cdn.materialdesignicons.com  https://cdnjs.cloudflare.com),
     img_src: %w('self' data: https://cdnjs.cloudflare.com),
-    script_src: %w('self' 'unsafe-inline' https://www.google-analytics.com 
-      https://cdnjs.cloudflare.com),
+    script_src: %w('self' 'unsafe-inline' 'unsafe-eval'
+    https://www.google-analytics.com https://cdnjs.cloudflare.com),
     style_src: %w('self' 'unsafe-inline' https://fonts.googleapis.com
       https://cdn.materialdesignicons.com),
   }

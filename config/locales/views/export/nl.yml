@@ -9,19 +9,28 @@ nl:
       next_step: Volgende stap
       start_download: Start download
       choose_options: Selecteer de opties die je wenst toe te passen op uw download.
-      only_last_submission_label: Download moet enkel de meest recente oplossingen bevatten
-      only_last_submission_label_help: Enkel de laatst ingediende oplossing van een student zal aanwezig zijn (per oefeningen). In combinatie met de optie hieronder wordt de laatst ingediende oplossing voor de deadline geselecteerd.
-      deadline_label: Download mag enkel oplossingen voor de deadline bevatten
-      deadline_label_help: Enkel de oplossingen ingediend voor de deadline worden meegeleverd. Als de reeks geen deadline heeft heeft deze optie geen effect.
+      with_info_label: Maak ook een informatief CSV-bestand
+      with_info_label_help: Het resultaat bevat een CSV-bestand met informatie over de studenten, de oefeningen en de ingediende oplossingen.
+      only_last_submission_label: Moet de indiengeschiedenis meegeleverd worden?
+      only_last_submission: Enkel de laatste ingediende oplossing
+      only_last_submission_help: Enkel de meest recente oplossing voor elke oefening worden meegeleverd.
+      all_submissions: All oplossingen
+      all_submissions_help: De volledige indiengeschiedenis wordt meegeleverd.
+      consider_deadline: Welke oplossingen moet er rekening mee gehouden worden?
+      with_deadline: Enkel oplossingen van voor de deadline
+      with_deadline_help: Als een reeks geen deadline heeft wordt deze optie genegeerd.
+      no_deadline: Ook oplossingen van na de deadline
+      no_deadline_help: De deadline wordt niet in rekening gebracht bij het selecteren van oplossingen.
       group_submissions_label: Hoe moeten de oplossingen gegroepeerd worden?
       group_by_student: Per student
       group_by_student_help: Resultaat bevat een map per student met zijn oplossingen per oefening.
       group_by_exercise: Per oefening
       group_by_exercise_help: Resultaat bevat een map per oefening met de oplossingen per student.
-      all_students_label: Download bevat ook de studenten die nooit hebben ingediend
-      all_students_label_help: Deze studenten zullen lege mappen krijgen in het resulterende ZIP-bestand en zullen ook vermeld worden in het eventuele CSV-bestand.
-      with_info_label: Download moet ook een informatief CSV-bestand bevatten
-      with_info_label_help: Het resultaat zal een CSV-bestand bevatten met informatie over de studenten, de oefeningen en de oplossingen.
+      which_students: Welke studenten moet er rekening mee gehouden worden?
+      all_students: Alle studenten
+      all_students_help: Studenten die nooit hebben ingediend zullen een lege map hebben in het resultaat.
+      only_submitted: Enkel studenten die minstens één keer ingediend hebben
+      only_submitted_help: Studenten die nooit hebben ingediend zullen niet te vinden zijn in het resultaat.
       exercise: Oefening
       course: Cursus
       series: Reeks

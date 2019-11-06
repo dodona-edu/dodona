@@ -9,19 +9,28 @@ en:
       next_step: Next step
       start_download: Start download
       choose_options: Select any extra options you wish to apply to your download.
-      only_last_submission_label: Include only the most recent submission for each exercise
-      only_last_submission_label_help: Only the most recent submission of each student will be present (for each exercise). If this option is combined with the option below the last submission before the deadline is selected.
-      deadline_label: Only include submissions before the deadline
-      deadline_label_help: Only submissions made before the deadline are included. If a series doesn't have a deadline this option is ignored.
+      with_info_label: Include an informative CSV-file
+      with_info_label_help: The result will contain a CSV-file with information about the students, the exercises and the submissions.
+      only_last_submission_label: Should the submission history be included?
+      only_last_submission: Only the last submission
+      only_last_submission_help: Only the most recent submissions are included for each exercise.
+      all_submissions: All submissions
+      all_submissions_help: The entire history for each exercise is included.
+      consider_deadline: Which submissions should be considered?
+      with_deadline: Only submissions made before the deadline
+      with_deadline_help: If a series doesn't have a deadline this option is ignored.
+      no_deadline: Include submissions made after the deadline
+      no_deadline_help: The deadline is not considered when selecting submissions.
       group_submissions_label: How should the submissions be organized?
       group_by_student: By student
       group_by_student_help: Result contains a folder per student containing their submissions per exercise.
       group_by_exercise: By exercise
       group_by_exercise_help: Result contains a folder per exercise containing the submissions per student.
-      all_students_label: Include students that never submitted
-      all_students_label_help: These students will have empty folders in the resulting ZIP-file and will be mentioned in the CSV file (if requested).
-      with_info_label: Include an informative CSV-file
-      with_info_label_help: The result will contain a CSV-file with information about the students, the exercises and the submissions.
+      which_students: Which students should be considered?
+      all_students: All students
+      all_students_help: Students who never submitted have an empty folder in the result.
+      only_submitted: Only students with at least one submission
+      only_submitted_help: Students who never submitted will not be found anywhere in the result.
       exercise: Exercise
       course: Course
       series: Series

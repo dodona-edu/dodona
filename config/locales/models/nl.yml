@@ -18,7 +18,6 @@ nl:
       label: Label
       api_token: API Token
       programming_language: Programmeertaal
-      post: Post
       event: Event
       institution: Onderwijsinstelling
     attributes:
@@ -132,13 +131,6 @@ nl:
         name: Naam
         editor_name: Editor modus
         extension: Extensie
-      post:
-        title_en: Engelstalige titel
-        title_nl: Nederlandstalige titel
-        content_en: Engelstalige inhoud
-        content_nl: Nederlandstalige inhoud
-        release: Releasedatum
-        draft: Ontwerp
       institution:
         name: Naam
         short_name: Korte naam

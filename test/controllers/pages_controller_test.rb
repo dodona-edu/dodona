@@ -28,6 +28,11 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal institution.sso_url, response.location.split('?').first
   end
 
+  test 'should get contact page' do
+    get contact_url
+    assert_response :success
+  end
+
   test 'should send email' do
     contact_form = {
       name: 'Jan',

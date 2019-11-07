@@ -3,15 +3,15 @@ require 'test_helper'
 class ExerciseHelperTest < ActiveSupport::TestCase
   def check_desc_and_footnotes(exercise)
     with_renderer_for exercise do |r|
-      check_description r.description_html, exercise
+      check_description r.description_html
       check_footnotes r.footnote_urls
     end
   end
 
-  def check_description(description, exercise)
+  def check_description(description)
     expected = <<~EOS
       <h2 id="los-deze-oefening-op">Los deze oefening op</h2>
-      <p><img src="/exercises/#{exercise.id}/media/img.jpg" alt="media-afbeelding">
+      <p><img src="media/img.jpg" alt="media-afbeelding">
       <a href="https://google.com">LMGTFY</a><sup class="footnote-url visible-print-inline">1</sup>
       <a href="../123455/">Volgende oefening</a><sup class="footnote-url visible-print-inline">2</sup></p>
     EOS

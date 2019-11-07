@@ -9,10 +9,8 @@
 
 
 import { start as startRails } from "@rails/ujs";
-import { start as startActiveStorage } from "@rails/activestorage";
 
 startRails();
-startActiveStorage();
 
 import jQuery from "jquery";
 

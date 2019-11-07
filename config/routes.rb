@@ -125,7 +125,6 @@ Rails.application.routes.draw do
 
     resources :labels
     resources :programming_languages
-    resources :posts
 
     resources :institutions, only: [:index, :show, :edit, :update]
     resources :events, only: [:index]

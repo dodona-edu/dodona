@@ -10,12 +10,12 @@
         <%= render partial: 'layouts/searchbar', locals: {
             actions: [
                 {text: t('.at_least_one_started'), search: {at_least_one_started: true}},
-                {text: t('series.scoresheet.download'), url: scoresheet_download_series_path }
+                {text: t('series.scoresheet.download'), url: scoresheet_series_path(@series, format: :csv) }
             ],
             course_labels: @course_labels
         } %>
         <div id="scoresheet-table-wrapper">
-          <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, exercises: @exercises, users: @users, submission_hash: @submission_hash} %>
+          <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, exercises: @exercises, users: @users, submissions: @submissions} %>
         </div>
       </div>
     </div>

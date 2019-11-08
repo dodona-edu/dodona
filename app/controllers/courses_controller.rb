@@ -5,6 +5,13 @@ class CoursesController < ApplicationController
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_institution, as: 'institution_id'
+  has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
+    scope.at_least_one_started_in_course(Course.find(controller.params[:id]))
+  end
+  has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
+    scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
+  end
+  has_scope :by_filter, as: 'filter', only: :scoresheet
 
   # GET /courses
   # GET /courses.json
@@ -147,6 +154,34 @@ class CoursesController < ApplicationController
   def statistics
     @title = I18n.t('courses.statistics.statistics')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.statistics.statistics'), '#']]
+  end
+
+  def scoresheet
+    @title = I18n.t('courses.scoresheet.scoresheet')
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.scoresheet.scoresheet'), '#']]
+    @course_labels = CourseLabel.where(course: @course)
+
+    scores = @course.scoresheet
+    @users = apply_scopes(scores[:users])
+    @series = scores[:series]
+    @hash = scores[:hash]
+
+    respond_to do |format|
+      format.html
+      format.js
+      format.csv do
+        sheet = CSV.generate do |csv|
+          csv << [I18n.t('courses.scoresheet.explanation')]
+          csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')].concat(@series.map(&:name))
+          csv << ['Maximum', '', '', ''].concat(@series.map { |s| s.exercises.count })
+          @users.each do |u|
+            csv << [u.first_name, u.last_name, u.username, u.email].concat(@series.map { |s| @hash[[u.id, s.id]] })
+          end
+        end
+        filename = "course-#{@course.name.parameterize}.csv"
+        send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
+      end
+    end
   end
 
   def update_membership

@@ -59,6 +59,12 @@ nl:
       choose_course: "Op welke cursus wil je je baseren?"
       data_entry: "Hoe moet je cursus er uit zien?"
       create: "Cursus aanmaken"
+    scoresheet:
+      user: Gebruiker
+      explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
+      at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
+      scoresheet: Statusoverzict
+      download: Statusoverzicht downloaden
     edit:
       confidential: Geheime link
       series_in_course: "Reeksen in deze cursus"

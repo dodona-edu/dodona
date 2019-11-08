@@ -38,7 +38,6 @@ Rails.application.routes.draw do
         get 'available_exercises', to: 'exercises#available'
         get 'overview'
         get 'scoresheet'
-        get 'scoresheet_download'
         post 'add_exercise'
         post 'mass_rejudge'
         post 'remove_exercise'
@@ -71,6 +70,7 @@ Rails.application.routes.draw do
         get 'statistics'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
         get 'manage_series'
+        get 'scoresheet'
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'

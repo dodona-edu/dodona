@@ -4,7 +4,7 @@ class SeriesController < ApplicationController
   before_action :check_token, only: %i[show overview]
 
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
-    scope.at_least_one_started(Series.find(controller.params[:id]))
+    scope.at_least_one_started_in_series(Series.find(controller.params[:id]))
   end
   has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
     scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)

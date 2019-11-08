@@ -3,7 +3,7 @@
   <tr>
     <th></th>
     <% exercises.each do |exercise| %>
-      <th class="status-icon-header"><%= exercise.name %></th>
+      <th class="status-icon-header ellipsis-overflow" title="<%= exercise.name %>"><%= exercise.name %></th>
     <% end %>
   </tr>
   </thead>

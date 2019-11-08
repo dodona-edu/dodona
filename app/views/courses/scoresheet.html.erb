@@ -3,19 +3,19 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
-          <%= "#{@series.name} (#{@course.name})" %>
+          <%= @course.name %>
         </h2>
       </div>
       <div class="card-supporting-text">
         <%= render partial: 'layouts/searchbar', locals: {
             actions: [
-                {text: t('.at_least_one_started'), search: {at_least_one_started: true}},
-                {text: t('.download'), url: scoresheet_series_path(@series, format: :csv) }
+                { text: t('.at_least_one_started'), search: { at_least_one_started: true } },
+                { text: t('.download'), url: scoresheet_course_path(@course, format: :csv) }
             ],
             course_labels: @course_labels
         } %>
         <div id="scoresheet-table-wrapper">
-          <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, exercises: @exercises, users: @users, submissions: @submissions} %>
+          <%= render partial: "scoresheet_table", locals: { course: @course, series: @series, users: @users, hash: @hash } %>
         </div>
       </div>
     </div>

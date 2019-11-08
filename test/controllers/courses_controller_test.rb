@@ -110,6 +110,18 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'should get course scoresheet as course admin' do
+    sign_in @course_admins.first
+    get scoresheet_course_url(@course)
+    assert_response :success, 'course_admin should be able to get course scoresheet'
+  end
+
+  test 'should not get course scoresheet as normal user' do
+    sign_in @students.first
+    get scoresheet_course_url(@course)
+    assert_response :redirect, 'student should not be able to get course scoresheet'
+  end
+
   test 'visiting registration page when subscribed should redirect' do
     with_users_signed_in @subscribed do |who|
       get registration_course_url(@course, @course.secret)

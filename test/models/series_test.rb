@@ -152,11 +152,6 @@ class SeriesTest < ActiveSupport::TestCase
         end
       end
     end
-    course.series.each do |series|
-      scoresheet = series.scoresheet
-      kommas = (3 + 1 + series.exercises.count) * (2 + users.count)
-      assert_equal kommas, scoresheet.count(',')
-    end
   end
 
   test 'completed? and solved_exercises with wrong submission before deadline' do

@@ -62,7 +62,7 @@ gem 'diff-lcs', '~>1.3'
 gem 'ace-rails-ap', '~>4.2'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>9.7.0'
+gem 'autoprefixer-rails', '~>9.7.1'
 
 # saml authentication
 gem 'devise', '~>4.7.1'

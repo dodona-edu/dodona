@@ -1094,10 +1094,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@rails/actiontext@^6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@rails/actiontext/-/actiontext-6.0.0.tgz#ee7f70e916c6d7c4ff2e0832047b9c1c2dff0f62"
-  integrity sha512-0Koqw59xIMYMMri3ZIE1CaEEEkMQi16j+4FQwCRE5QG830Q1tnli0TrQrtJ0vE+D1vf1JuJfy7UHSGPbaspmRQ==
+"@rails/actiontext@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@rails/actiontext/-/actiontext-6.0.1.tgz#62400c48262c71b90e9808718609eb5dd59f4ac6"
+  integrity sha512-JP+nW17rPVX4CtnJE++0hDKfgtQekxN3avYO9XzQ/Ta/G+y32BhCYZ/SR4AyL/b+sv48l2a89TXGHyX6tTM+3A==
   dependencies:
     "@rails/activestorage" "^6.0.0-alpha"
 

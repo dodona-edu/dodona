@@ -186,7 +186,7 @@ class Export
     selected_series.map do |series|
       @options[:deadline] = series.deadline || Time.current.tomorrow if deadline? # Prevent nil-deadline if series has no deadline
       get_submissions_for_series(series.exercises, users)
-    end .flatten
+    end.flatten
   end
 
   def get_submissions_for_user(selected_courses)
@@ -201,7 +201,7 @@ class Export
     @series_per_exercise = {}
     return if @item.nil? || @list.nil?
 
-    all_series = @item.is_a?(Course) ? @item.series : @list.map(&:series).flatten
+    all_series = @item.is_a?(Course) ? @list : @list.map(&:series).flatten
     all_series.each do |series|
       series.exercises.each { |ex| @series_per_exercise[ex.id] = series }
     end

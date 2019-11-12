@@ -2,8 +2,8 @@ nl:
   export:
     title: "Export"
     download_submissions:
-      title: Download oplossingen
-      title_students: Download oplossingen van studenten
+      title: Oplossingen downloaden
+      title_students: Oplossingen van studenten downloaden
       choose_exercises: Van welke oefeningen wil je oplossingen downloaden?
       choose_series: Van welke reeksen wil je oplossingen downloaden?
       choose_courses: Van welke cursussen wil je oplossingen downloaden?

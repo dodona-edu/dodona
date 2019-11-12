@@ -13,9 +13,7 @@ en:
       with_info_label_help: The summary is a CSV-file with information about the students, the exercises and the submissions.
       only_last_submission_label: Should the submission history be included?
       only_last_submission: No, only the last submission
-      only_last_submission_help: Only the most recent submissions are included for each exercise.
       all_submissions: Yes, include all submissions
-      all_submissions_help: The entire history for each exercise is included.
       consider_deadline: Which submissions should be considered?
       with_deadline: Only submissions made before the deadline
       with_deadline_help: If a series doesn't have a deadline this option is ignored.

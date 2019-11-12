@@ -13,9 +13,7 @@ nl:
       with_info_label_help: De samenvatting is een CSV-bestand met informatie over de studenten, de oefeningen en de ingediende oplossingen.
       only_last_submission_label: Wil je de indiengeschiedenis downloaden?
       only_last_submission: Nee, enkel de laatste ingediende oplossing
-      only_last_submission_help: Enkel de meest recente oplossing voor elke oefening worden meegeleverd.
       all_submissions: Ja, alle oplossingen
-      all_submissions_help: De volledige indiengeschiedenis wordt meegeleverd.
       consider_deadline: Met welke oplossingen moet rekening gehouden worden?
       with_deadline: Enkel oplossingen van voor de deadline
       with_deadline_help: Als een reeks geen deadline heeft wordt deze optie genegeerd.

@@ -9,14 +9,14 @@ nl:
       next_step: Volgende stap
       start_download: Start download
       choose_options: Selecteer de opties die je wenst toe te passen op uw download.
-      with_info_label: Maak ook een informatief CSV-bestand
-      with_info_label_help: Het resultaat bevat een CSV-bestand met informatie over de studenten, de oefeningen en de ingediende oplossingen.
-      only_last_submission_label: Moet de indiengeschiedenis meegeleverd worden?
-      only_last_submission: Enkel de laatste ingediende oplossing
+      with_info_label: Voeg samenvatting toe
+      with_info_label_help: De samenvatting is een CSV-bestand met informatie over de studenten, de oefeningen en de ingediende oplossingen.
+      only_last_submission_label: Wil je de indiengeschiedenis downloaden?
+      only_last_submission: Nee, enkel de laatste ingediende oplossing
       only_last_submission_help: Enkel de meest recente oplossing voor elke oefening worden meegeleverd.
-      all_submissions: Alle oplossingen
+      all_submissions: Ja, alle oplossingen
       all_submissions_help: De volledige indiengeschiedenis wordt meegeleverd.
-      consider_deadline: Welke oplossingen moet er rekening mee gehouden worden?
+      consider_deadline: Met welke oplossingen moet rekening gehouden worden?
       with_deadline: Enkel oplossingen van voor de deadline
       with_deadline_help: Als een reeks geen deadline heeft wordt deze optie genegeerd.
       no_deadline: Ook oplossingen van na de deadline
@@ -26,8 +26,8 @@ nl:
       group_by_student_help: Resultaat bevat een map per student met zijn oplossingen per oefening.
       group_by_exercise: Per oefening
       group_by_exercise_help: Resultaat bevat een map per oefening met de oplossingen per student.
-      which_students: Welke studenten moet er rekening mee gehouden worden?
-      all_students: Alle studenten
+      which_students: Met welke studenten moet rekening gehouden worden?
+      all_students: Alle ingeschreven studenten
       all_students_help: Studenten die nooit hebben ingediend zullen een lege map hebben in het resultaat.
       only_submitted: Enkel studenten die minstens één keer ingediend hebben
       only_submitted_help: Studenten die nooit hebben ingediend zullen niet te vinden zijn in het resultaat.

@@ -3,6 +3,7 @@ en:
     title: "Export"
     download_submissions:
       title: Download submissions
+      title_students: Download student submissions
       choose_exercises: From which exercises do you want to download the submissions?
       choose_series: From which series do you want to download the submissions?
       choose_courses: From which courses do you want to download the submissions?

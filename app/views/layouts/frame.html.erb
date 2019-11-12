@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#" lang="<%= I18n.locale.to_s %>">
+<html
+  prefix="og: http://ogp.me/ns#"
+  lang="<%= I18n.locale.to_s %>"
+  class="dodona-frame">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +29,7 @@
   <%= javascript_include_tag 'application' %>
   <%= yield :javascripts %>
 </head>
-<body class="dodona-frame">
+<body>
 <%# Open links in the parent window %>
 <base target="_parent">
   <%= yield %>

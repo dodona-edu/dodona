@@ -30,6 +30,12 @@ Rails.application.routes.draw do
       end
     end
 
+    concern :infoable do
+      member do
+        get 'info'
+      end
+    end
+
     concern :submitable do
       resources :submissions, only: %i[index create]
     end
@@ -60,9 +66,9 @@ Rails.application.routes.draw do
 
     resources :courses do
       resources :series, only: [:new, :index] do
-        resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
+        resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable infoable]
       end
-      resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
+      resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable infoable]
       resources :submissions, only: [:index]
       resources :members, only: [:index, :show, :edit, :update], controller: :course_members do
         get 'download_labels_csv', on: :collection
@@ -85,7 +91,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable] do
+    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable infoable] do
       member do
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do

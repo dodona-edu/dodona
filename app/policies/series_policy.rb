@@ -29,6 +29,10 @@ class SeriesPolicy < ApplicationPolicy
       user&.member_of?(course)
   end
 
+  def info?
+    course_admin?
+  end
+
   def overview?
     show? && (record.exercises_visible || course_admin?)
   end

@@ -27,6 +27,10 @@ class CoursePolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def info?
+    course_admin?
+  end
+
   def copy?
     create? &&
       user&.zeus? ||

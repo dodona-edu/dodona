@@ -9,7 +9,7 @@ jobs:
       image: ruby:2.6.5
       env:
         RAILS_ENV: "test"
-        PARALLEL_WORKERS: "1"
+        PARALLEL_WORKERS: "4"
         DATABASE_URL: "mysql2://dodona:dodona@mysql:3306/dodona_test"
     services:
       mysql:

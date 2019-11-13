@@ -38,13 +38,24 @@ jobs:
         key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
           ${{ runner.os }}-gem-
+    - name: Get the Yarn cache directory
+      id: yarn-cache
+      run: |
+        echo "::set-output name=dir::$(yarn cache dir)"
     - name: Cache Yarn dependencies
       uses: actions/cache@v1
       with:
-        path: /home/runner/work/dodona/dodona/node_modules
-        key: ${{ runner.os }}-node_modules-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+        path: ${{ steps.yarn-cache.outputs.dir }}
+        key: ${{ runner.os }}-yarn-fix-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
         restore-keys: |
-          ${{ runner.os }}-node_modules-
+          ${{ runner.os }}-yarn-fix-
+    - name: Cache node modules
+      uses: actions/cache@v1
+      with:
+        path: /__w/dodona/dodona/node_modules
+        key: ${{ runner.os }}-node_modules-fix-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+        restore-keys: |
+          ${{ runner.os }}-node_modules-fix-
     - name: Install dependencies
       run: |
         gem install bundler:2.0.2

@@ -41,10 +41,10 @@ jobs:
     - name: Cache Yarn dependencies
       uses: actions/cache@v1
       with:
-        path: ~/.cache/yarn
-        key: ${{ runner.os }}-yarn-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+        path: /home/runner/work/dodona/dodona/node_modules
+        key: ${{ runner.os }}-node_modules-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
+          ${{ runner.os }}-node_modules-
     - name: Install dependencies
       run: |
         gem install bundler:2.0.2

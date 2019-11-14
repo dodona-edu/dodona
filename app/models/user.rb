@@ -126,6 +126,14 @@ class User < ApplicationRecord
     first_string_present name, 'n/a'
   end
 
+  def pretty_email
+    if first_name || last_name
+      "#{full_name} <#{email}>"
+    else
+      email
+    end
+  end
+
   def first_name
     return self[:first_name] unless Current.demo_mode && Current.user != self
 

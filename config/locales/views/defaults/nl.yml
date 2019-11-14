@@ -50,6 +50,7 @@ nl:
     search:
       search: zoeken
   crumbs:
+    info: Informatie
     edit: Bewerken
     overview: Overzicht
   general:

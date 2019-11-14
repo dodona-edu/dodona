@@ -87,6 +87,7 @@ class ExercisesController < ApplicationController
 
   def info
     @title = @exercise.name
+    @repository = @exercise.repository
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] << [I18n.t('crumbs.info'), '#']
   end
 

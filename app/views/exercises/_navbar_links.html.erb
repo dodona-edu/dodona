@@ -9,12 +9,19 @@
                   title: t('.show'),
                   icon: 'clipboard-text',
                   if: policy(@exercise).edit? || can_view_submissions %>
+
   <%= navbar_link url: submissions_scoped_path(exercise: @exercise, course: @course, series: @series),
                   title: t('.submissions'),
                   custom_icon: 'submissions',
                   if: can_view_submissions %>
+
   <%= navbar_link url: edit_exercise_scoped_path(exercise: @exercise, course: @course, series: @series),
                   title: t('.edit'),
                   icon: 'pencil',
                   if: policy(@exercise).edit? %>
+
+  <%= navbar_link url: info_exercise_scoped_path(exercise: @exercise, course: @course, series: @series),
+                  title: t('.info'),
+                  icon: 'information',
+                  if: policy(@exercise).info? %>
 <% end %>

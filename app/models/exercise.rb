@@ -137,6 +137,10 @@ class Exercise < ApplicationRecord
     repository.github_url(path)
   end
 
+  def contact_email
+    config['contact'] || repository.first_admin.pretty_email
+  end
+
   def config
     repository.read_config_file(config_file)
   end

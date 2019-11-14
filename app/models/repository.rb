@@ -58,6 +58,10 @@ class Repository < ApplicationRecord
     [status.success?, error]
   end
 
+  def first_admin
+    repository_admins.first&.user
+  end
+
   def exercise_dirs
     exercise_dirs_below(full_path)
   end

@@ -1,6 +1,7 @@
 en:
   exercises:
     navbar_links:
+      info: Exercise information
       show: Show exercise
       submissions: Submissions for this exercise
       edit: Edit exercise

@@ -6,10 +6,19 @@
         <h2 class="card-title-text"><%= @exercise.name %></h2>
       </div>
       <div class="card-supporting-text">
-        <p> Info whoop
-      </div>
-      <div class="card-supporting-text card-border">
-        <h4 class="card-subtitle"><%= t('.courses') %></h4>
+        <p>
+          <strong><%= t '.repository' %>:
+          <% if policy(@repository).show? %>
+            <%= link_to @repository.name,
+                        repository_path(@repository) %>
+          <% else %>
+            <%= @repository.name %>
+          <% end %>
+        </p>
+        <p>
+          <strong><%= t '.author' %>:
+          <%= mail_to  @exercise.contact_email %>
+        </p>
       </div>
     </div>
   </div>

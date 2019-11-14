@@ -61,3 +61,11 @@ en:
       course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
     edit:
       courses: "Courses using this exercise"
+    info:
+      repository: "Repository"
+      location: "Location"
+      contact: "Contact"
+      programming_language: "Programming language"
+      natural_language: "Natural language"
+      labels: "Labels"
+      unknown: unknown

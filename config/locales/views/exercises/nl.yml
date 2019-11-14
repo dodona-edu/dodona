@@ -61,3 +61,11 @@ nl:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:
       courses: "Cursussen die deze oefening gebruiken"
+    info:
+      repository: "Repository"
+      location: "Locatie"
+      contact: "Contact"
+      programming_language: "Programmeertaal"
+      natural_language: "Natuurlijke taal"
+      labels: "Labels"
+      unknown: niet gekend

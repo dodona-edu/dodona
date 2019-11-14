@@ -9,16 +9,13 @@ jobs:
       image: ruby:2.6.5
       env:
         RAILS_ENV: "test"
-        PARALLEL_WORKERS: "1"
-        DATABASE_URL: "mysql2://dodona:dodona@mysql:3306/dodona_test"
+        DATABASE_URL: "mysql2://root:dodona@mysql:3306/dodona_test"
     services:
       mysql:
         image: mariadb
         env:
           MYSQL_DATABASE: "dodona_test"
-          MYSQL_USER: "dodona"
-          MYSQL_PASSWORD: "dodona"
-          MYSQL_RANDOM_ROOT_PASSWORD: true
+          MYSQL_ROOT_PASSWORD: "dodona"
           MYSQL_HOST: "localhost"
     steps:
     - uses: actions/checkout@v1

@@ -94,8 +94,19 @@ class Exercise < ApplicationRecord
                          path&.split('/')&.last
   end
 
+  def description_languages
+    languages = []
+    languages << 'nl' if description_file('nl').exist?
+    languages << 'en' if description_file('en').exist?
+    languages
+  end
+
+  def description_file(lang)
+    full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
+  end
+
   def description_localized(lang = I18n.locale.to_s)
-    file = full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
+    file = description_file(lang)
     file.read if file.exist?
   end
 

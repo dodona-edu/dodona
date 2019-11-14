@@ -7,7 +7,7 @@
       </div>
       <div class="card-supporting-text">
         <p>
-          <strong><%= t '.repository' %>:
+        <strong><%= t '.repository' %>:</strong>
           <% if policy(@repository).show? %>
             <%= link_to @repository.name,
                         repository_path(@repository) %>
@@ -15,10 +15,25 @@
             <%= @repository.name %>
           <% end %>
         </p>
+        <% if current_user&.repository_admin?(@repostiry) %>
+          <p>
+          <strong><%= t '.location' %>:</strong>
+            <%= github_link @repository, @exercise.path %>
+          </p>
+        <% end %>
         <p>
-          <strong><%= t '.author' %>:
+        <strong><%= t '.contact' %>:</strong>
           <%= mail_to  @exercise.contact_email %>
         </p>
+        <p>
+        <strong><%= t '.programming_language' %>:</strong>
+        <%= @exercise.programming_language.name || t('.unknown') %>
+        </p>
+        <strong><%= t '.natural_language' %>:</strong>
+          <%= @exercise.description_languages.join(', ') %>
+        </p>
+        <strong><%= t '.labels' %>:</strong>
+        <%= safe_join(@exercise.labels.map{ |label| link_to label.name, label_path(label) }, ', ') %>
       </div>
     </div>
   </div>

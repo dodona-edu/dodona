@@ -32,8 +32,26 @@
         <strong><%= t '.natural_language' %>:</strong>
           <%= @exercise.description_languages.join(', ') %>
         </p>
+        <p>
         <strong><%= t '.labels' %>:</strong>
         <%= safe_join(@exercise.labels.map{ |label| link_to label.name, label_path(label) }, ', ') %>
+        </p>
+        <p>
+          <strong><%= t '.about' %>:</strong>
+          <%= @exercise.about || t('.about_not_present') %>
+        </p>
+        <p>
+          <strong><%= t '.used_in_courses' %>:</strong>
+          <%= safe_join(@exercise.courses.map{ |course| link_to course.name, course_path(course) }, ', ') %>
+        </p>
+      </div>
+      <div class="card-supporting-text card-border">
+        <h4 class="card-subtitle"><%= t('.solution') %></h4>
+        <% if @exercise.solution_exist? %>
+          <%= raw FeedbackCodeRenderer.new(@exercise.solution, @exercise.programming_language.name).parse.html %>
+        <% else %>
+          No solution
+        <% end %>
       </div>
     </div>
   </div>

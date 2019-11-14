@@ -34,6 +34,7 @@ class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
+  SOLUTION_DIR = 'solution'.freeze
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
@@ -105,8 +106,21 @@ class Exercise < ApplicationRecord
     full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
   end
 
+  def solution_file(lang)
+    full_path + SOLUTION_DIR + "solution.#{lang}.#{programming_language.extension}"
+  end
+
+  def solution_exist?
+    %w[en nl].any? { |l| solution_file(l).exist? }
+  end
+
   def description_localized(lang = I18n.locale.to_s)
     file = description_file(lang)
+    file.read if file.exist?
+  end
+
+  def solution_localized(lang = I18n.locale.to_s)
+    file = solution_file(lang)
     file.read if file.exist?
   end
 
@@ -114,12 +128,24 @@ class Exercise < ApplicationRecord
     description_localized('nl')
   end
 
+  def solution_nl
+    solution_localized('nl')
+  end
+
   def description_en
     description_localized('en')
   end
 
+  def solution_en
+    solution_localized('en')
+  end
+
   def description
     (description_localized || description_nl || description_en || '').force_encoding('UTF-8').scrub
+  end
+
+  def solution
+    (solution_localized || solution_nl || solution_en || '').force_encoding('UTF-8').scrub
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)
@@ -162,6 +188,10 @@ class Exercise < ApplicationRecord
 
   def file_extension
     programming_language&.extension || 'txt'
+  end
+
+  def about
+    config['about']
   end
 
   def merged_config

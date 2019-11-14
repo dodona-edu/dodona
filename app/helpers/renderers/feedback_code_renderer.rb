@@ -1,11 +1,10 @@
 class FeedbackCodeRenderer
   require 'json'
 
-  def initialize(code, programming_language, messages, builder)
+  def initialize(code, programming_language, builder = nil)
     @code = code
     @programming_language = programming_language
-    @messages = messages
-    @builder = builder
+    @builder = builder || Builder::XmlMarkup.new
   end
 
   def parse
@@ -16,10 +15,17 @@ class FeedbackCodeRenderer
     lexed_c = lexer.lex(@code)
 
     @builder << table_formatter.format(lexed_c)
+    self
+  end
 
+  def add_messages(messages)
     @builder.script(type: 'application/javascript') do
       @builder << 'window.dodona.codeListing = new window.dodona.codeListingClass();'
-      @builder << 'window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + ');'
+      @builder << 'window.dodona.codeListing.addAnnotations(' + messages.map { |o| Hash[o.each_pair.to_a] }.to_json + ');'
     end
+  end
+
+  def html
+    @builder.html_safe
   end
 end

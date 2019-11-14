@@ -27,13 +27,18 @@ function initSelection() {
     }
 
     function initCheckboxes() {
-        $checkboxes.each(function (_index, checkbox) {
-            $(checkbox).click(function (_event) {
-                const amountChecked = filteredCheckboxes().length;
-                $selectAll.prop("indeterminate", amountChecked && amountChecked !== $checkboxes.length);
-                $selectAll.prop("checked", amountChecked === $checkboxes.length);
-                $allSubmissionsInput.prop("value", amountChecked === $checkboxes.length);
-            });
+        $(".selection-row").click(function () {
+            const $checkbox = $(this).find("input[type=\"checkbox\"]");
+            $checkbox.prop("checked", !$checkbox.prop("checked")).change();
+        });
+
+        $checkboxes.click(e => e.stopPropagation());
+
+        $checkboxes.change(function () {
+            const amountChecked = filteredCheckboxes().length;
+            $selectAll.prop("indeterminate", amountChecked && amountChecked !== $checkboxes.length);
+            $selectAll.prop("checked", amountChecked === $checkboxes.length);
+            $allSubmissionsInput.prop("value", amountChecked === $checkboxes.length);
         });
 
         $selectAll.click(function (event) {

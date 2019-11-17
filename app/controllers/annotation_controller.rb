@@ -8,7 +8,7 @@ class AnnotationController < ApplicationController
     @annotation.user = current_user
     @annotation.submission = @submission
     if @annotation.save
-      render json: @annotation
+      render json: @annotation, status: :created
     else
       render json: @annotation.errors, status: :unprocessable_entity
     end

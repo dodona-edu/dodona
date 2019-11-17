@@ -8,7 +8,7 @@ class AnnotationController < ApplicationController
     @annotation.user = current_user
     @annotation.submission = @submission
     if @annotation.save
-      render json: @annotation, status: :created
+      render 'annotations/annotation.json', status: :created, format: :json
     else
       render json: @annotation.errors, status: :unprocessable_entity
     end
@@ -17,7 +17,7 @@ class AnnotationController < ApplicationController
   def update
     authorize @annotation
     if @annotation.update(permitted_attributes(@annotation))
-      render json: @annotation
+      render 'annotations/annotation.json', format: :json
     else
       render json: @annotation.errors, status: :unprocessable_entity
     end
@@ -36,6 +36,6 @@ class AnnotationController < ApplicationController
 
   def set_submission
     @submission = Submission.find params[:submission_id]
-    @annotation = Annotation.find params[:annotation_id] if params[:annotation_id]
+    @annotation = @submission.annotations.find params[:annotation_id] if params[:annotation_id]
   end
 end

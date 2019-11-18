@@ -28,6 +28,18 @@ class Export
       @users = [@item]
       initialize_series_per_exercise
     end
+    @seen = {
+      courses: Hash.new(0),
+      exercises: Hash.new(0),
+      series: Hash.new(0),
+      users: Hash.new(0)
+    }
+    @names = {
+      courses: {},
+      exercises: {},
+      series: {},
+      users: {}
+    }
   end
 
   # Exporting a zip from Indianio: make sure to return specific output for this request
@@ -73,6 +85,50 @@ class Export
     @item.is_a?(User) ? "#{@item.full_name.parameterize}.zip" : "#{@item.name.parameterize}.zip"
   end
 
+  def ex_fn(ex)
+    return @names[:exercises][ex.id] if @names[:exercises][ex.id].present?
+
+    base = ex.name.parameterize
+    name = base
+    name += "-#{@seen[:exercises][base]}" if @seen[:exercises][base] > 0
+    @seen[:exercises][base] += 1
+    @names[:exercises][ex.id] = name
+    name
+  end
+
+  def user_fn(u)
+    return @names[:users][u.id] if @names[:users][u.id].present?
+
+    base = u.full_name
+    name = base
+    name += "-#{@seen[:users][base]}" if @seen[:users][base] > 0
+    @seen[:users][base] += 1
+    @names[:users][u.id] = name
+    name
+  end
+
+  def series_fn(s)
+    return @names[:series][s.id] if @names[:series][s.id].present?
+
+    base = s.name.parameterize
+    name = base
+    name += "-#{@seen[:series][base]}" if @seen[:series][base] > 0
+    @seen[:series][base] += 1
+    @names[:series][s.id] = name
+    name
+  end
+
+  def course_fn(c)
+    return @names[:courses][c.id] if @names[:courses][c.id].present?
+
+    base = c.name.parameterize
+    name = base
+    name += "-#{@seen[:courses][base]}" if @seen[:courses][base] > 0
+    @seen[:courses][base] += 1
+    @names[:courses][c.id] = name
+    name
+  end
+
   # Constructs a filename for the given combination of user, exercise and possible submission
   # If group_by == user: the filename will end with username/exercise_name
   # If group_by == exercise: the filename will end with exercise_name/username
@@ -83,15 +139,13 @@ class Export
   def get_filename(user, exercise, submission = nil)
     return exercise.file_name if indianio?
 
-    ex_fn_short = "#{exercise.name.parameterize}-#{exercise.id}"
-    userfn = "#{user.full_name}-#{user.id}"
     fn = case @options[:group_by]
          when 'user'
-           "#{userfn}/#{ex_fn_short}"
+           "#{user_fn(user)}/#{ex_fn(exercise)}"
          when 'personal'
-           ex_fn_short
+           ex_fn(exercise)
          when nil, 'exercise'
-           "#{ex_fn_short}/#{userfn}"
+           "#{ex_fn(exercise)}/#{user_fn(user)}"
          else
            raise ArgumentError, "Unknown grouping option supplied: #{@options[:group_by]}"
          end
@@ -101,11 +155,11 @@ class Export
       if series.nil?
         fn = "#{I18n.t('export.download_submissions.no_series')}/#{fn}"
       else
-        fn = "#{series.name.parameterize}-#{series.id}/#{fn}"
-        fn = "#{series.course.name.parameterize}-#{series.course.id}/#{fn}" if @item.is_a?(User)
+        fn = "#{series_fn(series)}/#{fn}"
+        fn = "#{course_fn(series.course)}/#{fn}" if @item.is_a?(User)
       end
     end
-    "#{fn}.#{exercise.file_extension}".force_encoding('utf-8') # Prevent incompatibility-errors with ZIP-encoding the file
+    "#{fn}.#{exercise.file_extension}"
   end
 
   def generate_zip_data(users, exercises, submissions)

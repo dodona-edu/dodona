@@ -79,7 +79,7 @@ class Series < ApplicationRecord
   end
 
   def scoresheet
-    users = course.enrolled_members
+    users = course.subscribed_members
                   .order('course_memberships.status ASC')
                   .order(permission: :asc)
                   .order(last_name: :asc, first_name: :asc)

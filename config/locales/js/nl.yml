@@ -36,6 +36,7 @@ nl:
     configured-institution: de ingestelde onderwijsinstelling
     loading: Aan het laden...
     submissions_on: ingediende oplossingen op
+    no_selection: Er moet ten minste één iets gekozen worden om oplossingen te kunnen downloaden.
     months:
       long:
         jan: Januari

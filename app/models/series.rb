@@ -99,54 +99,6 @@ class Series < ApplicationRecord
     end
   end
 
-  def zip_solutions_for_user(user, with_info: false)
-    filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
-    stringio = Zip::OutputStream.write_buffer do |zio|
-      info = CSV.generate(force_quotes: true) do |csv|
-        csv << %w[filename status submission_id name_en name_nl exercise_id]
-        exercises.each do |ex|
-          submission = ex.last_submission(user, deadline, course)
-          # write the submission
-          zio.put_next_entry(ex.file_name)
-          zio.write submission&.code
-          # write some extra information to the csv
-          csv << [ex.file_name, submission&.status, submission&.id, ex.name_en, ex.name_nl, ex.id]
-        end
-      end
-      if with_info
-        zio.put_next_entry('info.csv')
-        zio.write info
-      end
-    end
-    stringio.rewind
-    zip_data = stringio.sysread
-    { filename: filename, data: zip_data }
-  end
-
-  def zip_solutions(with_info: false)
-    filename = "#{name.parameterize}.zip"
-    stringio = Zip::OutputStream.write_buffer do |zio|
-      info = CSV.generate(force_quotes: true) do |csv|
-        csv << %w[filename full_name id status submission_id name_en name_nl exercise_id]
-        exercises.each do |ex|
-          course.users.each do |u|
-            submission = ex.last_submission(u, deadline, course)
-            zio.put_next_entry("#{u.full_name}-#{u.id}/#{ex.file_name}")
-            zio.write submission&.code
-            csv << ["#{u.full_name}-#{u.id}/#{ex.file_name}", u.full_name, u.id, submission&.status, submission&.id, ex.name_en, ex.name_nl, ex.id]
-          end
-        end
-      end
-      if with_info
-        zio.put_next_entry('info.csv')
-        zio.write info
-      end
-    end
-    stringio.rewind
-    zip_data = stringio.sysread
-    { filename: filename, data: zip_data }
-  end
-
   def generate_token(type)
     raise 'unknown token type' unless %i[indianio_token access_token].include? type
 

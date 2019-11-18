@@ -139,26 +139,28 @@ class Export
   def get_filename(user, exercise, submission = nil)
     return exercise.file_name if indianio?
 
+    ex_and_series_fn = ex_fn(exercise)
+    unless @item.is_a?(Series)
+      series = @series_per_exercise[exercise.id]
+      if series.nil?
+        ex_and_series_fn = "#{I18n.t('export.download_submissions.no_series')}/#{ex_and_series_fn}"
+      else
+        ex_and_series_fn = "#{series_fn(series)}/#{ex_and_series_fn}"
+        ex_and_series_fn = "#{course_fn(series.course)}/#{ex_and_series_fn}" if @item.is_a?(User)
+      end
+    end
+
     fn = case @options[:group_by]
          when 'user'
-           "#{user_fn(user)}/#{ex_fn(exercise)}"
+           "#{user_fn(user)}/#{ex_and_series_fn}"
          when 'personal'
-           ex_fn(exercise)
+           ex_and_series_fn
          when nil, 'exercise'
-           "#{ex_fn(exercise)}/#{user_fn(user)}"
+           "#{ex_and_series_fn}/#{user_fn(user)}"
          else
            raise ArgumentError, "Unknown grouping option supplied: #{@options[:group_by]}"
          end
     fn += "/#{submission.id}" unless submission.nil? || only_last_submission? # Do not generate folders unless multiple submissions must be sent
-    unless @item.is_a?(Series)
-      series = @series_per_exercise[exercise.id]
-      if series.nil?
-        fn = "#{I18n.t('export.download_submissions.no_series')}/#{fn}"
-      else
-        fn = "#{series_fn(series)}/#{fn}"
-        fn = "#{course_fn(series.course)}/#{fn}" if @item.is_a?(User)
-      end
-    end
     "#{fn}.#{exercise.file_extension}"
   end
 

@@ -146,7 +146,6 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
     }
     post export_course_path(@course), params: options
     assert_response :success
-    options[:group_by] = 'series'
     assert_zip response.body, options
   end
 

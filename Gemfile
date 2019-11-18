@@ -12,7 +12,7 @@ gem 'puma', '~> 3.11'
 # Use less for stylesheets
 gem 'less-rails', '~> 4.0'
 # less-rails does not support sprockets 4.0
-gem 'sprockets', '< 4.0'
+gem 'sprockets', '< 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 # This needs to be here for less :(

@@ -1,3 +1,6 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'scoresheet' %>
+<% end %>
 <div class="row">
   <div class="col-xs-12">
     <div class="card">
@@ -7,6 +10,12 @@
         </h2>
       </div>
       <div class="card-supporting-text">
+        <select id="scoresheet-selector">
+          <option data-url="<%= scoresheet_course_url(@course) %>" selected><%= t('.course_view') %></option>
+          <% @course.series.reverse.each do |s| %>
+            <option data-url="<%= scoresheet_series_url(s) %>"><%= s.name %></option>
+          <% end %>
+        </select>
         <%= render partial: 'layouts/searchbar', locals: {
             actions: [
                 { text: t('.at_least_one_started'), search: { at_least_one_started: true } },
@@ -21,3 +30,6 @@
     </div>
   </div>
 </div>
+<script>
+  $(window.dodona.initScoresheetLinks)
+</script>

@@ -116,6 +116,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success, 'course_admin should be able to get course scoresheet'
   end
 
+  test 'should get course scoresheet as course admin in csv format' do
+    sign_in @course_admins.first
+    get scoresheet_course_url(@course, format: :csv)
+    assert_response :success, 'course_admin should be able to get course scoresheet'
+  end
+
   test 'should not get course scoresheet as normal user' do
     sign_in @students.first
     get scoresheet_course_url(@course)

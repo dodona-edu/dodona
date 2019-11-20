@@ -234,6 +234,12 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
     assert_response :success, "#{@course_admin} should be able to get series scoresheet"
   end
 
+  test 'should get series scoresheet in csv format as course admin' do
+    sign_in @course_admin
+    get scoresheet_series_url(@series, format: :csv)
+    assert_response :success, "#{@course_admin} should be able to get series scoresheet"
+  end
+
   test 'should not get series scoresheet as normal user' do
     sign_in @student
     get scoresheet_series_url(@series)

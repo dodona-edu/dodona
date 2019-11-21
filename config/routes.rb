@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
+  post '/csp-report' => 'pages#csp_report'
 
   scope '(:locale)', locale: /en|nl/ do
     get '/sign_in(/:idp)' => 'pages#sign_in_page', as: 'sign_in'

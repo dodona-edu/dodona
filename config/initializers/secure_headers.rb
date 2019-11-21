@@ -13,6 +13,7 @@ SecureHeaders::Configuration.default do |config|
     https://www.google-analytics.com https://cdnjs.cloudflare.com),
     style_src: %w('self' 'unsafe-inline' https://fonts.googleapis.com
       https://cdn.materialdesignicons.com),
+    report_uri: %w(/csp-report)
   }
 end
 
@@ -38,6 +39,7 @@ SecureHeaders::Configuration.override(:sandbox) do |config|
   config.csp = {
     default_src: sources,
     script_src: sources,
+    report_uri: %w(/csp-report)
   }
 end
 

@@ -108,6 +108,8 @@ en:
       at_least_one_started: "Only show users that started at least one exercise"
       download: Download scoresheet
       scoresheet: Scoresheet
+      course_view: Course view
+      select_view: Select view
     not_a_member_card:
       not_a_member: You are not a member of this course. Do you wish to register?
       not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to this course.

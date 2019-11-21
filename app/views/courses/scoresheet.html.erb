@@ -10,16 +10,24 @@
         </h2>
       </div>
       <div class="card-supporting-text">
-        <select id="scoresheet-selector">
-          <option data-url="<%= scoresheet_course_url(@course) %>" selected><%= t('.course_view') %></option>
-          <% @course.series.reverse.each do |s| %>
-            <option data-url="<%= scoresheet_series_url(s) %>"><%= s.name %></option>
+        <div class="scoresheet-options-container">
+          <div class="form-group">
+            <label for="scoresheet-selector"><%= t('.select_view') %></label>
+            <select class="form-control" id="scoresheet-selector">
+              <option data-url="<%= scoresheet_course_url(@course) %>" selected><%= t('.course_view') %></option>
+              <% @course.series.reverse.each do |s| %>
+                <option data-url="<%= scoresheet_series_url(s) %>"><%= s.name %></option>
+              <% end %>
+            </select>
+          </div>
+          <%= link_to scoresheet_course_path(@course, format: :csv), class: "btn btn-primary btn-text" do %>
+            <i class="mdi mdi-cloud-download"></i>
+            <%=  t('.download') %>
           <% end %>
-        </select>
+        </div>
         <%= render partial: 'layouts/searchbar', locals: {
             actions: [
-                { text: t('.at_least_one_started'), search: { at_least_one_started: true } },
-                { text: t('.download'), url: scoresheet_course_path(@course, format: :csv) }
+                { text: t('.at_least_one_started'), search: { at_least_one_started: true } }
             ],
             course_labels: @course_labels
         } %>

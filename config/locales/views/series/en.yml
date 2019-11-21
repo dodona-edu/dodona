@@ -57,6 +57,8 @@ en:
       explanation: "Showing the number of correctly solved exercises before the deadline"
       at_least_one_started: "Only show users that started at least one exercise"
       download: Download scoresheet
+      course_view: Course view
+      select_view: Select view
     series_status:
       completed_after_deadline_missed: You solved all exercises, but unfortunately not before the deadline.
       wrong_after_deadline_missed: You missed the deadline, and there are still some incorrect exercises.

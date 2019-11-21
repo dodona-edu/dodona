@@ -161,10 +161,12 @@ class CoursesController < ApplicationController
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.scoresheet.scoresheet'), '#']]
     @course_labels = CourseLabel.where(course: @course)
 
-    scores = @course.scoresheet
-    @users = apply_scopes(scores[:users])
-    @series = scores[:series]
-    @hash = scores[:hash]
+    unless request.format == :html
+      scores = @course.scoresheet
+      @users = apply_scopes(scores[:users])
+      @series = scores[:series]
+      @hash = scores[:hash]
+    end
 
     respond_to do |format|
       format.html

@@ -73,10 +73,8 @@ class PagesController < ApplicationController
           report: report
         }
       )
-      head :ok
-    else
-      head :not_found
     end
+    head :ok
   end
 
   private

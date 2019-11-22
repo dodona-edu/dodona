@@ -201,6 +201,24 @@ class Course < ApplicationRecord
     end
   end
 
+  def scoresheet
+    sorted_series = series.reverse
+    sorted_users = subscribed_members.order('course_memberships.status ASC')
+                                     .order(permission: :asc)
+                                     .order(last_name: :asc, first_name: :asc)
+
+    hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).map do |series_info, user|
+      scores = series_info[1]
+      [[user.id, series_info[0].id], series_info[0].exercises.count { |e| scores[:submissions][[user.id, e.id]]&.accepted }]
+    end.to_h
+
+    {
+      users: sorted_users,
+      series: sorted_series,
+      hash: hash
+    }
+  end
+
   def labels_csv
     sorted_course_memberships = course_memberships
                                 .where.not(status: %i[unsubscribed pending])

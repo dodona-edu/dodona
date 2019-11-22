@@ -1,0 +1,22 @@
+<div class="table-scroll-wrapper scoresheet-table-wrapper">
+  <table class="table scoresheet-table">
+    <thead>
+    <tr>
+      <th class="user-name"><%= t('.user') %></th>
+      <% series.each do |s| %>
+      <th class="status-header ellipsis-overflow" title="<%= s.name %>"><%= s.name %></th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% users.each do |student| %>
+      <tr>
+        <td class="user-name ellipsis-overflow"><%= link_to student.full_name, course_member_path(course, student), title: student.full_name, class: "ellipsis-overflow" %></td>
+        <% series.each do |s| %>
+          <td class="status" title="<%= "#{s.name} - #{student.full_name} - #{hash[[student.id, s.id]]}/#{s.exercises.count}" %>"><%= hash[[student.id, s.id]] %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

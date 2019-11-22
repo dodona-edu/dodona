@@ -111,6 +111,10 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def scoresheet?
+    course_admin?
+  end
+
   def punchcard?
     statistics?
   end

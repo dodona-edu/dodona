@@ -79,24 +79,20 @@ class Series < ApplicationRecord
   end
 
   def scoresheet
-    sorted_users = course.enrolled_members.order('course_memberships.status ASC')
-                         .order(permission: :asc)
-                         .order(last_name: :asc, first_name: :asc)
-    CSV.generate do |csv|
-      csv << [I18n.t('series.scoresheet.explanation')]
-      csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), name].concat(exercises.map(&:name))
-      csv << ['Maximum', '', '', '', exercises.count].concat(exercises.map { 1 })
-      latest_subs = Submission.where(user_id: sorted_users.map(&:id), course_id: course.id, exercise_id: exercises.map(&:id)).select('MAX(id) as id')
-      latest_subs = latest_subs.before_deadline(deadline) unless deadline.nil?
-      latest_subs = Submission.where(id: latest_subs.group(:user_id, :exercise_id), accepted: true).group(:user_id, :exercise_id).count
-      sorted_users.each do |user|
-        row = [user.first_name, user.last_name, user.username, user.email]
-        succeeded_exercises = exercises.map { |ex| latest_subs[[user.id, ex.id]].present? ? 1 : 0 }
-        row << succeeded_exercises.sum
-        row.concat(succeeded_exercises)
-        csv << row
-      end
-    end
+    users = course.subscribed_members
+                  .order('course_memberships.status ASC')
+                  .order(permission: :asc)
+                  .order(last_name: :asc, first_name: :asc)
+
+    submission_hash = Submission.in_series(self).where(user: users)
+    submission_hash = submission_hash.before_deadline(deadline) if deadline.present?
+    submission_hash = submission_hash.group(%i[user_id exercise_id]).most_recent.map { |s| [[s.user_id, s.exercise_id], s] }.to_h
+
+    {
+      users: users,
+      exercises: exercises,
+      submissions: submission_hash
+    }
   end
 
   def generate_token(type)

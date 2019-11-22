@@ -12,6 +12,10 @@ class SeriesController < ApplicationController
   end
   has_scope :by_filter, as: 'filter', only: :scoresheet
 
+  content_security_policy only: %i[overview] do |policy|
+    policy.frame_src -> { sandbox_url }
+  end
+
   # GET /series
   # GET /series.json
   def index
@@ -35,7 +39,6 @@ class SeriesController < ApplicationController
     @course = @series.course
     @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
     @user = User.find(params[:user_id]) if params[:user_id] && current_user&.course_admin?(@course)
-    use_content_security_policy_named_append(:embeds_iframe)
   end
 
   # GET /series/new

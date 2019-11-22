@@ -2,6 +2,12 @@ class PagesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[csp_report]
   skip_before_action :redirect_to_default_host, only: %i[csp_report]
 
+  content_security_policy only: %i[contact] do |policy|
+    policy.script_src(*(%w[https://www.recaptcha.net https://www.gstatic.com
+                           https://www.google.com] + policy.script_src))
+    policy.frame_src 'https://www.google.com'
+  end
+
   def home
     @title = 'Home'
     @crumbs = []
@@ -37,7 +43,6 @@ class PagesController < ApplicationController
   def contact
     @contact_form = ContactForm.new
     @title = I18n.t('pages.contact.title')
-    use_content_security_policy_named_append(:captcha)
   end
 
   def create_contact

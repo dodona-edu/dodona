@@ -11,6 +11,14 @@ class ExercisesController < ApplicationController
   has_scope :by_programming_language, as: 'programming_language'
   has_scope :in_repository, as: 'repository_id'
 
+  content_security_policy only: %i[show] do |policy|
+    policy.frame_src -> { sandbox_url }
+  end
+
+  content_security_policy only: %i[description] do |policy|
+    policy.frame_ancestors -> { default_url }
+  end
+
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to exercises_path, alert: I18n.t('exercises.show.not_found')
   end
@@ -68,13 +76,11 @@ class ExercisesController < ApplicationController
     end
     @title = @exercise.name
     @crumbs << [@exercise.name, '#']
-    use_content_security_policy_named_append(:embeds_iframe)
   end
 
   def description
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @exercise.access_token == params[:token]
 
-    use_content_security_policy_named_append(:is_embedded)
     render layout: 'frame'
   end
 

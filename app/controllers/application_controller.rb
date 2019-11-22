@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
                 except: %i[media sign_in_page institution_not_supported],
                 unless: -> { devise_controller? || remote_request? }
 
-  before_action :enable_sandbox,
+  before_action :skip_session,
                 if: :sandbox?
 
   before_action :redirect_to_default_host,
@@ -23,6 +23,15 @@ class ApplicationController < ActionController::Base
   before_action :set_time_zone_offset
 
   impersonates :user
+
+  # A more lax CSP for pages in the sandbox
+  content_security_policy if: :sandbox? do |policy|
+    policy.directives.clear
+    sources = %i[self unsafe_inline https]
+    sources << :http if Rails.env.development?
+    policy.default_src(*sources)
+    policy.script_src(*sources)
+  end
 
   def after_sign_in_path_for(_resource)
     stored_location_for(:user) || root_path
@@ -45,6 +54,14 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def sandbox_url
+    "#{request.protocol}#{Rails.configuration.sandbox_host}:#{request.port}"
+  end
+
+  def default_url
+    "#{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
+  end
+
   def remote_request?
     request.format.js? || request.format.json?
   end
@@ -64,11 +81,6 @@ class ApplicationController < ActionController::Base
   end
 
   private
-
-  def enable_sandbox
-    use_secure_headers_override(:sandbox)
-    skip_session
-  end
 
   def redirect_to_default_host
     redirect_to host: Rails.configuration.default_host
@@ -124,7 +136,7 @@ class ApplicationController < ActionController::Base
     return if token.blank?
 
     # Sessions are not needed for the JSON API
-    request.session_options[:skip] = true
+    skip_session
 
     token.gsub!(/Token token=\"(.*)\"/, '\1')
     # only allow urlsafe base64 characters to pass

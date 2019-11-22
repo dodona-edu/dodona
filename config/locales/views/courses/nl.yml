@@ -65,7 +65,7 @@ nl:
       at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
       scoresheet: Statusoverzicht
       download: Statusoverzicht downloaden
-      course_view: Cursusweergave
+      course_view: Statusoverzicht van cursus
       select_view: Weergave selecteren
     edit:
       confidential: Geheime link

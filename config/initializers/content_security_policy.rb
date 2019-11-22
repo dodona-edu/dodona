@@ -25,7 +25,8 @@ Rails.application.config.content_security_policy do |policy|
                      'https://cdn.materialdesignicons.com',
                      'https://cdnjs.cloudflare.com'
 
-  policy.img_src     :self, :data, 'https://cdnjs.cloudflare.com'
+  policy.img_src     :self, :data, 'https://cdnjs.cloudflare.com',
+                     'https://www.google-analytics.com'
 
   policy.object_src  :none
 

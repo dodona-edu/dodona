@@ -113,7 +113,7 @@ Rails.application.configure do
   config.server_timings.enabled = false
 
   config.middleware.use ExceptionNotification::Rack,
-                        ignore_crawlers: %w[Googlebot bingbot],
+                        ignore_crawlers: %w[Googlebot bingbot Applebot],
                         ignore_if: ->(env, exception) {
                           env['action_controller.instance'].is_a?(PagesController) &&
                               env['action_controller.instance'].action_name == 'create_contact' &&

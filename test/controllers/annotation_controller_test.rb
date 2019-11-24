@@ -24,14 +24,14 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     put "/submissions/#{@submission.id}/annotations/#{@annotation.id}", params: {
       annotation: {
-        annotation_text: "We changed this text"
+        annotation_text: 'We changed this text'
       }
     }
     assert_response :success
 
     patch "/submissions/#{@submission.id}/annotations/#{@annotation.id}", params: {
       annotation: {
-        annotation_text: "We changed this text again"
+        annotation_text: 'We changed this text again'
       }
     }
     assert_response :success
@@ -53,4 +53,28 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     delete "/submissions/#{@submission.id}/annotations/#{@annotation.id}"
     assert_response :no_content
   end
+
+  test 'can not create invalid annotation' do
+    post "/submissions/#{@submission.id}/annotations", params: {
+      annotation: {
+        line_nr: 1_500_000_000,
+        annotation_text: 'You shall not pass'
+      }
+    }
+    assert_response :unprocessable_entity
+  end
+
+  test 'can not update valid annotation with invalid annotation' do
+    @annotation = create :annotation, submission: @submission, user: @zeus
+
+    put "/submissions/#{@submission.id}/annotations/#{@annotation.id}", params: {
+      annotation: {
+        # Titanic script is around 4500 sentences worth of text, so why not test that users can not submit such long content
+        annotation_text: Faker::Lorem.sentences(number: 4_500).join(' ')
+      }
+    }
+
+    assert_response :unprocessable_entity
+  end
+
 end

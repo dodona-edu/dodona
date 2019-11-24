@@ -25,11 +25,8 @@ class AnnotationController < ApplicationController
 
   def destroy
     authorize @annotation
-    if @annotation.destroy
-      render json: {}, status: :no_content
-    else
-      render json: {}, status: :unprocessable_entity
-    end
+    @annotation.destroy
+    render json: {}, status: :no_content
   end
 
   private

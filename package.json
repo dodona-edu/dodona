@@ -15,7 +15,7 @@
     "clipboard": "^2.0.4",
     "d3": "^5.14.1",
     "dragula": "^3.7.2",
-    "firebase": "^7.4.0",
+    "firebase": "^7.5.0",
     "first-input-delay": "^0.1.3",
     "iframe-resizer": "^4.2.6",
     "isomorphic-fetch": "^2.2.1",

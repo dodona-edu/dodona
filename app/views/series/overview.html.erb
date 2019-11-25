@@ -1,6 +1,5 @@
 <% summary = SeriesSummary.new user: @user || current_user, series: @series %>
 <%= content_for :javascripts do %>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
   <%= javascript_pack_tag 'series_overview' %>
 <% end %>
 

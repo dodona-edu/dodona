@@ -77,4 +77,14 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test 'can query the index of all annotations on a submission' do
+    create :annotation, submission: @submission, user: @zeus
+    create :annotation, submission: @submission, user: @zeus
+    create :annotation, submission: @submission, user: @zeus
+
+    get "/submissions/#{@submission.id}/annotations", params: {format: :json}
+
+    assert_response :ok
+  end
+
 end

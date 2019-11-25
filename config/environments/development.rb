@@ -89,7 +89,7 @@ Rails.application.configure do
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.middleware.use ExceptionNotification::Rack,
-                        #ignore_if: ->(env, _exception) { env['HTTP_HOST'] == 'localhost:3000' || env['HTTP_HOST'] == 'dodona.localhost:3000' },
+                        ignore_if: ->(env, _exception) { env['HTTP_HOST'] == 'localhost:3000' || env['HTTP_HOST'] == 'dodona.localhost:3000' },
                         email: {
                           email_prefix: '[Dodona-dev] ',
                           sender_address: %("Dodona" <dodona@ugent.be>),

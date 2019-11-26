@@ -69,3 +69,7 @@ en:
       natural_language: "Natural language"
       labels: "Labels"
       unknown: unknown
+      about: "About this exercise"
+      about_not_present: "This exercise does not have about info yet."
+      used_in_courses: "Courses using this exercise"
+      author_information: "Created by %{contact} in repository %{repository} %{created_at} ago. Last update was %{updated_at} ago."

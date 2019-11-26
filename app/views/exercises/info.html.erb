@@ -5,53 +5,152 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @exercise.name %></h2>
       </div>
-      <div class="card-supporting-text">
-        <p>
-        <strong><%= t '.repository' %>:</strong>
-          <% if policy(@repository).show? %>
-            <%= link_to @repository.name,
-                        repository_path(@repository) %>
+      <div class="card-supporting-text card-border row">
+        <div class="col-xs-12">
+          <% about = @config.dig('description', 'about')  %>
+          <% if about.present? %>
+            <%= markdown about %>
           <% else %>
-            <%= @repository.name %>
+            <span class="text-muted"><%= t '.no_about_present' %></span>
           <% end %>
-        </p>
-        <% if current_user&.repository_admin?(@repostiry) %>
-          <p>
-          <strong><%= t '.location' %>:</strong>
-            <%= github_link @repository, @exercise.path %>
-          </p>
-        <% end %>
-        <p>
-        <strong><%= t '.contact' %>:</strong>
-          <%= mail_to  @exercise.contact_email %>
-        </p>
-        <p>
-        <strong><%= t '.programming_language' %>:</strong>
-        <%= @exercise.programming_language.name || t('.unknown') %>
-        </p>
-        <strong><%= t '.natural_language' %>:</strong>
-          <%= @exercise.description_languages.join(', ') %>
-        </p>
-        <p>
-        <strong><%= t '.labels' %>:</strong>
-        <%= safe_join(@exercise.labels.map{ |label| link_to label.name, label_path(label) }, ', ') %>
-        </p>
-        <p>
-          <strong><%= t '.about' %>:</strong>
-          <%= @exercise.about || t('.about_not_present') %>
-        </p>
-        <p>
-          <strong><%= t '.used_in_courses' %>:</strong>
-          <%= safe_join(@exercise.courses.map{ |course| link_to course.name, course_path(course) }, ', ') %>
-        </p>
+          <% if @exercise.labels.any? %>
+            <strong><%= t '.labels' %>:</strong>
+            <%= safe_join(@exercise.labels.map{ |label| link_to label.name, label_path(label) }, ', ') %>
+          <% end %>
+        </div>
       </div>
       <div class="card-supporting-text card-border">
-        <h4 class="card-subtitle"><%= t('.solution') %></h4>
-        <% if @exercise.solution_exist? %>
-          <%= raw FeedbackCodeRenderer.new(@exercise.solution, @exercise.programming_language.name).parse.html %>
-        <% else %>
-          No solution
-        <% end %>
+        <div class="row">
+          <div class="col-xs-12">
+            <p>
+            <%
+                repository_html = if current_user&.repository_admin?(@repository)
+                                    "#{link_to @repository.name, repository_path(@repository)} (#{github_link @repository, @exercise.path})"
+                                  elsif policy(@repository).show?
+                                    link_to @repository.name, repository_path(@repository)
+                                  else
+                                    @repository.name
+                                  end
+                                %>
+                              <%
+                                  contact = mail_to(@config['contact'] || @repository.first_admin.pretty_email)
+                                %>
+            <%= raw t '.author_information',
+                  contact: contact,
+                  repository: repository_html,
+                  created_at: time_ago_in_words(@exercise.created_at),
+                  updated_at: time_ago_in_words(@exercise.updated_at) %>
+          </div>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border">
+        <div class="row">
+          <div class="col-lg-2 col-sm-4 col-xs-6">
+            <h1><i class="mdi mdi-36 mdi-language-<%= @exercise.programming_language.name %>" title="<%= @exercise.programming_language.name %>"></i></h1>
+            <%= t '.programming_language' %>
+          </div>
+          <div class="col-lg-2 col-sm-4 col-xs-6">
+            <h1><%= @exercise.description_languages.join(', ') %></h1>
+            <%= t '.natural_language' %>
+          </div>
+          <div class="col-lg-2 col-sm-4 col-xs-6">
+            <h1><%= @config.dig('evaluation', 'time_limit') %>s</h1>
+            <%= t '.time_limit' %>
+          </div>
+          <div class="col-lg-2 col-sm-4 col-xs-6">
+            <h1><%= human_bytes @config.dig('evaluation', 'memory_limit')&.to_i %></h1>
+            <%= t '.memory_limit' %>
+          </div>
+          <div class="col-lg-2 col-sm-4 col-xs-6">
+            <% if @config['network_enabled'] %>
+            <h1>
+              <i class="mdi mdi-36 mdi-wan"></i>
+            </h1>
+            <%= t '.network_enabled' %>
+            <% else %>
+            <h1>
+              <i class="mdi mdi-36 mdi-lan-disconnect"></i>
+            </h1>
+            <%= t '.network_disabled' %>
+            <% end %>
+          </div>
+          <div class="col-lg-2 col-sm-4 col-xs-6">
+            <h1><%= @exercise.submissions.count %></h1>
+            <%= t '.submission_count' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title">
+      <h2><%= t ".courses_using_this_exercise", course_count: @courses_series.count %></h2>
+      </div>
+      <div class="card-supporting-text row">
+        <div class="col-xs-12 courses-using-exercise">
+          <% if @courses_series.any? %>
+            <div class="row">
+              <% @courses_series.each do |course, series| %>
+                <div class="col-lg-4 col-md-6 col-sm-12 course">
+                  <div>
+                    <%= link_to course.name, course,
+                      class: "course-link", title: course.name %>
+                    in
+                    <%= raw series.map{ |s| link_to(s.name, s, class: "course-link", title: s.name).html_safe }.to_sentence %>
+                  </div>
+                  <span class="small text-muted">
+                    <% if course.teacher.present? %>
+                      <%= course.teacher %> &middot;
+                    <% end %>
+                    <%= course.year %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <%= t '.not_used_in_courses' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title">
+        <h2><%= t ".sample_solutions" %></h2>
+      </div>
+      <div class="card-supporting-text row">
+        <div class="col-xs-12">
+          <% solutions = @exercise.solutions %>
+          <% if solutions.any? %>
+            <div id="solutions-accordion" class="panel-group" role="tablist" aria-multiselectable="true">
+            <% solutions.each_with_index do |hash, i| %>
+              <% fname, code = hash %>
+              <div class="panel panel-default">
+                <div id="heading-solution-<%= i %>" class="panel-heading">
+                  <h4 class="panel-title">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#solutions-accordion" href="#collapse-solution-<%= i %>" aria-expanded="false"><%= fname %></a>
+                  </h4>
+                </div>
+                <div id="collapse-solution-<%= i %>" class="panel-collapse collapse" aria-expanded="false">
+                  <div class="panel-body">
+                    <%= raw FeedbackCodeRenderer.new(code, @exercise.programming_language.name).parse.html %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            </div>
+          <% else %>
+            <span class="text-muted"><%= t '.no_solutions' %></span>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

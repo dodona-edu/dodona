@@ -7,6 +7,21 @@ module ExerciseHelper
     "exercise-#{exercise.id}"
   end
 
+  BYTE_UNITS = {
+    unit: 'B',
+    thousand: 'kB',
+    million: 'MB',
+    billion: 'GB',
+    trillion: 'TB'
+  }.freeze
+
+  # Rails doesn't think its number_to_human_bytes helper should be correct,
+  # it returns Mebibytes and calls them Megabytes... sigh.
+  # This custom helper at least returns actual metric units.
+  def human_bytes(bytes)
+    number_to_human bytes, units: BYTE_UNITS
+  end
+
   # returns a list with as the first item the description of an execise
   # and as second item a hash of footnote indexes mapped on their url
   def exercise_description_footnotes_and_first_image(exercise)

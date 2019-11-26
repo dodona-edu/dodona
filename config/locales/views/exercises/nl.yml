@@ -69,3 +69,8 @@ nl:
       natural_language: "Natuurlijke taal"
       labels: "Labels"
       unknown: niet gekend
+      about: "Info over deze oefening"
+      about_not_present: "Deze oefening heeft nog geen extra informatie."
+      used_in_courses: "Cursussen die deze oefening gebruiken"
+      author_information: "Gemaakt door %{contact} in repository %{repository} %{created_at} geleden. Laatste wijziging was %{updated_at} geleden."
+      courses_using_this_exercise: "%{course_count} cursussen gebruiken deze oefening"

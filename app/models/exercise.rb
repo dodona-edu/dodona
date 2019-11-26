@@ -106,8 +106,12 @@ class Exercise < ApplicationRecord
     full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
   end
 
-  def solution_file(lang)
-    full_path + SOLUTION_DIR + "solution.#{lang}.#{programming_language.extension}"
+  def solutions
+    (full_path + SOLUTION_DIR)
+      .children
+      .filter { |path| path.file? && path.readable? }
+      .map { |path| [path.basename, path.read] }
+      .to_h
   end
 
   def solution_exist?
@@ -174,10 +178,6 @@ class Exercise < ApplicationRecord
     repository.github_url(path)
   end
 
-  def contact_email
-    config['contact'] || repository.first_admin.pretty_email
-  end
-
   def config
     repository.read_config_file(config_file)
   end
@@ -188,10 +188,6 @@ class Exercise < ApplicationRecord
 
   def file_extension
     programming_language&.extension || 'txt'
-  end
-
-  def about
-    config['about']
   end
 
   def merged_config

@@ -17,6 +17,16 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should show exercise description' do
+    get description_exercise_url(@instance, token: @instance.access_token)
+    assert_response :success
+  end
+
+  test 'should not show exercise description without token' do
+    get description_exercise_url(@instance)
+    assert_response :forbidden
+  end
+
   test 'should rescue from exercise not found' do
     not_id = Random.rand(10_000)
     begin

@@ -11,6 +11,10 @@ class SeriesController < ApplicationController
   end
   has_scope :by_filter, as: 'filter', only: :scoresheet
 
+  content_security_policy only: %i[overview] do |policy|
+    policy.frame_src -> { sandbox_url }
+  end
+
   # GET /series
   # GET /series.json
   def index

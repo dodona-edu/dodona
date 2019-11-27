@@ -4,19 +4,38 @@
 # For further information see the following documentation
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
-# Rails.application.config.content_security_policy do |policy|
-#   policy.default_src :self, :https
-#   policy.font_src    :self, :https, :data
-#   policy.img_src     :self, :https, :data
-#   policy.object_src  :none
-#   policy.script_src  :self, :https
-#   policy.style_src   :self, :https
-#   # If you are using webpack-dev-server then specify webpack-dev-server host
-#   policy.connect_src :self, :https, "http://localhost:3035", "ws://localhost:3035" if Rails.env.development?
+Rails.application.config.content_security_policy do |policy|
+  policy.default_src :self
 
-#   # Specify URI for violation reports
-#   # policy.report_uri "/csp-violation-report-endpoint"
-# end
+  policy.frame_ancestors :none
+
+  if Rails.env.development?
+    # Allow webpack-dev-server
+    policy.connect_src :self, 'https://pandora.ugent.be',
+                       'https://dodona-cea23.firebaseio.com',
+                       'https://www.google-analytics.com',
+                       'http://localhost:3035', 'ws://localhost:3035'
+  else
+    policy.connect_src :self, 'https://pandora.ugent.be',
+                       'https://dodona-cea23.firebaseio.com',
+                       'https://www.google-analytics.com'
+  end
+
+  policy.font_src    :self, 'https://fonts.gstatic.com',
+                     'https://cdn.materialdesignicons.com'
+
+  policy.img_src     :self, :data, 'https://www.google-analytics.com'
+
+  policy.object_src  :none
+
+  policy.script_src  :self, :unsafe_inline, :unsafe_eval,
+                     'https://www.google-analytics.com'
+
+  policy.style_src   :self, :unsafe_inline, 'https://fonts.googleapis.com',
+                     'https://cdn.materialdesignicons.com'
+
+  policy.report_uri "/csp-report"
+end
 
 # If you are using UJS then enable automatic nonce generation
 # Rails.application.config.content_security_policy_nonce_generator = -> request { SecureRandom.base64(16) }

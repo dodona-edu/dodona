@@ -88,42 +88,6 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title">
-      <h2><%= t ".courses_using_this_exercise", course_count: @courses_series.count %></h2>
-      </div>
-      <div class="card-supporting-text row">
-        <div class="col-xs-12 courses-using-exercise">
-          <% if @courses_series.any? %>
-            <div class="row">
-              <% @courses_series.each do |course, series| %>
-                <div class="col-lg-4 col-md-6 col-sm-12 course">
-                  <div>
-                    <%= link_to course.name, course,
-                      class: "course-link", title: course.name %>
-                    in
-                    <%= raw series.map{ |s| link_to(s.name, s, class: "course-link", title: s.name).html_safe }.to_sentence %>
-                  </div>
-                  <span class="small text-muted">
-                    <% if course.teacher.present? %>
-                      <%= course.teacher %> &middot;
-                    <% end %>
-                    <%= course.year %>
-                  </span>
-                </div>
-              <% end %>
-            </div>
-          <% else %>
-            <%= t '.not_used_in_courses' %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card">
-      <div class="card-title">
         <h2><%= t ".sample_solutions" %></h2>
       </div>
       <div class="card-supporting-text row">
@@ -149,6 +113,42 @@
             </div>
           <% else %>
             <span class="text-muted"><%= t '.no_solutions' %></span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title">
+      <h2><%= t ".courses_using_this_exercise", course_count: @courses_series.count %></h2>
+      </div>
+      <div class="card-supporting-text row">
+        <div class="col-xs-12 courses-using-exercise">
+          <% if @courses_series.any? %>
+            <div class="row">
+              <% @courses_series.each do |course, series| %>
+                <div class="col-lg-4 col-md-6 col-sm-12 course">
+                  <div>
+                    <%= link_to course.name, course,
+                      class: "course-link", title: course.name %>
+                    in
+                    <%= raw series.map{ |s| link_to(s.name, s, class: "course-link", title: s.name).html_safe }.to_sentence %>
+                  </div>
+                  <span class="small text-muted">
+                    <% if course.teacher.present? %>
+                      <%= course.teacher %> &middot;
+                    <% end %>
+                    <%= course.year %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <%= t '.not_used_in_courses' %>
           <% end %>
         </div>
       </div>

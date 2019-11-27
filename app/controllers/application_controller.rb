@@ -54,6 +54,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def allow_iframe
+    response.headers['X-Frame-Options'] = "allow-from #{default_url}"
+  end
+
   def sandbox_url
     "#{request.protocol}#{Rails.configuration.sandbox_host}:#{request.port}"
   end

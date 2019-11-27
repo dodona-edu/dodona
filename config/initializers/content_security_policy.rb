@@ -39,7 +39,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.report_uri "/csp-report"
 end
 
-Rails.application.config.content_security_policy_report_only = true
+# Rails.application.config.content_security_policy_report_only = true
 
 # If you are using UJS then enable automatic nonce generation
 # Rails.application.config.content_security_policy_nonce_generator = -> request { SecureRandom.base64(16) }

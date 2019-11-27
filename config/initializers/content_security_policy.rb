@@ -36,7 +36,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.style_src   :self, :unsafe_inline, 'https://fonts.googleapis.com',
                      'https://cdn.materialdesignicons.com'
 
-  policy.report_uri "/csp-report"
+  policy.report_uri  'https://dodona.report-uri.com/r/d/csp/enforce'
 end
 
 # Rails.application.config.content_security_policy_report_only = true

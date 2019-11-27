@@ -10,12 +10,15 @@
           <% about = @config.dig('description', 'about')  %>
           <% if about.present? %>
             <%= markdown about %>
+          <% elsif current_user&.repository_admin?(@repository) %>
+            <span class="text-muted"><%= t '.no_about_present_admin' %></span>
           <% else %>
             <span class="text-muted"><%= t '.no_about_present' %></span>
           <% end %>
-          <% if @exercise.labels.any? %>
-            <strong><%= t '.labels' %>:</strong>
-            <%= safe_join(@exercise.labels.map{ |label| link_to label.name, label_path(label) }, ', ') %>
+          <% @exercise.labels.each do |label| %>
+            <%= link_to label_path(label) do %>
+              <span class="label label-default"><%= label.name %></span>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -148,7 +151,7 @@
               <% end %>
             </div>
           <% else %>
-            <%= t '.not_used_in_courses' %>
+            <span class="text-muted"><%= t '.not_used_in_courses' %></span>
           <% end %>
         </div>
       </div>

@@ -3,6 +3,7 @@ class ExercisesController < ApplicationController
   before_action :set_course, only: %i[show edit update]
   before_action :set_series, only: %i[show edit update]
   before_action :ensure_trailing_slash, only: :show
+  before_action :allow_iframe, only: %i[description]
   skip_before_action :verify_authenticity_token, only: [:media]
   skip_before_action :redirect_to_default_host, only: %i[description media]
 
@@ -12,7 +13,7 @@ class ExercisesController < ApplicationController
   has_scope :in_repository, as: 'repository_id'
 
   content_security_policy only: %i[show] do |policy|
-    policy.frame_src -> { sandbox_url }
+    policy.frame_src -> { ["'self'", sandbox_url] }
   end
 
   content_security_policy only: %i[description] do |policy|

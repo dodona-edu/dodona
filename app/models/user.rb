@@ -111,7 +111,8 @@ class User < ApplicationRecord
 
   scope :in_course, ->(course) { joins(:course_memberships).where('course_memberships.course_id = ?', course.id) }
   scope :by_course_labels, ->(labels, course_id) { where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id)) }
-  scope :at_least_one_started, ->(series) { where(id: Submission.where(course_id: series.course_id, exercise_id: series.exercises).select('DISTINCT(user_id)')) }
+  scope :at_least_one_started_in_series, ->(series) { where(id: Submission.where(course_id: series.course_id, exercise_id: series.exercises).select('DISTINCT(user_id)')) }
+  scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
 
   def email_only_blank_if_smartschool
     errors.add(:email, 'should not be blank when institution does not use smartschool') if email.blank? && !institution&.smartschool?
@@ -174,8 +175,8 @@ class User < ApplicationRecord
     s.select('distinct exercise_id').count
   end
 
-  create_cacheable(:attempted_exercises,
-                   ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+  invalidateable_instance_cacheable(:attempted_exercises,
+                                    ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def correct_exercises(options)
     s = submissions.where(status: :correct)
@@ -183,8 +184,8 @@ class User < ApplicationRecord
     s.select('distinct exercise_id').count
   end
 
-  create_cacheable(:correct_exercises,
-                   ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+  invalidateable_instance_cacheable(:correct_exercises,
+                                    ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def unfinished_exercises(course = nil)
     attempted_exercises(course: course) - correct_exercises(course: course)

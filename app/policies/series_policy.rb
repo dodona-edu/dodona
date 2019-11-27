@@ -45,7 +45,7 @@ class SeriesPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def download_solutions?
+  def download_submissions?
     user && show?
   end
 

@@ -4,19 +4,21 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.2'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use less for stylesheets
 gem 'less-rails', '~> 4.0'
+# less-rails does not support sprockets 4.0
+gem 'sprockets', '< 4.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 # This needs to be here for less :(
 gem 'therubyracer', platforms: :ruby
 
-gem 'webpacker', '~> 4.0.7'
+gem 'webpacker', '~> 4.2.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.9.1'
@@ -45,12 +47,12 @@ gem 'delayed_job_web', '~>1.4.3'
 gem 'sinatra', '~>2.0.7'
 
 # pagination
-gem 'will_paginate', '~>3.1.8'
+gem 'will_paginate', '~>3.2.1'
 
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.1.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.11.1'
+gem 'rouge', '3.13.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.3'
@@ -62,7 +64,7 @@ gem 'diff-lcs', '~>1.3'
 gem 'ace-rails-ap', '~>4.2'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>9.6.1'
+gem 'autoprefixer-rails', '~>9.7.2'
 
 # saml authentication
 gem 'devise', '~>4.7.1'
@@ -76,7 +78,7 @@ gem 'jwt', '~> 2.2.1'
 
 # contact mail form
 gem 'mail_form', '~> 1.8.0'
-gem 'recaptcha', '~> 5.1.1', require: 'recaptcha/rails'
+gem 'recaptcha', '~> 5.2.1', require: 'recaptcha/rails'
 
 # authorization
 gem 'pundit', '~> 2.1.0'
@@ -85,7 +87,7 @@ gem 'pundit', '~> 2.1.0'
 gem 'pretender', '~> 0.3.4'
 
 # db annotations
-gem 'annotate', '~> 3.0.2'
+gem 'annotate', '~> 3.0.3'
 
 # Use Capistrano for deployment
 gem 'capistrano-passenger', '~> 0.2.0', group: :development
@@ -98,7 +100,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 3.3.0'
+gem 'i18n-js', '~> 3.5.0'
 gem 'rails-i18n', '~> 6.0.0'
 
 # email exceptions
@@ -107,7 +109,7 @@ gem 'httparty', '~> 0.17.1'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.10.4'
+gem 'nokogiri', '~> 1.10.5'
 gem 'premailer-rails', '~> 1.10.3'
 
 # filtering
@@ -129,7 +131,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.10'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.5.0'
+gem 'faker', '~> 2.7.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -153,7 +155,7 @@ end
 
 group :test do
   # for measuring coverage
-  gem 'codecov', '~> 0.1.15', require: false
+  gem 'codecov', '~> 0.1.16', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.17.1', require: false
 end

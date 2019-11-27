@@ -79,72 +79,20 @@ class Series < ApplicationRecord
   end
 
   def scoresheet
-    sorted_users = course.enrolled_members.order('course_memberships.status ASC')
-                         .order(permission: :asc)
-                         .order(last_name: :asc, first_name: :asc)
-    CSV.generate do |csv|
-      csv << [I18n.t('series.scoresheet.explanation')]
-      csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), name].concat(exercises.map(&:name))
-      csv << ['Maximum', '', '', '', exercises.count].concat(exercises.map { 1 })
-      latest_subs = Submission.where(user_id: sorted_users.map(&:id), course_id: course.id, exercise_id: exercises.map(&:id)).select('MAX(id) as id')
-      latest_subs = latest_subs.before_deadline(deadline) unless deadline.nil?
-      latest_subs = Submission.where(id: latest_subs.group(:user_id, :exercise_id), accepted: true).group(:user_id, :exercise_id).count
-      sorted_users.each do |user|
-        row = [user.first_name, user.last_name, user.username, user.email]
-        succeeded_exercises = exercises.map { |ex| latest_subs[[user.id, ex.id]].present? ? 1 : 0 }
-        row << succeeded_exercises.sum
-        row.concat(succeeded_exercises)
-        csv << row
-      end
-    end
-  end
+    users = course.subscribed_members
+                  .order('course_memberships.status ASC')
+                  .order(permission: :asc)
+                  .order(last_name: :asc, first_name: :asc)
 
-  def zip_solutions_for_user(user, with_info: false)
-    filename = "#{name.parameterize}-#{user.full_name.parameterize}.zip"
-    stringio = Zip::OutputStream.write_buffer do |zio|
-      info = CSV.generate(force_quotes: true) do |csv|
-        csv << %w[filename status submission_id name_en name_nl exercise_id]
-        exercises.each do |ex|
-          submission = ex.last_submission(user, deadline, course)
-          # write the submission
-          zio.put_next_entry(ex.file_name)
-          zio.write submission&.code
-          # write some extra information to the csv
-          csv << [ex.file_name, submission&.status, submission&.id, ex.name_en, ex.name_nl, ex.id]
-        end
-      end
-      if with_info
-        zio.put_next_entry('info.csv')
-        zio.write info
-      end
-    end
-    stringio.rewind
-    zip_data = stringio.sysread
-    { filename: filename, data: zip_data }
-  end
+    submission_hash = Submission.in_series(self).where(user: users)
+    submission_hash = submission_hash.before_deadline(deadline) if deadline.present?
+    submission_hash = submission_hash.group(%i[user_id exercise_id]).most_recent.map { |s| [[s.user_id, s.exercise_id], s] }.to_h
 
-  def zip_solutions(with_info: false)
-    filename = "#{name.parameterize}.zip"
-    stringio = Zip::OutputStream.write_buffer do |zio|
-      info = CSV.generate(force_quotes: true) do |csv|
-        csv << %w[filename full_name id status submission_id name_en name_nl exercise_id]
-        exercises.each do |ex|
-          course.users.each do |u|
-            submission = ex.last_submission(u, deadline, course)
-            zio.put_next_entry("#{u.full_name}-#{u.id}/#{ex.file_name}")
-            zio.write submission&.code
-            csv << ["#{u.full_name}-#{u.id}/#{ex.file_name}", u.full_name, u.id, submission&.status, submission&.id, ex.name_en, ex.name_nl, ex.id]
-          end
-        end
-      end
-      if with_info
-        zio.put_next_entry('info.csv')
-        zio.write info
-      end
-    end
-    stringio.rewind
-    zip_data = stringio.sysread
-    { filename: filename, data: zip_data }
+    {
+      users: users,
+      exercises: exercises,
+      submissions: submission_hash
+    }
   end
 
   def generate_token(type)

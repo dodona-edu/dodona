@@ -238,9 +238,10 @@ class Exercise < ApplicationRecord
       end
       return true if user&.repository_admin? repository
       return false unless access_public? || repository.allowed_courses.include?(course)
-      return true if course.open_for_all? || (course.open_for_institution? && course.institution == user&.institution)
+      return true if user&.member_of? course
+      return false if course.moderated && access_private?
 
-      user&.member_of? course
+      course.open_for_all? || (course.open_for_institution? && course.institution == user&.institution)
     else
       return true if user&.repository_admin? repository
 
@@ -254,8 +255,8 @@ class Exercise < ApplicationRecord
     subs.distinct.count(:user_id)
   end
 
-  create_cacheable(:users_correct,
-                   ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+  invalidateable_instance_cacheable(:users_correct,
+                                    ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
 
   def users_tried(options)
     subs = submissions.judged
@@ -263,8 +264,8 @@ class Exercise < ApplicationRecord
     subs.distinct.count(:user_id)
   end
 
-  create_cacheable(:users_tried,
-                   ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id) })
+  invalidateable_instance_cacheable(:users_tried,
+                                    ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id) })
 
   def best_is_last_submission?(user, deadline = nil, course = nil)
     last_correct = last_correct_submission(user, deadline, course)

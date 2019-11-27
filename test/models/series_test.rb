@@ -46,6 +46,11 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal false, @series.pending?
   end
 
+  test 'factory should create series with submissions' do
+    series = create :series, :with_submissions
+    assert_not_empty series.course.submissions
+  end
+
   test 'indianio_token should not be set' do
     assert_nil @series.indianio_token
   end
@@ -147,11 +152,6 @@ class SeriesTest < ActiveSupport::TestCase
         end
       end
     end
-    course.series.each do |series|
-      scoresheet = series.scoresheet
-      kommas = (3 + 1 + series.exercises.count) * (2 + users.count)
-      assert_equal kommas, scoresheet.count(',')
-    end
   end
 
   test 'completed? and solved_exercises with wrong submission before deadline' do
@@ -208,12 +208,5 @@ class SeriesTest < ActiveSupport::TestCase
            created_at: (deadline + 2.minutes)
     assert_equal true, series.completed?(user)
     assert_equal 1, series.solved_exercises(user).count
-  end
-
-  test 'zip_solutions(with_info: true) should create a zip with an info.csv file' do
-    series = create :series, exercise_count: 0
-    assert_zip series.zip_solutions(with_info: true)[:data],
-               with_info: true,
-               solution_count: series.exercises.count
   end
 end

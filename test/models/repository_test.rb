@@ -30,7 +30,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   def setup
     # ensure we push to the repository
     Rails.env.stubs(:production?).returns(true)
-    @pythia = create :judge, :git_stubbed, name: 'pythia'
+    @python = create :judge, :git_stubbed, name: 'python'
     @remote = local_remote('exercises/echo')
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
@@ -55,7 +55,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should set exercise judge' do
-    assert_equal @pythia, @echo.judge
+    assert_equal @python, @echo.judge
   end
 
   test 'should set exercise programming language' do

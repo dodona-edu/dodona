@@ -35,6 +35,10 @@ class CoursePolicy < ApplicationPolicy
       record.subscribed_members.include?(user)
   end
 
+  def download_submissions?
+    user && show?
+  end
+
   def update?
     course_admin?
   end
@@ -104,6 +108,10 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def manage_series?
+    course_admin?
+  end
+
+  def scoresheet?
     course_admin?
   end
 

@@ -59,6 +59,14 @@ nl:
       choose_course: "Op welke cursus wil je je baseren?"
       data_entry: "Hoe moet je cursus er uit zien?"
       create: "Cursus aanmaken"
+    scoresheet:
+      user: Gebruiker
+      explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
+      at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
+      scoresheet: Statusoverzicht
+      download: Statusoverzicht downloaden
+      course_view: Statusoverzicht van cursus
+      select_view: Weergave selecteren
     edit:
       confidential: Geheime link
       series_in_course: "Reeksen in deze cursus"
@@ -69,7 +77,7 @@ nl:
       course: Cursus
       hidden_show_link: 'Geheime link'
       visibility-visible_for_all-info: 'Deze cursus is zichtbaar voor iedereen: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'
-      visibility-visible_for_institution-info: 'Deze cursus is zichtbaar voor leden van %{institution}: voor hen wordt deze cursus opgelijst in het cursusoverzcht en is de inhoud zichtbaar. Anderen kunnen enkel de inhoud van deze cursus zien via de geheime link'
+      visibility-visible_for_institution-info: 'Deze cursus is zichtbaar voor leden van %{institution}: voor hen wordt deze cursus opgelijst in het cursusoverzicht en is de inhoud zichtbaar. Anderen kunnen enkel de inhoud van deze cursus zien via de geheime link'
       visibility-hidden-info: 'Deze cursus is verborgen: ze verschijnt niet in het cursusoverzicht en gebruikers kunnen deze cursus enkel zien via de geheime link.'
       registration-open_for_all-info: 'De registraties staan open voor iedereen: gebruikers die op de registratie-knop klikken worden geregistreerd.'
       registration-open_for_institution-info: 'De registraties staan open voor gebruikers van %{institution}: enkel zij kunnen zich registreren voor deze cursus.'
@@ -82,6 +90,8 @@ nl:
       no_series_yet: 'Deze cursus bevat nog geen reeksen met oefeningen. Klik op de knop "Reeksen beheren" om aan de slag te gaan.'
       users: Gebruikers
       series: reeksen
+      download_submissions: Oplossingen van studenten downloaden
+      download_my_submissions: Mijn oplossingen downloaden
       subscribed: Geregistreerd
       pending: Op de wachtlijst
       unsubscribed: Uitgeschreven

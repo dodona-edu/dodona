@@ -51,20 +51,20 @@ class ExerciseTest < ActiveSupport::TestCase
     exercise = create :exercise
     course = create :course, users: [@user]
     User.any_instance.stubs(:course_admin?).returns(true)
-    assert_equal false, exercise.accessible?(@user, course)
+    assert_not exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return false if user is not course admin of course and exercise is not in course' do
     exercise = create :exercise
     course = create :course, users: [@user]
-    assert_equal false, exercise.accessible?(@user, course)
+    assert_not exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return false if user is not course admin of course and series is not visible course' do
     exercise = create :exercise
     course = create :course, users: [@user]
     create :series, course: course, visibility: 'closed', exercises: [exercise]
-    assert_equal false, exercise.accessible?(@user, course)
+    assert_not exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user is course admin of course, repository admin and exercise is in course' do
@@ -73,7 +73,7 @@ class ExerciseTest < ActiveSupport::TestCase
     User.any_instance.stubs(:course_admin?).returns(true)
     User.any_instance.stubs(:repository_admin?).returns(true)
     create :series, course: course, exercises: [exercise]
-    assert_equal true, exercise.accessible?(@user, course)
+    assert exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user is repository admin and series is visible' do
@@ -81,51 +81,68 @@ class ExerciseTest < ActiveSupport::TestCase
     course = create :course
     User.any_instance.stubs(:repository_admin?).returns(true)
     create :series, course: course, exercises: [exercise]
-    assert_equal true, exercise.accessible?(@user, course)
+    assert exercise.accessible?(@user, course)
   end
 
-  test 'accessible? should return false if series is visible but exercise is private' do
+  test 'accessible? should return false if not allowed to use exercise' do
     exercise = create :exercise, access: 'private'
     course = create :course
     create :series, course: course, exercises: [exercise]
-    assert_equal false, exercise.accessible?(@user, course)
+    assert_not exercise.accessible?(@user, course)
   end
 
-  test 'accessible? should return false if repository allows access to course' do
-    exercise = create :exercise
+  test 'accessible? should return true if repository allows access to course' do
+    exercise = create :exercise, access: :private
     course = create :course
     create :series, course: course, exercises: [exercise]
-    assert_equal true, exercise.accessible?(@user, course)
+    exercise.repository.allowed_courses << course
+    assert exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return false if user is not a member of the course' do
     exercise = create :exercise
     course = create :course, registration: 'closed'
     create :series, course: course, exercises: [exercise]
-    assert_equal false, exercise.accessible?(@user, course)
+    assert_not exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user is a member of the course' do
     exercise = create :exercise
     course = create :course, users: [@user]
     create :series, course: course, exercises: [exercise]
-    assert_equal true, exercise.accessible?(@user, course)
+    assert exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user repository admin of repository' do
     exercise = create :exercise, access: 'private'
     User.any_instance.stubs(:repository_admin?).returns(true)
-    assert_equal true, exercise.accessible?(@user, nil)
+    assert exercise.accessible?(@user, nil)
   end
 
   test 'accessible? should return true if exercise is public' do
     exercise = create :exercise
-    assert_equal true, exercise.accessible?(@user, nil)
+    assert exercise.accessible?(@user, nil)
   end
 
   test 'accessible? should return false if exercise is private' do
     exercise = create :exercise, access: 'private'
-    assert_equal false, exercise.accessible?(@user, nil)
+    assert_not exercise.accessible?(@user, nil)
+  end
+
+  test 'exercise should be accessible if private and included in unmoderated open course' do
+    exercise = create :exercise, access: 'private'
+    course = create :course, moderated: false, registration: :open_for_all
+    exercise.repository.allowed_courses << course
+    create :series, course: course, exercises: [exercise]
+    assert exercise.accessible?(@user, course)
+  end
+
+  test 'exercise should not be accessible if private and included in a moderated but open course' do
+    exercise = create :exercise, access: 'private'
+    course = create :course, moderated: true, registration: :open_for_all
+    exercise.repository.allowed_courses << course
+    create :series, course: course, exercises: [exercise]
+    assert_not exercise.accessible?(@user, course)
   end
 
   test 'convert_visibility_to_access should convert "visible" to "public"' do
@@ -494,11 +511,11 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   end
 
   test 'dirconfig_file? should return true if the basename is "dirconfig.json"' do
-    assert_equal true, Exercise.dirconfig_file?(@exercise.full_path + '/dirconfig.json')
+    assert Exercise.dirconfig_file?(@exercise.full_path + '/dirconfig.json')
   end
 
   test 'dirconfig_file? should return false if the basename is not "dirconfig.json"' do
-    assert_equal false, Exercise.dirconfig_file?(@exercise.full_path + '/otherconfig.json')
+    assert_not Exercise.dirconfig_file?(@exercise.full_path + '/otherconfig.json')
   end
 
   test 'safe_delete should not destroy exercise if status is not removed' do
@@ -532,12 +549,12 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   end
 
   test 'config_file? should be true if exercise has a config file' do
-    assert_equal true, @exercise.config_file?
+    assert @exercise.config_file?
   end
 
   test 'config_file? should be false if exercise has no config file' do
     @exercise.path = '/wrong_path'
-    assert_equal false, @exercise.config_file?
+    assert_not @exercise.config_file?
   end
 end
 

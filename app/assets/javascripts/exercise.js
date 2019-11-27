@@ -138,8 +138,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         $("#submission-copy-btn").click(function () {
-            const submissionSource = ace.edit("editor-result").getValue();
-            editor.setValue(submissionSource, 1);
+            const codeString = dodona.codeListing.getCode();
+            editor.setValue(codeString, 1);
             $("#exercise-handin-link").tab("show");
         });
 
@@ -308,10 +308,15 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     message = I18n.t("js.submission-rate-limit");
                 } else if (errors.code && errors.code[0] === "too long") {
                     message = I18n.t("js.submission-too-long");
+                } else if (errors.exercise && errors.exercise[0] === "not permitted") {
+                    message = I18n.t("js.submission-not-allowed");
                 }
             } catch (e) {
                 message = I18n.t("js.submission-failed");
             }
+        }
+        if (message === undefined) {
+            message = I18n.t("js.submission-failed");
         }
         $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
         enableSubmitButton();

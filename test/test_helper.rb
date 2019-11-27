@@ -16,7 +16,7 @@ require 'helpers/delayed_job_helper'
 require 'helpers/crud_helper'
 require 'helpers/git_helper'
 require 'helpers/remote_helper'
-require 'helpers/series_zip_helper'
+require 'helpers/export_zip_helper'
 
 # automatically set locale for all routes
 require 'minitest/utils/rails/locale'
@@ -35,6 +35,14 @@ class ActiveSupport::TestCase
 
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
+
+  parallelize_setup do |worker|
+    SimpleCov.command_name "#{SimpleCov.command_name}-#{worker}"
+  end
+
+  parallelize_teardown do |_worker|
+    SimpleCov.result
+  end
 end
 
 class ActionDispatch::IntegrationTest

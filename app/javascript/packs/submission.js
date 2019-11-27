@@ -1,4 +1,5 @@
-import { initSubmissionShow, loadResultEditor } from "submission.js";
+import { initSubmissionShow } from "submission.js";
+import { CodeListing } from "code_listing.ts";
 
 window.dodona.initSubmissionShow = initSubmissionShow;
-window.dodona.loadResultEditor = loadResultEditor;
+window.dodona.codeListingClass = CodeListing;

@@ -18,7 +18,6 @@ en:
       label: Label
       api_token: API token
       programming_language: Programming Language
-      post: Post
       event: Event
       institution: Institution
     attributes:
@@ -131,13 +130,6 @@ en:
         name: Name
         editor_name: Editor mode
         extension: Extension
-      post:
-        title_en: English title
-        title_nl: Dutch title
-        content_en: English content
-        content_nl: Dutch content
-        release: Release date
-        draft: Draft
       institution:
         name: Name
         short_name: Short name

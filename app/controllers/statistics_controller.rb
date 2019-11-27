@@ -2,20 +2,20 @@ class StatisticsController < ApplicationController
   before_action :set_course_and_user, only: %i[punchcard heatmap]
 
   def punchcard
-    result = Submission.get_punchcard_matrix(@user, @course)
-    Submission.delay(queue: 'statistics').update_punchcard_matrix(@user, @course)
+    result = Submission.punchcard_matrix(user: @user, course: @course, timezone: Time.zone)
+    Submission.delay(queue: 'statistics').update_punchcard_matrix(user: @user, course: @course, timezone: Time.zone)
     if result.present?
-      render json: result[:matrix]
+      render json: result[:value]
     else
       render json: { status: 'not available yet' }, status: :accepted
     end
   end
 
   def heatmap
-    result = Submission.get_heatmap_matrix(@user, @course)
-    Submission.delay(queue: 'statistics').update_heatmap_matrix(@user, @course)
+    result = Submission.heatmap_matrix(user: @user, course: @course)
+    Submission.delay(queue: 'statistics').update_heatmap_matrix(user: @user, course: @course)
     if result.present?
-      render json: result[:matrix]
+      render json: result[:value]
     else
       render json: { status: 'not available yet' }, status: :accepted
     end

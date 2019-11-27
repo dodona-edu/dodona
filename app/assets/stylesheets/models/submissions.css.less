@@ -63,16 +63,12 @@
       }
     }
   }
-  .test {
-    .output {
-      font-family: @font-family-monospace;
-      white-space: pre-wrap;
-    }
-  }
+  .test .output,
   .code {
     font-family: @font-family-monospace;
     font-size: 13px;
     white-space: pre-wrap;
+    overflow-wrap: break-word;
   }
   table.diff {
     overflow: auto;

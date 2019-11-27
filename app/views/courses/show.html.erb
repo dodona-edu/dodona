@@ -56,19 +56,37 @@
         </div>
       <% end %>
 
-      <% if current_user&.member_of? @course or policy(@course).copy? %>
+      <% if current_user&.member_of? @course or policy(@course).copy? or policy(@course).scoresheet? %>
         <div class="card-actions card-border">
           <% if current_user&.member_of? @course %>
             <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn-text', data: {confirm: t('general.are_you_sure')} %>
           <% end %>
-          <% if policy(@course).copy? %>
+          <% if policy(@course).copy? or policy(@course).scoresheet? or policy(@course).download_submissions? %>
             <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
               <i class="mdi mdi-dots-vertical"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-right">
+              <% if policy(@course).scoresheet? %>
+                <li>
+                  <%= link_to t("courses.scoresheet.scoresheet"), scoresheet_course_url(@course) %>
+                </li>
+              <% end %>
               <% if policy(@course).copy? %>
                 <li>
                   <%= link_to t(".copy"), new_course_url(copy_options: {base_id: @course.id}) %>
+                </li>
+              <% end %>
+              <% if current_user&.course_admin?(@course) %>
+                <li>
+                  <%= link_to t(".download_submissions"), export_course_path(@course) %>
+                </li>
+              <% end %>
+              <% if (policy(@course).copy? || current_user&.course_admin?(@course)) && policy(@course).download_submissions? %>
+                <li role="separator" class="divider"></li>
+              <% end %>
+              <% if policy(@course).download_submissions? %>
+                <li>
+                  <%= link_to t(".download_my_submissions"), export_course_path(@course, user_id: current_user.id) %>
                 </li>
               <% end %>
             </ul>

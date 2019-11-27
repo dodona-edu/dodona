@@ -84,7 +84,7 @@ Rails.application.configure do
   end
 
   # Use a different cache store in production.
-  config.cache_store = :mem_cache_store, 'elysium.ugent.be', {namespace: :"1"}
+  config.cache_store = :mem_cache_store, 'elysium.ugent.be', {namespace: :"2"}
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
@@ -113,6 +113,7 @@ Rails.application.configure do
   config.server_timings.enabled = false
 
   config.middleware.use ExceptionNotification::Rack,
+                        ignore_crawlers: %w[Googlebot bingbot Applebot],
                         ignore_if: ->(env, exception) {
                           env['action_controller.instance'].is_a?(PagesController) &&
                               env['action_controller.instance'].action_name == 'create_contact' &&

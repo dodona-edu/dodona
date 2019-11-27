@@ -1,0 +1,76 @@
+.code-listing {
+
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  // Override the normal pre padding & coloring
+  pre {
+    padding: 0;
+    background-color: transparent;
+    margin-bottom: 0;
+    border: none;
+  }
+
+  .lineno:first-child {
+    .rouge-code, .rouge-gutter{
+      padding-top: 5px;
+    }
+  }
+
+  .lineno:last-child {
+    .rouge-code, .rouge-gutter{
+      padding-bottom: 5px;
+    }
+  }
+
+  .rouge-code {
+    padding-left: 5px;
+  }
+
+  .rouge-gutter {
+    min-width: 30px;
+    width: 1%;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    background-color: @well-bg;
+
+    pre {
+      color: @gray-light
+    }
+  }
+
+  background-color: @body-bg;
+
+  .annotation-set {
+    .annotation-cell {
+      .annotation {
+        user-select: none;
+        margin: 3px 5px 3px 10px;
+        padding: 2px 10px;
+        border-radius: 0 5px 5px 0;
+        border: 1px solid @hairlinegray;
+        border-left-width: 3px;
+        background: @content-bg;
+      }
+
+      .annotation.error {
+        border-left-color: @danger-500;
+      }
+
+      .annotation.warning {
+        border-left-color: @warning-500;
+      }
+
+      .annotation.info {
+        border-left-color: @info-500;
+      }
+    }
+  }
+
+  .lineno.marked {
+    background-color: @warning-500;
+  }
+}
+

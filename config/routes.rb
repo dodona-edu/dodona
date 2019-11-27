@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
+  post '/csp-report' => 'pages#csp_report'
 
   scope '(:locale)', locale: /en|nl/ do
     get '/sign_in(/:idp)' => 'pages#sign_in_page', as: 'sign_in'
@@ -36,10 +37,8 @@ Rails.application.routes.draw do
       resources :exercises, only: [:index]
       member do
         get 'available_exercises', to: 'exercises#available'
-        get 'download_solutions'
         get 'overview'
         get 'scoresheet'
-        get 'scoresheet_download'
         post 'add_exercise'
         post 'mass_rejudge'
         post 'remove_exercise'
@@ -48,6 +47,15 @@ Rails.application.routes.draw do
       end
     end
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
+
+    scope '/export' do
+      get '/series/:id', to: 'export#download_submissions_from_series', as: 'export_series'
+      post '/series/:id', to: 'export#start_download_from_series'
+      get '/courses/:id', to: 'export#download_submissions_from_course', as: 'export_course'
+      post '/courses/:id', to: 'export#start_download_from_course'
+      get '/users/:id', to: 'export#download_submissions_from_user', as: 'export_user'
+      post '/users/:id', to: 'export#start_download_from_user'
+    end
 
     resources :courses do
       resources :series, only: [:new, :index] do
@@ -63,6 +71,7 @@ Rails.application.routes.draw do
         get 'statistics'
         get 'subscribe/:secret', to: 'courses#registration', as: "registration"
         get 'manage_series'
+        get 'scoresheet'
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'
@@ -125,7 +134,6 @@ Rails.application.routes.draw do
 
     resources :labels
     resources :programming_languages
-    resources :posts
 
     resources :institutions, only: [:index, :show, :edit, :update]
     resources :events, only: [:index]

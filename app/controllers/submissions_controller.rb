@@ -57,20 +57,21 @@ class SubmissionsController < ApplicationController
     para[:user_id] = current_user.id
     para[:code].gsub!(/\r\n?/, "\n")
     para[:evaluate] = true # immediately evaluate after create
+    course = Course.find(para[:course_id]) if para[:course_id].present?
     if para[:course_id].present?
-      para.delete(:course_id) unless Course.find(para[:course_id]).subscribed_members.include?(current_user)
+      para.delete(:course_id) unless course.subscribed_members.include?(current_user)
     end
-    @submission = Submission.new(para)
+    submission = Submission.new(para)
     can_submit = true
-    if @submission.exercise.present?
-      can_submit &&= Pundit.policy!(current_user, @submission.exercise).submit?
-      can_submit &&= @submission.exercise.accessible?(current_user, @submission.course)
+    if submission.exercise.present?
+      can_submit &&= Pundit.policy!(current_user, submission.exercise).submit?
+      can_submit &&= submission.exercise.accessible?(current_user, course)
     end
-    if can_submit && @submission.save
-      render json: { status: 'ok', id: @submission.id, exercise_id: @submission.exercise_id, course_id: @submission.course_id, url: submission_url(@submission, format: :json) }
+    if can_submit && submission.save
+      render json: { status: 'ok', id: submission.id, exercise_id: submission.exercise_id, course_id: submission.course_id, url: submission_url(submission, format: :json) }
     else
-      @submission.errors.add(:exercise, :not_permitted) unless can_submit
-      render json: { status: 'failed', errors: @submission.errors }, status: :unprocessable_entity
+      submission.errors.add(:exercise, 'not permitted') unless can_submit
+      render json: { status: 'failed', errors: submission.errors }, status: :unprocessable_entity
     end
   end
 

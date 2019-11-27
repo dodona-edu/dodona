@@ -1,16 +1,19 @@
-require 'zip'
 class SeriesController < ApplicationController
   before_action :set_series, except: %i[index new create indianio_download]
 
-  before_action :check_token, only: %i[show overview download_solutions]
+  before_action :check_token, only: %i[show overview]
 
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
-    scope.at_least_one_started(Series.find(controller.params[:id]))
+    scope.at_least_one_started_in_series(Series.find(controller.params[:id]))
   end
   has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
     scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
   end
   has_scope :by_filter, as: 'filter', only: :scoresheet
+
+  content_security_policy only: %i[overview] do |policy|
+    policy.frame_src -> { sandbox_url }
+  end
 
   # GET /series
   # GET /series.json
@@ -97,18 +100,6 @@ class SeriesController < ApplicationController
     end
   end
 
-  def download_solutions
-    if current_user&.course_admin?(@series.course)
-      if params[:user_id].present?
-        send_zip User.find(params[:user_id])
-      else
-        send_zip nil
-      end
-    else
-      send_zip current_user
-    end
-  end
-
   def reset_token
     type = params[:type].to_sym
     @series.generate_token(type)
@@ -139,7 +130,8 @@ class SeriesController < ApplicationController
     else
       user = User.find_by(email: email)
       if user
-        send_zip user, with_info: true
+        options = { deadline: true, only_last_submission: true, with_info: true, all_students: true, indianio: true }
+        send_zip Export.new(item: @series, list: @series.exercises, users: [user], options: options).bundle
       else
         render json: { errors: ['Unknown email'] }, status: :not_found
       end
@@ -175,21 +167,35 @@ class SeriesController < ApplicationController
   def scoresheet
     @course = @series.course
     @title = @series.name
-    @exercises = @series.exercises
-    @users = apply_scopes(@course.enrolled_members).order('course_memberships.status ASC')
-                                                   .order(permission: :asc)
-                                                   .order(last_name: :asc, first_name: :asc)
     @course_labels = CourseLabel.where(course: @course)
-    @submission_hash = Submission.in_series(@series).where(user: @users)
-    @submission_hash = @submission_hash.before_deadline(@series.deadline) if @series.deadline.present?
-    @submission_hash = @submission_hash.group(%i[user_id exercise_id]).most_recent.map { |s| [[s.user_id, s.exercise_id], s] }.to_h
-    @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
-  end
 
-  def scoresheet_download
-    sheet = @series.scoresheet
-    filename = "scoresheet-#{@series.name.parameterize}.csv"
-    send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
+    scores = @series.scoresheet
+    @users = apply_scopes(scores[:users])
+    @exercises = scores[:exercises]
+    @submissions = scores[:submissions]
+
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
+
+    respond_to do |format|
+      format.html
+      format.js
+      format.csv do
+        sheet = CSV.generate do |csv|
+          csv << [I18n.t('series.scoresheet.explanation')]
+          csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), @series.name].concat(@exercises.map(&:name))
+          csv << ['Maximum', '', '', '', @exercises.count].concat(@exercises.map { 1 })
+          @users.each do |u|
+            row = [u.first_name, u.last_name, u.username, u.email]
+            succeeded_exercises = @exercises.map { |e| @submissions[[u.id, e.id]]&.accepted ? 1 : 0 }
+            row << succeeded_exercises.sum
+            row.concat(succeeded_exercises)
+            csv << row
+          end
+        end
+        filename = "scoresheet-#{@series.name.parameterize}.csv"
+        send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
+      end
+    end
   end
 
   def mass_rejudge
@@ -209,18 +215,5 @@ class SeriesController < ApplicationController
     raise Pundit::NotAuthorizedError if @series.hidden? &&
                                         !current_user&.course_admin?(@series.course) &&
                                         @series.access_token != params[:token]
-  end
-
-  # Generate and send a zip with solutions
-  def send_zip(user, **opts)
-    zip = if user.present?
-            @series.zip_solutions_for_user(user, opts)
-          else
-            @series.zip_solutions(opts)
-          end
-    send_data zip[:data],
-              type: 'application/zip',
-              filename: zip[:filename],
-              disposition: 'attachment', x_sendfile: true
   end
 end

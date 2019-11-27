@@ -17,6 +17,16 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should show exercise description' do
+    get description_exercise_url(@instance, token: @instance.access_token)
+    assert_response :success
+  end
+
+  test 'should not show exercise description without token' do
+    get description_exercise_url(@instance)
+    assert_response :forbidden
+  end
+
   test 'should rescue from exercise not found' do
     not_id = Random.rand(10_000)
     begin
@@ -408,5 +418,43 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     get exercise_url(@exercise).concat('/')
 
     assert_not_includes response.body, 'What is your favorite colour?'
+  end
+
+  test 'exercise page within series should contain extra navigation' do
+    course = create :course
+    exercise = create :exercise
+    other_exercise = create :exercise
+    series = create :series, course: course, exercises: [exercise, other_exercise]
+
+    get course_series_exercise_url(course, series, exercise)
+
+    assert_response :success
+    assert_includes response.body, 'exercise-sidebar'
+  end
+
+  test 'exercise page without series should not contain extra navigation' do
+    course = create :course
+    exercise = create :exercise
+    other_exercise = create :exercise
+    create :series, course: course, exercises: [exercise, other_exercise]
+
+    get exercise_url(exercise)
+
+    assert_response :success
+    assert_not_includes response.body, 'exercise-sidebar'
+  end
+
+  test 'json representation of exercise should contain the sandbox and access token in its description url' do
+    exercise = create :exercise
+
+    get exercise_url(exercise), params: { format: :json }
+
+    assert_response :success
+
+    exercise_json = JSON.parse response.body
+    description_url = exercise_json['description_url']
+
+    assert description_url.include?(Rails.configuration.sandbox_host)
+    assert description_url.include?(exercise.access_token)
   end
 end

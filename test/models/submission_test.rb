@@ -152,26 +152,119 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'update_heatmap_matrix should always write something to the cache' do
     Rails.cache.expects(:write).once
     Submission.destroy_all
-    Submission.update_heatmap_matrix(nil, nil)
+    Submission.update_heatmap_matrix
 
-    create :submission, status: :correct
+    create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current)
     Rails.cache.expects(:write).once
-    Submission.update_heatmap_matrix(nil, nil)
+    Submission.update_heatmap_matrix
   end
 
   test 'update_punchcard_matrix should always write something to the cache' do
     Rails.cache.expects(:write).once
     Submission.destroy_all
-    Submission.update_punchcard_matrix(nil, nil)
+    Submission.update_punchcard_matrix(timezone: Time.zone)
 
-    create :submission, status: :correct
+    create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current)
     Rails.cache.expects(:write).once
-    Submission.update_punchcard_matrix(nil, nil)
+    Submission.update_punchcard_matrix(timezone: Time.zone)
+  end
+
+  test 'normal get should go to cache for heatmap' do
+    Rails.cache.expects(:fetch).once
+    Submission.heatmap_matrix
+  end
+
+  test 'normal get should go to cache for punhcard' do
+    Rails.cache.expects(:fetch).once
+    Submission.punchcard_matrix(timezone: Time.zone)
+  end
+
+  test 'update_heatmap_matrix should write an updated value to cache when fetch returns something' do
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    to_update = Submission.old_heatmap_matrix
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    Rails.cache.expects(:fetch).returns(to_update)
+    Rails.cache.expects(:write).with(format(Submission::HEATMAP_MATRIX_CACHE_STRING, course_id: 'global', user_id: 'global'), Submission.old_heatmap_matrix)
+    Submission.update_heatmap_matrix
+  end
+
+  test 'update_punchcard_matrix should write an updated value to cache when fetch returns something' do
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    to_update = Submission.old_punchcard_matrix(timezone: Time.zone)
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    Rails.cache.expects(:fetch).returns(to_update)
+    Rails.cache.expects(:write).with(format(Submission::PUNCHCARD_MATRIX_CACHE_STRING, course_id: 'global', user_id: 'global', timezone: Time.zone.utc_offset), Submission.old_punchcard_matrix(timezone: Time.zone))
+    Submission.update_punchcard_matrix(timezone: Time.zone)
+  end
+
+  test 'punchcard should take summer time into account' do
+    Time.use_zone('Brussels') do
+      s1 = create :submission, created_at: Time.zone.local(1996, 1, 29, 1, 1, 1)
+      s2 = create :submission, created_at: Time.zone.local(1996, 7, 29, 1, 1, 1)
+      # Just to make sure we don't do something stupid
+      assert_equal s1.created_at.wday, s2.created_at.wday
+      assert_equal 1, Submission.old_punchcard_matrix(timezone: Time.zone)[:value].count
+    end
+  end
+
+  test 'punchcard should use timezone given even when system is set to another' do
+    Time.use_zone('Brussels') do
+      create :submission, created_at: Time.zone.local(1996, 1, 29, 1, 1, 1)
+      assert_equal 1, Submission.old_punchcard_matrix(timezone: ActiveSupport::TimeZone.new('Seoul'))[:value]['0, 9']
+    end
+  end
+
+  test 'clean calculate and update should give the same result for punchcard' do
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    to_update = Submission.old_punchcard_matrix(timezone: Time.zone)
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    updated = Submission.old_punchcard_matrix({ timezone: Time.zone }, to_update)
+    assert_equal updated, Submission.old_punchcard_matrix(timezone: Time.zone)
+  end
+
+  test 'clean calculate and update should give the same result for heatmap' do
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    to_update = Submission.old_heatmap_matrix
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    updated = Submission.old_heatmap_matrix({}, to_update)
+    assert_equal updated, Submission.old_heatmap_matrix
+  end
+
+  test 'user option should work for punchcard' do
+    temp = create :user
+    49.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: temp }
+    user = create :user
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: user }
+    assert_equal 50, Submission.old_punchcard_matrix(timezone: Time.zone, user: user)[:value].values.sum
+  end
+
+  test 'user option should work for heatmap' do
+    temp = create :user
+    49.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: temp }
+    user = create :user
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: user }
+    assert_equal 50, Submission.old_heatmap_matrix(user: user)[:value].values.sum
+  end
+
+  test 'course option should work for punchcard' do
+    temp = create :course
+    49.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
+    course = create :course
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
+    assert_equal 50, Submission.old_punchcard_matrix(timezone: Time.zone, course: course)[:value].values.sum
+  end
+
+  test 'course option should work for heatmap' do
+    temp = create :course
+    49.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
+    course = create :course
+    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
+    assert_equal 50, Submission.old_heatmap_matrix(course: course)[:value].values.sum
   end
 
   test 'update to internal error should send exception notification' do
     submission = create :submission
-    ExceptionNotifier.expects(:notify_exception)
+    ExceptionNotifier.expects(:notify_exception).with { |_e, data| data[:data][:url].present? }
     submission.update(status: :"internal error")
   end
 end

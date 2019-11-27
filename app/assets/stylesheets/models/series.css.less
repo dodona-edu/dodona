@@ -28,18 +28,6 @@
   color: @success-fg;
 }
 
-.scoresheet-table {
-  table-layout: fixed;
-}
-
-.status-icon-header {
-  overflow: hidden;
-}
-
-.status-icon, .status-icon-header {
-  text-align: center;
-}
-
 .submission-status-button {
   a {
     color: @btn-accent;
@@ -51,15 +39,6 @@
 }
 
 .card.series {
-  // position: relative (bootstrap default) starts a new stacking context which messes up the z-indices
-  position: unset;
-  overflow: visible;
-  z-index: 0;
-
-  .dropdown-menu {
-    z-index: 991;
-  }
-
   .card-subtitle {
     position: relative;
     margin-bottom: 16px;

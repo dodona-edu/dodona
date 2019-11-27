@@ -22,8 +22,8 @@ en:
       token_link: "Secret link"
       series: Series
       exercises: Exercises
-      download_solutions: Download my solutions
-      download_all_solutions: Download all solutions
+      download_submissions: Download my submissions
+      download_all_solutions: Download student submissions
       series_not_visible: This series is only visible for students using the secret link!
       series_not_accessible: This series is not accessible to students!
       exercises_not_visible: The exercises in this series are not visible to students!
@@ -57,6 +57,8 @@ en:
       explanation: "Showing the number of correctly solved exercises before the deadline"
       at_least_one_started: "Only show users that started at least one exercise"
       download: Download scoresheet
+      course_view: Course scoresheet
+      select_view: Select view
     series_status:
       completed_after_deadline_missed: You solved all exercises, but unfortunately not before the deadline.
       wrong_after_deadline_missed: You missed the deadline, and there are still some incorrect exercises.

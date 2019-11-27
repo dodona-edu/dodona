@@ -14,7 +14,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    return false unless user
+    return false if user.blank?
     return true if user.zeus?
     return true if user.id == record.id
 
@@ -22,11 +22,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    return false unless user
-    return true if user.zeus?
-    return true if user.id == record.id
-
-    false
+    show?
   end
 
   def create?
@@ -66,6 +62,10 @@ class UserPolicy < ApplicationPolicy
   end
 
   def list_tokens?
+    show?
+  end
+
+  def download_submissions?
     show?
   end
 

@@ -28,6 +28,23 @@ class ApplicationMailer < ActionMailer::Base
          subject: "Niet gelukt om onderwijsinstelling aan te maken voor #{uid} (#{email}) "\
                   "via #{provider} (#{institution})",
          content_type: 'text/plain',
-         body: "Authenticatie-info:\n#{@authinfo.pretty_inspect}\nErrors:\n#{@errors.pretty_inspect}"
+         body: "Authenticatie-info:\n#{@authinfo.pretty_inspect}\nErrors:\n#{@errors}"
+  end
+
+  def user_unable_to_log_in
+    authinfo = params[:authinfo]
+    errors = params[:errors]
+    uid = authinfo['uid']
+    provider = authinfo['provider']
+    email = authinfo['info']['email']
+    institution = authinfo['info']['institution']
+
+    mail to: Rails.application.config.dodona_email,
+         subject: "Een gebruiker kon niet inloggen (#{uid} - #{email})",
+         content_type: 'text/plain',
+         body: "Provider: #{provider}\n" \
+               "Institution: #{institution}\n" \
+               "Authenticatie-info:\n#{authinfo.inspect}\n" \
+               "Errors:\n#{errors}"
   end
 end

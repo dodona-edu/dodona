@@ -15,10 +15,11 @@
 #
 
 class Submission < ApplicationRecord
+  include Cacheable
   include ActiveModel::Dirty
 
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
-  PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/punchcard_matrix'.freeze
+  PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/timezone/%{timezone}/punchcard_matrix'.freeze
   HEATMAP_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/heatmap_matrix'.freeze
   BASE_PATH = Rails.application.config.submissions_storage_path
   CODE_FILENAME = 'code'.freeze
@@ -96,37 +97,27 @@ class Submission < ApplicationRecord
   end
 
   def code
-    before = Time.current
-    val = File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
-    logger.tagged('NFS_TIMING') { logger.info "Reading #{File.join(fs_path, CODE_FILENAME)} took #{Time.current - before} seconds" }
-    val
+    File.read(File.join(fs_path, CODE_FILENAME)).force_encoding('UTF-8')
   rescue Errno::ENOENT => e
     ExceptionNotifier.notify_exception e
     ''
   end
 
   def code=(code)
-    before = Time.current
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
     File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
-    logger.tagged('NFS_TIMING') { logger.info "Writing #{File.join(fs_path, CODE_FILENAME)} took #{Time.current - before} seconds" }
   end
 
   def result
-    before = Time.current
-    val = ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
-    logger.tagged('NFS_TIMING') { logger.info "Reading #{File.join(fs_path, RESULT_FILENAME)} took #{Time.current - before} seconds" }
-    val
+    ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
   rescue Errno::ENOENT, Zlib::GzipFile::Error => e
     ExceptionNotifier.notify_exception e, data: { submission_id: id, status: status, current_user: Current.user&.id }
     nil
   end
 
   def result=(result)
-    before = Time.current
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
     File.open(File.join(fs_path, RESULT_FILENAME), 'wb') { |f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8'))) }
-    logger.tagged('NFS_TIMING') { logger.info "Writing #{File.join(fs_path, RESULT_FILENAME)} took #{Time.current - before} seconds" }
   end
 
   def clean_messages(messages, levels)
@@ -274,56 +265,54 @@ class Submission < ApplicationRecord
     user.invalidate_correct_exercises(course: course)
   end
 
-  def self.get_punchcard_matrix(user, course)
-    Rails.cache.fetch(format(PUNCHCARD_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'))
-  end
-
-  def self.update_punchcard_matrix(user, course)
-    old = get_punchcard_matrix(user, course) || { latest: 0, matrix: {} }
+  def self.submissions_since(latest, options)
     submissions = Submission.all
-    submissions = submissions.of_user(user) if user.present?
-    submissions = submissions.in_course(course) if course.present?
-    submissions = submissions.where(id: (old[:latest] + 1)..)
-    submissions = submissions.pluck(:id, :created_at)
+    submissions = submissions.of_user(options[:user]) if options[:user].present?
+    submissions = submissions.in_course(options[:course]) if options[:course].present?
+    submissions.where(id: (latest + 1)..)
+  end
 
-    if submissions.empty?
-      Rails.cache.write(format(PUNCHCARD_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), old)
-      return
-    end
+  def self.punchcard_matrix(options, base = { until: 0, value: {} })
+    submissions = submissions_since(base[:until], options).pluck(:id, :created_at)
+    return base if submissions.empty?
 
-    to_merge = submissions.map { |_, d| "#{d.utc.wday > 0 ? d.utc.wday - 1 : 6}, #{d.utc.hour}" }
-                          .group_by(&:itself).transform_values(&:count)
-    result = {
-      latest: submissions.first[0],
-      matrix: old[:matrix].merge(to_merge) { |_k, v1, v2| v1 + v2 }
+    {
+      until: submissions.first[0],
+      value: base[:value].merge(submissions.map { |_, d| d.in_time_zone(options[:timezone]) }
+                                           .map { |d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}" }
+                                           .group_by(&:itself)
+                                           .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
     }
-    Rails.cache.write(format(PUNCHCARD_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), result)
   end
 
-  def self.get_heatmap_matrix(user, course)
-    Rails.cache.fetch(format(HEATMAP_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'))
-  end
-
-  def self.update_heatmap_matrix(user, course)
-    old = get_heatmap_matrix(user, course) || { latest: 0, matrix: {} }
-    submissions = Submission.all
-    submissions = submissions.of_user(user) if user.present?
-    submissions = submissions.in_course(course) if course.present?
-    submissions = submissions.where(id: (old[:latest] + 1)..)
-    submissions = submissions.pluck(:id, :created_at)
-
-    if submissions.empty?
-      Rails.cache.write(format(HEATMAP_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), old)
-      return
+  updateable_class_cacheable(
+    :punchcard_matrix,
+    lambda do |options|
+      format(PUNCHCARD_MATRIX_CACHE_STRING,
+             course_id: options[:course].present? ? options[:course].id : 'global',
+             user_id: options[:user].present? ? options[:user].id : 'global',
+             timezone: options[:timezone].utc_offset)
     end
+  )
 
-    to_merge = submissions.map { |_, d| d.strftime('%Y-%m-%d') }.group_by(&:itself).transform_values(&:count)
-    result = {
-      latest: submissions.first[0],
-      matrix: old[:matrix].merge(to_merge) { |_k, v1, v2| v1 + v2 }
+  def self.heatmap_matrix(options = {}, base = { until: 0, value: {} })
+    submissions = submissions_since(base[:until], options).pluck(:id, :created_at)
+    return base if submissions.empty?
+
+    {
+      until: submissions.first[0],
+      value: base[:value].merge(submissions.map { |_, d| d.strftime('%Y-%m-%d') }.group_by(&:itself).transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
     }
-    Rails.cache.write(format(HEATMAP_MATRIX_CACHE_STRING, course_id: course.present? ? course.id : 'global', user_id: user.present? ? user.id : 'global'), result)
   end
+
+  updateable_class_cacheable(
+    :heatmap_matrix,
+    lambda do |options|
+      format(HEATMAP_MATRIX_CACHE_STRING,
+             course_id: options[:course].present? ? options[:course].id : 'global',
+             user_id: options[:user].present? ? options[:user].id : 'global')
+    end
+  )
 
   private
 
@@ -347,6 +336,13 @@ class Submission < ApplicationRecord
   def report_if_internal_error
     return unless status_changed? && send(:"internal error?")
 
-    ExceptionNotifier.notify_exception(Exception.new("Submission(#{id}) status was changed to internal error"), data: { host: `hostname`, submission: self })
+    ExceptionNotifier.notify_exception(
+      Exception.new("Submission(#{id}) status was changed to internal error"),
+      data: {
+        host: `hostname`,
+        submission: inspect,
+        url: Rails.application.routes.url_helpers.submission_url('en', self, host: Rails.application.config.default_host)
+      }
+    )
   end
 end

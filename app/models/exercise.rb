@@ -108,7 +108,7 @@ class Exercise < ApplicationRecord
 
   def solutions
     (full_path + SOLUTION_DIR)
-      .children
+      .yield_self { |path| path.directory? ? path.children : [] }
       .filter { |path| path.file? && path.readable? }
       .map { |path| [path.basename, path.read] }
       .to_h

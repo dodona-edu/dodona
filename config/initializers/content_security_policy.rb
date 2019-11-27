@@ -14,11 +14,15 @@ Rails.application.config.content_security_policy do |policy|
     policy.connect_src :self, 'https://pandora.ugent.be',
                        'https://dodona-cea23.firebaseio.com',
                        'https://www.google-analytics.com',
+                       'https://firebaselogging.googleapis.com',
+                       'https://firebaseremoteconfig.googleapis.com',
                        'http://localhost:3035', 'ws://localhost:3035'
   else
     policy.connect_src :self, 'https://pandora.ugent.be',
                        'https://dodona-cea23.firebaseio.com',
-                       'https://www.google-analytics.com'
+                       'https://www.google-analytics.com',
+                       'https://firebaselogging.googleapis.com',
+                       'https://firebaseremoteconfig.googleapis.com'
   end
 
   policy.font_src    :self, 'https://fonts.gstatic.com',

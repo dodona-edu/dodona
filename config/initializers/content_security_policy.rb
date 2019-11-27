@@ -14,15 +14,13 @@ Rails.application.config.content_security_policy do |policy|
     policy.connect_src :self, 'https://pandora.ugent.be',
                        'https://dodona-cea23.firebaseio.com',
                        'https://www.google-analytics.com',
-                       'https://firebaselogging.googleapis.com',
-                       'https://firebaseremoteconfig.googleapis.com',
+                       'https://*.googleapis.com',
                        'http://localhost:3035', 'ws://localhost:3035'
   else
     policy.connect_src :self, 'https://pandora.ugent.be',
                        'https://dodona-cea23.firebaseio.com',
                        'https://www.google-analytics.com',
-                       'https://firebaselogging.googleapis.com',
-                       'https://firebaseremoteconfig.googleapis.com'
+                       'https://*.googleapis.com'
   end
 
   policy.font_src    :self, 'https://fonts.gstatic.com',
@@ -40,6 +38,8 @@ Rails.application.config.content_security_policy do |policy|
 
   policy.report_uri "/csp-report"
 end
+
+Rails.application.config.content_security_policy_report_only = true
 
 # If you are using UJS then enable automatic nonce generation
 # Rails.application.config.content_security_policy_nonce_generator = -> request { SecureRandom.base64(16) }

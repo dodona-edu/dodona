@@ -1,7 +1,6 @@
 class FeedbackTableRenderer
   include Rails.application.routes.url_helpers
   include ApplicationHelper
-  include ExerciseHelper
 
   require 'builder'
 
@@ -257,22 +256,18 @@ class FeedbackTableRenderer
     output_message(m)
   end
 
-  def rewrite_media_urls(html)
-    contextualize_media_paths(html, exercise_path(nil, @exercise), @exercise.access_private? ? @exercise.access_token : '')
-  end
-
   def output_message(m)
     if m[:format].in?(%w[plain text])
       @builder.text! m[:description]
     elsif m[:format].in?(%w[html])
-      @builder << rewrite_media_urls(safe(m[:description]))
+      @builder << safe(m[:description])
     elsif m[:format].in?(%w[markdown md])
       # `markdown` is always safe
-      @builder << rewrite_media_urls(markdown(m[:description]))
+      @builder << markdown(m[:description])
     elsif m[:format].in?(%w[callout])
       @builder.div(class: 'callout callout-info') do
         # `markdown` is always safe
-        @builder << rewrite_media_urls(markdown(m[:description]))
+        @builder << markdown(m[:description])
       end
     elsif m[:format].in?(%w[code])
       @builder.span(class: 'code') do
@@ -289,7 +284,8 @@ class FeedbackTableRenderer
 
   def init_js
     @builder.script do
-      @builder << 'dodona.initSubmissionShow();'
+      token = @exercise.access_private? ? "'#{@exercise.access_token}'" : 'undefined'
+      @builder << "dodona.initSubmissionShow('feedback-table', '#{exercise_path(nil, @exercise)}', #{token});"
     end
   end
 

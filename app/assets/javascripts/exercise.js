@@ -105,10 +105,11 @@ function initMathJax() {
     }
 }
 
-function initExerciseDescription() {
+function initExerciseDescription(parentId, exercisePath, token) {
     initLightboxes();
     centerImagesAndTables();
     initMathJax();
+    contextualizeMediaPaths(parentId, exercisePath, token);
 }
 
 
@@ -353,5 +354,27 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-export { initExerciseShow, initExerciseDescription, initLabelsEdit };
+function contextualizeMediaPaths(parentClass, exercisePath, token) {
+    const attrs = ["src", "href", "action", "cite", "data", "formaction",
+        "longdesc", "manifest", "poster"];
+    const query = attrs.map(attr => `[${attr}^='media/'],[${attr}^='./media/']`).join(",");
+    const tokenPart = token ? `?token=${token}` : "";
+    const elements = document.getElementsByClassName(parentClass).querySelectorAll(query);
+    elements.forEach(element => {
+        Array.from(element.attributes).forEach(attribute => {
+            if (attrs.includes(attribute.name)) {
+                const value = attribute.value;
+                if (value.startsWith("./media/")) {
+                    attribute.value = exercisePath + "/media/" +
+                        value.substr(8) + tokenPart;
+                } else if (value.startsWith("media/")) {
+                    attribute.value = exercisePath + "/media/" +
+                        value.substr(6) + tokenPart;
+                }
+            }
+        });
+    });
+}
+
+export { initExerciseShow, initExerciseDescription, initLabelsEdit, contextualizeMediaPaths };
 

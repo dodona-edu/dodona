@@ -65,6 +65,11 @@ export class CodeListing {
         annotationCell.appendChild(textNode);
 
         annotationTD.appendChild(annotationCell);
+
+        const edgeCopyBlocker = document.createElement("div");
+        edgeCopyBlocker.setAttribute("class", "copy-blocker");
+        annotationTD.appendChild(edgeCopyBlocker);
+
         return annotationRow;
     }
 

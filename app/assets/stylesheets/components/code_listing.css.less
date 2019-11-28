@@ -10,6 +10,7 @@
     background-color: transparent;
     margin-bottom: 0;
     border: none;
+    border-radius: 0;
   }
 
   .lineno:first-child {
@@ -31,12 +32,13 @@
   .rouge-gutter {
     min-width: 30px;
     width: 1%;
-    padding-right: 10px;
-    padding-left: 10px;
+    text-align: right;
+    padding-right: 5px;
 
     background-color: @well-bg;
 
     pre {
+      font-family: monospace;
       color: @gray-light
     }
   }
@@ -53,6 +55,7 @@
         border: 1px solid @hairlinegray;
         border-left-width: 3px;
         background: @content-bg;
+        white-space: pre;
       }
 
       .annotation.error {
@@ -65,6 +68,12 @@
 
       .annotation.info {
         border-left-color: @info-500;
+      }
+
+      .copy-blocker {
+        position: absolute;
+        user-select: text;
+        height: 100%;
       }
     }
   }

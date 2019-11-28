@@ -45,6 +45,10 @@ export class CodeListing {
     }
 
     private createAnnotation(message: Message, tableIndex: number, rougeRow: number): HTMLTableRowElement {
+        if (message.text.match("^--*$")) {
+            return null;
+        }
+
         let annotationRow: HTMLTableRowElement = this.table.querySelector(`#annotation-row-id-${message.row + 1}`);
         if (annotationRow === null) {
             annotationRow = this.createAnnotationRow(tableIndex, rougeRow);
@@ -56,11 +60,16 @@ export class CodeListing {
         annotationCell.setAttribute("class", "annotation");
         annotationCell.setAttribute("id", `annotation-id-${message.id}`);
 
-        const textNode: Text = document.createTextNode(message.text.replace(/-*$/, ""));
+        const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => ! s.match("^--*$")).join("\n"));
         annotationCell.classList.add(message.type);
         annotationCell.appendChild(textNode);
 
         annotationTD.appendChild(annotationCell);
+
+        const edgeCopyBlocker = document.createElement("div");
+        edgeCopyBlocker.setAttribute("class", "copy-blocker");
+        annotationTD.appendChild(edgeCopyBlocker);
+
         return annotationRow;
     }
 

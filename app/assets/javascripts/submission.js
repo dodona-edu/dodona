@@ -1,10 +1,12 @@
 import { logToGoogle } from "util.js";
+import { contextualizeMediaPaths } from "exercise.js";
 
-function initSubmissionShow() {
+function initSubmissionShow(parentClass, mediaPath, token) {
     function init() {
         initDiffSwitchButtons();
         initTabLinks();
         initHideCorrect();
+        contextualizeMediaPaths(parentClass, mediaPath, token);
     }
 
     function initDiffSwitchButtons() {

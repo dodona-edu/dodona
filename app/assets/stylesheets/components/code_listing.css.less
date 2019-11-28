@@ -32,12 +32,13 @@
   .rouge-gutter {
     min-width: 30px;
     width: 1%;
-    padding-right: 10px;
-    padding-left: 10px;
+    text-align: right;
+    padding-right: 5px;
 
     background-color: @well-bg;
 
     pre {
+      font-family: monospace;
       color: @gray-light
     }
   }
@@ -54,6 +55,7 @@
         border: 1px solid @hairlinegray;
         border-left-width: 3px;
         background: @content-bg;
+        white-space: pre;
       }
 
       .annotation.error {

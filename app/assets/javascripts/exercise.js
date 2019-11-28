@@ -359,19 +359,20 @@ function contextualizeMediaPaths(parentClass, exercisePath, token) {
         "longdesc", "manifest", "poster"];
     const query = attrs.map(attr => `[${attr}^='media/'],[${attr}^='./media/']`).join(",");
     const tokenPart = token ? `?token=${token}` : "";
-    const elements = document.getElementsByClassName(parentClass).querySelectorAll(query);
-    elements.forEach(element => {
-        Array.from(element.attributes).forEach(attribute => {
-            if (attrs.includes(attribute.name)) {
-                const value = attribute.value;
-                if (value.startsWith("./media/")) {
-                    attribute.value = exercisePath + "/media/" +
-                        value.substr(8) + tokenPart;
-                } else if (value.startsWith("media/")) {
-                    attribute.value = exercisePath + "/media/" +
-                        value.substr(6) + tokenPart;
+    Array.from(document.getElementsByClassName(parentClass)).forEach(parent => {
+        parent.querySelectorAll(query).forEach(element => {
+            Array.from(element.attributes).forEach(attribute => {
+                if (attrs.includes(attribute.name)) {
+                    const value = attribute.value;
+                    if (value.startsWith("./media/")) {
+                        attribute.value = exercisePath + "/media/" +
+                            value.substr(8) + tokenPart;
+                    } else if (value.startsWith("media/")) {
+                        attribute.value = exercisePath + "/media/" +
+                            value.substr(6) + tokenPart;
+                    }
                 }
-            }
+            });
         });
     });
 }

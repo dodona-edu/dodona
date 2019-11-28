@@ -34,39 +34,6 @@ module ExerciseHelper
                height: '500px'
   end
 
-  # Regex matching a HTML tag which has at least one attribute
-  # starting with 'media' or './media'
-  # The trailing 'm' makes this regex multiline,
-  # so newlines between attributes are handled correctly
-  MEDIA_TAG_MATCH = %r{<.*?=['"](\.\/)?media\/.*?['"].*?>}m.freeze
-
-  # Regex used for replacing these relative paths:
-  # 1: opening quotation marks
-  # 2: optional ./ (discarded)
-  # 3: media url
-  # 4: closing quotation marks
-  MEDIA_ATTR_MATCH = %r{(=['"])(\.\/)?(media\/.*?)(['"])}.freeze
-
-  # Replace each occurence of a relative media path with a
-  # path relative to the context (base URL).
-  #
-  # A match within a match is used to be able to handle multiple
-  # relative media paths in one tag, while making sure we only
-  # substitute within tags.
-  #
-  # Example substitutions:
-  # (with path = /nl/exercises/xxxx/)
-  # <img src='media/photo.jpg'>
-  #  => <img src='/nl/exercises/xxxx/media/photo.jpg'>
-  # <a href='./media/page.html'>link</a>
-  #  => <a href='/nl/exercises/xxxx/media/page.html'>
-  def contextualize_media_paths(html, path, token)
-    path += '/' unless path.ends_with? '/'
-    html.gsub(MEDIA_TAG_MATCH) do |match|
-      match.gsub MEDIA_ATTR_MATCH, token.present? ? "\\1#{path}\\3?token=#{token}\\4" : "\\1#{path}\\3\\4"
-    end
-  end
-
   class DescriptionRenderer
     require 'nokogiri'
     include Rails.application.routes.url_helpers

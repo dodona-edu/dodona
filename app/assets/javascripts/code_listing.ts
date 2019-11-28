@@ -60,7 +60,7 @@ export class CodeListing {
         annotationCell.setAttribute("class", "annotation");
         annotationCell.setAttribute("id", `annotation-id-${message.id}`);
 
-        const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => s.match("^--*$")).join("\n"));
+        const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => ! s.match("^--*$")).join("\n"));
         annotationCell.classList.add(message.type);
         annotationCell.appendChild(textNode);
 

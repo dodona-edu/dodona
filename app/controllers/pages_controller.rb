@@ -1,7 +1,4 @@
 class PagesController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: %i[csp_report]
-  skip_before_action :redirect_to_default_host, only: %i[csp_report]
-
   content_security_policy only: %i[contact] do |policy|
     policy.script_src(*(%w[https://www.recaptcha.net https://www.gstatic.com
                            https://www.google.com] + policy.script_src))
@@ -55,31 +52,6 @@ class PagesController < ApplicationController
       flash[:error] = @contact_form.errors.full_messages.to_sentence
       render :contact
     end
-  end
-
-  def csp_report
-    if request.content_type == 'application/csp-report'
-      raw_report = request.raw_post
-      begin
-        report = JSON.parse(raw_report)['csp-report']
-        message = "CSP Violation Report: blocked '#{report['blocked-uri']}' on page '#{report['document-uri']}' which violated '#{report['violated-directive']}'"
-      rescue JSON::ParserError, NoMethodError => e
-        report = {
-          'error': 'could not parse CSP report',
-          'raw_report': raw_report,
-          'error_message': e.message
-        }
-        message = "Could not parse CSP Violation Report: '#{raw_report}'"
-      end
-      ExceptionNotifier.notify_exception(
-        Exception.new(message.truncate(254)),
-        env: request.env,
-        data: {
-          report: report
-        }
-      )
-    end
-    head :ok
   end
 
   private

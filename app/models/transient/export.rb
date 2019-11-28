@@ -1,3 +1,5 @@
+require 'zip'
+
 class Export
   attr_reader :users, :item, :errors
 

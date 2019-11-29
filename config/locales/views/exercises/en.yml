@@ -62,14 +62,18 @@ en:
     edit:
       courses: "Courses using this exercise"
     info:
-      repository: "Repository"
-      location: "Location"
-      contact: "Contact"
-      programming_language: "Programming language"
-      natural_language: "Natural language"
-      labels: "Labels"
-      unknown: unknown
-      about: "About this exercise"
-      about_not_present: "This exercise does not have about info yet."
-      used_in_courses: "Courses using this exercise"
-      author_information: "Created by %{contact} in repository %{repository} %{created_at} ago. Last update was %{updated_at} ago."
+      no_about_present: "This exercise does not yet have extra information."
+      no_about_present_admin: "This exercise does not yet have an 'about' with extra information. You can add this to the exercise in the repository."
+      author_information: "Created by %{contact} in repository %{repository} %{created_at} ago. Last edited %{updated_at} ago."
+      programming_language: Programming language
+      natural_language: Natural language
+      time_limit: Time limit
+      memory_limit: Memory limit
+      network_enabled: Network enabled
+      network_disabled: Network disabled
+      submission_count: Submission count
+      sample_solutions: Sample solutions
+      no_solutions: This exercise does not yet have a sample solution.
+      no_solutions_admin: Add your sample solutions to the repository and they will be shown here.
+      courses_using_this_exercise: Courses using this exercise
+      not_used_in_courses: This exercise is not being used yet.

@@ -9,6 +9,67 @@
       <div class="card-supporting-text card-border">
         <div class="row">
           <div class="col-sm-8 col-xs-12">
+            <div class="row">
+              <div class="col-md-4 col-sm-6 col-xs-4">
+                <h1><i class="mdi mdi-36 mdi-language-<%= @exercise.programming_language.name %>" title="<%= @exercise.programming_language.name %>"></i></h1>
+                <%= t '.programming_language' %>
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-4">
+                <h1><%= @exercise.description_languages.join(', ') %></h1>
+                <%= t '.natural_language' %>
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-4">
+                <h1><%= @config.dig('evaluation', 'time_limit') %>s</h1>
+                <%= t '.time_limit' %>
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-4">
+                <h1><%= human_bytes @config.dig('evaluation', 'memory_limit')&.to_i %></h1>
+                <%= t '.memory_limit' %>
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-4">
+                <% if @config['network_enabled'] %>
+                <h1>
+                  <i class="mdi mdi-36 mdi-wan"></i>
+                </h1>
+                <%= t '.network_enabled' %>
+                <% else %>
+                <h1>
+                  <i class="mdi mdi-36 mdi-lan-disconnect"></i>
+                </h1>
+                <%= t '.network_disabled' %>
+                <% end %>
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-4">
+                <h1><%= @exercise.submissions.count %></h1>
+                <%= t '.submission_count' %>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 col-xs-12">
+            <span class="text-muted small">
+              <%
+                  contact = mail_to(@config['contact'] || @repository.first_admin.pretty_email)
+              repository_html = if current_user&.repository_admin?(@repository)
+                                  "#{link_to @repository.name, repository_path(@repository)} (#{github_link @repository, @exercise.path})"
+                                elsif policy(@repository).show?
+                                  link_to @repository.name, repository_path(@repository)
+                                else
+                                  @repository.name
+                                end
+                              %>
+                            <%= raw t '.author_information',
+                  contact: contact,
+                  repository: repository_html,
+                  created_at: time_ago_in_words(@exercise.created_at),
+                  updated_at: time_ago_in_words(@exercise.updated_at) %>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-supporting-text card-border">
+        <div class="row">
+          <div class="col-xs-12">
             <% about = @config.dig('description', 'about')  %>
             <% if about.present? %>
               <%= markdown about %>
@@ -23,66 +84,6 @@
               <% end %>
             <% end %>
           </div>
-          <div class="col-sm-4 col-xs-12">
-            <div class="row">
-              <div class="col-md-6 col-sm-12 col-xs-4">
-                <h1><i class="mdi mdi-36 mdi-language-<%= @exercise.programming_language.name %>" title="<%= @exercise.programming_language.name %>"></i></h1>
-                <%= t '.programming_language' %>
-              </div>
-              <div class="col-md-6 col-sm-12 col-xs-4">
-                <h1><%= @exercise.description_languages.join(', ') %></h1>
-                <%= t '.natural_language' %>
-              </div>
-              <div class="col-md-6 col-sm-12 col-xs-4">
-                <h1><%= @config.dig('evaluation', 'time_limit') %>s</h1>
-                <%= t '.time_limit' %>
-              </div>
-              <div class="col-md-6 col-sm-12 col-xs-4">
-                <h1><%= human_bytes @config.dig('evaluation', 'memory_limit')&.to_i %></h1>
-                <%= t '.memory_limit' %>
-              </div>
-              <div class="col-md-6 col-sm-12 col-xs-4">
-                <% if @config['network_enabled'] %>
-                <h1>
-                  <i class="mdi mdi-36 mdi-wan"></i>
-                </h1>
-                <%= t '.network_enabled' %>
-                <% else %>
-                <h1>
-                  <i class="mdi mdi-36 mdi-lan-disconnect"></i>
-                </h1>
-                <%= t '.network_disabled' %>
-                <% end %>
-              </div>
-              <div class="col-md-6 col-sm-12 col-xs-4">
-                <h1><%= @exercise.submissions.count %></h1>
-                <%= t '.submission_count' %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-supporting-text card-border">
-        <div class="row">
-          <div class="col-xs-12">
-            <span class="text-muted small">
-            <%
-              contact = mail_to(@config['contact'] || @repository.first_admin.pretty_email)
-              repository_html = if current_user&.repository_admin?(@repository)
-                                  "#{link_to @repository.name, repository_path(@repository)} (#{github_link @repository, @exercise.path})"
-                                elsif policy(@repository).show?
-                                  link_to @repository.name, repository_path(@repository)
-                                else
-                                  @repository.name
-                                end
-              %>
-            <%= raw t '.author_information',
-                  contact: contact,
-                  repository: repository_html,
-                  created_at: time_ago_in_words(@exercise.created_at),
-                  updated_at: time_ago_in_words(@exercise.updated_at) %>
-          </div>
         </div>
       </div>
 
@@ -94,7 +95,7 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title">
-        <h2><%= t ".sample_solutions" %></h2>
+        <h3><%= t ".sample_solutions" %></h2>
       </div>
       <div class="card-supporting-text row">
         <div class="col-xs-12">
@@ -132,7 +133,7 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title">
-      <h2><%= t ".courses_using_this_exercise", course_count: @courses_series.count %></h2>
+        <h3><%= t ".courses_using_this_exercise" %>&nbsp;<span class="badge"><%= @courses_series.count %></span></h2>
       </div>
       <div class="card-supporting-text row">
         <div class="col-xs-12 courses-using-exercise">

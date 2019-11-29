@@ -98,24 +98,26 @@
       </div>
       <div class="card-supporting-text row">
         <div class="col-xs-12">
-          <% solutions = @exercise.solutions %>
+          <% solutions = @exercise.solutions.sort(&method(:compare_solutions)) %>
           <% if solutions.any? %>
-            <div id="solutions-accordion" class="panel-group" role="tablist" aria-multiselectable="true">
-            <% solutions.each_with_index do |hash, i| %>
-              <% fname, code = hash %>
-              <div class="panel panel-default">
-                <div id="heading-solution-<%= i %>" class="panel-heading">
-                  <h4 class="panel-title">
-                    <a class="collapsed" data-toggle="collapse" data-parent="#solutions-accordion" href="#collapse-solution-<%= i %>" aria-expanded="false"><%= fname %></a>
-                  </h4>
-                </div>
-                <div id="collapse-solution-<%= i %>" class="panel-collapse collapse" aria-expanded="false">
-                  <div class="panel-body">
-                    <%= raw FeedbackCodeRenderer.new(code, @exercise.programming_language.name).parse.html %>
+            <div class="card-tab">
+              <ul class="nav nav-tabs">
+                <% solutions.map(&:first).each_with_index do |fname, i| %>
+                  <li class="<%= 'active' if i == 0 %>">
+                    <a href="#solution-<%= i %>" data-toggle="tab" aria-expanded="<%= i == 0 %>"><%= fname %></a>
+                  </li>
+                <% end %>
+              </ul>
+              <div class="tab-content">
+                <% solutions.map(&:last).each_with_index do |code, i| %>
+                  <div id="solution-<%= i %>" class="tab-pane<%= ' active' if i == 0 %>">
+                    <div class="code-table">
+                      <%= raw FeedbackCodeRenderer.new(code, @exercise.programming_language.name).parse.html %>
+
+                    </div>
                   </div>
-                </div>
+                <% end %>
               </div>
-            <% end %>
             </div>
           <% else %>
             <span class="text-muted"><%= t '.no_solutions' %></span>

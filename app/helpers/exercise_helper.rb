@@ -51,6 +51,20 @@ module ExerciseHelper
                height: '500px'
   end
 
+  def starts_with_solution?(item)
+    item.first.basename.to_s.starts_with?('solution')
+  end
+
+  def compare_solutions(a, b)
+    if starts_with_solution?(a) == starts_with_solution?(b)
+      a <=> b
+    elsif starts_with_solution?(a)
+      -1
+    else
+      1
+    end
+  end
+
   class DescriptionRenderer
     require 'nokogiri'
     include Rails.application.routes.url_helpers

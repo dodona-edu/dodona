@@ -18,13 +18,8 @@ class FeedbackCodeRenderer
     @builder << table_formatter.format(lexed_c)
 
     @builder.script(type: 'application/javascript') do
-      @builder << 'const messages = '
-      @builder << @messages.map { |o| Hash[o.each_pair.to_a] }.to_json
-      @builder << ';'
-
-      @builder << 'var codeListing = new window.dodona.codeListingClass();'
-      @builder << 'window.dodona.codeListing = codeListing;'
-      @builder << 'codeListing.addAnnotations(messages);'
+      @builder << 'window.dodona.codeListing = new window.dodona.codeListingClass();'
+      @builder << 'window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + ');'
     end
   end
 end

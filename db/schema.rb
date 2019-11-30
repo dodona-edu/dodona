@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_06_142529) do
+ActiveRecord::Schema.define(version: 2019_11_17_211919) do
+
+  create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "line_nr"
+    t.integer "submission_id"
+    t.integer "user_id"
+    t.text "annotation_text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "markdown_content", null: false
+    t.index ["submission_id"], name: "index_annotations_on_submission_id"
+    t.index ["user_id"], name: "index_annotations_on_user_id"
+  end
 
   create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -260,6 +272,8 @@ ActiveRecord::Schema.define(version: 2019_11_06_142529) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  add_foreign_key "annotations", "submissions"
+  add_foreign_key "annotations", "users"
   add_foreign_key "course_labels", "courses", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_labels", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_memberships", on_delete: :cascade

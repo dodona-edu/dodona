@@ -87,8 +87,8 @@ export class CodeListing {
 
     getCode(): string {
         const submissionCode = [];
-        document.querySelectorAll(".lineno .rouge-code")
-            .forEach( codeLine => submissionCode.push(codeLine.textContent));
-        return submissionCode.join("");
+        this.table.querySelectorAll(".lineno .rouge-code")
+            .forEach( codeLine => submissionCode.push(codeLine.textContent.replace(/\n$/, "")));
+        return submissionCode.join("\n");
     }
 }

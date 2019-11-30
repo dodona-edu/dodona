@@ -1,9 +1,5 @@
 .code-listing {
 
-  display: block;
-  overflow-x: auto;
-  white-space: nowrap;
-
   // Override the normal pre padding & coloring
   pre {
     padding: 0;
@@ -11,28 +7,32 @@
     margin-bottom: 0;
     border: none;
     border-radius: 0;
+    white-space: pre-wrap;
   }
 
   .lineno:first-child {
-    .rouge-code, .rouge-gutter{
+    .rouge-code, .rouge-gutter {
       padding-top: 5px;
     }
   }
 
   .lineno:last-child {
-    .rouge-code, .rouge-gutter{
+    .rouge-code, .rouge-gutter {
       padding-bottom: 5px;
     }
   }
 
   .rouge-code {
     padding-left: 5px;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   .rouge-gutter {
     min-width: 30px;
     width: 1%;
     text-align: right;
+    vertical-align: top;
     padding-right: 5px;
 
     background-color: @well-bg;
@@ -56,7 +56,7 @@
         border: 1px solid @hairlinegray;
         border-left-width: 3px;
         background: @content-bg;
-        white-space: pre;
+        white-space: pre-wrap;
       }
 
       .annotation.error {

@@ -355,14 +355,12 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 }
 
 function contextualizeMediaPaths(parentClass, exercisePath, token) {
-    const attrs = ["src", "href", "action", "cite", "data", "formaction",
-        "longdesc", "manifest", "poster"];
-    const query = attrs.map(attr => `[${attr}^='media/'],[${attr}^='./media/']`).join(",");
     const tokenPart = token ? `?token=${token}` : "";
+    const query = "a[href^='media'],a[href^='./media']";
     Array.from(document.getElementsByClassName(parentClass)).forEach(parent => {
         parent.querySelectorAll(query).forEach(element => {
             Array.from(element.attributes).forEach(attribute => {
-                if (attrs.includes(attribute.name)) {
+                if (attribute.name == "href") {
                     const value = attribute.value;
                     if (value.startsWith("./media/")) {
                         attribute.value = exercisePath + "/media/" +

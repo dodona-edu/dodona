@@ -5,7 +5,7 @@ class ExercisesController < ApplicationController
   before_action :ensure_trailing_slash, only: :show
   before_action :allow_iframe, only: %i[description]
   skip_before_action :verify_authenticity_token, only: [:media]
-  skip_before_action :redirect_to_default_host, only: %i[description media]
+  skip_before_action :redirect_to_default_host, only: %i[description]
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }

@@ -1,6 +1,5 @@
 <%= render 'navbar_links' %>
 <%
-  about = @config.dig('description', 'about')
   solutions = @exercise.solutions.sort(&method(:compare_solutions))
 %>
 <div class="row">
@@ -11,8 +10,9 @@
       </div>
 
       <div class="card-supporting-text card-border">
+        <% if @exercise.labels.any? %>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-xs-12 labels">
             <p>
             <% @exercise.labels.each do |label| %>
               <%= link_to label_path(label) do %>
@@ -21,44 +21,50 @@
             <% end %>
           </div>
         </div>
+        <% end %>
         <div class="row">
-          <div class="col-md-4 col-md-push-8 col-sm-6 col-xs-12">
+          <div class="col-md-4 col-md-push-8 col-sm-6  col-sm-push-6 col-xs-12">
             <div class="row">
               <div class="col-xs-12 repo-details">
-                <p>
-                <i class="mdi mdi-account-card-details mdi-24">
-                </i>
-                <%= mail_to(@config['contact'] || @repository.first_admin.pretty_email) %>
-                <p>
-                <i class="mdi mdi-server mdi-24">
-                </i>
-                <% if policy(@repository).show? %>
-                  <%= link_to @repository.name, repository_path(@repository) %>
-                <% else %>
-                  <%= @repository.name %>
-                <% end %>
-                <% if current_user&.repository_admin?(@repository) %>
-                <p>
-                <i class="mdi mdi-file-search mdi-24"></i>
-                <%= github_link @repository, @exercise.path %>
-                <% end %>
-                <p>
-                <i class="mdi mdi-clock-outline mdi-24"></i>
-                <%= time_ago_in_words(@exercise.created_at) %> geleden
-                <p>
-                <i class="mdi mdi-update mdi-24"></i>
-                <%= time_ago_in_words(@exercise.updated_at) %> geleden
-                <p>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <p><i class="mdi mdi-account-box mdi-24" title="<%= t '.contact' %>"></i>
+                    <%= mail_to(@config['contact'] || @repository.first_admin.pretty_email) %>
+                  </div>
+                  <div class="col-sm-12 col-xs-6">
+                    <p><i class="mdi mdi-server mdi-24" title="<%= t '.repository' %>"></i>
+                    <% if policy(@repository).show? %>
+                      <%= link_to @repository.name, repository_path(@repository) %>
+                    <% else %>
+                      <%= @repository.name %>
+                    <% end %>
+                    <% if current_user&.repository_admin?(@repository) %>
+                    <p>
+                    <i class="mdi mdi-file-search mdi-24" title="<%= t '.repository_path' %>"></i>
+                    <%= github_link @repository, @exercise.path %>
+                    <% end %>
+                  </div>
+                  <div class="col-sm-12 col-xs-6">
+                    <p><i class="mdi mdi-clock-outline mdi-24" title="<%= t '.created' %>"></i>
+                    <span title="<%= l @exercise.created_at, format: :long %>">
+                    <%= time_ago_in_words(@exercise.created_at) %> <%= t '.ago' %>.
+                    </span>
+                    <p><i class="mdi mdi-update mdi-24" title="<%= t '.updated' %>"></i>
+                    <span title="<%= l @exercise.updated_at, format: :long %>">
+                    <%= time_ago_in_words(@exercise.updated_at) %> <%= t '.ago' %>.
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-md-8 col-md-pull-4 col-sm-6 col-xs-12">
+          <div class="col-md-8 col-md-pull-4 col-sm-6 col-sm-pull-6 col-xs-12">
             <div class="row exercise-details">
               <div class="col-md-4 col-sm-6 col-xs-4 exercise-detail">
                 <h1><i class="mdi mdi-36 mdi-language-<%= @exercise.programming_language.name %>" title="<%= @exercise.programming_language.name %>"></i></h1>
                 <%= t '.programming_language' %>
               </div>
-              <div class="col-md-4 col-sm-6 col-xs-4">
+              <div class="col-md-4 col-sm-6 col-xs-4 exercise-detail">
                 <h1><%= @exercise.description_languages.join(', ') %></h1>
                 <%= t '.natural_language' %>
               </div>
@@ -95,12 +101,16 @@
       <div class="card-supporting-text card-border">
         <div class="row">
           <div class="col-xs-12">
-            <% if about.present? %>
-              <%= markdown about %>
-            <% elsif current_user&.repository_admin?(@repository) %>
-              <span class="text-muted"><%= t '.no_about_present_admin' %></span>
+            <% if @exercise.about.present? %>
+              <%= markdown @exercise.about %>
             <% else %>
               <span class="text-muted"><%= t '.no_about_present' %></span>
+              <% if current_user&.repository_admin?(@repository) %>
+                <%= github_link @repository,
+                  @exercise.path + "?filename=about.#{I18n.locale.to_s}.md",
+                  name: t('.click_here_to_create_one'),
+                  mode: 'new' %>
+              <% end %>
             <% end %>
           </div>
         </div>

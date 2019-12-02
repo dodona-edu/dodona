@@ -95,6 +95,15 @@ class Exercise < ApplicationRecord
                          path&.split('/')&.last
   end
 
+  def solutions
+    ext = '.' + programming_language.extension
+    (full_path + SOLUTION_DIR)
+      .yield_self { |path| path.directory? ? path.children : [] }
+      .filter { |path| path.file? && path.readable? && path.extname == ext }
+      .map { |path| [path.basename, path.read] }
+      .to_h
+  end
+
   def description_languages
     languages = []
     languages << 'nl' if description_file('nl').exist?
@@ -106,26 +115,8 @@ class Exercise < ApplicationRecord
     full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
   end
 
-  def solutions
-    ext = '.' + programming_language.extension
-    (full_path + SOLUTION_DIR)
-      .yield_self { |path| path.directory? ? path.children : [] }
-      .filter { |path| path.file? && path.readable? && path.extname == ext }
-      .map { |path| [path.basename, path.read] }
-      .to_h
-  end
-
-  def solution_exist?
-    %w[en nl].any? { |l| solution_file(l).exist? }
-  end
-
   def description_localized(lang = I18n.locale.to_s)
     file = description_file(lang)
-    file.read if file.exist?
-  end
-
-  def solution_localized(lang = I18n.locale.to_s)
-    file = solution_file(lang)
     file.read if file.exist?
   end
 
@@ -133,24 +124,33 @@ class Exercise < ApplicationRecord
     description_localized('nl')
   end
 
-  def solution_nl
-    solution_localized('nl')
-  end
-
   def description_en
     description_localized('en')
-  end
-
-  def solution_en
-    solution_localized('en')
   end
 
   def description
     (description_localized || description_nl || description_en || '').force_encoding('UTF-8').scrub
   end
 
-  def solution
-    (solution_localized || solution_nl || solution_en || '').force_encoding('UTF-8').scrub
+  def about_file(lang)
+    full_path + "about.#{lang}.md"
+  end
+
+  def about_localized(lang = I18n.locale.to_s)
+    file = about_file(lang)
+    file.read if file.exist?
+  end
+
+  def about_nl
+    about_localized('nl')
+  end
+
+  def about_en
+    about_localized('en')
+  end
+
+  def about
+    (about_localized || about_nl || about_en || '').force_encoding('UTF-8').scrub
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)

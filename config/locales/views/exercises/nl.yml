@@ -64,7 +64,7 @@ nl:
     info:
       no_about_present: "Deze oefening heeft nog geen extra informatie."
       no_about_present_admin: "Deze oefening heeft nog geen 'about' met extra informatie. Je kunt deze toevoegen aan de repository."
-      author_information: "Gemaakt door %{contact} in repository %{repository} %{created_at} geleden. Laatst gewijzigd %{updated_at} geleden."
+      author_information: "Gemaakt door %{contact} in repository %{repository}."
       programming_language: Programmeertaal
       natural_language: Natuurlijke taal
       time_limit: Tijdslimiet

@@ -64,7 +64,7 @@ en:
     info:
       no_about_present: "This exercise does not yet have extra information."
       no_about_present_admin: "This exercise does not yet have an 'about' with extra information. You can add this to the exercise in the repository."
-      author_information: "Created by %{contact} in repository %{repository} %{created_at} ago. Last edited %{updated_at} ago."
+      author_information: "Created by %{contact} in repository %{repository}."
       programming_language: Programming language
       natural_language: Natural language
       time_limit: Time limit

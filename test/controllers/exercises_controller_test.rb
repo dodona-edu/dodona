@@ -60,6 +60,39 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'image/png', response.content_type
   end
 
+  test 'should not get private media without token' do
+    sign_out :user
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    @instance.update access: :private
+
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_response :redirect
+  end
+
+  test 'should get private media with token' do
+    sign_out :user
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    @instance.update access: :private
+
+    get media_exercise_url(@instance, media: 'icon.png', token: @instance.access_token)
+
+    assert_response :success
+  end
+
+  test 'should redirect when requesting media on sandbox_host' do
+    sign_out :user
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    @instance.update access: :private
+
+    get media_exercise_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: @instance.access_token)
+
+    assert_response :redirect
+    location = response.headers['location']
+    assert location.starts_with?('http://www.example.com'), 'should redirect to default_host'
+    assert location.ends_with?("?token=#{@instance.access_token}"), 'should still contain access token'
+  end
+
   test 'should get exercices by repository_id' do
     get exercises_url repository_id: @instance.repository.id
     assert_response :success

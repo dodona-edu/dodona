@@ -78,7 +78,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     @exercise.unstub(:config)
     # Stub global config
     File.stubs(:read)
-        .with(Rails.root.join('app', 'runners', 'config.json'))
+        .with(Rails.root.join('app/runners/config.json'))
         .returns({ memory_limit: 100, time_limit: 42, network_enabled: false }.to_json)
     @submission.stubs(:code).returns(Random.new.alphanumeric(100))
     # Override something

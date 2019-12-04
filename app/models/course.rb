@@ -26,9 +26,9 @@ class Course < ApplicationRecord
   include Cacheable
   include ActionView::Helpers::SanitizeHelper
 
-  SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%{id}/subscribed_members_count'.freeze
-  EXERCISES_COUNT_CACHE_STRING = '/courses/%{id}/exercises_count'.freeze
-  CORRECT_SOLUTIONS_CACHE_STRING = '/courses/%{id}/correct_solutions'.freeze
+  SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%<id>d/subscribed_members_count'.freeze
+  EXERCISES_COUNT_CACHE_STRING = '/courses/%<id>d/exercises_count'.freeze
+  CORRECT_SOLUTIONS_CACHE_STRING = '/courses/%<id>d/correct_solutions'.freeze
 
   belongs_to :institution, optional: true
 

@@ -13,9 +13,9 @@ AllCops:
     - "node_modules/**/*"
   TargetRubyVersion: 2.6
 
-Layout/IndentFirstArrayElement:
+Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
 Lint/Loop:
@@ -42,7 +42,7 @@ Metrics/PerceivedComplexity:
 
 Naming/HeredocDelimiterNaming:
   Enabled: false
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false
 
 Rails/Date:
@@ -57,7 +57,7 @@ Style/ClassAndModuleChildren:
 Style/Documentation:
   Enabled: false
 Style/FormatStringToken:
-  EnforcedStyle: template
+  EnforcedStyle: annotated
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/MultilineBlockChain:

@@ -8,7 +8,7 @@ gem 'rails', '~> 6.0.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.2'
 # Use Puma as the app server
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 3.12'
 # Use less for stylesheets
 gem 'less-rails', '~> 4.0'
 # less-rails does not support sprockets 4.0

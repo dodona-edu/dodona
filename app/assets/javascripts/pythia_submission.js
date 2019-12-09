@@ -78,13 +78,20 @@ function initPythiaSubmissionShow(submissionCode) {
             "<div class='code' id='file-" + random + "'>Loading...</div>"
         );
         $.get(path, function (data) {
-            const lines = data.split("\n");
-            const maxLines = 200;
+            let lines = data.split("\n");
+            const maxLines = 25;
+            let omitted = false;
             if (lines.length > maxLines) {
-                // eslint-disable-next-line no-param-reassign
-                data = lines.slice(0, maxLines).join("\n") + "\n...";
+                lines = lines.slice(0, maxLines);
+                lines.push('...');
+                omitted = true;
             }
-            $("#file-" + random).html(data);
+            
+            $("#file-" + random).html(`<div class='external-file'>${
+                lines.map((l, i) => `<div class="line"><span class="number">${
+                    i + 1 == maxLines && omitted ? '': i+1
+                }</span>${l}</div>`).join("")
+            }</div>`);
         });
     }
 

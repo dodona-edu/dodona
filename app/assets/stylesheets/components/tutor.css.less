@@ -21,6 +21,47 @@
   position: relative;
 }
 
+#tutor {
+  .external-file {
+    @gutter-width: 28px;
+    @gutter-padding: 5px;
+
+    background-color: @body-bg;
+    font-family: @font-family-monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    padding: 5px 5px 4px @gutter-width + 2*@gutter-padding;
+    position: relative;
+
+    &:before {
+      content: '';
+      background-color: @well-bg;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: @gutter-width + @gutter-padding;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .line {
+      padding: 0 0 1px 0;
+
+      .number {
+        width: @gutter-width;
+        margin-right: 2*@gutter-padding;
+        margin-left: -@gutter-width - 2*@gutter-padding;
+        text-align: right;
+        display: inline-block;
+        position: relative;
+        color: @gray-light;
+        user-select: none;
+      }
+    }
+  }
+}
+
 #tutorviz {
   background-color: @content-bg;
   min-height: 200px;

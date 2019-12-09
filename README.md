@@ -12,7 +12,7 @@ The documentation of this project can be found at https://dodona-edu.github.io.
 2. If using `mysql`, add `sql-mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'` to the `/etc/mysql/mysql.conf.d/mysqld.cnf` file.
 3. Create dodona user (with password 'dodona') with create database permissions.
 4. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
-5. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be availablle on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
+5. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
 6. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database form step 4)
    - `http://dodona.localhost:3000/nl/users/1/token/zeus`
    - `http://dodona.localhost:3000/nl/users/2/token/staff`

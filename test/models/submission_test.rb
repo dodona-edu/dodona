@@ -17,7 +17,7 @@
 require 'test_helper'
 
 class SubmissionTest < ActiveSupport::TestCase
-  FILE_LOCATION = Rails.root.join('test', 'files', 'output.json')
+  FILE_LOCATION = Rails.root.join('test/files/output.json')
 
   test 'factory should create submission' do
     assert_not_nil create(:submission)

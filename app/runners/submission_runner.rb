@@ -7,7 +7,7 @@ require 'pathname' # better than File
 
 # Handles the execution of submissions
 class SubmissionRunner
-  DEFAULT_CONFIG_PATH = Rails.root.join('app', 'runners', 'config.json').freeze
+  DEFAULT_CONFIG_PATH = Rails.root.join('app/runners/config.json').freeze
 
   def initialize(submission)
     # definition of submission
@@ -202,8 +202,8 @@ class SubmissionRunner
 
     result[:messages] ||= []
     result[:messages] << build_message("<strong>Worker:</strong> #{`hostname`.strip}", 'zeus', 'html')
-    result[:messages] << build_message(format('<strong>Runtime:</strong> %.2f seconds', (after_time - before_time)), 'zeus', 'html')
-    result[:messages] << build_message(format('<strong>Memory usage:</strong> %.2f MiB', memory), 'zeus', 'html')
+    result[:messages] << build_message(format('<strong>Runtime:</strong> %<time>.2f seconds', time: (after_time - before_time)), 'zeus', 'html')
+    result[:messages] << build_message(format('<strong>Memory usage:</strong> %<memory>.2f MiB', memory: memory), 'zeus', 'html')
     result
   end
 

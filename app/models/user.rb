@@ -25,8 +25,8 @@ class User < ApplicationRecord
   include Cacheable
   include ActiveModel::Dirty
 
-  ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%{course_id}/user/%{id}/attempted_exercises'.freeze
-  CORRECT_EXERCISES_CACHE_STRING = '/courses/%{course_id}/user/%{id}/correct_exercises'.freeze
+  ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/attempted_exercises'.freeze
+  CORRECT_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/correct_exercises'.freeze
 
   enum permission: { student: 0, staff: 1, zeus: 2 }
 
@@ -176,7 +176,7 @@ class User < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:attempted_exercises,
-                                    ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+                                    ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def correct_exercises(options)
     s = submissions.where(status: :correct)
@@ -185,7 +185,7 @@ class User < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:correct_exercises,
-                                    ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+                                    ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def unfinished_exercises(course = nil)
     attempted_exercises(course: course) - correct_exercises(course: course)

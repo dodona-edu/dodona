@@ -135,6 +135,6 @@ class CoursePolicy < ApplicationPolicy
   private
 
   def course_admin?
-    record.class == Course && (user&.course_admin?(record))
+    record.class == Course && user&.course_admin?(record)
   end
 end

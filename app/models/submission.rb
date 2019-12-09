@@ -19,8 +19,8 @@ class Submission < ApplicationRecord
   include ActiveModel::Dirty
 
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
-  PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/timezone/%{timezone}/punchcard_matrix'.freeze
-  HEATMAP_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/heatmap_matrix'.freeze
+  PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%<course_id>s/user/%<user_id>s/timezone/%<timezone>s/punchcard_matrix'.freeze
+  HEATMAP_MATRIX_CACHE_STRING = '/courses/%<course_id>s/user/%<user_id>s/heatmap_matrix'.freeze
   BASE_PATH = Rails.application.config.submissions_storage_path
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
@@ -289,8 +289,8 @@ class Submission < ApplicationRecord
     :punchcard_matrix,
     lambda do |options|
       format(PUNCHCARD_MATRIX_CACHE_STRING,
-             course_id: options[:course].present? ? options[:course].id : 'global',
-             user_id: options[:user].present? ? options[:user].id : 'global',
+             course_id: options[:course].present? ? options[:course].id.to_s : 'global',
+             user_id: options[:user].present? ? options[:user].id.to_s : 'global',
              timezone: options[:timezone].utc_offset)
     end
   )
@@ -309,8 +309,8 @@ class Submission < ApplicationRecord
     :heatmap_matrix,
     lambda do |options|
       format(HEATMAP_MATRIX_CACHE_STRING,
-             course_id: options[:course].present? ? options[:course].id : 'global',
-             user_id: options[:user].present? ? options[:user].id : 'global')
+             course_id: options[:course].present? ? options[:course].id.to_s : 'global',
+             user_id: options[:user].present? ? options[:user].id.to_s : 'global')
     end
   )
 

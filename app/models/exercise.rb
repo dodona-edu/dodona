@@ -28,8 +28,8 @@ class Exercise < ApplicationRecord
   include StringHelper
   include Cacheable
 
-  USERS_CORRECT_CACHE_STRING = '/course/%{course_id}/exercise/%{id}/users_correct'.freeze
-  USERS_TRIED_CACHE_STRING = '/course/%{course_id}/exercise/%{id}/users_tried'.freeze
+  USERS_CORRECT_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_correct'.freeze
+  USERS_TRIED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_tried'.freeze
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
@@ -256,7 +256,7 @@ class Exercise < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:users_correct,
-                                    ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+                                    ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def users_tried(options)
     subs = submissions.judged
@@ -265,7 +265,7 @@ class Exercise < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:users_tried,
-                                    ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id) })
+                                    ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def best_is_last_submission?(user, deadline = nil, course = nil)
     last_correct = last_correct_submission(user, deadline, course)

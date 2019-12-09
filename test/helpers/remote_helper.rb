@@ -11,7 +11,7 @@ module RemoteHelper
   end
 end
 class TempRepository < GitRepository
-  REMOTES_LOCATION = Rails.root.join('test', 'remotes')
+  REMOTES_LOCATION = Rails.root.join('test/remotes')
 
   def initialize
     super Dir.mktmpdir

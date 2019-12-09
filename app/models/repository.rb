@@ -16,7 +16,7 @@ require 'pathname'
 class Repository < ApplicationRecord
   include Gitable
 
-  EXERCISE_LOCATIONS = Rails.root.join('data', 'exercises').freeze
+  EXERCISE_LOCATIONS = Rails.root.join('data/exercises').freeze
   MEDIA_DIR = 'public'.freeze
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }

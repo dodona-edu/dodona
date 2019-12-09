@@ -21,7 +21,6 @@
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
-    "trix": "^1.2.1",
     "ts-loader": "6.2.1",
     "typeahead.js": "^0.11.1",
     "typescript": "^3.7.2"

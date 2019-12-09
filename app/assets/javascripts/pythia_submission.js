@@ -79,7 +79,7 @@ function initPythiaSubmissionShow(submissionCode) {
         );
         $.get(path, function (data) {
             let lines = data.split("\n");
-            const maxLines = 25;
+            const maxLines = 99;
             let omitted = false;
             if (lines.length > maxLines) {
                 lines = lines.slice(0, maxLines);
@@ -89,7 +89,7 @@ function initPythiaSubmissionShow(submissionCode) {
             
             $("#file-" + random).html(`<div class='external-file'>${
                 lines.map((l, i) => `<div class="line"><span class="number">${
-                    i + 1 == maxLines && omitted ? '': i+1
+                    i == maxLines && omitted ? '': i+1
                 }</span>${l}</div>`).join("")
             }</div>`);
         });

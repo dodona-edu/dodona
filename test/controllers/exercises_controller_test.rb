@@ -322,7 +322,17 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
-  test 'should get exercise media because recond is ok' do
+  test 'should get plaintext exercise media with charset=utf-8' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get media_exercise_url(@instance, media: 'robots.txt')
+
+    assert_response :success
+    assert_equal response.content_type, 'text/plain; charset=utf-8'
+  end
+
+  test 'should get exercise media because record is ok' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 

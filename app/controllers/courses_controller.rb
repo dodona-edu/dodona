@@ -11,7 +11,6 @@ class CoursesController < ApplicationController
   has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
     scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
   end
-  has_scope :by_filter, as: 'filter', only: :scoresheet
 
   # GET /courses
   # GET /courses.json

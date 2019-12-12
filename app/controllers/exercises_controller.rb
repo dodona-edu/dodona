@@ -123,8 +123,11 @@ class ExercisesController < ApplicationController
     file = File.join(@exercise.repository.media_path, params[:media]) unless File.file? file
     raise ActionController::RoutingError, 'Not Found' unless File.file? file
 
+    type = Mime::Type.lookup_by_extension File.extname(file)[1..]
+    type = 'text/plain; charset=utf-8' if type.nil? || type == 'text/plain'
+
     # Support If-Modified-Since caching
-    send_file file, disposition: 'inline' \
+    send_file file, disposition: 'inline', type: type \
       if stale? last_modified: File.mtime(file)
   end
 

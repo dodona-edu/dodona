@@ -87,11 +87,11 @@ function initPythiaSubmissionShow(submissionCode) {
                 omitted = true;
             }
 
-            $("#file-" + random).html(`<div class='external-file'>${
-                lines.map((l, i) => `<div class="line"><span class="number">${
+            $("#file-" + random).html(`<table class='external-file'>${
+                lines.map((l, i) => `<tr><td class="line-nr">${
                     i == maxLines && omitted ? "": i+1
-                }</span>${l}</div>`).join("")
-            }</div>`);
+                }</td><td class="line">${l}</td></tr>`).join("")
+            }</table>`);
         });
     }
 

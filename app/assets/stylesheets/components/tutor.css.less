@@ -22,41 +22,53 @@
 }
 
 #tutor {
-  .external-file {
-    @gutter-width: 28px;
-    @gutter-padding: 5px;
-
-    background-color: @body-bg;
-    font-family: @font-family-monospace;
+  table.external-file {
+    overflow: auto;
     font-size: 13px;
-    white-space: pre-wrap;
-    padding: 5px 5px 4px @gutter-width + 2*@gutter-padding;
-    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: auto;
+    user-select: all;
+    -moz-user-select: all;
+    -webkit-user-select: all;
+    -ms-user-select: all;
 
-    &:before {
-      content: '';
-      background-color: @well-bg;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: @gutter-width + @gutter-padding;
-      user-select: none;
-      z-index: 0;
+    td {
+      vertical-align: top;
+
+      &.line-nr {
+        text-align: right;
+        white-space: pre-wrap;
+        background: @well-bg;
+        color: @gray-light;
+        padding-left: 10px;
+        padding-right: 10px;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+      }
+
+      &.line {
+        text-decoration: none;
+        padding-left: 5px;
+        padding-right: 5px;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: pre-wrap;
+        font-family: @font-family-monospace;
+        width: 100%;
+      }
     }
 
-    .line {
-      padding: 0 0 1px 0;
+    tr {
+      &:first-child td {
+        padding-top: 4px;
+      }
 
-      .number {
-        width: @gutter-width;
-        margin-right: 2*@gutter-padding;
-        margin-left: -@gutter-width - 2*@gutter-padding;
-        text-align: right;
-        display: inline-block;
-        position: relative;
-        color: @gray-light;
-        user-select: none;
+      &:last-child td {
+        padding-bottom: 4px;
       }
     }
   }

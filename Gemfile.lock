@@ -80,7 +80,7 @@ GEM
     bootsnap (1.4.5)
       msgpack (~> 1.0)
     bootstrap_tokenfield_rails (0.12.1)
-    builder (3.2.3)
+    builder (3.2.4)
     byebug (11.0.1)
     capistrano (3.11.0)
       airbrussh (>= 1.0.0)
@@ -416,7 +416,7 @@ DEPENDENCIES
   bcrypt_pbkdf
   bootsnap (~> 1.4.5)
   bootstrap_tokenfield_rails (~> 0.12.1)
-  builder (~> 3.2.3)
+  builder (~> 3.2.4)
   byebug (~> 11.0.1)
   capistrano-passenger (~> 0.2.0)
   capistrano-rails (~> 1.4.0)

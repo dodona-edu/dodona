@@ -6,7 +6,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@rails/actiontext": "^6.0.1",
+    "@rails/actiontext": "^6.0.2",
     "@rails/activestorage": "^6.0.1",
     "@rails/ujs": "^6.0.1",
     "@rails/webpacker": "4.2.2",

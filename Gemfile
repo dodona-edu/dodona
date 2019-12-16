@@ -52,7 +52,7 @@ gem 'will_paginate', '~>3.2.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.1.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.13.0'
+gem 'rouge', '3.14.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.3'

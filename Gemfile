@@ -143,7 +143,7 @@ group :development, :test do
   gem 'rails-controller-testing', '~> 1.0.4'
 
   # I18N default locale & better test reporter
-  gem 'minitest-utils', '~> 0.4.4'
+  gem 'minitest-utils', '~> 0.4.6'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 11.0.1', platforms: %i[mri mingw x64_mingw]

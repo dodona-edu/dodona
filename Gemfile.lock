@@ -225,7 +225,7 @@ GEM
     minitest (5.13.0)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
-    minitest-utils (0.4.4)
+    minitest-utils (0.4.6)
       minitest
     mocha (1.10.1)
     msgpack (1.3.1)
@@ -452,7 +452,7 @@ DEPENDENCIES
   listen (~> 3.2.1)
   mail_form (~> 1.8.0)
   minitest-ci (~> 3.4.0)
-  minitest-utils (~> 0.4.4)
+  minitest-utils (~> 0.4.6)
   mocha (~> 1.10.1)
   mysql2 (~> 0.5.3)
   nokogiri (~> 1.10.7)

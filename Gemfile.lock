@@ -170,7 +170,7 @@ GEM
       activesupport (>= 4.1)
     hashie (3.6.0)
     htmlentities (4.3.4)
-    httparty (0.17.2)
+    httparty (0.17.3)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     i18n (1.7.0)
@@ -439,7 +439,7 @@ DEPENDENCIES
   faker (~> 2.8.1)
   foreman!
   has_scope (~> 0.7.2)
-  httparty (~> 0.17.2)
+  httparty (~> 0.17.3)
   i18n-js (~> 3.5.0)
   image_processing (~> 1.9.2)
   jbuilder (~> 2.9.1)
@@ -490,4 +490,4 @@ RUBY VERSION
    ruby 2.6.5p114
 
 BUNDLED WITH
-   2.0.2
+   2.1.0

@@ -17,30 +17,36 @@ class FeedbackCodeRenderer
     only_errors = @messages.select { |message| message[:type] == :error || message[:type] == 'error' }
     compress = !only_errors.empty? && only_errors.size != @messages.size
 
-    @builder.div(class: 'feedback-table-options') do
-      @builder.span(class: 'flex-spacer') do
-      end
-      @builder.span(class: 'hidden-annotation-show hidden') do
-        @builder.text!(I18n.t('submissions.show.annotations.hidden'))
-        @builder.span(class: 'badge', id: 'hidden-annotation-counter') do
-          @builder.text!('0')
+    @builder.div do
+      @builder.div(class: 'feedback-table-options') do
+        @builder.span(class: 'flex-spacer') do
         end
-      end
-      @builder.span(class: 'diff-switch-buttons switch-buttons') do
-        @builder.span do
-          @builder.text!(I18n.t('submissions.show.annotations.title'))
-        end
-        @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title')) do
-          @builder.button(class: "btn btn-secondary #{'active' unless compress}", id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-            @builder.i(class: 'mdi mdi-18 mdi-comment-multiple-outline') {}
+        @builder.span(class: 'diff-switch-buttons switch-buttons') do
+          @builder.span do
+            @builder.text!(I18n.t('submissions.show.annotations.title'))
           end
-          if compress
-            @builder.button(class: 'btn btn-secondary active', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-              @builder.i(class: 'mdi mdi-18 mdi-comment-alert-outline') {}
+          @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title')) do
+            @builder.button(class: "btn btn-secondary #{'active' unless compress}", id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.i(class: 'mdi mdi-18 mdi-comment-multiple-outline') {}
+            end
+            if compress
+              @builder.button(class: 'btn btn-secondary active', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+                @builder.i(class: 'mdi mdi-18 mdi-comment-alert-outline') {}
+              end
+            end
+            @builder.button(class: 'btn btn-secondary', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.i(class: 'mdi mdi-18 mdi-comment-remove-outline') {}
             end
           end
-          @builder.button(class: 'btn btn-secondary', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-            @builder.i(class: 'mdi mdi-18 mdi-comment-remove-outline') {}
+        end
+      end
+      @builder.div(class: 'annotations-metadata') do
+        @builder.span(class: 'flex-spacer') do
+        end
+        @builder.span(class: 'hidden-annotation-show hidden') do
+          @builder.text!(I18n.t('submissions.show.annotations.hidden'))
+          @builder.span(class: 'badge', id: 'hidden-annotation-counter') do
+            @builder.text!('0')
           end
         end
       end

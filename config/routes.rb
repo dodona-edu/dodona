@@ -114,12 +114,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :submissions, only: %i[index show create edit], concerns: :mediable do
+    resources :submissions, only: %i[index show create edit] do
       post 'mass_rejudge', on: :collection
       member do
         get 'download'
         get 'evaluate'
-        get 'media/*media', to: 'submissions#media', constraints: {media: /.*/}
+        get 'media/*media', to: 'submissions#media', constraints: {media: /.*/}, as: 'media'
       end
     end
 

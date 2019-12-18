@@ -354,6 +354,23 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_equal response.content_type, 'image/png'
   end
 
+  test 'should get media of private exercise in course' do
+    @instance = create(:exercise, :description_html, access: 'private')
+    series = create :series, visibility: :hidden
+    series.exercises << @instance
+    series.course.enrolled_members << @user
+    @instance.repository.allowed_courses << series.course
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get course_series_exercise_url(series.course, series, @instance)
+    assert_response :success, 'should have access to exercise'
+
+    get media_course_series_exercise_url(series.course, series, @instance, media: 'icon.png')
+
+    assert_response :success, 'should have access to exercise media'
+    assert_equal response.content_type, 'image/png'
+  end
+
   test 'should get redirected from exercise media to root_url because user has no submissions and exercise is not ok' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:ok?).returns(false)

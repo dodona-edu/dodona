@@ -85,11 +85,14 @@ Rails.application.routes.draw do
 
     resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable] do
       member do
-        scope 'description' do
+        scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do
             root to: 'exercises#description', as: 'description'
+            get 'media/*media',
+                to: 'exercises#media',
+                constraints: {media: /.*/},
+                as: 'description_media'
           end
-          get 'media/*media', to: 'exercises#media', constraints: {media: /.*/}, as: 'description_media'
         end
       end
     end

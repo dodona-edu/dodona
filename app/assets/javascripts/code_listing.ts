@@ -19,6 +19,11 @@ export class CodeListing {
         if (this.table === null) {
             console.error("The code listing could not be found");
         }
+
+        this.table.addEventListener("copy", function (e) {
+            e.clipboardData.setData("text/plain", window.dodona.codeListing.getSelectededCode());
+            e.preventDefault();
+        });
     }
 
     addAnnotations(messages: Message[]): void {
@@ -61,7 +66,7 @@ export class CodeListing {
         annotationCell.setAttribute("id", `annotation-id-${message.id}`);
         annotationCell.setAttribute("title", message.type[0].toUpperCase() + message.type.substring(1));
 
-        const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => ! s.match("^--*$")).join("\n"));
+        const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => !s.match("^--*$")).join("\n"));
         annotationCell.classList.add(message.type);
         annotationCell.appendChild(textNode);
 
@@ -89,7 +94,29 @@ export class CodeListing {
     getCode(): string {
         const submissionCode = [];
         this.table.querySelectorAll(".lineno .rouge-code")
-            .forEach( codeLine => submissionCode.push(codeLine.textContent.replace(/\n$/, "")));
+            .forEach(codeLine => submissionCode.push(codeLine.textContent.replace(/\n$/, "")));
         return submissionCode.join("\n");
+    }
+
+    private getSelectededCode(): string {
+        const selection = window.getSelection();
+        const strings = [];
+
+        for (let rangeIndex = 0; rangeIndex < selection.rangeCount; rangeIndex++) {
+            const documentFragment = selection.getRangeAt(rangeIndex).cloneContents();
+            const fullNodes = documentFragment.querySelectorAll("td.rouge-code");
+            fullNodes.forEach((v, _n, _l) => {
+                strings.push(v.textContent.trimRight());
+            });
+        }
+
+        // TODO: Fix this other way
+        // Somewhat hacky way to circumvent the bad filtering in Firefox
+        const documentFragment1 = selection.getRangeAt(selection.rangeCount - 1).cloneContents();
+        if (documentFragment1.firstElementChild.tagName == "PRE") {
+            strings.push(documentFragment1.textContent);
+        }
+
+        return strings.join("\n");
     }
 }

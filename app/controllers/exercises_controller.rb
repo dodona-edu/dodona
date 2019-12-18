@@ -1,6 +1,6 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: %i[show description edit update media]
-  before_action :set_course, only: %i[show edit update]
+  before_action :set_course, only: %i[show edit update media]
   before_action :set_series, only: %i[show edit update]
   before_action :ensure_trailing_slash, only: :show
   before_action :allow_iframe, only: %i[description]

@@ -226,7 +226,7 @@ class Exercise < ApplicationRecord
   end
 
   def usable_by?(course)
-    access_public? || course.usable_repositories.include?(repository)
+    access_public? || course.usable_repositories.pluck(:id).include?(repository.id)
   end
 
   def accessible?(user, course)
@@ -237,7 +237,8 @@ class Exercise < ApplicationRecord
         return false unless course.visible_exercises.pluck(:id).include? id
       end
       return true if user&.repository_admin? repository
-      return false unless access_public? || repository.allowed_courses.include?(course)
+      return false unless access_public? \
+        || repository.allowed_courses.pluck(:id).include?(course&.id)
       return true if user&.member_of? course
       return false if course.moderated && access_private?
 

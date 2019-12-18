@@ -105,11 +105,10 @@ function initMathJax() {
     }
 }
 
-function initExerciseDescription(parentId, exercisePath, token) {
+function initExerciseDescription() {
     initLightboxes();
     centerImagesAndTables();
     initMathJax();
-    contextualizeMediaPaths(parentId, exercisePath, token);
 }
 
 
@@ -354,26 +353,5 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-function contextualizeMediaPaths(parentClass, exercisePath, token) {
-    const tokenPart = token ? `?token=${token}` : "";
-    const query = "a[href^='media'],a[href^='./media']";
-    Array.from(document.getElementsByClassName(parentClass)).forEach(parent => {
-        parent.querySelectorAll(query).forEach(element => {
-            Array.from(element.attributes).forEach(attribute => {
-                if (attribute.name == "href") {
-                    const value = attribute.value;
-                    if (value.startsWith("./media/")) {
-                        attribute.value = exercisePath + "/media/" +
-                            value.substr(8) + tokenPart;
-                    } else if (value.startsWith("media/")) {
-                        attribute.value = exercisePath + "/media/" +
-                            value.substr(6) + tokenPart;
-                    }
-                }
-            });
-        });
-    });
-}
-
-export { initExerciseShow, initExerciseDescription, initLabelsEdit, contextualizeMediaPaths };
+export { initExerciseShow, initExerciseDescription, initLabelsEdit };
 

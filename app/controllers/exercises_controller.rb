@@ -114,9 +114,7 @@ class ExercisesController < ApplicationController
 
   def media
     if params.key?(:token)
-      # Only allow token authentication on sandbox
-      raise Pundit::NotAuthorizedError, 'Not allowed' \
-        unless @exercise.access_token == params[:token] && sandbox?
+      raise Pundit::NotAuthorizedError, 'Not allowed' unless @exercise.access_token == params[:token]
     elsif !@exercise.accessible?(current_user, @course)
       raise Pundit::NotAuthorizedError, 'Not allowed'
     end

@@ -90,7 +90,7 @@ class PythiaRenderer < FeedbackTableRenderer
     return super(tc) unless tc[:data] && tc[:data][:files]
 
     jsonfiles = tc[:data][:files].to_a.map do |key, value|
-      value[:content] = "#{value[:content]}?token=#{@exercise.access_token}" if @exercise.access_private? && value[:location] == 'href'
+      value[:content] = "#{value[:content]}?token=#{@exercise.access_token}" if value[:location] == 'href'
       [key, value]
     end.to_h.to_json
     @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", "data-files": jsonfiles) do

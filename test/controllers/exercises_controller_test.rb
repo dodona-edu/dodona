@@ -75,7 +75,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     @instance.update access: :private
 
-    get media_exercise_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: @instance.access_token)
+    get description_media_exercise_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: @instance.access_token)
 
     assert_response :success
   end
@@ -83,7 +83,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
   test 'should not get media with wrong token on sandbox_host' do
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get media_exercise_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: 'blargh')
+    get description_media_exercise_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: 'blargh')
 
     assert_response :forbidden
   end
@@ -394,12 +394,13 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
-  test 'should not access exercise media on default host with token' do
+  test 'should access exercise media on default host with token' do
+    sign_out :user
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     get media_exercise_url(@instance, media: 'icon.png', token: @instance.access_token)
 
-    assert_redirected_to root_url
+    assert_response :success
   end
 
   def create_exercises_return_valid

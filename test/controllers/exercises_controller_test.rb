@@ -394,9 +394,18 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
-  test 'should access exercise media on default host with token' do
+  test 'should access public exercise media on default host with token' do
     sign_out :user
     @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    get media_exercise_url(@instance, media: 'icon.png', token: @instance.access_token)
+
+    assert_response :success
+  end
+
+  test 'should access private exercise media on default host with token' do
+    sign_out :user
+    @instance = create(:exercise, :description_html, access: :private)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     get media_exercise_url(@instance, media: 'icon.png', token: @instance.access_token)
 

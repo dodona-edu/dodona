@@ -59,6 +59,7 @@ export class CodeListing {
         const annotationCell: HTMLDivElement = document.createElement("div");
         annotationCell.setAttribute("class", "annotation");
         annotationCell.setAttribute("id", `annotation-id-${message.id}`);
+        annotationCell.setAttribute("title", message.type[0].toUpperCase() + message.type.substring(1));
 
         const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => ! s.match("^--*$")).join("\n"));
         annotationCell.classList.add(message.type);

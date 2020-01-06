@@ -175,7 +175,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
-    i18n-js (3.5.0)
+    i18n-js (3.5.1)
       i18n (>= 0.6.6)
     image_processing (1.10.0)
       mini_magick (>= 4.9.5, < 5)
@@ -440,7 +440,7 @@ DEPENDENCIES
   foreman!
   has_scope (~> 0.7.2)
   httparty (~> 0.17.2)
-  i18n-js (~> 3.5.0)
+  i18n-js (~> 3.5.1)
   image_processing (~> 1.10.0)
   jbuilder (~> 2.9.1)
   json-schema (~> 2.8.1)

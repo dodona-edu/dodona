@@ -80,7 +80,7 @@ export class CodeListing {
     }
 
     clearHighlights(): void {
-        const markedAnnotations = this.table.querySelectorAll(`.tr.lineno.${this.markingClass}`);
+        const markedAnnotations = this.table.querySelectorAll(`tr.lineno.${this.markingClass}`);
         markedAnnotations.forEach(markedAnnotation => {
             markedAnnotation.classList.remove(this.markingClass);
         });

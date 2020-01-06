@@ -51,6 +51,12 @@ Rails/HelperInstanceVariable:
   Enabled: false
 Rails/OutputSafety:
   Enabled: false
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - test
+    - production
+    - staging
 
 Style/ClassAndModuleChildren:
   Enabled: false

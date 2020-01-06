@@ -88,24 +88,24 @@ class SubmissionRunner
     memory_limit = @config['memory_limit']
 
     docker_options = {
-        # TODO: move entry point to docker container definition
-        Cmd: ['/main.sh',
-              # judge entry point
-              (@mountdst + @hidden_path + 'judge' + 'run').to_path],
-        Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
-        name: "dodona-#{@submission.id}", # assuming unique during execution
-        OpenStdin: true,
-        StdinOnce: true, # closes stdin after first disconnect
-        NetworkDisabled: !@config['network_enabled'],
-        HostConfig: {
-          Memory: memory_limit,
-          MemorySwap: memory_limit, # memory including swap
-          # WARNING: this will cause the container to hang if /dev/sda does not exist
-          BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }].filter{|| Rails.env.production? || Rails.env.staging? },
-          PidsLimit: 256,
-          Binds: ["#{@mountsrc}:#{@mountdst}",
-                  "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
-        }
+      # TODO: move entry point to docker container definition
+      Cmd: ['/main.sh',
+            # judge entry point
+            (@mountdst + @hidden_path + 'judge' + 'run').to_path],
+      Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
+      name: "dodona-#{@submission.id}", # assuming unique during execution
+      OpenStdin: true,
+      StdinOnce: true, # closes stdin after first disconnect
+      NetworkDisabled: !@config['network_enabled'],
+      HostConfig: {
+        Memory: memory_limit,
+        MemorySwap: memory_limit, # memory including swap
+        # WARNING: this will cause the container to hang if /dev/sda does not exist
+        BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }].filter { Rails.env.production? || Rails.env.staging? },
+        PidsLimit: 256,
+        Binds: ["#{@mountsrc}:#{@mountdst}",
+                "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
+      }
     }
 
     # process submission in docker container

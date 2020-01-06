@@ -81,9 +81,12 @@ export class CodeListing {
         });
     }
 
-    highlightLine(lineNr: number): void {
+    highlightLine(lineNr: number, scrollToLine = false): void {
         const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
         toMarkAnnotationRow.classList.add(this.markingClass);
+        if (scrollToLine) {
+            toMarkAnnotationRow.scrollIntoView({ block: "center" });
+        }
     }
 
     getCode(): string {

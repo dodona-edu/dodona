@@ -57,7 +57,7 @@ function initSubmissionShow(parentClass, mediaPath, token) {
             }
             if (line !== undefined) {
                 dodona.codeListing.clearHighlights();
-                dodona.codeListing.highlightLine(line);
+                dodona.codeListing.highlightLine(line, true);
             }
             return false;
         });

@@ -99,7 +99,7 @@ class SubmissionsController < ApplicationController
   end
 
   def media
-    redirect_to media_exercise_url(@submission.exercise, params[:media])
+    redirect_to media_exercise_url(@submission.exercise, params[:media], token: params[:token])
   end
 
   def mass_rejudge

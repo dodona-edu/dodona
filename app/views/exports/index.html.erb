@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+      </div>
+      <div class="card-supporting-text">
+        <div class="table-scroll-wrapper">
+          <table class="table exercise-table table-resource">
+            <thead>
+            <tr>
+              <th><%= t '.status' %></th>
+              <th><%= t '.started' %></th>
+              <th><%= t '.filename' %></th>
+              <th class="actions"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @exports.each do |export| %>
+              <tr>
+                <td><%= Export.human_enum_name(:status, export.status) %></td>
+                <td><%= l export.created_at %></td>
+                <td>
+                  <% if export.archive.attached? %>
+                    <%= export.archive.filename %>
+                  <% end %>
+                </td>
+                <td class="actions">
+                  <% if export.archive.attached? %>
+                    <%= link_to rails_blob_path(export.archive, disposition: "attachment"), class: 'btn btn-sm btn-default' do %>
+                      <i class="mdi mdi-cloud-download mdi-18"></i>
+                    <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

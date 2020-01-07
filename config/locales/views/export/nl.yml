@@ -1,6 +1,10 @@
 nl:
-  export:
-    title: "Export"
+  exports:
+    index:
+      title: "Exports"
+      filename: "Bestandsnaam"
+      started: "Begonnen op"
+      status: "Status"
     download_submissions:
       title: Oplossingen downloaden
       title_students: Oplossingen van studenten downloaden
@@ -34,6 +38,3 @@ nl:
       course: Cursus
       series: Reeks
       no_series: geen-reeks
-    start_download:
-      no_selection: Er moet ten minste één keuze aangeduid worden om oplossingen te kunnen downloaden.
-      unknown_grouping_option: Onbekende groepeeroptie meegegeven

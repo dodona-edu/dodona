@@ -164,12 +164,4 @@ class ApplicationController < ActionController::Base
   def set_time_zone_offset
     @time_zone_offset = Time.zone.now.utc_offset / -60
   end
-
-  def send_zip(zip)
-    send_data zip[:data],
-              type: 'application/zip',
-              filename: zip[:filename],
-              disposition: 'attachment',
-              x_sendfile: true
-  end
 end

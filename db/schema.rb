@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_06_142529) do
+ActiveRecord::Schema.define(version: 2019_12_06_123225) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -149,6 +149,14 @@ ActiveRecord::Schema.define(version: 2019_11_06_142529) do
     t.index ["repository_id"], name: "index_exercises_on_repository_id"
     t.index ["repository_token"], name: "index_exercises_on_repository_token", unique: true
     t.index ["status"], name: "index_exercises_on_status"
+  end
+
+  create_table "exports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_exports_on_user_id"
   end
 
   create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -294,6 +302,7 @@ ActiveRecord::Schema.define(version: 2019_11_06_142529) do
   add_foreign_key "exercises", "judges"
   add_foreign_key "exercises", "programming_languages"
   add_foreign_key "exercises", "repositories"
+  add_foreign_key "exports", "users"
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"

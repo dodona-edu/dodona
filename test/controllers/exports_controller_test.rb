@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ExportControllerTest < ActionDispatch::IntegrationTest
+class ExportsControllerTest < ActionDispatch::IntegrationTest
   setup do
     stub_all_exercises!
     @course = create :course
@@ -17,43 +17,33 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should retrieve download solutions wizard page' do
-    get export_series_path(@series)
+    get for_series_exports_path(@series)
     assert_response :success
-  end
-
-  test 'should return no-selection error' do
-    post export_series_path(@series), params: { with_info: true }
-    assert_response :bad_request
   end
 
   test 'should download only last submissions' do
-    post export_series_path(@series), params: { all: true, only_last_submission: true, with_info: true }
-    assert_response :success
+    post for_series_exports_path(@series), params: { all: true, only_last_submission: true, with_info: true }
+    assert_redirected_to exports_path
     count = @students.map { |u| @series.exercises.map { |e| e.last_submission(u, nil, @series.course) } }.flatten.select(&:present?).count
-    assert_zip response.body, with_info: true, solution_count: count, data: @data
+    assert_zip ActiveStorage::Blob.last.download, with_info: true, solution_count: count, data: @data
   end
 
   test 'should be grouped by user' do
-    post export_series_path(@series), params: { all: true, group_by: 'user' }
-    assert_response :success
-    assert_zip response.body, group_by: 'user', data: @data
+    post for_series_exports_path(@series), params: { all: true, group_by: 'user' }
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, group_by: 'user', data: @data
   end
 
   test 'should be grouped by exercise' do
-    post export_series_path(@series), params: { all: true, group_by: 'exercise' }
-    assert_response :success
-    assert_zip response.body, group_by: 'exercise', data: @data
-  end
-
-  test 'should be invalid grouping option' do
-    post export_series_path(@series), params: { group_by: 'hupseflupse', all: true }
-    assert_response :bad_request
+    post for_series_exports_path(@series), params: { all: true, group_by: 'exercise' }
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, group_by: 'exercise', data: @data
   end
 
   test 'should retrieve all submissions' do
-    post export_series_path(@series), params: { all: true }
-    assert_response :success
-    assert_zip response.body, solution_count: Submission.all.count, data: @data
+    post for_series_exports_path(@series), params: { all: true }
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, solution_count: Submission.all.count, data: @data
   end
 
   test 'all students should be present in the zip' do
@@ -68,28 +58,28 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
       end
     end .flatten.length
 
-    post export_series_path(@series), params: { all: true, all_students: true }
-    assert_response :success
-    assert_zip response.body, solution_count: zip_submission_count, data: @data
+    post for_series_exports_path(@series), params: { all: true, all_students: true }
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, solution_count: zip_submission_count, data: @data
   end
 
   test 'zip should only contain submissions before deadline' do
     @series.update(deadline: 1.year.ago)
-    post export_series_path(@series), params: { all: true, deadline: true }
-    assert_response :success
+    post for_series_exports_path(@series), params: { all: true, deadline: true }
+    assert_redirected_to exports_path
     zip_submission_count = @series.exercises.map { |ex| ex.submissions.before_deadline(@series.deadline) }.flatten.length
-    assert_zip response.body, solution_count: zip_submission_count, data: @data
+    assert_zip ActiveStorage::Blob.last.download, solution_count: zip_submission_count, data: @data
 
     @series.update(deadline: Time.current + 2.years)
-    post export_series_path(@series), params: { all: true, deadline: true }
-    assert_response :success
+    post for_series_exports_path(@series), params: { all: true, deadline: true }
+    assert_redirected_to exports_path
     zip_submission_count = @series.exercises.map { |ex| ex.submissions.before_deadline(@series.deadline) }.flatten.length
-    assert_zip response.body, solution_count: zip_submission_count, data: @data
+    assert_zip ActiveStorage::Blob.last.download, solution_count: zip_submission_count, data: @data
   end
 
   test 'should only download from specific exercises' do
     sample_exercises = @series.exercises.sample(3)
-    post export_series_path(@series), params: { selected_ids: sample_exercises.map(&:id), all_students: true }
+    post for_series_exports_path(@series), params: { selected_ids: sample_exercises.map(&:id), all_students: true }
     zip_submission_count = @data[:users].map do |u|
       sample_exercises.map do |ex|
         subs = ex.submissions.of_user(u).in_course(@series.course)
@@ -97,7 +87,7 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
         subs
       end
     end .flatten.length
-    assert_zip response.body, solution_count: zip_submission_count, data: @data
+    assert_zip ActiveStorage::Blob.last.download, solution_count: zip_submission_count, data: @data
   end
 
   test 'all options should be able to be used simultaneously' do
@@ -116,8 +106,8 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
         ex.submissions.of_user(u).in_course(@series.course).before_deadline(@series.deadline).limit(1).first
       end
     end .flatten.length
-    post export_series_path(@series), params: options
-    assert_zip response.body, options
+    post for_series_exports_path(@series), params: options
+    assert_zip ActiveStorage::Blob.last.download, options
   end
 
   test 'should download all submissions from course' do
@@ -128,10 +118,10 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
       solution_count: Submission.all.in_course(@course).count,
       all: true
     }
-    post export_course_path(@course), params: options
-    assert_response :success
+    post for_course_exports_path(@course), params: options
+    assert_redirected_to exports_path
     options[:group_by] = 'series'
-    assert_zip response.body, options
+    assert_zip ActiveStorage::Blob.last.download, options
   end
 
   test 'should download one submission per exercise from each series from course' do
@@ -145,9 +135,9 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
       all: true,
       solution_count: @course.users.count * @course.series.map(&:exercises).flatten.count
     }
-    post export_course_path(@course), params: options
-    assert_response :success
-    assert_zip response.body, options
+    post for_course_exports_path(@course), params: options
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, options
   end
 
   test 'should download all existing submissions from course and include all students in zip' do
@@ -164,9 +154,9 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
         end .sum
       end .sum
     end .sum
-    post export_course_path(@course), params: options
+    post for_course_exports_path(@course), params: options
     options[:group_by] = 'series'
-    assert_zip response.body, options
+    assert_zip ActiveStorage::Blob.last.download, options
   end
 
   test 'should download all submissions of the user' do
@@ -177,9 +167,9 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
       solution_count: Submission.all.of_user(student).count
     }
     @data[:user] = student
-    post export_user_path(student), params: options
+    post for_user_exports_path(student), params: options
     options[:group_by] = 'course'
-    assert_zip response.body, options
+    assert_zip ActiveStorage::Blob.last.download, options
   end
 
   test 'should not be able to download submissions of other user' do
@@ -190,11 +180,11 @@ class ExportControllerTest < ActionDispatch::IntegrationTest
       all: true,
       solution_count: Submission.all.of_user(other_student).count
     }
-    post export_user_path(other_student), params: options
+    post for_user_exports_path(other_student), params: options
     assert_response :redirect
 
     sign_in create(:staff, administrating_courses: [@course])
-    post export_user_path(other_student), params: options
+    post for_user_exports_path(other_student), params: options
     assert_response :redirect
   end
 end

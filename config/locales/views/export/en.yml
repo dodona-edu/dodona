@@ -1,6 +1,10 @@
 en:
-  export:
-    title: "Export"
+  exports:
+    index:
+      title: "Exports"
+      status: "Status"
+      filename: "Filename"
+      started: "Started"
     download_submissions:
       title: Download submissions
       title_students: Download student submissions
@@ -34,6 +38,3 @@ en:
       course: Course
       series: Series
       no_series: no-series
-    start_download:
-      no_selection: You must select at least one item before being able to download solutions.
-      unknown_grouping_option: Unknown grouping option supplied

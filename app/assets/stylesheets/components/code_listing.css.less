@@ -1,5 +1,6 @@
 .code-listing {
 
+  user-select: none;
   display: block;
   overflow-x: auto;
   white-space: nowrap;
@@ -27,6 +28,9 @@
 
   .rouge-code {
     padding-left: 5px;
+    user-select: text;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   .rouge-gutter {
@@ -49,7 +53,6 @@
     .annotation-cell {
       .annotation {
         font-family: @font-family-monospace;
-        user-select: none;
         margin: 3px 5px 3px 10px;
         padding: 2px 10px;
         border-radius: 0 5px 5px 0;

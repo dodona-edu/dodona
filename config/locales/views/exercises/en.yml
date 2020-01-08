@@ -73,6 +73,7 @@ en:
       network_disabled: Network disabled
       submission_count: Submission count
       sample_solutions: Sample solutions
+      sample_solutions_hint: Click on one of the tabs above to view a sample solution.
       no_solutions: This exercise does not yet have a sample solution.
       no_solutions_admin: Add your sample solutions to the repository and they will be shown here.
       courses_using_this_exercise: Courses using this exercise

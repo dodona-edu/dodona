@@ -73,6 +73,7 @@ nl:
       network_disabled: Netwerk uitgeschakeld
       submission_count: Aantal oplossingen
       sample_solutions: Voorbeeldoplossingen
+      sample_solutions_hint: Klik op een tab hierboven om een voorbeeldoplossing te bekijken.
       no_solutions: Deze oefening heeft nog geen voorbeeldoplossingen.
       no_solutions_admin: Voeg je voorbeeldoplossingen toe aan de repository om ze hier te laten verschijnen.
       courses_using_this_exercise: Cursussen die deze oefening gebruiken

@@ -138,6 +138,9 @@
                 <% end %>
               </ul>
               <div class="tab-content">
+                <div class="tab-pane active">
+                  <span class="text-muted"><%= t '.sample_solutions_hint' %></span>
+                </div>
                 <% solutions.map(&:last).each_with_index do |code, i| %>
                   <div id="solution-<%= i %>" class="tab-pane">
                     <div class="code-table">

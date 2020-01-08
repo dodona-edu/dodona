@@ -22,8 +22,8 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should not show exercise description without token' do
-    get description_exercise_url(@instance)
+  test 'should not show exercise description with incorrect token' do
+    get description_exercise_url(@instance, token: 'blargh')
     assert_response :forbidden
   end
 
@@ -58,6 +58,34 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal 'image/png', response.content_type
+  end
+
+  test 'should not get private media' do
+    sign_out :user
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    @instance.update access: :private
+
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_response :redirect
+  end
+
+  test 'should get media with token on sandbox_host' do
+    sign_out :user
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    @instance.update access: :private
+
+    get description_media_exercise_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: @instance.access_token)
+
+    assert_response :success
+  end
+
+  test 'should not get media with wrong token on sandbox_host' do
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get description_media_exercise_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: 'blargh')
+
+    assert_response :forbidden
   end
 
   test 'should get exercices by repository_id' do
@@ -197,6 +225,16 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
       assert_includes exercise_response_ids, exercise_expected.id
     end
   end
+
+  test 'should get plaintext exercise media with charset=utf-8' do
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get media_exercise_url(@instance, media: 'robots.txt')
+
+    assert_response :success
+    assert_equal response.content_type, 'text/plain; charset=utf-8'
+  end
 end
 
 class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
@@ -289,16 +327,6 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
-  test 'should get plaintext exercise media with charset=utf-8' do
-    @instance = create(:exercise, :description_html)
-    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
-
-    get media_exercise_url(@instance, media: 'robots.txt')
-
-    assert_response :success
-    assert_equal response.content_type, 'text/plain; charset=utf-8'
-  end
-
   test 'should get exercise media because record is ok' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
@@ -321,6 +349,23 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_equal response.content_type, 'image/png'
   end
 
+  test 'should get media of private exercise in course' do
+    @instance = create(:exercise, :description_html, access: 'private')
+    series = create :series, visibility: :hidden
+    series.exercises << @instance
+    series.course.enrolled_members << @user
+    @instance.repository.allowed_courses << series.course
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get course_series_exercise_url(series.course, series, @instance)
+    assert_response :success, 'should have access to exercise'
+
+    get media_course_series_exercise_url(series.course, series, @instance, media: 'icon.png')
+
+    assert_response :success, 'should have access to exercise media'
+    assert_equal response.content_type, 'image/png'
+  end
+
   test 'should get redirected from exercise media to root_url because user has no submissions and exercise is not ok' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:ok?).returns(false)
@@ -331,7 +376,7 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
-  test 'should get redirected from exercise media to root_url because user is not signed in' do
+  test 'should get redirected from exercise media to sign_in_url because user is not signed in' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:ok?).returns(false)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
@@ -339,6 +384,32 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     get media_exercise_url(@instance, media: 'icon.png')
 
     assert_redirected_to sign_in_url
+  end
+
+  test 'should not have access to exercise media when user has no access to private exercise' do
+    @instance = create(:exercise, :description_html, access: :private)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    get media_exercise_url(@instance, media: 'icon.png')
+
+    assert_redirected_to root_url
+  end
+
+  test 'should access public exercise media on default host with token' do
+    sign_out :user
+    @instance = create(:exercise, :description_html)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    get media_exercise_url(@instance, media: 'icon.png', token: @instance.access_token)
+
+    assert_response :success
+  end
+
+  test 'should access private exercise media on default host with token' do
+    sign_out :user
+    @instance = create(:exercise, :description_html, access: :private)
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    get media_exercise_url(@instance, media: 'icon.png', token: @instance.access_token)
+
+    assert_response :success
   end
 
   def create_exercises_return_valid

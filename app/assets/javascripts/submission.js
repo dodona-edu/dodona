@@ -1,5 +1,4 @@
 import { logToGoogle } from "util.js";
-import { contextualizeMediaPaths } from "exercise.js";
 
 function initSubmissionShow(parentClass, mediaPath, token) {
     function init() {
@@ -64,6 +63,27 @@ function initSubmissionShow(parentClass, mediaPath, token) {
     }
 
     init();
+}
+
+function contextualizeMediaPaths(parentClass, exercisePath, token) {
+    const tokenPart = token ? `?token=${token}` : "";
+    const query = "a[href^='media'],a[href^='./media']";
+    Array.from(document.getElementsByClassName(parentClass)).forEach(parent => {
+        parent.querySelectorAll(query).forEach(element => {
+            Array.from(element.attributes).forEach(attribute => {
+                if (attribute.name == "href") {
+                    const value = attribute.value;
+                    if (value.startsWith("./media/")) {
+                        attribute.value = exercisePath + "/media/" +
+                            value.substr(8) + tokenPart;
+                    } else if (value.startsWith("media/")) {
+                        attribute.value = exercisePath + "/media/" +
+                            value.substr(6) + tokenPart;
+                    }
+                }
+            });
+        });
+    });
 }
 
 export { initSubmissionShow };

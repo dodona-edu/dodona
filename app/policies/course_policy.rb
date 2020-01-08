@@ -123,6 +123,10 @@ class CoursePolicy < ApplicationPolicy
     statistics?
   end
 
+  def media?
+    show?
+  end
+
   def permitted_attributes
     # record is the Course class on create
     if course_admin? || (record == Course && user&.admin?)

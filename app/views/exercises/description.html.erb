@@ -28,5 +28,5 @@
 </div>
 </div>
 <script>
-$(function(){window.dodona.initExerciseDescription('exercise-description', <%= raw "'#{exercise_path(@exercise)}'" %>, <%= raw @exercise.access_private? ? "'#{@exercise.access_token}'" : 'undefined' %>) ;});
+$(function(){window.dodona.initExerciseDescription();});
 </script>

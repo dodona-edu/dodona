@@ -11,6 +11,8 @@ export class CodeListing {
     private readonly messages: Message[];
 
     private readonly markingClass: string = "marked";
+    private static readonly ORDERING = ["error", "warning", "info"];
+
 
     constructor(feedbackTableSelector = "table.code-listing") {
         this.table = document.querySelector(feedbackTableSelector) as HTMLTableElement;
@@ -26,23 +28,21 @@ export class CodeListing {
             e.preventDefault();
         });
 
-        const hideAllButton = document.querySelector("#hide_all_annotations");
-        const showAllButton = document.querySelector("#show_all_annotations");
-        if (hideAllButton && showAllButton) {
-            hideAllButton.addEventListener("click", () => {
+        const hideExtraButton = document.querySelector("#hide_extra_annotations");
+        const showExtraButton = document.querySelector("#show_extra_annotations");
+        if (hideExtraButton && showExtraButton) {
+            hideExtraButton.addEventListener("click", () => {
                 this.checkForErrorAndCompress();
-                hideAllButton.classList.add("active");
-                showAllButton.classList.remove("active");
+                hideExtraButton.classList.add("active");
+                showExtraButton.classList.remove("active");
             });
-            showAllButton.addEventListener("click", () => {
+            showExtraButton.addEventListener("click", () => {
                 this.decompressWarningsAndInfo();
-                hideAllButton.classList.remove("active");
-                showAllButton.classList.add("active");
+                hideExtraButton.classList.remove("active");
+                showExtraButton.classList.add("active");
             });
         }
     }
-
-    static readonly ORDERING = ["error", "warning", "info"];
 
     removeAllAnnotations(): void {
         this.table.querySelectorAll(".annotation").forEach(annotation => {
@@ -72,7 +72,10 @@ export class CodeListing {
             this.createAnnotation(message, correspondingLine.rowIndex + 1, message.row + 1);
         }
 
-        this.checkForErrorAndCompress();
+        const hideExtraButton = document.querySelector("#hide_extra_annotations");
+        if (hideExtraButton && hideExtraButton.classList.contains("active")) {
+            this.checkForErrorAndCompress();
+        }
     }
 
     checkForErrorAndCompress(): void {

@@ -20,10 +20,10 @@ class FeedbackCodeRenderer
       @builder.div(class: 'code-listing-options') do
         @builder.span(class: 'flex-spacer') {}
         @builder.div(class: 'btn-group btn-toggle') do
-          @builder.button(class: 'btn btn-secondary', id: 'show_all_annotations') do
+          @builder.button(class: 'btn btn-secondary', id: 'show_extra_annotations') do
             @builder.text!(I18n.t('submissions.show.annotations.show_all'))
           end
-          @builder.button(class: 'btn btn-secondary active', id: 'hide_all_annotations') do
+          @builder.button(class: 'btn btn-secondary active', id: 'hide_extra_annotations') do
             @builder.text!(I18n.t('submissions.show.annotations.hide_all'))
           end
         end

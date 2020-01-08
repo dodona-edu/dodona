@@ -166,7 +166,7 @@ class User < ApplicationRecord
   end
 
   def repository_admin?(repository)
-    zeus? || repositories.include?(repository)
+    zeus? || repositories.pluck(:id).include?(repository.id)
   end
 
   def attempted_exercises(options)
@@ -218,11 +218,11 @@ class User < ApplicationRecord
   end
 
   def member_of?(course)
-    subscribed_courses.include? course
+    course.present? && subscribed_courses.pluck(:id).include?(course.id)
   end
 
   def admin_of?(course)
-    administrating_courses.include?(course)
+    course.present? && administrating_courses.pluck(:id).include?(course.id)
   end
 
   def membership_status_for(course)

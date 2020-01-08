@@ -112,6 +112,11 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to media_exercise_path(@instance.exercise, 'dank_meme.jpg')
   end
 
+  test 'submission media should redirect to exercise media and keep token' do
+    get media_submission_path(@instance, 'dank_meme.jpg', token: @instance.exercise.access_token)
+    assert_redirected_to media_exercise_path(@instance.exercise, 'dank_meme.jpg', token: @instance.exercise.access_token)
+  end
+
   def rejudge_submissions(**params)
     post mass_rejudge_submissions_path, params: params
     assert_response :success

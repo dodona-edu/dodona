@@ -24,7 +24,9 @@ Rails.application.routes.draw do
 
     concern :mediable do
       member do
-        get 'media/*media', to: 'exercises#media', constraints: {media: /.*/}, as: 'media'
+        constraints host: Rails.configuration.default_host do
+          get 'media/*media', to: 'exercises#media', constraints: {media: /.*/}, as: 'media'
+        end
       end
     end
 
@@ -85,11 +87,14 @@ Rails.application.routes.draw do
 
     resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable] do
       member do
-        scope 'description' do
+        scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do
             root to: 'exercises#description', as: 'description'
+            get 'media/*media',
+                to: 'exercises#media',
+                constraints: {media: /.*/},
+                as: 'description_media'
           end
-          get 'media/*media', to: 'exercises#media', constraints: {media: /.*/}, as: 'description_media'
         end
       end
     end
@@ -114,12 +119,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :submissions, only: %i[index show create edit], concerns: :mediable do
+    resources :submissions, only: %i[index show create edit] do
       post 'mass_rejudge', on: :collection
       member do
         get 'download'
         get 'evaluate'
-        get 'media/*media', to: 'submissions#media', constraints: {media: /.*/}
+        get 'media/*media', to: 'submissions#media', constraints: {media: /.*/}, as: 'media'
       end
     end
 

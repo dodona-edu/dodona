@@ -15,22 +15,32 @@ class FeedbackCodeRenderer
     lexed_c = lexer.lex(@code)
 
     only_errors = @messages.select { |message| message[:type] == :error || message[:type] == 'error' }
+    compress = !only_errors.empty? && only_errors.size != @messages.size
 
-    if !only_errors.empty? && only_errors.size != @messages.size
-      @builder.div(class: 'feedback-table-options') do
-        @builder.span(class: 'flex-spacer') do
+    @builder.div(class: 'feedback-table-options') do
+      @builder.span(class: 'flex-spacer') do
+      end
+      @builder.span(class: 'hidden-annotation-show hidden') do
+        @builder.text!(I18n.t('submissions.show.annotations.hidden'))
+        @builder.span(class: 'badge', id: 'hidden-annotation-counter') do
+          @builder.text!('0')
         end
-        @builder.span(class: 'diff-switch-buttons switch-buttons') do
-          @builder.span do
-            @builder.text!(I18n.t('submissions.show.annotations.title'))
+      end
+      @builder.span(class: 'diff-switch-buttons switch-buttons') do
+        @builder.span do
+          @builder.text!(I18n.t('submissions.show.annotations.title'))
+        end
+        @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title')) do
+          @builder.button(class: "btn btn-secondary #{'active' unless compress}", id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+            @builder.i(class: 'mdi mdi-18 mdi-comment-multiple-outline') {}
           end
-          @builder.div(class: 'btn-group btn-toggle') do
-            @builder.button(class: 'btn btn-secondary', id: 'show_extra_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-              @builder.i(class: 'mdi mdi-18 mdi-arrow-expand-all') {}
+          if compress
+            @builder.button(class: 'btn btn-secondary active', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.i(class: 'mdi mdi-18 mdi-comment-alert-outline') {}
             end
-            @builder.button(class: 'btn btn-secondary active', id: 'hide_extra_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-              @builder.i(class: 'mdi mdi-18 mdi-arrow-collapse-all') {}
-            end
+          end
+          @builder.button(class: 'btn btn-secondary', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+            @builder.i(class: 'mdi mdi-18 mdi-comment-remove-outline') {}
           end
         end
       end
@@ -44,6 +54,7 @@ class FeedbackCodeRenderer
     @builder.script(type: 'application/javascript') do
       @builder << 'window.dodona.codeListing = new window.dodona.codeListingClass();'
       @builder << '$(() => window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + '));'
+      @builder << '$(() => window.dodona.codeListing.checkForErrorAndCompress());' if compress
     end
   end
 

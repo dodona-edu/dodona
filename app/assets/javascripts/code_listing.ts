@@ -21,25 +21,44 @@ export class CodeListing {
         if (this.table === null) {
             console.error("The code listing could not be found");
         }
+        this.initButtonsForView();
 
-        // Override the default copy behaviour of the browser to have a standard format for code copying.
         this.table.addEventListener("copy", function (e) {
             e.clipboardData.setData("text/plain", window.dodona.codeListing.getSelectededCode());
             e.preventDefault();
         });
+    }
 
-        const hideExtraButton = document.querySelector("#hide_extra_annotations");
-        const showExtraButton = document.querySelector("#show_extra_annotations");
-        if (hideExtraButton && showExtraButton) {
-            hideExtraButton.addEventListener("click", () => {
-                this.checkForErrorAndCompress();
-                hideExtraButton.classList.add("active");
-                showExtraButton.classList.remove("active");
+    private initButtonsForView(): void {
+        const hideAllButton = document.querySelector("#hide_all_annotations");
+        const showOnlyErrorButton = document.querySelector("#show_only_errors");
+        const showAllButton = document.querySelector("#show_all_annotations");
+        if (hideAllButton && showAllButton) {
+            showAllButton.addEventListener("click", () => {
+                this.showAllAnnotations();
+                hideAllButton.classList.remove("active");
+                if (showOnlyErrorButton) {
+                    showOnlyErrorButton.classList.remove("active");
+                }
+                showAllButton.classList.add("active");
             });
-            showExtraButton.addEventListener("click", () => {
-                this.decompressWarningsAndInfo();
-                hideExtraButton.classList.remove("active");
-                showExtraButton.classList.add("active");
+
+            hideAllButton.addEventListener("click", () => {
+                this.hideAllAnnotations();
+                hideAllButton.classList.add("active");
+                showAllButton.classList.remove("active");
+                if (showOnlyErrorButton) {
+                    showOnlyErrorButton.classList.remove("active");
+                }
+            });
+        }
+
+        if (showOnlyErrorButton && hideAllButton && showAllButton) {
+            showOnlyErrorButton.addEventListener("click", () => {
+                this.checkForErrorAndCompress();
+                hideAllButton.classList.remove("active");
+                showOnlyErrorButton.classList.add("active");
+                showAllButton.classList.remove("active");
             });
         }
     }
@@ -79,21 +98,48 @@ export class CodeListing {
     }
 
     checkForErrorAndCompress(): void {
+        let counter = 0;
+
+        this.showAllAnnotations();
+
         this.table.querySelectorAll(".annotation.error").forEach(warningAnnotation => {
             const td: HTMLTableDataCellElement = warningAnnotation.closest(".annotation-cell");
             const others = td.querySelectorAll(".annotation.info:not(.hide),.annotation.warning:not(.hide)");
-            if (others.length > 0) {
-                others.forEach(toHide => {
-                    toHide.classList.add("hide");
-                });
-            }
+            others.forEach(toHide => {
+                toHide.classList.add("hide");
+                counter += 1;
+            });
         });
+
+        const hiddenCounter = document.querySelector("#hidden-annotation-counter");
+        if (hiddenCounter && counter > 0) {
+            hiddenCounter.innerHTML = String(counter);
+            hiddenCounter.closest(".hidden-annotation-show").classList.remove("hidden");
+        }
     }
 
-    decompressWarningsAndInfo(): void {
+    showAllAnnotations(): void {
         this.table.querySelectorAll(".annotation.hide").forEach(annotation => {
             annotation.classList.remove("hide");
         });
+
+        const hiddenCounter = document.querySelector("#hidden-annotation-counter");
+        if (hiddenCounter) {
+            hiddenCounter.innerHTML = "0";
+            hiddenCounter.closest(".hidden-annotation-show").classList.add("hidden");
+        }
+    }
+
+    hideAllAnnotations(): void {
+        this.table.querySelectorAll(".annotation:not(.hide)").forEach(annotation => {
+            annotation.classList.add("hide");
+        });
+
+        const hiddenCounter = document.querySelector("#hidden-annotation-counter");
+        if (hiddenCounter) {
+            hiddenCounter.innerHTML = String(this.messages.length);
+            hiddenCounter.closest(".hidden-annotation-show").classList.remove("hidden");
+        }
     }
 
     private createAnnotationRow(lineNumber: number, rougeRow: number): HTMLTableRowElement {

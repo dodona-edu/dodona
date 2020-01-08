@@ -19,6 +19,12 @@ export class CodeListing {
         if (this.table === null) {
             console.error("The code listing could not be found");
         }
+
+        // Override the default copy behaviour of the browser to have a standard format for code copying.
+        this.table.addEventListener("copy", function (e) {
+            e.clipboardData.setData("text/plain", window.dodona.codeListing.getSelectededCode());
+            e.preventDefault();
+        });
     }
 
     addAnnotations(messages: Message[]): void {
@@ -61,7 +67,7 @@ export class CodeListing {
         annotationCell.setAttribute("id", `annotation-id-${message.id}`);
         annotationCell.setAttribute("title", message.type[0].toUpperCase() + message.type.substring(1));
 
-        const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => ! s.match("^--*$")).join("\n"));
+        const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => !s.match("^--*$")).join("\n"));
         annotationCell.classList.add(message.type);
         annotationCell.appendChild(textNode);
 
@@ -89,7 +95,35 @@ export class CodeListing {
     getCode(): string {
         const submissionCode = [];
         this.table.querySelectorAll(".lineno .rouge-code")
-            .forEach( codeLine => submissionCode.push(codeLine.textContent.replace(/\n$/, "")));
+            .forEach(codeLine => submissionCode.push(codeLine.textContent.replace(/\n$/, "")));
         return submissionCode.join("\n");
+    }
+
+    private getSelectededCode(): string {
+        const selection = window.getSelection();
+        const strings = [];
+
+        // A selection can have many different selected ranges
+        // Firefox: Selecting multiple rows in a table -> Multiple ranges, with the final one possibly being a preformatted node, while the original content of the selection was a part of a div
+        // Chrome: Selecting multiple rows in a table -> Single range that lists everything in HTML order (even observed some gutter elements)
+        for (let rangeIndex = 0; rangeIndex < selection.rangeCount; rangeIndex++) {
+            // Extract the selected HTML ranges into a DocumentFragment
+            const documentFragment = selection.getRangeAt(rangeIndex).cloneContents();
+
+            // Remove any gutter element or annotation element in the document fragment
+            // As observed, some browsers (Safari) can ignore user-select: none, and as such allow the user to select line numbers.
+            // To avoid any problems later we remove anything in a rouge-gutter or annotation-set class.
+            // TODO: When adding user annotations, edit this to make sure only code remains. The class is being changed
+            documentFragment.querySelectorAll(".rouge-gutter, .annotation-set").forEach(n => n.remove());
+
+            // Only select the preformatted nodes as they will contain the code (with trailing newline)
+            // In the case of an empty line (empty string), a newline is substituted.
+            const fullNodes = documentFragment.querySelectorAll("pre");
+            fullNodes.forEach((v, _n, _l) => {
+                strings.push(v.textContent || "\n");
+            });
+        }
+
+        return strings.join("");
     }
 }

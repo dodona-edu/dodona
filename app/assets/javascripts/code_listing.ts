@@ -8,7 +8,7 @@ interface Message {
 
 export class CodeListing {
     private readonly table: HTMLTableElement;
-    private messages: Message[];
+    private readonly messages: Message[];
 
     private readonly markingClass: string = "marked";
 
@@ -25,28 +25,53 @@ export class CodeListing {
             e.clipboardData.setData("text/plain", window.dodona.codeListing.getSelectededCode());
             e.preventDefault();
         });
+
+        const hideAllButton = document.querySelector("#hide_all_annotations");
+        const showAllButton = document.querySelector("#show_all_annotations");
+        if (hideAllButton && showAllButton) {
+            hideAllButton.addEventListener("click", () => {
+                this.checkForErrorAndCompress();
+                hideAllButton.classList.add("active");
+                showAllButton.classList.remove("active");
+            });
+            showAllButton.addEventListener("click", () => {
+                this.decompressWarningsAndInfo();
+                hideAllButton.classList.remove("active");
+                showAllButton.classList.add("active");
+            });
+        }
     }
 
-    // Ordering of messages by message type is only between elements that are added in the same addAnnotations() call.
-    // If a second set of annotations gets added the errors of the second set will appear below the info messages from
-    //  the first set. But all info messages from the second set will be below the errors of the second set.
     static readonly ORDERING = ["error", "warning", "info"];
+
+    removeAllAnnotations(): void {
+        this.table.querySelectorAll(".annotation").forEach(annotation => {
+            const potentialCopyBlocker: HTMLDivElement = annotation.nextSibling as HTMLDivElement;
+            annotation.remove();
+            if (potentialCopyBlocker.classList.contains("copy-blocker")) {
+                potentialCopyBlocker.remove();
+            }
+        });
+    }
 
     addAnnotations(messages: Message[]): void {
         let idOffset: number = this.messages.length;
 
-        messages.sort((a, b) => {
+        this.removeAllAnnotations();
+        this.messages.push(...messages);
+
+        this.messages.sort((a, b) => {
             return CodeListing.ORDERING.indexOf(a.type) - CodeListing.ORDERING.indexOf(b.type);
         });
 
-        for (const message of messages) {
+        for (const message of this.messages) {
             message.id = idOffset + 1;
             idOffset += 1;
             // Linter counts from 0, rouge counts from 1
             const correspondingLine: HTMLTableRowElement = this.table.querySelector(`#line-${message.row + 1}`);
             this.createAnnotation(message, correspondingLine.rowIndex + 1, message.row + 1);
-            this.messages.push(message);
         }
+
         this.checkForErrorAndCompress();
     }
 
@@ -58,23 +83,14 @@ export class CodeListing {
                 others.forEach(toHide => {
                     toHide.classList.add("hide");
                 });
-
-                const showMoreLink: HTMLSpanElement = document.createElement("span");
-                showMoreLink.setAttribute("class", "displayMore");
-                showMoreLink.append(document.createTextNode(I18n.t("js.compressed_warning_info")));
-                td.append(showMoreLink);
-
-                showMoreLink.addEventListener("click", this.decompressWarningsAndInfo.bind(this));
             }
         });
     }
 
-    decompressWarningsAndInfo(clickEvent): void {
-        const clickTarget = clickEvent.currentTarget;
-        clickTarget.closest(".annotation-cell").querySelectorAll(".annotation.hide").forEach(annotation => {
+    decompressWarningsAndInfo(): void {
+        this.table.querySelectorAll(".annotation.hide").forEach(annotation => {
             annotation.classList.remove("hide");
         });
-        clickTarget.remove();
     }
 
     private createAnnotationRow(lineNumber: number, rougeRow: number): HTMLTableRowElement {

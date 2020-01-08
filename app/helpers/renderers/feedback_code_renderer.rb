@@ -14,6 +14,22 @@ class FeedbackCodeRenderer
     lexer = (Rouge::Lexer.find(@programming_language) || Rouge::Lexers::PlainText).new
     lexed_c = lexer.lex(@code)
 
+    only_errors = @messages.select { |message| message[:type] == :error }
+
+    if !only_errors.empty? && only_errors.size != @messages.size
+      @builder.div(class: 'code-listing-options') do
+        @builder.span(class: 'flex-spacer') {}
+        @builder.div(class: 'btn-group btn-toggle') do
+          @builder.button(class: 'btn btn-secondary', id: 'show_all_annotations') do
+            @builder.text!('Show all annotations')
+          end
+          @builder.button(class: 'btn btn-secondary active', id: 'hide_all_annotations') do
+            @builder.text!('Hide all annotations')
+          end
+        end
+      end
+    end
+
     @builder << table_formatter.format(lexed_c)
     self
   end

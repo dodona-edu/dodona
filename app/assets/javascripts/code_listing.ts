@@ -97,19 +97,43 @@ export class CodeListing {
         }
     }
 
+    private addDotWhenHidden(element, type: string): void {
+        const tableRow: HTMLTableRowElement = element.closest("tr.annotation-set");
+        const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
+
+        const dotChild = lineNumberElement.querySelectorAll(`.dot-${type}`);
+        if (dotChild.length == 0) {
+            console.log(dotChild);
+            const dot: HTMLSpanElement = document.createElement("span");
+            dot.setAttribute("class", `dot dot-${type}`);
+            lineNumberElement.appendChild(dot);
+        }
+    }
+
+    private removeDotWhenNotHidden(element, type: string): void {
+        const tableRow: HTMLTableRowElement = element.closest("tr.annotation-set");
+        const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
+        const dotChildren = lineNumberElement.querySelectorAll(`.dot.dot-${type}`);
+        dotChildren.forEach(removal => {
+            removal.remove();
+        });
+    }
+
     checkForErrorAndCompress(): void {
         let counter = 0;
 
         this.showAllAnnotations();
 
-        this.table.querySelectorAll(".annotation.error").forEach(warningAnnotation => {
-            const td: HTMLTableDataCellElement = warningAnnotation.closest(".annotation-cell");
-            const others = td.querySelectorAll(".annotation.info:not(.hide),.annotation.warning:not(.hide)");
-            others.forEach(toHide => {
+        const errors = this.table.querySelectorAll(".annotation.error");
+        if (errors.length != 0) {
+            const others = this.table.querySelectorAll(".annotation.info:not(.hide),.annotation.warning:not(.hide)");
+            others.forEach((toHide: HTMLElement) => {
                 toHide.classList.add("hide");
                 counter += 1;
+
+                this.addDotWhenHidden(toHide, toHide.dataset.type);
             });
-        });
+        }
 
         const hiddenCounter = document.querySelector("#hidden-annotation-counter");
         if (hiddenCounter && counter > 0) {
@@ -119,8 +143,9 @@ export class CodeListing {
     }
 
     showAllAnnotations(): void {
-        this.table.querySelectorAll(".annotation.hide").forEach(annotation => {
+        this.table.querySelectorAll(".annotation.hide").forEach((annotation: HTMLElement) => {
             annotation.classList.remove("hide");
+            this.removeDotWhenNotHidden(annotation, annotation.dataset.type);
         });
 
         const hiddenCounter = document.querySelector("#hidden-annotation-counter");
@@ -131,8 +156,9 @@ export class CodeListing {
     }
 
     hideAllAnnotations(): void {
-        this.table.querySelectorAll(".annotation:not(.hide)").forEach(annotation => {
+        this.table.querySelectorAll(".annotation:not(.hide)").forEach((annotation: HTMLElement) => {
             annotation.classList.add("hide");
+            this.addDotWhenHidden(annotation, annotation.dataset.type);
         });
 
         const hiddenCounter = document.querySelector("#hidden-annotation-counter");
@@ -169,6 +195,7 @@ export class CodeListing {
         annotationCell.setAttribute("class", "annotation");
         annotationCell.setAttribute("id", `annotation-id-${message.id}`);
         annotationCell.setAttribute("title", message.type[0].toUpperCase() + message.type.substring(1));
+        annotationCell.dataset.type = message.type;
 
         const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => !s.match("^--*$")).join("\n"));
         annotationCell.classList.add(message.type);

@@ -448,6 +448,12 @@ class ExerciseTest < ActiveSupport::TestCase
     @exercise.update(access: :private)
     assert_not_equal @exercise.reload.access_token, old_token
   end
+
+  test 'access token should not change when something else changes' do
+    old_token = @exercise.access_token
+    @exercise.update(name_en: 'Wubba Lubba dub-dub')
+    assert_equal @exercise.reload.access_token, old_token
+  end
 end
 
 class ExerciseRemoteTest < ActiveSupport::TestCase

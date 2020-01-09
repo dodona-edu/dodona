@@ -27,6 +27,7 @@ class Exercise < ApplicationRecord
   include Filterable
   include StringHelper
   include Cacheable
+  include Tokenable
 
   USERS_CORRECT_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_correct'.freeze
   USERS_TRIED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_tried'.freeze
@@ -52,13 +53,16 @@ class Exercise < ApplicationRecord
 
   validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
 
+  token_generator :repository_token
+  token_generator :access_token
+
   before_create :generate_id
   before_create :generate_repository_token
   before_create :generate_access_token
   before_save :check_validity
   before_save :check_memory_limit
+  before_save :generate_access_token, if: :access_changed?
   before_update :update_config
-  after_update :generate_access_token
 
   scope :in_repository, ->(repository) { where repository: repository }
 
@@ -345,22 +349,6 @@ class Exercise < ApplicationRecord
     else
       'md'
     end
-  end
-
-  # not private so we can use this in the migration
-  def generate_repository_token
-    begin
-      new_token = Base64.strict_encode64 SecureRandom.random_bytes(48)
-    end until Exercise.find_by(repository_token: new_token).nil?
-    self.repository_token ||= new_token
-  end
-
-  def generate_access_token
-    self.access_token = SecureRandom.urlsafe_base64(12)
-    # We don't want to trigger callbacks, this doesn't have an influence on the config file
-    # rubocop:disable Rails/SkipsModelValidations
-    update_column(:access_token, self[:access_token]) unless new_record?
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def self.move_relations(from, to)

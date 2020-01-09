@@ -53,11 +53,12 @@ class Exercise < ApplicationRecord
 
   validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
 
-  token_generator :repository_token
+  token_generator :repository_token, length: 64
   token_generator :access_token
 
   before_create :generate_id
-  before_create :generate_repository_token
+  before_create :generate_repository_token,
+                if: ->(ex) { ex.repository_token.nil? }
   before_create :generate_access_token
   before_save :check_validity
   before_save :check_memory_limit

@@ -130,7 +130,6 @@ export class CodeListing {
     }
 
     checkForErrorAndCompress(): void {
-
         this.showAllAnnotations();
 
         const errors = this.table.querySelectorAll(".annotation.error");

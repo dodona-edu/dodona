@@ -21,6 +21,7 @@ require 'csv'
 
 class Series < ApplicationRecord
   include ActionView::Helpers::SanitizeHelper
+  include Tokenable
 
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
@@ -31,7 +32,10 @@ class Series < ApplicationRecord
   validates :name, presence: true
   validates :visibility, presence: true
 
-  before_create :set_access_token
+  token_generator :access_token
+  token_generator :indianio_token
+
+  before_create :generate_access_token
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }
@@ -72,7 +76,7 @@ class Series < ApplicationRecord
   def indianio_support=(value)
     value = false if ['0', 0, 'false'].include? value
     if indianio_token.nil? && value
-      generate_token :indianio_token
+      generate_indianio_token
     elsif !value
       self.indianio_token = nil
     end
@@ -93,17 +97,5 @@ class Series < ApplicationRecord
       exercises: exercises,
       submissions: submission_hash
     }
-  end
-
-  def generate_token(type)
-    raise 'unknown token type' unless %i[indianio_token access_token].include? type
-
-    self[type] = SecureRandom.urlsafe_base64(16).tr('1lL0oO', '')
-  end
-
-  private
-
-  def set_access_token
-    generate_token :access_token
   end
 end

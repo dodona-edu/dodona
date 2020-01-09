@@ -102,15 +102,22 @@ class SeriesController < ApplicationController
 
   def reset_token
     type = params[:type].to_sym
-    @series.generate_token(type)
-    @series.save
     value =
       case type
       when :indianio_token
+        @series.generate_indianio_token
         @series.indianio_token
       when :access_token
+        @series.generate_access_token
         series_url(@series, token: @series.access_token)
+      else
+        # unknown token type
+        head :unacceptable
       end
+
+    return if performed?
+
+    @series.save
     render partial: 'application/token_field', locals: {
       container_name: :access_token_field,
       name: type,

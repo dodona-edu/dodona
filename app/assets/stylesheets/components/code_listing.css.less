@@ -36,17 +36,16 @@
       }
     }
 
-    .lineno:first-child {
-      .rouge-code, .rouge-gutter {
-        padding-top: 5px;
-      }
-    }
-
     .lineno:last-child {
       .rouge-code, .rouge-gutter {
         padding-bottom: 5px;
       }
     }
+
+    .lineno.marked {
+      background-color: @warning-500;
+    }
+
 
     .rouge-code {
       padding-left: 5px;
@@ -70,6 +69,7 @@
       }
 
       @dot-size: 7px;
+
       .dot {
         height: @dot-size;
         width: @dot-size;
@@ -82,9 +82,11 @@
       .dot-info {
         background-color: @info-500;
       }
+
       .dot-warning {
         background-color: @warning-500;
       }
+
       .dot-error {
         background-color: @danger-500;
       }
@@ -133,10 +135,6 @@
           margin-left: 10px;
           color: @text-secondary;
         }
-      }
-
-      .lineno.marked {
-        background-color: @warning-500;
       }
     }
   }

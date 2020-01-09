@@ -5,7 +5,7 @@ module Tokenable
     def token_generator(name, length: 16, unique: true)
       token_name = name.to_sym
       raise "Model does not have attribute '#{name}'" \
-        unless self.column_names.include? token_name.to_s
+        unless column_names.include? token_name.to_s
 
       generate_token_method_name = "generate_#{name}".to_sym
 
@@ -18,11 +18,11 @@ module Tokenable
       # with the same token.
       define_method generate_token_method_name do
         begin
-          new_token = SecureRandom
-            .urlsafe_base64(length)
-            .tr('1lL0oO', '')[0, length]
+          new_token = SecureRandom.urlsafe_base64(length)
+                                  .tr('1lL0oO', '')
+                                  .slice(0, length)
         end until (new_token.length == length) && \
-          (!unique || self.class.find_by({token_name => new_token}).nil?)
+          (!unique || self.class.find_by(token_name => new_token).nil?)
         self[token_name] = new_token
       end
     end

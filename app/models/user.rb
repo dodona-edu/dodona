@@ -23,6 +23,7 @@ class User < ApplicationRecord
   include Filterable
   include StringHelper
   include Cacheable
+  include Tokenable
   include ActiveModel::Dirty
 
   ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/attempted_exercises'.freeze
@@ -99,6 +100,8 @@ class User < ApplicationRecord
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
   validate :email_only_blank_if_smartschool
+
+  token_generator :token
 
   before_save :set_token
   before_save :set_time_zone
@@ -272,7 +275,7 @@ class User < ApplicationRecord
     if institution.present?
       self.token = nil
     elsif token.blank?
-      self.token = SecureRandom.urlsafe_base64(16)
+      self.token = generate_token
     end
   end
 

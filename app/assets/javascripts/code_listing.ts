@@ -33,15 +33,18 @@ export class CodeListing {
         const hideAllButton = document.querySelector("#hide_all_annotations");
         const showOnlyErrorButton = document.querySelector("#show_only_errors");
         const showAllButton = document.querySelector("#show_all_annotations");
+
+        const showAllListener = (): void => {
+            this.showAllAnnotations();
+            hideAllButton.classList.remove("active");
+            if (showOnlyErrorButton) {
+                showOnlyErrorButton.classList.remove("active");
+            }
+            showAllButton.classList.add("active");
+        };
+
         if (hideAllButton && showAllButton) {
-            showAllButton.addEventListener("click", () => {
-                this.showAllAnnotations();
-                hideAllButton.classList.remove("active");
-                if (showOnlyErrorButton) {
-                    showOnlyErrorButton.classList.remove("active");
-                }
-                showAllButton.classList.add("active");
-            });
+            showAllButton.addEventListener("click", showAllListener);
 
             hideAllButton.addEventListener("click", () => {
                 this.hideAllAnnotations();
@@ -59,6 +62,14 @@ export class CodeListing {
                 hideAllButton.classList.remove("active");
                 showOnlyErrorButton.classList.add("active");
                 showAllButton.classList.remove("active");
+            });
+        }
+
+        const messagesWereHidden = document.querySelector("#messages-were-hidden");
+        if (messagesWereHidden) {
+            messagesWereHidden.addEventListener("click", () => {
+                showAllListener();
+                messagesWereHidden.remove();
             });
         }
     }
@@ -103,7 +114,6 @@ export class CodeListing {
 
         const dotChild = lineNumberElement.querySelectorAll(`.dot-${type}`);
         if (dotChild.length == 0) {
-            console.log(dotChild);
             const dot: HTMLSpanElement = document.createElement("span");
             dot.setAttribute("class", `dot dot-${type}`);
             lineNumberElement.appendChild(dot);
@@ -120,7 +130,6 @@ export class CodeListing {
     }
 
     checkForErrorAndCompress(): void {
-        let counter = 0;
 
         this.showAllAnnotations();
 
@@ -129,16 +138,8 @@ export class CodeListing {
             const others = this.table.querySelectorAll(".annotation.info:not(.hide),.annotation.warning:not(.hide)");
             others.forEach((toHide: HTMLElement) => {
                 toHide.classList.add("hide");
-                counter += 1;
-
                 this.addDotWhenHidden(toHide, toHide.dataset.type);
             });
-        }
-
-        const hiddenCounter = document.querySelector("#hidden-annotation-counter");
-        if (hiddenCounter && counter > 0) {
-            hiddenCounter.innerHTML = String(counter);
-            hiddenCounter.closest(".hidden-annotation-show").classList.remove("hidden");
         }
     }
 
@@ -147,12 +148,6 @@ export class CodeListing {
             annotation.classList.remove("hide");
             this.removeDotWhenNotHidden(annotation, annotation.dataset.type);
         });
-
-        const hiddenCounter = document.querySelector("#hidden-annotation-counter");
-        if (hiddenCounter) {
-            hiddenCounter.innerHTML = "0";
-            hiddenCounter.closest(".hidden-annotation-show").classList.add("hidden");
-        }
     }
 
     hideAllAnnotations(): void {
@@ -160,12 +155,6 @@ export class CodeListing {
             annotation.classList.add("hide");
             this.addDotWhenHidden(annotation, annotation.dataset.type);
         });
-
-        const hiddenCounter = document.querySelector("#hidden-annotation-counter");
-        if (hiddenCounter) {
-            hiddenCounter.innerHTML = String(this.messages.length);
-            hiddenCounter.closest(".hidden-annotation-show").classList.remove("hidden");
-        }
     }
 
     private createAnnotationRow(lineNumber: number, rougeRow: number): HTMLTableRowElement {

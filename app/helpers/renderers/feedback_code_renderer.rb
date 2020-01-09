@@ -20,6 +20,11 @@ class FeedbackCodeRenderer
     unless @messages.empty?
       @builder.div do
         @builder.div(class: 'feedback-table-options') do
+          if compress
+            @builder.span(id: 'messages-were-hidden') do
+              @builder.text!(I18n.t('submissions.show.annotations.messages.were_hidden'))
+            end
+          end
           @builder.span(class: 'flex-spacer') do
           end
           @builder.span(class: 'diff-switch-buttons switch-buttons') do
@@ -38,16 +43,6 @@ class FeedbackCodeRenderer
               @builder.button(class: 'btn btn-secondary', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
                 @builder.i(class: 'mdi mdi-18 mdi-comment-remove-outline') {}
               end
-            end
-          end
-        end
-        @builder.div(class: 'annotations-metadata') do
-          @builder.span(class: 'flex-spacer') do
-          end
-          @builder.span(class: 'hidden-annotation-show hidden') do
-            @builder.text!(I18n.t('submissions.show.annotations.hidden'))
-            @builder.span(class: 'badge', id: 'hidden-annotation-counter') do
-              @builder.text!('0')
             end
           end
         end

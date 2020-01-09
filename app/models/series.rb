@@ -36,6 +36,7 @@ class Series < ApplicationRecord
   token_generator :indianio_token
 
   before_create :generate_access_token
+  before_save :regenerate_exercise_tokens, if: :visibility_changed?
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }
@@ -97,5 +98,12 @@ class Series < ApplicationRecord
       exercises: exercises,
       submissions: submission_hash
     }
+  end
+
+  def regenerate_exercise_tokens
+    exercises.each do |exercise|
+      exercise.generate_access_token
+      exercise.save
+    end
   end
 end

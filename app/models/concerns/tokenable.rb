@@ -22,7 +22,7 @@ module Tokenable
                                   .tr('1lL0oO', '')
                                   .slice(0, length)
         end until (new_token.length == length) && \
-          (!unique || self.class.find_by(token_name => new_token).nil?)
+          !(unique && self.class.where(token_name => new_token).exists?)
         self[token_name] = new_token
       end
     end

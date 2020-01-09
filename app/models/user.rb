@@ -275,7 +275,7 @@ class User < ApplicationRecord
     if institution.present?
       self.token = nil
     elsif token.blank?
-      self.token = generate_token
+      generate_token
     end
   end
 

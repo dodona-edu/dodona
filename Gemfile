@@ -44,7 +44,7 @@ gem 'daemons', '~>1.3'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.3'
-gem 'sinatra', '~>2.0.7'
+gem 'sinatra', '~>2.0.8'
 
 # pagination
 gem 'will_paginate', '~>3.2.1'

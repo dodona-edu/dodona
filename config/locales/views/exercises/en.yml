@@ -76,8 +76,11 @@ en:
       sample_solutions_hint: Click on one of the tabs above to view a sample solution.
       no_solutions: This exercise does not yet have a sample solution.
       no_solutions_admin: Add your sample solutions to the repository and they will be shown here.
-      courses_using_this_exercise: Courses using this exercise
-      not_used_in_courses: This exercise is not being used yet.
+      usage: Usage
+      courses_using_this_exercise:
+        zero: "This exercise is not yet used by a course."
+        one: "This exercise is used by 1 course."
+        other: "This exercise is used by %{count} courses."
       contact: Contact information
       repository: Repository containing this exercise
       repository_path: Path within this repository

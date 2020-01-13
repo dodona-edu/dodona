@@ -76,7 +76,11 @@ nl:
       sample_solutions_hint: Klik op een tab hierboven om een voorbeeldoplossing te bekijken.
       no_solutions: Deze oefening heeft nog geen voorbeeldoplossingen.
       no_solutions_admin: Voeg je voorbeeldoplossingen toe aan de repository om ze hier te laten verschijnen.
-      courses_using_this_exercise: Cursussen die deze oefening gebruiken
+      usage: Gebruik
+      courses_using_this_exercise:
+        zero: "Deze oefening wordt nog niet gebruikt door een cursus."
+        one: "Deze oefening wordt gebruikt door 1 cursus."
+        other: "Deze oefening wordt gebruikt door %{count} cursussen."
       not_used_in_courses: Deze oefening wordt nog niet gebruikt.
       contact: Contactinformatie
       repository: Repository waar deze oefening zich in bevindt

@@ -25,6 +25,7 @@ en:
         description: Description
       course:
         name: Name
+        series: Series
         teacher: Teacher
         year: Academic year
         description: Description

@@ -26,6 +26,7 @@ nl:
         created_at: Aangemaakt op
       course:
         name: Naam
+        series: Reeksen
         teacher: Lesgever
         year: Academiejaar
         description: Beschrijving

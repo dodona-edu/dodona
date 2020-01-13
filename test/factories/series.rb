@@ -48,6 +48,7 @@ FactoryBot.define do
                submission_count: e.exercise_submission_count,
                submission_users: e.exercise_submission_users
       end
+      series.reload
     end
 
     trait :with_submissions do

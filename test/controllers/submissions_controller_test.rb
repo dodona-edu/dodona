@@ -6,6 +6,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   crud_helpers Submission, attrs: %i[code exercise_id]
 
   setup do
+    stub_all_exercises!
     @instance = create :submission
     @zeus = create(:zeus)
     sign_in @zeus
@@ -154,7 +155,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should rejudge exercise submissions' do
-    series = create(:series, :with_submissions)
+    series = create :series, :with_submissions
     exercise = series.exercises.sample
     assert_jobs_enqueued(exercise.submissions.count) do
       rejudge_submissions exercise_id: exercise.id

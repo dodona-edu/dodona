@@ -479,6 +479,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
     @exercise = create :exercise, :valid, description_format: 'md'
     Exercise.any_instance.stubs(:description_localized).returns(desciption_md)
+    Exercise.any_instance.stubs(:update_config)
     stub_status(Exercise.any_instance, 'ok')
   end
 

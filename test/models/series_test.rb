@@ -21,6 +21,7 @@ require 'test_helper'
 
 class SeriesTest < ActiveSupport::TestCase
   setup do
+    stub_all_exercises!
     @series = create :series
   end
 

@@ -681,3 +681,15 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_equal 500_000_000, @exercise.config['evaluation']['memory_limit']
   end
 end
+
+class ExerciseStubTest < ActiveSupport::TestCase
+  setup do
+    stub_all_exercises!
+    @exercise = create :exercise
+  end
+
+  test 'exercise should be valid and ok' do
+    assert @exercise.valid?, 'Exercise was not valid'
+    assert_equal @exercise.status, 'ok', 'Exercise was not ok'
+  end
+end

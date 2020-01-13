@@ -191,39 +191,16 @@ class Exercise < ApplicationRecord
     programming_language&.extension || 'txt'
   end
 
-  def merged_config
-    hash = Pathname.new('./' + path).parent.descend # all parent directories
-                   .map { |dir| read_dirconfig dir } # try reading their dirconfigs
-                   .compact # remove nil entries
-                   .push(config) # add exercise config file
-                   .reduce do |h1, h2| # reduce into single hash
-      h1.deep_merge(h2) do |k, v1, v2|
-        if k == 'labels'
-          (v1 + v2)
-        else
-          v2
-        end
-      end
-    end
-    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
-    hash
+  def merged_dirconfig
+    Pathname.new('./' + path).parent.descend # all parent directories
+            .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+            .compact # remove nil entries
+            .reduce{ |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .yield_self { |dirconfig| lowercase_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
-  def merged_dirconfig
-    hash = Pathname.new('./' + path).parent.descend # all parent directories
-                   .map { |dir| read_dirconfig dir } # try reading their dirconfigs
-                   .compact # remove nil entries
-                   .reduce do |h1, h2| # reduce into single hash
-      h1.deep_merge(h2) do |k, v1, v2|
-        if k == 'labels'
-          (v1 + v2).map(&:downcase).uniq
-        else
-          v2
-        end
-      end
-    end || {}
-    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
-    hash
+  def merged_config
+    lowercase_labels deep_merge_configs(merged_dirconfig, config)
   end
 
   def config_file?
@@ -423,5 +400,22 @@ class Exercise < ApplicationRecord
       new = SecureRandom.random_number(2_147_483_646)
     end until Exercise.find_by(id: new).nil?
     self.id = new
+  end
+
+  def deep_merge_configs(parent_conf, child_conf)
+    parent_conf.deep_merge(child_conf) do |k, v1, v2|
+      if k == 'labels'
+        (v1 + v2)
+      else
+        v2
+      end
+    end
+  end
+
+  def lowercase_labels(hash)
+    return unless hash
+
+    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key? 'labels'
+    hash
   end
 end

@@ -4,9 +4,6 @@ module Tokenable
   class_methods do
     def token_generator(name, length: 16, unique: true)
       token_name = name.to_sym
-      raise "Model does not have attribute '#{name}'" \
-        unless column_names.include? token_name.to_s
-
       generate_token_method_name = "generate_#{name}".to_sym
 
       # Generate a random base64 string, but strip characters which might

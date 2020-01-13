@@ -108,7 +108,7 @@ class Course < ApplicationRecord
   scope :by_institution, ->(institution) { where(institution: [institution, nil]) }
   default_scope { order(year: :desc, name: :asc) }
 
-  token_generator :secret, unique: false
+  token_generator :secret, unique: false, length: 5
 
   before_create :generate_secret
 

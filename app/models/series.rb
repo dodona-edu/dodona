@@ -32,7 +32,7 @@ class Series < ApplicationRecord
   validates :name, presence: true
   validates :visibility, presence: true
 
-  token_generator :access_token
+  token_generator :access_token, length: 5
   token_generator :indianio_token
 
   before_create :generate_access_token

@@ -135,7 +135,7 @@ gem 'faker', '~> 2.10.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 1.11.1'
+  gem 'mocha', '~> 1.11.2'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 5.1.1'
 

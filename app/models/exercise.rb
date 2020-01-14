@@ -199,8 +199,20 @@ class Exercise < ApplicationRecord
             .yield_self { |dirconfig| lowercase_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
+  def merged_dirconfig_locations
+    Pathname.new('./' + path).parent.descend # all parent directories
+            .map { |dir| read_dirconfig_locations dir } # try reading their dirconfigs
+            .compact # remove nil entries
+            .reduce{ |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .yield_self { |dirconfig| unique_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
+  end
+
   def merged_config
     lowercase_labels deep_merge_configs(merged_dirconfig, config)
+  end
+
+  def merged_config_locations
+    unique_labels deep_merge_configs(merged_dirconfig_locations, config_locations)
   end
 
   def config_file?
@@ -395,6 +407,19 @@ class Exercise < ApplicationRecord
     repository.read_config_file(subdir + DIRCONFIG_FILE)
   end
 
+  def read_config_locations(location)
+    repository.read_config_file(location)
+              &.deep_transform_values!{ location }
+  end
+
+  def config_locations
+    read_config_locations config_file
+  end
+
+  def read_dirconfig_locations(subdir)
+    read_config_locations(subdir + DIRCONFIG_FILE)
+  end
+
   def generate_id
     begin
       new = SecureRandom.random_number(2_147_483_646)
@@ -416,6 +441,13 @@ class Exercise < ApplicationRecord
     return unless hash
 
     hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key? 'labels'
+    hash
+  end
+
+  def unique_labels(hash)
+    return unless hash
+
+    hash['labels'] = hash['labels'].uniq if hash.key? 'labels'
     hash
   end
 end

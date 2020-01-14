@@ -9,9 +9,12 @@ Capybara.register_driver :chrome do |app|
   options.add_argument('--no-sandbox')
   options.add_argument('--disable-dev-shm-usage')
 
+
+  client = Selenium::WebDriver::Remote::Http::Default.new
+  client.read_timeout = 120 # instead of the default 60 end
   Capybara::Selenium::Driver.new(app,
                                  browser: :chrome,
-                                 options: options)
+                                 options: options, http_client: client)
 end
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase

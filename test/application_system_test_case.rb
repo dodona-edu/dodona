@@ -1,10 +1,6 @@
 require 'test_helper'
 require 'selenium/webdriver'
 
-Capybara.app_host = 'http://127.0.0.1:3000'
-Capybara.server_host = '127.0.0.1'
-Capybara.server_port = '3000'
-
 Capybara.register_driver :chrome do |app|
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument('--window-size=1400,1400')
@@ -15,8 +11,7 @@ Capybara.register_driver :chrome do |app|
 
   Capybara::Selenium::Driver.new(app,
                                  browser: :chrome,
-                                 options: options
-  )
+                                 options: options)
 end
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase

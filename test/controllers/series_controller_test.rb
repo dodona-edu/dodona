@@ -96,6 +96,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should add exercise to series' do
+    stub_all_exercises!
     exercise = create(:exercise)
     post add_exercise_series_path(@instance),
          params: {
@@ -103,7 +104,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
            exercise_id: exercise.id
          }
     assert_response :success
-    assert @instance.exercises.include? exercise
+    assert @instance.reload.exercises.include? exercise
   end
 
   test 'should remove exercise from series' do
@@ -265,6 +266,7 @@ end
 
 class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
   setup do
+    stub_all_exercises!
     @student = create :student
     @series = create :series,
                      :with_submissions,
@@ -278,6 +280,7 @@ class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
                                 email: @student.email
                               }
     assert_response :success
+    @series.reload
     assert_zip response.body,
                with_info: true,
                solution_count: @series.exercises.count,

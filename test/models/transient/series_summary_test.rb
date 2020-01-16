@@ -12,9 +12,7 @@ class SeriesSummaryTest < ActiveSupport::TestCase
       exercises: @series.exercises
     )
   end
-end
 
-class RunningTest < SeriesSummaryTest
   test 'should not have started yet' do
     create :submission, user: @user, course: @course, exercise: @series.exercises.first, status: :running
     assert_not summary.started?

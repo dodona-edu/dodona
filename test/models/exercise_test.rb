@@ -448,6 +448,36 @@ class ExerciseTest < ActiveSupport::TestCase
     @exercise.update(access: :private)
     assert_not_equal @exercise.reload.access_token, old_token
   end
+
+  test 'access token should not change when something else changes' do
+    old_token = @exercise.access_token
+    @exercise.update(name_en: 'Wubba Lubba dub-dub')
+    assert_equal @exercise.reload.access_token, old_token
+  end
+
+  test 'access token should change when containing series changes visibility' do
+    series = create :series, exercises: [@exercise], visibility: :open
+    old_token = @exercise.access_token
+
+    series.update(visibility: :hidden)
+    hidden_token = @exercise.reload.access_token
+    assert_not_equal hidden_token, old_token
+
+    series.update(visibility: :closed)
+    closed_token = @exercise.reload.access_token
+    assert_not_equal closed_token, hidden_token
+  end
+
+  test 'access token should change when removed from series' do
+    old_token = @exercise.access_token
+
+    series = create :series, visibility: :open
+    series.exercises << @exercise
+    assert_equal old_token, @exercise.reload.access_token, 'access token should not change when added to series'
+
+    series.exercises.destroy(@exercise)
+    assert_not_equal old_token, @exercise.reload.access_token
+  end
 end
 
 class ExerciseRemoteTest < ActiveSupport::TestCase
@@ -649,5 +679,17 @@ class LasagneConfigTest < ActiveSupport::TestCase
 
   test 'should update child configs if dirconfig has a memory limit that is too high' do
     assert_equal 500_000_000, @exercise.config['evaluation']['memory_limit']
+  end
+end
+
+class ExerciseStubTest < ActiveSupport::TestCase
+  setup do
+    stub_all_exercises!
+    @exercise = create :exercise
+  end
+
+  test 'exercise should be valid and ok' do
+    assert @exercise.valid?, 'Exercise was not valid'
+    assert_equal @exercise.status, 'ok', 'Exercise was not ok'
   end
 end

@@ -24,6 +24,7 @@ require 'csv'
 class Course < ApplicationRecord
   include Filterable
   include Cacheable
+  include Tokenable
   include ActionView::Helpers::SanitizeHelper
 
   SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%<id>d/subscribed_members_count'.freeze
@@ -107,6 +108,8 @@ class Course < ApplicationRecord
   scope :by_institution, ->(institution) { where(institution: [institution, nil]) }
   default_scope { order(year: :desc, name: :asc) }
 
+  token_generator :secret, unique: false, length: 5
+
   before_create :generate_secret
 
   # Default year & enum values
@@ -140,10 +143,6 @@ class Course < ApplicationRecord
 
   def formatted_year
     Course.format_year year
-  end
-
-  def generate_secret
-    self.secret = SecureRandom.urlsafe_base64(5)
   end
 
   def secret_required?(user = nil)

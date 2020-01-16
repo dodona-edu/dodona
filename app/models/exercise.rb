@@ -96,10 +96,9 @@ class Exercise < ApplicationRecord
   end
 
   def solutions
-    ext = '.' + programming_language.extension
     (full_path + SOLUTION_DIR)
       .yield_self { |path| path.directory? ? path.children : [] }
-      .filter { |path| path.file? && path.readable? && path.extname == ext }
+      .filter { |path| path.file? && path.readable? }
       .map { |path| [path.basename, path.read] }
       .to_h
   end

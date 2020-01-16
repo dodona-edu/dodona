@@ -1,4 +1,14 @@
 module ExerciseHelper
+
+  def exercise_config_explanation(*keys)
+    location = @config_locations.dig(*keys)
+    if location.present?
+      t '.config_set_by', file: location
+    else
+      t '.config_default'
+    end
+  end
+
   def exercise_anchor(exercise)
     '#'.concat exercise_anchor_id(exercise)
   end

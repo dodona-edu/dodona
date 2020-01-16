@@ -90,6 +90,7 @@ class ExercisesController < ApplicationController
     @repository = @exercise.repository
     @courses_series = policy_scope(@exercise.series).group_by(&:course)
     @config = @exercise.merged_config
+    @config_locations = @exercise.merged_config_locations
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] << [I18n.t('crumbs.info'), '#']
   end
 

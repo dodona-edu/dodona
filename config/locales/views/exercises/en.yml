@@ -72,6 +72,7 @@ en:
       network_enabled: Network enabled
       network_disabled: Network disabled
       submission_count: Submission count
+      submission_details: "This exercises has %{total} submissions by %{users} unique users. Of these submissions, %{correct} were correct."
       sample_solutions: Sample solutions
       sample_solutions_hint: Click on one of the tabs above to view a sample solution.
       no_solutions: This exercise does not yet have a sample solution.
@@ -88,3 +89,6 @@ en:
       updated: Last edited
       ago: ago
       click_here_to_create_one: Click here to create the about information.
+      config_set_by: "This value was set by %{file}"
+      config_default: "This is the default value."
+      description_files: "We found files for these languages in the descriptions folder %{path}"

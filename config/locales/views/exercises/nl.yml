@@ -72,6 +72,7 @@ nl:
       network_enabled: Netwerk ingeschakeld
       network_disabled: Netwerk uitgeschakeld
       submission_count: Aantal oplossingen
+      submission_details: "Deze oefening heeft %{total} inzendingen door %{users} unieke gebruikers, hiervan waren %{correct} inzendingen correct."
       sample_solutions: Voorbeeldoplossingen
       sample_solutions_hint: Klik op een tab hierboven om een voorbeeldoplossing te bekijken.
       no_solutions: Deze oefening heeft nog geen voorbeeldoplossingen.
@@ -89,5 +90,7 @@ nl:
       updated: Laatst gewijzigd
       ago: geleden
       click_here_to_create_one: Klik hier om de 'about' informatie aan te maken.
-
+      config_set_by: "Deze waarde werd ingesteld door %{file}"
+      config_default: "Dit is de standaardwaarde."
+      description_files:   "We hebben bestanden gevonden met een beschrijving voor deze talen in de beschrijvingsmap %{path}"
 

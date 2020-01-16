@@ -87,11 +87,26 @@ function initPythiaSubmissionShow(submissionCode) {
                 omitted = true;
             }
 
-            $("#file-" + random).html(`<table class='external-file'>${
-                lines.map((l, i) => `<tr><td class="line-nr">${
-                    i == maxLines && omitted ? "": i+1
-                }</td><td class="line">${l}</td></tr>`).join("")
-            }</table>`);
+            const table = document.createElement("table");
+            table.className = "external-file";
+            for (let i = 0; i < lines.length; i++) {
+                const tr = document.createElement("tr");
+
+                const number = document.createElement("td");
+                number.className = "line-nr";
+                number.textContent = (i === maxLines && omitted) ? "": i + 1;
+                tr.appendChild(number);
+
+                const line = document.createElement("td");
+                line.className = "line";
+                // textContent is safe, html is not executed
+                line.textContent = lines[i];
+                tr.appendChild(line);
+                table.appendChild(tr);
+            }
+            const fileView = document.getElementById(`file-${random}`);
+            fileView.innerHTML = "";
+            fileView.appendChild(table);
         });
     }
 

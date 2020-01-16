@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_123630) do
+ActiveRecord::Schema.define(version: 2019_11_06_142529) do
 
   create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -168,7 +168,6 @@ ActiveRecord::Schema.define(version: 2020_01_13_123630) do
     t.string "extension", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "icon_class"
     t.index ["name"], name: "index_programming_languages_on_name", unique: true
   end
 

@@ -29,6 +29,7 @@ class ExercisePolicy < ApplicationPolicy
 
   def info?
     return false unless user
+    return false if record.removed?
     return true if user.zeus?
     return true if user.repository_admin?(record.repository)
     return true if user.staff? && record&.access_public?

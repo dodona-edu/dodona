@@ -645,7 +645,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
   # set at top level, overridden by series, not set at exercise
   test 'should not write access if initially not present' do
     assert_equal 'public', @exercise.access
-    assert_equal Pathname.new('./exercices/series/dirconfig.json'),
+    assert_equal Pathname.new('./exercises/series/dirconfig.json'),
                  @exercise.merged_config_locations['access']
     @exercise.update_config
     assert_not @exercise.config.key? 'access'
@@ -663,7 +663,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_not @exercise.config.key? 'access'
     assert @exercise.merged_config.key? 'access'
     assert_equal 'public', @exercise.access
-    assert_equal Pathname.new('./exercices/series/dirconfig.json'),
+    assert_equal Pathname.new('./exercises/series/dirconfig.json'),
                  @exercise.merged_config_locations['access']
 
     @exercise.update_config

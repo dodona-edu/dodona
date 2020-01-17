@@ -88,7 +88,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
-  test 'should get exercices by repository_id' do
+  test 'should get exercises by repository_id' do
     get exercises_url repository_id: @instance.repository.id
     assert_response :success
   end

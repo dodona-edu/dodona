@@ -28,6 +28,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should show exercise info' do
+    stub_all_exercises!
     get info_exercise_url(@instance)
     assert_response :success
   end

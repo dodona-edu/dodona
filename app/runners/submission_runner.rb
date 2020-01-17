@@ -9,6 +9,10 @@ require 'pathname' # better than File
 class SubmissionRunner
   DEFAULT_CONFIG_PATH = Rails.root.join('app/runners/config.json').freeze
 
+  def self.default_config
+    JSON.parse(File.read(DEFAULT_CONFIG_PATH))
+  end
+
   def initialize(submission)
     # definition of submission
     @submission = submission
@@ -30,7 +34,7 @@ class SubmissionRunner
 
   def compose_config
     # set default configuration
-    config = JSON.parse(File.read(DEFAULT_CONFIG_PATH))
+    config = self.class.default_config
 
     # update with judge configuration
     config.deep_merge!(@judge.config)

@@ -1,5 +1,4 @@
 module ExerciseHelper
-
   def exercise_config_explanation(*keys)
     location = @config_locations.dig(*keys)
     if location.present?

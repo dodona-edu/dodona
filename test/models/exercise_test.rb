@@ -684,9 +684,9 @@ class LasagneConfigTest < ActiveSupport::TestCase
   test 'should merge label arrays' do
     assert_equal 4, @exercise.labels.count
     expected = ['dirconfig.json',
-                  './exercises/dirconfig.json',
-                  './exercises/series/dirconfig.json',
-                  @exercise.config_file].map{ |p| Pathname.new p }
+                './exercises/dirconfig.json',
+                './exercises/series/dirconfig.json',
+                @exercise.config_file].map { |p| Pathname.new p }
     assert_equal expected,
                  @exercise.merged_config_locations['labels']
   end

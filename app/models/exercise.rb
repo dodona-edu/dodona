@@ -194,7 +194,7 @@ class Exercise < ApplicationRecord
     Pathname.new('./' + path).parent.descend # all parent directories
             .map { |dir| read_dirconfig dir } # try reading their dirconfigs
             .compact # remove nil entries
-            .reduce{ |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
             .yield_self { |dirconfig| lowercase_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
@@ -202,7 +202,7 @@ class Exercise < ApplicationRecord
     Pathname.new('./' + path).parent.descend # all parent directories
             .map { |dir| read_dirconfig_locations dir } # try reading their dirconfigs
             .compact # remove nil entries
-            .reduce{ |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
             .yield_self { |dirconfig| unique_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
@@ -408,7 +408,7 @@ class Exercise < ApplicationRecord
 
   def read_config_locations(location)
     repository.read_config_file(location)
-              &.deep_transform_values!{ location }
+              &.deep_transform_values! { location }
   end
 
   def config_locations

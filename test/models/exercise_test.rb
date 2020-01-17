@@ -595,7 +595,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
     @remote = local_remote('exercises/lasagna')
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
-    @exercise = @repository.exercises.first
+    @exercise = @repository.exercises.find_by(path: 'exercises/series/ISBN')
+    @extra_exercise = @repository.exercises.find_by(path: 'exercises/extra/echo')
   end
 
   teardown do
@@ -693,6 +694,10 @@ class LasagneConfigTest < ActiveSupport::TestCase
 
   test 'should update child configs if dirconfig has a memory limit that is too high' do
     assert_equal 500_000_000, @exercise.config['evaluation']['memory_limit']
+  end
+
+  test 'should support directories without dirconfig' do
+    assert_equal @extra_exercise.merged_config['root_config'], 'set'
   end
 end
 

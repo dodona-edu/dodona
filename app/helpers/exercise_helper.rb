@@ -3,6 +3,7 @@ module ExerciseHelper
   def exercise_config_explanation(*keys)
     location = @config_locations.dig(*keys)
     if location.present?
+      location = location.to_sentence if location.is_a? Array
       t '.config_set_by', file: location
     else
       t '.config_default'

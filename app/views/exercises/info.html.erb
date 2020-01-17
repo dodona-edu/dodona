@@ -12,7 +12,7 @@
       <div class="card-supporting-text card-border">
         <% if @exercise.labels.any? %>
         <div class="row">
-          <div class="col-xs-12 labels">
+          <div class="col-xs-12 labels" title="<%= exercise_config_explanation 'labels' %>">
             <p>
             <% @exercise.labels.each do |label| %>
               <%= link_to label_path(label) do %>
@@ -28,28 +28,32 @@
               <div class="col-xs-12 repo-details">
                 <div class="row">
                   <div class="col-xs-12">
-                    <p><i class="mdi mdi-account-box mdi-24" title="<%= t '.contact' %>"></i>
+                    <p title="<%= t '.contact' %>">
+                    <i class="mdi mdi-account-box mdi-24"></i>
                     <%= mail_to(@config['contact'] || @repository.first_admin&.pretty_email) %>
                   </div>
                   <div class="col-sm-12 col-xs-6">
-                    <p><i class="mdi mdi-server mdi-24" title="<%= t '.repository' %>"></i>
+                    <p title="<%= t '.repository' %>">
+                    <i class="mdi mdi-server mdi-24"></i>
                     <% if policy(@repository).show? %>
                       <%= link_to @repository.name, repository_path(@repository) %>
                     <% else %>
                       <%= @repository.name %>
                     <% end %>
                     <% if current_user&.repository_admin?(@repository) %>
-                    <p>
-                    <i class="mdi mdi-file-search mdi-24" title="<%= t '.repository_path' %>"></i>
+                    <p title="<%= t '.repository_path' %>">
+                    <i class="mdi mdi-file-search mdi-24"></i>
                     <%= github_link @repository, @exercise.path %>
                     <% end %>
                   </div>
                   <div class="col-sm-12 col-xs-6">
-                    <p><i class="mdi mdi-clock-outline mdi-24" title="<%= t '.created' %>"></i>
+                    <p title="<%= t '.created' %>">
+                    <i class="mdi mdi-clock-outline mdi-24"></i>
                     <span title="<%= l @exercise.created_at, format: :long %>">
                     <%= time_ago_in_words(@exercise.created_at) %> <%= t '.ago' %>.
                     </span>
-                    <p><i class="mdi mdi-update mdi-24" title="<%= t '.updated' %>"></i>
+                    <p title="<%= t '.updated' %>">
+                    <i class="mdi mdi-update mdi-24"></i>
                     <span title="<%= l @exercise.updated_at, format: :long %>">
                     <%= time_ago_in_words(@exercise.updated_at) %> <%= t '.ago' %>.
                     </span>
@@ -109,7 +113,7 @@
               <%= markdown @exercise.about %>
             <% else %>
               <span class="text-muted"><%= t '.no_about_present' %></span>
-              <% if current_user&.repository_admin?(@repository) %>
+              <% if current_user&.repository_admin?(@repository) && @repository.github_url.present? %>
                 <%= github_link @repository,
                   @exercise.path + "?filename=about.#{I18n.locale.to_s}.md",
                   name: t('.click_here_to_create_one'),

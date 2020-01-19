@@ -34,6 +34,7 @@ export class CodeListing {
         const showOnlyErrorButton = document.querySelector("#show_only_errors");
         const showAllButton = document.querySelector("#show_all_annotations");
 
+        const messagesWereHidden = document.querySelector("#messages-were-hidden");
         const showAllListener = (): void => {
             this.showAllAnnotations();
             hideAllButton.classList.remove("active");
@@ -41,6 +42,10 @@ export class CodeListing {
                 showOnlyErrorButton.classList.remove("active");
             }
             showAllButton.classList.add("active");
+
+            if (messagesWereHidden) {
+                messagesWereHidden.remove();
+            }
         };
 
         if (hideAllButton && showAllButton) {
@@ -65,12 +70,8 @@ export class CodeListing {
             });
         }
 
-        const messagesWereHidden = document.querySelector("#messages-were-hidden");
         if (messagesWereHidden) {
-            messagesWereHidden.addEventListener("click", () => {
-                showAllListener();
-                messagesWereHidden.remove();
-            });
+            messagesWereHidden.addEventListener("click", showAllListener);
         }
     }
 

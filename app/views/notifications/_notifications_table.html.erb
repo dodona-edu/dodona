@@ -1,0 +1,28 @@
+<table class="table table-index table-resource">
+  <tbody>
+  <% notifications.each do |n| %>
+    <tr class="notification" data-url="<%= notification_path(n) %>">
+      <td>
+        <a href="<%= notifiable_url n %>"><%= t n.message %></a>
+        <div class="text-muted">
+          <small>
+            <span><%= "#{time_ago_in_words n.created_at} #{t 'series.deadline.ago'}" %></span>
+          </small>
+        </div>
+      </td>
+      <td class="actions">
+        <span class="btn-icon">
+          <% if n.read %>
+            <i class="mdi mdi-circle-medium mdi-18 mark-as-unread" ></i>
+          <% else %>
+            <i class="mdi mdi-check mdi-18 mark-as-read"></i>
+          <% end %>
+        </span>
+        <%= link_to notification_path(n), method: :delete, remote: true, class: "btn-icon" do %>
+          <i class="mdi mdi-close mdi-18"></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

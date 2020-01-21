@@ -19,7 +19,7 @@
             <% @exports.each do |export| %>
               <tr>
                 <td><%= Export.human_enum_name(:status, export.status) %></td>
-                <td><%= l export.created_at %></td>
+                <td><%= "#{time_ago_in_words export.created_at} #{t 'series.deadline.ago'}" %></td>
                 <td>
                   <% if export.archive.attached? %>
                     <%= export.archive.filename %>

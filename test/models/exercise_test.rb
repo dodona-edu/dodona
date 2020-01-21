@@ -17,6 +17,7 @@
 #  search                  :string(4096)
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
+#  allow_unsafe            :boolean          default(FALSE), not null
 #
 
 require 'test_helper'

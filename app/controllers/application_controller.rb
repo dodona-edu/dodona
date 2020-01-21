@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_time_zone_offset
 
+  before_action :set_notifications, if: :user_signed_in?
+
   impersonates :user
 
   # A more lax CSP for pages in the sandbox
@@ -163,5 +165,9 @@ class ApplicationController < ActionController::Base
 
   def set_time_zone_offset
     @time_zone_offset = Time.zone.now.utc_offset / -60
+  end
+
+  def set_notifications
+    @notifications = policy_scope(Notification)
   end
 end

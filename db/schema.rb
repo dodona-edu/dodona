@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_06_123225) do
+ActiveRecord::Schema.define(version: 2020_01_21_093650) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -191,6 +191,18 @@ ActiveRecord::Schema.define(version: 2019_12_06_123225) do
     t.index ["name"], name: "index_labels_on_name", unique: true
   end
 
+  create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "message", null: false
+    t.boolean "read", default: false, null: false
+    t.integer "user_id", null: false
+    t.string "notifiable_type"
+    t.bigint "notifiable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "programming_languages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "editor_name", null: false
@@ -303,6 +315,7 @@ ActiveRecord::Schema.define(version: 2019_12_06_123225) do
   add_foreign_key "exercises", "programming_languages"
   add_foreign_key "exercises", "repositories"
   add_foreign_key "exports", "users"
+  add_foreign_key "notifications", "users"
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"

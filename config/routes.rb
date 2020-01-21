@@ -149,6 +149,8 @@ Rails.application.routes.draw do
 
     resources :institutions, only: %i[index show edit update]
     resources :events, only: [:index]
+    resources :notifications, only: %i[index destroy]
+
 
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'

@@ -5,6 +5,7 @@ en:
       status: "Status"
       filename: "Filename"
       started: "Started"
+      ready_for_download: "Your export is ready for download"
     download_submissions:
       title: Download submissions
       title_students: Download student submissions

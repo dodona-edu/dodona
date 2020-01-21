@@ -3,8 +3,9 @@ nl:
     index:
       title: "Exports"
       filename: "Bestandsnaam"
-      started: "Begonnen op"
+      started: "Begonnen"
       status: "Status"
+      ready_for_download: "Je export staat klaar om te downloaden"
     download_submissions:
       title: Oplossingen downloaden
       title_students: Oplossingen van studenten downloaden

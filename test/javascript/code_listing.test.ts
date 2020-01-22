@@ -1,4 +1,4 @@
-import { CodeListing } from "../../app/assets/javascripts/code_listing";
+import { CodeListing, MessageType } from "../../app/assets/javascripts/code_listing";
 
 beforeEach(() => {
     document.body.innerHTML = "<table class='code-listing'><tbody>" +
@@ -11,9 +11,9 @@ beforeEach(() => {
 test("create feedback table with default settings", () => {
     const codeListing = new CodeListing();
     codeListing.addAnnotations([
-        { "text": "Value could be assigned", "row": 0, "type": "warning" },
-        { "text": "Value could be assigned", "row": 1, "type": "warning" },
-        { "text": "Value could be assigned", "row": 2, "type": "warning" },
+        { "text": "Value could be assigned", "row": 0, "type": MessageType.warning },
+        { "text": "Value could be assigned", "row": 1, "type": MessageType.warning },
+        { "text": "Value could be assigned", "row": 2, "type": MessageType.warning },
     ]);
 
     expect(document.querySelectorAll(".annotation").length).toBe(3);
@@ -22,12 +22,12 @@ test("create feedback table with default settings", () => {
 test("feedback table should support more than 1 annotation per row (first and last row)", () => {
     const codeListing = new CodeListing();
     codeListing.addAnnotations([
-        { "text": "Value could be assigned", "row": 0, "type": "warning" },
-        { "text": "Value could be assigned", "row": 0, "type": "warning" },
-        { "text": "Value could be assigned", "row": 1, "type": "warning" },
-        { "text": "Value could be assigned", "row": 1, "type": "warning" },
-        { "text": "Value could be assigned", "row": 2, "type": "warning" },
-        { "text": "Value could be assigned", "row": 2, "type": "warning" },
+        { "text": "Value could be assigned", "row": 0, "type": MessageType.warning },
+        { "text": "Value could be assigned", "row": 0, "type": MessageType.warning },
+        { "text": "Value could be assigned", "row": 1, "type": MessageType.warning },
+        { "text": "Value could be assigned", "row": 1, "type": MessageType.warning },
+        { "text": "Value could be assigned", "row": 2, "type": MessageType.warning },
+        { "text": "Value could be assigned", "row": 2, "type": MessageType.warning },
     ]);
 
     expect(document.querySelectorAll(".annotation").length).toBe(6);
@@ -36,9 +36,9 @@ test("feedback table should support more than 1 annotation per row (first and la
 test("annotation types should be transmitted into the view", () => {
     const codeListing = new CodeListing();
     codeListing.addAnnotations([
-        { "text": "Value could be assigned", "row": 0, "type": "info" },
-        { "text": "Float transformed into int", "row": 1, "type": "warning" },
-        { "text": "Division by zero", "row": 2, "type": "error" },
+        { "text": "Value could be assigned", "row": 0, "type": MessageType.info },
+        { "text": "Float transformed into int", "row": 1, "type": MessageType.warning },
+        { "text": "Division by zero", "row": 2, "type": MessageType.error },
     ]);
 
     expect(document.querySelectorAll(".annotation.info").length).toBe(1);

@@ -1,9 +1,15 @@
 interface Message {
     id?: number;
 
-    type: string;
+    type: MessageType;
     text: string;
     row: number;
+}
+
+export enum MessageType {
+    error = "error",
+    warning = "warning",
+    info = "info"
 }
 
 export class CodeListing {
@@ -11,7 +17,7 @@ export class CodeListing {
     private readonly messages: Message[];
 
     private readonly markingClass: string = "marked";
-    private static readonly ORDERING = ["error", "warning", "info"];
+    private static readonly ORDERING = [MessageType.error, MessageType.warning, MessageType.info];
 
 
     constructor(feedbackTableSelector = "table.code-listing") {
@@ -109,7 +115,7 @@ export class CodeListing {
         }
     }
 
-    private addDotWhenHidden(element, type: string): void {
+    private addDotWhenHidden(element, type: MessageType): void {
         const tableRow: HTMLTableRowElement = element.closest("tr.annotation-set");
         const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
 
@@ -121,7 +127,7 @@ export class CodeListing {
         }
     }
 
-    private removeDotWhenNotHidden(element, type: string): void {
+    private removeDotWhenNotHidden(element, type: MessageType): void {
         const tableRow: HTMLTableRowElement = element.closest("tr.annotation-set");
         const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
         const dotChildren = lineNumberElement.querySelectorAll(`.dot.dot-${type}`);
@@ -138,7 +144,7 @@ export class CodeListing {
             const others = this.table.querySelectorAll(".annotation.info:not(.hide),.annotation.warning:not(.hide)");
             others.forEach((toHide: HTMLElement) => {
                 toHide.classList.add("hide");
-                this.addDotWhenHidden(toHide, toHide.dataset.type);
+                this.addDotWhenHidden(toHide, MessageType[toHide.dataset.type]);
             });
         }
     }
@@ -146,14 +152,14 @@ export class CodeListing {
     showAllAnnotations(): void {
         this.table.querySelectorAll(".annotation.hide").forEach((annotation: HTMLElement) => {
             annotation.classList.remove("hide");
-            this.removeDotWhenNotHidden(annotation, annotation.dataset.type);
+            this.removeDotWhenNotHidden(annotation, MessageType[annotation.dataset.type]);
         });
     }
 
     hideAllAnnotations(): void {
         this.table.querySelectorAll(".annotation:not(.hide)").forEach((annotation: HTMLElement) => {
             annotation.classList.add("hide");
-            this.addDotWhenHidden(annotation, annotation.dataset.type);
+            this.addDotWhenHidden(annotation, MessageType[annotation.dataset.type]);
         });
     }
 

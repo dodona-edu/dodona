@@ -31,7 +31,7 @@ class FeedbackCodeRenderer
             @builder.span do
               @builder.text!(I18n.t('submissions.show.annotations.title'))
             end
-            @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title')) do
+            @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title'), 'data-toggle': 'buttons') do
               @builder.button(class: "btn btn-secondary #{'active' unless compress}", id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
                 @builder.i(class: 'mdi mdi-18 mdi-comment-multiple-outline') {}
               end

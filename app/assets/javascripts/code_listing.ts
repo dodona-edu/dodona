@@ -88,48 +88,29 @@ export class CodeListing {
     }
 
     private initButtonsForView(): void {
-        const hideAllButton = document.querySelector("#hide_all_annotations");
-        const showOnlyErrorButton = document.querySelector("#show_only_errors");
-        const showAllButton = document.querySelector("#show_all_annotations");
+        const hideAllButton: HTMLButtonElement = document.querySelector("#hide_all_annotations");
+        const showOnlyErrorButton: HTMLButtonElement = document.querySelector("#show_only_errors");
+        const showAllButton: HTMLButtonElement = document.querySelector("#show_all_annotations");
 
         const messagesWereHidden = document.querySelector("#messages-were-hidden");
         const showAllListener = (): void => {
             this.showAllAnnotations();
-            hideAllButton.classList.remove("active");
-            if (showOnlyErrorButton) {
-                showOnlyErrorButton.classList.remove("active");
-            }
-            showAllButton.classList.add("active");
-
             if (messagesWereHidden) {
                 messagesWereHidden.remove();
             }
         };
 
         if (hideAllButton && showAllButton) {
-            showAllButton.addEventListener("click", showAllListener);
-
-            hideAllButton.addEventListener("click", () => {
-                this.hideAllAnnotations();
-                hideAllButton.classList.add("active");
-                showAllButton.classList.remove("active");
-                if (showOnlyErrorButton) {
-                    showOnlyErrorButton.classList.remove("active");
-                }
-            });
+            showAllButton.addEventListener("click", showAllListener.bind(this));
+            hideAllButton.addEventListener("click", this.hideAllAnnotations.bind(this));
         }
 
         if (showOnlyErrorButton && hideAllButton && showAllButton) {
-            showOnlyErrorButton.addEventListener("click", () => {
-                this.checkForErrorAndCompress();
-                hideAllButton.classList.remove("active");
-                showOnlyErrorButton.classList.add("active");
-                showAllButton.classList.remove("active");
-            });
+            showOnlyErrorButton.addEventListener("click", this.checkForErrorAndCompress.bind(this));
         }
 
-        if (messagesWereHidden) {
-            messagesWereHidden.addEventListener("click", showAllListener);
+        if (messagesWereHidden && showAllButton) {
+            messagesWereHidden.addEventListener("click", () => showAllButton.click());
         }
     }
 

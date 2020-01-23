@@ -13,6 +13,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     @zeus = create(:zeus)
     sign_in @zeus
     @instance = create :correct_submission, result: File.read(Rails.root.join('db', 'results', 'python-result.json'))
+    Rails.application.config.default_host = '127.0.0.1'
   end
 
   test 'Can view submission page' do

@@ -1,15 +1,9 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  if Capybara.current_session
-    config.default_host = '127.0.0.1'
-    config.sandbox_host = '127.0.0.1'
-    config.action_controller.asset_host = nil
-  else
-    config.default_host = 'dodona.example.com'
-    config.sandbox_host = 'sandbox.example.com'
-    config.action_controller.asset_host = 'dodona.example.com:3000'
-  end
+  config.default_host = 'www.example.com'
+  config.sandbox_host = 'sandbox.example.com'
+  config.action_controller.asset_host = nil
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that

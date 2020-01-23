@@ -17,6 +17,10 @@ Capybara.register_driver :chrome do |app|
                                  options: options, http_client: client)
 end
 
+Capybara.configure do |config|
+  config.default_max_wait_time = 10
+end
+
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :chrome
 end

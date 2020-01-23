@@ -1,9 +1,61 @@
-interface Message {
+class Message {
     id?: number;
 
     type: MessageType;
     text: string;
     row: number;
+
+    element?: HTMLDivElement;
+
+    // Copy constructor from generic object to Message Object
+    constructor(m: Message) {
+        this.id = m.id;
+
+        this.type = m.type;
+        this.text = m.text;
+        this.row = m.row;
+
+        this.element = m.element;
+    }
+
+    hide(): void {
+        if (this.element) {
+            this.element.classList.add("hide");
+            this.addDot();
+        }
+    }
+
+    show(): void {
+        if (this.element) {
+            this.element.classList.remove("hide");
+            this.removeDot();
+        }
+    }
+
+    private addDot(): void {
+        if (this.element) {
+            const tableRow: HTMLTableRowElement = this.element.closest("tr.annotation-set");
+            const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
+
+            const dotChild = lineNumberElement.querySelectorAll(`.dot-${this.type}`);
+            if (dotChild.length == 0) {
+                const dot: HTMLSpanElement = document.createElement("span");
+                dot.setAttribute("class", `dot dot-${this.type}`);
+                lineNumberElement.appendChild(dot);
+            }
+        }
+    }
+
+    private removeDot(): void {
+        if (this.element) {
+            const tableRow: HTMLTableRowElement = this.element.closest("tr.annotation-set");
+            const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
+            const dotChildren = lineNumberElement.querySelectorAll(`.dot.dot-${this.type}`);
+            dotChildren.forEach(removal => {
+                removal.remove();
+            });
+        }
+    }
 }
 
 export enum MessageType {
@@ -95,7 +147,8 @@ export class CodeListing {
         let idOffset: number = this.messages.length;
 
         this.removeAllAnnotations();
-        this.messages.push(...messages);
+        const messageObj = messages.map(m => new Message(m));
+        this.messages.push(...messageObj);
 
         this.messages.sort((a, b) => {
             return CodeListing.ORDERING.indexOf(a.type) - CodeListing.ORDERING.indexOf(b.type);
@@ -115,52 +168,22 @@ export class CodeListing {
         }
     }
 
-    private addDotWhenHidden(element, type: MessageType): void {
-        const tableRow: HTMLTableRowElement = element.closest("tr.annotation-set");
-        const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
-
-        const dotChild = lineNumberElement.querySelectorAll(`.dot-${type}`);
-        if (dotChild.length == 0) {
-            const dot: HTMLSpanElement = document.createElement("span");
-            dot.setAttribute("class", `dot dot-${type}`);
-            lineNumberElement.appendChild(dot);
-        }
-    }
-
-    private removeDotWhenNotHidden(element, type: MessageType): void {
-        const tableRow: HTMLTableRowElement = element.closest("tr.annotation-set");
-        const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
-        const dotChildren = lineNumberElement.querySelectorAll(`.dot.dot-${type}`);
-        dotChildren.forEach(removal => {
-            removal.remove();
-        });
-    }
-
     checkForErrorAndCompress(): void {
         this.showAllAnnotations();
 
-        const errors = this.table.querySelectorAll(".annotation.error");
+        const errors = this.messages.filter(m => m.type == MessageType.error);
         if (errors.length != 0) {
-            const others = this.table.querySelectorAll(".annotation.info:not(.hide),.annotation.warning:not(.hide)");
-            others.forEach((toHide: HTMLElement) => {
-                toHide.classList.add("hide");
-                this.addDotWhenHidden(toHide, MessageType[toHide.dataset.type]);
-            });
+            const others = this.messages.filter(m => m.type != MessageType.error);
+            others.forEach(m => m.hide());
         }
     }
 
     showAllAnnotations(): void {
-        this.table.querySelectorAll(".annotation.hide").forEach((annotation: HTMLElement) => {
-            annotation.classList.remove("hide");
-            this.removeDotWhenNotHidden(annotation, MessageType[annotation.dataset.type]);
-        });
+        this.messages.forEach(m => m.show());
     }
 
     hideAllAnnotations(): void {
-        this.table.querySelectorAll(".annotation:not(.hide)").forEach((annotation: HTMLElement) => {
-            annotation.classList.add("hide");
-            this.addDotWhenHidden(annotation, MessageType[annotation.dataset.type]);
-        });
+        this.messages.forEach(m => m.hide());
     }
 
     private createAnnotationRow(lineNumber: number, rougeRow: number): HTMLTableRowElement {
@@ -197,6 +220,7 @@ export class CodeListing {
         annotationCell.appendChild(textNode);
 
         annotationTD.appendChild(annotationCell);
+        message.element = annotationCell;
 
         const edgeCopyBlocker = document.createElement("div");
         edgeCopyBlocker.setAttribute("class", "copy-blocker");

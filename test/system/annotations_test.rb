@@ -1,8 +1,7 @@
-require 'application_system_test_case'
-require 'capybara/rails'
 require 'capybara/minitest'
+require 'system/generic_system_test'
 
-class AnnotationsTest < ApplicationSystemTestCase
+class AnnotationsTest < GenericSystemTest
   include Devise::Test::IntegrationHelpers
   # Make the Capybara DSL available in all integration tests
   include Capybara::DSL
@@ -13,7 +12,6 @@ class AnnotationsTest < ApplicationSystemTestCase
     @zeus = create(:zeus)
     sign_in @zeus
     @instance = create :correct_submission, result: File.read(Rails.root.join('db', 'results', 'python-result.json'))
-    Rails.application.config.default_host = '127.0.0.1'
   end
 
   test 'Can view submission page' do

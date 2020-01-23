@@ -1,4 +1,12 @@
-class Message {
+interface MessageInterface {
+    id?: number;
+
+    type: MessageType;
+    text: string;
+    row: number;
+}
+
+class Message implements MessageInterface {
     id?: number;
 
     type: MessageType;
@@ -7,15 +15,13 @@ class Message {
 
     element?: HTMLDivElement;
 
-    // Copy constructor from generic object to Message Object
-    constructor(m: Message) {
+    // Copy constructor from generic interface object to Message Object
+    constructor(m: MessageInterface) {
         this.id = m.id;
 
         this.type = m.type;
         this.text = m.text;
         this.row = m.row;
-
-        this.element = m.element;
     }
 
     hide(): void {
@@ -124,7 +130,7 @@ export class CodeListing {
         });
     }
 
-    addAnnotations(messages: Message[]): void {
+    addAnnotations(messages: MessageInterface[]): void {
         let idOffset: number = this.messages.length;
 
         this.removeAllAnnotations();

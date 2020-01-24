@@ -65,7 +65,7 @@ nl:
       completed_after_deadline_missed: Je hebt alle oefeningen correct opgelost, maar helaas niet voor de deadline.
       wrong_after_deadline_missed: Je hebt de deadline gemist en er zijn nog oefeningen met een verkeerde oplossing.
       started_after_deadline_missed: Je hebt de deadline gemist en er zijn nog oefeningen waar je niet aan begonnen bent.
-      unstarted_after_deadline_missed: Je hebt de deadline gemist er je bent nog niet begonnen aan de oefeningen.
+      unstarted_after_deadline_missed: Je hebt de deadline gemist en je bent nog niet begonnen aan de oefeningen.
       completed_after_deadline_met: Je hebt alle oefeningen correct opgelost voor de deadline. Proficiat!
       wrong_after_deadline_met: Geen zorgen, je hebt alle oefeningen correct opgelost voor de deadline. Na de deadline heb je echter nog foute oplossingen ingediend.
       completed_before_deadline: Je hebt alle oefeningen correct opgelost voor de deadline. Proficiat!

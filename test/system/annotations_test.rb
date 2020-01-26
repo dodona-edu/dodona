@@ -133,7 +133,7 @@ class AnnotationsTest < GenericSystemTest
     assert_text annot.annotation_text
   end
 
-  test 'Create invalid annotation -- Too large input text' do
+  test 'Edit valid annotation -- Too large input text' do
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
     click_link 'Code'
@@ -149,7 +149,7 @@ class AnnotationsTest < GenericSystemTest
     assert_no_text replacement
   end
 
-  test 'Create invalid annotation -- Zero length input text' do
+  test 'Edit valid annotation -- Zero length input text' do
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
     click_link 'Code'
@@ -163,5 +163,38 @@ class AnnotationsTest < GenericSystemTest
     end
 
     assert_text annot.annotation_text
+  end
+
+  test 'Enter invalid annotation and send - No content' do
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+    find('tr#line-1').hover
+    find('button.annotation-button').click
+
+    initial = ''
+    within(:css, 'form.annotation-submission') do
+      find('textarea#submission-textarea').fill_in with: initial
+      click_button 'Send'
+    end
+
+    assert_css 'form.annotation-submission'
+  end
+
+  test 'Enter invalid annotation and send - Content too long' do
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+    find('tr#line-1').hover
+    find('button.annotation-button').click
+
+    initial = Faker::Lorem.words(number: 512).join(' ')
+    within(:css, 'form.annotation-submission') do
+      find('textarea#submission-textarea').fill_in with: initial
+      click_button 'Send'
+    end
+
+    assert_css 'form.annotation-submission'
+    assert_no_text initial
   end
 end

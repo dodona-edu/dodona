@@ -11,19 +11,32 @@ class AnnotationsTest < GenericSystemTest
   setup do
     @zeus = create(:zeus)
     sign_in @zeus
-    @instance = create :correct_submission, result: File.read(Rails.root.join('db', 'results', 'python-result.json'))
+    @code_lines = Faker::Lorem.sentences(number: 5)
+    @instance = create :correct_submission, result: File.read(Rails.root.join('db', 'results', 'python-result.json')), code: @code_lines.join("\n")
   end
 
   test 'Can view submission page' do
     visit(submission_path(id: @instance.id))
     assert_text 'Correct'
+    assert_text 'Correctheid'
     assert_text @instance.user.full_name
   end
 
   test 'Navigate to code tab' do
     visit(submission_path(id: @instance.id))
     click_link 'Code'
-    assert_text @instance.code
+    @code_lines.each { |code_line| assert_text code_line }
+  end
+
+  test 'Submission annotation button is present for each code line' do
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+    (1..@code_lines.length).each { |index|
+      line = "tr#line-#{index}"
+      find(line).hover
+      assert_css "#{line} button.annotation-button"
+    }
   end
 
   test 'Click on submission annotation button' do
@@ -32,7 +45,10 @@ class AnnotationsTest < GenericSystemTest
 
     find('tr#line-1').hover
     find('button.annotation-button').click
-    assert_text @instance.code
+    @code_lines.each { |code_line|
+      assert_text code_line
+    }
+    assert_no_css '.annotation'
   end
 
   test 'Enter annotation and send' do
@@ -42,10 +58,14 @@ class AnnotationsTest < GenericSystemTest
     find('tr#line-1').hover
     find('button.annotation-button').click
 
+    initial = 'This is a single line comment'
     within(:css, 'form.annotation-submission') do
-      find('textarea#submission-textarea').fill_in with: 'This is a single line comment'
+      find('textarea#submission-textarea').fill_in with: initial
       click_button 'Send'
     end
+
+    assert_text initial
+    assert_no_css 'form.annotation-submission'
   end
 
   test 'Cancel annotation form' do
@@ -59,6 +79,7 @@ class AnnotationsTest < GenericSystemTest
     end
 
     assert all('.annotation').empty?
+    assert_no_css 'form.annotation-submission'
   end
 
   test 'Edit annotation' do
@@ -76,7 +97,7 @@ class AnnotationsTest < GenericSystemTest
     end
 
     assert_text 'This is a different single line comment'
-    assert_not all('.annotation').empty?
+    assert_css '.annotation'
   end
 
   test 'Destroy annotation' do
@@ -93,7 +114,7 @@ class AnnotationsTest < GenericSystemTest
       accept_confirm('Ben je zeker dat je dit wilt verwijderen?')
     end
 
-    assert has_no_css?('.annotation')
+    assert_no_css '.annotation'
   end
 
   test 'User moving back and forth over code and tests' do
@@ -112,7 +133,7 @@ class AnnotationsTest < GenericSystemTest
     assert_text annot.annotation_text
   end
 
-  test 'Create invalid annotation' do
+  test 'Create invalid annotation -- Too large input text' do
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
     click_link 'Code'
@@ -126,7 +147,10 @@ class AnnotationsTest < GenericSystemTest
     end
 
     assert_no_text replacement
+  end
 
+  test 'Create invalid annotation -- Zero length input text' do
+    annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
     click_link 'Code'
     assert_text annot.annotation_text

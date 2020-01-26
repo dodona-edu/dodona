@@ -16,14 +16,14 @@ class AnnotationsTest < GenericSystemTest
 
   test 'Can view submission page' do
     visit(submission_path(id: @instance.id))
-    assert page.has_content? 'Correct'
-    assert page.has_content? @instance.user.full_name
+    assert_text 'Correct'
+    assert_text @instance.user.full_name
   end
 
   test 'Navigate to code tab' do
     visit(submission_path(id: @instance.id))
     click_link 'Code'
-    assert page.has_content?(@instance.code)
+    assert_text @instance.code
   end
 
   test 'Click on submission annotation button' do
@@ -32,7 +32,7 @@ class AnnotationsTest < GenericSystemTest
 
     find('tr#line-1').hover
     find('button.annotation-button').click
-    assert page.has_content?(@instance.code)
+    assert_text @instance.code
   end
 
   test 'Enter annotation and send' do
@@ -62,10 +62,11 @@ class AnnotationsTest < GenericSystemTest
   end
 
   test 'Edit annotation' do
-    create :annotation, submission: @instance, user: @zeus
+    annot = create :annotation, submission: @instance, user: @zeus
 
     visit(submission_path(id: @instance.id))
     click_link 'Code'
+    assert_text annot.annotation_text
 
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
 
@@ -79,11 +80,12 @@ class AnnotationsTest < GenericSystemTest
   end
 
   test 'Destroy annotation' do
-    create :annotation, submission: @instance, user: @zeus
+    annot = create :annotation, submission: @instance, user: @zeus
 
     visit(submission_path(id: @instance.id))
     click_link 'Code'
 
+    assert_text annot.annotation_text
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
 
     within(:css, 'form.annotation-submission.annotation-edit') do
@@ -92,5 +94,50 @@ class AnnotationsTest < GenericSystemTest
     end
 
     assert has_no_css?('.annotation')
+  end
+
+  test 'User moving back and forth over code and tests' do
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+    click_link 'Correctheid'
+    click_link 'Code'
+
+    annot = create :annotation, submission: @instance, user: @zeus
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+    assert_text annot.annotation_text
+    click_link 'Correctheid'
+    click_link 'Code'
+    assert_text annot.annotation_text
+  end
+
+  test 'Create invalid annotation' do
+    annot = create :annotation, submission: @instance, user: @zeus
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+    assert_text annot.annotation_text
+
+    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
+    replacement = (Faker::Lorem.words number: 512).join(' ')
+    within(:css, 'form.annotation-submission.annotation-edit') do
+      find('textarea#submission-textarea').fill_in with: replacement
+      click_button 'Send'
+    end
+
+    assert_no_text replacement
+
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+    assert_text annot.annotation_text
+
+    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
+    replacement = ''
+    within(:css, 'form.annotation-submission.annotation-edit') do
+      find('textarea#submission-textarea').fill_in with: replacement
+      click_button 'Send'
+    end
+
+    assert_text annot.annotation_text
   end
 end

@@ -1,27 +1,30 @@
-interface MessageInterface {
+type MessageType = "error" | "warning" | "info";
+interface MessageData {
     id?: number;
-
     type: MessageType;
     text: string;
     row: number;
 }
 
-class Message implements MessageInterface {
-    id?: number;
+class Message {
+    id: number;
+    readonly type: MessageType;
+    readonly text: string;
+    readonly row: number;
 
-    type: MessageType;
-    text: string;
-    row: number;
+    private shown = true;
 
-    element?: HTMLDivElement;
+    private element: HTMLDivElement;
 
-    // Copy constructor from generic interface object to Message Object
-    constructor(m: MessageInterface) {
+    constructor(m: MessageData) {
         this.id = m.id;
-
         this.type = m.type;
         this.text = m.text;
         this.row = m.row;
+    }
+
+    setElement(element: HTMLDivElement): void {
+        this.element = element;
     }
 
     hide(): void {
@@ -64,18 +67,12 @@ class Message implements MessageInterface {
     }
 }
 
-export enum MessageType {
-    error = "error",
-    warning = "warning",
-    info = "info"
-}
-
 export class CodeListing {
     private readonly table: HTMLTableElement;
     private readonly messages: Message[];
 
     private readonly markingClass: string = "marked";
-    private static readonly ORDERING = [MessageType.error, MessageType.warning, MessageType.info];
+    private static readonly ORDERING = ["error", "warning", "info"];
 
 
     constructor(feedbackTableSelector = "table.code-listing") {
@@ -130,7 +127,7 @@ export class CodeListing {
         });
     }
 
-    addAnnotations(messages: MessageInterface[]): void {
+    addAnnotations(messages: MessageData[]): void {
         let idOffset: number = this.messages.length;
 
         this.removeAllAnnotations();
@@ -158,9 +155,9 @@ export class CodeListing {
     checkForErrorAndCompress(): void {
         this.showAllAnnotations();
 
-        const errors = this.messages.filter(m => m.type == MessageType.error);
+        const errors = this.messages.filter(m => m.type === "error");
         if (errors.length != 0) {
-            const others = this.messages.filter(m => m.type != MessageType.error);
+            const others = this.messages.filter(m => m.type !== "error");
             others.forEach(m => m.hide());
         }
     }
@@ -207,7 +204,7 @@ export class CodeListing {
         annotationCell.appendChild(textNode);
 
         annotationTD.appendChild(annotationCell);
-        message.element = annotationCell;
+        message.setElement(annotationCell);
 
         const edgeCopyBlocker = document.createElement("div");
         edgeCopyBlocker.setAttribute("class", "copy-blocker");

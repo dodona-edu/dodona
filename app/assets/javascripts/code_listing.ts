@@ -1,69 +1,91 @@
 type MessageType = "error" | "warning" | "info";
 interface MessageData {
-    id?: number;
     type: MessageType;
     text: string;
     row: number;
 }
 
 class Message {
-    id: number;
+    readonly id: number;
     readonly type: MessageType;
     readonly text: string;
-    readonly row: number;
+    readonly line: number;
 
     private shown = true;
 
-    private element: HTMLDivElement;
+    private readonly codeListing: HTMLTableElement;
+    private annotation: HTMLDivElement;
 
-    constructor(m: MessageData) {
-        this.id = m.id;
+    constructor(id: number, m: MessageData, listing: HTMLTableElement) {
+        this.id = id;
         this.type = m.type;
         this.text = m.text;
-        this.row = m.row;
-    }
+        this.line = m.row + 1; // Linter counts from 0, rouge counts from 1
+        this.codeListing = listing;
 
-    setElement(element: HTMLDivElement): void {
-        this.element = element;
+        this.createAnnotation();
     }
 
     hide(): void {
-        if (this.element) {
-            this.element.classList.add("hide");
-            this.addDot();
-        }
+        this.annotation.classList.add("hide");
+        this.addDot();
     }
 
     show(): void {
-        if (this.element) {
-            this.element.classList.remove("hide");
-            this.removeDot();
+        this.annotation.classList.remove("hide");
+        this.removeDot();
+    }
+
+    private createAnnotation(): void {
+        let annotationsRow: HTMLTableRowElement = this.codeListing.querySelector(`#annotations-${this.line}`);
+        if (annotationsRow === null) {
+            annotationsRow = this.createAnnotationRow();
         }
+
+        this.annotation = document.createElement("div");
+        this.annotation.setAttribute("id", `annotation-${this.id}`);
+        this.annotation.setAttribute("title", this.type[0].toUpperCase() + this.type.substring(1));
+        this.annotation.classList.add("annotation", this.type);
+        this.annotation.appendChild(document.createTextNode(
+            this.text.split("\n").filter(s => !s.match("^--*$")).join("\n")
+        ));
+
+        const edgeCopyBlocker = document.createElement("div");
+        edgeCopyBlocker.setAttribute("class", "copy-blocker");
+
+        const annotationTD: HTMLTableDataCellElement = annotationsRow.querySelector(".annotation-cell");
+        annotationTD.appendChild(this.annotation);
+        annotationTD.appendChild(edgeCopyBlocker);
+    }
+
+    private createAnnotationRow(): HTMLTableRowElement {
+        const annotationRow: HTMLTableRowElement = this.codeListing.insertRow(this.line);
+        annotationRow.setAttribute("class", "annotation-set");
+        annotationRow.setAttribute("id", `annotations-${this.line}`);
+        annotationRow.insertCell().setAttribute("class", "rouge-gutter gl");
+        annotationRow.insertCell().setAttribute("class", "annotation-cell");
+        return annotationRow;
     }
 
     private addDot(): void {
-        if (this.element) {
-            const tableRow: HTMLTableRowElement = this.element.closest("tr.annotation-set");
-            const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
+        const tableRow: HTMLTableRowElement = this.annotation.closest("tr.annotation-set");
+        const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
 
-            const dotChild = lineNumberElement.querySelectorAll(`.dot-${this.type}`);
-            if (dotChild.length == 0) {
-                const dot: HTMLSpanElement = document.createElement("span");
-                dot.setAttribute("class", `dot dot-${this.type}`);
-                lineNumberElement.appendChild(dot);
-            }
+        const dotChild = lineNumberElement.querySelectorAll(`.dot-${this.type}`);
+        if (dotChild.length == 0) {
+            const dot: HTMLSpanElement = document.createElement("span");
+            dot.setAttribute("class", `dot dot-${this.type}`);
+            lineNumberElement.appendChild(dot);
         }
     }
 
     private removeDot(): void {
-        if (this.element) {
-            const tableRow: HTMLTableRowElement = this.element.closest("tr.annotation-set");
-            const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
-            const dotChildren = lineNumberElement.querySelectorAll(`.dot.dot-${this.type}`);
-            dotChildren.forEach(removal => {
-                removal.remove();
-            });
-        }
+        const tableRow: HTMLTableRowElement = this.annotation.closest("tr.annotation-set");
+        const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
+        const dotChildren = lineNumberElement.querySelectorAll(`.dot.dot-${this.type}`);
+        dotChildren.forEach(removal => {
+            removal.remove();
+        });
     }
 }
 
@@ -117,39 +139,18 @@ export class CodeListing {
         }
     }
 
-    removeAllAnnotations(): void {
-        this.table.querySelectorAll(".annotation").forEach(annotation => {
-            const potentialCopyBlocker: HTMLDivElement = annotation.nextSibling as HTMLDivElement;
-            annotation.remove();
-            if (potentialCopyBlocker.classList.contains("copy-blocker")) {
-                potentialCopyBlocker.remove();
-            }
-        });
-    }
-
     addAnnotations(messages: MessageData[]): void {
-        let idOffset: number = this.messages.length;
+        messages.forEach(m => this.addAnnotation(m));
 
-        this.removeAllAnnotations();
-        const messageObj = messages.map(m => new Message(m));
-        this.messages.push(...messageObj);
-
-        this.messages.sort((a, b) => {
-            return CodeListing.ORDERING.indexOf(a.type) - CodeListing.ORDERING.indexOf(b.type);
-        });
-
-        for (const message of this.messages) {
-            message.id = idOffset + 1;
-            idOffset += 1;
-            // Linter counts from 0, rouge counts from 1
-            const correspondingLine: HTMLTableRowElement = this.table.querySelector(`#line-${message.row + 1}`);
-            this.createAnnotation(message, correspondingLine.rowIndex + 1, message.row + 1);
-        }
-
+        // TODO: clean up
         const hideExtraButton = document.querySelector("#hide_extra_annotations");
         if (hideExtraButton && hideExtraButton.classList.contains("active")) {
             this.checkForErrorAndCompress();
         }
+    }
+
+    addAnnotation(message: MessageData): void {
+        this.messages.push(new Message(this.messages.length, message, this.table));
     }
 
     checkForErrorAndCompress(): void {
@@ -168,49 +169,6 @@ export class CodeListing {
 
     hideAllAnnotations(): void {
         this.messages.forEach(m => m.hide());
-    }
-
-    private createAnnotationRow(lineNumber: number, rougeRow: number): HTMLTableRowElement {
-        const annotationRow: HTMLTableRowElement = this.table.insertRow(lineNumber);
-        annotationRow.setAttribute("class", "annotation-set");
-        annotationRow.setAttribute("id", `annotation-row-id-${rougeRow}`);
-        const gutterTD: HTMLTableDataCellElement = annotationRow.insertCell();
-        gutterTD.setAttribute("class", "rouge-gutter gl");
-        const annotationTD: HTMLTableDataCellElement = annotationRow.insertCell();
-        annotationTD.setAttribute("class", "annotation-cell");
-        return annotationRow;
-    }
-
-    private createAnnotation(message: Message, tableIndex: number, rougeRow: number): HTMLTableRowElement {
-        if (message.text.match("^--*$")) {
-            return null;
-        }
-
-        let annotationRow: HTMLTableRowElement = this.table.querySelector(`#annotation-row-id-${message.row + 1}`);
-        if (annotationRow === null) {
-            annotationRow = this.createAnnotationRow(tableIndex, rougeRow);
-        }
-
-        const annotationTD: HTMLTableDataCellElement = annotationRow.lastChild as HTMLTableDataCellElement;
-
-        const annotationCell: HTMLDivElement = document.createElement("div");
-        annotationCell.setAttribute("class", "annotation");
-        annotationCell.setAttribute("id", `annotation-id-${message.id}`);
-        annotationCell.setAttribute("title", message.type[0].toUpperCase() + message.type.substring(1));
-        annotationCell.dataset.type = message.type;
-
-        const textNode: Text = document.createTextNode(message.text.split("\n").filter(s => !s.match("^--*$")).join("\n"));
-        annotationCell.classList.add(message.type);
-        annotationCell.appendChild(textNode);
-
-        annotationTD.appendChild(annotationCell);
-        message.setElement(annotationCell);
-
-        const edgeCopyBlocker = document.createElement("div");
-        edgeCopyBlocker.setAttribute("class", "copy-blocker");
-        annotationTD.appendChild(edgeCopyBlocker);
-
-        return annotationRow;
     }
 
     clearHighlights(): void {
@@ -240,19 +198,26 @@ export class CodeListing {
         const strings = [];
 
         // A selection can have many different selected ranges
-        // Firefox: Selecting multiple rows in a table -> Multiple ranges, with the final one possibly being a preformatted node, while the original content of the selection was a part of a div
-        // Chrome: Selecting multiple rows in a table -> Single range that lists everything in HTML order (even observed some gutter elements)
+        // Firefox: Selecting multiple rows in a table -> Multiple ranges, with the final one
+        //     possibly being a preformatted node, while the original content of the selection was
+        //     a part of a div
+        // Chrome: Selecting multiple rows in a table -> Single range that lists everything in HTML
+        //     order (even observed some gutter elements)
         for (let rangeIndex = 0; rangeIndex < selection.rangeCount; rangeIndex++) {
             // Extract the selected HTML ranges into a DocumentFragment
             const documentFragment = selection.getRangeAt(rangeIndex).cloneContents();
 
             // Remove any gutter element or annotation element in the document fragment
-            // As observed, some browsers (Safari) can ignore user-select: none, and as such allow the user to select line numbers.
-            // To avoid any problems later we remove anything in a rouge-gutter or annotation-set class.
-            // TODO: When adding user annotations, edit this to make sure only code remains. The class is being changed
+            // As observed, some browsers (Safari) can ignore user-select: none, and as such allow
+            // the user to select line numbers.
+            // To avoid any problems later we remove anything in a rouge-gutter or annotation-set
+            // class.
+            // TODO: When adding user annotations, edit this to make sure only code remains. The
+            // class is being changed
             documentFragment.querySelectorAll(".rouge-gutter, .annotation-set").forEach(n => n.remove());
 
-            // Only select the preformatted nodes as they will contain the code (with trailing newline)
+            // Only select the preformatted nodes as they will contain the code
+            // (with trailing newline)
             // In the case of an empty line (empty string), a newline is substituted.
             const fullNodes = documentFragment.querySelectorAll("pre");
             fullNodes.forEach((v, _n, _l) => {

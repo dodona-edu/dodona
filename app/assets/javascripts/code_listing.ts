@@ -80,19 +80,18 @@ class Message {
     }
 
     private addDot(): void {
-        const tableRow: HTMLTableRowElement = this.annotation.closest("tr.annotation-set");
-        const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
-
-        const dotChild = lineNumberElement.querySelectorAll(`.dot-${this.type}`);
+        const codeLine = this.codeListing.querySelector(`tr#line-${this.line}`);
+        const codeGutter = codeLine.querySelector(".rouge-gutter.gl");
+        const dotChild = codeGutter.querySelectorAll(`.dot-${this.type}`);
         if (dotChild.length == 0) {
             const dot: HTMLSpanElement = document.createElement("span");
             dot.setAttribute("class", `dot dot-${this.type}`);
-            lineNumberElement.appendChild(dot);
+            codeGutter.prepend(dot);
         }
     }
 
     private removeDot(): void {
-        const tableRow: HTMLTableRowElement = this.annotation.closest("tr.annotation-set");
+        const tableRow: HTMLTableRowElement = this.codeListing.querySelector(`tr#line-${this.line}`);
         const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
         const dotChildren = lineNumberElement.querySelectorAll(`.dot.dot-${this.type}`);
         dotChildren.forEach(removal => {

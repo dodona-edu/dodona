@@ -55,10 +55,12 @@
 
     .rouge-gutter {
       min-width: 30px;
-      width: 1%;
       text-align: right;
       vertical-align: top;
       padding-right: 5px;
+
+      display: flex;
+      justify-content: flex-end;
 
       background-color: @well-bg;
 
@@ -67,13 +69,14 @@
         color: @gray-light
       }
 
-      @dot-size: 7px;
+      @dot-size: 9px;
 
       .dot {
         height: @dot-size;
         width: @dot-size;
         border-radius: 50%;
         display: inline-block;
+        flex-shrink: 0;
 
         margin: 2px;
       }

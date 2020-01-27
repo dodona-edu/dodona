@@ -1,5 +1,6 @@
 type MessageType = "error" | "warning" | "info";
 const ORDERING = ["error", "warning", "info"];
+
 interface MessageData {
     type: MessageType;
     text: string;
@@ -14,15 +15,20 @@ class Message {
 
     private shown = true;
 
-    private readonly codeListing: HTMLTableElement;
+    private readonly codeListingHTML: HTMLTableElement;
     private annotation: HTMLDivElement;
+    private dot: HTMLSpanElement;
 
-    constructor(id: number, m: MessageData, listing: HTMLTableElement) {
+    private readonly codeListing: CodeListing;
+
+    constructor(id: number, m: MessageData, listing: HTMLTableElement, codeListing: CodeListing) {
         this.id = id;
         this.type = m.type;
         this.text = m.text;
         this.line = m.row + 1; // Linter counts from 0, rouge counts from 1
-        this.codeListing = listing;
+        this.codeListingHTML = listing;
+
+        this.codeListing = codeListing;
 
         this.createAnnotation();
     }
@@ -40,7 +46,7 @@ class Message {
     }
 
     private createAnnotation(): void {
-        let annotationsRow: HTMLTableRowElement = this.codeListing.querySelector(`#annotations-${this.line}`);
+        let annotationsRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#annotations-${this.line}`);
         if (annotationsRow === null) {
             annotationsRow = this.createAnnotationRow();
         }
@@ -62,8 +68,8 @@ class Message {
     }
 
     private createAnnotationRow(): HTMLTableRowElement {
-        const codeRow: HTMLTableRowElement = this.codeListing.querySelector(`#line-${this.line}`);
-        const annotationRow: HTMLTableRowElement = this.codeListing.insertRow(codeRow.rowIndex + 1);
+        const codeRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#line-${this.line}`);
+        const annotationRow: HTMLTableRowElement = this.codeListingHTML.insertRow(codeRow.rowIndex + 1);
         annotationRow.setAttribute("class", "annotation-set");
         annotationRow.setAttribute("id", `annotations-${this.line}`);
         annotationRow.insertCell().setAttribute("class", "rouge-gutter gl");
@@ -79,30 +85,28 @@ class Message {
         return annotationRow;
     }
 
-    private addDot(): void {
-        const codeLine = this.codeListing.querySelector(`tr#line-${this.line}`);
-        const codeGutter = codeLine.querySelector(".rouge-gutter.gl");
-        const dotChild = codeGutter.querySelectorAll(`.dot-${this.type}`);
-        if (dotChild.length == 0) {
-            const dot: HTMLSpanElement = document.createElement("span");
-            dot.setAttribute("class", `dot dot-${this.type}`);
-            codeGutter.prepend(dot);
+    addDot(): void {
+        if (this.dot) {
+            return;
         }
+
+        const codeGutter = this.codeListingHTML.querySelector(`tr#line-${this.line} .rouge-gutter.gl`);
+        this.dot = document.createElement("span");
+        this.dot.setAttribute("class", `dot dot-${this.type}`);
+        codeGutter.prepend(this.dot);
     }
 
-    private removeDot(): void {
-        const tableRow: HTMLTableRowElement = this.codeListing.querySelector(`tr#line-${this.line}`);
-        const lineNumberElement: HTMLTableDataCellElement = tableRow.querySelector(".rouge-gutter.gl");
-        const dotChildren = lineNumberElement.querySelectorAll(`.dot.dot-${this.type}`);
-        dotChildren.forEach(removal => {
-            removal.remove();
-        });
+    removeDot(): void {
+        if (this.dot) {
+            this.dot.remove();
+            this.dot = null;
+        }
     }
 }
 
 export class CodeListing {
     private readonly table: HTMLTableElement;
-    private readonly messages: Message[];
+    readonly messages: Message[];
 
     private readonly markingClass: string = "marked";
 
@@ -159,7 +163,7 @@ export class CodeListing {
     }
 
     addAnnotation(message: MessageData): void {
-        this.messages.push(new Message(this.messages.length, message, this.table));
+        this.messages.push(new Message(this.messages.length, message, this.table, this));
     }
 
     checkForErrorAndCompress(): void {

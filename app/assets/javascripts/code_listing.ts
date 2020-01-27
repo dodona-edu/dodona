@@ -117,20 +117,21 @@ export class CodeListing {
         if (this.table === null) {
             console.error("The code listing could not be found");
         }
-        this.initButtonsForView();
 
         this.table.addEventListener("copy", function (e) {
             e.clipboardData.setData("text/plain", window.dodona.codeListing.getSelectededCode());
             e.preventDefault();
         });
+
+        this.initButtonsForView();
     }
 
     private initButtonsForView(): void {
         const hideAllButton: HTMLButtonElement = document.querySelector("#hide_all_annotations");
         const showOnlyErrorButton: HTMLButtonElement = document.querySelector("#show_only_errors");
         const showAllButton: HTMLButtonElement = document.querySelector("#show_all_annotations");
+        const messagesWereHidden: HTMLSpanElement = document.querySelector("#messages-were-hidden");
 
-        const messagesWereHidden = document.querySelector("#messages-were-hidden");
         const showAllListener = (): void => {
             this.showAllAnnotations();
             if (messagesWereHidden) {
@@ -144,7 +145,7 @@ export class CodeListing {
         }
 
         if (showOnlyErrorButton && hideAllButton && showAllButton) {
-            showOnlyErrorButton.addEventListener("click", this.checkForErrorAndCompress.bind(this));
+            showOnlyErrorButton.addEventListener("click", this.compressMessages.bind(this));
         }
 
         if (messagesWereHidden && showAllButton) {
@@ -154,19 +155,13 @@ export class CodeListing {
 
     addAnnotations(messages: MessageData[]): void {
         messages.forEach(m => this.addAnnotation(m));
-
-        // TODO: clean up
-        const hideExtraButton = document.querySelector("#hide_extra_annotations");
-        if (hideExtraButton && hideExtraButton.classList.contains("active")) {
-            this.checkForErrorAndCompress();
-        }
     }
 
     addAnnotation(message: MessageData): void {
         this.messages.push(new Message(this.messages.length, message, this.table, this));
     }
 
-    checkForErrorAndCompress(): void {
+    compressMessages(): void {
         this.showAllAnnotations();
 
         const errors = this.messages.filter(m => m.type === "error");

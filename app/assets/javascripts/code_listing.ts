@@ -1,4 +1,5 @@
 type MessageType = "error" | "warning" | "info";
+const ORDERING = ["error", "warning", "info"];
 interface MessageData {
     type: MessageType;
     text: string;
@@ -29,11 +30,13 @@ class Message {
     hide(): void {
         this.annotation.classList.add("hide");
         this.addDot();
+        this.shown = false;
     }
 
     show(): void {
         this.annotation.classList.remove("hide");
         this.removeDot();
+        this.shown = true;
     }
 
     private createAnnotation(): void {
@@ -53,17 +56,26 @@ class Message {
         const edgeCopyBlocker = document.createElement("div");
         edgeCopyBlocker.setAttribute("class", "copy-blocker");
 
-        const annotationTD: HTMLTableDataCellElement = annotationsRow.querySelector(".annotation-cell");
-        annotationTD.appendChild(this.annotation);
-        annotationTD.appendChild(edgeCopyBlocker);
+        const annotationGroup: HTMLDivElement = annotationsRow.querySelector(`.annotation-cell .annotation-group-${this.type}`);
+        annotationGroup.appendChild(this.annotation);
+        annotationGroup.appendChild(edgeCopyBlocker);
     }
 
     private createAnnotationRow(): HTMLTableRowElement {
-        const annotationRow: HTMLTableRowElement = this.codeListing.insertRow(this.line);
+        const codeRow: HTMLTableRowElement = this.codeListing.querySelector(`#line-${this.line}`);
+        const annotationRow: HTMLTableRowElement = this.codeListing.insertRow(codeRow.rowIndex + 1);
         annotationRow.setAttribute("class", "annotation-set");
         annotationRow.setAttribute("id", `annotations-${this.line}`);
         annotationRow.insertCell().setAttribute("class", "rouge-gutter gl");
-        annotationRow.insertCell().setAttribute("class", "annotation-cell");
+        const annotationTDC = annotationRow.insertCell();
+        annotationTDC.setAttribute("class", "annotation-cell");
+
+        for (const type of ORDERING) {
+            const groupDiv: HTMLDivElement = document.createElement("div");
+            groupDiv.setAttribute("class", `annotation-group-${type}`);
+            annotationTDC.appendChild(groupDiv);
+        }
+
         return annotationRow;
     }
 
@@ -94,8 +106,6 @@ export class CodeListing {
     private readonly messages: Message[];
 
     private readonly markingClass: string = "marked";
-    private static readonly ORDERING = ["error", "warning", "info"];
-
 
     constructor(feedbackTableSelector = "table.code-listing") {
         this.table = document.querySelector(feedbackTableSelector) as HTMLTableElement;

@@ -15,7 +15,7 @@ module StubHelper
   end
 
   def stub_all_exercises!
-    config = { 'evaluation' => { 'time_limit' => 1} }.freeze
+    config = { 'evaluation' => { 'time_limit' => 1 } }.freeze
     description = 'ᕕ(ಠ_ಠ)ᕗ'
     Exercise.any_instance.stubs(:config).returns(config)
     Exercise.any_instance.stubs(:update_config)

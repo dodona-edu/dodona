@@ -12,7 +12,8 @@ class SubmissionsController < ApplicationController
   has_scope :by_status, as: 'status'
 
   has_scope :by_course_labels, as: 'course_labels', type: :array do |controller, scope, value|
-    if controller.params[:course_id].present? && controller.params[:user_id].nil?
+    course = Course.find_by(controller.params[:course_id]) if controller.params[:course_id].present?
+    if course.present? && controller.current_user&.course_admin(course) && controller.params[:user_id].nil?
       scope.by_course_labels(value, controller.params[:course_id])
     else
       scope

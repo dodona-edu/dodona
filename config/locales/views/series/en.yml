@@ -56,6 +56,7 @@ en:
       user: User
       explanation: "Showing the number of correctly solved exercises before the deadline"
       at_least_one_started: "Only show users that started at least one exercise"
+      no_exercises_html: "This series doesn't have any exercises. You can add some on the <a href=%{series_edit_url}>series edit page</a>."
       download: Download scoresheet
       course_view: Course scoresheet
       select_view: Select view

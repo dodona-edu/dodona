@@ -20,20 +20,26 @@
               <% end %>
             </select>
           </div>
-          <%= link_to scoresheet_series_path(@series, format: :csv), class: "btn btn-primary btn-text" do %>
-            <i class="mdi mdi-cloud-download"></i>
-            <%=  t('.download') %>
+          <% if @series.exercises.any? %>
+            <%= link_to scoresheet_series_path(@series, format: :csv), class: "btn btn-primary btn-text" do %>
+              <i class="mdi mdi-cloud-download"></i>
+              <%=  t('.download') %>
+            <% end %>
           <% end %>
         </div>
-        <%= render partial: 'layouts/searchbar', locals: {
-            actions: [
-                { text: t('.at_least_one_started'), search: { at_least_one_started: true } }
-            ],
-            course_labels: @course_labels
-        } %>
-        <div id="scoresheet-table-wrapper">
-          <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, exercises: @exercises, users: @users, submissions: @submissions} %>
-        </div>
+        <% if @series.exercises.any? %>
+          <%= render partial: 'layouts/searchbar', locals: {
+              actions: [
+                  { text: t('.at_least_one_started'), search: { at_least_one_started: true } }
+              ],
+              course_labels: @course_labels
+          } %>
+          <div id="scoresheet-table-wrapper">
+            <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, exercises: @exercises, users: @users, submissions: @submissions} %>
+          </div>
+        <% else %>
+          <span><%= t('.no_exercises_html', series_edit_url: edit_series_path(@series)) %></span>
+        <% end %>
       </div>
     </div>
   </div>

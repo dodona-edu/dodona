@@ -92,3 +92,5 @@ en:
       config_set_by: "This value was set by %{file}"
       config_default: "This is the default value."
       description_files: "We found files for these languages in the descriptions folder %{path}"
+      config_info: 'For more information about configuring exercises, you can take a look at our documentation site %{here}.'
+      here: 'here'

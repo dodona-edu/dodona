@@ -93,4 +93,5 @@ nl:
       config_set_by: "Deze waarde werd ingesteld door %{file}"
       config_default: "Dit is de standaardwaarde."
       description_files:   "We hebben bestanden gevonden met een beschrijving voor deze talen in de beschrijvingsmap %{path}"
-
+      config_info: 'Voor meer informatie over het configureren van oefeningen kun je %{here} een kijkje nemen op onze documentatiesite.'
+      here: 'hier'

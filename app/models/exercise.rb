@@ -35,6 +35,7 @@ class Exercise < ApplicationRecord
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
   SOLUTION_DIR = 'solution'.freeze
+  SOLUTION_MAX_BYTES = 2**16 - 1
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
@@ -99,7 +100,7 @@ class Exercise < ApplicationRecord
     (full_path + SOLUTION_DIR)
       .yield_self { |path| path.directory? ? path.children : [] }
       .filter { |path| path.file? && path.readable? }
-      .map { |path| [path.basename, path.read] }
+      .map { |path| [path.basename, path.read(SOLUTION_MAX_BYTES)] }
       .to_h
   end
 

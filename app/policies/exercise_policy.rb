@@ -27,6 +27,19 @@ class ExercisePolicy < ApplicationPolicy
     true
   end
 
+  def info?
+    return false unless user
+    return false if record.removed?
+    return true if user.zeus?
+    return true if user.repository_admin?(record.repository)
+    return true if user.staff? && record&.access_public?
+
+    user.administrating_courses
+        .joins(course_repositories: :repository)
+        .where('repositories.id = ?', record.repository.id)
+        .any?
+  end
+
   def update?
     return false unless record.ok?
 

@@ -1,0 +1,28 @@
+{
+  "labels": [
+    "label1",
+    "label2",
+    "label3",
+    "Label1",
+    "label1"
+  ],
+  "access": "public",
+  "description": {
+    "handler": "default",
+    "difficulty": 0.5,
+    "names": {
+      "en": "Imitation",
+      "nl": "Weergalm"
+    }
+  },
+  "submission": {
+    "handler": "default"
+  },
+  "evaluation": {
+    "handler": "python",
+    "pythia_judge": "output",
+    "time_limit": 15,
+    "memory_limit": 500000000
+  },
+  "programming_language": "python"
+}

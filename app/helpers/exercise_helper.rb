@@ -1,10 +1,35 @@
 module ExerciseHelper
+  def exercise_config_explanation(*keys)
+    location = @config_locations.dig(*keys)
+    if location.present?
+      location = location.to_sentence if location.is_a? Array
+      t '.config_set_by', file: location
+    else
+      t '.config_default'
+    end
+  end
+
   def exercise_anchor(exercise)
     '#'.concat exercise_anchor_id(exercise)
   end
 
   def exercise_anchor_id(exercise)
     "exercise-#{exercise.id}"
+  end
+
+  BYTE_UNITS = {
+    unit: 'B',
+    thousand: 'kB',
+    million: 'MB',
+    billion: 'GB',
+    trillion: 'TB'
+  }.freeze
+
+  # Rails doesn't think its number_to_human_bytes helper should be correct,
+  # it returns Mebibytes and calls them Megabytes... sigh.
+  # This custom helper at least returns actual metric units.
+  def human_bytes(bytes)
+    number_to_human bytes, units: BYTE_UNITS
   end
 
   # returns a list with as the first item the description of an execise
@@ -34,6 +59,20 @@ module ExerciseHelper
                allow: 'fullscreen https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com/ ',
                src: url,
                height: '500px'
+  end
+
+  def starts_with_solution?(item)
+    item.first.basename.to_s.starts_with?('solution')
+  end
+
+  def compare_solutions(a, b)
+    if starts_with_solution?(a) == starts_with_solution?(b)
+      a <=> b
+    elsif starts_with_solution?(a)
+      -1
+    else
+      1
+    end
   end
 
   class DescriptionRenderer

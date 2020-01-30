@@ -34,6 +34,8 @@ class Exercise < ApplicationRecord
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
+  SOLUTION_DIR = 'solution'.freeze
+  SOLUTION_MAX_BYTES = 2**16 - 1
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
@@ -94,8 +96,27 @@ class Exercise < ApplicationRecord
                          path&.split('/')&.last
   end
 
+  def solutions
+    (full_path + SOLUTION_DIR)
+      .yield_self { |path| path.directory? ? path.children : [] }
+      .filter { |path| path.file? && path.readable? }
+      .map { |path| [path.basename, path.read(SOLUTION_MAX_BYTES)] }
+      .to_h
+  end
+
+  def description_languages
+    languages = []
+    languages << 'nl' if description_file('nl').exist?
+    languages << 'en' if description_file('en').exist?
+    languages
+  end
+
+  def description_file(lang)
+    full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
+  end
+
   def description_localized(lang = I18n.locale.to_s)
-    file = full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
+    file = description_file(lang)
     file.read if file.exist?
   end
 
@@ -109,6 +130,27 @@ class Exercise < ApplicationRecord
 
   def description
     (description_localized || description_nl || description_en || '').force_encoding('UTF-8').scrub
+  end
+
+  def about_file(lang)
+    full_path + "about.#{lang}.md"
+  end
+
+  def about_localized(lang = I18n.locale.to_s)
+    file = about_file(lang)
+    file.read if file.exist?
+  end
+
+  def about_nl
+    about_localized('nl')
+  end
+
+  def about_en
+    about_localized('en')
+  end
+
+  def about
+    (about_localized || about_nl || about_en || '').force_encoding('UTF-8').scrub
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)
@@ -149,39 +191,28 @@ class Exercise < ApplicationRecord
     programming_language&.extension || 'txt'
   end
 
-  def merged_config
-    hash = Pathname.new('./' + path).parent.descend # all parent directories
-                   .map { |dir| read_dirconfig dir } # try reading their dirconfigs
-                   .compact # remove nil entries
-                   .push(config) # add exercise config file
-                   .reduce do |h1, h2| # reduce into single hash
-      h1.deep_merge(h2) do |k, v1, v2|
-        if k == 'labels'
-          (v1 + v2)
-        else
-          v2
-        end
-      end
-    end
-    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
-    hash
+  def merged_dirconfig
+    Pathname.new('./' + path).parent.descend # all parent directories
+            .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+            .compact # remove nil entries
+            .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .yield_self { |dirconfig| lowercase_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
-  def merged_dirconfig
-    hash = Pathname.new('./' + path).parent.descend # all parent directories
-                   .map { |dir| read_dirconfig dir } # try reading their dirconfigs
-                   .compact # remove nil entries
-                   .reduce do |h1, h2| # reduce into single hash
-      h1.deep_merge(h2) do |k, v1, v2|
-        if k == 'labels'
-          (v1 + v2).map(&:downcase).uniq
-        else
-          v2
-        end
-      end
-    end || {}
-    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
-    hash
+  def merged_dirconfig_locations
+    Pathname.new('./' + path).parent.descend # all parent directories
+            .map { |dir| read_dirconfig_locations dir } # try reading their dirconfigs
+            .compact # remove nil entries
+            .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .yield_self { |dirconfig| unique_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
+  end
+
+  def merged_config
+    lowercase_labels deep_merge_configs(merged_dirconfig, config)
+  end
+
+  def merged_config_locations
+    unique_labels deep_merge_configs(merged_dirconfig_locations, config_locations)
   end
 
   def config_file?
@@ -376,10 +407,47 @@ class Exercise < ApplicationRecord
     repository.read_config_file(subdir + DIRCONFIG_FILE)
   end
 
+  def read_config_locations(location)
+    repository.read_config_file(location)
+              &.deep_transform_values! { location }
+  end
+
+  def config_locations
+    read_config_locations config_file
+  end
+
+  def read_dirconfig_locations(subdir)
+    read_config_locations(subdir + DIRCONFIG_FILE)
+  end
+
   def generate_id
     begin
       new = SecureRandom.random_number(2_147_483_646)
     end until Exercise.find_by(id: new).nil?
     self.id = new
+  end
+
+  def deep_merge_configs(parent_conf, child_conf)
+    parent_conf.deep_merge(child_conf) do |k, v1, v2|
+      if k == 'labels'
+        (v1 + v2)
+      else
+        v2
+      end
+    end
+  end
+
+  def lowercase_labels(hash)
+    return unless hash
+
+    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key? 'labels'
+    hash
+  end
+
+  def unique_labels(hash)
+    return unless hash
+
+    hash['labels'] = hash['labels'].uniq if hash.key? 'labels'
+    hash
   end
 end

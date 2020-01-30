@@ -27,6 +27,12 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
+  test 'should show exercise info' do
+    stub_all_exercises!
+    get info_exercise_url(@instance)
+    assert_response :success
+  end
+
   test 'should rescue from exercise not found' do
     not_id = Random.rand(10_000)
     begin
@@ -88,7 +94,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
-  test 'should get exercices by repository_id' do
+  test 'should get exercises by repository_id' do
     get exercises_url repository_id: @instance.repository.id
     assert_response :success
   end

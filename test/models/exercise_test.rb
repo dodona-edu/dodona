@@ -595,7 +595,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
     @remote = local_remote('exercises/lasagna')
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
-    @exercise = @repository.exercises.first
+    @exercise = @repository.exercises.find_by(path: 'exercises/series/ISBN')
+    @extra_exercise = @repository.exercises.find_by(path: 'exercises/extra/echo')
   end
 
   teardown do
@@ -631,6 +632,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_not @exercise.config.key? 'root_config'
     assert @exercise.merged_config.key? 'root_config'
     assert_equal 'set', @exercise.merged_config['root_config']
+    assert_equal Pathname.new('dirconfig.json'),
+                 @exercise.merged_config_locations['root_config']
   end
 
   test 'should throw ":abort" when commit does not succed and return an error' do
@@ -643,6 +646,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
   # set at top level, overridden by series, not set at exercise
   test 'should not write access if initially not present' do
     assert_equal 'public', @exercise.access
+    assert_equal Pathname.new('./exercises/series/dirconfig.json'),
+                 @exercise.merged_config_locations['access']
     @exercise.update_config
     assert_not @exercise.config.key? 'access'
   end
@@ -659,6 +664,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_not @exercise.config.key? 'access'
     assert @exercise.merged_config.key? 'access'
     assert_equal 'public', @exercise.access
+    assert_equal Pathname.new('./exercises/series/dirconfig.json'),
+                 @exercise.merged_config_locations['access']
 
     @exercise.update_config
     assert_not @exercise.config.key? 'access'
@@ -671,14 +678,26 @@ class LasagneConfigTest < ActiveSupport::TestCase
     @exercise.update_config
     assert_equal 'private', @exercise.config['access']
     assert_equal 'private', @exercise.merged_config['access']
+    assert_equal @exercise.config_file,
+                 @exercise.merged_config_locations['access']
   end
 
   test 'should merge label arrays' do
     assert_equal 4, @exercise.labels.count
+    expected = ['dirconfig.json',
+                './exercises/dirconfig.json',
+                './exercises/series/dirconfig.json',
+                @exercise.config_file].map { |p| Pathname.new p }
+    assert_equal expected,
+                 @exercise.merged_config_locations['labels']
   end
 
   test 'should update child configs if dirconfig has a memory limit that is too high' do
     assert_equal 500_000_000, @exercise.config['evaluation']['memory_limit']
+  end
+
+  test 'should support directories without dirconfig' do
+    assert_equal @extra_exercise.merged_config['root_config'], 'set'
   end
 end
 

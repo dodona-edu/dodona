@@ -1,7 +1,7 @@
 class ExercisesController < ApplicationController
-  before_action :set_exercise, only: %i[show description edit update media]
-  before_action :set_course, only: %i[show edit update media]
-  before_action :set_series, only: %i[show edit update]
+  before_action :set_exercise, only: %i[show description edit update media info]
+  before_action :set_course, only: %i[show edit update media info]
+  before_action :set_series, only: %i[show edit update info]
   before_action :ensure_trailing_slash, only: :show
   before_action :allow_iframe, only: %i[description]
   skip_before_action :verify_authenticity_token, only: [:media]
@@ -83,6 +83,15 @@ class ExercisesController < ApplicationController
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @exercise.access_token == params[:token]
 
     render layout: 'frame'
+  end
+
+  def info
+    @title = @exercise.name
+    @repository = @exercise.repository
+    @courses_series = policy_scope(@exercise.series).group_by(&:course)
+    @config = @exercise.merged_config
+    @config_locations = @exercise.merged_config_locations
+    @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] << [I18n.t('crumbs.info'), '#']
   end
 
   def edit

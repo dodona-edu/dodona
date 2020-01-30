@@ -1,6 +1,7 @@
 en:
   exercises:
     navbar_links:
+      info: Exercise information
       show: Show exercise
       submissions: Submissions for this exercise
       edit: Edit exercise
@@ -60,3 +61,36 @@ en:
       course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
     edit:
       courses: "Courses using this exercise"
+    info:
+      no_about_present: "This exercise does not yet have extra information."
+      no_about_present_admin: "This exercise does not yet have an 'about' with extra information. You can add this to the exercise in the repository."
+      author_information: "Created by %{contact} in repository %{repository}."
+      programming_language: Programming language
+      natural_language: Natural language
+      time_limit: Time limit
+      memory_limit: Memory limit
+      network_enabled: Network enabled
+      network_disabled: Network disabled
+      submission_count: Submission count
+      submission_details: "This exercises has %{total} submissions by %{users} unique users. Of these submissions, %{correct} were correct."
+      sample_solutions: Sample solutions
+      sample_solutions_hint: Click on one of the tabs above to view a sample solution.
+      no_solutions: This exercise does not yet have a sample solution.
+      no_solutions_admin: Add your sample solutions to the repository and they will be shown here.
+      usage: Usage
+      courses_using_this_exercise:
+        zero: "This exercise is not yet used by a course."
+        one: "This exercise is used by 1 course."
+        other: "This exercise is used by %{count} courses."
+      contact: Contact information
+      repository: Repository containing this exercise
+      repository_path: Path within this repository
+      created: Created
+      updated: Last edited
+      ago: ago
+      click_here_to_create_one: Click here to create the about information.
+      config_set_by: "This value was set by %{file}"
+      config_default: "This is the default value."
+      description_files: "We found files for these languages in the descriptions folder %{path}"
+      config_info: 'For more information about configuring exercises, you can take a look at our documentation site %{here}.'
+      here: 'here'

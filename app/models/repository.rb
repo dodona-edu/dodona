@@ -58,6 +58,10 @@ class Repository < ApplicationRecord
     [status.success?, error]
   end
 
+  def first_admin
+    repository_admins.first&.user
+  end
+
   def exercise_dirs
     exercise_dirs_below(full_path)
   end
@@ -176,11 +180,13 @@ class Repository < ApplicationRecord
     ex.save
   end
 
-  def github_url(path = nil)
+  def github_url(path = nil, mode: nil)
     return unless github_remote?
 
+    mode ||= 'tree'
+
     url = remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '')
-    url += '/tree/master/' + path.to_s if path
+    url += "/#{mode}/master/#{path&.to_s}"
     url
   end
 

@@ -125,7 +125,7 @@ class SubmissionsController < ApplicationController
     end
     if params[:course_id]
       @course = Course.find(params[:course_id])
-      @course_labels = CourseLabel.where(course: @course) if @user.blank?
+      @course_labels = CourseLabel.where(course: @course) if @user.blank? && current_user&.course_admin?(@course)
     end
 
     @series = Series.find(params[:series_id]) if params[:series_id]

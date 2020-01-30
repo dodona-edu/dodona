@@ -28,6 +28,7 @@ module ExerciseHelper
         '##{id}')
     }
     tag.iframe id: id,
+               class: 'dodona-iframe',
                scrolling: 'no',
                onload: resizeframe,
                allow: 'fullscreen https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com/ ',

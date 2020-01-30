@@ -353,5 +353,23 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-export { initExerciseShow, initExerciseDescription, initLabelsEdit };
+function afterResize(details) {
+    /**
+     * If the page is loaded with a hash (#), the browser scrolls to the element
+     * with that id, but this happens before our iframe is loaded. After our
+     * iframe content is loaded, we resize its element to fit the content. If
+     * the item in the hash was below the iframe element, that item will
+     * possibly have 'jumped' away because of this.
+     *
+     * This function is called after such a resize to re-trigger the scroll-to
+     * behavior.
+     */
+    if (details.type === "init") {
+        const hash = location.hash;
+        location.hash = "#"; // some browsers only scroll after a change
+        location.hash = hash;
+    }
+}
+
+export { initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize };
 

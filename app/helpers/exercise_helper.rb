@@ -22,7 +22,8 @@ module ExerciseHelper
                                    dark: dark).html_safe
     resizeframe = %{
       window.iFrameResize({
-          heightCalculationMethod: 'bodyScroll'
+          heightCalculationMethod: 'bodyScroll',
+          onResized: dodona.afterResize,
         },
         '##{id}')
     }

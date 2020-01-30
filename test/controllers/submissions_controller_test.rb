@@ -37,6 +37,71 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'should be able to search by exercise name' do
+    u = create :user
+    sign_in u
+    e1 = create :exercise, name_en: 'abcd'
+    e2 = create :exercise, name_en: 'efgh'
+    create :submission, exercise: e1, user: u
+    create :submission, exercise: e2, user: u
+
+    get submissions_url, params: { filter: 'abcd', format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to search by user name' do
+    u1 = create :user, last_name: 'abcd'
+    u2 = create :user, last_name: 'efgh'
+    create :submission, user: u1
+    create :submission, user: u2
+
+    get submissions_url, params: { filter: 'abcd', format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to search by status' do
+    u = create :user
+    sign_in u
+    create :submission, status: :correct, user: u
+    create :submission, status: :wrong, user: u
+
+    get submissions_url, params: { status: 'correct', format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to search by course label' do
+    u1 = create :user
+    u2 = create :user
+    course = create :course
+    cm = CourseMembership.create(user: u1, course: course, status: :student)
+    CourseMembership.create(user: u2, course: course, status: :student)
+    cl = CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
+    create :submission, status: :correct, user: u1, course: course
+    create :submission, status: :wrong, user: u2, course: course
+    get course_submissions_url course, params: { course_labels: ['test'], format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'normal user should not be able to search by course label' do
+    u1 = create :user
+    u2 = create :user
+    sign_in u2
+    course = create :course
+    cm = CourseMembership.create(user: u1, course: course, status: :student)
+    CourseMembership.create(user: u2, course: course, status: :student)
+    CourseLabel.create(name: 'test', course_memberships: [cm])
+    create :submission, status: :correct, user: u1, course: course
+    create :submission, status: :wrong, user: u2, course: course
+
+    get course_submissions_url course, params: { course_labels: ['test'], format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
   test 'should add submissions to delayed_job queue' do
     submission = nil
     assert_jobs_enqueued(1) do

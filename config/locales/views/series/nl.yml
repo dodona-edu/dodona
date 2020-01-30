@@ -56,6 +56,7 @@ nl:
       user: Gebruiker
       explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
       at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
+      no_exercises_html: "Deze reeks bevat nog geen oefeningen. Je kan er toevoegen op de <a href=%{series_edit_url}>edit pagina van de reeks</a>."
       download: Statusoverzicht downloaden
       course_view: Statusoverzicht van cursus
       select_view: Weergave selecteren

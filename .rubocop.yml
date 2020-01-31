@@ -17,6 +17,8 @@ Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
+Layout/LineLength:
+  Enabled: false
 
 Lint/Loop:
   Enabled: false
@@ -30,8 +32,6 @@ Metrics/BlockNesting:
 Metrics/ClassLength:
   Enabled: false
 Metrics/CyclomaticComplexity:
-  Enabled: false
-Metrics/LineLength:
   Enabled: false
 Metrics/MethodLength:
   Enabled: false

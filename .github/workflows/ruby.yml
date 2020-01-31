@@ -89,4 +89,4 @@ jobs:
       env:
         RAILS_ENV: "test"
       run: |
-        bundle exec rubocop -c  .rubocop.yml app
+        bundle exec rubocop -c  .rubocop.yml

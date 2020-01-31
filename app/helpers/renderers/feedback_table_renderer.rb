@@ -222,7 +222,7 @@ class FeedbackTableRenderer
 
     @builder.div(class: 'messages') do
       msgs.each do |msg|
-        @builder.div(class: 'message') do
+        @builder.div(class: "message message-#{msg.is_a?(Hash) && msg.key?(:permission) ? msg[:permission] : "student"}") do
           message(msg)
         end
       end

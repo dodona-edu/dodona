@@ -24,7 +24,7 @@
   <% if @series.present? %>
     <nav class="col-md-1 hidden-xs hidden-sm hidden-print exercise-sidebar">
       <ul class="nav affix" data-offset-bottom="80">
-        <li class="header ellipsis-overflow"><%= @series.name %></li>
+        <li class="header ellipsis-overflow" title="<%= @series.name %>"><%= @series.name %></li>
         <% @series.exercises.each do |exercise| %>
           <li <%= 'class=active' if exercise.id == @exercise.id %>><%= link_to exercise.name, exercise_scoped_path(exercise: exercise, series: @series), class: 'ellipsis-overflow', title: exercise.name %> </li>
         <% end %>

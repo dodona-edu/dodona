@@ -1,41 +1,41 @@
 /**
- * Shows a notification in the bottom left corner. By default, hides it after 3 seconds.
+ * Shows a toast in the bottom left corner. By default, hides it after 3 seconds.
  */
-export class Notification {
+export class Toast {
     static readonly hideDelay = 3000;
     static readonly removeDelay = 1000;
-    static readonly notificationsContainer = ".notifications";
+    static readonly toastsContainer = ".toasts";
 
-    readonly notification: Element;
+    readonly toast: Element;
 
     constructor(readonly content: string, readonly autoHide = true, readonly loading = false) {
-        this.notification = this.generateNotificationHTML(this.content, this.loading);
+        this.toast = this.generateToastHTML(this.content, this.loading);
         this.show();
 
         if (this.autoHide) {
             setTimeout(() => {
                 this.hide();
-            }, Notification.hideDelay);
+            }, Toast.hideDelay);
         }
     }
 
     private show(): void {
-        document.querySelector(Notification.notificationsContainer).prepend(this.notification);
+        document.querySelector(Toast.toastsContainer).prepend(this.toast);
         window.requestAnimationFrame(() => {
-            this.notification.classList.remove("notification-show");
+            this.toast.classList.remove("toast-show");
         });
     }
 
     hide(): void {
-        this.notification.classList.add("notification-hide");
+        this.toast.classList.add("toast-hide");
         setTimeout(() => {
-            this.notification.remove();
-        }, Notification.removeDelay);
+            this.toast.remove();
+        }, Toast.removeDelay);
     }
 
-    private generateNotificationHTML(content: string, loading: boolean): Element {
+    private generateToastHTML(content: string, loading: boolean): Element {
         const element = this.htmlToElement(
-            `<div class='notification notification-show'>${content}</div>`
+            `<div class='toast toast-show'>${content}</div>`
         );
         if (loading) {
             element.appendChild(this.htmlToElement("<div class='spinner'></div>"));

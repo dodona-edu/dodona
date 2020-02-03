@@ -172,14 +172,14 @@ class RepositoriesController < ApplicationController
   def model_update_response(success, model, return_path)
     respond_to do |format|
       if success
-        notification = t('controllers.updated', model: model.model_name.human)
+        toast = t('controllers.updated', model: model.model_name.human)
         format.json { head :no_content }
-        format.js { render locals: { notification: notification } }
-        format.html { redirect_to return_path, notice: notification }
+        format.js { render locals: { toast: toast } }
+        format.html { redirect_to return_path, notice: toast }
       else
         alert = t('controllers.update_failed', model: model.model_name.human)
         format.json { head :unprocessable_entity }
-        format.js { render status: :bad_request, locals: { notification: alert } }
+        format.js { render status: :bad_request, locals: { toast: alert } }
         format.html { redirect_to return_path, alert: alert }
       end
     end

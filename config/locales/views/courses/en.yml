@@ -91,10 +91,10 @@ en:
       confirm_decline_all: Are you sure you want to decline all pending users?
       accept_all: Accept all
       confirm_accept_all: Are you sure you want to accept all pending users?
-      mass_accept_notification:
+      mass_accept_toast:
         one: 1 pending user is accepted.
         other: "%{count} pending users are accepted."
-      mass_decline_notification:
+      mass_decline_toast:
         one: 1 pending user is declined.
         other: "%{count} pending users are declined."
       taught_by: "Taught by %{teacher}."

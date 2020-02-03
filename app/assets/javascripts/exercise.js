@@ -1,6 +1,6 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
 import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
-import { Notification } from "./notification";
+import { Toast } from "./toast";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -268,7 +268,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
                 }
                 setTimeout(enableSubmitButton, 100);
-                new Notification(I18n.t("js.submission-processed"));
+                new Toast(I18n.t("js.submission-processed"));
                 lastSubmission = null;
             }
         }
@@ -284,7 +284,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function submissionSuccessful(data, userId) {
         lastSubmission = data.id;
-        new Notification(I18n.t("js.submission-saved"));
+        new Toast(I18n.t("js.submission-saved"));
         ga("send", "pageview");
         let url = `/submissions.js?user_id=${userId}&exercise_id=${data.exercise_id}`;
         if (data.course_id) {

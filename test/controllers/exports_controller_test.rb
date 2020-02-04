@@ -28,6 +28,13 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
     assert_zip ActiveStorage::Blob.last.download, with_info: true, solution_count: count, data: @data
   end
 
+  test 'should create notification' do
+    assert_difference('Notification.count', 1) do
+      post for_series_exports_path(@series), params: { all: true, only_last_submission: true, with_info: true }
+    end
+    assert_redirected_to exports_path
+  end
+
   test 'should be grouped by user' do
     post for_series_exports_path(@series), params: { all: true, group_by: 'user' }
     assert_redirected_to exports_path
@@ -180,11 +187,55 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
       all: true,
       solution_count: Submission.all.of_user(other_student).count
     }
-    post for_user_exports_path(other_student), params: options
-    assert_response :redirect
+    post for_user_exports_path(other_student, format: :json), params: options
+    assert_response :forbidden
 
     sign_in create(:staff, administrating_courses: [@course])
-    post for_user_exports_path(other_student), params: options
-    assert_response :redirect
+    post for_user_exports_path(other_student, format: :json), params: options
+    assert_response :forbidden
+  end
+
+  test 'should be able to export course if course member' do
+    sign_in @students[0]
+
+    post for_course_exports_path(@course, user_id: @students[0].id, format: :json)
+    assert_response :accepted
+  end
+
+  test 'should not be able to export course if not course member' do
+    u = create :user
+    sign_in u
+
+    post for_course_exports_path(@course, user_id: u.id, format: :json)
+    assert_response :forbidden
+  end
+
+  test 'should not be able to export full course if not course admin' do
+    sign_in @students[0]
+
+    post for_course_exports_path(@course, format: :json)
+    assert_response :forbidden
+  end
+
+  test 'should be able to export series if course member' do
+    sign_in @students[0]
+
+    post for_series_exports_path(@course.series.first, user_id: @students[0].id, format: :json)
+    assert_response :accepted
+  end
+
+  test 'should not be able to export series if not course member' do
+    u = create :user
+    sign_in u
+
+    post for_series_exports_path(@course.series.first, user_id: u.id, format: :json)
+    assert_response :forbidden
+  end
+
+  test 'should not be able to export full series if not course admin' do
+    sign_in @students[0]
+
+    post for_series_exports_path(@course.series.first, format: :json)
+    assert_response :forbidden
   end
 end

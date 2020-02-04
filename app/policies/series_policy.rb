@@ -100,11 +100,11 @@ class SeriesPolicy < ApplicationPolicy
     end
   end
 
-  private
-
   def course_admin?
     record.class == Series && user&.course_admin?(record&.course)
   end
+
+  private
 
   def course_member?
     record.class == Series && user&.member_of?(record&.course)

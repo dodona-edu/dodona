@@ -75,8 +75,14 @@ class ExportsController < ApplicationController
   def create(item, list)
     authorize item, :export?
     authorize @user, :export? if @user
+    authorize item, :course_admin? if @user.blank? && (item.class == Series || item.class == Course)
 
     Export.create(user: current_user).delay(queue: 'exports').start(item, list, ([@user] if @user), params)
-    redirect_to action: 'index'
+    respond_to do |format|
+      format.html do
+        redirect_to action: 'index'
+      end
+      format.json { head :accepted }
+    end
   end
 end

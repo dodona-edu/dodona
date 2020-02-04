@@ -14,5 +14,8 @@
 
 FactoryBot.define do
   factory :notification do
+    message { Faker::Lorem.words(number: 5) }
+    notifiable { |n| n.association(:export) }
+    user
   end
 end

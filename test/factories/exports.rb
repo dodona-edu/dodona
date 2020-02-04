@@ -11,6 +11,6 @@
 
 FactoryBot.define do
   factory :export do
-    user { nil }
+    user
   end
 end

@@ -16,4 +16,8 @@ class NotificationPolicy < ApplicationPolicy
   def destroy?
     record.user == user
   end
+
+  def permitted_attributes
+    %i[read]
+  end
 end

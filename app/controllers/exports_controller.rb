@@ -4,6 +4,7 @@ class ExportsController < ApplicationController
 
   def index
     authorize Export
+    @title = I18n.t('exports.index.title')
     @exports = policy_scope(Export)
   end
 

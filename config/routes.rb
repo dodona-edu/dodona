@@ -149,7 +149,7 @@ Rails.application.routes.draw do
 
     resources :institutions, only: %i[index show edit update]
     resources :events, only: [:index]
-    resources :notifications, only: %i[index destroy]
+    resources :notifications, only: %i[index update destroy]
 
 
     scope 'stats', controller: 'statistics' do

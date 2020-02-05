@@ -147,14 +147,17 @@ class SubmissionRunner
       end
     end
 
-    outlines, errlines = container.tap(&:start).attach(
-      stdin: StringIO.new(@config.to_json),
-      stdout: true,
-      stderr: true
-    )
-    timeout_mutex.synchronize do
-      timer.kill
-      timeout = false if timeout.nil?
+    begin
+      outlines, errlines = container.tap(&:start).attach(
+        stdin: StringIO.new(@config.to_json),
+        stdout: true,
+        stderr: true
+      )
+    ensure
+      timeout_mutex.synchronize do
+        timer.kill
+        timeout = false if timeout.nil?
+      end
     end
 
     after_time = Time.zone.now

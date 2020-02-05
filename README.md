@@ -45,10 +45,6 @@ If this does not work out of the box you can add the following lines to your `/e
 127.0.0.1             sandbox.localhost
 ```
 
-## Tutor Docker network
-
-Your docker network (for the python tutor) should be in `192.168.0.0/16`. If this is not the case, you should edit `Rails.config.tutor_docker_network_prefix` in `config/application.rb`. Be aware that you should run this application behind a proxy, otherwise users could spoof their IP address via the `X-Forwarder-For` header. (If they spoof their ip addres to one within the docker network, they will be able to access media files of private exercises that they would otherwise not have access to.)
-
 ## Running on Windows
 
 Some gems (such as therubyracer) are not supported on Windows. However it is possible to run Dodona using [WSL](https://docs.microsoft.com/en-us/windows/wsl/about). Note: using [WSL2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-index), these steps are probably not necessary.

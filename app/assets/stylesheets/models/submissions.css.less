@@ -204,6 +204,27 @@
     margin-left: 1em;
     margin-right: 1em;
   }
+  .message-zeus, .message-staff {
+    border-left: 3px solid @text-secondary;
+  }
+  .message-zeus:before, .message-staff:before {
+    font: normal normal normal 24px/1 "Material Design Icons";
+    color: @text-secondary;
+    font-size: 18px;
+    margin-left: 3px;
+    width: 22px;
+    display: inline-block;
+  }
+  .message-zeus:before {
+    content: "\F032";
+  }
+  .message-staff:before {
+    content: "\F474";
+  }
+  .message-zeus+.message-zeus:before,
+  .message-staff+.message-staff:before {
+    content: '';
+  }
   .tab-link-marker {
     background: @brand-warning !important;
   }

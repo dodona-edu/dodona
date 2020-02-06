@@ -1,35 +1,45 @@
 <table class="table table-index table-resource">
+  <thead>
+    <tr>
+      <th class="status-icon"></th>
+      <th><%= t 'notifications.index.message' %></th>
+      <th><%= t 'notifications.index.created_header' %></th>
+      <th class="actions"></th>
+    </tr>
+  </thead>
   <tbody>
   <% notifications.each do |n| %>
     <tr class="notification" data-id="<%= n.id %>">
+      <td class="front-read-indicator status-icon">
+        <i class="mdi mdi-circle-medium mdi-24<%= " transparent" if n.read %>"></i>
+      </td>
       <td>
         <a class="notification-link" href="<%= notifiable_url n %>"><%= t n.message %></a>
-        <div class="text-muted">
-          <small>
-            <span><%= "#{time_ago_in_words n.created_at} #{t 'series.deadline.ago'}" %></span>
-          </small>
-        </div>
+      </td>
+      <td>
+        <span><%= t 'notifications.index.created', {when: time_ago_in_words(n.created_at)} %></span>
       </td>
       <td class="actions">
-        <span class="btn-icon">
+        <span class="btn btn-sm btn-default read-toggle-button" >
           <% if n.read %>
-            <i class="mdi mdi-circle-medium mdi-18 read-indicator" ></i>
+            <i class="mdi mdi-circle-medium mdi-18 read-indicator" title="<%= t 'js.mark_as_unread' %>"></i>
           <% else %>
-            <i class="mdi mdi-check mdi-18 read-indicator"></i>
+            <i class="mdi mdi-check mdi-18 read-indicator" title="<%= t 'js.mark_as_read' %>"></i>
           <% end %>
         </span>
-        <%= link_to notification_path(n), method: :delete, remote: true, class: "btn-icon" do %>
-          <i class="mdi mdi-close mdi-18"></i>
-        <% end %>
+        <span class="btn btn-sm btn-danger delete-button">
+          <i class="mdi mdi-delete mdi-18"></i>
+        </span>
       </td>
     </tr>
   <% end %>
   <script>
     $(() => {
       <% notifications.each do |n| %>
-        new dodona.Notification(<%= n.id %>, "<%= notification_path(n, format: :json) %>", <%= n.read %>);
+        new dodona.Notification(<%= n.id %>, "<%= notification_path(n, format: :json) %>", <%= n.read %>, "<%= notifiable_url(n) %>", false);
       <% end %>
     })
   </script>
   </tbody>
 </table>
+<center><%= page_navigation_links notifications, true, 'notifications' %></center>

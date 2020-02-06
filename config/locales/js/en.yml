@@ -37,6 +37,8 @@ en:
     loading: Loading...
     submissions_on: "submissions on"
     no_selection: You must select at least one item before being able to download solutions.
+    mark_as_read: Mark as read
+    mark_as_unread: Mark as unread
     months:
       long:
         jan: January

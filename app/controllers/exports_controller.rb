@@ -1,6 +1,6 @@
 class ExportsController < ApplicationController
   before_action :set_user,
-                only: %i[new_for_course new_for_series create_for_series create_for_course]
+                only: %i[new_series_export new_course_export create_series_export create_course_export]
 
   def index
     authorize Export
@@ -8,7 +8,7 @@ class ExportsController < ApplicationController
     @exports = policy_scope(Export)
   end
 
-  def new_for_series
+  def new_series_export
     @series = Series.find(params[:id])
     authorize @series, :export?
     authorize @user, :export? if @user
@@ -24,7 +24,7 @@ class ExportsController < ApplicationController
     render 'download_submissions'
   end
 
-  def new_for_course
+  def new_course_export
     @course = Course.find(params[:id])
     authorize @course, :export?
     authorize @user, :export? if @user
@@ -37,7 +37,7 @@ class ExportsController < ApplicationController
     render 'download_submissions'
   end
 
-  def new_for_user
+  def new_user_export
     @user = User.find(params[:id])
     authorize @user, :export?
     @crumbs = [[@user.full_name, user_path(@user)], [I18n.t('exports.download_submissions.title'), '#']]
@@ -48,19 +48,19 @@ class ExportsController < ApplicationController
     render 'download_submissions'
   end
 
-  def create_for_series
+  def create_series_export
     item = Series.find(params[:id])
     list = Exercise.where(id: params[:selected_ids])
     create(item, list)
   end
 
-  def create_for_course
+  def create_course_export
     item = Course.find(params[:id])
     list = Series.where(id: params[:selected_ids])
     create(item, list)
   end
 
-  def create_for_user
+  def create_user_export
     item = User.find(params[:id])
     list = Course.where(id: params[:selected_ids])
     create(item, list)
@@ -80,6 +80,7 @@ class ExportsController < ApplicationController
     Export.create(user: current_user).delay(queue: 'exports').start(item, list, ([@user] if @user), params)
     respond_to do |format|
       format.html do
+        flash[:notice] = I18n.t('exports.index.export_started')
         redirect_to action: 'index'
       end
       format.json { head :accepted }

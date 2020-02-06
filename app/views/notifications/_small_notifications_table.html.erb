@@ -1,0 +1,60 @@
+<table class="table table-index table-resource">
+  <tbody>
+  <% notifications.limit(5).each do |n| %>
+    <tr class="notification" data-id="<%= n.id %>">
+      <td class="front-read-indicator">
+        <i class="mdi mdi-circle-medium mdi-24<%= " transparent" if n.read %>" ></i>
+      </td>
+      <td>
+        <a class="notification-link" href="<%= notifiable_url n %>"><%= t n.message %></a>
+        <div class="text-muted">
+          <small>
+            <span><%= t 'notifications.index.created', {when: time_ago_in_words(n.created_at)} %></span>
+          </small>
+        </div>
+      </td>
+      <td class="actions">
+        <span class="btn-icon read-toggle-button">
+          <% if n.read %>
+            <i class="mdi mdi-circle-medium mdi-18 read-indicator" title="<%= t 'js.mark_as_unread' %>"></i>
+          <% else %>
+            <i class="mdi mdi-check mdi-18 read-indicator" title="<%= t 'js.mark_as_read' %>"></i>
+          <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <% if notifications.count > 5 %>
+    <% unread_in_overflow = notifications.where(read: false).where('id < ?', notifications.limit(5).last.id).any? %>
+    <tr class="notification-overflow notification">
+      <td class="front-read-indicator">
+        <% if unread_in_overflow %>
+          <i class="mdi mdi-circle-medium mdi-24" ></i>
+        <% end %>
+      </td>
+      <td>
+        <small>
+          <a href="<%= notifications_path %>"><%= t 'notifications.index.view_all' %></a>
+        </small>
+      </td>
+      <td>
+        <%# We're going to do a little bit of a hack here: if there are unread
+            notifications that aren't shown in the navbar menu, we don't want
+            to toggle off the bell's notification status when all visible
+            notifications are set to read. Therefore, we add a hidden span here
+            that has the classes used for detecting if there any unread
+            notifications left. %>
+        <% if unread_in_overflow  %>
+          <span class="mdi-check read-indicator hidden"></span>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <script>
+    $(() => {
+      <% notifications.limit(5).each do |n| %>
+        new dodona.Notification(<%= n.id %>, "<%= notification_path(n, format: :json) %>", <%= n.read %>, "<%= notifiable_url(n) %>", true);
+      <% end %>
+    })
+  </script>
+  </tbody>
+</table>

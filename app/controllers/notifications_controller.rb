@@ -2,7 +2,9 @@ class NotificationsController < ApplicationController
   before_action :set_notification, only: %i[update destroy]
 
   def index
-    @notifications = Notification.all
+    authorize Notification
+    @title = I18n.t('notifications.index.title')
+    @notifications = Notification.where(user: current_user).paginate(page: parse_pagination_param(params[:page]))
   end
 
   def update
@@ -19,7 +21,16 @@ class NotificationsController < ApplicationController
     @notification.destroy
     respond_to do |format|
       format.json { head :no_content }
-      format.js
+    end
+  end
+
+  def destroy_all
+    authorize Notification
+    notifications = Notification.where(user: current_user)
+    notifications.destroy_all
+    respond_to do |format|
+      format.json { head :no_content }
+      format.html { redirect_to controller: 'pages', action: 'home' }
     end
   end
 

@@ -82,8 +82,8 @@ en:
       no_series_yet: This course currently contains no exercises nor series. Click the "Manage series" button to get started!
       users: Users
       series: series
-      download_submissions: Download student submissions
-      download_my_submissions: Download my submissions
+      download_submissions: Export student submissions
+      download_my_submissions: Export my submissions
       subscribed: Registered
       pending: Pending
       unsubscribed: Unregistered

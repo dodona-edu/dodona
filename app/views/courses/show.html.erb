@@ -78,7 +78,7 @@
               <% end %>
               <% if current_user&.course_admin?(@course) %>
                 <li>
-                  <%= link_to t(".download_submissions"), for_course_exports_path(@course) %>
+                  <%= link_to t(".download_submissions"), courses_exports_path(@course) %>
                 </li>
               <% end %>
               <% if (policy(@course).copy? || current_user&.course_admin?(@course)) && policy(@course).download_submissions? %>
@@ -86,7 +86,7 @@
               <% end %>
               <% if policy(@course).download_submissions? %>
                 <li>
-                  <%= link_to t(".download_my_submissions"), for_course_exports_path(@course, user_id: current_user.id) %>
+                  <%= link_to t(".download_my_submissions"), courses_exports_path(@course, user_id: current_user.id) %>
                 </li>
               <% end %>
             </ul>

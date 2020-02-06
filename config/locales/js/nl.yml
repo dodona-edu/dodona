@@ -37,6 +37,8 @@ nl:
     loading: Aan het laden...
     submissions_on: ingediende oplossingen op
     no_selection: Er moet ten minste één iets gekozen worden om oplossingen te kunnen downloaden.
+    mark_as_read: Als gelezen markeren
+    mark_as_unread: Als ongelezen markeren
     months:
       long:
         jan: Januari

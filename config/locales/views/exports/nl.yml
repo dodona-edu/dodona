@@ -1,19 +1,24 @@
 nl:
   exports:
     index:
-      title: "Exports"
+      title: "Exporteer je data"
       filename: "Bestandsnaam"
       started: "Begonnen"
       status: "Status"
-      ready_for_download: "Je export staat klaar om te downloaden"
+      ready_for_download: "Je data export staat klaar om te downloaden"
+      created: "%{when} geleden"
+      export_started: "We zijn je export aan het klaarmaken en zullen je verwittigen wanneer die klaar is"
+      automatic_deletion: Gegenereerde archieven zullen beschikbaar blijven voor 30 dagen, waarna ze van onze servers verwijderd zullen worden.
+      explanation: "Bij Dodona geloven we sterk dat jouw data wel degelijk van jou is. Daarom laten we je to om al de oplossingen die je ooit hebt ingediend op het platform te exporteren en te downloaden. Elke cursus en oefeningenreeks heeft een link naar onze data export wizard waar je een archief kan maken van je oplossingen in een paar gemakkelijke stappen. Lesgevers kunnen ook gemakkelijk alle oplossingen van studenten downloaden binnen hun vak."
+      no_exports_yet_html: "Het lijkt er op dat je geen recente exports hebt gemaakt. Je kan beginnen met <a href=\"%{user_link}\">al je ingediende oplossingen</a> te exporteren."
     download_submissions:
-      title: Oplossingen downloaden
-      title_students: Oplossingen van studenten downloaden
+      title: Oplossingen exporteren
+      title_students: Oplossingen van studenten exporteren
       choose_exercises: Van welke oefeningen wil je oplossingen downloaden?
       choose_series: Van welke reeksen wil je oplossingen downloaden?
       choose_courses: Van welke cursussen wil je oplossingen downloaden?
       next_step: Volgende stap
-      start_download: Start download
+      start_download: Start export
       choose_options: Selecteer de opties die je wenst toe te passen op uw download.
       with_info_label: Voeg samenvatting toe
       with_info_label_help: De samenvatting is een CSV-bestand met informatie over de studenten, de oefeningen en de ingediende oplossingen.

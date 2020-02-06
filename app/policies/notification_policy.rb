@@ -1,10 +1,4 @@
 class NotificationPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope.where(user: user)
-    end
-  end
-
   def index?
     user.present?
   end
@@ -15,6 +9,10 @@ class NotificationPolicy < ApplicationPolicy
 
   def destroy?
     record.user == user
+  end
+
+  def destroy_all?
+    user.present?
   end
 
   def permitted_attributes

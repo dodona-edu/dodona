@@ -55,12 +55,12 @@ Rails.application.routes.draw do
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
 
     resources :exports, except: %i[show edit update new destroy create] do
-      get 'for_user/:id', on: :collection, to: 'exports#new_for_user', as: 'for_user'
-      post 'for_user/:id', on: :collection, to: 'exports#create_for_user'
-      get 'for_course/:id', on: :collection, to: 'exports#new_for_course', as: 'for_course'
-      post 'for_course/:id', on: :collection, to: 'exports#create_for_course'
-      get 'for_series/:id', on: :collection, to: 'exports#new_for_series', as: 'for_series'
-      post 'for_series/:id', on: :collection, to: 'exports#create_for_series'
+      get 'users/:id', on: :collection, to: 'exports#new_user_export', as: 'users'
+      post 'users/:id', on: :collection, to: 'exports#create_user_export'
+      get 'courses/:id', on: :collection, to: 'exports#new_course_export', as: 'courses'
+      post 'courses/:id', on: :collection, to: 'exports#create_course_export'
+      get 'series/:id', on: :collection, to: 'exports#new_series_export', as: 'series'
+      post 'series/:id', on: :collection, to: 'exports#create_series_export'
     end
 
     resources :courses do
@@ -149,7 +149,9 @@ Rails.application.routes.draw do
 
     resources :institutions, only: %i[index show edit update]
     resources :events, only: [:index]
-    resources :notifications, only: %i[index update destroy]
+    resources :notifications, only: %i[index update destroy] do
+      delete 'destroy_all', on: :collection
+    end
 
 
     scope 'stats', controller: 'statistics' do

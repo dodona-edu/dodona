@@ -12,7 +12,7 @@
 require 'test_helper'
 
 class ExportTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'can be created by factory' do
+    assert_not_nil create(:export)
+  end
 end

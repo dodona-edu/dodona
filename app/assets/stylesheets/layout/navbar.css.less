@@ -155,13 +155,28 @@
       padding-left: 20px;
 
       .notification-dropdown {
-        .table > tbody > tr > td {
+        .table > tbody > tr:first-of-type > td {
           border-top: none;
+        }
+        .notification {
+          cursor: pointer;
+        }
+        .front-read-indicator {
+          i {
+            padding-left: 8px;
+            margin-right: -8px;
+
+            &.transparent {
+              display: none;
+            }
+          }
+        }
+        .read-toggle-button {
+          cursor: pointer;
         }
         a {
           padding-left: 0px;
           color: @text-color;
-          
           &.btn-icon {
             color: @text-secondary;
           }

@@ -1,56 +1,88 @@
+import { fetch } from "util.js";
 /**
- * Model for a notification in the navbar.
+ * Model for a notification in the navbar. It adds three listeners to the notification view:
+ *
+ *  1. It listens to clicks on the read toggle button and updates the model on
+ *  the server accordingly. The view is then updated based on the response of the server.
+ *
+ *  2. It listens to clicks on the delete button and removes the model on the
+ *  server accordingly. The element is then removed from the view.
+ *
+ *  3. It optionally listens to a click on the element and navigates to the link
+ *  of the notification.
  */
 export class Notification {
-    readonly element: Element;
-    read: boolean;
+    private readonly element: Element;
+    private readonly url: string;
+    private readonly notifiableUrl: string;
+    private read: boolean;
 
-    constructor(readonly id: number, readonly url: string, readonly _read: boolean) {
+    constructor(id: number, url: string, read: boolean, notifiableUrl: string, installClickHandler: boolean) {
         this.element = document.querySelector(`.notification[data-id="${id}"]`);
-        this.read = _read;
+        this.read = read;
+        this.url = url;
+        this.notifiableUrl = notifiableUrl;
 
-        this.element.querySelector(".notification-link").addEventListener("click", event => {
-            const goto = (event.target as HTMLLinkElement).href;
-            fetch(url, {
-                method: "PATCH",
-                headers: {
-                    "x-csrf-token": (document.querySelector("meta[name=\"csrf-token\"]") as HTMLMetaElement).content,
-                    "x-requested-with": "XMLHttpRequest",
-                    "content-type": "application/json"
-                },
-                body: "{ \"notification\": { \"read\": true } }"
-            }).then(() => {
-                window.location.href = goto;
-            });
-            return false;
-        });
-
-        this.element.querySelector(".read-indicator").addEventListener("click", event => {
-            const indicator = event.target as Element;
-            fetch(url, {
-                method: "PATCH",
-                headers: {
-                    "x-csrf-token": (document.querySelector("meta[name=\"csrf-token\"]") as HTMLMetaElement).content,
-                    "x-requested-with": "XMLHttpRequest",
-                    "content-type": "application/json"
-                },
-                body: `{ "notification": { "read": ${!this.read} } }`
-            }).then(resp => {
-                return Promise.all([resp.ok, resp.json()]);
-            }).then(([ok, body]) => {
-                if (!ok) {
-                    return Promise.reject(body);
-                }
-                this.read = body.read;
-                if (!this.read) {
-                    indicator.classList.remove("mdi-circle-medium");
-                    indicator.classList.add("mdi-check");
-                } else {
-                    indicator.classList.remove("mdi-check");
-                    indicator.classList.add("mdi-circle-medium");
-                }
-            });
+        this.element.querySelector(".read-toggle-button").addEventListener("click", event => {
+            this.toggleRead();
             event.stopPropagation();
         });
+
+        // Delete button isn't shown on small view in navbar
+        if (this.element.querySelector(".delete-button") != null) {
+            this.element.querySelector(".delete-button").addEventListener("click", event => {
+                this.remove();
+                event.stopPropagation();
+            });
+        }
+
+        // We only want to install the click handler for the full element on the small notification view.
+        if (installClickHandler) {
+            this.element.addEventListener("click", event => {
+                this.visit();
+                event.stopPropagation();
+            });
+        }
+    }
+
+    async toggleRead(): Promise<void> {
+        const response = await fetch(this.url, {
+            method: "PATCH",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: `{ "notification": { "read": ${!this.read} } }`
+        });
+        const body = await response.json();
+        this.read = body.read;
+        const indicator = this.element.querySelector(".read-indicator");
+        const frontIndicator = this.element.querySelector(".front-read-indicator i");
+        if (!this.read) {
+            indicator.classList.remove("mdi-circle-medium");
+            indicator.classList.add("mdi-check");
+            indicator.setAttribute("title", I18n.t("js.mark_as_read"));
+            frontIndicator.classList.remove("transparent");
+        } else {
+            indicator.classList.remove("mdi-check");
+            indicator.classList.add("mdi-circle-medium");
+            indicator.setAttribute("title", I18n.t("js.mark_as_unread"));
+            frontIndicator.classList.add("transparent");
+        }
+        if (document.querySelector(".notification-dropdown") !== null) {
+            if (document.querySelectorAll(".notification-dropdown .read-indicator.mdi-check").length === 0) {
+                document.querySelector("#navbar-notifications .dropdown-toggle").classList.remove("notification");
+            } else {
+                document.querySelector("#navbar-notifications .dropdown-toggle").classList.add("notification");
+            }
+        }
+    }
+
+    async remove(): Promise<void> {
+        await fetch(this.url, { method: "DELETE" });
+        this.element.remove();
+    }
+
+    visit(): void {
+        window.location.href = this.notifiableUrl;
     }
 }

@@ -1,0 +1,9 @@
+nl:
+  notifications:
+    index:
+      created: "%{when} geleden"
+      view_all: "Alle notificaties bekijken"
+      title: Notificaties
+      message: Bericht
+      created_header: "Aangemaakt"
+      destroy_all: "Alle notificaties verwijderen"

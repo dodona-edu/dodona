@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit
   include SetCurrentRequestDetails
+  include NotificationsHelper
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -168,6 +169,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_notifications
-    @notifications = policy_scope(Notification)
+    @notifications = current_user.notifications
+    @notifications.where(read: false).each do |n|
+      n.update(read: true) if notifiable_url(n) == request.original_fullpath
+    end
   end
 end

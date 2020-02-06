@@ -45,7 +45,7 @@ module ExportHelper
       }
     end
 
-    # Exporting a zip from Indianio: make sure to return specific output for this request
+    # Exporting a zip for Indianio: make sure to return specific output for this request
     def indianio?
       @options[:indianio].present?
     end

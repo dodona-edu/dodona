@@ -51,3 +51,5 @@ en:
         hidden: Hide correct tests
       judge_output_too_long: "The judge generated too much output. This usually happens when the submission itself generates too much output. Try to reduce how much output your submission generates."
       reading_failed: "Something went wrong while loading your results. Try again later or resubmit your solution if the problem persists."
+      message_staff: This message is only visible for course admins
+      message_zeus: This message is only visible for administrators

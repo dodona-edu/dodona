@@ -273,15 +273,22 @@ class Submission < ApplicationRecord
   end
 
   def self.punchcard_matrix(options, base = { until: 0, value: {} })
-    submissions = submissions_since(base[:until], options).pluck(:id, :created_at)
-    return base if submissions.empty?
+    submissions = submissions_since(base[:until], options)
+    return base unless submissions.any?
+
+    value = base[:value]
+
+    submissions.in_batches do |subs|
+      value = value.merge(subs.pluck(:created_at)
+                              .map { |d| d.in_time_zone(options[:timezone]) }
+                              .map { |d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}" }
+                              .group_by(&:itself)
+                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+    end
 
     {
-      until: submissions.first[0],
-      value: base[:value].merge(submissions.map { |_, d| d.in_time_zone(options[:timezone]) }
-                                           .map { |d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}" }
-                                           .group_by(&:itself)
-                                           .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+      until: submissions.first.id,
+      value: value
     }
   end
 
@@ -296,12 +303,21 @@ class Submission < ApplicationRecord
   )
 
   def self.heatmap_matrix(options = {}, base = { until: 0, value: {} })
-    submissions = submissions_since(base[:until], options).pluck(:id, :created_at)
-    return base if submissions.empty?
+    submissions = submissions_since(base[:until], options)
+    return base unless submissions.any?
+
+    value = base[:value]
+
+    submissions.in_batches do |subs|
+      value = value.merge(subs.pluck(:created_at)
+                              .map { |d| d.strftime('%Y-%m-%d') }
+                              .group_by(&:itself)
+                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+    end
 
     {
-      until: submissions.first[0],
-      value: base[:value].merge(submissions.map { |_, d| d.strftime('%Y-%m-%d') }.group_by(&:itself).transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+      until: submissions.first.id,
+      value: value
     }
   end
 

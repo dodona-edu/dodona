@@ -1,10 +1,13 @@
 class FeedbackCodeRenderer
   require 'json'
 
-  def initialize(code, programming_language, builder = nil)
+  def initialize(code, programming_language, messages, builder = nil)
     @code = code
     @programming_language = programming_language
+    @messages = messages
     @builder = builder || Builder::XmlMarkup.new
+
+    @compress = false
   end
 
   def parse
@@ -15,12 +18,12 @@ class FeedbackCodeRenderer
     lexed_c = lexer.lex(@code)
 
     only_errors = @messages.select { |message| message[:type] == :error || message[:type] == 'error' }
-    compress = !only_errors.empty? && only_errors.size != @messages.size
+    @compress = !only_errors.empty? && only_errors.size != @messages.size
 
     unless @messages.empty?
       @builder.div do
         @builder.div(class: 'feedback-table-options') do
-          if compress
+          if @compress
             @builder.span(id: 'messages-were-hidden') do
               @builder.text!(I18n.t('submissions.show.annotations.messages.were_hidden'))
             end
@@ -32,10 +35,10 @@ class FeedbackCodeRenderer
               @builder.text!(I18n.t('submissions.show.annotations.title'))
             end
             @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title'), 'data-toggle': 'buttons') do
-              @builder.button(class: "btn btn-secondary #{'active' unless compress}", id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.button(class: "btn btn-secondary #{'active' unless @compress}", id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
                 @builder.i(class: 'mdi mdi-18 mdi-comment-multiple-outline') {}
               end
-              if compress
+              if @compress
                 @builder.button(class: 'btn btn-secondary active', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
                   @builder.i(class: 'mdi mdi-18 mdi-comment-alert-outline') {}
                 end
@@ -53,11 +56,11 @@ class FeedbackCodeRenderer
     self
   end
 
-  def add_messages(messages)
+  def add_messages
     @builder.script(type: 'application/javascript') do
       @builder << 'window.dodona.codeListing = new window.dodona.codeListingClass();'
       @builder << '$(() => window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + '));'
-      @builder << '$(() => window.dodona.codeListing.compressMessages());' if compress
+      @builder << '$(() => window.dodona.codeListing.compressMessages());' if @compress
     end
   end
 

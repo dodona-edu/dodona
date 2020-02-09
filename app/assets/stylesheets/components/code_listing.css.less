@@ -76,10 +76,21 @@
         border-left-color: @info-500;
       }
 
-      .copy-blocker {
+      div.copy-blocker {
         position: absolute;
         user-select: text;
         height: 100%;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      span.displayMore {
+        cursor: pointer;
+        text-decoration: underline;
+        margin-left: 10px;
+        color: @text-secondary;
       }
     }
   }

@@ -27,8 +27,18 @@ export class CodeListing {
         });
     }
 
+    // Ordering of messages by message type is only between elements that are added in the same addAnnotations() call.
+    // If a second set of annotations gets added the errors of the second set will appear below the info messages from
+    //  the first set. But all info messages from the second set will be below the errors of the second set.
+    static readonly ORDERING = ["error", "warning", "info"];
+
     addAnnotations(messages: Message[]): void {
         let idOffset: number = this.messages.length;
+
+        messages.sort((a, b) => {
+            return CodeListing.ORDERING.indexOf(a.type) - CodeListing.ORDERING.indexOf(b.type);
+        });
+
         for (const message of messages) {
             message.id = idOffset + 1;
             idOffset += 1;
@@ -37,6 +47,34 @@ export class CodeListing {
             this.createAnnotation(message, correspondingLine.rowIndex + 1, message.row + 1);
             this.messages.push(message);
         }
+        this.checkForErrorAndCompress();
+    }
+
+    checkForErrorAndCompress(): void {
+        this.table.querySelectorAll(".annotation.error").forEach(warningAnnotation => {
+            const td: HTMLTableDataCellElement = warningAnnotation.closest(".annotation-cell");
+            const others = td.querySelectorAll(".annotation.info:not(.hide),.annotation.warning:not(.hide)");
+            if (others.length > 0) {
+                others.forEach(toHide => {
+                    toHide.classList.add("hide");
+                });
+
+                const showMoreLink: HTMLSpanElement = document.createElement("span");
+                showMoreLink.setAttribute("class", "displayMore");
+                showMoreLink.append(document.createTextNode(I18n.t("js.compressed_warning_info")));
+                td.append(showMoreLink);
+
+                showMoreLink.addEventListener("click", this.decompressWarningsAndInfo.bind(this));
+            }
+        });
+    }
+
+    decompressWarningsAndInfo(clickEvent): void {
+        const clickTarget = clickEvent.currentTarget;
+        clickTarget.closest(".annotation-cell").querySelectorAll(".annotation.hide").forEach(annotation => {
+            annotation.classList.remove("hide");
+        });
+        clickTarget.remove();
     }
 
     private createAnnotationRow(lineNumber: number, rougeRow: number): HTMLTableRowElement {

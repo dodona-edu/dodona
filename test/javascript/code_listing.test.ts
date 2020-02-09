@@ -45,3 +45,4 @@ test("annotation types should be transmitted into the view", () => {
     expect(document.querySelectorAll(".annotation.warning").length).toBe(1);
     expect(document.querySelectorAll(".annotation.error").length).toBe(1);
 });
+

@@ -1,4 +1,4 @@
-import { CodeListing } from "../../app/assets/javascripts/code_listing";
+import { CodeListing } from "../../app/assets/javascripts/code_listing/code_listing";
 
 beforeEach(() => {
     document.body.innerHTML = "<table class='code-listing'><tbody>" +

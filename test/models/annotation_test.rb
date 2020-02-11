@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class AnnotationTest < ActiveSupport::TestCase
-
   setup do
     @user = create :user, {}
     @submission = create :submission, user: @user

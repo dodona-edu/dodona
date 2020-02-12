@@ -92,9 +92,13 @@ export class Message {
             return;
         }
 
-        if (this.codeListing.messages.filter(m => m.type == this.type && m.dot != null).length != 0) {
-            return;
-        }
+        const ownOrder = this.order();
+        const others: Message[] = this.codeListing.messages.filter(p => this.line == p.line && p.dot != undefined);
+        others.forEach(dotDisplayed => {
+            if (dotDisplayed.order() >= ownOrder) {
+                dotDisplayed.removeDot();
+            }
+        });
 
         const codeGutter = this.codeListingHTML.querySelector(`tr#line-${this.line} .rouge-gutter.gl`);
         this.dot = document.createElement("span");
@@ -103,9 +107,13 @@ export class Message {
     }
 
     removeDot(): void {
-        if (this.dot) {
+        if (this.dot != undefined) {
             this.dot.remove();
             this.dot = null;
         }
+    }
+
+    order(): number {
+        return ORDERING.findIndex(p => p == this.type);
     }
 }

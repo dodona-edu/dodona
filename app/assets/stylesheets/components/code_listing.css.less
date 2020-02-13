@@ -19,6 +19,8 @@
     overflow-x: auto;
     white-space: nowrap;
 
+    background-color: @well-bg;
+
     // Override the normal pre padding & coloring
     pre {
       padding: 0;
@@ -62,7 +64,6 @@
       display: flex;
       justify-content: flex-end;
 
-      background-color: @well-bg;
 
       pre {
         font-family: @font-family-monospace;
@@ -94,7 +95,9 @@
       }
     }
 
-    background-color: @body-bg;
+    .rouge-code, .annotation-cell {
+      background-color: @body-bg;
+    }
 
     .annotation-set {
       .annotation-cell {

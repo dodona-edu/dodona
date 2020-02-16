@@ -85,7 +85,7 @@ export class CodeListing {
         const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
         toMarkAnnotationRow.classList.add(this.markingClass);
         if (scrollToLine) {
-            toMarkAnnotationRow.scrollIntoView({block: "center"});
+            toMarkAnnotationRow.scrollIntoView({ block: "center" });
         }
     }
 

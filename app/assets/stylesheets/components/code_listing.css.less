@@ -121,13 +121,16 @@
       background: @content-bg;
     }
 
+    .message-cell, .annotation-cell {
+      min-width: 100%;
+    }
+
     .hide {
       display: none;
     }
 
     .message-set {
       .message-cell {
-
         width: 100%;
 
         .message {
@@ -161,11 +164,7 @@
 
     .annotation-set {
       .annotation-cell {
-
-        min-width: 100%;
-
         .annotation {
-          max-width: 100%;
           border-left-color: @success-300;
           white-space: normal;
 

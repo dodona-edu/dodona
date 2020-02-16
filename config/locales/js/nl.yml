@@ -83,3 +83,9 @@ nl:
         fri: Vr
         sat: Za
         sun: Zo
+    message:
+      hidden: Een bericht werd verborgen van type
+      type:
+        error: Error
+        warning: Waarschuwing
+        info: Info

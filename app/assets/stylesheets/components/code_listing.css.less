@@ -6,8 +6,6 @@
 
   #messages-were-hidden {
     cursor: pointer;
-    height: 27px;
-    vertical-align: middle;
     display: block;
     text-decoration: underline;
   }
@@ -56,7 +54,7 @@
     }
 
     .rouge-gutter {
-      min-width: 30px;
+      min-width: 35px;
       text-align: right;
       vertical-align: top;
       padding-right: 5px;
@@ -75,7 +73,7 @@
       .dot {
         height: @dot-size;
         width: @dot-size;
-        border-radius: 50%;
+        border-radius: 100%;
         display: inline-block;
         flex-shrink: 0;
 
@@ -97,6 +95,11 @@
 
     .rouge-code, .annotation-cell {
       background-color: @body-bg;
+    }
+
+
+    .hide {
+      display: none;
     }
 
     .annotation-set {
@@ -131,10 +134,6 @@
           position: absolute;
           user-select: text;
           height: 100%;
-        }
-
-        .hide {
-          display: none;
         }
 
         span.displayMore {

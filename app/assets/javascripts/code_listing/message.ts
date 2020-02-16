@@ -16,6 +16,7 @@ export class Message {
     readonly line: number;
 
     private shown = true;
+    private dotShown = false;
 
     private readonly codeListingHTML: HTMLTableElement;
     private annotation: HTMLDivElement;
@@ -33,18 +34,19 @@ export class Message {
         this.codeListing = codeListing;
 
         this.createAnnotation();
+        this.createDot();
     }
 
     hide(): void {
         this.annotation.classList.add("hide");
-        this.addDot();
         this.shown = false;
+        this.addDot();
     }
 
     show(): void {
         this.annotation.classList.remove("hide");
-        this.removeDot();
         this.shown = true;
+        this.removeDot();
     }
 
     private createAnnotation(): void {
@@ -87,33 +89,39 @@ export class Message {
         return annotationRow;
     }
 
-    addDot(): void {
-        if (this.dot) {
-            return;
-        }
-
-        const ownOrder = this.order();
-        const others: Message[] = this.codeListing.messages.filter(p => this.line == p.line && p.dot != undefined);
-        others.forEach(dotDisplayed => {
-            if (dotDisplayed.order() >= ownOrder) {
-                dotDisplayed.removeDot();
-            }
-        });
-
+    private createDot(): void {
         const codeGutter = this.codeListingHTML.querySelector(`tr#line-${this.line} .rouge-gutter.gl`);
         this.dot = document.createElement("span");
-        this.dot.setAttribute("class", `dot dot-${this.type}`);
+        this.dot.setAttribute("class", `dot dot-${this.type} hide`);
+        let titleAttr = this.type.toString();
+
+        // Runtime for Jest does not have the i18n defined
+        if (Object.prototype.hasOwnProperty.call(window, "I18n")) {
+            const translatedType = I18n.t(`js.message.type.${this.type}`);
+            titleAttr = I18n.t("js.message.hidden") + " \"" + translatedType + "\"";
+        }
+
+        this.dot.setAttribute("title", titleAttr);
         codeGutter.prepend(this.dot);
     }
 
-    removeDot(): void {
-        if (this.dot != undefined) {
-            this.dot.remove();
-            this.dot = null;
+    addDot(): void {
+        const messagesForLine = this.codeListing.getMessagesForLine(this.line);
+        const ownOrder = this.order();
+        messagesForLine.filter(m => m.dotShown && m.order() >= ownOrder).forEach(m => m.removeDot());
+        if (messagesForLine.filter(m => m.order() < ownOrder && !m.shown).length !== 0) {
+            return;
         }
+        this.dot.classList.remove("hide");
+        this.dotShown = true;
+    }
+
+    removeDot(): void {
+        this.dot.classList.add("hide");
+        this.dotShown = false;
     }
 
     order(): number {
-        return ORDERING.findIndex(p => p == this.type);
+        return ORDERING.findIndex(p => p === this.type);
     }
 }

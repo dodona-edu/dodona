@@ -83,3 +83,9 @@ en:
         fri: Fr
         sat: Sa
         sun: Su
+    message:
+      hidden: A message was hidden of type
+      type:
+        error: Error
+        warning: Warning
+        info: Info

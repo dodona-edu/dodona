@@ -25,7 +25,7 @@ class FeedbackCodeRenderer
         @builder.div(class: 'feedback-table-options') do
           if @compress
             @builder.span(id: 'messages-were-hidden') do
-              @builder.text!(I18n.t('submissions.show.annotations.messages.were_hidden'))
+              @builder.text!(I18n.t('submissions.show.annotations.messages.were_hidden', other_count: @messages.count - only_errors.count))
             end
           end
           @builder.span(class: 'flex-spacer') do

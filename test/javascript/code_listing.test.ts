@@ -2,9 +2,9 @@ import { CodeListing } from "../../app/assets/javascripts/code_listing/code_list
 
 beforeEach(() => {
     document.body.innerHTML = "<table class='code-listing'><tbody>" +
-        "<tr><td id='line-1' class='lineno'><pre>print(5 + 6)</pre></td></tr>" +
-        "<tr><td id='line-2' class='lineno'><pre>print(6 + 3)</pre></td></tr>" +
-        "<tr><td id='line-3' class='lineno'><pre>print(9 + 15)</pre></td></tr>" +
+        "<tr id='line-1' class='lineno'><td class='rouge-gutter gl'><pre>1</pre></td><td class='rouge-code'><pre>print(5 + 6)</pre></td></tr>" +
+        "<tr id='line-2' class='lineno'><td class='rouge-gutter gl'><pre>2</pre></td><td class='rouge-code'><pre>print(6 + 3)</pre></td></tr>" +
+        "<tr id='line-3' class='lineno'><td class='rouge-gutter gl'><pre>3</pre></td><td class='rouge-code'><pre>print(9 + 15)</pre></td></tr>" +
         "</tbody></table>";
 });
 
@@ -46,3 +46,108 @@ test("annotation types should be transmitted into the view", () => {
     expect(document.querySelectorAll(".annotation.error").length).toBe(1);
 });
 
+test("dots only for non-shown messages and only the worst", () => {
+    const codeListing = new CodeListing();
+    codeListing.addAnnotations([
+        { "text": "Value could be assigned", "row": 0, "type": "info" },
+        { "text": "Float transformed into int", "row": 0, "type": "warning" },
+        { "text": "Division by zero", "row": 0, "type": "error" },
+    ]);
+
+    codeListing.hideAllAnnotations();
+
+    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(1);
+});
+
+test("dots not visible when all annotations are shown", () => {
+    const codeListing = new CodeListing();
+    codeListing.addAnnotations([
+        { "text": "Value could be assigned", "row": 0, "type": "info" },
+        { "text": "Float transformed into int", "row": 0, "type": "warning" },
+        { "text": "Division by zero", "row": 0, "type": "error" },
+    ]);
+
+    codeListing.showAllAnnotations();
+
+    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+});
+
+
+test("only warning dot visible when in compressed error mode", () => {
+    const codeListing = new CodeListing();
+    codeListing.addAnnotations([
+        { "text": "Value could be assigned", "row": 0, "type": "info" },
+        { "text": "Float transformed into int", "row": 0, "type": "warning" },
+        { "text": "Division by zero", "row": 0, "type": "error" },
+    ]);
+
+    codeListing.compressMessages();
+
+    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+
+    // Simulating user switching
+    codeListing.showAllAnnotations();
+    codeListing.hideAllAnnotations();
+    codeListing.showAllAnnotations();
+
+    codeListing.compressMessages();
+
+    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+
+});
+
+test("no double dots", () => {
+    const codeListing = new CodeListing();
+    codeListing.addAnnotations([
+        { "text": "Value could be assigned", "row": 0, "type": "info" },
+        { "text": "Float transformed into int", "row": 0, "type": "info" },
+        { "text": "Division by zero", "row": 0, "type": "info" },
+    ]);
+
+    codeListing.showAllAnnotations();
+
+    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(3);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+
+    codeListing.hideAllAnnotations();
+
+    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(2);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+
+    codeListing.compressMessages();
+
+    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(3);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+});

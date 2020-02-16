@@ -19,10 +19,10 @@ export class CodeListing {
             e.preventDefault();
         });
 
-        this.initButtonsForView();
+        this.initAnnotationToggleButtons();
     }
 
-    private initButtonsForView(): void {
+    private initAnnotationToggleButtons(): void {
         const hideAllButton: HTMLButtonElement = document.querySelector("#hide_all_annotations");
         const showOnlyErrorButton: HTMLButtonElement = document.querySelector("#show_only_errors");
         const showAllButton: HTMLButtonElement = document.querySelector("#show_all_annotations");
@@ -30,9 +30,7 @@ export class CodeListing {
 
         const showAllListener = (): void => {
             this.showAllAnnotations();
-            if (messagesWereHidden) {
-                messagesWereHidden.remove();
-            }
+            messagesWereHidden?.remove();
         };
 
         if (hideAllButton && showAllButton) {
@@ -61,9 +59,10 @@ export class CodeListing {
         this.showAllAnnotations();
 
         const errors = this.messages.filter(m => m.type === "error");
-        if (errors.length != 0) {
+        if (errors.length !== 0) {
             const others = this.messages.filter(m => m.type !== "error");
             others.forEach(m => m.hide());
+            errors.forEach(m => m.show());
         }
     }
 
@@ -86,7 +85,7 @@ export class CodeListing {
         const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
         toMarkAnnotationRow.classList.add(this.markingClass);
         if (scrollToLine) {
-            toMarkAnnotationRow.scrollIntoView({ block: "center" });
+            toMarkAnnotationRow.scrollIntoView({block: "center"});
         }
     }
 
@@ -130,5 +129,9 @@ export class CodeListing {
         }
 
         return strings.join("");
+    }
+
+    public getMessagesForLine(lineNr: number): Message[] {
+        return this.messages.filter(a => a.line === lineNr);
     }
 }

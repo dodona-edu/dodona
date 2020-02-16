@@ -138,7 +138,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         $("#submission-copy-btn").click(function () {
-            const codeString = dodona.codeListing.getCode();
+            const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
             $("#exercise-handin-link").tab("show");
         });

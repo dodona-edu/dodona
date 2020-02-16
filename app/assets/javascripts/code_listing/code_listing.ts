@@ -4,6 +4,8 @@ export class CodeListing {
     private readonly table: HTMLTableElement;
     readonly messages: Message[];
 
+    private _code: string;
+
     private readonly markingClass: string = "marked";
 
     constructor(feedbackTableSelector = "table.code-listing") {
@@ -89,11 +91,12 @@ export class CodeListing {
         }
     }
 
-    getCode(): string {
-        const submissionCode = [];
-        this.table.querySelectorAll(".lineno .rouge-code")
-            .forEach(codeLine => submissionCode.push(codeLine.textContent.replace(/\n$/, "")));
-        return submissionCode.join("\n");
+    set code(codeString: string) {
+        this._code = codeString;
+    }
+
+    get code(): string {
+        return this._code;
     }
 
     private getSelectededCode(): string {

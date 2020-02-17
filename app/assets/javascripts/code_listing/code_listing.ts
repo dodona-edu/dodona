@@ -8,12 +8,6 @@ export class CodeListing {
 
     private readonly markingClass: string = "marked";
 
-    private diffSwitchTitle: HTMLSpanElement;
-    private hideAllButton: HTMLButtonElement;
-    private showOnlyErrorButton: HTMLButtonElement;
-    private showAllButton: HTMLButtonElement;
-    private messagesWereHidden: HTMLSpanElement;
-
     constructor(feedbackTableSelector = "table.code-listing") {
         this.table = document.querySelector(feedbackTableSelector) as HTMLTableElement;
         this.messages = [];
@@ -31,24 +25,28 @@ export class CodeListing {
     }
 
     private initAnnotationToggleButtons(): void {
-        this.hideAllButton = document.querySelector("#hide_all_annotations");
-        this.showOnlyErrorButton = document.querySelector("#show_only_errors");
-        this.showAllButton = document.querySelector("#show_all_annotations");
-        this.messagesWereHidden = document.querySelector("#messages-were-hidden");
-        this.diffSwitchTitle = document.querySelector("#diff-switch-title");
+        const hideAllButton: HTMLButtonElement = document.querySelector("#hide_all_annotations");
+        const showOnlyErrorButton: HTMLButtonElement = document.querySelector("#show_only_errors");
+        const showAllButton: HTMLButtonElement = document.querySelector("#show_all_annotations");
+        const messagesWereHidden: HTMLSpanElement = document.querySelector("#messages-were-hidden");
 
         const showAllListener = (): void => {
             this.showAllAnnotations();
-            this.messagesWereHidden?.remove();
-            this.messagesWereHidden = null;
+            messagesWereHidden?.remove();
         };
 
-        this.showAllButton.addEventListener("click", showAllListener.bind(this));
-        this.hideAllButton.addEventListener("click", this.hideAllAnnotations.bind(this));
+        if (hideAllButton && showAllButton) {
+            showAllButton.addEventListener("click", showAllListener.bind(this));
+            hideAllButton.addEventListener("click", this.hideAllAnnotations.bind(this));
+        }
 
-        this.showOnlyErrorButton.addEventListener("click", this.compressMessages.bind(this));
+        if (showOnlyErrorButton && hideAllButton && showAllButton) {
+            showOnlyErrorButton.addEventListener("click", this.compressMessages.bind(this));
+        }
 
-        this.messagesWereHidden.addEventListener("click", () => this.showAllButton.click());
+        if (messagesWereHidden && showAllButton) {
+            messagesWereHidden.addEventListener("click", () => showAllButton.click());
+        }
     }
 
     addAnnotations(messages: MessageData[]): void {
@@ -57,15 +55,6 @@ export class CodeListing {
 
     addAnnotation(message: MessageData): void {
         this.messages.push(new Message(this.messages.length, message, this.table, this));
-
-        this.hideAllButton.classList.remove("hide");
-        this.showAllButton.classList.remove("hide");
-        this.diffSwitchTitle.classList.remove("hide");
-
-        if (message.type == "error") {
-            this.messagesWereHidden.classList.remove("hide");
-            this.showOnlyErrorButton.classList.remove("hide");
-        }
     }
 
     compressMessages(): void {
@@ -98,7 +87,7 @@ export class CodeListing {
         const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
         toMarkAnnotationRow.classList.add(this.markingClass);
         if (scrollToLine) {
-            toMarkAnnotationRow.scrollIntoView({block: "center"});
+            toMarkAnnotationRow.scrollIntoView({ block: "center" });
         }
     }
 

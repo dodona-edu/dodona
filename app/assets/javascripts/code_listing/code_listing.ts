@@ -8,6 +8,12 @@ export class CodeListing {
 
     private readonly markingClass: string = "marked";
 
+    private hideAllButton: HTMLButtonElement;
+    private showOnlyErrorButton: HTMLButtonElement;
+    private showAllButton: HTMLButtonElement;
+    private messagesWereHidden: HTMLSpanElement;
+    private diffSwitchPrefix: HTMLSpanElement;
+
     constructor(feedbackTableSelector = "table.code-listing") {
         this.table = document.querySelector(feedbackTableSelector) as HTMLTableElement;
         this.messages = [];
@@ -25,28 +31,23 @@ export class CodeListing {
     }
 
     private initAnnotationToggleButtons(): void {
-        const hideAllButton: HTMLButtonElement = document.querySelector("#hide_all_annotations");
-        const showOnlyErrorButton: HTMLButtonElement = document.querySelector("#show_only_errors");
-        const showAllButton: HTMLButtonElement = document.querySelector("#show_all_annotations");
-        const messagesWereHidden: HTMLSpanElement = document.querySelector("#messages-were-hidden");
+        this.hideAllButton = document.querySelector("#hide_all_annotations");
+        this.showOnlyErrorButton = document.querySelector("#show_only_errors");
+        this.showAllButton = document.querySelector("#show_all_annotations");
+        this.messagesWereHidden = document.querySelector("#messages-were-hidden");
+        this.diffSwitchPrefix = document.querySelector("#diff-switch-prefix");
 
         const showAllListener = (): void => {
             this.showAllAnnotations();
-            messagesWereHidden?.remove();
+            this.messagesWereHidden?.remove();
         };
 
-        if (hideAllButton && showAllButton) {
-            showAllButton.addEventListener("click", showAllListener.bind(this));
-            hideAllButton.addEventListener("click", this.hideAllAnnotations.bind(this));
-        }
+        this.showAllButton.addEventListener("click", showAllListener.bind(this));
+        this.hideAllButton.addEventListener("click", this.hideAllAnnotations.bind(this));
 
-        if (showOnlyErrorButton && hideAllButton && showAllButton) {
-            showOnlyErrorButton.addEventListener("click", this.compressMessages.bind(this));
-        }
+        this.showOnlyErrorButton.addEventListener("click", this.compressMessages.bind(this));
 
-        if (messagesWereHidden && showAllButton) {
-            messagesWereHidden.addEventListener("click", () => showAllButton.click());
-        }
+        this.messagesWereHidden.addEventListener("click", () => this.showAllButton.click());
     }
 
     addAnnotations(messages: MessageData[]): void {
@@ -55,6 +56,19 @@ export class CodeListing {
 
     addAnnotation(message: MessageData): void {
         this.messages.push(new Message(this.messages.length, message, this.table, this));
+
+        this.showAllButton.classList.remove("hide");
+        this.hideAllButton.classList.remove("hide");
+        this.diffSwitchPrefix.classList.remove("hide");
+
+        if (message.type === "error") {
+            this.showOnlyErrorButton.classList.remove("hide");
+            this.messagesWereHidden.classList.remove("hide");
+        }
+
+        const nonErrorMEssageCount = this.createHiddenMessage(this.messages.filter(m => m.type !== "error").length);
+        this.messagesWereHidden.innerHTML = "";
+        this.messagesWereHidden.appendChild(nonErrorMEssageCount);
     }
 
     compressMessages(): void {
@@ -65,6 +79,7 @@ export class CodeListing {
             const others = this.messages.filter(m => m.type !== "error");
             others.forEach(m => m.hide());
             errors.forEach(m => m.show());
+            this.showOnlyErrorButton.classList.add("active");
         }
     }
 
@@ -136,5 +151,19 @@ export class CodeListing {
 
     public getMessagesForLine(lineNr: number): Message[] {
         return this.messages.filter(a => a.line === lineNr);
+    }
+
+    public createHiddenMessage(count: number): HTMLAnchorElement {
+        const link = document.createElement("a");
+
+        let data = String(count);
+        // Runtime for Jest does not have the i18n defined
+        if (Object.prototype.hasOwnProperty.call(window, "I18n")) {
+            const key = `js.message.were_hidden.${ count > 1 ? "plural" : "single" }`;
+            data = I18n.t(key).replace(/{(\d)}/g, String(count));
+        }
+        const linkText = document.createTextNode(data);
+        link.appendChild(linkText);
+        return link;
     }
 }

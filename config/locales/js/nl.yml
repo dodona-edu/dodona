@@ -89,3 +89,7 @@ nl:
         error: Error
         warning: Waarschuwing
         info: Info
+      were_hidden:
+        single: Enkel errors worden getoond, toon {0} ander bericht
+        plural: Enkel errors worden getoond, toon {0} andere berichten
+

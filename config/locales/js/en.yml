@@ -89,3 +89,6 @@ en:
         error: Error
         warning: Warning
         info: Info
+      were_hidden:
+        single: Only errors are shown, show {0} other message
+        plural: Only errors are shown, show {0} other messages

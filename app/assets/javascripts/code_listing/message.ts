@@ -107,9 +107,9 @@ export class Message {
 
     addDot(): void {
         const messagesForLine = this.codeListing.getMessagesForLine(this.line);
-        const ownOrder = this.order();
-        messagesForLine.filter(m => m.dotShown && m.order() >= ownOrder).forEach(m => m.removeDot());
-        if (messagesForLine.filter(m => m.order() < ownOrder && !m.shown).length !== 0) {
+        const ownSeverity = this.severity();
+        messagesForLine.filter(m => m.dotShown && m.severity() >= ownSeverity).forEach(m => m.removeDot());
+        if (messagesForLine.filter(m => m.severity() < ownSeverity && !m.shown).length !== 0) {
             return;
         }
         this.dot.classList.remove("hide");
@@ -121,7 +121,7 @@ export class Message {
         this.dotShown = false;
     }
 
-    order(): number {
-        return ORDERING.findIndex(p => p === this.type);
+    severity(): number {
+        return ORDERING.indexOf(this.type);
     }
 }

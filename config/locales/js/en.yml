@@ -84,11 +84,7 @@ en:
         sat: Sa
         sun: Su
     message:
-      hidden: A message was hidden of type
-      type:
-        error: Error
-        warning: Warning
-        info: Info
+      hidden: A message was hidden
       were_hidden:
         single: Only errors are shown, show {0} other message
         plural: Only errors are shown, show {0} other messages

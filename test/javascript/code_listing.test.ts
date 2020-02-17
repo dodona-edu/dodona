@@ -70,12 +70,12 @@ test("dots only for non-shown messages and only the worst", () => {
 
     codeListing.hideAllAnnotations();
 
-    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll(".dot.hide").length).toBe(0);
+
+    expect(document.querySelectorAll(".dot.dot-info.dot-warning.dot-error").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-warning.dot-error:not(.dot-info)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-info.dot-error:not(.dot-warning)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-info.dot-warning:not(.dot-error)").length).toBe(0);
 });
 
 test("dots not visible when all annotations are shown", () => {
@@ -88,12 +88,11 @@ test("dots not visible when all annotations are shown", () => {
 
     codeListing.showAllAnnotations();
 
-    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+    // 1 Dot, that does not have a single dot-type class
+    expect(document.querySelectorAll(".dot:not(.dot-info)").length).toBe(1);
+    expect(document.querySelectorAll(".dot:not(.dot-warning)").length).toBe(1);
+    expect(document.querySelectorAll(".dot:not(.dot-error)").length).toBe(1);
+    expect(document.querySelectorAll(".dot").length).toBe(1);
 });
 
 
@@ -107,12 +106,10 @@ test("only warning dot visible when in compressed error mode", () => {
 
     codeListing.compressMessages();
 
-    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-error.dot-warning.dot-info").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning.dot-info").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
 
     // Simulating user switching
     codeListing.showAllAnnotations();
@@ -121,12 +118,10 @@ test("only warning dot visible when in compressed error mode", () => {
 
     codeListing.compressMessages();
 
-    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-error.dot-warning.dot-info").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning.dot-info").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
 });
 
 test("no double dots", () => {
@@ -137,32 +132,25 @@ test("no double dots", () => {
         { "text": "Division by zero", "row": 0, "type": "info" },
     ]);
 
+    expect(document.querySelectorAll(".dot").length).toBe(1);
+
     codeListing.showAllAnnotations();
 
-    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(3);
-    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-info").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
 
     codeListing.hideAllAnnotations();
 
-    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(2);
-    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-info").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-warning").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
 
     codeListing.compressMessages();
 
-    expect(document.querySelectorAll(".dot.dot-info.hide").length).toBe(3);
-    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning.hide").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error.hide").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error.dot-warning.dot-info").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning.dot-info").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
 });
 
 test("correct buttons & elements are hidden and unhidden", () => {

@@ -84,11 +84,7 @@ nl:
         sat: Za
         sun: Zo
     message:
-      hidden: Een bericht werd verborgen van type
-      type:
-        error: Error
-        warning: Waarschuwing
-        info: Info
+      hidden: Een bericht werd verborgen
       were_hidden:
         single: Enkel errors worden getoond, toon {0} ander bericht
         plural: Enkel errors worden getoond, toon {0} andere berichten

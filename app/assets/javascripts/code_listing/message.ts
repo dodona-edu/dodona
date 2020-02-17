@@ -16,7 +16,6 @@ export class Message {
     readonly line: number;
 
     private shown = true;
-    private dotShown = false;
 
     private readonly codeListingHTML: HTMLTableElement;
     private annotation: HTMLDivElement;
@@ -91,34 +90,36 @@ export class Message {
 
     private createDot(): void {
         const codeGutter = this.codeListingHTML.querySelector(`tr#line-${this.line} .rouge-gutter.gl`);
-        this.dot = document.createElement("span");
-        this.dot.setAttribute("class", `dot dot-${this.type} hide`);
-        let titleAttr = this.type.toString();
+        const potentialDot = codeGutter.querySelector("span.dot") as HTMLSpanElement;
+        if (potentialDot !== null) {
+            this.dot = potentialDot;
+            return;
+        }
 
+        this.dot = document.createElement("span");
+        this.dot.setAttribute("class", `dot dot-${this.type}`);
+
+        let titleAttr = "hidden";
         // Runtime for Jest does not have the i18n defined
         if (Object.prototype.hasOwnProperty.call(window, "I18n")) {
-            const translatedType = I18n.t(`js.message.type.${this.type}`);
-            titleAttr = I18n.t("js.message.hidden") + " \"" + translatedType + "\"";
+            titleAttr = I18n.t("js.message.hidden");
         }
 
         this.dot.setAttribute("title", titleAttr);
+
         codeGutter.prepend(this.dot);
     }
 
     addDot(): void {
-        const messagesForLine = this.codeListing.getMessagesForLine(this.line);
-        const ownSeverity = this.severity();
-        messagesForLine.filter(m => m.dotShown && m.severity() >= ownSeverity).forEach(m => m.removeDot());
-        if (messagesForLine.filter(m => m.severity() < ownSeverity && !m.shown).length !== 0) {
-            return;
-        }
-        this.dot.classList.remove("hide");
-        this.dotShown = true;
+        this.dot.classList.add(`dot-${this.type}`);
     }
 
     removeDot(): void {
-        this.dot.classList.add("hide");
-        this.dotShown = false;
+        const booleans = this.codeListing.getMessagesForLine(this.line).filter(m => m.type === this.type).map(m => m.shown);
+        const allHiddenOfThisType = booleans.reduce((sum, next) => sum && next, true);
+        if (allHiddenOfThisType) {
+            this.dot.classList.remove(`dot-${this.type}`);
+        }
     }
 
     severity(): number {

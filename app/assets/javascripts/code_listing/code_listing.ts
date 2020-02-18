@@ -159,8 +159,7 @@ export class CodeListing {
         let data = String(count);
         // Runtime for Jest does not have the i18n defined
         if (Object.prototype.hasOwnProperty.call(window, "I18n")) {
-            const key = `js.message.were_hidden.${ count > 1 ? "plural" : "single" }`;
-            data = I18n.t(key).replace(/{(\d)}/g, String(count));
+            data = I18n.t(`js.message.were_hidden.${count > 1 ? "plural" : "single"}`).replace(/{(\d)}/g, String(count));
         }
         const linkText = document.createTextNode(data);
         link.appendChild(linkText);

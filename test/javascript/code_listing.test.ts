@@ -60,6 +60,25 @@ test("annotation types should be transmitted into the view", () => {
     expect(document.querySelectorAll(".annotation.error").length).toBe(1);
 });
 
+test("line highlighting", () => {
+    const codeListing = new CodeListing();
+    codeListing.highlightLine(1);
+
+    expect(document.querySelectorAll(".lineno.marked").length).toBe(1);
+
+    codeListing.highlightLine(2);
+
+    expect(document.querySelectorAll(".lineno.marked").length).toBe(2);
+
+    codeListing.highlightLine(2);
+
+    expect(document.querySelectorAll(".lineno.marked").length).toBe(2);
+
+    codeListing.clearHighlights();
+
+    expect(document.querySelectorAll(".lineno.marked").length).toBe(0);
+});
+
 test("dots only for non-shown messages and only the worst", () => {
     const codeListing = new CodeListing();
     codeListing.addAnnotations([
@@ -196,4 +215,12 @@ test("correct buttons & elements are hidden and unhidden", () => {
 
     expect(document.querySelectorAll("#diff-switch-prefix.hide").length).toBe(0);
     expect(document.querySelectorAll("#diff-switch-prefix:not(.hide)").length).toBe(1);
+
+    const messagesWereHidden: HTMLSpanElement = document.querySelector("span#messages-were-hidden") as HTMLSpanElement;
+    messagesWereHidden.click();
+
+    expect(document.querySelectorAll("#messages-were-hidden").length).toBe(0);
+
+    expect(document.querySelectorAll("#show_all_annotations.active.hide").length).toBe(0);
+    expect(document.querySelectorAll("#show_all_annotations.active:not(.hide)").length).toBe(1);
 });

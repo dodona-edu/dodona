@@ -121,8 +121,4 @@ export class Message {
             this.dot.classList.remove(`dot-${this.type}`);
         }
     }
-
-    severity(): number {
-        return ORDERING.indexOf(this.type);
-    }
 }

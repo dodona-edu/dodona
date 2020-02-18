@@ -142,7 +142,6 @@
           }
         }
       }
-      
     }
   }
 
@@ -160,15 +159,22 @@
         }
         .notification {
           cursor: pointer;
-        }
-        .front-read-indicator {
-          i {
-            padding-left: 8px;
-            margin-right: -8px;
 
-            &.transparent {
-              display: none;
+          &.unread {
+            .notification-link {
+              font-weight: 500;
             }
+          }
+
+          .notification-icon i {
+            padding-left: 12px;
+            margin-right: -12px;
+            text-align: right;
+          }
+
+          .read-indicator:hover {
+            font-size: 22px;
+            line-height: 24px;
           }
         }
         .read-toggle-button {
@@ -179,6 +185,12 @@
           color: @text-color;
           &.btn-icon {
             color: @text-secondary;
+          }
+        }
+        .notification-overflow a {
+          color: @link-color;
+          &:hover {
+            text-decoration: underline;
           }
         }
       }

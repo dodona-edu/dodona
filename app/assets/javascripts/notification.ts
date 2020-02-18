@@ -56,20 +56,15 @@ export class Notification {
         const body = await response.json();
         this.read = body.read;
         const indicator = this.element.querySelector(".read-indicator");
-        const frontIndicator = this.element.querySelector(".front-read-indicator i");
         if (!this.read) {
-            indicator.classList.remove("mdi-circle-medium");
-            indicator.classList.add("mdi-check");
             indicator.setAttribute("title", I18n.t("js.mark_as_read"));
-            frontIndicator.classList.remove("transparent");
+            this.element.classList.add("unread");
         } else {
-            indicator.classList.remove("mdi-check");
-            indicator.classList.add("mdi-circle-medium");
             indicator.setAttribute("title", I18n.t("js.mark_as_unread"));
-            frontIndicator.classList.add("transparent");
+            this.element.classList.remove("unread");
         }
         if (document.querySelector(".notification-dropdown") !== null) {
-            if (document.querySelectorAll(".notification-dropdown .read-indicator.mdi-check").length === 0) {
+            if (document.querySelectorAll(".notification-dropdown .notification.unread").length === 0) {
                 document.querySelector("#navbar-notifications .dropdown-toggle").classList.remove("notification");
             } else {
                 document.querySelector("#navbar-notifications .dropdown-toggle").classList.add("notification");

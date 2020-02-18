@@ -9,9 +9,9 @@
   </thead>
   <tbody>
   <% notifications.each do |n| %>
-    <tr class="notification" data-id="<%= n.id %>">
-      <td class="front-read-indicator status-icon">
-        <i class="mdi mdi-circle-medium mdi-24<%= " transparent" if n.read %>"></i>
+    <tr class="notification<%= " unread" unless n.read %>" data-id="<%= n.id %>">
+      <td class="notification-icon status-icon">
+        <i class="mdi mdi-24 <%= notifiable_icon(n) %>"></i>
       </td>
       <td>
         <a class="notification-link" href="<%= notifiable_url n %>"><%= t n.message %></a>
@@ -21,11 +21,7 @@
       </td>
       <td class="actions">
         <span class="btn btn-sm btn-default read-toggle-button" >
-          <% if n.read %>
-            <i class="mdi mdi-circle-medium mdi-18 read-indicator" title="<%= t 'js.mark_as_unread' %>"></i>
-          <% else %>
-            <i class="mdi mdi-check mdi-18 read-indicator" title="<%= t 'js.mark_as_read' %>"></i>
-          <% end %>
+          <i class="mdi mdi-circle-medium mdi-18 read-indicator" title="<%= n.read ? t('js.mark_as_unread') : t('js.mark_as_read') %>"></i>
         </span>
         <span class="btn btn-sm btn-danger delete-button">
           <i class="mdi mdi-delete mdi-18"></i>

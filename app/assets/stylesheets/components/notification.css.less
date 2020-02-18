@@ -3,12 +3,9 @@ th.status-icon {
 }
 
 .notification {
-
-  .front-read-indicator i {
-    color: @info-500;
-
-    &.transparent {
-      color: #FFF0;
+  &.unread {
+    .notification-icon, .read-indicator {
+      color: @info-500;
     }
   }
 }

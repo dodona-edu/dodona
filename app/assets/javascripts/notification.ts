@@ -63,12 +63,14 @@ export class Notification {
             indicator.setAttribute("title", I18n.t("js.mark_as_unread"));
             this.element.classList.remove("unread");
         }
-        if (document.querySelector(".notification-dropdown") !== null) {
-            if (document.querySelectorAll(".notification-dropdown .notification.unread").length === 0) {
-                document.querySelector("#navbar-notifications .dropdown-toggle").classList.remove("notification");
-            } else {
-                document.querySelector("#navbar-notifications .dropdown-toggle").classList.add("notification");
-            }
+        if (document.querySelectorAll(".notification.unread").length === 0) {
+            document.querySelector("#navbar-notifications .dropdown-toggle")?.classList?.remove("notification");
+            document.querySelector("link[rel=\"shortcut icon\"][href=\"/icon-not.png\"]")?.setAttribute("href", "/icon.png");
+            document.querySelector("link[rel=\"shortcut icon\"][href=\"/favicon-not.ico\"]")?.setAttribute("href", "/favicon.ico");
+        } else {
+            document.querySelector("#navbar-notifications .dropdown-toggle")?.classList?.add("notification");
+            document.querySelector("link[rel=\"shortcut icon\"][href=\"/icon.png\"]")?.setAttribute("href", "/icon-not.png");
+            document.querySelector("link[rel=\"shortcut icon\"][href=\"/favicon.ico\"]")?.setAttribute("href", "/favicon-not.ico");
         }
     }
 

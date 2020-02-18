@@ -1,4 +1,4 @@
-import { Message, MessageData } from "../../../../app/assets/javascripts/code_listing/message";
+import { Message, MessageData } from "code_listing/message";
 
 export class CodeListing {
     private readonly table: HTMLTableElement;

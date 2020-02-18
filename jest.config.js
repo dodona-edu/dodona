@@ -8,5 +8,9 @@ module.exports = {
             },
         },
     },
-    roots: ["test/javascript/"],
+    roots: ["test/javascript/", "app/assets/"],
+    moduleDirectories: [
+        "node_modules",
+        "app/assets/javascripts"
+    ]
 };

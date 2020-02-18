@@ -71,7 +71,7 @@ module ApplicationHelper
   end
 
   def navbar_link(options)
-    return if options.delete(:if) == false
+    return unless options.delete(:if)
 
     url = options.delete(:url)
     if current_page?(url)

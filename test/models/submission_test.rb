@@ -69,7 +69,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'safe_result should remove staff tabs for students' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json
+    submission = create :submission, result: json, status: :correct
     user = create :user, permission: :student
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 1, result[:groups].count
@@ -77,7 +77,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'safe_result should remove zeus tabs for staff' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json
+    submission = create :submission, result: json, status: :correct
     user = create :user, permission: :staff
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 2, result[:groups].count
@@ -85,7 +85,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'safe_result should display all tabs to zeus' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json
+    submission = create :submission, result: json, status: :correct
     user = create :zeus
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 3, result[:groups].count
@@ -93,7 +93,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'safe_result should remove staff and zeus messages for students' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json
+    submission = create :submission, result: json, status: :correct
     user = create :user, permission: :student
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 2, result[:messages].count
@@ -105,7 +105,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'safe_result should remove zeus message for staff' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json
+    submission = create :submission, result: json, status: :correct
     user = create :user, permission: :staff
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 2, result[:groups].count
@@ -117,7 +117,7 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'transferring to another course should move the underlying result and code' do
-    submission = create :submission, result: 'result', code: 'code'
+    submission = create :submission, result: 'result', code: 'code', status: :correct
     path = submission.fs_path
     new_course = create :course
     submission.update(course: new_course)
@@ -128,7 +128,7 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'transferring to another exercise should move the underlying result and code' do
-    submission = create :submission, result: 'result', code: 'code'
+    submission = create :submission, result: 'result', code: 'code', status: :correct
     path = submission.fs_path
     new_exercise = create :exercise
     submission.update(exercise: new_exercise)
@@ -139,7 +139,7 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'transferring to another user should move the underlying result and code' do
-    submission = create :submission, result: 'result', code: 'code'
+    submission = create :submission, result: 'result', code: 'code', status: :correct
     path = submission.fs_path
     new_user = create :user
     submission.update(user: new_user)

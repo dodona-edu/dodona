@@ -5,6 +5,7 @@ class ExportsController < ApplicationController
   def index
     authorize Export
     @title = I18n.t('exports.index.title')
+    @highlighted_id = (params[:highlighted] || 0).to_i
     @exports = policy_scope(Export)
   end
 

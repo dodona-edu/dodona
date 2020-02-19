@@ -170,7 +170,7 @@ class ApplicationController < ActionController::Base
   def set_notifications
     @notifications = current_user.notifications
     @notifications.where(read: false).each do |n|
-      n.update(read: true) if helpers.current_page?(helpers.notifiable_url(n))
+      n.update(read: true) if helpers.current_page?(helpers.base_notifiable_url_params(n))
     end
   end
 end

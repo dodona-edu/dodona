@@ -7,4 +7,5 @@ en:
       message: Message
       created_header: "Created"
       destroy_all: "Clear notifications"
+      delete: Delete notification
 

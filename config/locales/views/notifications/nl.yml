@@ -7,3 +7,4 @@ nl:
       message: Bericht
       created_header: "Aangemaakt"
       destroy_all: "Alle notificaties verwijderen"
+      delete: Notificatie verwijderen

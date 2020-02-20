@@ -86,6 +86,8 @@ nl:
     annotation:
       hidden: Een annotatie werd verborgen
       were_hidden:
-        single: Enkel errors worden getoond, toon {0} andere annotatie
-        plural: Enkel errors worden getoond, toon {0} andere annotaties
+        first: Enkel errors worden getoond,
+        second:
+          single: toon 1 andere annotatie
+          plural: toon {count} andere annotaties
 

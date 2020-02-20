@@ -86,5 +86,8 @@ en:
     annotation:
       hidden: An annotation was hidden
       were_hidden:
-        single: Only errors are shown, show {0} other annotation
-        plural: Only errors are shown, show {0} other annotations
+        first: Only errors are shown,
+        second:
+          single: show 1 other annotation
+          plural: show {count} other annotations
+

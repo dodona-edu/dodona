@@ -146,11 +146,16 @@ export class CodeListing {
         return this.annotations.filter(a => a.line === lineNr);
     }
 
-    public createHiddenMessage(count: number): HTMLAnchorElement {
+    public createHiddenMessage(count: number): HTMLSpanElement {
+        const span = document.createElement("span");
+        const spanText: Text = document.createTextNode(I18n.t("js.annotation.were_hidden.first") + " ");
+        span.appendChild(spanText);
+
         const link: HTMLAnchorElement = document.createElement("a");
-        const data: string = I18n.t(`js.annotation.were_hidden.${count > 1 ? "plural" : "single"}`).replace(/{(\d)}/g, String(count));
+        const data: string = I18n.t(`js.annotation.were_hidden.second.${count > 1 ? "plural" : "single"}`).replace(/{count}/g, String(count));
         const linkText: Text = document.createTextNode(data);
         link.appendChild(linkText);
-        return link;
+        span.appendChild(link);
+        return span;
     }
 }

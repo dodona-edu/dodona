@@ -4,7 +4,7 @@ export class CodeListing {
     private readonly table: HTMLTableElement;
     readonly messages: Message[];
 
-    private _code: string;
+    public readonly code: string;
 
     private readonly markingClass: string = "marked";
 
@@ -14,16 +14,17 @@ export class CodeListing {
     private messagesWereHidden: HTMLSpanElement;
     private diffSwitchPrefix: HTMLSpanElement;
 
-    constructor(feedbackTableSelector = "table.code-listing") {
+    constructor(code, feedbackTableSelector = "table.code-listing") {
         this.table = document.querySelector(feedbackTableSelector) as HTMLTableElement;
         this.messages = [];
+        this.code = code;
 
         if (this.table === null) {
             console.error("The code listing could not be found");
         }
 
         this.table.addEventListener("copy", function (e) {
-            e.clipboardData.setData("text/plain", window.dodona.codeListing.getSelectededCode());
+            e.clipboardData.setData("text/plain", window.dodona.codeListing.getSelectedCode());
             e.preventDefault();
         });
 
@@ -42,10 +43,10 @@ export class CodeListing {
             this.messagesWereHidden?.remove();
         };
 
-        this.showAllButton.addEventListener("click", showAllListener.bind(this));
-        this.hideAllButton.addEventListener("click", this.hideAllAnnotations.bind(this));
+        this.showAllButton.addEventListener("click", () => showAllListener());
+        this.hideAllButton.addEventListener("click", () => this.hideAllAnnotations());
 
-        this.showOnlyErrorButton.addEventListener("click", this.compressMessages.bind(this));
+        this.showOnlyErrorButton.addEventListener("click", () => this.compressMessages());
 
         this.messagesWereHidden.addEventListener("click", () => this.showAllButton.click());
     }
@@ -106,15 +107,7 @@ export class CodeListing {
         }
     }
 
-    set code(codeString: string) {
-        this._code = codeString;
-    }
-
-    get code(): string {
-        return this._code;
-    }
-
-    private getSelectededCode(): string {
+    private getSelectedCode(): string {
         const selection = window.getSelection();
         const strings = [];
 

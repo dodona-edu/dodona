@@ -51,6 +51,7 @@ class FeedbackCodeRenderer
     @builder.script(type: 'application/javascript') do
       @builder << "window.dodona.codeListing = new window.dodona.codeListingClass(#{@code.dump});"
       @builder << '$(() => window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + '));'
+      @builder << '$(() => window.dodona.codeListing.showAllAnnotations());'
       @builder << '$(() => window.dodona.codeListing.compressAnnotations());' if @compress
     end
   end

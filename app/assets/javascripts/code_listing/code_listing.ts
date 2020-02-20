@@ -82,6 +82,9 @@ export class CodeListing {
             errors.forEach(m => m.show());
             this.showOnlyErrorButton.classList.add("active");
         }
+
+        this.showAllButton.classList.remove("active");
+        this.hideAllButton.classList.remove("active");
     }
 
     showAllAnnotations(): void {

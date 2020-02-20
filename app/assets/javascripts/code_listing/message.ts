@@ -115,8 +115,7 @@ export class Message {
     }
 
     removeDot(): void {
-        const booleans = this.codeListing.getMessagesForLine(this.line).filter(m => m.type === this.type).map(m => m.shown);
-        const allHiddenOfThisType = booleans.reduce((sum, next) => sum && next, true);
+        const allHiddenOfThisType = this.codeListing.getMessagesForLine(this.line).filter(m => m.type === this.type).every(m => m.shown);
         if (allHiddenOfThisType) {
             this.dot.classList.remove(`dot-${this.type}`);
         }

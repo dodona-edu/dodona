@@ -21,7 +21,7 @@ class FeedbackCodeRenderer
     @compress = !only_errors.empty? && only_errors.size != @messages.size
 
     @builder.div(class: 'feedback-table-options') do
-      @builder.span(id: 'messages-were-hidden', class: 'hide') do
+      @builder.span(id: 'annotations-were-hidden', class: 'hide') do
       end
       @builder.span(class: 'flex-spacer') do
       end
@@ -51,7 +51,7 @@ class FeedbackCodeRenderer
     @builder.script(type: 'application/javascript') do
       @builder << "window.dodona.codeListing = new window.dodona.codeListingClass(#{@code.dump});"
       @builder << '$(() => window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + '));'
-      @builder << '$(() => window.dodona.codeListing.compressMessages());' if @compress
+      @builder << '$(() => window.dodona.codeListing.compressAnnotations());' if @compress
     end
   end
 

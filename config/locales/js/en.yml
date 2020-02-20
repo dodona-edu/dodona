@@ -83,8 +83,8 @@ en:
         fri: Fr
         sat: Sa
         sun: Su
-    message:
-      hidden: A message was hidden
+    annotation:
+      hidden: An annotation was hidden
       were_hidden:
-        single: Only errors are shown, show {0} other message
-        plural: Only errors are shown, show {0} other messages
+        single: Only errors are shown, show {0} other annotation
+        plural: Only errors are shown, show {0} other annotations

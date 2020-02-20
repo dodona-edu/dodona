@@ -1,17 +1,17 @@
 import { CodeListing } from "code_listing/code_listing";
 
-type MessageType = "error" | "warning" | "info";
+type AnnotationType = "error" | "warning" | "info";
 const ORDERING = ["error", "warning", "info"];
 
-export interface MessageData {
-    type: MessageType;
+export interface AnnotationData {
+    type: AnnotationType;
     text: string;
     row: number;
 }
 
-export class Message {
+export class Annotation {
     readonly id: number;
-    readonly type: MessageType;
+    readonly type: AnnotationType;
     readonly text: string;
     readonly line: number;
 
@@ -23,7 +23,7 @@ export class Message {
 
     private readonly codeListing: CodeListing;
 
-    constructor(id: number, m: MessageData, listing: HTMLTableElement, codeListing: CodeListing) {
+    constructor(id: number, m: AnnotationData, listing: HTMLTableElement, codeListing: CodeListing) {
         this.id = id;
         this.type = m.type;
         this.text = m.text;
@@ -99,7 +99,7 @@ export class Message {
         this.dot = document.createElement("span");
         this.dot.setAttribute("class", `dot dot-${this.type}`);
 
-        const titleAttr = I18n.t("js.message.hidden");
+        const titleAttr = I18n.t("js.annotation.hidden");
         this.dot.setAttribute("title", titleAttr);
 
         codeGutter.prepend(this.dot);
@@ -110,7 +110,7 @@ export class Message {
     }
 
     removeDot(): void {
-        const allHiddenOfThisType = this.codeListing.getMessagesForLine(this.line).filter(m => m.type === this.type).every(m => m.shown);
+        const allHiddenOfThisType = this.codeListing.getAnnotationsForLine(this.line).filter(m => m.type === this.type).every(m => m.shown);
         if (allHiddenOfThisType) {
             this.dot.classList.remove(`dot-${this.type}`);
         }

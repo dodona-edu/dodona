@@ -1,8 +1,8 @@
-import { Message, MessageData } from "code_listing/message";
+import { Annotation, AnnotationData } from "code_listing/annotation";
 
 export class CodeListing {
     private readonly table: HTMLTableElement;
-    readonly messages: Message[];
+    readonly annotations: Annotation[];
 
     public readonly code: string;
 
@@ -11,12 +11,12 @@ export class CodeListing {
     private hideAllButton: HTMLButtonElement;
     private showOnlyErrorButton: HTMLButtonElement;
     private showAllButton: HTMLButtonElement;
-    private messagesWereHidden: HTMLSpanElement;
+    private annotationsWereHidden: HTMLSpanElement;
     private diffSwitchPrefix: HTMLSpanElement;
 
     constructor(code, feedbackTableSelector = "table.code-listing") {
         this.table = document.querySelector(feedbackTableSelector) as HTMLTableElement;
-        this.messages = [];
+        this.annotations = [];
         this.code = code;
 
         if (this.table === null) {
@@ -35,49 +35,49 @@ export class CodeListing {
         this.hideAllButton = document.querySelector("#hide_all_annotations");
         this.showOnlyErrorButton = document.querySelector("#show_only_errors");
         this.showAllButton = document.querySelector("#show_all_annotations");
-        this.messagesWereHidden = document.querySelector("#messages-were-hidden");
+        this.annotationsWereHidden = document.querySelector("#annotations-were-hidden");
         this.diffSwitchPrefix = document.querySelector("#diff-switch-prefix");
 
         const showAllListener = (): void => {
             this.showAllAnnotations();
-            this.messagesWereHidden?.remove();
+            this.annotationsWereHidden?.remove();
         };
 
         this.showAllButton.addEventListener("click", () => showAllListener());
         this.hideAllButton.addEventListener("click", () => this.hideAllAnnotations());
 
-        this.showOnlyErrorButton.addEventListener("click", () => this.compressMessages());
+        this.showOnlyErrorButton.addEventListener("click", () => this.compressAnnotations());
 
-        this.messagesWereHidden.addEventListener("click", () => this.showAllButton.click());
+        this.annotationsWereHidden.addEventListener("click", () => this.showAllButton.click());
     }
 
-    addAnnotations(messages: MessageData[]): void {
-        messages.forEach(m => this.addAnnotation(m));
+    addAnnotations(annotations: AnnotationData[]): void {
+        annotations.forEach(m => this.addAnnotation(m));
     }
 
-    addAnnotation(message: MessageData): void {
-        this.messages.push(new Message(this.messages.length, message, this.table, this));
+    addAnnotation(annotation: AnnotationData): void {
+        this.annotations.push(new Annotation(this.annotations.length, annotation, this.table, this));
 
         this.showAllButton.classList.remove("hide");
         this.hideAllButton.classList.remove("hide");
         this.diffSwitchPrefix.classList.remove("hide");
 
-        if (message.type === "error") {
+        if (annotation.type === "error") {
             this.showOnlyErrorButton.classList.remove("hide");
-            this.messagesWereHidden.classList.remove("hide");
+            this.annotationsWereHidden.classList.remove("hide");
         }
 
-        const nonErrorMEssageCount = this.createHiddenMessage(this.messages.filter(m => m.type !== "error").length);
-        this.messagesWereHidden.innerHTML = "";
-        this.messagesWereHidden.appendChild(nonErrorMEssageCount);
+        const nonErrorAnnotationCount = this.createHiddenMessage(this.annotations.filter(m => m.type !== "error").length);
+        this.annotationsWereHidden.innerHTML = "";
+        this.annotationsWereHidden.appendChild(nonErrorAnnotationCount);
     }
 
-    compressMessages(): void {
+    compressAnnotations(): void {
         this.showAllAnnotations();
 
-        const errors = this.messages.filter(m => m.type === "error");
+        const errors = this.annotations.filter(m => m.type === "error");
         if (errors.length !== 0) {
-            const others = this.messages.filter(m => m.type !== "error");
+            const others = this.annotations.filter(m => m.type !== "error");
             others.forEach(m => m.hide());
             errors.forEach(m => m.show());
             this.showOnlyErrorButton.classList.add("active");
@@ -85,11 +85,11 @@ export class CodeListing {
     }
 
     showAllAnnotations(): void {
-        this.messages.forEach(m => m.show());
+        this.annotations.forEach(m => m.show());
     }
 
     hideAllAnnotations(): void {
-        this.messages.forEach(m => m.hide());
+        this.annotations.forEach(m => m.hide());
     }
 
     clearHighlights(): void {
@@ -142,15 +142,14 @@ export class CodeListing {
         return strings.join("");
     }
 
-    public getMessagesForLine(lineNr: number): Message[] {
-        return this.messages.filter(a => a.line === lineNr);
+    public getAnnotationsForLine(lineNr: number): Annotation[] {
+        return this.annotations.filter(a => a.line === lineNr);
     }
 
     public createHiddenMessage(count: number): HTMLAnchorElement {
-        const link = document.createElement("a");
-
-        const data = I18n.t(`js.message.were_hidden.${count > 1 ? "plural" : "single"}`).replace(/{(\d)}/g, String(count));
-        const linkText = document.createTextNode(data);
+        const link: HTMLAnchorElement = document.createElement("a");
+        const data: string = I18n.t(`js.annotation.were_hidden.${count > 1 ? "plural" : "single"}`).replace(/{(\d)}/g, String(count));
+        const linkText: Text = document.createTextNode(data);
         link.appendChild(linkText);
         return link;
     }

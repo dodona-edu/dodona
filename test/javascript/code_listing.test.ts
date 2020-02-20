@@ -5,7 +5,7 @@ let codeListing;
 beforeEach(() => {
     document.body.innerHTML = "<div class='code-table'>" +
         "<div class='feedback-table-options'>" +
-            "<span id='messages-were-hidden' class='hide'></span>" +
+            "<span id='annotations-were-hidden' class='hide'></span>" +
             "<span class='flex-spacer'></span>" +
             "<span class='diff-switch-buttons diff-buttons'>" +
                 "<span id='diff-switch-prefix' class='hide'>Berichten</span>" +
@@ -119,7 +119,7 @@ test("only warning dot visible when in compressed error mode", () => {
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    codeListing.compressMessages();
+    codeListing.compressAnnotations();
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-error.dot-warning.dot-info").length).toBe(0);
@@ -131,7 +131,7 @@ test("only warning dot visible when in compressed error mode", () => {
     codeListing.hideAllAnnotations();
     codeListing.showAllAnnotations();
 
-    codeListing.compressMessages();
+    codeListing.compressAnnotations();
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-error.dot-warning.dot-info").length).toBe(0);
@@ -160,7 +160,7 @@ test("no double dots", () => {
     expect(document.querySelectorAll(".dot.dot-warning").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
 
-    codeListing.compressMessages();
+    codeListing.compressAnnotations();
 
     expect(document.querySelectorAll(".dot.dot-error.dot-warning.dot-info").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-warning.dot-info").length).toBe(0);
@@ -183,8 +183,8 @@ test("correct buttons & elements are hidden and unhidden", () => {
     expect(document.querySelectorAll("#show_only_errors.hide").length).toBe(1);
     expect(document.querySelectorAll("#show_only_errors:not(.hide)").length).toBe(0);
 
-    expect(document.querySelectorAll("#messages-were-hidden.hide").length).toBe(1);
-    expect(document.querySelectorAll("#messages-were-hidden:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll("#annotations-were-hidden.hide").length).toBe(1);
+    expect(document.querySelectorAll("#annotations-were-hidden:not(.hide)").length).toBe(0);
 
     expect(document.querySelectorAll("#diff-switch-prefix.hide").length).toBe(0);
     expect(document.querySelectorAll("#diff-switch-prefix:not(.hide)").length).toBe(1);
@@ -204,16 +204,16 @@ test("correct buttons & elements are hidden and unhidden", () => {
     expect(document.querySelectorAll("#show_only_errors.hide").length).toBe(0);
     expect(document.querySelectorAll("#show_only_errors:not(.hide)").length).toBe(1);
 
-    expect(document.querySelectorAll("#messages-were-hidden.hide").length).toBe(0);
-    expect(document.querySelectorAll("#messages-were-hidden:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll("#annotations-were-hidden.hide").length).toBe(0);
+    expect(document.querySelectorAll("#annotations-were-hidden:not(.hide)").length).toBe(1);
 
     expect(document.querySelectorAll("#diff-switch-prefix.hide").length).toBe(0);
     expect(document.querySelectorAll("#diff-switch-prefix:not(.hide)").length).toBe(1);
 
-    const messagesWereHidden: HTMLSpanElement = document.querySelector("span#messages-were-hidden") as HTMLSpanElement;
-    messagesWereHidden.click();
+    const annotationsWereHidden: HTMLSpanElement = document.querySelector("span#annotations-were-hidden") as HTMLSpanElement;
+    annotationsWereHidden.click();
 
-    expect(document.querySelectorAll("#messages-were-hidden").length).toBe(0);
+    expect(document.querySelectorAll("#annotations-were-hidden").length).toBe(0);
 
     expect(document.querySelectorAll("#show_all_annotations.active.hide").length).toBe(0);
     expect(document.querySelectorAll("#show_all_annotations.active:not(.hide)").length).toBe(1);

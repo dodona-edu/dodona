@@ -83,9 +83,9 @@ nl:
         fri: Vr
         sat: Za
         sun: Zo
-    message:
-      hidden: Een bericht werd verborgen
+    annotation:
+      hidden: Een annotatie werd verborgen
       were_hidden:
-        single: Enkel errors worden getoond, toon {0} ander bericht
-        plural: Enkel errors worden getoond, toon {0} andere berichten
+        single: Enkel errors worden getoond, toon {0} andere annotatie
+        plural: Enkel errors worden getoond, toon {0} andere annotaties
 

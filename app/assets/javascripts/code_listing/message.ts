@@ -99,12 +99,7 @@ export class Message {
         this.dot = document.createElement("span");
         this.dot.setAttribute("class", `dot dot-${this.type}`);
 
-        let titleAttr = "hidden";
-        // Runtime for Jest does not have the i18n defined
-        if (Object.prototype.hasOwnProperty.call(window, "I18n")) {
-            titleAttr = I18n.t("js.message.hidden");
-        }
-
+        const titleAttr = I18n.t("js.message.hidden");
         this.dot.setAttribute("title", titleAttr);
 
         codeGutter.prepend(this.dot);

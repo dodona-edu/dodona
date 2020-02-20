@@ -80,11 +80,9 @@ function initPythiaSubmissionShow(submissionCode) {
         $.get(path, function (data) {
             let lines = data.split("\n");
             const maxLines = 99;
-            let omitted = false;
             if (lines.length > maxLines) {
                 lines = lines.slice(0, maxLines);
                 lines.push("...");
-                omitted = true;
             }
 
             const table = document.createElement("table");
@@ -94,7 +92,7 @@ function initPythiaSubmissionShow(submissionCode) {
 
                 const number = document.createElement("td");
                 number.className = "line-nr";
-                number.textContent = (i === maxLines && omitted) ? "": i + 1;
+                number.textContent = (i === maxLines) ? "": i + 1;
                 tr.appendChild(number);
 
                 const line = document.createElement("td");

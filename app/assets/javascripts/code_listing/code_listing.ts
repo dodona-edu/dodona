@@ -149,11 +149,7 @@ export class CodeListing {
     public createHiddenMessage(count: number): HTMLAnchorElement {
         const link = document.createElement("a");
 
-        let data = String(count);
-        // Runtime for Jest does not have the i18n defined
-        if (Object.prototype.hasOwnProperty.call(window, "I18n")) {
-            data = I18n.t(`js.message.were_hidden.${count > 1 ? "plural" : "single"}`).replace(/{(\d)}/g, String(count));
-        }
+        const data = I18n.t(`js.message.were_hidden.${count > 1 ? "plural" : "single"}`).replace(/{(\d)}/g, String(count));
         const linkText = document.createTextNode(data);
         link.appendChild(linkText);
         return link;

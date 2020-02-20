@@ -1,5 +1,7 @@
 import { CodeListing } from "code_listing/code_listing";
 
+let codeListing;
+
 beforeEach(() => {
     document.body.innerHTML = "<div class='code-table'>" +
         "<div class='feedback-table-options'>" +
@@ -20,10 +22,10 @@ beforeEach(() => {
             "<tr id='line-3' class='lineno'><td class='rouge-gutter gl'><pre>3</pre></td><td class='rouge-code'><pre>print(9 + 15)</pre></td></tr>" +
         "</tbody></table>" +
         "</div>";
+    codeListing = new CodeListing("print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n");
 });
 
 test("create feedback table with default settings", () => {
-    const codeListing = new CodeListing();
     codeListing.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
@@ -34,7 +36,6 @@ test("create feedback table with default settings", () => {
 });
 
 test("feedback table should support more than 1 annotation per row (first and last row)", () => {
-    const codeListing = new CodeListing();
     codeListing.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
@@ -48,7 +49,6 @@ test("feedback table should support more than 1 annotation per row (first and la
 });
 
 test("annotation types should be transmitted into the view", () => {
-    const codeListing = new CodeListing();
     codeListing.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 1, "type": "warning" },
@@ -61,7 +61,6 @@ test("annotation types should be transmitted into the view", () => {
 });
 
 test("line highlighting", () => {
-    const codeListing = new CodeListing();
     codeListing.highlightLine(1);
 
     expect(document.querySelectorAll(".lineno.marked").length).toBe(1);
@@ -80,7 +79,6 @@ test("line highlighting", () => {
 });
 
 test("dots only for non-shown messages and only the worst", () => {
-    const codeListing = new CodeListing();
     codeListing.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "warning" },
@@ -98,7 +96,6 @@ test("dots only for non-shown messages and only the worst", () => {
 });
 
 test("dots not visible when all annotations are shown", () => {
-    const codeListing = new CodeListing();
     codeListing.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "warning" },
@@ -116,7 +113,6 @@ test("dots not visible when all annotations are shown", () => {
 
 
 test("only warning dot visible when in compressed error mode", () => {
-    const codeListing = new CodeListing();
     codeListing.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "warning" },
@@ -144,7 +140,6 @@ test("only warning dot visible when in compressed error mode", () => {
 });
 
 test("no double dots", () => {
-    const codeListing = new CodeListing();
     codeListing.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "info" },
@@ -173,7 +168,6 @@ test("no double dots", () => {
 });
 
 test("correct buttons & elements are hidden and unhidden", () => {
-    const codeListing = new CodeListing();
     codeListing.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "info" },

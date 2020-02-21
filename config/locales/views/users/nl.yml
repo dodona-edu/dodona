@@ -31,7 +31,7 @@ nl:
       token_sign_in: 'Deze account werd handmatig aangemaakt en kan enkel inloggen via deze link:'
       timezone: Je tijdzone staat ingesteld op
       stats: Statistieken
-      download_my_submissions: Mijn oplossingen downloaden
+      download_my_submissions: Mijn oplossingen exporteren
     users_table:
       staff: Beheerder
       zeus: Zeus

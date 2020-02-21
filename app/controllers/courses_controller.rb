@@ -189,15 +189,15 @@ class CoursesController < ApplicationController
     user = User.find params[:user]
     respond_to do |format|
       if update_membership_status_for user, params[:status]
-        notification = t('controllers.updated', model: CourseMembership.model_name.human)
-        format.html { redirect_back fallback_location: root_url, notice: notification }
+        toast = t('controllers.updated', model: CourseMembership.model_name.human)
+        format.html { redirect_back fallback_location: root_url, notice: toast }
         format.json { head :ok }
-        format.js { render 'reload_users', locals: { notification: notification } }
+        format.js { render 'reload_users', locals: { toast: toast } }
       else
         alert = t('controllers.update_failed', model: CourseMembership.model_name.human)
         format.html { redirect_back(fallback_location: root_url, alert: alert) }
         format.json { head :unprocessable_entity }
-        format.js { render 'reload_users', locals: { notification: alert } }
+        format.js { render 'reload_users', locals: { toast: alert } }
       end
     end
   end

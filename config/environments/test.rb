@@ -19,7 +19,7 @@ Rails.application.configure do
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
-      'Cache-Control' => "public, max-age=#{1.hour.to_i}"
+    'Cache-Control' => "public, max-age=#{1.hour.to_i}"
   }
 
   # Show full error reports and disable caching.
@@ -48,10 +48,10 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  Delayed::Worker.delay_jobs = ->(job) {job.queue != 'default'}
+  Delayed::Worker.delay_jobs = ->(job) { !%w[default exports].include?(job.queue) }
 
-  config.submissions_storage_path = Rails.root.join('tmp', 'data', 'storage', 'submissions')
+  config.submissions_storage_path = Rails.root.join('tmp/data/storage/submissions')
 
   routes.default_url_options[:trailing_slash] = true
-  routes.default_url_options[:locale] = "en"
+  routes.default_url_options[:locale] = 'en'
 end

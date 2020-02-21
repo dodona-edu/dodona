@@ -1,0 +1,11 @@
+en:
+  notifications:
+    index:
+      created: "%{when} ago"
+      view_all: "View all notifications"
+      title: Notifications
+      message: Message
+      created_header: "Created"
+      destroy_all: "Clear notifications"
+      delete: Delete notification
+

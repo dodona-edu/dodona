@@ -90,8 +90,8 @@ nl:
       no_series_yet: 'Deze cursus bevat nog geen reeksen met oefeningen. Klik op de knop "Reeksen beheren" om aan de slag te gaan.'
       users: Gebruikers
       series: reeksen
-      download_submissions: Oplossingen van studenten downloaden
-      download_my_submissions: Mijn oplossingen downloaden
+      download_submissions: Oplossingen van studenten exporteren
+      download_my_submissions: Mijn oplossingen exporteren
       subscribed: Geregistreerd
       pending: Op de wachtlijst
       unsubscribed: Uitgeschreven
@@ -99,10 +99,10 @@ nl:
       confirm_decline_all: Ben je zeker dat je alle gebruikers op de wachtlijst wil afwijzen?
       accept_all: Iedereen toelaten
       confirm_accept_all: Ben je zeker dat je alle gebruikers op de wachtlijst wil toelaten?
-      mass_accept_notification:
+      mass_accept_toast:
         one: 1 gebruiker op de wachtlijst is toegelaten.
         other: "%{count} gebruikers op de wachtlijst zijn toegelaten."
-      mass_decline_notification:
+      mass_decline_toast:
         one: 1 gebruiker op de wachtlijst is afgewezen.
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
       taught_by: "Gegeven door %{teacher}."

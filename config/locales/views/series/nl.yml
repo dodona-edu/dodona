@@ -22,8 +22,8 @@ nl:
       token_link: 'Geheime link'
       series: Reeks
       exercises: Oefeningen
-      download_submissions: Mijn oplossingen downloaden
-      download_all_solutions: Oplossingen van studenten downloaden
+      download_submissions: Mijn oplossingen exporteren
+      download_all_solutions: Oplossingen van studenten exporteren
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
       exercises_not_visible: De oefeningen in deze reeks zijn niet zichtbaar voor studenten!

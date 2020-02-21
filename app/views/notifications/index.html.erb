@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t('.title') %></h2>
+        <div class="card-title-fab">
+          <%= render 'application/fab_link', url: destroy_all_notifications_path, icon: 'delete', method: :delete, title: t('.destroy_all') %>
+        </div>
+      </div>
+      <div class="card-supporting-text">
+        <div id="notifications-table-wrapper">
+          <%= render partial: 'notifications_table', locals: { notifications: @notifications } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

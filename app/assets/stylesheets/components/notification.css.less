@@ -1,37 +1,11 @@
-.notifications {
-  bottom: 24px;
-  left: 24px;
-  position: fixed;
-  z-index: 1000;
+th.status-icon {
+  width: 48px;
 }
 
-.notifications .notification {
-  background-color: @notification-bg;
-  border-radius: 3px;
-  box-shadow: 0 0 2px @notification-inner-shadow, 0 2px 4px @notification-outer-shadow;
-  color: @notification-fg;
-  display: block;
-  line-height: 20px;
-  margin-top: 8px;
-  padding: 16px;
-  transition-duration: 1s;
-  transition-property: transform, opacity;
-  transition-timing-function: ease-out;
-}
-
-.notifications .notification-show {
-  transform: translateY(200px);
-  opacity: 0;
-}
-
-.notifications .notification-hide {
-  opacity: 0;
-}
-
-.notification .spinner {
-  width: 20px;
-  height: 20px;
-  float: right;
-  margin-left: 10px;
-  background-color: @notification-spinner-bg;
+.notification {
+  &.unread {
+    .notification-icon, .read-indicator {
+      color: @info-500;
+    }
+  }
 }

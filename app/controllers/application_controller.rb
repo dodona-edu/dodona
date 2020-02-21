@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_time_zone_offset
 
+  before_action :set_notifications, if: :user_signed_in?
+
   impersonates :user
 
   # A more lax CSP for pages in the sandbox
@@ -165,11 +167,10 @@ class ApplicationController < ActionController::Base
     @time_zone_offset = Time.zone.now.utc_offset / -60
   end
 
-  def send_zip(zip)
-    send_data zip[:data],
-              type: 'application/zip',
-              filename: zip[:filename],
-              disposition: 'attachment',
-              x_sendfile: true
+  def set_notifications
+    @notifications = current_user.notifications
+    @notifications.where(read: false).each do |n|
+      n.update(read: true) if helpers.current_page?(helpers.base_notifiable_url_params(n))
+    end
   end
 end

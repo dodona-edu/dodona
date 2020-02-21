@@ -15,7 +15,7 @@ class ApiTokensController < ApplicationController
       if can_create && @token.save
         message = I18n.t('controllers.created', model: ApiToken.model_name)
         f.html { redirect_back fallback_location: root_path, notice: message }
-        f.js { render 'create', locals: { notification: message, new_token: @token } }
+        f.js { render 'create', locals: { toast: message, new_token: @token } }
       else
         errors = @token.errors.full_messages
         errors << I18n.t('errors.models.api_token.attributes.not_permitted') unless can_create
@@ -24,7 +24,7 @@ class ApiTokensController < ApplicationController
           redirect_back fallback_location: root_path,
                         alert: message
         end
-        f.js { render 'notification', locals: { notification: message } }
+        f.js { render 'toast', locals: { toast: message } }
       end
     end
   end
@@ -40,7 +40,7 @@ class ApiTokensController < ApplicationController
         redirect_back fallback_location: root_path, notice: message
       end
       f.js do
-        render 'delete', locals: { notification: message }
+        render 'delete', locals: { toast: message }
       end
     end
   end

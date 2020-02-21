@@ -1,6 +1,6 @@
 /* globals flatpickr */
 
-import { Notification } from "./notification";
+import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop.js";
 
 const DRAG_AND_DROP_ARGS = {
@@ -94,14 +94,14 @@ function initSeriesEdit() {
     }
 
     function exerciseAdded($row, $addButton) {
-        new Notification(I18n.t("js.exercise-added-success"));
+        new Toast(I18n.t("js.exercise-added-success"));
         $row.find("a.remove-exercise").click(removeExercise);
         $row.removeClass("pending");
         $addButton.addClass("hidden");
     }
 
     function addingExerciseFailed($row) {
-        new Notification(I18n.t("js.exercise-added-failed"));
+        new Toast(I18n.t("js.exercise-added-failed"));
         $row.addClass("new").removeClass("pending");
         setTimeout(function () {
             $row.remove();
@@ -113,13 +113,13 @@ function initSeriesEdit() {
         setTimeout(function () {
             $row.remove();
         }, 500);
-        new Notification(I18n.t("js.exercise-removed-success"));
+        new Toast(I18n.t("js.exercise-removed-success"));
         $(`a.add-exercise[data-exercise_id="${$row.find("a.remove-exercise").data("exercise_id")}"]`).removeClass("hidden");
     }
 
     function removingExerciseFailed($row) {
         $row.removeClass("pending");
-        new Notification(I18n.t("js.exercise-removed-failed"));
+        new Toast(I18n.t("js.exercise-removed-failed"));
     }
 
     init();

@@ -29,12 +29,10 @@ export class Notification {
         });
 
         // Delete button isn't shown on small view in navbar
-        if (this.element.querySelector(".delete-button") != null) {
-            this.element.querySelector(".delete-button").addEventListener("click", event => {
-                this.remove();
-                event.stopPropagation();
-            });
-        }
+        this.element.querySelector(".delete-button")?.addEventListener("click", event => {
+            this.remove();
+            event.stopPropagation();
+        });
 
         // We only want to install the click handler for the full element on the small notification view.
         if (installClickHandler) {

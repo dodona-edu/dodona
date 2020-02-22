@@ -188,6 +188,7 @@ class SeriesController < ApplicationController
     respond_to do |format|
       format.html
       format.js
+      format.json
       format.csv do
         sheet = CSV.generate do |csv|
           csv << [I18n.t('series.scoresheet.explanation')]

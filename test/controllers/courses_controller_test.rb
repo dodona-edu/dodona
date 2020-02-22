@@ -26,7 +26,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    @course = create :course
+    @course = create :course, series_count: 10, exercises_per_series: 5, submissions_per_exercise: 5
     _zeus_extern = create :zeus
     _zeus_intern = create :zeus
 
@@ -119,6 +119,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should get course scoresheet as course admin in csv format' do
     sign_in @course_admins.first
     get scoresheet_course_url(@course, format: :csv)
+    assert_response :success, 'course_admin should be able to get course scoresheet'
+  end
+
+  test 'should get course scoresheet as course admin in json format' do
+    sign_in @course_admins.first
+    get scoresheet_course_url(@course, format: :json)
     assert_response :success, 'course_admin should be able to get course scoresheet'
   end
 

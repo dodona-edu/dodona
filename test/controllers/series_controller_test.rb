@@ -145,7 +145,7 @@ end
 
 class SeriesVisibilityTest < ActionDispatch::IntegrationTest
   setup do
-    @series = create :series
+    @series = create :series, exercise_count: 5, exercise_submission_count: 5
     @course = @series.course
     @student = create :student
     @zeus = create :zeus
@@ -238,6 +238,12 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
   test 'should get series scoresheet in csv format as course admin' do
     sign_in @course_admin
     get scoresheet_series_url(@series, format: :csv)
+    assert_response :success, "#{@course_admin} should be able to get series scoresheet"
+  end
+
+  test 'should get series scoresheet in json format as course admin' do
+    sign_in @course_admin
+    get scoresheet_series_url(@series, format: :json)
     assert_response :success, "#{@course_admin} should be able to get series scoresheet"
   end
 

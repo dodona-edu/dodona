@@ -1,4 +1,4 @@
-@dot-size: 11.5px;
+@dot-size: 9px;
 
 .code-table {
 
@@ -21,18 +21,6 @@
       white-space: pre-wrap;
     }
 
-    .lineno:first-child {
-      .rouge-code, .rouge-gutter {
-        padding-top: 5px;
-      }
-    }
-
-    .lineno:last-child {
-      .rouge-code, .rouge-gutter {
-        padding-bottom: 5px;
-      }
-    }
-
     .lineno.marked {
       background-color: @warning-500;
     }
@@ -45,28 +33,25 @@
     }
 
     .rouge-gutter {
-      min-width: 35px;
-      text-align: right;
       vertical-align: top;
-      padding-right: 5px;
-
-      display: flex;
-      justify-content: flex-end;
-
+      white-space: nowrap;
+      text-align: right;
 
       pre {
+        padding-right: 5px;
+        margin-left: 20px;
+        white-space: nowrap;
         font-family: @font-family-monospace;
         color: @gray-light
       }
 
       .dot {
+        float: left;
+        margin-left: 4px;
+        margin-top: 4px;
         height: @dot-size;
         width: @dot-size;
         border-radius: 100%;
-        display: inline-block;
-        flex-shrink: 0;
-
-        margin: 2px 6px 2px 4px;
       }
 
       .dot-info {

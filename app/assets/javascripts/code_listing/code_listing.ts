@@ -223,22 +223,22 @@ export class CodeListing {
     }
 
     private createRow(lineNumber: number, rougeRow: number): HTMLTableRowElement {
-        const messageRow: HTMLTableRowElement = this.table.insertRow(lineNumber);
-        messageRow.setAttribute("class", "message-set");
-        messageRow.setAttribute("id", `message-row-id-${rougeRow}`);
-        const gutterTD: HTMLTableDataCellElement = messageRow.insertCell();
+        const formSubmissionRow: HTMLTableRowElement = this.table.insertRow(lineNumber);
+        formSubmissionRow.setAttribute("class", "annotation-set");
+        formSubmissionRow.setAttribute("id", `annotation-row-id-${rougeRow}`);
+        const gutterTD: HTMLTableDataCellElement = formSubmissionRow.insertCell();
         gutterTD.setAttribute("class", "rouge-gutter gl");
-        const messageTD: HTMLTableDataCellElement = messageRow.insertCell();
-        messageTD.setAttribute("class", "message-cell");
-        return messageRow;
+        const annotationTD: HTMLTableDataCellElement = formSubmissionRow.insertCell();
+        annotationTD.setAttribute("class", "annotation-cell");
+        return formSubmissionRow;
     }
 
     private findOrCreateTableRow(rowId: number, tableIndex: number, rougeRow: number): HTMLTableRowElement {
-        let messageRow: HTMLTableRowElement = this.table.querySelector(`#message-row-id-${rowId}`);
-        if (messageRow === null) {
-            messageRow = this.createRow(tableIndex, rougeRow);
+        let annotationRow: HTMLTableRowElement = this.table.querySelector(`#annotation-row-id-${rowId}`);
+        if (annotationRow === null) {
+            annotationRow = this.createRow(tableIndex, rougeRow);
         }
-        return messageRow;
+        return annotationRow;
     }
 
     handleCommentButtonClick(clickEvent: MouseEvent): void {
@@ -255,8 +255,8 @@ export class CodeListing {
         }
 
         const annotationSubmissionDiv: HTMLFormElement = this.createAnnotationSubmissionDiv(lineId);
-        const messageCell: HTMLTableDataCellElement = tr.querySelector("td.message-cell");
-        messageCell.append(annotationSubmissionDiv);
+        const annotationCell: HTMLTableDataCellElement = tr.querySelector("td.annotation-cell");
+        annotationCell.append(annotationSubmissionDiv);
     }
 
     createAnnotationSubmissionDiv(lineId: string, annotation?: UserAnnotation): HTMLFormElement {

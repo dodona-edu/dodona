@@ -55,9 +55,17 @@ function initLabelsEdit(labels, undeletableLabels) {
     });
 }
 
-function initLightboxes() {
-    initStrip();
+function showLightbox(content) {
+    Strip.show(content.images, { side: "top" }, content.index);
+}
 
+function onFrameMessage(event) {
+    if (event.message.type === "lightbox") {
+        showLightbox(event.message.content);
+    }
+}
+
+function initLightboxes() {
     let index = 1;
     const images = [];
     $(".exercise-description img, a.dodona-lightbox").each(function () {
@@ -73,9 +81,14 @@ function initLightboxes() {
     });
 
     $(".exercise-description img, a.dodona-lightbox").click(function () {
-        Strip.show(images, {
-            side: "top",
-        }, $(this).data("image_index"));
+        const index = $(this).data("image_index");
+        window.parentIFrame.sendMessage({
+            type: "lightbox",
+            content: {
+                images: images,
+                index: index,
+            }
+        });
         return false;
     });
 }
@@ -121,6 +134,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (editorShown) {
             initEditor();
         }
+        initStrip();
         swapActionButtons();
         initDeadlineTimeout();
         enableSubmissionTableLinks();
@@ -371,5 +385,8 @@ function afterResize(details) {
     }
 }
 
-export { initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize };
+export {
+    initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
+    onFrameMessage
+};
 

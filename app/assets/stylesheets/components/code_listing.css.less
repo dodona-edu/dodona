@@ -104,25 +104,9 @@
       }
     }
 
-    .rouge-code, .annotation-cell, .message-cell {
+    // General lighter background on the right side
+    .rouge-code, .annotation-cell {
       background-color: @body-bg;
-    }
-
-    // Shared style
-    .annotation-set .annotation-cell, .message-set .message-cell {
-      min-width: 100%;
-
-      .annotation, .message {
-        margin: 3px 5px 3px 5px;
-        padding: 2px 5px 2px 10px;
-
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-        border: 1px solid @hairlinegray;
-        border-left-width: 3px;
-
-        background: @content-bg;
-      }
     }
 
     .hide {
@@ -132,9 +116,21 @@
     .annotation-set {
       .annotation-cell {
         width: 100%;
+        min-width: 100%;
 
         .annotation {
+
+          margin: 3px 5px 3px 5px;
+          padding: 2px 5px 2px 10px;
+
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+          border: 1px solid @hairlinegray;
+          border-left-width: 3px;
           border-left-color: @success-300;
+
+          background: @content-bg;
+
           white-space: normal;
 
           .annotation-header {

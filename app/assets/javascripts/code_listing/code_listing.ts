@@ -104,6 +104,10 @@ export class CodeListing {
         this.annotations.push(annotationObj);
     }
 
+    removeUserAnnotation(annotation: UserAnnotation): void {
+        this.annotations = this.annotations.filter(a => a.id != annotation.id);
+    }
+
     compressAnnotations(): void {
         this.showAllAnnotations();
 

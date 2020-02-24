@@ -327,8 +327,6 @@ test("Feedback table should be able to contain both annotations & messages", () 
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
-        // { "text": "Value could be assigned", "row": 2, "type": "warning" },
-        // { "text": "Value could be assigned", "row": 2, "type": "warning" },
     ]);
 
     expect(document.querySelectorAll(".annotation").length).toBe(2);

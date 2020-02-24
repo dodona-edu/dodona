@@ -4,8 +4,8 @@ import { UserAnnotation, UserAnnotationInterface, SubmitUserAnnotation } from "c
 
 export class CodeListing {
     private readonly table: HTMLTableElement;
-    readonly messages: Annotation[];
-    annotations: UserAnnotation[];
+    readonly annotations: Annotation[];
+    userAnnotations: UserAnnotation[];
 
     public readonly code: string;
 
@@ -22,8 +22,8 @@ export class CodeListing {
     constructor(code, localePrefix = "nl") {
         this.table = document.querySelector("table.code-listing") as HTMLTableElement;
         this.code = code;
-        this.messages = [];
         this.annotations = [];
+        this.userAnnotations = [];
 
         const htmlDivElement = document.querySelector(".code-table[data-submission-id]") as HTMLDivElement;
         if (htmlDivElement) {
@@ -69,7 +69,7 @@ export class CodeListing {
     }
 
     addAnnotation(annotation: AnnotationData): void {
-        this.messages.push(new Annotation(this.annotations.length, annotation, this.table, this));
+        this.annotations.push(new Annotation(this.userAnnotations.length, annotation, this.table, this));
 
         this.showAllButton.classList.remove("hide");
         this.hideAllButton.classList.remove("hide");
@@ -101,19 +101,19 @@ export class CodeListing {
     addUserAnnotation(annotation: UserAnnotationInterface): void {
         const annotationObj = new UserAnnotation(annotation, this.table, this);
         annotationObj.createAnnotationDiv();
-        this.annotations.push(annotationObj);
+        this.userAnnotations.push(annotationObj);
     }
 
     removeUserAnnotation(annotation: UserAnnotation): void {
-        this.annotations = this.annotations.filter(a => a.id != annotation.id);
+        this.userAnnotations = this.userAnnotations.filter(a => a.id != annotation.id);
     }
 
     compressAnnotations(): void {
         this.showAllAnnotations();
 
-        const errors = this.messages.filter(m => m.type === "error");
+        const errors = this.annotations.filter(m => m.type === "error");
         if (errors.length !== 0) {
-            const others = this.messages.filter(m => m.type !== "error");
+            const others = this.annotations.filter(m => m.type !== "error");
             others.forEach(m => m.hide());
             errors.forEach(m => m.show());
             this.showOnlyErrorButton.classList.add("active");
@@ -124,11 +124,11 @@ export class CodeListing {
     }
 
     showAllAnnotations(): void {
-        this.messages.forEach(m => m.show());
+        this.annotations.forEach(m => m.show());
     }
 
     hideAllAnnotations(): void {
-        this.messages.forEach(m => m.hide());
+        this.annotations.forEach(m => m.hide());
     }
 
     clearHighlights(): void {
@@ -182,7 +182,7 @@ export class CodeListing {
     }
 
     public getAnnotationsForLine(lineNr: number): Annotation[] {
-        return this.messages.filter(a => a.line === lineNr);
+        return this.annotations.filter(a => a.line === lineNr);
     }
 
     public createHiddenMessage(count: number): HTMLSpanElement {
@@ -284,13 +284,13 @@ export class CodeListing {
 
         const sendButton: HTMLButtonElement = document.createElement("button");
         sendButton.setAttribute("class", "btn-text annotation-control-button annotation-submission-button");
-        const sendButtonText: Text = document.createTextNode(I18n.t("js.annotation.send"));
+        const sendButtonText: Text = document.createTextNode(I18n.t("js.user_annotation.send"));
         sendButton.append(sendButtonText);
         buttonGroup.append(sendButton);
 
         if (annotation != null && annotation.permission.delete) {
             const deleteButton: HTMLButtonElement = document.createElement("button");
-            const deleteButtonText: Text = document.createTextNode(I18n.t("js.annotation.delete"));
+            const deleteButtonText: Text = document.createTextNode(I18n.t("js.user_annotation.delete"));
             deleteButton.append(deleteButtonText);
             deleteButton.setAttribute("class", "btn-text annotation-control-button annotation-delete-button");
             deleteButton.addEventListener("click", annotation.handleDeleteButtonClick.bind(annotation));
@@ -299,7 +299,7 @@ export class CodeListing {
 
         const cancelButton: HTMLButtonElement = document.createElement("button");
         cancelButton.setAttribute("class", "btn-text annotation-control-button annotation-cancel-button");
-        const cancelButtonText: Text = document.createTextNode(I18n.t("js.annotation.cancel"));
+        const cancelButtonText: Text = document.createTextNode(I18n.t("js.user_annotation.cancel"));
         cancelButton.append(cancelButtonText);
 
         buttonGroup.append(cancelButton);
@@ -337,20 +337,20 @@ export class CodeListing {
         this.sendAnnotationPost(annotation)
             .done(data => {
                 const createdAnnotation = new UserAnnotation(data, this.table, this);
-                this.annotations.push(createdAnnotation);
+                this.userAnnotations.push(createdAnnotation);
                 createdAnnotation.createAnnotationDiv();
                 form.remove();
             }).fail(error => {
-            const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(error.responseJSON);
+                const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(error.responseJSON);
 
-            // Remove previous error list
-            const previousErrorList = form.querySelector(".annotation-submission-error-list");
-            if (previousErrorList) {
-                previousErrorList.remove();
-            }
+                // Remove previous error list
+                const previousErrorList = form.querySelector(".annotation-submission-error-list");
+                if (previousErrorList) {
+                    previousErrorList.remove();
+                }
 
-            form.querySelector(".annotation-submission-button-container").appendChild(errorList);
-        });
+                form.querySelector(".annotation-submission-button-container").appendChild(errorList);
+            });
     }
 
     handleAnnotationSubmissionCancelButtonClick(clickEvent: MouseEvent): void {

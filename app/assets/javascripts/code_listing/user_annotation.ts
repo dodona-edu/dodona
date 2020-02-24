@@ -59,7 +59,7 @@ export class UserAnnotation implements UserAnnotationInterface {
         this.codeListing.sendAnnotationDelete(this.id)
             .done(_ => {
                 annotationDiv.remove();
-                this.codeListing.annotations = this.codeListing.annotations.filter(a => a.id != this.id);
+                this.codeListing.userAnnotations = this.codeListing.userAnnotations.filter(a => a.id != this.id);
             });
     }
 
@@ -189,7 +189,7 @@ export class UserAnnotation implements UserAnnotationInterface {
         for (const key in json) {
             const li: HTMLLIElement = document.createElement("li");
             li.setAttribute("class", "annotation-submission-error");
-            const textNode: Text = document.createTextNode(`${I18n.t(`js.annotation.fields.${key}`)}: ${json[key]}`);
+            const textNode: Text = document.createTextNode(`${I18n.t(`js.user_annotation.fields.${key}`)}: ${json[key]}`);
             li.append(textNode);
             htmluListElement.appendChild(li);
         }

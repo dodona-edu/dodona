@@ -50,7 +50,7 @@ export class UserAnnotation implements UserAnnotationInterface {
 
     handleDeleteButtonClick(clickEvent: MouseEvent): void {
         clickEvent.preventDefault();
-        if (!confirm(I18n.t("js.annotation.delete_confirm"))) {
+        if (!confirm(I18n.t("js.user_annotation.delete_confirm"))) {
             return;
         }
 

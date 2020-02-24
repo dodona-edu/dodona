@@ -293,7 +293,7 @@ test("feedback table should support more than 1 annotation per row", () => {
     expect(document.querySelectorAll(".annotation").length).toBe(2);
 });
 
-test("Feedback table should be able to contain both annotations & messages", () => {
+test("feedback table should be able to contain both machine annotations and user annotations", () => {
     codeListing.addUserAnnotation({
         "id": 1,
         "line_nr": 1,
@@ -332,4 +332,19 @@ test("Feedback table should be able to contain both annotations & messages", () 
     ]);
 
     expect(document.querySelectorAll(".annotation").length).toBe(2 + 6);
+});
+
+test("ensure that all buttons are created", () => {
+    codeListing.initButtonForComment();
+    expect(document.querySelectorAll(".annotation-button").length).toBe(3);
+});
+
+test("click on comment button", () => {
+    codeListing.initButtonForComment();
+
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
+    annotationButton.click();
+    expect(document.querySelectorAll("form.annotation-submission").length).toBe(1);
+    annotationButton.click();
+    expect(document.querySelectorAll("form.annotation-submission").length).toBe(1);
 });

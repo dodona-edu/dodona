@@ -228,3 +228,109 @@ test("Dont show a message when there is only an error", () => {
 
     expect(document.querySelector("#annotations-were-hidden").textContent).toBe("");
 });
+
+test("annotations should be transmitted into view", () => {
+    codeListing.addUserAnnotation({
+        "id": 1,
+        "line_nr": 1,
+        "annotation_text": "This could be shorter",
+        "markdown_text": "<p>This could be shorter</p>",
+        "permission": {
+            edit: false,
+            delete: false,
+        },
+        "user": {
+            name: "Jan Klaassen",
+        }
+    });
+
+    codeListing.addUserAnnotation({
+        "id": 2,
+        "line_nr": 2,
+        "annotation_text": "This should be faster",
+        "markdown_text": "<p>This should be faster</p>",
+        "permission": {
+            edit: true,
+            delete: true,
+        },
+        "user": {
+            name: "Piet Hein",
+        }
+    });
+
+    expect(document.querySelectorAll(".annotation").length).toBe(2);
+});
+
+test("feedback table should support more than 1 annotation per row", () => {
+    codeListing.addUserAnnotation({
+        "id": 1,
+        "line_nr": 1,
+        "annotation_text": "This could be shorter",
+        "markdown_text": "<p>This could be shorter</p>",
+        "permission": {
+            edit: false,
+            delete: false,
+        },
+        "user": {
+            name: "Jan Klaassen",
+        }
+    });
+
+    codeListing.addUserAnnotation({
+        "id": 2,
+        "line_nr": 1,
+        "annotation_text": "This should be faster",
+        "markdown_text": "<p>This should be faster</p>",
+        "permission": {
+            edit: true,
+            delete: true,
+        },
+        "user": {
+            name: "Piet Hein",
+        }
+    });
+
+    expect(document.querySelectorAll(".annotation").length).toBe(2);
+});
+
+test("Feedback table should be able to contain both annotations & messages", () => {
+    codeListing.addUserAnnotation({
+        "id": 1,
+        "line_nr": 1,
+        "annotation_text": "This could be shorter",
+        "markdown_text": "<p>This could be shorter</p>",
+        "permission": {
+            edit: false,
+            delete: false,
+        },
+        "user": {
+            name: "Jan Klaassen",
+        }
+    });
+
+    codeListing.addUserAnnotation({
+        "id": 2,
+        "line_nr": 2,
+        "annotation_text": "This should be faster",
+        "markdown_text": "<p>This should be faster</p>",
+        "permission": {
+            edit: true,
+            delete: true,
+        },
+        "user": {
+            name: "Piet Hein",
+        }
+    });
+
+    codeListing.addAnnotations([
+        { "text": "Value could be assigned", "row": 0, "type": "warning" },
+        { "text": "Value could be assigned", "row": 0, "type": "warning" },
+        { "text": "Value could be assigned", "row": 1, "type": "warning" },
+        { "text": "Value could be assigned", "row": 1, "type": "warning" },
+        // { "text": "Value could be assigned", "row": 2, "type": "warning" },
+        // { "text": "Value could be assigned", "row": 2, "type": "warning" },
+    ]);
+
+    expect(document.querySelectorAll(".annotation").length).toBe(2);
+    expect(document.querySelectorAll(".message").length).toBe(4);
+});

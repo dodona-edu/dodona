@@ -21,6 +21,53 @@
   position: relative;
 }
 
+#tutor {
+  table.external-file {
+    overflow: auto;
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: auto;
+    user-select: all;
+    
+    td {
+      vertical-align: top;
+
+      &.line-nr {
+        text-align: right;
+        white-space: pre-wrap;
+        background: @well-bg;
+        color: @gray-light;
+        padding-left: 10px;
+        padding-right: 10px;
+        user-select: none;
+      }
+
+      &.line {
+        text-decoration: none;
+        padding-left: 5px;
+        padding-right: 5px;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: pre-wrap;
+        font-family: @font-family-monospace;
+        width: 100%;
+      }
+    }
+
+    tr {
+      &:first-child td {
+        padding-top: 4px;
+      }
+
+      &:last-child td {
+        padding-bottom: 4px;
+      }
+    }
+  }
+}
+
 #tutorviz {
   background-color: @content-bg;
   min-height: 200px;

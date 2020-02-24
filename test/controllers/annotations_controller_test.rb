@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class AnnotationControllerTest < ActionDispatch::IntegrationTest
-
   def setup
     @submission = create :correct_submission
     @zeus = create(:zeus)
@@ -10,10 +9,10 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
   test 'can create annotation' do
     post "/submissions/#{@submission.id}/annotations", params: {
-        annotation: {
-            line_nr: 1,
-            annotation_text: 'Not available'
-        }
+      annotation: {
+        line_nr: 1,
+        annotation_text: 'Not available'
+      }
     }
 
     assert_response :created
@@ -23,16 +22,16 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     @annotation = create :annotation, submission: @submission, user: @zeus
 
     put "/submissions/#{@submission.id}/annotations/#{@annotation.id}", params: {
-        annotation: {
-            annotation_text: 'We changed this text'
-        }
+      annotation: {
+        annotation_text: 'We changed this text'
+      }
     }
     assert_response :success
 
     patch "/submissions/#{@submission.id}/annotations/#{@annotation.id}", params: {
-        annotation: {
-            annotation_text: 'We changed this text again'
-        }
+      annotation: {
+        annotation_text: 'We changed this text again'
+      }
     }
     assert_response :success
   end
@@ -45,10 +44,10 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
   test 'can not create invalid annotation' do
     post "/submissions/#{@submission.id}/annotations", params: {
-        annotation: {
-            line_nr: 1_500_000_000,
-            annotation_text: 'You shall not pass'
-        }
+      annotation: {
+        line_nr: 1_500_000_000,
+        annotation_text: 'You shall not pass'
+      }
     }
     assert_response :unprocessable_entity
   end
@@ -57,10 +56,10 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     @annotation = create :annotation, submission: @submission, user: @zeus
 
     put "/submissions/#{@submission.id}/annotations/#{@annotation.id}", params: {
-        annotation: {
-            # Titanic script is around 4500 sentences worth of text, so why not test that users can not submit such long content
-            annotation_text: Faker::Lorem.sentences(number: 4_500).join(' ')
-        }
+      annotation: {
+        # Titanic script is around 4500 sentences worth of text, so why not test that users can not submit such long content
+        annotation_text: Faker::Lorem.sentences(number: 4_500).join(' ')
+      }
     }
 
     assert_response :unprocessable_entity
@@ -71,9 +70,8 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     create :annotation, submission: @submission, user: @zeus
     create :annotation, submission: @submission, user: @zeus
 
-    get "/submissions/#{@submission.id}/annotations", params: {format: :json}
+    get "/submissions/#{@submission.id}/annotations", params: { format: :json }
 
     assert_response :ok
   end
-
 end

@@ -9,7 +9,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :integer
-#  accepted    :boolean          default(FALSE)
+#  accepted    :boolean          default("0")
 #  course_id   :integer
 #  fs_key      :string(24)
 #

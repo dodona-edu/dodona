@@ -3,7 +3,7 @@ import { CodeListing } from "code_listing/code_listing";
 let codeListing;
 
 beforeEach(() => {
-    document.body.innerHTML = "<div class='code-table'>" +
+    document.body.innerHTML = "<div class='code-table' data-submission-id='54'>" +
         "<div class='feedback-table-options'>" +
             "<span id='annotations-were-hidden' class='hide'></span>" +
             "<span class='flex-spacer'></span>" +
@@ -329,6 +329,5 @@ test("Feedback table should be able to contain both annotations & messages", () 
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
     ]);
 
-    expect(document.querySelectorAll(".annotation").length).toBe(2);
-    expect(document.querySelectorAll(".message").length).toBe(4);
+    expect(document.querySelectorAll(".annotation").length).toBe(6);
 });

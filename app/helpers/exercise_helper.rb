@@ -49,6 +49,7 @@ module ExerciseHelper
       window.iFrameResize({
           heightCalculationMethod: 'bodyScroll',
           onResized: dodona.afterResize,
+          onMessage: dodona.onFrameMessage,
         },
         '##{id}')
     }

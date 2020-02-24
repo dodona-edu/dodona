@@ -83,4 +83,11 @@ nl:
         fri: Vr
         sat: Za
         sun: Zo
+    annotation:
+      hidden: Een annotatie werd verborgen
+      were_hidden:
+        first: Enkel errors worden getoond,
+        second:
+          single: toon 1 andere annotatie
+          plural: toon {count} andere annotaties
 

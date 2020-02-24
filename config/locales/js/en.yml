@@ -83,3 +83,11 @@ en:
         fri: Fr
         sat: Sa
         sun: Su
+    annotation:
+      hidden: An annotation was hidden
+      were_hidden:
+        first: Only errors are shown,
+        second:
+          single: show 1 other annotation
+          plural: show {count} other annotations
+

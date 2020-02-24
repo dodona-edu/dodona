@@ -299,9 +299,9 @@ class FeedbackTableRenderer
 
   def source(_, messages)
     @builder.div(class: 'code-table') do
-      FeedbackCodeRenderer.new(@code, @programming_language, @builder)
+      FeedbackCodeRenderer.new(@code, @programming_language, messages, @builder)
                           .parse
-                          .add_messages(messages)
+                          .add_messages
     end
   end
 

@@ -8,7 +8,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    ace-rails-ap (4.2)
+    ace-rails-ap (4.3)
     actioncable (6.0.2.1)
       actionpack (= 6.0.2.1)
       nio4r (~> 2.0)
@@ -411,7 +411,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  ace-rails-ap (~> 4.2)
+  ace-rails-ap (~> 4.3)
   annotate (~> 3.0.3)
   autoprefixer-rails (~> 9.7.4)
   bcrypt_pbkdf

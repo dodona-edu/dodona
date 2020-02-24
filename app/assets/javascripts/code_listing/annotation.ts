@@ -56,7 +56,7 @@ export class Annotation {
 
         this.annotation = document.createElement("div");
         this.annotation.setAttribute("title", this.type[0].toUpperCase() + this.type.substring(1));
-        this.annotation.classList.add("annotation", this.type);
+        this.annotation.classList.add("annotation", this.type, "machine-annotation");
         this.annotation.appendChild(document.createTextNode(
             this.text.split("\n").filter(s => !s.match("^--*$")).join("\n")
         ));

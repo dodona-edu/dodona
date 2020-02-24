@@ -129,41 +129,10 @@
       display: none;
     }
 
-    .message-set {
-      .message-cell {
-        width: 100%;
-
-        .message {
-          font-family: @font-family-monospace;
-          white-space: pre-wrap;
-        }
-
-        .message.error {
-          border-left-color: @danger-500;
-        }
-
-        .message.warning {
-          border-left-color: @warning-500;
-        }
-
-        .message.info {
-          border-left-color: @info-500;
-        }
-
-        div.copy-blocker {
-          position: absolute;
-          user-select: text;
-          height: 100%;
-        }
-
-        .annotation-submission {
-          margin: 4px 10px;
-        }
-      }
-    }
-
     .annotation-set {
       .annotation-cell {
+        width: 100%;
+
         .annotation {
           border-left-color: @success-300;
           white-space: normal;
@@ -222,6 +191,28 @@
               }
             }
           }
+        }
+        .annotation.error {
+          border-left-color: @danger-500;
+        }
+
+        .annotation.warning {
+          border-left-color: @warning-500;
+        }
+
+        .annotation.info {
+          border-left-color: @info-500;
+        }
+
+        .annotation.machine-annotation {
+          font-family: @font-family-monospace;
+          white-space: pre-wrap;
+        }
+
+        div.copy-blocker {
+          position: absolute;
+          user-select: text;
+          height: 100%;
         }
       }
     }

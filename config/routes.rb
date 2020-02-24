@@ -131,6 +131,7 @@ Rails.application.routes.draw do
         get 'evaluate'
         get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }, as: 'media'
       end
+      resources :annotations, only: [:index, :create, :update, :destroy], format: :json
     end
 
     resources :users do

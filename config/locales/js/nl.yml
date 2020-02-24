@@ -90,4 +90,12 @@ nl:
         second:
           single: toon 1 andere annotatie
           plural: toon {count} andere annotaties
+    user_annotation:
+      send: 'Verzenden'
+      cancel: 'Annuleren'
+      delete: 'Verwijderen'
+      fields:
+        annotation_text: 'Annotatie tekst'
+      delete_confirm: 'Ben je zeker dat je dit wilt verwijderen?'
+
 

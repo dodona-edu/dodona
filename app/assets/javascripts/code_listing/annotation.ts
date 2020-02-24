@@ -18,7 +18,7 @@ export class Annotation {
     private shown = true;
 
     private readonly codeListingHTML: HTMLTableElement;
-    private annotation: HTMLDivElement;
+    private message: HTMLDivElement;
     private dot: HTMLSpanElement;
 
     private readonly codeListing: CodeListing;
@@ -32,60 +32,62 @@ export class Annotation {
 
         this.codeListing = codeListing;
 
-        this.createAnnotation();
+        this.createMessage();
         this.createDot();
     }
 
     hide(): void {
-        this.annotation.classList.add("hide");
-        this.shown = false;
+        this.message.classList.add("hide");
         this.addDot();
+        this.shown = false;
     }
 
     show(): void {
-        this.annotation.classList.remove("hide");
-        this.shown = true;
+        this.message.classList.remove("hide");
         this.removeDot();
+        this.shown = true;
     }
 
-    private createAnnotation(): void {
-        let annotationsRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#annotations-${this.line}`);
-        if (annotationsRow === null) {
-            annotationsRow = this.createAnnotationRow();
+    private createMessage(): void {
+        let messagesRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#messages-${this.line}`);
+        if (messagesRow === null) {
+            messagesRow = this.createMessageRow();
         }
 
-        this.annotation = document.createElement("div");
-        this.annotation.setAttribute("id", `annotation-${this.id}`);
-        this.annotation.setAttribute("title", this.type[0].toUpperCase() + this.type.substring(1));
-        this.annotation.classList.add("annotation", this.type);
-        this.annotation.appendChild(document.createTextNode(
+        this.message = document.createElement("div");
+        this.message.setAttribute("id", `messages-${this.id}`);
+        this.message.setAttribute("title", this.type[0].toUpperCase() + this.type.substring(1));
+        this.message.classList.add("message", this.type);
+        this.message.appendChild(document.createTextNode(
             this.text.split("\n").filter(s => !s.match("^--*$")).join("\n")
         ));
 
         const edgeCopyBlocker = document.createElement("div");
         edgeCopyBlocker.setAttribute("class", "copy-blocker");
 
-        const annotationGroup: HTMLDivElement = annotationsRow.querySelector(`.annotation-cell .annotation-group-${this.type}`);
-        annotationGroup.appendChild(this.annotation);
-        annotationGroup.appendChild(edgeCopyBlocker);
+        const messageGroup: HTMLDivElement = messagesRow.querySelector(`.message-cell .message-group-${this.type}`);
+        messageGroup.appendChild(this.message);
+        messageGroup.appendChild(edgeCopyBlocker);
     }
 
-    private createAnnotationRow(): HTMLTableRowElement {
+    private createMessageRow(): HTMLTableRowElement {
         const codeRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#line-${this.line}`);
-        const annotationRow: HTMLTableRowElement = this.codeListingHTML.insertRow(codeRow.rowIndex + 1);
-        annotationRow.setAttribute("class", "annotation-set");
-        annotationRow.setAttribute("id", `annotations-${this.line}`);
-        annotationRow.insertCell().setAttribute("class", "rouge-gutter gl");
-        const annotationTDC = annotationRow.insertCell();
-        annotationTDC.setAttribute("class", "annotation-cell");
+        const messageRow: HTMLTableRowElement = this.codeListingHTML.insertRow(codeRow.rowIndex + 1);
+        messageRow.setAttribute("class", "message-set");
+        messageRow.setAttribute("id", `messages-${this.line}`);
+        const htmlTableDataCellElement = messageRow.insertCell();
+        htmlTableDataCellElement.setAttribute("class", "rouge-gutter gl");
+        htmlTableDataCellElement.appendChild(document.createElement("div"));
+        const messageTDC: HTMLTableDataCellElement = messageRow.insertCell();
+        messageTDC.setAttribute("class", "message-cell");
 
         for (const type of ORDERING) {
             const groupDiv: HTMLDivElement = document.createElement("div");
-            groupDiv.setAttribute("class", `annotation-group-${type}`);
-            annotationTDC.appendChild(groupDiv);
+            groupDiv.setAttribute("class", `message-group-${type}`);
+            messageTDC.appendChild(groupDiv);
         }
 
-        return annotationRow;
+        return messageRow;
     }
 
     private createDot(): void {
@@ -116,3 +118,4 @@ export class Annotation {
         }
     }
 }
+

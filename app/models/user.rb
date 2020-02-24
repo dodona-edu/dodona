@@ -96,6 +96,8 @@ class User < ApplicationRecord
            through: :repository_admins,
            source: :repository
 
+  has_many :annotations, dependent: :restrict_with_error
+
   devise :saml_authenticatable
   devise :omniauthable, omniauth_providers: %i[smartschool office365 google_oauth2]
 

@@ -16,6 +16,8 @@ class FeedbackTableRenderer
 
   def initialize(submission, user)
     result = submission.safe_result(user)
+    @submission_id = submission.id
+    @annotations = submission.annotations
     @submission = result.present? ? JSON.parse(result, symbolize_names: true) : nil
     @current_user = user
     @course = submission.course
@@ -298,8 +300,8 @@ class FeedbackTableRenderer
   end
 
   def source(_, messages)
-    @builder.div(class: 'code-table') do
-      FeedbackCodeRenderer.new(@code, @programming_language, messages, @builder)
+    @builder.div(class: 'code-table', 'data-submission-id': @submission_id) do
+      FeedbackCodeRenderer.new(@submission_id, messages, @current_user, @builder)
                           .parse
                           .add_messages
     end

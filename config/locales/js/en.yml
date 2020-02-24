@@ -90,4 +90,11 @@ en:
         second:
           single: show 1 other annotation
           plural: show {count} other annotations
+    user_annotation:
+      send: 'Send'
+      cancel: 'Cancel'
+      delete: 'Delete'
+      fields:
+        annotation_text: 'Annotation text'
+      delete_confirm: 'Are you certain you want to delete this item?'
 

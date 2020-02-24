@@ -1,10 +1,16 @@
 class FeedbackCodeRenderer
+  include ApplicationHelper
+  include Rails.application.routes.url_helpers
   require 'json'
 
-  def initialize(code, programming_language, messages = nil, builder = nil)
-    @code = code
-    @programming_language = programming_language
-    @messages = messages || []
+  def initialize(submission_id, messages, user, builder)
+    @submission_id = submission_id
+    @submission = Submission.find(@submission_id)
+    @code = @submission.code
+    @programming_language = @submission.exercise&.programming_language&.name
+    @messages = messages
+    @annotations = @submission.annotations
+    @user = user
     @builder = builder || Builder::XmlMarkup.new
 
     @compress = false
@@ -53,6 +59,8 @@ class FeedbackCodeRenderer
       @builder << '$(() => window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + '));'
       @builder << '$(() => window.dodona.codeListing.showAllAnnotations());'
       @builder << '$(() => window.dodona.codeListing.compressAnnotations());' if @compress
+      @builder << "$(() => window.dodona.codeListing.addAnnotations('#{submission_annotations_path 'nl', @submission_id}'));"
+      @builder << '$(() => window.dodona.codeListing.initButtonForComment());' if AnnotationPolicy.new(@user, @submission).show_comment_button?
     end
   end
 

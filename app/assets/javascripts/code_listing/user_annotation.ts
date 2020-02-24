@@ -106,7 +106,7 @@ export class UserAnnotation implements UserAnnotationInterface {
                 const editButtonText: HTMLElement = document.createElement("i");
                 editButtonText.setAttribute("class", "mdi mdi-pencil");
                 editButton.appendChild(editButtonText);
-                editButton.addEventListener("click", this.handleEditButtonClick.bind(this));
+                editButton.addEventListener("click", e => this.handleEditButtonClick(e));
                 header.append(editButton);
             }
 

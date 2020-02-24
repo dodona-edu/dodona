@@ -212,7 +212,7 @@ export class CodeListing {
             const annotationButton: HTMLButtonElement = document.createElement("button");
             annotationButton.setAttribute("class", "annotation-button");
             annotationButton.setAttribute("data-line-id", (Number(idParts[idParts.length - 1]) - 1).toString());
-            annotationButton.addEventListener("click", this.handleCommentButtonClick.bind(this));
+            annotationButton.addEventListener("click", e => this.handleCommentButtonClick(e));
 
             const annotationButtonPlus = document.createElement("i");
             annotationButtonPlus.setAttribute("class", "mdi mdi-plus mdi-12");
@@ -293,7 +293,7 @@ export class CodeListing {
             const deleteButtonText: Text = document.createTextNode(I18n.t("js.user_annotation.delete"));
             deleteButton.append(deleteButtonText);
             deleteButton.setAttribute("class", "btn-text annotation-control-button annotation-delete-button");
-            deleteButton.addEventListener("click", annotation.handleDeleteButtonClick.bind(annotation));
+            deleteButton.addEventListener("click", e => annotation.handleDeleteButtonClick(e));
             buttonGroup.append(deleteButton);
         }
 
@@ -309,11 +309,11 @@ export class CodeListing {
         });
 
         if (annotation) {
-            cancelButton.addEventListener("click", annotation.handleAnnotationEditCancelButtonClick.bind(annotation));
-            sendButton.addEventListener("click", annotation.handleAnnotationEditSubmissionButtonClick.bind(annotation));
+            cancelButton.addEventListener("click", e => annotation.handleAnnotationEditCancelButtonClick(e));
+            sendButton.addEventListener("click", e => annotation.handleAnnotationEditSubmissionButtonClick(e));
         } else {
-            cancelButton.addEventListener("click", this.handleAnnotationSubmissionCancelButtonClick.bind(this));
-            sendButton.addEventListener("click", this.handleAnnotationSubmissionButtonClick.bind(this));
+            cancelButton.addEventListener("click", e => this.handleAnnotationSubmissionCancelButtonClick(e));
+            sendButton.addEventListener("click", e => this.handleAnnotationSubmissionButtonClick(e));
         }
 
         annotationSubmissionDiv.append(inputField, buttonGroup);

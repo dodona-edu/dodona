@@ -59,7 +59,7 @@ class FeedbackCodeRenderer
       @builder << '$(() => window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + '));'
       @builder << '$(() => window.dodona.codeListing.showAllAnnotations());'
       @builder << '$(() => window.dodona.codeListing.compressAnnotations());' if @compress
-      @builder << "$(() => window.dodona.codeListing.addAnnotations('#{submission_annotations_path 'nl', @submission_id}'));"
+      @builder << "$(() => window.dodona.codeListing.addUserAnnotations('#{submission_annotations_path 'nl', @submission_id}'));"
       @builder << '$(() => window.dodona.codeListing.initButtonForComment());' if AnnotationPolicy.new(@user, @submission).show_comment_button?
     end
   end

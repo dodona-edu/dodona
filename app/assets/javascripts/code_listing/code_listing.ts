@@ -333,7 +333,6 @@ export class CodeListing {
             "line_nr": line,
         };
 
-        console.log(annotation);
         this.sendAnnotationPost(annotation)
             .done(data => {
                 const createdAnnotation = new UserAnnotation(data, this.table, this);

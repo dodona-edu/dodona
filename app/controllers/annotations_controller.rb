@@ -18,6 +18,7 @@ class AnnotationsController < ApplicationController
     args[:submission] = @submission
     @annotation = Annotation.new(args)
     authorize @annotation
+    set_review_session
     respond_to do |format|
       if @annotation.save
         format.json { render :show, status: :created, location: @annotation }
@@ -51,5 +52,9 @@ class AnnotationsController < ApplicationController
   def set_annotation
     @annotation = Annotation.find(params[:id])
     authorize @annotation
+  end
+
+  def set_review_session
+    @annotation.review_session_id = params[:review_session_id] if params[:review_session_id]
   end
 end

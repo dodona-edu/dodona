@@ -50,6 +50,10 @@ class Review < ApplicationRecord
     }
   end
 
+  def session_metadata
+    review_session.metadata(self)
+  end
+
   private
 
   def unset_annotation_references

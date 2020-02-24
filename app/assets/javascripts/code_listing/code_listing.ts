@@ -104,10 +104,6 @@ export class CodeListing {
         this.userAnnotations.push(annotationObj);
     }
 
-    removeUserAnnotation(annotation: UserAnnotation): void {
-        this.userAnnotations = this.userAnnotations.filter(a => a.id != annotation.id);
-    }
-
     compressAnnotations(): void {
         this.showAllAnnotations();
 
@@ -344,9 +340,7 @@ export class CodeListing {
 
                 // Remove previous error list
                 const previousErrorList = form.querySelector(".annotation-submission-error-list");
-                if (previousErrorList) {
-                    previousErrorList.remove();
-                }
+                previousErrorList?.remove();
 
                 form.querySelector(".annotation-submission-button-container").appendChild(errorList);
             });

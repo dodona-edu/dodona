@@ -59,7 +59,7 @@ export class UserAnnotation implements UserAnnotationInterface {
         this.codeListing.sendAnnotationDelete(this.id)
             .done(_ => {
                 annotationDiv.remove();
-                this.codeListing.userAnnotations = this.codeListing.userAnnotations.filter(a => a.id != this.id);
+                this.codeListing.userAnnotations = this.codeListing.userAnnotations.filter(a => a.id !== this.id);
             });
     }
 
@@ -158,9 +158,7 @@ export class UserAnnotation implements UserAnnotationInterface {
 
                 // Remove previous error list
                 const previousErrorList = form.querySelector(".annotation-submission-error-list");
-                if (previousErrorList) {
-                    previousErrorList.remove();
-                }
+                previousErrorList?.remove();
 
                 form.querySelector(".annotation-submission-button-container").appendChild(errorList);
             });

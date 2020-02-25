@@ -5,10 +5,10 @@
 #  id         :integer          not null, primary key
 #  course_id  :integer
 #  user_id    :integer
-#  status     :integer          default("student")
+#  status     :integer          default("2")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  favorite   :boolean          default(FALSE)
+#  favorite   :boolean          default("0")
 #
 
 require 'test_helper'

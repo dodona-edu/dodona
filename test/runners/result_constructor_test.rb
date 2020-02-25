@@ -63,7 +63,8 @@ class ResultConstructorTest < ActiveSupport::TestCase
             tests: [{
               expected: 'SOMETHING',
               generated: 'SOMETHING',
-              accepted: true
+              accepted: true,
+              channel: 'return'
             }]
           }]
         }, {
@@ -84,7 +85,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "start-tab", "title": "Tab One", "permission": "student" }',
       '{ "command": "start-context" }',
       '{ "command": "start-testcase", "description": "case 1" }',
-      '{ "command": "start-test", "expected": "SOMETHING" }',
+      '{ "command": "start-test", "expected": "SOMETHING", "channel": "return" }',
       '{ "command": "close-test", "generated": "SOMETHING", "status": { "enum": "correct", "human": "Correct" } }',
       '{ "command": "close-testcase" }',
       '{ "command": "close-context" }',
@@ -117,7 +118,8 @@ class ResultConstructorTest < ActiveSupport::TestCase
               expected: 'SOMETHING',
               generated: 'SOMETHING',
               accepted: true,
-              messages: ['test']
+              messages: ['test'],
+              channel: 'stdout'
             }],
             messages: ['testcase']
           }],
@@ -135,7 +137,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "append-message", "message": "context" }',
       '{ "command": "start-testcase", "description": "case 1" }',
       '{ "command": "append-message", "message": "testcase" }',
-      '{ "command": "start-test", "expected": "SOMETHING" }',
+      '{ "command": "start-test", "expected": "SOMETHING", "channel": "stdout" }',
       '{ "command": "append-message", "message": "test" }',
       '{ "command": "close-test", "generated": "SOMETHING", "status": { "enum": "correct", "human": "Correct" } }',
       '{ "command": "close-testcase" }',
@@ -161,7 +163,8 @@ class ResultConstructorTest < ActiveSupport::TestCase
             tests: [{
               expected: 'SOMETHING',
               generated: 'SOMETHING',
-              accepted: false
+              accepted: false,
+              channel: 'exception'
             }]
           }]
         }]
@@ -171,7 +174,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "start-tab", "title": "Tab One" }',
       '{ "command": "start-context" }',
       '{ "command": "start-testcase", "description": "case 1" }',
-      '{ "command": "start-test", "expected": "SOMETHING" }',
+      '{ "command": "start-test", "expected": "SOMETHING", "channel": "exception" }',
       '{ "command": "close-test", "generated": "SOMETHING", "status": { "enum": "correct", "human": "Correct" }, "accepted": false }',
       '{ "command": "close-testcase", "accepted": true }',
       '{ "command": "close-context", "accepted": false }',

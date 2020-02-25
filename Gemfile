@@ -61,7 +61,7 @@ gem 'builder', '~>3.2.4'
 gem 'diff-lcs', '~>1.3'
 
 # code editor
-gem 'ace-rails-ap', '~>4.2'
+gem 'ace-rails-ap', '~>4.3'
 
 # auto css prefixer
 gem 'autoprefixer-rails', '~>9.7.4'

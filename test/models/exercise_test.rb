@@ -500,6 +500,11 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     JSON.parse(File.read(@exercise.config_file))
   end
 
+  test 'should have solutions' do
+    assert_equal @exercise.solutions,
+                 Pathname.new('solution.py') => "print(input())\n"
+  end
+
   test 'should update access in config file' do
     @exercise.update access: 'private'
     assert_equal 'private', config['access']

@@ -1,10 +1,10 @@
 class FeedbackCodeRenderer
   require 'json'
 
-  def initialize(code, programming_language, messages, builder = nil)
+  def initialize(code, programming_language, messages = nil, builder = nil)
     @code = code
     @programming_language = programming_language
-    @messages = messages
+    @messages = messages || []
     @builder = builder || Builder::XmlMarkup.new
 
     @compress = false

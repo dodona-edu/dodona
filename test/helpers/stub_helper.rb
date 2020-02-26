@@ -18,6 +18,8 @@ module StubHelper
     config = { 'evaluation' => { 'time_limit' => 1 } }.freeze
     config_locations = { 'evaluation' => { 'time_limit' => 'config.json' } }.freeze
     description = 'ᕕ(ಠ_ಠ)ᕗ'
+    solutions = { 'solution.py' => 'print(input())' }
+    Exercise.any_instance.stubs(:solutions).returns(solutions)
     Exercise.any_instance.stubs(:config).returns(config)
     Exercise.any_instance.stubs(:config_locations).returns(config_locations)
     Exercise.any_instance.stubs(:update_config)

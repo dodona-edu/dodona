@@ -1,6 +1,6 @@
-<% notification = local_assigns.fetch :notification, nil %>
-<% if notification %>
-new dodona.Notification("<%= notification %>");
+<% toast = local_assigns.fetch :toast, nil %>
+<% if toast %>
+  new dodona.Toast("<%= toast %>");
 <% end %>
 <% count = @course.pending_members.count %>
 $("#pending-count").text('<%= count if count.nonzero? %>');

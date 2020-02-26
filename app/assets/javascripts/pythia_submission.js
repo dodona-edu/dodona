@@ -78,13 +78,33 @@ function initPythiaSubmissionShow(submissionCode) {
             "<div class='code' id='file-" + random + "'>Loading...</div>"
         );
         $.get(path, function (data) {
-            const lines = data.split("\n");
-            const maxLines = 200;
+            let lines = data.split("\n");
+            const maxLines = 99;
             if (lines.length > maxLines) {
-                // eslint-disable-next-line no-param-reassign
-                data = lines.slice(0, maxLines).join("\n") + "\n...";
+                lines = lines.slice(0, maxLines);
+                lines.push("...");
             }
-            $("#file-" + random).html(data);
+
+            const table = document.createElement("table");
+            table.className = "external-file";
+            for (let i = 0; i < lines.length; i++) {
+                const tr = document.createElement("tr");
+
+                const number = document.createElement("td");
+                number.className = "line-nr";
+                number.textContent = (i === maxLines) ? "": i + 1;
+                tr.appendChild(number);
+
+                const line = document.createElement("td");
+                line.className = "line";
+                // textContent is safe, html is not executed
+                line.textContent = lines[i];
+                tr.appendChild(line);
+                table.appendChild(tr);
+            }
+            const fileView = document.getElementById(`file-${random}`);
+            fileView.innerHTML = "";
+            fileView.appendChild(table);
         });
     }
 

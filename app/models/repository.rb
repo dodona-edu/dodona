@@ -16,7 +16,7 @@ require 'pathname'
 class Repository < ApplicationRecord
   include Gitable
 
-  EXERCISE_LOCATIONS = Rails.root.join('data', 'exercises').freeze
+  EXERCISE_LOCATIONS = Rails.root.join('data/exercises').freeze
   MEDIA_DIR = 'public'.freeze
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
@@ -56,6 +56,10 @@ class Repository < ApplicationRecord
       _out, error, status = Open3.capture3('git push', chdir: full_path.to_path) if status.success?
     end
     [status.success?, error]
+  end
+
+  def first_admin
+    repository_admins.first&.user
   end
 
   def exercise_dirs
@@ -176,11 +180,13 @@ class Repository < ApplicationRecord
     ex.save
   end
 
-  def github_url(path = nil)
+  def github_url(path = nil, mode: nil)
     return unless github_remote?
 
+    mode ||= 'tree'
+
     url = remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '')
-    url += '/tree/master/' + path.to_s if path
+    url += "/#{mode}/master/#{path&.to_s}"
     url
   end
 

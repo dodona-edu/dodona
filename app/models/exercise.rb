@@ -11,12 +11,13 @@
 #  description_format      :string(255)
 #  repository_id           :integer
 #  judge_id                :integer
-#  status                  :integer          default("ok")
-#  access                  :integer          default("public"), not null
+#  status                  :integer          default("0")
+#  access                  :integer          default("0"), not null
 #  programming_language_id :bigint
 #  search                  :string(4096)
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
+#  allow_unsafe            :boolean          default("0"), not null
 #
 
 require 'pathname'
@@ -27,12 +28,15 @@ class Exercise < ApplicationRecord
   include Filterable
   include StringHelper
   include Cacheable
+  include Tokenable
 
-  USERS_CORRECT_CACHE_STRING = '/course/%{course_id}/exercise/%{id}/users_correct'.freeze
-  USERS_TRIED_CACHE_STRING = '/course/%{course_id}/exercise/%{id}/users_tried'.freeze
+  USERS_CORRECT_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_correct'.freeze
+  USERS_TRIED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_tried'.freeze
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
+  SOLUTION_DIR = 'solution'.freeze
+  SOLUTION_MAX_BYTES = 2**16 - 1
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
@@ -52,13 +56,17 @@ class Exercise < ApplicationRecord
 
   validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
 
+  token_generator :repository_token, length: 64
+  token_generator :access_token
+
   before_create :generate_id
-  before_create :generate_repository_token
+  before_create :generate_repository_token,
+                if: ->(ex) { ex.repository_token.nil? }
   before_create :generate_access_token
   before_save :check_validity
   before_save :check_memory_limit
+  before_save :generate_access_token, if: :access_changed?
   before_update :update_config
-  after_update :generate_access_token
 
   scope :in_repository, ->(repository) { where repository: repository }
 
@@ -89,8 +97,27 @@ class Exercise < ApplicationRecord
                          path&.split('/')&.last
   end
 
+  def solutions
+    (full_path + SOLUTION_DIR)
+      .yield_self { |path| path.directory? ? path.children : [] }
+      .filter { |path| path.file? && path.readable? }
+      .map { |path| [path.basename, path.read(SOLUTION_MAX_BYTES)] }
+      .to_h
+  end
+
+  def description_languages
+    languages = []
+    languages << 'nl' if description_file('nl').exist?
+    languages << 'en' if description_file('en').exist?
+    languages
+  end
+
+  def description_file(lang)
+    full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
+  end
+
   def description_localized(lang = I18n.locale.to_s)
-    file = full_path + DESCRIPTION_DIR + "description.#{lang}.#{description_format}"
+    file = description_file(lang)
     file.read if file.exist?
   end
 
@@ -104,6 +131,27 @@ class Exercise < ApplicationRecord
 
   def description
     (description_localized || description_nl || description_en || '').force_encoding('UTF-8').scrub
+  end
+
+  def about_file(lang)
+    full_path + "about.#{lang}.md"
+  end
+
+  def about_localized(lang = I18n.locale.to_s)
+    file = about_file(lang)
+    file.read if file.exist?
+  end
+
+  def about_nl
+    about_localized('nl')
+  end
+
+  def about_en
+    about_localized('en')
+  end
+
+  def about
+    (about_localized || about_nl || about_en || '').force_encoding('UTF-8').scrub
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)
@@ -144,39 +192,28 @@ class Exercise < ApplicationRecord
     programming_language&.extension || 'txt'
   end
 
-  def merged_config
-    hash = Pathname.new('./' + path).parent.descend # all parent directories
-                   .map { |dir| read_dirconfig dir } # try reading their dirconfigs
-                   .compact # remove nil entries
-                   .push(config) # add exercise config file
-                   .reduce do |h1, h2| # reduce into single hash
-      h1.deep_merge(h2) do |k, v1, v2|
-        if k == 'labels'
-          (v1 + v2)
-        else
-          v2
-        end
-      end
-    end
-    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
-    hash
+  def merged_dirconfig
+    Pathname.new('./' + path).parent.descend # all parent directories
+            .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+            .compact # remove nil entries
+            .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .yield_self { |dirconfig| lowercase_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
-  def merged_dirconfig
-    hash = Pathname.new('./' + path).parent.descend # all parent directories
-                   .map { |dir| read_dirconfig dir } # try reading their dirconfigs
-                   .compact # remove nil entries
-                   .reduce do |h1, h2| # reduce into single hash
-      h1.deep_merge(h2) do |k, v1, v2|
-        if k == 'labels'
-          (v1 + v2).map(&:downcase).uniq
-        else
-          v2
-        end
-      end
-    end || {}
-    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key?('labels')
-    hash
+  def merged_dirconfig_locations
+    Pathname.new('./' + path).parent.descend # all parent directories
+            .map { |dir| read_dirconfig_locations dir } # try reading their dirconfigs
+            .compact # remove nil entries
+            .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .yield_self { |dirconfig| unique_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
+  end
+
+  def merged_config
+    lowercase_labels deep_merge_configs(merged_dirconfig, config)
+  end
+
+  def merged_config_locations
+    unique_labels deep_merge_configs(merged_dirconfig_locations, config_locations)
   end
 
   def config_file?
@@ -257,7 +294,7 @@ class Exercise < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:users_correct,
-                                    ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+                                    ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def users_tried(options)
     subs = submissions.judged
@@ -266,7 +303,7 @@ class Exercise < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:users_tried,
-                                    ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id : 'global', id: this.id) })
+                                    ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def best_is_last_submission?(user, deadline = nil, course = nil)
     last_correct = last_correct_submission(user, deadline, course)
@@ -347,22 +384,6 @@ class Exercise < ApplicationRecord
     end
   end
 
-  # not private so we can use this in the migration
-  def generate_repository_token
-    begin
-      new_token = Base64.strict_encode64 SecureRandom.random_bytes(48)
-    end until Exercise.find_by(repository_token: new_token).nil?
-    self.repository_token ||= new_token
-  end
-
-  def generate_access_token
-    self.access_token = SecureRandom.urlsafe_base64(12)
-    # We don't want to trigger callbacks, this doesn't have an influence on the config file
-    # rubocop:disable Rails/SkipsModelValidations
-    update_column(:access_token, self[:access_token]) unless new_record?
-    # rubocop:enable Rails/SkipsModelValidations
-  end
-
   def self.move_relations(from, to)
     from.submissions.each { |s| s.update(exercise: to) }
     from.series_memberships.each { |sm| sm.update(exercise: to) unless SeriesMembership.find_by(exercise: to, series: sm.series) }
@@ -387,10 +408,47 @@ class Exercise < ApplicationRecord
     repository.read_config_file(subdir + DIRCONFIG_FILE)
   end
 
+  def read_config_locations(location)
+    repository.read_config_file(location)
+              &.deep_transform_values! { location }
+  end
+
+  def config_locations
+    read_config_locations config_file
+  end
+
+  def read_dirconfig_locations(subdir)
+    read_config_locations(subdir + DIRCONFIG_FILE)
+  end
+
   def generate_id
     begin
       new = SecureRandom.random_number(2_147_483_646)
     end until Exercise.find_by(id: new).nil?
     self.id = new
+  end
+
+  def deep_merge_configs(parent_conf, child_conf)
+    parent_conf.deep_merge(child_conf) do |k, v1, v2|
+      if k == 'labels'
+        (v1 + v2)
+      else
+        v2
+      end
+    end
+  end
+
+  def lowercase_labels(hash)
+    return unless hash
+
+    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key? 'labels'
+    hash
+  end
+
+  def unique_labels(hash)
+    return unless hash
+
+    hash['labels'] = hash['labels'].uniq if hash.key? 'labels'
+    hash
   end
 end

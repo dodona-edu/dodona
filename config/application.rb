@@ -14,7 +14,6 @@ module Dodona
     config.load_defaults 6.0
 
     config.dodona_email = 'dodona@ugent.be'
-    config.tutor_docker_network_prefix = '192.168.'
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

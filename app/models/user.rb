@@ -7,7 +7,7 @@
 #  first_name     :string(255)
 #  last_name      :string(255)
 #  email          :string(255)
-#  permission     :integer          default("student")
+#  permission     :integer          default("0")
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  lang           :string(255)      default("nl")
@@ -23,10 +23,11 @@ class User < ApplicationRecord
   include Filterable
   include StringHelper
   include Cacheable
+  include Tokenable
   include ActiveModel::Dirty
 
-  ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%{course_id}/user/%{id}/attempted_exercises'.freeze
-  CORRECT_EXERCISES_CACHE_STRING = '/courses/%{course_id}/user/%{id}/correct_exercises'.freeze
+  ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/attempted_exercises'.freeze
+  CORRECT_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/correct_exercises'.freeze
 
   enum permission: { student: 0, staff: 1, zeus: 2 }
 
@@ -38,6 +39,8 @@ class User < ApplicationRecord
   has_many :repository_admins, dependent: :restrict_with_error
   has_many :courses, through: :course_memberships
   has_many :events, dependent: :restrict_with_error
+  has_many :exports, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   has_many :subscribed_courses,
            lambda {
@@ -100,6 +103,8 @@ class User < ApplicationRecord
   validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
   validate :email_only_blank_if_smartschool
 
+  token_generator :token
+
   before_save :set_token
   before_save :set_time_zone
   before_save :split_last_name, unless: :first_name?, if: :last_name?
@@ -121,6 +126,14 @@ class User < ApplicationRecord
   def full_name
     name = (first_name || '') + ' ' + (last_name || '')
     first_string_present name, 'n/a'
+  end
+
+  def pretty_email
+    if first_name || last_name
+      "#{full_name} <#{email}>"
+    else
+      email
+    end
   end
 
   def first_name
@@ -176,7 +189,7 @@ class User < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:attempted_exercises,
-                                    ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+                                    ->(this, options) { format(ATTEMPTED_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def correct_exercises(options)
     s = submissions.where(status: :correct)
@@ -185,7 +198,7 @@ class User < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:correct_exercises,
-                                    ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id : 'global', id: this.id) })
+                                    ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def unfinished_exercises(course = nil)
     attempted_exercises(course: course) - correct_exercises(course: course)
@@ -272,7 +285,7 @@ class User < ApplicationRecord
     if institution.present?
       self.token = nil
     elsif token.blank?
-      self.token = SecureRandom.urlsafe_base64(16)
+      generate_token
     end
   end
 

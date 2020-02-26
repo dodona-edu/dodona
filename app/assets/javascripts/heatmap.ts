@@ -203,3 +203,4 @@ function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year
 }
 
 export { initHeatmap };
+

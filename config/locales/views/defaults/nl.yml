@@ -29,6 +29,7 @@ nl:
       manual: Gebruikershandleiding
       exercises: Oefeningen
       my_submissions: Mijn oplossingen
+      my_exports: Mijn exports
       submissions: Oplossingen
       users: Gebruikers
       courses: Cursussen
@@ -50,11 +51,12 @@ nl:
     search:
       search: zoeken
   crumbs:
+    info: Informatie
     edit: Bewerken
     overview: Overzicht
   general:
     are_you_sure: "Ben je zeker?"
-    confirm_reset_token: 'Ben je zeker? De oude token/link zal niet meer bruikbaar zijn als je een nieuw genereert.'
+    confirm_reset_token: 'Ben je zeker? De oude token/link zal niet meer bruikbaar zijn als je een nieuwe genereert.'
     generate_token: 'Genereer nieuw'
   errors:
     no_rights: Sorry, je hebt geen toegangsrechten tot deze pagina.

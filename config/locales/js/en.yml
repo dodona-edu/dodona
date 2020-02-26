@@ -37,6 +37,8 @@ en:
     loading: Loading...
     submissions_on: "submissions on"
     no_selection: You must select at least one item before being able to download solutions.
+    mark_as_read: Mark as read
+    mark_as_unread: Mark as unread
     months:
       long:
         jan: January
@@ -81,3 +83,11 @@ en:
         fri: Fr
         sat: Sa
         sun: Su
+    annotation:
+      hidden: An annotation was hidden
+      were_hidden:
+        first: Only errors are shown,
+        second:
+          single: show 1 other annotation
+          plural: show {count} other annotations
+

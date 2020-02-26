@@ -9,7 +9,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :integer
-#  accepted    :boolean          default(FALSE)
+#  accepted    :boolean          default("0")
 #  course_id   :integer
 #  fs_key      :string(24)
 #
@@ -19,8 +19,8 @@ class Submission < ApplicationRecord
   include ActiveModel::Dirty
 
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
-  PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/timezone/%{timezone}/punchcard_matrix'.freeze
-  HEATMAP_MATRIX_CACHE_STRING = '/courses/%{course_id}/user/%{user_id}/heatmap_matrix'.freeze
+  PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%<course_id>s/user/%<user_id>s/timezone/%<timezone>s/punchcard_matrix'.freeze
+  HEATMAP_MATRIX_CACHE_STRING = '/courses/%<course_id>s/user/%<user_id>s/heatmap_matrix'.freeze
   BASE_PATH = Rails.application.config.submissions_storage_path
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
@@ -109,6 +109,8 @@ class Submission < ApplicationRecord
   end
 
   def result
+    return nil if queued? || running?
+
     ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
   rescue Errno::ENOENT, Zlib::GzipFile::Error => e
     ExceptionNotifier.notify_exception e, data: { submission_id: id, status: status, current_user: Current.user&.id }
@@ -273,15 +275,22 @@ class Submission < ApplicationRecord
   end
 
   def self.punchcard_matrix(options, base = { until: 0, value: {} })
-    submissions = submissions_since(base[:until], options).pluck(:id, :created_at)
-    return base if submissions.empty?
+    submissions = submissions_since(base[:until], options)
+    return base unless submissions.any?
+
+    value = base[:value]
+
+    submissions.in_batches do |subs|
+      value = value.merge(subs.pluck(:created_at)
+                              .map { |d| d.in_time_zone(options[:timezone]) }
+                              .map { |d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}" }
+                              .group_by(&:itself)
+                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+    end
 
     {
-      until: submissions.first[0],
-      value: base[:value].merge(submissions.map { |_, d| d.in_time_zone(options[:timezone]) }
-                                           .map { |d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}" }
-                                           .group_by(&:itself)
-                                           .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+      until: submissions.first.id,
+      value: value
     }
   end
 
@@ -289,19 +298,28 @@ class Submission < ApplicationRecord
     :punchcard_matrix,
     lambda do |options|
       format(PUNCHCARD_MATRIX_CACHE_STRING,
-             course_id: options[:course].present? ? options[:course].id : 'global',
-             user_id: options[:user].present? ? options[:user].id : 'global',
+             course_id: options[:course].present? ? options[:course].id.to_s : 'global',
+             user_id: options[:user].present? ? options[:user].id.to_s : 'global',
              timezone: options[:timezone].utc_offset)
     end
   )
 
   def self.heatmap_matrix(options = {}, base = { until: 0, value: {} })
-    submissions = submissions_since(base[:until], options).pluck(:id, :created_at)
-    return base if submissions.empty?
+    submissions = submissions_since(base[:until], options)
+    return base unless submissions.any?
+
+    value = base[:value]
+
+    submissions.in_batches do |subs|
+      value = value.merge(subs.pluck(:created_at)
+                              .map { |d| d.strftime('%Y-%m-%d') }
+                              .group_by(&:itself)
+                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+    end
 
     {
-      until: submissions.first[0],
-      value: base[:value].merge(submissions.map { |_, d| d.strftime('%Y-%m-%d') }.group_by(&:itself).transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+      until: submissions.first.id,
+      value: value
     }
   end
 
@@ -309,8 +327,8 @@ class Submission < ApplicationRecord
     :heatmap_matrix,
     lambda do |options|
       format(HEATMAP_MATRIX_CACHE_STRING,
-             course_id: options[:course].present? ? options[:course].id : 'global',
-             user_id: options[:user].present? ? options[:user].id : 'global')
+             course_id: options[:course].present? ? options[:course].id.to_s : 'global',
+             user_id: options[:user].present? ? options[:user].id.to_s : 'global')
     end
   )
 

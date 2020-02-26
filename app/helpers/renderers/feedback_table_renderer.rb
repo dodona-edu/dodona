@@ -222,7 +222,15 @@ class FeedbackTableRenderer
 
     @builder.div(class: 'messages') do
       msgs.each do |msg|
-        @builder.div(class: 'message') do
+        permission = msg.is_a?(Hash) && msg.key?(:permission) ? msg[:permission] : 'student'
+        tooltip = if permission == 'zeus'
+                    I18n.t('submissions.show.message_zeus')
+                  elsif permission == 'staff'
+                    I18n.t('submissions.show.message_staff')
+                  else
+                    ''
+                  end
+        @builder.div(class: "message message-#{permission}", title: tooltip) do
           message(msg)
         end
       end
@@ -291,7 +299,9 @@ class FeedbackTableRenderer
 
   def source(_, messages)
     @builder.div(class: 'code-table') do
-      FeedbackCodeRenderer.new(@code, @programming_language, messages, @builder).parse
+      FeedbackCodeRenderer.new(@code, @programming_language, messages, @builder)
+                          .parse
+                          .add_messages
     end
   end
 

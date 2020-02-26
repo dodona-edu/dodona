@@ -1,6 +1,6 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
 import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
-import { Notification } from "./notification";
+import { Toast } from "./toast";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -55,9 +55,17 @@ function initLabelsEdit(labels, undeletableLabels) {
     });
 }
 
-function initLightboxes() {
-    initStrip();
+function showLightbox(content) {
+    Strip.show(content.images, { side: "top" }, content.index);
+}
 
+function onFrameMessage(event) {
+    if (event.message.type === "lightbox") {
+        showLightbox(event.message.content);
+    }
+}
+
+function initLightboxes() {
     let index = 1;
     const images = [];
     $(".exercise-description img, a.dodona-lightbox").each(function () {
@@ -73,9 +81,14 @@ function initLightboxes() {
     });
 
     $(".exercise-description img, a.dodona-lightbox").click(function () {
-        Strip.show(images, {
-            side: "top",
-        }, $(this).data("image_index"));
+        const index = $(this).data("image_index");
+        window.parentIFrame.sendMessage({
+            type: "lightbox",
+            content: {
+                images: images,
+                index: index,
+            }
+        });
         return false;
     });
 }
@@ -121,6 +134,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (editorShown) {
             initEditor();
         }
+        initStrip();
         swapActionButtons();
         initDeadlineTimeout();
         enableSubmissionTableLinks();
@@ -138,7 +152,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         $("#submission-copy-btn").click(function () {
-            const codeString = dodona.codeListing.getCode();
+            const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
             $("#exercise-handin-link").tab("show");
         });
@@ -268,7 +282,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
                 }
                 setTimeout(enableSubmitButton, 100);
-                new Notification(I18n.t("js.submission-processed"));
+                new Toast(I18n.t("js.submission-processed"));
                 lastSubmission = null;
             }
         }
@@ -284,7 +298,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function submissionSuccessful(data, userId) {
         lastSubmission = data.id;
-        new Notification(I18n.t("js.submission-saved"));
+        new Toast(I18n.t("js.submission-saved"));
         ga("send", "pageview");
         let url = `/submissions.js?user_id=${userId}&exercise_id=${data.exercise_id}`;
         if (data.course_id) {
@@ -353,5 +367,26 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-export { initExerciseShow, initExerciseDescription, initLabelsEdit };
+function afterResize(details) {
+    /**
+     * If the page is loaded with a hash (#), the browser scrolls to the element
+     * with that id, but this happens before our iframe is loaded. After our
+     * iframe content is loaded, we resize its element to fit the content. If
+     * the item in the hash was below the iframe element, that item will
+     * possibly have 'jumped' away because of this.
+     *
+     * This function is called after such a resize to re-trigger the scroll-to
+     * behavior.
+     */
+    if (details.type === "init") {
+        const hash = location.hash;
+        location.hash = "#"; // some browsers only scroll after a change
+        location.hash = hash;
+    }
+}
+
+export {
+    initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
+    onFrameMessage
+};
 

@@ -5,7 +5,7 @@
 #  id          :integer          not null, primary key
 #  series_id   :integer
 #  exercise_id :integer
-#  order       :integer          default(999)
+#  order       :integer          default("999")
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
@@ -21,8 +21,14 @@ class SeriesMembership < ApplicationRecord
   validates :series_id, uniqueness: { scope: :exercise_id }
   after_create :invalidate_caches
   after_destroy :invalidate_caches
+  after_destroy :regenerate_exercise_token
 
   def invalidate_caches
     course.invalidate_exercises_count_cache
+  end
+
+  def regenerate_exercise_token
+    exercise.generate_access_token
+    exercise.save
   end
 end

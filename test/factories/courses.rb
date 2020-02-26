@@ -9,13 +9,13 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  description    :text(65535)
-#  visibility     :integer          default("visible_for_all")
-#  registration   :integer          default("open_for_all")
+#  visibility     :integer          default("0")
+#  registration   :integer          default("0")
 #  color          :integer
 #  teacher        :string(255)      default("")
 #  institution_id :bigint
 #  search         :string(4096)
-#  moderated      :boolean          default(FALSE), not null
+#  moderated      :boolean          default("0"), not null
 #
 
 FactoryBot.define do
@@ -30,6 +30,7 @@ FactoryBot.define do
     transient do
       series_count { 0 }
       exercises_per_series { 0 }
+      submissions_per_exercise { 0 }
       start_year { Time.zone.today.year }
     end
 
@@ -37,7 +38,7 @@ FactoryBot.define do
 
     after :create do |course, e|
       e.series_count.times do
-        create :series, course: course, exercise_count: e.exercises_per_series
+        create :series, course: course, exercise_count: e.exercises_per_series, exercise_submission_count: e.submissions_per_exercise
       end
     end
   end

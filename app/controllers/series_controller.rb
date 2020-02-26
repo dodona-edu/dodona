@@ -1,4 +1,6 @@
 class SeriesController < ApplicationController
+  include ExportHelper
+
   before_action :set_series, except: %i[index new create indianio_download]
 
   before_action :check_token, only: %i[show overview]
@@ -102,15 +104,22 @@ class SeriesController < ApplicationController
 
   def reset_token
     type = params[:type].to_sym
-    @series.generate_token(type)
-    @series.save
     value =
       case type
       when :indianio_token
+        @series.generate_indianio_token
         @series.indianio_token
       when :access_token
+        @series.generate_access_token
         series_url(@series, token: @series.access_token)
+      else
+        # unknown token type
+        head :unacceptable
       end
+
+    return if performed?
+
+    @series.save
     render partial: 'application/token_field', locals: {
       container_name: :access_token_field,
       name: type,
@@ -131,7 +140,7 @@ class SeriesController < ApplicationController
       user = User.find_by(email: email)
       if user
         options = { deadline: true, only_last_submission: true, with_info: true, all_students: true, indianio: true }
-        send_zip Export.new(item: @series, list: @series.exercises, users: [user], options: options).bundle
+        send_zip Zipper.new(item: @series, list: @series.exercises, users: [user], options: options).bundle
       else
         render json: { errors: ['Unknown email'] }, status: :not_found
       end
@@ -179,6 +188,7 @@ class SeriesController < ApplicationController
     respond_to do |format|
       format.html
       format.js
+      format.json
       format.csv do
         sheet = CSV.generate do |csv|
           csv << [I18n.t('series.scoresheet.explanation')]
@@ -215,5 +225,13 @@ class SeriesController < ApplicationController
     raise Pundit::NotAuthorizedError if @series.hidden? &&
                                         !current_user&.course_admin?(@series.course) &&
                                         @series.access_token != params[:token]
+  end
+
+  def send_zip(zip)
+    send_data zip[:data],
+              type: 'application/zip',
+              filename: zip[:filename],
+              disposition: 'attachment',
+              x_sendfile: true
   end
 end

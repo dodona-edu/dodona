@@ -117,7 +117,7 @@ if Rails.env.development?
 
   puts 'Add series, exercises and submissions to courses'
 
-  # Add exercices to test course
+  # Add exercises to test course
   courses.each do |course|
     series = []
     series << Series.create(name: 'Verborgen reeks',

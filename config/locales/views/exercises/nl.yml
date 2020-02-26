@@ -1,6 +1,7 @@
 nl:
   exercises:
     navbar_links:
+      info: Informatie over deze oefening
       show: Oefening bekijken
       edit: Oefening bewerken
       submissions: Oplossingen voor deze oefening
@@ -60,3 +61,37 @@ nl:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:
       courses: "Cursussen die deze oefening gebruiken"
+    info:
+      no_about_present: "Deze oefening heeft nog geen extra informatie."
+      no_about_present_admin: "Deze oefening heeft nog geen 'about' met extra informatie. Je kunt deze toevoegen aan de repository."
+      author_information: "Gemaakt door %{contact} in repository %{repository}."
+      programming_language: Programmeertaal
+      natural_language: Natuurlijke taal
+      time_limit: Tijdslimiet
+      memory_limit: Geheugenlimitiet
+      network_enabled: Netwerk ingeschakeld
+      network_disabled: Netwerk uitgeschakeld
+      submission_count: Aantal oplossingen
+      submission_details: "Deze oefening heeft %{total} inzendingen door %{users} unieke gebruikers, hiervan waren %{correct} inzendingen correct."
+      sample_solutions: Voorbeeldoplossingen
+      sample_solutions_hint: Klik op een tab hierboven om een voorbeeldoplossing te bekijken.
+      no_solutions: Deze oefening heeft nog geen voorbeeldoplossingen.
+      no_solutions_admin: Voeg je voorbeeldoplossingen toe aan de repository om ze hier te laten verschijnen.
+      usage: Gebruik
+      courses_using_this_exercise:
+        zero: "Deze oefening wordt nog niet gebruikt door een cursus."
+        one: "Deze oefening wordt gebruikt door 1 cursus."
+        other: "Deze oefening wordt gebruikt door %{count} cursussen."
+      not_used_in_courses: Deze oefening wordt nog niet gebruikt.
+      contact: Contactinformatie
+      repository: Repository waar deze oefening zich in bevindt
+      repository_path: Bestandslocatie binnen deze repository
+      created: Aangemaakt
+      updated: Laatst gewijzigd
+      ago: geleden
+      click_here_to_create_one: Klik hier om de 'about' informatie aan te maken.
+      config_set_by: "Deze waarde werd ingesteld door %{file}"
+      config_default: "Dit is de standaardwaarde."
+      description_files:   "We hebben bestanden gevonden met een beschrijving voor deze talen in de beschrijvingsmap %{path}"
+      config_info: 'Voor meer informatie over het configureren van oefeningen kun je %{here} een kijkje nemen op onze documentatiesite.'
+      here: 'hier'

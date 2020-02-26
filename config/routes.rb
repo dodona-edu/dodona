@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   root 'pages#home'
 
-
-  authenticated :user, -> user {user.zeus?} do
+  authenticated :user, ->(user) { user.zeus? } do
     mount DelayedJobWeb, at: '/dj'
   end
 
@@ -25,8 +24,14 @@ Rails.application.routes.draw do
     concern :mediable do
       member do
         constraints host: Rails.configuration.default_host do
-          get 'media/*media', to: 'exercises#media', constraints: {media: /.*/}, as: 'media'
+          get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: 'media'
         end
+      end
+    end
+
+    concern :infoable do
+      member do
+        get 'info'
       end
     end
 
@@ -34,7 +39,7 @@ Rails.application.routes.draw do
       resources :submissions, only: %i[index create]
     end
 
-    resources :series, except: [:new, :index] do
+    resources :series, except: %i[new index] do
       resources :exercises, only: [:index]
       member do
         get 'available_exercises', to: 'exercises#available'
@@ -49,28 +54,28 @@ Rails.application.routes.draw do
     end
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
 
-    scope '/export' do
-      get '/series/:id', to: 'export#download_submissions_from_series', as: 'export_series'
-      post '/series/:id', to: 'export#start_download_from_series'
-      get '/courses/:id', to: 'export#download_submissions_from_course', as: 'export_course'
-      post '/courses/:id', to: 'export#start_download_from_course'
-      get '/users/:id', to: 'export#download_submissions_from_user', as: 'export_user'
-      post '/users/:id', to: 'export#start_download_from_user'
+    resources :exports, except: %i[show edit update new destroy create] do
+      get 'users/:id', on: :collection, to: 'exports#new_user_export', as: 'users'
+      post 'users/:id', on: :collection, to: 'exports#create_user_export'
+      get 'courses/:id', on: :collection, to: 'exports#new_course_export', as: 'courses'
+      post 'courses/:id', on: :collection, to: 'exports#create_course_export'
+      get 'series/:id', on: :collection, to: 'exports#new_series_export', as: 'series'
+      post 'series/:id', on: :collection, to: 'exports#create_series_export'
     end
 
     resources :courses do
-      resources :series, only: [:new, :index] do
-        resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
+      resources :series, only: %i[new index] do
+        resources :exercises, only: %i[show edit update], concerns: %i[mediable submitable infoable]
       end
-      resources :exercises, only: [:show, :edit, :update], concerns: %i[mediable submitable]
+      resources :exercises, only: %i[show edit update], concerns: %i[mediable submitable infoable]
       resources :submissions, only: [:index]
-      resources :members, only: [:index, :show, :edit, :update], controller: :course_members do
+      resources :members, only: %i[index show edit update], controller: :course_members do
         get 'download_labels_csv', on: :collection
         post 'upload_labels_csv', on: :collection
       end
       member do
         get 'statistics'
-        get 'subscribe/:secret', to: 'courses#registration', as: "registration"
+        get 'subscribe/:secret', to: 'courses#registration', as: 'registration'
         get 'manage_series'
         get 'scoresheet'
         post 'mass_accept_pending'
@@ -85,14 +90,14 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable] do
+    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable infoable] do
       member do
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do
             root to: 'exercises#description', as: 'description'
             get 'media/*media',
                 to: 'exercises#media',
-                constraints: {media: /.*/},
+                constraints: { media: /.*/ },
                 as: 'description_media'
           end
         end
@@ -124,7 +129,7 @@ Rails.application.routes.draw do
       member do
         get 'download'
         get 'evaluate'
-        get 'media/*media', to: 'submissions#media', constraints: {media: /.*/}, as: 'media'
+        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }, as: 'media'
       end
     end
 
@@ -142,8 +147,12 @@ Rails.application.routes.draw do
     resources :labels
     resources :programming_languages
 
-    resources :institutions, only: [:index, :show, :edit, :update]
+    resources :institutions, only: %i[index show edit update]
     resources :events, only: [:index]
+    resources :notifications, only: %i[index update destroy] do
+      delete 'destroy_all', on: :collection
+    end
+
 
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'

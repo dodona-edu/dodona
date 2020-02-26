@@ -1,0 +1,39 @@
+<table class="table table-index table-resource">
+  <tbody>
+  <% notifications.limit(5).each do |n| %>
+    <tr class="notification<%= " unread" unless n.read %>" data-id="<%= n.id %>">
+      <td class="notification-icon">
+        <i class="mdi mdi-48 <%= notifiable_icon(n) %>" ></i>
+      </td>
+      <td>
+        <a class="notification-link" href="<%= notifiable_url n %>"><%= t n.message %></a>
+        <div class="text-muted">
+          <small>
+            <span><%= t 'notifications.index.created', {when: time_ago_in_words(n.created_at)} %></span>
+          </small>
+        </div>
+      </td>
+      <td class="actions">
+        <span class="btn-icon read-toggle-button">
+          <i class="mdi mdi-circle-medium mdi-18 read-indicator" title="<%= n.read ? t('js.mark_as_unread') : t('js.mark_as_read') %>"></i>
+        </span>
+      </td>
+    </tr>
+  <% end %>
+  <% unread_in_overflow = notifications.where(read: false).where('id < ?', notifications.limit(5).last.id).any? %>
+  <tr class="notification-overflow notification<%= " unread" if unread_in_overflow %>">
+    <td></td>
+    <td>
+      <a href="<%= notifications_path %>"><%= t 'notifications.index.view_all' %></a>
+    </td>
+    <td></td>
+  </tr>
+  <script>
+    $(() => {
+      <% notifications.limit(5).each do |n| %>
+        new dodona.Notification(<%= n.id %>, "<%= notification_path(n, format: :json) %>", <%= n.read %>, "<%= notifiable_url(n) %>", true);
+      <% end %>
+    })
+  </script>
+  </tbody>
+</table>

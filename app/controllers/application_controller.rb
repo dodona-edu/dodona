@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_time_zone_offset
 
+  before_action :set_notifications, if: :user_signed_in?
+
   impersonates :user
 
   # A more lax CSP for pages in the sandbox
@@ -87,7 +89,8 @@ class ApplicationController < ActionController::Base
   private
 
   def redirect_to_default_host
-    redirect_to host: Rails.configuration.default_host
+    redirect_to host: Rails.configuration.default_host,
+                params: request.query_parameters
   end
 
   def user_not_authorized
@@ -112,7 +115,7 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     begin
-      I18n.locale = params[:locale] || (current_user&.lang) || I18n.default_locale
+      I18n.locale = params[:locale] || current_user&.lang || I18n.default_locale
     rescue I18n::InvalidLocale
       I18n.locale = I18n.default_locale
     end
@@ -164,11 +167,10 @@ class ApplicationController < ActionController::Base
     @time_zone_offset = Time.zone.now.utc_offset / -60
   end
 
-  def send_zip(zip)
-    send_data zip[:data],
-              type: 'application/zip',
-              filename: zip[:filename],
-              disposition: 'attachment',
-              x_sendfile: true
+  def set_notifications
+    @notifications = current_user.notifications
+    @notifications.where(read: false).each do |n|
+      n.update(read: true) if helpers.current_page?(helpers.base_notifiable_url_params(n))
+    end
   end
 end

@@ -12,11 +12,11 @@ The documentation of this project can be found at https://dodona-edu.github.io.
 2. If using `mysql`, add `sql-mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'` to the `/etc/mysql/mysql.conf.d/mysqld.cnf` file.
 3. Create dodona user (with password 'dodona') with create database permissions.
 4. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
-5. [Start the server](#starting-the-server). The simplest way is with `rails s`.
+5. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
 6. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database form step 4)
-   - `http://localhost:3000/nl/users/1/token/zeus`
-   - `http://localhost:3000/nl/users/2/token/staff`
-   - `http://localhost:3000/nl/users/3/token/student`
+   - `http://dodona.localhost:3000/nl/users/1/token/zeus`
+   - `http://dodona.localhost:3000/nl/users/2/token/staff`
+   - `http://dodona.localhost:3000/nl/users/3/token/student`
 
 ## Evaluating exercises locally
 These steps are not required to run the server, but you need docker to actually evaluate exercises.
@@ -35,9 +35,15 @@ To run all these processes at the same time, the foreman gem is used. To start t
 
 This has one letdown: debugging with `byebug` is broken. You can run `bin/server norails` to only start webpack and delayed_job in foreman and then run `rails s` in a different terminal to be able to use `byebug` again.
 
-## Tutor Docker network
+## Localhost subdomain
 
-Your docker network (for the python tutor) should be in `192.168.0.0/16`. If this is not the case, you should edit `Rails.config.tutor_docker_network_prefix` in `config/application.rb`. Be aware that you should run this application behind a proxy, otherwise users could spoof their IP address via the `X-Forwarder-For` header. (If they spoof their ip addres to one within the docker network, they will be able to access media files of private exercises that they would otherwise not have access to.)
+Dodona use subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed. We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
+
+If this does not work out of the box you can add the following lines to your `/etc/hosts` file:
+```
+127.0.0.1             dodona.localhost
+127.0.0.1             sandbox.localhost
+```
 
 ## Running on Windows
 

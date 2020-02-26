@@ -27,6 +27,10 @@ class CoursePolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def info?
+    course_admin?
+  end
+
   def copy?
     create? &&
       user&.zeus? ||
@@ -127,6 +131,12 @@ class CoursePolicy < ApplicationPolicy
     show?
   end
 
+  def export?
+    return true if zeus?
+
+    course_member?
+  end
+
   def permitted_attributes
     # record is the Course class on create
     if course_admin? || (record == Course && user&.admin?)
@@ -136,9 +146,13 @@ class CoursePolicy < ApplicationPolicy
     end
   end
 
+  def course_admin?
+    record.class == Course && user&.course_admin?(record)
+  end
+
   private
 
-  def course_admin?
-    record.class == Course && (user&.course_admin?(record))
+  def course_member?
+    record.class == Course && user&.member_of?(record)
   end
 end

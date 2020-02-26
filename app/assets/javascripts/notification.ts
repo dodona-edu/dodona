@@ -1,51 +1,83 @@
+import { fetch } from "util.js";
 /**
- * Shows a notification in the bottom left corner. By default, hides it after 3 seconds.
+ * Model for a notification in the navbar. It adds three listeners to the notification view:
+ *
+ *  1. It listens to clicks on the read toggle button and updates the model on
+ *  the server accordingly. The view is then updated based on the response of the server.
+ *
+ *  2. It listens to clicks on the delete button and removes the model on the
+ *  server accordingly. The element is then removed from the view.
+ *
+ *  3. It optionally listens to a click on the element and navigates to the link
+ *  of the notification.
  */
 export class Notification {
-    static readonly hideDelay = 3000;
-    static readonly removeDelay = 1000;
-    static readonly notificationsContainer = ".notifications";
+    private readonly element: Element;
+    private readonly url: string;
+    private readonly notifiableUrl: string;
+    private read: boolean;
 
-    readonly notification: Element;
+    constructor(id: number, url: string, read: boolean, notifiableUrl: string, installClickHandler: boolean) {
+        this.element = document.querySelector(`.notification[data-id="${id}"]`);
+        this.read = read;
+        this.url = url;
+        this.notifiableUrl = notifiableUrl;
 
-    constructor(readonly content: string, readonly autoHide = true, readonly loading = false) {
-        this.notification = this.generateNotificationHTML(this.content, this.loading);
-        this.show();
-
-        if (this.autoHide) {
-            setTimeout(() => {
-                this.hide();
-            }, Notification.hideDelay);
-        }
-    }
-
-    private show(): void {
-        document.querySelector(Notification.notificationsContainer).prepend(this.notification);
-        window.requestAnimationFrame(() => {
-            this.notification.classList.remove("notification-show");
+        this.element.querySelector(".read-toggle-button").addEventListener("click", event => {
+            this.toggleRead();
+            event.stopPropagation();
         });
-    }
 
-    hide(): void {
-        this.notification.classList.add("notification-hide");
-        setTimeout(() => {
-            this.notification.remove();
-        }, Notification.removeDelay);
-    }
+        // Delete button isn't shown on small view in navbar
+        this.element.querySelector(".delete-button")?.addEventListener("click", event => {
+            this.remove();
+            event.stopPropagation();
+        });
 
-    private generateNotificationHTML(content: string, loading: boolean): Element {
-        const element = this.htmlToElement(
-            `<div class='notification notification-show'>${content}</div>`
-        );
-        if (loading) {
-            element.appendChild(this.htmlToElement("<div class='spinner'></div>"));
+        // We only want to install the click handler for the full element on the small notification view.
+        if (installClickHandler) {
+            this.element.addEventListener("click", event => {
+                this.visit();
+                event.stopPropagation();
+            });
         }
-        return element;
     }
 
-    private htmlToElement(html: string): Element {
-        const template = document.createElement("template");
-        template.innerHTML = html.trim();
-        return template.content.firstChild as Element;
+    async toggleRead(): Promise<void> {
+        const response = await fetch(this.url, {
+            method: "PATCH",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: `{ "notification": { "read": ${!this.read} } }`
+        });
+        const body = await response.json();
+        this.read = body.read;
+        const indicator = this.element.querySelector(".read-indicator");
+        if (!this.read) {
+            indicator.setAttribute("title", I18n.t("js.mark_as_read"));
+            this.element.classList.add("unread");
+        } else {
+            indicator.setAttribute("title", I18n.t("js.mark_as_unread"));
+            this.element.classList.remove("unread");
+        }
+        if (document.querySelectorAll(".notification.unread").length === 0) {
+            document.querySelector("#navbar-notifications .dropdown-toggle")?.classList?.remove("notification");
+            document.querySelector("link[rel=\"shortcut icon\"][href=\"/icon-not.png\"]")?.setAttribute("href", "/icon.png");
+            document.querySelector("link[rel=\"shortcut icon\"][href=\"/favicon-not.ico\"]")?.setAttribute("href", "/favicon.ico");
+        } else {
+            document.querySelector("#navbar-notifications .dropdown-toggle")?.classList?.add("notification");
+            document.querySelector("link[rel=\"shortcut icon\"][href=\"/icon.png\"]")?.setAttribute("href", "/icon-not.png");
+            document.querySelector("link[rel=\"shortcut icon\"][href=\"/favicon.ico\"]")?.setAttribute("href", "/favicon-not.ico");
+        }
+    }
+
+    async remove(): Promise<void> {
+        await fetch(this.url, { method: "DELETE" });
+        this.element.remove();
+    }
+
+    visit(): void {
+        window.location.href = this.notifiableUrl;
     }
 }

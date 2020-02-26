@@ -72,7 +72,7 @@
             <% end %>
             <% if policy(series).download_submissions? && current_user.course_admin?(series.course) %>
               <li>
-                <%= link_to export_series_path(series, token: (series.access_token if series.hidden?)) do %>
+                <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?)) do %>
                   <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_all_solutions") %>
                 <% end %>
               </li>
@@ -95,7 +95,7 @@
           <% end %>
           <% if policy(series).download_submissions? %>
             <li>
-              <%= link_to export_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
+              <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
                <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_submissions") %>
               <% end %>
             </li>

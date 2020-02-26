@@ -7,7 +7,11 @@ require 'pathname' # better than File
 
 # Handles the execution of submissions
 class SubmissionRunner
-  DEFAULT_CONFIG_PATH = Rails.root.join('app', 'runners', 'config.json').freeze
+  DEFAULT_CONFIG_PATH = Rails.root.join('app/runners/config.json').freeze
+
+  def self.default_config
+    JSON.parse(File.read(DEFAULT_CONFIG_PATH))
+  end
 
   def initialize(submission)
     # definition of submission
@@ -30,7 +34,7 @@ class SubmissionRunner
 
   def compose_config
     # set default configuration
-    config = JSON.parse(File.read(DEFAULT_CONFIG_PATH))
+    config = self.class.default_config
 
     # update with judge configuration
     config.deep_merge!(@judge.config)
@@ -87,29 +91,32 @@ class SubmissionRunner
     # fetch execution memory limit from submission configuration
     memory_limit = @config['memory_limit']
 
+    docker_options = {
+      # TODO: move entry point to docker container definition
+      Cmd: ['/main.sh',
+            # judge entry point
+            (@mountdst + @hidden_path + 'judge' + 'run').to_path],
+      Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
+      name: "dodona-#{@submission.id}", # assuming unique during execution
+      OpenStdin: true,
+      StdinOnce: true, # closes stdin after first disconnect
+      NetworkDisabled: !@config['network_enabled'],
+      HostConfig: {
+        Memory: memory_limit,
+        MemorySwap: memory_limit, # memory including swap
+        # WARNING: this will cause the container to hang if /dev/sda does not exist
+        BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }].filter { Rails.env.production? || Rails.env.staging? },
+        PidsLimit: 256,
+        Binds: ["#{@mountsrc}:#{@mountdst}",
+                "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
+      }
+    }
+
     # process submission in docker container
     # TODO: set user with the --user option
     # TODO: set the workdir with the -w option
     begin
-      container = Docker::Container.create(
-        # TODO: move entry point to docker container definition
-        Cmd: ['/main.sh',
-              # judge entry point
-              (@mountdst + @hidden_path + 'judge' + 'run').to_path],
-        Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
-        name: "dodona-#{@submission.id}", # assuming unique during execution
-        OpenStdin: true,
-        StdinOnce: true, # closes stdin after first disconnect
-        NetworkDisabled: !@config['network_enabled'],
-        HostConfig: {
-          Memory: memory_limit,
-          MemorySwap: memory_limit, # memory including swap
-          BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }],
-          PidsLimit: 256,
-          Binds: ["#{@mountsrc}:#{@mountdst}",
-                  "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
-        }
-      )
+      container = Docker::Container.create(**docker_options)
     rescue StandardError => e
       return build_error 'internal error', 'internal error', [
         build_message("Error creating docker: #{e}", 'staff', 'plain'),
@@ -140,14 +147,17 @@ class SubmissionRunner
       end
     end
 
-    outlines, errlines = container.tap(&:start).attach(
-      stdin: StringIO.new(@config.to_json),
-      stdout: true,
-      stderr: true
-    )
-    timeout_mutex.synchronize do
-      timer.kill
-      timeout = false if timeout.nil?
+    begin
+      outlines, errlines = container.tap(&:start).attach(
+        stdin: StringIO.new(@config.to_json),
+        stdout: true,
+        stderr: true
+      )
+    ensure
+      timeout_mutex.synchronize do
+        timer.kill
+        timeout = false if timeout.nil?
+      end
     end
 
     after_time = Time.zone.now
@@ -202,8 +212,8 @@ class SubmissionRunner
 
     result[:messages] ||= []
     result[:messages] << build_message("<strong>Worker:</strong> #{`hostname`.strip}", 'zeus', 'html')
-    result[:messages] << build_message(format('<strong>Runtime:</strong> %.2f seconds', (after_time - before_time)), 'zeus', 'html')
-    result[:messages] << build_message(format('<strong>Memory usage:</strong> %.2f MiB', memory), 'zeus', 'html')
+    result[:messages] << build_message(format('<strong>Runtime:</strong> %<time>.2f seconds', time: (after_time - before_time)), 'zeus', 'html')
+    result[:messages] << build_message(format('<strong>Memory usage:</strong> %<memory>.2f MiB', memory: memory), 'zeus', 'html')
     result
   end
 

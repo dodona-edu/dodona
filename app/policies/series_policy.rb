@@ -29,6 +29,10 @@ class SeriesPolicy < ApplicationPolicy
       user&.member_of?(course)
   end
 
+  def info?
+    course_admin?
+  end
+
   def overview?
     show? && (record.exercises_visible || course_admin?)
   end
@@ -73,16 +77,18 @@ class SeriesPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def scoresheet_download?
-    course_admin?
-  end
-
   def mass_rejudge?
     course_admin?
   end
 
   def reset_token?
     edit?
+  end
+
+  def export?
+    return true if zeus?
+
+    course_member?
   end
 
   def permitted_attributes
@@ -94,9 +100,13 @@ class SeriesPolicy < ApplicationPolicy
     end
   end
 
-  private
-
   def course_admin?
     record.class == Series && user&.course_admin?(record&.course)
+  end
+
+  private
+
+  def course_member?
+    record.class == Series && user&.member_of?(record&.course)
   end
 end

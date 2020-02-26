@@ -31,7 +31,7 @@ en:
       token_sign_in: 'This account was created manually and can only sign in using this link:'
       timezone: Your timezone is set to
       stats: Statistics
-      download_my_submissions: Download my submissions
+      download_my_submissions: Export my submissions
     users_table:
       staff: Staff
       zeus: Zeus

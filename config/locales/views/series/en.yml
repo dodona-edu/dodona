@@ -22,8 +22,8 @@ en:
       token_link: "Secret link"
       series: Series
       exercises: Exercises
-      download_submissions: Download my submissions
-      download_all_solutions: Download student submissions
+      download_submissions: Export my submissions
+      download_all_solutions: Export student submissions
       series_not_visible: This series is only visible for students using the secret link!
       series_not_accessible: This series is not accessible to students!
       exercises_not_visible: The exercises in this series are not visible to students!
@@ -56,6 +56,7 @@ en:
       user: User
       explanation: "Showing the number of correctly solved exercises before the deadline"
       at_least_one_started: "Only show users that started at least one exercise"
+      no_exercises_html: "This series doesn't have any exercises. You can add some on the <a href=%{series_edit_url}>series edit page</a>."
       download: Download scoresheet
       course_view: Course scoresheet
       select_view: Select view

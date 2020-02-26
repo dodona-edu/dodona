@@ -9,6 +9,7 @@ nl:
     models:
       course: Cursus
       exercise: Oefening
+      export: Export
       judge: Judge
       repository: Repository
       series: Reeks
@@ -26,6 +27,7 @@ nl:
         created_at: Aangemaakt op
       course:
         name: Naam
+        series: Reeksen
         teacher: Lesgever
         year: Academiejaar
         description: Beschrijving
@@ -150,3 +152,8 @@ nl:
           permission_change: Verandering in toegangsniveau
           exercise_repository: Aanmaak van oefeningenrepository
           error: Error
+      export:
+        statuses:
+          started: Begonnen
+          finished: Klaar
+          failed: Er liep iets fout

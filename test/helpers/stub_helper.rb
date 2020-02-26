@@ -14,6 +14,18 @@ module StubHelper
     end
   end
 
+  def stub_all_exercises!
+    config = { 'evaluation' => { 'time_limit' => 1 } }.freeze
+    config_locations = { 'evaluation' => { 'time_limit' => 'config.json' } }.freeze
+    description = 'ᕕ(ಠ_ಠ)ᕗ'
+    Exercise.any_instance.stubs(:config).returns(config)
+    Exercise.any_instance.stubs(:config_locations).returns(config_locations)
+    Exercise.any_instance.stubs(:update_config)
+    Exercise.any_instance.stubs(:merged_config).returns(config)
+    Exercise.any_instance.stubs(:merged_config_locations).returns(config_locations)
+    Exercise.any_instance.stubs(:description_localized).returns(description)
+  end
+
   refine FactoryBot::SyntaxRunner do
     include StubHelper
   end

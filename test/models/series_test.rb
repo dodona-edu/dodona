@@ -7,20 +7,21 @@
 #  name              :string(255)
 #  description       :text(65535)
 #  visibility        :integer
-#  order             :integer          default(0), not null
+#  order             :integer          default("0"), not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  deadline          :datetime
 #  access_token      :string(255)
 #  indianio_token    :string(255)
-#  progress_enabled  :boolean          default(TRUE), not null
-#  exercises_visible :boolean          default(TRUE), not null
+#  progress_enabled  :boolean          default("1"), not null
+#  exercises_visible :boolean          default("1"), not null
 #
 
 require 'test_helper'
 
 class SeriesTest < ActiveSupport::TestCase
   setup do
+    stub_all_exercises!
     @series = create :series
   end
 
@@ -94,18 +95,12 @@ class SeriesTest < ActiveSupport::TestCase
   test 'generate_token should generate a new token' do
     indianio = 'indianio'
     access = 'access'
-    @series.update(indianio_token: 'indianio', access_token: 'access')
-    @series.generate_token :indianio_token
+    @series.update(indianio_token: indianio, access_token: access)
+    @series.generate_indianio_token
     assert_not_equal indianio, @series.indianio_token
 
-    @series.generate_token :access_token
-    assert_not_equal access, @series.indianio_token
-  end
-
-  test 'generating token for unkown type should give an error' do
-    assert_raises 'unknown token type' do
-      @series.generate_token :unknown_token
-    end
+    @series.generate_access_token
+    assert_not_equal access, @series.access_token
   end
 
   test 'access_token should always be set' do

@@ -9,13 +9,13 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  description    :text(65535)
-#  visibility     :integer          default("visible_for_all")
-#  registration   :integer          default("open_for_all")
+#  visibility     :integer          default("0")
+#  registration   :integer          default("0")
 #  color          :integer
 #  teacher        :string(255)      default("")
 #  institution_id :bigint
 #  search         :string(4096)
-#  moderated      :boolean          default(FALSE), not null
+#  moderated      :boolean          default("0"), not null
 #
 
 require 'securerandom'
@@ -24,11 +24,12 @@ require 'csv'
 class Course < ApplicationRecord
   include Filterable
   include Cacheable
+  include Tokenable
   include ActionView::Helpers::SanitizeHelper
 
-  SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%{id}/subscribed_members_count'.freeze
-  EXERCISES_COUNT_CACHE_STRING = '/courses/%{id}/exercises_count'.freeze
-  CORRECT_SOLUTIONS_CACHE_STRING = '/courses/%{id}/correct_solutions'.freeze
+  SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%<id>d/subscribed_members_count'.freeze
+  EXERCISES_COUNT_CACHE_STRING = '/courses/%<id>d/exercises_count'.freeze
+  CORRECT_SOLUTIONS_CACHE_STRING = '/courses/%<id>d/correct_solutions'.freeze
 
   belongs_to :institution, optional: true
 
@@ -107,6 +108,8 @@ class Course < ApplicationRecord
   scope :by_institution, ->(institution) { where(institution: [institution, nil]) }
   default_scope { order(year: :desc, name: :asc) }
 
+  token_generator :secret, unique: false, length: 5
+
   before_create :generate_secret
 
   # Default year & enum values
@@ -140,10 +143,6 @@ class Course < ApplicationRecord
 
   def formatted_year
     Course.format_year year
-  end
-
-  def generate_secret
-    self.secret = SecureRandom.urlsafe_base64(5)
   end
 
   def secret_required?(user = nil)

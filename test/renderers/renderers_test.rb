@@ -3,7 +3,7 @@ require 'test_helper'
 # A test that just runs renderers on input satisfying the schema,
 # and test whether they don't crash.
 class RenderersTest < ActiveSupport::TestCase
-  FILES_LOCATION = Rails.root.join('test', 'files')
+  FILES_LOCATION = Rails.root.join('test/files')
 
   def run_renderer(renderer, file_name)
     json = (FILES_LOCATION + file_name).read
@@ -32,7 +32,7 @@ class RenderersTest < ActiveSupport::TestCase
     json = (FILES_LOCATION + 'output.json').read
     exercise = create :exercise
     exercise.update(allow_unsafe: true)
-    submission = create :submission, result: json, user: create(:zeus), exercise: exercise
+    submission = create :submission, result: json, user: create(:zeus), exercise: exercise, status: :correct
 
     assert_match %r{<script>alert.*</script>}, FeedbackTableRenderer.new(submission, submission.user).parse
   end
@@ -41,7 +41,7 @@ class RenderersTest < ActiveSupport::TestCase
     json = (FILES_LOCATION + 'pythia_output.json').read
     exercise = create :exercise
     exercise.update(allow_unsafe: true)
-    submission = create :submission, result: json, user: create(:zeus), exercise: exercise
+    submission = create :submission, result: json, user: create(:zeus), exercise: exercise, status: :correct
 
     assert_match %r{<script>alert.*</script>}, PythiaRenderer.new(submission, submission.user).parse
   end
@@ -50,7 +50,7 @@ class RenderersTest < ActiveSupport::TestCase
     json = (FILES_LOCATION + 'output.json').read
     exercise = create :exercise
     exercise.update(access: :private)
-    submission = create :submission, result: json, user: create(:zeus), exercise: exercise
+    submission = create :submission, result: json, user: create(:zeus), exercise: exercise, status: :correct
 
     assert_match exercise.access_token, FeedbackTableRenderer.new(submission, submission.user).parse
   end

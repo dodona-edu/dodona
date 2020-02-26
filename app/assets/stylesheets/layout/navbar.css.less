@@ -88,6 +88,10 @@
       font-size: 18px;
       padding-left: 18px;
 
+      &:focus {
+        outline: none;
+      }
+
       i {
         line-height: @navbar-height;
         @media (min-width: @navbar-collapse-width) {
@@ -127,20 +131,6 @@
         display: none;
       }
 
-      a.notification:before {
-        content: '';
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        border: 1px solid white;
-        display: inline-block;
-        background-color: @pending-color;
-        position: relative;
-        margin-left: -15px;
-        left: 30px;
-        z-index: 10;
-      }
-
       li a {
         padding-left: 8px;
         padding-right: 8px;
@@ -152,7 +142,6 @@
           }
         }
       }
-      
     }
   }
 
@@ -163,6 +152,48 @@
     .dropdown-nav {
       padding-right: 20px;
       padding-left: 20px;
+
+      .notification-dropdown {
+        .table > tbody > tr:first-of-type > td {
+          border-top: none;
+        }
+        .notification {
+          cursor: pointer;
+
+          &.unread {
+            .notification-link {
+              font-weight: 500;
+            }
+          }
+
+          .notification-icon i {
+            padding-left: 12px;
+            margin-right: -12px;
+            text-align: right;
+          }
+
+          .read-indicator:hover {
+            font-size: 22px;
+            line-height: 24px;
+          }
+        }
+        .read-toggle-button {
+          cursor: pointer;
+        }
+        a {
+          padding-left: 0px;
+          color: @text-color;
+          &.btn-icon {
+            color: @text-secondary;
+          }
+        }
+        .notification-overflow a {
+          color: @link-color;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
 
       li a {
         padding-left: 8px;
@@ -346,4 +377,16 @@
   }
 }
 
-
+a.notification:before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid white;
+  display: inline-block;
+  background-color: @pending-color;
+  position: relative;
+  margin-left: -15px;
+  left: 30px;
+  z-index: 10;
+}

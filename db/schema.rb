@@ -10,18 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_17_211919) do
+ActiveRecord::Schema.define(version: 2020_01_21_093650) do
 
-  create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "line_nr"
-    t.integer "submission_id"
-    t.integer "user_id"
-    t.text "annotation_text"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "markdown_content", null: false
-    t.index ["submission_id"], name: "index_annotations_on_submission_id"
-    t.index ["user_id"], name: "index_annotations_on_user_id"
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
   create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -142,6 +151,14 @@ ActiveRecord::Schema.define(version: 2019_11_17_211919) do
     t.index ["status"], name: "index_exercises_on_status"
   end
 
+  create_table "exports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_exports_on_user_id"
+  end
+
   create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
@@ -172,6 +189,18 @@ ActiveRecord::Schema.define(version: 2019_11_17_211919) do
     t.string "name", null: false
     t.integer "color", null: false
     t.index ["name"], name: "index_labels_on_name", unique: true
+  end
+
+  create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "message", null: false
+    t.boolean "read", default: false, null: false
+    t.integer "user_id", null: false
+    t.string "notifiable_type"
+    t.bigint "notifiable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "programming_languages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -272,8 +301,7 @@ ActiveRecord::Schema.define(version: 2019_11_17_211919) do
     t.index ["username"], name: "index_users_on_username"
   end
 
-  add_foreign_key "annotations", "submissions"
-  add_foreign_key "annotations", "users"
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "course_labels", "courses", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_labels", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_memberships", on_delete: :cascade
@@ -286,6 +314,8 @@ ActiveRecord::Schema.define(version: 2019_11_17_211919) do
   add_foreign_key "exercises", "judges"
   add_foreign_key "exercises", "programming_languages"
   add_foreign_key "exercises", "repositories"
+  add_foreign_key "exports", "users"
+  add_foreign_key "notifications", "users"
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"

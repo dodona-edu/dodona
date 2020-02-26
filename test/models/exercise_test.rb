@@ -11,12 +11,13 @@
 #  description_format      :string(255)
 #  repository_id           :integer
 #  judge_id                :integer
-#  status                  :integer          default("ok")
-#  access                  :integer          default("public"), not null
+#  status                  :integer          default("0")
+#  access                  :integer          default("0"), not null
 #  programming_language_id :bigint
 #  search                  :string(4096)
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
+#  allow_unsafe            :boolean          default("0"), not null
 #
 
 require 'test_helper'
@@ -448,6 +449,36 @@ class ExerciseTest < ActiveSupport::TestCase
     @exercise.update(access: :private)
     assert_not_equal @exercise.reload.access_token, old_token
   end
+
+  test 'access token should not change when something else changes' do
+    old_token = @exercise.access_token
+    @exercise.update(name_en: 'Wubba Lubba dub-dub')
+    assert_equal @exercise.reload.access_token, old_token
+  end
+
+  test 'access token should change when containing series changes visibility' do
+    series = create :series, exercises: [@exercise], visibility: :open
+    old_token = @exercise.access_token
+
+    series.update(visibility: :hidden)
+    hidden_token = @exercise.reload.access_token
+    assert_not_equal hidden_token, old_token
+
+    series.update(visibility: :closed)
+    closed_token = @exercise.reload.access_token
+    assert_not_equal closed_token, hidden_token
+  end
+
+  test 'access token should change when removed from series' do
+    old_token = @exercise.access_token
+
+    series = create :series, visibility: :open
+    series.exercises << @exercise
+    assert_equal old_token, @exercise.reload.access_token, 'access token should not change when added to series'
+
+    series.exercises.destroy(@exercise)
+    assert_not_equal old_token, @exercise.reload.access_token
+  end
 end
 
 class ExerciseRemoteTest < ActiveSupport::TestCase
@@ -565,7 +596,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
     @remote = local_remote('exercises/lasagna')
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
-    @exercise = @repository.exercises.first
+    @exercise = @repository.exercises.find_by(path: 'exercises/series/ISBN')
+    @extra_exercise = @repository.exercises.find_by(path: 'exercises/extra/echo')
   end
 
   teardown do
@@ -601,6 +633,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_not @exercise.config.key? 'root_config'
     assert @exercise.merged_config.key? 'root_config'
     assert_equal 'set', @exercise.merged_config['root_config']
+    assert_equal Pathname.new('dirconfig.json'),
+                 @exercise.merged_config_locations['root_config']
   end
 
   test 'should throw ":abort" when commit does not succed and return an error' do
@@ -613,6 +647,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
   # set at top level, overridden by series, not set at exercise
   test 'should not write access if initially not present' do
     assert_equal 'public', @exercise.access
+    assert_equal Pathname.new('./exercises/series/dirconfig.json'),
+                 @exercise.merged_config_locations['access']
     @exercise.update_config
     assert_not @exercise.config.key? 'access'
   end
@@ -629,6 +665,8 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_not @exercise.config.key? 'access'
     assert @exercise.merged_config.key? 'access'
     assert_equal 'public', @exercise.access
+    assert_equal Pathname.new('./exercises/series/dirconfig.json'),
+                 @exercise.merged_config_locations['access']
 
     @exercise.update_config
     assert_not @exercise.config.key? 'access'
@@ -641,13 +679,37 @@ class LasagneConfigTest < ActiveSupport::TestCase
     @exercise.update_config
     assert_equal 'private', @exercise.config['access']
     assert_equal 'private', @exercise.merged_config['access']
+    assert_equal @exercise.config_file,
+                 @exercise.merged_config_locations['access']
   end
 
   test 'should merge label arrays' do
     assert_equal 4, @exercise.labels.count
+    expected = ['dirconfig.json',
+                './exercises/dirconfig.json',
+                './exercises/series/dirconfig.json',
+                @exercise.config_file].map { |p| Pathname.new p }
+    assert_equal expected,
+                 @exercise.merged_config_locations['labels']
   end
 
   test 'should update child configs if dirconfig has a memory limit that is too high' do
     assert_equal 500_000_000, @exercise.config['evaluation']['memory_limit']
+  end
+
+  test 'should support directories without dirconfig' do
+    assert_equal @extra_exercise.merged_config['root_config'], 'set'
+  end
+end
+
+class ExerciseStubTest < ActiveSupport::TestCase
+  setup do
+    stub_all_exercises!
+    @exercise = create :exercise
+  end
+
+  test 'exercise should be valid and ok' do
+    assert @exercise.valid?, 'Exercise was not valid'
+    assert_equal @exercise.status, 'ok', 'Exercise was not ok'
   end
 end

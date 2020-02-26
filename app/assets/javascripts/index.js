@@ -1,5 +1,5 @@
 /* globals Bloodhound */
-import { Notification } from "./notification";
+import { Toast } from "./toast";
 import {
     delay,
     getArrayURLParameter,
@@ -132,7 +132,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 url,
                 { format: "json" },
                 function (data) {
-                    new Notification(data.message);
+                    new Toast(data.message);
                     if (data.js) {
                         eval(data.js);
                     } else {

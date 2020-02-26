@@ -9,6 +9,7 @@ en:
     models:
       course: Course
       exercise: Exercise
+      export: Export
       judge: Judge
       repository: Repository
       series: Series
@@ -25,6 +26,7 @@ en:
         description: Description
       course:
         name: Name
+        series: Series
         teacher: Teacher
         year: Academic year
         description: Description
@@ -149,3 +151,8 @@ en:
           permission_change: Change in permission level
           exercise_repository: Creation of exercise repository
           error: Error
+      export:
+        statuses:
+          started: Started
+          finished: Finished
+          failed: Failed

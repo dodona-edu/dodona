@@ -44,6 +44,19 @@ module ApplicationHelper
     end
   end
 
+  def info_exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
+    raise 'Exercise should not be nil' if exercise.nil?
+
+    if series.present?
+      course ||= series.course
+      info_course_series_exercise_path(I18n.locale, course, series, exercise, options)
+    elsif course.present?
+      info_course_exercise_path(I18n.locale, course, exercise, options)
+    else
+      info_exercise_path(I18n.locale, exercise, options)
+    end
+  end
+
   def submissions_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
     if exercise.nil?
       submissions_path(I18n.locale, options)
@@ -58,7 +71,7 @@ module ApplicationHelper
   end
 
   def navbar_link(options)
-    return if options.delete(:if) == false
+    return unless options.delete(:if)
 
     url = options.delete(:url)
     if current_page?(url)

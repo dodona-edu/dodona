@@ -151,6 +151,10 @@ export class CodeListing {
 
     public createHiddenMessage(count: number): HTMLSpanElement {
         const span = document.createElement("span");
+        if (count === 0) {
+            return null;
+        }
+
         const spanText: Text = document.createTextNode(I18n.t("js.annotation.were_hidden.first") + " ");
         span.appendChild(spanText);
 

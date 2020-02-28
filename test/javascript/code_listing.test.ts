@@ -218,3 +218,13 @@ test("correct buttons & elements are hidden and unhidden", () => {
     expect(document.querySelectorAll("#show_all_annotations.active.hide").length).toBe(0);
     expect(document.querySelectorAll("#show_all_annotations.active:not(.hide)").length).toBe(1);
 });
+
+test("Dont show a message when there is only an error", () => {
+    codeListing.addAnnotation({
+        type: "error",
+        text: "Replace with oneliner",
+        row: 1
+    });
+
+    expect(document.querySelector("#annotations-were-hidden").textContent).toBe("");
+});

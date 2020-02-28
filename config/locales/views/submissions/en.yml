@@ -51,7 +51,7 @@ en:
         hidden: Hide correct tests
       annotations:
         title: Annotations
-        show_all: Show annotations
+        show_all: Show all annotations
         hide_all: Hide annotations
         show_errors: Only show errors
         hidden: Hidden annotations

@@ -51,7 +51,7 @@ nl:
         hidden: Verberg correcte tests
       annotations:
         title: Annotaties
-        show_all: Toon annotaties
+        show_all: Toon alle annotaties
         hide_all: Verberg annotaties
         show_errors: Enkel errors tonen
         hidden: Verborgen annotaties

@@ -96,11 +96,12 @@ class ResultConstructor
     @level = :testcase
   end
 
-  def start_test(description: nil, expected: nil)
+  def start_test(description: nil, expected: nil, channel: nil)
     check_level(:testcase, 'test started')
     @test = {}
     @test[:description] = description unless description.nil?
     @test[:expected] = expected
+    @test[:channel] = channel unless channel.nil?
     @level = :test
   end
 

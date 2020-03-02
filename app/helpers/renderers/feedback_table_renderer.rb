@@ -201,10 +201,10 @@ class FeedbackTableRenderer
         @builder.div(class: 'description') do
           message(t[:description])
         end
-      elsif t[:data]&.fetch(:channel, nil)
+      elsif (channel = t[:data]&.fetch(:channel, nil) || t[:channel])
         @builder.div(class: 'description') do
           @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
-            @builder.text! t[:data][:channel]
+            @builder.text! channel
           end
         end
       end

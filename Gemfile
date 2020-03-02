@@ -47,7 +47,7 @@ gem 'delayed_job_web', '~>1.4.3'
 gem 'sinatra', '~>2.0.8'
 
 # pagination
-gem 'will_paginate', '~>3.2.1'
+gem 'will_paginate', '~>3.3.0'
 
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.1.0'

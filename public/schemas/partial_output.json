@@ -62,7 +62,8 @@
         "properties": {
             "command":     { "enum": ["start-test"] },
             "expected":    { "type": "string" },
-            "description": { "$ref": "#/definitions/message" }
+            "description": { "$ref": "#/definitions/message" },
+            "channel":     { "type": "string" }
         }
     },
     "append-message": {

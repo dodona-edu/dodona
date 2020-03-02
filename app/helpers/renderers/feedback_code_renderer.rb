@@ -3,17 +3,23 @@ class FeedbackCodeRenderer
   include Rails.application.routes.url_helpers
   require 'json'
 
-  def initialize(code, user, programming_language, submission_id = nil, messages = nil, builder = nil)
-    @submission_id = submission_id
-    @submission = Submission.find(@submission_id)
-    @code = code || @submission.code
-    @programming_language = programming_language || @submission.exercise&.programming_language&.name
+  def initialize(code, user, programming_language, messages = nil, builder = nil)
+    @code = code
+    @programming_language = programming_language
     @messages = messages || []
-    @annotations = @submission.annotations
     @user = user
     @builder = builder || Builder::XmlMarkup.new
 
     @compress = false
+  end
+
+  def add_submission(submission_id)
+    @submission_id = submission_id
+    @submission = Submission.find(@submission_id)
+    @code = @submission.code
+    @programming_language = @submission.exercise&.programming_language&.name
+    @annotations = @submission.annotations
+    self
   end
 
   def parse
@@ -59,8 +65,10 @@ class FeedbackCodeRenderer
       @builder << '$(() => window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + '));'
       @builder << '$(() => window.dodona.codeListing.showAllAnnotations());'
       @builder << '$(() => window.dodona.codeListing.compressAnnotations());' if @compress
-      @builder << "$(() => window.dodona.codeListing.addUserAnnotations('#{submission_annotations_path 'nl', @submission_id}'));"
-      @builder << '$(() => window.dodona.codeListing.initButtonForComment());' if AnnotationPolicy.new(@user, @submission).show_comment_button?
+      if @submission
+        @builder << "$(() => window.dodona.codeListing.addUserAnnotations('#{submission_annotations_path 'nl', @submission_id}'));"
+        @builder << '$(() => window.dodona.codeListing.initButtonForComment());' if AnnotationPolicy.new(@user, @submission).show_comment_button?
+      end
     end
   end
 

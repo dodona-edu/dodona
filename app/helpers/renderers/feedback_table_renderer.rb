@@ -301,7 +301,8 @@ class FeedbackTableRenderer
 
   def source(_, messages)
     @builder.div(class: 'code-table', 'data-submission-id': @submission_id) do
-      FeedbackCodeRenderer.new(@code, @current_user, @programming_language, @submission_id, messages, @builder)
+      FeedbackCodeRenderer.new(@code, @current_user, @programming_language, messages, @builder)
+                          .add_submission(@submission_id)
                           .parse
                           .add_messages
     end

@@ -67,9 +67,13 @@ export class CodeListing {
             this.annotationsWereHidden.classList.remove("hide");
         }
 
-        const nonErrorAnnotationCount = this.createHiddenMessage(this.annotations.filter(m => m.type !== "error").length);
-        this.annotationsWereHidden.innerHTML = "";
-        this.annotationsWereHidden.appendChild(nonErrorAnnotationCount);
+
+        const errorCount = this.annotations.filter(m => m.type !== "error").length;
+        if (errorCount > 0) {
+            const nonErrorAnnotationCount = this.createHiddenMessage(errorCount);
+            this.annotationsWereHidden.innerHTML = "";
+            this.annotationsWereHidden.appendChild(nonErrorAnnotationCount);
+        }
     }
 
     compressAnnotations(): void {
@@ -151,9 +155,6 @@ export class CodeListing {
 
     public createHiddenMessage(count: number): HTMLSpanElement {
         const span = document.createElement("span");
-        if (count === 0) {
-            return span;
-        }
 
         const spanText: Text = document.createTextNode(I18n.t("js.annotation.were_hidden.first") + " ");
         span.appendChild(spanText);
@@ -161,6 +162,10 @@ export class CodeListing {
         const link: HTMLAnchorElement = document.createElement("a");
         const data: string = I18n.t(`js.annotation.were_hidden.second.${count > 1 ? "plural" : "single"}`).replace(/{count}/g, String(count));
         const linkText: Text = document.createTextNode(data);
+        link.href = "#";
+        link.addEventListener("click", function (ev) {
+            ev.preventDefault();
+        });
         link.appendChild(linkText);
         span.appendChild(link);
         return span;

@@ -109,7 +109,7 @@ gem 'httparty', '~> 0.18.0'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.10.8'
+gem 'nokogiri', '~> 1.10.9'
 gem 'premailer-rails', '~> 1.10.3'
 
 # filtering

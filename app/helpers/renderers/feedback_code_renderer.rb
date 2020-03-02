@@ -3,12 +3,12 @@ class FeedbackCodeRenderer
   include Rails.application.routes.url_helpers
   require 'json'
 
-  def initialize(submission_id, messages, user, builder)
+  def initialize(code, user, programming_language, submission_id = nil, messages = nil, builder = nil)
     @submission_id = submission_id
     @submission = Submission.find(@submission_id)
-    @code = @submission.code
-    @programming_language = @submission.exercise&.programming_language&.name
-    @messages = messages
+    @code = code || @submission.code
+    @programming_language = programming_language || @submission.exercise&.programming_language&.name
+    @messages = messages || []
     @annotations = @submission.annotations
     @user = user
     @builder = builder || Builder::XmlMarkup.new

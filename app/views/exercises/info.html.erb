@@ -155,8 +155,7 @@
                 <% solutions.map(&:last).each_with_index do |code, i| %>
                   <div id="solution-<%= i %>" class="tab-pane">
                     <div class="code-table">
-                      <%= raw FeedbackCodeRenderer.new(code, @exercise.programming_language.name).parse.html %>
-
+                      <%= raw FeedbackCodeRenderer.new(code, current_user ,@exercise.programming_language.name).parse.html %>
                     </div>
                   </div>
                 <% end %>

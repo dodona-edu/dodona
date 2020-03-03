@@ -502,7 +502,8 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
   test 'should have solutions' do
     assert_equal @exercise.solutions,
-                 Pathname.new('solution.py') => "print(input())\n"
+                 Pathname.new('solution.py') => "print(input())\n",
+                 Pathname.new('empty.py') => ''
   end
 
   test 'should update access in config file' do

@@ -2,9 +2,7 @@ require 'test_helper'
 require 'builder'
 
 class FeedbackCodeRendererTest < ActiveSupport::TestCase
-
   test 'No weird carriage return or linefeeds in the generated html' do
-
     programming_language = 'python'
     examples = [
       "print(x)\nprint(y)\n",

@@ -91,7 +91,7 @@ en:
           single: show 1 other annotation
           plural: show {count} other annotations
     user_annotation:
-      send: 'Send'
+      send: 'Annotate'
       cancel: 'Cancel'
       delete: 'Delete'
       fields:

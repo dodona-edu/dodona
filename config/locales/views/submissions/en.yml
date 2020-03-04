@@ -52,7 +52,7 @@ en:
       annotations:
         title: Annotations
         show_all: Show all annotations
-        hide_all: Hide annotations
+        hide_all: Hide all annotations
         show_errors: Only show errors
         hidden: Hidden annotations
       judge_output_too_long: "The judge generated too much output. This usually happens when the submission itself generates too much output. Try to reduce how much output your submission generates."

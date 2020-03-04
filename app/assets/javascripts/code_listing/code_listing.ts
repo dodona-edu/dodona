@@ -290,7 +290,7 @@ export class CodeListing {
 
         buttonGroup.append(cancelButton);
 
-        if (annotation != null && annotation.permission.delete) {
+        if (annotation && annotation.permission.delete) {
             const deleteButton: HTMLButtonElement = document.createElement("button");
             const deleteButtonText: Text = document.createTextNode(I18n.t("js.user_annotation.delete"));
             deleteButton.append(deleteButtonText);

@@ -142,9 +142,9 @@ export class UserAnnotation extends Annotation {
         this.annotation_text = text;
         this.codeListing.sendAnnotationPatch(this)
             .done((data: UserAnnotationInterface) => {
-                const annotation = new UserAnnotation(data, this.codeListingHTML, this.codeListing);
-                const annotationTextDisplay: HTMLSpanElement = annotation.createAnnotationTextDisplay();
-                form.replaceWith(annotationTextDisplay);
+                annotationContext.remove();
+                this.codeListing.annotations = this.codeListing.annotations.filter(f => f === this);
+                this.codeListing.annotations.push(new UserAnnotation(data, this.codeListingHTML, this.codeListing));
                 annotationEditPencil.classList.remove("hide");
             }).fail(error => {
                 const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(error.responseJSON);

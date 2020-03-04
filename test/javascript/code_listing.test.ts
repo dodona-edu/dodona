@@ -210,7 +210,7 @@ test("correct buttons & elements are hidden and unhidden", () => {
     expect(document.querySelectorAll("#diff-switch-prefix.hide").length).toBe(0);
     expect(document.querySelectorAll("#diff-switch-prefix:not(.hide)").length).toBe(1);
 
-    const annotationsWereHidden: HTMLSpanElement = document.querySelector("span#annotations-were-hidden") as HTMLSpanElement;
+    const annotationsWereHidden: HTMLSpanElement = document.querySelector("span#annotations-were-hidden a") as HTMLSpanElement;
     annotationsWereHidden.click();
 
     expect(document.querySelectorAll("#annotations-were-hidden").length).toBe(0);

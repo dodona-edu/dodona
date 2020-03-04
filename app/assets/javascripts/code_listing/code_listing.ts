@@ -279,10 +279,17 @@ export class CodeListing {
         buttonGroup.setAttribute("class", "annotation-submission-button-container");
 
         const sendButton: HTMLButtonElement = document.createElement("button");
-        sendButton.setAttribute("class", "btn-text annotation-control-button annotation-submission-button");
+        sendButton.setAttribute("class", "btn-text btn-primary annotation-control-button annotation-submission-button");
         const sendButtonText: Text = document.createTextNode(I18n.t("js.user_annotation.send"));
         sendButton.append(sendButtonText);
         buttonGroup.append(sendButton);
+
+        const cancelButton: HTMLButtonElement = document.createElement("button");
+        cancelButton.setAttribute("class", "btn-text annotation-control-button annotation-cancel-button");
+        const cancelButtonText: Text = document.createTextNode(I18n.t("js.user_annotation.cancel"));
+        cancelButton.append(cancelButtonText);
+
+        buttonGroup.append(cancelButton);
 
         if (annotation != null && annotation.permission.delete) {
             const deleteButton: HTMLButtonElement = document.createElement("button");
@@ -292,13 +299,6 @@ export class CodeListing {
             deleteButton.addEventListener("click", e => annotation.handleDeleteButtonClick(e));
             buttonGroup.append(deleteButton);
         }
-
-        const cancelButton: HTMLButtonElement = document.createElement("button");
-        cancelButton.setAttribute("class", "btn-text annotation-control-button annotation-cancel-button");
-        const cancelButtonText: Text = document.createTextNode(I18n.t("js.user_annotation.cancel"));
-        cancelButton.append(cancelButtonText);
-
-        buttonGroup.append(cancelButton);
 
         inputField.addEventListener("input", function () {
             $(inputField).height(0).height(inputField.scrollHeight);

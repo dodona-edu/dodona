@@ -47,8 +47,6 @@ export class CodeListing {
         this.hideAllButton.addEventListener("click", () => this.hideAllAnnotations());
 
         this.showOnlyErrorButton.addEventListener("click", () => this.compressAnnotations());
-
-        this.annotationsWereHidden.addEventListener("click", () => this.showAllButton.click());
     }
 
     addAnnotations(annotations: AnnotationData[]): void {
@@ -163,8 +161,9 @@ export class CodeListing {
         const data: string = I18n.t(`js.annotation.were_hidden.second.${count > 1 ? "plural" : "single"}`).replace(/{count}/g, String(count));
         const linkText: Text = document.createTextNode(data);
         link.href = "#";
-        link.addEventListener("click", function (ev) {
+        link.addEventListener("click", ev => {
             ev.preventDefault();
+            this.showAllButton.click();
         });
         link.appendChild(linkText);
         span.appendChild(link);

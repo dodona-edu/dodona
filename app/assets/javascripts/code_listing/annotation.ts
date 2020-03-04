@@ -3,7 +3,6 @@ import { SuperAnnotation } from "code_listing/super_annotation";
 import type { AnnotationType } from "code_listing/super_annotation";
 
 const ORDERING = ["error", "warning", "info"];
-// const machineAnnotationIDOffset = 8000;
 
 export interface AnnotationData {
     type: AnnotationType;

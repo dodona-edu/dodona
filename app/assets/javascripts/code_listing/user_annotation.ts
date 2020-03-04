@@ -68,8 +68,8 @@ export class UserAnnotation implements UserAnnotationInterface {
         const annotationDiv: HTMLDivElement = clickTarget.closest(".annotation");
         const annotationForm: HTMLFormElement = annotationDiv.querySelector("form.annotation-submission.annotation-edit");
         annotationForm.replaceWith(this.createAnnotationTextDisplay());
-        const annotationEditPencil: HTMLDivElement = annotationDiv.querySelector("div.annotation-control-button.annotation-edit.disabled");
-        annotationEditPencil.classList.remove("disabled");
+        const annotationEditPencil: HTMLDivElement = annotationDiv.querySelector("div.annotation-control-button.annotation-edit.hide");
+        annotationEditPencil.classList.remove("hide");
     }
 
     private createAnnotationTextDisplay(): HTMLSpanElement {
@@ -143,7 +143,7 @@ export class UserAnnotation implements UserAnnotationInterface {
         const form: HTMLFormElement = clickTarget.closest("form.annotation-submission");
         const annotationContext: HTMLDivElement = form.closest("div.annotation");
         const text: string = (form.querySelector("#submission-textarea") as HTMLTextAreaElement).value;
-        const annotationEditPencil: HTMLDivElement = annotationContext.querySelector("div.annotation-control-button.annotation-edit.disabled");
+        const annotationEditPencil: HTMLDivElement = annotationContext.querySelector("div.annotation-control-button.annotation-edit.hide");
 
         // eslint-disable-next-line @typescript-eslint/camelcase
         this.annotation_text = text;
@@ -152,7 +152,7 @@ export class UserAnnotation implements UserAnnotationInterface {
                 const annotation = new UserAnnotation(data, this.codeListingHTML, this.codeListing);
                 const annotationTextDisplay: HTMLSpanElement = annotation.createAnnotationTextDisplay();
                 form.replaceWith(annotationTextDisplay);
-                annotationEditPencil.classList.remove("disabled");
+                annotationEditPencil.classList.remove("hide");
             }).fail(error => {
                 const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(error.responseJSON);
 
@@ -168,16 +168,12 @@ export class UserAnnotation implements UserAnnotationInterface {
         clickEvent.preventDefault();
         const clickTarget: HTMLDivElement = clickEvent.currentTarget as HTMLDivElement;
 
-        if (clickTarget.classList.contains("disabled")) {
-            return;
-        }
-
         const annotationDiv: HTMLDivElement = clickTarget.closest(".annotation");
         const lineId: string = annotationDiv.dataset.annotationId;
         const annotationText: HTMLSpanElement = annotationDiv.querySelector(".annotation-text");
         const annotationSubmissionDiv: HTMLFormElement = this.codeListing.createAnnotationSubmissionDiv(lineId, this);
         annotationText.replaceWith(annotationSubmissionDiv);
-        clickTarget.classList.add("disabled");
+        clickTarget.classList.add("hide");
     }
 
     static processErrorMessage(json: object): HTMLUListElement {

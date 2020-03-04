@@ -211,7 +211,7 @@ export class CodeListing {
             annotationButton.addEventListener("click", e => this.handleCommentButtonClick(e));
 
             const annotationButtonPlus = document.createElement("i");
-            annotationButtonPlus.setAttribute("class", "mdi mdi-plus mdi-12");
+            annotationButtonPlus.setAttribute("class", "mdi mdi-comment-plus mdi-18");
             annotationButton.appendChild(annotationButtonPlus);
 
             codeLine.prepend(annotationButton);

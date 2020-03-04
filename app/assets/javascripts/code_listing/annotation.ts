@@ -1,6 +1,5 @@
 import { CodeListing } from "code_listing/code_listing";
-import { SuperAnnotation } from "code_listing/super_annotation";
-import type { AnnotationType } from "code_listing/super_annotation";
+import { SuperAnnotation, AnnotationType } from "code_listing/super_annotation";
 
 const ORDERING = ["error", "warning", "info"];
 

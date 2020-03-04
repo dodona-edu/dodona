@@ -1,4 +1,5 @@
 import { CodeListing } from "code_listing/code_listing";
+import { SuperAnnotation } from "code_listing/super_annotation";
 
 export interface SubmitUserAnnotation {
     annotation_text: string;
@@ -21,31 +22,23 @@ export interface UserAnnotationInterface extends SubmitUserAnnotation {
     user: UserAnnotationUserData;
 }
 
-export class UserAnnotation implements UserAnnotationInterface {
-    id: number;
+export class UserAnnotation extends SuperAnnotation {
     markdown_text: string;
     permission: UserAnnotationPermissionData;
     user: UserAnnotationUserData;
     annotation_text: string;
-    line_nr: number;
-
-    private readonly codeListingHTML: HTMLTableElement;
-    private readonly codeListing: CodeListing;
-    private annotation: HTMLDivElement;
 
     constructor(annotation: UserAnnotationInterface, listing: HTMLTableElement, codeListing: CodeListing) {
-        this.codeListingHTML = listing;
-        this.codeListing = codeListing;
+        super(annotation.id, listing, codeListing, annotation.line_nr + 1, "user");
 
-        this.id = annotation.id;
         // eslint-disable-next-line @typescript-eslint/camelcase
         this.annotation_text = annotation.annotation_text;
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        this.line_nr = annotation.line_nr + 1;
         // eslint-disable-next-line @typescript-eslint/camelcase
         this.markdown_text = annotation.markdown_text;
         this.permission = annotation.permission;
         this.user = annotation.user;
+
+        this.createHTML();
     }
 
     handleDeleteButtonClick(clickEvent: MouseEvent): void {
@@ -59,7 +52,7 @@ export class UserAnnotation implements UserAnnotationInterface {
         this.codeListing.sendAnnotationDelete(this.id)
             .done(_ => {
                 annotationDiv.remove();
-                this.codeListing.userAnnotations = this.codeListing.userAnnotations.filter(a => a.id !== this.id);
+                this.codeListing.annotations = this.codeListing.annotations.filter(a => a.id !== this.id);
             });
     }
 
@@ -81,7 +74,7 @@ export class UserAnnotation implements UserAnnotationInterface {
         return textSpan;
     }
 
-    createAnnotationDiv(): void {
+    createAnnotation(): void {
         const outsideDiv: HTMLDivElement = document.createElement("div");
         outsideDiv.setAttribute("class", "annotation");
         outsideDiv.setAttribute("data-annotation-id", String(this.id));
@@ -115,7 +108,7 @@ export class UserAnnotation implements UserAnnotationInterface {
 
         outsideDiv.appendChild(textSpan);
 
-        let annotationsRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#annotations-${this.line_nr}`);
+        let annotationsRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#annotations-${this.row}`);
         if (annotationsRow === null) {
             annotationsRow = this.createAnnotationRow();
         }
@@ -126,10 +119,10 @@ export class UserAnnotation implements UserAnnotationInterface {
     }
 
     createAnnotationRow(): HTMLTableRowElement {
-        const correspondingLine: HTMLTableRowElement = this.codeListingHTML.querySelector(`#line-${this.line_nr}`);
+        const correspondingLine: HTMLTableRowElement = this.codeListingHTML.querySelector(`#line-${this.row}`);
         const annotationRow = this.codeListingHTML.insertRow(correspondingLine.rowIndex + 1);
         annotationRow.setAttribute("class", "annotation-set");
-        annotationRow.setAttribute("id", `annotations-${this.line_nr}`);
+        annotationRow.setAttribute("id", `annotations-${this.row}`);
         const htmlTableDataCellElement = annotationRow.insertCell();
         htmlTableDataCellElement.setAttribute("class", "rouge-gutter gl");
         const annotationTDC: HTMLTableDataCellElement = annotationRow.insertCell();

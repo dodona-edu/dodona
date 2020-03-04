@@ -1,11 +1,12 @@
 import { Annotation, AnnotationData } from "code_listing/annotation";
 
 import { UserAnnotation, UserAnnotationInterface, SubmitUserAnnotation } from "code_listing/user_annotation";
+import { SuperAnnotation } from "code_listing/super_annotation";
 
 export class CodeListing {
     private readonly table: HTMLTableElement;
-    readonly annotations: Annotation[];
-    userAnnotations: UserAnnotation[];
+
+    annotations: SuperAnnotation[];
 
     public readonly code: string;
 
@@ -23,7 +24,6 @@ export class CodeListing {
         this.table = document.querySelector("table.code-listing") as HTMLTableElement;
         this.code = code;
         this.annotations = [];
-        this.userAnnotations = [];
 
         const htmlDivElement = document.querySelector(".code-table[data-submission-id]") as HTMLDivElement;
         if (htmlDivElement) {
@@ -69,7 +69,7 @@ export class CodeListing {
     }
 
     addAnnotation(annotation: AnnotationData): void {
-        this.annotations.push(new Annotation(this.userAnnotations.length, annotation, this.table, this));
+        this.annotations.push(new Annotation(this.annotations.length, annotation, this.table, this));
 
         this.showAllButton.classList.remove("hide");
         this.hideAllButton.classList.remove("hide");
@@ -80,7 +80,7 @@ export class CodeListing {
             this.annotationsWereHidden.classList.remove("hide");
         }
 
-        const errorCount = this.annotations.filter(a => a.type !== "error").length;
+        const errorCount = this.annotations.filter(a => a.type !== "error" && a.type !== "user").length;
         if (errorCount > 0) {
             const nonErrorAnnotationCount = this.createHiddenMessage(errorCount);
             this.annotationsWereHidden.innerHTML = "";
@@ -100,18 +100,17 @@ export class CodeListing {
 
     addUserAnnotation(annotation: UserAnnotationInterface): void {
         const annotationObj = new UserAnnotation(annotation, this.table, this);
-        annotationObj.createAnnotationDiv();
-        this.userAnnotations.push(annotationObj);
+        this.annotations.push(annotationObj);
     }
 
     compressAnnotations(): void {
         this.showAllAnnotations();
 
-        const errors = this.annotations.filter(m => m.type === "error");
-        if (errors.length !== 0) {
-            const others = this.annotations.filter(m => m.type !== "error");
+        const errorsAndUser = this.annotations.filter(m => m.type === "error" || m.type === "user");
+        if (errorsAndUser.length !== 0) {
+            const others = this.annotations.filter(m => m.type !== "error" && m.type !== "user");
             others.forEach(m => m.hide());
-            errors.forEach(m => m.show());
+            errorsAndUser.forEach(m => m.show());
             this.showOnlyErrorButton.classList.add("active");
         }
 
@@ -177,8 +176,8 @@ export class CodeListing {
         return strings.join("");
     }
 
-    public getAnnotationsForLine(lineNr: number): Annotation[] {
-        return this.annotations.filter(a => a.line === lineNr);
+    public getAnnotationsForLine(lineNr: number): SuperAnnotation[] {
+        return this.annotations.filter(a => a.row === lineNr);
     }
 
     public createHiddenMessage(count: number): HTMLSpanElement {
@@ -332,18 +331,17 @@ export class CodeListing {
         this.sendAnnotationPost(annotation)
             .done(data => {
                 const createdAnnotation = new UserAnnotation(data, this.table, this);
-                this.userAnnotations.push(createdAnnotation);
-                createdAnnotation.createAnnotationDiv();
+                this.annotations.push(createdAnnotation);
                 form.remove();
             }).fail(error => {
-                const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(error.responseJSON);
+            const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(error.responseJSON);
 
-                // Remove previous error list
-                const previousErrorList = form.querySelector(".annotation-submission-error-list");
-                previousErrorList?.remove();
+            // Remove previous error list
+            const previousErrorList = form.querySelector(".annotation-submission-error-list");
+            previousErrorList?.remove();
 
-                form.querySelector(".annotation-submission-button-container").appendChild(errorList);
-            });
+            form.querySelector(".annotation-submission-button-container").appendChild(errorList);
+        });
     }
 
     handleAnnotationSubmissionCancelButtonClick(clickEvent: MouseEvent): void {

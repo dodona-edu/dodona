@@ -334,14 +334,14 @@ export class CodeListing {
                 this.annotations.push(createdAnnotation);
                 form.remove();
             }).fail(error => {
-            const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(error.responseJSON);
+                const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(error.responseJSON);
 
-            // Remove previous error list
-            const previousErrorList = form.querySelector(".annotation-submission-error-list");
-            previousErrorList?.remove();
+                // Remove previous error list
+                const previousErrorList = form.querySelector(".annotation-submission-error-list");
+                previousErrorList?.remove();
 
-            form.querySelector(".annotation-submission-button-container").appendChild(errorList);
-        });
+                form.querySelector(".annotation-submission-button-container").appendChild(errorList);
+            });
     }
 
     handleAnnotationSubmissionCancelButtonClick(clickEvent: MouseEvent): void {

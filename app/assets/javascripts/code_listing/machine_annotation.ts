@@ -44,22 +44,6 @@ export class MachineAnnotation extends Annotation {
         annotationGroup.appendChild(edgeCopyBlocker);
     }
 
-    private createAnnotationRow(): HTMLTableRowElement {
-        const codeRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#line-${this.row}`);
-        const annotationRow: HTMLTableRowElement = this.codeListingHTML.insertRow(codeRow.rowIndex + 1);
-        annotationRow.setAttribute("class", "annotation-set");
-        annotationRow.setAttribute("id", `annotations-${this.row}`);
-        const htmlTableDataCellElement = annotationRow.insertCell();
-        htmlTableDataCellElement.setAttribute("class", "rouge-gutter gl");
-        htmlTableDataCellElement.appendChild(document.createElement("div"));
-        const annotationTDC: HTMLTableDataCellElement = annotationRow.insertCell();
-        annotationTDC.setAttribute("class", "annotation-cell");
-
-        this.createAnnotationGroups(annotationTDC);
-
-        return annotationRow;
-    }
-
     private createAnnotationGroups(annotationTDC: HTMLTableDataCellElement): void {
         for (const type of ORDERING) {
             const groupDiv: HTMLDivElement = document.createElement("div");

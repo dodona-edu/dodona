@@ -69,4 +69,16 @@ export abstract class Annotation {
             this.dot.classList.remove(`dot-${this.type}`);
         }
     }
+
+    protected createAnnotationRow(): HTMLTableRowElement {
+        const correspondingLine: HTMLTableRowElement = this.codeListingHTML.querySelector(`#line-${this.row}`);
+        const annotationRow = this.codeListingHTML.insertRow(correspondingLine.rowIndex + 1);
+        annotationRow.setAttribute("class", "annotation-set");
+        annotationRow.setAttribute("id", `annotations-${this.row}`);
+        const htmlTableDataCellElement = annotationRow.insertCell();
+        htmlTableDataCellElement.setAttribute("class", "rouge-gutter gl");
+        const annotationTDC: HTMLTableDataCellElement = annotationRow.insertCell();
+        annotationTDC.setAttribute("class", "annotation-cell");
+        return annotationRow;
+    }
 }

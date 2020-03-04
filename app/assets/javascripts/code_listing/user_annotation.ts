@@ -131,7 +131,7 @@ export class UserAnnotation extends Annotation {
         this.codeListing.sendAnnotationPatch(this)
             .done((data: UserAnnotationInterface) => {
                 annotationContext.remove();
-                this.codeListing.annotations = this.codeListing.annotations.filter(f => f === this);
+                this.codeListing.annotations = this.codeListing.annotations.filter(a => a.id !== this.id);
                 this.codeListing.annotations.push(new UserAnnotation(data, this.codeListingHTML, this.codeListing));
                 annotationEditPencil.classList.remove("hide");
             }).fail(error => {

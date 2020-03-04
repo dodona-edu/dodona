@@ -1,12 +1,12 @@
-import { Annotation, AnnotationData } from "code_listing/annotation";
+import { MachineAnnotation, AnnotationData } from "code_listing/machine_annotation";
 
 import { UserAnnotation, UserAnnotationInterface, SubmitUserAnnotation } from "code_listing/user_annotation";
-import { SuperAnnotation } from "code_listing/super_annotation";
+import { Annotation } from "code_listing/annotation";
 
 export class CodeListing {
     private readonly table: HTMLTableElement;
 
-    annotations: SuperAnnotation[];
+    annotations: Annotation[];
 
     public readonly code: string;
 
@@ -69,7 +69,7 @@ export class CodeListing {
     }
 
     addAnnotation(annotation: AnnotationData): void {
-        this.annotations.push(new Annotation(this.annotations.length, annotation, this.table, this));
+        this.annotations.push(new MachineAnnotation(this.annotations.length, annotation, this.table, this));
 
         this.showAllButton.classList.remove("hide");
         this.hideAllButton.classList.remove("hide");
@@ -176,7 +176,7 @@ export class CodeListing {
         return strings.join("");
     }
 
-    public getAnnotationsForLine(lineNr: number): SuperAnnotation[] {
+    public getAnnotationsForLine(lineNr: number): Annotation[] {
         return this.annotations.filter(a => a.row === lineNr);
     }
 

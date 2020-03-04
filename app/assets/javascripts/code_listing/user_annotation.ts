@@ -1,5 +1,5 @@
 import { CodeListing } from "code_listing/code_listing";
-import { SuperAnnotation } from "code_listing/super_annotation";
+import { Annotation } from "code_listing/annotation";
 
 export interface SubmitUserAnnotation {
     annotation_text: string;
@@ -22,7 +22,7 @@ export interface UserAnnotationInterface extends SubmitUserAnnotation {
     user: UserAnnotationUserData;
 }
 
-export class UserAnnotation extends SuperAnnotation {
+export class UserAnnotation extends Annotation {
     markdown_text: string;
     permission: UserAnnotationPermissionData;
     user: UserAnnotationUserData;

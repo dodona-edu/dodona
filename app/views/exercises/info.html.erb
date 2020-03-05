@@ -98,7 +98,7 @@
                 <%= network_config_name %>
               </div>
               <div title="<%= t '.submission_details', correct: @exercise.submissions.correct.count, total: @exercise.submissions.count, users: @exercise.users_tried %>" class="col-md-4 col-sm-6 col-xs-4 exercise-detail">
-                <h1><%= @exercise.submissions.count %></h1>
+                <h1><%= number_with_delimiter @exercise.submissions.count, delimiter: " " %></h1>
                 <%= t '.submission_count' %>
               </div>
             </div>

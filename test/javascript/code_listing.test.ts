@@ -210,11 +210,21 @@ test("correct buttons & elements are hidden and unhidden", () => {
     expect(document.querySelectorAll("#diff-switch-prefix.hide").length).toBe(0);
     expect(document.querySelectorAll("#diff-switch-prefix:not(.hide)").length).toBe(1);
 
-    const annotationsWereHidden: HTMLSpanElement = document.querySelector("span#annotations-were-hidden") as HTMLSpanElement;
+    const annotationsWereHidden: HTMLSpanElement = document.querySelector("span#annotations-were-hidden a") as HTMLSpanElement;
     annotationsWereHidden.click();
 
     expect(document.querySelectorAll("#annotations-were-hidden").length).toBe(0);
 
     expect(document.querySelectorAll("#show_all_annotations.active.hide").length).toBe(0);
     expect(document.querySelectorAll("#show_all_annotations.active:not(.hide)").length).toBe(1);
+});
+
+test("Dont show a message when there is only an error", () => {
+    codeListing.addAnnotation({
+        type: "error",
+        text: "Replace with oneliner",
+        row: 1
+    });
+
+    expect(document.querySelector("#annotations-were-hidden").textContent).toBe("");
 });

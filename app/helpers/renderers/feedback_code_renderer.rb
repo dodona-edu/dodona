@@ -15,7 +15,7 @@ class FeedbackCodeRenderer
     table_formatter = Rouge::Formatters::HTMLLineTable.new line_formatter, table_class: 'code-listing highlighter-rouge'
 
     lexer = (Rouge::Lexer.find(@programming_language) || Rouge::Lexers::PlainText).new
-    lexed_c = lexer.lex(@code)
+    lexed_c = lexer.lex(@code.encode(universal_newline: true))
 
     only_errors = @messages.select { |message| message[:type] == :error || message[:type] == 'error' }
     @compress = !only_errors.empty? && only_errors.size != @messages.size

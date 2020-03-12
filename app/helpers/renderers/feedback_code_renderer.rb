@@ -7,7 +7,6 @@ class FeedbackCodeRenderer
     @builder = Builder::XmlMarkup.new
   end
 
-
   def parse
     line_formatter = Rouge::Formatters::HTML.new
     table_formatter = Rouge::Formatters::HTMLLineTable.new line_formatter, table_class: 'code-listing highlighter-rouge'

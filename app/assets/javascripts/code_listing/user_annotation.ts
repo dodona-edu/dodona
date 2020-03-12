@@ -32,7 +32,7 @@ export class UserAnnotation extends Annotation {
     }
 
     async delete(annotationDiv: HTMLDivElement): Promise<void> {
-        const response = await fetch(this.annotationData.url, { method: "DELETE" })
+        const response = await fetch(this.annotationData.url, { method: "DELETE" });
         if (response.ok) {
             annotationDiv.remove();
             this.codeListing.removeUserAnnotation(this);
@@ -44,6 +44,7 @@ export class UserAnnotation extends Annotation {
             headers: { "Content-Type": "application/json" },
             method: "PATCH",
             data: JSON.stringify({ annotation: {
+                // eslint-disable-next-line @typescript-eslint/camelcase
                 annotation_text: newText
             } })
         });
@@ -92,7 +93,7 @@ export class UserAnnotation extends Annotation {
         <div class="annotation" data-annotation-id="${this.id}">
           <div class="annotation-header">
             <span class="annotation-user">${this.annotationData.user.name}</span>
-            ${this.annotationData.permission.update ?  `
+            ${this.annotationData.permission.update ? `
                   <div class="annotation-control-button annotation-edit">
                     <i class="mdi mdi-pencil"></i>
                   </div>
@@ -102,11 +103,13 @@ export class UserAnnotation extends Annotation {
         </div>
         `, "text/xml").firstChild as HTMLDivElement;
         annotationsRow.appendChild(this.annotation);
-        const editButton: HTMLDivElement = this.annotation.querySelector(".annotation-control-button.annotation-edit");
-        editButton.addEventListener("click", e => {
-            e.preventDefault();
-            this.startEdit(editButton, this.annotation);
-        })
+        if (this.annotationData.permission.update) {
+            const editButton: HTMLDivElement = this.annotation.querySelector(".annotation-control-button.annotation-edit");
+            editButton.addEventListener("click", e => {
+                e.preventDefault();
+                this.startEdit(editButton, this.annotation);
+            });
+        }
     }
 
     static processErrorMessage(json: object): HTMLUListElement {

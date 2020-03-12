@@ -236,8 +236,8 @@ test("annotations should be transmitted into view", () => {
         "annotation_text": "This could be shorter",
         "markdown_text": "<p>This could be shorter</p>",
         "permission": {
-            edit: false,
-            delete: false,
+            update: false,
+            destroy: false,
         },
         "user": {
             name: "Jan Klaassen",
@@ -250,8 +250,8 @@ test("annotations should be transmitted into view", () => {
         "annotation_text": "This should be faster",
         "markdown_text": "<p>This should be faster</p>",
         "permission": {
-            edit: true,
-            delete: true,
+            update: true,
+            destroy: true,
         },
         "user": {
             name: "Piet Hein",
@@ -268,8 +268,8 @@ test("feedback table should support more than 1 annotation per row", () => {
         "annotation_text": "This could be shorter",
         "markdown_text": "<p>This could be shorter</p>",
         "permission": {
-            edit: false,
-            delete: false,
+            update: false,
+            destroy: false,
         },
         "user": {
             name: "Jan Klaassen",
@@ -282,8 +282,8 @@ test("feedback table should support more than 1 annotation per row", () => {
         "annotation_text": "This should be faster",
         "markdown_text": "<p>This should be faster</p>",
         "permission": {
-            edit: true,
-            delete: true,
+            update: true,
+            destroy: true,
         },
         "user": {
             name: "Piet Hein",
@@ -300,8 +300,8 @@ test("feedback table should be able to contain both machine annotations and user
         "annotation_text": "This could be shorter",
         "markdown_text": "<p>This could be shorter</p>",
         "permission": {
-            edit: false,
-            delete: false,
+            update: false,
+            destroy: false,
         },
         "user": {
             name: "Jan Klaassen",
@@ -314,8 +314,8 @@ test("feedback table should be able to contain both machine annotations and user
         "annotation_text": "This should be faster",
         "markdown_text": "<p>This should be faster</p>",
         "permission": {
-            edit: true,
-            delete: true,
+            update: true,
+            destroy: true,
         },
         "user": {
             name: "Piet Hein",

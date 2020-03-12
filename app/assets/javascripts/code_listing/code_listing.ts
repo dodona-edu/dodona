@@ -307,7 +307,9 @@ export class CodeListing {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             data: JSON.stringify({ annotation: {
+                // eslint-disable-next-line @typescript-eslint/camelcase
                 line_nr: lineId,
+                // eslint-disable-next-line @typescript-eslint/camelcase
                 annotation_text: text
             } })
         });

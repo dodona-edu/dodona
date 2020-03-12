@@ -6,7 +6,7 @@ export abstract class Annotation {
     readonly id: number;
     protected shown: boolean = true;
 
-    protected annotation: HTMLDivElement;
+    annotation: HTMLDivElement;
     protected dot: HTMLSpanElement;
 
     protected readonly codeListingHTML: HTMLTableElement;

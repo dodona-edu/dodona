@@ -1,31 +1,46 @@
 class AnnotationPolicy < ApplicationPolicy
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      if user&.zeus?
+        scope.all
+      elsif user
+        scope = scope.joins(:submission)
+        scope.where(submission: { user: user }).or(scope.where(submission: { course_id: user.administrating_courses.map(&:id) }))
+      else
+        scope.none
+      end
+    end
+  end
+
+  def index?
+    true
+  end
+
   def create?
-    record.submission.user == record.user || course_admin?
+    if record.class == Annotation
+      user.course_admin?(record.submission.course)
+    else
+      user.a_course_admin?
+    end
+  end
+
+  def show?
+    policy(record.submission).show?
   end
 
   def update?
-    record.user == user || course_admin?
+    record&.user == user
   end
 
   def destroy?
-    record.user == user || course_admin?
+    record&.user == user
   end
 
   def permitted_attributes
-    attribs = [:annotation_text]
-    attribs += [:line_nr] if record == Annotation || record.new_record?
-    attribs
-  end
-
-  # Record is a submission in this case
-  # TODO: Add owner of submission to this.
-  def show_comment_button?
-    user&.course_admin?(record.course)
-  end
-
-  private
-
-  def course_admin?
-    record.class == Annotation && user&.course_admin?(record.submission.course)
+    if record.class == Annotation
+      %i[annotation_text]
+    else # new record
+      %i[annotation_text line_nr]
+    end
   end
 end

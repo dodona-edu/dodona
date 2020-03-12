@@ -1,35 +1,42 @@
 class AnnotationsController < ApplicationController
-  before_action :set_submission
-  skip_before_action :verify_authenticity_token if Rails.env.development?
+  before_action :set_submission, only: %i[create index]
+  before_action :set_annotation, only: %i[show update destroy]
 
   def index
-    authorize @submission, :show?
-    @annotations = @submission.annotations
+    authorize Annotation
+    @annotations = policy_scope(@submission.annotations)
   end
 
+  def show; end
+
   def create
-    @annotation = Annotation.new(permitted_attributes(Annotation))
-    @annotation.user = current_user
-    @annotation.submission = @submission
+    args = {
+      **permitted_attributes(Annotation),
+      user: current_user,
+      submission: @submission
+    }
+    @annotation = Annotation.new(args)
     authorize @annotation
-    if @annotation.save
-      render 'annotations/annotation.json', status: :created, format: :json
-    else
-      render json: @annotation.errors, status: :unprocessable_entity
+    respond_to do |format|
+      if @annotation.save
+        format.json { render :show, status: :created, location: @annotation }
+      else
+        format.json { render json: @annotation.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def update
-    authorize @annotation
-    if @annotation.update(permitted_attributes(@annotation))
-      render 'annotations/annotation.json', format: :json
-    else
-      render json: @annotation.errors, status: :unprocessable_entity
+    respond_to do |format|
+      if @annotation.update(permitted_attributes(@annotation))
+        format.json { render :show, status: ok, location: @annotation }
+      else
+        format.json { render json: @annotation.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
-    authorize @annotation
     @annotation.destroy
     render json: {}, status: :no_content
   end
@@ -37,8 +44,11 @@ class AnnotationsController < ApplicationController
   private
 
   def set_submission
-    @submission = Submission.find params[:submission_id]
-    @annotation = @submission.annotations.find params[:id] if params[:id]
-    @current_user = current_user
+    @submission = Submission.find_by(id: params[:submission_id])
+  end
+
+  def set_annotation
+    @annotation = Annotation.find(params[:id])
+    authorize @annotation
   end
 end

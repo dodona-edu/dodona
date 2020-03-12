@@ -172,7 +172,7 @@ function initTooltips() {
     $("[data-toggle=\"tooltip\"]").tooltip({ container: "body" });
 }
 
-function fetch(url, options) {
+function fetch(url, options = {}) {
     const headers = options.headers || {};
     headers["x-csrf-token"] = headers["x-csrf-token"] || document.querySelector("meta[name=\"csrf-token\"]").content;
     headers["x-requested-with"] = headers["x-requested-with"] || "XMLHttpRequest";

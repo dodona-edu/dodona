@@ -1,8 +1,6 @@
 class PythiaRenderer < FeedbackTableRenderer
-  include ActionView::Helpers::JavaScriptHelper
-
-  def initialize(submission, user)
-    super(submission, user)
+  def initialize(submission, user, helpers)
+    super(submission, user, helpers)
   end
 
   def parse
@@ -11,9 +9,9 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def show_code_tab
-    return true unless @submission[:groups]
+    return true unless @result[:groups]
 
-    @submission[:groups].none? { |t| t[:data][:source_annotations] }
+    @result[:groups].none? { |t| t[:data][:source_annotations] }
   end
 
   def tab_content(t)
@@ -104,7 +102,7 @@ class PythiaRenderer < FeedbackTableRenderer
   def tutor_init
     # Initialize tutor javascript
     @builder.script do
-      escaped = escape_javascript(@code.strip)
+      escaped = @helpers.escape_javascript(@code.strip)
       @builder << '$(function() {'
       @builder << "$('#tutor').appendTo('body');"
       @builder << "var code = \"#{escaped}\";"

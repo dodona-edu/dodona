@@ -124,14 +124,16 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :annotations, only: %i[index show create update destroy]
+
     resources :submissions, only: %i[index show create edit] do
+      resources :annotations, only: %i[index create]
       post 'mass_rejudge', on: :collection
       member do
         get 'download'
         get 'evaluate'
         get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }, as: 'media'
       end
-      resources :annotations, only: [:index, :create, :update, :destroy], format: :json
     end
 
     resources :users do

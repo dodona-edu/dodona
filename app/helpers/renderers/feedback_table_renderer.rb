@@ -1,5 +1,4 @@
 class FeedbackTableRenderer
-  include Rails.application.routes.url_helpers
   include ApplicationHelper
 
   require 'builder'
@@ -14,11 +13,11 @@ class FeedbackTableRenderer
     attr_reader :renderers
   end
 
-  def initialize(submission, user)
+  def initialize(submission, user, helpers)
     result = submission.safe_result(user)
-    @submission_id = submission.id
+    @submission = submission
     @annotations = submission.annotations
-    @submission = result.present? ? JSON.parse(result, symbolize_names: true) : nil
+    @result = result.present? ? JSON.parse(result, symbolize_names: true) : nil
     @current_user = user
     @course = submission.course
     @builder = Builder::XmlMarkup.new
@@ -26,17 +25,18 @@ class FeedbackTableRenderer
     @exercise = submission.exercise
     @exercise_id = submission.exercise_id
     @programming_language = @exercise.programming_language&.editor_name
+    @helpers = helpers
   end
 
   def parse
-    if @submission.present?
+    if @result.present?
       @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
-        if @submission[:messages].present?
+        if @result[:messages].present?
           @builder.div(class: 'row feedback-table-messages') do
-            messages(@submission[:messages])
+            messages(@result[:messages])
           end
         end
-        tabs(@submission)
+        tabs(@result)
         init_js
       end.html_safe
     else
@@ -54,10 +54,10 @@ class FeedbackTableRenderer
 
   def show_diff_type_switch(tab)
     tab[:groups]&.compact # Groups
-        &.flat_map { |t| t[:groups] }&.compact # Testcases
-        &.flat_map { |t| t[:tests] }&.compact # Tests
-        &.reject { |t| t[:accepted] }
-        &.any?
+      &.flat_map { |t| t[:groups] }&.compact # Testcases
+      &.flat_map { |t| t[:tests] }&.compact # Tests
+      &.reject { |t| t[:accepted] }
+      &.any?
   end
 
   def show_hide_correct_switch(tab)
@@ -92,7 +92,7 @@ class FeedbackTableRenderer
         end
       end
       @builder.div(class: 'tab-content') do
-        @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
+        @result[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
         if show_code_tab
           @builder.div(class: "tab-pane #{'active' if submission[:groups].blank?}", id: 'code-tab') do
             if submission[:annotations]
@@ -295,16 +295,16 @@ class FeedbackTableRenderer
   def init_js
     @builder.script do
       token = @exercise.access_private? ? "'#{@exercise.access_token}'" : 'undefined'
-      @builder << "dodona.initSubmissionShow('feedback-table', '#{exercise_path(nil, @exercise)}', #{token});"
+      @builder << "dodona.initSubmissionShow('feedback-table', '#{@helpers.exercise_path(@exercise)}', #{token});"
     end
   end
 
   def source(_, messages)
-    @builder.div(class: 'code-table', 'data-submission-id': @submission_id) do
-      FeedbackCodeRenderer.new(@code, @current_user, @programming_language, messages, @builder)
-                          .add_submission(@submission_id)
-                          .parse
-                          .add_messages
+    @builder.div(class: 'code-table', 'data-submission-id': @submission.id) do
+      @builder << FeedbackCodeRenderer.new(@submission.code, @submission.exercise.programming_language&.name)
+                                      .add_messages(@submission, messages, @helpers)
+                                      .parse
+                                      .html
     end
   end
 

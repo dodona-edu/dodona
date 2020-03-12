@@ -36,5 +36,5 @@
 </div>
 
 <% unless submission.queued? or submission.running? %>
-  <%= submission.judge.renderer.new(submission, current_user).parse %>
+  <%= submission.judge.renderer.new(submission, current_user, controller.helpers).parse %>
 <% end %>

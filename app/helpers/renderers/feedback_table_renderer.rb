@@ -16,21 +16,18 @@ class FeedbackTableRenderer
   def initialize(submission, user, helpers)
     result = submission.safe_result(user)
     @submission = submission
-    @annotations = submission.annotations
     @result = result.present? ? JSON.parse(result, symbolize_names: true) : nil
-    @current_user = user
     @course = submission.course
     @builder = Builder::XmlMarkup.new
     @code = submission.code
     @exercise = submission.exercise
-    @exercise_id = submission.exercise_id
     @programming_language = @exercise.programming_language&.editor_name
     @helpers = helpers
   end
 
   def parse
     if @result.present?
-      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
+      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
         if @result[:messages].present?
           @builder.div(class: 'row feedback-table-messages') do
             messages(@result[:messages])
@@ -40,7 +37,7 @@ class FeedbackTableRenderer
         init_js
       end.html_safe
     else
-      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
+      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
         @builder.div(class: 'row feedback-table-messages') do
           messages([{ description: I18n.t('submissions.show.reading_failed'), format: 'plain' }])
         end

@@ -69,7 +69,7 @@ export class UserAnnotation extends Annotation {
 
     cancelEdit(annotationDiv: HTMLDivElement, form: HTMLFormElement): void {
         form.replaceWith(this.createAnnotationTextDisplay());
-        const annotationEditPencil: HTMLDivElement = annotationDiv.querySelector("div.annotation-control-button.annotation-edit.hide");
+        const annotationEditPencil: HTMLSpanElement = annotationDiv.querySelector(".annotation-control-button.annotation-edit.hide");
         annotationEditPencil.classList.remove("hide");
     }
 

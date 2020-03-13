@@ -335,12 +335,12 @@ test("feedback table should be able to contain both machine annotations and user
 });
 
 test("ensure that all buttons are created", () => {
-    codeListing.initButtonForComment();
+    codeListing.initButtonsForComment();
     expect(document.querySelectorAll(".annotation-button").length).toBe(3);
 });
 
 test("click on comment button", () => {
-    codeListing.initButtonForComment();
+    codeListing.initButtonsForComment();
 
     const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
     annotationButton.click();

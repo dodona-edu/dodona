@@ -53,7 +53,7 @@ class FeedbackCodeRenderer
           window.dodona.codeListing.showAllAnnotations();
           #{'window.dodona.codeListing.compressAnnotations();' if compress}
           window.dodona.codeListing.addUserAnnotations('#{submission_annotations_path(nil, submission)}');
-          #{'window.dodona.codeListing.initButtonForComment();' if AnnotationPolicy.new(user, Annotation).create?}
+          #{'window.dodona.codeListing.initButtonsForComment();' if AnnotationPolicy.new(user, Annotation).create?}
         });
       HEREDOC
     end

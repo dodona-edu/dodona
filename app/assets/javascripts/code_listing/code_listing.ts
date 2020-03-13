@@ -197,21 +197,21 @@ export class CodeListing {
         return span;
     }
 
-    initButtonForComment(): void {
-        const codeLines = this.table.querySelectorAll(".lineno .rouge-code");
-        codeLines.forEach((codeLine: HTMLTableDataCellElement) => {
-            const line = codeLine.closest(".lineno");
-            const idParts = line.id.split("-");
+    initButtonsForComment(): void {
+        const codeLines = this.table.querySelectorAll(".lineno");
+        codeLines.forEach((codeLine: HTMLTableRowElement) => {
+            const idParts = codeLine.id.split("-");
+            const lineNumber = parseInt(idParts[idParts.length - 1]) - 1;
             const annotationButton: HTMLButtonElement = document.createElement("button");
             annotationButton.setAttribute("class", "annotation-button");
-            annotationButton.setAttribute("data-line-id", (Number(idParts[idParts.length - 1]) - 1).toString());
-            annotationButton.addEventListener("click", e => this.handleCommentButtonClick(e));
+            annotationButton.setAttribute("type", "button");
+            annotationButton.addEventListener("click", () => this.handleCommentButtonClick(lineNumber, codeLine));
 
             const annotationButtonPlus = document.createElement("i");
             annotationButtonPlus.setAttribute("class", "mdi mdi-comment-plus mdi-18");
             annotationButton.appendChild(annotationButtonPlus);
 
-            codeLine.prepend(annotationButton);
+            codeLine.querySelector(".rouge-code").prepend(annotationButton);
         });
     }
 
@@ -234,20 +234,17 @@ export class CodeListing {
         return annotationRow;
     }
 
-    handleCommentButtonClick(clickEvent: MouseEvent): void {
-        const targetButton: HTMLButtonElement = clickEvent.currentTarget as HTMLButtonElement;
-        const lineId: string = targetButton.dataset["lineId"];
-
-        const tableRowId: number = (targetButton.closest("tr") as HTMLTableRowElement).rowIndex;
+    handleCommentButtonClick(lineNumber: number, codeLine: HTMLTableRowElement): void {
+        const tableRowId: number = codeLine.rowIndex;
 
         // Remove previous submission window
-        const tr: HTMLTableRowElement = this.findOrCreateTableRow(+lineId, tableRowId + 1, +lineId);
+        const tr: HTMLTableRowElement = this.findOrCreateTableRow(lineNumber, tableRowId + 1, lineNumber);
         const existingAnnotationSubmissionDiv: HTMLFormElement = tr.querySelector("form.annotation-submission");
         if (existingAnnotationSubmissionDiv) {
             return;
         }
 
-        const annotationSubmissionDiv: HTMLFormElement = this.createAnnotationSubmissionDiv(+lineId);
+        const annotationSubmissionDiv: HTMLFormElement = this.createAnnotationSubmissionDiv(lineNumber);
         const annotationCell: HTMLTableDataCellElement = tr.querySelector("td.annotation-cell");
         annotationCell.append(annotationSubmissionDiv);
     }

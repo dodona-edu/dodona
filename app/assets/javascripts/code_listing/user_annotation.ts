@@ -43,7 +43,7 @@ export class UserAnnotation extends Annotation {
         const response = await fetch(this.annotationData.url, {
             headers: { "Content-Type": "application/json" },
             method: "PATCH",
-            data: JSON.stringify({ annotation: {
+            body: JSON.stringify({ annotation: {
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 annotation_text: newText
             } })
@@ -61,15 +61,14 @@ export class UserAnnotation extends Annotation {
         }
     }
 
-    startEdit(button: HTMLDivElement, annotationDiv: HTMLDivElement): void {
+    startEdit(button: HTMLSpanElement, annotationDiv: HTMLDivElement): void {
         button.classList.add("hide");
         annotationDiv.querySelector(".annotation-text").replaceWith(this.codeListing.createAnnotationSubmissionDiv(this.id, this));
     }
 
 
-    cancelEdit(annotationDiv: HTMLDivElement): void {
-        const annotationForm: HTMLFormElement = annotationDiv.querySelector("form.annotation-submission.annotation-edit");
-        annotationForm.replaceWith(this.createAnnotationTextDisplay());
+    cancelEdit(annotationDiv: HTMLDivElement, form: HTMLFormElement): void {
+        form.replaceWith(this.createAnnotationTextDisplay());
         const annotationEditPencil: HTMLDivElement = annotationDiv.querySelector("div.annotation-control-button.annotation-edit.hide");
         annotationEditPencil.classList.remove("hide");
     }
@@ -89,22 +88,22 @@ export class UserAnnotation extends Annotation {
             annotationsRow = this.createAnnotationRow();
         }
 
-        this.annotation = new DOMParser().parseFromString(`
-        <div class="annotation" data-annotation-id="${this.id}">
+        this.annotation = document.createElement("div");
+        this.annotation.classList.add("annotation");
+        this.annotation.innerHTML = `
           <div class="annotation-header">
             <span class="annotation-user">${this.annotationData.user.name}</span>
             ${this.annotationData.permission.update ? `
-                  <div class="annotation-control-button annotation-edit">
+                  <span class="annotation-control-button annotation-edit">
                     <i class="mdi mdi-pencil"></i>
-                  </div>
+                  </span>
                 ` : ""}
           </div>
           <span class="annotation-text">${this.annotationData.rendered_markdown}</span>
-        </div>
-        `, "text/xml").firstChild as HTMLDivElement;
-        annotationsRow.appendChild(this.annotation);
+        `;
+        annotationsRow.querySelector(".annotation-cell").appendChild(this.annotation);
         if (this.annotationData.permission.update) {
-            const editButton: HTMLDivElement = this.annotation.querySelector(".annotation-control-button.annotation-edit");
+            const editButton: HTMLSpanElement = this.annotation.querySelector(".annotation-control-button.annotation-edit");
             editButton.addEventListener("click", e => {
                 e.preventDefault();
                 this.startEdit(editButton, this.annotation);

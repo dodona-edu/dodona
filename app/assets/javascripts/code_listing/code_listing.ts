@@ -253,33 +253,36 @@ export class CodeListing {
     }
 
     createAnnotationSubmissionDiv(lineId: number, annotation?: UserAnnotation): HTMLFormElement {
-        const node = new DOMParser().parseFromString(`
-          <form class="annotation-submission ${annotation ? "annotation-edit" : ""}" data-lineId="${lineId}">
-            <textarea class="form-control" id="submission-textarea" rows="3" />
-            <div class="annotation-submission-button-container">
-              <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
-                ${I18n.t("js.user_annotation.send")}
-              </button>
-              <button class="btn btn-text annotation-control-button annotation-cancel-button" type="button">
-                ${I18n.t("js.user_annotation.cancel")}
-              </button>
-              ${annotation && annotation.annotationData.permission.destroy ? `
-                    <button class="btn-text annotation-control-button annotation-delete-button" type="button">
-                      ${I18n.t("js.user_annotation.delete")}
-                    </button>
-                  ` : ""}
-            </div>
-          </form>
-        `, "text/xml").firstChild as HTMLFormElement;
+        const node = document.createElement("form");
+        node.classList.add("annotation-submission");
+        if (annotation) {
+            node.classList.add("annotation-edit");
+        }
+        node.dataset["lineId"] = `${lineId}`;
+        node.innerHTML = `
+          <textarea class="form-control" id="submission-textarea" rows="3"></textarea>
+          <div class="annotation-submission-button-container">
+            <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
+              ${I18n.t("js.user_annotation.send")}
+            </button>
+            <button class="btn btn-text annotation-control-button annotation-cancel-button" type="button">
+              ${I18n.t("js.user_annotation.cancel")}
+            </button>
+            ${annotation && annotation.annotationData.permission.destroy ? `
+                  <button class="btn-text annotation-control-button annotation-delete-button" type="button">
+                    ${I18n.t("js.user_annotation.delete")}
+                  </button>
+                ` : ""}
+          </div>
+        `;
 
         const inputField: HTMLTextAreaElement = node.querySelector("#submission-textarea");
         if (annotation) {
             inputField.textContent = annotation.annotationData.annotation_text;
             inputField.setAttribute("rows", String(annotation.annotationData.annotation_text.split("\n").length));
+        } else {
+            inputField.textContent = "";
         }
-        inputField.addEventListener("input", function () {
-            $(inputField).height(0).height(inputField.scrollHeight);
-        });
 
         if (annotation && annotation.annotationData.permission.destroy) {
             const deleteButton: HTMLButtonElement = node.querySelector(".annotation-delete-button");
@@ -293,7 +296,7 @@ export class CodeListing {
 
         if (annotation) {
             sendButton.addEventListener("click", () => annotation.update(inputField.value, annotation.annotation, node));
-            cancelButton.addEventListener("click", () => annotation.cancelEdit(annotation.annotation));
+            cancelButton.addEventListener("click", () => annotation.cancelEdit(annotation.annotation, node));
         } else {
             sendButton.addEventListener("click", () => this.createAnnotation(lineId, inputField.value, node));
             cancelButton.addEventListener("click", () => node.remove());
@@ -306,7 +309,7 @@ export class CodeListing {
         const response = await fetch(`/submissions/${this.submissionId}/annotations`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            data: JSON.stringify({ annotation: {
+            body: JSON.stringify({ annotation: {
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 line_nr: lineId,
                 // eslint-disable-next-line @typescript-eslint/camelcase

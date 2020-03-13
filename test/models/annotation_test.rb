@@ -19,13 +19,6 @@ class AnnotationTest < ActiveSupport::TestCase
     assert_not annotation.valid?
   end
 
-  test 'can not create annotation with line_nr above code length' do
-    annotating_user = create :user
-    annotation = create :annotation, submission: @submission, user: annotating_user
-    annotation.line_nr = @submission.code.lines.count + 1
-    assert_not annotation.valid?
-  end
-
   test 'can not create annotation without some sort of message' do
     annotating_user = create :user
     annotation = create :annotation, submission: @submission, user: annotating_user

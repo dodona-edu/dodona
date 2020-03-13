@@ -8,11 +8,12 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'can create annotation' do
-    post annotations_submission_url(@submission), params: {
+    post submission_annotations_url(@submission), params: {
       annotation: {
         line_nr: 1,
         annotation_text: 'Not available'
-      }
+      },
+      format: :json
     }
 
     assert_response :created
@@ -24,14 +25,16 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     put annotation_url(@annotation), params: {
       annotation: {
         annotation_text: 'We changed this text'
-      }
+      },
+      format: :json
     }
     assert_response :success
 
     patch annotation_url(@annotation), params: {
       annotation: {
         annotation_text: 'We changed this text again'
-      }
+      },
+      format: :json
     }
     assert_response :success
   end
@@ -43,11 +46,12 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'can not create invalid annotation' do
-    post annotations_submission_url(@submission), params: {
+    post submission_annotations_url(@submission), params: {
       annotation: {
-        line_nr: 1_500_000_000,
-        annotation_text: 'You shall not pass'
-      }
+        line_nr: 1,
+        annotation_text: Faker::Lorem.sentences(number: 4_500).join(' ')
+      },
+      format: :json
     }
     assert_response :unprocessable_entity
   end
@@ -59,7 +63,8 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
       annotation: {
         # Titanic script is around 4500 sentences worth of text, so why not test that users can not submit such long content
         annotation_text: Faker::Lorem.sentences(number: 4_500).join(' ')
-      }
+      },
+      format: :json
     }
 
     assert_response :unprocessable_entity
@@ -70,7 +75,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     create :annotation, submission: @submission, user: @zeus
     create :annotation, submission: @submission, user: @zeus
 
-    get annotations_submission_url(@submission), params: { format: :json }
+    get submission_annotations_url(@submission), params: { format: :json }
 
     assert_response :ok
   end

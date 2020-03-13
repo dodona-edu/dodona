@@ -1,4 +1,5 @@
 class FeedbackTableRenderer
+  include Rails.application.routes.url_helpers
   include ApplicationHelper
 
   require 'builder'
@@ -13,16 +14,16 @@ class FeedbackTableRenderer
     attr_reader :renderers
   end
 
-  def initialize(submission, user, helpers)
+  def initialize(submission, user)
     result = submission.safe_result(user)
     @submission = submission
     @result = result.present? ? JSON.parse(result, symbolize_names: true) : nil
     @course = submission.course
     @builder = Builder::XmlMarkup.new
     @code = submission.code
+    @user = user
     @exercise = submission.exercise
     @programming_language = @exercise.programming_language&.editor_name
-    @helpers = helpers
   end
 
   def parse
@@ -292,14 +293,14 @@ class FeedbackTableRenderer
   def init_js
     @builder.script do
       token = @exercise.access_private? ? "'#{@exercise.access_token}'" : 'undefined'
-      @builder << "dodona.initSubmissionShow('feedback-table', '#{@helpers.exercise_path(@exercise)}', #{token});"
+      @builder << "dodona.initSubmissionShow('feedback-table', '#{exercise_path(nil, @exercise)}', #{token});"
     end
   end
 
   def source(_, messages)
     @builder.div(class: 'code-table', 'data-submission-id': @submission.id) do
-      @builder << FeedbackCodeRenderer.new(@submission.code, @submission.exercise.programming_language&.name)
-                                      .add_messages(@submission, messages, @helpers)
+      @builder << FeedbackCodeRenderer.new(@code, @submission.exercise.programming_language&.name)
+                                      .add_messages(@submission, messages, @user)
                                       .parse
                                       .html
     end

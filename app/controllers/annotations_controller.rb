@@ -10,11 +10,9 @@ class AnnotationsController < ApplicationController
   def show; end
 
   def create
-    args = {
-      **permitted_attributes(Annotation),
-      user: current_user,
-      submission: @submission
-    }
+    args = permitted_attributes(Annotation)
+    args[:user] = current_user
+    args[:submission] = @submission
     @annotation = Annotation.new(args)
     authorize @annotation
     respond_to do |format|
@@ -29,7 +27,7 @@ class AnnotationsController < ApplicationController
   def update
     respond_to do |format|
       if @annotation.update(permitted_attributes(@annotation))
-        format.json { render :show, status: ok, location: @annotation }
+        format.json { render :show, status: :ok, location: @annotation }
       else
         format.json { render json: @annotation.errors, status: :unprocessable_entity }
       end

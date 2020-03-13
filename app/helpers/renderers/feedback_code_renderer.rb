@@ -1,5 +1,6 @@
 class FeedbackCodeRenderer
   require 'json'
+  include Rails.application.routes.url_helpers
 
   def initialize(code, programming_language)
     @code = code
@@ -18,7 +19,7 @@ class FeedbackCodeRenderer
     self
   end
 
-  def add_messages(submission, messages, helpers)
+  def add_messages(submission, messages, user)
     only_errors = messages.select { |message| message[:type] == :error || message[:type] == 'error' }
     compress = !only_errors.empty? && only_errors.size != messages.size
 
@@ -51,8 +52,8 @@ class FeedbackCodeRenderer
           window.dodona.codeListing.addAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
           window.dodona.codeListing.showAllAnnotations();
           #{'window.dodona.codeListing.compressAnnotations();' if compress}
-          window.dodona.codeListing.addUserAnnotations('#{helpers.submission_annotations_path(submission)}');
-          #{'window.dodona.codeListing.initButtonForComment();' if helpers.policy(Annotation).create?}
+          window.dodona.codeListing.addUserAnnotations('#{submission_annotations_path(nil, submission)}');
+          #{'window.dodona.codeListing.initButtonForComment();' if AnnotationPolicy.new(user, Annotation).create?}
         });
       HEREDOC
     end

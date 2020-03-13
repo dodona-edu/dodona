@@ -1,6 +1,8 @@
 class PythiaRenderer < FeedbackTableRenderer
-  def initialize(submission, user, helpers)
-    super(submission, user, helpers)
+  include ActionView::Helpers::JavaScriptHelper
+
+  def initialize(submission, user)
+    super(submission, user)
   end
 
   def parse
@@ -102,7 +104,7 @@ class PythiaRenderer < FeedbackTableRenderer
   def tutor_init
     # Initialize tutor javascript
     @builder.script do
-      escaped = @helpers.escape_javascript(@code.strip)
+      escaped = escape_javascript(@code.strip)
       @builder << '$(function() {'
       @builder << "$('#tutor').appendTo('body');"
       @builder << "var code = \"#{escaped}\";"

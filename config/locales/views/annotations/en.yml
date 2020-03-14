@@ -1,0 +1,4 @@
+en:
+    annotations:
+        index:
+            new_annotation: "There is a new remark on your code"

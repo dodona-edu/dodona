@@ -78,6 +78,12 @@ export class CodeListing {
                 this.annotationsWereHidden.innerHTML = "";
                 this.annotationsWereHidden.appendChild(nonErrorAnnotationCount);
             }
+        } else {
+            this.showAllButton.classList.add("hide");
+            this.hideAllButton.classList.add("hide");
+            this.diffSwitchPrefix.classList.add("hide");
+            this.showOnlyErrorButton.classList.add("hide");
+            this.annotationsWereHidden.classList.add("hide");
         }
     }
 
@@ -102,6 +108,7 @@ export class CodeListing {
     addUserAnnotation(annotation: UserAnnotationData): void {
         const annotationObj = new UserAnnotation(annotation, this.table, this);
         this.annotations.push(annotationObj);
+        this.setToggleButtonsVisibility();
     }
 
     removeUserAnnotation(annotation: UserAnnotation): void {
@@ -109,6 +116,7 @@ export class CodeListing {
         if (index !== -1) {
             this.annotations.splice(index, 1);
         }
+        this.setToggleButtonsVisibility();
     }
 
     compressAnnotations(): void {

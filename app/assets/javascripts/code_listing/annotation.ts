@@ -26,18 +26,20 @@ export abstract class Annotation {
     protected createHTML(): void {
         this.createAnnotation();
         this.createDot();
+        // Shown by default, makes sure dots are correctly handled for user annotations.
+        this.show();
     }
 
     hide(): void {
         this.annotation.classList.add("hide");
         this.shown = false;
-        this.addDot();
+        this.updateDot();
     }
 
     show(): void {
         this.annotation.classList.remove("hide");
         this.shown = true;
-        this.removeDot();
+        this.updateDot();
     }
 
     protected abstract createAnnotation(): void;
@@ -59,13 +61,11 @@ export abstract class Annotation {
         codeGutter.prepend(this.dot);
     }
 
-    protected addDot(): void {
-        this.dot.classList.add(`dot-${this.type}`);
-    }
-
-    protected removeDot(): void {
-        const allHiddenOfThisType = this.codeListing.getAnnotationsForLine(this.row).filter(m => m.type === this.type).every(m => m.shown);
-        if (allHiddenOfThisType) {
+    private updateDot(): void {
+        const anyHiddenOfThisType = this.codeListing.getAnnotationsForLine(this.row).filter(m => m.type === this.type).some(m => !m.shown);
+        if (anyHiddenOfThisType) {
+            this.dot.classList.add(`dot-${this.type}`);
+        } else {
             this.dot.classList.remove(`dot-${this.type}`);
         }
     }

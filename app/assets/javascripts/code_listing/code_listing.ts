@@ -203,15 +203,14 @@ export class CodeListing {
             const idParts = codeLine.id.split("-");
             const lineNumber = parseInt(idParts[idParts.length - 1]) - 1;
             const annotationButton: HTMLButtonElement = document.createElement("button");
-            annotationButton.setAttribute("class", "annotation-button");
-            annotationButton.setAttribute("type", "button");
+            annotationButton.setAttribute("class", "btn btn-primary annotation-button");
             annotationButton.addEventListener("click", () => this.handleCommentButtonClick(lineNumber, codeLine));
 
             const annotationButtonPlus = document.createElement("i");
-            annotationButtonPlus.setAttribute("class", "mdi mdi-comment-plus mdi-18");
+            annotationButtonPlus.setAttribute("class", "mdi mdi-comment-plus-outline mdi-18");
             annotationButton.appendChild(annotationButtonPlus);
 
-            codeLine.querySelector(".rouge-code").prepend(annotationButton);
+            codeLine.querySelector(".rouge-gutter").prepend(annotationButton);
         });
     }
 
@@ -306,12 +305,14 @@ export class CodeListing {
         const response = await fetch(`/submissions/${this.submissionId}/annotations`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ annotation: {
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                line_nr: lineId,
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                annotation_text: text
-            } })
+            body: JSON.stringify({
+                annotation: {
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    line_nr: lineId,
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    annotation_text: text
+                }
+            })
         });
         if (response.ok) {
             this.addUserAnnotation(await response.json());

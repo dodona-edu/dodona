@@ -19,7 +19,6 @@ export interface UserAnnotationData {
     permission: UserAnnotationPermissionData;
     user: UserAnnotationUserData;
     url: string;
-    updated_at: string;
 }
 
 export class UserAnnotation extends Annotation {
@@ -95,8 +94,6 @@ export class UserAnnotation extends Annotation {
 
         this.annotation = document.createElement("div");
         this.annotation.classList.add("annotation", "user");
-
-        const lastUpdatedAt: string = new Date(Date.parse(this.annotationData.updated_at)).toLocaleString();
         this.annotation.innerHTML = `
           <div class="annotation-header">
             <span class="annotation-user">${this.annotationData.user.name}</span>
@@ -107,9 +104,6 @@ export class UserAnnotation extends Annotation {
                 ` : ""}
           </div>
           <span class="annotation-text">${this.annotationData.rendered_markdown}</span>
-          <div class="annotation-footer">
-             <span class="annotation-date">${lastUpdatedAt}</span>
-          </div>
         `;
         annotationsRow.querySelector(".annotation-cell").appendChild(this.annotation);
         if (this.annotationData.permission.update) {

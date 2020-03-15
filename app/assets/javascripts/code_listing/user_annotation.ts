@@ -63,7 +63,7 @@ export class UserAnnotation extends Annotation {
         }
     }
 
-    startEdit(button: HTMLSpanElement, annotationDiv: HTMLDivElement): void {
+    startEdit(button: HTMLElement, annotationDiv: HTMLDivElement): void {
         button.classList.add("hide");
         annotationDiv.querySelector(".annotation-text").replaceWith(this.codeListing.createAnnotationSubmissionDiv(this.id, this));
     }
@@ -105,7 +105,7 @@ export class UserAnnotation extends Annotation {
         `;
         annotationsRow.querySelector(".annotation-cell").appendChild(this.annotation);
         if (this.annotationData.permission.update) {
-            const editButton: HTMLSpanElement = this.annotation.querySelector(".annotation-control-button.annotation-edit");
+            const editButton: HTMLElement = this.annotation.querySelector(".annotation-control-button.annotation-edit");
             editButton.addEventListener("click", e => {
                 e.preventDefault();
                 this.startEdit(editButton, this.annotation);

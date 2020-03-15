@@ -306,6 +306,12 @@ export class CodeListing {
             cancelButton.addEventListener("click", () => node.remove());
         }
 
+        inputField.addEventListener("keypress", e => {
+            if (e.code === "Enter" && e.shiftKey) {
+                sendButton.click();
+            }
+        });
+
         return node;
     }
 

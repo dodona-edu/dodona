@@ -61,28 +61,33 @@ export class CodeListing {
         this.showOnlyErrorButton.addEventListener("click", () => this.compressAnnotations());
     }
 
+    private setToggleButtonsVisibility(): void {
+        if (this.annotations.length > 0) {
+            this.showAllButton.classList.remove("hide");
+            this.hideAllButton.classList.remove("hide");
+            this.diffSwitchPrefix.classList.remove("hide");
+
+            if (this.annotations.some(a => a.type === "error" || a.type === "user")) {
+                this.showOnlyErrorButton.classList.remove("hide");
+                this.annotationsWereHidden.classList.remove("hide");
+            }
+
+            const errorCount = this.annotations.filter(a => a.type !== "error" && a.type !== "user").length;
+            if (errorCount > 0) {
+                const nonErrorAnnotationCount = this.createHiddenMessage(errorCount);
+                this.annotationsWereHidden.innerHTML = "";
+                this.annotationsWereHidden.appendChild(nonErrorAnnotationCount);
+            }
+        }
+    }
+
     addAnnotations(annotations: AnnotationData[]): void {
         annotations.forEach(m => this.addAnnotation(m));
+        this.setToggleButtonsVisibility();
     }
 
     addAnnotation(annotation: AnnotationData): void {
         this.annotations.push(new MachineAnnotation(this.annotations.length, annotation, this.table, this));
-
-        this.showAllButton.classList.remove("hide");
-        this.hideAllButton.classList.remove("hide");
-        this.diffSwitchPrefix.classList.remove("hide");
-
-        if (annotation.type === "error") {
-            this.showOnlyErrorButton.classList.remove("hide");
-            this.annotationsWereHidden.classList.remove("hide");
-        }
-
-        const errorCount = this.annotations.filter(a => a.type !== "error" && a.type !== "user").length;
-        if (errorCount > 0) {
-            const nonErrorAnnotationCount = this.createHiddenMessage(errorCount);
-            this.annotationsWereHidden.innerHTML = "";
-            this.annotationsWereHidden.appendChild(nonErrorAnnotationCount);
-        }
     }
 
     async addUserAnnotations(userAnnotationURL: string): Promise<void> {
@@ -91,6 +96,7 @@ export class CodeListing {
             const data: UserAnnotationData[] = await response.json();
             data.forEach(annotation => this.addUserAnnotation(annotation));
         }
+        this.setToggleButtonsVisibility();
     }
 
     addUserAnnotation(annotation: UserAnnotationData): void {

@@ -320,6 +320,12 @@ export class CodeListing {
             }
         });
 
+        inputField.addEventListener("keyup", e => {
+            if (e.code === "Escape") {
+                cancelButton.click();
+            }
+        });
+
         return node;
     }
 

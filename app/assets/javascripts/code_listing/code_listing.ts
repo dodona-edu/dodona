@@ -248,7 +248,7 @@ export class CodeListing {
         annotationCell.append(annotationSubmissionDiv);
     }
 
-    createAnnotationSubmissionDiv(lineId: number, annotation?: UserAnnotation): HTMLFormElement {
+    createAnnotationSubmissionDiv(lineId: number, annotation?: UserAnnotation, edit = false): HTMLFormElement {
         const node = document.createElement("form");
         node.classList.add("annotation-submission");
         if (annotation) {
@@ -258,24 +258,24 @@ export class CodeListing {
         node.innerHTML = `
           <textarea class="form-control" id="submission-textarea" rows="3"></textarea>
           <div class="annotation-submission-button-container">
-            <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
-              ${I18n.t("js.user_annotation.send")}
-            </button>
-            <button class="btn btn-text annotation-control-button annotation-cancel-button" type="button">
-              ${I18n.t("js.user_annotation.cancel")}
-            </button>
             ${annotation && annotation.annotationData.permission.destroy ? `
                   <button class="btn-text annotation-control-button annotation-delete-button" type="button">
                     ${I18n.t("js.user_annotation.delete")}
                   </button>
                 ` : ""}
+            <button class="btn-text annotation-control-button annotation-cancel-button" type="button">
+              ${I18n.t("js.user_annotation.cancel")}
+            </button>
+            <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
+              ${edit ? I18n.t("js.user_annotation.update") : I18n.t("js.user_annotation.send")}
+            </button>
           </div>
         `;
 
         const inputField: HTMLTextAreaElement = node.querySelector("#submission-textarea");
         if (annotation) {
             inputField.textContent = annotation.annotationData.annotation_text;
-            inputField.setAttribute("rows", String(annotation.annotationData.annotation_text.split("\n").length));
+            inputField.setAttribute("rows", String(annotation.annotationData.annotation_text.split("\n").length + 1));
         } else {
             inputField.textContent = "";
         }
@@ -283,7 +283,9 @@ export class CodeListing {
         if (annotation && annotation.annotationData.permission.destroy) {
             const deleteButton: HTMLButtonElement = node.querySelector(".annotation-delete-button");
             deleteButton.addEventListener("click", () => {
-                annotation.delete(annotation.annotation);
+                if (confirm(I18n.t("js.user_annotation.delete_confirm"))) {
+                    annotation.delete(annotation.annotation);
+                }
             });
         }
 

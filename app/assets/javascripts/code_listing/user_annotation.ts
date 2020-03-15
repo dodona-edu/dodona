@@ -65,7 +65,7 @@ export class UserAnnotation extends Annotation {
 
     startEdit(button: HTMLSpanElement, annotationDiv: HTMLDivElement): void {
         button.classList.add("hide");
-        annotationDiv.querySelector(".annotation-text").replaceWith(this.codeListing.createAnnotationSubmissionDiv(this.id, this));
+        annotationDiv.querySelector(".annotation-text").replaceWith(this.codeListing.createAnnotationSubmissionDiv(this.id, this, true));
     }
 
 
@@ -96,7 +96,7 @@ export class UserAnnotation extends Annotation {
           <div class="annotation-header">
             <span class="annotation-user">${this.annotationData.user.name}</span>
             ${this.annotationData.permission.update ? `
-                  <a href='#' class="btn-icon annotation-control-button annotation-edit">
+                  <a href='#' class="btn-icon annotation-control-button annotation-edit" title="${I18n.t("js.user_annotation.edit")}">
                     <i class="mdi mdi-pencil"></i>
                   </a>
                 ` : ""}

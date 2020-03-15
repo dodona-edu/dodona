@@ -314,14 +314,12 @@ export class CodeListing {
             cancelButton.addEventListener("click", () => node.remove());
         }
 
-        inputField.addEventListener("keypress", e => {
-            if (e.code === "Enter" && e.shiftKey) {
-                sendButton.click();
-            }
-        });
-
         inputField.addEventListener("keyup", e => {
-            if (e.code === "Escape") {
+            if (e.code === "Enter" && e.shiftKey) {
+                e.preventDefault();
+                sendButton.click();
+            } else if (e.code === "Escape") {
+                e.preventDefault();
                 cancelButton.click();
             }
         });

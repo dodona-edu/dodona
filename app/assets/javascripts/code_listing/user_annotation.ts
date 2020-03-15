@@ -36,6 +36,8 @@ export class UserAnnotation extends Annotation {
         if (response.ok) {
             annotationDiv.remove();
             this.codeListing.removeUserAnnotation(this);
+            // Make sure dot in the sidebar is correctly handled.
+            this.hide();
         }
     }
 

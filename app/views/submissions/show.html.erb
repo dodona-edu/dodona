@@ -14,6 +14,16 @@
       </div>
       <div class="card-supporting-text">
         <%= render partial: 'description', locals: {submission: @submission} %>
+        <script>
+          $(() => {
+            <%# Python judge has a with href="code-n" where n is the number of
+                tabs, so we can't generically handle code tabs, except for
+                selecting the last tab. %>
+            if (window.location.hash === "#code") {
+              $(".nav.nav-tabs li:last-child a").tab("show");
+            }
+          });
+        </script>
       </div>
     </div>
   </div>

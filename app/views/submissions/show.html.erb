@@ -16,9 +16,10 @@
         <%= render partial: 'description', locals: {submission: @submission} %>
         <script>
           $(() => {
-            <%# Python judge has a with href="code-n" where n is the number of
-                tabs, so we can't generically handle code tabs, except for
-                selecting the last tab. %>
+            <%# Python judge has a code tab with href="#code-n" where n is the
+                number of tabs and for the other judges it is "#code-tab", so we
+                can't generically handle code tabs, except for selecting the last
+                tab. %>
             if (window.location.hash === "#code") {
               $(".nav.nav-tabs li:last-child a").tab("show");
             }

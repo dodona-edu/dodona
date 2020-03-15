@@ -34,7 +34,7 @@
         left: -15px;
         margin-top: -7px;
         border-radius: 50%;
-        padding-left: 6px;
+        padding-left: 5.5px;
         padding-top: 6px;
       }
 
@@ -130,7 +130,7 @@
           border-bottom-right-radius: 5px;
           border: 1px solid @hairlinegray;
           border-left-width: 3px;
-          border-left-color: @success-300;
+          border-left-color: @grey-500;
 
           background: @content-bg;
 
@@ -138,11 +138,12 @@
 
           .annotation-header {
             .annotation-user {
-              font-weight: bold;
+              font-size: 85%;
+              color: @text-secondary;
             }
 
-            .annotation-control-button {
-              margin: 3px;
+            .annotation-edit {
+              float: right;
             }
           }
 
@@ -196,6 +197,10 @@
 
         .annotation.info {
           border-left-color: @info-500;
+        }
+        .annotation.user {
+          border-left-color: @success-500;
+          border-left-width: 5px;
         }
 
         .annotation.machine-annotation {

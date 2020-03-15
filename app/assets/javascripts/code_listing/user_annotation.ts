@@ -43,10 +43,12 @@ export class UserAnnotation extends Annotation {
         const response = await fetch(this.annotationData.url, {
             headers: { "Content-Type": "application/json" },
             method: "PATCH",
-            body: JSON.stringify({ annotation: {
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                annotation_text: newText
-            } })
+            body: JSON.stringify({
+                annotation: {
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    annotation_text: newText
+                }
+            })
         });
         if (response.ok) {
             const data: UserAnnotationData = await response.json();
@@ -89,14 +91,14 @@ export class UserAnnotation extends Annotation {
         }
 
         this.annotation = document.createElement("div");
-        this.annotation.classList.add("annotation");
+        this.annotation.classList.add("annotation", "user");
         this.annotation.innerHTML = `
           <div class="annotation-header">
             <span class="annotation-user">${this.annotationData.user.name}</span>
             ${this.annotationData.permission.update ? `
-                  <span class="annotation-control-button annotation-edit">
+                  <a href='#' class="btn-icon annotation-control-button annotation-edit">
                     <i class="mdi mdi-pencil"></i>
-                  </span>
+                  </a>
                 ` : ""}
           </div>
           <span class="annotation-text">${this.annotationData.rendered_markdown}</span>

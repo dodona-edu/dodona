@@ -17,11 +17,7 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def create?
-    if record.class == Annotation
-      user.course_admin?(record.submission.course)
-    else
-      user.a_course_admin?
-    end
+    user.course_admin?(record.submission.course)
   end
 
   def show?

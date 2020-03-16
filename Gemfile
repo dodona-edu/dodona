@@ -8,7 +8,7 @@ gem 'rails', '~> 6.0.2'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 4.3.1'
+gem 'puma', '~> 4.3.3'
 # Use less for stylesheets
 gem 'less-rails', '~> 4.0'
 # less-rails does not support sprockets 4.0
@@ -31,7 +31,7 @@ gem 'jbuilder', '~> 2.10.0'
 gem 'image_processing', '~> 1.10.3'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.4.5', require: false
+gem 'bootsnap', '~> 1.4.6', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -47,7 +47,7 @@ gem 'delayed_job_web', '~>1.4.3'
 gem 'sinatra', '~>2.0.8'
 
 # pagination
-gem 'will_paginate', '~>3.2.1'
+gem 'will_paginate', '~>3.3.0'
 
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.1.0'
@@ -109,7 +109,7 @@ gem 'httparty', '~> 0.18.0'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.10.8'
+gem 'nokogiri', '~> 1.10.9'
 gem 'premailer-rails', '~> 1.10.3'
 
 # filtering
@@ -157,7 +157,7 @@ group :test do
   # for measuring coverage
   gem 'codecov', '~> 0.1.16', require: false
   gem 'minitest-ci', '~> 3.4.0'
-  gem 'simplecov', '~> 0.18.3', require: false
+  gem 'simplecov', '~> 0.18.5', require: false
 end
 
 group :development do

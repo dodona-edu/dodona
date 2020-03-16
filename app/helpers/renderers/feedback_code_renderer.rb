@@ -1,13 +1,11 @@
 class FeedbackCodeRenderer
   require 'json'
+  include Rails.application.routes.url_helpers
 
-  def initialize(code, programming_language, messages = nil, builder = nil)
+  def initialize(code, programming_language)
     @code = code
     @programming_language = programming_language
-    @messages = messages || []
-    @builder = builder || Builder::XmlMarkup.new
-
-    @compress = false
+    @builder = Builder::XmlMarkup.new
   end
 
   def parse
@@ -17,14 +15,18 @@ class FeedbackCodeRenderer
     lexer = (Rouge::Lexer.find(@programming_language) || Rouge::Lexers::PlainText).new
     lexed_c = lexer.lex(@code.encode(universal_newline: true))
 
-    only_errors = @messages.select { |message| message[:type] == :error || message[:type] == 'error' }
-    @compress = !only_errors.empty? && only_errors.size != @messages.size
+    @builder << table_formatter.format(lexed_c)
+    self
+  end
+
+  def add_messages(submission, messages, user)
+    only_errors = messages.select { |message| message[:type] == :error || message[:type] == 'error' }
+    compress = !only_errors.empty? && only_errors.size != messages.size
 
     @builder.div(class: 'feedback-table-options') do
       @builder.span(id: 'annotations-were-hidden', class: 'hide') do
       end
-      @builder.span(class: 'flex-spacer') do
-      end
+      @builder.span(class: 'flex-spacer') {}
       @builder.span(class: 'diff-switch-buttons switch-buttons') do
         @builder.span(id: 'diff-switch-prefix', class: 'hide') do
           @builder.text!(I18n.t('submissions.show.annotations.title'))
@@ -43,17 +45,19 @@ class FeedbackCodeRenderer
       end
     end
 
-    @builder << table_formatter.format(lexed_c)
-    self
-  end
-
-  def add_messages
     @builder.script(type: 'application/javascript') do
-      @builder << "window.dodona.codeListing = new window.dodona.codeListingClass(#{@code.dump});"
-      @builder << '$(() => window.dodona.codeListing.addAnnotations(' + @messages.map { |o| Hash[o.each_pair.to_a] }.to_json + '));'
-      @builder << '$(() => window.dodona.codeListing.showAllAnnotations());'
-      @builder << '$(() => window.dodona.codeListing.compressAnnotations());' if @compress
+      @builder << <<~HEREDOC
+        $(() => {
+          window.dodona.codeListing = new window.dodona.codeListingClass(#{@code.to_json});
+          window.dodona.codeListing.addAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
+          window.dodona.codeListing.showAllAnnotations();
+          #{'window.dodona.codeListing.compressAnnotations();' if compress}
+          window.dodona.codeListing.addUserAnnotations('#{submission_annotations_path(nil, submission)}');
+          #{'window.dodona.codeListing.initButtonsForComment();' if AnnotationPolicy.new(user, Annotation).create?}
+        });
+      HEREDOC
     end
+    self
   end
 
   def html

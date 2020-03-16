@@ -25,6 +25,41 @@
       background-color: @warning-500;
     }
 
+    .lineno {
+      .annotation-button {
+        display: none;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        left: -15px;
+        margin-top: -7px;
+        border-radius: 50%;
+        padding-left: 5.5px;
+        padding-top: 6px;
+      }
+
+      .annotation-button:hover {
+        transform: scale(1.15);
+        transition: 0.1s ease-in-out;
+      }
+    }
+
+    .lineno:first-child {
+      .rouge-code, .rouge-gutter {
+        padding-top: 5px;
+      }
+    }
+
+    .lineno:last-child {
+      .rouge-code, .rouge-gutter {
+        padding-bottom: 5px;
+      }
+    }
+
+    .lineno:hover .annotation-button {
+      display: block;
+    }
+
     .rouge-code {
       width: 100%;
       padding-left: 5px;
@@ -66,12 +101,16 @@
       .dot-error {
         background-color: @danger-500;
       }
+
+      .dot-user {
+        background-color: @success-300
+      }
     }
 
+    // General lighter background on the right side
     .rouge-code, .annotation-cell {
       background-color: @body-bg;
     }
-
 
     .hide {
       display: none;
@@ -79,20 +118,76 @@
 
     .annotation-set {
       .annotation-cell {
-
         width: 100%;
+        min-width: 100%;
 
         .annotation {
-          font-family: @font-family-monospace;
-          margin: 3px 5px 3px 10px;
-          padding: 2px 10px;
-          border-radius: 0 5px 5px 0;
+
+          margin: 3px 5px 3px 5px;
+          padding: 2px 5px 2px 10px;
+
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
           border: 1px solid @hairlinegray;
           border-left-width: 3px;
-          background: @content-bg;
-          white-space: pre-wrap;
-        }
+          border-left-color: @grey-500;
 
+          background: @content-bg;
+
+          white-space: normal;
+
+          .annotation-header {
+            .annotation-user {
+              font-size: 85%;
+              color: @text-secondary;
+            }
+
+            .annotation-edit {
+              float: right;
+              margin-top: 4px;
+            }
+          }
+
+          .annotation-text {
+            display: block;
+            word-break: break-word;
+
+            // Stylize the embedded code block
+            .highlighter-rouge div.highlight {
+              padding: 5px 10px;
+              margin-left: 10px;
+              margin-right: 10px;
+              background: @code-bg;
+              border-radius: 3px;
+            }
+
+            .highlighter-rouge {
+              margin-top: 8px;
+              margin-bottom: 8px;
+            }
+
+            hr {
+              margin-top: 8px;
+              margin-bottom: 8px;
+            }
+
+            img {
+              display: block;
+              margin: 10px auto 20px;
+
+              max-width: 300px;
+              @media (min-width: @screen-tablet) {
+                max-width: calc(@container-tablet * 0.6);
+              }
+              @media (min-width: @screen-lg) {
+                max-width: calc(@container-desktop * 0.7);
+              }
+              @media (min-width: @screen-lg-desktop) {
+                max-width: calc(@container-large-desktop * 0.7);
+              }
+            }
+          }
+        }
         .annotation.error {
           border-left-color: @danger-500;
         }
@@ -104,12 +199,46 @@
         .annotation.info {
           border-left-color: @info-500;
         }
+        .annotation.user {
+          border-left-color: @success-500;
+          border-left-width: 5px;
+        }
+
+        .annotation.machine-annotation {
+          font-family: @font-family-monospace;
+          white-space: pre-wrap;
+        }
 
         div.copy-blocker {
           position: absolute;
           user-select: text;
           height: 100%;
         }
+      }
+    }
+
+    .annotation-submission {
+
+      padding: 5px;
+
+      .annotation-submission-button-container {
+        margin-top: 12px;
+        margin-bottom: 12px;
+        text-align: right;
+
+        .annotation-control-button {
+          margin-left: 3px;
+        }
+
+        .annotation-submission-error-list {
+          margin-top: 3px;
+          margin-bottom: 3px;
+        }
+      }
+
+      #submission-textarea {
+        border-radius: 0;
+        resize: vertical;
       }
     }
   }

@@ -124,7 +124,10 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :annotations, only: %i[index show create update destroy]
+
     resources :submissions, only: %i[index show create edit] do
+      resources :annotations, only: %i[index create]
       post 'mass_rejudge', on: :collection
       member do
         get 'download'

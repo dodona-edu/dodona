@@ -11,9 +11,9 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def show_code_tab
-    return true unless @submission[:groups]
+    return true unless @result[:groups]
 
-    @submission[:groups].none? { |t| t[:data][:source_annotations] }
+    @result[:groups].none? { |t| t[:data][:source_annotations] }
   end
 
   def tab_content(t)

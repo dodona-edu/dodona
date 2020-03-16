@@ -86,8 +86,18 @@ nl:
     annotation:
       hidden: Een annotatie werd verborgen
       were_hidden:
-        first: Enkel errors worden getoond,
+        first: Enkel errors en annotaties door gebruikers worden getoond,
         second:
           single: toon 1 andere annotatie
           plural: toon {count} andere annotaties
+    user_annotation:
+      send: 'Annoteren'
+      update: 'Updaten'
+      cancel: 'Annuleren'
+      delete: 'Verwijderen'
+      edit: 'Annotatie bewerken'
+      fields:
+        annotation_text: 'Annotatie tekst'
+      delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'
+
 

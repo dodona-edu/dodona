@@ -1,95 +1,51 @@
 import { CodeListing } from "code_listing/code_listing";
+export type AnnotationType = "user" | "error" | "warning" | "info";
 
-type AnnotationType = "error" | "warning" | "info";
-const ORDERING = ["error", "warning", "info"];
 
-export interface AnnotationData {
-    type: AnnotationType;
-    text: string;
-    row: number;
-}
-
-export class Annotation {
+export abstract class Annotation {
     readonly id: number;
-    readonly type: AnnotationType;
-    readonly text: string;
-    readonly line: number;
+    protected shown: boolean = true;
 
-    private shown = true;
+    annotation: HTMLDivElement;
+    protected dot: HTMLSpanElement;
 
-    private readonly codeListingHTML: HTMLTableElement;
-    private annotation: HTMLDivElement;
-    private dot: HTMLSpanElement;
+    protected readonly codeListingHTML: HTMLTableElement;
+    protected readonly codeListing: CodeListing;
 
-    private readonly codeListing: CodeListing;
+    row: number;
+    type: AnnotationType;
 
-    constructor(id: number, m: AnnotationData, listing: HTMLTableElement, codeListing: CodeListing) {
+    protected constructor(id: number, codeListingHTML: HTMLTableElement, codeListing: CodeListing, row: number, type: AnnotationType) {
         this.id = id;
-        this.type = m.type;
-        this.text = m.text;
-        this.line = m.row + 1; // Linter counts from 0, rouge counts from 1
-        this.codeListingHTML = listing;
-
+        this.codeListingHTML = codeListingHTML;
         this.codeListing = codeListing;
+        this.row = row;
+        this.type = type;
+    }
 
+    protected createHTML(): void {
         this.createAnnotation();
         this.createDot();
+        // Shown by default, makes sure dots are correctly handled for user annotations.
+        this.show();
     }
 
     hide(): void {
         this.annotation.classList.add("hide");
         this.shown = false;
-        this.addDot();
+        this.updateDot();
     }
 
     show(): void {
         this.annotation.classList.remove("hide");
         this.shown = true;
-        this.removeDot();
+        this.updateDot();
     }
 
-    private createAnnotation(): void {
-        let annotationsRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#annotations-${this.line}`);
-        if (annotationsRow === null) {
-            annotationsRow = this.createAnnotationRow();
-        }
+    protected abstract createAnnotation(): void;
 
-        this.annotation = document.createElement("div");
-        this.annotation.setAttribute("id", `annotation-${this.id}`);
-        this.annotation.setAttribute("title", this.type[0].toUpperCase() + this.type.substring(1));
-        this.annotation.classList.add("annotation", this.type);
-        this.annotation.appendChild(document.createTextNode(
-            this.text.split("\n").filter(s => !s.match("^--*$")).join("\n")
-        ));
-
-        const edgeCopyBlocker = document.createElement("div");
-        edgeCopyBlocker.setAttribute("class", "copy-blocker");
-
-        const annotationGroup: HTMLDivElement = annotationsRow.querySelector(`.annotation-cell .annotation-group-${this.type}`);
-        annotationGroup.appendChild(this.annotation);
-        annotationGroup.appendChild(edgeCopyBlocker);
-    }
-
-    private createAnnotationRow(): HTMLTableRowElement {
-        const codeRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#line-${this.line}`);
-        const annotationRow: HTMLTableRowElement = this.codeListingHTML.insertRow(codeRow.rowIndex + 1);
-        annotationRow.setAttribute("class", "annotation-set");
-        annotationRow.setAttribute("id", `annotations-${this.line}`);
-        annotationRow.insertCell().setAttribute("class", "rouge-gutter gl");
-        const annotationTDC = annotationRow.insertCell();
-        annotationTDC.setAttribute("class", "annotation-cell");
-
-        for (const type of ORDERING) {
-            const groupDiv: HTMLDivElement = document.createElement("div");
-            groupDiv.setAttribute("class", `annotation-group-${type}`);
-            annotationTDC.appendChild(groupDiv);
-        }
-
-        return annotationRow;
-    }
-
-    private createDot(): void {
-        const codeGutter = this.codeListingHTML.querySelector(`tr#line-${this.line} .rouge-gutter.gl`);
+    protected createDot(): void {
+        const codeGutter = this.codeListingHTML.querySelector(`tr#line-${this.row} .rouge-gutter.gl`);
         const potentialDot = codeGutter.querySelector("span.dot") as HTMLSpanElement;
         if (potentialDot !== null) {
             this.dot = potentialDot;
@@ -105,14 +61,24 @@ export class Annotation {
         codeGutter.prepend(this.dot);
     }
 
-    addDot(): void {
-        this.dot.classList.add(`dot-${this.type}`);
-    }
-
-    removeDot(): void {
-        const allHiddenOfThisType = this.codeListing.getAnnotationsForLine(this.line).filter(m => m.type === this.type).every(m => m.shown);
-        if (allHiddenOfThisType) {
+    private updateDot(): void {
+        const anyHiddenOfThisType = this.codeListing.getAnnotationsForLine(this.row).filter(m => m.type === this.type).some(m => !m.shown);
+        if (anyHiddenOfThisType) {
+            this.dot.classList.add(`dot-${this.type}`);
+        } else {
             this.dot.classList.remove(`dot-${this.type}`);
         }
+    }
+
+    protected createAnnotationRow(): HTMLTableRowElement {
+        const correspondingLine: HTMLTableRowElement = this.codeListingHTML.querySelector(`#line-${this.row}`);
+        const annotationRow = this.codeListingHTML.insertRow(correspondingLine.rowIndex + 1);
+        annotationRow.setAttribute("class", "annotation-set");
+        annotationRow.setAttribute("id", `annotations-${this.row}`);
+        const htmlTableDataCellElement = annotationRow.insertCell();
+        htmlTableDataCellElement.setAttribute("class", "rouge-gutter gl");
+        const annotationTDC: HTMLTableDataCellElement = annotationRow.insertCell();
+        annotationTDC.setAttribute("class", "annotation-cell");
+        return annotationRow;
     }
 }

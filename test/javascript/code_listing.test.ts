@@ -3,7 +3,7 @@ import { CodeListing } from "code_listing/code_listing";
 let codeListing;
 
 beforeEach(() => {
-    document.body.innerHTML = "<div class='code-table'>" +
+    document.body.innerHTML = "<div class='code-table' data-submission-id='54'>" +
         "<div class='feedback-table-options'>" +
             "<span id='annotations-were-hidden' class='hide'></span>" +
             "<span class='flex-spacer'></span>" +
@@ -227,4 +227,124 @@ test("Dont show a message when there is only an error", () => {
     });
 
     expect(document.querySelector("#annotations-were-hidden").textContent).toBe("");
+});
+
+test("annotations should be transmitted into view", () => {
+    codeListing.addUserAnnotation({
+        "id": 1,
+        "line_nr": 1,
+        "annotation_text": "This could be shorter",
+        "markdown_text": "<p>This could be shorter</p>",
+        "permission": {
+            update: false,
+            destroy: false,
+        },
+        "user": {
+            name: "Jan Klaassen",
+        }
+    });
+
+    codeListing.addUserAnnotation({
+        "id": 2,
+        "line_nr": 2,
+        "annotation_text": "This should be faster",
+        "markdown_text": "<p>This should be faster</p>",
+        "permission": {
+            update: true,
+            destroy: true,
+        },
+        "user": {
+            name: "Piet Hein",
+        }
+    });
+
+    expect(document.querySelectorAll(".annotation").length).toBe(2);
+});
+
+test("feedback table should support more than 1 annotation per row", () => {
+    codeListing.addUserAnnotation({
+        "id": 1,
+        "line_nr": 1,
+        "annotation_text": "This could be shorter",
+        "markdown_text": "<p>This could be shorter</p>",
+        "permission": {
+            update: false,
+            destroy: false,
+        },
+        "user": {
+            name: "Jan Klaassen",
+        }
+    });
+
+    codeListing.addUserAnnotation({
+        "id": 2,
+        "line_nr": 1,
+        "annotation_text": "This should be faster",
+        "markdown_text": "<p>This should be faster</p>",
+        "permission": {
+            update: true,
+            destroy: true,
+        },
+        "user": {
+            name: "Piet Hein",
+        }
+    });
+
+    expect(document.querySelectorAll(".annotation").length).toBe(2);
+});
+
+test("feedback table should be able to contain both machine annotations and user annotations", () => {
+    codeListing.addUserAnnotation({
+        "id": 1,
+        "line_nr": 1,
+        "annotation_text": "This could be shorter",
+        "markdown_text": "<p>This could be shorter</p>",
+        "permission": {
+            update: false,
+            destroy: false,
+        },
+        "user": {
+            name: "Jan Klaassen",
+        }
+    });
+
+    codeListing.addUserAnnotation({
+        "id": 2,
+        "line_nr": 2,
+        "annotation_text": "This should be faster",
+        "markdown_text": "<p>This should be faster</p>",
+        "permission": {
+            update: true,
+            destroy: true,
+        },
+        "user": {
+            name: "Piet Hein",
+        }
+    });
+
+    codeListing.addAnnotations([
+        { "text": "Value could be assigned", "row": 0, "type": "warning" },
+        { "text": "Value could be assigned", "row": 0, "type": "warning" },
+        { "text": "Value could be assigned", "row": 1, "type": "warning" },
+        { "text": "Value could be assigned", "row": 1, "type": "error" },
+        { "text": "Value could be assigned", "row": 2, "type": "warning" },
+        { "text": "Value could be assigned", "row": 2, "type": "info" },
+    ]);
+
+    expect(document.querySelectorAll(".annotation").length).toBe(2 + 6);
+});
+
+test("ensure that all buttons are created", () => {
+    codeListing.initButtonsForComment();
+    expect(document.querySelectorAll(".annotation-button").length).toBe(3);
+});
+
+test("click on comment button", () => {
+    codeListing.initButtonsForComment();
+
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
+    annotationButton.click();
+    expect(document.querySelectorAll("form.annotation-submission").length).toBe(1);
+    annotationButton.click();
+    expect(document.querySelectorAll("form.annotation-submission").length).toBe(1);
 });

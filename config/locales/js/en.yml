@@ -86,8 +86,17 @@ en:
     annotation:
       hidden: An annotation was hidden
       were_hidden:
-        first: Only errors are shown,
+        first: Only errors and user annotations are shown,
         second:
           single: show 1 other annotation
           plural: show {count} other annotations
+    user_annotation:
+      send: 'Annotate'
+      update: 'Update'
+      cancel: 'Cancel'
+      delete: 'Delete'
+      edit: 'Edit annotation'
+      fields:
+        annotation_text: 'Annotation text'
+      delete_confirm: 'Are you sure you want to delete this annotation?'
 

@@ -16,29 +16,29 @@ class FeedbackTableRenderer
 
   def initialize(submission, user)
     result = submission.safe_result(user)
-    @submission = result.present? ? JSON.parse(result, symbolize_names: true) : nil
-    @current_user = user
+    @submission = submission
+    @result = result.present? ? JSON.parse(result, symbolize_names: true) : nil
     @course = submission.course
     @builder = Builder::XmlMarkup.new
     @code = submission.code
+    @user = user
     @exercise = submission.exercise
-    @exercise_id = submission.exercise_id
     @programming_language = @exercise.programming_language&.editor_name
   end
 
   def parse
-    if @submission.present?
-      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
-        if @submission[:messages].present?
+    if @result.present?
+      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
+        if @result[:messages].present?
           @builder.div(class: 'row feedback-table-messages') do
-            messages(@submission[:messages])
+            messages(@result[:messages])
           end
         end
-        tabs(@submission)
+        tabs(@result)
         init_js
       end.html_safe
     else
-      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise_id) do
+      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
         @builder.div(class: 'row feedback-table-messages') do
           messages([{ description: I18n.t('submissions.show.reading_failed'), format: 'plain' }])
         end
@@ -52,10 +52,10 @@ class FeedbackTableRenderer
 
   def show_diff_type_switch(tab)
     tab[:groups]&.compact # Groups
-        &.flat_map { |t| t[:groups] }&.compact # Testcases
-        &.flat_map { |t| t[:tests] }&.compact # Tests
-        &.reject { |t| t[:accepted] }
-        &.any?
+      &.flat_map { |t| t[:groups] }&.compact # Testcases
+      &.flat_map { |t| t[:tests] }&.compact # Tests
+      &.reject { |t| t[:accepted] }
+      &.any?
   end
 
   def show_hide_correct_switch(tab)
@@ -90,7 +90,7 @@ class FeedbackTableRenderer
         end
       end
       @builder.div(class: 'tab-content') do
-        @submission[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
+        @result[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
         if show_code_tab
           @builder.div(class: "tab-pane #{'active' if submission[:groups].blank?}", id: 'code-tab') do
             if submission[:annotations]
@@ -298,10 +298,11 @@ class FeedbackTableRenderer
   end
 
   def source(_, messages)
-    @builder.div(class: 'code-table') do
-      FeedbackCodeRenderer.new(@code, @programming_language, messages, @builder)
-                          .parse
-                          .add_messages
+    @builder.div(class: 'code-table', 'data-submission-id': @submission.id) do
+      @builder << FeedbackCodeRenderer.new(@code, @submission.exercise.programming_language&.name)
+                                      .add_messages(@submission, messages, @user)
+                                      .parse
+                                      .html
     end
   end
 

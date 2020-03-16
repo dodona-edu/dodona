@@ -87,6 +87,7 @@ en:
         one: "This exercise is used by 1 course."
         other: "This exercise is used by %{count} courses."
       contact: Contact information
+      judge: Judge
       repository: Repository containing this exercise
       repository_path: Path within this repository
       created: Created

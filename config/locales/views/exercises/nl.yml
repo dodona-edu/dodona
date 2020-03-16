@@ -88,6 +88,7 @@ nl:
         other: "Deze oefening wordt gebruikt door %{count} cursussen."
       not_used_in_courses: Deze oefening wordt nog niet gebruikt.
       contact: Contactinformatie
+      judge: Judge
       repository: Repository waar deze oefening zich in bevindt
       repository_path: Bestandslocatie binnen deze repository
       created: Aangemaakt

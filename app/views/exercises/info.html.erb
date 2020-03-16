@@ -27,10 +27,19 @@
             <div class="row">
               <div class="col-xs-12 repo-details">
                 <div class="row">
-                  <div class="col-xs-12">
+                  <div class="col-sm-12 col-xs-6">
                     <p title="<%= t '.contact' %>">
                     <i class="mdi mdi-account-box mdi-24"></i>
                     <%= mail_to(@config['contact'] || @repository.first_admin&.pretty_email) %>
+                  </div>
+                  <div class="col-sm-12 col-xs-6">
+                    <p title="<%= t '.judge' %>">
+                    <i class="mdi mdi-gavel mdi-24"></i>
+                    <% if policy(@exercise.judge).show? %>
+                      <%= link_to @exercise.judge.name, judge_path(@exercise.judge) %>
+                    <% else %>
+                      <%= @exercise.judge.name %>
+                    <% end %>
                   </div>
                   <div class="col-sm-12 col-xs-6">
                     <p title="<%= t '.repository' %>">
@@ -40,6 +49,8 @@
                     <% else %>
                       <%= @repository.name %>
                     <% end %>
+                  </div>
+                  <div class="col-sm-12 col-xs-6">
                     <% if current_user&.repository_admin?(@repository) %>
                     <p title="<%= t '.repository_path' %>">
                     <i class="mdi mdi-file-search mdi-24"></i>
@@ -52,6 +63,8 @@
                     <span title="<%= l @exercise.created_at, format: :long %>">
                     <%= time_ago_in_words(@exercise.created_at) %> <%= t '.ago' %>.
                     </span>
+                  </div>
+                  <div class="col-sm-12 col-xs-6">
                     <p title="<%= t '.updated' %>">
                     <i class="mdi mdi-update mdi-24"></i>
                     <span title="<%= l @exercise.updated_at, format: :long %>">

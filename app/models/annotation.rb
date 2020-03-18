@@ -11,6 +11,9 @@ class Annotation < ApplicationRecord
     greater_than_or_equal_to: 0
   }, if: ->(attr) { attr.line_nr.present? }
 
+  scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
+
   after_create :create_notification
 
   private

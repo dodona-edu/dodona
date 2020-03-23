@@ -19,7 +19,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
-  test 'submission index should contain all annotations user can see' do
+  test 'annotation index should contain all annotations user can see' do
     user = create :user
     other_user = create :user
     course = create :course
@@ -42,6 +42,23 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     get annotations_url(format: :json)
     assert_equal 3, JSON.parse(response.body).count
+  end
+
+  test 'annotation index should be filterable by user' do
+    user = create :user
+    other_user = create :user
+
+    create :annotation, user: user, submission: (create :submission, user: user)
+    create :annotation, user: user, submission: (create :submission, user: user)
+    create :annotation, user: user, submission: (create :submission, user: user)
+    create :annotation, user: other_user, submission: (create :submission, user: other_user)
+    create :annotation, user: other_user, submission: (create :submission, user: other_user)
+
+    get annotations_url(format: :json, user_id: user.id)
+    assert_equal 3, JSON.parse(response.body).count
+
+    get annotations_url(format: :json, user_id: other_user.id)
+    assert_equal 2, JSON.parse(response.body).count
   end
 
   test 'user who created submission should be able to see the annotation' do

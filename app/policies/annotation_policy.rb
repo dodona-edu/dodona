@@ -21,7 +21,7 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def show?
-    policy(record.submission).show?
+    SubmissionPolicy.new(user, record.submission).show?
   end
 
   def update?

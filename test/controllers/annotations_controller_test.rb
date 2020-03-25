@@ -19,10 +19,68 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
-  test 'can update annotation, but only the content' do
-    @annotation = create :annotation, submission: @submission, user: @zeus
+  test 'annotation index should contain all annotations user can see' do
+    user = create :user
+    other_user = create :user
+    course = create :course
+    course_admin = create :user
+    course_admin.update(administrating_courses: [course])
 
-    put annotation_url(@annotation), params: {
+    create :annotation, user: user, submission: (create :submission, user: user, course: course)
+    create :annotation, user: user, submission: (create :submission, user: user, course: course)
+    create :annotation, user: user, submission: (create :submission, user: user)
+    create :annotation, user: other_user, submission: (create :submission, user: other_user, course: course)
+    create :annotation, user: other_user, submission: (create :submission, user: other_user)
+
+    get annotations_url(format: :json)
+    assert_equal 5, JSON.parse(response.body).count
+
+    sign_in course_admin
+    get annotations_url(format: :json)
+    assert_equal 3, JSON.parse(response.body).count
+
+    sign_in user
+    get annotations_url(format: :json)
+    assert_equal 3, JSON.parse(response.body).count
+  end
+
+  test 'annotation index should be filterable by user' do
+    user = create :user
+    other_user = create :user
+
+    create :annotation, user: user, submission: (create :submission, user: user)
+    create :annotation, user: user, submission: (create :submission, user: user)
+    create :annotation, user: user, submission: (create :submission, user: user)
+    create :annotation, user: other_user, submission: (create :submission, user: other_user)
+    create :annotation, user: other_user, submission: (create :submission, user: other_user)
+
+    get annotations_url(format: :json, user_id: user.id)
+    assert_equal 3, JSON.parse(response.body).count
+
+    get annotations_url(format: :json, user_id: other_user.id)
+    assert_equal 2, JSON.parse(response.body).count
+  end
+
+  test 'user who created submission should be able to see the annotation' do
+    annotation = create :annotation, submission: @submission, user: @zeus
+    sign_in @submission.user
+
+    get annotation_url(annotation, format: :json)
+    assert_response :success
+  end
+
+  test 'unrelated user should not be able to see the annotation' do
+    annotation = create :annotation, submission: @submission, user: @zeus
+    sign_in create(:user)
+
+    get annotation_url(annotation, format: :json)
+    assert_response :forbidden
+  end
+
+  test 'can update annotation, but only the content' do
+    annotation = create :annotation, submission: @submission, user: @zeus
+
+    put annotation_url(annotation), params: {
       annotation: {
         annotation_text: 'We changed this text'
       },
@@ -30,7 +88,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     }
     assert_response :success
 
-    patch annotation_url(@annotation), params: {
+    patch annotation_url(annotation), params: {
       annotation: {
         annotation_text: 'We changed this text again'
       },
@@ -40,8 +98,8 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'can remove annotation' do
-    @annotation = create :annotation, submission: @submission, user: @zeus
-    delete annotation_url(@annotation)
+    annotation = create :annotation, submission: @submission, user: @zeus
+    delete annotation_url(annotation)
     assert_response :no_content
   end
 
@@ -49,7 +107,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     post submission_annotations_url(@submission), params: {
       annotation: {
         line_nr: 1,
-        annotation_text: Faker::Lorem.sentences(number: 4_500).join(' ')
+        annotation_text: Faker::Lorem.sentences(number: 100).join(' ')
       },
       format: :json
     }
@@ -57,12 +115,11 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'can not update valid annotation with invalid annotation' do
-    @annotation = create :annotation, submission: @submission, user: @zeus
+    annotation = create :annotation, submission: @submission, user: @zeus
 
-    put annotation_url(@annotation), params: {
+    put annotation_url(annotation), params: {
       annotation: {
-        # Titanic script is around 4500 sentences worth of text, so why not test that users can not submit such long content
-        annotation_text: Faker::Lorem.sentences(number: 4_500).join(' ')
+        annotation_text: Faker::Lorem.sentences(number: 100).join(' ')
       },
       format: :json
     }

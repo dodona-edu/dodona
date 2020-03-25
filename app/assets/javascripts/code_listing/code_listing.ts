@@ -294,6 +294,10 @@ export class CodeListing {
             inputField.textContent = "";
         }
 
+        // We must wait till the next frame, because we can only give the focus after the element
+        // is added to the dom.
+        window.requestAnimationFrame(() => inputField.focus());
+
         if (annotation && annotation.annotationData.permission.destroy) {
             const deleteButton: HTMLButtonElement = node.querySelector(".annotation-delete-button");
             deleteButton.addEventListener("click", () => {

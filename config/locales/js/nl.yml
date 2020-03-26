@@ -96,6 +96,7 @@ nl:
       cancel: 'Annuleren'
       delete: 'Verwijderen'
       edit: 'Annotatie bewerken'
+      help: 'Druk Shift + Enter om te verzenden. Markdown wordt ondersteund.'
       fields:
         annotation_text: 'Annotatie tekst'
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'

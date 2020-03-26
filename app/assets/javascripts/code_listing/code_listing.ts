@@ -271,6 +271,7 @@ export class CodeListing {
         node.dataset["lineId"] = `${lineId}`;
         node.innerHTML = `
           <textarea class="form-control" id="submission-textarea" rows="3"></textarea>
+          <span class='help-block'>${I18n.t("js.user_annotation.help")}</span>
           <div class="annotation-submission-button-container">
             ${annotation && annotation.annotationData.permission.destroy ? `
                   <button class="btn-text annotation-control-button annotation-delete-button" type="button">

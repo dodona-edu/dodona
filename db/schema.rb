@@ -46,6 +46,17 @@ ActiveRecord::Schema.define(version: 2020_04_06_155516) do
     t.index ["user_id"], name: "index_annotations_on_user_id"
   end
 
+  create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "line_nr"
+    t.integer "submission_id"
+    t.integer "user_id"
+    t.text "annotation_text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["submission_id"], name: "index_annotations_on_submission_id"
+    t.index ["user_id"], name: "index_annotations_on_user_id"
+  end
+
   create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
     t.string "token_digest"

@@ -73,6 +73,15 @@
         }
       ],
       "status": "wrong answer"
+    },
+    {
+      "accepted": true,
+      "badgeCount": 0,
+      "data": {
+        "source_annotations": []
+      },
+      "description": "code",
+      "status": "correct answer"
     }
   ],
   "status": "wrong answer",

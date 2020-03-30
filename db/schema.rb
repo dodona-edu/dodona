@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_10_142529) do
+ActiveRecord::Schema.define(version: 2020_03_30_115303) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_142529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["token_digest"], name: "index_api_tokens_on_token_digest"
+    t.index ["user_id", "description"], name: "index_api_tokens_on_user_id_and_description", unique: true
     t.index ["user_id"], name: "index_api_tokens_on_user_id"
   end
 
@@ -182,7 +183,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_142529) do
     t.string "entity_id"
     t.integer "provider"
     t.string "identifier"
-    t.index ["identifier"], name: "index_institutions_on_identifier"
+    t.index ["identifier"], name: "index_institutions_on_identifier", unique: true
   end
 
   create_table "judges", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -231,6 +232,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_142529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id"
+    t.index ["name"], name: "index_repositories_on_name", unique: true
     t.index ["path"], name: "index_repositories_on_path", unique: true
   end
 
@@ -269,7 +271,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_142529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["exercise_id"], name: "index_series_memberships_on_exercise_id"
-    t.index ["series_id", "exercise_id"], name: "index_series_memberships_on_series_id_and_exercise_id"
+    t.index ["series_id", "exercise_id"], name: "index_series_memberships_on_series_id_and_exercise_id", unique: true
     t.index ["series_id"], name: "index_series_memberships_on_series_id"
   end
 
@@ -306,6 +308,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_142529) do
     t.string "time_zone", default: "Brussels"
     t.bigint "institution_id"
     t.string "search", limit: 4096
+    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"
     t.index ["username", "institution_id"], name: "index_users_on_username_and_institution_id", unique: true

@@ -1,10 +1,13 @@
 class AnnotationsController < ApplicationController
-  before_action :set_submission, only: %i[create index]
+  before_action :set_submission, only: %i[create]
   before_action :set_annotation, only: %i[show update destroy]
+
+  has_scope :by_submission, as: :submission_id
+  has_scope :by_user, as: :user_id
 
   def index
     authorize Annotation
-    @annotations = policy_scope(@submission.annotations)
+    @annotations = apply_scopes(policy_scope(Annotation.all))
   end
 
   def show; end

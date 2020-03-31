@@ -10,7 +10,7 @@
     "@rails/ujs": "^6.0.2",
     "@rails/webpacker": "4.2.2",
     "@types/d3": "^5.7.2",
-    "@types/jquery": "^3.3.33",
+    "@types/jquery": "^3.3.34",
     "clipboard": "^2.0.6",
     "d3": "^5.15.0",
     "dragula": "^3.7.2",

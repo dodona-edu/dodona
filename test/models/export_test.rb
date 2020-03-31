@@ -4,7 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  user_id    :integer
-#  status     :integer          default("0"), not null
+#  status     :integer          default("started"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

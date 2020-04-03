@@ -107,7 +107,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     post submission_annotations_url(@submission), params: {
       annotation: {
         line_nr: 1,
-        annotation_text: Faker::Lorem.sentences(number: 100).join(' ')
+        annotation_text: 'A' * 2049 # max length of annotation text is 2048 -> trigger failure
       },
       format: :json
     }

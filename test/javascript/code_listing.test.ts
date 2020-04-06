@@ -5,15 +5,15 @@ let codeListing;
 beforeEach(() => {
     document.body.innerHTML = "<span class='badge' data-description='code'></span>" +
         "<div class='code-table' data-submission-id='54'>" +
-        "<div class='feedback-table-options'>" +
+        "<div class='feedback-table-options hide' id='feedback-table-options'>" +
             "<span id='annotations-were-hidden' class='hide'></span>" +
             "<span class='flex-spacer'></span>" +
             "<span class='diff-switch-buttons diff-buttons'>" +
-                "<span id='diff-switch-prefix' class='hide'>Berichten</span>" +
+                "<span id='diff-switch-prefix'>Berichten</span>" +
                 "<div class='btn-group btn-toggle' role='group' data-toggle='buttons'>" +
-                    "<button class='btn btn-secondary active hide' id='show_all_annotations'><i class='mdi mdi-18 mdi-comment-multiple-outline'></i></button>" +
+                    "<button class='btn btn-secondary active' id='show_all_annotations'><i class='mdi mdi-18 mdi-comment-multiple-outline'></i></button>" +
                     "<button class='btn btn-secondary hide' id='show_only_errors'><i class='mdi mdi-18 mdi-comment-alert-outline'></i></button>" +
-                    "<button class='btn btn-secondary hide' id='hide_all_annotations'><i class='mdi mdi-18 mdi-comment-remove-outline'></i></button>" +
+                    "<button class='btn btn-secondary' id='hide_all_annotations'><i class='mdi mdi-18 mdi-comment-remove-outline'></i></button>" +
                 "</div>" +
             "</span>" +
         "</div>" +
@@ -175,11 +175,8 @@ test("correct buttons & elements are hidden and unhidden", () => {
         { "text": "Division by zero", "row": 0, "type": "info" },
     ]);
 
-    expect(document.querySelectorAll("#hide_all_annotations.hide").length).toBe(0);
-    expect(document.querySelectorAll("#hide_all_annotations:not(.hide)").length).toBe(1);
-
-    expect(document.querySelectorAll("#show_all_annotations.hide").length).toBe(0);
-    expect(document.querySelectorAll("#show_all_annotations:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll("#feedback-table-options.hide").length).toBe(0);
+    expect(document.querySelectorAll("#feedback-table-options:not(.hide)").length).toBe(1);
 
     expect(document.querySelectorAll("#show_only_errors.hide").length).toBe(1);
     expect(document.querySelectorAll("#show_only_errors:not(.hide)").length).toBe(0);
@@ -187,20 +184,14 @@ test("correct buttons & elements are hidden and unhidden", () => {
     expect(document.querySelectorAll("#annotations-were-hidden.hide").length).toBe(1);
     expect(document.querySelectorAll("#annotations-were-hidden:not(.hide)").length).toBe(0);
 
-    expect(document.querySelectorAll("#diff-switch-prefix.hide").length).toBe(0);
-    expect(document.querySelectorAll("#diff-switch-prefix:not(.hide)").length).toBe(1);
-
     codeListing.addAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "error" },
         { "text": "Float transformed into int", "row": 0, "type": "error" },
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    expect(document.querySelectorAll("#hide_all_annotations.hide").length).toBe(0);
-    expect(document.querySelectorAll("#hide_all_annotations:not(.hide)").length).toBe(1);
-
-    expect(document.querySelectorAll("#show_all_annotations.hide").length).toBe(0);
-    expect(document.querySelectorAll("#show_all_annotations:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll("#feedback-table-options.hide").length).toBe(0);
+    expect(document.querySelectorAll("#feedback-table-options:not(.hide)").length).toBe(1);
 
     expect(document.querySelectorAll("#show_only_errors.hide").length).toBe(0);
     expect(document.querySelectorAll("#show_only_errors:not(.hide)").length).toBe(1);
@@ -208,16 +199,10 @@ test("correct buttons & elements are hidden and unhidden", () => {
     expect(document.querySelectorAll("#annotations-were-hidden.hide").length).toBe(0);
     expect(document.querySelectorAll("#annotations-were-hidden:not(.hide)").length).toBe(1);
 
-    expect(document.querySelectorAll("#diff-switch-prefix.hide").length).toBe(0);
-    expect(document.querySelectorAll("#diff-switch-prefix:not(.hide)").length).toBe(1);
-
     const annotationsWereHidden: HTMLSpanElement = document.querySelector("span#annotations-were-hidden a") as HTMLSpanElement;
     annotationsWereHidden.click();
 
     expect(document.querySelectorAll("#annotations-were-hidden").length).toBe(0);
-
-    expect(document.querySelectorAll("#show_all_annotations.active.hide").length).toBe(0);
-    expect(document.querySelectorAll("#show_all_annotations.active:not(.hide)").length).toBe(1);
 });
 
 test("Dont show a message when there is only an error", () => {

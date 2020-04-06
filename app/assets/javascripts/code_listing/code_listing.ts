@@ -14,6 +14,7 @@ export class CodeListing {
     private readonly submissionId: string;
 
     private badge: HTMLSpanElement;
+    private options: HTMLDivElement;
     private hideAllButton: HTMLButtonElement;
     private showOnlyErrorButton: HTMLButtonElement;
     private showAllButton: HTMLButtonElement;
@@ -21,7 +22,8 @@ export class CodeListing {
     private diffSwitchPrefix: HTMLSpanElement;
 
     constructor(code: string) {
-        this.badge = document.querySelector("span.badge[data-description=code]");
+        this.badge = document.querySelector<HTMLSpanElement>("span.badge[data-description=code]");
+        this.options = document.querySelector<HTMLDivElement>("#feedback-table-options");
         this.table = document.querySelector("table.code-listing") as HTMLTableElement;
         this.code = code;
         this.annotations = [];
@@ -70,9 +72,7 @@ export class CodeListing {
 
     private setToggleButtonsVisibility(): void {
         if (this.annotations.length > 0) {
-            this.showAllButton.classList.remove("hide");
-            this.hideAllButton.classList.remove("hide");
-            this.diffSwitchPrefix.classList.remove("hide");
+            this.options.classList.remove("hide");
 
             if (this.annotations.some(a => a.type === "error" || a.type === "user")) {
                 this.showOnlyErrorButton.classList.remove("hide");
@@ -86,9 +86,7 @@ export class CodeListing {
                 this.annotationsWereHidden.appendChild(nonErrorAnnotationCount);
             }
         } else {
-            this.showAllButton.classList.add("hide");
-            this.hideAllButton.classList.add("hide");
-            this.diffSwitchPrefix.classList.add("hide");
+            this.options.classList.add("hide");
             this.showOnlyErrorButton.classList.add("hide");
             this.annotationsWereHidden.classList.add("hide");
         }

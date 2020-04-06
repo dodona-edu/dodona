@@ -95,6 +95,7 @@ class Submission < ApplicationRecord
     super(params)
     # We need to do this after the rest of the fields are initialized, because we depend on the course_id, user_id, ...
     self.code = code.to_s unless code.nil?
+    self.line_count = self.code.length unless code.nil?
     self.result = result.to_s unless result.nil?
   end
 
@@ -108,6 +109,11 @@ class Submission < ApplicationRecord
   def code=(code)
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
     File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
+  end
+
+  def line_count
+    self[:line_count] = code.lines.count if self[:line_count].nil?
+    self[:line_count]
   end
 
   def result

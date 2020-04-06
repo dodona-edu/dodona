@@ -175,12 +175,14 @@ class CoursesController < ApplicationController
         sheet = CSV.generate do |csv|
           csv << [I18n.t('courses.scoresheet.explanation')]
           columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')]
-          columns.concat(@series.flat_map { |s| [s.name, I18n.t('courses.scoresheet.started', series: s.name)] })
+          columns.concat(@series.map(&:name))
+          columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })
           csv << columns
-          csv << ['Maximum', '', '', ''].concat(@series.flat_map { |s| [s.exercises.count] * 2 })
+          csv << ['Maximum', '', '', ''].concat(@series.map { |s| s.exercises.count }).concat(@series.map { |s| s.exercises.count })
           @users.each do |u|
             row = [u.first_name, u.last_name, u.username, u.email]
-            row.concat(@series.flat_map { |s| [@hash[[u.id, s.id]][:accepted], @hash[[u.id, s.id]][:started]] })
+            row.concat(@series.map { |s| @hash[[u.id, s.id]][:accepted] })
+            row.concat(@series.map { |s| @hash[[u.id, s.id]][:started] })
             csv << row
           end
         end

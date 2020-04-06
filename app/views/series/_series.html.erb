@@ -105,13 +105,22 @@
     </div>
   </div>
   <% if current_user&.course_admin?(series.course) && series.hidden? %>
-    <div class="alert alert-info hidden-print"><%= t "series.show.series_not_visible" %></div>
+    <div class="alert alert-info hidden-print">
+      <%= t "series.show.series_not_visible" %>
+      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
+    </div>
   <% end %>
   <% if current_user&.course_admin?(series.course) && series.closed? %>
-    <div class="alert alert-info hidden-print"><%= t "series.show.series_not_accessible" %></div>
+    <div class="alert alert-info hidden-print">
+      <%= t "series.show.series_not_accessible" %>
+      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
+    </div>
   <% end %>
   <% if current_user&.course_admin?(series.course) && !series.exercises_visible %>
-    <div class="alert alert-info hidden-print"><%= t "series.show.exercises_not_visible" %></div>
+    <div class="alert alert-info hidden-print">
+      <%= t "series.show.exercises_not_visible" %>
+      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
+    </div>
   <% end %>
   <div class="series-description">
     <%= markdown(series.description) %>

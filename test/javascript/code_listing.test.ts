@@ -3,7 +3,8 @@ import { CodeListing } from "code_listing/code_listing";
 let codeListing;
 
 beforeEach(() => {
-    document.body.innerHTML = "<div class='code-table' data-submission-id='54'>" +
+    document.body.innerHTML = "<span class='badge' data-description='code'></span>" +
+        "<div class='code-table' data-submission-id='54'>" +
         "<div class='feedback-table-options'>" +
             "<span id='annotations-were-hidden' class='hide'></span>" +
             "<span class='flex-spacer'></span>" +

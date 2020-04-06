@@ -13,6 +13,7 @@ export class CodeListing {
     private readonly markingClass: string = "marked";
     private readonly submissionId: string;
 
+    private badge: HTMLSpanElement;
     private hideAllButton: HTMLButtonElement;
     private showOnlyErrorButton: HTMLButtonElement;
     private showAllButton: HTMLButtonElement;
@@ -20,6 +21,7 @@ export class CodeListing {
     private diffSwitchPrefix: HTMLSpanElement;
 
     constructor(code: string) {
+        this.badge = document.querySelector("span.badge[data-description=code]");
         this.table = document.querySelector("table.code-listing") as HTMLTableElement;
         this.code = code;
         this.annotations = [];
@@ -61,6 +63,11 @@ export class CodeListing {
         this.showOnlyErrorButton.addEventListener("click", () => this.compressAnnotations());
     }
 
+    private updateBadgeCount(): void {
+        const count = this.annotations.length;
+        this.badge.innerText = count > 0 ? count.toString() : "";
+    }
+
     private setToggleButtonsVisibility(): void {
         if (this.annotations.length > 0) {
             this.showAllButton.classList.remove("hide");
@@ -94,6 +101,7 @@ export class CodeListing {
 
     addAnnotation(annotation: AnnotationData): void {
         this.annotations.push(new MachineAnnotation(this.annotations.length, annotation, this.table, this));
+        this.updateBadgeCount();
     }
 
     async addUserAnnotations(userAnnotationURL: string): Promise<void> {
@@ -108,6 +116,7 @@ export class CodeListing {
     addUserAnnotation(annotation: UserAnnotationData): void {
         const annotationObj = new UserAnnotation(annotation, this.table, this);
         this.annotations.push(annotationObj);
+        this.updateBadgeCount();
         this.setToggleButtonsVisibility();
     }
 
@@ -116,6 +125,7 @@ export class CodeListing {
         if (index !== -1) {
             this.annotations.splice(index, 1);
         }
+        this.updateBadgeCount();
         this.setToggleButtonsVisibility();
     }
 

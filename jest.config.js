@@ -8,7 +8,7 @@ module.exports = {
             },
         },
         // Mocking the I18N calls. The key itself will be returned as value
-        "I18n": { t: t => t }
+        "I18n": { l: k => k, t: t => t }
     },
     roots: ["test/javascript/", "app/assets/"],
     moduleDirectories: [

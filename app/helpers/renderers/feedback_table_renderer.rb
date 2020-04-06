@@ -70,7 +70,7 @@ class FeedbackTableRenderer
           @builder.li(class: ('active' if i.zero?)) do
             @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
               @builder.text!((t[:description] || 'Test').upcase_first + ' ')
-              @builder.span(class: 'badge') do
+              @builder.span(class: 'badge', 'data-description': t[:description]) do
                 @builder.text! tab_count(t)
               end
             end
@@ -80,11 +80,7 @@ class FeedbackTableRenderer
           @builder.li(class: ('active' if submission[:groups].blank?)) do
             @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
               @builder.text!(I18n.t('submissions.show.code') + ' ')
-              if submission.key?(:annotations) && submission[:annotations].count.positive?
-                @builder.span(class: 'badge') do
-                  @builder << submission[:annotations].count.to_s
-                end
-              end
+              @builder.span(class: 'badge', 'data-description': 'code')
             end
           end
         end

@@ -67,4 +67,82 @@ class CourseTest < ActiveSupport::TestCase
     assert_not course.secret_required?(user2)
     assert_not course.secret_required?(user3)
   end
+
+  test 'course scoresheet should be correct' do
+    course = create :course
+    create_list :series, 4, course: course, exercise_count: 5, deadline: Time.current
+    users = create_list(:user, 6, courses: [course])
+
+    expected_started = Hash.new 0
+    expected_accepted = Hash.new 0
+    course.series.each do |series|
+      deadline = series.deadline
+      series.exercises.map do |exercise|
+        6.times do |i|
+          u = users[i]
+          case i
+          when 0 # Wrong submission before deadline
+            create :wrong_submission,
+              exercise: exercise,
+              user: u,
+              created_at: (deadline - 2.minutes),
+              course: course
+            expected_started[[u.id, series.id]] += 1
+          when 1 # Wrong, then correct submission before deadline
+            create :correct_submission,
+              exercise: exercise,
+              user: u,
+              created_at: (deadline - 2.minutes),
+              course: course
+            create :correct_submission,
+              exercise: exercise,
+              user: u,
+              created_at: (deadline - 1.minutes),
+              course: course
+            expected_started[[u.id, series.id]] += 1
+            expected_accepted[[u.id, series.id]] += 1
+          when 2 # Wrong submission after deadline
+            create :wrong_submission,
+              exercise: exercise,
+              user: u,
+              created_at: (deadline + 2.minutes),
+              course: course
+          when 3 # Correct submission after deadline
+            create :correct_submission,
+              exercise: exercise,
+              user: u,
+              created_at: (deadline + 2.minutes),
+              course: course
+          when 4 # Correct submission before deadline not in course
+            create :correct_submission,
+              exercise: exercise,
+              user: u,
+              created_at: (deadline - 2.minutes)
+          when 5 # Correct submission after deadline not in course
+            create :correct_submission,
+              exercise: exercise,
+              user: u,
+              created_at: (deadline + 2.minutes)
+          end
+        end
+      end
+    end
+
+    scoresheet = course.scoresheet
+    # All users are included in the scoresheet.
+    assert_equal users.to_set, scoresheet[:users].to_set
+    # All series are included in the scoresheet.
+    assert_equal course.series.to_set, scoresheet[:series].to_set
+    # All series and users are counted.
+    assert_equal course.series.count * users.count, scoresheet[:hash].count
+    # Correct series are counted.
+    assert_equal scoresheet[:hash].keys.map { |k| k[1] }.to_set, scoresheet[:series].map(&:id).to_set
+    # Correct users are counted.
+    assert_equal scoresheet[:hash].keys.map(&:first).to_set, users.map(&:id).to_set
+    # Counts are correct.
+    scoresheet[:hash].each do |key, counts|
+      assert_equal counts[:accepted], expected_accepted[key]
+      assert_equal counts[:started], expected_started[key]
+    end
+  end
 end

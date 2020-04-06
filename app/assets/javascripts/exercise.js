@@ -57,6 +57,9 @@ function initLabelsEdit(labels, undeletableLabels) {
 
 function showLightbox(content) {
     Strip.show(content.images, { side: "top" }, content.index);
+    // Transfer focus back to the document body to allow the lightbox to be closed.
+    // https://github.com/dodona-edu/dodona/issues/1759.
+    document.body.focus();
 }
 
 function onFrameMessage(event) {

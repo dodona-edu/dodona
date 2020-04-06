@@ -75,7 +75,7 @@ en:
       memory_limit: Memory limit
       network_enabled: Network enabled
       network_disabled: Network disabled
-      submission_count: Submission count
+      submission_count: Submitted solutions
       submission_details: "This exercises has %{total} submissions by %{users} unique users. Of these submissions, %{correct} were correct."
       sample_solutions: Sample solutions
       sample_solutions_hint: Click on one of the tabs above to view a sample solution.

@@ -75,7 +75,7 @@ nl:
       memory_limit: Geheugenlimitiet
       network_enabled: Netwerk ingeschakeld
       network_disabled: Netwerk uitgeschakeld
-      submission_count: Aantal oplossingen
+      submission_count: Ingediende oplossingen
       submission_details: "Deze oefening heeft %{total} inzendingen door %{users} unieke gebruikers, hiervan waren %{correct} inzendingen correct."
       sample_solutions: Voorbeeldoplossingen
       sample_solutions_hint: Klik op een tab hierboven om een voorbeeldoplossing te bekijken.

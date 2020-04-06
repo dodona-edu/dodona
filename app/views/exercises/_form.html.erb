@@ -29,18 +29,6 @@
     <div class="col-sm-6 col-xs-12"><%= f.text_field :labels, class: 'form-control', disable: !f.permission?(:labels), value: exercise.labels.map(&:name).join(','), placeholder: t(".labels") %></div>
     <span class="help-block col-sm-offset-3 col-sm-6 col-xs-12"><%= t '.labels_delimiter' %></span>
   </div>
-  <div class="field form-group">
-    <label class="col-sm-3 col-xs-12 control-label"><%= Exercise.human_attribute_name("repository") %></label>
-    <div class="col-sm-6 col-xs-12 form-control-static"><%= link_to exercise.repository.name, exercise.repository %></div>
-  </div>
-  <div class="field form-group">
-    <label class="col-sm-3 col-xs-12 control-label"><%= Exercise.human_attribute_name("judge") %></label>
-    <div class="col-sm-6 col-xs-12 form-control-static"><%= link_to exercise.judge.name, exercise.judge %></div>
-  </div>
-  <div class="field form-group">
-    <label class="col-sm-3 col-xs-12 control-label"><%= t ".edit_exercise" %></label>
-    <div class="col-sm-6 col-xs-12 form-control-static"><%= link_to t(".open_on_github"), exercise.github_url, target: '_blank', rel: 'noopener' %></div>
-  </div>
 <% end %>
 <script>
     dodona.initLabelsEdit(<%= raw render template: 'labels/index', formats: :json %>, <%= raw (exercise.merged_dirconfig['labels'] || []).to_json %>);

@@ -174,10 +174,14 @@ class CoursesController < ApplicationController
       format.csv do
         sheet = CSV.generate do |csv|
           csv << [I18n.t('courses.scoresheet.explanation')]
-          csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')].concat(@series.map(&:name))
-          csv << ['Maximum', '', '', ''].concat(@series.map { |s| s.exercises.count })
+          columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')]
+          columns.concat(@series.flat_map { |s| [s.name, I18n.t('courses.scoresheet.started', series: s.name)] })
+          csv << columns
+          csv << ['Maximum', '', '', ''].concat(@series.flat_map { |s| [s.exercises.count] * 2 })
           @users.each do |u|
-            csv << [u.first_name, u.last_name, u.username, u.email].concat(@series.map { |s| @hash[[u.id, s.id]] })
+            row = [u.first_name, u.last_name, u.username, u.email]
+            row.concat(@series.flat_map { |s| [@hash[[u.id, s.id]][:accepted], @hash[[u.id, s.id]][:started]] })
+            csv << row
           end
         end
         filename = "course-#{@course.name.parameterize}.csv"

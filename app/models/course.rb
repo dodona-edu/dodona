@@ -208,7 +208,11 @@ class Course < ApplicationRecord
 
     hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).map do |series_info, user|
       scores = series_info[1]
-      [[user.id, series_info[0].id], series_info[0].exercises.count { |e| scores[:submissions][[user.id, e.id]]&.accepted }]
+      data = {
+        :accepted => series_info[0].exercises.count { |e| scores[:submissions][[user.id, e.id]]&.accepted },
+        :started => series_info[0].exercises.count { |e| !scores[:submissions][[user.id, e.id]].nil? }
+      }
+      [[user.id, series_info[0].id], data]
     end.to_h
 
     {

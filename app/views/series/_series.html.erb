@@ -117,7 +117,10 @@
     </div>
   <% end %>
   <% if current_user&.course_admin?(series.course) && !series.exercises_visible %>
-    <div class="alert alert-info hidden-print"><%= t "series.show.exercises_not_visible" %></div>
+    <div class="alert alert-info hidden-print">
+      <%= t "series.show.exercises_not_visible" %>
+      <%= link_to(t('series.show.make_visible.link'), series_path(series, series: {exercises_visible: true}), method: :patch) + " " +  t('series.show.make_visible.for_students') %>
+    </div>
   <% end %>
   <div class="series-description">
     <%= markdown(series.description) %>

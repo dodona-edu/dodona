@@ -77,25 +77,25 @@
           </div>
           <div class="col-md-8 col-md-pull-4 col-sm-6 col-sm-pull-6 col-xs-12">
             <div class="row exercise-details">
-              <div title="<%= exercise_config_explanation 'programming_language' %>" class="col-md-4 col-sm-6 col-xs-4 exercise-detail">
+              <div title="<%= exercise_config_explanation 'programming_language' %>" class="col-md-4 col-sm-6 col-xs-6 exercise-detail">
                 <h1><%= @exercise.programming_language.name.titlecase %></h1>
                 <%= t '.programming_language' %>
               </div>
-              <div title="<%= t '.description_files', path: './' + @exercise.path + '/' + Exercise::DESCRIPTION_DIR  + '/' %>" class="col-md-4 col-sm-6 col-xs-4 exercise-detail">
+              <div title="<%= t '.description_files', path: './' + @exercise.path + '/' + Exercise::DESCRIPTION_DIR  + '/' %>" class="col-md-4 col-sm-6 col-xs-6 exercise-detail">
                 <h1><%= @exercise.description_languages.join(', ') %></h1>
                 <%= t '.natural_language' %>
               </div>
-              <div class="col-md-4 col-sm-6 col-xs-4 exercise-detail" title="<%= exercise_config_explanation 'evaluation', 'time_limit' %>">
+              <div class="col-md-4 col-sm-6 col-xs-6 exercise-detail" title="<%= exercise_config_explanation 'evaluation', 'time_limit' %>">
                 <h1><%= @config.dig('evaluation', 'time_limit') || SubmissionRunner.default_config['time_limit']  %>s</h1>
                 <%= t '.time_limit' %>
               </div>
-              <div title="<%= exercise_config_explanation 'evaluation', 'memory_limit' %>" class="col-md-4 col-sm-6 col-xs-4 exercise-detail">
+              <div title="<%= exercise_config_explanation 'evaluation', 'memory_limit' %>" class="col-md-4 col-sm-6 col-xs-6 exercise-detail">
                 <h1>
                   <%= human_bytes (@config.dig('evaluation', 'memory_limit') || SubmissionRunner.default_config['memory_limit']).to_i %>
                 </h1>
                 <%= t '.memory_limit' %>
               </div>
-              <div title="<%= exercise_config_explanation 'network_enabled' %>" class="col-md-4 col-sm-6 col-xs-4 exercise-detail">
+              <div title="<%= exercise_config_explanation 'network_enabled' %>" class="col-md-4 col-sm-6 col-xs-6 exercise-detail">
                 <%
                     if @config['network_enabled']
                       network_icon = 'mdi-wan'
@@ -110,7 +110,7 @@
                 </h1>
                 <%= network_config_name %>
               </div>
-              <div title="<%= t '.submission_details', correct: @exercise.submissions.correct.count, total: @exercise.submissions.count, users: @exercise.users_tried %>" class="col-md-4 col-sm-6 col-xs-4 exercise-detail">
+              <div title="<%= t '.submission_details', correct: @exercise.submissions.correct.count, total: @exercise.submissions.count, users: @exercise.users_tried %>" class="col-md-4 col-sm-6 col-xs-6 exercise-detail">
                 <h1><%= number_with_delimiter @exercise.submissions.count, delimiter: " " %></h1>
                 <%= t '.submission_count' %>
               </div>

@@ -1,6 +1,5 @@
 class JudgesController < ApplicationController
   before_action :set_judge, only: %i[show edit update destroy hook]
-  skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /judges
   # GET /judges.json

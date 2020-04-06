@@ -1,8 +1,6 @@
 class CoursesController < ApplicationController
   before_action :set_course_and_current_membership, except: %i[index new create]
 
-  skip_forgery_protection only: [:subscribe]
-
   has_scope :by_filter, as: 'filter'
   has_scope :by_institution, as: 'institution_id'
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|

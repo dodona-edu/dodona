@@ -3,7 +3,8 @@ declare interface Window {
 }
 
 declare module I18n {
-    export function t(key: string): string;
+    export function l(key: string, data: any): string;
+    export function t(key: string, options?: {}): string;
 
     export var locale: string;
 }

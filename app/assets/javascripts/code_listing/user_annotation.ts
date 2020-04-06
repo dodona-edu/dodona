@@ -14,6 +14,7 @@ interface UserAnnotationPermissionData {
 export interface UserAnnotationData {
     id: number;
     annotation_text: string;
+    created_at: string;
     line_nr: number;
     rendered_markdown: string;
     permission: UserAnnotationPermissionData;
@@ -92,11 +93,13 @@ export class UserAnnotation extends Annotation {
             annotationsRow = this.createAnnotationRow();
         }
 
+        const timestamp = I18n.l("time.formats.annotation", this.annotationData.created_at);
+
         this.annotation = document.createElement("div");
         this.annotation.classList.add("annotation", "user");
         this.annotation.innerHTML = `
           <div class="annotation-header">
-            <span class="annotation-user">${this.annotationData.user.name}</span>
+            <span class="annotation-meta">${I18n.t("js.user_annotation.meta", { user: this.annotationData.user.name, time: timestamp })}</span>
             ${this.annotationData.permission.update ? `
                   <a href='#' class="btn-icon annotation-control-button annotation-edit" title="${I18n.t("js.user_annotation.edit")}">
                     <i class="mdi mdi-pencil"></i>

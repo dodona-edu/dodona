@@ -91,6 +91,7 @@ nl:
           single: toon 1 andere annotatie
           plural: toon {count} andere annotaties
     user_annotation:
+      meta: "%{user} op %{time}"
       send: 'Annoteren'
       update: 'Updaten'
       cancel: 'Annuleren'

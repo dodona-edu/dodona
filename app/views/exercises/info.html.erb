@@ -208,7 +208,7 @@
                   <% @courses_series.each do |course, series| %>
                     <tr>
                       <td title="<%= course.name %>" class="text">
-                        <span><%= link_to course.name, course, target: '_blank' %></span>
+                        <span><%= link_to course.name, course %></span>
                       </td>
                       <td class="text">
                         <%= raw series.map{ |s| link_to(s.name, s, class: "course-link", title: s.name).html_safe }.to_sentence %>

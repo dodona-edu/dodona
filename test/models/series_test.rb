@@ -117,7 +117,7 @@ class SeriesTest < ActiveSupport::TestCase
     create_list :series, 4, course: course, exercise_count: 5, deadline: Time.current
     users = create_list(:user, 6, courses: [course])
 
-    expected_submissions = Hash.new
+    expected_submissions = {}
 
     course.series.each do |series|
       deadline = series.deadline
@@ -128,10 +128,10 @@ class SeriesTest < ActiveSupport::TestCase
           case i
           when 0 # Wrong submission before deadline
             s = create :wrong_submission,
-                   exercise: exercise,
-                   user: u,
-                   created_at: (deadline - 2.minutes),
-                   course: course
+                       exercise: exercise,
+                       user: u,
+                       created_at: (deadline - 2.minutes),
+                       course: course
             expected_submissions[series.id] << s.id
           when 1 # Wrong, then correct submission before deadline
             create :correct_submission,
@@ -140,10 +140,10 @@ class SeriesTest < ActiveSupport::TestCase
                    created_at: (deadline - 2.minutes),
                    course: course
             s = create :correct_submission,
-                   exercise: exercise,
-                   user: u,
-                   created_at: (deadline - 1.minutes),
-                   course: course
+                       exercise: exercise,
+                       user: u,
+                       created_at: (deadline - 1.minute),
+                       course: course
             expected_submissions[series.id] << s.id
           when 2 # Wrong submission after deadline
             create :wrong_submission,
@@ -179,7 +179,7 @@ class SeriesTest < ActiveSupport::TestCase
       # Only latest submissions in the course and after the deadline are counted.
       assert_equal 2 * series.exercises.count, scoresheet[:submissions].count
       # Submissions are for the correct user.
-      assert_equal users[0,2].map(&:id).to_set, scoresheet[:submissions].keys.map(&:first).to_set
+      assert_equal users[0, 2].map(&:id).to_set, scoresheet[:submissions].keys.map(&:first).to_set
       # Expected submissions are returned.
       assert_equal expected_submissions[series.id].to_set, scoresheet[:submissions].values.map(&:id).to_set
       # Hash mapping is correct.

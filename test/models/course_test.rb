@@ -83,46 +83,46 @@ class CourseTest < ActiveSupport::TestCase
           case i
           when 0 # Wrong submission before deadline
             create :wrong_submission,
-              exercise: exercise,
-              user: u,
-              created_at: (deadline - 2.minutes),
-              course: course
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline - 2.minutes),
+                   course: course
             expected_started[[u.id, series.id]] += 1
           when 1 # Wrong, then correct submission before deadline
             create :correct_submission,
-              exercise: exercise,
-              user: u,
-              created_at: (deadline - 2.minutes),
-              course: course
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline - 2.minutes),
+                   course: course
             create :correct_submission,
-              exercise: exercise,
-              user: u,
-              created_at: (deadline - 1.minutes),
-              course: course
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline - 1.minute),
+                   course: course
             expected_started[[u.id, series.id]] += 1
             expected_accepted[[u.id, series.id]] += 1
           when 2 # Wrong submission after deadline
             create :wrong_submission,
-              exercise: exercise,
-              user: u,
-              created_at: (deadline + 2.minutes),
-              course: course
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline + 2.minutes),
+                   course: course
           when 3 # Correct submission after deadline
             create :correct_submission,
-              exercise: exercise,
-              user: u,
-              created_at: (deadline + 2.minutes),
-              course: course
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline + 2.minutes),
+                   course: course
           when 4 # Correct submission before deadline not in course
             create :correct_submission,
-              exercise: exercise,
-              user: u,
-              created_at: (deadline - 2.minutes)
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline - 2.minutes)
           when 5 # Correct submission after deadline not in course
             create :correct_submission,
-              exercise: exercise,
-              user: u,
-              created_at: (deadline + 2.minutes)
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline + 2.minutes)
           end
         end
       end

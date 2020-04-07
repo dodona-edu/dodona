@@ -27,11 +27,13 @@
             <div class="row">
               <div class="col-xs-12 repo-details">
                 <div class="row">
-                  <div class="col-sm-12 col-xs-6">
-                    <p title="<%= t '.contact' %>">
-                    <i class="mdi mdi-account-box mdi-24"></i>
-                    <%= mail_to(@config['contact'] || @repository.first_admin&.pretty_email) %>
-                  </div>
+                  <% if (contact_info = @config['contact'] || @repository.first_admin&.pretty_email) %>
+                    <div class="col-sm-12 col-xs-6">
+                      <p title="<%= t '.contact' %>">
+                        <i class="mdi mdi-account-box mdi-24"></i>
+                        <%= mail_to(contact_info) %>
+                    </div>
+                  <% end %>
                   <div class="col-sm-12 col-xs-6">
                     <p title="<%= t '.judge' %>">
                     <i class="mdi mdi-gavel mdi-24"></i>

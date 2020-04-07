@@ -57,6 +57,10 @@ en:
       alert_removed: This exercise is no longer available, but can still see your old submissions.
       deadline_passed: "The deadline for this exercise was at %{deadline}. You can still submit, but your submissions may not be accounted for."
       deadline_in_5_minutes: "The deadline for this exercise is at %{deadline}, which is less than 5 minutes away."
+      navigation:
+        back_to_course: Back to course overview
+        previous: Previous exercise
+        next: Next exercise
     series_exercises_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
     edit:

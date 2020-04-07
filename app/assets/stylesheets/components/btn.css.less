@@ -189,6 +189,16 @@
   height: 33px;
 }
 
+.btn-icon-inverted {
+  &:extend(.btn-icon);
+
+  color: @white-secondary;
+
+  &:hover {
+    color: @white-text;
+  }
+}
+
 form.button_to {
   display: inline;
 }

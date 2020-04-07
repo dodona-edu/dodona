@@ -17,6 +17,28 @@ module ExerciseHelper
     "exercise-#{exercise.id}"
   end
 
+  # Finds the paths to the previous and next exercise in a series, given the
+  # current exercise.
+  def previous_next_exercise_path(series, exercise)
+    return [nil, nil] if series.blank?
+
+    previous_ex = nil
+    next_ex = nil
+
+    # Function that gets the path to the exercise.
+    get_ex_path = ->(ex) { course_series_exercise_path(I18n.locale, series.course, series.id, ex) }
+
+    series.exercise_ids.each_with_index do |series_exercise_id, idx|
+      next unless series_exercise_id == exercise.id
+
+      previous_ex = get_ex_path.call(series.exercise_ids[idx - 1]) if idx > 0
+      next_ex = get_ex_path.call(series.exercise_ids[idx + 1]) if idx + 1 < series.exercises.length
+      break
+    end
+
+    [previous_ex, next_ex]
+  end
+
   BYTE_UNITS = {
     unit: 'B',
     thousand: 'kB',

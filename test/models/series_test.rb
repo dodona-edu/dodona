@@ -115,36 +115,76 @@ class SeriesTest < ActiveSupport::TestCase
   test 'series scoresheet should be correct' do
     course = create :course
     create_list :series, 4, course: course, exercise_count: 5, deadline: Time.current
-    users = create_list(:user, 4, courses: [course])
+    users = create_list(:user, 6, courses: [course])
+
+    expected_submissions = {}
 
     course.series.each do |series|
       deadline = series.deadline
+      expected_submissions[series.id] = []
       series.exercises.map do |exercise|
-        4.times do |i|
+        6.times do |i|
           u = users[i]
           case i
           when 0 # Wrong submission before deadline
-            create :wrong_submission,
-                   exercise: exercise,
-                   user: u,
-                   created_at: (deadline - 2.minutes)
-          when 1 # Correct submission before deadline
+            s = create :wrong_submission,
+                       exercise: exercise,
+                       user: u,
+                       created_at: (deadline - 2.minutes),
+                       course: course
+            expected_submissions[series.id] << s.id
+          when 1 # Wrong, then correct submission before deadline
             create :correct_submission,
                    exercise: exercise,
                    user: u,
-                   created_at: (deadline - 2.minutes)
+                   created_at: (deadline - 2.minutes),
+                   course: course
+            s = create :correct_submission,
+                       exercise: exercise,
+                       user: u,
+                       created_at: (deadline - 1.minute),
+                       course: course
+            expected_submissions[series.id] << s.id
           when 2 # Wrong submission after deadline
             create :wrong_submission,
                    exercise: exercise,
                    user: u,
-                   created_at: (deadline + 2.minutes)
+                   created_at: (deadline + 2.minutes),
+                   course: course
           when 3 # Correct submission after deadline
+            create :correct_submission,
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline + 2.minutes),
+                   course: course
+          when 4 # Correct submission before deadline not in course
+            create :correct_submission,
+                   exercise: exercise,
+                   user: u,
+                   created_at: (deadline - 2.minutes)
+          when 5 # Correct submission after deadline not in course
             create :correct_submission,
                    exercise: exercise,
                    user: u,
                    created_at: (deadline + 2.minutes)
           end
         end
+      end
+
+      scoresheet = series.scoresheet
+      # All users are included in the scoresheet.
+      assert_equal users.to_set, scoresheet[:users].to_set
+      # All exercises are included in the scoresheet.
+      assert_equal series.exercises.to_set, scoresheet[:exercises].to_set
+      # Only latest submissions in the course and after the deadline are counted.
+      assert_equal 2 * series.exercises.count, scoresheet[:submissions].count
+      # Submissions are for the correct user.
+      assert_equal users[0, 2].map(&:id).to_set, scoresheet[:submissions].keys.map(&:first).to_set
+      # Expected submissions are returned.
+      assert_equal expected_submissions[series.id].to_set, scoresheet[:submissions].values.map(&:id).to_set
+      # Hash mapping is correct.
+      scoresheet[:submissions].each do |key, submission|
+        assert_equal [submission.user_id, submission.exercise.id], key
       end
     end
   end

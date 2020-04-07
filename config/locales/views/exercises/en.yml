@@ -79,6 +79,7 @@ en:
       submission_details: "This exercises has %{total} submissions by %{users} unique users. Of these submissions, %{correct} were correct."
       sample_solutions: Sample solutions
       sample_solutions_hint: Click on one of the tabs above to view a sample solution.
+      sample_solution_submit: Submit sample solution
       no_solutions: This exercise does not yet have a sample solution.
       no_solutions_admin: Add your sample solutions to the repository and they will be shown here.
       usage: Usage

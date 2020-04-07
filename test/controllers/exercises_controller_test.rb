@@ -211,6 +211,32 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get solution with show' do
+    solutions = {}
+    solutions.expects(:[]).with(Pathname.new('test')).returns("content")
+    Exercise.any_instance.expects(:solutions).returns(solutions)
+
+    get exercise_url(@instance),
+        params: { from_solution: 'test' }
+    assert_response :success
+  end
+
+  test 'should not get solution as student' do
+    student = create :student
+    sign_out :user
+    sign_in student
+
+    get exercise_url(@instance, format: :json),
+        params: { from_solution: 'test' }
+    assert_response :forbidden
+  end
+
+  test 'should rescue illegal filename for solution' do
+    get exercise_url(@instance),
+        params: { from_solution: "(/\\:*?\"<>|\0" }
+    assert_response :success
+  end
+
   test 'should list all exercises within series' do
     exercises = create_list :exercise, 10, repository: @instance.repository
     exercises_in_series = exercises.take(5)

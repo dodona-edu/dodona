@@ -76,6 +76,16 @@ class ExercisesController < ApplicationController
       @edit_submission = Submission.find(params[:edit_submission])
       authorize @edit_submission, :edit?
     end
+    if params[:from_solution]
+      begin
+        @solution = @exercise.solutions[Pathname.new(params[:from_solution])]
+      rescue ArgumentError # ignored, the pathname is invalid.
+        @solution = nil
+      end
+      authorize @exercise, :info?
+    end
+
+    @code = @edit_submission.try(:code) || @solution || @exercise.boilerplate
     @title = @exercise.name
     @crumbs << [@exercise.name, '#']
   end

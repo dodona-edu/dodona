@@ -213,7 +213,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get solution with show' do
     solutions = {}
-    solutions.expects(:[]).with(Pathname.new('test')).returns('content')
+    solutions.expects(:[]).with('test').returns('content')
     Exercise.any_instance.expects(:solutions).returns(solutions)
 
     get exercise_url(@instance),
@@ -229,12 +229,6 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     get exercise_url(@instance, format: :json),
         params: { from_solution: 'test' }
     assert_response :forbidden
-  end
-
-  test 'should rescue illegal filename for solution' do
-    get exercise_url(@instance),
-        params: { from_solution: "(/\\:*?\"<>|\0" }
-    assert_response :success
   end
 
   test 'should list all exercises within series' do

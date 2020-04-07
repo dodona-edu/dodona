@@ -87,16 +87,19 @@
                 <h1><%= @exercise.description_languages.join(', ') %></h1>
                 <%= t '.natural_language' %>
               </div>
+              <div class="clearfix visible-sm-block"></div>
               <div class="col-md-4 col-sm-6 col-xs-6 exercise-detail" title="<%= exercise_config_explanation 'evaluation', 'time_limit' %>">
                 <h1><%= @config.dig('evaluation', 'time_limit') || SubmissionRunner.default_config['time_limit']  %>s</h1>
                 <%= t '.time_limit' %>
               </div>
+              <div class="clearfix visible-md-block"></div>
               <div title="<%= exercise_config_explanation 'evaluation', 'memory_limit' %>" class="col-md-4 col-sm-6 col-xs-6 exercise-detail">
                 <h1>
                   <%= human_bytes (@config.dig('evaluation', 'memory_limit') || SubmissionRunner.default_config['memory_limit']).to_i %>
                 </h1>
                 <%= t '.memory_limit' %>
               </div>
+              <div class="clearfix visible-sm-block"></div>
               <div title="<%= exercise_config_explanation 'network_enabled' %>" class="col-md-4 col-sm-6 col-xs-6 exercise-detail">
                 <%
                     if @config['network_enabled']

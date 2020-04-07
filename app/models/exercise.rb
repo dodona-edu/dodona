@@ -157,7 +157,7 @@ class Exercise < ApplicationRecord
   def boilerplate_localized(lang = I18n.locale.to_s)
     ext = lang ? ".#{lang}" : ''
     file = full_path + BOILERPLATE_DIR + "boilerplate#{ext}"
-    file.read.strip if file.exist?
+    file.read if file.exist?
   end
 
   def boilerplate_default

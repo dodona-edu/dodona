@@ -41,7 +41,7 @@ class AnnotationTest < ActiveSupport::TestCase
   test 'can not create annotation with an enormous message' do
     annotating_user = create :user
     annotation = create :annotation, submission: @submission, user: annotating_user
-    annotation.annotation_text = Faker::Lorem.paragraph sentence_count: 100
+    annotation.annotation_text = 'A' * 2049 # max length of annotation text is 2048 -> trigger failure
     assert_not annotation.valid?
   end
 

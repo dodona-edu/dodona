@@ -148,41 +148,39 @@
 
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card">
+    <div class="card sample-solutions">
       <div class="card-title">
         <h3><%= t ".sample_solutions" %></h3>
       </div>
-      <div class="card-supporting-text row">
-        <div class="col-xs-12">
-          <% if solutions.any? %>
-            <div class="card-tab">
-              <ul class="nav nav-tabs">
-                <% solutions.map(&:first).each_with_index do |fname, i| %>
-                  <li>
-                    <a href="#solution-<%= i %>" data-toggle="tab" aria-expanded="false"><%= fname %></a>
-                  </li>
-                <% end %>
-              </ul>
-              <div class="tab-content">
-                <div class="tab-pane active">
-                  <span class="text-muted"><%= t '.sample_solutions_hint' %></span>
-                </div>
-                <% solutions.each_with_index do |(fname, code), i| %>
-                  <div id="solution-<%= i %>" class="tab-pane feedback-table">
-                    <div class="feedback-table-options">
-                      <%= link_to t('.sample_solution_submit'), exercise_url(@exercise, from_solution: fname), class: "btn btn-default btn-secondary" %>
-                    </div>
-                    <div class="code-table">
-                      <%= raw FeedbackCodeRenderer.new(code, @exercise.programming_language.name).parse.html %>
-                    </div>
-                  </div>
-                <% end %>
+      <div class="card-supporting-text">
+        <% if solutions.any? %>
+          <div class="card-tab">
+            <ul class="nav nav-tabs">
+              <% solutions.map(&:first).each_with_index do |fname, i| %>
+                <li>
+                  <a href="#solution-<%= i %>" data-toggle="tab" aria-expanded="false"><%= fname %></a>
+                </li>
+              <% end %>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active">
+                <span class="text-muted"><%= t '.sample_solutions_hint' %></span>
               </div>
+              <% solutions.each_with_index do |(fname, code), i| %>
+                <div id="solution-<%= i %>" class="tab-pane feedback-table">
+                  <div class="feedback-table-options">
+                    <%= link_to t('.sample_solution_submit'), exercise_url(@exercise, from_solution: fname), class: "btn btn-default btn-secondary" %>
+                  </div>
+                  <div class="code-table">
+                    <%= raw FeedbackCodeRenderer.new(code, @exercise.programming_language.name).parse.html %>
+                  </div>
+                </div>
+              <% end %>
             </div>
-          <% else %>
-            <span class="text-muted"><%= t '.no_solutions' %></span>
-          <% end %>
-        </div>
+          </div>
+        <% else %>
+          <span class="text-muted"><%= t '.no_solutions' %></span>
+        <% end %>
       </div>
     </div>
   </div>

@@ -213,7 +213,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get solution with show' do
     solutions = {}
-    solutions.expects(:[]).with(Pathname.new('test')).returns("content")
+    solutions.expects(:[]).with(Pathname.new('test')).returns('content')
     Exercise.any_instance.expects(:solutions).returns(solutions)
 
     get exercise_url(@instance),

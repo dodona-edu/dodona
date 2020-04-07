@@ -19,6 +19,8 @@ nl:
       open_on_github: Open op GitHub
       labels_delimiter: "Gebruik een komma om labels te scheiden"
       labels: Nieuw label
+      info: Informatie
+      info_description: Ga naar de informative over deze oefening
     index:
       title: Oefeningen
       exercise: Oefening

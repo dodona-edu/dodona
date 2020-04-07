@@ -19,6 +19,8 @@ en:
       open_on_github: Open on GitHub
       labels_delimiter: "Use a comma to delimit labels"
       labels: New label
+      info: Information
+      info_description: Go to the information about this exercise
     index:
       title: Exercises
       exercise: Exercise

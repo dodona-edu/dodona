@@ -95,7 +95,7 @@ class Submission < ApplicationRecord
     super(params)
     # We need to do this after the rest of the fields are initialized, because we depend on the course_id, user_id, ...
     self.code = code.to_s unless code.nil?
-    self.line_count = self.code.length unless code.nil?
+    self.line_count = self.code.lines.length unless code.nil?
     self.result = result.to_s unless result.nil?
   end
 

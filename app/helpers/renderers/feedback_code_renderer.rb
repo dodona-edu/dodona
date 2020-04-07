@@ -15,7 +15,14 @@ class FeedbackCodeRenderer
     lexer = (Rouge::Lexer.find(@programming_language) || Rouge::Lexers::PlainText).new
     lexed_c = lexer.lex(@code.encode(universal_newline: true))
 
-    @builder << table_formatter.format(lexed_c)
+    @builder.div(style: 'position: relative; left: 0; top: 0') do
+      @builder << table_formatter.format(lexed_c)
+
+      # Not possible to use clipboard_button_for here since the behaviour is different.
+      @builder.button(class: 'btn btn-default', id: 'copy-to-clipboard', style: 'position: absolute; top: 0px; right: 1px') do
+        @builder.i!(class: 'mdi mdi-clipboard-text mdi-18')
+      end
+    end
     self
   end
 

@@ -1,7 +1,7 @@
 import { MachineAnnotation, AnnotationData } from "code_listing/machine_annotation";
 import { UserAnnotation, UserAnnotationData } from "code_listing/user_annotation";
 import { Annotation } from "code_listing/annotation";
-import { fetch } from "util.js";
+import { ClipboardJS, fetch } from "util.js";
 
 export class CodeListing {
     private readonly table: HTMLTableElement;
@@ -13,6 +13,7 @@ export class CodeListing {
     private readonly markingClass: string = "marked";
     private readonly submissionId: string;
 
+    private clipboard: ClipboardJS;
     private badge: HTMLSpanElement;
     private options: HTMLDivElement;
     private hideAllButton: HTMLButtonElement;
@@ -45,6 +46,7 @@ export class CodeListing {
         });
 
         this.initAnnotationToggleButtons();
+        this.initCopyToClipboard();
     }
 
     private initAnnotationToggleButtons(): void {
@@ -63,6 +65,25 @@ export class CodeListing {
         this.hideAllButton.addEventListener("click", () => this.hideAllAnnotations());
 
         this.showOnlyErrorButton.addEventListener("click", () => this.compressAnnotations());
+    }
+
+    private initCopyToClipboard(): void {
+        const $clipboardBtn = $("#copy-to-clipboard");
+        const delay = 1000;
+        const tooltip = (message: string): void => {
+            // @ts-ignore
+            $clipboardBtn.attr("title", message).tooltip("show");
+            // @ts-ignore
+            setTimeout(() => $clipboardBtn.tooltip("destroy"), delay);
+        };
+
+        this.clipboard = new ClipboardJS("#copy-to-clipboard", { text: () => this.code });
+        this.clipboard.on("success", () => {
+            tooltip(I18n.t("js.copy-success"));
+        });
+        this.clipboard.on("error", () => {
+            tooltip(I18n.t("js.copy-fail"));
+        });
     }
 
     private updateBadgeCount(): void {

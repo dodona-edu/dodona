@@ -181,6 +181,7 @@ function fetch(url, options = {}) {
 }
 
 export {
+    ClipboardJS,
     initClipboard,
     delay,
     fetch,

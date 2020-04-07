@@ -77,11 +77,7 @@ class ExercisesController < ApplicationController
       authorize @edit_submission, :edit?
     end
     if params[:from_solution]
-      begin
-        @solution = @exercise.solutions[Pathname.new(params[:from_solution])]
-      rescue ArgumentError # ignored, the pathname is invalid.
-        @solution = nil
-      end
+      @solution = @exercise.solutions[params[:from_solution]]
       authorize @exercise, :info?
     end
 

@@ -84,14 +84,18 @@ en:
         sat: Sa
         sun: Su
     annotation:
-      hidden: An annotation was hidden
-      were_hidden:
-        first: Only errors and user annotations are shown,
-        second:
-          single: show 1 other annotation
-          plural: show {count} other annotations
+      hidden:
+        single: Hidden annotation
+        plural: "%{count} hidden annotations"
+      type:
+        error: Error
+        info: Notice
+        user: Comment
+        warning: Warning
+    code:
+      copy-to-clipboard: Copy code to clipboard
     user_annotation:
-      meta: "%{user} at %{time}"
+      meta: "%{user} · %{time}"
       send: 'Annotate'
       update: 'Update'
       cancel: 'Cancel'

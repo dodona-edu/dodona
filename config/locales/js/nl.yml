@@ -84,14 +84,18 @@ nl:
         sat: Za
         sun: Zo
     annotation:
-      hidden: Een annotatie werd verborgen
-      were_hidden:
-        first: Enkel errors en annotaties door gebruikers worden getoond,
-        second:
-          single: toon 1 andere annotatie
-          plural: toon {count} andere annotaties
+      hidden:
+        single: Verborgen annotatie
+        plural: "%{count} verborgen annotaties"
+      type:
+        error: Fout
+        info: Opmerking
+        user: Commentaar
+        warning: Waarschuwing
+    code:
+      copy-to-clipboard: Kopieer code naar klembord
     user_annotation:
-      meta: "%{user} op %{time}"
+      meta: "%{user} · %{time}"
       send: 'Annoteren'
       update: 'Updaten'
       cancel: 'Annuleren'

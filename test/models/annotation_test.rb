@@ -15,20 +15,27 @@ require 'test_helper'
 class AnnotationTest < ActiveSupport::TestCase
   setup do
     @user = create :user, {}
-    @submission = create :submission, user: @user
+    @submission = create :submission, code: "line1\nline2\nline3\n", user: @user
   end
 
-  test 'can create normal annotation' do
+  test 'can create line-bound annotation' do
     annotating_user = create :user
-    annotation = create :annotation, submission: @submission, user: annotating_user
+    annotation = create :annotation, line_nr: 1, submission: @submission, user: annotating_user
     assert annotation.valid?
   end
 
-  test 'can not create annotation with line_nr below 0' do
+  test 'can not create annotation with negative line_nr' do
     annotating_user = create :user
     annotation = create :annotation, submission: @submission, user: annotating_user
     annotation.line_nr = -1
     assert_not annotation.valid?
+  end
+
+  test 'can create global annotation' do
+    annotating_user = create :user
+    annotation = create :annotation, submission: @submission, user: annotating_user
+    annotation.line_nr = nil
+    assert annotation.valid?
   end
 
   test 'can not create annotation without some sort of message' do

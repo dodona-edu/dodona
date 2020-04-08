@@ -2,12 +2,24 @@ require 'test_helper'
 
 class AnnotationControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @submission = create :correct_submission
+    @submission = create :correct_submission, code: "line1\nline2\nline3\n"
     @zeus = create(:zeus)
     sign_in @zeus
   end
 
-  test 'can create annotation' do
+  test 'can create global annotation' do
+    post submission_annotations_url(@submission), params: {
+      annotation: {
+        line_nr: nil,
+        annotation_text: 'Not available'
+      },
+      format: :json
+    }
+
+    assert_response :created
+  end
+
+  test 'can create line-bound annotation' do
     post submission_annotations_url(@submission), params: {
       annotation: {
         line_nr: 1,

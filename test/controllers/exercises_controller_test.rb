@@ -29,6 +29,8 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should show exercise info' do
     stub_all_exercises!
+    # Attach exercise to courses to test sorting
+    create_list(:course, 5).each { |s| s.series << create(:series, exercises: [@instance]) }
     get info_exercise_url(@instance)
     assert_response :success
   end

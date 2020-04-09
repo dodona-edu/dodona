@@ -6,4 +6,18 @@ module SeriesHelper
       course_path(series.course, anchor: series.anchor)
     end
   end
+
+  def deadline_class(met, future)
+    return 'deadline-ok' if met
+    return 'deadline-future' if future
+
+    'deadline-passed'
+  end
+
+  def deadline_icon(met, future)
+    return 'mdi-alarm-check' if met
+    return 'mdi-alarm' if future
+
+    'mdi-alarm-off'
+  end
 end

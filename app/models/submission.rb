@@ -272,6 +272,15 @@ class Submission < ApplicationRecord
 
     return if course.blank?
 
+    # Invalidate the completion status of this exercise, for every series in
+    # the current course that contains this exercise, for the current user.
+    # Afterwards, invalidate the completion status of the series itself as well.
+    exercise.series.where(course_id: course_id).find_each do |ex_series|
+      exercise.invalidate_accepted_for(course: course, deadline: ex_series.deadline, user: user)
+      ex_series.invalidate_completed_before_deadline?(user: user)
+    end
+
+    # Invalidate other statistics.
     course.invalidate_correct_solutions
     exercise.invalidate_users_correct(course: course)
     exercise.invalidate_users_tried(course: course)

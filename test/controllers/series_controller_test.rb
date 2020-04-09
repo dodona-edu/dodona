@@ -142,6 +142,15 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal ids, @instance.series_memberships.map(&:exercise_id)
   end
 
+  test 'missed deadlines should have correct class' do
+    series = create :series, deadline: Time.zone.now - 1.day
+    create_list :exercise, 5, series: [series]
+
+    get series_url(series)
+    assert_response :success
+    assert_match(/deadline-passed/, response.body)
+  end
+
   test 'update should work using api' do
     # https://github.com/dodona-edu/dodona/issues/1765
     sign_out :user

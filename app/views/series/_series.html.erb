@@ -25,11 +25,13 @@
       <%= render partial: 'series/series_status', locals: {summary: summary} %>
     </div>
     <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
+      <%=  %>
       <% if series.deadline? %>
+        <% deadline_met = user ? series.completed_before_deadline?(user: user) : false %>
         <% if series.deadline > Time.now %>
-          <%= "<small class='deadline-ok' title='deadline #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}'><i class='mdi mdi-alarm mdi-12'></i> #{l series.deadline, format: :long}</small>".html_safe %>
+          <%= "<small class='#{deadline_class deadline_met, true}' title='deadline #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}'><i class='mdi #{deadline_icon deadline_met, true} mdi-12'></i> #{l series.deadline, format: :long}</small>".html_safe %>
         <% else %>
-          <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><i class='mdi mdi-alarm mdi-12'></i> #{l series.deadline, format: :long}</small>".html_safe %>
+          <%= "<small class='#{deadline_class deadline_met, false}' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><i class='mdi #{deadline_icon deadline_met, true} mdi-12'></i> #{l series.deadline, format: :long}</small>".html_safe %>
         <% end %>
       <% end %>
     </h4>

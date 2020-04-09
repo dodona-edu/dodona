@@ -21,7 +21,10 @@ require 'csv'
 
 class Series < ApplicationRecord
   include ActionView::Helpers::SanitizeHelper
+  include Cacheable
   include Tokenable
+
+  USER_COMPLETED_CACHE_STRING = '/series/%<id>s/deadline/%<deadline>s/user/%<user_id>s'.freeze
 
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
@@ -59,11 +62,22 @@ class Series < ApplicationRecord
   end
 
   def completed?(user)
-    exercises.all? { |e| e.accepted_for(user) }
+    exercises.all? { |e| e.accepted_for(user: user) }
   end
 
+  def completed_before_deadline?(options)
+    return true unless deadline?
+
+    options[:course] = course
+    options[:deadline] = deadline
+    exercises.all? { |e| e.accepted_for(options) }
+  end
+
+  invalidateable_instance_cacheable(:completed_before_deadline?,
+                                    ->(this, options) { format(USER_COMPLETED_CACHE_STRING, user_id: options[:user].id.to_s, deadline: this.deadline? ? this.deadline.to_s : 'global', id: this.id.to_s) })
+
   def solved_exercises(user)
-    exercises.select { |e| e.accepted_for(user) }
+    exercises.select { |e| e.accepted_for(user: user) }
   end
 
   def indianio_support

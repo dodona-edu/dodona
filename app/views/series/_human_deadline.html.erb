@@ -1,7 +1,14 @@
 <% if series.deadline? %>
-  <% if series.deadline > Time.now %>
-    <%= "<small class='deadline-ok' title='#{l series.deadline, format: :long}'><i class='mdi mdi-alarm mdi-12'></i> #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}</small>".html_safe %>
-  <% else %>
-    <%= "<small class='deadline-passed' title='#{l series.deadline, format: :long}'><i class='mdi mdi-alarm mdi-12'></i> #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'}</small>".html_safe %>
-  <% end %>
+  <% met = series.completed_before_deadline?(user: current_user) %>
+  <% in_future = series.deadline > Time.now %>
+  <small class="<%= deadline_class met, in_future %>" title="<%= l(series.deadline, format: :long) %>">
+    <i class="mdi mdi-12 <%= deadline_icon met, in_future %>"></i>
+    <% if in_future %>
+      <%= " #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}" %>
+    <% elsif met %>
+      <%= " #{time_ago_in_words series.deadline} #{t "series.deadline.ago"}" %>
+    <% else %>
+      <%= t("series.show.missed_deadline") %>
+    <% end %>
+  </small>
 <% end %>

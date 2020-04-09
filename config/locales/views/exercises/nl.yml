@@ -20,7 +20,7 @@ nl:
       labels_delimiter: "Gebruik een komma om labels te scheiden"
       labels: Nieuw label
       info: Informatie
-      info_description: Ga naar de informative over deze oefening
+      info_description: Ga naar de informatiepagina van deze oefening
     index:
       title: Oefeningen
       exercise: Oefening
@@ -81,7 +81,7 @@ nl:
       submission_details: "Deze oefening heeft %{total} inzendingen door %{users} unieke gebruikers, hiervan waren %{correct} inzendingen correct."
       sample_solutions: Voorbeeldoplossingen
       sample_solutions_hint: Klik op een tab hierboven om een voorbeeldoplossing te bekijken.
-      sample_solution_submit: Voorbeeldoplossing indienen
+      sample_solution_submit: Deze oplossing indienen
       no_solutions: Deze oefening heeft nog geen voorbeeldoplossingen.
       no_solutions_admin: Voeg je voorbeeldoplossingen toe aan de repository om ze hier te laten verschijnen.
       usage: Gebruik

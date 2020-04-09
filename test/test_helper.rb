@@ -11,12 +11,12 @@ require 'faker'
 require 'rails/test_help'
 require 'mocha/minitest'
 
-require 'helpers/stub_helper'
-require 'helpers/delayed_job_helper'
-require 'helpers/crud_helper'
-require 'helpers/git_helper'
-require 'helpers/remote_helper'
-require 'helpers/export_zip_helper'
+require 'testhelpers/stub_helper'
+require 'testhelpers/delayed_job_helper'
+require 'testhelpers/crud_helper'
+require 'testhelpers/git_helper'
+require 'testhelpers/remote_helper'
+require 'testhelpers/export_zip_helper'
 
 # automatically set locale for all routes
 require 'minitest/utils/rails/locale'

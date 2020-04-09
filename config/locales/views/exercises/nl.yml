@@ -57,6 +57,10 @@ nl:
       alert_removed: Deze oefening is niet meer beschikbaar, maar je kan nog steeds je oude oplossingen bekijken.
       deadline_passed: "De deadline voor deze oefening was om %{deadline}. Je kan nog steeds indienen, maar de lesgever houdt er mogelijk geen rekening meer mee."
       deadline_in_5_minutes: "De deadline voor deze oefening is om %{deadline}, wat over minder dan 5 minuten is."
+      navigation:
+        back_to_course: Terug naar cursusoverzicht
+        previous: Vorige oefening
+        next: Volgende oefening
     series_exercises_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:

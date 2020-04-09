@@ -1,4 +1,4 @@
-require 'helpers/crud_helper'
+require 'testhelpers/crud_helper'
 require 'test_helper'
 
 class CoursesControllerTest < ActionDispatch::IntegrationTest

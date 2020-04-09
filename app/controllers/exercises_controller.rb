@@ -1,4 +1,6 @@
 class ExercisesController < ApplicationController
+  include SeriesHelper
+
   before_action :set_exercise, only: %i[show description edit update media info]
   before_action :set_course, only: %i[show edit update media info]
   before_action :set_series, only: %i[show edit update info]
@@ -160,11 +162,7 @@ class ExercisesController < ApplicationController
     return if params[:series_id].nil?
 
     @series = Series.find(params[:series_id])
-    @crumbs << if @series.hidden? && !current_user&.course_admin?(@series.course)
-                 [@series.name, series_path(@series, token: @series.access_token)]
-               else
-                 [@series.name, course_path(@series.course, anchor: @series.anchor)]
-               end
+    @crumbs << [@series.name, breadcrumb_series_path(@series, current_user)]
     authorize @series
   end
 end

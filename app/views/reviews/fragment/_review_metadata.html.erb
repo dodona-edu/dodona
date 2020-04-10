@@ -1,0 +1,42 @@
+<div class="review-metadata-submission">
+  <h4><%= t('review.metadata.submission.title') %></h4>
+  <p>
+    <%= t('review.metadata.submission.time.html', time_ago: time_ago_in_words(review.submission.created_at), made_on: l(review.submission.created_at), format: :short) %>
+
+  </p>
+  <p>
+    <% ttd = review.time_to_deadline %>
+    <%= t('review.metadata.submission.time_to_series_deadline.html', time_ago: distance_of_time_in_words(ttd[:submission_time], ttd[:deadline])) %>
+  </p>
+
+  <p>
+    <%= t('review.metadata.submission.previous_attempts.html', count: review.previous_attempts) %>
+  </p>
+
+</div>
+<div class="review-metadata-session">
+  <h4><%= t('review.metadata.session.title') %></h4>
+
+  <% meta = review.session_metadata %>
+
+  <p>
+    <%= t('review.metadata.session.remaining_exercise.html', count: meta[:exercise_remaining]) %>
+  </p>
+
+  <p>
+    <%= t('review.metadata.session.remaining_user.html', count: meta[:user_remaining]) %>
+  </p>
+
+  <p>
+    <%= t('review.metadata.session.remaining.html', count: meta[:remaining])%>
+    <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
+      <% total = meta[:total].to_f %>
+      <% done = total - meta[:remaining] - meta[:undecided] %>
+      <% correct_end = done / total %>
+      <% wrong_end = correct_end + meta[:remaining] / total %>
+      <line x1="0" y1="0.5" x2="<%= correct_end %>" y2="0.5" class="correct" data-toggle="tooltip" title="<%= t('review_session.progress.finished', review_count: done.to_i) %>"></line>
+      <line x1="<%= correct_end %>" y1="0.5" x2="<%= wrong_end %>" y2="0.5" class="wrong" data-toggle="tooltip" title="<%= t('review_session.progress.unfinished', review_count: meta[:remaining].to_i) %>"></line>
+      <line x1="<%= wrong_end %>" y1="0.5" x2="1" y2="0.5" class="not-started" data-toggle="tooltip" title="<%= t('review_session.progress.undecided', review_count: (meta[:total] - meta[:remaining] - done).to_i) %>"></line>
+    </svg>
+  </p>
+</div>

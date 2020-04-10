@@ -71,6 +71,19 @@
                 <% end %>
               </li>
             <% end %>
+            <% if policy(series).review_create_wizard? %>
+              <li>
+                <% if series.review_session %>
+                  <%= link_to review_session_path(series.review_session) do %>
+                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("review_session.wizard.view_session") %>
+                  <% end %>
+                <% else %>
+                  <%= link_to review_series_path(series) do %>
+                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("review_session.wizard.create_session") %>
+                  <% end %>
+                <% end %>
+              </li>
+            <% end %>
             <li role="separator" class="divider"></li>
           <% end %>
           <% if policy(series).overview? %>
@@ -83,7 +96,7 @@
           <% if policy(series).download_submissions? %>
             <li>
               <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
-               <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_submissions") %>
+                <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_submissions") %>
               <% end %>
             </li>
           <% end %>

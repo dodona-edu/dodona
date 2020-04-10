@@ -4,7 +4,8 @@ class AnnotationPolicy < ApplicationPolicy
       if user&.zeus?
         scope.all
       elsif user
-        common = scope.joins(:submission)
+        common = scope.joins(:submission).left_outer_joins(:review_session)
+        common = common.where(review_session_id: nil).or(common.where(review_sessions: { released: true }))
         common.where(submissions: { user: user }).or(common.where(submissions: { course_id: user.administrating_courses.map(&:id) }))
       else
         scope.none
@@ -32,11 +33,15 @@ class AnnotationPolicy < ApplicationPolicy
     record&.user == user
   end
 
+  def visible_student?
+    record&.review_session.nil? || record.review_session.released
+  end
+
   def permitted_attributes
     if record.class == Annotation
       %i[annotation_text]
     else # new record
-      %i[annotation_text line_nr]
+      %i[annotation_text line_nr review_session_id]
     end
   end
 end

@@ -57,6 +57,8 @@ Rails.application.routes.draw do
         post 'remove_activity'
         post 'reorder_activities'
         post 'reset_token'
+        get 'review', to: 'reviews#review_create_wizard'
+        post 'review', to: 'reviews#create_review', as: 'review_create'
       end
     end
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
@@ -149,13 +151,14 @@ Rails.application.routes.draw do
     resources :annotations, only: %i[index show create update destroy]
 
     resources :submissions, only: %i[index show create edit] do
-      resources :annotations, only: %i[index create]
+      resources :annotations, only: %i[index create], as: 'submission_annotations'
       post 'mass_rejudge', on: :collection
       member do
         get 'download'
         get 'evaluate'
         get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }, as: 'media'
       end
+      resources :annotations, only: [:index, :create, :update, :destroy], format: :json
     end
 
     resources :users do
@@ -183,7 +186,16 @@ Rails.application.routes.draw do
       get 'heatmap', to: 'statistics#heatmap'
       get 'punchcard', to: 'statistics#punchcard'
     end
+
+    resources :reviews, only: [:show, :edit, :update], path: "review_session", as: 'review_session' do
+      member do
+        get 'review/:review_id', to: 'reviews#review', as: 'review'
+        post 'review/:review_id/complete', to: 'reviews#review_complete', as: 'review_complete'
+        get 'overview', to: 'reviews#overview', as: 'overview'
+      end
+    end
   end
+
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 

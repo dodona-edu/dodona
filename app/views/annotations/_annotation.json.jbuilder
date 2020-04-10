@@ -10,3 +10,6 @@ json.permission do
   json.update policy(annotation).update?
   json.destroy policy(annotation).destroy?
 end
+json.visibility do
+  json.student policy(annotation).visible_student?
+end

@@ -36,6 +36,8 @@ class Series < ApplicationRecord
   has_many :activities, through: :series_memberships
   has_many :activity_statuses, dependent: :destroy
 
+  has_one :review_session, dependent: :destroy
+
   validates :name, presence: true
   validates :visibility, presence: true
 

@@ -1,0 +1,16 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'reviews' %>
+<% end %>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="card series-edit">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t("review_session.wizard.create_session_named", series_name: @series.name) %></h2>
+        <div class="card-title-fab">
+          <%= render 'fab_button', form: "new_review_session", icon: 'check' %>
+        </div>
+      </div>
+      <%= render 'wizard', review_session: @review_session, url: review_create_series_path(@review_session.series)%>
+    </div>
+  </div>
+</div>

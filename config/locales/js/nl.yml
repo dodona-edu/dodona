@@ -106,3 +106,17 @@ nl:
       fields:
         annotation_text: 'Annotatie tekst'
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'
+      not_released: Deze annotatie is nog niet zichtbaar voor studenten
+    review:
+      submission:
+        status: Status
+        accepted: Aanvaard
+        not_accepted: Niet aanvaard
+      group:
+        header: 'Oefening: '
+        noContent: Er werden geen groepen gevonden om weer te geven
+        group: Groep
+        accepted: Aanvaard
+        total: Totaal
+      information:
+        error: Er liep iets mis bij het ophalen van extra informatie

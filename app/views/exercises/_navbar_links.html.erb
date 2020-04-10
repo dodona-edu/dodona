@@ -22,6 +22,6 @@
 
   <%= navbar_link url: info_exercise_scoped_path(exercise: @exercise, course: @course, series: @series),
                   title: t('.info'),
-                  icon: 'information-outline',
+                  icon: 'information',
                   if: policy(@exercise).info? %>
 <% end %>

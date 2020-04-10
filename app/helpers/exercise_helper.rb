@@ -85,7 +85,7 @@ module ExerciseHelper
   end
 
   def starts_with_solution?(item)
-    item.first.basename.to_s.starts_with?('solution')
+    item.first.starts_with?('solution')
   end
 
   def compare_solutions(a, b)

@@ -90,7 +90,7 @@
                 </div>
               <% end %>
               <div id="editor-window" class='tex2jax_ignore'>
-                <div id="editor-text"><%= @edit_submission.try(:code) || @exercise.boilerplate %></div>
+                <div id="editor-text"><%= @code %></div>
               </div>
               <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
             <% end %>

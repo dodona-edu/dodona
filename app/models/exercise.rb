@@ -101,7 +101,7 @@ class Exercise < ApplicationRecord
     (full_path + SOLUTION_DIR)
       .yield_self { |path| path.directory? ? path.children : [] }
       .filter { |path| path.file? && path.readable? }
-      .map { |path| [path.basename, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
+      .map { |path| [path.basename.to_s, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
       .to_h
   end
 

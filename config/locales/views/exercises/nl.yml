@@ -19,6 +19,8 @@ nl:
       open_on_github: Open op GitHub
       labels_delimiter: "Gebruik een komma om labels te scheiden"
       labels: Nieuw label
+      info: Informatie
+      info_description: Ga naar de informatiepagina van deze oefening
     index:
       title: Oefeningen
       exercise: Oefening
@@ -75,10 +77,11 @@ nl:
       memory_limit: Geheugenlimitiet
       network_enabled: Netwerk ingeschakeld
       network_disabled: Netwerk uitgeschakeld
-      submission_count: Aantal oplossingen
+      submission_count: Ingediende oplossingen
       submission_details: "Deze oefening heeft %{total} inzendingen door %{users} unieke gebruikers, hiervan waren %{correct} inzendingen correct."
       sample_solutions: Voorbeeldoplossingen
       sample_solutions_hint: Klik op een tab hierboven om een voorbeeldoplossing te bekijken.
+      sample_solution_submit: Deze oplossing indienen
       no_solutions: Deze oefening heeft nog geen voorbeeldoplossingen.
       no_solutions_admin: Voeg je voorbeeldoplossingen toe aan de repository om ze hier te laten verschijnen.
       usage: Gebruik
@@ -88,6 +91,7 @@ nl:
         other: "Deze oefening wordt gebruikt door %{count} cursussen."
       not_used_in_courses: Deze oefening wordt nog niet gebruikt.
       contact: Contactinformatie
+      judge: Judge
       repository: Repository waar deze oefening zich in bevindt
       repository_path: Bestandslocatie binnen deze repository
       created: Aangemaakt
@@ -97,5 +101,5 @@ nl:
       config_set_by: "Deze waarde werd ingesteld door %{file}"
       config_default: "Dit is de standaardwaarde."
       description_files:   "We hebben bestanden gevonden met een beschrijving voor deze talen in de beschrijvingsmap %{path}"
-      config_info: 'Voor meer informatie over het configureren van oefeningen kun je %{here} een kijkje nemen op onze documentatiesite.'
-      here: 'hier'
+      config_info: 'Neem een kijkje op de %{doc_site} voor meer informatie over het configureren van oefeningen.'
+      doc_site: 'documentatiesite'

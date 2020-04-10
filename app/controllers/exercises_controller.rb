@@ -76,6 +76,12 @@ class ExercisesController < ApplicationController
       @edit_submission = Submission.find(params[:edit_submission])
       authorize @edit_submission, :edit?
     end
+    if params[:from_solution]
+      @solution = @exercise.solutions[params[:from_solution]]
+      authorize @exercise, :info?
+    end
+
+    @code = @edit_submission.try(:code) || @solution || @exercise.boilerplate
     @title = @exercise.name
     @crumbs << [@exercise.name, '#']
   end
@@ -89,10 +95,12 @@ class ExercisesController < ApplicationController
   def info
     @title = @exercise.name
     @repository = @exercise.repository
-    @courses_series = policy_scope(@exercise.series).group_by(&:course)
     @config = @exercise.merged_config
     @config_locations = @exercise.merged_config_locations
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] << [I18n.t('crumbs.info'), '#']
+    @courses_series = policy_scope(@exercise.series).group_by(&:course).sort do |a, b|
+      [b.first.year, a.first.name] <=> [a.first.year, b.first.name]
+    end
   end
 
   def edit

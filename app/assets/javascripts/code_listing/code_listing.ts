@@ -1,6 +1,4 @@
 import { Annotation } from "code_listing/annotation";
-import ClipboardJS from "clipboard";
-import { tooltip } from "util.js";
 import { MachineAnnotation, MachineAnnotationData } from "code_listing/machine_annotation";
 import { UserAnnotation, UserAnnotationData, UserAnnotationFormData } from "code_listing/user_annotation";
 
@@ -15,7 +13,6 @@ const annotationFormCancel = ".annotation-cancel-button";
 const annotationFormDelete = ".annotation-delete-button";
 const annotationFormSubmit = ".annotation-submission-button";
 const badge = "#badge_code";
-const clipboardBtn = "#copy-to-clipboard";
 
 const ANNOTATION_ORDER = ["error", "user", "warning", "info"];
 
@@ -25,9 +22,6 @@ export class CodeListing {
     public readonly code: string;
     public readonly codeLines: number;
     public readonly submissionId: number;
-
-    private clipboard: ClipboardJS;
-    private readonly clipboardBtn;
 
     private readonly markingClass: string = "marked";
 
@@ -50,8 +44,6 @@ export class CodeListing {
         this.badge = document.querySelector<HTMLSpanElement>(badge);
         this.table = document.querySelector<HTMLTableElement>("table.code-listing");
 
-        this.clipboardBtn = document.querySelector<HTMLButtonElement>(clipboardBtn);
-
         this.hideAllAnnotations = document.querySelector<HTMLButtonElement>(annotationHideAll);
         this.showAllAnnotations = document.querySelector<HTMLButtonElement>(annotationShowAll);
         this.showErrorAnnotations = document.querySelector<HTMLButtonElement>(annotationShowErrors);
@@ -61,7 +53,6 @@ export class CodeListing {
         this.globalAnnotationGroups = document.querySelector<HTMLDivElement>(annotationsGlobalGroups);
 
         this.initAnnotations();
-        this.initCopyToClipboard();
     }
 
     // /////////////////////////////////////////////////////////////////////////
@@ -268,16 +259,6 @@ export class CodeListing {
             annotationButton.appendChild(annotationButtonIcon);
 
             codeLine.querySelector(".rouge-gutter").prepend(annotationButton);
-        });
-    }
-
-    private initCopyToClipboard(): void {
-        this.clipboard = new ClipboardJS(clipboardBtn, { text: () => this.code });
-        this.clipboard.on("success", () => {
-            tooltip(this.clipboardBtn, I18n.t("js.copy-success"));
-        });
-        this.clipboard.on("error", () => {
-            tooltip(this.clipboardBtn, I18n.t("js.copy-fail"));
         });
     }
 

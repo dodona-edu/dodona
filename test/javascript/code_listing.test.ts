@@ -1,19 +1,5 @@
 import { CodeListing } from "code_listing/code_listing";
 
-class ClipboardMock {
-    constructor() {
-    }
-
-    public on(ev: string, fn: CallableFunction): void {
-
-    }
-}
-
-// Mock the clipboard to make the tests pass.
-jest.mock("clipboard", () => {
-    return { default: () => new ClipboardMock() };
-});
-
 let codeListing;
 
 beforeEach(() => {
@@ -52,7 +38,6 @@ beforeEach(() => {
             </tr>
             </tbody>
         </table>
-        <button id="copy-to-clipboard"></button>
     </div>
 </div>`;
     codeListing = new CodeListing(54, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);

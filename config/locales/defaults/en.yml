@@ -21,6 +21,7 @@
 en:
   time:
     formats:
+      annotation: '%B %d, %Y %H:%M'
       submission: '%B %d, %Y %H:%M:%S'
   controllers:
     created: "%{model} was successfully created."

@@ -68,9 +68,12 @@ class FeedbackTableRenderer
       @builder.ul(class: 'nav nav-tabs') do
         submission[:groups]&.each_with_index do |t, i|
           @builder.li(class: ('active' if i.zero?)) do
-            @builder.a(href: "##{(t[:description] || 'test').parameterize}-#{i}", 'data-toggle': 'tab') do
+            id = "##{(t[:description] || 'test').parameterize}-#{i}"
+            @builder.a(href: id, 'data-toggle': 'tab') do
               @builder.text!((t[:description] || 'Test').upcase_first + ' ')
-              @builder.span(class: 'badge') do
+              # Choose between the pythonic devil and the deep blue sea.
+              badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id
+              @builder.span(class: 'badge', id: 'badge_' + badge_id) do
                 @builder.text! tab_count(t)
               end
             end
@@ -80,11 +83,7 @@ class FeedbackTableRenderer
           @builder.li(class: ('active' if submission[:groups].blank?)) do
             @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
               @builder.text!(I18n.t('submissions.show.code') + ' ')
-              if submission.key?(:annotations) && submission[:annotations].count.positive?
-                @builder.span(class: 'badge') do
-                  @builder << submission[:annotations].count.to_s
-                end
-              end
+              @builder.span(class: 'badge', id: 'badge_code')
             end
           end
         end

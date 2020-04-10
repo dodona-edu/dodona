@@ -1,146 +1,72 @@
-import { MachineAnnotation, AnnotationData } from "code_listing/machine_annotation";
-import { UserAnnotation, UserAnnotationData } from "code_listing/user_annotation";
 import { Annotation } from "code_listing/annotation";
-import { fetch } from "util.js";
+import ClipboardJS from "clipboard";
+import { tooltip } from "util.js";
+import { MachineAnnotation, MachineAnnotationData } from "code_listing/machine_annotation";
+import { UserAnnotation, UserAnnotationData, UserAnnotationFormData } from "code_listing/user_annotation";
+
+const annotationGlobalAdd = "#add_global_annotation";
+const annotationsGlobal = "#feedback-table-global-annotations";
+const annotationsGlobalGroups = "#feedback-table-global-annotations-list";
+const annotationHideAll = "#hide_all_annotations";
+const annotationShowAll = "#show_all_annotations";
+const annotationShowErrors = "#show_only_errors";
+const annotationToggles = "#annotations_toggles";
+const annotationFormCancel = ".annotation-cancel-button";
+const annotationFormDelete = ".annotation-delete-button";
+const annotationFormSubmit = ".annotation-submission-button";
+const badge = "#badge_code";
+const clipboardBtn = "#copy-to-clipboard";
+
+const ANNOTATION_ORDER = ["error", "user", "warning", "info"];
 
 export class CodeListing {
-    private readonly table: HTMLTableElement;
-
-    private annotations: Annotation[];
+    private readonly annotations: Map<number, Annotation[]>;
 
     public readonly code: string;
+    public readonly codeLines: number;
+    public readonly submissionId: number;
+
+    private clipboard: ClipboardJS;
+    private readonly clipboardBtn;
 
     private readonly markingClass: string = "marked";
-    private readonly submissionId: string;
 
-    private hideAllButton: HTMLButtonElement;
-    private showOnlyErrorButton: HTMLButtonElement;
-    private showAllButton: HTMLButtonElement;
-    private annotationsWereHidden: HTMLSpanElement;
-    private diffSwitchPrefix: HTMLSpanElement;
+    private readonly badge: HTMLSpanElement;
+    private readonly table: HTMLTableElement;
 
-    constructor(code: string) {
-        this.table = document.querySelector("table.code-listing") as HTMLTableElement;
+    private readonly globalAnnotations: HTMLDivElement;
+    private readonly globalAnnotationGroups: HTMLDivElement;
+    private readonly hideAllAnnotations: HTMLButtonElement;
+    private readonly showAllAnnotations: HTMLButtonElement;
+    private readonly showErrorAnnotations: HTMLButtonElement;
+    private readonly annotationToggles: HTMLDivElement;
+
+    constructor(submissionId: number, code: string, codeLines: number) {
+        this.annotations = new Map<number, Annotation[]>();
         this.code = code;
-        this.annotations = [];
+        this.codeLines = codeLines;
+        this.submissionId = submissionId;
 
-        const htmlDivElement = document.querySelector(".code-table[data-submission-id]") as HTMLDivElement;
-        if (htmlDivElement) {
-            this.submissionId = htmlDivElement.dataset["submissionId"];
-        } else {
-            console.error("There was no code-table to be found with a submission id");
-        }
+        this.badge = document.querySelector<HTMLSpanElement>(badge);
+        this.table = document.querySelector<HTMLTableElement>("table.code-listing");
 
-        if (this.table === null) {
-            console.error("The code listing could not be found");
-        }
+        this.clipboardBtn = document.querySelector<HTMLButtonElement>(clipboardBtn);
 
-        this.table.addEventListener("copy", e => {
-            e.clipboardData.setData("text/plain", this.getSelectedCode());
-            e.preventDefault();
-        });
+        this.hideAllAnnotations = document.querySelector<HTMLButtonElement>(annotationHideAll);
+        this.showAllAnnotations = document.querySelector<HTMLButtonElement>(annotationShowAll);
+        this.showErrorAnnotations = document.querySelector<HTMLButtonElement>(annotationShowErrors);
+        this.annotationToggles = document.querySelector<HTMLDivElement>(annotationToggles);
 
-        this.initAnnotationToggleButtons();
+        this.globalAnnotations = document.querySelector<HTMLDivElement>(annotationsGlobal);
+        this.globalAnnotationGroups = document.querySelector<HTMLDivElement>(annotationsGlobalGroups);
+
+        this.initAnnotations();
+        this.initCopyToClipboard();
     }
 
-    private initAnnotationToggleButtons(): void {
-        this.hideAllButton = document.querySelector("#hide_all_annotations");
-        this.showOnlyErrorButton = document.querySelector("#show_only_errors");
-        this.showAllButton = document.querySelector("#show_all_annotations");
-        this.annotationsWereHidden = document.querySelector("#annotations-were-hidden");
-        this.diffSwitchPrefix = document.querySelector("#diff-switch-prefix");
-
-        const showAllListener = (): void => {
-            this.showAllAnnotations();
-            this.annotationsWereHidden?.remove();
-        };
-
-        this.showAllButton.addEventListener("click", () => showAllListener());
-        this.hideAllButton.addEventListener("click", () => this.hideAllAnnotations());
-
-        this.showOnlyErrorButton.addEventListener("click", () => this.compressAnnotations());
-    }
-
-    private setToggleButtonsVisibility(): void {
-        if (this.annotations.length > 0) {
-            this.showAllButton.classList.remove("hide");
-            this.hideAllButton.classList.remove("hide");
-            this.diffSwitchPrefix.classList.remove("hide");
-
-            if (this.annotations.some(a => a.type === "error" || a.type === "user")) {
-                this.showOnlyErrorButton.classList.remove("hide");
-                this.annotationsWereHidden.classList.remove("hide");
-            }
-
-            const errorCount = this.annotations.filter(a => a.type !== "error" && a.type !== "user").length;
-            if (errorCount > 0) {
-                const nonErrorAnnotationCount = this.createHiddenMessage(errorCount);
-                this.annotationsWereHidden.innerHTML = "";
-                this.annotationsWereHidden.appendChild(nonErrorAnnotationCount);
-            }
-        } else {
-            this.showAllButton.classList.add("hide");
-            this.hideAllButton.classList.add("hide");
-            this.diffSwitchPrefix.classList.add("hide");
-            this.showOnlyErrorButton.classList.add("hide");
-            this.annotationsWereHidden.classList.add("hide");
-        }
-    }
-
-    addAnnotations(annotations: AnnotationData[]): void {
-        annotations.forEach(m => this.addAnnotation(m));
-        this.setToggleButtonsVisibility();
-    }
-
-    addAnnotation(annotation: AnnotationData): void {
-        this.annotations.push(new MachineAnnotation(this.annotations.length, annotation, this.table, this));
-    }
-
-    async addUserAnnotations(userAnnotationURL: string): Promise<void> {
-        const response = await fetch(userAnnotationURL);
-        if (response.ok) {
-            const data: UserAnnotationData[] = await response.json();
-            data.forEach(annotation => this.addUserAnnotation(annotation));
-        }
-        this.setToggleButtonsVisibility();
-    }
-
-    addUserAnnotation(annotation: UserAnnotationData): void {
-        const annotationObj = new UserAnnotation(annotation, this.table, this);
-        this.annotations.push(annotationObj);
-        this.setToggleButtonsVisibility();
-    }
-
-    removeUserAnnotation(annotation: UserAnnotation): void {
-        const index = this.annotations.indexOf(annotation);
-        if (index !== -1) {
-            this.annotations.splice(index, 1);
-        }
-        this.setToggleButtonsVisibility();
-    }
-
-    compressAnnotations(): void {
-        this.showAllAnnotations();
-
-        const errorsAndUser = this.annotations.filter(m => m.type === "error" || m.type === "user");
-        if (errorsAndUser.length !== 0) {
-            const others = this.annotations.filter(m => m.type !== "error" && m.type !== "user");
-            others.forEach(m => m.hide());
-            errorsAndUser.forEach(m => m.show());
-            this.showOnlyErrorButton.classList.add("active");
-        }
-
-        this.showAllButton.classList.remove("active");
-        this.hideAllButton.classList.remove("active");
-    }
-
-    showAllAnnotations(): void {
-        this.annotations.forEach(m => m.show());
-    }
-
-    hideAllAnnotations(): void {
-        this.annotations.forEach(m => m.hide());
-    }
+    // /////////////////////////////////////////////////////////////////////////
+    // Highlighting ////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
 
     clearHighlights(): void {
         const markedAnnotations = this.table.querySelectorAll(`tr.lineno.${this.markingClass}`);
@@ -157,122 +83,280 @@ export class CodeListing {
         }
     }
 
-    private getSelectedCode(): string {
-        const selection = window.getSelection();
-        const strings = [];
+    // /////////////////////////////////////////////////////////////////////////
+    // Annotation management ///////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
 
-        // A selection can have many different selected ranges
-        // Firefox: Selecting multiple rows in a table -> Multiple ranges, with the final one
-        //     possibly being a preformatted node, while the original content of the selection was
-        //     a part of a div
-        // Chrome: Selecting multiple rows in a table -> Single range that lists everything in HTML
-        //     order (even observed some gutter elements)
-        for (let rangeIndex = 0; rangeIndex < selection.rangeCount; rangeIndex++) {
-            // Extract the selected HTML ranges into a DocumentFragment
-            const documentFragment = selection.getRangeAt(rangeIndex).cloneContents();
+    private addAnnotation(annotation: Annotation): void {
+        const line = annotation.global ? 0 : annotation.line;
 
-            // Remove any gutter element or annotation element in the document fragment
-            // As observed, some browsers (Safari) can ignore user-select: none, and as such allow
-            // the user to select line numbers.
-            // To avoid any problems later we remove anything in a rouge-gutter or annotation-set
-            // class.
-            documentFragment.querySelectorAll(".rouge-gutter, .annotation-set").forEach(n => n.remove());
-
-            // Only select the preformatted nodes as they will contain the code
-            // (with trailing newline)
-            // In the case of an empty line (empty string), a newline is substituted.
-            const fullNodes = documentFragment.querySelectorAll("pre");
-            fullNodes.forEach(v => strings.push(v.textContent || "\n"));
+        if (!this.annotations.has(line)) {
+            this.annotations.set(line, []);
         }
 
-        return strings.join("");
+        // Add the annotation in the map.
+        this.annotations.get(line).push(annotation);
+
+        // Append the HTML component of the annotation to the code table.
+        if (annotation.global) {
+            this.appendAnnotationToGlobal(annotation);
+        } else {
+            this.appendAnnotationToTable(annotation);
+        }
+
+        this.updateViewState();
     }
 
-    public getAnnotationsForLine(lineNr: number): Annotation[] {
-        return this.annotations.filter(a => a.row === lineNr);
+    private addMachineAnnotation(data: MachineAnnotationData): void {
+        const annotation = new MachineAnnotation(data);
+        this.addAnnotation(annotation);
     }
 
-    public createHiddenMessage(count: number): HTMLSpanElement {
-        const span = document.createElement("span");
+    // noinspection JSUnusedGlobalSymbols used by FeedbackCodeRenderer.
+    public addMachineAnnotations(annotations: MachineAnnotationData[]): void {
+        annotations.forEach(ma => this.addMachineAnnotation(ma));
+    }
 
-        const spanText: Text = document.createTextNode(I18n.t("js.annotation.were_hidden.first") + " ");
-        span.appendChild(spanText);
+    // Unit-testing purposes.
+    private addUserAnnotation(data: UserAnnotationData): void {
+        const annotation = new UserAnnotation(data,
+            (a, cb) => this.createUpdateAnnotationForm(a, cb));
+        this.addAnnotation(annotation);
+    }
 
-        const link: HTMLAnchorElement = document.createElement("a");
-        const data: string = I18n.t(`js.annotation.were_hidden.second.${count > 1 ? "plural" : "single"}`).replace(/{count}/g, String(count));
-        const linkText: Text = document.createTextNode(data);
-        link.href = "#";
-        link.addEventListener("click", ev => {
-            ev.preventDefault();
-            this.showAllButton.click();
+    // Unit-testing purposes.
+    public addUserAnnotations(annotations: UserAnnotationData[]): void {
+        annotations.forEach(ua => this.addUserAnnotation(ua));
+    }
+
+    // noinspection JSUnusedGlobalSymbols used by FeedbackCodeRenderer.
+    public async loadUserAnnotations(): Promise<void> {
+        return UserAnnotation.getAll(this.submissionId,
+            (a, cb) => this.createUpdateAnnotationForm(a, cb))
+            .then(annotations => {
+                annotations.forEach(annotation => this.addAnnotation(annotation));
+            });
+    }
+
+    public removeAnnotation(annotation: Annotation): void {
+        const line = annotation.global ? 0 : annotation.line;
+
+        // Remove the annotation from the map.
+        const lineAnnotations = this.annotations.get(line).filter(a => a.__id !== annotation.__id);
+        if (lineAnnotations.length === 0) {
+            this.annotations.delete(line);
+
+            // Remove the padding from the annotation list.
+            if (annotation.global) {
+                this.globalAnnotations.classList.remove("has-annotations");
+            }
+        } else {
+            this.annotations.set(line, lineAnnotations);
+        }
+
+        this.updateViewState();
+    }
+
+    private updateAnnotation(original: Annotation, updated: Annotation): void {
+        const origLine = original.global ? 0 : original.line;
+        const updLine = updated.global ? 0 : updated.line;
+
+        // Different line -> can simply remove and re-add.
+        if (origLine !== updLine) {
+            this.removeAnnotation(original);
+            this.addAnnotation(updated);
+            return;
+        }
+
+        // Find the annotation in the map.
+        const lineAnnotations = this.annotations.get(origLine);
+        lineAnnotations.forEach((annotation, idx) => {
+            if (annotation.__id === original.__id) {
+                lineAnnotations[idx] = updated;
+            }
         });
-        link.appendChild(linkText);
-        span.appendChild(link);
-        return span;
+        this.annotations.set(updLine, lineAnnotations);
+
+        // Replace the HTML component.
+        document.querySelector(`#annotation-div-${original.__id}`).replaceWith(updated.html);
     }
 
-    initButtonsForComment(): void {
+    // /////////////////////////////////////////////////////////////////////////
+    // DOM operations //////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
+
+    private appendAnnotationToGlobal(annotation: Annotation): void {
+        // Append the annotation.
+        this.globalAnnotationGroups
+            .querySelector<HTMLDivElement>(`.annotation-group-${annotation.type}`)
+            .appendChild(annotation.html);
+
+        // Add the padding to the global annotation list.
+        this.globalAnnotations.classList.add("has-annotations");
+    }
+
+    private appendAnnotationToTable(annotation: Annotation): void {
+        const line = annotation.line;
+        const row = this.table.querySelector<HTMLTableRowElement>(`#line-${line}`);
+
+        const cell = row.querySelector<HTMLDivElement>(`#annotation-cell-${line}`);
+        if (cell.querySelector(`.annotation-group-${annotation.type}`) === null) {
+            // Create the dot.
+            const dot = document.createElement("span") as HTMLSpanElement;
+            dot.classList.add("dot", "hide");
+            dot.id = `dot-${line}`;
+            row.querySelector<HTMLTableDataCellElement>(".rouge-gutter").prepend(dot);
+
+            // Create annotation groups.
+            ANNOTATION_ORDER.forEach((type: string) => {
+                const group = document.createElement("div") as HTMLDivElement;
+                group.classList.add(`annotation-group-${type}`);
+                cell.appendChild(group);
+            });
+        }
+
+        // Append the annotation.
+        cell.querySelector<HTMLDivElement>(`.annotation-group-${annotation.type}`)
+            .appendChild(annotation.html);
+    }
+
+    // //////////////////////////////////////////////////////////////////////////
+    // Initialisations //////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////
+
+    private initAnnotations(): void {
+        // Create global annotation groups.
+        ANNOTATION_ORDER.forEach((type: string) => {
+            const group = document.createElement("div") as HTMLDivElement;
+            group.classList.add(`annotation-group-${type}`);
+            this.globalAnnotationGroups.appendChild(group);
+        });
+
+        // Create annotation cells.
+        for (let i = 1; i <= this.codeLines; ++i) {
+            const tableLine = this.table.querySelector<HTMLTableRowElement>(`#line-${i}`);
+            tableLine.dataset["line"] = i.toString();
+            // Add an annotation container underneath the pre element.
+            const lineCodeCell = tableLine.querySelector<HTMLTableDataCellElement>(".rouge-code");
+            const annotationContainer = document.createElement("div") as HTMLDivElement;
+            annotationContainer.classList.add("annotation-cell");
+            annotationContainer.id = `annotation-cell-${i}`;
+            lineCodeCell.appendChild(annotationContainer);
+        }
+
+        // Toggle buttons.
+        this.hideAllAnnotations.addEventListener("click", () => this.hideAnnotations());
+        this.showAllAnnotations.addEventListener("click", () => this.showAnnotations());
+        this.showErrorAnnotations.addEventListener("click", () => this.hideAnnotations(true));
+    }
+
+    // noinspection JSUnusedGlobalSymbols used by FeedbackCodeRenderer.
+    public initAnnotateButtons(): void {
+        // Global annotations.
+        const globalButton = document.querySelector(annotationGlobalAdd);
+        globalButton.addEventListener("click", () => this.handleAnnotateGlobal());
+
+        // Inline annotations.
         const codeLines = this.table.querySelectorAll(".lineno");
         codeLines.forEach((codeLine: HTMLTableRowElement) => {
-            const idParts = codeLine.id.split("-");
-            const lineNumber = parseInt(idParts[idParts.length - 1]) - 1;
-            const annotationButton: HTMLButtonElement = document.createElement("button");
-            annotationButton.setAttribute("class", "btn btn-primary annotation-button");
-            annotationButton.addEventListener("click", () => this.handleCommentButtonClick(lineNumber, codeLine));
+            const annotationButton = document.createElement("button") as HTMLButtonElement;
+            annotationButton.classList.add("btn", "btn-primary", "annotation-button");
+            annotationButton.addEventListener("click", () => this.handleAnnotateLine(codeLine));
 
-            const annotationButtonPlus = document.createElement("i");
-            annotationButtonPlus.setAttribute("class", "mdi mdi-comment-plus-outline mdi-18");
-            annotationButton.appendChild(annotationButtonPlus);
+            const annotationButtonIcon = document.createElement("i") as HTMLElement;
+            annotationButtonIcon.classList.add("mdi", "mdi-comment-plus-outline", "mdi-18");
+            annotationButton.appendChild(annotationButtonIcon);
 
             codeLine.querySelector(".rouge-gutter").prepend(annotationButton);
         });
     }
 
-    private createRow(lineNumber: number, rougeRow: number): HTMLTableRowElement {
-        const formSubmissionRow: HTMLTableRowElement = this.table.insertRow(lineNumber);
-        formSubmissionRow.setAttribute("class", "annotation-set");
-        formSubmissionRow.setAttribute("id", `annotation-row-id-${rougeRow}`);
-        const gutterTD: HTMLTableDataCellElement = formSubmissionRow.insertCell();
-        gutterTD.setAttribute("class", "rouge-gutter gl");
-        const annotationTD: HTMLTableDataCellElement = formSubmissionRow.insertCell();
-        annotationTD.setAttribute("class", "annotation-cell");
-        return formSubmissionRow;
+    private initCopyToClipboard(): void {
+        this.clipboard = new ClipboardJS(clipboardBtn, { text: () => this.code });
+        this.clipboard.on("success", () => {
+            tooltip(this.clipboardBtn, I18n.t("js.copy-success"));
+        });
+        this.clipboard.on("error", () => {
+            tooltip(this.clipboardBtn, I18n.t("js.copy-fail"));
+        });
     }
 
-    private findOrCreateTableRow(rowId: number, tableIndex: number, rougeRow: number): HTMLTableRowElement {
-        let annotationRow: HTMLTableRowElement = this.table.querySelector(`#annotation-row-id-${rowId}`);
-        if (annotationRow === null) {
-            annotationRow = this.createRow(tableIndex, rougeRow);
-        }
-        return annotationRow;
+    // /////////////////////////////////////////////////////////////////////////
+    // Show and hide annotations ///////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
+
+    public hideAnnotations(keepImportant = false): void {
+        this.annotations.forEach((annotations, line) => {
+            // Do not hide global annotations.
+            if (line === 0) {
+                return;
+            }
+
+            // Find the dot for this line.
+            const dot = this.table.querySelector<HTMLSpanElement>(`#dot-${line}`);
+
+            // Determine the colours of the dot for this line.
+            const colours = annotations
+                .filter(annotation => !annotation.important || !keepImportant)
+                .map(annotation => `dot-${annotation.type}`);
+
+            // Configure the dot.
+            if (colours.length > 0) {
+                // Remove previous colours.
+                dot.classList.remove("hide", ...ANNOTATION_ORDER.map(type => `dot-${type}`));
+
+                // Add new colours.
+                dot.classList.add(...colours);
+
+                // Help text.
+                const count = annotations.length;
+                if (count === 1) {
+                    dot.title = I18n.t("js.annotation.hidden.single");
+                } else {
+                    dot.title = I18n.t("js.annotation.hidden.plural", { count: count });
+                }
+            } else {
+                // Hide the dot.
+                dot.classList.add("hide");
+            }
+        });
+
+        this.annotations.forEach(annotations => annotations.forEach(annotation => {
+            if (annotation.global || (keepImportant && annotation.important)) {
+                annotation.show();
+            } else {
+                annotation.hide();
+            }
+        }));
     }
 
-    handleCommentButtonClick(lineNumber: number, codeLine: HTMLTableRowElement): void {
-        const tableRowId: number = codeLine.rowIndex;
+    public showAnnotations(): void {
+        this.annotations.forEach(annotations => {
+            annotations.forEach(annotation => annotation.show());
+        });
 
-        // Remove previous submission window
-        const tr: HTMLTableRowElement = this.findOrCreateTableRow(lineNumber, tableRowId + 1, lineNumber);
-        const existingAnnotationSubmissionDiv: HTMLFormElement = tr.querySelector("form.annotation-submission");
-        if (existingAnnotationSubmissionDiv) {
-            return;
-        }
-
-        const annotationSubmissionDiv: HTMLFormElement = this.createAnnotationSubmissionDiv(lineNumber);
-        const annotationCell: HTMLTableDataCellElement = tr.querySelector("td.annotation-cell");
-        annotationCell.append(annotationSubmissionDiv);
+        // Hide all dots.
+        this.table.querySelectorAll<HTMLSpanElement>(".dot").forEach(dot => {
+            dot.classList.add("hide");
+        });
     }
 
-    createAnnotationSubmissionDiv(lineId: number, annotation?: UserAnnotation, edit = false): HTMLFormElement {
-        const node = document.createElement("form");
-        node.classList.add("annotation-submission");
-        if (annotation) {
-            node.classList.add("annotation-edit");
-        }
-        node.dataset["lineId"] = `${lineId}`;
-        node.innerHTML = `
-          <textarea class="form-control" id="submission-textarea" rows="3"></textarea>
+    // /////////////////////////////////////////////////////////////////////////
+    // Creating and modifying user annotations /////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
+
+    private createAnnotationForm(id: string,
+        annotation: Annotation | null,
+        onSubmit: (f: HTMLFormElement) => void,
+        onCancel: (f: HTMLFormElement) => void): HTMLFormElement {
+        const form = document.createElement("form") as HTMLFormElement;
+        form.classList.add("annotation-submission");
+        form.id = id;
+        form.innerHTML = `
+          <textarea autofocus class="form-control annotation-submission-input" rows="3"></textarea>
+          <span class='help-block'>${I18n.t("js.user_annotation.help")}</span>
           <div class="annotation-submission-button-container">
-            ${annotation && annotation.annotationData.permission.destroy ? `
+            ${annotation && annotation.removable ? `
                   <button class="btn-text annotation-control-button annotation-delete-button" type="button">
                     ${I18n.t("js.user_annotation.delete")}
                   </button>
@@ -281,77 +365,171 @@ export class CodeListing {
               ${I18n.t("js.user_annotation.cancel")}
             </button>
             <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
-              ${edit ? I18n.t("js.user_annotation.update") : I18n.t("js.user_annotation.send")}
+              ${annotation !== null ? I18n.t("js.user_annotation.update") : I18n.t("js.user_annotation.send")}
             </button>
           </div>
         `;
 
-        const inputField: HTMLTextAreaElement = node.querySelector("#submission-textarea");
-        if (annotation) {
-            inputField.textContent = annotation.annotationData.annotation_text;
-            inputField.setAttribute("rows", String(annotation.annotationData.annotation_text.split("\n").length + 1));
-        } else {
-            inputField.textContent = "";
+        const cancelButton = form.querySelector<HTMLButtonElement>(annotationFormCancel);
+        const deleteButton = form.querySelector<HTMLButtonElement>(annotationFormDelete);
+        const sendButton = form.querySelector<HTMLButtonElement>(annotationFormSubmit);
+        const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
+
+        if (annotation !== null) {
+            inputField.rows = annotation.rawText.split("\n").length + 1;
+            inputField.textContent = annotation.rawText;
         }
 
-        if (annotation && annotation.annotationData.permission.destroy) {
-            const deleteButton: HTMLButtonElement = node.querySelector(".annotation-delete-button");
-            deleteButton.addEventListener("click", () => {
+        // Cancellation handler.
+        cancelButton.addEventListener("click", () => onCancel(form));
+
+        // Deletion handler.
+        if (deleteButton !== null) {
+            deleteButton.addEventListener("click", async () => {
                 if (confirm(I18n.t("js.user_annotation.delete_confirm"))) {
-                    annotation.delete(annotation.annotation);
+                    annotation.remove().then(() => this.removeAnnotation(annotation));
                 }
             });
         }
 
-        const cancelButton: HTMLButtonElement = node.querySelector(".annotation-cancel-button");
-        const sendButton: HTMLButtonElement = node.querySelector(".annotation-submission-button");
+        // Submission handler.
+        sendButton.addEventListener("click", () => onSubmit(form));
 
-        if (annotation) {
-            sendButton.addEventListener("click", () => annotation.update(inputField.value, annotation.annotation, node));
-            cancelButton.addEventListener("click", () => annotation.cancelEdit(annotation.annotation, node));
-        } else {
-            sendButton.addEventListener("click", () => this.createAnnotation(lineId, inputField.value, node));
-            cancelButton.addEventListener("click", () => node.remove());
-        }
-
-        inputField.addEventListener("keyup", e => {
+        inputField.addEventListener("keydown", e => {
             if (e.code === "Enter" && e.shiftKey) {
+                // Send using Shift-Enter.
                 e.preventDefault();
                 sendButton.click();
+                return false;
             } else if (e.code === "Escape") {
+                // Cancel using ESC.
                 e.preventDefault();
                 cancelButton.click();
+                return false;
             }
         });
 
-        return node;
+        return form;
     }
 
-    async createAnnotation(lineId: number, text: string, form: HTMLFormElement): Promise<void> {
-        const response = await fetch(`/submissions/${this.submissionId}/annotations`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                annotation: {
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    line_nr: lineId,
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    annotation_text: text
-                }
-            })
-        });
-        if (response.ok) {
-            this.addUserAnnotation(await response.json());
-            form.remove();
+    private createNewAnnotationForm(line: number | null): HTMLFormElement {
+        const onSubmit = async (form: HTMLFormElement): Promise<void> => {
+            const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
+            inputField.classList.remove("validation-error");
+
+            const annotationData: UserAnnotationFormData = {
+                "annotation_text": inputField.value,
+                "line_nr": (line === null ? null : line - 1)
+            };
+
+            try {
+                const annotation = await UserAnnotation.create(annotationData, this.submissionId,
+                    (a, cb) => this.createUpdateAnnotationForm(a, cb));
+                this.addAnnotation(annotation);
+                form.remove();
+            } catch (err) {
+                inputField.classList.add("validation-error");
+            }
+        };
+
+        return this.createAnnotationForm(`annotation-submission-new-${line || 0}`,
+            null, onSubmit, form => form.remove());
+    }
+
+    private createUpdateAnnotationForm(annotation: UserAnnotation,
+        callback: CallableFunction): HTMLFormElement {
+        const onSubmit = async (form: HTMLFormElement): Promise<void> => {
+            const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
+
+            const annotationData: UserAnnotationFormData = {
+                "annotation_text": inputField.value,
+                "line_nr": (annotation.line === null ? null : annotation.line - 1)
+            };
+
+            try {
+                const updated = await annotation.update(annotationData);
+                this.updateAnnotation(annotation, updated);
+            } catch (err) {
+                inputField.classList.add("validation-error");
+            }
+        };
+
+        const formId = `annotation-submission-update-${annotation.id}`;
+        return this.createAnnotationForm(formId, annotation, onSubmit, () => callback());
+    }
+
+    private handleAnnotateGlobal(): void {
+        // Attempt to find an existing form and reuse that.
+        const formId = "#annotation-submission-0";
+        let form = this.globalAnnotations.querySelector<HTMLFormElement>(formId);
+        if (form === null) {
+            form = this.createNewAnnotationForm(null);
+
+            // Inject the form into the div.
+            this.globalAnnotations.prepend(form);
+        }
+
+        // Focus the input field. We must wait till the next frame, because we can only give the
+        // focus after the element is added to the dom.
+        const input = form.querySelector<HTMLTextAreaElement>(".annotation-submission-input");
+        window.requestAnimationFrame(() => input.focus());
+    }
+
+    private handleAnnotateLine(row: HTMLTableRowElement): void {
+        const lineNo = parseInt(row.dataset["line"]);
+
+        // Attempt to find an existing form and reuse that.
+        let form = row.querySelector<HTMLFormElement>(`#annotation-submission-new-${lineNo}`);
+        if (form === null) {
+            form = this.createNewAnnotationForm(lineNo);
+            // Inject the form into the table.
+            const cell = row.querySelector<HTMLTableDataCellElement>(`#annotation-cell-${lineNo}`);
+            cell.prepend(form);
+        }
+
+        // Focus the input field. We must wait till the next frame, because we can only give the
+        // focus after the element is added to the dom.
+        const input = form.querySelector<HTMLTextAreaElement>(".annotation-submission-input");
+        window.requestAnimationFrame(() => input.focus());
+    }
+
+    // /////////////////////////////////////////////////////////////////////////
+    // Update view /////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
+
+    private get annotationCount(): number {
+        return Array.from(this.annotations.values())
+            .map(ann => ann.length)
+            .reduce((acc, nw) => acc + nw, 0);
+    }
+
+    /**
+     * Updates the badge count and button visibility state.
+     */
+    private updateViewState(): void {
+        const amount = this.annotationCount;
+        if (amount > 0) {
+            // Set the badge count.
+            this.badge.innerText = amount.toString();
+
+            // Find the important annotations.
+            const importantAnnotationCount = Array.from(this.annotations.values())
+                .map(annotations => annotations.filter(an => an.important).length)
+                .reduce((acc, nw) => acc + nw);
+            if (importantAnnotationCount === 0 || importantAnnotationCount === amount) {
+                this.showErrorAnnotations.classList.add("hide");
+            } else {
+                this.showErrorAnnotations.classList.remove("hide");
+            }
+
+            // Show the annotation toggles.
+            this.annotationToggles.classList.remove("hide");
         } else {
-            const error = await response.json();
-            const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(error.responseJSON);
+            // No annotations have been added (yet).
+            this.badge.innerText = "";
 
-            // Remove previous error list
-            const previousErrorList = form.querySelector(".annotation-submission-error-list");
-            previousErrorList?.remove();
-
-            form.querySelector(".annotation-submission-button-container").appendChild(errorList);
+            // Hide the annotation toggles.
+            this.annotationToggles.classList.add("hide");
         }
     }
 }

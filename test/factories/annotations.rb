@@ -12,7 +12,7 @@
 #
 FactoryBot.define do
   factory :annotation do
-    line_nr { 1 }
+    line_nr { 0 }
     annotation_text { 'This code does not contain the right parameters' }
     submission
     user

@@ -1,31 +1,40 @@
 @dot-size: 9px;
 
 .code-table {
+  .code-listing-container {
+    position: relative;
+    left: 0;
+    top: 0;
 
-  .code-listing {
-
-    user-select: none;
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-
-    background-color: @well-bg;
-
-    // Override the normal pre padding & coloring
-    pre {
-      padding: 0;
-      background-color: transparent;
-      margin-bottom: 0;
-      border: none;
-      border-radius: 0;
-      white-space: pre-wrap;
+    #copy-to-clipboard {
+      margin-right: 5px;
+      position: absolute;
+      right: 1px;
+      top: 0;
     }
 
-    .lineno.marked {
-      background-color: @warning-500;
-    }
+    .code-listing {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
 
-    .lineno {
+      background-color: @well-bg;
+
+      // Override the normal pre padding & coloring
+      pre {
+        padding: 0;
+        background-color: transparent;
+        margin-bottom: 0;
+        border: none;
+        border-radius: 0;
+        white-space: pre-wrap;
+        line-height: 20px;
+      }
+
+      .lineno.marked {
+        background-color: @warning-500;
+      }
+
       .annotation-button {
         display: none;
         position: absolute;
@@ -42,204 +51,215 @@
         transform: scale(1.15);
         transition: 0.1s ease-in-out;
       }
-    }
 
-    .lineno:first-child {
-      .rouge-code, .rouge-gutter {
-        padding-top: 5px;
+      .lineno:first-child {
+        .rouge-code, .rouge-gutter {
+          padding-top: 5px;
+        }
       }
-    }
 
-    .lineno:last-child {
-      .rouge-code, .rouge-gutter {
-        padding-bottom: 5px;
+      .lineno:last-child {
+        .rouge-code, .rouge-gutter {
+          padding-bottom: 5px;
+        }
       }
-    }
 
-    .lineno:hover .annotation-button {
-      display: block;
-    }
+      .lineno:hover .annotation-button {
+        display: block;
+      }
 
-    .rouge-code {
-      width: 100%;
-      padding-left: 5px;
-      user-select: text;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
+      .rouge-code {
+        width: 100%;
 
-    .rouge-gutter {
-      vertical-align: top;
-      white-space: nowrap;
-      text-align: right;
+        pre {
+          padding-left: 5px;
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+      }
 
-      pre {
-        padding-right: 5px;
-        margin-left: 20px;
+      .rouge-gutter {
+        vertical-align: top;
         white-space: nowrap;
-        font-family: @font-family-monospace;
-        color: @gray-light
+        text-align: right;
+
+        pre {
+          padding-right: 5px;
+          margin-left: 20px;
+          white-space: nowrap;
+          font-family: @font-family-monospace;
+          color: @gray-light
+        }
+
+        .dot {
+          float: left;
+          margin-left: 4px;
+          margin-top: 4px;
+          height: @dot-size;
+          width: @dot-size;
+          border-radius: 100%;
+        }
+
+        .dot-info {
+          background-color: @info-500;
+        }
+
+        .dot-warning {
+          background-color: @warning-500;
+        }
+
+        .dot-user {
+          background-color: @success-300
+        }
+
+        .dot-error {
+          background-color: @danger-500;
+        }
       }
 
-      .dot {
-        float: left;
-        margin-left: 4px;
-        margin-top: 4px;
-        height: @dot-size;
-        width: @dot-size;
-        border-radius: 100%;
+      // General lighter background on the right side
+      .rouge-code, .annotation-cell {
+        background-color: @body-bg;
       }
 
-      .dot-info {
-        background-color: @info-500;
+      .hide {
+        display: none;
       }
 
-      .dot-warning {
-        background-color: @warning-500;
-      }
-
-      .dot-error {
-        background-color: @danger-500;
-      }
-
-      .dot-user {
-        background-color: @success-300
-      }
-    }
-
-    // General lighter background on the right side
-    .rouge-code, .annotation-cell {
-      background-color: @body-bg;
-    }
-
-    .hide {
-      display: none;
-    }
-
-    .annotation-set {
       .annotation-cell {
         width: 100%;
         min-width: 100%;
 
-        .annotation {
-
-          margin: 3px 5px 3px 5px;
-          padding: 2px 5px 2px 10px;
-
-          border-top-right-radius: 5px;
-          border-bottom-right-radius: 5px;
-          border: 1px solid @hairlinegray;
-          border-left-width: 3px;
-          border-left-color: @grey-500;
-
-          background: @content-bg;
-
-          white-space: normal;
-
-          .annotation-header {
-            .annotation-user {
-              font-size: 85%;
-              color: @text-secondary;
-            }
-
-            .annotation-edit {
-              float: right;
-              margin-top: 4px;
-            }
-          }
-
-          .annotation-text {
-            display: block;
-            word-break: break-word;
-
-            // Stylize the embedded code block
-            .highlighter-rouge div.highlight {
-              padding: 5px 10px;
-              margin-left: 10px;
-              margin-right: 10px;
-              background: @code-bg;
-              border-radius: 3px;
-            }
-
-            .highlighter-rouge {
-              margin-top: 8px;
-              margin-bottom: 8px;
-            }
-
-            hr {
-              margin-top: 8px;
-              margin-bottom: 8px;
-            }
-
-            img {
-              display: block;
-              margin: 10px auto 20px;
-
-              max-width: 300px;
-              @media (min-width: @screen-tablet) {
-                max-width: calc(@container-tablet * 0.6);
-              }
-              @media (min-width: @screen-lg) {
-                max-width: calc(@container-desktop * 0.7);
-              }
-              @media (min-width: @screen-lg-desktop) {
-                max-width: calc(@container-large-desktop * 0.7);
-              }
-            }
-          }
-        }
-        .annotation.error {
-          border-left-color: @danger-500;
-        }
-
-        .annotation.warning {
-          border-left-color: @warning-500;
-        }
-
-        .annotation.info {
-          border-left-color: @info-500;
-        }
-        .annotation.user {
-          border-left-color: @success-500;
-          border-left-width: 5px;
-        }
-
-        .annotation.machine-annotation {
-          font-family: @font-family-monospace;
-          white-space: pre-wrap;
-        }
-
-        div.copy-blocker {
-          position: absolute;
-          user-select: text;
-          height: 100%;
-        }
-      }
-    }
-
-    .annotation-submission {
-
-      padding: 5px;
-
-      .annotation-submission-button-container {
-        margin-top: 12px;
-        margin-bottom: 12px;
-        text-align: right;
-
-        .annotation-control-button {
-          margin-left: 3px;
-        }
-
-        .annotation-submission-error-list {
-          margin-top: 3px;
-          margin-bottom: 3px;
-        }
-      }
-
-      #submission-textarea {
-        border-radius: 0;
-        resize: vertical;
       }
     }
   }
+
+  #feedback-table-global-annotations.has-annotations {
+    padding-bottom: 10px;
+  }
+
+  .annotation {
+
+    margin: 3px 5px 3px 5px;
+    padding: 2px 5px 2px 10px;
+
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid @hairlinegray;
+    border-left-width: 3px;
+    border-left-color: @grey-500;
+
+    background: @content-bg;
+
+    white-space: normal;
+
+    .annotation-header {
+      .annotation-meta {
+        font-size: 85%;
+        color: @text-secondary;
+      }
+
+      .annotation-edit {
+        float: right;
+        margin-top: 4px;
+      }
+    }
+
+    .annotation-text {
+      display: block;
+      word-break: break-word;
+
+      // Stylize the embedded code block
+      .highlighter-rouge div.highlight {
+        padding: 5px 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        background: @code-bg;
+        border-radius: 3px;
+      }
+
+      .highlighter-rouge {
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
+
+      hr {
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
+
+      img {
+        display: block;
+        margin: 10px auto 20px;
+
+        max-width: 300px;
+        @media (min-width: @screen-tablet) {
+          max-width: calc(@container-tablet * 0.6);
+        }
+        @media (min-width: @screen-lg) {
+          max-width: calc(@container-desktop * 0.7);
+        }
+        @media (min-width: @screen-lg-desktop) {
+          max-width: calc(@container-large-desktop * 0.7);
+        }
+      }
+    }
+  }
+
+  .annotation.error {
+    border-left-color: @danger-500;
+  }
+
+  .annotation.warning {
+    border-left-color: @warning-500;
+  }
+
+  .annotation.info {
+    border-left-color: @info-500;
+  }
+
+  .annotation.user {
+    border-left-color: @success-500;
+    border-left-width: 5px;
+  }
+
+  .annotation.machine-annotation {
+    .annotation-text {
+      font-family: @font-family-monospace;
+      white-space: pre-wrap;
+    }
+  }
+
+  .annotation-submission {
+    padding: 5px;
+
+    .help-block {
+      float: left;
+    }
+
+    .annotation-submission-button-container {
+      margin-top: 12px;
+      margin-bottom: 12px;
+      text-align: right;
+
+      .annotation-control-button {
+        margin-left: 3px;
+      }
+
+      .annotation-submission-error-list {
+        margin-top: 3px;
+        margin-bottom: 3px;
+      }
+    }
+
+    .annotation-submission-input {
+      border-radius: 0;
+      resize: vertical;
+    }
+
+    .annotation-submission-input.validation-error {
+      border-color: @danger-fg;
+    }
+  }
+
 }

@@ -22,6 +22,7 @@
 nl:
   time:
     formats:
+      annotation: '%e %B %Y, %H:%M'
       submission: '%d %B %Y %H:%M:%S'
   controllers:
     created: "%{model} werd succesvol aangemaakt."

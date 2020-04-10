@@ -1,18 +1,5 @@
 /* globals ga */
 
-import ClipboardJS from "clipboard";
-
-function initClipboard() {
-    $(() => {
-        const selector = ".btn";
-        const delay = 1000;
-        const clip = new ClipboardJS(selector);
-        const targetOf = e => $($(e.trigger).data("clipboard-target"));
-        clip.on("success", e => tooltip(targetOf(e), I18n.t("js.copy-success"), delay));
-        clip.on("error", e => tooltip(targetOf(e), I18n.t("js.copy-fail"), delay));
-    });
-}
-
 /*
  * Function to delay some other function until it isn't
  * called for "ms" ms
@@ -181,7 +168,6 @@ function fetch(url, options = {}) {
 }
 
 export {
-    initClipboard,
     delay,
     fetch,
     updateURLParameter,

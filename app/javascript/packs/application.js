@@ -23,7 +23,8 @@ import "polyfills.js";
 import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";
-import { checkTimeZone, initClipboard, initCSRF, initTooltips } from "util.js";
+import { checkTimeZone, initCSRF, initTooltips } from "util.js";
+import { initClipboard } from "copy";
 
 
 import * as firebase from "firebase/app";

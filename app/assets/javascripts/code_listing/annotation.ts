@@ -51,6 +51,13 @@ export abstract class Annotation {
         meta.textContent = this.meta;
         header.appendChild(meta);
 
+        if (!this.released) {
+            const icon = document.createElement("i");
+            icon.classList.add("mdi", "mdi-eye-off");
+            icon.title = I18n.t("js.user_annotation.not_released");
+            header.appendChild(icon);
+        }
+
         // Update button.
         if (this.modifiable) {
             const link = document.createElement("a");
@@ -103,6 +110,10 @@ export abstract class Annotation {
 
     public get removable(): boolean {
         return false;
+    }
+
+    public get released(): boolean {
+        return true;
     }
 
     public async remove(): Promise<void> {

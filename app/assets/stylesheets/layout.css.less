@@ -2,6 +2,8 @@
 @import "layout/footer.css.less";
 @import "layout/navbar.css.less";
 
+@container_top_padding: 20px;
+
 html,
 body {
   height: 100%;
@@ -33,8 +35,8 @@ html.dodona-frame > body {
 
 }
 
-.container.main {
-  padding-top: 20px;
+.container.main, .container-fluid.main {
+  padding-top: @container_top_padding;
   padding-bottom: 80px;
   @media (max-width: @screen-sm-max) {
     padding-bottom: 180px;

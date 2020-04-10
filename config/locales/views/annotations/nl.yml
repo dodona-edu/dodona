@@ -2,3 +2,4 @@ nl:
     annotations:
         index:
             new_annotation: "Er is een nieuwe opmerking op je code"
+            review_released: "Een review op enkele van je submissions werd net vrijgegeven"

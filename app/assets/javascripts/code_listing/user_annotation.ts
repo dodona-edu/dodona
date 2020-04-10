@@ -4,12 +4,17 @@ import { fetch } from "util.js";
 export interface UserAnnotationFormData {
     annotation_text: string;
     line_nr: number | null;
+    review_session_id: number | undefined;
 }
 
 export type UserAnnotationEditor = (ua: UserAnnotation, cb: CallableFunction) => HTMLElement;
 
 interface UserAnnotationUserData {
     name: string;
+}
+
+interface UserAnnotationVisibility {
+    student: boolean;
 }
 
 interface UserAnnotationPermissionData {
@@ -24,8 +29,10 @@ export interface UserAnnotationData {
     line_nr: number;
     permission: UserAnnotationPermissionData;
     rendered_markdown: string;
+    review_session_id: number | null;
     url: string;
     user: UserAnnotationUserData;
+    visibility: UserAnnotationVisibility;
 }
 
 export class UserAnnotation extends Annotation {
@@ -35,8 +42,10 @@ export class UserAnnotation extends Annotation {
     public readonly id: number;
     public readonly permissions: UserAnnotationPermissionData;
     private readonly __rawText: string;
+    public readonly reviewSessionId: number | null;
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
+    public readonly visibility: UserAnnotationVisibility;
 
     constructor(data: UserAnnotationData, editFn: UserAnnotationEditor) {
         const line = data.line_nr === null ? null : data.line_nr + 1;
@@ -45,7 +54,9 @@ export class UserAnnotation extends Annotation {
         this.editor = editFn;
         this.id = data.id;
         this.permissions = data.permission;
+        this.visibility = data.visibility;
         this.__rawText = data.annotation_text;
+        this.reviewSessionId = data.review_session_id;
         this.url = data.url;
         this.user = data.user;
     }
@@ -111,6 +122,10 @@ export class UserAnnotation extends Annotation {
         return fetch(this.url, { method: "DELETE" }).then(() => {
             super.remove();
         });
+    }
+
+    public get released(): boolean {
+        return this.visibility.student;
     }
 
     protected get title(): string {

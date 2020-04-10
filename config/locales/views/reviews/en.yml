@@ -1,0 +1,79 @@
+en:
+  review_session:
+    show:
+      review_session: "Review session"
+    wizard:
+      create_session: "Create review session"
+      view_session: "Show review sessie"
+      create_session_named: "Create review session: '%{series_name}'"
+    title: "Reviews for '%{series}'"
+    progress:
+      finished: "Finished reviews: %{review_count}"
+      unfinished: "Unfinished reviews: %{review_count}"
+      undecided: "Reviews without a coupled submission: %{review_count}"
+    table:
+      user: "User (anonymized)"
+    overview:
+      review_session: "Review session overview"
+    edit:
+      failure: "The review session could not be made"
+  reviews:
+    show:
+      review: "Review"
+  review_exercise:
+  review:
+    title: "Reviewing submission %{submission_id}"
+    details: "Review details"
+    metadata:
+      session:
+        title: "Review session metadata"
+        remaining_exercise:
+          html:
+            zero: "For this exercise, <b>all reviews are completed</b>"
+            one: "For this exercise, there is still <b>1 review remaining</b> to be completed"
+            other: "For this exercise, there are <b>%{count} reviews remaining</b> to be completed"
+        remaining_user:
+          html:
+            zero: "For this user, <b>all reviews</b> are completed"
+            one: "For this user, there is still <b>1 review remaining</b> to be completed"
+            other: "For this user, there are still <b>%{count} reviews remaining</b> to be completed"
+        remaining:
+          html:
+            zero: "There are <b>no reviews remaining</b> to completed"
+            one: "There is still <b>one review remaining</b> to be completed"
+            other: "There are still <b>%{count} reviews remaining</b> to be completed"
+      submission:
+        title: "Submission metadata"
+        time:
+          html: "This submission was made <b>%{time_ago} ago</b>. It was made on <b>%{made_on}</b>"
+        previous_attempts:
+          html:
+            zero: "The user made <b>no attempts</b> before this submission."
+            one: "The user made <b>1 attempt</b> before this submission."
+            other: "The user made <b>%{count} attempts</b> before this submission."
+        time_to_series_deadline:
+          html: "Between deadline and submission time there was <b>%{time_ago}</b>"
+      title: "Metadata"
+    direction:
+      prev: "Previous"
+      next: "Next"
+    completed:
+      button:
+        completed: "Mark as completed"
+        unfinished: "Mark as unfinished"
+        header: "Change review state"
+      failure: "Could not set review status"
+    action:
+      title: "Actions"
+    category:
+      id: "Random review"
+      user: "Review for same user"
+      exercise: "Review for same exercise"
+    overview:
+      annotations:
+        count: "Amount of annotations by teacher"
+        amount:
+          zero: "No annotations"
+          one: "One annotation"
+          other: "%{count} annotations"
+      title: "Overview of all submissions that were reviewed"

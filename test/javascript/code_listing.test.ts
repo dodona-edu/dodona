@@ -229,6 +229,9 @@ test("annotations should be transmitted into view", () => {
         },
         "user": {
             name: "Jan Klaassen",
+        },
+        "visibility": {
+            "student": true
         }
     });
 
@@ -243,6 +246,9 @@ test("annotations should be transmitted into view", () => {
         },
         "user": {
             name: "Piet Hein",
+        },
+        "visibility": {
+            "student": true
         }
     });
 
@@ -261,6 +267,9 @@ test("feedback table should support more than 1 annotation per row", () => {
         },
         "user": {
             name: "Jan Klaassen",
+        },
+        "visibility": {
+            "student": true
         }
     });
 
@@ -275,6 +284,9 @@ test("feedback table should support more than 1 annotation per row", () => {
         },
         "user": {
             name: "Piet Hein",
+        },
+        "visibility": {
+            "student": true
         }
     });
 
@@ -293,6 +305,9 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "user": {
             name: "Jan Klaassen",
+        },
+        "visibility": {
+            "student": true
         }
     });
 
@@ -307,6 +322,9 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "user": {
             name: "Piet Hein",
+        },
+        "visibility": {
+            "student": true
         }
     });
 

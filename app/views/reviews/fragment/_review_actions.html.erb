@@ -1,0 +1,30 @@
+<% review_pointers = @review.review_session.review_siblings(@review) %>
+
+<div class="routing-actions">
+  <div class="routing-action by-id">
+    <h4><%= t('review.category.id') %></h4>
+    <%= review_action_button 'review.direction.prev', review_pointers[:id][:prev] %>
+    <%= review_action_button 'review.direction.next', review_pointers[:id][:next] %>
+  </div>
+
+  <div class="routing-action by-user">
+    <h4><%= t('review.category.user') %></h4>
+    <%= review_action_button 'review.direction.prev', review_pointers[:user][:prev] %>
+    <%= review_action_button 'review.direction.next', review_pointers[:user][:next] %>
+  </div>
+
+  <div class="routing-action by-exercise">
+    <h4><%= t('review.category.exercise') %></h4>
+    <%= review_action_button 'review.direction.prev', review_pointers[:exercise][:prev] %>
+    <%= review_action_button 'review.direction.next', review_pointers[:exercise][:next] %>
+  </div>
+</div>
+
+<div class="review-actions card-border">
+  <h4><%= t('review.completed.button.header') %></h4>
+  <%= form_with scope: :review, id: 'mark-review-complete', url: review_complete_review_session_path(@review.review_session, @review), method: :post do |f| %>
+    <%= f.hidden_field :status, value: !@review.completed %>
+    <% state = !@review.completed ? "completed": "unfinished" %>
+    <%= f.submit t("review.completed.button.#{state}"), class: "btn btn-text" %>
+  <% end %>
+</div>

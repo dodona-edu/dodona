@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="card review-show">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t('review_session.title', series: @review_session.series.name) %></h2>
+      </div>
+      <div class="card-title-fab">
+        <%= link_to edit_review_session_path(@review_session) do %>
+          <button class="btn btn-primary btn-fab mdi mdi-36 mdi-pencil">
+          </button>
+        <% end %>
+      </div>
+      <div class="card-supporting-text card-border">
+        <%= render 'review_table', reviews: @reviews, review_session: @review_session %>
+      </div>
+    </div>
+  </div>
+</div>

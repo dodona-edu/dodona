@@ -30,6 +30,7 @@ export class CodeListing {
     private readonly clipboardBtn;
 
     private readonly markingClass: string = "marked";
+    private reviewSessionId: number;
 
     private readonly badge: HTMLSpanElement;
     private readonly table: HTMLTableElement;
@@ -62,6 +63,10 @@ export class CodeListing {
 
         this.initAnnotations();
         this.initCopyToClipboard();
+    }
+
+    setReviewSession(id: number): void {
+        this.reviewSessionId = id;
     }
 
     // /////////////////////////////////////////////////////////////////////////
@@ -419,7 +424,8 @@ export class CodeListing {
 
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
-                "line_nr": (line === null ? null : line - 1)
+                "line_nr": (line === null ? null : line - 1),
+                "review_session_id": this.reviewSessionId || undefined
             };
 
             try {
@@ -443,7 +449,8 @@ export class CodeListing {
 
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
-                "line_nr": (annotation.line === null ? null : annotation.line - 1)
+                "line_nr": (annotation.line === null ? null : annotation.line - 1),
+                "review_session_id": annotation.reviewSessionId || undefined
             };
 
             try {

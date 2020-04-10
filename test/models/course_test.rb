@@ -145,4 +145,11 @@ class CourseTest < ActiveSupport::TestCase
       assert_equal counts[:started], expected_started[key]
     end
   end
+
+  test 'destroying course does not destroy submissions' do
+    course = create :course, series_count: 10, exercises_per_series: 5, submissions_per_exercise: 5
+    assert_difference 'Submission.count', 0 do
+      course.destroy
+    end
+  end
 end

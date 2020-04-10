@@ -1,4 +1,6 @@
 class CoursePolicy < ApplicationPolicy
+  MAX_SUBMISSIONS_FOR_DESTROY = 20
+
   class Scope < Scope
     def resolve
       if user&.zeus?
@@ -48,7 +50,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.zeus?
+    course_admin? && record.submissions.count <= MAX_SUBMISSIONS_FOR_DESTROY
   end
 
   def members?

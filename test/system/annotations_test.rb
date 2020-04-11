@@ -61,7 +61,7 @@ class AnnotationsTest < GenericSystemTest
     initial = 'This is a single line comment'
     within(:css, 'form.annotation-submission') do
       find('textarea#submission-textarea').fill_in with: initial
-      click_button 'Send'
+      click_button 'Annotate'
     end
 
     assert_text initial
@@ -93,7 +93,7 @@ class AnnotationsTest < GenericSystemTest
 
     within(:css, 'form.annotation-submission.annotation-edit') do
       find('textarea#submission-textarea').fill_in with: 'This is a different single line comment'
-      click_button 'Send'
+      click_button 'Update'
     end
 
     assert_text 'This is a different single line comment'
@@ -111,7 +111,7 @@ class AnnotationsTest < GenericSystemTest
 
     within(:css, 'form.annotation-submission.annotation-edit') do
       click_button 'Delete'
-      accept_confirm('Ben je zeker dat je dit wilt verwijderen?')
+      accept_confirm('Are you sure you want to delete this annotation?')
     end
 
     assert_no_css '.annotation'
@@ -143,7 +143,7 @@ class AnnotationsTest < GenericSystemTest
     replacement = (Faker::Lorem.words number: 512).join(' ')
     within(:css, 'form.annotation-submission.annotation-edit') do
       find('textarea#submission-textarea').fill_in with: replacement
-      click_button 'Send'
+      click_button 'Update'
     end
 
     assert_no_text replacement
@@ -159,7 +159,7 @@ class AnnotationsTest < GenericSystemTest
     replacement = ''
     within(:css, 'form.annotation-submission.annotation-edit') do
       find('textarea#submission-textarea').fill_in with: replacement
-      click_button 'Send'
+      click_button 'Update'
     end
 
     assert_text annot.annotation_text
@@ -175,7 +175,7 @@ class AnnotationsTest < GenericSystemTest
     initial = ''
     within(:css, 'form.annotation-submission') do
       find('textarea#submission-textarea').fill_in with: initial
-      click_button 'Send'
+      click_button 'Annotate'
     end
 
     assert_css 'form.annotation-submission'
@@ -191,7 +191,7 @@ class AnnotationsTest < GenericSystemTest
     initial = Faker::Lorem.words(number: 512).join(' ')
     within(:css, 'form.annotation-submission') do
       find('textarea#submission-textarea').fill_in with: initial
-      click_button 'Send'
+      click_button 'Annotate'
     end
 
     assert_css 'form.annotation-submission'

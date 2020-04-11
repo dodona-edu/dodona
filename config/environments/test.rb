@@ -31,7 +31,7 @@ Rails.application.configure do
   config.action_dispatch.show_exceptions = false
 
   # Disable request forgery protection in test environment.
-  config.action_controller.allow_forgery_protection = false
+  config.action_controller.allow_forgery_protection = true
   config.action_mailer.perform_caching = false
 
   # Store uploaded files on the local file system in a temporary directory

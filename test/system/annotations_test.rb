@@ -12,7 +12,7 @@ class AnnotationsTest < GenericSystemTest
     @zeus = create(:zeus)
     sign_in @zeus
     @code_lines = Faker::Lorem.sentences(number: 5)
-    @instance = create :correct_submission, result: File.read(Rails.root.join('db', 'results', 'python-result.json')), code: @code_lines.join("\n")
+    @instance = create :correct_submission, result: File.read(Rails.root.join('db/results/python-result.json')), code: @code_lines.join("\n")
     @instance.exercise.judge.renderer = PythiaRenderer
     @instance.exercise.judge.save
   end
@@ -34,11 +34,11 @@ class AnnotationsTest < GenericSystemTest
     visit(submission_path(id: @instance.id))
     click_link 'Code'
 
-    (1..@code_lines.length).each { |index|
+    (1..@code_lines.length).each do |index|
       line = "tr#line-#{index}"
       find(line).hover
       assert_css 'button.annotation-button'
-    }
+    end
   end
 
   test 'Click on submission annotation button' do
@@ -47,9 +47,9 @@ class AnnotationsTest < GenericSystemTest
 
     find('tr#line-1').hover
     find('button.annotation-button').click
-    @code_lines.each { |code_line|
+    @code_lines.each do |code_line|
       assert_text code_line
-    }
+    end
     assert_no_css '.annotation'
   end
 

@@ -98,8 +98,8 @@ ActiveRecord::Schema.define(version: 2020_04_06_155516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
-    t.integer "visibility"
-    t.integer "registration"
+    t.integer "visibility", default: 0
+    t.integer "registration", default: 0
     t.integer "color"
     t.string "teacher", default: ""
     t.bigint "institution_id"

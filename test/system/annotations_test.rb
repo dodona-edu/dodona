@@ -13,6 +13,8 @@ class AnnotationsTest < GenericSystemTest
     sign_in @zeus
     @code_lines = Faker::Lorem.sentences(number: 5)
     @instance = create :correct_submission, result: File.read(Rails.root.join('db', 'results', 'python-result.json')), code: @code_lines.join("\n")
+    @instance.exercise.judge.renderer = PythiaRenderer
+    @instance.exercise.judge.save
   end
 
   test 'Can view submission page' do
@@ -35,7 +37,7 @@ class AnnotationsTest < GenericSystemTest
     (1..@code_lines.length).each { |index|
       line = "tr#line-#{index}"
       find(line).hover
-      assert_css "#{line} button.annotation-button"
+      assert_css 'button.annotation-button'
     }
   end
 
@@ -60,7 +62,7 @@ class AnnotationsTest < GenericSystemTest
 
     initial = 'This is a single line comment'
     within(:css, 'form.annotation-submission') do
-      find('textarea#submission-textarea').fill_in with: initial
+      find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Annotate'
     end
 
@@ -91,8 +93,8 @@ class AnnotationsTest < GenericSystemTest
 
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
 
-    within(:css, 'form.annotation-submission.annotation-edit') do
-      find('textarea#submission-textarea').fill_in with: 'This is a different single line comment'
+    within(:css, 'form.annotation-submission') do
+      find('textarea.annotation-submission-input').fill_in with: 'This is a different single line comment'
       click_button 'Update'
     end
 
@@ -109,7 +111,7 @@ class AnnotationsTest < GenericSystemTest
     assert_text annot.annotation_text
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
 
-    within(:css, 'form.annotation-submission.annotation-edit') do
+    within(:css, 'form.annotation-submission') do
       click_button 'Delete'
       accept_confirm('Are you sure you want to delete this annotation?')
     end
@@ -141,8 +143,8 @@ class AnnotationsTest < GenericSystemTest
 
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = (Faker::Lorem.words number: 512).join(' ')
-    within(:css, 'form.annotation-submission.annotation-edit') do
-      find('textarea#submission-textarea').fill_in with: replacement
+    within(:css, 'form.annotation-submission') do
+      find('textarea.annotation-submission-input').fill_in with: replacement
       click_button 'Update'
     end
 
@@ -157,8 +159,8 @@ class AnnotationsTest < GenericSystemTest
 
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = ''
-    within(:css, 'form.annotation-submission.annotation-edit') do
-      find('textarea#submission-textarea').fill_in with: replacement
+    within(:css, 'form.annotation-submission') do
+      find('textarea.annotation-submission-input').fill_in with: replacement
       click_button 'Update'
     end
 
@@ -174,7 +176,7 @@ class AnnotationsTest < GenericSystemTest
 
     initial = ''
     within(:css, 'form.annotation-submission') do
-      find('textarea#submission-textarea').fill_in with: initial
+      find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Annotate'
     end
 
@@ -188,9 +190,9 @@ class AnnotationsTest < GenericSystemTest
     find('tr#line-1').hover
     find('button.annotation-button').click
 
-    initial = Faker::Lorem.words(number: 512).join(' ')
+    initial = Faker::Lorem.words(number: 2048).join(' ')
     within(:css, 'form.annotation-submission') do
-      find('textarea#submission-textarea').fill_in with: initial
+      find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Annotate'
     end
 

@@ -245,7 +245,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     reviews = review_session.reviews.decided.includes(:submission)
     reviews.each do |review|
       # Annotation bound to Review
-      p = review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
+      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
 
       # Normal annotation
       Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)

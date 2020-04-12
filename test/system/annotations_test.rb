@@ -199,4 +199,37 @@ class AnnotationsTest < GenericSystemTest
     assert_css 'form.annotation-submission'
     assert_no_text initial
   end
+
+  test 'Enter global annotation' do
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+    click_button 'Add global annotation'
+
+    initial = Faker::Lorem.words(number: 128).join(' ')
+    within(:css, '#feedback-table-global-annotations') do
+      find('textarea.annotation-submission-input').fill_in with: initial
+      click_button 'Annotate'
+    end
+
+    assert_text initial
+    assert_no_css 'form.annotation-submission'
+  end
+
+  test 'Edit global annotation' do
+    annot = create :annotation, submission: @instance, user: @zeus, line_nr: nil
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+    assert_text annot.annotation_text
+    old_text = annot.annotation_text
+
+    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
+    replacement = Faker::Lorem.words(number: 128).join(' ')
+    within(:css, 'form.annotation-submission') do
+      find('textarea.annotation-submission-input').fill_in with: replacement
+      click_button 'Update'
+    end
+    assert_no_text old_text
+    assert_text replacement
+  end
 end

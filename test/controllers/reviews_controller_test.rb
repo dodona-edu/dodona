@@ -211,10 +211,10 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     reviews = review_session.reviews.decided.includes(:submission)
     reviews.each do |review|
       # Annotation bound to Review
-      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 1, user: @zeus)
+      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
 
       # Normal annotation
-      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 1, user: @zeus)
+      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
     end
     assert_equal reviews.count, Notification.all.count, 'only notifications for the notifications without a review session'
 
@@ -245,10 +245,10 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     reviews = review_session.reviews.decided.includes(:submission)
     reviews.each do |review|
       # Annotation bound to Review
-      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 1, user: @zeus)
+      p = review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
 
       # Normal annotation
-      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 1, user: @zeus)
+      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
     end
 
     student = @users.sample
@@ -330,7 +330,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     review_session = @series.review_session
     annotations = []
     review_session.reviews.decided.each do |review|
-      annotations << review.submission.annotations.create(review_session: @review_session, user: @zeus, annotation_text: Faker::Lorem.sentences(number: 3), line_nr: 1)
+      annotations << review.submission.annotations.create(review_session: @review_session, user: @zeus, annotation_text: Faker::Lorem.sentences(number: 3), line_nr: 0)
     end
 
     assert_not_empty annotations
@@ -399,8 +399,8 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
     review_session = @series.review_session
     review_session.reviews.each do |review|
-      review&.submission&.annotations&.create(line_nr: 1, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
-      review&.submission&.annotations&.create(line_nr: 1, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
+      review&.submission&.annotations&.create(line_nr: 0, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
+      review&.submission&.annotations&.create(line_nr: 0, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
 
       review.completed = true
       review.save

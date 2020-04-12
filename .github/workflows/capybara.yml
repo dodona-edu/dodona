@@ -82,6 +82,7 @@ jobs:
       env:
         CI: true
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        SYSTEM_TEST: true
       run: |
         git config --global user.email "dodona@ugent.be"
         git config --global user.name "Dodona"

@@ -32,6 +32,26 @@ class CourseTest < ActiveSupport::TestCase
     assert_equal '2017–2018', course.formatted_year
   end
 
+  test 'course formatted attribution should only have a dot with teacher and institution' do
+    course = create :course, teacher: ''
+    assert_equal '', course.formatted_attribution
+
+    course = create :course, teacher: 'teach'
+    assert_equal 'teach', course.formatted_attribution
+
+    course = create :course, teacher: '', institution: (create :institution, short_name: 'sn', name: '')
+    assert_equal '', course.formatted_attribution
+
+    course = create :course, teacher: 'teach', institution: (create :institution, short_name: 'sn', name: '')
+    assert_equal 'teach', course.formatted_attribution
+
+    course = create :course, teacher: '', institution: (create :institution, short_name: 'sn', name: 'inst')
+    assert_equal 'inst', course.formatted_attribution
+
+    course = create :course, teacher: 'teach', institution: (create :institution, short_name: 'sn', name: 'inst')
+    assert_equal 'teach · inst', course.formatted_attribution
+  end
+
   test 'hidden course should always require secret' do
     course = create :course, institution: (create :institution), visibility: :hidden
     user1 = create :user, institution: nil

@@ -110,7 +110,7 @@ gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
 gem 'nokogiri', '~> 1.10.9'
-gem 'premailer-rails', '~> 1.11.0'
+gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
 gem 'has_scope', '~> 0.7.2'

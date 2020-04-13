@@ -67,13 +67,14 @@ en:
       series_reordering_moved_help_html: 'Looking to reorder the series in this course? This functionality has moved to a <a href="%{course_url}">separate page</a>.'
       delete:
         title: "Delete course"
-        sure: "Deleting a course has the following consequences:"
+        consequences: "Deleting a course has the following consequences:"
         submissions: "Submissions are kept, but are no longer linked to a course."
-        lose: "Series are irrevocably lost."
-        button: "Course"
+        series: "Series are irrevocably lost."
+        button: "Delete"
         impossible:
           one: "A course with more than %{count} submission cannot be removed."
           other: "A course with more than %{count} submissions cannot be removed."
+        contact_html: "<a href=\"%{contact_url}\">Contact us</a> if you want to delete the course anyway."
     show:
       course: Course
       hidden_show_link: "Secret link"

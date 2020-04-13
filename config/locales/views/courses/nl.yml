@@ -76,13 +76,14 @@ nl:
       series_reordering_moved_help_html: "Wou je de reeksen in dit vak herordenen? Deze functionaliteit is verplaatst naar een <a href=\"%{course_url}\">aparte pagina</a>."
       delete:
         title: "Cursus verwijderen"
-        sure: "Het verwijderen van een cursus heeft de volgende gevolgen:"
+        consequences: "Het verwijderen van een cursus heeft de volgende gevolgen:"
         submissions: "Oplossingen blijven bewaard, maar zijn niet meer gekoppeld aan een cursus."
-        lose: "Reeksen gaan onherroepelijk verloren."
+        series: "Reeksen gaan onherroepelijk verloren."
         button: "Verwijderen"
         impossible:
           one: "Een cursus met meer dan %{count} oplossing kan niet verwijderd worden."
           other: "Een cursus met meer dan %{count} oplossingen kan niet verwijderd worden."
+        contact_html: "<a href=\"%{contact_url}\">Contacteer ons</a> als je de cursus toch wilt verwijderen."
     show:
       course: Cursus
       hidden_show_link: 'Geheime link'

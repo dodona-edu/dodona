@@ -194,10 +194,10 @@ GEM
       addressable (~> 2.3)
     less (2.6.0)
       commonjs (~> 0.2.7)
-    less-rails (4.0.0)
-      actionpack (>= 4)
+    less-rails (5.0.0)
+      actionpack (>= 5.0)
       less (~> 2.6.0)
-      sprockets (>= 2)
+      sprockets (~> 3.0)
     letter_opener (1.7.0)
       launchy (~> 2.2)
     libv8 (3.16.14.19)
@@ -453,7 +453,7 @@ DEPENDENCIES
   jwt (~> 2.2.1)
   kramdown (~> 2.1.0)
   kramdown-parser-gfm (~> 1.1.0)
-  less-rails (~> 4.0)
+  less-rails (~> 5.0)
   letter_opener (~> 1.7.0)
   listen (~> 3.2.1)
   mail_form (~> 1.8.0)
@@ -484,7 +484,6 @@ DEPENDENCIES
   slack-notifier (~> 2.3.2)
   spring (~> 2.1.0)
   spring-watcher-listen (~> 2.0.1)
-  sprockets (< 4.0)
   therubyracer
   tzinfo-data
   uglifier (>= 4.1.20)
@@ -493,7 +492,7 @@ DEPENDENCIES
   will_paginate (~> 3.3.0)
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 2.6.6p146
 
 BUNDLED WITH
    2.0.2

@@ -543,4 +543,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     delete course_url(@course)
     assert_not response.successful?
   end
+
+  test 'should destroy course as zeus even if too many submissions' do
+    admin = create :zeus
+    sign_in admin
+    # Ensure we are testing something useful.
+    assert_operator @course.submissions.count, :>, CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY
+    assert_difference 'Course.count', -1 do
+      delete course_url(@course)
+    end
+    assert response.body.include?(courses_url)
+  end
 end

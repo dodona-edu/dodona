@@ -50,7 +50,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def destroy?
-    course_admin? && record.submissions.count <= MAX_SUBMISSIONS_FOR_DESTROY
+    user&.zeus? || (course_admin? && record.submissions.count <= MAX_SUBMISSIONS_FOR_DESTROY)
   end
 
   def members?

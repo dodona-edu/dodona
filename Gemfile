@@ -10,7 +10,7 @@ gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
 gem 'puma', '~> 4.3.3'
 # Use less for stylesheets
-gem 'less-rails', '~> 4.0'
+gem 'less-rails', '~> 5.0'
 # less-rails does not support sprockets 4.0
 gem 'sprockets', '< 4.0'
 # Use Uglifier as compressor for JavaScript assets

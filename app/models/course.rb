@@ -145,6 +145,12 @@ class Course < ApplicationRecord
     Course.format_year year
   end
 
+  def formatted_attribution
+    result = teacher || ''
+    result += ' · ' if teacher.present? && institution&.name.present?
+    result + (institution&.name || '')
+  end
+
   def secret_required?(user = nil)
     return false if visible_for_all?
     return false if visible_for_institution? && user&.institution == institution

@@ -97,9 +97,6 @@ en:
       mass_decline_toast:
         one: 1 pending user is declined.
         other: "%{count} pending users are declined."
-      taught_by: "Taught by %{teacher}."
-      taught_by_at: "Taught by %{teacher} at %{institution}."
-      taught_at: "Taught at %{institution}."
       copy: "Copy this course"
       manage_series: "Manage series"
     scoresheet:

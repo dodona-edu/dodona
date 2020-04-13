@@ -106,9 +106,6 @@ nl:
       mass_decline_toast:
         one: 1 gebruiker op de wachtlijst is afgewezen.
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
-      taught_by: "Gegeven door %{teacher}."
-      taught_by_at: "Gegeven door %{teacher} aan %{institution}."
-      taught_at: "Gegeven aan %{institution}."
       copy: "Deze cursus kopiëren"
       manage_series: "Reeksen beheren"
     registration:

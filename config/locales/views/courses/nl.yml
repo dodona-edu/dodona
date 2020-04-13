@@ -76,7 +76,7 @@ nl:
       series_reordering_moved_help_html: "Wou je de reeksen in dit vak herordenen? Deze functionaliteit is verplaatst naar een <a href=\"%{course_url}\">aparte pagina</a>."
       delete:
         title: "Cursus verwijderen"
-        sure: "Het verwijderen van een cursus heeft volgende gevolgen:"
+        sure: "Het verwijderen van een cursus heeft de volgende gevolgen:"
         submissions: "Oplossingen blijven bewaard, maar zijn niet meer gekoppeld aan een cursus."
         lose: "Reeksen gaan onherroepelijk verloren."
         button: "Verwijderen"

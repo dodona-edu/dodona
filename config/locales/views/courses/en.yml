@@ -67,7 +67,7 @@ en:
       series_reordering_moved_help_html: 'Looking to reorder the series in this course? This functionality has moved to a <a href="%{course_url}">separate page</a>.'
       delete:
         title: "Delete course"
-        sure: "Deleting a course has following consequences."
+        sure: "Deleting a course has the following consequences:"
         submissions: "Submissions are kept, but are no longer linked to a course."
         lose: "Series are irrevocably lost."
         button: "Course"

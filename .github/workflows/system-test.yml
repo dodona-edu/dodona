@@ -1,4 +1,4 @@
-name: Capybara
+name: System tests
 
 on: [push]
 

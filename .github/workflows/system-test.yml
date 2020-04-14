@@ -77,7 +77,7 @@ jobs:
         yarn install
     - name: Show installed chrome version
       run: |
-        google-chrome --version | cut -f 3 -d ' ' | cut -d '.' -f 1
+        google-chrome --version
     - name: Run tests
       env:
         CI: true

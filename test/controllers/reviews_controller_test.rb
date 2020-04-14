@@ -43,7 +43,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Not all exercises' do
-    exercises_take_map = @exercises.take(4).map(&:id)
+    exercises_take_map = @exercises.take(2).map(&:id)
     post review_create_series_path(@series), params: {
       review_session: {
         deadline: DateTime.now + 4.days,
@@ -53,7 +53,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_response :redirect
-    assert_equal 4 * @users.count, @series.review_session.reviews.count
+    assert_equal 2 * @users.count, @series.review_session.reviews.count
   end
 
   test 'Not all exercises & users' do
@@ -61,12 +61,12 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
       review_session: {
         deadline: DateTime.now + 4.days,
         users: [@users.first.id],
-        exercises: @exercises.take(4).map(&:id)
+        exercises: @exercises.take(2).map(&:id)
       }
     }
 
     assert_response :redirect
-    assert_equal 4 * 1, @series.review_session.reviews.count
+    assert_equal 2, @series.review_session.reviews.count
   end
 
   test 'Update series with reduced user count' do
@@ -98,11 +98,11 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
     patch review_session_path(@series.review_session), params: {
       review_session: {
-        exercises: @exercises.take(4).map(&:id)
+        exercises: @exercises.take(2).map(&:id)
       }
     }
 
-    assert_equal @users.count * 4, @series.review_session.reviews.count
+    assert_equal @users.count * 2, @series.review_session.reviews.count
   end
 
   test 'Update series with reduced exercise count and user count' do
@@ -117,12 +117,12 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
     patch review_session_path(@series.review_session), params: {
       review_session: {
-        exercises: @exercises.take(4).map(&:id),
+        exercises: @exercises.take(2).map(&:id),
         users: @users.take(1).map(&:id)
       }
     }
 
-    assert_equal 1 * 4, @series.review_session.reviews.count
+    assert_equal 2, @series.review_session.reviews.count
   end
 
   test 'Update series with adding users, before adding them back' do
@@ -138,12 +138,12 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     patch review_session_path(@series.review_session), params: {
       review_session: {
         released: false,
-        exercises: @exercises.take(4).map(&:id),
+        exercises: @exercises.take(2).map(&:id),
         users: @users.take(1).map(&:id)
       }
     }
 
-    assert_equal 1 * 4, @series.review_session.reviews.count
+    assert_equal 2, @series.review_session.reviews.count
 
     patch review_session_path(@series.review_session), params: {
       review_session: {
@@ -211,12 +211,12 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     reviews = review_session.reviews.decided.includes(:submission)
     reviews.each do |review|
       # Annotation bound to Review
-      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 1, user: @zeus)
+      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
 
       # Normal annotation
-      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 1, user: @zeus)
+      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
     end
-    assert_equal reviews.count, Notification.all.count, 'only notifications for the notifications without a review session'
+    assert_equal reviews.count, Notification.all.count, 'only notifications for the annotations without a review session'
 
     review_session.reviews.each do |review|
       review.completed = true
@@ -245,10 +245,10 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     reviews = review_session.reviews.decided.includes(:submission)
     reviews.each do |review|
       # Annotation bound to Review
-      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 1, user: @zeus)
+      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
 
       # Normal annotation
-      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 1, user: @zeus)
+      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
     end
 
     student = @users.sample
@@ -272,7 +272,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     json_response = JSON.parse(@response.body)
     assert_equal 2, json_response.size, 'Both annotations are visible, as the review session is released'
 
-    random_unauthorized_student = @users.reject { |u| u.id == student.id || u.id == @zeus.id }.sample
+    random_unauthorized_student = create :student
     sign_in random_unauthorized_student
 
     get submission_annotations_path(picked_submission), headers: { accept: 'application/json' }
@@ -330,7 +330,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     review_session = @series.review_session
     annotations = []
     review_session.reviews.decided.each do |review|
-      annotations << review.submission.annotations.create(review_session: @review_session, user: @zeus, annotation_text: Faker::Lorem.sentences(number: 3), line_nr: 1)
+      annotations << review.submission.annotations.create(review_session: @review_session, user: @zeus, annotation_text: Faker::Lorem.sentences(number: 3), line_nr: 0)
     end
 
     assert_not_empty annotations
@@ -339,7 +339,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     annotations.each do |annotation|
       assert_nil annotation.review_session
 
-      get submission_annotations_path(annotation.submission), headers: { accept: 'application/json' }
+      get submission_annotations_path(annotation.submission, format: :json)
       json_response = JSON.parse(@response.body)
       assert_equal 1, json_response.size, 'The one annotation is visible here, since the review session is deleted'
     end
@@ -399,8 +399,8 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
     review_session = @series.review_session
     review_session.reviews.each do |review|
-      review&.submission&.annotations&.create(line_nr: 1, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
-      review&.submission&.annotations&.create(line_nr: 1, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
+      review&.submission&.annotations&.create(line_nr: 0, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
+      review&.submission&.annotations&.create(line_nr: 0, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
 
       review.completed = true
       review.save

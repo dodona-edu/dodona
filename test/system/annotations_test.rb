@@ -20,6 +20,7 @@ class AnnotationsTest < ApplicationSystemTestCase
   test 'Can view submission page' do
     visit(submission_path(id: @instance.id))
     assert_text 'Correct'
+    assert_text 'Totaal random'
     assert_text 'Correctheid'
     assert_text @instance.user.full_name
   end

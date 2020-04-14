@@ -87,3 +87,9 @@ jobs:
         git config --global user.email "dodona@ugent.be"
         git config --global user.name "Dodona"
         bundle exec rails test:system
+    - name: Upload screenshot artifacts
+      if: failure()
+      uses: actions/upload-artifact@v1
+      with:
+        name: screenshots-failure
+        path: tmp/screenshots

@@ -25,4 +25,19 @@ end
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :chrome
+
+  setup do
+    @default_host = Rails.application.config.default_host
+    @sandbox_host = Rails.application.config.sandbox_host
+    Rails.application.config.default_host = '127.0.0.1'
+    Rails.application.config.sandbox_host = '127.0.0.1'
+    @forgery = ActionController::Base.allow_forgery_protection
+    ActionController::Base.allow_forgery_protection = true
+  end
+
+  teardown do
+    ActionController::Base.allow_forgery_protection = @forgery
+    Rails.application.config.sandbox_host = @sandbox_host
+    Rails.application.config.default_host = @default_host
+  end
 end

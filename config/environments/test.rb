@@ -1,10 +1,8 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  isSystemTest = ENV['SYSTEM_TEST'].present?
-  localhostIp = "127.0.0.1"
-  config.default_host = isSystemTest ? localhostIp : 'www.example.com'
-  config.sandbox_host = isSystemTest ? localhostIp : 'sandbox.example.com'
+  config.default_host = 'www.example.com'
+  config.sandbox_host = 'sandbox.example.com'
   config.action_controller.asset_host = nil
 
   # The test environment is used exclusively to run your application's
@@ -33,7 +31,7 @@ Rails.application.configure do
   config.action_dispatch.show_exceptions = false
 
   # Disable request forgery protection in test environment.
-  config.action_controller.allow_forgery_protection = isSystemTest
+  config.action_controller.allow_forgery_protection = false
   config.action_mailer.perform_caching = false
 
   # Store uploaded files on the local file system in a temporary directory

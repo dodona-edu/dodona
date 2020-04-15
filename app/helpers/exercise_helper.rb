@@ -73,7 +73,7 @@ module ExerciseHelper
           onResized: dodona.afterResize,
           onMessage: dodona.onFrameMessage,
           onScroll: dodona.onFrameScroll,
-          inPageLinks:true,
+          inPageLinks: true,
         },
         '##{id}')
     }

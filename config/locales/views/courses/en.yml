@@ -72,8 +72,8 @@ en:
         series: "Series are irrevocably lost."
         button: "Delete"
         impossible:
-          one: "A course with more than %{count} submission cannot be removed."
-          other: "A course with more than %{count} submissions cannot be removed."
+          one: "You can't remove a course with more than %{count} submission yourself."
+          other: "You can't remove a course with more than %{count} submissions yourself."
         contact_html: "<a href=\"%{contact_url}\">Contact us</a> if you want to delete the course anyway."
     show:
       course: Course

@@ -81,8 +81,8 @@ nl:
         series: "Reeksen gaan onherroepelijk verloren."
         button: "Verwijderen"
         impossible:
-          one: "Een cursus met meer dan %{count} oplossing kan niet verwijderd worden."
-          other: "Een cursus met meer dan %{count} oplossingen kan niet verwijderd worden."
+          one: "Je kan een cursus met meer dan %{count} oplossing niet zelf verwijderen."
+          other: "Je kan een cursus met meer dan %{count} oplossingen niet zelf verwijderen."
         contact_html: "<a href=\"%{contact_url}\">Contacteer ons</a> als je de cursus toch wilt verwijderen."
     show:
       course: Cursus

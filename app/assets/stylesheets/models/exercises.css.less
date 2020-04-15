@@ -76,12 +76,18 @@
   margin-left: 16px;
 }
 
-.exercise-description .footnotes {
-  border-top: 1px solid @divider-color;
-  padding-top: 16px;
-  font-size: 13px;
-  // The parent div has 16px of padding, which we don't want.
-  margin: 16px -16px 0;
+.footnotes::before {
+  content: "";
+  width: 150px;
+  height: 16px;
+  margin-left: 16px;
+  display: block;
+  border-top: 1px solid @text-secondary;
+}
+
+.footnotes {
+  font-size: 90%;
+  margin: 16px 0 0 -16px;
 }
 
 center img {

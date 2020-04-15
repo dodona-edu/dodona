@@ -72,6 +72,7 @@ module ExerciseHelper
           heightCalculationMethod: 'bodyScroll',
           onResized: dodona.afterResize,
           onMessage: dodona.onFrameMessage,
+          inPageLinks:true,
         },
         '##{id}')
     }
@@ -147,7 +148,7 @@ module ExerciseHelper
       end
     end
 
-    # Rewrite relative url's to absulute
+    # Rewrite relative url's to absolute
     # (i.e. if it is relative, rewrite it to be absolute)
     # Returns nil if the argument isn't an url
     def absolutize_url(url)

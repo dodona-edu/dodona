@@ -54,7 +54,7 @@ module ExerciseHelper
     number_to_human bytes, units: BYTE_UNITS
   end
 
-  # returns a list with as the first item the description of an execise
+  # returns a list with as the first item the description of an exercise
   # and as second item a hash of footnote indexes mapped on their url
   def exercise_description_footnotes_and_first_image(exercise)
     renderer = DescriptionRenderer.new(exercise, request)
@@ -72,6 +72,8 @@ module ExerciseHelper
           heightCalculationMethod: 'bodyScroll',
           onResized: dodona.afterResize,
           onMessage: dodona.onFrameMessage,
+          onScroll: dodona.onFrameScroll,
+          inPageLinks: true,
         },
         '##{id}')
     }
@@ -147,7 +149,7 @@ module ExerciseHelper
       end
     end
 
-    # Rewrite relative url's to absulute
+    # Rewrite relative url's to absolute
     # (i.e. if it is relative, rewrite it to be absolute)
     # Returns nil if the argument isn't an url
     def absolutize_url(url)

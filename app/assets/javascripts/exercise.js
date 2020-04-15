@@ -388,8 +388,18 @@ function afterResize(details) {
     }
 }
 
+function onFrameScroll(position) {
+    /**
+     * The scroll position does not account for the navigation bar, which is always
+     * visible. This will add the offset for the navigation bar.
+     */
+    const navHeight = document.querySelector("nav.dodona-navbar").offsetHeight;
+    window.scrollTo(position.x, position.y - navHeight);
+    return false;
+}
+
 export {
     initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
-    onFrameMessage
+    onFrameMessage, onFrameScroll
 };
 

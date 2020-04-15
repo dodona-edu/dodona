@@ -300,7 +300,7 @@ class FeedbackTableRenderer
     @builder.div(class: 'code-table', 'data-submission-id': @submission.id) do
       @builder << FeedbackCodeRenderer.new(@code, @submission.exercise.programming_language&.name)
                                       .add_messages(@submission, messages, @user)
-                                      .parse
+                                      .add_code
                                       .html
     end
   end

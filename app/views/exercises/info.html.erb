@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'submission' %>
+<% end %>
 <%= render 'navbar_links' %>
 <%
   solutions = @exercise.solutions.sort(&method(:compare_solutions))
@@ -175,7 +178,7 @@
                     <%= link_to t('.sample_solution_submit'), exercise_url(@exercise, from_solution: fname), class: "btn-text" %>
                   </div>
                   <div class="code-table">
-                    <%= raw FeedbackCodeRenderer.new(code, @exercise.programming_language.name).parse.html %>
+                    <%= raw FeedbackCodeRenderer.new(code, @exercise.programming_language.name).add_code.html %>
                   </div>
                 </div>
               <% end %>

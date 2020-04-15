@@ -2,10 +2,38 @@ class FeedbackCodeRenderer
   require 'json'
   include Rails.application.routes.url_helpers
 
+  @instances = 0
+
+  class << self
+    attr_accessor :instances
+  end
+
   def initialize(code, programming_language)
     @code = code
     @programming_language = programming_language
     @builder = Builder::XmlMarkup.new
+    self.class.instances += 1
+    @instance = self.class.instances
+  end
+
+  def add_code
+    @builder.div(class: 'code-listing-container') do
+      parse
+
+      # Not possible to use clipboard_button_for here since the behaviour is different.
+      @builder.button(class: 'btn btn-default copy-btn', id: "copy-to-clipboard-#{@instance}", title: I18n.t('js.code.copy-to-clipboard'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+        @builder.i(class: 'mdi mdi-clipboard-text mdi-18') {}
+      end
+      @builder.script(type: 'application/javascript') do
+        @builder << <<~HEREDOC
+          $(() => {
+            window.dodona.submissionCode#{@instance} = #{@code.to_json};
+            window.dodona.attachClipboard("#copy-to-clipboard-#{@instance}", window.dodona.submissionCode#{@instance});
+          });
+        HEREDOC
+      end
+    end
+    self
   end
 
   def parse
@@ -14,15 +42,7 @@ class FeedbackCodeRenderer
 
     lexer = (Rouge::Lexer.find(@programming_language) || Rouge::Lexers::PlainText).new
     lexed_c = lexer.lex(@code.encode(universal_newline: true))
-
-    @builder.div(class: 'code-listing-container') do
-      @builder << table_formatter.format(lexed_c)
-
-      # Not possible to use clipboard_button_for here since the behaviour is different.
-      @builder.button(class: 'btn btn-default', id: 'copy-to-clipboard', title: I18n.t('js.code.copy-to-clipboard'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-        @builder.i(class: 'mdi mdi-clipboard-text mdi-18') {}
-      end
-    end
+    @builder << table_formatter.format(lexed_c)
     self
   end
 
@@ -62,7 +82,7 @@ class FeedbackCodeRenderer
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
         $(() => {
-          window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, #{@code.to_json}, #{@code.lines.length});
+          window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, window.dodona.submissionCode#{@instance}, #{@code.lines.length});
           window.dodona.codeListing.addMachineAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
           #{'window.dodona.codeListing.initAnnotateButtons();' if user_may_annotate}
           window.dodona.codeListing.loadUserAnnotations();

@@ -54,7 +54,7 @@ module ExerciseHelper
     number_to_human bytes, units: BYTE_UNITS
   end
 
-  # returns a list with as the first item the description of an execise
+  # returns a list with as the first item the description of an exercise
   # and as second item a hash of footnote indexes mapped on their url
   def exercise_description_footnotes_and_first_image(exercise)
     renderer = DescriptionRenderer.new(exercise, request)

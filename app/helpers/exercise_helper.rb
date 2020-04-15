@@ -72,6 +72,7 @@ module ExerciseHelper
           heightCalculationMethod: 'bodyScroll',
           onResized: dodona.afterResize,
           onMessage: dodona.onFrameMessage,
+          onScroll: dodona.onFrameScroll,
           inPageLinks:true,
         },
         '##{id}')

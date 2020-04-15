@@ -20,3 +20,30 @@
     <% end %>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card card-border">
+      <div class="card-supporting-text">
+        <h4><%= t ".delete.title" %></h4>
+        <p><%= t '.delete.consequences' %></p>
+        <ul>
+          <li><%= t '.delete.submissions' %></li>
+          <li><%= t '.delete.series' %></li>
+        </ul>
+      </div>
+      <% if policy(@course).destroy? %>
+        <div class="card-actions card-border">
+          <%= link_to @course, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-text btn-danger", title: t(".delete.button") do %>
+            <%= t('.delete.button') %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="card-supporting-text card-border">
+          <%= t '.delete.impossible', count: CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY %>
+          <%= t '.delete.contact_html', contact_url: contact_url %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

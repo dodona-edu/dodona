@@ -65,6 +65,16 @@ en:
       series_reordering_help_html: "You can reorder the series by dragging the icons at the left of the table. For students, a <b>reverse chronological</b> order is probably the easiest. This way, the most recent series is at the top, and the students don't have to scroll down each time."
       update: "Update"
       series_reordering_moved_help_html: 'Looking to reorder the series in this course? This functionality has moved to a <a href="%{course_url}">separate page</a>.'
+      delete:
+        title: "Delete course"
+        consequences: "Deleting a course has the following consequences:"
+        submissions: "Submissions are kept, but are no longer linked to a course."
+        series: "Series are irrevocably lost."
+        button: "Delete"
+        impossible:
+          one: "You can't remove a course with more than %{count} submission yourself."
+          other: "You can't remove a course with more than %{count} submissions yourself."
+        contact_html: "<a href=\"%{contact_url}\">Contact us</a> if you want to delete the course anyway."
     show:
       course: Course
       hidden_show_link: "Secret link"

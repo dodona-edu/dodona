@@ -519,4 +519,39 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     get course_url(@course, secret: @course.secret)
     assert_not response.body.include?(subscribe_course_path(@course, secret: @course.secret))
   end
+
+  test 'should not destroy course as student' do
+    sign_in @students.first
+    delete course_url(@course)
+    assert_not response.successful?
+  end
+
+  test 'should destroy course as course admin' do
+    # Ensure there are not too many submissions.
+    @course.submissions.offset(CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY).each(&:destroy)
+    sign_in @course_admins.first
+    assert_difference 'Course.count', -1 do
+      delete course_url(@course)
+    end
+    assert response.body.include?(courses_url)
+  end
+
+  test 'should not destroy course as course admin if too many submissions' do
+    sign_in @course_admins.first
+    # Ensure we are testing something useful.
+    assert_operator @course.submissions.count, :>, CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY
+    delete course_url(@course)
+    assert_not response.successful?
+  end
+
+  test 'should destroy course as zeus even if too many submissions' do
+    admin = create :zeus
+    sign_in admin
+    # Ensure we are testing something useful.
+    assert_operator @course.submissions.count, :>, CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY
+    assert_difference 'Course.count', -1 do
+      delete course_url(@course)
+    end
+    assert response.body.include?(courses_url)
+  end
 end

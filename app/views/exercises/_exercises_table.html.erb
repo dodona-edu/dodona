@@ -4,10 +4,6 @@
    else
      user = current_user
    end %>
-<% summary ||= SeriesSummary.new(
-    user: user,
-    series: local_assigns[:series],
-    exercises: local_assigns[:exercises]) %>
 
 <div class="table-scroll-wrapper">
   <table class="table exercise-table table-resource">
@@ -37,24 +33,24 @@
     </tr>
     </thead>
     <tbody>
-    <% summary.exercise_summaries.each do |ex| %>
+    <% local_assigns[:exercises].each do |exercise| %>
       <tr>
         <td class='status-icon'>
           <% if user_signed_in? %>
-            <% if current_user.repository_admin?(ex.exercise.repository) || current_user.course_admin?(@course) %>
-              <%= render partial: 'exercises/repository_status', locals: {exercise: ex.exercise, series: local_assigns[:series]} %>
+            <% if current_user.repository_admin?(exercise.repository) || current_user.course_admin?(@course) %>
+              <%= render partial: 'exercises/repository_status', locals: {exercise: exercise, series: local_assigns[:series]} %>
             <% end %>
-            <%= render partial: 'exercises/user_status_icon', locals: {summary: ex} %>
+            <%= render partial: 'exercises/user_status_icon', locals: {exercise: exercise, series: local_assigns[:series], user: user} %>
           <% end %>
         </td>
 
         <td>
-          <% if ex.exercise.accessible?(current_user, @course) %>
-            <%= link_to ex.exercise.name, get_exercise_path.call(ex.exercise) %>
-          <% elsif ex.exercise.access_public? %>
-            <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
+          <% if exercise.accessible?(current_user, @course) %>
+            <%= link_to exercise.name, get_exercise_path.call(exercise) %>
+          <% elsif exercise.access_public? %>
+            <%= link_to exercise.name, exercise_path(exercise) %>
           <% else %>
-            <%= ex.exercise.name %>
+            <%= exercise.name %>
           <% end %>
         </td>
 
@@ -64,15 +60,15 @@
               <%= render partial: 'application/progress_chart',
                 locals: {
                   total: @course.subscribed_members_count,
-                  tried: ex.users_tried,
-                  correct: ex.users_correct,
+                  tried: exercise.users_tried(@course),
+                  correct: exercise.users_correct(@course),
                   info_tried: 'exercises.index.progress_chart_info_tried',
                   info_correct: 'exercises.index.progress_chart_info_correct'
                 }
               %>
             <% else %>
               <%= content_tag :span, title: t('exercises.exercise.count_tooltip'), class: "text-right text-muted" do %>
-                <%= ex.users_correct %>/<%= ex.users_tried %>
+                <%= exercise.users_correct %>/<%= exercise.users_tried %>
               <% end %>
             <% end %>
           </td>
@@ -80,12 +76,12 @@
 
         <% if user_signed_in? %>
           <td>
-            <%= render partial: 'exercises/user_status', locals: {summary: ex} %>
+            <%= render partial: 'exercises/user_status', locals: {exercise: exercise, series: series, user: user} %>
           </td>
           <td>
-            <% if ex.submitted? || current_user.course_admin?(local_assigns[:series]&.course) %>
+            <% if exercise.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course) %>
               <% options = current_user == user ? {} : {user_id: user.id} %>
-              <%= link_to submissions_scoped_path(exercise: ex.exercise, course: ex.series&.course, series: ex.series, options: options),
+              <%= link_to submissions_scoped_path(exercise: exercise, course: series&.course, series: series, options: options),
                           title: t('layout.menu.my_submissions'),
                           class: 'btn-icon' do %>
                 <i class="mdi mdi-chevron-right mdi-18"></i>

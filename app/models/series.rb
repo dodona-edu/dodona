@@ -28,12 +28,12 @@ class Series < ApplicationRecord
   USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started'.freeze
   USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong'.freeze
 
-  enum visibility: {open: 0, hidden: 1, closed: 2}
+  enum visibility: { open: 0, hidden: 1, closed: 2 }
 
   belongs_to :course
   has_many :series_memberships, dependent: :destroy
   has_many :exercises, through: :series_memberships
-  has_many :exercise_statuses
+  has_many :exercise_statuses, dependent: :destroy
 
   validates :name, presence: true
   validates :visibility, presence: true
@@ -68,9 +68,9 @@ class Series < ApplicationRecord
   # @param [Object] options {deadline (optional), user}
   def completed?(options)
     if options[:deadline]
-      exercises.all? { |e| e.exercise_status_for(options[:user], self).accepted_before_deadline? }
+      exercises.all? { |e| e.accepted_before_deadline_for?(options[:user], self) }
     else
-      exercises.all? { |e| e.exercise_status_for(options[:user], self).accepted? }
+      exercises.all? { |e| e.accepted_for?(options[:user], self) }
     end
   end
 
@@ -88,14 +88,14 @@ class Series < ApplicationRecord
   end
 
   def started?(options)
-    exercises.any? { |e| e.exercise_status_for(options[:user], self).started? }
+    exercises.any? { |e| e.started_for?(options[:user], self) }
   end
 
   invalidateable_instance_cacheable(:started?,
                                     ->(this, options) { format(USER_STARTED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
 
   def wrong?(options)
-    exercises.any? { |e| e.exercise_status_for(options[:user], self).wrong? }
+    exercises.any? { |e| e.wrong_for?(options[:user], self) }
   end
 
   invalidateable_instance_cacheable(:wrong?,
@@ -120,18 +120,18 @@ class Series < ApplicationRecord
 
   def scoresheet
     users = course.subscribed_members
-                .order('course_memberships.status ASC')
-                .order(permission: :asc)
-                .order(last_name: :asc, first_name: :asc)
+                  .order('course_memberships.status ASC')
+                  .order(permission: :asc)
+                  .order(last_name: :asc, first_name: :asc)
 
     submission_hash = Submission.in_series(self).where(user: users)
     submission_hash = submission_hash.before_deadline(deadline) if deadline.present?
     submission_hash = submission_hash.group(%i[user_id exercise_id]).most_recent.index_by { |s| [s.user_id, s.exercise_id] }
 
     {
-        users: users,
-        exercises: exercises,
-        submissions: submission_hash
+      users: users,
+      exercises: exercises,
+      submissions: submission_hash
     }
   end
 

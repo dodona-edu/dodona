@@ -7,14 +7,6 @@
    else
      user = current_user
    end %>
-<% if loaded %>
-  <% summary ||= SeriesSummary.new(
-      user: user,
-      series: series,
-      exercises: series.exercises) %>
-<% else %>
-  <% summary ||= nil %>
-<% end %>
 
 <div class="card card-supporting-text series"
      id="series-card-<%= series.id %>"
@@ -127,8 +119,7 @@
             series: series,
             exercises: series.exercises,
             get_exercise_path: get_exercise_path,
-            summary: summary,
-            user: user,
+            user: user
         } %>
       <% else %>
         <div class="exercise-table-skeleton">

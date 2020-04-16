@@ -36,13 +36,13 @@ class Exercise < ApplicationRecord
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
   SOLUTION_DIR = 'solution'.freeze
-  SOLUTION_MAX_BYTES = 2 ** 16 - 1
+  SOLUTION_MAX_BYTES = 2**16 - 1
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
   # We need to prefix, otherwise Rails can't generate the public? method
-  enum access: {public: 0, private: 1}, _prefix: true
-  enum status: {ok: 0, not_valid: 1, removed: 2}
+  enum access: { public: 0, private: 1 }, _prefix: true
+  enum status: { ok: 0, not_valid: 1, removed: 2 }
 
   belongs_to :repository
   belongs_to :judge
@@ -55,7 +55,7 @@ class Exercise < ApplicationRecord
   has_many :exercise_labels, dependent: :destroy
   has_many :labels, through: :exercise_labels
 
-  validates :path, uniqueness: {scope: :repository_id, case_sensitive: false}, allow_nil: true
+  validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
 
   token_generator :repository_token, length: 64
   token_generator :access_token
@@ -74,8 +74,8 @@ class Exercise < ApplicationRecord
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
-  scope :by_labels, ->(labels) { includes(:labels).where(labels: {name: labels}).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
-  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: {name: programming_language}) }
+  scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(exercise_labels.label_id)) = ?', labels.uniq.length) }
+  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
 
   def full_path
     return '' unless path
@@ -100,10 +100,10 @@ class Exercise < ApplicationRecord
 
   def solutions
     (full_path + SOLUTION_DIR)
-        .yield_self { |path| path.directory? ? path.children : [] }
-        .filter { |path| path.file? && path.readable? }
-        .map { |path| [path.basename, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
-        .to_h
+      .yield_self { |path| path.directory? ? path.children : [] }
+      .filter { |path| path.file? && path.readable? }
+      .map { |path| [path.basename.to_s, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
+      .to_h
   end
 
   def description_languages
@@ -195,18 +195,18 @@ class Exercise < ApplicationRecord
 
   def merged_dirconfig
     Pathname.new('./' + path).parent.descend # all parent directories
-        .map { |dir| read_dirconfig dir } # try reading their dirconfigs
-        .compact # remove nil entries
-        .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
-        .yield_self { |dirconfig| lowercase_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
+            .map { |dir| read_dirconfig dir } # try reading their dirconfigs
+            .compact # remove nil entries
+            .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .yield_self { |dirconfig| lowercase_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
   def merged_dirconfig_locations
     Pathname.new('./' + path).parent.descend # all parent directories
-        .map { |dir| read_dirconfig_locations dir } # try reading their dirconfigs
-        .compact # remove nil entries
-        .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
-        .yield_self { |dirconfig| unique_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
+            .map { |dir| read_dirconfig_locations dir } # try reading their dirconfigs
+            .compact # remove nil entries
+            .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
+            .yield_self { |dirconfig| unique_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
   def merged_config
@@ -306,17 +306,33 @@ class Exercise < ApplicationRecord
   invalidateable_instance_cacheable(:users_tried,
                                     ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
-  def exercise_status_for(user, series = nil)
-    ExerciseStatus.create_or_find_by(exercise: self, series: series, user: user)
-  end
-
   def exercise_statuses_for(user, course)
     series_memberships.in_course(course).each do |series_membership|
       ExerciseStatus.create_or_find_by(exercise: self, series: series_membership.series, user: user)
     end
   end
 
-  def best_is_last_submission?(user, series)
+  def accepted_for?(user, series = nil)
+    exercise_status_for(user, series).accepted?
+  end
+
+  def accepted_before_deadline_for?(user, series = nil)
+    exercise_status_for(user, series).accepted_before_deadline?
+  end
+
+  def solved_for?(user, series = nil)
+    exercise_status_for(user, series).solved?
+  end
+
+  def started_for?(user, series = nil)
+    exercise_status_for(user, series).started?
+  end
+
+  def wrong_for?(user, series = nil)
+    exercise_status_for(user, series).wrong?
+  end
+
+  def best_is_last_submission?(user, series = nil)
     exercise_status_for(user, series).best_is_last?
   end
 
@@ -406,6 +422,10 @@ class Exercise < ApplicationRecord
   end
 
   private
+
+  def exercise_status_for(user, series = nil)
+    ExerciseStatus.create_or_find_by(exercise: self, series: series, user: user)
+  end
 
   # takes a relative path
   def read_dirconfig(subdir)

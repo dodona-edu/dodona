@@ -51,7 +51,7 @@ module SeriesHelper
         t('series.series_status.completed_after_deadline_met')
       else
         t('series.series_status.wrong_after_deadline_met')
-      end # started and unstarted are impossible after deadline met
+      end
     elsif series.completed?(user: user)
       t('series.series_status.completed_no_deadline')
     elsif series.wrong?(user: user)

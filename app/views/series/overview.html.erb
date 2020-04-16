@@ -1,4 +1,4 @@
-<% summary = SeriesSummary.new user: @user || current_user, series: @series %>
+<% user = @user || current_user %>
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'series_overview' %>
 <% end %>
@@ -10,26 +10,26 @@
       get_exercise_path: method(:exercise_anchor),
       user: @user
   } %>
-  <% summary.exercise_summaries.each do |ex| %>
+  <% @series.exercises.each do |exercise| %>
     <div class="card exercise-description">
       <%= content_tag :a,
                       '',
-                      name: exercise_anchor_id(ex.exercise),
+                      name: exercise_anchor_id(exercise),
                       class: 'anchor' %>
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
-          <%= link_to ex.exercise.name, exercise_path(ex.exercise) %>
+          <%= link_to exercise.name, exercise_path(exercise) %>
         </h2>
       </div>
-      <%= description_iframe ex.exercise %>
+      <%= description_iframe exercise %>
       <div class="card-actions card-border hidden-print">
-        <% if ex.submitted? || ex.deadline_passed? %>
+        <% if exercise.started_for?(user, @series) || @series.deadline&.past? %>
           <div class="btn-text submission-status-button">
-            <%= render partial: 'exercises/user_status_icon', locals: {summary: ex} %>
-            <%= render partial: 'exercises/user_status', locals: {summary: ex} %>
+            <%= render partial: 'exercises/user_status_icon', locals: {exercise: exercise, series: @series, user: user} %>
+            <%= render partial: 'exercises/user_status', locals: {exercise: exercise, series: @series, user: user} %>
           </div>
         <% else %>
-          <%= link_to t('exercises.show.handin'), course_series_exercise_path(@series.course, @series.id, ex.exercise, anchor: "submission-card"), class: "btn-text" %>
+          <%= link_to t('exercises.show.handin'), course_series_exercise_path(@series.course, @series.id, exercise, anchor: "submission-card"), class: "btn-text" %>
         <% end %>
       </div>
     </div>

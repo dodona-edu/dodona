@@ -24,15 +24,16 @@ class Series < ApplicationRecord
   include Cacheable
   include Tokenable
 
-  USER_COMPLETED_CACHE_STRING = '/series/%<id>s/deadline/%<deadline>s/user/%<user_id>s'.freeze
-  USER_STARTED_CACHE_STRING = '/series/%<id>s/started/user/%<user_id>s'.freeze
-  USER_WRONG_CACHE_STRING = '/series/%<id>s/wrong/user/%<user_id>s'.freeze
+  USER_COMPLETED_CACHE_STRING = '/series/%<id>s/deadline/%<deadline>s/user/%<user_id>s/completed'.freeze
+  USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started'.freeze
+  USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong'.freeze
 
-  enum visibility: { open: 0, hidden: 1, closed: 2 }
+  enum visibility: {open: 0, hidden: 1, closed: 2}
 
   belongs_to :course
   has_many :series_memberships, dependent: :destroy
   has_many :exercises, through: :series_memberships
+  has_many :exercise_statuses
 
   validates :name, presence: true
   validates :visibility, presence: true
@@ -42,6 +43,7 @@ class Series < ApplicationRecord
 
   before_create :generate_access_token
   before_save :regenerate_exercise_tokens, if: :visibility_changed?
+  after_save :invalidate_exercise_statuses
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }
@@ -65,8 +67,11 @@ class Series < ApplicationRecord
 
   # @param [Object] options {deadline (optional), user}
   def completed?(options)
-    options[:course] = course
-    exercises.all? { |e| e.accepted_for(options) }
+    if options[:deadline]
+      exercises.all? { |e| e.exercise_status_for(options[:user], self).accepted_before_deadline? }
+    else
+      exercises.all? { |e| e.exercise_status_for(options[:user], self).accepted? }
+    end
   end
 
   invalidateable_instance_cacheable(:completed?,
@@ -79,28 +84,22 @@ class Series < ApplicationRecord
   def missed_deadline?(user)
     return false unless deadline&.past?
 
-    !completed?(deadline: deadline, user: user)
+    !completed_before_deadline?(user)
   end
 
   def started?(options)
-    options[:course] = course
-    exercises.any? { |e| e.started_for?(options) }
+    exercises.any? { |e| e.exercise_status_for(options[:user], self).started? }
   end
 
   invalidateable_instance_cacheable(:started?,
                                     ->(this, options) { format(USER_STARTED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
 
   def wrong?(options)
-    options[:course] = course
-    exercises.any? { |e| e.started_for?(options) && !e.accepted_for(options) }
+    exercises.any? { |e| e.exercise_status_for(options[:user], self).wrong? }
   end
 
   invalidateable_instance_cacheable(:wrong?,
                                     ->(this, options) { format(USER_WRONG_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
-
-  def solved_exercises(user)
-    exercises.select { |e| e.accepted_for(user: user) }
-  end
 
   def indianio_support
     indianio_token.present?
@@ -121,18 +120,18 @@ class Series < ApplicationRecord
 
   def scoresheet
     users = course.subscribed_members
-                  .order('course_memberships.status ASC')
-                  .order(permission: :asc)
-                  .order(last_name: :asc, first_name: :asc)
+                .order('course_memberships.status ASC')
+                .order(permission: :asc)
+                .order(last_name: :asc, first_name: :asc)
 
     submission_hash = Submission.in_series(self).where(user: users)
     submission_hash = submission_hash.before_deadline(deadline) if deadline.present?
     submission_hash = submission_hash.group(%i[user_id exercise_id]).most_recent.index_by { |s| [s.user_id, s.exercise_id] }
 
     {
-      users: users,
-      exercises: exercises,
-      submissions: submission_hash
+        users: users,
+        exercises: exercises,
+        submissions: submission_hash
     }
   end
 
@@ -141,5 +140,9 @@ class Series < ApplicationRecord
       exercise.generate_access_token
       exercise.save
     end
+  end
+
+  def invalidate_exercise_statuses
+    exercise_statuses.destroy_all
   end
 end

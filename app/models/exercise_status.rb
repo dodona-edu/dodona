@@ -9,6 +9,14 @@ class ExerciseStatus < ApplicationRecord
 
   after_create :refresh_values
 
+  def best_is_last?
+    accepted == solved
+  end
+
+  def wrong?
+    started && !accepted?
+  end
+
   def refresh_values
     best_submission = exercise.best_submission(user, nil, series&.course)
     best_submission_before_deadline = exercise.best_submission(user, series&.deadline, series&.course)
@@ -19,9 +27,9 @@ class ExerciseStatus < ApplicationRecord
     solved_at ||= best_submission_before_deadline&.created_at if best_submission_before_deadline&.accepted?
     solved_at ||= best_submission&.created_at if best_submission&.accepted?
 
-    update accepted: last_submission&.accepted?,
-           accepted_before_deadline: last_submission_before_deadline&.accepted?,
-           solved: best_submission&.accepted?,
+    update accepted: last_submission&.accepted? || false,
+           accepted_before_deadline: last_submission_before_deadline&.accepted? || false,
+           solved: best_submission&.accepted? || false,
            solved_at: solved_at,
            started: last_submission.present?
   end

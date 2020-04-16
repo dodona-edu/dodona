@@ -30,8 +30,6 @@ class Exercise < ApplicationRecord
   include Cacheable
   include Tokenable
 
-  USER_ACCEPTED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/deadline/%<deadline>s/user/%<user_id>s'.freeze
-  USER_STARTED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/started/user/%<user_id>s'.freeze
   USERS_CORRECT_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_correct'.freeze
   USERS_TRIED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_tried'.freeze
   CONFIG_FILE = 'config.json'.freeze
@@ -278,7 +276,7 @@ class Exercise < ApplicationRecord
       end
       return true if user&.repository_admin? repository
       return false unless access_public? \
-         || repository.allowed_courses.pluck(:id).include?(course&.id)
+          || repository.allowed_courses.pluck(:id).include?(course&.id)
       return true if user&.member_of? course
       return false if course.moderated && access_private?
 
@@ -308,11 +306,18 @@ class Exercise < ApplicationRecord
   invalidateable_instance_cacheable(:users_tried,
                                     ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
-  def best_is_last_submission?(user, deadline = nil, course = nil)
-    last_correct = last_correct_submission(user, deadline, course)
-    return true if last_correct.nil?
+  def exercise_status_for(user, series = nil)
+    ExerciseStatus.create_or_find_by(exercise: self, series: series, user: user)
+  end
 
-    last_correct == last_submission(user, deadline, course)
+  def exercise_statuses_for(user, course)
+    series_memberships.in_course(course).each do |series_membership|
+      ExerciseStatus.create_or_find_by(exercise: self, series: series_membership.series, user: user)
+    end
+  end
+
+  def best_is_last_submission?(user, series)
+    exercise_status_for(user, series).best_is_last?
   end
 
   def best_submission(user, deadline = nil, course = nil)
@@ -333,27 +338,6 @@ class Exercise < ApplicationRecord
     s = s.in_course(course) if course
     s = s.before_deadline(deadline) if deadline
     s.limit(1).first
-  end
-
-  def accepted_for(options)
-    last_submission(options[:user], options[:deadline], options[:course]).try(:accepted)
-  end
-
-  invalidateable_instance_cacheable(:accepted_for,
-                                    ->(this, options) { format(USER_ACCEPTED_CACHE_STRING, user_id: options[:user].id.to_s, course_id: options[:course] ? options[:course].id.to_s : 'global', deadline: options[:deadline] ? options[:deadline].to_s : 'global', id: this.id.to_s) })
-
-  def exercise_status_for(user, series = nil)
-    ExerciseStatus.create_or_find_by(exercise: self, series: series, user: user)
-  end
-
-  def exercise_statuses_for(user, course)
-    series_memberships.in_course(course).each do |series_membership|
-      ExerciseStatus.create_or_find_by(exercise: self, series: series_membership.series, user: user)
-    end
-  end
-
-  def started_for?(options)
-    last_submission(options[:user], options[:deadline], options[:course]).present?
   end
 
   def number_of_submissions_for(user, course = nil)

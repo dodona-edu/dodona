@@ -267,7 +267,7 @@ class Submission < ApplicationRecord
 
   def update_exercise_status
     exercise.exercise_statuses_for(user, course).each do |exercise_status|
-      exercise_status.update_status(self)
+      exercise_status.update_values(self)
     end
   end
 
@@ -283,10 +283,10 @@ class Submission < ApplicationRecord
     # the current course that contains this exercise, for the current user.
     # Afterwards, invalidate the completion status of the series itself as well.
     exercise.series.where(course_id: course_id).find_each do |ex_series|
-      exercise.invalidate_accepted_for(course: course, deadline: ex_series.deadline, user: user)
       ex_series.invalidate_completed?(user: user)
       ex_series.invalidate_completed?(deadline: ex_series.deadline, user: user)
       ex_series.invalidate_started?(user: user)
+      ex_series.invalidate_wrong?(user: user)
     end
 
     # Invalidate other statistics.

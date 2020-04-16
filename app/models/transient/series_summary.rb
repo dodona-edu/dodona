@@ -27,18 +27,6 @@ class SeriesSummary
     @timely_submissions = kwargs[:timely_submissions] || query_timely_submissions
   end
 
-  def deadline_status
-    if @series.deadline&.past?
-      if all?(&:solved_before_deadline?)
-        'deadline-met'
-      else
-        'deadline-missed'
-      end
-    else
-      ''
-    end
-  end
-
   def each(&block)
     exercise_summaries.each(&block)
   end
@@ -54,48 +42,6 @@ class SeriesSummary
       end
     end
   end
-
-  def number_solved_before_deadline
-    count(&:solved_before_deadline?)
-  end
-
-  def number_solved
-    count(&:solved?)
-  end
-
-  def number_wrong
-    count(&:wrong?)
-  end
-
-  def progress_percentage(step: 1)
-    pct = (number_solved * 100) / count
-    pct /= step
-    pct * step
-  end
-
-  def wrong_percentage(step: 1)
-    pct = (number_wrong * 100) / count
-    pct /= step
-    pct * step
-  end
-
-  def progress
-    number_solved.to_f / count
-  end
-
-  def wrong?
-    any?(&:wrong?)
-  end
-
-  def completed?
-    all?(&:solved?)
-  end
-
-  def started?
-    query_submissions.any?
-  end
-
-  private
 
   def mk_exercise_summary(exercise, **kwargs)
     ExerciseSummary.new(

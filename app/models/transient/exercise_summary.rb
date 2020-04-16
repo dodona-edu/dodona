@@ -20,45 +20,10 @@ class ExerciseSummary
     @accepted_submission = kwargs.key?(:accepted_submission) ? kwargs[:accepted_submission] : query_accepted_submission
   end
 
-  # whether latest submission is wrong, if it exists
-  def wrong?
-    latest_submission.present? && !latest_submission.accepted
-  end
-
-  # whether latest submission is correct
-  def solved?
-    latest_submission&.accepted
-  end
-
-  # whether last submission before deadline is correct
-  def solved_before_deadline?
-    timely_submission&.accepted
-  end
-
   # whether the user has submitted a solution for this exercise
   def submitted?
     latest_submission != nil
   end
-
-  def accepted_submission_exists?
-    accepted_submission != nil
-  end
-
-  delegate :deadline, to: :series, allow_nil: true
-
-  def deadline_passed?
-    deadline&.past?
-  end
-
-  def users_correct
-    exercise.users_correct(course: series_membership&.course)
-  end
-
-  def users_tried
-    exercise.users_tried(course: series_membership&.course)
-  end
-
-  private
 
   def query_submissions
     s = Submission.judged.where(user: user, exercise: exercise).reorder(id: :desc)

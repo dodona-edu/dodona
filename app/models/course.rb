@@ -134,11 +134,11 @@ class Course < ApplicationRecord
   end
 
   def pending_series(user)
-    series.visible.select { |s| s.pending? && !s.completed?(user) }
+    series.visible.select { |s| s.pending? && !s.completed?(user: user) }
   end
 
   def incomplete_series(user)
-    series.visible.reject { |s| s.completed?(user) }
+    series.visible.reject { |s| s.completed?(user: user) }
   end
 
   def formatted_year

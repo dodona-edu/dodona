@@ -10,7 +10,7 @@ module SeriesHelper
   def series_status_deadline_icon(series, user)
     return nil unless series.deadline?
     return 'mdi-alarm-off' if series.missed_deadline?(user)
-    return 'mdi-alarm-check' if series.completed_before_deadline?(user: user) && !series.completed?(user)
+    return 'mdi-alarm-check' if series.completed_before_deadline?(user) && !series.completed?(user: user)
 
     nil
   end

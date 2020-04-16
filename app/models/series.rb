@@ -61,26 +61,23 @@ class Series < ApplicationRecord
     deadline? && deadline > Time.zone.now
   end
 
-  def completed?(user)
-    exercises.all? { |e| e.accepted_for(user: user) }
-  end
-
-  # @param [Object] options {user}
-  def completed_before_deadline?(options)
-    return true unless deadline?
-
+  # @param [Object] options {deadline (optional), user}
+  def completed?(options)
     options[:course] = course
-    options[:deadline] = deadline
     exercises.all? { |e| e.accepted_for(options) }
   end
 
-  invalidateable_instance_cacheable(:completed_before_deadline?,
-                                    ->(this, options) { format(USER_COMPLETED_CACHE_STRING, user_id: options[:user].id.to_s, deadline: this.deadline? ? this.deadline.to_s : 'global', id: this.id.to_s) })
+  invalidateable_instance_cacheable(:completed?,
+                                    ->(this, options) { format(USER_COMPLETED_CACHE_STRING, user_id: options[:user].id.to_s, deadline: options[:deadline] ? options[:deadline].to_s : 'global', id: this.id.to_s) })
+
+  def completed_before_deadline?(user)
+    completed?(deadline: deadline, user: user)
+  end
 
   def missed_deadline?(user)
     return false unless deadline&.past?
 
-    !completed_before_deadline?(user: user)
+    !completed?(deadline: deadline, user: user)
   end
 
   def solved_exercises(user)

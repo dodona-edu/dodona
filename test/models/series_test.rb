@@ -199,7 +199,7 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
-    assert_equal false, series.completed?(user)
+    assert_equal false, series.completed?(user: user)
     assert_equal 0, series.solved_exercises(user).count
   end
 
@@ -213,7 +213,7 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
-    assert_equal true, series.completed?(user)
+    assert_equal true, series.completed?(user: user)
     assert_equal 1, series.solved_exercises(user).count
   end
 
@@ -227,7 +227,7 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
-    assert_equal false, series.completed?(user)
+    assert_equal false, series.completed?(user: user)
     assert_equal 0, series.solved_exercises(user).count
   end
 
@@ -241,7 +241,7 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
-    assert_equal true, series.completed?(user)
+    assert_equal true, series.completed?(user: user)
     assert_equal 1, series.solved_exercises(user).count
   end
 end

@@ -16,18 +16,19 @@
   <% summary ||= nil %>
 <% end %>
 
+<% deadline_met = user ? series.completed_before_deadline?(user: user) : false %>
+
 <div class="card card-supporting-text series"
      id="series-card-<%= series.id %>"
      data-series-url="<%= user&.id ? series_path(series, format: :js, user_id: user.id) : series_path(series, format: :js) %>">
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>" name="series-<%= series.id %>"></a>
     <div class="hidden-print">
-      <%= render partial: 'series/series_status', locals: {summary: summary} %>
+      <%= render partial: 'series/series_status', locals: {series: series, user: user} %>
     </div>
     <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
       <%=  %>
       <% if series.deadline? %>
-        <% deadline_met = user ? series.completed_before_deadline?(user: user) : false %>
         <% if series.deadline > Time.now %>
           <%= "<small class='#{deadline_class deadline_met, true}' title='deadline #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}'><i class='mdi #{deadline_icon deadline_met, true} mdi-12'></i> #{l series.deadline, format: :long}</small>".html_safe %>
         <% else %>

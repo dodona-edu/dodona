@@ -1,0 +1,7 @@
+nl:
+  deadlines:
+    missed:
+      "deadline gemist"
+    relative:
+      ago: "%{time_ago} geleden"
+      in: "binnen %{time_left}"

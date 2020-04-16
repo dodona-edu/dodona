@@ -1,6 +1,5 @@
-<% if user.present? %>
-  <% deadline_met = user ? series.completed_before_deadline?(user: user) : false %>
-  <% tooltip = if series.deadline.present?
+<% if summary.present? %>
+  <% tooltip = if summary.series.deadline.present?
                  if summary.deadline_missed?
                    if summary.completed?
                      t ".completed_after_deadline_missed"

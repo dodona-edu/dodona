@@ -14,8 +14,8 @@ module DeadlinesHelper
   end
 
   def deadline_relative_time(deadline)
-    return t('deadlines.in', time_left: time_ago_in_words(deadline)) if deadline.future?
+    return t('deadlines.relative.in', time_left: time_ago_in_words(deadline)) if deadline.future?
 
-    t('deadlines.ago', time_ago: time_ago_in_words(deadline))
+    t('deadlines.relative.ago', time_ago: time_ago_in_words(deadline))
   end
 end

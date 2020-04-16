@@ -41,15 +41,7 @@
                end
   %>
   <div class="card-title-icon <%= summary.full_status %>" title="<%= tooltip %>" data-toggle="tooltip" data-placement="top">
-    <% if !summary.started? %>
-      <i class="mdi mdi-school"></i>
-    <% elsif summary.completed? %>
-      <i class="mdi mdi-check-bold"></i>
-    <% elsif summary.wrong? %>
-      <i class="mdi mdi-close"></i>
-    <% elsif summary.started? %>
-      <i class="mdi mdi-thumb-up"></i>
-    <% end %>
+    <i class="mdi <%= series_status_icon(series, user) %>"></i>
     <% icon_secondary = series_status_deadline_icon(series, user) %>
     <% if icon_secondary %>
       <i class="mdi mdi-18 <%= icon_secondary %>"></i>

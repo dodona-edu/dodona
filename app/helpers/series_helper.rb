@@ -8,17 +8,11 @@ module SeriesHelper
   end
 
   def series_status_icon(series, user)
-    return 'mdi-school' unless series.started?(user)
-    return 'mdi-check-bold' if series.completed?(user)
-    #<% if !summary.started? %>
-    #  <i class="mdi mdi-school"></i>
-    #<% elsif summary.completed? %>
-    #  <i class="mdi mdi-check-bold"></i>
-    #                        <% elsif summary.wrong? %>
-    #  <i class="mdi mdi-close"></i>
-    #<% elsif summary.started? %>
-    #  <i class="mdi mdi-thumb-up"></i>
-    #                                                <% end %>
+    return 'mdi-school' unless series.started?(user: user)
+    return 'mdi-check-bold' if series.completed?(user: user)
+    return 'mdi-close' if series.wrong?(user: user)
+
+    'mdi-thumb-up'
   end
 
   def series_status_deadline_icon(series, user)

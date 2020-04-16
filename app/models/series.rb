@@ -26,6 +26,7 @@ class Series < ApplicationRecord
 
   USER_COMPLETED_CACHE_STRING = '/series/%<id>s/deadline/%<deadline>s/user/%<user_id>s'.freeze
   USER_STARTED_CACHE_STRING = '/series/%<id>s/started/user/%<user_id>s'.freeze
+  USER_WRONG_CACHE_STRING = '/series/%<id>s/wrong/user/%<user_id>s'.freeze
 
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
@@ -88,6 +89,14 @@ class Series < ApplicationRecord
 
   invalidateable_instance_cacheable(:started?,
                                     ->(this, options) { format(USER_STARTED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
+
+  def wrong?(options)
+    options[:course] = course
+    exercises.any? { |e| e.started_for?(options) && !e.accepted_for(options) }
+  end
+
+  invalidateable_instance_cacheable(:wrong?,
+                                    ->(this, options) { format(USER_WRONG_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
 
   def solved_exercises(user)
     exercises.select { |e| e.accepted_for(user: user) }

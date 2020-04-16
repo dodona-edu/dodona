@@ -49,6 +49,7 @@ class Exercise < ApplicationRecord
   belongs_to :repository
   belongs_to :judge
   belongs_to :programming_language, optional: true
+  has_many :exercise_statuses, dependent: :destroy
   has_many :submissions, dependent: :restrict_with_error
   has_many :series_memberships, dependent: :restrict_with_error
   has_many :series, through: :series_memberships
@@ -342,11 +343,8 @@ class Exercise < ApplicationRecord
                                     ->(this, options) { format(USER_ACCEPTED_CACHE_STRING, user_id: options[:user].id.to_s, course_id: options[:course] ? options[:course].id.to_s : 'global', deadline: options[:deadline] ? options[:deadline].to_s : 'global', id: this.id.to_s) })
 
   def started_for?(options)
-    last_submission(options[:user], nil, options[:course]).present?
+    last_submission(options[:user], options[:deadline], options[:course]).present?
   end
-
-  invalidateable_instance_cacheable(:started_for?,
-                                    ->(this, options) { format(USER_STARTED_CACHE_STRING, user_id: options[:user].id.to_s, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def number_of_submissions_for(user, course = nil)
     s = submissions.of_user(user)

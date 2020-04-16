@@ -31,6 +31,7 @@ class Exercise < ApplicationRecord
   include Tokenable
 
   USER_ACCEPTED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/deadline/%<deadline>s/user/%<user_id>s'.freeze
+  USER_STARTED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/started/user/%<user_id>s'.freeze
   USERS_CORRECT_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_correct'.freeze
   USERS_TRIED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_tried'.freeze
   CONFIG_FILE = 'config.json'.freeze
@@ -339,6 +340,13 @@ class Exercise < ApplicationRecord
 
   invalidateable_instance_cacheable(:accepted_for,
                                     ->(this, options) { format(USER_ACCEPTED_CACHE_STRING, user_id: options[:user].id.to_s, course_id: options[:course] ? options[:course].id.to_s : 'global', deadline: options[:deadline] ? options[:deadline].to_s : 'global', id: this.id.to_s) })
+
+  def started_for?(options)
+    last_submission(options[:user], nil, options[:course]).present?
+  end
+
+  invalidateable_instance_cacheable(:started_for?,
+                                    ->(this, options) { format(USER_STARTED_CACHE_STRING, user_id: options[:user].id.to_s, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def number_of_submissions_for(user, course = nil)
     s = submissions.of_user(user)

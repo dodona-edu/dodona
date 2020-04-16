@@ -40,6 +40,7 @@ class Submission < ApplicationRecord
   before_update :update_fs
   before_save :report_if_internal_error
   after_create :evaluate_delayed, if: :evaluate?
+  after_save :update_exercise_status
   after_save :invalidate_caches
   after_destroy :invalidate_caches
   after_destroy :clear_fs
@@ -262,6 +263,12 @@ class Submission < ApplicationRecord
     return status if status.in?(statuses)
 
     'unknown'
+  end
+
+  def update_exercise_status
+    exercise.exercise_statuses_for(user, course).each do |exercise_status|
+      exercise_status.update_status(self)
+    end
   end
 
   def invalidate_caches

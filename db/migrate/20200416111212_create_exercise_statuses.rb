@@ -2,7 +2,7 @@ class CreateExerciseStatuses < ActiveRecord::Migration[6.0]
   def change
     create_table :exercise_statuses do |t|
       t.boolean :accepted, default: false, null: false # status of the last submission
-      t.boolean :accepted_before_deadline, default: false, null: false
+      t.boolean :accepted_before_deadline, default: false, null: false # whether the last submission before the deadline was correct
       t.boolean :solved, default: false, null: false # whether any correct submission exists
       t.boolean :started, default: false, null: false # whether any submission exists
 

@@ -27,18 +27,6 @@ class SeriesSummary
     @timely_submissions = kwargs[:timely_submissions] || query_timely_submissions
   end
 
-  def progress_status
-    if !started?
-      'not-yet-begun'
-    elsif completed?
-      'completed'
-    elsif wrong?
-      'wrong'
-    elsif started?
-      'started'
-    end
-  end
-
   def deadline_status
     if @series.deadline&.past?
       if all?(&:solved_before_deadline?)
@@ -49,10 +37,6 @@ class SeriesSummary
     else
       ''
     end
-  end
-
-  def full_status
-    progress_status + ' ' + deadline_status
   end
 
   def each(&block)
@@ -109,14 +93,6 @@ class SeriesSummary
 
   def started?
     query_submissions.any?
-  end
-
-  def deadline_missed?
-    @series.deadline&.past? && !all?(&:solved_before_deadline?)
-  end
-
-  def deadline_met?
-    @series.deadline&.past? && all?(&:solved_before_deadline?)
   end
 
   private

@@ -22,7 +22,7 @@
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>" name="series-<%= series.id %>"></a>
     <div class="hidden-print">
-      <%= render partial: 'series/series_status', locals: {loaded: loaded, summary: summary, series: series, user: user} %>
+      <%= render partial: 'series/series_status', locals: {loaded: loaded, series: series, user: user} %>
     </div>
     <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
       <%= render partial: 'deadlines/absolute', locals: {deadline: series.deadline, met: series.completed_before_deadline?(user)} %>

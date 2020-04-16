@@ -16,25 +16,16 @@
   <% summary ||= nil %>
 <% end %>
 
-<% deadline_met = user ? series.completed_before_deadline?(user: user) : false %>
-
 <div class="card card-supporting-text series"
      id="series-card-<%= series.id %>"
      data-series-url="<%= user&.id ? series_path(series, format: :js, user_id: user.id) : series_path(series, format: :js) %>">
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>" name="series-<%= series.id %>"></a>
     <div class="hidden-print">
-      <%= render partial: 'series/series_status', locals: {series: series, user: user} %>
+      <%= render partial: 'series/series_status', locals: {loaded: loaded, summary: summary, series: series, user: user} %>
     </div>
     <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
-      <%=  %>
-      <% if series.deadline? %>
-        <% if series.deadline > Time.now %>
-          <%= "<small class='#{deadline_class deadline_met, true}' title='deadline #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}'><i class='mdi #{deadline_icon deadline_met, true} mdi-12'></i> #{l series.deadline, format: :long}</small>".html_safe %>
-        <% else %>
-          <%= "<small class='#{deadline_class deadline_met, false}' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><i class='mdi #{deadline_icon deadline_met, true} mdi-12'></i> #{l series.deadline, format: :long}</small>".html_safe %>
-        <% end %>
-      <% end %>
+      <%= render partial: 'deadlines/absolute', locals: {deadline: series.deadline, met: series.completed_before_deadline?(user: user)} %>
     </h4>
     <div class="flex-spacer"></div>
     <div class="card-subtitle-actions">
@@ -43,7 +34,7 @@
           <i class="mdi mdi-dots-vertical"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-right">
-          <% if current_user&.course_admin?(series.course) %>
+          <% if user&.course_admin?(series.course) %>
             <% if policy(series).edit? %>
               <li>
                 <%= link_to edit_series_path(series) do %>
@@ -73,7 +64,7 @@
                 <% end %>
               </li>
             <% end %>
-            <% if policy(series).download_submissions? && current_user.course_admin?(series.course) %>
+            <% if policy(series).download_submissions? && user.course_admin?(series.course) %>
               <li>
                 <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?)) do %>
                   <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_all_solutions") %>
@@ -107,19 +98,19 @@
       </div>
     </div>
   </div>
-  <% if current_user&.course_admin?(series.course) && series.hidden? %>
+  <% if user&.course_admin?(series.course) && series.hidden? %>
     <div class="alert alert-info hidden-print">
       <%= t "series.show.series_not_visible" %>
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
-  <% if current_user&.course_admin?(series.course) && series.closed? %>
+  <% if user&.course_admin?(series.course) && series.closed? %>
     <div class="alert alert-info hidden-print">
       <%= t "series.show.series_not_accessible" %>
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
-  <% if current_user&.course_admin?(series.course) && !series.exercises_visible %>
+  <% if user&.course_admin?(series.course) && !series.exercises_visible %>
     <div class="alert alert-info hidden-print">
       <%= t "series.show.exercises_not_visible" %>
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>

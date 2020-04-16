@@ -1,5 +1,6 @@
-<% if summary.present? %>
-  <% tooltip = if summary.series.deadline.present?
+<% # arguments: loaded (bool), series (Series), user (User) %>
+<% if loaded %>
+  <% tooltip = if series.deadline?
                  if summary.deadline_missed?
                    if summary.completed?
                      t ".completed_after_deadline_missed"

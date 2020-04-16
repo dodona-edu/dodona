@@ -44,18 +44,16 @@
     <% if !summary.started? %>
       <i class="mdi mdi-school"></i>
     <% elsif summary.completed? %>
-      <i class="mdi mdi-check-bold">
+      <i class="mdi mdi-check-bold"></i>
     <% elsif summary.wrong? %>
       <i class="mdi mdi-close"></i>
     <% elsif summary.started? %>
       <i class="mdi mdi-thumb-up"></i>
     <% end %>
-      <% if summary.deadline_met? && !summary.completed? %>
-        <i class="mdi mdi-alarm-check mdi-18"></i>
-      <% elsif summary.deadline_missed? %>
-        <i class="mdi mdi-alarm-off mdi-18"></i>
-      <% end %>
-      </i>
+    <% icon_secondary = series_status_deadline_icon(series, user) %>
+    <% if icon_secondary %>
+      <i class="mdi mdi-18 <%= icon_secondary %>"></i>
+    <% end %>
   </div>
 <% else %>
   <div class="card-title-icon skeleton">

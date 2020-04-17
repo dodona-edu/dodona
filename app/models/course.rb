@@ -9,8 +9,8 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  description    :text(65535)
-#  visibility     :integer          default("visible_for_all")
-#  registration   :integer          default("open_for_all")
+#  visibility     :integer
+#  registration   :integer
 #  color          :integer
 #  teacher        :string(255)      default("")
 #  institution_id :bigint

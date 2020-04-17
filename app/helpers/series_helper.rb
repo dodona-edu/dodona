@@ -28,38 +28,27 @@ module SeriesHelper
   def series_status(series, user)
     if series.deadline?
       if series.missed_deadline?(user)
-        if series.completed?(user: user)
-          t('series.series_status.completed_after_deadline_missed')
-        elsif series.wrong?(user: user)
-          t('series.series_status.wrong_after_deadline_missed')
-        elsif series.started?(user: user)
-          t('series.series_status.started_after_deadline_missed')
-        else
-          t('series.series_status.unstarted_after_deadline_missed')
-        end
+        return t('series.series_status.completed_after_deadline_missed') if series.completed?(user: user)
+        return t('series.series_status.wrong_after_deadline_missed')     if series.wrong?(user: user)
+        return t('series.series_status.started_after_deadline_missed')   if series.started?(user: user)
+
+        return t('series.series_status.unstarted_after_deadline_missed')
       elsif series.deadline.future?
-        if series.completed?(user: user)
-          t('series.series_status.completed_before_deadline')
-        elsif series.wrong?(user: user)
-          t('series.series_status.wrong_before_deadline')
-        elsif series.started?(user: user)
-          t('series.series_status.started_before_deadline')
-        else
-          t('series.series_status.unstarted_before_deadline')
-        end
-      elsif series.completed?(user: user)
-        t('series.series_status.completed_after_deadline_met')
-      else
-        t('series.series_status.wrong_after_deadline_met')
+        return t('series.series_status.completed_before_deadline') if series.completed?(user: user)
+        return t('series.series_status.wrong_before_deadline')     if series.wrong?(user: user)
+        return t('series.series_status.started_before_deadline')   if series.started?(user: user)
+
+        return t('series.series_status.unstarted_before_deadline')
       end
-    elsif series.completed?(user: user)
-      t('series.series_status.completed_no_deadline')
-    elsif series.wrong?(user: user)
-      t('series.series_status.wrong_no_deadline')
-    elsif series.started?(user: user)
-      t('series.series_status.started_no_deadline')
-    else
-      t('series.series_status.unstarted_no_deadline')
+      return t('series.series_status.completed_after_deadline_met') if series.completed?(user: user)
+
+      return t('series.series_status.wrong_after_deadline_met')
     end
+
+    return t('series.series_status.completed_no_deadline') if series.completed?(user: user)
+    return t('series.series_status.wrong_no_deadline')     if series.wrong?(user: user)
+    return t('series.series_status.started_no_deadline')   if series.started?(user: user)
+
+    t('series.series_status.unstarted_no_deadline')
   end
 end

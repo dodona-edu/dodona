@@ -60,8 +60,8 @@
               <%= render partial: 'application/progress_chart',
                 locals: {
                   total: @course.subscribed_members_count,
-                  tried: exercise.users_tried(@course),
-                  correct: exercise.users_correct(@course),
+                  tried: exercise.users_tried(course: @course),
+                  correct: exercise.users_correct(course: @course),
                   info_tried: 'exercises.index.progress_chart_info_tried',
                   info_correct: 'exercises.index.progress_chart_info_correct'
                 }
@@ -76,12 +76,12 @@
 
         <% if user_signed_in? %>
           <td>
-            <%= render partial: 'exercises/user_status', locals: {exercise: exercise, series: series, user: user} %>
+            <%= render partial: 'exercises/user_status', locals: {exercise: exercise, series: local_assigns[:series], user: user} %>
           </td>
           <td>
             <% if exercise.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course) %>
               <% options = current_user == user ? {} : {user_id: user.id} %>
-              <%= link_to submissions_scoped_path(exercise: exercise, course: series&.course, series: series, options: options),
+              <%= link_to submissions_scoped_path(exercise: exercise, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('layout.menu.my_submissions'),
                           class: 'btn-icon' do %>
                 <i class="mdi mdi-chevron-right mdi-18"></i>

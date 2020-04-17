@@ -369,7 +369,6 @@ class ExerciseTest < ActiveSupport::TestCase
            created_at: @date
 
     assert @exercise.best_is_last_submission?(@user)
-    assert @exercise.best_is_last_submission?(@user, @date - 10.seconds)
 
     create :wrong_submission,
            user: @user,
@@ -377,33 +376,31 @@ class ExerciseTest < ActiveSupport::TestCase
            created_at: @date + 10.seconds
 
     assert_not @exercise.best_is_last_submission?(@user)
-    assert @exercise.best_is_last_submission?(@user, @date + 5.seconds)
   end
 
   test 'accepted for' do
-    assert_not @exercise.accepted_for(user: @user)
+    assert_not @exercise.accepted_for?(@user)
 
     create :wrong_submission,
            user: @user,
            exercise: @exercise,
            created_at: @date
 
-    assert_not @exercise.accepted_for(user: @user)
+    assert_not @exercise.accepted_for?(@user)
 
     create :correct_submission,
            user: @user,
            exercise: @exercise,
            created_at: @date + 10.seconds
 
-    assert @exercise.accepted_for(user: @user)
-    assert_not @exercise.accepted_for(user: @user, deadline: @date + 5.seconds)
+    assert @exercise.accepted_for?(@user)
 
     create :wrong_submission,
            user: @user,
            exercise: @exercise,
            created_at: @date + 1.minute
 
-    assert_not @exercise.accepted_for(user: @user)
+    assert_not @exercise.accepted_for?(@user)
   end
 
   test 'exercise not made within course should not be accepted for that course' do
@@ -414,16 +411,16 @@ class ExerciseTest < ActiveSupport::TestCase
            user: @user,
            exercise: @exercise
 
-    courses.each do |course|
-      assert_not @exercise.accepted_for(user: @user, deadline: nil, course: course)
+    series.each do |series_it|
+      assert_not @exercise.accepted_for?(@user, series_it)
     end
 
     create :wrong_submission,
            user: @user,
            exercise: @exercise
 
-    courses.each do |course|
-      assert_not @exercise.accepted_for(user: @user, deadline: nil, course: course)
+    series.each do |series_it|
+      assert_not @exercise.accepted_for?(@user, series_it)
     end
 
     create :correct_submission,
@@ -431,16 +428,16 @@ class ExerciseTest < ActiveSupport::TestCase
            exercise: @exercise,
            course: courses[0]
 
-    assert @exercise.accepted_for(user: @user, deadline: nil, course: courses[0])
-    assert_not @exercise.accepted_for(user: @user, deadline: nil, course: courses[1])
+    assert @exercise.accepted_for?(@user, series[0])
+    assert_not @exercise.accepted_for?(@user, series[1])
 
     create :correct_submission,
            user: @user,
            exercise: @exercise,
            course: courses[1]
 
-    courses.each do |course|
-      assert @exercise.accepted_for(user: @user, deadline: nil, course: course)
+    series.each do |series_it|
+      assert @exercise.accepted_for?(@user, series_it)
     end
   end
 

@@ -52,8 +52,8 @@ FactoryBot.define do
     end
 
     trait :with_submissions do
-      exercise_count { 10 }
-      exercise_submission_count { 3 }
+      exercise_count { 2 }
+      exercise_submission_count { 2 }
     end
   end
 end

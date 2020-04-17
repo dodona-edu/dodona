@@ -189,7 +189,7 @@ end
 
 class SeriesVisibilityTest < ActionDispatch::IntegrationTest
   setup do
-    @series = create :series, exercise_count: 5, exercise_submission_count: 5
+    @series = create :series, exercise_count: 2, exercise_submission_count: 2
     @course = @series.course
     @student = create :student
     @zeus = create :zeus

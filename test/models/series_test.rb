@@ -114,7 +114,7 @@ class SeriesTest < ActiveSupport::TestCase
 
   test 'series scoresheet should be correct' do
     course = create :course
-    create_list :series, 4, course: course, exercise_count: 5, deadline: Time.current
+    create_list :series, 2, course: course, exercise_count: 2, deadline: Time.current
     users = create_list(:user, 6, courses: [course])
 
     expected_submissions = {}

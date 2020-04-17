@@ -12,7 +12,7 @@ en:
       status: Status
       result: Result
       summary: Summary
-      annotated: This submission has been annotated.
+      annotated: This submission has remarks.
     index:
       title: All submissions
       for: for

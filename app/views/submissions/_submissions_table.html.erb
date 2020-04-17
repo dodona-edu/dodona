@@ -2,7 +2,7 @@
   <table class="table table-resource submissions-table">
     <thead>
     <tr>
-      <th></th>
+      <th class="status-column"></th>
       <% if (current_user.administrating_courses.any? || current_user.admin?) && user.nil? %>
         <th><%= t ".user" %></th>
       <% end %>

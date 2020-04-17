@@ -43,7 +43,7 @@ class Series < ApplicationRecord
 
   before_create :generate_access_token
   before_save :regenerate_exercise_tokens, if: :visibility_changed?
-  after_save :invalidate_exercise_statuses, if: :deadline_changed?
+  after_save :invalidate_exercise_statuses, if: :saved_change_to_deadline?
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }

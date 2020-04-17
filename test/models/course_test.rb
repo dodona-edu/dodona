@@ -88,6 +88,48 @@ class CourseTest < ActiveSupport::TestCase
     assert_not course.secret_required?(user3)
   end
 
+  test 'correct solutions should be updated for submission in course' do
+    course = create :course
+    series = create :series, course: course, exercise_count: 1
+    user = create :user
+
+    assert_equal 0, course.correct_solutions
+
+    create :wrong_submission,
+           course: course,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal 0, course.correct_solutions
+
+    create :correct_submission,
+           course: course,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal 1, course.correct_solutions
+  end
+
+  test 'correct solutions should not be updated for submission outside course' do
+    course = create :course
+    series = create :series, course: course, exercise_count: 1
+    user = create :user
+
+    assert_equal 0, course.correct_solutions
+
+    create :wrong_submission,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal 0, course.correct_solutions
+
+    create :correct_submission,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal 0, course.correct_solutions
+  end
+
   test 'course scoresheet should be correct' do
     course = create :course
     create_list :series, 2, course: course, exercise_count: 2, deadline: Time.current

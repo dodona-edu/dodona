@@ -81,12 +81,6 @@ class Submission < ApplicationRecord
     correct.group(:user_id).most_recent
   }
 
-  scope :exercise_hash, lambda {
-    s = group(:exercise_id).most_recent
-    entries = s.map { |submission| [submission.exercise_id, submission] }
-    Hash[entries]
-  }
-
   def initialize(params)
     raise 'please explicitly tell whether you want to evaluate this submission' unless params.key? :evaluate
 

@@ -56,6 +56,24 @@ class SeriesTest < ActiveSupport::TestCase
     assert_nil @series.indianio_token
   end
 
+  test 'changing deadline should invalidate exercise statuses' do
+    course = create :course
+    series = create :series, course: course, deadline: Time.zone.now + 1.day, exercise_count: 1
+    user = create :user
+
+    create :correct_submission,
+           created_at: Time.zone.now,
+           course: course,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal true, series.completed_before_deadline?(user)
+
+    series.update(deadline: Time.zone.now - 1.day)
+
+    assert_equal false, series.completed_before_deadline?(user)
+  end
+
   test 'enabling indianio_support should generate a new token if there was none' do
     @series.indianio_support = true
     assert_not_nil @series.indianio_token

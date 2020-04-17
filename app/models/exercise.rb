@@ -358,12 +358,6 @@ class Exercise < ApplicationRecord
     s.limit(1).first
   end
 
-  def number_of_submissions_for(user, course = nil)
-    s = submissions.of_user(user)
-    s = s.in_course(course) if course
-    s.count
-  end
-
   def check_validity
     return unless ok?
 

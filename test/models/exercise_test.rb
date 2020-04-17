@@ -287,6 +287,20 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 1, e.users_correct(course: course2)
   end
 
+  test 'solved_for' do
+    create :wrong_submission,
+           exercise: @exercise,
+           user: @user
+
+    assert_equal false, @exercise.solved_for?(@user)
+
+    create :correct_submission,
+           exercise: @exercise,
+           user: @user
+
+    assert_equal true, @exercise.solved_for?(@user)
+  end
+
   test 'last submission' do
     assert_nil @exercise.last_submission(@user)
 

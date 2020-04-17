@@ -12,6 +12,7 @@ nl:
       status: Status
       result: Resultaat
       summary: Samenvatting
+      annotated: Deze oplossing heeft opmerkingen.
     index:
       title: Alle oplossingen
       for: voor

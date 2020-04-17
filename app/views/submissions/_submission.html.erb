@@ -1,5 +1,10 @@
 <tr id="submission_<%= submission.id %>" data-status="<%= submission.status %>">
-  <td><%= submission_status_icon(submission) %></td>
+  <td>
+    <%= submission_status_icon(submission) %>
+    <% if submission.annotated? %>
+      <i class="mdi mdi-comment-text-outline mdi-18 colored-secondary" data-toggle="tooltip" data-placement="top" title="<%= t('submissions.submissions_table.annotated') %>"></i>
+    <% end %>
+  </td>
   <% if (current_user.administrating_courses.any? || current_user.admin?) && user.nil? %>
     <td>
       <i class="mdi mdi-filter-outline mdi-18 filter-icon"

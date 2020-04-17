@@ -27,8 +27,6 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @course = create :course, series_count: 1, exercises_per_series: 1, submissions_per_exercise: 1
-    _zeus_extern = create :zeus
-    _zeus_intern = create :zeus
 
     @course.administrating_members.concat(create_normies)
 
@@ -535,16 +533,19 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not destroy course as course admin if too many submissions' do
-    create_list :series, 1, course: @course, exercise_count: 1, exercise_submission_count: CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY + 1
+    create_list :exercise, 1, series: @course.series, submission_count: CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY + 1
     sign_in @course_admins.first
+    # Assert there are actually too many submissions
+    assert_operator @course.submissions.count, :>, CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY
     delete course_url(@course)
     assert_not response.successful?
   end
 
   test 'should destroy course as zeus even if too many submissions' do
-    create_list :series, 1, course: @course, exercise_count: 1, exercise_submission_count: CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY + 1
-    admin = create :zeus
-    sign_in admin
+    create_list :exercise, 1, series: @course.series, submission_count: CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY + 1
+    sign_in create(:zeus)
+    # Assert there are actually too many submissions
+    assert_operator @course.submissions.count, :>, CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY
     assert_difference 'Course.count', -1 do
       delete course_url(@course)
     end

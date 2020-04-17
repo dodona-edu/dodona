@@ -70,7 +70,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should subscribe current_user to course' do
     with_users_signed_in @not_subscribed do |who, user|
-      post subscribe_course_url(@course)
+      post subscribe_course_url(@course, format: :json)
       assert @course.subscribed_members.include?(user), "#{who} should be able to subscribe"
     end
   end
@@ -86,7 +86,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @not_subscribed do |who, user|
       %w[visible_for_all visible_for_institution hidden].product(%w[open_for_all open_for_institution closed], [true, false]).each do |v, r, m|
         @course.update(visibility: v, registration: r, moderated: m)
-        get course_url(@course, secret: @course.secret)
+        get course_url(@course, secret: @course.secret, format: :json)
         assert_response :success, "#{who} should get registration page"
         # GET should not subscribe
         assert_not user.member_of?(@course), "#{who} should not be registered"
@@ -97,7 +97,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should not subscribe when already subscribed' do
     with_users_signed_in @course.users do |who|
       assert_difference('CourseMembership.count', 0, "#{who} should not be able to create a second membership") do
-        post subscribe_course_url(@course)
+        post subscribe_course_url(@course, format: :json)
       end
     end
   end
@@ -105,12 +105,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'unsubscribed user should be able to resubscribe' do
     with_users_signed_in @unsubscribed do |who, user|
       assert_not user.member_of?(@course), "#{who} was already a member"
-      post subscribe_course_url(@course)
+      post subscribe_course_url(@course, format: :json)
       assert user.member_of?(@course), "#{who} should be a member"
     end
   end
 
-  test 'should get course scoresheet as course admin' do
+  test 'should get course scoresheet as course admin in html format' do
     sign_in @course_admins.first
     get scoresheet_course_url(@course)
     assert_response :success, 'course_admin should be able to get course scoresheet'
@@ -136,7 +136,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'visiting registration page when subscribed should redirect' do
     with_users_signed_in @subscribed do |who|
-      get registration_course_url(@course, @course.secret)
+      get registration_course_url(@course, @course.secret, format: :json)
       assert_redirected_to @course, "#{who} should be redirected"
     end
   end
@@ -193,7 +193,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should be on pending list with moderated course' do
     @course.update(moderated: true)
     with_users_signed_in @not_subscribed do |who, user|
-      post subscribe_course_url(@course)
+      post subscribe_course_url(@course, format: :json)
       assert @course.pending_members.include?(user), "#{who} should be pending"
     end
   end
@@ -201,7 +201,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should be able to withdraw registration request' do
     @course.update(moderated: true)
     with_users_signed_in @pending do |who, user|
-      post unsubscribe_course_url(@course)
+      post unsubscribe_course_url(@course, format: :json)
       assert_not @course.pending_members.include?(user), "#{who} should not be pending anymore"
     end
   end
@@ -209,7 +209,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should be on pending list with moderated and hidden course' do
     @course.update(moderated: 'true', visibility: 'hidden')
     with_users_signed_in @not_subscribed do |who, user|
-      post subscribe_course_url(@course, secret: @course.secret)
+      post subscribe_course_url(@course, secret: @course.secret, format: :json)
       assert @course.pending_members.include?(user), "#{who} should be pending"
     end
   end

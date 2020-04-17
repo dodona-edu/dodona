@@ -240,31 +240,38 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'user option should work for heatmap' do
     temp = create :user
-    49.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: temp }
+    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: temp }
     user = create :user
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: user }
-    assert_equal 50, Submission.old_heatmap_matrix(user: user)[:value].values.sum
+    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: user }
+    assert_equal 3, Submission.old_heatmap_matrix(user: user)[:value].values.sum
   end
 
   test 'course option should work for punchcard' do
     temp = create :course
-    49.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
+    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
     course = create :course
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
-    assert_equal 50, Submission.old_punchcard_matrix(timezone: Time.zone, course: course)[:value].values.sum
+    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
+    assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, course: course)[:value].values.sum
   end
 
   test 'course option should work for heatmap' do
     temp = create :course
-    49.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
+    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
     course = create :course
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
-    assert_equal 50, Submission.old_heatmap_matrix(course: course)[:value].values.sum
+    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
+    assert_equal 3, Submission.old_heatmap_matrix(course: course)[:value].values.sum
   end
 
   test 'update to internal error should send exception notification' do
     submission = create :submission
     ExceptionNotifier.expects(:notify_exception).with { |_e, data| data[:data][:url].present? }
     submission.update(status: :"internal error")
+  end
+
+  test 'file is removed when submission is destroyed' do
+    submission = create :submission
+    assert File.exist?(submission.fs_path)
+    submission.destroy
+    assert_not File.exist?(submission.fs_path)
   end
 end

@@ -26,9 +26,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    @course = create :course, series_count: 10, exercises_per_series: 5, submissions_per_exercise: 5
-    _zeus_extern = create :zeus
-    _zeus_intern = create :zeus
+    @course = create :course, series_count: 1, exercises_per_series: 1, submissions_per_exercise: 1
 
     @course.administrating_members.concat(create_normies)
 
@@ -70,7 +68,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should subscribe current_user to course' do
     with_users_signed_in @not_subscribed do |who, user|
-      post subscribe_course_url(@course)
+      post subscribe_course_url(@course, format: :json)
       assert @course.subscribed_members.include?(user), "#{who} should be able to subscribe"
     end
   end
@@ -86,7 +84,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @not_subscribed do |who, user|
       %w[visible_for_all visible_for_institution hidden].product(%w[open_for_all open_for_institution closed], [true, false]).each do |v, r, m|
         @course.update(visibility: v, registration: r, moderated: m)
-        get course_url(@course, secret: @course.secret)
+        get course_url(@course, secret: @course.secret, format: :json)
         assert_response :success, "#{who} should get registration page"
         # GET should not subscribe
         assert_not user.member_of?(@course), "#{who} should not be registered"
@@ -97,7 +95,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should not subscribe when already subscribed' do
     with_users_signed_in @course.users do |who|
       assert_difference('CourseMembership.count', 0, "#{who} should not be able to create a second membership") do
-        post subscribe_course_url(@course)
+        post subscribe_course_url(@course, format: :json)
       end
     end
   end
@@ -105,12 +103,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'unsubscribed user should be able to resubscribe' do
     with_users_signed_in @unsubscribed do |who, user|
       assert_not user.member_of?(@course), "#{who} was already a member"
-      post subscribe_course_url(@course)
+      post subscribe_course_url(@course, format: :json)
       assert user.member_of?(@course), "#{who} should be a member"
     end
   end
 
-  test 'should get course scoresheet as course admin' do
+  test 'should get course scoresheet as course admin in html format' do
     sign_in @course_admins.first
     get scoresheet_course_url(@course)
     assert_response :success, 'course_admin should be able to get course scoresheet'
@@ -136,7 +134,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'visiting registration page when subscribed should redirect' do
     with_users_signed_in @subscribed do |who|
-      get registration_course_url(@course, @course.secret)
+      get registration_course_url(@course, @course.secret, format: :json)
       assert_redirected_to @course, "#{who} should be redirected"
     end
   end
@@ -193,7 +191,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should be on pending list with moderated course' do
     @course.update(moderated: true)
     with_users_signed_in @not_subscribed do |who, user|
-      post subscribe_course_url(@course)
+      post subscribe_course_url(@course, format: :json)
       assert @course.pending_members.include?(user), "#{who} should be pending"
     end
   end
@@ -201,7 +199,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should be able to withdraw registration request' do
     @course.update(moderated: true)
     with_users_signed_in @pending do |who, user|
-      post unsubscribe_course_url(@course)
+      post unsubscribe_course_url(@course, format: :json)
       assert_not @course.pending_members.include?(user), "#{who} should not be pending anymore"
     end
   end
@@ -209,7 +207,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should be on pending list with moderated and hidden course' do
     @course.update(moderated: 'true', visibility: 'hidden')
     with_users_signed_in @not_subscribed do |who, user|
-      post subscribe_course_url(@course, secret: @course.secret)
+      post subscribe_course_url(@course, secret: @course.secret, format: :json)
       assert @course.pending_members.include?(user), "#{who} should be pending"
     end
   end
@@ -527,8 +525,6 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy course as course admin' do
-    # Ensure there are not too many submissions.
-    @course.submissions.offset(CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY).each(&:destroy)
     sign_in @course_admins.first
     assert_difference 'Course.count', -1 do
       delete course_url(@course)
@@ -537,17 +533,18 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not destroy course as course admin if too many submissions' do
+    create_list :exercise, 1, series: @course.series, submission_count: CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY + 1
     sign_in @course_admins.first
-    # Ensure we are testing something useful.
+    # Assert there are actually too many submissions
     assert_operator @course.submissions.count, :>, CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY
     delete course_url(@course)
     assert_not response.successful?
   end
 
   test 'should destroy course as zeus even if too many submissions' do
-    admin = create :zeus
-    sign_in admin
-    # Ensure we are testing something useful.
+    create_list :exercise, 1, series: @course.series, submission_count: CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY + 1
+    sign_in create(:zeus)
+    # Assert there are actually too many submissions
     assert_operator @course.submissions.count, :>, CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY
     assert_difference 'Course.count', -1 do
       delete course_url(@course)

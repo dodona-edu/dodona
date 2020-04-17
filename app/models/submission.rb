@@ -181,6 +181,10 @@ class Submission < ApplicationRecord
     @evaluate
   end
 
+  def annotated?
+    !annotations.empty?
+  end
+
   def skip_rate_limit_check?
     @skip_rate_limit_check
   end

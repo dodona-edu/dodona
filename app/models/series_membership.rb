@@ -13,7 +13,6 @@
 class SeriesMembership < ApplicationRecord
   belongs_to :series
   belongs_to :exercise
-  has_one :course, through: :series
 
   delegate :course, to: :series
 
@@ -23,8 +22,6 @@ class SeriesMembership < ApplicationRecord
   after_create :invalidate_caches
   after_destroy :invalidate_caches
   after_destroy :regenerate_exercise_token
-
-  scope :in_course, ->(course) { where(course: course) }
 
   def invalidate_caches
     course.invalidate_exercises_count_cache

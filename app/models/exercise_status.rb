@@ -23,7 +23,7 @@ class ExerciseStatus < ApplicationRecord
   scope :for_exercise, ->(exercise) { where(exercise: exercise) }
   scope :for_user, ->(user) { where(user: user) }
 
-  after_create :refresh_values
+  before_create :initialise_values
 
   def best_is_last?
     accepted == solved
@@ -33,23 +33,6 @@ class ExerciseStatus < ApplicationRecord
     started && !accepted?
   end
 
-  def refresh_values
-    best_submission = exercise.best_submission(user, nil, series&.course)
-    best_submission_before_deadline = exercise.best_submission(user, series&.deadline, series&.course)
-    last_submission = exercise.last_submission(user, nil, series&.course)
-    last_submission_before_deadline = exercise.last_submission(user, series&.deadline, series&.course)
-
-    solved_at = nil
-    solved_at ||= best_submission_before_deadline&.created_at if best_submission_before_deadline&.accepted?
-    solved_at ||= best_submission&.created_at if best_submission&.accepted?
-
-    update accepted: last_submission&.accepted? || false,
-           accepted_before_deadline: last_submission_before_deadline&.accepted? || false,
-           solved: best_submission&.accepted? || false,
-           solved_at: solved_at,
-           started: last_submission.present?
-  end
-
   def update_values(submission)
     updates = { accepted: submission.accepted?, started: true }
     updates[:accepted_before_deadline] = submission.accepted? if series.blank? || series&.deadline&.future?
@@ -57,5 +40,22 @@ class ExerciseStatus < ApplicationRecord
     updates[:solved_at] = submission.created_at if submission.accepted? && !solved
 
     update updates
+  end
+
+  private
+
+  def initialise_values
+    best = exercise.best_submission(user, nil, series&.course)
+    best_before_deadline = exercise.best_submission(user, series&.deadline, series&.course)
+    last = exercise.last_submission(user, nil, series&.course)
+    last_before_deadline = exercise.last_submission(user, series&.deadline, series&.course)
+
+    self.accepted = last&.accepted? || false
+    self.accepted_before_deadline = last_before_deadline&.accepted? || false
+    self.solved = best&.accepted? || false
+    if solved?
+      self.solved_at = best_before_deadline&.accepted? ? best_before_deadline&.created_at : best&.created_at
+    end
+    self.started = last.present?
   end
 end

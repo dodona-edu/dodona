@@ -403,6 +403,24 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_not @exercise.accepted_for?(@user)
   end
 
+  test 'exercise status should be updated for every series in a course' do
+    course = create :course
+    series = create_list :series, 2, course: course, exercises: [@exercise]
+
+    series.each do |series_it|
+      assert_not @exercise.accepted_for?(@user, series_it)
+    end
+
+    create :correct_submission,
+           course: course,
+           exercise: @exercise,
+           user: @user
+
+    series.each do |series_it|
+      assert @exercise.accepted_for?(@user, series_it)
+    end
+  end
+
   test 'exercise not made within course should not be accepted for that course' do
     series = create_list :series, 2, exercises: [@exercise]
     courses = series.map(&:course)

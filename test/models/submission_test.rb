@@ -150,6 +150,10 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not File.exist?(path)
   end
 
+  test 'normalize_status should return unknown if unknown' do
+    assert_equal 'unknown', Submission.normalize_status('no-exist')
+  end
+
   test 'update_heatmap_matrix should always write something to the cache' do
     Rails.cache.expects(:write).once
     Submission.destroy_all

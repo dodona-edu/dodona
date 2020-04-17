@@ -19,25 +19,39 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Can view submission page' do
     visit(submission_path(id: @instance.id))
-    assert_text 'Correct'
-    assert_text 'Correctheid'
-    assert_text @instance.user.full_name
+    within '.card-title' do
+      assert_text 'Submission results'
+    end
+    within '.status-line' do
+      assert_text 'Correct'
+    end
+    within '.card-tab .nav.nav-tabs' do
+      assert_text 'Correctheid'
+      assert_text 'Code'
+    end
+    within '.submission-summary .description' do
+      assert_text @instance.user.full_name
+    end
   end
 
   test 'Navigate to code tab' do
     visit(submission_path(id: @instance.id))
     click_link 'Code'
-    @code_lines.each { |code_line| assert_text code_line }
+    within '.code-listing' do
+      @code_lines.each { |code_line| assert_text code_line }
+    end
   end
 
   test 'Submission annotation button is present for each code line' do
     visit(submission_path(id: @instance.id))
     click_link 'Code'
 
-    (1..@code_lines.length).each do |index|
-      line = "tr#line-#{index}"
-      find(line).hover
-      assert_css 'button.annotation-button'
+    within '.code-listing' do
+      (1..@code_lines.length).each do |index|
+        line = "tr#line-#{index}"
+        find(line).hover
+        assert_css 'button.annotation-button'
+      end
     end
   end
 
@@ -47,8 +61,10 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     find('tr#line-1').hover
     find('button.annotation-button').click
-    @code_lines.each do |code_line|
-      assert_text code_line
+    within '.code-listing' do
+      @code_lines.each do |code_line|
+        assert_text code_line
+      end
     end
     assert_no_css '.annotation'
   end
@@ -61,12 +77,15 @@ class AnnotationsTest < ApplicationSystemTestCase
     find('button.annotation-button').click
 
     initial = 'This is a single line comment'
-    within(:css, 'form.annotation-submission') do
+    within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Annotate'
     end
 
-    assert_text initial
+    within '.annotation' do
+      assert_text initial
+    end
+
     assert_no_css 'form.annotation-submission'
   end
 
@@ -76,11 +95,12 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     find('tr#line-1').hover
     find('button.annotation-button').click
-    within(:css, 'form.annotation-submission') do
+    within 'form.annotation-submission' do
       click_button 'Cancel'
     end
 
-    assert all('.annotation').empty?
+    assert_no_css '.annotation'
+    # assert all('.annotation').empty?
     assert_no_css 'form.annotation-submission'
   end
 
@@ -89,17 +109,23 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     visit(submission_path(id: @instance.id))
     click_link 'Code'
-    assert_text annot.annotation_text
+    within '.annotation' do
+      assert_text annot.annotation_text
+    end
+    assert_selector('.annotation', count: 1)
 
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
+    replacement = Faker::Lorem.paragraph(sentence_count: 3)
 
-    within(:css, 'form.annotation-submission') do
-      find('textarea.annotation-submission-input').fill_in with: 'This is a different single line comment'
+    within 'form.annotation-submission' do
+      find('textarea.annotation-submission-input').fill_in with: replacement
       click_button 'Update'
     end
 
-    assert_text 'This is a different single line comment'
-    assert_css '.annotation'
+    within '.annotation' do
+      assert_text replacement
+    end
+    assert_selector('.annotation', count: 1)
   end
 
   test 'Destroy annotation' do
@@ -108,10 +134,14 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     click_link 'Code'
 
-    assert_text annot.annotation_text
+    within '.annotation' do
+      assert_text annot.annotation_text
+    end
+    assert_selector '.annotation', count: 1
+
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
 
-    within(:css, 'form.annotation-submission') do
+    within 'form.annotation-submission' do
       click_button 'Delete'
       accept_confirm('Are you sure you want to delete this annotation?')
     end
@@ -129,21 +159,33 @@ class AnnotationsTest < ApplicationSystemTestCase
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
     click_link 'Code'
-    assert_text annot.annotation_text
+
+    assert_selector '.annotation', count: 1
+    within '.annotation' do
+      assert_text annot.annotation_text
+    end
+
     click_link 'Correctheid'
     click_link 'Code'
-    assert_text annot.annotation_text
+
+    assert_selector '.annotation', count: 1
+    within '.annotation' do
+      assert_text annot.annotation_text
+    end
   end
 
   test 'Edit valid annotation -- Too large input text' do
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
     click_link 'Code'
-    assert_text annot.annotation_text
+    assert_selector '.annotation', count: 1
+    within '.annotation' do
+      assert_text annot.annotation_text
+    end
 
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = (Faker::Lorem.words number: 512).join(' ')
-    within(:css, 'form.annotation-submission') do
+    within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: replacement
       click_button 'Update'
     end
@@ -155,11 +197,15 @@ class AnnotationsTest < ApplicationSystemTestCase
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
     click_link 'Code'
-    assert_text annot.annotation_text
+
+    assert_selector '.annotation', count: 1
+    within '.annotation' do
+      assert_text annot.annotation_text
+    end
 
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = ''
-    within(:css, 'form.annotation-submission') do
+    within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: replacement
       click_button 'Update'
     end
@@ -175,7 +221,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     find('button.annotation-button').click
 
     initial = ''
-    within(:css, 'form.annotation-submission') do
+    within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Annotate'
     end
@@ -191,7 +237,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     find('button.annotation-button').click
 
     initial = Faker::Lorem.words(number: 2048).join(' ')
-    within(:css, 'form.annotation-submission') do
+    within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Annotate'
     end
@@ -207,7 +253,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_button 'Add global annotation'
 
     initial = Faker::Lorem.words(number: 128).join(' ')
-    within(:css, '#feedback-table-global-annotations') do
+    within '#feedback-table-global-annotations' do
       find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Annotate'
     end
@@ -225,7 +271,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = Faker::Lorem.words(number: 128).join(' ')
-    within(:css, 'form.annotation-submission') do
+    within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: replacement
       click_button 'Update'
     end

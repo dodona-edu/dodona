@@ -267,4 +267,11 @@ class SubmissionTest < ActiveSupport::TestCase
     ExceptionNotifier.expects(:notify_exception).with { |_e, data| data[:data][:url].present? }
     submission.update(status: :"internal error")
   end
+
+  test 'file is removed when submission is destroyed' do
+    submission = create :submission
+    assert File.exist?(submission.fs_path)
+    submission.destroy
+    assert_not File.exist?(submission.fs_path)
+  end
 end

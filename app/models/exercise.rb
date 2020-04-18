@@ -307,7 +307,7 @@ class Exercise < ApplicationRecord
                                     ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def exercise_statuses_for(user, course)
-    return [exercise_status_for(user, nil)] unless course
+    return [exercise_status_for(user, nil)] if course.nil?
 
     series_memberships.joins(:series).where('course_id = ?', course.id).map do |series_membership|
       exercise_status_for(user, series_membership.series)

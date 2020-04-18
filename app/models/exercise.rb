@@ -420,7 +420,7 @@ class Exercise < ApplicationRecord
   private
 
   def exercise_status_for(user, series = nil)
-    ExerciseStatus.create_or_find_by(exercise: self, series: series, user: user)
+    ExerciseStatus.find_or_create_by(exercise: self, series: series, user: user)
   end
 
   # takes a relative path

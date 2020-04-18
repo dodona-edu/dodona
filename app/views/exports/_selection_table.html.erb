@@ -8,7 +8,7 @@
       <th>
         <%= data[:table_header_type] %>
       </th>
-      <% if data[:type] == 'series' %>
+      <% if data[:is_series?] %>
         <th class='count hidden-xs'>
             <%= t "exercises.index.class_progress" %>
         </th>
@@ -18,7 +18,7 @@
     </tr>
     </thead>
     <tbody>
-    <% data[:list].each_with_index do |el, index| %>
+    <% data[:list].each do |el| %>
       <% if policy(el).show? %>
         <tr class="selection-row">
           <td class="col-md-1">
@@ -27,13 +27,13 @@
           <td>
             <span> <%= el.name %> </span>
           </td>
-          <% if data[:type] == 'series' %>
+          <% if data[:is_series?] %>
             <td class="hidden-xs">
               <%= render partial: 'application/progress_chart',
                   locals: {
                       total: data[:course].subscribed_members_count,
-                      tried: data[:summary].exercise_summaries[index].users_tried,
-                      correct: data[:summary].exercise_summaries[index].users_correct,
+                      tried: el.users_tried(course: data[:course]),
+                      correct: el.users_correct(course: data[:course]),
                       info_tried: 'exercises.index.progress_chart_info_tried',
                       info_correct: 'exercises.index.progress_chart_info_correct'
                   }

@@ -1,0 +1,12 @@
+<% # arguments: deadline (time | nil), met (bool) %>
+<% if deadline.present? %>
+  <% met ||= false %>
+  <small class="<%= deadline_class met, deadline %>" title="<%= l(deadline, format: :long) %>">
+    <i class="mdi mdi-12 <%= deadline_icon met, deadline %>"></i>
+    <% if deadline.past? && !met %>
+      <%= t('deadlines.missed') %>
+    <% else %>
+      <%= deadline_relative_time deadline %>
+    <% end %>
+  </small>
+<% end %>

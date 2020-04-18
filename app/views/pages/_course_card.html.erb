@@ -80,7 +80,7 @@
         <% course_series.first(3).each do |series| %>
           <p>
             <span class='pull-right'>
-              <%= render partial: 'series/human_deadline', locals: {series: series} %>
+              <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
             </span>
             <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
           </p>

@@ -1,60 +1,12 @@
-<% if summary.present? %>
-  <% tooltip = if summary.series.deadline.present?
-                 if summary.deadline_missed?
-                   if summary.completed?
-                     t ".completed_after_deadline_missed"
-                   elsif summary.wrong?
-                     t ".wrong_after_deadline_missed"
-                   elsif summary.started?
-                     t ".started_after_deadline_missed"
-                   else
-                     t ".unstarted_after_deadline_missed"
-                   end
-                 elsif summary.deadline_met?
-                   if summary.completed?
-                     t ".completed_after_deadline_met"
-                   else
-                     t ".wrong_after_deadline_met"
-                   end # started and unstarted are impossible after deadline met
-                 else
-                   if summary.completed?
-                     t ".completed_before_deadline"
-                   elsif summary.wrong?
-                     t ".wrong_before_deadline"
-                   elsif summary.started?
-                     t ".started_before_deadline"
-                   else
-                     t ".unstarted_before_deadline"
-                   end
-                 end
-               else
-                 if summary.completed?
-                   t ".completed_no_deadline"
-                 elsif summary.wrong?
-                   t ".wrong_no_deadline"
-                 elsif summary.started?
-                   t ".started_no_deadline"
-                 else
-                   t ".unstarted_no_deadline"
-                 end
-               end
-  %>
-  <div class="card-title-icon <%= summary.full_status %>" title="<%= tooltip %>" data-toggle="tooltip" data-placement="top">
-    <% if !summary.started? %>
-      <i class="mdi mdi-school"></i>
-    <% elsif summary.completed? %>
-      <i class="mdi mdi-check-bold">
-    <% elsif summary.wrong? %>
-      <i class="mdi mdi-close"></i>
-    <% elsif summary.started? %>
-      <i class="mdi mdi-thumb-up"></i>
+<% # arguments: loaded (bool), series (Series), user (User) %>
+<% if loaded && user.present? %>
+  <% deadline_class, deadline_icon = series_status_deadline(series, user) %>
+  <% progress_class, progress_icon = series_status_progress(series, user) %>
+  <div class="card-title-icon <%= progress_class %> <%= deadline_class %>" title="<%= series_status(series, user) %>" data-toggle="tooltip" data-placement="top">
+    <i class="mdi <%= progress_icon %>"></i>
+    <% if deadline_icon %>
+      <i class="mdi mdi-18 <%= deadline_icon %>"></i>
     <% end %>
-      <% if summary.deadline_met? && !summary.completed? %>
-        <i class="mdi mdi-alarm-check mdi-18"></i>
-      <% elsif summary.deadline_missed? %>
-        <i class="mdi mdi-alarm-off mdi-18"></i>
-      <% end %>
-      </i>
   </div>
 <% else %>
   <div class="card-title-icon skeleton">

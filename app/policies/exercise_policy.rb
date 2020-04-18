@@ -18,7 +18,7 @@ class ExercisePolicy < ApplicationPolicy
     return false if !user && record.access_private?
     return true if record.ok?
     return false unless user
-    return true if record.number_of_submissions_for(user).nonzero?
+    return true if record.started_for?(user)
 
     false
   end
@@ -50,7 +50,7 @@ class ExercisePolicy < ApplicationPolicy
     return true if user&.admin?
     return true if record.ok?
     return false unless user
-    return true if record.number_of_submissions_for(user).nonzero?
+    return true if record.started_for?(user)
 
     false
   end

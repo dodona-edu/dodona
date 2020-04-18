@@ -9,8 +9,8 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  description    :text(65535)
-#  visibility     :integer          default("visible_for_all")
-#  registration   :integer          default("open_for_all")
+#  visibility     :integer
+#  registration   :integer
 #  color          :integer
 #  teacher        :string(255)      default("")
 #  institution_id :bigint
@@ -86,6 +86,48 @@ class CourseTest < ActiveSupport::TestCase
     assert_not course.secret_required?(user1)
     assert_not course.secret_required?(user2)
     assert_not course.secret_required?(user3)
+  end
+
+  test 'correct solutions should be updated for submission in course' do
+    course = create :course
+    series = create :series, course: course, exercise_count: 1
+    user = create :user
+
+    assert_equal 0, course.correct_solutions
+
+    create :wrong_submission,
+           course: course,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal 0, course.correct_solutions
+
+    create :correct_submission,
+           course: course,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal 1, course.correct_solutions
+  end
+
+  test 'correct solutions should not be updated for submission outside course' do
+    course = create :course
+    series = create :series, course: course, exercise_count: 1
+    user = create :user
+
+    assert_equal 0, course.correct_solutions
+
+    create :wrong_submission,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal 0, course.correct_solutions
+
+    create :correct_submission,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal 0, course.correct_solutions
   end
 
   test 'course scoresheet should be correct' do

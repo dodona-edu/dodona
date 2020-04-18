@@ -12,6 +12,7 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #  fs_key      :string(24)
+#  line_count  :integer
 #
 
 require 'test_helper'
@@ -147,6 +148,10 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal 'code', submission.code
     assert File.exist?(submission.fs_path)
     assert_not File.exist?(path)
+  end
+
+  test 'normalize_status should return unknown if unknown' do
+    assert_equal 'unknown', Submission.normalize_status('no-exist')
   end
 
   test 'update_heatmap_matrix should always write something to the cache' do

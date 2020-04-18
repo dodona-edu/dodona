@@ -9,8 +9,8 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  description    :text(65535)
-#  visibility     :integer          default("visible_for_all")
-#  registration   :integer          default("open_for_all")
+#  visibility     :integer
+#  registration   :integer
 #  color          :integer
 #  teacher        :string(255)      default("")
 #  institution_id :bigint
@@ -134,11 +134,11 @@ class Course < ApplicationRecord
   end
 
   def pending_series(user)
-    series.visible.select { |s| s.pending? && !s.completed?(user) }
+    series.visible.select { |s| s.pending? && !s.completed?(user: user) }
   end
 
   def incomplete_series(user)
-    series.visible.reject { |s| s.completed?(user) }
+    series.visible.reject { |s| s.completed?(user: user) }
   end
 
   def formatted_year

@@ -1,7 +1,0 @@
-<% if series.deadline? %>
-  <% if series.deadline > Time.now %>
-    <%= "<small class='deadline-ok' title='deadline #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}'><i class='mdi mdi-alert mdi-18'></i> #{l series.deadline, format: :long}</small>".html_safe %>
-  <% else %>
-    <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><i class='mdi mdi-alert mdi-18'></i> #{l series.deadline, format: :long}</small>".html_safe %>
-  <% end %>
-<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_06_155516) do
+ActiveRecord::Schema.define(version: 2020_04_16_111212) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -96,8 +96,8 @@ ActiveRecord::Schema.define(version: 2020_04_06_155516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
-    t.integer "visibility", default: 0
-    t.integer "registration", default: 0
+    t.integer "visibility"
+    t.integer "registration"
     t.integer "color"
     t.string "teacher", default: ""
     t.bigint "institution_id"
@@ -136,6 +136,22 @@ ActiveRecord::Schema.define(version: 2020_04_06_155516) do
     t.bigint "label_id", null: false
     t.index ["exercise_id", "label_id"], name: "index_exercise_labels_on_exercise_id_and_label_id", unique: true
     t.index ["label_id"], name: "fk_rails_0510a660e5"
+  end
+
+  create_table "exercise_statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.boolean "accepted", default: false, null: false
+    t.boolean "accepted_before_deadline", default: false, null: false
+    t.boolean "solved", default: false, null: false
+    t.boolean "started", default: false, null: false
+    t.datetime "solved_at"
+    t.integer "exercise_id", null: false
+    t.integer "series_id"
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["exercise_id", "series_id", "user_id"], name: "index_exercise_statuses_on_exercise_id_and_series_id_and_user_id", unique: true
+    t.index ["series_id"], name: "fk_rails_1bc42c2178"
+    t.index ["user_id"], name: "fk_rails_8a05a160e8"
   end
 
   create_table "exercises", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -328,6 +344,9 @@ ActiveRecord::Schema.define(version: 2020_04_06_155516) do
   add_foreign_key "events", "users", on_delete: :cascade
   add_foreign_key "exercise_labels", "exercises"
   add_foreign_key "exercise_labels", "labels"
+  add_foreign_key "exercise_statuses", "exercises", on_delete: :cascade
+  add_foreign_key "exercise_statuses", "series", on_delete: :cascade
+  add_foreign_key "exercise_statuses", "users", on_delete: :cascade
   add_foreign_key "exercises", "judges"
   add_foreign_key "exercises", "programming_languages"
   add_foreign_key "exercises", "repositories"

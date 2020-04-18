@@ -56,6 +56,24 @@ class SeriesTest < ActiveSupport::TestCase
     assert_nil @series.indianio_token
   end
 
+  test 'changing deadline should invalidate exercise statuses' do
+    course = create :course
+    series = create :series, course: course, deadline: Time.zone.now + 1.day, exercise_count: 1
+    user = create :user
+
+    create :correct_submission,
+           created_at: Time.zone.now,
+           course: course,
+           exercise: series.exercises[0],
+           user: user
+
+    assert_equal true, series.completed_before_deadline?(user)
+
+    series.update(deadline: Time.zone.now - 1.day)
+
+    assert_equal false, series.completed_before_deadline?(user)
+  end
+
   test 'enabling indianio_support should generate a new token if there was none' do
     @series.indianio_support = true
     assert_not_nil @series.indianio_token
@@ -189,7 +207,7 @@ class SeriesTest < ActiveSupport::TestCase
     end
   end
 
-  test 'completed? and solved_exercises with wrong submission before deadline' do
+  test 'completed? with wrong submission before deadline' do
     series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
@@ -199,11 +217,24 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
-    assert_equal false, series.completed?(user)
-    assert_equal 0, series.solved_exercises(user).count
+    assert_equal false, series.completed?(user: user)
   end
 
-  test 'completed? and solved_exercises with correct submission before deadline' do
+  test 'completed? with correct submission before deadline within a course' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Correct submission before deadline
+    create :correct_submission,
+           course: series.course,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    assert_equal true, series.completed?(user: user)
+  end
+
+  test 'completed? with correct submission before deadline without course' do
     series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
@@ -213,11 +244,10 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
-    assert_equal true, series.completed?(user)
-    assert_equal 1, series.solved_exercises(user).count
+    assert_equal false, series.completed?(user: user)
   end
 
-  test 'completed? and solved_exercises with wrong submission after deadline' do
+  test 'completed? with wrong submission after deadline' do
     series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
@@ -227,11 +257,24 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
-    assert_equal false, series.completed?(user)
-    assert_equal 0, series.solved_exercises(user).count
+    assert_equal false, series.completed?(user: user)
   end
 
-  test 'completed? and solved_exercises with correct submission after deadline' do
+  test 'completed? with correct submission after deadline within course' do
+    series = create :series, exercise_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Correct submission after deadline
+    create :correct_submission,
+           course: series.course,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline + 2.minutes)
+    assert_equal true, series.completed?(user: user)
+  end
+
+  test 'completed? with correct submission after deadline without course' do
     series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
@@ -241,7 +284,6 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
-    assert_equal true, series.completed?(user)
-    assert_equal 1, series.solved_exercises(user).count
+    assert_equal false, series.completed?(user: user)
   end
 end

@@ -1,12 +1,14 @@
-<% submission = summary.latest_submission %>
-<% if summary.submitted? %>
-  <% if summary.solved? %>
+<% # arguments: exercise (Exercise), series (Series | nil), user (User) %>
+<% submission = exercise.last_submission(user, nil, series&.course) %>
+<% best_submission = exercise.best_submission(user, nil, series&.course) %>
+<% if submission.present? %>
+  <% if submission.accepted? %>
     <%= link_to submission, class: 'deadline-ok' do %>
       <%= t 'exercises.exercise.correct' %>
     <% end %>
-    <% unless summary.solved_before_deadline? %>
-      <%= link_to summary.accepted_submission,
-                  title: t('exercises.exercise.correct_after_deadline', deadline: l(summary.deadline, format: :long)),
+    <% unless exercise.accepted_before_deadline_for?(user, series) %>
+      <%= link_to best_submission,
+                  title: t('exercises.exercise.correct_after_deadline', deadline: l(series&.deadline, format: :long)),
                   class: 'btn btn-icon',
                   'data-toggle': 'tooltip',
                   'data-placement': 'right' do %>
@@ -17,15 +19,15 @@
     <%= link_to submission, class: "colored-wrong" do %>
       <%= t 'exercises.exercise.wrong' %>
     <% end %>
-    <% if summary.solved_before_deadline? %>
-      <%= link_to summary.accepted_submission,
-                  title: t('exercises.exercise.wrong_after_deadline', deadline: l(summary.deadline, format: :long)),
+    <% if exercise.accepted_before_deadline_for?(user, series) %>
+      <%= link_to best_submission,
+                  title: t('exercises.exercise.wrong_after_deadline', deadline: l(series&.deadline, format: :long)),
                   'data-toggle': 'tooltip',
                   'data-placement': 'right' do %>
         <i class="mdi mdi-information colored-info mdi-18"></i>
       <% end %>
-    <% elsif summary.accepted_submission_exists? %>
-      <%= link_to summary.accepted_submission,
+    <% elsif exercise.solved_for?(user, series) %>
+      <%= link_to best_submission,
                   title: t('series.show.best_is_not_last'),
                   'data-toggle': 'tooltip',
                   'data-placement': 'right' do %>

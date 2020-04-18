@@ -18,7 +18,6 @@ class ExportsController < ApplicationController
               users: ([@user] if @user),
               list: @series.exercises,
               course: @series.course,
-              summary: SeriesSummary.new(user: @user || current_user, series: @series, exercises: @series.exercises),
               choose_step_text: t('exports.download_submissions.choose_exercises'),
               table_header_type: t('exports.download_submissions.exercise'),
               is_series?: true }

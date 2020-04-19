@@ -100,7 +100,6 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
 
     assert_no_css '.annotation'
-    # assert all('.annotation').empty?
     assert_no_css 'form.annotation-submission'
   end
 

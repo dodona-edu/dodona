@@ -104,12 +104,6 @@ class Submission < ApplicationRecord
   def code=(code)
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
     File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
-    self.line_count = code.lines.length unless code.nil?
-  end
-
-  def line_count
-    self[:line_count] = code.lines.count if self[:line_count].nil?
-    self[:line_count]
   end
 
   def result

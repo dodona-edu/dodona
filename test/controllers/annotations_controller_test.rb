@@ -126,17 +126,6 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test 'can not create annotation for invalid line' do
-    post submission_annotations_url(@submission), params: {
-      annotation: {
-        annotation_text: 'Should not be possible',
-        line_nr: 2000
-      },
-      format: :json
-    }
-    assert_response :unprocessable_entity
-  end
-
   test 'can not update valid annotation with invalid annotation' do
     annotation = create :annotation, submission: @submission, user: @zeus
 

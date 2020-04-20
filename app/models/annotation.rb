@@ -19,8 +19,7 @@ class Annotation < ApplicationRecord
   validates :user, presence: true
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 2048 }
   validates :line_nr, allow_nil: true, numericality: {
-    greater_than_or_equal_to: 0,
-    less_than: ->(annotation) { annotation.submission.line_count } # zero-based indexing -> [0, line_count[
+    greater_than_or_equal_to: 0
   }, if: ->(attr) { attr.line_nr.present? }
 
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }

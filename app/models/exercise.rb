@@ -425,7 +425,7 @@ class Exercise < ApplicationRecord
       ExerciseStatus.find_or_create_by(exercise: self, series: series, user: user)
     rescue StandardError
       # https://github.com/dodona-edu/dodona/issues/1877
-      raise unless (attempts += 1) < 1
+      raise unless (attempts += 1) <= 1
 
       retry
     end

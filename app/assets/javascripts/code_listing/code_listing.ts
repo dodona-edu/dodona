@@ -187,7 +187,7 @@ export class CodeListing {
     }
 
     private appendAnnotationToTable(annotation: Annotation): void {
-        const line = annotation.line;
+        const line = Math.min(annotation.line, this.codeLines);
         const row = this.table.querySelector<HTMLTableRowElement>(`#line-${line}`);
 
         const cell = row.querySelector<HTMLDivElement>(`#annotation-cell-${line}`);
@@ -267,11 +267,12 @@ export class CodeListing {
     // /////////////////////////////////////////////////////////////////////////
 
     public hideAnnotations(keepImportant = false): void {
-        this.annotations.forEach((annotations, line) => {
+        this.annotations.forEach((annotations, _line) => {
             // Do not hide global annotations.
-            if (line === 0) {
+            if (_line === 0) {
                 return;
             }
+            const line = Math.min(_line, this.codeLines);
 
             // Find the dot for this line.
             const dot = this.table.querySelector<HTMLSpanElement>(`#dot-${line}`);

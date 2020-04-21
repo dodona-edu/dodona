@@ -6,7 +6,7 @@
     <%= link_to submission, class: 'deadline-ok' do %>
       <%= t 'exercises.exercise.correct' %>
     <% end %>
-    <% unless series&.deadline? && exercise.accepted_before_deadline_for?(user, series) %>
+    <% if series&.deadline? && !exercise.accepted_before_deadline_for?(user, series) %>
       <%= link_to best_submission,
                   title: t('exercises.exercise.correct_after_deadline', deadline: l(series&.deadline, format: :long)),
                   class: 'btn btn-icon',

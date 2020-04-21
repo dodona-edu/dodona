@@ -192,13 +192,18 @@ class SeriesController < ApplicationController
       format.csv do
         sheet = CSV.generate do |csv|
           csv << [I18n.t('series.scoresheet.explanation')]
-          csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), @series.name].concat(@exercises.map(&:name))
-          csv << ['Maximum', '', '', '', @exercises.count].concat(@exercises.map { 1 })
+          columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), @series.name]
+          columns.concat(@exercises.map(&:name))
+          columns.concat(@exercises.map { |e| I18n.t('series.scoresheet.status', exercise: e.name) })
+          csv << columns
+          csv << ['Maximum', '', '', '', @exercises.count].concat(@exercises.map { 1 }).concat(@exercises.map { '' })
           @users.each do |u|
             row = [u.first_name, u.last_name, u.username, u.email]
             succeeded_exercises = @exercises.map { |e| @submissions[[u.id, e.id]]&.accepted ? 1 : 0 }
+            exercise_status = @exercises.map { |e| @submissions[[u.id, e.id]]&.status || 'unstarted' }
             row << succeeded_exercises.sum
             row.concat(succeeded_exercises)
+            row.concat(exercise_status)
             csv << row
           end
         end

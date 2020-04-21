@@ -24,11 +24,10 @@ nl:
       exercises: Oefeningen
       download_submissions: Mijn oplossingen exporteren
       download_all_solutions: Oplossingen van studenten exporteren
+      make_visible_html: "<a href=%{series_url} data-method=\"patch\">Maak zichtbaar</a> voor studenten."
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
       exercises_not_visible: De oefeningen in deze reeks zijn niet zichtbaar voor studenten!
-      missed_deadline: deadline gemist
-      deadline_in: binnen
       series_scoresheet: Statusoverzicht
       best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
       show_overview: Alle opgaven bekijken
@@ -50,8 +49,6 @@ nl:
     delete:
       title: Reeks verwijderen
       confirm: Bent u zeker dat u deze reeks wilt verwijderen?
-    deadline:
-      ago: geleden
     scoresheet:
       user: Gebruiker
       explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
@@ -60,6 +57,7 @@ nl:
       download: Statusoverzicht downloaden
       course_view: Statusoverzicht van cursus
       select_view: Weergave selecteren
+      status: "Status %{exercise}"
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:
@@ -84,4 +82,3 @@ nl:
         other: "%{count} oefeningen"
       name: "Naam"
       deadline: "Deadline"
-  

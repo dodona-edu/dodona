@@ -10,15 +10,13 @@ gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
 gem 'puma', '~> 4.3.3'
 # Use less for stylesheets
-gem 'less-rails', '~> 4.0'
-# less-rails does not support sprockets 4.0
-gem 'sprockets', '< 4.0'
+gem 'less-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 # This needs to be here for less :(
 gem 'therubyracer', platforms: :ruby
 
-gem 'webpacker', '~> 4.2.2'
+gem 'webpacker', '~> 5.0.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.10.0'
@@ -52,7 +50,7 @@ gem 'will_paginate', '~>3.3.0'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.1.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.16.0'
+gem 'rouge', '3.18.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -64,7 +62,7 @@ gem 'diff-lcs', '~>1.3'
 gem 'ace-rails-ap', '~>4.3'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>9.7.4'
+gem 'autoprefixer-rails', '~>9.7.6'
 
 # saml authentication
 gem 'devise', '~>4.7.1'
@@ -78,7 +76,7 @@ gem 'jwt', '~> 2.2.1'
 
 # contact mail form
 gem 'mail_form', '~> 1.8.0'
-gem 'recaptcha', '~> 5.3.0', require: 'recaptcha/rails'
+gem 'recaptcha', '~> 5.5.0', require: 'recaptcha/rails'
 
 # authorization
 gem 'pundit', '~> 2.1.0'
@@ -87,7 +85,7 @@ gem 'pundit', '~> 2.1.0'
 gem 'pretender', '~> 0.3.4'
 
 # db annotations
-gem 'annotate', '~> 3.1.0'
+gem 'annotate', '~> 3.1.1'
 
 # Use Capistrano for deployment
 gem 'capistrano-passenger', '~> 0.2.0', group: :development
@@ -110,13 +108,13 @@ gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
 gem 'nokogiri', '~> 1.10.9'
-gem 'premailer-rails', '~> 1.10.3'
+gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
 gem 'has_scope', '~> 0.7.2'
 
 # generating zip files
-gem 'rubyzip', '~> 2.2.0'
+gem 'rubyzip', '~> 2.3.0'
 
 # add request server timings to the devtools
 gem 'rails_server_timings', '~> 1.0.8'
@@ -131,7 +129,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.10'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.10.2'
+gem 'faker', '~> 2.11.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -146,10 +144,10 @@ group :development, :test do
   gem 'minitest-utils', '~> 0.4.6'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', '~> 11.1.1', platforms: %i[mri mingw x64_mingw]
+  gem 'byebug', '~> 11.1.2', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.31.0'
+  gem 'capybara', '~> 3.32.1'
   gem 'selenium-webdriver', '~> 3.142.7'
 end
 
@@ -167,7 +165,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.4.2'
+  gem 'rubocop-rails', '~> 2.5.2'
   gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

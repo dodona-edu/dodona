@@ -4,7 +4,8 @@ json.array! @users do |user|
     json.array! @series do |series|
       json.extract! series, :id, :name
       json.total_exercises series.exercises.count
-      json.correct_exercises @hash[[user.id, series.id]]
+      json.correct_exercises @hash[[user.id, series.id]][:accepted]
+      json.started_exercises @hash[[user.id, series.id]][:started]
     end
   end
 end

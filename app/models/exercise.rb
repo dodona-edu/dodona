@@ -11,13 +11,13 @@
 #  description_format      :string(255)
 #  repository_id           :integer
 #  judge_id                :integer
-#  status                  :integer          default("0")
-#  access                  :integer          default("0"), not null
+#  status                  :integer          default("ok")
+#  access                  :integer          default("public"), not null
 #  programming_language_id :bigint
 #  search                  :string(4096)
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
-#  allow_unsafe            :boolean          default("0"), not null
+#  allow_unsafe            :boolean          default(FALSE), not null
 #
 
 require 'pathname'
@@ -47,6 +47,7 @@ class Exercise < ApplicationRecord
   belongs_to :repository
   belongs_to :judge
   belongs_to :programming_language, optional: true
+  has_many :exercise_statuses, dependent: :destroy
   has_many :submissions, dependent: :restrict_with_error
   has_many :series_memberships, dependent: :restrict_with_error
   has_many :series, through: :series_memberships
@@ -101,7 +102,7 @@ class Exercise < ApplicationRecord
     (full_path + SOLUTION_DIR)
       .yield_self { |path| path.directory? ? path.children : [] }
       .filter { |path| path.file? && path.readable? }
-      .map { |path| [path.basename, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
+      .map { |path| [path.basename.to_s, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
       .to_h
   end
 
@@ -157,7 +158,7 @@ class Exercise < ApplicationRecord
   def boilerplate_localized(lang = I18n.locale.to_s)
     ext = lang ? ".#{lang}" : ''
     file = full_path + BOILERPLATE_DIR + "boilerplate#{ext}"
-    file.read.strip if file.exist?
+    file.read if file.exist?
   end
 
   def boilerplate_default
@@ -275,7 +276,7 @@ class Exercise < ApplicationRecord
       end
       return true if user&.repository_admin? repository
       return false unless access_public? \
-        || repository.allowed_courses.pluck(:id).include?(course&.id)
+          || repository.allowed_courses.pluck(:id).include?(course&.id)
       return true if user&.member_of? course
       return false if course.moderated && access_private?
 
@@ -305,11 +306,36 @@ class Exercise < ApplicationRecord
   invalidateable_instance_cacheable(:users_tried,
                                     ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
-  def best_is_last_submission?(user, deadline = nil, course = nil)
-    last_correct = last_correct_submission(user, deadline, course)
-    return true if last_correct.nil?
+  def exercise_statuses_for(user, course)
+    return [exercise_status_for(user, nil)] if course.nil?
 
-    last_correct == last_submission(user, deadline, course)
+    series_memberships.joins(:series).where('course_id = ?', course.id).map do |series_membership|
+      exercise_status_for(user, series_membership.series)
+    end
+  end
+
+  def accepted_for?(user, series = nil)
+    exercise_status_for(user, series).accepted?
+  end
+
+  def accepted_before_deadline_for?(user, series = nil)
+    exercise_status_for(user, series).accepted_before_deadline?
+  end
+
+  def solved_for?(user, series = nil)
+    exercise_status_for(user, series).solved?
+  end
+
+  def started_for?(user, series = nil)
+    exercise_status_for(user, series).started?
+  end
+
+  def wrong_for?(user, series = nil)
+    exercise_status_for(user, series).wrong?
+  end
+
+  def best_is_last_submission?(user, series = nil)
+    exercise_status_for(user, series).best_is_last?
   end
 
   def best_submission(user, deadline = nil, course = nil)
@@ -330,16 +356,6 @@ class Exercise < ApplicationRecord
     s = s.in_course(course) if course
     s = s.before_deadline(deadline) if deadline
     s.limit(1).first
-  end
-
-  def accepted_for(user, deadline = nil, course = nil)
-    last_submission(user, deadline, course).try(:accepted)
-  end
-
-  def number_of_submissions_for(user, course = nil)
-    s = submissions.of_user(user)
-    s = s.in_course(course) if course
-    s.count
   end
 
   def check_validity
@@ -403,6 +419,10 @@ class Exercise < ApplicationRecord
 
   private
 
+  def exercise_status_for(user, series = nil)
+    ExerciseStatus.find_or_create_by(exercise: self, series: series, user: user)
+  end
+
   # takes a relative path
   def read_dirconfig(subdir)
     repository.read_config_file(subdir + DIRCONFIG_FILE)
@@ -410,7 +430,7 @@ class Exercise < ApplicationRecord
 
   def read_config_locations(location)
     repository.read_config_file(location)
-              &.deep_transform_values! { location }
+        &.deep_transform_values! { location }
   end
 
   def config_locations

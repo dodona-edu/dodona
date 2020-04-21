@@ -83,6 +83,18 @@
   transition: background-color 0.2s cubic-bezier(.4, 0, .2, 1);
 }
 
+.btn-danger.btn-text {
+  background-color: @btn-danger-bg;
+  color: @btn-danger-color;
+  .shadow-z1();
+}
+
+.btn-danger.btn-text:hover {
+  background-color: @btn-danger-bg;
+  color: @btn-danger-color;
+  .shadow-z3();
+}
+
 .btn-primary.btn-text {
   background-color: @btn-accent;
   color: white;
@@ -187,6 +199,16 @@
 
 .input-group .input-group-btn .btn {
   height: 33px;
+}
+
+.btn-icon-inverted {
+  &:extend(.btn-icon);
+
+  color: @white-secondary;
+
+  &:hover {
+    color: @white-text;
+  }
 }
 
 form.button_to {

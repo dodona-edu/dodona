@@ -11,16 +11,16 @@
 #  description_format      :string(255)
 #  repository_id           :integer
 #  judge_id                :integer
-#  status                  :integer          default("0")
-#  access                  :integer          default("0"), not null
+#  status                  :integer          default("ok")
+#  access                  :integer          default("public"), not null
 #  programming_language_id :bigint
 #  search                  :string(4096)
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
-#  allow_unsafe            :boolean          default("0"), not null
+#  allow_unsafe            :boolean          default(FALSE), not null
 #
 
-require File.dirname(__FILE__) + '/../helpers/stub_helper.rb'
+require File.dirname(__FILE__) + '/../testhelpers/stub_helper.rb'
 using StubHelper
 
 FactoryBot.define do

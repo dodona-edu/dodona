@@ -3,8 +3,6 @@ class SubmissionsController < ApplicationController
   before_action :set_submissions, only: %i[index mass_rejudge]
   before_action :ensure_trailing_slash, only: :show
 
-  skip_before_action :verify_authenticity_token, only: [:create]
-
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
     scope.by_filter(value, controller.params[:user_id].present?, controller.params[:exercise_id].present?)
   end

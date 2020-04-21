@@ -1,0 +1,7 @@
+en:
+  deadlines:
+    missed:
+      "missed deadline"
+    relative:
+      ago: "%{time_ago} ago"
+      in: "in %{time_left}"

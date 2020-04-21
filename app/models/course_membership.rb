@@ -5,10 +5,10 @@
 #  id         :integer          not null, primary key
 #  course_id  :integer
 #  user_id    :integer
-#  status     :integer          default("2")
+#  status     :integer          default("student")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  favorite   :boolean          default("0")
+#  favorite   :boolean          default(FALSE)
 #
 
 class CourseMembership < ApplicationRecord
@@ -16,7 +16,7 @@ class CourseMembership < ApplicationRecord
 
   belongs_to :course
   belongs_to :user
-  has_many :course_membership_labels, dependent: :restrict_with_error
+  has_many :course_membership_labels, dependent: :destroy
   has_many :course_labels, through: :course_membership_labels
 
   validates :course_id, uniqueness: { scope: :user_id }

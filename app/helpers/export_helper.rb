@@ -167,7 +167,7 @@ module ExportHelper
           csv << if indianio?
                    %w[filename status submission_id name_en name_nl exercise_id]
                  else
-                   %w[filename full_name id status submission_id name_en name_nl exercise_id]
+                   %w[filename full_name id status submission_id name_en name_nl exercise_id created_at]
                  end
           submissions.each do |submission|
             exercises_per_user[submission.user.id].add(submission.exercise.id)
@@ -207,7 +207,7 @@ module ExportHelper
       csv << if indianio?
                [filename, submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id]
              else
-               [filename, user.full_name, user.id, submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id]
+               [filename, user.full_name, user.id, submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id, submission&.created_at]
              end
     end
 

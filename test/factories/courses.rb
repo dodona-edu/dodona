@@ -9,13 +9,13 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  description    :text(65535)
-#  visibility     :integer          default("0")
-#  registration   :integer          default("0")
+#  visibility     :integer
+#  registration   :integer
 #  color          :integer
 #  teacher        :string(255)      default("")
 #  institution_id :bigint
 #  search         :string(4096)
-#  moderated      :boolean          default("0"), not null
+#  moderated      :boolean          default(FALSE), not null
 #
 
 FactoryBot.define do

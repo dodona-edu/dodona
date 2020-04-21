@@ -29,6 +29,8 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should show exercise info' do
     stub_all_exercises!
+    # Attach exercise to courses to test sorting
+    create_list(:course, 5).each { |s| s.series << create(:series, exercises: [@instance]) }
     get info_exercise_url(@instance)
     assert_response :success
   end
@@ -209,6 +211,26 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     get exercise_url(@instance),
         params: { edit_submission: submission.id }
     assert_response :success
+  end
+
+  test 'should get solution with show' do
+    solutions = {}
+    solutions.expects(:[]).with('test').returns('content')
+    Exercise.any_instance.expects(:solutions).returns(solutions)
+
+    get exercise_url(@instance),
+        params: { from_solution: 'test' }
+    assert_response :success
+  end
+
+  test 'should not get solution as student' do
+    student = create :student
+    sign_out :user
+    sign_in student
+
+    get exercise_url(@instance, format: :json),
+        params: { from_solution: 'test' }
+    assert_response :forbidden
   end
 
   test 'should list all exercises within series' do

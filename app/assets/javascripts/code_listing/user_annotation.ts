@@ -1,6 +1,12 @@
-import { CodeListing } from "code_listing/code_listing";
 import { Annotation } from "code_listing/annotation";
 import { fetch } from "util.js";
+
+export interface UserAnnotationFormData {
+    annotation_text: string;
+    line_nr: number | null;
+}
+
+export type UserAnnotationEditor = (ua: UserAnnotation, cb: CallableFunction) => HTMLElement;
 
 interface UserAnnotationUserData {
     name: string;
@@ -12,120 +18,118 @@ interface UserAnnotationPermissionData {
 }
 
 export interface UserAnnotationData {
-    id: number;
     annotation_text: string;
+    created_at: string;
+    id: number;
     line_nr: number;
-    rendered_markdown: string;
     permission: UserAnnotationPermissionData;
-    user: UserAnnotationUserData;
+    rendered_markdown: string;
     url: string;
+    user: UserAnnotationUserData;
 }
 
 export class UserAnnotation extends Annotation {
-    annotationData: UserAnnotationData;
+    private readonly editor: UserAnnotationEditor;
 
-    constructor(annotation: UserAnnotationData, listing: HTMLTableElement, codeListing: CodeListing) {
-        super(annotation.id, listing, codeListing, annotation.line_nr + 1, "user");
-        this.annotationData = annotation;
+    public readonly createdAt: string;
+    public readonly id: number;
+    public readonly permissions: UserAnnotationPermissionData;
+    private readonly __rawText: string;
+    public readonly url: string;
+    public readonly user: UserAnnotationUserData;
 
-        this.createHTML();
+    constructor(data: UserAnnotationData, editFn: UserAnnotationEditor) {
+        const line = data.line_nr === null ? null : data.line_nr + 1;
+        super(line, data.rendered_markdown, "user");
+        this.createdAt = data.created_at;
+        this.editor = editFn;
+        this.id = data.id;
+        this.permissions = data.permission;
+        this.__rawText = data.annotation_text;
+        this.url = data.url;
+        this.user = data.user;
     }
 
-    async delete(annotationDiv: HTMLDivElement): Promise<void> {
-        const response = await fetch(this.annotationData.url, { method: "DELETE" });
+    public static async create(formData: UserAnnotationFormData,
+        submissionId: number,
+        editFn: UserAnnotationEditor): Promise<UserAnnotation> {
+        const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ annotation: formData })
+        });
+        const data = await response.json();
+
         if (response.ok) {
-            annotationDiv.remove();
-            this.codeListing.removeUserAnnotation(this);
-            // Make sure dot in the sidebar is correctly handled.
-            this.hide();
+            return new UserAnnotation(data, editFn);
         }
+        throw new Error();
     }
 
-    async update(newText: string, annotationDiv: HTMLDivElement, form: HTMLFormElement): Promise<void> {
-        const response = await fetch(this.annotationData.url, {
+    protected edit(): void {
+        const editButton = this.__html.querySelector(".annotation-edit");
+
+        const editor = this.editor(this, () => {
+            const editFormId = `#annotation-submission-update-${this.id}`;
+            this.__html.querySelector(editFormId).replaceWith(this.body);
+            editButton.classList.remove("hide");
+        });
+        editButton.classList.add("hide");
+
+        this.__html.querySelector(".annotation-text").replaceWith(editor);
+    }
+
+    public static async getAll(submission: number,
+        editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
+        return fetch(`/submissions/${submission}/annotations.json`)
+            .then(resp => resp.json())
+            .then(json => json.map(data =>
+                new UserAnnotation(data, editFn)
+            ));
+    }
+
+    protected get meta(): string {
+        const timestamp = I18n.l("time.formats.annotation", this.createdAt);
+        const user = this.user.name;
+
+        return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });
+    }
+
+    public get modifiable(): boolean {
+        return this.permissions.update;
+    }
+
+    public get rawText(): string {
+        return this.__rawText;
+    }
+
+    public get removable(): boolean {
+        return this.permissions.destroy;
+    }
+
+    public async remove(): Promise<void> {
+        return fetch(this.url, { method: "DELETE" }).then(() => {
+            super.remove();
+        });
+    }
+
+    protected get title(): string {
+        return I18n.t(`js.annotation.type.${this.type}`);
+    }
+
+    public async update(formData: UserAnnotationFormData): Promise<Annotation> {
+        const response = await fetch(this.url, {
             headers: { "Content-Type": "application/json" },
             method: "PATCH",
             body: JSON.stringify({
-                annotation: {
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    annotation_text: newText
-                }
+                annotation: formData
             })
         });
+        const data = await response.json();
+
         if (response.ok) {
-            const data: UserAnnotationData = await response.json();
-            annotationDiv.remove();
-            this.codeListing.removeUserAnnotation(this);
-            this.codeListing.addUserAnnotation(data);
-        } else {
-            const errorList: HTMLUListElement = UserAnnotation.processErrorMessage(await response.json());
-            const previousErrorList = form.querySelector(".annotation-submission-error-list");
-            previousErrorList?.remove();
-            form.querySelector(".annotation-submission-button-container").appendChild(errorList);
+            return new UserAnnotation(data, this.editor);
         }
-    }
-
-    startEdit(button: HTMLElement, annotationDiv: HTMLDivElement): void {
-        button.classList.add("hide");
-        annotationDiv.querySelector(".annotation-text").replaceWith(this.codeListing.createAnnotationSubmissionDiv(this.id, this, true));
-    }
-
-
-    cancelEdit(annotationDiv: HTMLDivElement, form: HTMLFormElement): void {
-        form.replaceWith(this.createAnnotationTextDisplay());
-        const annotationEditPencil: HTMLSpanElement = annotationDiv.querySelector(".annotation-control-button.annotation-edit.hide");
-        annotationEditPencil.classList.remove("hide");
-    }
-
-    private createAnnotationTextDisplay(): HTMLSpanElement {
-        const textSpan: HTMLSpanElement = document.createElement("span");
-        textSpan.setAttribute("class", "annotation-text");
-
-        // Markdown render is html safe
-        textSpan.innerHTML = this.annotationData.rendered_markdown;
-        return textSpan;
-    }
-
-    createAnnotation(): void {
-        let annotationsRow: HTMLTableRowElement = this.codeListingHTML.querySelector(`#annotations-${this.row}`);
-        if (annotationsRow === null) {
-            annotationsRow = this.createAnnotationRow();
-        }
-
-        this.annotation = document.createElement("div");
-        this.annotation.classList.add("annotation", "user");
-        this.annotation.innerHTML = `
-          <div class="annotation-header">
-            <span class="annotation-user">${this.annotationData.user.name}</span>
-            ${this.annotationData.permission.update ? `
-                  <a href='#' class="btn-icon annotation-control-button annotation-edit" title="${I18n.t("js.user_annotation.edit")}">
-                    <i class="mdi mdi-pencil"></i>
-                  </a>
-                ` : ""}
-          </div>
-          <span class="annotation-text">${this.annotationData.rendered_markdown}</span>
-        `;
-        annotationsRow.querySelector(".annotation-cell").appendChild(this.annotation);
-        if (this.annotationData.permission.update) {
-            const editButton: HTMLElement = this.annotation.querySelector(".annotation-control-button.annotation-edit");
-            editButton.addEventListener("click", e => {
-                e.preventDefault();
-                this.startEdit(editButton, this.annotation);
-            });
-        }
-    }
-
-    static processErrorMessage(json: object): HTMLUListElement {
-        const htmluListElement: HTMLUListElement = document.createElement("ul");
-        htmluListElement.setAttribute("class", "annotation-submission-error-list");
-        // eslint-disable-next-line guard-for-in
-        for (const key in json) {
-            const li: HTMLLIElement = document.createElement("li");
-            li.setAttribute("class", "annotation-submission-error");
-            const textNode: Text = document.createTextNode(`${I18n.t(`js.user_annotation.fields.${key}`)}: ${json[key]}`);
-            li.append(textNode);
-            htmluListElement.appendChild(li);
-        }
-        return htmluListElement;
+        throw new Error();
     }
 }

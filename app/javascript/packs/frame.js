@@ -6,7 +6,8 @@ window.jquery = jQuery;
 window.$ = jQuery;
 
 import "polyfills.js";
-import { initTooltips, initClipboard } from "util.js";
+import { initTooltips } from "util.js";
+import { initClipboard } from "copy";
 
 // Use a global dodona object to prevent polluting the global na
 const dodona = window.dodona || {};

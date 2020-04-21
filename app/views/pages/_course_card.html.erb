@@ -25,13 +25,10 @@
       <% end %>
       <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>
       <h3 class="card-subtitle-text"><%= course.formatted_year %>&nbsp;</h3>
-      <% if course.institution&.name.present? && course.teacher.present? %>
-        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %> (<%= course.institution.name %>)"><%= course.teacher %>
-          (<%= course.institution.name %>)&nbsp;</h3>
-      <% elsif course.teacher.present? %>
-        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.teacher %>"><%= course.teacher %>&nbsp;</h3>
-      <% elsif course.institution&.name.present? %>
-        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.institution.name %>"><%= course.institution.name %></h3>
+      <% if course.formatted_attribution.present? %>
+        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.formatted_attribution %>">
+          <%= course.formatted_attribution %>
+        </h3>
       <% end %>
     </div>
   <% end %>
@@ -83,7 +80,7 @@
         <% course_series.first(3).each do |series| %>
           <p>
             <span class='pull-right'>
-              <%= render partial: 'series/human_deadline', locals: {series: series} %>
+              <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
             </span>
             <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
           </p>

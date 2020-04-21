@@ -7,27 +7,33 @@
 #  name              :string(255)
 #  description       :text(65535)
 #  visibility        :integer
-#  order             :integer          default("0"), not null
+#  order             :integer          default(0), not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  deadline          :datetime
 #  access_token      :string(255)
 #  indianio_token    :string(255)
-#  progress_enabled  :boolean          default("1"), not null
-#  exercises_visible :boolean          default("1"), not null
+#  progress_enabled  :boolean          default(TRUE), not null
+#  exercises_visible :boolean          default(TRUE), not null
 #
 
 require 'csv'
 
 class Series < ApplicationRecord
   include ActionView::Helpers::SanitizeHelper
+  include Cacheable
   include Tokenable
+
+  USER_COMPLETED_CACHE_STRING = '/series/%<id>s/deadline/%<deadline>s/user/%<user_id>s/completed'.freeze
+  USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started'.freeze
+  USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong'.freeze
 
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
   belongs_to :course
   has_many :series_memberships, dependent: :destroy
   has_many :exercises, through: :series_memberships
+  has_many :exercise_statuses, dependent: :destroy
 
   validates :name, presence: true
   validates :visibility, presence: true
@@ -37,6 +43,7 @@ class Series < ApplicationRecord
 
   before_create :generate_access_token
   before_save :regenerate_exercise_tokens, if: :visibility_changed?
+  after_save :invalidate_exercise_statuses, if: :saved_change_to_deadline?
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }
@@ -58,13 +65,41 @@ class Series < ApplicationRecord
     deadline? && deadline > Time.zone.now
   end
 
-  def completed?(user)
-    exercises.all? { |e| e.accepted_for(user) }
+  # @param [Object] options {deadline (optional), user}
+  def completed?(options)
+    if options[:deadline]
+      exercises.all? { |e| e.accepted_before_deadline_for?(options[:user], self) }
+    else
+      exercises.all? { |e| e.accepted_for?(options[:user], self) }
+    end
   end
 
-  def solved_exercises(user)
-    exercises.select { |e| e.accepted_for(user) }
+  invalidateable_instance_cacheable(:completed?,
+                                    ->(this, options) { format(USER_COMPLETED_CACHE_STRING, user_id: options[:user].id.to_s, deadline: options[:deadline] ? options[:deadline].to_s : 'global', id: this.id.to_s) })
+
+  def completed_before_deadline?(user)
+    completed?(deadline: deadline, user: user)
   end
+
+  def missed_deadline?(user)
+    return false unless deadline&.past?
+
+    !completed_before_deadline?(user)
+  end
+
+  def started?(options)
+    exercises.any? { |e| e.started_for?(options[:user], self) }
+  end
+
+  invalidateable_instance_cacheable(:started?,
+                                    ->(this, options) { format(USER_STARTED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
+
+  def wrong?(options)
+    exercises.any? { |e| e.wrong_for?(options[:user], self) }
+  end
+
+  invalidateable_instance_cacheable(:wrong?,
+                                    ->(this, options) { format(USER_WRONG_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
 
   def indianio_support
     indianio_token.present?
@@ -91,7 +126,7 @@ class Series < ApplicationRecord
 
     submission_hash = Submission.in_series(self).where(user: users)
     submission_hash = submission_hash.before_deadline(deadline) if deadline.present?
-    submission_hash = submission_hash.group(%i[user_id exercise_id]).most_recent.map { |s| [[s.user_id, s.exercise_id], s] }.to_h
+    submission_hash = submission_hash.group(%i[user_id exercise_id]).most_recent.index_by { |s| [s.user_id, s.exercise_id] }
 
     {
       users: users,
@@ -105,5 +140,9 @@ class Series < ApplicationRecord
       exercise.generate_access_token
       exercise.save
     end
+  end
+
+  def invalidate_exercise_statuses
+    exercise_statuses.destroy_all
   end
 end

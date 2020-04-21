@@ -2,10 +2,38 @@ class FeedbackCodeRenderer
   require 'json'
   include Rails.application.routes.url_helpers
 
+  @instances = 0
+
+  class << self
+    attr_accessor :instances
+  end
+
   def initialize(code, programming_language)
     @code = code
     @programming_language = programming_language
     @builder = Builder::XmlMarkup.new
+    self.class.instances += 1
+    @instance = self.class.instances
+  end
+
+  def add_code
+    @builder.div(class: 'code-listing-container') do
+      parse
+
+      # Not possible to use clipboard_button_for here since the behaviour is different.
+      @builder.button(class: 'btn btn-default copy-btn', id: "copy-to-clipboard-#{@instance}", title: I18n.t('js.code.copy-to-clipboard'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+        @builder.i(class: 'mdi mdi-clipboard-text mdi-18') {}
+      end
+      @builder.script(type: 'application/javascript') do
+        @builder << <<~HEREDOC
+          $(() => {
+            window.dodona.submissionCode#{@instance} = #{@code.to_json};
+            window.dodona.attachClipboard("#copy-to-clipboard-#{@instance}", window.dodona.submissionCode#{@instance});
+          });
+        HEREDOC
+      end
+    end
+    self
   end
 
   def parse
@@ -14,46 +42,51 @@ class FeedbackCodeRenderer
 
     lexer = (Rouge::Lexer.find(@programming_language) || Rouge::Lexers::PlainText).new
     lexed_c = lexer.lex(@code.encode(universal_newline: true))
-
     @builder << table_formatter.format(lexed_c)
     self
   end
 
   def add_messages(submission, messages, user)
-    only_errors = messages.select { |message| message[:type] == :error || message[:type] == 'error' }
-    compress = !only_errors.empty? && only_errors.size != messages.size
+    user_may_annotate = AnnotationPolicy.new(user, Annotation.new(submission: submission, user: user)).create?
 
-    @builder.div(class: 'feedback-table-options') do
-      @builder.span(id: 'annotations-were-hidden', class: 'hide') do
+    @builder.div(id: 'feedback-table-options', class: 'feedback-table-options') do
+      if user_may_annotate
+        @builder.button(class: 'btn-text', id: 'add_global_annotation') do
+          @builder.text!(I18n.t('submissions.show.annotations.add_global'))
+        end
       end
+
       @builder.span(class: 'flex-spacer') {}
-      @builder.span(class: 'diff-switch-buttons switch-buttons') do
-        @builder.span(id: 'diff-switch-prefix', class: 'hide') do
+      @builder.span(class: 'diff-switch-buttons switch-buttons hide', id: 'annotations_toggles') do
+        @builder.span(id: 'diff-switch-prefix') do
           @builder.text!(I18n.t('submissions.show.annotations.title'))
         end
         @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title'), 'data-toggle': 'buttons') do
-          @builder.button(class: 'btn btn-secondary active hide', id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+          @builder.button(class: 'btn btn-secondary annotation-toggle active', id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
             @builder.i(class: 'mdi mdi-18 mdi-comment-multiple-outline') {}
           end
-          @builder.button(class: 'btn btn-secondary hide', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+          @builder.button(class: 'btn btn-secondary annotation-toggle', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
             @builder.i(class: 'mdi mdi-18 mdi-comment-alert-outline') {}
           end
-          @builder.button(class: 'btn btn-secondary hide', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+          @builder.button(class: 'btn btn-secondary annotation-toggle', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
             @builder.i(class: 'mdi mdi-18 mdi-comment-remove-outline') {}
           end
         end
       end
     end
 
+    @builder.div(id: 'feedback-table-global-annotations') do
+      @builder.div(id: 'feedback-table-global-annotations-list') {}
+    end
+
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
         $(() => {
-          window.dodona.codeListing = new window.dodona.codeListingClass(#{@code.to_json});
-          window.dodona.codeListing.addAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
-          window.dodona.codeListing.showAllAnnotations();
-          #{'window.dodona.codeListing.compressAnnotations();' if compress}
-          window.dodona.codeListing.addUserAnnotations('#{submission_annotations_path(nil, submission)}');
-          #{'window.dodona.codeListing.initButtonsForComment();' if AnnotationPolicy.new(user, Annotation.new(submission: submission, user: user)).create?}
+          window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, window.dodona.submissionCode#{@instance}, #{@code.lines.length});
+          window.dodona.codeListing.addMachineAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
+          #{'window.dodona.codeListing.initAnnotateButtons();' if user_may_annotate}
+          window.dodona.codeListing.loadUserAnnotations();
+          window.dodona.codeListing.showAnnotations();
         });
       HEREDOC
     end

@@ -9,9 +9,10 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :integer
-#  accepted    :boolean          default("0")
+#  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #  fs_key      :string(24)
+#  line_count  :integer
 #
 
 FactoryBot.define do

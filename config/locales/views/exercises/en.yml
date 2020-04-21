@@ -19,6 +19,8 @@ en:
       open_on_github: Open on GitHub
       labels_delimiter: "Use a comma to delimit labels"
       labels: New label
+      info: Information
+      info_description: Go to the information page of this exercise
     index:
       title: Exercises
       exercise: Exercise
@@ -57,6 +59,10 @@ en:
       alert_removed: This exercise is no longer available, but can still see your old submissions.
       deadline_passed: "The deadline for this exercise was at %{deadline}. You can still submit, but your submissions may not be accounted for."
       deadline_in_5_minutes: "The deadline for this exercise is at %{deadline}, which is less than 5 minutes away."
+      navigation:
+        back_to_course: Back to course overview
+        previous: Previous exercise
+        next: Next exercise
     series_exercises_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
     edit:
@@ -71,10 +77,11 @@ en:
       memory_limit: Memory limit
       network_enabled: Network enabled
       network_disabled: Network disabled
-      submission_count: Submission count
+      submission_count: Submitted solutions
       submission_details: "This exercises has %{total} submissions by %{users} unique users. Of these submissions, %{correct} were correct."
       sample_solutions: Sample solutions
       sample_solutions_hint: Click on one of the tabs above to view a sample solution.
+      sample_solution_submit: Submit this solution
       no_solutions: This exercise does not yet have a sample solution.
       no_solutions_admin: Add your sample solutions to the repository and they will be shown here.
       usage: Usage
@@ -83,6 +90,7 @@ en:
         one: "This exercise is used by 1 course."
         other: "This exercise is used by %{count} courses."
       contact: Contact information
+      judge: Judge
       repository: Repository containing this exercise
       repository_path: Path within this repository
       created: Created
@@ -92,5 +100,5 @@ en:
       config_set_by: "This value was set by %{file}"
       config_default: "This is the default value."
       description_files: "We found files for these languages in the descriptions folder %{path}"
-      config_info: 'For more information about configuring exercises, you can take a look at our documentation site %{here}.'
-      here: 'here'
+      config_info: 'Take a look at the %{doc_site} for more information about configuring exercises.'
+      doc_site: 'documentation site'

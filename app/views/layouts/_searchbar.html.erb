@@ -12,13 +12,15 @@
         <div class="auxbar bar bar3" style="width: 0%;"></div>
       </div>
     </form>
-    <div class="btn-group hidden actions" id="kebab-menu">
-      <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
-        <i class="mdi mdi-dots-vertical"></i>
-      </a>
-      <ul class="dropdown-menu dropdown-menu-right">
-      </ul>
-    </div>
+    <% if local_assigns[:actions]&.any? %>
+      <div class="btn-group hidden actions" id="kebab-menu">
+        <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
+          <i class="mdi mdi-dots-vertical"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+        </ul>
+      </div>
+    <% end %>
   </div>
 </div>
 

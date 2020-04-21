@@ -1,10 +1,11 @@
 class ExercisesController < ApplicationController
+  include SeriesHelper
+
   before_action :set_exercise, only: %i[show description edit update media info]
   before_action :set_course, only: %i[show edit update media info]
   before_action :set_series, only: %i[show edit update info]
   before_action :ensure_trailing_slash, only: :show
   before_action :allow_iframe, only: %i[description]
-  skip_before_action :verify_authenticity_token, only: [:media]
   skip_before_action :redirect_to_default_host, only: %i[description media]
 
   has_scope :by_filter, as: 'filter'
@@ -75,6 +76,12 @@ class ExercisesController < ApplicationController
       @edit_submission = Submission.find(params[:edit_submission])
       authorize @edit_submission, :edit?
     end
+    if params[:from_solution]
+      @solution = @exercise.solutions[params[:from_solution]]
+      authorize @exercise, :info?
+    end
+
+    @code = @edit_submission.try(:code) || @solution || @exercise.boilerplate
     @title = @exercise.name
     @crumbs << [@exercise.name, '#']
   end
@@ -88,10 +95,12 @@ class ExercisesController < ApplicationController
   def info
     @title = @exercise.name
     @repository = @exercise.repository
-    @courses_series = policy_scope(@exercise.series).group_by(&:course)
     @config = @exercise.merged_config
     @config_locations = @exercise.merged_config_locations
     @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] << [I18n.t('crumbs.info'), '#']
+    @courses_series = policy_scope(@exercise.series).group_by(&:course).sort do |a, b|
+      [b.first.year, a.first.name] <=> [a.first.year, b.first.name]
+    end
   end
 
   def edit
@@ -161,11 +170,7 @@ class ExercisesController < ApplicationController
     return if params[:series_id].nil?
 
     @series = Series.find(params[:series_id])
-    @crumbs << if @series.hidden? && !current_user&.course_admin?(@series.course)
-                 [@series.name, series_path(@series, token: @series.access_token)]
-               else
-                 [@series.name, course_path(@series.course, anchor: @series.anchor)]
-               end
+    @crumbs << [@series.name, breadcrumb_series_path(@series, current_user)]
     authorize @series
   end
 end

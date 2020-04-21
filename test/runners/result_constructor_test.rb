@@ -269,6 +269,18 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "close-judgement", "status": { "enum": "runtime error", "human": "Runtime" } }'
     ])
     assert_equal('runtime error', result[:status])
+    result = construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong" } }',
+      '{ "command": "close-judgement", "status": { "enum": "memory limit exceeded", "human": "Runtime" } }'
+    ])
+    assert_equal('memory limit exceeded', result[:status])
+    result = construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong" } }',
+      '{ "command": "close-judgement", "status": { "enum": "time limit exceeded", "human": "Runtime" } }'
+    ])
+    assert_equal('time limit exceeded', result[:status])
   end
 
   test 'correct permissions should be present in result' do

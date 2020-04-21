@@ -9,9 +9,10 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :integer
-#  accepted    :boolean          default("0")
+#  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #  fs_key      :string(24)
+#  line_count  :integer
 #
 
 class Submission < ApplicationRecord
@@ -40,6 +41,7 @@ class Submission < ApplicationRecord
   before_update :update_fs
   before_save :report_if_internal_error
   after_create :evaluate_delayed, if: :evaluate?
+  after_save :update_exercise_status
   after_save :invalidate_caches
   after_destroy :invalidate_caches
   after_destroy :clear_fs
@@ -77,12 +79,6 @@ class Submission < ApplicationRecord
 
   scope :most_recent_correct_per_user, lambda { |*|
     correct.group(:user_id).most_recent
-  }
-
-  scope :exercise_hash, lambda {
-    s = group(:exercise_id).most_recent
-    entries = s.map { |submission| [submission.exercise_id, submission] }
-    Hash[entries]
   }
 
   def initialize(params)
@@ -175,6 +171,10 @@ class Submission < ApplicationRecord
     @evaluate
   end
 
+  def annotated?
+    annotations.any?
+  end
+
   def skip_rate_limit_check?
     @skip_rate_limit_check
   end
@@ -254,6 +254,12 @@ class Submission < ApplicationRecord
     'unknown'
   end
 
+  def update_exercise_status
+    exercise.exercise_statuses_for(user, course).each do |exercise_status|
+      exercise_status.update_values(self)
+    end
+  end
+
   def invalidate_caches
     exercise.invalidate_users_correct
     exercise.invalidate_users_tried
@@ -262,6 +268,17 @@ class Submission < ApplicationRecord
 
     return if course.blank?
 
+    # Invalidate the completion status of this exercise, for every series in
+    # the current course that contains this exercise, for the current user.
+    # Afterwards, invalidate the completion status of the series itself as well.
+    exercise.series.where(course_id: course_id).find_each do |ex_series|
+      ex_series.invalidate_completed?(user: user)
+      ex_series.invalidate_completed?(deadline: ex_series.deadline, user: user)
+      ex_series.invalidate_started?(user: user)
+      ex_series.invalidate_wrong?(user: user)
+    end
+
+    # Invalidate other statistics.
     course.invalidate_correct_solutions
     exercise.invalidate_users_correct(course: course)
     exercise.invalidate_users_tried(course: course)

@@ -27,7 +27,7 @@
       <% deadlines.first(5).each do |series| %>
         <p>
           <span class='pull-right'>
-            <%= render partial: 'series/human_deadline', locals: {series: series} %>
+            <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
           </span>
           <%= link_to series.name, course_path(series.course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
           <%= link_to series.course.name, course_path(series.course), class: "small text-muted course-link", title: series.course.name %>

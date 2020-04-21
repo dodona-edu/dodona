@@ -28,7 +28,7 @@ function initSubmissionShow(parentClass, mediaPath, token) {
         const buttons = $(".correct-switch-buttons .btn");
         buttons.click(e => {
             const button = $(e.currentTarget);
-            const tab = button.parents(".tab-pane");
+            const tab = button.parents(".feedback-tab-pane");
             const tabButtons = tab.find(".correct-switch-buttons .btn");
             tabButtons.removeClass("active");
             button.addClass("active");

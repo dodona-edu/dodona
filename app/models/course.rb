@@ -9,13 +9,13 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  description    :text(65535)
-#  visibility     :integer          default("0")
-#  registration   :integer          default("0")
+#  visibility     :integer
+#  registration   :integer
 #  color          :integer
 #  teacher        :string(255)      default("")
 #  institution_id :bigint
 #  search         :string(4096)
-#  moderated      :boolean          default("0"), not null
+#  moderated      :boolean          default(FALSE), not null
 #
 
 require 'securerandom'
@@ -33,14 +33,14 @@ class Course < ApplicationRecord
 
   belongs_to :institution, optional: true
 
-  has_many :course_memberships, dependent: :restrict_with_error
-  has_many :series, dependent: :restrict_with_error
-  has_many :course_repositories, dependent: :restrict_with_error
+  has_many :course_memberships, dependent: :destroy
+  has_many :series, dependent: :destroy
+  has_many :course_repositories, dependent: :destroy
 
   has_many :exercises, -> { distinct }, through: :series
   has_many :series_memberships, through: :series
 
-  has_many :submissions, dependent: :restrict_with_error
+  has_many :submissions, dependent: :nullify
   has_many :users, through: :course_memberships
 
   has_many :usable_repositories, through: :course_repositories, source: :repository
@@ -134,15 +134,21 @@ class Course < ApplicationRecord
   end
 
   def pending_series(user)
-    series.visible.select { |s| s.pending? && !s.completed?(user) }
+    series.visible.select { |s| s.pending? && !s.completed?(user: user) }
   end
 
   def incomplete_series(user)
-    series.visible.reject { |s| s.completed?(user) }
+    series.visible.reject { |s| s.completed?(user: user) }
   end
 
   def formatted_year
     Course.format_year year
+  end
+
+  def formatted_attribution
+    result = teacher || ''
+    result += ' · ' if teacher.present? && institution&.name.present?
+    result + (institution&.name || '')
   end
 
   def secret_required?(user = nil)
@@ -208,7 +214,11 @@ class Course < ApplicationRecord
 
     hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).map do |series_info, user|
       scores = series_info[1]
-      [[user.id, series_info[0].id], series_info[0].exercises.count { |e| scores[:submissions][[user.id, e.id]]&.accepted }]
+      data = {
+        accepted: series_info[0].exercises.count { |e| scores[:submissions][[user.id, e.id]]&.accepted },
+        started: series_info[0].exercises.count { |e| !scores[:submissions][[user.id, e.id]].nil? }
+      }
+      [[user.id, series_info[0].id], data]
     end.to_h
 
     {

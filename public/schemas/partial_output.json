@@ -197,6 +197,8 @@
       "enum": [
         "internal error",
         "compilation error",
+        "memory limit exceeded",
+        "time limit exceeded",
         "runtime error",
         "wrong", "wrong answer",
         "correct", "correct answer"

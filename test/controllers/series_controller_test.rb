@@ -141,11 +141,74 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal ids, @instance.series_memberships.map(&:exercise_id)
   end
+
+  test 'missed deadlines should have correct class' do
+    series = create :series, deadline: Time.zone.now - 1.day
+    create :exercise, series: [series]
+
+    get series_url(series)
+
+    assert_response :success
+    assert_match(/deadline-passed/, response.body)
+  end
+
+  test 'upcoming deadlines should have correct class' do
+    series = create :series, deadline: Time.zone.now + 1.day
+    create :exercise, series: [series]
+
+    get series_url(series)
+    assert_response :success
+    assert_match(/deadline-future/, response.body)
+  end
+
+  test 'update should work using api' do
+    # https://github.com/dodona-edu/dodona/issues/1765
+    sign_out :user
+
+    user = create :staff
+    token = create :api_token, user: user
+    @instance.course.administrating_members << user
+
+    updated_description = 'The new description value.'
+
+    original_csrf_protection = ActionController::Base.allow_forgery_protection
+    begin
+      ActionController::Base.allow_forgery_protection = true
+      patch series_url(@instance, format: :json, series: { description: updated_description }),
+            params: { format: :json },
+            headers: { 'Authorization' => token.token }
+      assert_response :success
+      assert_equal updated_description, @instance.reload.description
+    ensure
+      ActionController::Base.allow_forgery_protection = original_csrf_protection
+    end
+  end
+
+  test 'update should not work over api without token' do
+    # https://github.com/dodona-edu/dodona/issues/1765
+    sign_out :user
+
+    user = create :staff
+    @instance.course.administrating_members << user
+
+    updated_description = 'The new description value.'
+
+    original_csrf_protection = ActionController::Base.allow_forgery_protection
+    begin
+      ActionController::Base.allow_forgery_protection = true
+      patch series_url(@instance, format: :json, series: { description: updated_description }),
+            params: { format: :json }
+      assert_response :unauthorized
+      assert_not_equal updated_description, @instance.reload.description
+    ensure
+      ActionController::Base.allow_forgery_protection = original_csrf_protection
+    end
+  end
 end
 
 class SeriesVisibilityTest < ActionDispatch::IntegrationTest
   setup do
-    @series = create :series, exercise_count: 5, exercise_submission_count: 5
+    @series = create :series, exercise_count: 2, exercise_submission_count: 2
     @course = @series.course
     @student = create :student
     @zeus = create :zeus

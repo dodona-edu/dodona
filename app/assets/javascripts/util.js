@@ -1,28 +1,5 @@
 /* globals ga */
 
-import ClipboardJS from "clipboard";
-
-function initClipboard() {
-    $(() => {
-        const selector = ".btn";
-        const delay = 1000;
-        const clip = new ClipboardJS(selector);
-        const targetOf = e => $($(e.trigger).data("clipboard-target"));
-        clip.on("success", e => {
-            const $t = targetOf(e);
-            $t.attr("title", I18n.t("js.copy-success"))
-                .tooltip("show");
-            setTimeout(() => $t.tooltip("destroy"), delay);
-        });
-        clip.on("error", e => {
-            const $t = targetOf(e);
-            $t.attr("title", I18n.t("js.copy-fail"))
-                .tooltip("show");
-            setTimeout(() => $t.tooltip("destroy"), delay);
-        });
-    });
-}
-
 /*
  * Function to delay some other function until it isn't
  * called for "ms" ms
@@ -172,6 +149,16 @@ function initTooltips() {
     $("[data-toggle=\"tooltip\"]").tooltip({ container: "body" });
 }
 
+function tooltip(target, message, disappearAfter=1000) {
+    const $target = $(target);
+    const originalTitle = $target.attr("data-original-title");
+    $target.attr("data-original-title", message).tooltip("show");
+    $target.attr("title", message).tooltip("show");
+    setTimeout(() => {
+        $target.attr("title", originalTitle).attr("data-original-title", originalTitle).tooltip();
+    }, disappearAfter);
+}
+
 function fetch(url, options = {}) {
     const headers = options.headers || {};
     headers["x-csrf-token"] = headers["x-csrf-token"] || document.querySelector("meta[name=\"csrf-token\"]").content;
@@ -181,7 +168,6 @@ function fetch(url, options = {}) {
 }
 
 export {
-    initClipboard,
     delay,
     fetch,
     updateURLParameter,
@@ -191,5 +177,6 @@ export {
     logToGoogle,
     checkTimeZone,
     initCSRF,
+    tooltip,
     initTooltips,
 };

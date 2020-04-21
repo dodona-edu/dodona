@@ -84,18 +84,24 @@ en:
         sat: Sa
         sun: Su
     annotation:
-      hidden: An annotation was hidden
-      were_hidden:
-        first: Only errors and user annotations are shown,
-        second:
-          single: show 1 other annotation
-          plural: show {count} other annotations
+      hidden:
+        single: Hidden annotation
+        plural: "%{count} hidden annotations"
+      type:
+        error: Error
+        info: Notice
+        user: Comment
+        warning: Warning
+    code:
+      copy-to-clipboard: Copy code to clipboard
     user_annotation:
+      meta: "%{user} · %{time}"
       send: 'Annotate'
       update: 'Update'
       cancel: 'Cancel'
       delete: 'Delete'
       edit: 'Edit annotation'
+      help: 'Press Shift + Enter to send. Markdown is supported.'
       fields:
         annotation_text: 'Annotation text'
       delete_confirm: 'Are you sure you want to delete this annotation?'

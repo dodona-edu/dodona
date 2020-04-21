@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: annotations
+#
+#  id              :bigint           not null, primary key
+#  line_nr         :integer
+#  submission_id   :integer
+#  user_id         :integer
+#  annotation_text :text(65535)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
 class Annotation < ApplicationRecord
   include ApplicationHelper
 
@@ -6,8 +18,7 @@ class Annotation < ApplicationRecord
 
   validates :user, presence: true
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 2048 }
-  validates :line_nr, numericality: {
-    only_integer: true,
+  validates :line_nr, allow_nil: true, numericality: {
     greater_than_or_equal_to: 0
   }, if: ->(attr) { attr.line_nr.present? }
 

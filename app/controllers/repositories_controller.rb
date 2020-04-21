@@ -2,7 +2,6 @@ require 'set'
 
 class RepositoriesController < ApplicationController
   before_action :set_repository, only: %i[show edit update destroy hook reprocess admins add_admin remove_admin courses add_course remove_course]
-  skip_before_action :verify_authenticity_token, only: [:hook]
 
   # GET /repositories
   # GET /repositories.json

@@ -23,8 +23,21 @@
 }
 
 // exercise
-.exercise-description .card-supporting-text {
-  margin-top: 15px;
+.exercise-description {
+  .card-title {
+    display: flex;
+    flex-direction: row;
+
+    .card-title-navigation {
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 24px;
+      font-weight: 300;
+      line-height: normal;
+      overflow: hidden;
+      margin-left: auto;
+    }
+  }
 }
 
 .exercise-description img {
@@ -63,6 +76,20 @@
   margin-left: 16px;
 }
 
+.footnotes::before {
+  content: "";
+  width: 150px;
+  height: 16px;
+  margin-left: 16px;
+  display: block;
+  border-top: 1px solid @text-secondary;
+}
+
+.footnotes {
+  font-size: 90%;
+  margin: 16px 0 0 -16px;
+}
+
 center img {
   vertical-align: top;
   margin-left: 16px;
@@ -91,6 +118,9 @@ center img {
 .exercise-info {
   .labels {
     margin-bottom: 1em;
+    a:hover {
+      text-decoration: none;
+    }
   }
 
   .repo-details {
@@ -112,4 +142,12 @@ center img {
   }
 }
 
-
+// reduce padding for tabs for sample solutions
+.sample-solutions {
+  .card-title {
+    padding-bottom: 0;
+  }
+  .card-supporting-text {
+    padding-top: 0;
+  }
+}

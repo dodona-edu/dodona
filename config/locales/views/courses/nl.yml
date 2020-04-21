@@ -67,12 +67,23 @@ nl:
       download: Statusoverzicht downloaden
       course_view: Statusoverzicht van cursus
       select_view: Weergave selecteren
+      started: "Begonnen in %{series}"
     edit:
       confidential: Geheime link
       series_in_course: "Reeksen in deze cursus"
       series_reordering_help_html: "Je kan de reeksen herordenen door ze te verslepen met de icoontjes aan de linkerkant van de tabel. Voor studenten is een <b>omgekeerd chronologische</b> volgorde waarschijnlijk het gemakkelijkste. Hierbij staan recente reeksen bovenaan de pagina en hoeven ze niet telkens naar onder te scrollen."
       update: "Aanpassen"
       series_reordering_moved_help_html: "Wou je de reeksen in dit vak herordenen? Deze functionaliteit is verplaatst naar een <a href=\"%{course_url}\">aparte pagina</a>."
+      delete:
+        title: "Cursus verwijderen"
+        consequences: "Het verwijderen van een cursus heeft de volgende gevolgen:"
+        submissions: "Oplossingen blijven bewaard, maar zijn niet meer gekoppeld aan een cursus."
+        series: "Reeksen gaan onherroepelijk verloren."
+        button: "Verwijderen"
+        impossible:
+          one: "Je kan een cursus met meer dan %{count} oplossing niet zelf verwijderen."
+          other: "Je kan een cursus met meer dan %{count} oplossingen niet zelf verwijderen."
+        contact_html: "<a href=\"%{contact_url}\">Contacteer ons</a> als je de cursus toch wilt verwijderen."
     show:
       course: Cursus
       hidden_show_link: 'Geheime link'
@@ -105,9 +116,6 @@ nl:
       mass_decline_toast:
         one: 1 gebruiker op de wachtlijst is afgewezen.
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
-      taught_by: "Gegeven door %{teacher}."
-      taught_by_at: "Gegeven door %{teacher} aan %{institution}."
-      taught_at: "Gegeven aan %{institution}."
       copy: "Deze cursus kopiëren"
       manage_series: "Reeksen beheren"
     registration:

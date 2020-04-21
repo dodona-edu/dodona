@@ -11,13 +11,13 @@
 #  description_format      :string(255)
 #  repository_id           :integer
 #  judge_id                :integer
-#  status                  :integer          default("0")
-#  access                  :integer          default("0"), not null
+#  status                  :integer          default("ok")
+#  access                  :integer          default("public"), not null
 #  programming_language_id :bigint
 #  search                  :string(4096)
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
-#  allow_unsafe            :boolean          default("0"), not null
+#  allow_unsafe            :boolean          default(FALSE), not null
 #
 
 require 'test_helper'
@@ -287,6 +287,20 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 1, e.users_correct(course: course2)
   end
 
+  test 'solved_for' do
+    create :wrong_submission,
+           exercise: @exercise,
+           user: @user
+
+    assert_equal false, @exercise.solved_for?(@user)
+
+    create :correct_submission,
+           exercise: @exercise,
+           user: @user
+
+    assert_equal true, @exercise.solved_for?(@user)
+  end
+
   test 'last submission' do
     assert_nil @exercise.last_submission(@user)
 
@@ -369,7 +383,6 @@ class ExerciseTest < ActiveSupport::TestCase
            created_at: @date
 
     assert @exercise.best_is_last_submission?(@user)
-    assert @exercise.best_is_last_submission?(@user, @date - 10.seconds)
 
     create :wrong_submission,
            user: @user,
@@ -377,33 +390,49 @@ class ExerciseTest < ActiveSupport::TestCase
            created_at: @date + 10.seconds
 
     assert_not @exercise.best_is_last_submission?(@user)
-    assert @exercise.best_is_last_submission?(@user, @date + 5.seconds)
   end
 
   test 'accepted for' do
-    assert_not @exercise.accepted_for(@user)
+    assert_not @exercise.accepted_for?(@user)
 
     create :wrong_submission,
            user: @user,
            exercise: @exercise,
            created_at: @date
 
-    assert_not @exercise.accepted_for(@user)
+    assert_not @exercise.accepted_for?(@user)
 
     create :correct_submission,
            user: @user,
            exercise: @exercise,
            created_at: @date + 10.seconds
 
-    assert @exercise.accepted_for(@user)
-    assert_not @exercise.accepted_for(@user, @date + 5.seconds)
+    assert @exercise.accepted_for?(@user)
 
     create :wrong_submission,
            user: @user,
            exercise: @exercise,
            created_at: @date + 1.minute
 
-    assert_not @exercise.accepted_for(@user)
+    assert_not @exercise.accepted_for?(@user)
+  end
+
+  test 'exercise status should be updated for every series in a course' do
+    course = create :course
+    series = create_list :series, 2, course: course, exercises: [@exercise]
+
+    series.each do |series_it|
+      assert_not @exercise.accepted_for?(@user, series_it)
+    end
+
+    create :correct_submission,
+           course: course,
+           exercise: @exercise,
+           user: @user
+
+    series.each do |series_it|
+      assert @exercise.accepted_for?(@user, series_it)
+    end
   end
 
   test 'exercise not made within course should not be accepted for that course' do
@@ -414,16 +443,16 @@ class ExerciseTest < ActiveSupport::TestCase
            user: @user,
            exercise: @exercise
 
-    courses.each do |course|
-      assert_not @exercise.accepted_for(@user, nil, course)
+    series.each do |series_it|
+      assert_not @exercise.accepted_for?(@user, series_it)
     end
 
     create :wrong_submission,
            user: @user,
            exercise: @exercise
 
-    courses.each do |course|
-      assert_not @exercise.accepted_for(@user, nil, course)
+    series.each do |series_it|
+      assert_not @exercise.accepted_for?(@user, series_it)
     end
 
     create :correct_submission,
@@ -431,16 +460,16 @@ class ExerciseTest < ActiveSupport::TestCase
            exercise: @exercise,
            course: courses[0]
 
-    assert @exercise.accepted_for(@user, nil, courses[0])
-    assert_not @exercise.accepted_for(@user, nil, courses[1])
+    assert @exercise.accepted_for?(@user, series[0])
+    assert_not @exercise.accepted_for?(@user, series[1])
 
     create :correct_submission,
            user: @user,
            exercise: @exercise,
            course: courses[1]
 
-    courses.each do |course|
-      assert @exercise.accepted_for(@user, nil, course)
+    series.each do |series_it|
+      assert @exercise.accepted_for?(@user, series_it)
     end
   end
 
@@ -502,8 +531,8 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
   test 'should have solutions' do
     assert_equal @exercise.solutions,
-                 Pathname.new('solution.py') => "print(input())\n",
-                 Pathname.new('empty.py') => ''
+                 'solution.py' => "print(input())\n",
+                 'empty.py' => ''
   end
 
   test 'should update access in config file' do

@@ -24,11 +24,10 @@ en:
       exercises: Exercises
       download_submissions: Export my submissions
       download_all_solutions: Export student submissions
+      make_visible_html: "<a href=%{series_url} data-method=\"patch\">Make visible</a> for students."
       series_not_visible: This series is only visible for students using the secret link!
       series_not_accessible: This series is not accessible to students!
       exercises_not_visible: The exercises in this series are not visible to students!
-      missed_deadline: missed deadline
-      deadline_in: in
       series_scoresheet: Series scoresheet
       best_is_not_last: Your best submission is not your last submission! Click to check (and edit/submit) your best submission.
       show_overview: Show all exercise descriptions
@@ -50,8 +49,6 @@ en:
     delete:
       title: Delete series
       confirm: Please confirm you want to delete this series.
-    deadline:
-      ago: ago
     scoresheet:
       user: User
       explanation: "Showing the number of correctly solved exercises before the deadline"
@@ -60,6 +57,7 @@ en:
       download: Download scoresheet
       course_view: Course scoresheet
       select_view: Select view
+      status: "Status %{exercise}"
     series_status:
       completed_after_deadline_missed: You solved all exercises, but unfortunately not before the deadline.
       wrong_after_deadline_missed: You missed the deadline, and there are still some incorrect exercises.

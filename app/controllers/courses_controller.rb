@@ -1,8 +1,6 @@
 class CoursesController < ApplicationController
   before_action :set_course_and_current_membership, except: %i[index new create]
 
-  skip_forgery_protection only: [:subscribe]
-
   has_scope :by_filter, as: 'filter'
   has_scope :by_institution, as: 'institution_id'
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
@@ -174,10 +172,16 @@ class CoursesController < ApplicationController
       format.csv do
         sheet = CSV.generate do |csv|
           csv << [I18n.t('courses.scoresheet.explanation')]
-          csv << [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')].concat(@series.map(&:name))
-          csv << ['Maximum', '', '', ''].concat(@series.map { |s| s.exercises.count })
+          columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')]
+          columns.concat(@series.map(&:name))
+          columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })
+          csv << columns
+          csv << ['Maximum', '', '', ''].concat(@series.map { |s| s.exercises.count }).concat(@series.map { |s| s.exercises.count })
           @users.each do |u|
-            csv << [u.first_name, u.last_name, u.username, u.email].concat(@series.map { |s| @hash[[u.id, s.id]] })
+            row = [u.first_name, u.last_name, u.username, u.email]
+            row.concat(@series.map { |s| @hash[[u.id, s.id]][:accepted] })
+            row.concat(@series.map { |s| @hash[[u.id, s.id]][:started] })
+            csv << row
           end
         end
         filename = "course-#{@course.name.parameterize}.csv"

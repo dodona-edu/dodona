@@ -3,30 +3,48 @@ import { CodeListing } from "code_listing/code_listing";
 let codeListing;
 
 beforeEach(() => {
-    document.body.innerHTML = "<div class='code-table' data-submission-id='54'>" +
-        "<div class='feedback-table-options'>" +
-            "<span id='annotations-were-hidden' class='hide'></span>" +
-            "<span class='flex-spacer'></span>" +
-            "<span class='diff-switch-buttons diff-buttons'>" +
-                "<span id='diff-switch-prefix' class='hide'>Berichten</span>" +
-                "<div class='btn-group btn-toggle' role='group' data-toggle='buttons'>" +
-                    "<button class='btn btn-secondary active hide' id='show_all_annotations'><i class='mdi mdi-18 mdi-comment-multiple-outline'></i></button>" +
-                    "<button class='btn btn-secondary hide' id='show_only_errors'><i class='mdi mdi-18 mdi-comment-alert-outline'></i></button>" +
-                    "<button class='btn btn-secondary hide' id='hide_all_annotations'><i class='mdi mdi-18 mdi-comment-remove-outline'></i></button>" +
-                "</div>" +
-            "</span>" +
-        "</div>" +
-        "<table class='code-listing'><tbody>" +
-            "<tr id='line-1' class='lineno'><td class='rouge-gutter gl'><pre>1</pre></td><td class='rouge-code'><pre>print(5 + 6)</pre></td></tr>" +
-            "<tr id='line-2' class='lineno'><td class='rouge-gutter gl'><pre>2</pre></td><td class='rouge-code'><pre>print(6 + 3)</pre></td></tr>" +
-            "<tr id='line-3' class='lineno'><td class='rouge-gutter gl'><pre>3</pre></td><td class='rouge-code'><pre>print(9 + 15)</pre></td></tr>" +
-        "</tbody></table>" +
-        "</div>";
-    codeListing = new CodeListing("print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n");
+    document.body.innerHTML = `
+    <a href="#" data-toggle="tab">Code <span class="badge" id="badge_code"></span></a>
+    <div class="code-table" data-submission-id="54">
+    <div id="feedback-table-options" class="feedback-table-options">
+        <button class="btn btn-text" id="add_global_annotation">Annotatie toevoegen</button>
+        <span class="flex-spacer"></span>
+        <span class="diff-switch-buttons switch-buttons hide" id="annotations_toggles">
+            <span id="diff-switch-prefix">Annotaties</span>
+            <div class="btn-group btn-toggle" role="group" aria-label="Annotaties" data-toggle="buttons">
+                <button class="annotation-toggle active" id="show_all_annotations"></button>
+                <button class="annotation-toggle" id="show_only_errors"></button>
+                <button class="annotation-toggle" id="hide_all_annotations"></button>
+            </div>
+        </span>
+    </div>
+    <div id="feedback-table-global-annotations">
+        <div id="feedback-table-global-annotations-list"></div>
+    </div>
+    <div class="code-listing-container">
+        <table class="code-listing highlighter-rouge">
+            <tbody>
+            <tr id="line-1" class="lineno">
+                <td class="rouge-gutter gl"><pre>1</pre></td>
+                <td class="rouge-code"><pre>print(5 + 6)</pre></td>
+            </tr>
+            <tr id="line-2" class="lineno">
+                <td class="rouge-gutter gl"><pre>2</pre></td>
+                <td class="rouge-code"><pre>print(6 + 3)</pre></td>
+            </tr>
+            <tr id="line-3" class="lineno">
+                <td class="rouge-gutter gl"><pre>1</pre></td>
+                <td class="rouge-code"><pre>print(9 + 15)</pre></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>`;
+    codeListing = new CodeListing(54, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
 });
 
 test("create feedback table with default settings", () => {
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
         { "text": "Value could be assigned", "row": 2, "type": "warning" },
@@ -36,7 +54,7 @@ test("create feedback table with default settings", () => {
 });
 
 test("feedback table should support more than 1 annotation per row (first and last row)", () => {
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
@@ -49,7 +67,7 @@ test("feedback table should support more than 1 annotation per row (first and la
 });
 
 test("annotation types should be transmitted into the view", () => {
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 1, "type": "warning" },
         { "text": "Division by zero", "row": 2, "type": "error" },
@@ -79,68 +97,59 @@ test("line highlighting", () => {
 });
 
 test("dots only for non-shown messages and only the worst", () => {
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "warning" },
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    codeListing.hideAllAnnotations();
+    codeListing.hideAnnotations();
 
+    // Dot on line 1 should be shown.
+    expect(document.querySelectorAll(".dot").length).toBe(1);
     expect(document.querySelectorAll(".dot.hide").length).toBe(0);
 
-    expect(document.querySelectorAll(".dot.dot-info.dot-warning.dot-error").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-warning.dot-error:not(.dot-info)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-info.dot-error:not(.dot-warning)").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-info.dot-warning:not(.dot-error)").length).toBe(0);
+    // Type of the dot should be error.
+    expect(document.querySelectorAll(".dot.dot-error").length).toBe(1);
 });
 
 test("dots not visible when all annotations are shown", () => {
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "warning" },
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    codeListing.showAllAnnotations();
+    codeListing.showAnnotations();
 
-    // 1 Dot, that does not have a single dot-type class
-    expect(document.querySelectorAll(".dot:not(.dot-info)").length).toBe(1);
-    expect(document.querySelectorAll(".dot:not(.dot-warning)").length).toBe(1);
-    expect(document.querySelectorAll(".dot:not(.dot-error)").length).toBe(1);
+    // 1 dot that should not be visible.
     expect(document.querySelectorAll(".dot").length).toBe(1);
+    expect(document.querySelectorAll(".dot.hide").length).toBe(1);
 });
 
-
 test("only warning dot visible when in compressed error mode", () => {
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "warning" },
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    codeListing.compressAnnotations();
+    codeListing.hideAnnotations(true);
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-error.dot-warning.dot-info").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning.dot-info").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning").length).toBe(1);
 
     // Simulating user switching
-    codeListing.showAllAnnotations();
-    codeListing.hideAllAnnotations();
-    codeListing.showAllAnnotations();
-
-    codeListing.compressAnnotations();
+    codeListing.showAnnotations();
+    codeListing.hideAnnotations();
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-error.dot-warning.dot-info").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning.dot-info").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error").length).toBe(1);
 });
 
 test("no double dots", () => {
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "info" },
         { "text": "Division by zero", "row": 0, "type": "info" },
@@ -148,85 +157,49 @@ test("no double dots", () => {
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
 
-    codeListing.showAllAnnotations();
+    codeListing.showAnnotations();
 
-    expect(document.querySelectorAll(".dot.dot-info").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
 
-    codeListing.hideAllAnnotations();
+    codeListing.hideAnnotations(true);
 
-    expect(document.querySelectorAll(".dot.dot-info").length).toBe(1);
-    expect(document.querySelectorAll(".dot.dot-warning").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
 
-    codeListing.compressAnnotations();
+    codeListing.hideAnnotations();
 
-    expect(document.querySelectorAll(".dot.dot-error.dot-warning.dot-info").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-warning.dot-info").length).toBe(0);
-    expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
+    expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
 });
 
 test("correct buttons & elements are hidden and unhidden", () => {
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "info" },
         { "text": "Division by zero", "row": 0, "type": "info" },
     ]);
 
-    expect(document.querySelectorAll("#hide_all_annotations.hide").length).toBe(0);
-    expect(document.querySelectorAll("#hide_all_annotations:not(.hide)").length).toBe(1);
-
-    expect(document.querySelectorAll("#show_all_annotations.hide").length).toBe(0);
-    expect(document.querySelectorAll("#show_all_annotations:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll("#feedback-table-options.hide").length).toBe(0);
+    expect(document.querySelectorAll("#feedback-table-options:not(.hide)").length).toBe(1);
 
     expect(document.querySelectorAll("#show_only_errors.hide").length).toBe(1);
     expect(document.querySelectorAll("#show_only_errors:not(.hide)").length).toBe(0);
 
-    expect(document.querySelectorAll("#annotations-were-hidden.hide").length).toBe(1);
-    expect(document.querySelectorAll("#annotations-were-hidden:not(.hide)").length).toBe(0);
-
-    expect(document.querySelectorAll("#diff-switch-prefix.hide").length).toBe(0);
-    expect(document.querySelectorAll("#diff-switch-prefix:not(.hide)").length).toBe(1);
-
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "error" },
         { "text": "Float transformed into int", "row": 0, "type": "error" },
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    expect(document.querySelectorAll("#hide_all_annotations.hide").length).toBe(0);
-    expect(document.querySelectorAll("#hide_all_annotations:not(.hide)").length).toBe(1);
-
-    expect(document.querySelectorAll("#show_all_annotations.hide").length).toBe(0);
-    expect(document.querySelectorAll("#show_all_annotations:not(.hide)").length).toBe(1);
+    expect(document.querySelectorAll("#feedback-table-options.hide").length).toBe(0);
+    expect(document.querySelectorAll("#feedback-table-options:not(.hide)").length).toBe(1);
 
     expect(document.querySelectorAll("#show_only_errors.hide").length).toBe(0);
     expect(document.querySelectorAll("#show_only_errors:not(.hide)").length).toBe(1);
-
-    expect(document.querySelectorAll("#annotations-were-hidden.hide").length).toBe(0);
-    expect(document.querySelectorAll("#annotations-were-hidden:not(.hide)").length).toBe(1);
-
-    expect(document.querySelectorAll("#diff-switch-prefix.hide").length).toBe(0);
-    expect(document.querySelectorAll("#diff-switch-prefix:not(.hide)").length).toBe(1);
-
-    const annotationsWereHidden: HTMLSpanElement = document.querySelector("span#annotations-were-hidden a") as HTMLSpanElement;
-    annotationsWereHidden.click();
-
-    expect(document.querySelectorAll("#annotations-were-hidden").length).toBe(0);
-
-    expect(document.querySelectorAll("#show_all_annotations.active.hide").length).toBe(0);
-    expect(document.querySelectorAll("#show_all_annotations.active:not(.hide)").length).toBe(1);
-});
-
-test("Dont show a message when there is only an error", () => {
-    codeListing.addAnnotation({
-        type: "error",
-        text: "Replace with oneliner",
-        row: 1
-    });
-
-    expect(document.querySelector("#annotations-were-hidden").textContent).toBe("");
 });
 
 test("annotations should be transmitted into view", () => {
@@ -322,7 +295,7 @@ test("feedback table should be able to contain both machine annotations and user
         }
     });
 
-    codeListing.addAnnotations([
+    codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
@@ -335,12 +308,12 @@ test("feedback table should be able to contain both machine annotations and user
 });
 
 test("ensure that all buttons are created", () => {
-    codeListing.initButtonsForComment();
+    codeListing.initAnnotateButtons();
     expect(document.querySelectorAll(".annotation-button").length).toBe(3);
 });
 
 test("click on comment button", () => {
-    codeListing.initButtonsForComment();
+    codeListing.initAnnotateButtons();
 
     const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
     annotationButton.click();

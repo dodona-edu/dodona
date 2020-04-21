@@ -17,6 +17,28 @@ module ExerciseHelper
     "exercise-#{exercise.id}"
   end
 
+  # Finds the paths to the previous and next exercise in a series, given the
+  # current exercise.
+  def previous_next_exercise_path(series, exercise)
+    return [nil, nil] if series.blank?
+
+    previous_ex = nil
+    next_ex = nil
+
+    # Function that gets the path to the exercise.
+    get_ex_path = ->(ex) { course_series_exercise_path(I18n.locale, series.course, series.id, ex) }
+
+    series.exercise_ids.each_with_index do |series_exercise_id, idx|
+      next unless series_exercise_id == exercise.id
+
+      previous_ex = get_ex_path.call(series.exercise_ids[idx - 1]) if idx > 0
+      next_ex = get_ex_path.call(series.exercise_ids[idx + 1]) if idx + 1 < series.exercises.length
+      break
+    end
+
+    [previous_ex, next_ex]
+  end
+
   BYTE_UNITS = {
     unit: 'B',
     thousand: 'kB',
@@ -32,7 +54,7 @@ module ExerciseHelper
     number_to_human bytes, units: BYTE_UNITS
   end
 
-  # returns a list with as the first item the description of an execise
+  # returns a list with as the first item the description of an exercise
   # and as second item a hash of footnote indexes mapped on their url
   def exercise_description_footnotes_and_first_image(exercise)
     renderer = DescriptionRenderer.new(exercise, request)
@@ -50,6 +72,8 @@ module ExerciseHelper
           heightCalculationMethod: 'bodyScroll',
           onResized: dodona.afterResize,
           onMessage: dodona.onFrameMessage,
+          onScroll: dodona.onFrameScroll,
+          inPageLinks: true,
         },
         '##{id}')
     }
@@ -63,7 +87,7 @@ module ExerciseHelper
   end
 
   def starts_with_solution?(item)
-    item.first.basename.to_s.starts_with?('solution')
+    item.first.starts_with?('solution')
   end
 
   def compare_solutions(a, b)
@@ -125,7 +149,7 @@ module ExerciseHelper
       end
     end
 
-    # Rewrite relative url's to absulute
+    # Rewrite relative url's to absolute
     # (i.e. if it is relative, rewrite it to be absolute)
     # Returns nil if the argument isn't an url
     def absolutize_url(url)

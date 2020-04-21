@@ -7,14 +7,14 @@
 #  name              :string(255)
 #  description       :text(65535)
 #  visibility        :integer
-#  order             :integer          default("0"), not null
+#  order             :integer          default(0), not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  deadline          :datetime
 #  access_token      :string(255)
 #  indianio_token    :string(255)
-#  progress_enabled  :boolean          default("1"), not null
-#  exercises_visible :boolean          default("1"), not null
+#  progress_enabled  :boolean          default(TRUE), not null
+#  exercises_visible :boolean          default(TRUE), not null
 #
 
 FactoryBot.define do
@@ -52,8 +52,8 @@ FactoryBot.define do
     end
 
     trait :with_submissions do
-      exercise_count { 10 }
-      exercise_submission_count { 3 }
+      exercise_count { 2 }
+      exercise_submission_count { 2 }
     end
   end
 end

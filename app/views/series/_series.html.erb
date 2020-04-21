@@ -7,14 +7,6 @@
    else
      user = current_user
    end %>
-<% if loaded %>
-  <% summary ||= SeriesSummary.new(
-      user: user,
-      series: series,
-      exercises: series.exercises) %>
-<% else %>
-  <% summary ||= nil %>
-<% end %>
 
 <div class="card card-supporting-text series"
      id="series-card-<%= series.id %>"
@@ -22,16 +14,10 @@
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>" name="series-<%= series.id %>"></a>
     <div class="hidden-print">
-      <%= render partial: 'series/series_status', locals: {summary: summary} %>
+      <%= render partial: 'series/series_status', locals: {loaded: loaded, series: series, user: user} %>
     </div>
     <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
-      <% if series.deadline? %>
-        <% if series.deadline > Time.now %>
-          <%= "<small class='deadline-ok' title='deadline #{t "series.show.deadline_in"} #{time_ago_in_words series.deadline}'><i class='mdi mdi-alarm mdi-12'></i> #{l series.deadline, format: :long}</small>".html_safe %>
-        <% else %>
-          <%= "<small class='deadline-passed' title='deadline was #{time_ago_in_words series.deadline} #{t 'series.deadline.ago'} '><i class='mdi mdi-alarm mdi-12'></i> #{l series.deadline, format: :long}</small>".html_safe %>
-        <% end %>
-      <% end %>
+      <%= render partial: 'deadlines/absolute', locals: {deadline: series.deadline, met: user ? series.completed_before_deadline?(user) : false} %>
     </h4>
     <div class="flex-spacer"></div>
     <div class="card-subtitle-actions">
@@ -105,13 +91,22 @@
     </div>
   </div>
   <% if current_user&.course_admin?(series.course) && series.hidden? %>
-    <div class="alert alert-info hidden-print"><%= t "series.show.series_not_visible" %></div>
+    <div class="alert alert-info hidden-print">
+      <%= t "series.show.series_not_visible" %>
+      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
+    </div>
   <% end %>
   <% if current_user&.course_admin?(series.course) && series.closed? %>
-    <div class="alert alert-info hidden-print"><%= t "series.show.series_not_accessible" %></div>
+    <div class="alert alert-info hidden-print">
+      <%= t "series.show.series_not_accessible" %>
+      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
+    </div>
   <% end %>
   <% if current_user&.course_admin?(series.course) && !series.exercises_visible %>
-    <div class="alert alert-info hidden-print"><%= t "series.show.exercises_not_visible" %></div>
+    <div class="alert alert-info hidden-print">
+      <%= t "series.show.exercises_not_visible" %>
+      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
+    </div>
   <% end %>
   <div class="series-description">
     <%= markdown(series.description) %>
@@ -124,8 +119,7 @@
             series: series,
             exercises: series.exercises,
             get_exercise_path: get_exercise_path,
-            summary: summary,
-            user: user,
+            user: user
         } %>
       <% else %>
         <div class="exercise-table-skeleton">

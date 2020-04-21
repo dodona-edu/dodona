@@ -12,6 +12,7 @@ nl:
       status: Status
       result: Resultaat
       summary: Samenvatting
+      annotated: Deze oplossing heeft opmerkingen.
     index:
       title: Alle oplossingen
       for: voor
@@ -51,6 +52,7 @@ nl:
         hidden: Verberg correcte tests
       annotations:
         title: Annotaties
+        add_global: Annotatie toevoegen
         show_all: Toon alle annotaties
         hide_all: Verberg alle annotaties
         show_errors: Enkel errors en annotaties door gebruikers tonen

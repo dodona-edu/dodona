@@ -7,9 +7,8 @@ module.exports = {
                 allowJs: true,
             },
         },
-        // Mocking the I18N calls. The key itself will be returned as value
-        "I18n": { t: t => t }
     },
+    setupFiles: ["<rootDir>/test/javascript/setup-jest.ts"],
     roots: ["test/javascript/", "app/assets/"],
     moduleDirectories: [
         "node_modules",

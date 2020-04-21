@@ -301,6 +301,28 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal true, @exercise.solved_for?(@user)
   end
 
+  test 'solved_for should retry finding ExerciseStatus when it fails once' do
+    create :wrong_submission,
+           exercise: @exercise,
+           user: @user
+
+    ExerciseStatus.stubs(:find_or_create_by).raises(StandardError.new('This is an error'))
+    ExerciseStatus.stubs(:find_or_create_by).returns(ExerciseStatus.create(exercise: @exercise, user: @user))
+    assert_equal false, @exercise.solved_for?(@user)
+  end
+
+  test 'solved_for should not retry finding ExerciseStatus when it fails twice' do
+    create :wrong_submission,
+           exercise: @exercise,
+           user: @user
+
+    ExerciseStatus.stubs(:find_or_create_by).raises(StandardError.new('This is an error'))
+    ExerciseStatus.stubs(:find_or_create_by).raises(StandardError.new('This is an error'))
+    assert_raises StandardError do
+      @exercise.solved_for?(@user)
+    end
+  end
+
   test 'last submission' do
     assert_nil @exercise.last_submission(@user)
 

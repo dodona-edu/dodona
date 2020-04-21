@@ -306,8 +306,9 @@ class ExerciseTest < ActiveSupport::TestCase
            exercise: @exercise,
            user: @user
 
-    ExerciseStatus.stubs(:find_or_create_by).raises(StandardError.new('This is an error'))
-    ExerciseStatus.stubs(:find_or_create_by).returns(ExerciseStatus.create(exercise: @exercise, user: @user))
+    ExerciseStatus.stubs(:find_or_create_by)
+                  .raises(StandardError.new('This is an error')).then
+                  .returns(ExerciseStatus.create(exercise: @exercise, user: @user))
     assert_equal false, @exercise.solved_for?(@user)
   end
 
@@ -316,8 +317,9 @@ class ExerciseTest < ActiveSupport::TestCase
            exercise: @exercise,
            user: @user
 
-    ExerciseStatus.stubs(:find_or_create_by).raises(StandardError.new('This is an error'))
-    ExerciseStatus.stubs(:find_or_create_by).raises(StandardError.new('This is an error'))
+    ExerciseStatus.stubs(:find_or_create_by)
+                  .raises(StandardError.new('This is an error')).then
+                  .raises(StandardError.new('This is an error'))
     assert_raises StandardError do
       @exercise.solved_for?(@user)
     end

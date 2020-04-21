@@ -27,8 +27,7 @@ class FeedbackCodeRenderer
       @builder.script(type: 'application/javascript') do
         @builder << <<~HEREDOC
           $(() => {
-            window.dodona.submissionCode#{@instance} = #{@code.to_json};
-            window.dodona.attachClipboard("#copy-to-clipboard-#{@instance}", window.dodona.submissionCode#{@instance});
+            window.dodona.attachClipboard("#copy-to-clipboard-#{@instance}", #{@code.to_json});
           });
         HEREDOC
       end
@@ -82,7 +81,7 @@ class FeedbackCodeRenderer
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
         $(() => {
-          window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, window.dodona.submissionCode#{@instance}, #{@code.lines.length});
+          window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, #{@code.to_json}, #{@code.lines.length});
           window.dodona.codeListing.addMachineAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
           #{'window.dodona.codeListing.initAnnotateButtons();' if user_may_annotate}
           window.dodona.codeListing.loadUserAnnotations();

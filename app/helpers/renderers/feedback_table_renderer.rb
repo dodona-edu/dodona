@@ -113,7 +113,7 @@ class FeedbackTableRenderer
   end
 
   def tab(t, i)
-    @builder.div(class: "tab-pane #{'active' if i.zero?}", id: "#{(t[:description] || 'test').parameterize}-#{i}") do
+    @builder.div(class: "tab-pane feedback-tab-pane #{'active' if i.zero?}", id: "#{(t[:description] || 'test').parameterize}-#{i}") do
       tab_content(t)
     end
   end

@@ -420,7 +420,15 @@ class Exercise < ApplicationRecord
   private
 
   def exercise_status_for(user, series = nil)
-    ExerciseStatus.find_or_create_by(exercise: self, series: series, user: user)
+    attempts = 0
+    begin
+      ExerciseStatus.find_or_create_by(exercise: self, series: series, user: user)
+    rescue StandardError
+      # https://github.com/dodona-edu/dodona/issues/1877
+      raise unless (attempts += 1) < 1
+
+      retry
+    end
   end
 
   # takes a relative path

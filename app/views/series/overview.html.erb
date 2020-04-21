@@ -23,7 +23,7 @@
       </div>
       <%= description_iframe exercise %>
       <div class="card-actions card-border hidden-print">
-        <% if exercise.started_for?(user, @series) || @series.deadline&.past? %>
+        <% if user && (exercise.started_for?(user, @series) || @series.deadline&.past?) %>
           <div class="btn-text submission-status-button">
             <%= render partial: 'exercises/user_status_icon', locals: {exercise: exercise, series: @series, user: user} %>
             <%= render partial: 'exercises/user_status', locals: {exercise: exercise, series: @series, user: user} %>

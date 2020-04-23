@@ -12,23 +12,23 @@
 
 class SeriesMembership < ApplicationRecord
   belongs_to :series
-  belongs_to :exercise
+  belongs_to :activity
 
   delegate :course, to: :series
 
   default_scope { order(order: :asc, id: :asc) }
 
-  validates :series_id, uniqueness: { scope: :exercise_id }
+  validates :series_id, uniqueness: { scope: :activity_id }
   after_create :invalidate_caches
   after_destroy :invalidate_caches
-  after_destroy :regenerate_exercise_token
+  after_destroy :regenerate_activity_token
 
   def invalidate_caches
-    course.invalidate_exercises_count_cache
+    course.invalidate_activities_count_cache
   end
 
-  def regenerate_exercise_token
-    exercise.generate_access_token
-    exercise.save
+  def regenerate_activity_token
+    activity.generate_access_token
+    activity.save
   end
 end

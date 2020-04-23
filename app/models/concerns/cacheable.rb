@@ -20,6 +20,11 @@ module Cacheable
 
       define_method("invalidate_#{name}".to_sym) do |options = {}|
         lookup_string = cache_string.call(self, options)
+        Rails.cache.delete(lookup_string)
+      end
+
+      define_method("invalidate_delayed_#{name}".to_sym) do |options = {}|
+        lookup_string = cache_string.call(self, options)
         value = Rails.cache.read(lookup_string)
         Rails.cache.write(lookup_string, [true, value[1]], expires_in: CACHE_EXPIRY_TIME) if value.present? && !value[0]
       end

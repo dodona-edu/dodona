@@ -255,9 +255,9 @@ class Submission < ApplicationRecord
   end
 
   def update_exercise_status
-    exercise.exercise_statuses_for(user, course).each do |exercise_status|
-      exercise_status.update_values(self)
-    end
+    return if status.in?(%i[queued running])
+
+    exercise.exercise_statuses_for(user, course).each(&:update_values)
   end
 
   def invalidate_caches

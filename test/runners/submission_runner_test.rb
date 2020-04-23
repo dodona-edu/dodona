@@ -166,6 +166,12 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                       accepted: false
   end
 
+  test 'too much output should result in output limit exceeded' do
+    evaluate_with_stubbed_docker output: ('A' * 20 * 1024 * 1024)
+    assert_submission status: 'output limit exceeded',
+                      accepted: false
+  end
+
   test 'non-zero status code should result in internal error' do
     evaluate_with_stubbed_docker status_code: 1,
                                  err: STRIKE_ERROR

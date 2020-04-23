@@ -108,6 +108,7 @@ en:
           compilation error: Compilation error
           memory limit exceeded: Memory limit exceeded
           internal error: Internal error
+          output limit exceeded: Output limit exceeded
       label:
         name: Name
         color: Color

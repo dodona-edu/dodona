@@ -117,6 +117,7 @@
         "runtime error",
         "memory limit exceeded",
         "time limit exceeded",
+        "output limit exceeded",
         "wrong", "wrong answer",
         "correct", "correct answer",
         "internal error"

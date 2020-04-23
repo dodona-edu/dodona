@@ -109,6 +109,7 @@ nl:
           compilation error: Compilatiefout
           memory limit exceeded: Geheugenlimiet overschreden
           internal error: Interne fout
+          output limit exceeded: Uitvoerlimiet overschreden
       label:
         name: Naam
         color: Kleur

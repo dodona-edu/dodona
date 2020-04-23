@@ -221,6 +221,7 @@ class ResultConstructor
   EVILNESS = [
     'correct',
     'wrong',
+    'output limit exceeded',
     'runtime error',
     'compilation error',
     'memory limit exceeded',

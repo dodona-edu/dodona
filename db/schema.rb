@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_20_145756) do
+ActiveRecord::Schema.define(version: 2020_04_24_161936) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -31,6 +31,66 @@ ActiveRecord::Schema.define(version: 2020_04_20_145756) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name_nl"
+    t.string "name_en"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "path"
+    t.string "description_format"
+    t.integer "repository_id"
+    t.integer "judge_id"
+    t.integer "status", default: 0
+    t.integer "access", default: 0, null: false
+    t.bigint "programming_language_id"
+    t.string "search", limit: 4096
+    t.string "access_token", limit: 16, null: false
+    t.string "repository_token", limit: 64, null: false
+    t.boolean "allow_unsafe", default: false, null: false
+    t.string "type", default: "Exercise", null: false
+    t.index ["judge_id"], name: "index_activities_on_judge_id"
+    t.index ["name_nl"], name: "index_activities_on_name_nl"
+    t.index ["path", "repository_id"], name: "index_activities_on_path_and_repository_id", unique: true
+    t.index ["programming_language_id"], name: "fk_rails_f60feebafd"
+    t.index ["repository_id"], name: "index_activities_on_repository_id"
+    t.index ["repository_token"], name: "index_activities_on_repository_token", unique: true
+    t.index ["status"], name: "index_activities_on_status"
+  end
+
+  create_table "activity_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "activity_id", null: false
+    t.bigint "label_id", null: false
+    t.index ["activity_id", "label_id"], name: "index_activity_labels_on_activity_id_and_label_id", unique: true
+    t.index ["label_id"], name: "fk_rails_0510a660e5"
+  end
+
+  create_table "activity_read_states", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "activity_id", null: false
+    t.integer "course_id"
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id", "course_id", "user_id"], name: "activity_read_states_unique", unique: true
+    t.index ["course_id"], name: "fk_rails_f674cacc14"
+    t.index ["user_id"], name: "fk_rails_96d00253e9"
+  end
+
+  create_table "activity_statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.boolean "accepted", default: false, null: false
+    t.boolean "accepted_before_deadline", default: false, null: false
+    t.boolean "solved", default: false, null: false
+    t.boolean "started", default: false, null: false
+    t.datetime "solved_at"
+    t.integer "activity_id", null: false
+    t.integer "series_id"
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id", "series_id", "user_id"], name: "index_activity_statuses_on_activity_id_and_series_id_and_user_id", unique: true
+    t.index ["series_id"], name: "fk_rails_1bc42c2178"
+    t.index ["user_id"], name: "fk_rails_8a05a160e8"
   end
 
   create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -131,54 +191,6 @@ ActiveRecord::Schema.define(version: 2020_04_20_145756) do
     t.index ["user_id"], name: "fk_rails_0cb5590091"
   end
 
-  create_table "exercise_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "exercise_id", null: false
-    t.bigint "label_id", null: false
-    t.index ["exercise_id", "label_id"], name: "index_exercise_labels_on_exercise_id_and_label_id", unique: true
-    t.index ["label_id"], name: "fk_rails_0510a660e5"
-  end
-
-  create_table "exercise_statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.boolean "accepted", default: false, null: false
-    t.boolean "accepted_before_deadline", default: false, null: false
-    t.boolean "solved", default: false, null: false
-    t.boolean "started", default: false, null: false
-    t.datetime "solved_at"
-    t.integer "exercise_id", null: false
-    t.integer "series_id"
-    t.integer "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["exercise_id", "series_id", "user_id"], name: "index_exercise_statuses_on_exercise_id_and_series_id_and_user_id", unique: true
-    t.index ["series_id"], name: "fk_rails_1bc42c2178"
-    t.index ["user_id"], name: "fk_rails_8a05a160e8"
-  end
-
-  create_table "exercises", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name_nl"
-    t.string "name_en"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "path"
-    t.string "description_format"
-    t.integer "repository_id"
-    t.integer "judge_id"
-    t.integer "status", default: 0
-    t.integer "access", default: 0, null: false
-    t.bigint "programming_language_id"
-    t.string "search", limit: 4096
-    t.string "access_token", limit: 16, null: false
-    t.string "repository_token", limit: 64, null: false
-    t.boolean "allow_unsafe", default: false, null: false
-    t.index ["judge_id"], name: "index_exercises_on_judge_id"
-    t.index ["name_nl"], name: "index_exercises_on_name_nl"
-    t.index ["path", "repository_id"], name: "index_exercises_on_path_and_repository_id", unique: true
-    t.index ["programming_language_id"], name: "fk_rails_f60feebafd"
-    t.index ["repository_id"], name: "index_exercises_on_repository_id"
-    t.index ["repository_token"], name: "index_exercises_on_repository_token", unique: true
-    t.index ["status"], name: "index_exercises_on_status"
-  end
-
   create_table "exports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.integer "status", default: 0, null: false
@@ -271,7 +283,7 @@ ActiveRecord::Schema.define(version: 2020_04_20_145756) do
     t.string "access_token"
     t.string "indianio_token"
     t.boolean "progress_enabled", default: true, null: false
-    t.boolean "exercises_visible", default: true, null: false
+    t.boolean "activities_visible", default: true, null: false
     t.index ["access_token"], name: "index_series_on_access_token"
     t.index ["course_id"], name: "index_series_on_course_id"
     t.index ["deadline"], name: "index_series_on_deadline"
@@ -282,12 +294,12 @@ ActiveRecord::Schema.define(version: 2020_04_20_145756) do
 
   create_table "series_memberships", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "series_id"
-    t.integer "exercise_id"
+    t.integer "activity_id"
     t.integer "order", default: 999
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exercise_id"], name: "index_series_memberships_on_exercise_id"
-    t.index ["series_id", "exercise_id"], name: "index_series_memberships_on_series_id_and_exercise_id", unique: true
+    t.index ["activity_id"], name: "index_series_memberships_on_activity_id"
+    t.index ["series_id", "activity_id"], name: "index_series_memberships_on_series_id_and_activity_id", unique: true
     t.index ["series_id"], name: "index_series_memberships_on_series_id"
   end
 
@@ -332,6 +344,17 @@ ActiveRecord::Schema.define(version: 2020_04_20_145756) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "activities", "judges"
+  add_foreign_key "activities", "programming_languages"
+  add_foreign_key "activities", "repositories"
+  add_foreign_key "activity_labels", "activities"
+  add_foreign_key "activity_labels", "labels"
+  add_foreign_key "activity_read_states", "activities", on_delete: :cascade
+  add_foreign_key "activity_read_states", "courses", on_delete: :cascade
+  add_foreign_key "activity_read_states", "users", on_delete: :cascade
+  add_foreign_key "activity_statuses", "activities", on_delete: :cascade
+  add_foreign_key "activity_statuses", "series", on_delete: :cascade
+  add_foreign_key "activity_statuses", "users", on_delete: :cascade
   add_foreign_key "annotations", "submissions"
   add_foreign_key "annotations", "users"
   add_foreign_key "course_labels", "courses", on_delete: :cascade
@@ -341,24 +364,16 @@ ActiveRecord::Schema.define(version: 2020_04_20_145756) do
   add_foreign_key "course_repositories", "repositories"
   add_foreign_key "courses", "institutions"
   add_foreign_key "events", "users", on_delete: :cascade
-  add_foreign_key "exercise_labels", "exercises"
-  add_foreign_key "exercise_labels", "labels"
-  add_foreign_key "exercise_statuses", "exercises", on_delete: :cascade
-  add_foreign_key "exercise_statuses", "series", on_delete: :cascade
-  add_foreign_key "exercise_statuses", "users", on_delete: :cascade
-  add_foreign_key "exercises", "judges"
-  add_foreign_key "exercises", "programming_languages"
-  add_foreign_key "exercises", "repositories"
   add_foreign_key "exports", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"
   add_foreign_key "series", "courses"
-  add_foreign_key "series_memberships", "exercises"
+  add_foreign_key "series_memberships", "activities"
   add_foreign_key "series_memberships", "series"
+  add_foreign_key "submissions", "activities", column: "exercise_id"
   add_foreign_key "submissions", "courses"
-  add_foreign_key "submissions", "exercises"
   add_foreign_key "submissions", "users"
   add_foreign_key "users", "institutions"
 end

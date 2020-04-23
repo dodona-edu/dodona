@@ -23,7 +23,7 @@
 require 'pathname'
 require 'action_view'
 
-class Exercise < ApplicationRecord
+class Activity < ApplicationRecord
   include ActionView::Helpers::DateHelper
   include Filterable
   include StringHelper
@@ -223,7 +223,7 @@ class Exercise < ApplicationRecord
   end
 
   def config_file?
-    Exercise.config_file? full_path
+    Activity.config_file? full_path
   end
 
   def self.config_file?(directory)
@@ -419,7 +419,7 @@ class Exercise < ApplicationRecord
   end
 
   def set_search
-    self.search = "#{Exercise.human_enum_name(:status, status, locale: :nl)} #{Exercise.human_enum_name(:status, status, locale: :en)} #{Exercise.human_enum_name(:access, access, locale: :en)} #{Exercise.human_enum_name(:access, access, locale: :nl)} #{name_nl} #{name_en} #{path}"
+    self.search = "#{Activity.human_enum_name(:status, status, locale: :nl)} #{Activity.human_enum_name(:status, status, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :nl)} #{name_nl} #{name_en} #{path}"
   end
 
   private
@@ -457,7 +457,7 @@ class Exercise < ApplicationRecord
   def generate_id
     begin
       new = SecureRandom.random_number(2_147_483_646)
-    end until Exercise.find_by(id: new).nil?
+    end until Activity.find_by(id: new).nil?
     self.id = new
   end
 

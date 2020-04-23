@@ -168,7 +168,7 @@ class SubmissionRunner
 
     # handling judge output
     if stdout.bytesize + stderr.bytesize > 10 * 1024 * 1024
-      return build_error 'internal error', 'internal error', [
+      return build_error 'output limit exceeded', 'output limit exceeded', [
         build_message('Judge generated more than 10MiB of output.', 'staff', 'plain'),
         build_message("Judge exited with status code #{exit_status}.", 'staff', 'plain'),
         build_message("Standard Error #{stderr.bytesize} Bytes:", 'staff', 'plain'),

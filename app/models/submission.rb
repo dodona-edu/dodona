@@ -255,14 +255,14 @@ class Submission < ApplicationRecord
   end
 
   def update_exercise_status
-    exercise.exercise_statuses_for(user, course).each do |exercise_status|
-      exercise_status.update_values(self)
-    end
+    return if status.in?(%i[queued running])
+
+    exercise.exercise_statuses_for(user, course).each(&:update_values)
   end
 
   def invalidate_caches
-    exercise.invalidate_users_correct
-    exercise.invalidate_users_tried
+    exercise.invalidate_delayed_users_correct
+    exercise.invalidate_delayed_users_tried
     user.invalidate_attempted_exercises
     user.invalidate_correct_exercises
 
@@ -279,9 +279,9 @@ class Submission < ApplicationRecord
     end
 
     # Invalidate other statistics.
-    course.invalidate_correct_solutions
-    exercise.invalidate_users_correct(course: course)
-    exercise.invalidate_users_tried(course: course)
+    course.invalidate_delayed_correct_solutions
+    exercise.invalidate_delayed_users_correct(course: course)
+    exercise.invalidate_delayed_users_tried(course: course)
     user.invalidate_attempted_exercises(course: course)
     user.invalidate_correct_exercises(course: course)
   end

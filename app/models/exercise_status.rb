@@ -33,13 +33,9 @@ class ExerciseStatus < ApplicationRecord
     started && !accepted?
   end
 
-  def update_values(submission)
-    updates = { accepted: submission.accepted?, started: true }
-    updates[:accepted_before_deadline] = submission.accepted? if series.blank? || series&.deadline&.future?
-    updates[:solved] = solved || submission.accepted?
-    updates[:solved_at] = submission.created_at if submission.accepted? && !solved
-
-    update updates
+  def update_values
+    initialise_values
+    save
   end
 
   private

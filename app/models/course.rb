@@ -28,7 +28,7 @@ class Course < ApplicationRecord
   include ActionView::Helpers::SanitizeHelper
 
   SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%<id>d/subscribed_members_count'.freeze
-  EXERCISES_COUNT_CACHE_STRING = '/courses/%<id>d/exercises_count'.freeze
+  ACTIVITIES_COUNT_CACHE_STRING = '/courses/%<id>d/activities_count'.freeze
   CORRECT_SOLUTIONS_CACHE_STRING = '/courses/%<id>d/correct_solutions'.freeze
 
   belongs_to :institution, optional: true
@@ -37,7 +37,7 @@ class Course < ApplicationRecord
   has_many :series, dependent: :destroy
   has_many :course_repositories, dependent: :destroy
 
-  has_many :exercises, -> { distinct }, through: :series
+  has_many :activities, -> { distinct }, through: :series
   has_many :series_memberships, through: :series
 
   has_many :submissions, dependent: :nullify
@@ -51,12 +51,12 @@ class Course < ApplicationRecord
   enum registration: { open_for_all: 0, open_for_institution: 1, closed: 2 }
   enum color: { red: 0, pink: 1, purple: 2, "deep-purple": 3, indigo: 4, teal: 5, orange: 6, brown: 7, "blue-grey": 8 }
 
-  has_many :visible_exercises,
+  has_many :visible_activities,
            lambda {
              where(series: { visibility: %i[open hidden] }).distinct
            },
            through: :series,
-           source: :exercises
+           source: :activities
 
   has_many :subscribed_members,
            lambda {
@@ -168,13 +168,13 @@ class Course < ApplicationRecord
     end
   end
 
-  def invalidate_exercises_count_cache
-    Rails.cache.delete(format(EXERCISES_COUNT_CACHE_STRING, id: id))
+  def invalidate_activities_count_cache
+    Rails.cache.delete(format(ACTIVITIES_COUNT_CACHE_STRING, id: id))
   end
 
-  def exercises_count
-    Rails.cache.fetch(format(EXERCISES_COUNT_CACHE_STRING, id: id)) do
-      exercises.count
+  def activities_count
+    Rails.cache.fetch(format(ACTIVITIES_COUNT_CACHE_STRING, id: id)) do
+      activities.count
     end
   end
 
@@ -215,8 +215,8 @@ class Course < ApplicationRecord
     hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).map do |series_info, user|
       scores = series_info[1]
       data = {
-        accepted: series_info[0].exercises.count { |e| scores[:submissions][[user.id, e.id]]&.accepted },
-        started: series_info[0].exercises.count { |e| !scores[:submissions][[user.id, e.id]].nil? }
+        accepted: series_info[0].activities.count { |e| scores[:submissions][[user.id, e.id]]&.accepted },
+        started: series_info[0].activities.count { |e| !scores[:submissions][[user.id, e.id]].nil? }
       }
       [[user.id, series_info[0].id], data]
     end.to_h

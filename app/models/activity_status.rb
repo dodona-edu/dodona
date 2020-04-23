@@ -14,13 +14,12 @@
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #
-class ExerciseStatus < ApplicationRecord
-  belongs_to :exercise
+class ActivityStatus < ApplicationRecord
+  belongs_to :activity
   belongs_to :series, optional: true
   belongs_to :user
 
   scope :in_series, ->(series) { where(series: series) }
-  scope :for_exercise, ->(exercise) { where(exercise: exercise) }
   scope :for_user, ->(user) { where(user: user) }
 
   before_create :initialise_values
@@ -41,10 +40,10 @@ class ExerciseStatus < ApplicationRecord
   private
 
   def initialise_values
-    best = exercise.best_submission(user, nil, series&.course)
-    best_before_deadline = exercise.best_submission(user, series&.deadline, series&.course)
-    last = exercise.last_submission(user, nil, series&.course)
-    last_before_deadline = exercise.last_submission(user, series&.deadline, series&.course)
+    best = activity.best_submission(user, nil, series&.course)
+    best_before_deadline = activity.best_submission(user, series&.deadline, series&.course)
+    last = activity.last_submission(user, nil, series&.course)
+    last_before_deadline = activity.last_submission(user, series&.deadline, series&.course)
 
     self.accepted = last&.accepted? || false
     self.accepted_before_deadline = last_before_deadline&.accepted? || false

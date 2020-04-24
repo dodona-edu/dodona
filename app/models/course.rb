@@ -29,7 +29,7 @@ class Course < ApplicationRecord
 
   SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%<id>d/subscribed_members_count'.freeze
   ACTIVITIES_COUNT_CACHE_STRING = '/courses/%<id>d/activities_count'.freeze
-  CONTENTS_COUNT_CACHE_STRING = '/courses/%<id>d/contents_count'.freeze
+  CONTENT_PAGES_COUNT_CACHE_STRING = '/courses/%<id>d/content_pages_count'.freeze
   EXERCISES_COUNT_CACHE_STRING = '/courses/%<id>d/exercises_count'.freeze
   CORRECT_SOLUTIONS_CACHE_STRING = '/courses/%<id>d/correct_solutions'.freeze
 
@@ -55,7 +55,7 @@ class Course < ApplicationRecord
   enum color: { red: 0, pink: 1, purple: 2, "deep-purple": 3, indigo: 4, teal: 5, orange: 6, brown: 7, "blue-grey": 8 }
 
   # TODO: Remove and use activities?
-  has_many :contents,
+  has_many :content_pages,
            lambda {
              where activities: { type: ContentPage.name }
            },
@@ -201,9 +201,9 @@ class Course < ApplicationRecord
     end
   end
 
-  def contents_count
-    Rails.cache.fetch(format(CONTENTS_COUNT_CACHE_STRING, id: id)) do
-      contents.count
+  def content_pages_count
+    Rails.cache.fetch(format(CONTENT_PAGES_COUNT_CACHE_STRING, id: id)) do
+      content_pages.count
     end
   end
 
@@ -215,7 +215,7 @@ class Course < ApplicationRecord
 
   def invalidate_activities_count_cache
     Rails.cache.delete(format(ACTIVITIES_COUNT_CACHE_STRING, id: id))
-    Rails.cache.delete(format(CONTENTS_COUNT_CACHE_STRING, id: id))
+    Rails.cache.delete(format(CONTENT_PAGES_COUNT_CACHE_STRING, id: id))
     Rails.cache.delete(format(EXERCISES_COUNT_CACHE_STRING, id: id))
   end
 

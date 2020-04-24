@@ -38,7 +38,7 @@ class Repository < ApplicationRecord
            source: :course
 
   # TODO: Remove
-  has_many :contents, dependent: :restrict_with_error
+  has_many :content_pages, dependent: :restrict_with_error
   has_many :exercises, dependent: :restrict_with_error
 
   def full_path
@@ -159,11 +159,9 @@ class Repository < ApplicationRecord
     type = Activity.parse_type config['type']
 
     if type == ContentPage.name
-      act = act.becomes(Content)
+      act = act.becomes(ContentPage)
     elsif type == Exercise.name
       act = act.becomes(Exercise)
-    else
-      raise format("Unknown type: %s", config['type'])
     end
 
     labels = config['labels']&.map do |name|
@@ -180,7 +178,7 @@ class Repository < ApplicationRecord
     act.status = :ok
     act.type = type
 
-    if act.is_a?(Exercise)
+    if act.exercise?
       j = nil
       j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
       programming_language_name = config['programming_language']

@@ -74,26 +74,21 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal false, series.completed_before_deadline?(user)
   end
 
-  test 'changing deadline should not destroy exercise statuses for content pages' do
+  test 'changing deadline and restoring should restore completion status' do
     original_deadline = Time.zone.now + 1.day
 
     course = create :course
     series = create :series, course: course, deadline: original_deadline
     user = create :user
 
-    content = create :content
-    series.contents << content
+    content_page = create :content_page
+    series.content_pages << content_page
 
-    # Complete the content
+    # Complete the content page.
     now = Time.zone.now
-    ActivityStatus.create activity: content,
-                          series: series,
-                          user: user,
-                          accepted: true,
-                          accepted_before_deadline: true,
-                          solved: true,
-                          solved_at: now,
-                          started: true
+    ActivityReadState.create activity: content_page,
+                             course: course,
+                             user: user
 
     assert_equal true, series.completed_before_deadline?(user)
 

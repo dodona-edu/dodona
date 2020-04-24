@@ -116,7 +116,7 @@ if Rails.env.development?
   contents_list = Content.all.to_a
   exercises_list = Exercise.all.to_a
 
-  puts 'Add series, contents, exercises and submissions to courses'
+  puts 'Add series, content pages, exercises and submissions to courses'
 
   # Add contents and exercises to test course
   courses.each do |course|

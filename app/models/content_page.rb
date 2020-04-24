@@ -22,6 +22,10 @@
 #
 
 class ContentPage < Activity
+  def content_page?
+    true
+  end
+
   class << self
     def type
       'content'

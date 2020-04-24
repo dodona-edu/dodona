@@ -71,7 +71,7 @@ class Activity < ApplicationRecord
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
   scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
 
-  def content?
+  def content_page?
     false
   end
 
@@ -252,6 +252,12 @@ class Activity < ApplicationRecord
     end
   end
 
+  def read_state_for(user, course = nil)
+    s = activity_read_states.of_user(user)
+    s = s.in_course(course) if course
+    s.first
+  end
+
   def activity_statuses_for(user, course)
     return [activity_status_for(user, nil)] if course.nil?
 
@@ -326,12 +332,12 @@ class Activity < ApplicationRecord
   end
 
   def self.parse_type(type)
-    return Exercise.type unless type
+    return Exercise.name unless type
     return type if types.include?(type)
-    return ContentPage.type if type.downcase == ContentPage.type
-    return Exercise.type if type.downcase == Exercise.type
+    return ContentPage.name if type.downcase == ContentPage.type
+    return Exercise.name if type.downcase == Exercise.type
 
-    Exercise.type
+    Exercise.name
   end
 
   class << self

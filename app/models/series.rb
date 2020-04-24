@@ -49,7 +49,7 @@ class Series < ApplicationRecord
   scope :with_deadline, -> { where.not(deadline: nil) }
   default_scope { order(order: :asc, id: :desc) }
 
-  has_many :contents,
+  has_many :content_pages,
            lambda {
              where activities: { type: ContentPage.name }
            },
@@ -157,6 +157,6 @@ class Series < ApplicationRecord
   end
 
   def invalidate_activity_statuses
-    activity_statuses.destroy_all
+    ActivityStatus.delete_by(series: self)
   end
 end

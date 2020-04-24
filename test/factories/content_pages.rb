@@ -24,11 +24,11 @@ require File.dirname(__FILE__) + '/../testhelpers/stub_helper.rb'
 using StubHelper
 
 FactoryBot.define do
-  factory :content do
+  factory :content_page do
     access { 'public' }
     status { 'ok' }
 
-    sequence(:path) { |n| "content#{n}" }
+    sequence(:path) { |n| "content_page#{n}" }
 
     association :repository, factory: %i[repository git_stubbed]
 

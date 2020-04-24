@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: exercises
+# Table name: activities
 #
 #  id                      :integer          not null, primary key
 #  name_nl                 :string(255)
@@ -18,12 +18,13 @@
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
 #  allow_unsafe            :boolean          default(FALSE), not null
+#  type                    :string(255)      default("Exercises"), not null
 #
 
 require 'pathname'
 require 'action_view'
 
-class Activity < ApplicationRecord
+class Content < Activity
   include ActionView::Helpers::DateHelper
   include Filterable
   include StringHelper
@@ -68,9 +69,6 @@ class Activity < ApplicationRecord
   before_save :check_memory_limit
   before_save :generate_access_token, if: :access_changed?
   before_update :update_config
-
-  scope :contents, -> { where(type: Content.name) }
-  scope :exercises, -> { where(type: Exercise.name) }
 
   scope :in_repository, ->(repository) { where repository: repository }
 
@@ -418,22 +416,6 @@ class Activity < ApplicationRecord
 
   def set_search
     self.search = "#{Activity.human_enum_name(:status, status, locale: :nl)} #{Activity.human_enum_name(:status, status, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :nl)} #{name_nl} #{name_en} #{path}"
-  end
-
-  def self.parse_type(type)
-    return Exercise.name unless type
-    return type if types.include?(type)
-
-    type = type.titleize
-    return type if types.include?(type)
-
-    Exercise.name
-  end
-
-  class << self
-    def types
-      %w[Content Exercise]
-    end
   end
 
   private

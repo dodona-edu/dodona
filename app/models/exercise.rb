@@ -39,6 +39,10 @@ class Exercise < Activity
 
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
 
+  def exercise?
+    true
+  end
+
   def solutions
     (full_path + SOLUTION_DIR)
       .yield_self { |path| path.directory? ? path.children : [] }
@@ -94,22 +98,6 @@ class Exercise < Activity
 
   invalidateable_instance_cacheable(:users_tried,
                                     ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
-
-  def accepted_for?(user, series = nil)
-    activity_status_for(user, series).accepted?
-  end
-
-  def accepted_before_deadline_for?(user, series = nil)
-    activity_status_for(user, series).accepted_before_deadline?
-  end
-
-  def solved_for?(user, series = nil)
-    activity_status_for(user, series).solved?
-  end
-
-  def wrong_for?(user, series = nil)
-    activity_status_for(user, series).wrong?
-  end
 
   def best_is_last_submission?(user, series = nil)
     activity_status_for(user, series).best_is_last?

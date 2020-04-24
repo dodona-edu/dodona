@@ -37,6 +37,10 @@ class Repository < ApplicationRecord
            through: :course_repositories,
            source: :course
 
+  # TODO: Remove
+  has_many :contents, dependent: :restrict_with_error
+  has_many :exercises, dependent: :restrict_with_error
+
   def full_path
     Pathname.new File.join(ACTIVITY_LOCATIONS, path)
   end
@@ -87,12 +91,12 @@ class Repository < ApplicationRecord
     end.compact
 
     existing_activities = activity_dirs_and_configs
-                         .reject { |_, c| c['internals'].nil? || c['internals']['token'].nil? }
-                         .map { |d, c| [d, Activity.find_by(repository_token: c['internals']['token'], repository_id: id)] }
-                         .reject { |_, e| e.nil? }
-                         .group_by { |_, e| e }
-                         .map { |e, l| [e, l.map { |elem| elem[0] }] }
-                         .to_h
+                          .reject { |_, c| c['internals'].nil? || c['internals']['token'].nil? }
+                          .map { |d, c| [d, Activity.find_by(repository_token: c['internals']['token'], repository_id: id)] }
+                          .reject { |_, e| e.nil? }
+                          .group_by { |_, e| e }
+                          .map { |e, l| [e, l.map { |elem| elem[0] }] }
+                          .to_h
     handled_directories = []
     handled_activities = []
     new_activities = []
@@ -152,6 +156,15 @@ class Repository < ApplicationRecord
 
   def update_activity(act)
     config = act.merged_config
+    type = Activity.parse_type config['type']
+
+    if type == ContentPage.name
+      act = act.becomes(Content)
+    elsif type == Exercise.name
+      act = act.becomes(Exercise)
+    else
+      raise format("Unknown type: %s", config['type'])
+    end
 
     labels = config['labels']&.map do |name|
       Label.find_by(name: name) || Label.create(name: name)
@@ -165,13 +178,9 @@ class Repository < ApplicationRecord
     act.name_nl = config['description']&.fetch('names', nil)&.fetch('nl', nil)
     act.labels = labels
     act.status = :ok
-    act.type = Activity.parse_type config['type']
+    act.type = type
 
-    if act.type == ContentPage.type
-      act = act.becomes(ContentPage)
-    elsif act.type == Exercise.type
-      act = act.becomes(Exercise)
-
+    if act.is_a?(Exercise)
       j = nil
       j = Judge.find_by(name: config['evaluation']['handler']) if config['evaluation']
       programming_language_name = config['programming_language']

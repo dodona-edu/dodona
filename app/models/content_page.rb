@@ -21,9 +21,6 @@
 #  type                    :string(255)      default("Exercises"), not null
 #
 
-require 'pathname'
-require 'action_view'
-
 class ContentPage < Activity
   class << self
     def type

@@ -40,6 +40,7 @@ class Activity < ApplicationRecord
   enum status: { ok: 0, not_valid: 1, removed: 2 }
 
   belongs_to :repository
+  has_many :activity_read_states, dependent: :destroy
   has_many :activity_statuses, dependent: :destroy
   has_many :series_memberships, dependent: :restrict_with_error
   has_many :series, through: :series_memberships
@@ -69,6 +70,14 @@ class Activity < ApplicationRecord
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
   scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
+
+  def content?
+    false
+  end
+
+  def exercise?
+    false
+  end
 
   def full_path
     return '' unless path
@@ -249,6 +258,22 @@ class Activity < ApplicationRecord
     series_memberships.joins(:series).where('course_id = ?', course.id).map do |series_membership|
       activity_status_for(user, series_membership.series)
     end
+  end
+
+  def accepted_for?(user, series = nil)
+    activity_status_for(user, series).accepted?
+  end
+
+  def accepted_before_deadline_for?(user, series = nil)
+    activity_status_for(user, series).accepted_before_deadline?
+  end
+
+  def solved_for?(user, series = nil)
+    activity_status_for(user, series).solved?
+  end
+
+  def wrong_for?(user, series = nil)
+    activity_status_for(user, series).wrong?
   end
 
   def started_for?(user, series = nil)

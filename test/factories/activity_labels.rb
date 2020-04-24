@@ -8,8 +8,8 @@
 #
 
 FactoryBot.define do
-  factory :exercise_label do
-    exercise
+  factory :activity_label do
+    activity
     label
   end
 end

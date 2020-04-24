@@ -34,7 +34,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def overview?
-    show? && (record.exercises_visible || course_admin?)
+    show? && (record.activities_visible || course_admin?)
   end
 
   def create?
@@ -94,7 +94,7 @@ class SeriesPolicy < ApplicationPolicy
   def permitted_attributes
     # record is the Series class on create
     if course_admin? || record == Series
-      %i[name description course_id visibility order deadline indianio_support progress_enabled exercises_visible]
+      %i[name description course_id visibility order deadline indianio_support progress_enabled activities_visible]
     else
       []
     end

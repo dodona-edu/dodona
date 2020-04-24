@@ -51,12 +51,36 @@ class Course < ApplicationRecord
   enum registration: { open_for_all: 0, open_for_institution: 1, closed: 2 }
   enum color: { red: 0, pink: 1, purple: 2, "deep-purple": 3, indigo: 4, teal: 5, orange: 6, brown: 7, "blue-grey": 8 }
 
+  # TODO: Remove and use activities?
+  has_many :contents,
+           lambda {
+             where activities: { type: ContentPage.name }
+           },
+           through: :series_memberships,
+           source: :activity
+
+  # TODO: Remove and use activities?
+  has_many :exercises,
+           lambda {
+             where activities: { type: Exercise.name }
+           },
+           through: :series_memberships,
+           source: :activity
+
   has_many :visible_activities,
            lambda {
              where(series: { visibility: %i[open hidden] }).distinct
            },
            through: :series,
            source: :activities
+
+  # TODO: Remove and use activities?
+  has_many :visible_exercises,
+           lambda {
+             where(series: { visibility: %i[open hidden] }).distinct
+           },
+           through: :series,
+           source: :exercises
 
   has_many :subscribed_members,
            lambda {

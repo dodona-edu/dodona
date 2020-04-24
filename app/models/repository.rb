@@ -167,9 +167,9 @@ class Repository < ApplicationRecord
     act.status = :ok
     act.type = Activity.parse_type config['type']
 
-    if act.type == Content.name
-      act = act.becomes(Content)
-    elsif act.type == Exercise.name
+    if act.type == ContentPage.type
+      act = act.becomes(ContentPage)
+    elsif act.type == Exercise.type
       act = act.becomes(Exercise)
 
       j = nil

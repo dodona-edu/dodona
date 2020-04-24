@@ -88,7 +88,7 @@ nl:
         visibility: Zichtbaarheid
         order: Volgorde
         deadline: Deadline
-        exercises_visible: Oefeningen zichtbaar
+        activities_visible: Lesactiviteiten zichtbaar
         visibilities:
           open: Open
           hidden: Verborgen

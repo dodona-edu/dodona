@@ -49,6 +49,20 @@ class Series < ApplicationRecord
   scope :with_deadline, -> { where.not(deadline: nil) }
   default_scope { order(order: :asc, id: :desc) }
 
+  has_many :contents,
+           lambda {
+             where activities: { type: ContentPage.name }
+           },
+           through: :series_memberships,
+           source: :activity
+
+  has_many :exercises,
+           lambda {
+             where activities: { type: Exercise.name }
+           },
+           through: :series_memberships,
+           source: :activity
+
   after_initialize do
     self.visibility ||= 'open'
   end

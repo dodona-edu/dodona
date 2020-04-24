@@ -30,25 +30,17 @@ class Activity < ApplicationRecord
   include Cacheable
   include Tokenable
 
-  USERS_CORRECT_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_correct'.freeze
-  USERS_TRIED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_tried'.freeze
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
-  SOLUTION_DIR = 'solution'.freeze
-  SOLUTION_MAX_BYTES = 2**16 - 1
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
-  BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
   # We need to prefix, otherwise Rails can't generate the public? method
   enum access: { public: 0, private: 1 }, _prefix: true
   enum status: { ok: 0, not_valid: 1, removed: 2 }
 
   belongs_to :repository
-  belongs_to :judge
-  belongs_to :programming_language, optional: true
   has_many :activity_statuses, dependent: :destroy
-  has_many :submissions, dependent: :restrict_with_error
   has_many :series_memberships, dependent: :restrict_with_error
   has_many :series, through: :series_memberships
   has_many :courses, -> { distinct }, through: :series
@@ -65,11 +57,10 @@ class Activity < ApplicationRecord
                 if: ->(ex) { ex.repository_token.nil? }
   before_create :generate_access_token
   before_save :check_validity
-  before_save :check_memory_limit
   before_save :generate_access_token, if: :access_changed?
   before_update :update_config
 
-  scope :contents, -> { where(type: Content.name) }
+  scope :content_pages, -> { where(type: ContentPage.name) }
   scope :exercises, -> { where(type: Exercise.name) }
 
   scope :in_repository, ->(repository) { where repository: repository }
@@ -78,7 +69,6 @@ class Activity < ApplicationRecord
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
   scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
-  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
 
   def full_path
     return '' unless path
@@ -99,14 +89,6 @@ class Activity < ApplicationRecord
                          name_nl,
                          name_en,
                          path&.split('/')&.last
-  end
-
-  def solutions
-    (full_path + SOLUTION_DIR)
-      .yield_self { |path| path.directory? ? path.children : [] }
-      .filter { |path| path.file? && path.readable? }
-      .map { |path| [path.basename.to_s, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
-      .to_h
   end
 
   def description_languages
@@ -158,42 +140,12 @@ class Activity < ApplicationRecord
     (about_localized || about_nl || about_en || '').force_encoding('UTF-8').scrub
   end
 
-  def boilerplate_localized(lang = I18n.locale.to_s)
-    ext = lang ? ".#{lang}" : ''
-    file = full_path + BOILERPLATE_DIR + "boilerplate#{ext}"
-    file.read if file.exist?
-  end
-
-  def boilerplate_default
-    boilerplate_localized(nil)
-  end
-
-  def boilerplate_nl
-    boilerplate_localized('nl')
-  end
-
-  def boilerplate_en
-    boilerplate_localized('en')
-  end
-
-  def boilerplate
-    boilerplate_localized || boilerplate_default || boilerplate_nl || boilerplate_en
-  end
-
   def github_url
     repository.github_url(path)
   end
 
   def config
     repository.read_config_file(config_file)
-  end
-
-  def file_name
-    "#{name.parameterize}.#{file_extension}"
-  end
-
-  def file_extension
-    programming_language&.extension || 'txt'
   end
 
   def merged_dirconfig
@@ -273,9 +225,9 @@ class Activity < ApplicationRecord
   def accessible?(user, course)
     if course.present?
       if user&.course_admin? course
-        return false unless course.exercises.pluck(:id).include? id
+        return false unless course.activities.pluck(:id).include? id
       else
-        return false unless course.visible_exercises.pluck(:id).include? id
+        return false unless course.visible_activities.pluck(:id).include? id
       end
       return true if user&.repository_admin? repository
       return false unless access_public? \
@@ -291,24 +243,6 @@ class Activity < ApplicationRecord
     end
   end
 
-  def users_correct(options)
-    subs = submissions.where(status: :correct)
-    subs = subs.in_course(options[:course]) if options[:course].present?
-    subs.distinct.count(:user_id)
-  end
-
-  invalidateable_instance_cacheable(:users_correct,
-                                    ->(this, options) { format(USERS_CORRECT_CACHE_STRING, course_id: options[:course].present? ? options[:course].id.to_s : 'global', id: this.id.to_s) })
-
-  def users_tried(options)
-    subs = submissions.judged
-    subs = subs.in_course(options[:course]) if options[:course].present?
-    subs.distinct.count(:user_id)
-  end
-
-  invalidateable_instance_cacheable(:users_tried,
-                                    ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
-
   def activity_statuses_for(user, course)
     return [activity_status_for(user, nil)] if course.nil?
 
@@ -317,48 +251,8 @@ class Activity < ApplicationRecord
     end
   end
 
-  def accepted_for?(user, series = nil)
-    activity_status_for(user, series).accepted?
-  end
-
-  def accepted_before_deadline_for?(user, series = nil)
-    activity_status_for(user, series).accepted_before_deadline?
-  end
-
-  def solved_for?(user, series = nil)
-    activity_status_for(user, series).solved?
-  end
-
   def started_for?(user, series = nil)
     activity_status_for(user, series).started?
-  end
-
-  def wrong_for?(user, series = nil)
-    activity_status_for(user, series).wrong?
-  end
-
-  def best_is_last_submission?(user, series = nil)
-    activity_status_for(user, series).best_is_last?
-  end
-
-  def best_submission(user, deadline = nil, course = nil)
-    last_correct_submission(user, deadline, course) || last_submission(user, deadline, course)
-  end
-
-  def last_correct_submission(user, deadline = nil, course = nil)
-    s = submissions.of_user(user).where(status: :correct)
-    s = s.in_course(course) if course
-    s = s.before_deadline(deadline) if deadline
-    s.limit(1).first
-  end
-
-  def last_submission(user, deadline = nil, course = nil)
-    raise 'Second argument is a deadline, not a course' if deadline.is_a? Course
-
-    s = submissions.of_user(user)
-    s = s.in_course(course) if course
-    s = s.before_deadline(deadline) if deadline
-    s.limit(1).first
   end
 
   def check_validity
@@ -371,18 +265,6 @@ class Activity < ApplicationRecord
                   else
                     :ok
                   end
-  end
-
-  def check_memory_limit
-    return unless ok?
-    return unless merged_config.fetch('evaluation', {}).fetch('memory_limit', 0) > 500_000_000 # 500MB
-
-    c = config
-    c['evaluation'] ||= {}
-    c['evaluation']['memory_limit'] = 500_000_000
-    store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " \
-        "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " \
-        'bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.')
   end
 
   def self.convert_visibility_to_access(visibility)
@@ -404,13 +286,11 @@ class Activity < ApplicationRecord
   end
 
   def self.move_relations(from, to)
-    from.submissions.each { |s| s.update(exercise: to) }
-    from.series_memberships.each { |sm| sm.update(exercise: to) unless SeriesMembership.find_by(exercise: to, series: sm.series) }
+    from.series_memberships.each { |sm| sm.update(activity: to) unless SeriesMembership.find_by(activity: to, series: sm.series) }
   end
 
   def safe_destroy
     return unless removed?
-    return if submissions.any?
     return if series_memberships.any?
 
     destroy
@@ -421,18 +301,17 @@ class Activity < ApplicationRecord
   end
 
   def self.parse_type(type)
-    return Exercise.name unless type
+    return Exercise.type unless type
     return type if types.include?(type)
+    return ContentPage.type if type.downcase == ContentPage.type
+    return Exercise.type if type.downcase == Exercise.type
 
-    type = type.titleize
-    return type if types.include?(type)
-
-    Exercise.name
+    Exercise.type
   end
 
   class << self
     def types
-      %w[Content Exercise]
+      %w[ContentPage Exercise]
     end
   end
 
@@ -441,7 +320,7 @@ class Activity < ApplicationRecord
   def activity_status_for(user, series = nil)
     attempts = 0
     begin
-      ExerciseStatus.find_or_create_by(exercise: self, series: series, user: user)
+      ActivityStatus.find_or_create_by(activity: self, series: series, user: user)
     rescue StandardError
       # https://github.com/dodona-edu/dodona/issues/1877
       raise unless (attempts += 1) <= 1

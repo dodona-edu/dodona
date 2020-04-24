@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: exercises
+# Table name: activities
 #
 #  id                      :integer          not null, primary key
 #  name_nl                 :string(255)
@@ -18,12 +18,13 @@
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
 #  allow_unsafe            :boolean          default(FALSE), not null
+#  type                    :string(255)      default("Exercises"), not null
 #
 
 require 'pathname'
 require 'action_view'
 
-class Activity < ApplicationRecord
+class Content < Activity
   include ActionView::Helpers::DateHelper
   include Filterable
   include StringHelper
@@ -68,9 +69,6 @@ class Activity < ApplicationRecord
   before_save :check_memory_limit
   before_save :generate_access_token, if: :access_changed?
   before_update :update_config
-
-  scope :contents, -> { where(type: Content.name) }
-  scope :exercises, -> { where(type: Exercise.name) }
 
   scope :in_repository, ->(repository) { where repository: repository }
 
@@ -137,30 +135,25 @@ class Activity < ApplicationRecord
     (description_localized || description_nl || description_en || '').force_encoding('UTF-8').scrub
   end
 
-  def about_by_precedence(lang = I18n.locale.to_s)
-    return unless full_path.exist?
+  def about_file(lang)
+    full_path + "about.#{lang}.md"
+  end
 
-    files = full_path
-            .children
-            .filter { |path| path.file? && path.readable? }
-            .index_by { |path| path.basename.to_s.downcase }
+  def about_localized(lang = I18n.locale.to_s)
+    file = about_file(lang)
+    file.read if file.exist?
+  end
 
-    first_matching = [
-      "readme.#{lang}.md",
-      "about.#{lang}.md",
-      'readme.md',
-      'readme',
-      'readme.nl.md',
-      'readme.en.md',
-      'about.nl.md',
-      'about.en.md'
-    ].find { |fname| files.key?(fname) }
+  def about_nl
+    about_localized('nl')
+  end
 
-    files[first_matching]&.read
+  def about_en
+    about_localized('en')
   end
 
   def about
-    (about_by_precedence || '').force_encoding('UTF-8').scrub
+    (about_localized || about_nl || about_en || '').force_encoding('UTF-8').scrub
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)
@@ -423,22 +416,6 @@ class Activity < ApplicationRecord
 
   def set_search
     self.search = "#{Activity.human_enum_name(:status, status, locale: :nl)} #{Activity.human_enum_name(:status, status, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :nl)} #{name_nl} #{name_en} #{path}"
-  end
-
-  def self.parse_type(type)
-    return Exercise.name unless type
-    return type if types.include?(type)
-
-    type = type.titleize
-    return type if types.include?(type)
-
-    Exercise.name
-  end
-
-  class << self
-    def types
-      %w[Content Exercise]
-    end
   end
 
   private

@@ -14,10 +14,9 @@
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #
-require 'test_helper'
-
-class ExerciseStatusTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class ActivityReadState < ApplicationRecord
+  belongs_to :activity
+  belongs_to :course, optional: true
+  belongs_to :user
 end
+

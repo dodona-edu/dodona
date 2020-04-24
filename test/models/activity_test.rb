@@ -43,7 +43,7 @@ class ActivityTest < ActiveSupport::TestCase
     exercise.save
 
     # Fetch the ContentPage from the database.
-    content_page_activity = Activity.find(id: exercise_id)
+    content_page_activity = Activity.find(exercise_id)
     assert_instance_of ContentPage, content_page_activity
 
     # Convert the ContentPage back to an Exercise.
@@ -51,7 +51,7 @@ class ActivityTest < ActiveSupport::TestCase
     content_page_activity.save
 
     # Fetch the Exercise from the database.
-    exercise_activity = Activity.find(id: exercise_id)
+    exercise_activity = Activity.find(exercise_id)
     assert_instance_of Exercise, exercise_activity
     assert_equal 10, exercise_activity.submissions.count
   end

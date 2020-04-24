@@ -74,6 +74,39 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal false, series.completed_before_deadline?(user)
   end
 
+  test 'changing deadline should not destroy exercise statuses for content pages' do
+    original_deadline = Time.zone.now + 1.day
+
+    course = create :course
+    series = create :series, course: course, deadline: original_deadline
+    user = create :user
+
+    content = create :content
+    series.contents << content
+
+    # Complete the content
+    now = Time.zone.now
+    ActivityStatus.create activity: content,
+                          series: series,
+                          user: user,
+                          accepted: true,
+                          accepted_before_deadline: true,
+                          solved: true,
+                          solved_at: now,
+                          started: true
+
+    assert_equal true, series.completed_before_deadline?(user)
+
+    series.update(deadline: now - 1.day)
+
+    assert_equal false, series.completed_before_deadline?(user)
+
+    # Reset the deadline to the original one to ensure the status was not removed.
+    series.update(deadline: original_deadline)
+
+    assert_equal true, series.completed_before_deadline?(user)
+  end
+
   test 'enabling indianio_support should generate a new token if there was none' do
     @series.indianio_support = true
     assert_not_nil @series.indianio_token

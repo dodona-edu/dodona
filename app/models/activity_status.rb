@@ -22,7 +22,7 @@ class ActivityStatus < ApplicationRecord
   scope :in_series, ->(series) { where(series: series) }
   scope :for_user, ->(user) { where(user: user) }
 
-  before_create :initialise_values
+  before_create :initialise_values_for_exercise, if: -> { activity.exercise? }
 
   def best_is_last?
     accepted == solved
@@ -33,13 +33,13 @@ class ActivityStatus < ApplicationRecord
   end
 
   def update_values
-    initialise_values
+    initialise_values_for_exercise if activity.exercise?
     save
   end
 
   private
 
-  def initialise_values
+  def initialise_values_for_exercise
     best = activity.best_submission(user, nil, series&.course)
     best_before_deadline = activity.best_submission(user, series&.deadline, series&.course)
     last = activity.last_submission(user, nil, series&.course)

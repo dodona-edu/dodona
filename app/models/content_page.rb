@@ -18,7 +18,7 @@
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
 #  allow_unsafe            :boolean          default(FALSE), not null
-#  type                    :string(255)      default("Exercises"), not null
+#  type                    :string(255)      default("Exercise"), not null
 #
 
 class ContentPage < Activity

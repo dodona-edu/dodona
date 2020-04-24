@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: exercises
+# Table name: activities
 #
 #  id                      :integer          not null, primary key
 #  name_nl                 :string(255)
@@ -18,6 +18,7 @@
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
 #  allow_unsafe            :boolean          default(FALSE), not null
+#  type                    :string(255)      default("Exercise"), not null
 #
 
 require File.dirname(__FILE__) + '/../testhelpers/stub_helper.rb'

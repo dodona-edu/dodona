@@ -1,9 +1,9 @@
 # == Schema Information
 #
-# Table name: exercise_labels
+# Table name: activity_labels
 #
 #  id          :bigint           not null, primary key
-#  exercise_id :integer          not null
+#  activity_id :integer          not null
 #  label_id    :bigint           not null
 #
 

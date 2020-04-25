@@ -13,6 +13,7 @@ class ActivitiesController < ApplicationController
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }
   has_scope :by_programming_language, as: 'programming_language'
+  has_scope :by_type, as: 'type'
   has_scope :in_repository, as: 'repository_id'
 
   content_security_policy only: %i[show] do |policy|

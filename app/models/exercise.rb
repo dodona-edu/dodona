@@ -143,10 +143,12 @@ class Exercise < ApplicationRecord
             .index_by { |path| path.basename.to_s.downcase }
 
     first_matching = [
+      "readme.#{lang}.md",
       "about.#{lang}.md",
-      'about.md',
       'readme.md',
       'readme',
+      'readme.nl.md',
+      'readme.en.md',
       'about.nl.md',
       'about.en.md'
     ].find { |fname| files.key?(fname) }

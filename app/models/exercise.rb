@@ -138,7 +138,7 @@ class Exercise < ApplicationRecord
     files = full_path
             .children
             .filter { |path| path.file? && path.readable? }
-            .index_by { |path| [path.basename.to_s.downcase, path] }
+            .index_by { |path| path.basename.to_s.downcase }
 
     first_matching = [
       "about.#{lang}.md",

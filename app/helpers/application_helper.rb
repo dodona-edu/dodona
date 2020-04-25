@@ -57,16 +57,16 @@ module ApplicationHelper
     end
   end
 
-  def submissions_scoped_path(activity: nil, series: nil, course: nil, options: nil)
-    if activity.nil?
+  def submissions_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
+    if exercise.nil?
       submissions_path(I18n.locale, options)
     elsif series.present?
       course ||= series.course
-      course_series_activity_submissions_path(I18n.locale, course, series, activity, options)
+      course_series_activity_submissions_path(I18n.locale, course, series, exercise, options)
     elsif course.present?
-      course_activity_submissions_path(I18n.locale, course, activity, options)
+      course_activity_submissions_path(I18n.locale, course, exercise, options)
     else
-      activity_submissions_path(I18n.locale, activity, options)
+      activity_submissions_path(I18n.locale, exercise, options)
     end
   end
 

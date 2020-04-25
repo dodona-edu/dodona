@@ -97,6 +97,17 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get activities by type' do
+    cp = create :content_page
+    ex = @instance
+    get activities_url(format: :json, type: ContentPage.name)
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal cp.id, JSON.parse(response.body)[0]['id']
+    get activities_url(format: :json, type: Exercise.name)
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal ex.id, JSON.parse(response.body)[0]['id']
+  end
+
   test 'should get available activities for series' do
     course = create :course, usable_repositories: [@instance.repository]
     other_exercise = create :exercise

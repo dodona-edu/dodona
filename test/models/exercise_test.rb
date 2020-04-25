@@ -542,6 +542,8 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
     @exercise = @repository.exercises.first
+    @about_nl_path = @exercise.full_path.join('about.nl.md')
+    @about_en_path = @exercise.full_path.join('README.md')
   end
 
   teardown do
@@ -645,6 +647,39 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   test 'config_file? should be false if exercise has no config file' do
     @exercise.path = '/wrong_path'
     assert_not @exercise.config_file?
+  end
+
+  test 'about should give a localized result for en' do
+    I18n.with_locale :en do
+      assert_equal File.read(@about_en_path), @exercise.about
+    end
+  end
+
+  test 'about should give a localized result for nl' do
+    I18n.with_locale :nl do
+      assert_equal File.read(@about_nl_path), @exercise.about
+    end
+  end
+
+  test 'about should fallback to other language if localized is unavailable' do
+    FileUtils.rm @about_en_path
+    I18n.with_locale :en do
+      assert_equal File.read(@about_nl_path), @exercise.about
+    end
+  end
+
+  test 'about can be in about.md' do
+    about = File.read @about_en_path
+    FileUtils.rm @about_nl_path
+    FileUtils.mv @about_en_path, @exercise.full_path.join('about.md')
+    assert_equal about, @exercise.about
+  end
+
+  test 'about can be in README' do
+    about = File.read @about_en_path
+    FileUtils.rm @about_nl_path
+    FileUtils.mv @about_en_path, @exercise.full_path.join('README')
+    assert_equal about, @exercise.about
   end
 end
 

@@ -134,25 +134,28 @@ class Exercise < ApplicationRecord
     (description_localized || description_nl || description_en || '').force_encoding('UTF-8').scrub
   end
 
-  def about_file(lang)
-    full_path + "about.#{lang}.md"
-  end
+  def about_by_precedence(lang = I18n.locale.to_s)
+    return unless full_path.exist?
 
-  def about_localized(lang = I18n.locale.to_s)
-    file = about_file(lang)
-    file.read if file.exist?
-  end
+    files = full_path
+            .children
+            .filter { |path| path.file? && path.readable? }
+            .index_by { |path| path.basename.to_s.downcase }
 
-  def about_nl
-    about_localized('nl')
-  end
+    first_matching = [
+      "about.#{lang}.md",
+      'about.md',
+      'readme.md',
+      'readme',
+      'about.nl.md',
+      'about.en.md'
+    ].find { |fname| files.key?(fname) }
 
-  def about_en
-    about_localized('en')
+    files[first_matching]&.read
   end
 
   def about
-    (about_localized || about_nl || about_en || '').force_encoding('UTF-8').scrub
+    (about_by_precedence || '').force_encoding('UTF-8').scrub
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)

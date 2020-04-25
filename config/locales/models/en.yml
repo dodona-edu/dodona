@@ -9,7 +9,7 @@ en:
     models:
       course: Course
       activity: Activity
-      content_page: Content
+      content_page: Reading activity
       exercise: Exercise
       export: Export
       judge: Judge

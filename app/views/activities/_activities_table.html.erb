@@ -91,7 +91,7 @@
             <%= render partial: 'activities/user_status', locals: {activity: activity, series: local_assigns[:series], user: user} %>
           </td>
           <td>
-            <% if activity.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course) %>
+            <% if activity.exercise? && (activity.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course)) %>
               <% options = current_user == user ? {} : {user_id: user.id} %>
               <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('layout.menu.my_submissions'),
@@ -106,4 +106,6 @@
     </tbody>
   </table>
 </div>
-<center><%= page_navigation_links activities, true, "activities" if activities.try(:total_pages) %></center>
+<% if activities.try(:total_pages) %>
+  <center><%= page_navigation_links activities, true, "activities" %></center>
+<% end %>

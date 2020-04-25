@@ -34,6 +34,32 @@ class ActivityTest < ActiveSupport::TestCase
     assert_not_nil @exercise
   end
 
+  test 'users_read' do
+    e = create :exercise
+    course1 = create :course
+    create :series, course: course1, exercises: [e]
+    course2 = create :course
+    create :series, course: course2, exercises: [e]
+
+    user_c1 = create :user, courses: [course1]
+
+    assert_equal 0, e.users_read
+    assert_equal 0, e.users_read(course: course1)
+    assert_equal 0, e.users_read(course: course2)
+
+    # Create activity read state for unscoped exercise.
+    create :activity_read_state, user: user_c1, activity: e
+    assert_equal 1, e.users_read
+    assert_equal 0, e.users_read(course: course1)
+    assert_equal 0, e.users_read(course: course2)
+
+    # Create activity read state for course 1.
+    create :activity_read_state, user: user_c1, course: course1, activity: e
+    assert_equal 1, e.users_read
+    assert_equal 1, e.users_read(course: course1)
+    assert_equal 0, e.users_read(course: course2)
+  end
+
   test 'converting an exercise to a content page and back should retain submissions' do
     exercise = create :exercise, submission_count: 10
     exercise_id = exercise.id

@@ -1,37 +1,33 @@
 require 'test_helper'
 
-class ExercisesControllerTest < ActionDispatch::IntegrationTest
+class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
-
-  crud_helpers Exercise, attrs: %i[access name_nl name_en]
 
   def setup
     @instance = create(:exercise, :description_html)
     sign_in create(:zeus)
   end
 
-  test_crud_actions only: %i[index edit update]
-
-  test 'should show exercise' do
-    get exercise_url(@instance)
+  test 'should show activity' do
+    get activity_url(@instance)
     assert_response :success
   end
 
-  test 'should show exercise description' do
-    get description_exercise_url(@instance, token: @instance.access_token)
+  test 'should show activity description' do
+    get description_activity_url(@instance, token: @instance.access_token)
     assert_response :success
   end
 
-  test 'should not show exercise description with incorrect token' do
-    get description_exercise_url(@instance, token: 'blargh')
+  test 'should not show activity description with incorrect token' do
+    get description_activity_url(@instance, token: 'blargh')
     assert_response :forbidden
   end
 
-  test 'should show exercise info' do
+  test 'should show activity info' do
     stub_all_exercises!
     # Attach exercise to courses to test sorting
     create_list(:course, 5).each { |s| s.series << create(:series, exercises: [@instance]) }
-    get info_exercise_url(@instance)
+    get info_activity_url(@instance)
     assert_response :success
   end
 
@@ -40,19 +36,19 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     begin
       loop do
         not_id = Random.rand(10_000)
-        Exercise.find not_id
+        Activity.find not_id
       end
     rescue ActiveRecord::RecordNotFound
-      get exercise_url(not_id)
-      assert_redirected_to exercises_path
-      assert_equal flash[:alert], I18n.t('exercises.show.not_found')
+      get activity_url(not_id)
+      assert_redirected_to activities_path
+      assert_equal flash[:alert], I18n.t('activities.show.not_found')
     end
   end
 
-  test 'should get exercise media' do
+  test 'should get activities media' do
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get media_exercise_url(@instance, media: 'icon.png')
+    get(activity_url(@instance) + '/media/icon.png')
 
     assert_response :success
     assert_equal response.content_type, 'image/png'
@@ -62,7 +58,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     @instance.stubs(:media_path).returns(Pathname.new('not-a-real-directory'))
     Repository.any_instance.stubs(:full_path).returns(Pathname.new(Rails.root))
 
-    get media_exercise_url(@instance, media: 'icon.png')
+    get(activity_url(@instance) + '/media/icon.png')
 
     assert_response :success
     assert_equal 'image/png', response.content_type
@@ -73,7 +69,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     @instance.update access: :private
 
-    get media_exercise_url(@instance, media: 'icon.png')
+    get(activity_url(@instance) + '/media/icon.png')
 
     assert_response :redirect
   end
@@ -83,7 +79,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     @instance.update access: :private
 
-    get description_media_exercise_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: @instance.access_token)
+    get description_media_activity_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: @instance.access_token)
 
     assert_response :success
   end
@@ -91,17 +87,17 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
   test 'should not get media with wrong token on sandbox_host' do
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get description_media_exercise_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: 'blargh')
+    get description_media_activity_url(@instance, host: 'sandbox.example.com', media: 'icon.png', token: 'blargh')
 
     assert_response :forbidden
   end
 
-  test 'should get exercises by repository_id' do
-    get exercises_url repository_id: @instance.repository.id
+  test 'should get activities by repository_id' do
+    get activities_url repository_id: @instance.repository.id
     assert_response :success
   end
 
-  test 'should get available exercises for series' do
+  test 'should get available activities for series' do
     course = create :course, usable_repositories: [@instance.repository]
     other_exercise = create :exercise
     series_exercise = create :exercise, repository: @instance.repository
@@ -112,7 +108,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
     sign_in admin
 
-    get available_exercises_series_url(series, format: :json)
+    get available_activities_series_url(series, format: :json)
 
     assert_response :success
     result_exercises = JSON.parse response.body
@@ -123,7 +119,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 3, result_exercises.count, 'should only contain available exercises'
   end
 
-  test 'should get available exercises for course with labels' do
+  test 'should get available activities for course with labels' do
     course = create :course, usable_repositories: [@instance.repository]
     other_exercise = create :exercise
     series_exercise = create :exercise, repository: @instance.repository
@@ -136,7 +132,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
     sign_in admin
 
-    get available_exercises_series_url(series, labels: [label.name], format: :json)
+    get available_activities_series_url(series, labels: [label.name], format: :json)
 
     assert_response :success
     result_exercises = JSON.parse response.body
@@ -144,7 +140,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
     label.activities << @instance
 
-    get available_exercises_series_url(series, labels: [label.name], format: :json)
+    get available_activities_series_url(series, labels: [label.name], format: :json)
 
     assert_response :success
     result_exercises = JSON.parse response.body
@@ -153,12 +149,12 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert result_exercises.all? { |ex| ex['id'] != other_exercise.id }, 'should not contain exercise without label'
   end
 
-  test 'should get available exercises for course with programming language' do
+  test 'should get available activities for course with programming language' do
     course = create :course, usable_repositories: [@instance.repository]
     other_exercise = create :exercise
     series_exercise = create :exercise, repository: @instance.repository
     create :exercise # Other exercise that should never show up
-    series = create :series, course: course, exercises: [series_exercise]
+    series = create :series, course: course, activities: [series_exercise]
     admin = create :staff, administrating_courses: [course], repositories: [other_exercise.repository]
 
     programming_language = create :programming_language
@@ -166,7 +162,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
     sign_in admin
 
-    get available_exercises_series_url(series, programming_language: programming_language.name, format: :json)
+    get available_activities_series_url(series, programming_language: programming_language.name, format: :json)
 
     assert_response :success
     result_exercises = JSON.parse response.body
@@ -174,7 +170,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
     @instance.update(programming_language: programming_language)
 
-    get available_exercises_series_url(series, programming_language: programming_language.name, format: :json)
+    get available_activities_series_url(series, programming_language: programming_language.name, format: :json)
 
     assert_response :success
     result_exercises = JSON.parse response.body
@@ -183,7 +179,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     assert result_exercises.all? { |ex| ex['id'] != other_exercise.id }, 'should not contain exercise with other programming language'
   end
 
-  test 'should not get available exercises as student' do
+  test 'should not get available activities as student' do
     course = create :course, usable_repositories: [@instance.repository]
     create :exercise # Other exercise that should never show up
     series = create :series, course: course
@@ -192,15 +188,15 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
     sign_in student
 
-    get available_exercises_series_url(series, format: :json)
+    get available_activities_series_url(series, format: :json)
 
     assert_response :forbidden
   end
 
-  def assert_response_contains_exercise(exercise, msg = nil)
+  def assert_response_contains_activity(activity, msg = nil)
     assert_response :success
-    result_exercises = JSON.parse response.body
-    assert result_exercises.any? { |ex| ex['id'] == exercise.id }, msg
+    result_activities = JSON.parse response.body
+    assert result_activities.any? { |ex| ex['id'] == activity.id }, msg
   end
 
   test 'should get edit submission with show' do
@@ -208,7 +204,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
 
     Submission.expects(:find).with(submission.id.to_s).returns(submission)
 
-    get exercise_url(@instance),
+    get activity_url(@instance),
         params: { edit_submission: submission.id }
     assert_response :success
   end
@@ -218,7 +214,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     solutions.expects(:[]).with('test').returns('content')
     Exercise.any_instance.expects(:solutions).returns(solutions)
 
-    get exercise_url(@instance),
+    get activity_url(@instance),
         params: { from_solution: 'test' }
     assert_response :success
   end
@@ -228,19 +224,19 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
     sign_in student
 
-    get exercise_url(@instance, format: :json),
+    get activity_url(@instance, format: :json),
         params: { from_solution: 'test' }
     assert_response :forbidden
   end
 
-  test 'should list all exercises within series' do
+  test 'should list all activities within series' do
     exercises = create_list :exercise, 10, repository: @instance.repository
     exercises_in_series = exercises.take(5)
     series = create :series, exercises: exercises_in_series
-    create :series, exercises: create_list(:exercise, 5)
+    create :series, activities: create_list(:exercise, 5)
     series.course.usable_repositories << @instance.repository
 
-    get series_exercises_url(series, format: :json)
+    get series_activities_url(series, format: :json)
 
     assert_response :success
     exercises_response = JSON.parse response.body
@@ -254,18 +250,18 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should get plaintext exercise media with charset=utf-8' do
+  test 'should get plaintext activity media with charset=utf-8' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get media_exercise_url(@instance, media: 'robots.txt')
+    get(activity_url(@instance) + '/media/robots.txt')
 
     assert_response :success
     assert_equal response.content_type, 'text/plain; charset=utf-8'
   end
 end
 
-class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
+class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
   setup do
     # stub file access
     Exercise.any_instance.stubs(:description_localized).returns("it's something")
@@ -273,111 +269,111 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
   end
 
-  def show_exercise
-    get exercise_path(@instance).concat('/')
+  def show_activity
+    get activity_path(@instance).concat('/')
   end
 
-  test 'user should be able to see exercise' do
+  test 'user should be able to see activity' do
     @instance = create :exercise
-    show_exercise
+    show_activity
     assert_response :success
   end
 
-  test 'user should not be able to see invalid exercise' do
+  test 'user should not be able to see invalid activity' do
     @instance = create :exercise, :nameless
-    show_exercise
+    show_activity
     assert_redirected_to root_url
   end
 
-  test 'user should be able to see invalid exercise when he has submissions, but not when closed' do
+  test 'user should be able to see invalid activity when he has submissions, but not when closed' do
     @instance = create :exercise, :nameless
     create :submission, exercise: @instance, user: @user
-    show_exercise
+    show_activity
     assert_response :success
   end
 
-  test 'admin should be able to see invalid exercise' do
+  test 'admin should be able to see invalid activity' do
     sign_in create(:staff)
     @instance = create :exercise, :nameless
-    show_exercise
+    show_activity
     assert_response :success
   end
 
-  test 'unauthenticated user should not be able to see private exercise' do
+  test 'unauthenticated user should not be able to see private activity' do
     sign_out :user
     @instance = create :exercise, access: 'private'
-    show_exercise
+    show_activity
     assert_redirected_to sign_in_url
   end
 
-  test 'unauthenticated user should be able to see public exercise' do
+  test 'unauthenticated user should be able to see public activity' do
     sign_out :user
     @instance = create :exercise
-    show_exercise
+    show_activity
     assert_response :success
   end
 
-  test 'authenticated user should not be able to see private exercise within series' do
+  test 'authenticated user should not be able to see private activity within series' do
     @instance = create :exercise, access: 'private'
-    show_exercise
+    show_activity
     assert_redirected_to root_url
 
     series = create :series
     series.exercises << @instance
-    get course_exercise_path(series.course, @instance).concat('/')
+    get course_activity_path(series.course, @instance).concat('/')
     assert_redirected_to root_url
   end
 
-  test 'repository admin should always be able to see private exercises' do
+  test 'repository admin should always be able to see private activities' do
     @instance = create :exercise, access: 'private'
     @instance.repository.admins << @user
-    show_exercise
+    show_activity
     assert_response :success
   end
 
-  test 'authenticated user should be able to see private exercise when used in a subscribed course' do
+  test 'authenticated user should be able to see private activity when used in a subscribed course' do
     series = create :series
     @instance = create :exercise, access: 'private'
     series.exercises << @instance
     series.course.subscribed_members << @user
     @instance.repository.allowed_courses << series.course
-    get course_exercise_path(series.course, @instance).concat('/')
+    get course_activity_path(series.course, @instance).concat('/')
     assert_response :success
   end
 
-  test 'authenticated user should not be able to see private exercise when used in a closed series of a subscribed course' do
+  test 'authenticated user should not be able to see private activity when used in a closed series of a subscribed course' do
     series = create :series, visibility: :closed
     @instance = create :exercise, access: :private
     series.exercises << @instance
     series.course.subscribed_members << @user
     @instance.repository.allowed_courses << series.course
-    get course_exercise_path(series.course, @instance).concat('/')
+    get course_activity_path(series.course, @instance).concat('/')
     assert_redirected_to root_url
   end
 
-  test 'should get exercise media because record is ok' do
+  test 'should get activity media because record is ok' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get media_exercise_url(@instance, media: 'icon.png')
+    get(activity_url(@instance) + '/media/icon.png')
 
     assert_response :success
     assert_equal response.content_type, 'image/png'
   end
 
-  test 'should get exercise media because user has submissions' do
+  test 'should get activity media because user has submissions' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:ok?).returns(false)
     create :submission, exercise: @instance, user: @user
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get media_exercise_url(@instance, media: 'icon.png')
+    get(activity_url(@instance) + '/media/icon.png')
 
     assert_response :success
     assert_equal response.content_type, 'image/png'
   end
 
-  test 'should get media of private exercise in course' do
+  test 'should get media of private activity in course' do
     @instance = create(:exercise, :description_html, access: 'private')
     series = create :series, visibility: :hidden
     series.exercises << @instance
@@ -385,21 +381,21 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     @instance.repository.allowed_courses << series.course
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get course_series_exercise_url(series.course, series, @instance)
-    assert_response :success, 'should have access to exercise'
+    get course_series_activity_url(series.course, series, @instance)
+    assert_response :success, 'should have access to activity'
 
-    get media_course_series_exercise_url(series.course, series, @instance, media: 'icon.png')
+    get(course_series_activity_url(series.course, series, @instance) + 'media/icon.png')
 
-    assert_response :success, 'should have access to exercise media'
+    assert_response :success, 'should have access to activity media'
     assert_equal response.content_type, 'image/png'
   end
 
-  test 'should get redirected from exercise media to root_url because user has no submissions and exercise is not ok' do
+  test 'should get redirected from activity media to root_url because user has no submissions and activity is not ok' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:ok?).returns(false)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get media_exercise_url(@instance, media: 'icon.png')
+    get(activity_url(@instance) + 'media/icon.png')
 
     assert_redirected_to root_url
   end
@@ -409,24 +405,24 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     Exercise.any_instance.stubs(:ok?).returns(false)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     sign_out @user
-    get media_exercise_url(@instance, media: 'icon.png')
+    get(activity_url(@instance) + 'media/icon.png')
 
     assert_redirected_to sign_in_url
   end
 
-  test 'should not have access to exercise media when user has no access to private exercise' do
+  test 'should not have access to activity media when user has no access to private activity' do
     @instance = create(:exercise, :description_html, access: :private)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
-    get media_exercise_url(@instance, media: 'icon.png')
+    get(activity_url(@instance) + 'media/icon.png')
 
     assert_redirected_to root_url
   end
 
-  test 'should access public exercise media on default host with token' do
+  test 'should access public activity media on default host with token' do
     sign_out :user
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
-    get media_exercise_url(@instance, media: 'icon.png', token: @instance.access_token)
+    get(activity_url(@instance) + "media/icon.png?token=#{@instance.access_token}")
 
     assert_response :success
   end
@@ -435,7 +431,7 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
     @instance = create(:exercise, :description_html, access: :private)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
-    get media_exercise_url(@instance, media: 'icon.png', token: @instance.access_token)
+    get(activity_url(@instance) + "media/icon.png?token=#{@instance.access_token}")
 
     assert_response :success
   end
@@ -449,7 +445,7 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'exercise overview should not include closed, hidden or invalid exercises' do
     visible = create_exercises_return_valid
 
-    get exercises_url, params: { format: :json }
+    get activities_url, params: { format: :json }
 
     exercises = JSON.parse response.body
     assert_equal 1, exercises.length
@@ -461,7 +457,7 @@ class ExercisesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
     sign_in create(:zeus)
 
-    get exercises_url, params: { format: :json }
+    get activities_url, params: { format: :json }
 
     exercises = JSON.parse response.body
     assert_equal 3, exercises.length
@@ -513,19 +509,19 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
   test 'iframe to exercise description should be present in the page' do
     sign_in create :user
-    get exercise_url(@exercise).concat('/')
+    get activity_url(@exercise).concat('/')
 
-    assert_includes response.body, description_exercise_url(@exercise, token: @exercise.access_token)
+    assert_includes response.body, description_activity_url(@exercise, token: @exercise.access_token)
   end
 
   test 'iframe should set dark mode to false when there is no logged in user' do
-    get exercise_url(@exercise).concat('/')
+    get activity_url(@exercise).concat('/')
 
-    assert_includes response.body, description_exercise_url(@exercise, token: @exercise.access_token, dark: false)
+    assert_includes response.body, description_activity_url(@exercise, token: @exercise.access_token, dark: false)
   end
 
   test 'script in exercise description should not be present in the page' do
-    get exercise_url(@exercise).concat('/')
+    get activity_url(@exercise).concat('/')
 
     assert_not_includes response.body, 'What is your favorite colour?'
   end
@@ -536,10 +532,10 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     other_exercise = create :exercise
     series = create :series, course: course, exercises: [exercise, other_exercise]
 
-    get course_series_exercise_url(course, series, exercise)
+    get course_series_activity_url(course, series, exercise)
 
     assert_response :success
-    assert_includes response.body, 'exercise-sidebar'
+    assert_includes response.body, 'activity-sidebar'
   end
 
   test 'exercise page without series should not contain extra navigation' do
@@ -548,7 +544,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     other_exercise = create :exercise
     create :series, course: course, exercises: [exercise, other_exercise]
 
-    get exercise_url(exercise)
+    get activity_url(exercise)
 
     assert_response :success
     assert_not_includes response.body, 'exercise-sidebar'
@@ -557,7 +553,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
   test 'json representation of exercise should contain the sandbox and access token in its description url' do
     exercise = create :exercise
 
-    get exercise_url(exercise), params: { format: :json }
+    get activity_url(exercise), params: { format: :json }
 
     assert_response :success
 

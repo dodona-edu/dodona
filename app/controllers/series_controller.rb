@@ -147,7 +147,7 @@ class SeriesController < ApplicationController
     end
   end
 
-  def add_exercise
+  def add_activity
     @exercise = Exercise.find(params[:exercise_id])
     unless @exercise.usable_by? @series.course
       if current_user.repository_admin? @exercise.repository
@@ -160,12 +160,12 @@ class SeriesController < ApplicationController
     SeriesMembership.create(series: @series, activity: @exercise)
   end
 
-  def remove_exercise
+  def remove_activity
     @exercise = Exercise.find(params[:exercise_id])
     @series.activities.destroy(@exercise)
   end
 
-  def reorder_exercises
+  def reorder_activities
     order = JSON.parse(params[:order])
     @series.series_memberships.each do |membership|
       rank = order.find_index(membership.activity_id) || 0

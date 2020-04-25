@@ -36,7 +36,7 @@ class SubmissionsController < ApplicationController
     elsif @judge
       @crumbs << [@judge.name, judge_path(@judge)]
     end
-    @crumbs << [@exercise.name, helpers.exercise_scoped_path(exercise: @exercise, series: @series, course: @course)] if @exercise
+    @crumbs << [@exercise.name, helpers.activity_scoped_path(activity: @exercise, series: @series, course: @course)] if @exercise
     @crumbs << [I18n.t('submissions.index.title'), '#']
   end
 
@@ -44,9 +44,9 @@ class SubmissionsController < ApplicationController
     @title = I18n.t('submissions.show.submission')
     course = @submission.course
     @crumbs = if course.present?
-                [[course.name, course_path(course)], [@submission.exercise.name, course_exercise_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
+                [[course.name, course_path(course)], [@submission.exercise.name, course_activity_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
               else
-                [[@submission.exercise.name, exercise_path(@submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
+                [[@submission.exercise.name, activity_path(@submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
               end
   end
 
@@ -78,9 +78,9 @@ class SubmissionsController < ApplicationController
     respond_to do |format|
       format.html do
         if @submission.course.nil?
-          redirect_to exercise_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+          redirect_to activity_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
         else
-          redirect_to course_exercise_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+          redirect_to course_activity_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
         end
       end
     end
@@ -98,7 +98,7 @@ class SubmissionsController < ApplicationController
   end
 
   def media
-    redirect_to media_exercise_url(@submission.exercise, params[:media], token: params[:token])
+    redirect_to media_activity_url(@submission.exercise, params[:media], token: params[:token])
   end
 
   def mass_rejudge

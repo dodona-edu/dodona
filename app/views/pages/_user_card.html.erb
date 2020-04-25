@@ -43,19 +43,19 @@
         <% submission = exercise.last_submission(current_user) %>
         <p>
           <% if submission.course.nil? %>
-            <%= link_to exercise_submissions_path(submission.exercise), class: 'btn-icon pull-right' do %>
+            <%= link_to activity_submissions_path(submission.exercise), class: 'btn-icon pull-right' do %>
               <i class="mdi mdi-chevron-right mdi-18"></i>
             <% end %>
           <% else %>
-            <%= link_to course_exercise_submissions_path(submission.course, submission.exercise), class: 'btn-icon pull-right' do %>
+            <%= link_to course_activity_submissions_path(submission.course, submission.exercise), class: 'btn-icon pull-right' do %>
               <i class="mdi mdi-chevron-right mdi-18"></i>
             <% end %>
           <% end %>
           <span class='pull-left'><%= submission_status_icon(submission) %></span>
           <% if submission.course.nil? %>
-            <%= link_to submission.exercise.name, exercise_path(submission.exercise), class: "course-link", title: submission.exercise.name %>
+            <%= link_to submission.exercise.name, activity_path(submission.exercise), class: "course-link", title: submission.exercise.name %>
           <% else %>
-            <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise), class: "course-link", title: submission.exercise.name %>
+            <%= link_to submission.exercise.name, course_activity_path(submission.course, submission.exercise), class: "course-link", title: submission.exercise.name %>
             <%= link_to submission.course.name, course_path(submission.course), class: "small text-muted course-link", title: submission.course.name %>
           <% end %>
         </p>

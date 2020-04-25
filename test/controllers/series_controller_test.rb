@@ -95,48 +95,48 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_nil @instance.reload.indianio_token
   end
 
-  test 'should add exercise to series' do
-    stub_all_exercises!
-    exercise = create(:exercise)
+  test 'should add activities to series' do
+    stub_all_activities!
+    activity = create(:activity)
     post add_activity_series_path(@instance),
          params: {
            format: 'application/javascript',
-           exercise_id: exercise.id
+           activity_id: activity.id
          }
     assert_response :success
-    assert @instance.reload.exercises.include? exercise
+    assert @instance.reload.activities.include? activity
   end
 
-  test 'should remove exercise from series' do
-    exercise = create(:exercise, series: [@instance])
+  test 'should remove activity from series' do
+    activity = create(:activity, series: [@instance])
     post remove_activity_series_path(@instance),
          params: {
            format: 'application/javascript',
-           exercise_id: exercise.id
+           activity_id: activity.id
          }
     assert_response :success
-    assert_not @instance.exercises.include?(exercise)
+    assert_not @instance.activities.include?(activity)
   end
 
-  test 'repository admin adding private exercise to series should add course to repository\'s allowed courses' do
-    exercise = create :exercise, access: :private
-    post add_activity_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
-    assert exercise.repository.allowed_courses.include? @instance.course
+  test 'repository admin adding private activity to series should add course to repository\'s allowed courses' do
+    activity = create :activity, access: :private
+    post add_activity_series_path @instance, params: { format: 'application/javascript', activity_id: activity.id }
+    assert activity.repository.allowed_courses.include? @instance.course
   end
 
-  test 'course admin should not be able to add private exercise to series' do
-    exercise = create :exercise, access: :private
+  test 'course admin should not be able to add private activity to series' do
+    activity = create :activity, access: :private
     user = create :user
     sign_in user
     @instance.course.administrating_members << user
-    post add_activity_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
-    assert_not @instance.exercises.include? exercise
+    post add_activity_series_path @instance, params: { format: 'application/javascript', activity_id: activity.id }
+    assert_not @instance.activities.include? activity
   end
 
-  test 'should reorder exercises' do
-    exercises = create_list(:exercise, 10, series: [@instance])
-    exercises.shuffle!
-    ids = exercises.map(&:id)
+  test 'should reorder activities' do
+    activities = create_list(:activity, 10, series: [@instance])
+    activities.shuffle!
+    ids = activities.map(&:id)
     post reorder_activities_series_path @instance, params: { format: 'application/javascript', order: ids.to_json }
     assert_response :success
     assert_equal ids, @instance.series_memberships.map(&:activity_id)
@@ -144,7 +144,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'missed deadlines should have correct class' do
     series = create :series, deadline: Time.zone.now - 1.day
-    create :exercise, series: [series]
+    create :activity, series: [series]
 
     get series_url(series)
 
@@ -154,7 +154,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'upcoming deadlines should have correct class' do
     series = create :series, deadline: Time.zone.now + 1.day
-    create :exercise, series: [series]
+    create :activity, series: [series]
 
     get series_url(series)
     assert_response :success
@@ -208,7 +208,7 @@ end
 
 class SeriesVisibilityTest < ActionDispatch::IntegrationTest
   setup do
-    @series = create :series, exercise_count: 2, exercise_submission_count: 2
+    @series = create :series, activity_count: 2, exercise_submission_count: 2
     @course = @series.course
     @student = create :student
     @zeus = create :zeus
@@ -335,7 +335,7 @@ end
 
 class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
   setup do
-    stub_all_exercises!
+    stub_all_activities!
     @student = create :student
     @series = create :series,
                      :with_submissions,
@@ -352,7 +352,7 @@ class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
     @series.reload
     assert_zip response.body,
                with_info: true,
-               solution_count: @series.exercises.count,
+               solution_count: @series.activities.count,
                group_by: 'exercise',
                data: { exercises: @series.exercises }
   end

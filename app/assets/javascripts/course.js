@@ -85,8 +85,8 @@ function initCourseMembers() {
     init();
 }
 
-const TABLE_WRAPPER_SELECTOR = ".series-exercises-table-wrapper";
-const SKELETON_TABLE_SELECTOR = ".exercise-table-skeleton";
+const TABLE_WRAPPER_SELECTOR = ".series-activities-table-wrapper";
+const SKELETON_TABLE_SELECTOR = ".activity-table-skeleton";
 
 class Series {
     static findAll(cards_selector = ".series.card") {

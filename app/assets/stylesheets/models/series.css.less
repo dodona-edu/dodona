@@ -1,23 +1,29 @@
-.add-exercise-action {
+.add-activity-action {
   width: 25px;
 }
 
-.series-exercise-list .exercise {
+.series-activity-list .exercise {
   height: 40px;
   transition: opacity 0.5s ease-in-out;
 }
 
-.series-exercise-list .exercise.new {
+.series-activity-list .activity.new {
   opacity: 0;
 }
 
-.series-exercise-list .exercise.pending {
+.series-activity-list .activity.pending {
   opacity: 0.5;
 }
 
-.exercise.gu-mirror .actions,
-.series-exercise-list .exercise .actions {
+.activity.gu-mirror .actions,
+.series-activity-list .activity .actions {
   text-align: right;
+}
+
+.series-activity-list .status-icon,
+#activities-table-wrapper .status-icon {
+  text-align: right;
+  color: @text-secondary;
 }
 
 .deadline-future {
@@ -162,11 +168,11 @@
   top: 2px;
 }
 
-.table.table-resource td.series-exercises-table-labels {
+.table.table-resource td.series-activities-table-labels {
   white-space: normal;
 }
 
-.exercise-table-skeleton {
+.activity-table-skeleton {
   width: 100%;
 
   .skeleton-head {

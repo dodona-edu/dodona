@@ -16,7 +16,7 @@
     <% labels.each do |label| %>
       <tr>
         <td><%= link_to label.name, label_path(label) %></td>
-        <td><%= link_to label.activities.count, exercises_path({"labels[]" => label.name}) %></td>
+        <td><%= link_to label.activities.count, activities_path({"labels[]" => label.name}) %></td>
         <td>
           <% if policy(Label).edit? %>
             <%= link_to edit_label_path(label), class: "btn btn-sm btn-default" do %>

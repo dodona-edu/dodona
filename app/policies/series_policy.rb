@@ -57,20 +57,20 @@ class SeriesPolicy < ApplicationPolicy
     true
   end
 
-  def modify_exercises?
+  def modify_activities?
     course_admin?
   end
 
-  def add_exercise?
-    modify_exercises?
+  def add_activity?
+    modify_activities?
   end
 
-  def remove_exercise?
-    modify_exercises?
+  def remove_activity?
+    modify_activities?
   end
 
-  def reorder_exercises?
-    modify_exercises?
+  def reorder_activities?
+    modify_activities?
   end
 
   def scoresheet?

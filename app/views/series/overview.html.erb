@@ -7,29 +7,29 @@
   <h2><%= @series.course.name %></h2><br>
   <%= render partial: 'series/series', locals: {
       series: @series,
-      get_exercise_path: method(:exercise_anchor),
+      get_activity_path: method(:activity_anchor),
       user: @user
   } %>
-  <% @series.exercises.each do |exercise| %>
+  <% @series.activities.each do |exercise| %>
     <div class="card exercise-description">
       <%= content_tag :a,
                       '',
-                      name: exercise_anchor_id(exercise),
+                      name: activity_anchor_id(exercise),
                       class: 'anchor' %>
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
-          <%= link_to exercise.name, exercise_path(exercise) %>
+          <%= link_to exercise.name, activity_path(exercise) %>
         </h2>
       </div>
       <%= description_iframe exercise %>
       <div class="card-actions card-border hidden-print">
         <% if user && (exercise.started_for?(user, @series) || @series.deadline&.past?) %>
           <div class="btn-text submission-status-button">
-            <%= render partial: 'exercises/user_status_icon', locals: {exercise: exercise, series: @series, user: user} %>
-            <%= render partial: 'exercises/user_status', locals: {exercise: exercise, series: @series, user: user} %>
+            <%= render partial: 'activities/user_status_icon', locals: {activity: exercise, series: @series, user: user} %>
+            <%= render partial: 'activities/user_status', locals: {activity: exercise, series: @series, user: user} %>
           </div>
         <% else %>
-          <%= link_to t('exercises.show.handin'), course_series_exercise_path(@series.course, @series.id, exercise, anchor: "submission-card"), class: "btn-text" %>
+          <%= link_to t('exercises.show.handin'), course_series_activity_path(@series.course, @series.id, exercise, anchor: "submission-card"), class: "btn-text" %>
         <% end %>
       </div>
     </div>

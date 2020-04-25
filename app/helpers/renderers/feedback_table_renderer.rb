@@ -292,7 +292,7 @@ class FeedbackTableRenderer
   def init_js
     @builder.script do
       token = @exercise.access_private? ? "'#{@exercise.access_token}'" : 'undefined'
-      @builder << "dodona.initSubmissionShow('feedback-table', '#{exercise_path(nil, @exercise)}', #{token});"
+      @builder << "dodona.initSubmissionShow('feedback-table', '#{activity_path(nil, @exercise)}', #{token});"
     end
   end
 

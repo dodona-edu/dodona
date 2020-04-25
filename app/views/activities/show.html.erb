@@ -1,6 +1,6 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'activity' %>
-  <% if activity.exercise? %>
+  <% if @activity.exercise? %>
+    <%= javascript_pack_tag 'exercise' %>
     <%= javascript_pack_tag 'submission' %>
     <%= javascript_pack_tag 'pythia_submission' if @activity.judge.renderer == PythiaRenderer %>
   <% end %>
@@ -103,7 +103,7 @@
               <% if !user_signed_in? %>
                 <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
               <% elsif @submissions.length > 0 %>
-                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, activity: @activity, course: @course, user: current_user} %>
+                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: current_user} %>
               <% else %>
                 <div class="alert alert-info"><%= t ".hand_in_tooltip" %></div>
               <% end %>

@@ -57,7 +57,7 @@
         </div>
       <% end %>
     </div>
-    <% if policy(@series).modify_exercises? %>
+    <% if policy(@series).modify_activities? %>
       <div class="card">
         <div class="card-supporting-text">
           <div class="col-xs-12">
@@ -77,15 +77,15 @@
               <% if @series.exercises.empty? %>
                 <p id="no-exercises" class="text-center"><%= t ".no_exercises" %><br><span class="small"><%= t ".no_exercises_bis" %></span></p>
               <% end %>
-              <%= render partial: 'exercises/series_exercises_table', locals: {exercises: @series.exercises, series: @series, paginate: false, show_buttons_for_present: true} %>
+              <%= render partial: 'activities/series_activities_table', locals: {exercises: @series.exercises, series: @series, paginate: false, show_buttons_for_present: true} %>
             </div>
           </div>
         </div>
         <div class="card-supporting-text card-border">
           <div class="col-xs-12">
             <h4 id="add-exercises"><%= t ".add_exercises" %></h4>
-            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_exercises_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories} %>
-            <div id="exercises-table-wrapper">
+            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories} %>
+            <div id="activities-table-wrapper">
             </div>
           </div>
         </div>

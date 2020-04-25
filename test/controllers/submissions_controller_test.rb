@@ -26,7 +26,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     # most_recent works
     create :correct_submission, user: users.first
 
-    get course_exercise_submissions_url c, e, most_recent_correct_per_user: true, format: :json
+    get course_activity_submissions_url c, e, most_recent_correct_per_user: true, format: :json
 
     results = JSON.parse response.body
     result_ids = results.map { |r| r['id'] }
@@ -133,7 +133,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     submission = create_request_expect attr_hash: attrs
 
     assert_not_nil submission.course, 'Course was not properly set'
-    assert_equal course, submission.course
+    assert_equal course.id, submission.course.id
   end
 
   test 'unregistered user submitting to private exercise in moderated course should fail' do
@@ -154,7 +154,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get submission edit page' do
     get edit_submission_path(@instance)
-    assert_redirected_to exercise_url(
+    assert_redirected_to activity_url(
       @instance.exercise,
       anchor: 'submission-card',
       edit_submission: @instance
@@ -175,12 +175,12 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'submission media should redirect to exercise media' do
     get media_submission_path(@instance, 'dank_meme.jpg')
-    assert_redirected_to media_exercise_path(@instance.exercise, 'dank_meme.jpg')
+    assert_redirected_to media_activity_path(@instance.exercise, 'dank_meme.jpg')
   end
 
   test 'submission media should redirect to exercise media and keep token' do
     get media_submission_path(@instance, 'dank_meme.jpg', token: @instance.exercise.access_token)
-    assert_redirected_to media_exercise_path(@instance.exercise, 'dank_meme.jpg', token: @instance.exercise.access_token)
+    assert_redirected_to media_activity_path(@instance.exercise, 'dank_meme.jpg', token: @instance.exercise.access_token)
   end
 
   def rejudge_submissions(**params)

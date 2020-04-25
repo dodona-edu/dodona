@@ -1,0 +1,2 @@
+class ExercisePolicy < ActivityPolicy
+end

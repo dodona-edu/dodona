@@ -28,6 +28,7 @@ en:
       private: Private
       invalid: Invalid
       removed: Removed
+      activity_title: Title
       programming_language: "Programming language"
       labels: "Labels"
       repository: "Repository"
@@ -40,6 +41,9 @@ en:
       progress_chart_info_correct:
         one: "One user solved it correctly."
         other: "%{count} users solved it correctly."
+      type:
+        exercise: Exercise
+        content: Reading activity
     show:
       code: Code
       handin: Hand in

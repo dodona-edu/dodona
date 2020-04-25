@@ -1,11 +1,11 @@
 en:
-  exercises:
+  activities:
     navbar_links:
       info: Exercise information
       show: Show exercise
       submissions: Submissions for this exercise
       edit: Edit exercise
-    exercise:
+    activity:
       count_tooltip: number of students that solved this exercise correctly
       correct: Correct
       correct_after_deadline: You missed the deadline, but your latest submission (after the deadline) is correct.

@@ -62,28 +62,28 @@
         <div class="card-supporting-text">
           <div class="col-xs-12">
             <div class="page-subtitle">
-              <h3><%= t ".manage_exercises" %></h3>
+              <h3><%= t ".manage_activities" %></h3>
               <div class="flex-spacer"></div>
               <div>
-                <a class="btn btn-down" title="<%= t(".add_exercises") %>" href="#add-exercises">
-                  <i class="mdi mdi-chevron-down mdi-12"></i><span><%= t(".add_exercises") %></span>
+                <a class="btn btn-down" title="<%= t(".add_activities") %>" href="#add-activities">
+                  <i class="mdi mdi-chevron-down mdi-12"></i><span><%= t(".add_activities") %></span>
                 </a>
               </div>
             </div>
-            <p class="h3-info-text"><%= t ".manage_exercises_info" %></p>
-            <h4><%= t ".exercises_in_series" %></h4>
-            <p class="h4-info-text"><%= t ".exercises_in_series_info" %></p>
-            <div class="series-exercise-list">
-              <% if @series.exercises.empty? %>
-                <p id="no-exercises" class="text-center"><%= t ".no_exercises" %><br><span class="small"><%= t ".no_exercises_bis" %></span></p>
+            <p class="h3-info-text"><%= t ".manage_activities_info" %></p>
+            <h4><%= t ".activities_in_series" %></h4>
+            <p class="h4-info-text"><%= t ".activities_in_series_info" %></p>
+            <div class="series-activity-list">
+              <% if @series.activities.empty? %>
+                <p id="no-activities" class="text-center"><%= t ".no_activities" %><br><span class="small"><%= t ".no_activities_bis" %></span></p>
               <% end %>
-              <%= render partial: 'activities/series_activities_table', locals: {exercises: @series.exercises, series: @series, paginate: false, show_buttons_for_present: true} %>
+              <%= render partial: 'activities/series_activities_table', locals: {activities: @series.activities, series: @series, paginate: false, show_buttons_for_present: true} %>
             </div>
           </div>
         </div>
         <div class="card-supporting-text card-border">
           <div class="col-xs-12">
-            <h4 id="add-exercises"><%= t ".add_exercises" %></h4>
+            <h4 id="add-activities"><%= t ".add_activities" %></h4>
             <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories} %>
             <div id="activities-table-wrapper">
             </div>

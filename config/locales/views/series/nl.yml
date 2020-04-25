@@ -7,8 +7,8 @@ nl:
       indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
       class_progress_disable: "Verberg de \"Voortgang groep\" visualisatie voor studenten"
       class_progress_disable_help: "Deze visualisatie is een meerwaarde voor studenten, maar lesgevers willen ze misschien uitschakelen voor examens"
-      hide_exercises: Verberg oefeningen
-      hide_exercises_help: "Als de oefeningen verborgen zijn, dan zal enkel de beschrijving van deze reeks getoond worden. Lesgevers kunnen deze instelling gebruiken om bijvoorbeeld de leerstof van de reeks vooraf beschikbaar te stellen, zonder de oefeningen al vrij te geven."
+      hide_activities: Verberg leeractiviteiten
+      hide_activities_help: "Als de leeractiviteiten verborgen zijn, dan zal enkel de beschrijving van deze reeks getoond worden. Lesgevers kunnen deze instelling gebruiken om bijvoorbeeld de leerstof van de reeks vooraf beschikbaar te stellen, zonder de oefeningen en leesactiviteiten al vrij te geven."
       advanced_settings: Geavanceerde instellingen
     index:
       title: Alle reeksen
@@ -21,27 +21,27 @@ nl:
       indianio_token: 'Indianio-token'
       token_link: 'Geheime link'
       series: Reeks
-      exercises: Oefeningen
+      activities: Leeractiviteiten
       download_submissions: Mijn oplossingen exporteren
       download_all_solutions: Oplossingen van studenten exporteren
       make_visible_html: "<a href=%{series_url} data-method=\"patch\">Maak zichtbaar</a> voor studenten."
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
-      exercises_not_visible: De oefeningen in deze reeks zijn niet zichtbaar voor studenten!
+      activities_not_visible: De leeractiviteiten in deze reeks zijn niet zichtbaar voor studenten!
       series_scoresheet: Statusoverzicht
       best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
-      show_overview: Alle opgaven bekijken
+      show_overview: Alle opgaven en leesactiviteiten bekijken
     edit:
       title: Reeks bewerken
-      add_exercises: Oefeningen toevoegen
-      manage_exercises: Oefeningen beheren
-      manage_exercises_info: Aanpassingen hieronder worden ogenblikkelijk opgeslagen.
-      exercises_in_series: Oefeningen in deze reeks
-      exercises_in_series_info: Versleep het icoontje links van een rij om de oefening te herordenen.
-      add_exercise: oefening toevoegen
-      no_exercises: Deze reeks bevat nog geen oefeningen.
-      no_exercises_bis: Gebruik de zoekfunctie hieronder om aan de slag te gaan.
-      remove_exercise: oefening verwijderen
+      add_activities: Activiteiten toevoegen
+      activities_in_series: Oefeningen en leesactiviteiten in deze reeks
+      activities_in_series_info: Versleep het icoontje links van een rij om de activiteiten te herordenen.
+      manage_activities: Leeractiviteiten beheren
+      manage_activities_info: Aanpassingen hieronder worden ogenblikkelijk opgeslagen.
+      add_activity: leeractiviteit toevoegen
+      no_activities: Deze reeks bevat nog geen oefeningen of leesactiviteiten.
+      no_activities_bis: Gebruik de zoekfunctie hieronder om aan de slag te gaan.
+      remove_activity: leeractiviteit verwijderen
       confidential: Geheime links en tokens
       indianio-help: Kopieer dit token en plak het in Indianio om Indianio toe te laten oplossingen van studenten te downloaden voor deze reeks.
       access-link: Geheime link
@@ -51,34 +51,34 @@ nl:
       confirm: Bent u zeker dat u deze reeks wilt verwijderen?
     scoresheet:
       user: Gebruiker
-      explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
-      at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
-      no_exercises_html: "Deze reeks bevat nog geen oefeningen. Je kan er toevoegen op de <a href=%{series_edit_url}>edit pagina van de reeks</a>."
+      explanation: "Toont het aantal correct opgeloste oefeningen en afgewerkte leesactiviteiten voor het verstrijken van de deadline"
+      at_least_one_started: "Toon enkel gebruikers die tenminste aan één leeractiviteit begonnen zijn"
+      no_activities_html: "Deze reeks bevat nog geen leeractiviteiten. Je kan er toevoegen op de <a href=%{series_edit_url}>edit pagina van de reeks</a>."
       download: Statusoverzicht downloaden
       course_view: Statusoverzicht van cursus
       select_view: Weergave selecteren
-      status: "Status %{exercise}"
+      status: "Status %{activity}"
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:
-      completed_after_deadline_missed: Je hebt alle oefeningen correct opgelost, maar helaas niet voor de deadline.
+      completed_after_deadline_missed: Je hebt alle leeractiviteiten afgewerkt, maar helaas niet voor de deadline.
       wrong_after_deadline_missed: Je hebt de deadline gemist en er zijn nog oefeningen met een verkeerde oplossing.
-      started_after_deadline_missed: Je hebt de deadline gemist en er zijn nog oefeningen waar je niet aan begonnen bent.
-      unstarted_after_deadline_missed: Je hebt de deadline gemist en je bent nog niet begonnen aan de oefeningen.
-      completed_after_deadline_met: Je hebt alle oefeningen correct opgelost voor de deadline. Proficiat!
-      wrong_after_deadline_met: Geen zorgen, je hebt alle oefeningen correct opgelost voor de deadline. Na de deadline heb je echter nog foute oplossingen ingediend.
-      completed_before_deadline: Je hebt alle oefeningen correct opgelost voor de deadline. Proficiat!
+      started_after_deadline_missed: Je hebt de deadline gemist en er zijn nog leeractiviteiten waar je niet aan begonnen bent.
+      unstarted_after_deadline_missed: Je hebt de deadline gemist en je bent nog niet begonnen aan deze reeks.
+      completed_after_deadline_met: Je hebt alle leeractiviteiten correct afgewerkt voor de deadline. Proficiat!
+      wrong_after_deadline_met: Geen zorgen, je hebt alle leeractiviteiten correct afgewerkt voor de deadline. Na de deadline heb je echter nog foute oplossingen ingediend.
+      completed_before_deadline: Je hebt alle leeractiviteiten correct afgewerkt voor de deadline. Proficiat!
       wrong_before_deadline: Er zijn nog onopgeloste oefeningen, maar je hebt nog tijd. Success!
-      started_before_deadline: Er zijn nog oefeningen waar je nog niet aan begonnen bent, maar je hebt nog tijd. Succes!
-      unstarted_before_deadline: Je bent nog niet begonnen aan de oefeningen, maar je hebt nog tijd. Succes!
-      completed_no_deadline: Je hebt alle oefeningen correct opgelost. Proficiat!
+      started_before_deadline: Er zijn nog leeractiviteiten waar je nog niet aan begonnen bent, maar je hebt nog tijd. Succes!
+      unstarted_before_deadline: Je bent nog niet begonnen aan deze reeks, maar je hebt nog tijd. Succes!
+      completed_no_deadline: Je hebt alle leeractiviteiten correct afgewerkt. Proficiat!
       wrong_no_deadline: Er zijn nog oefeningen met een verkeerde oplossing.
-      started_no_deadline: Er zijn nog enkele oefeningen waar je nog niet aan begonnen bent.
-      unstarted_no_deadline: Je bent nog niet begonnen aan de oefeningen.
+      started_no_deadline: Er zijn nog enkele leeractiviteiten waar je nog niet aan begonnen bent.
+      unstarted_no_deadline: Je bent nog niet begonnen aan deze reeks.
     course_series_table:
-      num_exercises:
-        zero: "Geen oefeningen"
-        one: "1 oefening"
-        other: "%{count} oefeningen"
+      num_activities:
+        zero: "Geen leeractiviteiten"
+        one: "1 leeractiviteit"
+        other: "%{count} leeractiviteiten"
       name: "Naam"
       deadline: "Deadline"

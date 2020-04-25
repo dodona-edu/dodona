@@ -29,7 +29,7 @@ FactoryBot.define do
 
     transient do
       series_count { 0 }
-      exercises_per_series { 0 }
+      activities_per_series { 0 }
       submissions_per_exercise { 0 }
       start_year { Time.zone.today.year }
     end
@@ -38,7 +38,7 @@ FactoryBot.define do
 
     after :create do |course, e|
       e.series_count.times do
-        create :series, course: course, exercise_count: e.exercises_per_series, exercise_submission_count: e.submissions_per_exercise
+        create :series, course: course, activity_count: e.activities_per_series, exercise_submission_count: e.submissions_per_exercise
       end
     end
   end

@@ -1,4 +1,4 @@
-class ExercisePolicy < ApplicationPolicy
+class ActivityPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user&.zeus?

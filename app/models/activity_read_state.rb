@@ -20,6 +20,7 @@ class ActivityReadState < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
 
   def invalidate_caches
+    activity.invalidate_delayed_users_read
     activity.activity_statuses_for(user, course).each(&:update_values)
     user.invalidate_attempted_exercises
     user.invalidate_correct_exercises
@@ -37,6 +38,7 @@ class ActivityReadState < ApplicationRecord
     end
 
     # Invalidate other statistics.
+    activity.invalidate_delayed_users_read(course: course)
     course.invalidate_delayed_correct_solutions
     user.invalidate_attempted_exercises(course: course)
     user.invalidate_correct_exercises(course: course)

@@ -7,7 +7,7 @@ en:
       edit: Edit exercise
     activity:
       count_tooltip: Number of students that solved this exercise correctly
-      read_tooltip: Number of students that read this reading activity
+      read_tooltip: Number of students that read this
       read_by: Read %{count} times
       correct: Correct
       correct_after_deadline: You missed the deadline, but your latest submission (after the deadline) is correct.

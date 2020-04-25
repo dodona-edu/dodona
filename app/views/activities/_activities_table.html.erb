@@ -10,7 +10,8 @@
     <thead>
     <tr>
       <th class='status-icon'></th>
-      <th><%= t "activities.index.activity" %></th>
+      <th class='type-icon'></th>
+      <th><%= t "activities.index.activity_title" %></th>
       <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
         <th class='count hidden-xs'>
           <% if @course %>
@@ -44,6 +45,14 @@
           <% end %>
         </td>
 
+        <td class='type-icon'>
+          <% if activity.exercise? %>
+            <i class="mdi mdi-file-document-edit-outline mdi-18" title="<%= t "activities.index.type.exercise" %>"></i>
+          <% elsif activity.content_page? %>
+            <i class="mdi mdi-book-open-variant mdi-18" title="<%= t "activities.index.type.content" %>"></i>
+          <% end %>
+        </td>
+
         <td>
           <% if activity.accessible?(current_user, @course) %>
             <%= link_to activity.name, get_activity_path.call(activity) %>
@@ -55,21 +64,23 @@
         </td>
 
         <%# TODO: We probably want different behaviour for content here. The activity.exercise? must be removed here. %>
-        <% if activity.exercise? && (@course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course)) %>
+        <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
           <td class="hidden-xs">
-            <% if @course %>
-              <%= render partial: 'application/progress_chart',
-                locals: {
-                  total: @course.subscribed_members_count,
-                  tried: activity.users_tried(course: @course),
-                  correct: activity.users_correct(course: @course),
-                  info_tried: 'activities.index.progress_chart_info_tried',
-                  info_correct: 'activities.index.progress_chart_info_correct'
-                }
-              %>
-            <% else %>
-              <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-right text-muted" do %>
-                <%= activity.users_correct %>/<%= activity.users_tried %>
+            <% if activity.exercise? %>
+              <% if @course %>
+                <%= render partial: 'application/progress_chart',
+                  locals: {
+                    total: @course.subscribed_members_count,
+                    tried: activity.users_tried(course: @course),
+                    correct: activity.users_correct(course: @course),
+                    info_tried: 'activities.index.progress_chart_info_tried',
+                    info_correct: 'activities.index.progress_chart_info_correct'
+                  }
+                %>
+              <% else %>
+                <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-right text-muted" do %>
+                  <%= activity.users_correct %>/<%= activity.users_tried %>
+                <% end %>
               <% end %>
             <% end %>
           </td>
@@ -80,7 +91,7 @@
             <%= render partial: 'activities/user_status', locals: {activity: activity, series: local_assigns[:series], user: user} %>
           </td>
           <td>
-            <% if activity.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course) %>
+            <% if activity.exercise? && (activity.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course)) %>
               <% options = current_user == user ? {} : {user_id: user.id} %>
               <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('layout.menu.my_submissions'),
@@ -95,4 +106,6 @@
     </tbody>
   </table>
 </div>
-<center><%= page_navigation_links activities, true, "activities" if activities.try(:total_pages) %></center>
+<% if activities.try(:total_pages) %>
+  <center><%= page_navigation_links activities, true, "activities" %></center>
+<% end %>

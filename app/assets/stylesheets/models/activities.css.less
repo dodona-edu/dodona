@@ -1,7 +1,14 @@
-// exercise table
-.exercise-table {
+// activity table
+.activity-table {
   th.status-icon {
-    width: 48px;
+    width: 30px;
+  }
+
+  th.type-icon, td.type-icon {
+    width: 18px;
+    color: @text-secondary;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   td.status-icon {
@@ -22,8 +29,8 @@
   top: 1px; // move the icon a bit downwards
 }
 
-// exercise
-.exercise-description {
+// activity
+.activity-description {
   .card-title {
     display: flex;
     flex-direction: row;
@@ -40,39 +47,39 @@
   }
 }
 
-.exercise-description img {
+.activity-description img {
   cursor: pointer;
 }
 
-.exercise-description .highlighter-rouge .err {
+.activity-description .highlighter-rouge .err {
   border: none;
 }
 
-.exercise-description .dodona-centered-group {
+.activity-description .dodona-centered-group {
   margin: 0 auto 9.5px;
   text-align: center;
 }
 
-.exercise-description .dodona-centered-group img {
+.activity-description .dodona-centered-group img {
   margin-left: 0;
   margin-right: 0;
   vertical-align: middle;
 }
 
-.exercise-description .dodona-centered-group table {
+.activity-description .dodona-centered-group table {
   width: auto;
   display: inline-table;
   vertical-align: middle;
 }
 
-.exercise-description .dodona-centered-group table {
+.activity-description .dodona-centered-group table {
   text-align: left;
 }
 
-.exercise-description .dodona-centered-group img + img,
-.exercise-description .dodona-centered-group img + table,
-.exercise-description .dodona-centered-group table + img,
-.exercise-description .dodona-centered-group table + table {
+.activity-description .dodona-centered-group img + img,
+.activity-description .dodona-centered-group img + table,
+.activity-description .dodona-centered-group table + img,
+.activity-description .dodona-centered-group table + table {
   margin-left: 16px;
 }
 
@@ -115,7 +122,7 @@ center img {
   padding-bottom: 1em;
 }
 
-.exercise-info {
+.activity-info {
   .labels {
     margin-bottom: 1em;
     a:hover {
@@ -137,7 +144,7 @@ center img {
     }
   }
 
-  .exercise-detail {
+  .activity-detail {
     margin-bottom: 1em;
   }
 }

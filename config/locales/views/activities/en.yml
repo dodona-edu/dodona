@@ -24,7 +24,7 @@ en:
     index:
       title: Exercises
       exercise: Exercise
-      status: Latest submission
+      status: Status
       private: Private
       invalid: Invalid
       removed: Removed

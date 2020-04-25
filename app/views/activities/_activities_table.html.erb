@@ -64,21 +64,23 @@
         </td>
 
         <%# TODO: We probably want different behaviour for content here. The activity.exercise? must be removed here. %>
-        <% if activity.exercise? && (@course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course)) %>
+        <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
           <td class="hidden-xs">
-            <% if @course %>
-              <%= render partial: 'application/progress_chart',
-                locals: {
-                  total: @course.subscribed_members_count,
-                  tried: activity.users_tried(course: @course),
-                  correct: activity.users_correct(course: @course),
-                  info_tried: 'activities.index.progress_chart_info_tried',
-                  info_correct: 'activities.index.progress_chart_info_correct'
-                }
-              %>
-            <% else %>
-              <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-right text-muted" do %>
-                <%= activity.users_correct %>/<%= activity.users_tried %>
+            <% if activity.exercise? %>
+              <% if @course %>
+                <%= render partial: 'application/progress_chart',
+                  locals: {
+                    total: @course.subscribed_members_count,
+                    tried: activity.users_tried(course: @course),
+                    correct: activity.users_correct(course: @course),
+                    info_tried: 'activities.index.progress_chart_info_tried',
+                    info_correct: 'activities.index.progress_chart_info_correct'
+                  }
+                %>
+              <% else %>
+                <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-right text-muted" do %>
+                  <%= activity.users_correct %>/<%= activity.users_tried %>
+                <% end %>
               <% end %>
             <% end %>
           </td>

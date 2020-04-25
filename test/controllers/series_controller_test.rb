@@ -98,7 +98,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   test 'should add exercise to series' do
     stub_all_exercises!
     exercise = create(:exercise)
-    post add_exercise_series_path(@instance),
+    post add_activity_series_path(@instance),
          params: {
            format: 'application/javascript',
            exercise_id: exercise.id
@@ -109,7 +109,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should remove exercise from series' do
     exercise = create(:exercise, series: [@instance])
-    post remove_exercise_series_path(@instance),
+    post remove_activity_series_path(@instance),
          params: {
            format: 'application/javascript',
            exercise_id: exercise.id
@@ -120,7 +120,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'repository admin adding private exercise to series should add course to repository\'s allowed courses' do
     exercise = create :exercise, access: :private
-    post add_exercise_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
+    post add_activity_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
     assert exercise.repository.allowed_courses.include? @instance.course
   end
 
@@ -129,7 +129,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     user = create :user
     sign_in user
     @instance.course.administrating_members << user
-    post add_exercise_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
+    post add_activity_series_path @instance, params: { format: 'application/javascript', exercise_id: exercise.id }
     assert_not @instance.exercises.include? exercise
   end
 
@@ -137,7 +137,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     exercises = create_list(:exercise, 10, series: [@instance])
     exercises.shuffle!
     ids = exercises.map(&:id)
-    post reorder_exercises_series_path(@instance), params: { order: ids.to_json }
+    post reorder_activities_series_path @instance, params: { format: 'application/javascript', order: ids.to_json }
     assert_response :success
     assert_equal ids, @instance.series_memberships.map(&:activity_id)
   end

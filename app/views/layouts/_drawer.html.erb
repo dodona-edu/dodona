@@ -34,9 +34,9 @@
               <% end %>
             </li>
           <% end %>
-          <% if policy(Exercise).index? %>
+          <% if policy(Activity).index? %>
             <li>
-              <%= activatable_link_to exercises_path,
+              <%= activatable_link_to activities_path,
                                       class: 'drawer-list-item' do %>
                 <%= custom_icon 'exercises' %>
                 <%= t("layout.menu.exercises") %>

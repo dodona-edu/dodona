@@ -32,7 +32,7 @@ module ActivityHelper
       next unless series_activity_id == activity.id
 
       previous_ex = get_ex_path.call(series.activity_ids[idx - 1]) if idx > 0
-      next_ex = get_ex_path.call(series.activity_ids[idx + 1]) if idx + 1 < series.activitys.length
+      next_ex = get_ex_path.call(series.activity_ids[idx + 1]) if idx + 1 < series.activities.length
       break
     end
 

@@ -1,0 +1,2 @@
+class ContentPagePolicy < ActivityPolicy
+end

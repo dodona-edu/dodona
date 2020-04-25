@@ -115,16 +115,16 @@
   <% if policy(series).overview? && series.exercises.length > 0 %>
     <div class="series-exercises-table-wrapper">
       <% if loaded %>
-        <%= render partial: 'exercises/exercises_table', locals: {
+        <%= render partial: 'activities/activities_table', locals: {
             series: series,
-            exercises: series.exercises,
+            activities: series.activities,
             get_exercise_path: get_exercise_path,
             user: user
         } %>
       <% else %>
         <div class="exercise-table-skeleton">
           <div class="skeleton-head"></div>
-          <% series.exercises.count.times do %>
+          <% series.activities.count.times do %>
             <div class="skeleton-row"></div>
           <% end %>
         </div>

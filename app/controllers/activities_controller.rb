@@ -80,17 +80,17 @@ class ActivitiesController < ApplicationController
         authorize @edit_submission, :edit?
       end
       if params[:from_solution]
-        @solution = @exercise.solutions[params[:from_solution]]
-        authorize @exercise, :info?
+        @solution = @activity.solutions[params[:from_solution]]
+        authorize @activity, :info?
       end
 
-      @code = @edit_submission.try(:code) || @solution || @exercise.boilerplate
+      @code = @edit_submission.try(:code) || @solution || @activity.boilerplate
     elsif @activity.content_page?
       @read_state = @activity.activity_read_states.find_by(user: current_user, course: @course)
     end
 
-    @title = @exercise.name
-    @crumbs << [@exercise.name, '#']
+    @title = @activity.name
+    @crumbs << [@activity.name, '#']
   end
 
   def description

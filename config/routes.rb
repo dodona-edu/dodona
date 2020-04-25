@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     concern :mediable do
       member do
         constraints host: Rails.configuration.default_host do
-          get 'media/*media', to: 'activities#media', constraints: { media: /.*/ }
+          get 'media/*media', to: 'activities#media', constraints: { media: /.*/ }, as: :media
         end
       end
     end
@@ -67,10 +67,10 @@ Rails.application.routes.draw do
     resources :courses do
       resources :series, only: %i[new index] do
         resources :activities, only: %i[show edit update], concerns: %i[mediable submitable infoable]
-        resources :activities, only: %i[show edit update], concerns: %i[mediable submitable infoable], path: '/exercises'
+        resources :activities, only: %i[show edit update], concerns: %i[submitable infoable], path: '/exercises'
       end
       resources :activities, only: %i[show edit update], concerns: %i[mediable submitable infoable]
-      resources :activities, only: %i[show edit update], concerns: %i[mediable submitable infoable], path: '/exercises'
+      resources :activities, only: %i[show edit update], concerns: %i[submitable infoable], path: '/exercises'
       resources :submissions, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
         get 'download_labels_csv', on: :collection
@@ -107,7 +107,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :activities, only: %i[index show edit update], concerns: %i[mediable submitable infoable], path: '/exercises' do
+    resources :activities, only: %i[index show edit update], concerns: %i[submitable infoable], path: '/exercises' do
       member do
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do

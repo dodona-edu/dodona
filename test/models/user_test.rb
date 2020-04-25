@@ -197,6 +197,34 @@ class UserTest < ActiveSupport::TestCase
     assert user.valid?
   end
 
+  def oauth_hash_for(user)
+    oauth_hash = mock
+    info_hash = mock
+    info_hash.stubs(:email).returns('')
+    info_hash.stubs(:first_name).returns(user.first_name)
+    info_hash.stubs(:last_name).returns(user.last_name)
+    oauth_hash.stubs(:info).returns(info_hash)
+    oauth_hash.stubs(:uid).returns(user.username)
+    oauth_hash
+  end
+
+  # there was a bug where a smartschool user's update_from_oauth would set their
+  # email to an empty string, which would create a RecordNotUnique exception
+  test 'two smartschool users without empty string email' do
+    smartschool = create :smartschool_institution
+
+    first = build :user, institution: smartschool
+    first.email = ''
+    assert first.save
+
+    second = build :user, institution: smartschool
+    second.email = ''
+    assert second.save
+
+    assert first.update_from_oauth(oauth_hash_for(first), smartschool).valid?
+    assert second.update_from_oauth(oauth_hash_for(second), smartschool).valid?
+  end
+
   test 'should transform empty username into nil' do
     saml = create :saml_institution
 

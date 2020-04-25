@@ -7,7 +7,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     stub_git(Repository.any_instance)
-    Repository.any_instance.stubs(:process_exercises)
+    Repository.any_instance.stubs(:process_activities)
     @instance = create :repository
     @admin = create :zeus
     sign_in @admin
@@ -15,13 +15,13 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions
 
-  test 'should process exercises on create' do
-    Repository.any_instance.expects(:process_exercises)
+  test 'should process activities on create' do
+    Repository.any_instance.expects(:process_activities)
     create_request_expect
   end
 
-  test 'should reprocess exercises' do
-    Repository.any_instance.expects(:process_exercises)
+  test 'should reprocess activities' do
+    Repository.any_instance.expects(:process_activities)
     get reprocess_repository_path(@instance)
     assert_redirected_to(@instance)
   end
@@ -129,7 +129,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     # allow pushing
     Rails.env.stubs(:production?).returns(true)
     @repository = create :repository, remote: @remote.path
-    @repository.process_exercises
+    @repository.process_activities
 
     # update remote
     @remote.update_json('echo/config.json', 'make echo private') do |config|

@@ -33,7 +33,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @python = create :judge, :git_stubbed, name: 'python'
     @remote = local_remote('exercises/echo')
     @repository = create :repository, remote: @remote.path
-    @repository.process_exercises
+    @repository.process_activities
     @echo = @repository.exercises.first
   end
 
@@ -98,7 +98,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       json
     end
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     assert_equal Label.all, @echo.labels
     assert_equal 4, Label.count
   end
@@ -116,7 +116,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.remove_dir(@echo.path)
     @remote.commit('remove exercise')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     assert_equal 'removed', @echo.reload.status
   end
 
@@ -125,7 +125,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.rename_dir(@echo.path, new_dir)
     @remote.commit('move exercise')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     @echo.reload
     assert_equal 'ok', @echo.status
     assert_equal new_dir, @echo.path
@@ -135,10 +135,10 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.remove_dir(@echo.path)
     @remote.commit('remove exercise')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     @remote.revert_commit
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     @echo.reload
     assert_equal 'ok', @echo.status
   end
@@ -147,7 +147,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.remove_dir(@echo.path)
     @remote.add_sample_dir('exercises/echo')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     @echo.reload
     assert_equal 'ok', @echo.status
     assert_equal 'echo', @echo.path
@@ -158,7 +158,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.rename_dir(@echo.path, new_dir)
     @remote.add_sample_dir('exercises/echo')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     @echo.reload
     assert_equal 'ok', @echo.status
     assert_equal new_dir, @echo.path
@@ -168,10 +168,10 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.remove_dir(@echo.path)
     @remote.commit('remove exercise')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     @remote.add_sample_dir('exercises/echo')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     @echo.reload
     assert_equal 'removed', @echo.status
     assert_equal 2, Exercise.all.count
@@ -182,7 +182,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.copy_dir(@echo.path, new_dir)
     @remote.commit('copy exercise')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     @echo.reload
     assert_equal 'echo', @echo.path
     assert_equal 2, Exercise.all.count
@@ -195,7 +195,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.rename_dir(@echo.path, new_dir2)
     @remote.commit('copy + rename exercise')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     @echo.reload
     assert [new_dir1, new_dir2].include?(@echo.path)
     assert_equal 2, Exercise.all.count
@@ -209,7 +209,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       json
     end
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     echo2 = Exercise.find_by(path: new_dir)
     assert_equal echo2.repository_token, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
   end
@@ -219,7 +219,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.copy_dir(@echo.path, new_dir)
     @remote.commit('copy exercise')
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     echo2 = Exercise.find_by(path: new_dir)
     assert_not_equal @echo.repository_token, echo2.config['internals']['token']
   end
@@ -230,7 +230,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       json
     end
     @repository.reset
-    @repository.process_exercises
+    @repository.process_activities
     assert_equal 500_000_000, JSON.parse(File.read(File.join(@remote.path, @echo.path, 'config.json')))['evaluation']['memory_limit']
   end
 
@@ -240,7 +240,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     end
     @repository.reset
     assert_raises(AggregatedConfigErrors) do
-      @repository.process_exercises
+      @repository.process_activities
     end
     @echo.reload
     assert_equal 'not_valid', @echo.status

@@ -142,7 +142,7 @@ class ExercisesControllerTest < ActionDispatch::IntegrationTest
     result_exercises = JSON.parse response.body
     assert_equal 0, result_exercises.count, 'should not contain exercises'
 
-    label.exercises << @instance
+    label.activities << @instance
 
     get available_exercises_series_url(series, labels: [label.name], format: :json)
 
@@ -473,7 +473,7 @@ class ExerciseErrorMailerTest < ActionDispatch::IntegrationTest
     @pythia = create :judge, :git_stubbed, name: 'pythia'
     @remote = local_remote('exercises/echo')
     @repository = create :repository, remote: @remote.path
-    @repository.process_exercises
+    @repository.process_activities
   end
 
   test 'error email' do

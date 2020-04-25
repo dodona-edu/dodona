@@ -157,18 +157,18 @@ class SeriesController < ApplicationController
         return
       end
     end
-    SeriesMembership.create(series: @series, exercise: @exercise)
+    SeriesMembership.create(series: @series, activity: @exercise)
   end
 
   def remove_exercise
     @exercise = Exercise.find(params[:exercise_id])
-    @series.exercises.destroy(@exercise)
+    @series.activities.destroy(@exercise)
   end
 
   def reorder_exercises
     order = JSON.parse(params[:order])
     @series.series_memberships.each do |membership|
-      rank = order.find_index(membership.exercise_id) || 0
+      rank = order.find_index(membership.activity_id) || 0
       membership.update(order: rank)
     end
   end

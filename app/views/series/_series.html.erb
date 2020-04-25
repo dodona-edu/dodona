@@ -102,7 +102,7 @@
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
-  <% if current_user&.course_admin?(series.course) && !series.exercises_visible %>
+  <% if current_user&.course_admin?(series.course) && !series.activities_visible %>
     <div class="alert alert-info hidden-print">
       <%= t "series.show.exercises_not_visible" %>
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>

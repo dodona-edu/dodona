@@ -25,78 +25,52 @@ require File.dirname(__FILE__) + '/../testhelpers/stub_helper.rb'
 using StubHelper
 
 FactoryBot.define do
-  factory :exercise do
-    sequence(:name_nl) { |n| name || "Oefening #{n}" }
-    sequence(:name_en) { |n| name || "Exercise #{n}" }
-
+  factory :content_page do
     access { 'public' }
     status { 'ok' }
-    programming_language
 
-    sequence(:path) { |n| "exercise#{n}" }
+    sequence(:path) { |n| "content_page#{n}" }
 
     association :repository, factory: %i[repository git_stubbed]
-    judge { repository.judge }
 
     transient do
       name { nil }
       description_html_stubbed { nil }
       description_md_stubbed { nil }
-
-      submission_count { 0 }
-      submission_users do
-        create_list :user, 5 if submission_count.positive?
-      end
     end
 
-    after :create do |exercise, e|
-      e.submission_count.times do
-        create :submission,
-               exercise: exercise,
-               course: e.series&.first&.course,
-               user: e.submission_users.sample
+    after :create do |content, c|
+      if c.description_html_stubbed
+        content.description_format = 'html'
+        stub_status(content, 'ok')
+        content.stubs(:description_localized).returns(c.description_html_stubbed)
+      elsif c.description_md_stubbed
+        content.description_format = 'md'
+        stub_status(content, 'ok')
+        content.stubs(:description_localized).returns(c.description_md_stubbed)
       end
-      if e.description_html_stubbed
-        exercise.description_format = 'html'
-        stub_status(exercise, 'ok')
-        exercise.stubs(:description_localized).returns(e.description_html_stubbed)
-      elsif e.description_md_stubbed
-        exercise.description_format = 'md'
-        stub_status(exercise, 'ok')
-        exercise.stubs(:description_localized).returns(e.description_md_stubbed)
-      end
-    end
-
-    after :build do |exercise|
-      exercise.stubs(:merged_config).returns('evaluation' => { 'time_limit' => 1 })
-    end
-
-    trait :nameless do
-      name_nl { nil }
-      name_en { nil }
     end
 
     trait :config_stubbed do
-      after :build do |exercise|
-        exercise.stubs(:update_config)
-        exercise.stubs(:config)
-                .returns({ 'evaluation': {} }.stringify_keys)
+      after :build do |content|
+        content.stubs(:update_config)
+        content.stubs(:config)
       end
     end
 
     trait :valid do
       config_stubbed
-      after :build do |exercise|
-        exercise.update(status: :ok)
-        stub_status(exercise, 'ok')
+      after :build do |content|
+        content.update(status: :ok)
+        stub_status(content, 'ok')
       end
     end
 
     trait :description_html do
       valid
       description_format { 'html' }
-      after :build do |exercise|
-        exercise.stubs(:description_localized).returns <<~EOS
+      after :build do |content|
+        content.stubs(:description_localized).returns <<~EOS
           <h2 id="los-deze-oefening-op">Los deze oefening op</h2>
           <p><img src="media/img.jpg" alt="media-afbeelding"/>
           <a href="https://google.com">LMGTFY</a>

@@ -98,26 +98,26 @@ class Repository < ApplicationRecord
                           .map { |e, l| [e, l.map { |elem| elem[0] }] }
                           .to_h
     handled_directories = []
-    handled_activities = []
+    handled_activity_ids = []
     new_activities = []
 
     existing_activities.each do |act, directories|
       orig_path = directories.select { |dir| dir == act.full_path }.first || directories.first
       act.path = activity_relative_path orig_path
       update_activity act
-      handled_activities.push act
+      handled_activity_ids.push act.id
       handled_directories.push orig_path
       directories.reject { |dir| dir == orig_path }.each do |dir|
         new_act = Activity.new(path: activity_relative_path(dir), repository_id: id)
         new_activities.push new_act
         update_activity new_act
-        handled_activities.push new_act
+        handled_activity_ids.push new_act.id
         handled_directories.push dir
       end
     end
 
     repository_activities = Activity.where(repository_id: id)
-    repository_activities.reject { |a| handled_activities.include? a }.each do |act|
+    repository_activities.reject { |a| handled_activity_ids.include? a.id }.each do |act|
       if dirs.include?(act.full_path) && !handled_directories.include?(act.full_path)
         handled_directories.push act.full_path
         if activity_dirs_and_configs.select { |d, _| d == act.full_path }.first.nil?

@@ -29,9 +29,9 @@ FactoryBot.define do
     end
 
     transient do
-      exercise_count { 0 }
+      activity_count { 0 }
       exercise_repositories do
-        create_list(:repository, 2, :git_stubbed) if exercise_count.positive?
+        create_list(:repository, 2, :git_stubbed) if activity_count.positive?
       end
 
       exercise_submission_count { 0 }
@@ -41,7 +41,7 @@ FactoryBot.define do
     end
 
     after :create do |series, e|
-      e.exercise_count.times do
+      e.activity_count.times do
         create :exercise,
                repository: e.exercise_repositories.sample,
                series: [series],
@@ -52,7 +52,7 @@ FactoryBot.define do
     end
 
     trait :with_submissions do
-      exercise_count { 2 }
+      activity_count { 2 }
       exercise_submission_count { 2 }
     end
   end

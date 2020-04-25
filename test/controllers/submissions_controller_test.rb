@@ -6,7 +6,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   crud_helpers Submission, attrs: %i[code exercise_id]
 
   setup do
-    stub_all_exercises!
+    stub_all_activities!
     @instance = create :submission
     @zeus = create(:zeus)
     sign_in @zeus
@@ -16,7 +16,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should fetch last correct submissions for exercise' do
     users = create_list :user, 10
-    c = create :course, series_count: 1, exercises_per_series: 1
+    c = create :course, series_count: 1, activities_per_series: 1
     e = c.series.first.exercises.first
 
     submissions = users.map { |u| create :correct_submission, user: u, exercise: e, course: c }

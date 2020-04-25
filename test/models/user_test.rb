@@ -291,16 +291,16 @@ class UserTest < ActiveSupport::TestCase
   test 'pending_series should return all series of the users courses that have a deadline' do
     user = create :user
     course = create :course, users: [user]
-    create :series, course: course, exercise_count: 2, deadline: Time.current - 2.minutes # Not pending series
-    pending_series = create :series, course: course, exercise_count: 2, deadline: Time.current + 2.minutes
+    create :series, course: course, activity_count: 2, deadline: Time.current - 2.minutes # Not pending series
+    pending_series = create :series, course: course, activity_count: 2, deadline: Time.current + 2.minutes
     assert_equal [pending_series], user.pending_series
   end
 
   test 'homepage_series should return all the series of subscribed courses that should appear on the homepage' do
     user = create :user
     course = create :course, users: [user]
-    create :series, course: course, exercise_count: 2, deadline: Time.current - 2.minutes # Not pending series
-    homepage_series = create :series, course: course, exercise_count: 2, deadline: Time.current + 2.minutes
+    create :series, course: course, activity_count: 2, deadline: Time.current - 2.minutes # Not pending series
+    homepage_series = create :series, course: course, activity_count: 2, deadline: Time.current + 2.minutes
     assert_equal [homepage_series], user.homepage_series
   end
 

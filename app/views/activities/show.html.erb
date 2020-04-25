@@ -7,6 +7,14 @@
 <% end %>
 <%= render 'navbar_links' %>
 
+<% if @series.present?
+  previous_activity, next_activity = previous_next_activity_path(@series, @activity)
+  previous_link = previous_activity || breadcrumb_series_path(@series, current_user)
+  previous_tooltip = previous_activity ? t('.navigation.previous') : t('.navigation.back_to_course')
+  next_link = next_activity || breadcrumb_series_path(@series, current_user)
+  next_tooltip = next_activity ? t('.navigation.next') : t('.navigation.back_to_course')
+end %>
+
 <div class="row">
   <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>
     <span class='hidden-sm'><%= t('.handin') %></span><br>
@@ -19,13 +27,6 @@
           <%= @activity.name %>
         </h2>
         <% if @series.present? %>
-          <%
-            previous_activity, next_activity = previous_next_activity_path(@series, @activity)
-            previous_link = previous_activity || breadcrumb_series_path(@series, current_user)
-            previous_tooltip = previous_activity ? t('.navigation.previous') : t('.navigation.back_to_course')
-            next_link = next_activity || breadcrumb_series_path(@series, current_user)
-            next_tooltip = next_activity ? t('.navigation.next') : t('.navigation.back_to_course')
-          %>
           <div class="card-title-navigation hidden-print">
             <%= link_to previous_link, class: 'btn-icon-inverted', title: previous_tooltip, data: {toggle: 'tooltip', placement: 'top'} do %>
               <i class="mdi mdi-chevron-left"></i>
@@ -117,6 +118,32 @@
     </div>
   </div>
 </div>
+<% elsif @activity.content_page? %>
+  <div class="row hidden-print">
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+      <div class="page-subtitle">
+        <% if @series.present? %>
+          <%= link_to previous_link, class: 'btn-fab-extended' do %>
+            <i class="mdi mdi-chevron-left icon"></i><span class="text"><%= previous_tooltip %></span>
+          <% end %>
+          <div class="flex-spacer"></div>
+        <% end %>
+        <a class="btn btn-primary with-text btn-fab-extended">
+          <i class="mdi mdi-clipboard-check-outline icon"></i>
+          <span class="text"><%= t('.mark_as_read') %></span>
+        </a>
+        <% if @series.present? %>
+          <div class="flex-spacer"></div>
+          <%= link_to next_link, class: 'btn-fab-extended' do %>
+            <i class="mdi mdi-chevron-right icon"></i><span class="text"><%= next_tooltip %></span>
+          <% end %>
+        <% end %>
+      </div>
+
+
+<!--      <span class="with-text btn-fab-extended" style="padding-right:20px;"><i class="mdi mdi-chevron-left icon"></i>vorige</span><div class="flex-spacer"></div><span class="btn with-text btn-primary btn-fab-extended" style="margin-left:auto;margin-right:auto"><i class="mdi mdi-playlist-edit icon"></i>markeren als gelezen</span><div class="flex-spacer"></div><span class="with-text btn-fab-extended" style="padding-left:20px;padding-right:0px;">volgende<i class="mdi mdi-chevron-right icon" style="padding-right:0px;"></i></span></div>-->
+    </div>
+  </div>
 <% end %>
 <script type="text/javascript">
     $(function () {

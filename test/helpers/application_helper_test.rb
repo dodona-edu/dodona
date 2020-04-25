@@ -44,13 +44,13 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     assert_equal submissions_path(I18n.locale), submissions_scoped_path
 
     assert_equal activity_submissions_path(I18n.locale, @activity),
-                 submissions_scoped_path(activity: @activity)
+                 submissions_scoped_path(exercise: @activity)
 
     assert_equal course_activity_submissions_path(I18n.locale, @course, @activity),
-                 submissions_scoped_path(activity: @activity, course: @course)
+                 submissions_scoped_path(exercise: @activity, course: @course)
 
     assert_equal course_series_activity_submissions_path(I18n.locale, @course, @series, @activity),
-                 submissions_scoped_path(activity: @activity, course: @course, series: @series)
+                 submissions_scoped_path(exercise: @activity, course: @course, series: @series)
   end
 
   test 'sanitize helper should filter dangerous tags' do

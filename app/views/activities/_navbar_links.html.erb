@@ -10,7 +10,7 @@
                   icon: 'clipboard-text',
                   if: policy(@activity).edit? || can_view_submissions %>
 
-  <%= navbar_link url: submissions_scoped_path(activity: @activity, course: @course, series: @series),
+  <%= navbar_link url: submissions_scoped_path(exercise: @activity, course: @course, series: @series),
                   title: t('.submissions'),
                   custom_icon: 'submissions',
                   if: can_view_submissions %>

@@ -1,6 +1,6 @@
 <% content_for :javascripts do %>
+  <%= javascript_pack_tag 'exercise' %>
   <% if @activity.exercise? %>
-    <%= javascript_pack_tag 'exercise' %>
     <%= javascript_pack_tag 'submission' %>
     <%= javascript_pack_tag 'pythia_submission' if @activity.judge.renderer == PythiaRenderer %>
   <% end %>
@@ -117,6 +117,7 @@
     </div>
   </div>
 </div>
+<% end %>
 <script type="text/javascript">
     $(function () {
         dodona.initExerciseShow(
@@ -129,4 +130,3 @@
         );
     });
 </script>
-<% end %>

@@ -136,11 +136,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     function init() {
         if (editorShown) {
             initEditor();
+            initDeadlineTimeout();
+            enableSubmissionTableLinks();
+            swapActionButtons();
         }
         initStrip();
-        swapActionButtons();
-        initDeadlineTimeout();
-        enableSubmissionTableLinks();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {

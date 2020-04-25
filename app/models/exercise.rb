@@ -135,6 +135,8 @@ class Exercise < ApplicationRecord
   end
 
   def about_by_precedence(lang = I18n.locale.to_s)
+    return unless full_path.exist?
+
     files = full_path
             .children
             .filter { |path| path.file? && path.readable? }

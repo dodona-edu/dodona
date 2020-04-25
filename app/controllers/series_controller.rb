@@ -148,21 +148,21 @@ class SeriesController < ApplicationController
   end
 
   def add_activity
-    @exercise = Exercise.find(params[:exercise_id])
-    unless @exercise.usable_by? @series.course
-      if current_user.repository_admin? @exercise.repository
-        @series.course.usable_repositories << @exercise.repository
+    @activity = Activity.find(params[:activity_id])
+    unless @activity.usable_by? @series.course
+      if current_user.repository_admin? @activity.repository
+        @series.course.usable_repositories << @activity.repository
       else
         render status: :forbidden
         return
       end
     end
-    SeriesMembership.create(series: @series, activity: @exercise)
+    SeriesMembership.create(series: @series, activity: @activity)
   end
 
   def remove_activity
-    @exercise = Exercise.find(params[:exercise_id])
-    @series.activities.destroy(@exercise)
+    @activity = Activity.find(params[:activity_id])
+    @series.activities.destroy(@activity)
   end
 
   def reorder_activities

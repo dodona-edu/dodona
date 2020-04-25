@@ -15,6 +15,6 @@
 #  updated_at               :datetime         not null
 #
 FactoryBot.define do
-  factory :exercise_status do
+  factory :activity_status do
   end
 end

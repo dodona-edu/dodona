@@ -6,7 +6,9 @@ nl:
       edit: Oefening bewerken
       submissions: Oplossingen voor deze oefening
     activity:
-      count_tooltip: aantal studenten die deze oefening correct hebben
+      count_tooltip: Aantal studenten die deze oefening correct hebben
+      read_tooltip: Aantal studenten die dit gelezen hebben
+      read_by: "%{count} keer gelezen"
       correct: Correct
       correct_after_deadline: Je hebt de deadline niet gehaald, maar je recentste oplossing (na de deadline) is correct.
       wrong: Verkeerd
@@ -41,6 +43,9 @@ nl:
       progress_chart_info_correct:
         one: "Één gebruiker loste ze correct op."
         other: "%{count} gebruikers losten ze correct op."
+      progress_chart_info_read:
+        one: "Één gebruiker heeft dit gelezen."
+        other: "%{count} gebruikers hebben dit gelezen."
       type:
         exercise: Oefening
         content: Leesactiviteit

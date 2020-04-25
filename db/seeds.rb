@@ -113,7 +113,7 @@ if Rails.env.development?
   end
   big_activity_repo.process_activities
 
-  contents_list = Content.all.to_a
+  contents_list = ContentPage.all.to_a
   exercises_list = Exercise.all.to_a
 
   puts 'Add series, content pages, exercises and submissions to courses'
@@ -146,7 +146,7 @@ if Rails.env.development?
 
     series.each do |s|
       series_contents = contents_list.sample(rand(3) + 2)
-      s.contents << series_contents
+      s.content_pages << series_contents
 
       series_exercises = exercises_list.sample(rand(3) + 2)
       s.exercises << series_exercises

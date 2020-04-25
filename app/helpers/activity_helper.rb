@@ -104,7 +104,7 @@ module ActivityHelper
     require 'nokogiri'
     include Rails.application.routes.url_helpers
     include ApplicationHelper
-    include ExerciseHelper
+    include ActivityHelper
 
     attr_reader :footnote_urls
     attr_reader :first_image

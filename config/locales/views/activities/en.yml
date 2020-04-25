@@ -6,7 +6,9 @@ en:
       submissions: Submissions for this exercise
       edit: Edit exercise
     activity:
-      count_tooltip: number of students that solved this exercise correctly
+      count_tooltip: Number of students that solved this exercise correctly
+      read_tooltip: Number of students that read this
+      read_by: Read %{count} times
       correct: Correct
       correct_after_deadline: You missed the deadline, but your latest submission (after the deadline) is correct.
       wrong: Wrong
@@ -41,6 +43,9 @@ en:
       progress_chart_info_correct:
         one: "One user solved it correctly."
         other: "%{count} users solved it correctly."
+      progress_chart_info_read:
+        one: "One user read this."
+        other: "%{count} users read this."
       type:
         exercise: Exercise
         content: Reading activity

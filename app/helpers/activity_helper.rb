@@ -1,5 +1,5 @@
-module ExerciseHelper
-  def exercise_config_explanation(*keys)
+module ActivityHelper
+  def activity_config_explanation(*keys)
     location = @config_locations.dig(*keys)
     if location.present?
       location = location.to_sentence if location.is_a? Array
@@ -9,30 +9,30 @@ module ExerciseHelper
     end
   end
 
-  def exercise_anchor(exercise)
-    '#'.concat exercise_anchor_id(exercise)
+  def activity_anchor(activity)
+    '#'.concat activity_anchor_id(activity)
   end
 
-  def exercise_anchor_id(exercise)
-    "exercise-#{exercise.id}"
+  def activity_anchor_id(activity)
+    "activity-#{activity.id}"
   end
 
-  # Finds the paths to the previous and next exercise in a series, given the
-  # current exercise.
-  def previous_next_exercise_path(series, exercise)
+  # Finds the paths to the previous and next activity in a series, given the
+  # current activity.
+  def previous_next_activity_path(series, activity)
     return [nil, nil] if series.blank?
 
     previous_ex = nil
     next_ex = nil
 
-    # Function that gets the path to the exercise.
-    get_ex_path = ->(ex) { course_series_exercise_path(I18n.locale, series.course, series.id, ex) }
+    # Function that gets the path to the activity.
+    get_ex_path = ->(ex) { course_series_activity_path(I18n.locale, series.course, series.id, ex) }
 
-    series.exercise_ids.each_with_index do |series_exercise_id, idx|
-      next unless series_exercise_id == exercise.id
+    series.activity_ids.each_with_index do |series_activity_id, idx|
+      next unless series_activity_id == activity.id
 
-      previous_ex = get_ex_path.call(series.exercise_ids[idx - 1]) if idx > 0
-      next_ex = get_ex_path.call(series.exercise_ids[idx + 1]) if idx + 1 < series.exercises.length
+      previous_ex = get_ex_path.call(series.activity_ids[idx - 1]) if idx > 0
+      next_ex = get_ex_path.call(series.activity_ids[idx + 1]) if idx + 1 < series.activitys.length
       break
     end
 
@@ -54,18 +54,18 @@ module ExerciseHelper
     number_to_human bytes, units: BYTE_UNITS
   end
 
-  # returns a list with as the first item the description of an exercise
+  # returns a list with as the first item the description of an activity
   # and as second item a hash of footnote indexes mapped on their url
-  def exercise_description_footnotes_and_first_image(exercise)
-    renderer = DescriptionRenderer.new(exercise, request)
+  def activity_description_footnotes_and_first_image(activity)
+    renderer = DescriptionRenderer.new(activity, request)
     [renderer.description_html, renderer.footnote_urls, renderer.first_image]
   end
 
-  def description_iframe(exercise)
+  def description_iframe(activity)
     dark = current_user.present? && session[:dark]
-    id = "exercise-description-#{exercise.id}"
-    url = description_exercise_url(exercise,
-                                   token: exercise.access_token,
+    id = "activity-description-#{activity.id}"
+    url = description_activity_url(activity,
+                                   token: activity.access_token,
                                    dark: dark).html_safe
     resizeframe = %{
       window.iFrameResize({
@@ -109,11 +109,11 @@ module ExerciseHelper
     attr_reader :footnote_urls
     attr_reader :first_image
 
-    def initialize(exercise, request)
-      @exercise = exercise
+    def initialize(activity, request)
+      @activity = activity
       @request = request
-      @description = exercise.description || ''
-      @description = markdown_unsafe(@description) if exercise.description_format == 'md'
+      @description = activity.description || ''
+      @description = markdown_unsafe(@description) if activity.description_format == 'md'
       process_html
     end
 

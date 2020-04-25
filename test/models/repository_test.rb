@@ -220,7 +220,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.commit('copy exercise')
     @repository.reset
     @repository.process_activities
-    echo2 = Exercise.find_by(path: new_dir)
+    echo2 = Activity.find_by(path: new_dir)
     assert_not_equal @echo.repository_token, echo2.config['internals']['token']
   end
 
@@ -232,6 +232,17 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     assert_equal 500_000_000, JSON.parse(File.read(File.join(@remote.path, @echo.path, 'config.json')))['evaluation']['memory_limit']
+  end
+
+  test 'should convert to content page' do
+    @remote.update_json(@echo.path + '/config.json', 'convert to content page') do |json|
+      json['type'] = 'content'
+      json
+    end
+    @repository.reset
+    @repository.process_activities
+    assert @repository.activities.first.content_page?
+    assert @repository.activities.first.ok?
   end
 
   test 'should catch invalid dirconfig files' do

@@ -119,31 +119,30 @@ end %>
   </div>
 </div>
 <% elsif @activity.content_page? %>
-  <div class="row hidden-print">
-    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-      <div class="page-subtitle">
-        <% if @series.present? %>
-          <%= link_to previous_link, class: 'btn-fab-extended' do %>
-            <i class="mdi mdi-chevron-left icon"></i><span class="text"><%= previous_tooltip %></span>
-          <% end %>
-          <div class="flex-spacer"></div>
+<div class="row hidden-print">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="page-subtitle">
+      <% if @series.present? %>
+        <%= link_to previous_link, class: 'btn-fab-extended' do %>
+          <i class="mdi mdi-chevron-left icon"></i><span class="text"><%= previous_tooltip %></span>
         <% end %>
-        <a class="btn btn-primary with-text btn-fab-extended">
-          <i class="mdi mdi-clipboard-check-outline icon"></i>
-          <span class="text"><%= t('.mark_as_read') %></span>
-        </a>
-        <% if @series.present? %>
-          <div class="flex-spacer"></div>
-          <%= link_to next_link, class: 'btn-fab-extended' do %>
-            <i class="mdi mdi-chevron-right icon"></i><span class="text"><%= next_tooltip %></span>
-          <% end %>
+        <div class="flex-spacer"></div>
+      <% end %>
+      <% read_url = read_activity_url(@activity) %>
+      <% read_url = read_course_activity_url(@series&.course, @activity) if @series.present? %>
+      <%= link_to read_url, method: :post, remote: true, class: 'btn btn-primary with-text btn-fab-extended' do %>
+        <i class="mdi mdi-clipboard-check-outline icon"></i>
+        <span class="text"><%= t('.mark_as_read') %></span>
+      <% end %>
+      <% if @series.present? %>
+        <div class="flex-spacer"></div>
+        <%= link_to next_link, class: 'btn-fab-extended' do %>
+          <i class="mdi mdi-chevron-right icon"></i><span class="text"><%= next_tooltip %></span>
         <% end %>
-      </div>
-
-
-<!--      <span class="with-text btn-fab-extended" style="padding-right:20px;"><i class="mdi mdi-chevron-left icon"></i>vorige</span><div class="flex-spacer"></div><span class="btn with-text btn-primary btn-fab-extended" style="margin-left:auto;margin-right:auto"><i class="mdi mdi-playlist-edit icon"></i>markeren als gelezen</span><div class="flex-spacer"></div><span class="with-text btn-fab-extended" style="padding-left:20px;padding-right:0px;">volgende<i class="mdi mdi-chevron-right icon" style="padding-right:0px;"></i></span></div>-->
+      <% end %>
     </div>
   </div>
+</div>
 <% end %>
 <script type="text/javascript">
     $(function () {

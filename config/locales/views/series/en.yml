@@ -57,7 +57,7 @@ en:
       download: Download scoresheet
       course_view: Course scoresheet
       select_view: Select view
-      status: "Status %{activity}"
+      status: "Status %{exercise}"
     series_status:
       completed_after_deadline_missed: You completed all learning activities, but unfortunately not before the deadline.
       wrong_after_deadline_missed: You missed the deadline, and there are still incorrect exercises.

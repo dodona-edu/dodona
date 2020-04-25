@@ -1,8 +1,0 @@
-<% if exercise.access_private? && local_assigns[:series].nil? %>
-  <i class="mdi mdi-eye-off mdi-18" title="<%= t('exercises.index.private') %>"></i>
-<% end %>
-<% if exercise.removed? %>
-  <i class="mdi mdi-delete mdi-18" title="<%= t('exercises.index.removed') %>"></i>
-<% elsif exercise.not_valid? %>
-  <i class="mdi mdi-alert-circle mdi-18" title="<%= t('exercises.index.invalid') %>"></i>
-<% end %>

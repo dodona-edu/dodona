@@ -37,8 +37,6 @@ class Exercise < Activity
 
   before_save :check_memory_limit
 
-  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
-
   def exercise?
     true
   end

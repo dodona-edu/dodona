@@ -1,7 +1,9 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'exercise' %>
-  <%= javascript_pack_tag 'submission' %>
-  <%= javascript_pack_tag 'pythia_submission' if @exercise.judge.renderer == PythiaRenderer %>
+  <% if @activity.exercise? %>
+    <%= javascript_pack_tag 'submission' %>
+    <%= javascript_pack_tag 'pythia_submission' if @activity.judge.renderer == PythiaRenderer %>
+  <% end %>
 <% end %>
 <%= render 'navbar_links' %>
 
@@ -11,18 +13,18 @@
     <i class="mdi mdi-chevron-down"></i>
   <% end %>
   <div class="col-sm-10 col-xs-12">
-    <div class="card exercise-description">
+    <div class="card activity-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
-          <%= @exercise.name %>
+          <%= @activity.name %>
         </h2>
         <% if @series.present? %>
           <%
-            previous_exercise, next_exercise = previous_next_exercise_path(@series, @exercise)
-            previous_link = previous_exercise || breadcrumb_series_path(@series, current_user)
-            previous_tooltip = previous_exercise ? t('.navigation.previous') : t('.navigation.back_to_course')
-            next_link = next_exercise || breadcrumb_series_path(@series, current_user)
-            next_tooltip = next_exercise ? t('.navigation.next') : t('.navigation.back_to_course')
+            previous_activity, next_activity = previous_next_activity_path(@series, @activity)
+            previous_link = previous_activity || breadcrumb_series_path(@series, current_user)
+            previous_tooltip = previous_activity ? t('.navigation.previous') : t('.navigation.back_to_course')
+            next_link = next_activity || breadcrumb_series_path(@series, current_user)
+            next_tooltip = next_activity ? t('.navigation.next') : t('.navigation.back_to_course')
           %>
           <div class="card-title-navigation hidden-print">
             <%= link_to previous_link, class: 'btn-icon-inverted', title: previous_tooltip, data: {toggle: 'tooltip', placement: 'top'} do %>
@@ -34,28 +36,29 @@
           </div>
         <% end %>
       </div>
-      <%= description_iframe @exercise %>
+      <%= description_iframe @activity %>
     </div>
   </div>
 
   <% if @series.present? %>
-    <nav class="col-md-1 hidden-xs hidden-sm hidden-print exercise-sidebar">
+    <nav class="col-md-1 hidden-xs hidden-sm hidden-print activity-sidebar">
       <ul class="nav affix" data-offset-bottom="80">
         <li class="header ellipsis-overflow" title="<%= @series.name %>"><%= @series.name %></li>
-        <% @series.exercises.each do |exercise| %>
-          <li <%= 'class=active' if exercise.id == @exercise.id %>><%= link_to exercise.name, exercise_scoped_path(exercise: exercise, series: @series), class: 'ellipsis-overflow', title: exercise.name %> </li>
+        <% @series.activities.each do |activity| %>
+          <li <%= 'class=active' if activity.id == @activity.id %>><%= link_to activity.name, activity_scoped_path(activity: activity, series: @series), class: 'ellipsis-overflow', title: activity.name %> </li>
         <% end %>
       </ul>
     </nav>
   <% end %>
 
 </div>
+<% if @activity.exercise? %>
 <div class="row hidden-print">
   <a class="anchor" id="submission-card"></a>
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card card-nav">
       <div class="card-title card-title-colored">
-        <% if policy(@exercise).submit? %>
+        <% if policy(@activity).submit? %>
           <div class="card-title-fab">
             <button class="btn btn-primary btn-fab mdi mdi-play mdi-36" id="editor-process-btn" data-user_id="<%= current_user.id %>">
             </button>
@@ -65,12 +68,12 @@
           </div>
         <% end %>
         <ul class="nav nav-tabs">
-          <% if policy(@exercise).submit? || !user_signed_in? %>
-            <li class="active"><a href="#handin" id="exercise-handin-link" data-toggle="tab"><%= t ".handin" %></a></li>
+          <% if policy(@activity).submit? || !user_signed_in? %>
+            <li class="active"><a href="#handin" id="activity-handin-link" data-toggle="tab"><%= t ".handin" %></a></li>
           <% end %>
-          <li class="<%= 'active' if !(policy(@exercise).submit? || !user_signed_in?) %>">
-            <a href="#submissions" data-toggle="tab" id='exercise-submission-link'><%= t ".solutions" %></a></li>
-          <li><a href="#feedback" data-toggle="tab" id='exercise-feedback-link' class='hidden'><%= t ".feedback" %></a>
+          <li class="<%= 'active' if !(policy(@activity).submit? || !user_signed_in?) %>">
+            <a href="#submissions" data-toggle="tab" id='activity-submission-link'><%= t ".solutions" %></a></li>
+          <li><a href="#feedback" data-toggle="tab" id='activity-feedback-link' class='hidden'><%= t ".feedback" %></a>
           </li>
         </ul>
       </div>
@@ -80,7 +83,7 @@
             <% if !user_signed_in? %>
               <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
             <% end %>
-            <% if policy(@exercise).submit? || !user_signed_in? %>
+            <% if policy(@activity).submit? || !user_signed_in? %>
               <% if @series.present? && @series.deadline.present? %>
                 <div id="deadline-info" class="alert alert-info" hidden>
                   <%= t('.deadline_in_5_minutes', deadline: @series.deadline.strftime("%R")) %>
@@ -95,12 +98,12 @@
               <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
             <% end %>
           </div>
-          <div class="tab-pane fade <%= 'in active' if !(policy(@exercise).submit? || !user_signed_in?) %>" id="submissions">
+          <div class="tab-pane fade <%= 'in active' if !(policy(@activity).submit? || !user_signed_in?) %>" id="submissions">
             <div id="submissions-table-wrapper">
               <% if !user_signed_in? %>
                 <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
               <% elsif @submissions.length > 0 %>
-                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, user: current_user} %>
+                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: current_user} %>
               <% else %>
                 <div class="alert alert-info"><%= t ".hand_in_tooltip" %></div>
               <% end %>
@@ -114,13 +117,14 @@
     </div>
   </div>
 </div>
+<% end %>
 <script type="text/javascript">
     $(function () {
         dodona.initExerciseShow(
-            <%= @exercise.id %>,
-            "<%= @exercise.programming_language&.editor_name || "text" %>",
+            <%= @activity.id %>,
+            "<%= @activity.programming_language&.editor_name || "text" %>",
             <%= user_signed_in? %>,
-            <%= policy(@exercise).submit? || !user_signed_in? %>,
+            <%= policy(@activity).submit? || !user_signed_in? %>,
             <%= @course&.id || "null" %>,
             <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>
         );

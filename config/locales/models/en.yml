@@ -8,6 +8,7 @@ en:
           not_permitted: You are not permitted to create a token for this user.
     models:
       course: Course
+      activity: Activity
       exercise: Exercise
       export: Export
       judge: Judge
@@ -54,7 +55,7 @@ en:
           brown: Brown
           blue-grey: Blue Grey
         institution: Institution
-      exercise:
+      activity:
         name: Name
         name_nl: Name Dutch
         name_en: Name English
@@ -78,7 +79,7 @@ en:
         remote: Clone URL
         path: Path
         judge: Default judge
-        exercises: Exercises
+        activities: Exercises
       series:
         indianio_support: Indianio support
         course: Course

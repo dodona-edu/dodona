@@ -46,7 +46,7 @@
                   <%= programming_language.extension %>
                 </td>
                 <td>
-                  <%= link_to programming_language.exercises.count, exercises_path(programming_language: programming_language.name) %>
+                  <%= link_to programming_language.exercises.count, activities_path(programming_language: programming_language.name) %>
                 </td>
                 <td class="actions">
                   <% if policy(programming_language).edit? %>

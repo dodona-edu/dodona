@@ -5,55 +5,55 @@ module ApplicationHelper
     end
   end
 
-  def exercise_scoped_url(exercise: nil, series: nil, course: nil, options: nil)
-    raise 'Exercise should not be nil' if exercise.nil?
+  def activity_scoped_url(activity: nil, series: nil, course: nil, options: nil)
+    raise 'Exercise should not be nil' if activity.nil?
 
     if series.present?
       course ||= series.course
-      course_series_exercise_url(I18n.locale, course, series, exercise, options)
+      course_series_activity_url(I18n.locale, course, series, activity, options)
     elsif course.present?
-      course_exercise_url(I18n.locale, course, exercise, options)
+      course_activity_url(I18n.locale, course, activity, options)
     else
-      exercise_url(I18n.locale, exercise, options)
+      activity_url(I18n.locale, activity, options)
     end
   end
 
-  def exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
-    raise 'Exercise should not be nil' if exercise.nil?
+  def activity_scoped_path(activity: nil, series: nil, course: nil, options: nil)
+    raise 'Exercise should not be nil' if activity.nil?
 
     if series.present?
       course ||= series.course
-      course_series_exercise_path(I18n.locale, course, series, exercise, options)
+      course_series_activity_path(I18n.locale, course, series, activity, options)
     elsif course.present?
-      course_exercise_path(I18n.locale, course, exercise, options)
+      course_activity_path(I18n.locale, course, activity, options)
     else
-      exercise_path(I18n.locale, exercise, options)
+      activity_path(I18n.locale, activity, options)
     end
   end
 
-  def edit_exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
-    raise 'Exercise should not be nil' if exercise.nil?
+  def edit_activity_scoped_path(activity: nil, series: nil, course: nil, options: nil)
+    raise 'Exercise should not be nil' if activity.nil?
 
     if series.present?
       course ||= series.course
-      edit_course_series_exercise_path(I18n.locale, course, series, exercise, options)
+      edit_course_series_activity_path(I18n.locale, course, series, activity, options)
     elsif course.present?
-      edit_course_exercise_path(I18n.locale, course, exercise, options)
+      edit_course_activity_path(I18n.locale, course, activity, options)
     else
-      edit_exercise_path(I18n.locale, exercise, options)
+      edit_activity_path(I18n.locale, activity, options)
     end
   end
 
-  def info_exercise_scoped_path(exercise: nil, series: nil, course: nil, options: nil)
-    raise 'Exercise should not be nil' if exercise.nil?
+  def info_activity_scoped_path(activity: nil, series: nil, course: nil, options: nil)
+    raise 'Exercise should not be nil' if activity.nil?
 
     if series.present?
       course ||= series.course
-      info_course_series_exercise_path(I18n.locale, course, series, exercise, options)
+      info_course_series_activity_path(I18n.locale, course, series, activity, options)
     elsif course.present?
-      info_course_exercise_path(I18n.locale, course, exercise, options)
+      info_course_activity_path(I18n.locale, course, activity, options)
     else
-      info_exercise_path(I18n.locale, exercise, options)
+      info_activity_path(I18n.locale, activity, options)
     end
   end
 
@@ -62,11 +62,11 @@ module ApplicationHelper
       submissions_path(I18n.locale, options)
     elsif series.present?
       course ||= series.course
-      course_series_exercise_submissions_path(I18n.locale, course, series, exercise, options)
+      course_series_activity_submissions_path(I18n.locale, course, series, exercise, options)
     elsif course.present?
-      course_exercise_submissions_path(I18n.locale, course, exercise, options)
+      course_activity_submissions_path(I18n.locale, course, exercise, options)
     else
-      exercise_submissions_path(I18n.locale, exercise, options)
+      activity_submissions_path(I18n.locale, exercise, options)
     end
   end
 

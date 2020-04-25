@@ -1,0 +1,8 @@
+<% if activity.access_private? && local_assigns[:series].nil? %>
+  <i class="mdi mdi-eye-off mdi-18" title="<%= t('activitys.index.private') %>"></i>
+<% end %>
+<% if activity.removed? %>
+  <i class="mdi mdi-delete mdi-18" title="<%= t('activitys.index.removed') %>"></i>
+<% elsif activity.not_valid? %>
+  <i class="mdi mdi-alert-circle mdi-18" title="<%= t('activitys.index.invalid') %>"></i>
+<% end %>

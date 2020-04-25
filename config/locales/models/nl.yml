@@ -9,6 +9,7 @@ nl:
     models:
       course: Cursus
       activity: Activiteit
+      content_page: Inhoudspagina
       exercise: Oefening
       export: Export
       judge: Judge

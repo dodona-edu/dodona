@@ -234,6 +234,17 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 500_000_000, JSON.parse(File.read(File.join(@remote.path, @echo.path, 'config.json')))['evaluation']['memory_limit']
   end
 
+  test 'should convert to content page' do
+    @remote.update_json(@echo.path + '/config.json', 'convert to content page') do |json|
+      json['type'] = 'content'
+      json
+    end
+    @repository.reset
+    @repository.process_activities
+    assert @repository.activities.first.content_page?
+    assert @repository.activities.first.ok?
+  end
+
   test 'should catch invalid dirconfig files' do
     @remote.write_file('dirconfig.json') do
       '{"invalid json",,}'

@@ -220,7 +220,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.commit('copy exercise')
     @repository.reset
     @repository.process_activities
-    echo2 = Exercise.find_by(path: new_dir)
+    echo2 = Activity.find_by(path: new_dir)
     assert_not_equal @echo.repository_token, echo2.config['internals']['token']
   end
 

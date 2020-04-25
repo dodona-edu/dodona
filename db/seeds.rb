@@ -97,27 +97,28 @@ if Rails.env.development?
   # junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.com:dodona-edu/judge-java.git', renderer: FeedbackTableRenderer
   Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.com:dodona-edu/judge-javascript.git', renderer: FeedbackTableRenderer
 
-  puts 'Create & clone exercise repository'
+  puts 'Create & clone activity repository'
 
-  exercise_repo = Repository.create name: 'Example Python Exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
-  exercise_repo.process_exercises
+  activity_repo = Repository.create name: 'Example Python Activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
+  activity_repo.process_activities
 
-  big_exercise_repo = Repository.create name: 'A lot of python exercises', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
+  big_activity_repo = Repository.create name: 'A lot of python activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
 
-  Dir.glob("#{big_exercise_repo.full_path}/*")
+  Dir.glob("#{big_activity_repo.full_path}/*")
       .select {|f| File.directory? f}
       .each do |dir|
     20.times do |i|
       FileUtils.cp_r(dir, dir + i.to_s)
     end
   end
-  big_exercise_repo.process_exercises
+  big_activity_repo.process_activities
 
+  contents_list = Content.all.to_a
   exercises_list = Exercise.all.to_a
 
-  puts 'Add series, exercises and submissions to courses'
+  puts 'Add series, content pages, exercises and submissions to courses'
 
-  # Add exercises to test course
+  # Add contents and exercises to test course
   courses.each do |course|
     series = []
     series << Series.create(name: 'Verborgen reeks',
@@ -144,6 +145,9 @@ if Rails.env.development?
     end
 
     series.each do |s|
+      series_contents = contents_list.sample(rand(3) + 2)
+      s.contents << series_contents
+
       series_exercises = exercises_list.sample(rand(3) + 2)
       s.exercises << series_exercises
       series_exercises.each do |exercise|

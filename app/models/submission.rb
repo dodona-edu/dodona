@@ -12,7 +12,6 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #  fs_key      :string(24)
-#  line_count  :integer
 #
 
 class Submission < ApplicationRecord
@@ -257,7 +256,7 @@ class Submission < ApplicationRecord
   def update_exercise_status
     return if status.in?(%i[queued running])
 
-    exercise.exercise_statuses_for(user, course).each(&:update_values)
+    exercise.activity_statuses_for(user, course).each(&:update_values)
   end
 
   def invalidate_caches

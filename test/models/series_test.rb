@@ -2,19 +2,19 @@
 #
 # Table name: series
 #
-#  id                :integer          not null, primary key
-#  course_id         :integer
-#  name              :string(255)
-#  description       :text(65535)
-#  visibility        :integer
-#  order             :integer          default(0), not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  deadline          :datetime
-#  access_token      :string(255)
-#  indianio_token    :string(255)
-#  progress_enabled  :boolean          default(TRUE), not null
-#  exercises_visible :boolean          default(TRUE), not null
+#  id                 :integer          not null, primary key
+#  course_id          :integer
+#  name               :string(255)
+#  description        :text(65535)
+#  visibility         :integer
+#  order              :integer          default(0), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  deadline           :datetime
+#  access_token       :string(255)
+#  indianio_token     :string(255)
+#  progress_enabled   :boolean          default(TRUE), not null
+#  activities_visible :boolean          default(TRUE), not null
 #
 
 require 'test_helper'
@@ -72,6 +72,34 @@ class SeriesTest < ActiveSupport::TestCase
     series.update(deadline: Time.zone.now - 1.day)
 
     assert_equal false, series.completed_before_deadline?(user)
+  end
+
+  test 'changing deadline and restoring should restore completion status' do
+    original_deadline = Time.zone.now + 1.day
+
+    course = create :course
+    series = create :series, course: course, deadline: original_deadline
+    user = create :user
+
+    content_page = create :content_page
+    series.content_pages << content_page
+
+    # Complete the content page.
+    now = Time.zone.now
+    ActivityReadState.create activity: content_page,
+                             course: course,
+                             user: user
+
+    assert_equal true, series.completed_before_deadline?(user)
+
+    series.update(deadline: now - 1.day)
+
+    assert_equal false, series.completed_before_deadline?(user)
+
+    # Reset the deadline to the original one to ensure the status was not removed.
+    series.update(deadline: original_deadline)
+
+    assert_equal true, series.completed_before_deadline?(user)
   end
 
   test 'enabling indianio_support should generate a new token if there was none' do

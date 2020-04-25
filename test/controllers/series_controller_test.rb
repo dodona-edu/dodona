@@ -139,7 +139,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     ids = exercises.map(&:id)
     post reorder_exercises_series_path(@instance), params: { order: ids.to_json }
     assert_response :success
-    assert_equal ids, @instance.series_memberships.map(&:exercise_id)
+    assert_equal ids, @instance.series_memberships.map(&:activity_id)
   end
 
   test 'missed deadlines should have correct class' do

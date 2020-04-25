@@ -2,19 +2,19 @@
 #
 # Table name: series
 #
-#  id                :integer          not null, primary key
-#  course_id         :integer
-#  name              :string(255)
-#  description       :text(65535)
-#  visibility        :integer
-#  order             :integer          default(0), not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  deadline          :datetime
-#  access_token      :string(255)
-#  indianio_token    :string(255)
-#  progress_enabled  :boolean          default(TRUE), not null
-#  exercises_visible :boolean          default(TRUE), not null
+#  id                 :integer          not null, primary key
+#  course_id          :integer
+#  name               :string(255)
+#  description        :text(65535)
+#  visibility         :integer
+#  order              :integer          default(0), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  deadline           :datetime
+#  access_token       :string(255)
+#  indianio_token     :string(255)
+#  progress_enabled   :boolean          default(TRUE), not null
+#  activities_visible :boolean          default(TRUE), not null
 #
 
 require 'csv'
@@ -32,8 +32,8 @@ class Series < ApplicationRecord
 
   belongs_to :course
   has_many :series_memberships, dependent: :destroy
-  has_many :exercises, through: :series_memberships
-  has_many :exercise_statuses, dependent: :destroy
+  has_many :activities, through: :series_memberships
+  has_many :activity_statuses, dependent: :destroy
 
   validates :name, presence: true
   validates :visibility, presence: true
@@ -42,12 +42,26 @@ class Series < ApplicationRecord
   token_generator :indianio_token
 
   before_create :generate_access_token
-  before_save :regenerate_exercise_tokens, if: :visibility_changed?
-  after_save :invalidate_exercise_statuses, if: :saved_change_to_deadline?
+  before_save :regenerate_activity_tokens, if: :visibility_changed?
+  after_save :invalidate_activity_statuses, if: :saved_change_to_deadline?
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }
   default_scope { order(order: :asc, id: :desc) }
+
+  has_many :content_pages,
+           lambda {
+             where activities: { type: ContentPage.name }
+           },
+           through: :series_memberships,
+           source: :activity
+
+  has_many :exercises,
+           lambda {
+             where activities: { type: Exercise.name }
+           },
+           through: :series_memberships,
+           source: :activity
 
   after_initialize do
     self.visibility ||= 'open'
@@ -68,9 +82,9 @@ class Series < ApplicationRecord
   # @param [Object] options {deadline (optional), user}
   def completed?(options)
     if options[:deadline]
-      exercises.all? { |e| e.accepted_before_deadline_for?(options[:user], self) }
+      activities.all? { |a| a.accepted_before_deadline_for?(options[:user], self) }
     else
-      exercises.all? { |e| e.accepted_for?(options[:user], self) }
+      activities.all? { |a| a.accepted_for?(options[:user], self) }
     end
   end
 
@@ -135,14 +149,14 @@ class Series < ApplicationRecord
     }
   end
 
-  def regenerate_exercise_tokens
-    exercises.each do |exercise|
-      exercise.generate_access_token
-      exercise.save
+  def regenerate_activity_tokens
+    activities.each do |activity|
+      activity.generate_access_token
+      activity.save
     end
   end
 
-  def invalidate_exercise_statuses
-    exercise_statuses.destroy_all
+  def invalidate_activity_statuses
+    ActivityStatus.delete_by(series: self)
   end
 end

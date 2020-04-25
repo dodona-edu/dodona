@@ -1,11 +1,11 @@
 nl:
-  exercises:
+  activities:
     navbar_links:
       info: Informatie over deze oefening
       show: Oefening bekijken
       edit: Oefening bewerken
       submissions: Oplossingen voor deze oefening
-    exercise:
+    activity:
       count_tooltip: aantal studenten die deze oefening correct hebben
       correct: Correct
       correct_after_deadline: Je hebt de deadline niet gehaald, maar je recentste oplossing (na de deadline) is correct.

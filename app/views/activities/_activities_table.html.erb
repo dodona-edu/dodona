@@ -54,8 +54,8 @@
           <% end %>
         </td>
 
-        <%# TODO: We probably want different behaviour for content here %>
-        <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
+        <%# TODO: We probably want different behaviour for content here. The activity.exercise? must be removed here. %>
+        <% if activity.exercise? && (@course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course)) %>
           <td class="hidden-xs">
             <% if @course %>
               <%= render partial: 'application/progress_chart',

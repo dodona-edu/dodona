@@ -24,7 +24,7 @@ nl:
     index:
       title: Oefeningen
       exercise: Oefening
-      status: Recentste oplossing
+      status: Status
       private: Privé
       invalid: Ongeldig
       removed: Verwijderd

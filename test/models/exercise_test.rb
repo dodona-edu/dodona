@@ -542,7 +542,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     @repository = create :repository, remote: @remote.path
     @repository.process_exercises
     @exercise = @repository.exercises.first
-    @about_nl_path = @exercise.full_path.join('about.nl.md')
+    @about_nl_path = @exercise.full_path.join('README.nl.md')
     @about_en_path = @exercise.full_path.join('README.md')
   end
 
@@ -651,28 +651,34 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
   test 'about should give a localized result for en' do
     I18n.with_locale :en do
-      assert_equal File.read(@about_en_path), @exercise.about
+      assert_equal @about_en_path.read, @exercise.about
     end
   end
 
   test 'about should give a localized result for nl' do
     I18n.with_locale :nl do
-      assert_equal File.read(@about_nl_path), @exercise.about
+      assert_equal @about_nl_path.read, @exercise.about
     end
   end
 
   test 'about should fallback to other language if localized is unavailable' do
     FileUtils.rm @about_en_path
     I18n.with_locale :en do
-      assert_equal File.read(@about_nl_path), @exercise.about
+      assert_equal @about_nl_path.read, @exercise.about
     end
   end
 
-  test 'about can be in about.md' do
-    about = File.read @about_en_path
-    FileUtils.rm @about_nl_path
-    FileUtils.mv @about_en_path, @exercise.full_path.join('about.md')
-    assert_equal about, @exercise.about
+  test 'about.en.md and about.nl.md shoud still be supported' do
+    about_en = @about_en_path.read
+    about_nl = @about_nl_path.read
+    FileUtils.mv @about_en_path, @exercise.full_path.join('about.en.md')
+    FileUtils.mv @about_nl_path, @exercise.full_path.join('about.nl.md')
+    I18n.with_locale :en do
+      assert_equal about_en, @exercise.about
+    end
+    I18n.with_locale :nl do
+      assert_equal about_nl, @exercise.about
+    end
   end
 
   test 'about can be in README' do

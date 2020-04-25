@@ -72,6 +72,7 @@ nl:
         back_to_course: Terug naar cursusoverzicht
         previous: Vorige oefening
         next: Volgende oefening
+      mark_as_read: Markeren als gelezen
     series_exercises_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:

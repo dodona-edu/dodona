@@ -632,7 +632,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   test 'safe_delete should not destroy exercise if it has series memberships' do
     @exercise.status = 2 # set status to removed
     course = create :course
-    series = create :series, course: course, exercise_count: 1
+    series = create :series, course: course, activity_count: 1
     series.exercises.map { @exercise }
     @exercise.series.concat(series) # Add series membership
     @exercise.safe_destroy
@@ -764,7 +764,7 @@ end
 
 class ExerciseStubTest < ActiveSupport::TestCase
   setup do
-    stub_all_exercises!
+    stub_all_activities!
     @exercise = create :exercise
   end
 

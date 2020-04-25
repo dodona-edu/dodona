@@ -31,6 +31,7 @@ class Activity < ApplicationRecord
   include Cacheable
   include Tokenable
 
+  USERS_READ_CACHE_STRING = '/course/%<course_id>s/activity/%<id>s/users_read'.freeze
   CONFIG_FILE = 'config.json'.freeze
   DIRCONFIG_FILE = 'dirconfig.json'.freeze
   DESCRIPTION_DIR = 'description'.freeze
@@ -289,6 +290,15 @@ class Activity < ApplicationRecord
   def started_for?(user, series = nil)
     activity_status_for(user, series).started?
   end
+
+  def users_read(options)
+    states = activity_read_states
+    states = states.in_course(options[:course]) if options[:course].present?
+    states.distinct.count(:user_id)
+  end
+
+  invalidateable_instance_cacheable(:users_read,
+                                    ->(this, options) { format(USERS_READ_CACHE_STRING, course_id: options[:course].present? ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def check_validity
     return unless ok?

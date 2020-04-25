@@ -11,7 +11,7 @@
     <tr>
       <th class='status-icon'></th>
       <th class='type-icon'></th>
-      <th><%= t "activities.index.activity" %></th>
+      <th><%= t "activities.index.activity_title" %></th>
       <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
         <th class='count hidden-xs'>
           <% if @course %>
@@ -47,9 +47,9 @@
 
         <td class='type-icon'>
           <% if activity.exercise? %>
-            <i class="mdi mdi-file-document-edit-outline mdi-18"></i>
+            <i class="mdi mdi-file-document-edit-outline mdi-18" title="<%= t "activities.index.type.exercise" %>"></i>
           <% elsif activity.content_page? %>
-            <i class="mdi mdi-book-open-variant mdi-18"></i>
+            <i class="mdi mdi-book-open-variant mdi-18" title="<%= t "activities.index.type.content" %>"></i>
           <% end %>
         </td>
 

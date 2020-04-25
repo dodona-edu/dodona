@@ -28,6 +28,7 @@ nl:
       private: Privé
       invalid: Ongeldig
       removed: Verwijderd
+      activity_title: Titel
       programming_language: "Programmeertaal"
       labels: "Labels"
       repository: "Repository"
@@ -40,6 +41,9 @@ nl:
       progress_chart_info_correct:
         one: "Één gebruiker loste ze correct op."
         other: "%{count} gebruikers losten ze correct op."
+      type:
+        exercise: Oefening
+        content: Leesactiviteit
     show:
       code: Code
       handin: Indienen

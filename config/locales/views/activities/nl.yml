@@ -70,8 +70,8 @@ nl:
       deadline_in_5_minutes: "De deadline voor deze oefening is om %{deadline}, wat over minder dan 5 minuten is."
       navigation:
         back_to_course: Terug naar cursus
-        previous: Vorige oefening
-        next: Volgende oefening
+        previous: Vorige activiteit
+        next: Volgende activiteit
       mark_as_read: Markeren als gelezen
       read_at: "Gelezen op %{timestamp}"
     series_exercises_table:

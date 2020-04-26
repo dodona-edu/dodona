@@ -70,8 +70,8 @@ en:
       deadline_in_5_minutes: "The deadline for this exercise is at %{deadline}, which is less than 5 minutes away."
       navigation:
         back_to_course: Back to course
-        previous: Previous exercise
-        next: Next exercise
+        previous: Previous activity
+        next: Next activity
       mark_as_read: Mark as read
       read_at: "Marked as read at %{timestamp}"
     series_exercises_table:

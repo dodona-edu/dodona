@@ -133,6 +133,9 @@ class CourseTest < ActiveSupport::TestCase
   test 'course scoresheet should be correct' do
     course = create :course
     create_list :series, 2, course: course, activity_count: 2, deadline: Time.current
+    content_pages = create_list :content_page, 2
+    SeriesMembership.create(series: course.series.first, activity: content_pages.first)
+    SeriesMembership.create(series: course.series.second, activity: content_pages.second)
     users = create_list(:user, 6, courses: [course])
 
     expected_started = Hash.new 0
@@ -188,6 +191,18 @@ class CourseTest < ActiveSupport::TestCase
           end
         end
       end
+      series.content_pages.map do |cp|
+        6.times do |i|
+          u = users[i]
+          if i.even?
+            create :activity_read_state, activity: cp, user: u, course: course, created_at: (deadline - 2.minutes)
+            expected_started[[u.id, series.id]] += 1
+            expected_accepted[[u.id, series.id]] += 1
+          else
+            create :activity_read_state, activity: cp, user: u, course: course, created_at: (deadline + 2.minutes)
+          end
+        end
+      end
     end
 
     scoresheet = course.scoresheet
@@ -203,8 +218,8 @@ class CourseTest < ActiveSupport::TestCase
     assert_equal scoresheet[:hash].keys.map(&:first).to_set, users.map(&:id).to_set
     # Counts are correct.
     scoresheet[:hash].each do |key, counts|
-      assert_equal counts[:accepted], expected_accepted[key]
-      assert_equal counts[:started], expected_started[key]
+      assert_equal expected_accepted[key], counts[:accepted]
+      assert_equal expected_started[key], counts[:started]
     end
   end
 

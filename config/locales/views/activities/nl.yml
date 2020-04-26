@@ -20,7 +20,7 @@ nl:
       deadline_met: Je hebt de deadline gehaald
       not_solved: Nog niet opgelost
     form:
-      edit_exercise: Opgave aanpassen
+      edit_activity: Leeractiviteit aanpassen
       open_on_github: Open op GitHub
       labels_delimiter: "Gebruik een komma om labels te scheiden"
       labels: Nieuw label

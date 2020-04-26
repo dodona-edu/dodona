@@ -18,7 +18,7 @@ nl:
     demo_mode:
       demo_mode_enabled: Demo modus ingeschakeld
       info: in demo modus verbergt Dodona de echte namen van alle gebruikers.
-      switch_back: Demo modus uitschakelen. 
+      switch_back: Demo modus uitschakelen.
     messages:
       warning: Opgepast
       danger: Oh nee
@@ -27,7 +27,7 @@ nl:
       time_zone_html: Je tijdzone staat momenteel ingesteld op <strong>%{time_zone}</strong>, maar dit lijkt niet overeen te komen met je lokale tijd. Je kan van tijdzone wisselen op je <a href='%{profile_edit}'>profielpagina</a>.
     menu:
       manual: Gebruikershandleiding
-      exercises: Oefeningen
+      activities: Leeractiviteiten
       my_submissions: Mijn oplossingen
       my_exports: Mijn exports
       submissions: Oplossingen

@@ -223,7 +223,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     series = create :series, :with_submissions
     exercise = series.exercises.sample
     assert_jobs_enqueued(exercise.submissions.count) do
-      rejudge_submissions exercise_id: exercise.id
+      rejudge_submissions activity_id: exercise.id
     end
   end
 end

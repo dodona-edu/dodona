@@ -4,7 +4,7 @@ class SubmissionsController < ApplicationController
   before_action :ensure_trailing_slash, only: :show
 
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
-    scope.by_filter(value, controller.params[:user_id].present?, controller.params[:exercise_id].present?)
+    scope.by_filter(value, controller.params[:user_id].present?, controller.params[:activity_id].present?)
   end
 
   has_scope :by_status, as: 'status'
@@ -36,7 +36,7 @@ class SubmissionsController < ApplicationController
     elsif @judge
       @crumbs << [@judge.name, judge_path(@judge)]
     end
-    @crumbs << [@exercise.name, helpers.activity_scoped_path(activity: @exercise, series: @series, course: @course)] if @exercise
+    @crumbs << [@activity.name, helpers.activity_scoped_path(activity: @exercise, series: @series, course: @course)] if @exercise
     @crumbs << [I18n.t('submissions.index.title'), '#']
   end
 
@@ -128,11 +128,11 @@ class SubmissionsController < ApplicationController
     end
 
     @series = Series.find(params[:series_id]) if params[:series_id]
-    @exercise = Exercise.find(params[:exercise_id]) if params[:exercise_id]
+    @activity = Exercise.find(params[:activity_id]) if params[:activity_id]
     @judge = Judge.find(params[:judge_id]) if params[:judge_id]
 
-    if @exercise
-      @submissions = @submissions.of_exercise(@exercise)
+    if @activity
+      @submissions = @submissions.of_exercise(@activity)
       if @course
         @submissions = @submissions.in_course(@course)
       elsif @series

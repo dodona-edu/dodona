@@ -123,17 +123,13 @@ end %>
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="content-page-actions">
       <% if @series.present? %>
-        <%= link_to previous_link, class: 'content-page-action btn-fab-extended' do %>
+        <%= link_to previous_link, class: 'content-page-action btn-fab-extended previous' do %>
           <i class="mdi mdi-chevron-left icon"></i><span class="text"><%= previous_tooltip %></span>
         <% end %>
-        <div class="flex-spacer"></div>
       <% end %>
-      <div class="content-page-action" id="content_page_read_action">
-        <%= render partial: 'content_page_read_button', locals: {activity: @activity, course: @series&.course, user: current_user} %>
-      </div>
+      <%= render partial: 'content_page_read_button', locals: {activity: @activity, course: @series&.course, user: current_user} %>
       <% if @series.present? %>
-        <div class="flex-spacer"></div>
-        <%= link_to next_link, class: 'content-page-action btn-fab-extended-right' do %>
+        <%= link_to next_link, class: 'content-page-action btn-fab-extended right next' do %>
           <span class="text"><%= next_tooltip %></span>
           <i class="mdi mdi-chevron-right icon"></i>
         <% end %>

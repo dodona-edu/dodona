@@ -69,7 +69,7 @@ nl:
       deadline_passed: "De deadline voor deze oefening was om %{deadline}. Je kan nog steeds indienen, maar de lesgever houdt er mogelijk geen rekening meer mee."
       deadline_in_5_minutes: "De deadline voor deze oefening is om %{deadline}, wat over minder dan 5 minuten is."
       navigation:
-        back_to_course: Terug naar cursusoverzicht
+        back_to_course: Terug naar cursus
         previous: Vorige oefening
         next: Volgende oefening
       mark_as_read: Markeren als gelezen

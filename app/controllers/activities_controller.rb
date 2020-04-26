@@ -122,7 +122,7 @@ class ActivitiesController < ApplicationController
                                        course: @course,
                                        user: current_user
     can_read = @activity.read_state_for(current_user, @course).blank?
-    can_read &&= @activity.accessible?(current_user, course)
+    can_read &&= @activity.accessible?(current_user, @course)
     if can_read && read_state.save
       respond_to do |format|
         format.js { render 'activities/read', locals: { activity: @activity, course: @course, user: current_user } }

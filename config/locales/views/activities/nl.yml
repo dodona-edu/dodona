@@ -9,6 +9,9 @@ nl:
       count_tooltip: Aantal studenten die deze oefening correct hebben
       read_tooltip: Aantal studenten die dit gelezen hebben
       read_by: "%{count} keer gelezen"
+      read: Gelezen
+      not_read: Nog niet gelezen
+      read_after_deadline: Je hebt de deadline niet gehaald, maar je hebt dit wel gelezen.
       correct: Correct
       correct_after_deadline: Je hebt de deadline niet gehaald, maar je recentste oplossing (na de deadline) is correct.
       wrong: Verkeerd

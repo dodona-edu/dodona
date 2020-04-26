@@ -7,6 +7,14 @@
 <% end %>
 <%= render 'navbar_links' %>
 
+<% if @series.present?
+  previous_activity, next_activity = previous_next_activity_path(@series, @activity)
+  previous_link = previous_activity || breadcrumb_series_path(@series, current_user)
+  previous_tooltip = previous_activity ? t('.navigation.previous') : t('.navigation.back_to_course')
+  next_link = next_activity || breadcrumb_series_path(@series, current_user)
+  next_tooltip = next_activity ? t('.navigation.next') : t('.navigation.back_to_course')
+end %>
+
 <div class="row">
   <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>
     <span class='hidden-sm'><%= t('.handin') %></span><br>
@@ -19,13 +27,6 @@
           <%= @activity.name %>
         </h2>
         <% if @series.present? %>
-          <%
-            previous_activity, next_activity = previous_next_activity_path(@series, @activity)
-            previous_link = previous_activity || breadcrumb_series_path(@series, current_user)
-            previous_tooltip = previous_activity ? t('.navigation.previous') : t('.navigation.back_to_course')
-            next_link = next_activity || breadcrumb_series_path(@series, current_user)
-            next_tooltip = next_activity ? t('.navigation.next') : t('.navigation.back_to_course')
-          %>
           <div class="card-title-navigation hidden-print">
             <%= link_to previous_link, class: 'btn-icon-inverted', title: previous_tooltip, data: {toggle: 'tooltip', placement: 'top'} do %>
               <i class="mdi mdi-chevron-left"></i>
@@ -114,6 +115,25 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<% elsif @activity.content_page? %>
+<div class="row hidden-print">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="content-page-actions">
+      <% if @series.present? %>
+        <%= link_to previous_link, class: 'content-page-action btn-fab-extended previous' do %>
+          <i class="mdi mdi-chevron-left icon"></i><span class="text"><%= previous_tooltip %></span>
+        <% end %>
+      <% end %>
+      <%= render partial: 'content_page_read_button', locals: {activity: @activity, course: @series&.course, user: current_user} %>
+      <% if @series.present? %>
+        <%= link_to next_link, class: 'content-page-action btn-fab-extended right next' do %>
+          <span class="text"><%= next_tooltip %></span>
+          <i class="mdi mdi-chevron-right icon"></i>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>

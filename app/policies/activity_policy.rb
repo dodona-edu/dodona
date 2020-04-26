@@ -64,6 +64,15 @@ class ActivityPolicy < ApplicationPolicy
     false
   end
 
+  def read?
+    return false if record.removed?
+    return false if user.blank?
+    return true if user.admin?
+    return true if record.ok?
+
+    false
+  end
+
   def permitted_attributes
     if update?
       %i[access name_nl name_en]

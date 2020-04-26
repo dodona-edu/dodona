@@ -1,8 +1,8 @@
 class ActivitiesController < ApplicationController
   include SeriesHelper
 
-  before_action :set_activity, only: %i[show description edit update media info]
-  before_action :set_course, only: %i[show edit update media info]
+  before_action :set_activity, only: %i[show description edit update media info read]
+  before_action :set_course, only: %i[show edit update media info read]
   before_action :set_series, only: %i[show edit update info]
   before_action :ensure_trailing_slash, only: :show
   before_action :allow_iframe, only: %i[description]
@@ -117,6 +117,23 @@ class ActivitiesController < ApplicationController
     @labels = Label.all
   end
 
+  def read
+    read_state = ActivityReadState.new activity: @activity,
+                                       course: @course,
+                                       user: current_user
+    can_read = @activity.read_state_for(current_user, @course).blank?
+    can_read &&= @activity.accessible?(current_user, course)
+    if can_read && read_state.save
+      respond_to do |format|
+        format.js { render 'activities/read', locals: { activity: @activity, course: @course, user: current_user } }
+        format.json { head :ok }
+      end
+    else
+      read_state.errors.add(:activity, 'already read') unless can_read
+      render json: { status: 'failed', errors: read_state.errors }, status: :unprocessable_entity
+    end
+  end
+
   def update
     attributes = permitted_attributes(@activity)
 
@@ -163,12 +180,6 @@ class ActivitiesController < ApplicationController
   def set_activity
     @activity = Activity.find(params[:id])
     authorize @activity
-    @activity = case @activity.type
-                when ContentPage.name
-                  @activity.becomes(ContentPage)
-                when Exercise.name
-                  @activity.becomes(Exercise)
-                end
   end
 
   def set_course

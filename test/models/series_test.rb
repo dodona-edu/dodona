@@ -340,6 +340,7 @@ class SeriesTest < ActiveSupport::TestCase
     create :correct_submission,
            exercise: series.exercises.first,
            user: user,
+           course: series.course,
            created_at: (deadline - 2.minutes)
     assert_equal false, series.completed?(user: user)
   end
@@ -353,11 +354,13 @@ class SeriesTest < ActiveSupport::TestCase
     create :wrong_submission,
            exercise: series.exercises.first,
            user: user,
+           course: series.course,
            created_at: (deadline - 2.minutes)
     # Read before deadline
     create :activity_read_state,
            activity: series.content_pages.first,
            user: user,
+           course: series.course,
            created_at: (deadline - 2.minutes)
     assert_equal false, series.completed?(user: user)
   end
@@ -371,11 +374,13 @@ class SeriesTest < ActiveSupport::TestCase
     create :correct_submission,
            exercise: series.exercises.first,
            user: user,
+           course: series.course,
            created_at: (deadline - 2.minutes)
     # Read before deadline
     create :activity_read_state,
            activity: series.content_pages.first,
            user: user,
+           course: series.course,
            created_at: (deadline - 2.minutes)
     assert_equal true, series.completed?(user: user)
   end

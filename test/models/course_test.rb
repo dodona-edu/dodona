@@ -90,7 +90,7 @@ class CourseTest < ActiveSupport::TestCase
 
   test 'correct solutions should be updated for submission in course' do
     course = create :course
-    series = create :series, course: course, activity_count: 1
+    series = create :series, course: course, activity_count: 2
     user = create :user
 
     assert_equal 0, course.correct_solutions
@@ -112,7 +112,7 @@ class CourseTest < ActiveSupport::TestCase
 
   test 'correct solutions should not be updated for submission outside course' do
     course = create :course
-    series = create :series, course: course, activity_count: 1
+    series = create :series, course: course, activity_count: 2
     user = create :user
 
     assert_equal 0, course.correct_solutions
@@ -132,7 +132,10 @@ class CourseTest < ActiveSupport::TestCase
 
   test 'course scoresheet should be correct' do
     course = create :course
-    create_list :series, 2, course: course, activity_count: 2, deadline: Time.current
+    create_list :series, 2,
+                course: course,
+                exercise_count: 2,
+                deadline: Time.current
     content_pages = create_list :content_page, 2
     SeriesMembership.create(series: course.series.first, activity: content_pages.first)
     SeriesMembership.create(series: course.series.second, activity: content_pages.second)
@@ -224,7 +227,7 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test 'destroying course does not destroy submissions' do
-    course = create :course, series_count: 2, activities_per_series: 1, submissions_per_exercise: 2
+    course = create :course, series_count: 2, exercises_per_series: 1, submissions_per_exercise: 2
     assert_difference 'Submission.count', 0 do
       course.destroy
     end

@@ -352,7 +352,7 @@ class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
     @series.reload
     assert_zip response.body,
                with_info: true,
-               solution_count: @series.activities.count,
+               solution_count: @series.exercises.count,
                group_by: 'exercise',
                data: { exercises: @series.exercises }
   end

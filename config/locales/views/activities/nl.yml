@@ -1,9 +1,9 @@
 nl:
   activities:
     navbar_links:
-      info: Informatie over deze oefening
-      show: Oefening bekijken
-      edit: Oefening bewerken
+      info: Informatie over deze activiteit
+      show: Activiteit bekijken
+      edit: Activiteit bewerken
       submissions: Oplossingen voor deze oefening
     activity:
       count_tooltip: Aantal studenten die deze oefening correct hebben

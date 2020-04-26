@@ -147,6 +147,7 @@ nl:
     user_stats:
       subscribed_users: Geregistreerde gebruikers
       exercise_count: Oefeningen
+      content_count: Leesactiviteiten
       submitted_solutions: Ingediende oplossingen
       more_statistics: "Meer statistieken >"
     create:

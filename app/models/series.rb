@@ -142,9 +142,14 @@ class Series < ApplicationRecord
     submission_hash = submission_hash.before_deadline(deadline) if deadline.present?
     submission_hash = submission_hash.group(%i[user_id exercise_id]).most_recent.index_by { |s| [s.user_id, s.exercise_id] }
 
+    read_state_hash = ActivityReadState.in_series(self).where(user: users)
+    read_state_hash = read_state_hash.before_deadline(deadline) if deadline.present?
+    read_state_hash = read_state_hash.group(%i[user_id activity_id]).index_by { |s| [s.user_id, s.activity_id] }
+
     {
       users: users,
-      exercises: exercises,
+      activities: activities,
+      read_states: read_state_hash,
       submissions: submission_hash
     }
   end

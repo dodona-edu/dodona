@@ -39,4 +39,21 @@
   <% else %>
     <span class='text-muted'><%= t 'activities.activity.not_solved' %></span>
   <% end %>
+<% elsif activity.content_page? %>
+  <% if activity.accepted_for?(user, series) %>
+    <span class="deadline-ok">
+      <%= t 'activities.activity.read' %>
+    </span>
+    <% if series&.deadline? && !activity.accepted_before_deadline_for?(user, series) %>
+      <span
+          class="btn btn-icon"
+          title="<%= t('activities.activity.read_after_deadline', deadline: l(series&.deadline, format: :long)) %>"
+          data-toggle="tooltip"
+          data-placement="right">
+          <i class="mdi mdi-information colored-info mdi-18"></i>
+      </span>
+    <% end %>
+  <% else %>
+    <span class='text-muted'><%= t 'activities.activity.not_read' %></span>
+  <% end %>
 <% end %>

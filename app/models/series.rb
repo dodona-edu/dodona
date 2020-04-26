@@ -102,14 +102,14 @@ class Series < ApplicationRecord
   end
 
   def started?(options)
-    exercises.any? { |e| e.started_for?(options[:user], self) }
+    activities.any? { |a| a.started_for?(options[:user], self) }
   end
 
   invalidateable_instance_cacheable(:started?,
                                     ->(this, options) { format(USER_STARTED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
 
   def wrong?(options)
-    exercises.any? { |e| e.wrong_for?(options[:user], self) }
+    activities.any? { |a| a.wrong_for?(options[:user], self) }
   end
 
   invalidateable_instance_cacheable(:wrong?,

@@ -156,13 +156,31 @@
   line-height: 36px;
   padding-right: 20px;
   text-transform: uppercase;
+  white-space: nowrap;
+
+  &.right{
+    padding-right: 0;
+    padding-left: 20px;
+    
+    .icon {
+      padding-left: 12px;
+      padding-right: 0;
+      padding-top: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .icon {
+        padding-left: 0;
+      }
+    }
+  }
 
   .icon {
     padding-right: 12px;
     padding-top: 4px;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     padding-left: 8px;
     padding-right: 8px;
     .text {

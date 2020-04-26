@@ -45,6 +45,10 @@ class CoursePolicy < ApplicationPolicy
     user && show?
   end
 
+  def read?
+    user && user&.member_of?(record)
+  end
+
   def update?
     course_admin?
   end

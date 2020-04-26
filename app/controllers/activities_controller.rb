@@ -87,7 +87,11 @@ class ActivitiesController < ApplicationController
 
       @code = @edit_submission.try(:code) || @solution || @activity.boilerplate
     elsif @activity.content_page?
-      @read_state = @activity.activity_read_states.find_by(user: current_user, course: @course)
+      @read_state = if current_user&.member_of?(@course)
+                      @activity.activity_read_states.find_by(user: current_user, course: @course)
+                    else
+                      @activity.activity_read_states.find_by(user: current_user)
+                    end
     end
 
     @title = @activity.name
@@ -118,6 +122,7 @@ class ActivitiesController < ApplicationController
   end
 
   def read
+    @course = nil unless @course.subscribed_members.include?(current_user)
     read_state = ActivityReadState.new activity: @activity,
                                        course: @course,
                                        user: current_user

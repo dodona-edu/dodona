@@ -1,5 +1,4 @@
-<% # arguments: activity (Activity), course (Course) | nil), user (User) %>
-<% read_state = activity.read_state_for(user, course) %>
+<% # arguments: activity (Activity), course (Course | nil), user (User), read_state (ActivityReadState | nil) %>
 <% if read_state.present? %>
   <span>
     <i class="mdi mdi-check icon colored-correct"></i>

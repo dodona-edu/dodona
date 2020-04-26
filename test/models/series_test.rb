@@ -58,7 +58,7 @@ class SeriesTest < ActiveSupport::TestCase
 
   test 'changing deadline should invalidate exercise statuses' do
     course = create :course
-    series = create :series, course: course, deadline: Time.zone.now + 1.day, activity_count: 2
+    series = create :series, course: course, deadline: Time.zone.now + 1.day, exercise_count: 1
     user = create :user
 
     create :correct_submission,
@@ -252,7 +252,7 @@ class SeriesTest < ActiveSupport::TestCase
   end
 
   test 'completed? with wrong submission before deadline' do
-    series = create :series, activity_count: 2, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -265,7 +265,7 @@ class SeriesTest < ActiveSupport::TestCase
   end
 
   test 'completed? with correct submission before deadline within a course' do
-    series = create :series, activity_count: 2, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -279,7 +279,7 @@ class SeriesTest < ActiveSupport::TestCase
   end
 
   test 'completed? with correct submission before deadline without course' do
-    series = create :series, activity_count: 2, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -292,7 +292,7 @@ class SeriesTest < ActiveSupport::TestCase
   end
 
   test 'completed? with wrong submission after deadline' do
-    series = create :series, activity_count: 2, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -305,7 +305,7 @@ class SeriesTest < ActiveSupport::TestCase
   end
 
   test 'completed? with correct submission after deadline within course' do
-    series = create :series, activity_count: 2, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -319,7 +319,7 @@ class SeriesTest < ActiveSupport::TestCase
   end
 
   test 'completed? with correct submission after deadline without course' do
-    series = create :series, activity_count: 2, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline

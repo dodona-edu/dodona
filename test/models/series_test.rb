@@ -261,6 +261,7 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
+
     assert_equal false, series.completed?(user: user)
   end
 
@@ -275,6 +276,7 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
+
     assert_equal true, series.completed?(user: user)
   end
 
@@ -382,6 +384,33 @@ class SeriesTest < ActiveSupport::TestCase
            user: user,
            course: series.course,
            created_at: (deadline - 2.minutes)
+    assert_equal true, series.completed?(user: user)
+  end
+
+  test 'completed? with content_page' do
+    series = create :series, content_page_count: 1, deadline: Time.current
+    user = create :user
+    deadline = series.deadline
+
+    # unread
+    assert_equal false, series.completed?(user: user)
+
+    # read after deadline
+    read_state = create :activity_read_state,
+                        activity: series.content_pages.first,
+                        user: user,
+                        course: series.course,
+                        created_at: (deadline + 2.minutes)
+
+    assert_equal false, series.completed?(user: user)
+
+    read_state.delete
+    create :activity_read_state,
+           activity: series.content_pages.first,
+           user: user,
+           course: series.course,
+           created_at: (deadline - 2.minutes)
+
     assert_equal true, series.completed?(user: user)
   end
 end

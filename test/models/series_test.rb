@@ -330,4 +330,53 @@ class SeriesTest < ActiveSupport::TestCase
            created_at: (deadline + 2.minutes)
     assert_equal false, series.completed?(user: user)
   end
+
+  test 'completed? with correct submission and unread content_page' do
+    series = create :series, exercise_count: 1, content_page_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Correct submission before deadline
+    create :correct_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    assert_equal false, series.completed?(user: user)
+  end
+
+  test 'completed? with wrong submission and read content_page' do
+    series = create :series, exercise_count: 1, content_page_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Wrong submission before deadline
+    create :wrong_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    # Read before deadline
+    create :activity_read_state,
+           activity: series.content_pages.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    assert_equal false, series.completed?(user: user)
+  end
+
+  test 'completed? with correct submission and read content_page' do
+    series = create :series, exercise_count: 1, content_page_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Correct submission before deadline
+    create :correct_submission,
+           exercise: series.exercises.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    # Read before deadline
+    create :activity_read_state,
+           activity: series.content_pages.first,
+           user: user,
+           created_at: (deadline - 2.minutes)
+    assert_equal true, series.completed?(user: user)
+  end
 end

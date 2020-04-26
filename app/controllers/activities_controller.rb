@@ -135,7 +135,7 @@ class ActivitiesController < ApplicationController
   end
 
   def update
-    attributes = permitted_attributes(@activity)
+    attributes = permitted_attributes(@activity.becomes(Activity))
 
     labels = params[:activity][:labels]
     if labels

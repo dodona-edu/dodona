@@ -5,7 +5,8 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
 
   def setup
     @instance = create(:exercise, :description_html)
-    sign_in create(:zeus)
+    @user = create(:zeus)
+    sign_in @user
   end
 
   test 'should show activity' do
@@ -16,6 +17,29 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   test 'should show activity description' do
     get description_activity_url(@instance, token: @instance.access_token)
     assert_response :success
+  end
+
+  test 'should show content_page' do
+    cp = create :content_page
+    get activity_url(cp)
+    assert_response :success
+  end
+
+  test 'should mark content_page as read outside course' do
+    cp = create :content_page
+    post read_activity_url(cp)
+    assert_response :success
+
+    assert ActivityReadState.where(user: @user, activity: cp, course: nil).exist?
+  end
+
+  test 'should mark content_page as within course' do
+    course = create :course, series_count: 1, content_pages_per_series: 1
+    cp = course.series.first.content_pages.first
+    post read_activity_url(cp)
+    assert_response :success
+
+    assert ActivityReadState.where(user: @user, activity: cp, course: course).exist?
   end
 
   test 'should not show activity description with incorrect token' do

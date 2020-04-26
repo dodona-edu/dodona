@@ -144,10 +144,10 @@
             <% if @activity.about.present? %>
               <%= markdown @activity.about %>
             <% else %>
-              <span class="text-muted"><%= t '.no_about_present' %></span>
+              <span class="text-muted"><%= t '.no_readme_present' %></span>
               <% if current_user&.repository_admin?(@repository) && @repository.github_url.present? %>
                 <%= github_link @repository,
-                  "?filename=#{@activity.path}/about.#{I18n.locale.to_s}.md",
+                  "?filename=#{@activity.path}/readme.#{I18n.locale.to_s}.md",
                   name: t('.click_here_to_create_one'),
                   mode: 'new' %>
               <% end %>

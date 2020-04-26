@@ -394,6 +394,7 @@ class SeriesTest < ActiveSupport::TestCase
 
     # unread
     assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
 
     # read after deadline
     read_state = create :activity_read_state,
@@ -402,7 +403,8 @@ class SeriesTest < ActiveSupport::TestCase
                         course: series.course,
                         created_at: (deadline + 2.minutes)
 
-    assert_equal false, series.completed?(user: user)
+    assert_equal true, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
 
     read_state.delete
     create :activity_read_state,
@@ -412,5 +414,6 @@ class SeriesTest < ActiveSupport::TestCase
            created_at: (deadline - 2.minutes)
 
     assert_equal true, series.completed?(user: user)
+    assert_equal true, series.completed_before_deadline?(user)
   end
 end

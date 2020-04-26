@@ -10,7 +10,7 @@ en:
       read_tooltip: Number of students that read this
       read_by: Read %{count} times
       read: Read
-      not_read: Not read yet
+      not_read: Not yet read
       read_after_deadline: You missed the deadline, but you did read this.
       correct: Correct
       correct_after_deadline: You missed the deadline, but your latest submission (after the deadline) is correct.

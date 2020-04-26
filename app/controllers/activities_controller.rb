@@ -130,7 +130,7 @@ class ActivitiesController < ApplicationController
     can_read &&= @activity.accessible?(current_user, @course)
     if can_read && read_state.save
       respond_to do |format|
-        format.js { render 'activities/read', locals: { activity: @activity, course: @course, user: current_user } }
+        format.js { render 'activities/read', locals: { activity: @activity, course: @course, read_state: read_state, user: current_user } }
         format.json { head :ok }
       end
     else

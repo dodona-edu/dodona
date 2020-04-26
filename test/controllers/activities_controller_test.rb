@@ -558,7 +558,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     get activity_url(exercise)
 
     assert_response :success
-    assert_not_includes response.body, 'exercise-sidebar'
+    assert_not_includes response.body, 'activity-sidebar'
   end
 
   test 'json representation of exercise should contain the sandbox and access token in its description url' do

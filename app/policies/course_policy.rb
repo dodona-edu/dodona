@@ -46,7 +46,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def read?
-    user && user&.member_of?(record)
+    user
   end
 
   def update?

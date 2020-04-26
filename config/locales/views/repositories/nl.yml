@@ -16,8 +16,10 @@ nl:
     show:
       repository: Repository
       webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> in zodat de oefeningen op Dodona automatisch geüpdatet worden bij elke commit:"
-      reprocess: Alle oefeningen herverwerken
+      reprocess: Repository herverwerken
       exercises: Oefeningen
+      content_pages: Leesactiviteiten
+      learning_activities: Leeractiviteiten
     admins:
       admins: "Beheerders"
       admin_explanation: "De gebruikers die hieronder staan opgelijst zijn de beheerders van deze repository. Deze gebruikers kunnen anderen repository beheerder maken, privé oefeningen uit deze repository zien, oefeningen uit deze repository aanpassen en beheren welke cursussen privé oefeningen uit deze repository gebruiken."

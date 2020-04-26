@@ -17,7 +17,9 @@ class ActivityReadState < ApplicationRecord
   after_save :invalidate_caches
 
   scope :in_course, ->(course) { where course_id: course.id }
+  scope :in_series, ->(series) { where(course_id: series.course.id).where(activity: series.content_pages) }
   scope :of_user, ->(user) { where user_id: user.id }
+  scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }
 
   def invalidate_caches
     activity.invalidate_delayed_users_read

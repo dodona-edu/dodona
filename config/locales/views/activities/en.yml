@@ -1,10 +1,10 @@
 en:
   activities:
     navbar_links:
-      info: Exercise information
-      show: Show exercise
+      info: Activity information
+      show: Show activity
       submissions: Submissions for this exercise
-      edit: Edit exercise
+      edit: Edit activity
     activity:
       count_tooltip: Number of students that solved this exercise correctly
       read_tooltip: Number of students that read this

@@ -97,7 +97,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should add activities to series' do
     stub_all_activities!
-    activity = create(:activity)
+    activity = create :exercise
     post add_activity_series_path(@instance),
          params: {
            format: 'application/javascript',
@@ -108,7 +108,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should remove activity from series' do
-    activity = create(:activity, series: [@instance])
+    activity = create(:exercise, series: [@instance])
     post remove_activity_series_path(@instance),
          params: {
            format: 'application/javascript',
@@ -119,13 +119,13 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'repository admin adding private activity to series should add course to repository\'s allowed courses' do
-    activity = create :activity, access: :private
+    activity = create :exercise, access: :private
     post add_activity_series_path @instance, params: { format: 'application/javascript', activity_id: activity.id }
     assert activity.repository.allowed_courses.include? @instance.course
   end
 
   test 'course admin should not be able to add private activity to series' do
-    activity = create :activity, access: :private
+    activity = create :exercise, access: :private
     user = create :user
     sign_in user
     @instance.course.administrating_members << user
@@ -134,7 +134,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should reorder activities' do
-    activities = create_list(:activity, 10, series: [@instance])
+    activities = create_list(:exercise, 10, series: [@instance])
     activities.shuffle!
     ids = activities.map(&:id)
     post reorder_activities_series_path @instance, params: { format: 'application/javascript', order: ids.to_json }
@@ -144,7 +144,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'missed deadlines should have correct class' do
     series = create :series, deadline: Time.zone.now - 1.day
-    create :activity, series: [series]
+    create :exercise, series: [series]
 
     get series_url(series)
 
@@ -154,7 +154,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'upcoming deadlines should have correct class' do
     series = create :series, deadline: Time.zone.now + 1.day
-    create :activity, series: [series]
+    create :exercise, series: [series]
 
     get series_url(series)
     assert_response :success

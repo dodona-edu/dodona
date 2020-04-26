@@ -126,15 +126,13 @@ class ActivitiesController < ApplicationController
     read_state = ActivityReadState.new activity: @activity,
                                        course: @course,
                                        user: current_user
-    can_read = @activity.accessible?(current_user, @course)
-    if can_read && read_state.save
+    if read_state.save
       respond_to do |format|
         format.html { redirect_to helpers.activity_scoped_path(activity: @activity, course: @course, series: @series) }
         format.js { render 'activities/read', locals: { activity: @activity, course: @course, read_state: read_state, user: current_user } }
         format.json { head :ok }
       end
     else
-      read_state.errors.add(:activity, 'not permitted') unless can_read
       render json: { status: 'failed', errors: read_state.errors }, status: :unprocessable_entity
     end
   end

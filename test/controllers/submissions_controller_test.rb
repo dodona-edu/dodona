@@ -115,11 +115,18 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should not create submission for content page' do
+    attrs = generate_attr_hash
+    attrs[:exercise_id] = create(:content_page).id
+    create_request(attr_hash: attrs)
+    assert_response :unprocessable_entity
+  end
+
   test 'create submission should respond bad_request without an exercise' do
     attrs = generate_attr_hash
     attrs.delete(:exercise_id)
     create_request(attr_hash: attrs)
-    assert_response 422
+    assert_response :unprocessable_entity
   end
 
   test 'create submission within course' do

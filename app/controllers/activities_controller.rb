@@ -179,12 +179,6 @@ class ActivitiesController < ApplicationController
   def set_activity
     @activity = Activity.find(params[:id])
     authorize @activity
-    @activity = case @activity.type
-                when ContentPage.name
-                  @activity.becomes(ContentPage)
-                when Exercise.name
-                  @activity.becomes(Exercise)
-                end
   end
 
   def set_course

@@ -22,7 +22,7 @@ nl:
       labels_delimiter: "Gebruik een komma om labels te scheiden"
       labels: Nieuw label
       info: Informatie
-      info_description: Ga naar de informatiepagina van deze oefening
+      info_description: Ga naar de informatiepagina van deze leeractiviteit
     index:
       title: Oefeningen
       exercise: Oefening

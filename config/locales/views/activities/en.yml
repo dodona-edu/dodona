@@ -22,7 +22,7 @@ en:
       labels_delimiter: "Use a comma to delimit labels"
       labels: New label
       info: Information
-      info_description: Go to the information page of this exercise
+      info_description: Go to the information page of this learning activity
     index:
       title: Exercises
       exercise: Exercise

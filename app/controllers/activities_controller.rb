@@ -87,11 +87,11 @@ class ActivitiesController < ApplicationController
 
       @code = @edit_submission.try(:code) || @solution || @activity.boilerplate
     elsif @activity.content_page?
-      if current_user&.member_of?(@course)
-        @read_state = @activity.activity_read_states.find_by(user: current_user, course: @course)
-      else
-        @read_state = @activity.activity_read_states.find_by(user: current_user)
-      end
+      @read_state = if current_user&.member_of?(@course)
+                      @activity.activity_read_states.find_by(user: current_user, course: @course)
+                    else
+                      @activity.activity_read_states.find_by(user: current_user)
+                    end
     end
 
     @title = @activity.name

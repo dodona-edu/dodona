@@ -20,7 +20,7 @@ en:
       deadline_met: You met the deadline
       not_solved: Not yet solved
     form:
-      edit_exercise: Edit exercise
+      edit_activity: Edit activity
       open_on_github: Open on GitHub
       labels_delimiter: "Use a comma to delimit labels"
       labels: New label

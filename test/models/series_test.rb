@@ -58,7 +58,7 @@ class SeriesTest < ActiveSupport::TestCase
 
   test 'changing deadline should invalidate exercise statuses' do
     course = create :course
-    series = create :series, course: course, deadline: Time.zone.now + 1.day, activity_count: 1
+    series = create :series, course: course, deadline: Time.zone.now + 1.day, exercise_count: 1
     user = create :user
 
     create :correct_submission,
@@ -252,7 +252,7 @@ class SeriesTest < ActiveSupport::TestCase
   end
 
   test 'completed? with wrong submission before deadline' do
-    series = create :series, activity_count: 1, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -261,11 +261,13 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
+
     assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission before deadline within a course' do
-    series = create :series, activity_count: 1, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -275,11 +277,13 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
+
     assert_equal true, series.completed?(user: user)
+    assert_equal true, series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission before deadline without course' do
-    series = create :series, activity_count: 1, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -288,11 +292,13 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
+
     assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
   end
 
   test 'completed? with wrong submission after deadline' do
-    series = create :series, activity_count: 1, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -301,11 +307,13 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
+
     assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission after deadline within course' do
-    series = create :series, activity_count: 1, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -315,11 +323,13 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
+
     assert_equal true, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission after deadline without course' do
-    series = create :series, activity_count: 1, deadline: Time.current
+    series = create :series, exercise_count: 1, deadline: Time.current
     user = create :user
 
     deadline = series.deadline
@@ -328,6 +338,117 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
+
     assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
+  end
+
+  test 'completed? with correct submission and unread content_page' do
+    series = create :series, exercise_count: 1, content_page_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+    # Correct submission before deadline
+    create :correct_submission,
+           exercise: series.exercises.first,
+           user: user,
+           course: series.course,
+           created_at: (deadline - 2.minutes)
+
+    assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
+  end
+
+  test 'completed? with wrong submission and read content_page' do
+    series = create :series, exercise_count: 1, content_page_count: 1, deadline: Time.current
+    user = create :user
+
+    deadline = series.deadline
+
+    # Wrong submission before deadline
+    create :wrong_submission,
+           exercise: series.exercises.first,
+           user: user,
+           course: series.course,
+           created_at: (deadline - 2.minutes)
+
+    # Read before deadline
+    create :activity_read_state,
+           activity: series.content_pages.first,
+           user: user,
+           course: series.course,
+           created_at: (deadline - 2.minutes)
+
+    assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
+  end
+
+  test 'completed? with correct submission and read content_page' do
+    series = create :series, exercise_count: 1, content_page_count: 1, deadline: Time.current
+    user = create :user
+    deadline = series.deadline
+
+    assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
+
+    # Correct submission before deadline
+    create :correct_submission,
+           exercise: series.exercises.first,
+           user: user,
+           course: series.course,
+           created_at: (deadline - 2.minutes)
+
+    assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
+
+    # Read before deadline
+    create :activity_read_state,
+           activity: series.content_pages.first,
+           user: user,
+           course: series.course,
+           created_at: (deadline - 2.minutes)
+
+    assert_equal true, series.completed?(user: user)
+    assert_equal true, series.completed_before_deadline?(user)
+  end
+
+  test 'completed? with content_page read after deadline' do
+    series = create :series, content_page_count: 1, deadline: Time.current
+    user = create :user
+    deadline = series.deadline
+
+    # unread
+    assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
+
+    # read after deadline
+    create :activity_read_state,
+           activity: series.content_pages.first,
+           user: user,
+           course: series.course,
+           created_at: (deadline + 2.minutes)
+
+    assert_equal true, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
+  end
+
+  test 'completed? with content_page read before deadline' do
+    series = create :series, content_page_count: 1, deadline: Time.current
+    user = create :user
+    deadline = series.deadline
+
+    # unread
+    assert_equal false, series.completed?(user: user)
+    assert_equal false, series.completed_before_deadline?(user)
+
+    # read before deadline
+    create :activity_read_state,
+           activity: series.content_pages.first,
+           user: user,
+           course: series.course,
+           created_at: (deadline - 2.minutes)
+
+    assert_equal true, series.completed?(user: user)
+    assert_equal true, series.completed_before_deadline?(user)
   end
 end

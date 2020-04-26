@@ -14,6 +14,8 @@ class ActivityReadState < ApplicationRecord
   belongs_to :course, optional: true
   belongs_to :user
 
+  validates :activity, uniqueness: { scope: %i[user_id course_id] }
+
   after_save :invalidate_caches
 
   scope :in_course, ->(course) { where course_id: course.id }

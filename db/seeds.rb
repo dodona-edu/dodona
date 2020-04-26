@@ -116,7 +116,7 @@ if Rails.env.development?
   contents_list = ContentPage.all.to_a
   exercises_list = Exercise.all.to_a
 
-  puts 'Add series, content pages, exercises and submissions to courses'
+  puts 'Add series, content pages, exercises, read states and submissions to courses'
 
   # Add contents and exercises to test course
   courses.each do |course|
@@ -147,6 +147,13 @@ if Rails.env.development?
     series.each do |s|
       series_contents = contents_list.sample(rand(3) + 2)
       s.content_pages << series_contents
+      series_contents.each do |content|
+        course.enrolled_members.sample(5).each do |student|
+          ActivityReadState.create user: student,
+                                   course: s.course,
+                                   activity: content
+        end
+      end
 
       series_exercises = exercises_list.sample(rand(3) + 2)
       s.exercises << series_exercises

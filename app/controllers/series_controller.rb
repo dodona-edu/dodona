@@ -180,8 +180,9 @@ class SeriesController < ApplicationController
 
     scores = @series.scoresheet
     @users = apply_scopes(scores[:users])
-    @exercises = scores[:exercises]
+    @activities = scores[:activities]
     @submissions = scores[:submissions]
+    @read_states = scores[:read_states]
 
     @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
 
@@ -193,14 +194,26 @@ class SeriesController < ApplicationController
         sheet = CSV.generate do |csv|
           csv << [I18n.t('series.scoresheet.explanation')]
           columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), @series.name]
-          columns.concat(@exercises.map(&:name))
-          columns.concat(@exercises.map { |e| I18n.t('series.scoresheet.status', exercise: e.name) })
+          columns.concat(@activities.map(&:name))
+          columns.concat(@activities.map { |a| I18n.t('series.scoresheet.status', activity: a.name) })
           csv << columns
-          csv << ['Maximum', '', '', '', @exercises.count].concat(@exercises.map { 1 }).concat(@exercises.map { '' })
+          csv << ['Maximum', '', '', '', @activities.count].concat(@activities.map { 1 }).concat(@activities.map { '' })
           @users.each do |u|
             row = [u.first_name, u.last_name, u.username, u.email]
-            succeeded_exercises = @exercises.map { |e| @submissions[[u.id, e.id]]&.accepted ? 1 : 0 }
-            exercise_status = @exercises.map { |e| @submissions[[u.id, e.id]]&.status || 'unstarted' }
+            succeeded_exercises = @activities.map do |a|
+              if a.exercise?
+                @submissions[[u.id, a.id]]&.accepted ? 1 : 0
+              elsif a.content_page?
+                @read_states[[u.id, a.id]].present? ? 1 : 0
+              end
+            end
+            exercise_status = @activities.map do |a|
+              if a.exercise?
+                @submissions[[u.id, a.id]]&.status || 'unstarted'
+              elsif a.content_page?
+                @read_states[[u.id, a.id]].present? ? 'read' : 'unread'
+              end
+            end
             row << succeeded_exercises.sum
             row.concat(succeeded_exercises)
             row.concat(exercise_status)

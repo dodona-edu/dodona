@@ -57,7 +57,7 @@ nl:
       download: Statusoverzicht downloaden
       course_view: Statusoverzicht van cursus
       select_view: Weergave selecteren
-      status: "Status %{exercise}"
+      status: "Status %{activity}"
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:

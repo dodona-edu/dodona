@@ -16,8 +16,10 @@ en:
     show:
       repository: Repository
       webhook_html: "If you set up a <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> on GitHub, Dodona will automatically update your exercises on each commit:"
-      reprocess: Reprocess all exercises
+      reprocess: Reprocess repository
       exercises: Exercises
+      content_pages: Reading activities
+      learning_activities: Learning activities
     admins:
       admins: "Administrators"
       admin_explanation: "The users listed below are repository administrators. These users can make others repository admins, view the private exercises in this repository, edit exercises in the repository and manage which courses can use private exercises."

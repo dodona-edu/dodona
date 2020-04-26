@@ -221,7 +221,7 @@ class SeriesTest < ActiveSupport::TestCase
       # All users are included in the scoresheet.
       assert_equal users.to_set, scoresheet[:users].to_set
       # All exercises are included in the scoresheet.
-      assert_equal series.exercises.to_set, scoresheet[:exercises].to_set
+      assert_equal series.activities.to_set, scoresheet[:activities].to_set
       # Only latest submissions in the course and after the deadline are counted.
       assert_equal 2 * series.exercises.count, scoresheet[:submissions].count
       # Submissions are for the correct user.

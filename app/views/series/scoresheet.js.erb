@@ -1,1 +1,1 @@
-$("#scoresheet-table-wrapper").html("<%= escape_javascript(render partial: 'scoresheet_table', locals: {course: @course, series: @series, exercises: @exercises, users: @users, submissions: @submissions}) %>")
+$("#scoresheet-table-wrapper").html("<%= escape_javascript(render partial: 'scoresheet_table', locals: {course: @course, series: @series, activities: @activities, users: @users, submissions: @submissions, read_states: @read_states}) %>")

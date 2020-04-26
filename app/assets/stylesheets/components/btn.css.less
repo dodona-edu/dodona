@@ -175,6 +175,33 @@
   }
 }
 
+.btn-fab-extended-right {
+  display: flex;
+  height: 42px;
+  border-radius: 24px;
+  font-size: 14px;
+  line-height: 36px;
+  padding-left: 20px;
+  text-transform: uppercase;
+
+  .icon {
+    padding-left: 12px;
+    padding-top: 4px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 8px;
+    padding-right: 8px;
+    .text {
+      display: none;
+    }
+
+    .icon {
+      padding-left: 0;
+    }
+  }
+}
+
 .btn-toggle {
   .btn {
     border: 1px solid @toggle-btn-border;

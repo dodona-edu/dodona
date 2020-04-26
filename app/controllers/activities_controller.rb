@@ -123,7 +123,10 @@ class ActivitiesController < ApplicationController
                                        user: current_user
     can_read = @activity.read_state_for(current_user, @course).blank?
     if can_read && read_state.save
-      render json: { status: 'ok', activity_id: read_state.activity_id, course_id: read_state.course_id }
+      respond_to do |format|
+        format.js { render 'activities/read', locals: { activity: @activity, course: @course, user: current_user } }
+        format.json { head :ok }
+      end
     else
       read_state.errors.add(:activity, 'already read') unless can_read
       render json: { status: 'failed', errors: read_state.errors }, status: :unprocessable_entity

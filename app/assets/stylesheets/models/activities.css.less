@@ -83,6 +83,25 @@
   margin-left: 16px;
 }
 
+.content-page-actions {
+  display: flex;
+  padding-bottom: 16px;
+
+  .content-page-action {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+
+    :first-child {
+      margin-right: auto;
+    }
+
+    :last-child {
+      margin-left: auto;
+    }
+  }
+}
+
 .footnotes::before {
   content: "";
   width: 150px;

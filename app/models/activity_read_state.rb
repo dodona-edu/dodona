@@ -14,7 +14,8 @@ class ActivityReadState < ApplicationRecord
   belongs_to :course, optional: true
   belongs_to :user
 
-  validates :activity, uniqueness: { scope: %i[user_id course_id] }
+  validates :activity, uniqueness: { scope: %i[user course], message: 'already read' }
+  validate :activity_accessible_for_user?, on: :create
 
   after_save :invalidate_caches
 
@@ -46,5 +47,9 @@ class ActivityReadState < ApplicationRecord
     course.invalidate_delayed_correct_solutions
     user.invalidate_attempted_exercises(course: course)
     user.invalidate_correct_exercises(course: course)
+  end
+
+  def activity_accessible_for_user?
+    errors.add(:activity, 'not accessible') unless activity.accessible?(user, course)
   end
 end

@@ -132,6 +132,10 @@ class Series < ApplicationRecord
     end
   end
 
+  def activity_count
+    @activity_c ||= activities.count
+  end
+
   def scoresheet
     users = course.subscribed_members
                   .order('course_memberships.status ASC')

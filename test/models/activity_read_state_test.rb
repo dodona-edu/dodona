@@ -36,4 +36,47 @@ class ActivityReadStateTest < ActiveSupport::TestCase
     second_read_state.course = nil
     assert second_read_state.valid?
   end
+
+  test 'accessibility should only be checked on create' do
+    series = create :series, content_page_count: 1
+    user = create :user, enrolled_courses: [series.course]
+    content_page = series.content_pages.first
+    content_page.update(access: :private)
+    content_page.repository.update(allowed_courses: [series.course])
+
+    read_state = build :activity_read_state,
+                       user: user,
+                       course: series.course,
+                       activity: content_page
+
+    assert read_state.valid?
+    assert read_state.save
+
+    series.update(visibility: :closed)
+
+    assert_not content_page.accessible?(user, series.course)
+    assert read_state.valid?
+    assert read_state.update(updated_at: Time.current)
+  end
+
+  test 'accessibility should be checked on create' do
+    series = create :series, content_page_count: 1, visibility: :closed
+    user = create :user, enrolled_courses: [series.course]
+    content_page = series.content_pages.first
+    content_page.update(access: :private)
+    content_page.repository.update(allowed_courses: [series.course])
+
+    read_state = build :activity_read_state,
+                       user: user,
+                       course: series.course,
+                       activity: content_page
+
+    assert_not read_state.valid?
+    assert_not read_state.save
+
+    series.update(visibility: :open)
+
+    assert read_state.valid?
+    assert read_state.save
+  end
 end

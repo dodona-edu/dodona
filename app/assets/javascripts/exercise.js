@@ -270,7 +270,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     lastTimeout = (lastTimeout || 0) + 1000;
                     lastTimeout = lastTimeout >= 5000 ? 4000 : lastTimeout;
                     ga("send", "pageview");
-                    let url = `/submissions.js?user_id=${userId}&exercise_id=${exerciseId}`;
+                    let url = `/submissions.js?user_id=${userId}&activity_id=${exerciseId}`;
                     if (courseId !== undefined) {
                         url += `&course_id=${courseId}`;
                     }
@@ -303,7 +303,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         lastSubmission = data.id;
         new Toast(I18n.t("js.submission-saved"));
         ga("send", "pageview");
-        let url = `/submissions.js?user_id=${userId}&exercise_id=${data.exercise_id}`;
+        let url = `/submissions.js?user_id=${userId}&activity_id=${data.exercise_id}`;
         if (data.course_id) {
             url += `&course_id=${data.course_id}`;
         }

@@ -52,10 +52,12 @@
             <% end %>
           <% end %>
           <span class='pull-left'><%= submission_status_icon(submission) %></span>
-          <% if submission.course.nil? %>
-            <%= link_to submission.exercise.name, activity_path(submission.exercise), class: "course-link", title: submission.exercise.name %>
+          <% if submission.exercise.accessible?(current_user, submission.course) %>
+            <%= link_to submission.exercise.name, activity_scoped_path(course: submission.course, activity: submission.exercise), class: "course-link", title: submission.exercise.name %>
           <% else %>
-            <%= link_to submission.exercise.name, course_activity_path(submission.course, submission.exercise), class: "course-link", title: submission.exercise.name %>
+            <span title="<%= submission.exercise.name %>"><%= submission.exercise.name %></span>
+          <% end %>
+          <% unless submission.course.nil? %>
             <%= link_to submission.course.name, course_path(submission.course), class: "small text-muted course-link", title: submission.course.name %>
           <% end %>
         </p>

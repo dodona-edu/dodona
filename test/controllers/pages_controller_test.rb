@@ -8,6 +8,25 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get signed in homepage' do
+    sign_in(create(:user))
+    get root_url
+    assert_response :success
+  end
+
+  test 'should get signed in homepage when user submitted to content page' do
+    user = create :user
+    activity = create :exercise
+    create :submission,
+           user: user,
+           exercise: activity
+    activity.update(type: ContentPage.name)
+
+    sign_in(user)
+    get root_url
+    assert_response :success
+  end
+
   test 'should get sign in page' do
     get sign_in_url
     assert_response :success

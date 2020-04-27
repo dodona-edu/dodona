@@ -14,6 +14,12 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should show activity if removed' do
+    @instance.update(status: :removed, path: nil)
+    get activity_url(@instance)
+    assert_response :success
+  end
+
   test 'should show activity description' do
     get description_activity_url(@instance, token: @instance.access_token)
     assert_response :success

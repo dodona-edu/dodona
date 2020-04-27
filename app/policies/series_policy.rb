@@ -30,7 +30,8 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def info?
-    course_admin?
+    # This is checked correctly in the ActivityPolicy
+    true
   end
 
   def overview?

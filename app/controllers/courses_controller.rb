@@ -33,7 +33,7 @@ class CoursesController < ApplicationController
     end
     @title = @course.name
     @series = policy_scope(@course.series)
-    @series_loaded = params[:secret].present? ? @course.series.count : 3
+    @series_loaded = params[:secret].present? ? @course.series.count : 2
   end
 
   # GET /courses/new

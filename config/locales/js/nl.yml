@@ -9,10 +9,10 @@ nl:
     submission-not-allowed: "Oeps, je bent niet toegelaten om een oplossing in te dienen voor deze oefening."
     submission-processed: Evaluatie afgerond
     unknown-error-loading-feedback: "Er is een onbekende fout opgetreden bij het laden van de feedback voor je oplossing"
-    exercise-added-success: Oefening toegevoegd
-    exercise-added-failed: Oefening toevoegen mislukt
-    exercise-removed-success: Oefening verwijderd
-    exercise-removed-failed: Oefening verwijderen mislukt
+    activity-added-success: Leeractiviteit toegevoegd
+    activity-added-failed: Leeractiviteit toevoegen mislukt
+    activity-removed-success: Leeractiviteit verwijderd
+    activity-removed-failed: Leeractiviteit verwijderen mislukt
     tutor-failed: Er ging iets fout bij het laden van de online python tutor
     copy-to-clipboard: Klik om te kopiëren
     copy-success: Gekopieerd!
@@ -32,6 +32,7 @@ nl:
     course_labels: Gebruikerlabels
     statuses: Statussen
     event_types: Event types
+    activity_types: Activiteitstypes
     label-undeletable: Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.
     configured-institution: de ingestelde onderwijsinstelling
     loading: Aan het laden...
@@ -105,5 +106,3 @@ nl:
       fields:
         annotation_text: 'Annotatie tekst'
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'
-
-

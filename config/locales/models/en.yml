@@ -8,6 +8,8 @@ en:
           not_permitted: You are not permitted to create a token for this user.
     models:
       course: Course
+      activity: Activity
+      content_page: Reading activity
       exercise: Exercise
       export: Export
       judge: Judge
@@ -54,7 +56,7 @@ en:
           brown: Brown
           blue-grey: Blue Grey
         institution: Institution
-      exercise:
+      activity:
         name: Name
         name_nl: Name Dutch
         name_en: Name English
@@ -78,7 +80,7 @@ en:
         remote: Clone URL
         path: Path
         judge: Default judge
-        exercises: Exercises
+        activities: Exercises
       series:
         indianio_support: Indianio support
         course: Course
@@ -87,7 +89,7 @@ en:
         visibility: Visibility
         order: Order
         deadline: Deadline
-        exercises_visible: Exercises visible
+        activities_visible: Activities visible
         visibilities:
           open: Open
           hidden: Hidden
@@ -108,6 +110,7 @@ en:
           compilation error: Compilation error
           memory limit exceeded: Memory limit exceeded
           internal error: Internal error
+          output limit exceeded: Output limit exceeded
       label:
         name: Name
         color: Color

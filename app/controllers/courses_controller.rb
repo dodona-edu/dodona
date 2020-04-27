@@ -176,7 +176,7 @@ class CoursesController < ApplicationController
           columns.concat(@series.map(&:name))
           columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })
           csv << columns
-          csv << ['Maximum', '', '', ''].concat(@series.map { |s| s.exercises.count }).concat(@series.map { |s| s.exercises.count })
+          csv << ['Maximum', '', '', ''].concat(@series.map { |s| s.activities.count }).concat(@series.map { |s| s.activities.count })
           @users.each do |u|
             row = [u.first_name, u.last_name, u.username, u.email]
             row.concat(@series.map { |s| @hash[[u.id, s.id]][:accepted] })

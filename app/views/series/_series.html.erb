@@ -1,4 +1,4 @@
-<% get_exercise_path ||= ->(ex) {course_series_exercise_path series.course_id, series.id, ex} %>
+<% get_activity_path ||= ->(ex) {course_series_activity_path series.course_id, series.id, ex} %>
 <% unless defined? loaded %>
   <% loaded = true %>
 <% end %>
@@ -102,9 +102,9 @@
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
-  <% if current_user&.course_admin?(series.course) && !series.exercises_visible %>
+  <% if current_user&.course_admin?(series.course) && !series.activities_visible %>
     <div class="alert alert-info hidden-print">
-      <%= t "series.show.exercises_not_visible" %>
+      <%= t "series.show.activities_not_visible" %>
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
@@ -112,19 +112,19 @@
     <%= markdown(series.description) %>
   </div>
 
-  <% if policy(series).overview? && series.exercises.length > 0 %>
-    <div class="series-exercises-table-wrapper">
+  <% if policy(series).overview? && series.activities.length > 0 %>
+    <div class="series-activities-table-wrapper">
       <% if loaded %>
-        <%= render partial: 'exercises/exercises_table', locals: {
+        <%= render partial: 'activities/activities_table', locals: {
             series: series,
-            exercises: series.exercises,
-            get_exercise_path: get_exercise_path,
+            activities: series.activities,
+            get_activity_path: get_activity_path,
             user: user
         } %>
       <% else %>
-        <div class="exercise-table-skeleton">
+        <div class="activity-table-skeleton">
           <div class="skeleton-head"></div>
-          <% series.exercises.count.times do %>
+          <% series.activities.count.times do %>
             <div class="skeleton-row"></div>
           <% end %>
         </div>

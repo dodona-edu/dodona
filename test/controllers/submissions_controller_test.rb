@@ -6,7 +6,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   crud_helpers Submission, attrs: %i[code exercise_id]
 
   setup do
-    stub_all_exercises!
+    stub_all_activities!
     @instance = create :submission
     @zeus = create(:zeus)
     sign_in @zeus
@@ -16,7 +16,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should fetch last correct submissions for exercise' do
     users = create_list :user, 10
-    c = create :course, series_count: 1, exercises_per_series: 1
+    c = create :course, series_count: 1, activities_per_series: 1
     e = c.series.first.exercises.first
 
     submissions = users.map { |u| create :correct_submission, user: u, exercise: e, course: c }
@@ -26,7 +26,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     # most_recent works
     create :correct_submission, user: users.first
 
-    get course_exercise_submissions_url c, e, most_recent_correct_per_user: true, format: :json
+    get course_activity_submissions_url c, e, most_recent_correct_per_user: true, format: :json
 
     results = JSON.parse response.body
     result_ids = results.map { |r| r['id'] }
@@ -115,11 +115,18 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should not create submission for content page' do
+    attrs = generate_attr_hash
+    attrs[:exercise_id] = create(:content_page).id
+    create_request(attr_hash: attrs)
+    assert_response :unprocessable_entity
+  end
+
   test 'create submission should respond bad_request without an exercise' do
     attrs = generate_attr_hash
     attrs.delete(:exercise_id)
     create_request(attr_hash: attrs)
-    assert_response 422
+    assert_response :unprocessable_entity
   end
 
   test 'create submission within course' do
@@ -133,7 +140,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     submission = create_request_expect attr_hash: attrs
 
     assert_not_nil submission.course, 'Course was not properly set'
-    assert_equal course, submission.course
+    assert_equal course.id, submission.course.id
   end
 
   test 'unregistered user submitting to private exercise in moderated course should fail' do
@@ -154,7 +161,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get submission edit page' do
     get edit_submission_path(@instance)
-    assert_redirected_to exercise_url(
+    assert_redirected_to activity_url(
       @instance.exercise,
       anchor: 'submission-card',
       edit_submission: @instance
@@ -175,12 +182,12 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'submission media should redirect to exercise media' do
     get media_submission_path(@instance, 'dank_meme.jpg')
-    assert_redirected_to media_exercise_path(@instance.exercise, 'dank_meme.jpg')
+    assert_redirected_to media_activity_path(@instance.exercise, 'dank_meme.jpg')
   end
 
   test 'submission media should redirect to exercise media and keep token' do
     get media_submission_path(@instance, 'dank_meme.jpg', token: @instance.exercise.access_token)
-    assert_redirected_to media_exercise_path(@instance.exercise, 'dank_meme.jpg', token: @instance.exercise.access_token)
+    assert_redirected_to media_activity_path(@instance.exercise, 'dank_meme.jpg', token: @instance.exercise.access_token)
   end
 
   def rejudge_submissions(**params)
@@ -223,7 +230,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     series = create :series, :with_submissions
     exercise = series.exercises.sample
     assert_jobs_enqueued(exercise.submissions.count) do
-      rejudge_submissions exercise_id: exercise.id
+      rejudge_submissions activity_id: exercise.id
     end
   end
 end

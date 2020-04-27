@@ -20,14 +20,14 @@
               <% end %>
             </select>
           </div>
-          <% if @series.exercises.any? %>
+          <% if @series.activities.any? %>
             <%= link_to scoresheet_series_path(@series, format: :csv), class: "btn btn-primary btn-text" do %>
               <i class="mdi mdi-cloud-download"></i>
               <%=  t('.download') %>
             <% end %>
           <% end %>
         </div>
-        <% if @series.exercises.any? %>
+        <% if @series.activities.any? %>
           <%= render partial: 'layouts/searchbar', locals: {
               actions: [
                   { text: t('.at_least_one_started'), search: { at_least_one_started: true } }
@@ -35,7 +35,7 @@
               course_labels: @course_labels
           } %>
           <div id="scoresheet-table-wrapper">
-            <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, exercises: @exercises, users: @users, submissions: @submissions} %>
+            <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, activities: @activities, users: @users, submissions: @submissions, read_states: @read_states} %>
           </div>
         <% else %>
           <span><%= t('.no_exercises_html', series_edit_url: edit_series_path(@series)) %></span>

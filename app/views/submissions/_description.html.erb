@@ -7,9 +7,9 @@
   <span class="description">
     <%= t "submissions.show.submission_for" %>
     <% if submission.course.nil? %>
-      <%= link_to submission.exercise.name, exercise_path(submission.exercise) %>
+      <%= link_to submission.exercise.name, activity_path(submission.exercise) %>
     <% else %>
-      <%= link_to submission.exercise.name, course_exercise_path(submission.course, submission.exercise) %>
+      <%= link_to submission.exercise.name, course_activity_path(submission.course, submission.exercise) %>
     <% end %>
     <% if current_user.course_admin?(submission.course) %>
       <%= t "submissions.show.by" %>

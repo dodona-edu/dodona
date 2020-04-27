@@ -4,13 +4,13 @@ import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop.js";
 
 const DRAG_AND_DROP_ARGS = {
-    table_selector: ".series-exercise-list tbody",
-    item_selector: ".series-exercise-list a.remove-exercise",
+    table_selector: ".series-activity-list tbody",
+    item_selector: ".series-activity-list a.remove-activity",
     item_data_selector: "series_id",
-    order_selector: ".series-exercise-list a.remove-exercise",
-    order_data_selector: "exercise_id",
+    order_selector: ".series-activity-list a.remove-activity",
+    order_data_selector: "activity_id",
     url_from_id: function (seriesId) {
-        return `/series/${seriesId}/reorder_exercises.js`;
+        return `/series/${seriesId}/reorder_activities.js`;
     },
 };
 
@@ -21,17 +21,17 @@ function initSeriesEdit() {
         initRemoveButtons();
         initDragAndDrop(DRAG_AND_DROP_ARGS);
         // export function
-        dodona.seriesEditExercisesLoaded = () => {
+        dodona.seriesEditActivitiesLoaded = () => {
             initAddButtons();
             initTokenClickables();
         };
     }
 
     function initAddButtons() {
-        $("a.add-exercise").click(function () {
+        $("a.add-activity").click(function () {
             const $addButton = $(this);
-            const exerciseId = $addButton.data("exercise_id");
-            const exerciseName = $addButton.data("exercise_name");
+            const activityId = $addButton.data("activity_id");
+            const activityName = $addButton.data("activity_name");
             const seriesId = $addButton.data("series_id");
             const scopedUrl = $addButton.data("scoped_url");
             const confirmMessage = $addButton.data("confirm");
@@ -41,20 +41,20 @@ function initSeriesEdit() {
             const $row = $addButton.parents("tr").clone();
             $row.addClass("new");
             $row.children("td:first").html("<div class='drag-handle'><i class='mdi mdi-reorder-horizontal mdi-18'></i></div>");
-            $row.children("td.link").children("span.ellipsis-overflow").html(`<a target='_blank' href='${scopedUrl}'>${exerciseName}</a>`);
-            $row.children("td.actions").html(`<a href='#' class='btn btn-icon remove-exercise' data-exercise_id='${exerciseId}' data-exercise_name='${exerciseName}' data-series_id='${seriesId }'><i class='mdi mdi-delete mdi-18'></i></a>`);
-            $(".series-exercise-list tbody").append($row);
+            $row.children("td.link").children("span.ellipsis-overflow").html(`<a target='_blank' href='${scopedUrl}'>${activityName}</a>`);
+            $row.children("td.actions").html(`<a href='#' class='btn btn-icon remove-activity' data-activity_id='${activityId}' data-activity_name='${activityName}' data-series_id='${seriesId}'><i class='mdi mdi-delete mdi-18'></i></a>`);
+            $(".series-activity-list tbody").append($row);
             $row.css("opacity"); // trigger paint
             $row.removeClass("new").addClass("pending");
-            $.post("/series/" + seriesId + "/add_exercise.js", {
-                exercise_id: exerciseId,
+            $.post("/series/" + seriesId + "/add_activity.js", {
+                activity_id: activityId,
             })
                 .done(function () {
-                    $("#no-exercises").remove();
-                    exerciseAdded($row, $addButton);
+                    $("#no-activities").remove();
+                    activityAdded($row, $addButton);
                 })
                 .fail(function () {
-                    addingExerciseFailed($row);
+                    addingActivityFailed($row);
                 });
             return false;
         });
@@ -74,52 +74,52 @@ function initSeriesEdit() {
     }
 
     function initRemoveButtons() {
-        $("a.remove-exercise").click(removeExercise);
+        $("a.remove-activity").click(removeActivity);
     }
 
-    function removeExercise() {
-        const exerciseId = $(this).data("exercise_id");
+    function removeActivity() {
+        const activityId = $(this).data("activity_id");
         const seriesId = $(this).data("series_id");
         const $row = $(this).parents("tr").addClass("pending");
-        $.post("/series/" + seriesId + "/remove_exercise.js", {
-            exercise_id: exerciseId,
+        $.post("/series/" + seriesId + "/remove_activity.js", {
+            activity_id: activityId,
         })
             .done(function () {
-                exerciseRemoved($row);
+                activityRemoved($row);
             })
             .fail(function () {
-                removingExerciseFailed($row);
+                removingActivityFailed($row);
             });
         return false;
     }
 
-    function exerciseAdded($row, $addButton) {
-        new Toast(I18n.t("js.exercise-added-success"));
-        $row.find("a.remove-exercise").click(removeExercise);
+    function activityAdded($row, $addButton) {
+        new Toast(I18n.t("js.activity-added-success"));
+        $row.find("a.remove-activity").click(removeActivity);
         $row.removeClass("pending");
         $addButton.addClass("hidden");
     }
 
-    function addingExerciseFailed($row) {
-        new Toast(I18n.t("js.exercise-added-failed"));
+    function addingActivityFailed($row) {
+        new Toast(I18n.t("js.activity-added-failed"));
         $row.addClass("new").removeClass("pending");
         setTimeout(function () {
             $row.remove();
         }, 500);
     }
 
-    function exerciseRemoved($row) {
+    function activityRemoved($row) {
         $row.addClass("new").removeClass("pending");
         setTimeout(function () {
             $row.remove();
         }, 500);
-        new Toast(I18n.t("js.exercise-removed-success"));
-        $(`a.add-exercise[data-exercise_id="${$row.find("a.remove-exercise").data("exercise_id")}"]`).removeClass("hidden");
+        new Toast(I18n.t("js.activity-removed-success"));
+        $(`a.add-activity[data-activity_id="${$row.find("a.remove-activity").data("activity_id")}"]`).removeClass("hidden");
     }
 
-    function removingExerciseFailed($row) {
+    function removingActivityFailed($row) {
         $row.removeClass("pending");
-        new Toast(I18n.t("js.exercise-removed-failed"));
+        new Toast(I18n.t("js.activity-removed-failed"));
     }
 
     init();

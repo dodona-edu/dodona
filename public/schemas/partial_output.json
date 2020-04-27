@@ -199,6 +199,7 @@
         "compilation error",
         "memory limit exceeded",
         "time limit exceeded",
+        "output limit exceeded",
         "runtime error",
         "wrong", "wrong answer",
         "correct", "correct answer"

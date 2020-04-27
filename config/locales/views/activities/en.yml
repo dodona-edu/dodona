@@ -1,0 +1,118 @@
+en:
+  activities:
+    navbar_links:
+      info: Activity information
+      show: Show activity
+      submissions: Submissions for this exercise
+      edit: Edit activity
+    activity:
+      count_tooltip: Number of students that solved this exercise correctly
+      read_tooltip: Number of students that read this
+      read_by: Read %{count} times
+      read: Read
+      not_read: Not yet read
+      read_after_deadline: You missed the deadline, but you did read this.
+      correct: Correct
+      correct_after_deadline: You missed the deadline, but your latest submission (after the deadline) is correct.
+      wrong: Wrong
+      wrong_after_deadline: You met the deadline, but your latest submission (after the deadline) is wrong. Click to go to your last correct solution.
+      deadline_missed: You missed the deadline (your last submission before the deadline was wrong)
+      deadline_met: You met the deadline
+      not_solved: Not yet solved
+    form:
+      edit_activity: Edit activity
+      open_on_github: Open on GitHub
+      labels_delimiter: "Use a comma to delimit labels"
+      labels: New label
+      info: Information
+      info_description: Go to the information page of this learning activity
+    index:
+      title: Exercises
+      exercise: Exercise
+      status: Status
+      private: Private
+      invalid: Invalid
+      removed: Removed
+      activity_title: Title
+      programming_language: "Programming language"
+      labels: "Labels"
+      repository: "Repository"
+      path: "Path"
+      class_progress: Class progress
+      class_progress_visibility_disabled: "The class progress is not visible for students."
+      progress_chart_info_tried:
+        one: "One user started this exercise."
+        other: "%{count} users started this exercise."
+      progress_chart_info_correct:
+        one: "One user solved it correctly."
+        other: "%{count} users solved it correctly."
+      progress_chart_info_read:
+        one: "One user read this."
+        other: "%{count} users read this."
+      type:
+        exercise: Exercise
+        content: Reading activity
+    show:
+      code: Code
+      handin: Hand in
+      feedback: Feedback
+      solutions: Submissions
+      not_logged_in_html: <a href="%{url}">Sign in</a> to test your solution.
+      hand_in_info: You can submit as many times as you want. Only your last submission is taken into account.
+      hide_correct: hide correct
+      correct: correct
+      wrong: wrong
+      hand_in_tooltip: Click the play button to hand in and test your solution.
+      not_found: Sorry, we can't find this exercise.
+      not_accessible: This exercise isn't accessible to students.
+      not_visible: This exercise isn't visible for students without the correct link.
+      not_a_member: You are viewing this exercise within a course of which you are not a member. You won't show up on your teacher's scoresheets until you register.
+      alert_not_valid: There's something wrong with this exercise. You can't hand in new solutions but can still see your old submissions.
+      alert_removed: This exercise is no longer available, but can still see your old submissions.
+      deadline_passed: "The deadline for this exercise was at %{deadline}. You can still submit, but your submissions may not be accounted for."
+      deadline_in_5_minutes: "The deadline for this exercise is at %{deadline}, which is less than 5 minutes away."
+      navigation:
+        back_to_course: Back to course
+        previous: Previous activity
+        next: Next activity
+      mark_as_read: Mark as read
+      read_at: "Marked as read at %{timestamp}"
+    series_exercises_table:
+      course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
+    edit:
+      courses: "Courses using this exercise"
+    info:
+      no_readme_present: "This learning activity does not yet have extra information."
+      no_readme_present_admin: "This activity does not yet have a 'readme' with extra information. You can add this to the learning activity in the repository."
+      author_information: "Created by %{contact} in repository %{repository}."
+      programming_language: Programming language
+      natural_language: Natural language
+      time_limit: Time limit
+      memory_limit: Memory limit
+      network_enabled: Network enabled
+      network_disabled: Network disabled
+      submission_count: Submitted solutions
+      submission_details: "This exercises has %{total} submissions by %{users} unique users. Of these submissions, %{correct} were correct."
+      sample_solutions: Sample solutions
+      sample_solutions_hint: Click on one of the tabs above to view a sample solution.
+      sample_solution_submit: Submit this solution
+      no_solutions: This exercise does not yet have a sample solution.
+      no_solutions_admin: Add your sample solutions to the repository and they will be shown here.
+      usage: Usage
+      courses_using_this_activity:
+        zero: "This activity is not yet used by a course."
+        one: "This activity is used by 1 course."
+        other: "This activity is used by %{count} courses."
+      contact: Contact information
+      judge: Judge
+      repository: Repository containing this activity
+      repository_path: Path within this repository
+      created: Created
+      updated: Last edited
+      ago: ago
+      click_here_to_create_one: Click here to create the readme.
+      config_set_by: "This value was set by %{file}"
+      config_default: "This is the default value."
+      description_files: "We found files for these languages in the descriptions folder %{path}"
+      config_info: 'Take a look at the %{doc_site} for more information about configuring exercises.'
+      doc_site: 'documentation site'

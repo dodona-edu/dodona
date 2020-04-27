@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ExportsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    stub_all_exercises!
+    stub_all_activities!
     @course = create :course
     @students = [create(:student), create(:student), create(:student)]
     @course.enrolled_members.concat(@students)

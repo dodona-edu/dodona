@@ -26,7 +26,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    @course = create :course, series_count: 1, exercises_per_series: 1, submissions_per_exercise: 1
+    @course = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
 
     @course.administrating_members.concat(create_normies)
 

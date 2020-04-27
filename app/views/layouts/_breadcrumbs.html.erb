@@ -6,7 +6,7 @@
 
 <div class="crumbs">
   <% if !user_signed_in? %>
-    <div class="crumb"><%= link_to(t("layout.menu.exercises"), exercises_path) %></div>
+    <div class="crumb"><%= link_to(t("layout.menu.activities"), activities_path) %></div>
   <% elsif @crumbs.present? %>
     <% is_first = true %>
     <% @crumbs.each do |name, path| %>

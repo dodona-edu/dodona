@@ -12,7 +12,6 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #  fs_key      :string(24)
-#  line_count  :integer
 #
 
 class Submission < ApplicationRecord
@@ -26,7 +25,7 @@ class Submission < ApplicationRecord
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
 
-  enum status: { unknown: 0, correct: 1, wrong: 2, "time limit exceeded": 3, running: 4, queued: 5, "runtime error": 6, "compilation error": 7, "memory limit exceeded": 8, "internal error": 9 }
+  enum status: { unknown: 0, correct: 1, wrong: 2, "time limit exceeded": 3, running: 4, queued: 5, "runtime error": 6, "compilation error": 7, "memory limit exceeded": 8, "internal error": 9, "output limit exceeded": 10 }
 
   belongs_to :exercise
   belongs_to :user
@@ -257,7 +256,7 @@ class Submission < ApplicationRecord
   def update_exercise_status
     return if status.in?(%i[queued running])
 
-    exercise.exercise_statuses_for(user, course).each(&:update_values)
+    exercise.activity_statuses_for(user, course).each(&:update_values)
   end
 
   def invalidate_caches

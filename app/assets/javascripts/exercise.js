@@ -71,7 +71,7 @@ function onFrameMessage(event) {
 function initLightboxes() {
     let index = 1;
     const images = [];
-    $(".exercise-description img, a.dodona-lightbox").each(function () {
+    $(".activity-description img, a.dodona-lightbox").each(function () {
         const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
         const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
         const imageObject = {
@@ -83,7 +83,7 @@ function initLightboxes() {
         $(this).data("image_index", index++);
     });
 
-    $(".exercise-description img, a.dodona-lightbox").click(function () {
+    $(".activity-description img, a.dodona-lightbox").click(function () {
         const index = $(this).data("image_index");
         window.parentIFrame.sendMessage({
             type: "lightbox",
@@ -97,9 +97,9 @@ function initLightboxes() {
 }
 
 function centerImagesAndTables() {
-    $(".exercise-description p > img").parent().wrapInner("<center></center>");
-    $(".exercise-description > table").wrap("<center></center>");
-    $(".exercise-description > iframe").wrap("<center></center>");
+    $(".activity-description p > img").parent().wrapInner("<center></center>");
+    $(".activity-description > table").wrap("<center></center>");
+    $(".activity-description > iframe").wrap("<center></center>");
 }
 
 function initMathJax() {
@@ -136,11 +136,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     function init() {
         if (editorShown) {
             initEditor();
+            initDeadlineTimeout();
+            enableSubmissionTableLinks();
+            swapActionButtons();
         }
         initStrip();
-        swapActionButtons();
-        initDeadlineTimeout();
-        enableSubmissionTableLinks();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").click(function () {
@@ -157,16 +157,16 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $("#submission-copy-btn").click(function () {
             const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
-            $("#exercise-handin-link").tab("show");
+            $("#activity-handin-link").tab("show");
         });
 
-        $("#exercise-handin-link").on("shown.bs.tab", function () {
+        $("#activity-handin-link").on("shown.bs.tab", function () {
             // refresh editor after show
             editor.resize(true);
         });
 
         // secure external links
-        $(".exercise-description a[target='_blank']").each(function () {
+        $(".activity-description a[target='_blank']").each(function () {
             $(this).attr("rel", "noopener");
         });
 
@@ -192,11 +192,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function swapActionButtons() {
-        $("#exercise-handin-link").on("show.bs.tab", function (e) {
+        $("#activity-handin-link").on("show.bs.tab", function (e) {
             $("#submission-copy-btn").addClass("hidden-fab");
             $("#editor-process-btn").removeClass("hidden-fab");
         });
-        $("#exercise-submission-link").on("show.bs.tab", function (e) {
+        $("#activity-submission-link").on("show.bs.tab", function (e) {
             $("#submission-copy-btn").addClass("hidden-fab");
             if (lastSubmission) {
                 $("#editor-process-btn").removeClass("hidden-fab");
@@ -204,7 +204,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 $("#editor-process-btn").addClass("hidden-fab");
             }
         });
-        $("#exercise-feedback-link").on("show.bs.tab", function (e) {
+        $("#activity-feedback-link").on("show.bs.tab", function (e) {
             $("#editor-process-btn").addClass("hidden-fab");
             $("#submission-copy-btn").removeClass("hidden-fab");
         });
@@ -224,7 +224,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     function feedbackLoaded(submissionId) {
         ga("send", "pageview");
         $("#feedback").removeClass("hidden");
-        const $exerciseFeedbackLink = $("#exercise-feedback-link");
+        const $exerciseFeedbackLink = $("#activity-feedback-link");
         $exerciseFeedbackLink.removeClass("hidden");
         $exerciseFeedbackLink.tab("show");
         $exerciseFeedbackLink.attr("data-submission_id", submissionId);
@@ -278,10 +278,10 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 }, (lastTimeout || 0) + 1000);
             } else {
                 lastTimeout = 0;
-                if ($("#exercise-submission-link").parent().hasClass("active")) {
+                if ($("#activity-submission-link").parent().hasClass("active")) {
                     $submissionRow.find(".load-submission").get(0).click();
-                } else if ($("#exercise-feedback-link").parent().hasClass("active") &&
-                    $("#exercise-feedback-link").data("submission_id") === lastSubmission) {
+                } else if ($("#activity-feedback-link").parent().hasClass("active") &&
+                    $("#activity-feedback-link").data("submission_id") === lastSubmission) {
                     loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
                 }
                 setTimeout(enableSubmitButton, 100);
@@ -308,7 +308,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             url += `&course_id=${data.course_id}`;
         }
         $.get(url);
-        $("#exercise-submission-link").tab("show");
+        $("#activity-submission-link").tab("show");
     }
 
     function submissionFailed(request) {
@@ -402,4 +402,3 @@ export {
     initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
     onFrameMessage, onFrameScroll
 };
-

@@ -1,0 +1,29 @@
+<%= content_for :navbar do %>
+  <% can_view_submissions = if @course
+                              policy(@course).submissions?
+                            else
+                              current_user&.admin?
+                            end %>
+
+  <%= navbar_link url: activity_scoped_path(activity: @activity, course: @course, series: @series),
+                  title: t('.show'),
+                  icon: 'clipboard-text',
+                  if: policy(@activity).edit? || can_view_submissions %>
+
+  <% if @activity.exercise? %>
+    <%= navbar_link url: submissions_scoped_path(exercise: @activity, course: @course, series: @series),
+                    title: t('.submissions'),
+                    custom_icon: 'submissions',
+                    if: can_view_submissions %>
+  <% end %>
+
+  <%= navbar_link url: edit_activity_scoped_path(activity: @activity, course: @course, series: @series),
+                  title: t('.edit'),
+                  icon: 'pencil',
+                  if: policy(@activity).edit? %>
+
+  <%= navbar_link url: info_activity_scoped_path(activity: @activity, course: @course, series: @series),
+                  title: t('.info'),
+                  icon: 'information',
+                  if: policy(@activity).info? %>
+<% end %>

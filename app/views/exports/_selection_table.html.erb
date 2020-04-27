@@ -10,7 +10,7 @@
       </th>
       <% if data[:is_series?] %>
         <th class='count hidden-xs'>
-            <%= t "exercises.index.class_progress" %>
+            <%= t "activities.index.class_progress" %>
         </th>
       <% end %>
       <th>
@@ -34,8 +34,8 @@
                       total: data[:course].subscribed_members_count,
                       tried: el.users_tried(course: data[:course]),
                       correct: el.users_correct(course: data[:course]),
-                      info_tried: 'exercises.index.progress_chart_info_tried',
-                      info_correct: 'exercises.index.progress_chart_info_correct'
+                      info_tried: 'activities.index.progress_chart_info_tried',
+                      info_correct: 'activities.index.progress_chart_info_correct'
                   }
               %>
             </td>

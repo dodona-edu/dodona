@@ -133,7 +133,7 @@ class Series < ApplicationRecord
   end
 
   def activity_count
-    @activity_c ||= activities.count
+    @activity_count ||= activities.count
   end
 
   def scoresheet

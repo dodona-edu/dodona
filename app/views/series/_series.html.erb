@@ -112,7 +112,7 @@
     <%= markdown(series.description) %>
   </div>
 
-  <% if policy(series).overview? && series.activities.length > 0 %>
+  <% if policy(series).overview? && series.activity_count > 0 %>
     <div class="series-activities-table-wrapper">
       <% if loaded %>
         <%= render partial: 'activities/activities_table', locals: {
@@ -124,7 +124,7 @@
       <% else %>
         <div class="activity-table-skeleton">
           <div class="skeleton-head"></div>
-          <% series.activities.count.times do %>
+          <% series.activity_count.times do %>
             <div class="skeleton-row"></div>
           <% end %>
         </div>

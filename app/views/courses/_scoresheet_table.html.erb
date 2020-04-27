@@ -13,7 +13,7 @@
       <tr>
         <td class="user-name ellipsis-overflow"><%= link_to student.full_name, course_member_path(course, student), title: student.full_name, class: "ellipsis-overflow" %></td>
         <% series.each do |s| %>
-          <td class="status" title="<%= "#{s.name} - #{student.full_name} - #{hash[[student.id, s.id]][:accepted]}/#{s.activities.count}" %>"><%= hash[[student.id, s.id]][:accepted] %></td>
+          <td class="status" title="<%= "#{s.name} - #{student.full_name} - #{hash[[student.id, s.id]][:accepted]}/#{s.activity_count}" %>"><%= hash[[student.id, s.id]][:accepted] %></td>
         <% end %>
       </tr>
     <% end %>

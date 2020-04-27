@@ -33,7 +33,7 @@ class CoursesController < ApplicationController
     end
     @title = @course.name
     @series = policy_scope(@course.series)
-    @series_loaded = params[:secret].present? ? @course.series.count : 3
+    @series_loaded = params[:secret].present? ? @course.series.count : 2
   end
 
   # GET /courses/new
@@ -176,7 +176,7 @@ class CoursesController < ApplicationController
           columns.concat(@series.map(&:name))
           columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })
           csv << columns
-          csv << ['Maximum', '', '', ''].concat(@series.map { |s| s.activities.count }).concat(@series.map { |s| s.activities.count })
+          csv << ['Maximum', '', '', ''].concat(@series.map(&:activity_count)).concat(@series.map(&:activity_count))
           @users.each do |u|
             row = [u.first_name, u.last_name, u.username, u.email]
             row.concat(@series.map { |s| @hash[[u.id, s.id]][:accepted] })

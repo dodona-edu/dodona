@@ -1,6 +1,7 @@
 json.extract! activity,
               :id,
               :name,
+              :type,
               :description_format
 if activity.exercise?
   json.boilerplate activity.boilerplate

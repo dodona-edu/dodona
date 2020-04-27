@@ -85,7 +85,7 @@ class Activity < ApplicationRecord
   end
 
   def full_path
-    return '' unless path
+    return Pathname.new '' unless path
 
     Pathname.new File.join(repository.full_path, path)
   end

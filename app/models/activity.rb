@@ -85,7 +85,9 @@ class Activity < ApplicationRecord
   end
 
   def full_path
-    Pathname.new(path ? File.join(repository.full_path, path) : '')
+    return Pathname.new '' unless path
+
+    Pathname.new File.join(repository.full_path, path)
   end
 
   def media_path

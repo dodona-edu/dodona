@@ -15,7 +15,7 @@ class ActivityReadState < ApplicationRecord
   belongs_to :user
 
   validates :activity, uniqueness: { scope: %i[user course], message: 'already read' }
-  validate :activity_accessible_for_user?
+  validate :activity_accessible_for_user?, on: :create
 
   after_save :invalidate_caches
 

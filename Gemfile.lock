@@ -153,10 +153,10 @@ GEM
       activesupport (>= 4.0, < 7)
     excon (0.71.0)
     execjs (2.7.0)
-    factory_bot (5.1.1)
+    factory_bot (5.2.0)
       activesupport (>= 4.2.0)
-    factory_bot_rails (5.1.1)
-      factory_bot (~> 5.1.0)
+    factory_bot_rails (5.2.0)
+      factory_bot (~> 5.2.0)
       railties (>= 4.2.0)
     faker (2.11.0)
       i18n (>= 1.6, < 2)
@@ -442,7 +442,7 @@ DEPENDENCIES
   docker-api (~> 1.34.2)
   ed25519
   exception_notification (~> 4.4.0)
-  factory_bot_rails (~> 5.1.1)
+  factory_bot_rails (~> 5.2.0)
   faker (~> 2.11.0)
   foreman!
   has_scope (~> 0.7.2)

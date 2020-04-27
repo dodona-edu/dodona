@@ -76,15 +76,15 @@
   <div class="field form-group">
       <div class="col-sm-6 col-sm-offset-3">
         <div class="checkbox">
-          <%= f.label :exercises_visible, class: 'checkbox-label' do %>
-            <input type="hidden" value="1" name="series[exercises_visible">
-            <%= check_box_tag "series[exercises_visible]", "0", !@series.exercises_visible %>
-            <%= t '.hide_exercises' %>
+          <%= f.label :activities_visible, class: 'checkbox-label' do %>
+            <input type="hidden" value="1" name="series[activities_visible]">
+            <%= check_box_tag "series[activities_visible]", "0", !@series.activities_visible %>
+            <%= t '.hide_activities' %>
           <% end %>
         </div>
       </div>
       <span class="help-block col-sm-offset-3 col-sm-6">
-        <%= t '.hide_exercises_help' %>
+        <%= t '.hide_activities_help' %>
       </span>
     </div>
   </div>

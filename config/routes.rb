@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     concern :mediable do
       member do
         constraints host: Rails.configuration.default_host do
-          get 'media/*media', to: 'exercises#media', constraints: { media: /.*/ }, as: 'media'
+          get 'media/*media', to: 'activities#media', constraints: { media: /.*/ }, as: :media
         end
       end
     end
@@ -35,20 +35,27 @@ Rails.application.routes.draw do
       end
     end
 
+    concern :readable do
+      member do
+        post 'read'
+      end
+    end
+
     concern :submitable do
       resources :submissions, only: %i[index create]
     end
 
     resources :series, except: %i[new index] do
-      resources :exercises, only: [:index]
+      resources :activities, only: [:index]
+      resources :activities, only: [:index], path: '/exercises'
       member do
-        get 'available_exercises', to: 'exercises#available'
+        get 'available_activities', to: 'activities#available'
         get 'overview'
         get 'scoresheet'
-        post 'add_exercise'
+        post 'add_activity'
         post 'mass_rejudge'
-        post 'remove_exercise'
-        post 'reorder_exercises'
+        post 'remove_activity'
+        post 'reorder_activities'
         post 'reset_token'
       end
     end
@@ -65,9 +72,11 @@ Rails.application.routes.draw do
 
     resources :courses do
       resources :series, only: %i[new index] do
-        resources :exercises, only: %i[show edit update], concerns: %i[mediable submitable infoable]
+        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
+        resources :activities, only: %i[show edit update], concerns: %i[submitable infoable], path: '/exercises'
       end
-      resources :exercises, only: %i[show edit update], concerns: %i[mediable submitable infoable]
+      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
+      resources :activities, only: %i[show edit update], concerns: %i[submitable infoable], path: '/exercises'
       resources :submissions, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
         get 'download_labels_csv', on: :collection
@@ -90,15 +99,28 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exercises, only: %i[index show edit update], concerns: %i[mediable submitable infoable] do
+    resources :activities, only: %i[index show edit update], concerns: %i[readable mediable submitable infoable] do
       member do
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do
-            root to: 'exercises#description', as: 'description'
+            root to: 'activities#description', as: 'description'
             get 'media/*media',
-                to: 'exercises#media',
+                to: 'activities#media',
                 constraints: { media: /.*/ },
                 as: 'description_media'
+          end
+        end
+      end
+    end
+
+    resources :activities, only: %i[index show edit update], concerns: %i[submitable infoable], path: '/exercises' do
+      member do
+        scope 'description/:token/' do
+          constraints host: Rails.configuration.sandbox_host do
+            root to: 'activities#description'
+            get 'media/*media',
+                to: 'activities#media',
+                constraints: { media: /.*/ }
           end
         end
       end

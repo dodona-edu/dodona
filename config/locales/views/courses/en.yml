@@ -152,6 +152,7 @@ en:
       subscribed_users: Registered users
       submitted_solutions: Submitted solutions
       exercise_count: Exercises
+      content_count: Reading activities
       more_statistics: "More statistics >"
     create:
       added_private_exercises: "Private exercises were added while creating this course. To use these exercises, this course will need to be granted permission from the relevant repositories."

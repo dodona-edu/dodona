@@ -14,7 +14,7 @@ module StubHelper
     end
   end
 
-  def stub_all_exercises!
+  def stub_all_activities!
     config = { 'evaluation' => { 'time_limit' => 1 } }.freeze
     config_locations = { 'evaluation' => { 'time_limit' => 'config.json' } }.freeze
     description = 'ᕕ(ಠ_ಠ)ᕗ'

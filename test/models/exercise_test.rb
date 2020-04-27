@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: exercises
+# Table name: activities
 #
 #  id                      :integer          not null, primary key
 #  name_nl                 :string(255)
@@ -18,6 +18,7 @@
 #  access_token            :string(16)       not null
 #  repository_token        :string(64)       not null
 #  allow_unsafe            :boolean          default(FALSE), not null
+#  type                    :string(255)      default("Exercise"), not null
 #
 
 require 'test_helper'
@@ -301,23 +302,23 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal true, @exercise.solved_for?(@user)
   end
 
-  test 'solved_for should retry finding ExerciseStatus when it fails once' do
+  test 'solved_for should retry finding ActivityStatus when it fails once' do
     create :wrong_submission,
            exercise: @exercise,
            user: @user
 
-    ExerciseStatus.stubs(:find_or_create_by)
+    ActivityStatus.stubs(:find_or_create_by)
                   .raises(StandardError.new('This is an error')).then
-                  .returns(ExerciseStatus.create(exercise: @exercise, user: @user))
+                  .returns(ActivityStatus.create(activity: @exercise, user: @user))
     assert_equal false, @exercise.solved_for?(@user)
   end
 
-  test 'solved_for should not retry finding ExerciseStatus when it fails twice' do
+  test 'solved_for should not retry finding ActivityStatus when it fails twice' do
     create :wrong_submission,
            exercise: @exercise,
            user: @user
 
-    ExerciseStatus.stubs(:find_or_create_by)
+    ActivityStatus.stubs(:find_or_create_by)
                   .raises(StandardError.new('This is an error')).then
                   .raises(StandardError.new('This is an error'))
     assert_raises StandardError do
@@ -540,7 +541,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     Rails.env.stubs(:production?).returns(true)
     @remote = local_remote('exercises/echo')
     @repository = create :repository, remote: @remote.path
-    @repository.process_exercises
+    @repository.process_activities
     @exercise = @repository.exercises.first
     @about_nl_path = @exercise.full_path.join('README.nl.md')
     @about_en_path = @exercise.full_path.join('README.md')
@@ -633,7 +634,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   test 'safe_delete should not destroy exercise if it has series memberships' do
     @exercise.status = 2 # set status to removed
     course = create :course
-    series = create :series, course: course, exercise_count: 1
+    series = create :series, course: course, activity_count: 1
     series.exercises.map { @exercise }
     @exercise.series.concat(series) # Add series membership
     @exercise.safe_destroy
@@ -695,7 +696,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
     @judge = create :judge, :git_stubbed, name: 'Iona Nikitchenko'
     @remote = local_remote('exercises/lasagna')
     @repository = create :repository, remote: @remote.path
-    @repository.process_exercises
+    @repository.process_activities
     @exercise = @repository.exercises.find_by(path: 'exercises/series/ISBN')
     @extra_exercise = @repository.exercises.find_by(path: 'exercises/extra/echo')
   end
@@ -804,7 +805,7 @@ end
 
 class ExerciseStubTest < ActiveSupport::TestCase
   setup do
-    stub_all_exercises!
+    stub_all_activities!
     @exercise = create :exercise
   end
 

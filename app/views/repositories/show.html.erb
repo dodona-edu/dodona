@@ -25,12 +25,15 @@
               :</strong> <%= link_to @repository.judge.name, @repository.judge %>
           </p>
           <p>
-            <strong># <%= Repository.human_attribute_name("exercises") %>:</strong> <%= @repository.exercises.count %>
+            <strong><%= t(".exercises") %>:</strong> <%= @repository.exercises.count %>
+          </p>
+          <p>
+            <strong><%= t(".content_pages") %>:</strong> <%= @repository.content_pages.count %>
           </p>
           <% if policy(@repository).reprocess? %>
-            <p>
-              <%= link_to t(".reprocess"), reprocess_repository_path(@repository) %>
-            </p>
+            <div class="pull-right">
+              <%= link_to t(".reprocess"), reprocess_repository_path(@repository), class: "btn-text" %>
+            </div>
           <% end %>
         </div>
         <% if current_user.repository_admin?(@repository) %>
@@ -49,9 +52,9 @@
         <% end %>
       </div>
       <div class="card-supporting-text card-border">
-        <h3><%= t ".exercises" %></h3>
-        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: exercises_path(repository_id: @repository.id), eager: true}) %>
-        <div id="exercises-table-wrapper">
+        <h3><%= t ".learning_activities" %></h3>
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: activities_path(repository_id: @repository.id), eager: true, activity_types: [ContentPage, Exercise]}) %>
+        <div id="activities-table-wrapper">
         </div>
       </div>
     </div>

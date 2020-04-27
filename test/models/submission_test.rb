@@ -12,7 +12,6 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #  fs_key      :string(24)
-#  line_count  :integer
 #
 
 require 'test_helper'
@@ -22,6 +21,17 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'factory should create submission' do
     assert_not_nil create(:submission)
+  end
+
+  test 'submission with content_page as exercise is not valid' do
+    submission = create :submission
+    content_page = create :content_page
+
+    assert_raises ActiveRecord::AssociationTypeMismatch do
+      submission.exercise = content_page
+    end
+
+    assert_not submission.update(exercise_id: content_page.id)
   end
 
   test 'submissions should be rate limited for a user' do

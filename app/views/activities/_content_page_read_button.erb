@@ -1,0 +1,16 @@
+<% # arguments: activity (Activity), course (Course | nil), user (User), read_state (ActivityReadState | nil) %>
+<% if read_state.present? %>
+  <span>
+    <i class="mdi mdi-check icon colored-correct"></i>
+    <%= t('activities.show.read_at', timestamp: l(read_state.created_at, format: :long)) %>
+  </span>
+<% else %>
+  <span id='content_page_read_action'>
+    <% read_url = read_activity_url(activity) %>
+    <% read_url = read_course_activity_url(course, activity) if course.present? %>
+    <%= link_to read_url, method: :post, remote: true, class: 'btn btn-primary with-text btn-fab-extended' do %>
+      <i class="mdi mdi-clipboard-check-outline icon"></i>
+      <span class="text"><%= t('activities.show.mark_as_read') %></span>
+    <% end %>
+  </span>
+<% end %>

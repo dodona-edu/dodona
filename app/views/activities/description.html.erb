@@ -1,0 +1,32 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'description' %>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<% end %>
+<div class="activity-description">
+  <div class="card-supporting-text">
+    <% if @activity.removed? %>
+      <div class="alert alert-info"><%= t "activities.show.alert_removed" %></div>
+    <% elsif @activity.not_valid? %>
+      <div class="alert alert-info"><%= t "activities.show.alert_not_valid" %></div>
+    <% else %>
+      <% description, footnotes, first_image = activity_description_footnotes_and_first_image(@activity) %>
+      <% content_for :meta_tags do %>
+        <% if first_image.present? %>
+          <meta property="og:image" content="<%= first_image %>">
+        <% end %>
+      <% end %>
+      <%= description %>
+    <% end %>
+    <footer class="footnote-links visible-print">
+      <% if footnotes&.any? %>
+        <h4>Links</h4>
+        <% footnotes.each do |index, url| %>
+          <%= link_to "[#{index}]: #{url}", url %><br/>
+        <% end %>
+      <% end %>
+    </footer>
+  </div>
+</div>
+<script>
+  $(function(){window.dodona.initDescription();});
+</script>

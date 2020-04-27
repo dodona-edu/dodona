@@ -9,10 +9,10 @@ en:
     submission-not-allowed: "Oops, you are not allowed to submit a solution to this exercise."
     submission-processed: Evaluation finished
     unknown-error-loading-feedback: An unknown error occurred while loading the feedback for your submission
-    exercise-added-success: Exercise added
-    exercise-added-failed: Adding exercise failed
-    exercise-removed-success: Exercise removed
-    exercise-removed-failed: Removing exercise failed
+    activity-added-success: Activity added
+    activity-added-failed: Adding activity failed
+    activity-removed-success: Activity removed
+    activity-removed-failed: Removing activity failed
     tutor-failed: Something went wrong while loading the online python tutor
     copy-to-clipboard: Click to copy
     copy-success: Copied!
@@ -32,7 +32,8 @@ en:
     course_labels: Member labels
     statuses: Statuses
     event_types: Event types
-    label-undeletable: This label can't be deleted because it was set in the dirconfig file of a parent directory of the exercise.
+    activity_types: Activity types
+    label-undeletable: This label can't be deleted because it was set in the dirconfig file of a parent directory of the learning activity.
     configured-institution: the configured institution
     loading: Loading...
     submissions_on: "submissions on"
@@ -105,4 +106,3 @@ en:
       fields:
         annotation_text: 'Annotation text'
       delete_confirm: 'Are you sure you want to delete this annotation?'
-

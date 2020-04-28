@@ -50,6 +50,13 @@ class ActivityStatus < ApplicationRecord
     save
   end
 
+  def self.add_status_for(user, series, eager = [])
+    Current.status_store ||= {}
+    ActivityStatus.where(series: series, user: user).includes(eager).find_each do |as|
+      Current.status_store[[as.user_id, as.series_id, as.activity_id]] = as
+    end
+  end
+
   private
 
   def initialise_values_for_content_page

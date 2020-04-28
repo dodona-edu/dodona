@@ -369,13 +369,14 @@ class Activity < ApplicationRecord
 
   def activity_status_for(user, series = nil)
     attempts = 0
-    begin
+    Current.status_store ||= {}
+    Current.status_store[[user.id, series.id, id]] ||= begin
       ActivityStatus.find_or_create_by(activity: self, series: series, user: user)
-    rescue StandardError
-      # https://github.com/dodona-edu/dodona/issues/1877
-      raise unless (attempts += 1) <= 1
+                                                       rescue StandardError
+                                                         # https://github.com/dodona-edu/dodona/issues/1877
+                                                         raise unless (attempts += 1) <= 1
 
-      retry
+                                                         retry
     end
   end
 

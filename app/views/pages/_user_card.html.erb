@@ -40,7 +40,7 @@
     <div class="card-supporting-text card-border recents">
       <h5><%= t ".recent-exercises" %></h5>
       <% current_user.recent_exercises(5).each do |exercise| %>
-        <% submission = exercise.last_submission(current_user) %>
+        <% submission = exercise.last_submission!(current_user) %>
         <p>
           <% if submission.course.nil? %>
             <%= link_to activity_submissions_path(submission.exercise), class: 'btn-icon pull-right' do %>

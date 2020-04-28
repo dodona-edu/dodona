@@ -8,8 +8,8 @@ if activity.exercise?
   json.programming_language activity.programming_language
   if current_user
     json.last_solution_is_best activity.best_is_last_submission?(current_user, series)
-    json.has_solution activity.last_submission(current_user).present?
-    json.has_correct_solution activity.last_correct_submission(current_user).present?
+    json.has_solution activity.last_submission!(current_user).present?
+    json.has_correct_solution activity.last_correct_submission!(current_user).present?
   end
 elsif activity.content_page?
   json.has_read activity.activity_read_states.find_by(user: current_user).present? if current_user

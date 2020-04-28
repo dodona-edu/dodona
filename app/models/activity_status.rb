@@ -64,10 +64,10 @@ class ActivityStatus < ApplicationRecord
   def initialise_values_for_exercise
     return unless activity.exercise?
 
-    best = activity.best_submission(user, nil, series&.course)
-    best_before_deadline = activity.best_submission(user, series&.deadline, series&.course)
-    last = activity.last_submission(user, nil, series&.course)
-    last_before_deadline = activity.last_submission(user, series&.deadline, series&.course)
+    best = activity.best_submission!(user, nil, series&.course)
+    best_before_deadline = activity.best_submission!(user, series&.deadline, series&.course)
+    last = activity.last_submission!(user, nil, series&.course)
+    last_before_deadline = activity.last_submission!(user, series&.deadline, series&.course)
 
     self.last_submission = last
     self.last_submission_deadline = last_before_deadline

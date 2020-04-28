@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_24_161936) do
+ActiveRecord::Schema.define(version: 2020_04_28_114649) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -88,6 +88,10 @@ ActiveRecord::Schema.define(version: 2020_04_24_161936) do
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "last_submission_id"
+    t.integer "last_submission_deadline_id"
+    t.integer "best_submission_id"
+    t.integer "best_submission_deadline_id"
     t.index ["activity_id", "series_id", "user_id"], name: "index_activity_statuses_on_activity_id_and_series_id_and_user_id", unique: true
     t.index ["series_id"], name: "fk_rails_1bc42c2178"
     t.index ["user_id"], name: "fk_rails_8a05a160e8"

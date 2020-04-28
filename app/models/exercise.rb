@@ -101,18 +101,18 @@ class Exercise < Activity
     activity_status_for(user, series).best_is_last?
   end
 
-  def best_submission(user, deadline = nil, course = nil)
-    last_correct_submission(user, deadline, course) || last_submission(user, deadline, course)
+  def best_submission!(user, deadline = nil, course = nil)
+    last_correct_submission!(user, deadline, course) || last_submission!(user, deadline, course)
   end
 
-  def last_correct_submission(user, deadline = nil, course = nil)
+  def last_correct_submission!(user, deadline = nil, course = nil)
     s = submissions.of_user(user).where(status: :correct)
     s = s.in_course(course) if course
     s = s.before_deadline(deadline) if deadline
     s.limit(1).first
   end
 
-  def last_submission(user, deadline = nil, course = nil)
+  def last_submission!(user, deadline = nil, course = nil)
     raise 'Second argument is a deadline, not a course' if deadline.is_a? Course
 
     s = submissions.of_user(user)

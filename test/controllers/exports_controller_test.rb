@@ -24,7 +24,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
   test 'should download only last submissions' do
     post series_exports_path(@series), params: { all: true, only_last_submission: true, with_info: true }
     assert_redirected_to exports_path
-    count = @students.map { |u| @series.exercises.map { |e| e.last_submission!(u, nil, @series.course) } }.flatten.select(&:present?).count
+    count = @students.map { |u| @series.exercises.map { |e| e.last_submission(u, series) } }.flatten.select(&:present?).count
     assert_zip ActiveStorage::Blob.last.download, with_info: true, solution_count: count, data: @data
   end
 

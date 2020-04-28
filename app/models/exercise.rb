@@ -97,6 +97,22 @@ class Exercise < Activity
   invalidateable_instance_cacheable(:users_tried,
                                     ->(this, options) { format(USERS_TRIED_CACHE_STRING, course_id: options[:course] ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
+  def last_submission(user, series = nil)
+    activity_status_for(user, series).last_submission
+  end
+
+  def last_submission_before_deadline(user, series = nil)
+    activity_status_for(user, series).last_submission_deadline
+  end
+
+  def best_submission(user, series = nil)
+    activity_status_for(user, series).best_submission
+  end
+
+  def best_submission_before_deadline(user, series = nil)
+    activity_status_for(user, series).best_submission_deadline
+  end
+
   def best_is_last_submission?(user, series = nil)
     activity_status_for(user, series).best_is_last?
   end

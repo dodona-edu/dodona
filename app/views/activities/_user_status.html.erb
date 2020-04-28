@@ -1,7 +1,7 @@
 <% # arguments: activity (Activity), series (Series | nil), user (User) %>
 <% if activity.exercise? %>
-  <% submission = activity.last_submission!(user, nil, series&.course) %>
-  <% best_submission = activity.best_submission!(user, nil, series&.course) %>
+  <% submission = activity.last_submission(user, series) %>
+  <% best_submission = activity.best_submission(user, series) %>
   <% if submission.present? %>
     <% if submission.accepted? %>
       <%= link_to submission, class: 'deadline-ok' do %>

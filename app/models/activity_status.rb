@@ -15,6 +15,13 @@
 #  updated_at               :datetime         not null
 #
 class ActivityStatus < ApplicationRecord
+  # the reverse relations aren't defined because this doesn't make sense and there are no
+  # indexes defined to allow fast retrieval
+  belongs_to :last_submission, class_name: 'Submission', optional: true
+  belongs_to :last_submission_deadline, class_name: 'Submission', optional: true
+  belongs_to :best_submission, class_name: 'Submission', optional: true
+  belongs_to :best_submission_deadline, class_name: 'Submission', optional: true
+
   belongs_to :activity
   belongs_to :series, optional: true
   belongs_to :user
@@ -61,6 +68,11 @@ class ActivityStatus < ApplicationRecord
     best_before_deadline = activity.best_submission(user, series&.deadline, series&.course)
     last = activity.last_submission(user, nil, series&.course)
     last_before_deadline = activity.last_submission(user, series&.deadline, series&.course)
+
+    self.last_submission = last
+    self.last_submission_deadline = last_before_deadline
+    self.best_submission = best
+    self.best_submission_deadline = best_before_deadline
 
     self.accepted = last&.accepted? || false
     self.accepted_before_deadline = last_before_deadline&.accepted? || false

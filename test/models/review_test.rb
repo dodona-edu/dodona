@@ -5,7 +5,7 @@
 #  id                 :bigint           not null, primary key
 #  submission_id      :integer
 #  review_session_id  :bigint
-#  user_id            :integer
+#  review_user_id     :bigint
 #  review_exercise_id :bigint
 #  completed          :boolean          default(FALSE), not null
 #  created_at         :datetime         not null

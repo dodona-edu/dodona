@@ -4,9 +4,8 @@ class AnnotationPolicy < ApplicationPolicy
       if user&.zeus?
         scope.all
       elsif user
-        common = scope.joins(:submission).left_outer_joins(:review_session)
-        common = common.where(review_session_id: nil).or(common.where(review_sessions: { released: true }))
-        common.where(submissions: { user: user }).or(common.where(submissions: { course_id: user.administrating_courses.map(&:id) }))
+        common = scope.joins(:submission).left_joins(:review_session)
+        common.released.where(submissions: { user: user }).or(common.where(submissions: { course_id: user.administrating_courses.map(&:id) }))
       else
         scope.none
       end
@@ -22,7 +21,10 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def show?
-    SubmissionPolicy.new(user, record.submission).show?
+    return false unless SubmissionPolicy.new(user, record.submission).show?
+    return true if record.review_session.blank?
+
+    record.review_session.released
   end
 
   def update?
@@ -31,10 +33,6 @@ class AnnotationPolicy < ApplicationPolicy
 
   def destroy?
     record&.user == user
-  end
-
-  def visible_student?
-    record&.review_session.nil? || record.review_session.released
   end
 
   def permitted_attributes

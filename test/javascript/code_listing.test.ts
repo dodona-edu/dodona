@@ -208,15 +208,13 @@ test("annotations should be transmitted into view", () => {
         "line_nr": 1,
         "annotation_text": "This could be shorter",
         "markdown_text": "<p>This could be shorter</p>",
+        "released": true,
         "permission": {
             update: false,
             destroy: false,
         },
         "user": {
             name: "Jan Klaassen",
-        },
-        "visibility": {
-            "student": true
         }
     });
 
@@ -225,15 +223,13 @@ test("annotations should be transmitted into view", () => {
         "line_nr": 2,
         "annotation_text": "This should be faster",
         "markdown_text": "<p>This should be faster</p>",
+        "released": true,
         "permission": {
             update: true,
             destroy: true,
         },
         "user": {
             name: "Piet Hein",
-        },
-        "visibility": {
-            "student": true
         }
     });
 
@@ -250,11 +246,9 @@ test("feedback table should support more than 1 annotation per row", () => {
             update: false,
             destroy: false,
         },
+        "released": true,
         "user": {
             name: "Jan Klaassen",
-        },
-        "visibility": {
-            "student": true
         }
     });
 
@@ -263,15 +257,13 @@ test("feedback table should support more than 1 annotation per row", () => {
         "line_nr": 1,
         "annotation_text": "This should be faster",
         "markdown_text": "<p>This should be faster</p>",
+        "released": true,
         "permission": {
             update: true,
             destroy: true,
         },
         "user": {
             name: "Piet Hein",
-        },
-        "visibility": {
-            "student": true
         }
     });
 
@@ -284,15 +276,13 @@ test("feedback table should be able to contain both machine annotations and user
         "line_nr": 1,
         "annotation_text": "This could be shorter",
         "markdown_text": "<p>This could be shorter</p>",
+        "released": true,
         "permission": {
             update: false,
             destroy: false,
         },
         "user": {
             name: "Jan Klaassen",
-        },
-        "visibility": {
-            "student": true
         }
     });
 
@@ -301,15 +291,13 @@ test("feedback table should be able to contain both machine annotations and user
         "line_nr": 2,
         "annotation_text": "This should be faster",
         "markdown_text": "<p>This should be faster</p>",
+        "released": true,
         "permission": {
             update: true,
             destroy: true,
         },
         "user": {
             name: "Piet Hein",
-        },
-        "visibility": {
-            "student": true
         }
     });
 

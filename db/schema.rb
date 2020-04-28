@@ -279,13 +279,13 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
     t.index ["user_id"], name: "fk_rails_6b59ad362c"
   end
 
-  create_table "review_activities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "review_exercises", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "review_session_id"
-    t.integer "activity_id"
+    t.integer "exercise_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["activity_id"], name: "index_review_activities_on_activity_id"
-    t.index ["review_session_id"], name: "index_review_activities_on_review_session_id"
+    t.index ["exercise_id"], name: "index_review_exercises_on_exercise_id"
+    t.index ["review_session_id"], name: "index_review_exercises_on_review_session_id"
   end
 
   create_table "review_sessions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -297,18 +297,27 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
     t.index ["series_id"], name: "index_review_sessions_on_series_id"
   end
 
+  create_table "review_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "review_session_id"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["review_session_id"], name: "index_review_users_on_review_session_id"
+    t.index ["user_id"], name: "index_review_users_on_user_id"
+  end
+
   create_table "reviews", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "submission_id"
     t.bigint "review_session_id"
-    t.integer "user_id"
-    t.bigint "review_activity_id"
+    t.bigint "review_user_id"
+    t.bigint "review_exercise_id"
     t.boolean "completed", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["review_activity_id"], name: "index_reviews_on_review_activity_id"
+    t.index ["review_exercise_id"], name: "index_reviews_on_review_exercise_id"
     t.index ["review_session_id"], name: "index_reviews_on_review_session_id"
+    t.index ["review_user_id"], name: "index_reviews_on_review_user_id"
     t.index ["submission_id"], name: "index_reviews_on_submission_id"
-    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "series", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -413,13 +422,15 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"
-  add_foreign_key "review_activities", "activities"
-  add_foreign_key "review_activities", "review_sessions"
+  add_foreign_key "review_exercises", "activities", column: "exercise_id"
+  add_foreign_key "review_exercises", "review_sessions"
   add_foreign_key "review_sessions", "series"
-  add_foreign_key "reviews", "review_activities"
+  add_foreign_key "review_users", "review_sessions"
+  add_foreign_key "review_users", "users"
+  add_foreign_key "reviews", "review_exercises"
   add_foreign_key "reviews", "review_sessions"
+  add_foreign_key "reviews", "review_users"
   add_foreign_key "reviews", "submissions"
-  add_foreign_key "reviews", "users"
   add_foreign_key "series", "courses"
   add_foreign_key "series_memberships", "activities"
   add_foreign_key "series_memberships", "series"

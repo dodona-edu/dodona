@@ -155,11 +155,6 @@ class User < ApplicationRecord
     Faker::Name.last_name
   end
 
-  def review_name
-    Faker::Config.random = Random.new(id)
-    Faker::FunnyName.name
-  end
-
   def username
     return self[:username] unless Current.demo_mode && Current.user != self
 

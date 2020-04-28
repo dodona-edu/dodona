@@ -13,7 +13,7 @@
   <tbody>
   <% reviews[:reviews].each do |user, review_l| %>
     <tr>
-      <td><%= user.review_name %></td>
+      <td><%= user.full_name %></td>
       <% review_l.each do |review| %>
         <td class="review-table-center">
           <% if review.submission.nil? %>

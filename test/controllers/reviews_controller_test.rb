@@ -11,8 +11,9 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
         submission.save
       end
     end
-    @zeus = create(:zeus)
-    sign_in @zeus
+    @course_admin = create(:staff)
+    @course_admin.administrating_courses << @series.course
+    sign_in @course_admin
   end
 
   test 'Create session via wizard page' do
@@ -173,6 +174,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
         status: true
       }
     }
+    assert_response :success
 
     refetched = @series.review_session.reviews.find(random_review.id)
     assert_equal true, refetched.completed, 'completed should have been set to true'
@@ -211,10 +213,10 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     reviews = review_session.reviews.decided.includes(:submission)
     reviews.each do |review|
       # Annotation bound to Review
-      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
+      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @course_admin)
 
       # Normal annotation
-      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
+      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @course_admin)
     end
     assert_equal reviews.count, Notification.all.count, 'only notifications for the annotations without a review session'
 
@@ -245,21 +247,24 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     reviews = review_session.reviews.decided.includes(:submission)
     reviews.each do |review|
       # Annotation bound to Review
-      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
+      review_session.annotations.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @course_admin)
 
       # Normal annotation
-      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @zeus)
+      Annotation.create(submission: review.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @course_admin)
     end
 
     student = @users.sample
     assert_not_nil student
+    picked_submission = review_session.reviews.where(user: student).decided.sample.submission
+
+    get submission_annotations_path(picked_submission, format: :json)
+    json_response = JSON.parse(@response.body)
+    assert_equal 2, json_response.size, 'Course admin should be able to see unreleased submissions'
 
     sign_in student
 
-    picked_submission = review_session.reviews.where(user: student).decided.sample.submission
-    assert_not_nil picked_submission
     assert_equal student, picked_submission.user
-    get submission_annotations_path(picked_submission), headers: { accept: 'application/json' }
+    get submission_annotations_path(picked_submission, format: :json)
 
     json_response = JSON.parse(@response.body)
     assert_equal 1, json_response.size, 'Only one annotation is visible here, since the review session is unreleased'
@@ -267,7 +272,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     review_session.released = true
     review_session.save
 
-    get submission_annotations_path(picked_submission), headers: { accept: 'application/json' }
+    get submission_annotations_path(picked_submission, format: :json)
 
     json_response = JSON.parse(@response.body)
     assert_equal 2, json_response.size, 'Both annotations are visible, as the review session is released'
@@ -275,16 +280,14 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     random_unauthorized_student = create :student
     sign_in random_unauthorized_student
 
-    get submission_annotations_path(picked_submission), headers: { accept: 'application/json' }
+    get submission_annotations_path(picked_submission, format: :json)
 
     json_response = JSON.parse(@response.body)
     assert_equal 0, json_response.size, 'Non authorized users can not query for annotations on a submission that is not their own'
 
-    sign_out @zeus
-    sign_out student
     sign_out random_unauthorized_student
 
-    get submission_annotations_path(picked_submission), headers: { accept: 'application/json' }
+    get submission_annotations_path(picked_submission, format: :json)
 
     json_response = JSON.parse(@response.body)
     assert_equal 0, json_response.size, 'Non logged in users may not query the annotations of a submission'
@@ -305,7 +308,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    sign_out @zeus
+    sign_out @course_admin
 
     # No log in
     get review_review_session_path(review_session, random_review)
@@ -330,7 +333,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     review_session = @series.review_session
     annotations = []
     review_session.reviews.decided.each do |review|
-      annotations << review.submission.annotations.create(review_session: @review_session, user: @zeus, annotation_text: Faker::Lorem.sentences(number: 3), line_nr: 0)
+      annotations << review.submission.annotations.create(review_session: @review_session, user: @course_admin, annotation_text: Faker::Lorem.sentences(number: 3), line_nr: 0)
     end
 
     assert_not_empty annotations
@@ -373,7 +376,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal review_session_count, ReviewSession.where(series: @series).count, 'No new review sessions should be made for this series'
 
-    sign_out @zeus
+    sign_out @course_admin
     get review_series_path(@series)
     assert_response :redirect
   end
@@ -382,7 +385,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     get review_series_path(@series)
     assert_response :success
 
-    sign_out @zeus
+    sign_out @course_admin
     get review_series_path(@series)
     assert_response :redirect
   end
@@ -399,8 +402,8 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
     review_session = @series.review_session
     review_session.reviews.each do |review|
-      review&.submission&.annotations&.create(line_nr: 0, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
-      review&.submission&.annotations&.create(line_nr: 0, annotation_text: Faker::Lorem.sentences(number: 3), user: @zeus, review_session: review_session)
+      review&.submission&.annotations&.create(line_nr: 0, annotation_text: Faker::Lorem.sentences(number: 3), user: @course_admin, review_session: review_session)
+      review&.submission&.annotations&.create(line_nr: 0, annotation_text: Faker::Lorem.sentences(number: 3), user: @course_admin, review_session: review_session)
 
       review.completed = true
       review.save
@@ -409,16 +412,8 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     review_session.released = true
     review_session.save
 
-    # Logged in as Zeus, should only have access if Zeus himself has a review
-    get overview_review_session_path(review_session)
-    if @users.include? @zeus
-      assert_response :success
-    else
-      assert_response :redirect
-    end
-
     # Not logged in, no access
-    sign_out @zeus
+    sign_out @course_admin
     get overview_review_session_path(review_session)
     assert_response :redirect
 
@@ -445,7 +440,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     get edit_review_session_path(review_session)
     assert_response :success
 
-    sign_out @zeus
+    sign_out @course_admin
     get edit_review_session_path(review_session)
     assert_response :redirect
 
@@ -480,7 +475,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
       get review_review_session_path(review_session, review)
       assert_response :success
     end
-    sign_out @zeus
+    sign_out @course_admin
 
     sign_in staff_member
     review_session.reviews.decided.each do |review|
@@ -527,8 +522,8 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
     assert_not review_session.released
 
-    sign_out @zeus
-    [@zeus, staff_member, student_from_review_session, random_student].each do |person|
+    sign_out @course_admin
+    [staff_member, student_from_review_session, random_student].each do |person|
       sign_in person
       get overview_review_session_path(review_session)
       assert_response :redirect, 'Should not get access since the review is unreleased'
@@ -538,7 +533,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     review_session.released = true
     review_session.save
 
-    [@zeus, staff_member].each do |person|
+    [@course_admin, staff_member].each do |person|
       sign_in person
       get overview_review_session_path(review_session)
       if @users.include? person
@@ -577,7 +572,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     staff_member = create :staff
     @series.course.administrating_members << staff_member
 
-    [@zeus, staff_member].each do |person|
+    [@course_admin, staff_member].each do |person|
       sign_in person
       get review_session_path(review_session)
       assert_response :success, 'Should get access since the user is not a student'

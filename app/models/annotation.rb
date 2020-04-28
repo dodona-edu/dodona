@@ -26,20 +26,24 @@ class Annotation < ApplicationRecord
 
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :released, lambda {
+    common = left_joins(:review_session)
+    common.where(review_session_id: nil).or(common.where(review_sessions: { released: true }))
+  }
 
   after_save :create_notification
-  before_destroy :destroy_notifications
+  after_destroy :destroy_notification
 
   private
 
   def create_notification
-    Notification.find_by(notifiable: submission)&.destroy
     return if review_session.present?
 
+    Notification.find_by(notifiable: submission)&.destroy
     Notification.create(notifiable: submission, user: submission.user, message: 'annotations.index.new_annotation')
   end
 
-  def destroy_notifications
-    Notification.where(notifiable: self)&.destroy_all
+  def destroy_notification
+    Notification.find_by(notifiable: submission)&.destroy unless submission.annotations.released.any?
   end
 end

@@ -57,8 +57,6 @@ Rails.application.routes.draw do
         post 'remove_activity'
         post 'reorder_activities'
         post 'reset_token'
-        get 'review', to: 'reviews#review_create_wizard'
-        post 'review', to: 'reviews#create_review', as: 'review_create'
       end
     end
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
@@ -181,21 +179,17 @@ Rails.application.routes.draw do
       delete 'destroy_all', on: :collection
     end
 
+    resources :review_sessions, only: %i[show new edit create update destroy] do
+      resources :reviews, only: %i[show update]
+    end
+    resources :reviews, only: %i[show update]
 
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'
       get 'punchcard', to: 'statistics#punchcard'
     end
 
-    resources :reviews, only: [:show, :edit, :update], path: "review_session", as: 'review_session' do
-      member do
-        get 'review/:review_id', to: 'reviews#review', as: 'review'
-        post 'review/:review_id/complete', to: 'reviews#review_complete', as: 'review_complete'
-        get 'overview', to: 'reviews#overview', as: 'overview'
-      end
-    end
   end
-
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 

@@ -1,13 +1,15 @@
 class ReviewPolicy < ApplicationPolicy
-  def review?
+  def show?
     course_admin?
   end
 
-  def review_complete?
+  def update?
     course_admin?
   end
+
+  private
 
   def course_admin?
-    record.class == Review && user&.course_admin?(record&.submission&.course)
+    user&.course_admin?(record&.submission&.course)
   end
 end

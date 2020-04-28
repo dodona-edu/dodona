@@ -11,19 +11,21 @@ class ReviewSessionPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def review?
+  def destroy?
     course_admin?
   end
 
-  def overview?
-    record.reviews.where(user: user).exists? && record.released
+  def permitted_attributes
+    if record.class == ReviewSession
+      %i[deadline user_ids exercise_ids]
+    else
+      %i[series_id deadline user_ids exercise_ids]
+    end
   end
 
-  def review_complete?
-    course_admin?
-  end
+  private
 
   def course_admin?
-    record.class == ReviewSession && user&.course_admin?(record&.series&.course)
+    user&.course_admin?(record&.series&.course)
   end
 end

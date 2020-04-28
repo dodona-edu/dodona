@@ -51,7 +51,7 @@ export abstract class Annotation {
         meta.textContent = this.meta;
         header.appendChild(meta);
 
-        if (!this.released) {
+        if (!this.visible) {
             const icon = document.createElement("i");
             icon.classList.add("mdi", "mdi-eye-off");
             icon.title = I18n.t("js.user_annotation.not_released");
@@ -112,7 +112,7 @@ export abstract class Annotation {
         return false;
     }
 
-    public get released(): boolean {
+    public get visible(): boolean {
         return true;
     }
 

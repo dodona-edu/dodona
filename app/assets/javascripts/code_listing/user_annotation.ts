@@ -13,10 +13,6 @@ interface UserAnnotationUserData {
     name: string;
 }
 
-interface UserAnnotationVisibility {
-    student: boolean;
-}
-
 interface UserAnnotationPermissionData {
     update: boolean;
     destroy: boolean;
@@ -28,11 +24,11 @@ export interface UserAnnotationData {
     id: number;
     line_nr: number;
     permission: UserAnnotationPermissionData;
+    released: boolean;
     rendered_markdown: string;
     review_session_id: number | null;
     url: string;
     user: UserAnnotationUserData;
-    visibility: UserAnnotationVisibility;
 }
 
 export class UserAnnotation extends Annotation {
@@ -42,10 +38,10 @@ export class UserAnnotation extends Annotation {
     public readonly id: number;
     public readonly permissions: UserAnnotationPermissionData;
     private readonly __rawText: string;
+    public readonly released: boolean;
     public readonly reviewSessionId: number | null;
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
-    public readonly visibility: UserAnnotationVisibility;
 
     constructor(data: UserAnnotationData, editFn: UserAnnotationEditor) {
         const line = data.line_nr === null ? null : data.line_nr + 1;
@@ -54,7 +50,7 @@ export class UserAnnotation extends Annotation {
         this.editor = editFn;
         this.id = data.id;
         this.permissions = data.permission;
-        this.visibility = data.visibility;
+        this.released = data.released;
         this.__rawText = data.annotation_text;
         this.reviewSessionId = data.review_session_id;
         this.url = data.url;
@@ -92,11 +88,9 @@ export class UserAnnotation extends Annotation {
 
     public static async getAll(submission: number,
         editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
-        return fetch(`/submissions/${submission}/annotations.json`)
-            .then(resp => resp.json())
-            .then(json => json.map(data =>
-                new UserAnnotation(data, editFn)
-            ));
+        const response = await fetch(`/submissions/${submission}/annotations.json`);
+        const json = await response.json();
+        return json.map(data => new UserAnnotation(data, editFn));
     }
 
     protected get meta(): string {
@@ -118,14 +112,14 @@ export class UserAnnotation extends Annotation {
         return this.permissions.destroy;
     }
 
+    public get visible(): boolean {
+        return this.released;
+    }
+
     public async remove(): Promise<void> {
         return fetch(this.url, { method: "DELETE" }).then(() => {
             super.remove();
         });
-    }
-
-    public get released(): boolean {
-        return this.visibility.student;
     }
 
     protected get title(): string {

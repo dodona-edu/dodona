@@ -131,6 +131,9 @@ gem 'dalli', '~> 2.7.10'
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.11.0'
 
+# Profiling
+gem 'rack-mini-profiler', '~> 2.0.1'
+
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.11.2'

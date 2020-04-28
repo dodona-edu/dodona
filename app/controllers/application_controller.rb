@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session
 
+  before_action :enable_profiling
+
   before_action :store_current_location,
                 except: %i[media sign_in_page institution_not_supported],
                 unless: -> { devise_controller? || remote_request? }
@@ -174,5 +176,9 @@ class ApplicationController < ActionController::Base
     @notifications.where(read: false).each do |n|
       n.update(read: true) if helpers.current_page?(helpers.base_notifiable_url_params(n))
     end
+  end
+
+  def enable_profiling
+    Rack::MiniProfiler.authorize_request if current_user && current_user.zeus?
   end
 end

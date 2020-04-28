@@ -179,6 +179,8 @@ class ApplicationController < ActionController::Base
   end
 
   def enable_profiling
-    Rack::MiniProfiler.authorize_request if current_user && current_user.zeus?
+    if user_signed_in? && (current_user.zeus? || (true_user && true_user.zeus?))
+      Rack::MiniProfiler.authorize_request
+    end
   end
 end

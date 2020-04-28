@@ -322,7 +322,7 @@ class ExerciseTest < ActiveSupport::TestCase
                   .raises(StandardError.new('This is an error')).then
                   .raises(StandardError.new('This is an error'))
     assert_raises StandardError do
-      @exercise.solved_for?(@user)
+      @exercise.activity_status_for!(@user)
     end
   end
 

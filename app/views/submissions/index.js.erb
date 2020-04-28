@@ -1,8 +1,8 @@
-$("#submissions-table-wrapper").html("<%= escape_javascript(render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @exercise, course: @course, user: @user }) %>");
+$("#submissions-table-wrapper").html("<%= escape_javascript(render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: @user }) %>");
 if (dodona.feedbackTableLoaded) {
     dodona.feedbackTableLoaded(
         <%= raw "#{current_user&.id || 'undefined'}" %>,
-        <%= raw "#{@exercise&.id || 'undefined'}" %>,
+        <%= raw "#{@activity&.id || 'undefined'}" %>,
         <%= raw "#{@course&.id || 'undefined'}" %>
     );
 }

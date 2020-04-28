@@ -15,6 +15,7 @@
 #  indianio_token     :string(255)
 #  progress_enabled   :boolean          default(TRUE), not null
 #  activities_visible :boolean          default(TRUE), not null
+#  activities_count   :integer
 #
 
 require 'csv'
@@ -133,7 +134,7 @@ class Series < ApplicationRecord
   end
 
   def activity_count
-    @activity_count ||= activities.count
+    activities_count || series_memberships.size
   end
 
   def scoresheet

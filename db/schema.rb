@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_28_114649) do
+ActiveRecord::Schema.define(version: 2020_04_28_211530) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -288,6 +288,7 @@ ActiveRecord::Schema.define(version: 2020_04_28_114649) do
     t.string "indianio_token"
     t.boolean "progress_enabled", default: true, null: false
     t.boolean "activities_visible", default: true, null: false
+    t.integer "activities_count"
     t.index ["access_token"], name: "index_series_on_access_token"
     t.index ["course_id"], name: "index_series_on_course_id"
     t.index ["deadline"], name: "index_series_on_deadline"

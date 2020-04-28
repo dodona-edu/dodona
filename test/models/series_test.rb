@@ -15,6 +15,7 @@
 #  indianio_token     :string(255)
 #  progress_enabled   :boolean          default(TRUE), not null
 #  activities_visible :boolean          default(TRUE), not null
+#  activities_count   :integer
 #
 
 require 'test_helper'

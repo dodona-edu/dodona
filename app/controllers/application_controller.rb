@@ -6,8 +6,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session
 
-  before_action :enable_profiling
-
   before_action :store_current_location,
                 except: %i[media sign_in_page institution_not_supported],
                 unless: -> { devise_controller? || remote_request? }
@@ -56,6 +54,10 @@ class ApplicationController < ActionController::Base
       raise "User with id #{user.id} should not have a blank email " \
             'if the provider is not smartschool'
     end
+  end
+
+  Warden::Manager.after_set_user do |user, _auth, _opts|
+    Rack::MiniProfiler.authorize_request if user.zeus?
   end
 
   protected
@@ -176,9 +178,5 @@ class ApplicationController < ActionController::Base
     @notifications.where(read: false).each do |n|
       n.update(read: true) if helpers.current_page?(helpers.base_notifiable_url_params(n))
     end
-  end
-
-  def enable_profiling
-    Rack::MiniProfiler.authorize_request if user_signed_in? && (current_user.zeus? || true_user&.zeus?)
   end
 end

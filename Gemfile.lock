@@ -163,6 +163,7 @@ GEM
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.11.3)
+    flamegraph (0.9.5)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     has_scope (0.7.2)
@@ -215,6 +216,7 @@ GEM
       activemodel (>= 5.0)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
+    memory_profiler (0.9.14)
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
@@ -278,6 +280,8 @@ GEM
     pundit (2.1.0)
       activesupport (>= 3.0.0)
     rack (2.2.2)
+    rack-mini-profiler (2.0.1)
+      rack (>= 1.2.0)
     rack-protection (2.0.8.1)
       rack
     rack-proxy (0.6.5)
@@ -381,6 +385,7 @@ GEM
     sshkit (1.20.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    stackprof (0.2.15)
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
       ref
@@ -444,6 +449,7 @@ DEPENDENCIES
   exception_notification (~> 4.4.0)
   factory_bot_rails (~> 5.2.0)
   faker (~> 2.11.0)
+  flamegraph (~> 0.9.5)
   foreman!
   has_scope (~> 0.7.2)
   httparty (~> 0.18.0)
@@ -458,6 +464,7 @@ DEPENDENCIES
   letter_opener (~> 1.7.0)
   listen (~> 3.2.1)
   mail_form (~> 1.8.0)
+  memory_profiler (~> 0.9.14)
   minitest-ci (~> 3.4.0)
   minitest-utils (~> 0.4.6)
   mocha (~> 1.11.2)
@@ -470,6 +477,7 @@ DEPENDENCIES
   pretender (~> 0.3.4)
   puma (~> 4.3.3)
   pundit (~> 2.1.0)
+  rack-mini-profiler (~> 2.0.1)
   rails (~> 6.0.2)
   rails-controller-testing (~> 1.0.4)
   rails-i18n (~> 6.0.0)
@@ -485,6 +493,7 @@ DEPENDENCIES
   slack-notifier (~> 2.3.2)
   spring (~> 2.1.0)
   spring-watcher-listen (~> 2.0.1)
+  stackprof (~> 0.2.15)
   therubyracer
   tzinfo-data
   uglifier (>= 4.1.20)

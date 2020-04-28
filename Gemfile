@@ -133,6 +133,9 @@ gem 'faker', '~> 2.11.0'
 
 # Profiling
 gem 'rack-mini-profiler', '~> 2.0.1'
+gem 'memory_profiler', '~> 0.9.14'
+gem 'flamegraph', '~> 0.9.5'
+gem 'stackprof', '~> 0.2.15'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

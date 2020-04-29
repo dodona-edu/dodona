@@ -56,6 +56,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  Warden::Manager.after_set_user do |user, _auth, _opts|
+    Rack::MiniProfiler.authorize_request if user.zeus?
+  end
+
   protected
 
   def allow_iframe

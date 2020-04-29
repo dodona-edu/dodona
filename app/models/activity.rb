@@ -269,9 +269,10 @@ class Activity < ApplicationRecord
   end
 
   def activity_statuses_for(user, course)
-    return [activity_status_for(user, nil)] if course.nil?
+    nil_status = [activity_status_for(user, nil)]
+    return nil_status if course.nil?
 
-    series_memberships.joins(:series).where('course_id = ?', course.id).map do |series_membership|
+    nil_status + series_memberships.joins(:series).where('course_id = ?', course.id).map do |series_membership|
       activity_status_for(user, series_membership.series)
     end
   end

@@ -18,9 +18,11 @@ const FILTER_ICONS_CLASS = ".filter-icon";
 const FILTER_DATA = "filter";
 
 const LABEL_UNIQUE_ATTR = "label-id";
+const RELOAD_SECONDS = 1;
 
 window.dodona.index = {};
 window.dodona.index.baseUrl = window.location.href;
+window.dodona.index.periodicReload = false;
 window.dodona.index.doSearch = () => { };
 
 function setBaseUrl(_baseUrl) {
@@ -408,4 +410,25 @@ function initFilterButtons() {
     init();
 }
 
-export { initFilterButtons, initFilterIndex, setBaseUrl };
+
+function toggleIndexReload() {
+    if (window.dodona.index.periodicReload) {
+        window.dodona.index.periodicReload = false;
+    } else {
+        console.log("Starting reload...");
+        window.dodona.index.periodicReload = true;
+        const indexReload = () => {
+            if (window.dodona.index.periodicReload) {
+                window.dodona.index.doSearch();
+                setTimeout(indexReload, RELOAD_SECONDS * 1000);
+                console.log("Reloaded.");
+            } else {
+                console.log("Stopped reloading.");
+            }
+        };
+        indexReload();
+    }
+    return true;
+}
+
+export { initFilterButtons, initFilterIndex, setBaseUrl, toggleIndexReload };

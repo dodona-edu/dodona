@@ -21,7 +21,21 @@
 require 'test_helper'
 
 class ActivityStatusTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'submitting to an exercise should update all activity statuses' do
+    course = create :course
+    series = create :series, course: course, exercise_count: 1
+    activity = series.activities.first
+    user = create :user
+    as1 = create :activity_status, user: user, activity: activity, series: nil
+    as2 = create :activity_status, user: user, activity: activity, series: series
+    assert_not as1.started
+    assert_not as2.started
+
+    create :submission, exercise: activity, course: course, status: :correct, user: user
+
+    as1.reload
+    as2.reload
+    assert as1.started
+    assert as2.started
+  end
 end

@@ -322,81 +322,81 @@ class ExerciseTest < ActiveSupport::TestCase
                   .raises(StandardError.new('This is an error')).then
                   .raises(StandardError.new('This is an error'))
     assert_raises StandardError do
-      @exercise.solved_for?(@user)
+      @exercise.activity_status_for!(@user)
     end
   end
 
   test 'last submission' do
-    assert_nil @exercise.last_submission(@user)
+    assert_nil @exercise.last_submission!(@user)
 
     first = create :wrong_submission,
                    user: @user,
                    exercise: @exercise,
                    created_at: @date
 
-    assert_equal first, @exercise.last_submission(@user)
+    assert_equal first, @exercise.last_submission!(@user)
 
-    assert_nil @exercise.last_submission(@user, @date - 1.second)
+    assert_nil @exercise.last_submission!(@user, @date - 1.second)
 
     second = create :correct_submission,
                     user: @user,
                     exercise: @exercise,
                     created_at: @date + 1.minute
 
-    assert_equal second, @exercise.last_submission(@user)
-    assert_equal first, @exercise.last_submission(@user, @date + 10.seconds)
+    assert_equal second, @exercise.last_submission!(@user)
+    assert_equal first, @exercise.last_submission!(@user, @date + 10.seconds)
   end
 
   test 'last correct submission' do
-    assert_nil @exercise.last_correct_submission(@user)
+    assert_nil @exercise.last_correct_submission!(@user)
 
     create :wrong_submission,
            user: @user,
            exercise: @exercise,
            created_at: @date
 
-    assert_nil @exercise.last_correct_submission(@user)
+    assert_nil @exercise.last_correct_submission!(@user)
 
     correct = create :correct_submission,
                      user: @user,
                      exercise: @exercise,
                      created_at: @date + 1.second
 
-    assert_equal correct, @exercise.last_correct_submission(@user)
-    assert_nil @exercise.last_correct_submission(@user, @date - 1.second)
+    assert_equal correct, @exercise.last_correct_submission!(@user)
+    assert_nil @exercise.last_correct_submission!(@user, @date - 1.second)
 
     create :wrong_submission,
            user: @user,
            exercise: @exercise,
            created_at: @date + 2.seconds
 
-    assert_equal correct, @exercise.last_correct_submission(@user)
+    assert_equal correct, @exercise.last_correct_submission!(@user)
   end
 
   test 'best submission' do
-    assert_nil @exercise.best_submission(@user)
+    assert_nil @exercise.best_submission!(@user)
 
     wrong = create :wrong_submission,
                    user: @user,
                    exercise: @exercise,
                    created_at: @date
 
-    assert_equal wrong, @exercise.best_submission(@user)
+    assert_equal wrong, @exercise.best_submission!(@user)
 
     correct = create :correct_submission,
                      user: @user,
                      exercise: @exercise,
                      created_at: @date + 10.seconds
 
-    assert_equal correct, @exercise.best_submission(@user)
-    assert_equal wrong, @exercise.best_submission(@user, @date + 1.second)
+    assert_equal correct, @exercise.best_submission!(@user)
+    assert_equal wrong, @exercise.best_submission!(@user, @date + 1.second)
 
     create :wrong_submission,
            user: @user,
            exercise: @exercise,
            created_at: @date + 1.minute
 
-    assert_equal correct, @exercise.best_submission(@user)
+    assert_equal correct, @exercise.best_submission!(@user)
   end
 
   test 'best is last submission' do

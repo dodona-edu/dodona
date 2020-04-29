@@ -87,9 +87,9 @@ class UserTest < ActiveSupport::TestCase
     staff.course_memberships.first.update(status: 'course_admin')
     zeus.course_memberships.first.update(status: 'course_admin')
 
-    assert user.course_admin?(course)
-    assert staff.course_admin?(course)
-    assert zeus.course_admin?(course)
+    assert user.administrating_courses.include?(course)
+    assert staff.administrating_courses.include?(course)
+    assert zeus.administrating_courses.include?(course)
   end
 
   test 'full name should be n/a when blank' do

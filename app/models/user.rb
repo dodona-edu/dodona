@@ -243,10 +243,8 @@ class User < ApplicationRecord
   def admin_of?(course)
     return false if course.blank?
 
-    @admin_of ||= Hash.new do |h, course_id|
-      h[course_id] = administrating_courses.pluck(:id).include?(course_id)
-    end
-    @admin_of[course.id]
+    @admin_of ||= Set.new(administrating_courses.pluck(:id))
+    @admin_of.include?(course.id)
   end
 
   def membership_status_for(course)

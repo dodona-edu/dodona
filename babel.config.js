@@ -34,6 +34,13 @@ module.exports = function(api) {
           modules: false,
           exclude: ["transform-typeof-symbol"]
         }
+      ],
+      [
+        '@babel/preset-typescript',
+        {
+          allExtensions: true,
+          isTSX: true
+        }
       ]
     ].filter(Boolean),
     plugins: [

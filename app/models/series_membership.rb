@@ -11,7 +11,7 @@
 #
 
 class SeriesMembership < ApplicationRecord
-  belongs_to :series
+  belongs_to :series, counter_cache: :activities_count
   belongs_to :activity
 
   delegate :course, to: :series

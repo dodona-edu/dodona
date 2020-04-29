@@ -2,19 +2,30 @@
 #
 # Table name: activity_statuses
 #
-#  id                       :bigint           not null, primary key
-#  accepted                 :boolean          default(FALSE), not null
-#  accepted_before_deadline :boolean          default(FALSE), not null
-#  solved                   :boolean          default(FALSE), not null
-#  started                  :boolean          default(FALSE), not null
-#  solved_at                :datetime
-#  activity_id              :integer          not null
-#  series_id                :integer
-#  user_id                  :integer          not null
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
+#  id                          :bigint           not null, primary key
+#  accepted                    :boolean          default(FALSE), not null
+#  accepted_before_deadline    :boolean          default(FALSE), not null
+#  solved                      :boolean          default(FALSE), not null
+#  started                     :boolean          default(FALSE), not null
+#  solved_at                   :datetime
+#  activity_id                 :integer          not null
+#  series_id                   :integer
+#  user_id                     :integer          not null
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  last_submission_id          :integer
+#  last_submission_deadline_id :integer
+#  best_submission_id          :integer
+#  best_submission_deadline_id :integer
 #
 class ActivityStatus < ApplicationRecord
+  # the reverse relations aren't defined because this doesn't make sense and there are no
+  # indexes defined to allow fast retrieval
+  belongs_to :last_submission, class_name: 'Submission', optional: true
+  belongs_to :last_submission_deadline, class_name: 'Submission', optional: true
+  belongs_to :best_submission, class_name: 'Submission', optional: true
+  belongs_to :best_submission_deadline, class_name: 'Submission', optional: true
+
   belongs_to :activity
   belongs_to :series, optional: true
   belongs_to :user
@@ -39,6 +50,17 @@ class ActivityStatus < ApplicationRecord
     save
   end
 
+  def self.add_status_for(user, series, eager = [])
+    Current.status_store ||= {}
+    ActivityStatus.where(series: series, user: user).includes(eager).find_each do |as|
+      Current.status_store[[as.user_id, as.series_id, as.activity_id]] = as
+    end
+  end
+
+  def self.clear_status_store
+    Current.status_store = {}
+  end
+
   private
 
   def initialise_values_for_content_page
@@ -57,10 +79,15 @@ class ActivityStatus < ApplicationRecord
   def initialise_values_for_exercise
     return unless activity.exercise?
 
-    best = activity.best_submission(user, nil, series&.course)
-    best_before_deadline = activity.best_submission(user, series&.deadline, series&.course)
-    last = activity.last_submission(user, nil, series&.course)
-    last_before_deadline = activity.last_submission(user, series&.deadline, series&.course)
+    last = activity.last_submission!(user, nil, series&.course)
+    last_before_deadline = activity.last_submission!(user, series&.deadline, series&.course) if last
+    best = activity.best_submission!(user, nil, series&.course) if last
+    best_before_deadline = activity.best_submission!(user, series&.deadline, series&.course) if best
+
+    self.last_submission = last
+    self.last_submission_deadline = last_before_deadline
+    self.best_submission = best
+    self.best_submission_deadline = best_before_deadline
 
     self.accepted = last&.accepted? || false
     self.accepted_before_deadline = last_before_deadline&.accepted? || false

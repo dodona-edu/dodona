@@ -15,6 +15,7 @@
 #  indianio_token     :string(255)
 #  progress_enabled   :boolean          default(TRUE), not null
 #  activities_visible :boolean          default(TRUE), not null
+#  activities_count   :integer
 #
 
 require 'test_helper'
@@ -71,6 +72,8 @@ class SeriesTest < ActiveSupport::TestCase
 
     series.update(deadline: Time.zone.now - 1.day)
 
+    ActivityStatus.clear_status_store
+
     assert_equal false, series.completed_before_deadline?(user)
   end
 
@@ -94,10 +97,14 @@ class SeriesTest < ActiveSupport::TestCase
 
     series.update(deadline: now - 1.day)
 
+    ActivityStatus.clear_status_store
+
     assert_equal false, series.completed_before_deadline?(user)
 
     # Reset the deadline to the original one to ensure the status was not removed.
     series.update(deadline: original_deadline)
+
+    ActivityStatus.clear_status_store
 
     assert_equal true, series.completed_before_deadline?(user)
   end

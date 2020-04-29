@@ -57,6 +57,10 @@ class ActivityStatus < ApplicationRecord
     end
   end
 
+  def self.clear_status_store
+    Current.status_store = {}
+  end
+
   private
 
   def initialise_values_for_content_page

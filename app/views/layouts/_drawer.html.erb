@@ -3,11 +3,7 @@
     <div class="drawer-group">
       <h1 class="drawer-group-title"><%= t 'layout.menu.courses' %></h1>
       <ul class="drawer-list">
-        <% courses = if current_user.favorite_courses.any?
-                       current_user.favorite_courses
-                     else
-                       current_user.recent_courses(1)
-                     end %>
+        <% courses = current_user.drawer_courses %>
         <% courses.each do |course| %>
           <li>
             <%= activatable_link_to course_path(course),

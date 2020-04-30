@@ -235,6 +235,17 @@ class User < ApplicationRecord
     subscribed_courses.group_by(&:year).first(number_of_years)
   end
 
+  def drawer_courses
+    actual_memberships = course_memberships.includes(:course).to_a.select(&:subscribed?)
+    favorites = actual_memberships.select(&:favorite)
+
+    return [] if actual_memberships.empty?
+    return favorites.map(&:course) if favorites.any?
+
+    sorted_courses = actual_memberships.map(&:course).sort_by(&:year).reverse
+    sorted_courses.select { |c| c.year == sorted_courses.first.year }
+  end
+
   def full_view?
     subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count.positive?
   end

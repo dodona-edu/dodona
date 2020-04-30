@@ -237,9 +237,9 @@ class User < ApplicationRecord
 
   def drawer_courses
     actual_memberships = course_memberships.includes(:course).to_a.select(&:subscribed?)
-    favorites = actual_memberships.select(&:favorite)
-
     return [] if actual_memberships.empty?
+
+    favorites = actual_memberships.select(&:favorite)
     return favorites.map(&:course) if favorites.any?
 
     sorted_courses = actual_memberships.map(&:course).sort_by(&:year).reverse

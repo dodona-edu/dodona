@@ -104,7 +104,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @unsubscribed do |who, user|
       assert_not user.member_of?(@course), "#{who} was already a member"
       post subscribe_course_url(@course, format: :json)
-      assert user.member_of?(@course), "#{who} should be a member"
+      assert user.courses.include?(@course), "#{who} should be a member"
     end
   end
 

@@ -49,21 +49,26 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
       post remove_admin_repository_url(@instance, user_id: @admin.id)
     end
 
-    user2 = create :user
-    @instance.admins << user2
+    @instance.admins << (create :user)
 
     sign_in @admin
 
     assert_difference('@instance.admins.count', -1, 'zeus should be able to remove a repository admin') do
       post remove_admin_repository_url(@instance, user_id: user.id)
     end
+  end
+
+  test 'normal user should not be able to edit repository admins' do
+    user = create :user
+    repo_admin = create :user
+    @instance.admins << repo_admin
 
     sign_in user
 
     @instance.admins << @admin
 
     assert_difference('@instance.admins.count', 0, 'user should not be able to remove a repository admin') do
-      post remove_admin_repository_url(@instance, user_id: user2.id)
+      post remove_admin_repository_url(@instance, user_id: repo_admin.id)
     end
 
     assert_difference('@instance.admins.count', 0, 'user should not be able to add a repository admin') do

@@ -174,9 +174,13 @@ class ApplicationController < ActionController::Base
   end
 
   def set_notifications
-    @notifications = current_user.notifications
-    @notifications.where(read: false).each do |n|
-      n.update(read: true) if helpers.current_page?(helpers.base_notifiable_url_params(n))
+    @last_notifications = current_user.notifications.limit(5).to_a
+    @unread_notifications = current_user.notifications.where(read: false).to_a
+    @unread_notifications.delete_if do |n|
+      if helpers.current_page?(helpers.base_notifiable_url_params(n))
+        n.update(read: true)
+        true
+      end
     end
   end
 end

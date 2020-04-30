@@ -125,7 +125,7 @@ class ApplicationController < ActionController::Base
     rescue I18n::InvalidLocale
       I18n.locale = I18n.default_locale
     end
-    current_user&.update(lang: I18n.locale.to_s)
+    current_user&.update(lang: I18n.locale.to_s) if current_user&.lang != I18n.locale.to_s
   end
 
   def default_url_options

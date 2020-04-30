@@ -184,7 +184,10 @@ class User < ApplicationRecord
   end
 
   def repository_admin?(repository)
-    zeus? || repositories.pluck(:id).include?(repository.id)
+    return true if zeus?
+
+    @repository_admin ||= Set.new(repositories.pluck(:id))
+    @repository_admin.include?(repository.id)
   end
 
   def attempted_exercises(options)
@@ -237,16 +240,17 @@ class User < ApplicationRecord
   end
 
   def member_of?(course)
-    course.present? && subscribed_courses.pluck(:id).include?(course.id)
+    return false if course.blank?
+
+    @member_of ||= Set.new(subscribed_courses.pluck(:id))
+    @member_of.include?(course.id)
   end
 
   def admin_of?(course)
     return false if course.blank?
 
-    @admin_of ||= Hash.new do |h, course_id|
-      h[course_id] = administrating_courses.pluck(:id).include?(course_id)
-    end
-    @admin_of[course.id]
+    @admin_of ||= Set.new(administrating_courses.pluck(:id))
+    @admin_of.include?(course.id)
   end
 
   def membership_status_for(course)

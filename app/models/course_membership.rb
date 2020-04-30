@@ -38,6 +38,10 @@ class CourseMembership < ApplicationRecord
       .having('COUNT(DISTINCT(course_membership_labels.course_label_id)) = ?', course_labels.uniq.length)
   }
 
+  def subscribed?
+    student? || course_admin?
+  end
+
   def at_least_one_admin_per_course
     if status_was == 'course_admin' &&
        status != 'course_admin' &&

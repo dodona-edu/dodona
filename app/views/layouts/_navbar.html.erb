@@ -26,13 +26,13 @@
       <ul id="navbar" class="dropdown-nav collapse">
         <%= content_for :navbar %>
         <% if user_signed_in? %>
-          <% if @notifications.any? && current_page?(notifications_path).! %>
+          <% if @last_notifications.any? && current_page?(notifications_path).! %>
             <li id="navbar-notifications" class="dropdown">
-              <a href="#" class="dropdown-toggle<%= " notification" if @notifications.where(read: false).any? %>" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <a href="#" class="dropdown-toggle<%= " notification" if @unread_notifications.any? %>" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="mdi mdi-24 mdi-bell"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-right notification-dropdown">
-                <%= render partial: 'notifications/small_notifications_table', locals: { notifications: @notifications } %>
+                <%= render partial: 'notifications/small_notifications_table', locals: { notifications: @last_notifications } %>
               </div>
             </li>
           <% end %>

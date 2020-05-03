@@ -110,7 +110,9 @@
     </div>
   <% end %>
   <div class="series-description">
-    <%= markdown(series.description) %>
+    <%= cache series do %>
+      <%= markdown(series.description) %>
+    <% end %>
   </div>
 
   <% if policy(series).overview? && series.activity_count > 0 %>

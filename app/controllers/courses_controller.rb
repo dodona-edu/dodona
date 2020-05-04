@@ -95,7 +95,7 @@ class CoursesController < ApplicationController
         Series.new(
           series_memberships: @copy_options[:exercises] ?
                                   s.series_memberships.map do |sm|
-                                    SeriesMembership.new(exercise: sm.exercise, order: sm.order)
+                                    SeriesMembership.new(activity: sm.activity, order: sm.order)
                                   end :
                                   [],
           name: s.name,

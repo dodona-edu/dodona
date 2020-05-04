@@ -324,8 +324,8 @@ class UserHasManyTest < ActiveSupport::TestCase
     membership_course_admin = CourseMembership.new(user: @user, course: @administrating_course, status: 'course_admin')
     @administrating_course.course_memberships.concat(membership_course_admin)
     @favorite_course = create :course
-    membership_favorite = CourseMembership.new(user: @user, course: @favorite_course, status: 'student', favorite: true)
-    @favorite_course.course_memberships.concat(membership_favorite)
+    @membership_favorite = CourseMembership.new(user: @user, course: @favorite_course, status: 'student', favorite: true)
+    @favorite_course.course_memberships.concat(@membership_favorite)
     @enrolled_course = create :course, users: [@user]
     @unsubscribed_course = create :course
     membership_unsubscribed = CourseMembership.new(user: @user, course: @unsubscribed_course, status: 'unsubscribed')
@@ -386,5 +386,24 @@ class UserHasManyTest < ActiveSupport::TestCase
     create :course, users: [user], year: '2017-2018'
     create :course, users: [user], year: '2018-2019'
     assert_equal true, user.full_view?
+  end
+
+  test 'drawer_courses should not return courses if not subscribed for any' do
+    user = create :user
+    assert user.courses.empty?
+    assert user.drawer_courses.empty?
+  end
+
+  test 'drawer_courses should return favorite courses' do
+    assert_equal [@favorite_course], @user.drawer_courses
+
+    @membership_favorite.update(favorite: false)
+    assert_not_equal [@favorite_course], @user.drawer_courses
+
+    @user.courses.each { |c| c.update(year: '1') }
+    assert_equal @user.subscribed_courses.length, @user.drawer_courses.length
+
+    @user.subscribed_courses.first.update(year: '2')
+    assert_equal [@user.subscribed_courses.first], @user.drawer_courses
   end
 end

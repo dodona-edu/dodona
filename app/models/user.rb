@@ -184,7 +184,10 @@ class User < ApplicationRecord
   end
 
   def repository_admin?(repository)
-    zeus? || repositories.pluck(:id).include?(repository.id)
+    return true if zeus?
+
+    @repository_admin ||= Set.new(repositories.pluck(:id))
+    @repository_admin.include?(repository.id)
   end
 
   def attempted_exercises(options)
@@ -232,21 +235,33 @@ class User < ApplicationRecord
     subscribed_courses.group_by(&:year).first(number_of_years)
   end
 
+  def drawer_courses
+    actual_memberships = course_memberships.includes(:course).to_a.select(&:subscribed?)
+    return [] if actual_memberships.empty?
+
+    favorites = actual_memberships.select(&:favorite)
+    return favorites.map(&:course) if favorites.any?
+
+    sorted_courses = actual_memberships.map(&:course).sort_by(&:year).reverse
+    sorted_courses.select { |c| c.year == sorted_courses.first.year }
+  end
+
   def full_view?
     subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count.positive?
   end
 
   def member_of?(course)
-    course.present? && subscribed_courses.pluck(:id).include?(course.id)
+    return false if course.blank?
+
+    @member_of ||= Set.new(subscribed_courses.pluck(:id))
+    @member_of.include?(course.id)
   end
 
   def admin_of?(course)
     return false if course.blank?
 
-    @admin_of ||= Hash.new do |h, course_id|
-      h[course_id] = administrating_courses.pluck(:id).include?(course_id)
-    end
-    @admin_of[course.id]
+    @admin_of ||= Set.new(administrating_courses.pluck(:id))
+    @admin_of.include?(course.id)
   end
 
   def membership_status_for(course)

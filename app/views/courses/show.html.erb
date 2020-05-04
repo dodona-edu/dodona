@@ -32,7 +32,9 @@
       <% if @course.description.present? or current_user&.member_of?(@course).! %>
         <div class="card-supporting-text card-border row course-description">
           <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
-            <%= markdown(@course.description) %>
+            <%= cache @course do %>
+              <%= markdown(@course.description) %>
+            <% end %>
           </div>
           <% if current_user&.member_of?(@course).! %>
             <%= render partial: 'not_a_member_card' %>

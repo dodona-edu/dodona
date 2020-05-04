@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_28_211530) do
+ActiveRecord::Schema.define(version: 2020_05_04_090034) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -135,9 +135,9 @@ ActiveRecord::Schema.define(version: 2020_04_28_211530) do
   end
 
   create_table "course_memberships", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "course_id"
-    t.integer "user_id"
-    t.integer "status", default: 2
+    t.integer "course_id", null: false
+    t.integer "user_id", null: false
+    t.integer "status", default: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "favorite", default: false
@@ -365,6 +365,8 @@ ActiveRecord::Schema.define(version: 2020_04_28_211530) do
   add_foreign_key "course_labels", "courses", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_labels", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_memberships", on_delete: :cascade
+  add_foreign_key "course_memberships", "courses", on_delete: :cascade
+  add_foreign_key "course_memberships", "users", on_delete: :cascade
   add_foreign_key "course_repositories", "courses"
   add_foreign_key "course_repositories", "repositories"
   add_foreign_key "courses", "institutions"

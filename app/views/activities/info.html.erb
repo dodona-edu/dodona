@@ -88,7 +88,7 @@
             <div class="row activity-details">
               <% if @activity.exercise? %>
                 <div title="<%= activity_config_explanation 'programming_language' %>" class="col-md-4 col-sm-6 col-xs-6 activity-detail">
-                  <h1><%= @activity.programming_language.name.titlecase %></h1>
+                  <h1><%= @activity.programming_language ? @activity.programming_language.name.titlecase : "n/a" %></h1>
                   <%= t '.programming_language' %>
                 </div>
               <% end %>

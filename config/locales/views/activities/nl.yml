@@ -21,7 +21,7 @@ nl:
       not_solved: Nog niet opgelost
     form:
       edit_activity: Leeractiviteit aanpassen
-      open_on_github: Open de repository
+      open_on_github: Open in repository
       labels_delimiter: "Gebruik een komma om labels te scheiden"
       labels: Nieuw label
       info: Informatie

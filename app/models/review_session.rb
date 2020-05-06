@@ -56,9 +56,10 @@ class ReviewSession < ApplicationRecord
   private
 
   def manage_reviews
+    existing = reviews.to_a
     review_users.to_a.shuffle.each do |ru|
       review_exercises.to_a.shuffle.each do |re|
-        reviews.new(review_user: ru, review_exercise: re) if reviews.find_by(review_user: ru, review_exercise: re).blank?
+        reviews.new(review_user: ru, review_exercise: re) if existing.select { |r| r.review_user == ru && r.review_exercise == re }.blank?
       end
     end
   end

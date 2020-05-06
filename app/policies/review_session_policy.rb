@@ -3,7 +3,7 @@ class ReviewSessionPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def edit?
+  def create?
     course_admin?
   end
 
@@ -17,7 +17,7 @@ class ReviewSessionPolicy < ApplicationPolicy
 
   def permitted_attributes
     if record.class == ReviewSession
-      %i[deadline user_ids exercise_ids]
+      %i[released deadline user_ids exercise_ids]
     else
       %i[series_id deadline user_ids exercise_ids]
     end

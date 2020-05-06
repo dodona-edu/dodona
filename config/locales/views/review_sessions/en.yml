@@ -1,0 +1,15 @@
+en:
+  review_sessions:
+    show:
+      review_session: "Review session"
+      title: "Reviews for '%{series}'"
+    new:
+      create_session: Create review session
+    edit:
+      title: Edit review session
+    destroy: Delete
+    form:
+      users_explanation: By default, all students in the course are added to the review session. You can edit this after the review session is created.
+      exercises_explanation: All exercises in the series are added to the review session.
+    review_table:
+      user: User

@@ -1,0 +1,15 @@
+nl:
+  review_sessions:
+    show:
+      review_session: "Review sessie"
+      title: "Reviews voor '%{series}'"
+    new:
+      create_session: Review sessie aanmaken
+    edit:
+      title: Review sessie aanpassen
+    destroy: Verwijderen
+    form:
+      users_explanation: Bij het aanmaken van een review sessie worden alle studenten in het vak aan de review sessie toegevoegd. Je kan dit later nog aanpassen.
+      exercises_explanation: Alle oefeningen in de reeks worden aan de review sessie toegevoegd.
+    review_table:
+      user: Gebruiker

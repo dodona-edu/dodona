@@ -92,11 +92,7 @@ class SeriesPolicy < ApplicationPolicy
     course_member?
   end
 
-  def review_create_wizard?
-    course_admin?
-  end
-
-  def create_review?
+  def create_review_session?
     course_admin?
   end
 

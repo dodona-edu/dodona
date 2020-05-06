@@ -1,24 +1,27 @@
-class ReviewSessionController < ApplicationController
+class ReviewSessionsController < ApplicationController
   before_action :set_review_session, only: %i[show edit update destroy]
   before_action :set_series, only: %i[new]
 
   def show
     @reviews = @review_session.review_sheet
-    @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_session.show.review_session'), '#']]
+    @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_sessions.show.review_session'), '#']]
   end
 
   def new
-    @review_session = ReviewSession.new(series: @series, deadline: @series.deadline, exercises: @series.exercises, users: @series.course.enrolled_members)
+    @review_session = ReviewSession.new(series: @series, deadline: @series.deadline)
     authorize @review_session
   end
 
   def edit
-    @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_session.show.review_session'), '#']]
+    @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_session.edit.title'), '#']]
   end
 
   def create
     @review_session = ReviewSession.new(permitted_attributes(ReviewSession))
     authorize @review_session
+    @review_session.users = @review_session.series.course.enrolled_members
+    @review_session.exercises = @review_session.series.exercises
+
 
     respond_to do |format|
       if @review_session.save

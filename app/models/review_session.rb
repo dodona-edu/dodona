@@ -29,10 +29,10 @@ class ReviewSession < ApplicationRecord
   def review_sheet
     exercises = review_exercises.includes(:exercise).map(&:exercise)
     exercise_ids = exercises.pluck(:id)
-    users = review_users.includes(:user).map(&:user)
+    users = review_users.includes(:user)
 
-    revs = users.map do |user|
-      [user, reviews.where(user: user).sort_by { |rev| exercise_ids.find_index rev.review_exercise.exercise.id }]
+    revs = users.map do |ruser|
+      [ruser.user, reviews.where(review_user: ruser).sort_by { |rev| exercise_ids.find_index rev.review_exercise.exercise.id }]
     end
 
     {
@@ -55,8 +55,8 @@ class ReviewSession < ApplicationRecord
   private
 
   def manage_reviews
-    review_users.order("RAND()").each do |ru|
-      review_exercises.order("RAND()").each do |re|
+    review_users.to_a.shuffle.each do |ru|
+      review_exercises.to_a.shuffle.each do |re|
         reviews.new(review_user: ru, review_exercise: re) if reviews.find_by(review_user: ru, review_exercise: re).blank?
       end
     end

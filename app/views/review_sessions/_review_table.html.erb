@@ -1,12 +1,9 @@
-<% content_for :javascripts do %>
-  <%= javascript_pack_tag 'reviews' %>
-<% end %>
 <table class="table table-resource">
   <thead>
   <tr>
-    <td><%= t('review_session.table.user') %></td>
+    <th><%= t('.user') %></td>
     <% reviews[:exercises].each do |exercise| %>
-      <td class="review-table-center review-exercise"><%= exercise.name %></td>
+      <th class="review-table-center review-exercise"><%= exercise.name %></td>
     <% end %>
   </tr>
   </thead>
@@ -19,8 +16,14 @@
           <% if review.submission.nil? %>
             <i class="mdi mdi-comment-question-outline mdi-24"></i>
           <% else %>
-            <%= link_to review_review_session_path(review_session, review) do %>
-              <%= render 'reviews/fragment/review_cell', review: review %>
+            <%= link_to review_session_review_path(review_session, review) do %>
+              <div class="review-cell">
+                <% if review.completed? %>
+                  <i class="mdi mdi-comment-check-outline mdi-24"></i>
+                <% else %>
+                  <i class="mdi mdi-comment-remove-outline mdi-24"></i>
+                <% end %>
+              </div>
             <% end %>
           <% end %>
         </td>
@@ -29,6 +32,3 @@
   <% end %>
   </tbody>
 </table>
-<script type="application/javascript">
-    $(() => window.dodona.initReviewTablePopover());
-</script>

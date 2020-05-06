@@ -1,79 +1,60 @@
 nl:
-  review_session:
-    show:
-      review_session: "Review sessie"
-    wizard:
-      create_session: "Review sessie aanmaken"
-      view_session: "Review sessie bekijken"
-      create_session_named: "Review sessie aanmaken: '%{series_name}'"
-    title: "Reviews voor '%{series}'"
-    progress:
-      finished: "Afgewerkte reviews: %{review_count}"
-      unfinished: "Onafgewerkte reviews: %{review_count}"
-      undecided: "Reviews zonder gekoppelde inzending: %{review_count}"
-    table:
-      user: "Gebruiker (anoniem)"
-    overview:
-      review_session: "Review sessie overzicht"
-    edit:
-      failure: "De review sessie kon niet aangemaakt worden"
   reviews:
     show:
       review: "Review"
-  review_exercise:
-  review:
-    title: "Submission %{submission_id} reviewen"
-    details: "Review details"
-    metadata:
-      session:
-        title: "Review sessie metadata"
-        remaining_exercise:
-          html:
-            zero: "Voor deze opgave zijn er <b>geen reviews meer</b> af te werken"
-            one: "Voor deze opgave resteert er <b>nog 1 onafgewerkte review</b>"
-            other: "Voor deze opgave resteren er <b>nog %{count} onafgewerkte reviews</b>"
-        remaining_user:
-          html:
-            zero: "Voor deze gebruiker zijn <b>alle reviews afgewerkt</b>"
-            one: "Voor deze gebruiker resteert er <b>1 review om af te werken</b>"
-            other: "Voor deze gebruiker resteren er <b>nog %{count} reviews om af te werken</b>"
-        remaining:
-          html:
-            zero: "Er zijn <b>geen reviews meer</b> af te werken"
-            one: "Er is nog <b>1 review</b> om af te werken"
-            other: "Er zijn nog <b>%{count} reviews</b> af te werken"
-      submission:
-        title: "Indiening metadata"
-        time:
-          html: "Deze indiening werd <b>%{time_ago} geleden</b> gemaakt. Deze werd gemaakt op <b>%{made_on}</b>"
-        previous_attempts:
-          html:
-            zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor deze indiening."
-            one: "De gebruiker had <b>1 voorgaande poging</b> nodig voor deze indiening."
-            other: "De gebruiker had <b>%{count} pogingen</b> nodig voor deze indiening."
-        time_to_series_deadline:
-          html: "Tussen deadline en indiening zat er <b>%{time_ago}</b>"
-      title: "Metadata"
-    direction:
-      next: "Volgende"
-      prev: "Vorige"
-    completed:
-      button:
-        completed: "Markeren als afgewerkt"
-        unfinished: "Markeren als onafgewerkt"
-        header: "Review status aanpassen"
-      failure: "De review status kon niet ingesteld worden"
-    action:
-      title: "Acties"
-    category:
-      id: "Willekeurige review"
-      user: "Review voor zelfde gebruiker"
-      exercise: "Review voor zelfde oefening"
-    overview:
-      annotations:
-        count: "Aantal opmerkingen door lesgever"
-        amount:
-          zero: "Geen opmerkingen"
-          one: "1 opmerking"
-          other: "%{count} opmerkingen"
-      title: "Overzicht van alle gereviewde indieningen"
+    review:
+      title: "Submission %{submission_id} reviewen"
+      details: "Review details"
+      metadata:
+        session:
+          title: "Review sessie metadata"
+          remaining_exercise:
+            html:
+              zero: "Voor deze opgave zijn er <b>geen reviews meer</b> af te werken"
+              one: "Voor deze opgave resteert er <b>nog 1 onafgewerkte review</b>"
+              other: "Voor deze opgave resteren er <b>nog %{count} onafgewerkte reviews</b>"
+          remaining_user:
+            html:
+              zero: "Voor deze gebruiker zijn <b>alle reviews afgewerkt</b>"
+              one: "Voor deze gebruiker resteert er <b>1 review om af te werken</b>"
+              other: "Voor deze gebruiker resteren er <b>nog %{count} reviews om af te werken</b>"
+          remaining:
+            html:
+              zero: "Er zijn <b>geen reviews meer</b> af te werken"
+              one: "Er is nog <b>1 review</b> om af te werken"
+              other: "Er zijn nog <b>%{count} reviews</b> af te werken"
+        submission:
+          title: "Indiening metadata"
+          time:
+            html: "Deze indiening werd <b>%{time_ago} geleden</b> gemaakt. Deze werd gemaakt op <b>%{made_on}</b>"
+          previous_attempts:
+            html:
+              zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor deze indiening."
+              one: "De gebruiker had <b>1 voorgaande poging</b> nodig voor deze indiening."
+              other: "De gebruiker had <b>%{count} pogingen</b> nodig voor deze indiening."
+          time_to_series_deadline:
+            html: "Tussen deadline en indiening zat er <b>%{time_ago}</b>"
+        title: "Metadata"
+      direction:
+        next: "Volgende"
+        prev: "Vorige"
+      completed:
+        button:
+          completed: "Markeren als afgewerkt"
+          unfinished: "Markeren als onafgewerkt"
+          header: "Review status aanpassen"
+        failure: "De review status kon niet ingesteld worden"
+      action:
+        title: "Acties"
+      category:
+        id: "Willekeurige review"
+        user: "Review voor zelfde gebruiker"
+        exercise: "Review voor zelfde oefening"
+      overview:
+        annotations:
+          count: "Aantal opmerkingen door lesgever"
+          amount:
+            zero: "Geen opmerkingen"
+            one: "1 opmerking"
+            other: "%{count} opmerkingen"
+        title: "Overzicht van alle gereviewde indieningen"

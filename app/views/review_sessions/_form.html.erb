@@ -1,0 +1,72 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'review' %>
+<% end %>
+<%= form_for review_session, html: { class: "form-horizontal review-form" } do |f| %>
+  <% if review_session.errors.any? %>
+    <div>
+      <div class="callout callout-danger" id="error_explanation">
+        <h4><%= t('errors.validation_errors', count: review_session.errors.count) %></h4>
+        <ul>
+          <% review_session.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.hidden_field :series_id %>
+
+    <div class="field form-group">
+      <%= f.label :series, class: 'col-sm-3 text-right' %>
+      <div class="col-sm-6">
+        <span><%= review_session.series.name %> (<%= review_session.series.course.name %>)</span>
+      </div>
+    </div>
+
+
+    <% if review_session.new_record? %>
+    <div class="field form-group">
+      <%= f.label :deadline, class: "col-sm-3 control-label" %>
+      <div class='col-sm-6'>
+        <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>
+          <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+            <button class="btn btn-default" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
+          </span>
+        </div>
+      </div>
+    </div>
+      <div class="field form-group">
+        <%= f.label :users, class: 'col-sm-3 text-right' %>
+        <div class="col-sm-6">
+          <span><%= t ".users_explanation" %></span>
+        </div>
+      </div>
+      <div class="field form-group">
+        <%= f.label :exercises, class: 'col-sm-3 text-right' %>
+        <div class="col-sm-6">
+          <span><%= t ".exercises_explanation" %></span>
+        </div>
+      </div>
+    <% else %>
+      <div class="field form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+          <div class="checkbox">
+            <%= f.label :released do %>
+              <%= f.check_box :released %>
+              <%= ReviewSession.human_attribute_name(:released) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<script>
+  $(function() {
+    dodona.initDeadlinePicker("#deadline-group");
+  });
+</script>

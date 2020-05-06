@@ -71,6 +71,6 @@ class Review < ApplicationRecord
   private
 
   def destroy_related_annotations
-    submission.annotations.where(review_session_id: review_session_id).destroy_all
+    submission.annotations.where(review_session_id: review_session_id).destroy_all if submission.present?
   end
 end

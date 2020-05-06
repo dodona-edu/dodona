@@ -23,6 +23,8 @@ en:
       programming_language: Programming Language
       event: Event
       institution: Institution
+      review_session: Review sessie
+      review: Review
     attributes:
       api_token:
         description: Description
@@ -159,3 +161,9 @@ en:
           started: Started
           finished: Finished
           failed: Failed
+      review_session:
+        series: Series
+        users: Users
+        exercises: Exercises
+        deadline: Deadline
+        released: Released

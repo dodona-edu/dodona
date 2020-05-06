@@ -29,10 +29,11 @@ class ReviewSession < ApplicationRecord
   def review_sheet
     exercises = review_exercises.includes(:exercise).map(&:exercise)
     exercise_ids = exercises.pluck(:id)
-    users = review_users.includes(:user)
+    users = review_users.includes(:user).map(&:user)
 
-    revs = users.map do |ruser|
-      [ruser.user, reviews.where(review_user: ruser).sort_by { |rev| exercise_ids.find_index rev.review_exercise.exercise.id }]
+    all_reviews = reviews.includes(review_exercise: [:exercise], review_user: [:user]).to_a
+    revs = users.map do |user|
+      [user, all_reviews.select { |rev| rev.review_user.user == user }.sort_by { |rev| exercise_ids.find_index rev.review_exercise.exercise.id }]
     end
 
     {
@@ -67,7 +68,7 @@ class ReviewSession < ApplicationRecord
     return unless released
 
     users.find_each do |user|
-      Notification.create(notifiable: self, user_id: user_id, message: 'annotations.index.review_released')
+      Notification.create(notifiable: self, user_id: user.id, message: 'annotations.index.review_released')
     end
   end
 

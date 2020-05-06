@@ -22,7 +22,6 @@ class ReviewSessionsController < ApplicationController
     @review_session.users = @review_session.series.course.enrolled_members
     @review_session.exercises = @review_session.series.exercises
 
-
     respond_to do |format|
       if @review_session.save
         format.html { redirect_to review_session_path(@review_session) }

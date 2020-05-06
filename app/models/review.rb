@@ -67,7 +67,6 @@ class Review < ApplicationRecord
     }
   end
 
-
   private
 
   def destroy_related_annotations

@@ -1,8 +1,9 @@
 en:
   review_sessions:
     show:
+      view_session: "Show review session"
       review_session: "Review session"
-      title: "Reviews for '%{series}'"
+      title: "Reviews for %{series}"
     new:
       create_session: Create review session
     edit:

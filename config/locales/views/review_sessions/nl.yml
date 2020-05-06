@@ -1,8 +1,9 @@
 nl:
   review_sessions:
     show:
+      view_session: "Toon review sessie"
       review_session: "Review sessie"
-      title: "Reviews voor '%{series}'"
+      title: "Reviews voor %{series}"
     new:
       create_session: Review sessie aanmaken
     edit:

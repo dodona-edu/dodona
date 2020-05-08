@@ -7,6 +7,10 @@ class ReviewPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def permitted_attributes
+    %i[completed]
+  end
+
   private
 
   def course_admin?

@@ -26,6 +26,18 @@ class ReviewSession < ApplicationRecord
   after_save :manage_user_notifications
   before_destroy :destroy_notification
 
+  def users=(new_users)
+    removed = users - new_users
+    review_users.where(user: removed).destroy_all
+    super(new_users)
+  end
+
+  def exercises=(new_exercises)
+    removed = exercises - new_exercises
+    review_exercises.where(exercise: removed).destroy_all
+    super(new_exercises)
+  end
+
   def review_sheet
     exercises = review_exercises.includes(:exercise).map(&:exercise)
     exercise_ids = exercises.pluck(:id)

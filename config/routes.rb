@@ -180,7 +180,7 @@ Rails.application.routes.draw do
     end
 
     resources :review_sessions, only: %i[show new edit create update destroy] do
-      resources :reviews, only: %i[show update]
+      resources :reviews, only: %i[index show update]
     end
     resources :reviews, only: %i[show update]
 

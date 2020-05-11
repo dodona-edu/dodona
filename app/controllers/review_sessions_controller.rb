@@ -8,6 +8,10 @@ class ReviewSessionsController < ApplicationController
   end
 
   def new
+    if @series.review_session.present?
+      redirect_to review_session_path(@series.review_session)
+      return
+    end
     @review_session = ReviewSession.new(series: @series, deadline: @series.deadline)
     authorize @review_session
   end

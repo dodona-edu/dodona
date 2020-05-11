@@ -20,36 +20,30 @@ class ReviewTest < ActiveSupport::TestCase
   end
 
   test 'Appropriate amount of reviews are created when making a session and when updating' do
-    user_ids = @review_session.series.course.submissions.where(exercise: @review_session.series.exercises).map(&:user_id).uniq
-    user_count = user_ids.count
-    exercise_ids = @review_session.series.exercises.map(&:id)
-    exercise_count = exercise_ids.count
+    users = @review_session.series.course.submissions.where(exercise: @review_session.series.exercises).map(&:user).uniq
+    user_count = users.count
+    exercises = @review_session.series.exercises
+    exercise_count = exercises.count
 
     assert_equal user_count * exercise_count, @review_session.reviews.count
 
-    user_id_to_remove = user_ids.sample
+    user_to_remove = users.sample
 
     params = {
-      review_session: {
-        exercises: exercise_ids,
-        users: user_ids - [user_id_to_remove],
-        released: false
-      }
+      exercises: exercises,
+      users: users - [user_to_remove]
     }
-    @review_session.update_session(params)
+    @review_session.update(params)
 
-    assert_equal (user_ids.count - 1) * exercise_count, @review_session.reviews.count
+    assert_equal (user_count - 1) * exercise_count, @review_session.reviews.count
 
-    exercise_id_to_remove = exercise_ids.sample
+    exercise_to_remove = exercises.sample
 
     params = {
-      review_session: {
-        exercises: exercise_ids - [exercise_id_to_remove],
-        users: user_ids - [user_id_to_remove],
-        released: false
-      }
+      exercises: exercises - [exercise_to_remove],
+      users: users - [user_to_remove]
     }
-    @review_session.update_session(params)
-    assert_equal (user_ids.count - 1) * (exercise_count - 1), @review_session.reviews.count
+    @review_session.update(params)
+    assert_equal (user_count - 1) * (exercise_count - 1), @review_session.reviews.count
   end
 end

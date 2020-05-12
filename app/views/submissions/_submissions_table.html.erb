@@ -3,7 +3,7 @@
     <thead>
     <tr>
       <th class="status-column"></th>
-      <% if (current_user.administrating_courses.any? || current_user.admin?) && user.nil? %>
+      <% if user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
         <th><%= t ".user" %></th>
       <% end %>
       <% unless exercise.present? %>

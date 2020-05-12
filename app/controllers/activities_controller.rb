@@ -72,7 +72,7 @@ class ActivitiesController < ApplicationController
     @series = Series.find_by(id: params[:series_id])
     flash.now[:alert] = I18n.t('activities.show.not_a_member') if @course && !current_user&.member_of?(@course)
     if @activity.exercise?
-      @submissions = @activity.submissions
+      @submissions = @activity.submissions.includes(:annotations)
       @submissions = @submissions.in_course(@course) if @course.present? && current_user&.member_of?(@course)
       @submissions = @submissions.of_user(current_user) if current_user
       @submissions = policy_scope(@submissions).paginate(page: parse_pagination_param(params[:page]))

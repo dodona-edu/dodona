@@ -57,6 +57,13 @@ class ActivityStatus < ApplicationRecord
     end
   end
 
+  def self.add_status_for_activities(user, activities, eager = [])
+    Current.status_store ||= {}
+    ActivityStatus.where(activity: activities, user: user).includes(eager).find_each do |as|
+      Current.status_store[[as.user_id, nil, as.activity_id]] = as
+    end
+  end
+
   def self.clear_status_store
     Current.status_store = {}
   end

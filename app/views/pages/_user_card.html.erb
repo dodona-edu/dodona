@@ -36,26 +36,26 @@
     </div>
   <% end %>
 
-  <% if current_user.submissions.any? %>
+  <% if @recent_exercises.any? %>
     <div class="card-supporting-text card-border recents">
       <h5><%= t ".recent-exercises" %></h5>
-      <% current_user.recent_exercises(5).each do |exercise| %>
+      <% @recent_exercises.each do |exercise| %>
         <% submission = exercise.last_submission(current_user) %>
         <p>
           <% if submission.course.nil? %>
-            <%= link_to activity_submissions_path(submission.exercise), class: 'btn-icon pull-right' do %>
+            <%= link_to activity_submissions_path(exercise), class: 'btn-icon pull-right' do %>
               <i class="mdi mdi-chevron-right mdi-18"></i>
             <% end %>
           <% else %>
-            <%= link_to course_activity_submissions_path(submission.course, submission.exercise), class: 'btn-icon pull-right' do %>
+            <%= link_to course_activity_submissions_path(submission.course, exercise), class: 'btn-icon pull-right' do %>
               <i class="mdi mdi-chevron-right mdi-18"></i>
             <% end %>
           <% end %>
           <span class='pull-left'><%= submission_status_icon(submission) %></span>
-          <% if submission.exercise.accessible?(current_user, submission.course) %>
-            <%= link_to submission.exercise.name, activity_scoped_path(course: submission.course, activity: submission.exercise), class: "course-link", title: submission.exercise.name %>
+          <% if exercise.accessible?(current_user, submission.course) %>
+            <%= link_to exercise.name, activity_scoped_path(course: submission.course, activity: exercise), class: "course-link", title: exercise.name %>
           <% else %>
-            <span title="<%= submission.exercise.name %>"><%= submission.exercise.name %></span>
+            <span title="<%= exercise.name %>"><%= exercise.name %></span>
           <% end %>
           <% unless submission.course.nil? %>
             <%= link_to submission.course.name, course_path(submission.course), class: "small text-muted course-link", title: submission.course.name %>

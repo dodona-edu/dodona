@@ -11,6 +11,9 @@ class PagesController < ApplicationController
     if !current_user
       render "static_home"
     end
+
+    @recent_exercises = current_user.recent_exercises(5)
+    ActivityStatus.add_status_for_activities(current_user, @recent_exercises, [last_submission: [:course]])
   end
 
   def sign_in_page

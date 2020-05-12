@@ -214,7 +214,7 @@ class User < ApplicationRecord
 
   def recent_exercises(limit = 3)
     # If a user has submitted to a content page this will include `nil` values. So we compact to throw those away.
-    submissions.select('distinct exercise_id').limit(limit).map(&:exercise).compact
+    submissions.select('distinct exercise_id').limit(limit).includes(:exercise).map(&:exercise).compact
   end
 
   def pending_series

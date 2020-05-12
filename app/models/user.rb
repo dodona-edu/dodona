@@ -221,10 +221,6 @@ class User < ApplicationRecord
     courses.map { |c| c.pending_series(self) }.flatten.sort_by(&:deadline)
   end
 
-  def homepage_series
-    subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
-  end
-
   def drawer_courses
     actual_memberships = course_memberships.includes(:course).to_a.select(&:subscribed?)
     return [] if actual_memberships.empty?

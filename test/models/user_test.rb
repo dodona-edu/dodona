@@ -284,14 +284,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [pending_series], user.pending_series
   end
 
-  test 'homepage_series should return all the series of subscribed courses that should appear on the homepage' do
-    user = create :user
-    course = create :course, users: [user]
-    create :series, course: course, activity_count: 2, deadline: Time.current - 2.minutes # Not pending series
-    homepage_series = create :series, course: course, activity_count: 2, deadline: Time.current + 2.minutes
-    assert_equal [homepage_series], user.homepage_series
-  end
-
   test 'split_last_name should split the "De Achternaam"' do
     user = create :user, last_name: 'De Achternaam', first_name: ''
     assert_equal 'De', user.first_name

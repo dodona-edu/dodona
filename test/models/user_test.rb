@@ -42,18 +42,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user_korea.time_zone, 'Seoul'
   end
 
-  test 'recent courses for user' do
-    user = create :user, courses: []
-    assert_equal [], user.recent_courses(2)
-
-    user.courses << create_list(:course, 5)
-    courses = user.recent_courses(2)
-    assert_not_equal [], courses
-
-    courses = user.recent_courses(1)
-    assert_not_equal [], courses
-  end
-
   test 'only zeus and staff should be admin' do
     assert create(:zeus).admin?
     assert create(:staff).admin?
@@ -364,28 +352,6 @@ class UserHasManyTest < ActiveSupport::TestCase
 
   test 'unsubscribed_courses should return the courses in which the user is a student' do
     assert_equal [@unsubscribed_course], @user.unsubscribed_courses
-  end
-
-  test 'full_view? should return true because user has a course they has favorite' do
-    assert_equal true, @user.full_view?
-  end
-
-  test 'full_view? should return false because user is not subscribed to any courses' do
-    user = create :user
-    assert_equal false, user.full_view?
-  end
-
-  test 'full_view? should return true because user is subscribed to more than four courses' do
-    user = create :user
-    user.courses << create_list(:course, 5)
-    assert_equal true, user.full_view?
-  end
-
-  test 'full_view? should return true because user is subscribed to courses that are in different years' do
-    user = create :user
-    create :course, users: [user], year: '2017-2018'
-    create :course, users: [user], year: '2018-2019'
-    assert_equal true, user.full_view?
   end
 
   test 'drawer_courses should not return courses if not subscribed for any' do

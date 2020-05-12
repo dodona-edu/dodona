@@ -225,16 +225,6 @@ class User < ApplicationRecord
     subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
   end
 
-  def recent_courses(number_of_years)
-    grouped_recent_courses(number_of_years).map { |a| a[1] }.flatten
-  end
-
-  def grouped_recent_courses(number_of_years)
-    return [] if subscribed_courses.empty?
-
-    subscribed_courses.group_by(&:year).first(number_of_years)
-  end
-
   def drawer_courses
     actual_memberships = course_memberships.includes(:course).to_a.select(&:subscribed?)
     return [] if actual_memberships.empty?
@@ -246,21 +236,17 @@ class User < ApplicationRecord
     sorted_courses.select { |c| c.year == sorted_courses.first.year }
   end
 
-  def full_view?
-    subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count.positive?
-  end
-
   def member_of?(course)
     return false if course.blank?
 
-    @member_of ||= Set.new(subscribed_courses.pluck(:id))
+    @member_of ||= Set.new(subscribed_courses.unscope(:order).pluck(:id))
     @member_of.include?(course.id)
   end
 
   def admin_of?(course)
     return false if course.blank?
 
-    @admin_of ||= Set.new(administrating_courses.pluck(:id))
+    @admin_of ||= Set.new(administrating_courses.unscope(:order).pluck(:id))
     @admin_of.include?(course.id)
   end
 

@@ -8,12 +8,15 @@ class PagesController < ApplicationController
   def home
     @title = 'Home'
     @crumbs = []
-    if !current_user
-      render "static_home"
-    end
+    render 'static_home' unless current_user
 
     @recent_exercises = current_user.recent_exercises(5)
     ActivityStatus.add_status_for_activities(current_user, @recent_exercises, [last_submission: [:course]])
+
+    course_memberships = current_user.course_memberships.includes(course: %i[institution series]).select(&:subscribed?)
+    @subscribed_courses = course_memberships.map(&:course)
+    @favorite_courses = course_memberships.select(&:favorite).map(&:course)
+    @grouped_courses = @subscribed_courses.sort_by(&:year).reverse.group_by(&:year)
   end
 
   def sign_in_page

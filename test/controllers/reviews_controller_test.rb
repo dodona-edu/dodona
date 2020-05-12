@@ -2,9 +2,9 @@ require 'test_helper'
 
 class ReviewsControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @series = create :series, exercise_count: 5, deadline: DateTime.now + 4.hours
+    @series = create :series, exercise_count: 2, deadline: DateTime.now + 4.hours
     @exercises = @series.exercises
-    @users = (0..5).map { |_| create :user }
+    @users = (0..2).map { |_| create :user }
     @users.each do |user|
       user.enrolled_courses << @series.course
       @exercises.each do |ex|

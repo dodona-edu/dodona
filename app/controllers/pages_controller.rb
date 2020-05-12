@@ -8,6 +8,9 @@ class PagesController < ApplicationController
   def home
     @title = 'Home'
     @crumbs = []
+    if !current_user
+      render "static_home"
+    end
   end
 
   def sign_in_page

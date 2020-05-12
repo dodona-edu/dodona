@@ -59,7 +59,7 @@ class ActivityStatus < ApplicationRecord
 
   def self.add_status_for_activities(user, activities, eager = [])
     Current.status_store ||= {}
-    ActivityStatus.where(activity: activities, user: user).unscope(:order).includes(eager).find_each do |as|
+    ActivityStatus.where(activity: activities, user: user, series: nil).unscope(:order).includes(eager).find_each do |as|
       Current.status_store[[as.user_id, nil, as.activity_id]] = as
     end
   end

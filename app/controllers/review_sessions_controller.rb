@@ -1,5 +1,7 @@
 class ReviewSessionsController < ApplicationController
-  before_action :set_review_session, only: %i[show edit update destroy]
+  include SeriesHelper
+
+  before_action :set_review_session, only: %i[show edit update destroy overview]
   before_action :set_series, only: %i[new]
 
   def show
@@ -55,6 +57,15 @@ class ReviewSessionsController < ApplicationController
       format.html { redirect_to course_url(@review_session.series.course, anchor: @review_session.series.anchor), notice: I18n.t('controllers.destroyed', model: ReviewSession.model_name.human) }
       format.json { head :no_content }
     end
+  end
+
+  def overview
+    @reviews = policy_scope(Review.joins(:review_user).where(review_session: @review_session, review_users: { user: current_user }))
+    @crumbs = [
+      [@review_session.series.course.name, course_url(@review_session.series.course)],
+      [@review_session.series.name, breadcrumb_series_path(@review_session.series, current_user)],
+      [I18n.t('review_sessions.overview.title'), '#']
+    ]
   end
 
   private

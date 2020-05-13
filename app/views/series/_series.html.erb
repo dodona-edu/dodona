@@ -100,6 +100,11 @@
               <% end %>
             </li>
           <% end %>
+          <% if series.review_session.present? && policy(series.review_session).overview? %>
+              <%= link_to overview_review_session_path(series.review_session) do %>
+                <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.review_session_overview") %>
+              <% end %>
+          <% end %>
         </ul>
       </div>
     </div>

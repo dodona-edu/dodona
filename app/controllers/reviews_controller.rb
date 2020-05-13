@@ -1,10 +1,12 @@
 class ReviewsController < ApplicationController
+  include SeriesHelper
+
   before_action :set_review, only: %i[show update]
 
   def show
     @crumbs = [
       [@review.review_session.series.course.name, course_url(@review.review_session.series.course)],
-      [@review.review_session.series.name, series_url(@review.review_session.series)],
+      [@review.review_session.series.name, breadcrumb_series_path(@review.review_session.series, current_user)],
       [I18n.t('review_sessions.show.review_session'), review_session_path(@review.review_session)],
       [I18n.t('reviews.show.review'), '#']
     ]

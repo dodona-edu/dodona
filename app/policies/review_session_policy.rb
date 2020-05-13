@@ -15,6 +15,10 @@ class ReviewSessionPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def overview?
+    record.users.include?(user) && record.released
+  end
+
   def permitted_attributes
     if record.class == ReviewSession
       %i[released deadline user_ids exercise_ids]

@@ -14,3 +14,9 @@ en:
       exercises_explanation: All exercises in the series are added to the review session.
     review_table:
       user: User
+    overview:
+      title: Overview
+      released: Your code was corrected
+      exercise: Exercise
+      no_annotations: "# annotations"
+      no_submission: "No submission"

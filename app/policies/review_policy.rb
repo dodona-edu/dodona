@@ -1,4 +1,16 @@
 class ReviewPolicy < ApplicationPolicy
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      if user&.zeus?
+        scope.all
+      elsif user
+        scope.joins(:review_user).where(review_users: { user: user })
+      else
+        scope.none
+      end
+    end
+  end
+
   def show?
     course_admin?
   end

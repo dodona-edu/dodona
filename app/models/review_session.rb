@@ -81,7 +81,7 @@ class ReviewSession < ApplicationRecord
     return unless released
 
     users.find_each do |user|
-      Notification.create(notifiable: self, user_id: user.id, message: 'annotations.index.review_released')
+      Notification.create(notifiable: self, user_id: user.id, message: 'review_sessions.overview.released')
     end
   end
 

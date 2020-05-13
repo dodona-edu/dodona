@@ -7,7 +7,9 @@
           <%= render 'fab_button', form: "new_review_session", icon: 'check' %>
         </div>
       </div>
-      <%= render 'form', review_session: @review_session %>
+      <div class="card-supporting-text">
+        <%= render 'form', review_session: @review_session %>
+      </div>
     </div>
   </div>
 </div>

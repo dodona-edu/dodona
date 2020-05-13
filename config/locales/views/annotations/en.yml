@@ -1,5 +1,4 @@
 en:
-    annotations:
-        index:
-            new_annotation: "There is a new remark on your code"
-            review_released: "A review on some of your submissions was just released"
+  annotations:
+    index:
+      new_annotation: "There is a new remark on your code"

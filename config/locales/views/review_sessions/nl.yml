@@ -14,3 +14,9 @@ nl:
       exercises_explanation: Alle oefeningen in de reeks worden aan de review sessie toegevoegd.
     review_table:
       user: Gebruiker
+    overview:
+      title: Overzicht
+      released: Je code werd verbeterd
+      exercise: Oefening
+      no_annotations: "# annotations"
+      no_submission: "Geen oplossing"

@@ -40,8 +40,6 @@ module Dodona
     config.autoload_paths += Dir[Rails.root.join('app', 'helpers', 'renderers')]
     config.autoload_paths += Dir[Rails.root.join('app', 'models', 'transient')]
 
-    config.middleware.use I18n::JS::Middleware
-
     config.active_job.queue_adapter = :delayed_job
 
     config.active_storage.queues.analysis = :default

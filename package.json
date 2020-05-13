@@ -35,6 +35,6 @@
     "jest-junit": "^10.0.0",
     "ts-jest": "^25.5.1",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "3.10.3"
+    "webpack-dev-server": "3.11.0"
   }
 }

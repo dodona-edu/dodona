@@ -94,11 +94,11 @@
     <% else %>
       <%= link_to t('.go-to-course'), course_path(course), class: 'btn-text pull-right' %>
     <% end %>
-    <% if not local_assigns[:course_index] and current_user.full_view? %>
+    <% if not local_assigns[:course_index] %>
       <div class="pull-left">
-        <i class="favorite-button mdi <%= current_user.favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"
+        <i class="favorite-button mdi <%= @favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"
            data-course_id="<%= course.id %>"
-           title="<%= current_user.favorite_courses.include?(course) ? t('js.unfavorite-course-do') : t('js.favorite-course-do') %>"
+           title="<%= @favorite_courses.include?(course) ? t('js.unfavorite-course-do') : t('js.favorite-course-do') %>"
            data-toggle="tooltip"
            data-placement="bottom"
         >

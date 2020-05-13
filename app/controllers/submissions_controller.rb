@@ -20,7 +20,7 @@ class SubmissionsController < ApplicationController
 
   def index
     authorize Submission
-    @submissions = @submissions.paginate(page: parse_pagination_param(params[:page]))
+    @submissions = @submissions.includes(:annotations).paginate(page: parse_pagination_param(params[:page]))
     @title = I18n.t('submissions.index.title')
     @crumbs = []
     if @user
@@ -41,7 +41,7 @@ class SubmissionsController < ApplicationController
   end
 
   def show
-    @title = I18n.t('submissions.show.submission')
+    @title = I18n.t('submissions.show.submission') + ' - ' + @submission.exercise.name
     course = @submission.course
     @crumbs = if course.present?
                 [[course.name, course_path(course)], [@submission.exercise.name, course_activity_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), '#']]

@@ -309,7 +309,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     ActivityStatus.stubs(:find_or_create_by)
                   .raises(StandardError.new('This is an error')).then
-                  .returns(ActivityStatus.create(activity: @exercise, user: @user))
+                  .returns(ActivityStatus.find_by(activity: @exercise, user: @user))
     assert_equal false, @exercise.solved_for?(@user)
   end
 

@@ -3,9 +3,9 @@
 # Table name: course_memberships
 #
 #  id         :integer          not null, primary key
-#  course_id  :integer
-#  user_id    :integer
-#  status     :integer          default("student")
+#  course_id  :integer          not null
+#  user_id    :integer          not null
+#  status     :integer          default("student"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  favorite   :boolean          default(FALSE)

@@ -18,7 +18,7 @@ nl:
       write-code-text: Schrijf je in voor een cursus en kies een van de honderden programmeeroefeningen.
       hand-in-text: Los de oefening op en dien je code in via de ingebouwde editor.
       get-feedback-text: Je code wordt automatisch getest en na enkele seconden krijg je het resultaat te zien.
-    dynamic_home:
+    home:
       more-courses: Meer cursussen
       favorites: "Favorieten"
     course_card:

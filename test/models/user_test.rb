@@ -42,18 +42,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user_korea.time_zone, 'Seoul'
   end
 
-  test 'recent courses for user' do
-    user = create :user, courses: []
-    assert_equal [], user.recent_courses(2)
-
-    user.courses << create_list(:course, 5)
-    courses = user.recent_courses(2)
-    assert_not_equal [], courses
-
-    courses = user.recent_courses(1)
-    assert_not_equal [], courses
-  end
-
   test 'only zeus and staff should be admin' do
     assert create(:zeus).admin?
     assert create(:staff).admin?
@@ -296,14 +284,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [pending_series], user.pending_series
   end
 
-  test 'homepage_series should return all the series of subscribed courses that should appear on the homepage' do
-    user = create :user
-    course = create :course, users: [user]
-    create :series, course: course, activity_count: 2, deadline: Time.current - 2.minutes # Not pending series
-    homepage_series = create :series, course: course, activity_count: 2, deadline: Time.current + 2.minutes
-    assert_equal [homepage_series], user.homepage_series
-  end
-
   test 'split_last_name should split the "De Achternaam"' do
     user = create :user, last_name: 'De Achternaam', first_name: ''
     assert_equal 'De', user.first_name
@@ -364,28 +344,6 @@ class UserHasManyTest < ActiveSupport::TestCase
 
   test 'unsubscribed_courses should return the courses in which the user is a student' do
     assert_equal [@unsubscribed_course], @user.unsubscribed_courses
-  end
-
-  test 'full_view? should return true because user has a course they has favorite' do
-    assert_equal true, @user.full_view?
-  end
-
-  test 'full_view? should return false because user is not subscribed to any courses' do
-    user = create :user
-    assert_equal false, user.full_view?
-  end
-
-  test 'full_view? should return true because user is subscribed to more than four courses' do
-    user = create :user
-    user.courses << create_list(:course, 5)
-    assert_equal true, user.full_view?
-  end
-
-  test 'full_view? should return true because user is subscribed to courses that are in different years' do
-    user = create :user
-    create :course, users: [user], year: '2017-2018'
-    create :course, users: [user], year: '2018-2019'
-    assert_equal true, user.full_view?
   end
 
   test 'drawer_courses should not return courses if not subscribed for any' do

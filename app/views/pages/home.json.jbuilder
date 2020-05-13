@@ -3,7 +3,7 @@ if current_user
     json.partial! 'users/user', user: current_user
   end
 
-  json.deadline_series current_user.homepage_series do |series|
+  json.deadline_series @homepage_series do |series|
     json.partial! 'series/series', series: series
   end
 end

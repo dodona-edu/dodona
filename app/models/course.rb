@@ -153,7 +153,7 @@ class Course < ApplicationRecord
   end
 
   def homepage_series(passed_series = 1)
-    with_deadlines = series.visible.with_deadline.sort_by(&:deadline)
+    with_deadlines = series.select(&:open?).reject { |s| s.deadline.nil? }.sort_by(&:deadline)
     passed_deadlines = with_deadlines
                        .select { |s| s.deadline < Time.zone.now && s.deadline > Time.zone.now - 1.week }[-1 * passed_series, 1 * passed_series]
     future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }

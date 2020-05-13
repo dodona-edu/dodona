@@ -214,25 +214,11 @@ class User < ApplicationRecord
 
   def recent_exercises(limit = 3)
     # If a user has submitted to a content page this will include `nil` values. So we compact to throw those away.
-    submissions.select('distinct exercise_id').limit(limit).map(&:exercise).compact
+    submissions.select('distinct exercise_id').limit(limit).includes(:exercise).map(&:exercise).compact
   end
 
   def pending_series
     courses.map { |c| c.pending_series(self) }.flatten.sort_by(&:deadline)
-  end
-
-  def homepage_series
-    subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
-  end
-
-  def recent_courses(number_of_years)
-    grouped_recent_courses(number_of_years).map { |a| a[1] }.flatten
-  end
-
-  def grouped_recent_courses(number_of_years)
-    return [] if subscribed_courses.empty?
-
-    subscribed_courses.group_by(&:year).first(number_of_years)
   end
 
   def drawer_courses
@@ -246,21 +232,17 @@ class User < ApplicationRecord
     sorted_courses.select { |c| c.year == sorted_courses.first.year }
   end
 
-  def full_view?
-    subscribed_courses.count > 4 || subscribed_courses.group_by(&:year).length > 1 || favorite_courses.count.positive?
-  end
-
   def member_of?(course)
     return false if course.blank?
 
-    @member_of ||= Set.new(subscribed_courses.pluck(:id))
+    @member_of ||= Set.new(subscribed_courses.unscope(:order).pluck(:id))
     @member_of.include?(course.id)
   end
 
   def admin_of?(course)
     return false if course.blank?
 
-    @admin_of ||= Set.new(administrating_courses.pluck(:id))
+    @admin_of ||= Set.new(administrating_courses.unscope(:order).pluck(:id))
     @admin_of.include?(course.id)
   end
 

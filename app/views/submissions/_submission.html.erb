@@ -5,7 +5,7 @@
       <i class="mdi mdi-comment-text-outline mdi-18 colored-secondary" data-toggle="tooltip" data-placement="top" title="<%= t('submissions.submissions_table.annotated') %>"></i>
     <% end %>
   </td>
-  <% if (current_user.administrating_courses.any? || current_user.admin?) && user.nil? %>
+  <% if user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
     <td>
       <i class="mdi mdi-filter-outline mdi-18 filter-icon"
          title="<%= t('.filter-submissions-by-user') %>"

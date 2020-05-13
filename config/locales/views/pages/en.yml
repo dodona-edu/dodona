@@ -18,7 +18,7 @@ en:
       write-code-text: Subscribe for a course and pick one of the hundreds of programming exercises.
       hand-in-text: Solve the exercise and hand in using the built-in code editor.
       get-feedback-text: Your code is automatically tested. Get your results in seconds!
-    dynamic_home:
+    home:
       more-courses: More courses
       favorites: "Favorites"
     course_card:

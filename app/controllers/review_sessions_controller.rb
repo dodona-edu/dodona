@@ -1,7 +1,7 @@
 class ReviewSessionsController < ApplicationController
   include SeriesHelper
 
-  before_action :set_review_session, only: %i[show edit update destroy overview]
+  before_action :set_review_session, only: %i[show edit update destroy overview add_user remove_user]
   before_action :set_series, only: %i[new]
 
   def show
@@ -49,6 +49,16 @@ class ReviewSessionsController < ApplicationController
         format.json { render json: @review_session.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def add_user
+    user = @review_session.series.course.enrolled_members.find(params[:user_id])
+    @review_session.update(users: @review_session.users + [user])
+  end
+
+  def remove_user
+    user = @review_session.series.course.enrolled_members.find(params[:user_id])
+    @review_session.update(users: @review_session.users - [user])
   end
 
   def destroy

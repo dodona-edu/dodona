@@ -1,4 +1,4 @@
-name: Ruby
+name: System tests
 
 on: [push]
 
@@ -27,6 +27,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
+    - name: Setup chromium-chromedriver
+      uses: nanasess/setup-chromedriver@master
     - name: Cache Ruby dependencies
       uses: actions/cache@v1
       with:
@@ -51,6 +53,9 @@ jobs:
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
         yarn install
+    - name: Show installed chrome version
+      run: |
+        google-chrome --version
     - name: Run tests
       env:
         CI: true
@@ -58,29 +63,10 @@ jobs:
       run: |
         git config --global user.email "dodona@ugent.be"
         git config --global user.name "Dodona"
-        bundle exec rails test
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use ruby 2.6
-      uses: actions/setup-ruby@v1
+        bundle exec rails test:system
+    - name: Upload screenshot artifacts
+      if: failure()
+      uses: actions/upload-artifact@v1
       with:
-        ruby-version: 2.6.6
-    - name: Cache Ruby dependencies
-      uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
-    - name: Install dependencies
-      run: |
-        gem install bundler:2.0.2
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
-    - name: Lint with rubocop
-      env:
-        RAILS_ENV: "test"
-      run: |
-        bundle exec rubocop -c  .rubocop.yml
+        name: screenshots-failure
+        path: tmp/screenshots

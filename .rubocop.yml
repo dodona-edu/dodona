@@ -10,6 +10,7 @@ AllCops:
     - "log/**/*"
     - "tmp/**/*"
     - "db/**/*"
+    - "vendor/**/*"
     - "node_modules/**/*"
   TargetRubyVersion: 2.6
 

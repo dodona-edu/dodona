@@ -17,6 +17,7 @@
 #  last_submission_deadline_id :integer
 #  best_submission_id          :integer
 #  best_submission_deadline_id :integer
+#  series_id_non_nil           :integer          not null
 #
 class ActivityStatus < ApplicationRecord
   # the reverse relations aren't defined because this doesn't make sense and there are no
@@ -30,11 +31,15 @@ class ActivityStatus < ApplicationRecord
   belongs_to :series, optional: true
   belongs_to :user
 
+  validates :series_id_non_nil, uniqueness: { scope: %i[user_id activity_id] }, on: :create
+
   scope :in_series, ->(series) { where(series: series) }
   scope :for_user, ->(user) { where(user: user) }
 
   before_create :initialise_values_for_content_page, if: -> { activity.content_page? }
   before_create :initialise_values_for_exercise, if: -> { activity.exercise? }
+
+  before_validation :initialise_series_id_non_nil, if: -> { new_record? }
 
   def best_is_last?
     accepted == solved
@@ -69,6 +74,10 @@ class ActivityStatus < ApplicationRecord
   end
 
   private
+
+  def initialise_series_id_non_nil
+    self.series_id_non_nil = series_id || 0
+  end
 
   def initialise_values_for_content_page
     return unless activity.content_page?

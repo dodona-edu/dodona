@@ -17,6 +17,7 @@
 #  last_submission_deadline_id :integer
 #  best_submission_id          :integer
 #  best_submission_deadline_id :integer
+#  series_id_non_nil           :integer          not null
 #
 require 'test_helper'
 
@@ -37,5 +38,13 @@ class ActivityStatusTest < ActiveSupport::TestCase
     as2.reload
     assert as1.started
     assert as2.started
+  end
+
+  test 'should not be able to create two activity_statuses with series_id nil' do
+    activity = create :exercise
+    user = create :user
+    ActivityStatus.create(user: user, activity: activity, series: nil)
+    ActivityStatus.create(user: user, activity: activity, series: nil)
+    assert_equal 1, ActivityStatus.count
   end
 end

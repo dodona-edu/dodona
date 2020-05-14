@@ -17,6 +17,7 @@
 #  last_submission_deadline_id :integer
 #  best_submission_id          :integer
 #  best_submission_deadline_id :integer
+#  series_id_non_nil           :integer          not null
 #
 FactoryBot.define do
   factory :activity_status do

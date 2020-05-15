@@ -137,6 +137,9 @@ gem 'memory_profiler', '~> 0.9.14'
 gem 'rack-mini-profiler', '~> 2.0.1'
 gem 'stackprof', '~> 0.2.15'
 
+# Datadog
+gem 'ddtrace', '~> 0.35.2'
+
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.11.2'

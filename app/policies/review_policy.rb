@@ -20,7 +20,7 @@ class ReviewPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    %i[completed]
+    %i[completed submission_id]
   end
 
   private

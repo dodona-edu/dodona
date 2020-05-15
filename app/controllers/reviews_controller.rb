@@ -1,7 +1,7 @@
 class ReviewsController < ApplicationController
   include SeriesHelper
 
-  before_action :set_review, only: %i[show update]
+  before_action :set_review, only: %i[show edit update]
 
   def show
     @crumbs = [
@@ -11,6 +11,8 @@ class ReviewsController < ApplicationController
       [I18n.t('reviews.show.review'), '#']
     ]
   end
+
+  def edit; end
 
   def update
     @review.update(permitted_attributes(@review))

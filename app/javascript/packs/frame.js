@@ -1,4 +1,5 @@
 import jQuery from "jquery";
+import { datadogRum } from "@datadog/browser-rum";
 
 // jQuery aliases
 window.jQuery = jQuery;
@@ -18,3 +19,10 @@ window.dodona = dodona;
 initClipboard();
 
 $(initTooltips);
+
+datadogRum.init({
+    applicationId: "477d9a7b-e9be-42eb-9caa-f4e92286eb32",
+    clientToken: "pub9b24c5cc957941661162cd98406925ad",
+    datacenter: "us",
+    sampleRate: 100,
+});

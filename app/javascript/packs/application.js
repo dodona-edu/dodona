@@ -25,6 +25,14 @@ import { Toast } from "toast";
 import { Notification } from "notification";
 import { checkTimeZone, initCSRF, initTooltips } from "util.js";
 import { initClipboard } from "copy";
+import { datadogRum } from "@datadog/browser-rum";
+
+datadogRum.init({
+    applicationId: "477d9a7b-e9be-42eb-9caa-f4e92286eb32",
+    clientToken: "pub9b24c5cc957941661162cd98406925ad",
+    datacenter: "us",
+    sampleRate: 100,
+});
 
 // Initialize clipboard.js
 initClipboard();

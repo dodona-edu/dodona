@@ -8,6 +8,7 @@ nl:
       create_session: Review sessie aanmaken
     edit:
       title: Review sessie aanpassen
+      manage_users: Gebruikers toevoegen/verwijderen
     destroy: Verwijderen
     form:
       users_explanation: Bij het aanmaken van een review sessie worden alle studenten in het vak aan de review sessie toegevoegd. Je kan dit later nog aanpassen.
@@ -20,3 +21,6 @@ nl:
       exercise: Oefening
       no_annotations: "# annotations"
       no_submission: "Geen oplossing"
+    members_table:
+      remove_user: Student verwijderen uit review
+      add_user: Student toevoegen aan review

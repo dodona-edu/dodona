@@ -10,6 +10,25 @@
       <div class="card-supporting-text card-border">
         <%= render 'form', review_session: @review_session, url: review_session_path(@review_session) %>
       </div>
+      <div class="card-supporting-text card-border">
+        <div class = "page-subtitle">
+          <h3><%= t ".manage_users" %></h3>
+        </div>
+        <%= render partial: 'layouts/searchbar',
+                   locals: {
+                       eager: false,
+                       course_labels: @course_labels,
+                       institutions: Institution.of_course_by_members(@course)
+                   } %>
+        <div id="users-table-wrapper">
+          <%= render partial: 'members_table',
+                     locals: {
+                         course_memberships: @course_memberships,
+                         pagination_opts: @pagination_opts
+                     } %>
+        </div>
+
+      </div>
       <div class="card-actions card-border">
         <% if policy(@review_session).destroy? %>
           <%= link_to t('review_sessions.destroy'),

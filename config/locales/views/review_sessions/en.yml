@@ -8,6 +8,7 @@ en:
       create_session: Create review session
     edit:
       title: Edit review session
+      manage_users: Add/remove users
     destroy: Delete
     form:
       users_explanation: By default, all students in the course are added to the review session. You can edit this after the review session is created.
@@ -20,3 +21,6 @@ en:
       exercise: Exercise
       no_annotations: "# annotations"
       no_submission: "No submission"
+    members_table:
+      remove_user: Remove student
+      add_user: Add student

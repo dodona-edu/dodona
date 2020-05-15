@@ -4,6 +4,10 @@ class ReviewSessionsController < ApplicationController
   before_action :set_review_session, only: %i[show edit update destroy overview add_user remove_user]
   before_action :set_series, only: %i[new]
 
+  has_scope :by_institution, as: 'institution_id'
+  has_scope :by_filter, as: 'filter'
+  has_scope :by_course_labels, as: 'course_labels', type: :array
+
   def show
     @reviews = @review_session.review_sheet
     @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_sessions.show.review_session'), '#']]
@@ -19,6 +23,15 @@ class ReviewSessionsController < ApplicationController
   end
 
   def edit
+    @course = @review_session.series.course
+    @course_labels = CourseLabel.where(course: @course)
+    @course_memberships = apply_scopes(@course.course_memberships)
+                          .includes(:course_labels, user: [:institution])
+                          .order(status: :asc)
+                          .order(Arel.sql('users.permission ASC'))
+                          .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
+                          .where(status: %i[course_admin student])
+                          .paginate(page: parse_pagination_param(params[:page]))
     @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_session.edit.title'), '#']]
   end
 
@@ -52,12 +65,12 @@ class ReviewSessionsController < ApplicationController
   end
 
   def add_user
-    user = @review_session.series.course.enrolled_members.find(params[:user_id])
+    user = @review_session.series.course.subscribed_members.find(params[:user_id])
     @review_session.update(users: @review_session.users + [user])
   end
 
   def remove_user
-    user = @review_session.series.course.enrolled_members.find(params[:user_id])
+    user = @review_session.series.course.subscribed_members.find(params[:user_id])
     @review_session.update(users: @review_session.users - [user])
   end
 
@@ -81,7 +94,7 @@ class ReviewSessionsController < ApplicationController
   private
 
   def set_review_session
-    @review_session = ReviewSession.find(params[:id])
+    @review_session = ReviewSession.includes(%i[review_users review_exercises reviews users exercises]).find(params[:id])
     authorize @review_session
   end
 

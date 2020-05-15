@@ -12,13 +12,11 @@ Rails.application.config.content_security_policy do |policy|
   if Rails.env.development?
     # Allow webpack-dev-server
     policy.connect_src :self, 'https://pandora.ugent.be',
-                       'https://dodona-cea23.firebaseio.com',
                        'https://www.google-analytics.com',
                        'https://*.googleapis.com',
                        'http://localhost:3035', 'ws://localhost:3035'
   else
     policy.connect_src :self, 'https://pandora.ugent.be',
-                       'https://dodona-cea23.firebaseio.com',
                        'https://www.google-analytics.com',
                        'https://*.googleapis.com'
   end

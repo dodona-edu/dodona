@@ -26,7 +26,7 @@ nl:
         progress:
           finished: "%{review_count} reviews zijn afgerond."
           unfinished: "%{review_count} reviews zijn nog niet afgerond."
-          undecided: "%{review_count} reviews zijn nog niet begonnen."
+          undecided: "%{review_count} reviews hebben geen oplossing."
       submission:
         title: "Indiening metadata"
         time:

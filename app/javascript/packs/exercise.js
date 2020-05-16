@@ -7,4 +7,4 @@ window.dodona.onFrameMessage = onFrameMessage;
 window.dodona.onFrameScroll = onFrameScroll;
 
 // will automaticaly bind to window.iFrameResize()
-import { iframeResizer } from "iframe-resizer"; // eslint-disable-line no-unused-vars
+require("iframe-resizer");

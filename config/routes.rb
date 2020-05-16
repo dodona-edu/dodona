@@ -185,9 +185,9 @@ Rails.application.routes.draw do
         post 'add_user'
         post 'remove_user'
       end
-      resources :reviews, only: %i[show update]
+      resources :reviews, only: %i[show edit update]
     end
-    resources :reviews, only: %i[show update]
+    resources :reviews, only: %i[show edit update]
 
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'

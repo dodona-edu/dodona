@@ -41,7 +41,13 @@ class Review < ApplicationRecord
   end
 
   def session_metadata
-    review_session.metadata(self)
+    incompleted = review_session.reviews.incomplete
+    {
+      exercise_remaining: incompleted.where(review_exercise: review_exercise).count,
+      user_remaining: incompleted.where(review_user: review_user).count,
+      remaining: incompleted.count,
+      total: review_session.reviews.count
+    }
   end
 
   def time_to_deadline
@@ -52,7 +58,7 @@ class Review < ApplicationRecord
   end
 
   def siblings
-    others = review_session.reviews.where.not(submission: nil)
+    others = review_session.reviews
     reviews_same_exercise = others.where(review_exercise: review_exercise).order(:id)
     reviews_same_user = others.where(review_user: review_user).order(:id)
 

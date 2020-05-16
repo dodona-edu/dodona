@@ -54,17 +54,6 @@ class ReviewSession < ApplicationRecord
     }
   end
 
-  def metadata(review)
-    incompleted = reviews.incomplete.decided
-    {
-      exercise_remaining: incompleted.where(review_exercise: review.review_exercise).count,
-      user_remaining: incompleted.where(review_user: review.review_user).count,
-      remaining: incompleted.count,
-      undecided: reviews.undecided.count,
-      total: reviews.count
-    }
-  end
-
   private
 
   def manage_reviews

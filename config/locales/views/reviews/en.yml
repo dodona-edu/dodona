@@ -5,6 +5,7 @@ en:
       action_title: "Actions"
       metadata_title: "Metadata"
       details: "Review details"
+      no_linked_submission: "We couldn't find a submission of this user for this exercise that was made before the deadline of this review session."
     review_metadata:
       session:
         remaining_exercise:
@@ -59,3 +60,9 @@ en:
             one: "One annotation"
             other: "%{count} annotations"
         title: "Overview of all submissions that were reviewed"
+        short_title: "Change submission"
+    edit:
+      title: "Change submission of %{user} for %{exercise}"
+    submissions_table:
+      update-submission: "Change to this submission"
+      confirm: "Are you sure? All annotations on the previous submission will be deleted."

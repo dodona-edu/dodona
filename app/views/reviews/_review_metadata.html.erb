@@ -1,21 +1,23 @@
-<div class="review-metadata-submission">
-  <h4><%= t('.submission.title') %></h4>
-  <p>
+<% if review.submission.present? %>
+  <div class="review-metadata-submission">
+    <h4><%= t('.submission.title') %></h4>
+    <p>
     <%= t('.submission.time.html', time_ago: time_ago_in_words(review.submission.created_at), made_on: l(review.submission.created_at), format: :short) %>
 
-  </p>
-  <% ttd = review.time_to_deadline %>
-  <% if ttd[:deadline].present? %>
-    <p>
-      <%= t('.submission.time_to_series_deadline.html', time_ago: distance_of_time_in_words(ttd[:submission_time], ttd[:deadline])) %>
     </p>
-  <% end %>
+    <% ttd = review.time_to_deadline %>
+    <% if ttd[:deadline].present? %>
+      <p>
+      <%= t('.submission.time_to_series_deadline.html', time_ago: distance_of_time_in_words(ttd[:submission_time], ttd[:deadline])) %>
+      </p>
+    <% end %>
 
-  <p>
+    <p>
     <%= t('.submission.previous_attempts.html', count: review.previous_attempts) %>
-  </p>
+    </p>
+  </div>
+<% end %>
 
-</div>
 <div class="review-metadata-session">
   <h4><%= t('.session.title') %></h4>
 
@@ -32,14 +34,11 @@
   <p>
     <%= t('.session.remaining.html', count: meta[:remaining])%>
     <% total = meta[:total].to_f %>
-    <% done = total - meta[:remaining] - meta[:undecided] %>
-    <% correct_end = done / total %>
-    <% wrong_end = correct_end + meta[:remaining] / total %>
-    <span data-html="true" data-toggle="tooltip" title="<%= t('.session.progress.finished', review_count: done.to_i) %><br><%= t('.session.progress.unfinished', review_count: meta[:remaining].to_i) %><br><%= t('.session.progress.undecided', review_count: (meta[:total] - meta[:remaining] - done).to_i) %>">
+    <% done = total - meta[:remaining] %>
+    <span data-html="true" data-toggle="tooltip" title="<%= t('.session.progress.finished', review_count: done.to_i) %><br><%= t('.session.progress.unfinished', review_count: meta[:remaining].to_i) %>">
       <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-        <line x1="0" y1="0.5" x2="<%= correct_end %>" y2="0.5" class="correct"></line>
-        <line x1="<%= correct_end %>" y1="0.5" x2="<%= wrong_end %>" y2="0.5" class="wrong"></line>
-        <line x1="<%= wrong_end %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
+        <line x1="0" y1="0.5" x2="<%= done / total %>" y2="0.5" class="correct"></line>
+        <line x1="<%= done / total %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
       </svg>
     </span>
   </p>

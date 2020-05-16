@@ -1,34 +1,32 @@
 <table class="table table-resource">
   <thead>
-  <tr>
-    <th><%= t('.user') %></td>
-    <% reviews[:exercises].each do |exercise| %>
-      <th class="review-table-center review-exercise"><%= exercise.name %></td>
-    <% end %>
-  </tr>
+    <tr>
+      <th><%= t('.user') %></td>
+      <% reviews[:exercises].each do |exercise| %>
+        <th class="review-table-center review-exercise"><%= exercise.name %></td>
+      <% end %>
+    </tr>
   </thead>
   <tbody>
-  <% reviews[:reviews].each do |user, review_l| %>
-    <tr>
-      <td><%= user.full_name %></td>
-      <% review_l.each do |review| %>
-        <td class="review-table-center">
-          <% if review.submission.nil? %>
-            <i class="mdi mdi-comment-question-outline mdi-24"></i>
-          <% else %>
+    <% reviews[:reviews].each do |user, review_l| %>
+      <tr>
+        <td><%= user.full_name %></td>
+        <% review_l.each do |review| %>
+          <td class="review-table-center">
             <%= link_to review_session_review_path(review_session, review) do %>
               <div class="review-cell">
-                <% if review.completed? %>
+                <% if review.submission.nil? %>
+                  <i class="mdi mdi-comment-question-outline mdi-24"></i>
+                <% elsif review.completed? %>
                   <i class="mdi mdi-comment-check-outline mdi-24"></i>
                 <% else %>
                   <i class="mdi mdi-comment-remove-outline mdi-24"></i>
                 <% end %>
               </div>
             <% end %>
-          <% end %>
-        </td>
-      <% end %>
-    </tr>
-  <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
   </tbody>
 </table>

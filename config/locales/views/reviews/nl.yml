@@ -5,6 +5,7 @@ nl:
       metadata_title: "Metadata"
       review: "Review"
       details: "Review details"
+      no_linked_submission: "Er is geen oplossing van deze gebruiker gevonden voor deze oefening die voor de deadline van de review sessie werdt gemaakt."
     review_metadata:
       session:
         title: "Review sessie metadata"
@@ -60,3 +61,9 @@ nl:
             one: "1 opmerking"
             other: "%{count} opmerkingen"
         title: "Overzicht van alle gereviewde indieningen"
+    edit:
+      title: "Oplossing van %{user} voor %{exercise} veranderen"
+      short_title: "Oplossing veranderen"
+    submissions_table:
+      update-submission: "Veranderen naar deze oplossing"
+      confirm: "Ben je zeker? Alle annotaties op de vorige oplossing zullen verwijderd worden."

@@ -24,7 +24,7 @@ class ReviewTest < ActiveSupport::TestCase
         create :submission, user: u, exercise: e, course: series.course
       end
     end
-    @review_session = create :review_session, series: series, users: @users, exercises: @exercises, deadline: Time.now + 1.hour
+    @review_session = create :review_session, series: series, users: @users, exercises: @exercises, deadline: Time.zone.now + 1.hour
     @user_count = @users.count
     @exercise_count = @exercises.count
     @zeus = create :zeus

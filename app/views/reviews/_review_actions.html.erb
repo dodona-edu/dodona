@@ -1,5 +1,11 @@
 <% review_pointers = @review.siblings %>
 
+<div>
+  <%= link_to edit_review_path(@review), class: "btn btn-text btn-primary" do %>
+    <%= t("reviews.edit.short_title") %>
+  <% end %>
+</div>
+
 <div class="routing-actions">
   <div class="routing-action by-id">
     <h4><%= t('.category.id') %></h4>

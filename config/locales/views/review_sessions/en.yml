@@ -1,26 +1,26 @@
 en:
   review_sessions:
     show:
-      view_session: "Show review session"
-      review_session: "Review session"
-      title: "Reviews for %{series}"
+      view_session: "Show evaluation"
+      review_session: "Evaluation"
+      title: "Evaluation for %{series}"
     new:
-      create_session: Create review session
+      create_session: Evaluate
     edit:
-      title: Edit review session
+      title: Edit evaluation
       manage_users: Add/remove users
     destroy: Delete
     form:
-      users_explanation: By default, all students in the course are added to the review session. You can edit this after the review session is created.
-      exercises_explanation: All exercises in the series are added to the review session.
+      users_explanation: By default, all students in the course are added to the evaluation. You can edit this after the evaluation is created.
+      exercises_explanation: All exercises in the series are added to the evaluation.
     review_table:
       user: User
     overview:
       title: Overview
-      released: Your code was corrected
+      released: Feedback was added to your code.
       exercise: Exercise
       no_annotations: "# annotations"
       no_submission: "No submission"
     members_table:
-      remove_user: Remove student
-      add_user: Add student
+      remove_user: Remove student from evaluation
+      add_user: Add student to evaluation

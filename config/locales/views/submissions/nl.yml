@@ -18,8 +18,8 @@ nl:
       for: voor
       from: van
       most_recent_correct: Meest recente correcte oplossing per gebruiker
-      reevaluate_submissions: Oplossingen herevalueren
-      confirm_reevaluate_submissions: Ben je zeker dat je deze oplossingen wil herevalueren?
+      reevaluate_submissions: Oplossingen hertesten
+      confirm_reevaluate_submissions: Ben je zeker dat je deze oplossingen wil hertesten?
       reevaluating_submissions:
         one: 1 oplossing wordt geherevalueerd
         other: "%{count} oplossingen worden geherevalueerd"
@@ -35,7 +35,7 @@ nl:
       result: Resultaat
       code: Code
       line: Regel
-      reevaluate: Herevalueren
+      reevaluate: Hertesten
       your_output: Jouw uitvoer
       expected: Verwachte uitvoer
       edit: Wijzig oplossing

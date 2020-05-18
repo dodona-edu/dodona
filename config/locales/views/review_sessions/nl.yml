@@ -1,26 +1,26 @@
 nl:
   review_sessions:
     show:
-      view_session: "Toon review sessie"
-      review_session: "Review sessie"
-      title: "Reviews voor %{series}"
+      view_session: "Toon evaluatie"
+      review_session: "Evaluatie"
+      title: "Evaluatie voor %{series}"
     new:
-      create_session: Review sessie aanmaken
+      create_session: Evalueren
     edit:
-      title: Review sessie aanpassen
+      title: Evaluatie aanpassen
       manage_users: Gebruikers toevoegen/verwijderen
     destroy: Verwijderen
     form:
-      users_explanation: Bij het aanmaken van een review sessie worden alle studenten in het vak aan de review sessie toegevoegd. Je kan dit later nog aanpassen.
-      exercises_explanation: Alle oefeningen in de reeks worden aan de review sessie toegevoegd.
+      users_explanation: Bij het aanmaken van een evaluatie worden alle studenten in het vak aan de evaluatie toegevoegd. Je kan dit later nog aanpassen.
+      exercises_explanation: Alle oefeningen in de reeks worden aan de evaluatie toegevoegd.
     review_table:
       user: Gebruiker
     overview:
       title: Overzicht
-      released: Je code werd verbeterd
+      released: Er werd feedback gegeven op je code
       exercise: Oefening
       no_annotations: "# annotations"
       no_submission: "Geen oplossing"
     members_table:
-      remove_user: Student verwijderen uit review
-      add_user: Student toevoegen aan review
+      remove_user: Student verwijderen uit evaluatie
+      add_user: Student toevoegen aan evaluatie

@@ -23,8 +23,8 @@ en:
       programming_language: Programming Language
       event: Event
       institution: Institution
-      review_session: Review sessie
-      review: Review
+      review_session: Evaluation
+      review: Feedback
     attributes:
       api_token:
         description: Description
@@ -152,7 +152,7 @@ en:
         message: Message
         created_at: Timestamp
         event_types:
-          rejudge: "Re-evaluation of submissions"
+          rejudge: "Retest of submissions"
           permission_change: Change in permission level
           exercise_repository: Creation of exercise repository
           error: Error

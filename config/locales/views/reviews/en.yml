@@ -1,13 +1,13 @@
 en:
   reviews:
     show:
-      review: "Review"
+      review: "Give feedback"
       action_title: "Actions"
       metadata_title: "Metadata"
-      details: "Review details"
-      no_linked_submission: "We couldn't find a submission of this user for this exercise that was made before the deadline of this review session."
+      no_linked_submission: "We couldn't find a submission of this user for this exercise that was made before the deadline of this evaluation."
     review_metadata:
       session:
+        title: "Evaluation metadata"
         remaining_exercise:
           html:
             zero: "For this exercise, <b>all reviews are completed</b>"
@@ -46,8 +46,8 @@ en:
         button:
           completed: "Mark as completed"
           unfinished: "Mark as unfinished"
-          header: "Change review state"
-        failure: "Could not set review status"
+          header: "Change state"
+        failure: "Could not set state"
       category:
         id: "Random review"
         user: "Review for same user"

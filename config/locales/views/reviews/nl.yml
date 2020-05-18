@@ -3,12 +3,11 @@ nl:
     show:
       action_title: "Acties"
       metadata_title: "Metadata"
-      review: "Review"
-      details: "Review details"
-      no_linked_submission: "Er is geen oplossing van deze gebruiker gevonden voor deze oefening die voor de deadline van de review sessie werdt gemaakt."
+      review: "Feedback geven"
+      no_linked_submission: "Er is geen oplossing van deze gebruiker gevonden voor deze oefening die voor de deadline van deze evaluatie werdt gemaakt."
     review_metadata:
       session:
-        title: "Review sessie metadata"
+        title: "Evaluatie metadata"
         remaining_exercise:
           html:
             zero: "Voor deze opgave zijn er <b>geen reviews meer</b> af te werken"
@@ -29,14 +28,14 @@ nl:
           unfinished: "%{review_count} reviews zijn nog niet afgerond."
           undecided: "%{review_count} reviews hebben geen oplossing."
       submission:
-        title: "Indiening metadata"
+        title: "Metadata van oplossing"
         time:
           html: "Deze indiening werd <b>%{time_ago} geleden</b> gemaakt. Deze werd gemaakt op <b>%{made_on}</b>"
         previous_attempts:
           html:
-            zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor deze indiening."
-            one: "De gebruiker had <b>1 voorgaande poging</b> nodig voor deze indiening."
-            other: "De gebruiker had <b>%{count} pogingen</b> nodig voor deze indiening."
+            zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor deze oefening."
+            one: "De gebruiker had <b>1 voorgaande poging</b> nodig voor deze oefening."
+            other: "De gebruiker had <b>%{count} pogingen</b> nodig voor deze oefening."
         time_to_series_deadline:
           html: "Tussen deadline en indiening zat er <b>%{time_ago}</b>"
     review_actions:
@@ -47,8 +46,8 @@ nl:
         button:
           completed: "Markeren als afgewerkt"
           unfinished: "Markeren als onafgewerkt"
-          header: "Review status aanpassen"
-        failure: "De review status kon niet ingesteld worden"
+          header: "Status aanpassen"
+        failure: "De status kon niet ingesteld worden"
       category:
         id: "Willekeurige review"
         user: "Review voor zelfde gebruiker"

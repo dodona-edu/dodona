@@ -23,8 +23,8 @@ nl:
       programming_language: Programmeertaal
       event: Event
       institution: Onderwijsinstelling
-      review_session: Review sessie
-      review: Review
+      review_session: Evaluatie
+      review: Feedback
     attributes:
       api_token:
         description: Beschrijving
@@ -153,7 +153,7 @@ nl:
         message: Bericht
         created_at: Time
         event_types:
-          rejudge: "Herevalueren van oplossingen"
+          rejudge: "Hertesten van oplossingen"
           permission_change: Verandering in toegangsniveau
           exercise_repository: Aanmaak van oefeningenrepository
           error: Error

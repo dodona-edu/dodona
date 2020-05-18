@@ -3,12 +3,19 @@
     <div class="card series-edit">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t(".create_session") %></h2>
-        <div class="card-title-fab">
-          <%= render 'fab_button', form: "new_review_session", icon: 'check' %>
-        </div>
       </div>
       <div class="card-supporting-text">
+        <div class="row">
+          <div class="col-sm-offset-3 col-sm-6">
+            <%= t ".explanation_html" %>
+          </div>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border">
         <%= render 'form', review_session: @review_session %>
+      </div>
+      <div class="card-actions card-border">
+        <button type="submit" class="btn btn-primary btn-text" form="new_review_session"><%= t '.next' %></button>
       </div>
     </div>
   </div>

@@ -6,13 +6,14 @@ en:
       title: "Evaluation for %{series}"
     new:
       create_session: Evaluate
+      explanation_html: "When evaluating a series you first choose a deadline. Then you select the users included in the evaluation and give them feedback. When you release the feedback, the users in the evaluation get a notification."
+      next: Next
     edit:
       title: Edit evaluation
       manage_users: Add/remove users
     destroy: Delete
     form:
-      users_explanation: By default, all students in the course are added to the evaluation. You can edit this after the evaluation is created.
-      exercises_explanation: All exercises in the series are added to the evaluation.
+      deadline-help: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
     review_table:
       user: User
     overview:

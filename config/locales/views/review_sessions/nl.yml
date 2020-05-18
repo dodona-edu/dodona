@@ -6,13 +6,14 @@ nl:
       title: "Evaluatie voor %{series}"
     new:
       create_session: Evalueren
+      explanation_html: "Bij het evalueren van een reeks kies je eerst een deadline. Dan kies je de gebruikers die in de evaluatie opgenomen werden en geef je hen feedback. Wanneer je de feedback vrijgeeft krijgen de gebruikers in de evaluatie een notificatie."
+      next: Volgende
     edit:
       title: Evaluatie aanpassen
       manage_users: Gebruikers toevoegen/verwijderen
     destroy: Verwijderen
     form:
-      users_explanation: Bij het aanmaken van een evaluatie worden alle studenten in het vak aan de evaluatie toegevoegd. Je kan dit later nog aanpassen.
-      exercises_explanation: Alle oefeningen in de reeks worden aan de evaluatie toegevoegd.
+      deadline-help_html: "De deadline wordt gebruikt om de default oplossingen te selecteren waarop je feedback geeft. De laatste oplossing voor deze deadline wordt gebruikt. <b>Let op:</b> je kan de deadline achteraf niet meer aanpassen."
     review_table:
       user: Gebruiker
     overview:

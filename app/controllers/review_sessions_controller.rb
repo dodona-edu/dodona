@@ -43,7 +43,7 @@ class ReviewSessionsController < ApplicationController
 
     respond_to do |format|
       if @review_session.save
-        format.html { redirect_to review_session_path(@review_session) }
+        format.html { redirect_to edit_review_session_path(@review_session) }
         format.json { render :show, status: :created, location: @review_session }
       else
         format.html { render :new }

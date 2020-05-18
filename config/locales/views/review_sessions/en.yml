@@ -4,13 +4,16 @@ en:
       view_session: "Show evaluation"
       review_session: "Evaluation"
       title: "Evaluation for %{series}"
+      release: Release feedback
+      unrelease: Unrelease feedback
     new:
       create_session: Evaluate
       explanation_html: "When evaluating a series you first choose a deadline. Then you select the users included in the evaluation and give them feedback. When you release the feedback, the users in the evaluation get a notification."
       next: Next
     edit:
-      title: Edit evaluation
-      manage_users: Add/remove users
+      title: Edit users
+      delete_title: Delete evaluation
+      delete_consequences: Deleting an evaluation will also delete all feedback that was given within the evaluation.
     destroy: Delete
     form:
       deadline-help: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
@@ -24,4 +27,5 @@ en:
       no_submission: "No submission"
     members_table:
       remove_user: Remove student from evaluation
+      remove_user_consequences: "If this student already received feedback it will be deleted."
       add_user: Add student to evaluation

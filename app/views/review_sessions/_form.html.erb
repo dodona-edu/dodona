@@ -26,32 +26,19 @@
     </div>
 
 
-    <% if review_session.new_record? %>
-      <div class="field form-group">
-        <%= f.label :deadline, class: "col-sm-3 control-label" %>
-        <div class='col-sm-6'>
-          <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>
-            <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
-              <button class="btn btn-default" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
-            </span>
-          </div>
-        </div>
-        <span class="help-block col-sm-offset-3 col-sm-6"><%= t(".deadline-help_html") %></span>
-      </div>
-    <% else %>
-      <div class="field form-group">
-        <div class="col-sm-6 col-sm-offset-3">
-          <div class="checkbox">
-            <%= f.label :released do %>
-              <%= f.check_box :released %>
-              <%= ReviewSession.human_attribute_name(:released) %>
-            <% end %>
-          </div>
+    <div class="field form-group">
+      <%= f.label :deadline, class: "col-sm-3 control-label" %>
+      <div class='col-sm-6'>
+        <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>
+          <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+            <button class="btn btn-default" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
+          </span>
         </div>
       </div>
-    <% end %>
+      <span class="help-block col-sm-offset-3 col-sm-6"><%= t(".deadline-help_html") %></span>
+    </div>
   </div>
 <% end %>
 <script>

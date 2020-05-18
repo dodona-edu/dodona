@@ -1,19 +1,10 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="card review-show">
+    <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title') %></h2>
-        <div class="card-title-fab">
-          <%= render 'fab_button', form: "edit_review_session_#{@review_session.id}", icon: 'check' %>
-        </div>
       </div>
       <div class="card-supporting-text card-border">
-        <%= render 'form', review_session: @review_session, url: review_session_path(@review_session) %>
-      </div>
-      <div class="card-supporting-text card-border">
-        <div class = "page-subtitle">
-          <h3><%= t ".manage_users" %></h3>
-        </div>
         <%= render partial: 'layouts/searchbar',
                    locals: {
                        eager: false,
@@ -28,6 +19,12 @@
                      } %>
         </div>
 
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-supporting-text">
+        <h4><%= t '.delete_title' %></h4>
+        <p><%= t '.delete_consequences' %></p>
       </div>
       <div class="card-actions card-border">
         <% if policy(@review_session).destroy? %>

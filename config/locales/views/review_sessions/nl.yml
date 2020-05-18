@@ -4,13 +4,16 @@ nl:
       view_session: "Toon evaluatie"
       review_session: "Evaluatie"
       title: "Evaluatie voor %{series}"
+      release: Feedback vrijgeven
+      unrelease: Feedback verbergen
     new:
       create_session: Evalueren
       explanation_html: "Bij het evalueren van een reeks kies je eerst een deadline. Dan kies je de gebruikers die in de evaluatie opgenomen werden en geef je hen feedback. Wanneer je de feedback vrijgeeft krijgen de gebruikers in de evaluatie een notificatie."
       next: Volgende
     edit:
-      title: Evaluatie aanpassen
-      manage_users: Gebruikers toevoegen/verwijderen
+      title: Gebruikers aanpassen
+      delete_title: Evaluatie verwijderen
+      delete_consequences: Het verwijderen van een evaluatie zal ook alle feedback die binnen de evaluatie gegeven werd verwijderen.
     destroy: Verwijderen
     form:
       deadline-help_html: "De deadline wordt gebruikt om de default oplossingen te selecteren waarop je feedback geeft. De laatste oplossing voor deze deadline wordt gebruikt. <b>Let op:</b> je kan de deadline achteraf niet meer aanpassen."
@@ -24,4 +27,5 @@ nl:
       no_submission: "Geen oplossing"
     members_table:
       remove_user: Student verwijderen uit evaluatie
+      remove_user_consequences: "Als deze student al feedback gekregen had, zal deze verwijderd worden."
       add_user: Student toevoegen aan evaluatie

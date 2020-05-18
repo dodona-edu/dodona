@@ -1,5 +1,19 @@
 <div class="row">
   <div class="col-xs-12">
+    <div class="page-subtitle">
+      <div class="flex-spacer"></div>
+      <div>
+        <%= link_to review_session_path(@review_session, review_session: { released: !@review_session.released }), class: "btn btn-primary btn-fab-extended", method: :patch do %>
+          <% if !@review_session.released %>
+            <i class="mdi mdi-eye-outline icon"></i>
+            <span class="text"><%= t('.release') %></span>
+          <% else %>
+            <i class="mdi mdi-eye-off-outline icon"></i>
+            <span class="text"><%= t('.unrelease') %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
     <div class="card review-show">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title', series: @review_session.series.name) %></h2>

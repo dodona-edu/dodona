@@ -32,7 +32,7 @@ class ReviewSessionsController < ApplicationController
                           .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
                           .where(status: %i[course_admin student])
                           .paginate(page: parse_pagination_param(params[:page]))
-    @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_session.edit.title'), '#']]
+    @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_sessions.show.review_session'), review_session_url(@review_session)], [I18n.t('review_sessions.edit.title'), '#']]
   end
 
   def create

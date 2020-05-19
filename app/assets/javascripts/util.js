@@ -1,5 +1,4 @@
 /* globals ga */
-import { default as isofetch } from "isomorphic-fetch";
 
 /*
  * Function to delay some other function until it isn't
@@ -167,7 +166,7 @@ function fetch(url, options = {}) {
 
     options["headers"] = headers;
     options["credentials"] = options["credentials"] || "same-origin";
-    return isofetch(url, options);
+    return window.fetch(url, options);
 }
 
 export {

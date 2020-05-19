@@ -19,6 +19,7 @@ class Review < ApplicationRecord
   belongs_to :review_exercise
   belongs_to :submission, optional: true
 
+  before_create :generate_id
   before_create :determine_submission
   before_destroy :destroy_related_annotations
   before_save :manage_annotations_after_submission_update
@@ -31,10 +32,6 @@ class Review < ApplicationRecord
   scope :decided, -> { where.not(submission: nil) }
   scope :undecided, -> { where(submission: nil) }
 
-  def determine_submission
-    # First because the default order is id: :desc
-    self.submission = review_user.user.submissions.of_exercise(review_exercise.exercise).before_deadline(review_session.deadline).first
-  end
 
   def previous_attempts
     [review_user.user.submissions.of_exercise(review_exercise.exercise).before_deadline(submission.created_at).count - 1, 0].max
@@ -79,6 +76,18 @@ class Review < ApplicationRecord
   end
 
   private
+
+  def determine_submission
+    # First because the default order is id: :desc
+    self.submission = review_user.user.submissions.of_exercise(review_exercise.exercise).before_deadline(review_session.deadline).first
+  end
+
+  def generate_id
+    begin
+      new = SecureRandom.random_number(2_147_483_646)
+    end until Review.find_by(id: new).nil?
+    self.id = new
+  end
 
   def manage_annotations_after_submission_update
     return unless submission_id_changed? && submission_id_was.present?

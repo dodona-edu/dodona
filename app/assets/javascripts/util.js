@@ -1,4 +1,5 @@
 /* globals ga */
+import { default as isofetch } from "isomorphic-fetch";
 
 /*
  * Function to delay some other function until it isn't
@@ -163,8 +164,10 @@ function fetch(url, options = {}) {
     const headers = options.headers || {};
     headers["x-csrf-token"] = headers["x-csrf-token"] || document.querySelector("meta[name=\"csrf-token\"]").content;
     headers["x-requested-with"] = headers["x-requested-with"] || "XMLHttpRequest";
+
     options["headers"] = headers;
-    return window.fetch(url, options);
+    options["credentials"] = options["credentials"] || "same-origin";
+    return isofetch(url, options);
 }
 
 export {

@@ -1,13 +1,13 @@
 /* globals Bloodhound */
 import { Toast } from "./toast";
 import {
+    fetch,
     delay,
     getArrayURLParameter,
     getURLParameter,
     updateArrayURLParameter,
     updateURLParameter,
 } from "./util.js";
-import fetch from "isomorphic-fetch";
 
 const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
@@ -74,7 +74,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     let searchIndex = 0;
     let appliedIndex = 0;
 
-    function search(updateAddressBar, baseUrl, _query, _filterCollections, extraParams) {
+    async function search(updateAddressBar, baseUrl, _query, _filterCollections, extraParams) {
         let url = addParametersToUrl(baseUrl, _query, _filterCollections, extraParams);
         url = updateURLParameter(url, "page", 1);
 
@@ -84,22 +84,17 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             window.history.replaceState(null, "Dodona", url);
         }
         $("#progress-filter").css("visibility", "visible");
-        fetch(updateURLParameter(url, "format", "js"), {
-            headers: {
-                "accept": "text/javascript",
-                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-                "x-requested-with": "XMLHttpRequest",
-            },
-            credentials: "same-origin",
-        })
-            .then(resp => resp.text())
-            .then(data => {
-                if (appliedIndex < localIndex) {
-                    appliedIndex = localIndex;
-                    eval(data);
-                }
-                $("#progress-filter").css("visibility", "hidden");
-            });
+
+        url = updateURLParameter(url, "format", "js");
+        const resp = await fetch(url, { headers: { "accept": "text/javascript" } });
+
+        if (appliedIndex < localIndex) {
+            appliedIndex = localIndex;
+            eval(resp.text());
+        }
+
+        $("#progress-filter").css("visibility", "hidden");
+        return resp;
     }
 
     function initFilter(updateAddressBar, _baseUrl, eager, _filterCollections) {
@@ -401,9 +396,9 @@ function toggleIndexReload() {
     } else {
         console.log("Starting reload...");
         window.dodona.index.periodicReload = true;
-        const indexReload = () => {
+        const indexReload = async () => {
             if (window.dodona.index.periodicReload) {
-                window.dodona.index.doSearch();
+                await window.dodona.index.doSearch();
                 setTimeout(indexReload, RELOAD_SECONDS * 1000);
                 console.log("Reloaded.");
             } else {

@@ -17,7 +17,7 @@ const QUERY_FILTER_ID = "#filter-query-tokenfield";
 const FILTER_ICONS_CLASS = ".filter-icon";
 const FILTER_DATA = "filter";
 
-const RELOAD_SECONDS = 1;
+const RELOAD_SECONDS = 15;
 
 window.dodona.index = {};
 window.dodona.index.baseUrl = window.location.href;
@@ -181,6 +181,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             );
         }
 
+        const checkboxHtml = "<i class='action-checkbox mdi mdi-checkbox-blank-outline mdi-18 mdi-box'></i>";
         $actions.removeClass("hidden");
         if (searchOptions.length > 0) {
             $actions
@@ -192,19 +193,19 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                         action.type ? "data-type=" + action.type : ""
                     } data-search_opt_id="${id}">${
                         action.text
-                    }<i class='mdi mdi-checkbox-blank-outline mdi-18 mdi-box'></i></a>`
+                    }${ checkboxHtml }</a>`
                 );
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
+                const $checkbox = $link.find("i.action-checkbox");
                 if (urlContainsSearchOpt(action)) {
-                    $link.find("i").removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
+                    $checkbox.removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
                 }
                 $link.click(() => {
-                    const child = $link.find("i");
-                    if (child.hasClass("mdi-checkbox-blank-outline")) {
-                        child.removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
+                    if ($checkbox.hasClass("mdi-checkbox-blank-outline")) {
+                        $checkbox.removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
                     } else {
-                        child.removeClass("mdi-checkbox-marked-outline").addClass("mdi-checkbox-blank-outline");
+                        $checkbox.removeClass("mdi-checkbox-marked-outline").addClass("mdi-checkbox-blank-outline");
                     }
                     performSearch();
                     return false;
@@ -217,11 +218,14 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 .append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
             searchActions.forEach(function (action) {
                 const $link = $(
-                    `<a class="action" href='${
-                        action.url ? action.url : "#"
-                    }' ${
-                        action.type ? "data-type=" + action.type : ""
-                    }><i class='mdi mdi-${action.icon} mdi-18'></i>${action.text}</a>`
+                    `<a class='action'
+                    id="${ action.id || "" }"
+                    href='${ action.url ? action.url : "#" }'
+                    ${ action.type ? "data-type=" + action.type : "" }>
+                      <i class='mdi mdi-${action.icon} mdi-18'></i>
+                      ${ action.text }
+                      ${ action.checkbox ? checkboxHtml : "" }
+                    </a>`
                 );
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
@@ -391,18 +395,26 @@ function initFilterButtons() {
 
 
 function toggleIndexReload() {
-    if (window.dodona.index.periodicReload) {
-        window.dodona.index.periodicReload = false;
+    const $checkbox = document.querySelector("#index-reload > i.action-checkbox");
+
+    const isEnabled = () => $checkbox.classList.contains("mdi-checkbox-marked-outline");
+    const enable = () => {
+        $checkbox.classList.remove("mdi-checkbox-blank-outline");
+        $checkbox.classList.add("mdi-checkbox-marked-outline");
+    };
+    const disable = () => {
+        $checkbox.classList.remove("mdi-checkbox-marked-outline");
+        $checkbox.classList.add("mdi-checkbox-blank-outline");
+    };
+
+    if (isEnabled()) {
+        disable();
     } else {
-        console.log("Starting reload...");
-        window.dodona.index.periodicReload = true;
+        enable();
         const indexReload = async () => {
-            if (window.dodona.index.periodicReload) {
+            if (isEnabled()) {
                 await window.dodona.index.doSearch();
                 setTimeout(indexReload, RELOAD_SECONDS * 1000);
-                console.log("Reloaded.");
-            } else {
-                console.log("Stopped reloading.");
             }
         };
         indexReload();

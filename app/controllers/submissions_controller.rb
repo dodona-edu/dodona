@@ -22,22 +22,31 @@ class SubmissionsController < ApplicationController
     authorize Submission
     @submissions = @submissions.includes(:annotations).paginate(page: parse_pagination_param(params[:page]))
     @title = I18n.t('submissions.index.title')
-    @crumbs = []
-    if @user
-      @crumbs << if @course.present?
-                   [@user.full_name, course_member_path(@course, @user)]
-                 else
-                   [@user.full_name, user_path(@user)]
-                 end
-    elsif @series
-      @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
-    elsif @course
-      @crumbs << [@course.name, course_path(@course)]
-    elsif @judge
-      @crumbs << [@judge.name, judge_path(@judge)]
+
+    return unless stale? @submissions
+
+    respond_to do |format|
+      format.html do
+        @crumbs = []
+        if @user
+          @crumbs << if @course.present?
+                       [@user.full_name, course_member_path(@course, @user)]
+                     else
+                       [@user.full_name, user_path(@user)]
+                     end
+        elsif @series
+          @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
+        elsif @course
+          @crumbs << [@course.name, course_path(@course)]
+        elsif @judge
+          @crumbs << [@judge.name, judge_path(@judge)]
+        end
+        @crumbs << [@activity.name, helpers.activity_scoped_path(activity: @exercise, series: @series, course: @course)] if @exercise
+        @crumbs << [I18n.t('submissions.index.title'), '#']
+      end
+      format.json
+      format.js
     end
-    @crumbs << [@activity.name, helpers.activity_scoped_path(activity: @exercise, series: @series, course: @course)] if @exercise
-    @crumbs << [I18n.t('submissions.index.title'), '#']
   end
 
   def show

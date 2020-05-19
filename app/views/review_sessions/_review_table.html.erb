@@ -13,16 +13,21 @@
         <td><%= user.full_name %></td>
         <% review_l.each do |review| %>
           <td class="review-table-center">
-            <%= link_to review_session_review_path(review_session, review) do %>
-              <div class="review-cell">
-                <% if review.submission.nil? %>
-                  <i class="mdi mdi-comment-question-outline mdi-24"></i>
-                <% elsif review.completed? %>
-                  <i class="mdi mdi-comment-check-outline mdi-24"></i>
-                <% else %>
-                  <i class="mdi mdi-comment-remove-outline mdi-24"></i>
-                <% end %>
-              </div>
+            <%= link_to review_session_review_path(review_session, review), class: "btn btn-icon" do %>
+              <% if review.completed? %>
+                <i class="mdi mdi-comment-check-outline mdi-24" title="<%= t ".review_finished" %>"></i>
+              <% elsif review.submission.nil? %>
+                <i class="mdi mdi-comment-question-outline mdi-24" title="<%= t ".review_undecided" %>"></i>
+              <% else %>
+                <i class="mdi mdi-comment-remove-outline mdi-24" title="<%= t ".review_unstarted" %>"></i>
+              <% end %>
+              <% if review.submission.blank? %>
+                <i class="mdi mdi-file-cancel-outline mdi-24" title="<%= t ".submission_empty" %>"></i>
+              <% elsif review.submission.accepted %>
+                <i class="mdi mdi-file-check-outline mdi-24" title="<%= t ".submission_accepted" %>"></i>
+              <% else %>
+                <i class="mdi mdi-file-remove-outline mdi-24" title="<%= t ".submission_wrong" %>"></i>
+              <% end %>
             <% end %>
           </td>
         <% end %>

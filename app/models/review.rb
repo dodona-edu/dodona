@@ -32,7 +32,6 @@ class Review < ApplicationRecord
   scope :decided, -> { where.not(submission: nil) }
   scope :undecided, -> { where(submission: nil) }
 
-
   def previous_attempts
     [review_user.user.submissions.of_exercise(review_exercise.exercise).before_deadline(submission.created_at).count - 1, 0].max
   end
@@ -80,6 +79,7 @@ class Review < ApplicationRecord
   def determine_submission
     # First because the default order is id: :desc
     self.submission = review_user.user.submissions.of_exercise(review_exercise.exercise).before_deadline(review_session.deadline).first
+    self.completed = true if submission.nil?
   end
 
   def generate_id

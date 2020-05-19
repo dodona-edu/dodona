@@ -6,6 +6,11 @@ nl:
       title: "Evaluatie voor %{series}"
       release: Feedback vrijgeven
       unrelease: Feedback verbergen
+      deadline_html: De oplossingen voor deze evaluatie werden bepaald met als deadline <b>%{deadline}</b>.
+      next_incomplete_review: Volgende onafgewerkte oplossing
+      progress:
+        finished: "%{review_count} oplossingen hebben afgewerkte feedback."
+        unfinished: "%{review_count} oplossingen hebben nog geen afgewerkte feedback."
     new:
       create_session: Evalueren
       explanation_html: "Bij het evalueren van een reeks kies je eerst een deadline. Dan kies je de gebruikers die in de evaluatie opgenomen werden en geef je hen feedback. Wanneer je de feedback vrijgeeft krijgen de gebruikers in de evaluatie een notificatie."
@@ -19,6 +24,12 @@ nl:
       deadline-help_html: "De deadline wordt gebruikt om de default oplossingen te selecteren waarop je feedback geeft. De laatste oplossing voor deze deadline wordt gebruikt. <b>Let op:</b> je kan de deadline achteraf niet meer aanpassen."
     review_table:
       user: Gebruiker
+      review_finished: Feedback afgewerkt
+      review_undecided: Lege oplossing die nog niet als afgewerkt werd gemarkeerd
+      review_unstarted: Feedback nog niet afgewerkt
+      submission_empty: Lege oplossing
+      submission_accepted: Juiste oplossing
+      submission_wrong: Foute oplossing
     overview:
       title: Overzicht
       released: Er werd feedback gegeven op je code

@@ -27,6 +27,10 @@ class ReviewSessionPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def mark_undecided_complete?
+    course_admin?
+  end
+
   def permitted_attributes
     if record.class == ReviewSession
       %i[released deadline user_ids exercise_ids]

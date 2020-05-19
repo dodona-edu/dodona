@@ -1,7 +1,7 @@
 class ReviewSessionsController < ApplicationController
   include SeriesHelper
 
-  before_action :set_review_session, only: %i[show edit update destroy overview add_user remove_user]
+  before_action :set_review_session, only: %i[show edit update destroy overview add_user remove_user mark_undecided_complete]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -72,6 +72,10 @@ class ReviewSessionsController < ApplicationController
   def remove_user
     user = @review_session.series.course.subscribed_members.find(params[:user_id])
     @review_session.update(users: @review_session.users - [user])
+  end
+
+  def mark_undecided_complete
+    @review_session.reviews.undecided.find_each { |r| r.update(completed: true) }
   end
 
   def destroy

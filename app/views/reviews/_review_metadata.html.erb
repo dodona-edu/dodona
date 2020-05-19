@@ -33,12 +33,12 @@
 
   <p>
     <%= t('.session.remaining.html', count: meta[:remaining])%>
-    <% total = meta[:total].to_f %>
+    <% total = meta[:total] %>
     <% done = total - meta[:remaining] %>
-    <span data-html="true" data-toggle="tooltip" title="<%= t('.session.progress.finished', review_count: done.to_i) %><br><%= t('.session.progress.unfinished', review_count: meta[:remaining].to_i) %>">
+    <span data-html="true" data-toggle="tooltip" title="<%= t('.session.progress.finished', review_count: done) %><br><%= t('.session.progress.unfinished', review_count: meta[:remaining]) %>">
       <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-        <line x1="0" y1="0.5" x2="<%= done / total %>" y2="0.5" class="correct"></line>
-        <line x1="<%= done / total %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
+        <line x1="0" y1="0.5" x2="<%= done.to_f / total %>" y2="0.5" class="correct"></line>
+        <line x1="<%= done.to_f / total %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
       </svg>
     </span>
   </p>

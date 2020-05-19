@@ -6,6 +6,11 @@ en:
       title: "Evaluation for %{series}"
       release: Release feedback
       unrelease: Unrelease feedback
+      deadline_html: The submissions for this evaluation were chosen with <b>%{deadline}</b> as a deadline.
+      next_incomplete_review: Next incomplete submissions
+      progress:
+        finished: "%{review_count} submissions have completed feedback."
+        unfinished: "%{review_count} submissions don't have completed feedback."
     new:
       create_session: Evaluate
       explanation_html: "When evaluating a series you first choose a deadline. Then you select the users included in the evaluation and give them feedback. When you release the feedback, the users in the evaluation get a notification."
@@ -19,6 +24,12 @@ en:
       deadline-help: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
     review_table:
       user: User
+      review_finished: Feedback completed
+      review_undecided: Empty submission that was not marked as completed
+      review_unstarted: Feedback not yet completed
+      submission_empty: Empty submission
+      submission_accepted: Correct submission
+      submission_wrong: Wrong submission
     overview:
       title: Overview
       released: Feedback was added to your code.

@@ -38,6 +38,17 @@ class ReviewSession < ApplicationRecord
     super(new_exercises)
   end
 
+  def next_incomplete_review
+    reviews.incomplete.order(id: :asc).first
+  end
+
+  def metadata
+    {
+      done: reviews.complete.count,
+      total: reviews.count
+    }
+  end
+
   def review_sheet
     exercises = review_exercises.includes(:exercise).map(&:exercise)
     exercise_ids = exercises.pluck(:id)

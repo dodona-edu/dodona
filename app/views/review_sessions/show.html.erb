@@ -1,19 +1,5 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="page-subtitle">
-      <div class="flex-spacer"></div>
-      <div>
-        <%= link_to review_session_path(@review_session, review_session: { released: !@review_session.released }), class: "btn btn-primary btn-fab-extended", method: :patch do %>
-          <% if !@review_session.released %>
-            <i class="mdi mdi-eye-outline icon"></i>
-            <span class="text"><%= t('.release') %></span>
-          <% else %>
-            <i class="mdi mdi-eye-off-outline icon"></i>
-            <span class="text"><%= t('.unrelease') %></span>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
     <div class="card review-show">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title', series: @review_session.series.name) %></h2>
@@ -23,6 +9,34 @@
           <button class="btn btn-primary btn-fab mdi mdi-36 mdi-pencil">
           </button>
         <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <div class="row">
+          <% metadata = @review_session.metadata %>
+          <div class="col-xs-push-6 col-xs-6 col-sm-3 col-sm-push-9">
+            <%= link_to review_session_path(@review_session, review_session: { released: !@review_session.released }), class: "btn btn-primary btn-text", method: :patch do %>
+              <% if !@review_session.released %>
+                <span class="text"><%= t('.release') %></span>
+              <% else %>
+                <span class="text"><%= t('.unrelease') %></span>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-sm-pull-3">
+            <span data-toggle="tooltip" title="<%= t('.progress.finished', review_count: metadata[:done]) %> <%= t('.progress.unfinished', review_count: (metadata[:total] - metadata[:done])) %>">
+              <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
+                <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="correct"></line>
+                <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
+              </svg>
+            </span>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-sm-pull-3">
+            <% if @review_session.reviews.incomplete.any? %>
+              <%= link_to t('.next_incomplete_review'), @review_session.next_incomplete_review %>
+            <% end %>
+          </div>
+        </div>
+        <span class="help-block"><%= t '.deadline_html', deadline: l(@review_session.deadline, format: :submission) %></span>
       </div>
       <div class="card-supporting-text card-border">
         <%= render 'review_table', reviews: @reviews, review_session: @review_session %>

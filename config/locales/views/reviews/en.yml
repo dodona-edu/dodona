@@ -26,7 +26,6 @@ en:
         progress:
           finished: "%{review_count} reviews have been finished."
           unfinished: "%{review_count} reviews have not been finished yet."
-          undecided: "%{review_count} reviews have no submission."
       submission:
         title: "Submission metadata"
         time:

@@ -137,12 +137,7 @@ module ApplicationHelper
     sanitized = ActionController::Base.helpers.sanitize html,
                                                         tags: tags,
                                                         attributes: attributes
-    # If an anchor has a target, disable the referer
-    doc = Nokogiri::HTML::DocumentFragment.parse(sanitized)
-    doc.css('a[target*=\'_blank\']').each do |a|
-      a['rel'] = 'noopener noreferrer'
-    end
-    doc.to_html.html_safe
+    sanitized.html_safe
   end
 
   def markdown(source)

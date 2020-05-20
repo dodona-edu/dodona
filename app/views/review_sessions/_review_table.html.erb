@@ -8,7 +8,8 @@
     </tr>
   </thead>
   <tbody>
-    <% reviews[:reviews].each do |user, review_l| %>
+    <% review_session.users.order(last_name: :asc, first_name: :asc).each do |user| %>
+      <% review_l = reviews[:reviews][user.id] %>
       <tr>
         <td><%= user.full_name %></td>
         <% review_l.each do |review| %>

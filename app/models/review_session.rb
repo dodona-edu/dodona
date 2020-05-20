@@ -56,8 +56,8 @@ class ReviewSession < ApplicationRecord
 
     all_reviews = reviews.includes(review_exercise: [:exercise], review_user: [:user]).to_a
     revs = users.map do |user|
-      [user, all_reviews.select { |rev| rev.review_user.user == user }.sort_by { |rev| exercise_ids.find_index rev.review_exercise.exercise.id }]
-    end
+      [user.id, all_reviews.select { |rev| rev.review_user.user == user }.sort_by { |rev| exercise_ids.find_index rev.review_exercise.exercise.id }]
+    end.to_h
 
     {
       exercises: exercises,

@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     post '/toggle_demo_mode' => 'pages#toggle_demo_mode'
     post '/toggle_dark_mode' => 'pages#toggle_dark_mode'
 
+    get '/status' => redirect("https://p.datadoghq.com/sb/sil3oh7xurb0ujwu-3dfa8d0b077b83f3afbee49f0641abfd"), :as => :status
+
     concern :mediable do
       member do
         constraints host: Rails.configuration.default_host do

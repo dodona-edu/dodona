@@ -10,6 +10,7 @@ class ReviewsController < ApplicationController
   has_scope :by_status, as: 'status'
 
   def show
+    @auto_mark = params[:auto_mark]
     @crumbs = [
       [@review.review_session.series.course.name, course_url(@review.review_session.series.course)],
       [@review.review_session.series.name, breadcrumb_series_path(@review.review_session.series, current_user)],
@@ -32,10 +33,12 @@ class ReviewsController < ApplicationController
   end
 
   def update
+    @auto_mark = params[:auto_mark]
     @review.update(permitted_attributes(@review))
     respond_to do |format|
       format.html { redirect_to review_session_review_path(@review.review_session, @review) }
       format.json { render :show, status: :ok, location: @review }
+      format.js
     end
   end
 

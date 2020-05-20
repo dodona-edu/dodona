@@ -1,7 +1,7 @@
 module ReviewHelper
   def review_action_button(text, other_review)
     if other_review
-      link_to(review_path(other_review)) do
+      link_to(review_session_review_path(other_review.review_session, other_review), class: 'review-nav-link') do
         button(text, false)
       end
     else

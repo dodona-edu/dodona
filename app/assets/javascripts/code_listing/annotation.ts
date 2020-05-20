@@ -53,9 +53,9 @@ export abstract class Annotation {
 
         if (!this.visible) {
             const icon = document.createElement("i");
-            icon.classList.add("mdi", "mdi-eye-off");
+            icon.classList.add("mdi", "mdi-eye-off", "mdi-18", "annotation-visibility");
             icon.title = I18n.t("js.user_annotation.not_released");
-            header.appendChild(icon);
+            meta.appendChild(icon);
         }
 
         // Update button.

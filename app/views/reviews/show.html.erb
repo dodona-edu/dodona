@@ -7,29 +7,27 @@
 <div class="row" id="review-page">
   <div class="col-xs-12 col-md-push-9 col-md-3 review-metadata">
     <div class="card">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t('.action_title') %></h2>
-      </div>
-      <div class="card-supporting-text card-border">
+      <div class="card-supporting-text card-border review-actions-holder">
         <%= render partial: 'review_actions', locals: { review_session: @review.review_session, review: @review } %>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t('.metadata_title') %></h2>
-      </div>
-      <div class="card-supporting-text card-border">
-        <%= render partial: 'review_metadata', locals: { review: @review } %>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-md-pull-3 col-md-9 review-submission">
     <div class="card review-show">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t('submissions.show.submission_results') %></h2>
+        <h2 class="card-title-text"><%= t '.submission_for_by', for: @review.exercise.name, by: @review.user.full_name %></h2>
       </div>
       <div class="card-supporting-text card-border">
+        <div class="pull-right">
+          <%= link_to edit_review_path(@review), class: "btn btn-text btn-primary" do %>
+            <%= t("reviews.edit.short_title") %>
+          <% end %>
+        </div>
         <% if @review.submission.present? %>
+          <div class="review-metadata-submission">
+            <p><%= t('.submission.time_html', time: l(@review.submission.created_at, format: :submission)) %></p>
+            <p><%= t('.submission.previous_attempts_html', count: @review.previous_attempts) %></p>
+          </div>
           <div class="code-table" data-submission-id="<%= @review.submission.id %>">
             <%= @review.submission.judge.renderer.new(@review.submission, current_user).parse %>
           </div>

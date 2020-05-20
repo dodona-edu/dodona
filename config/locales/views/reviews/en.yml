@@ -2,42 +2,17 @@ en:
   reviews:
     show:
       review: "Give feedback"
-      action_title: "Actions"
-      metadata_title: "Metadata"
       no_linked_submission: "We couldn't find a submission of this user for this exercise that was made before the deadline of this evaluation."
-    review_metadata:
-      session:
-        title: "Evaluation metadata"
-        remaining_exercise:
-          html:
-            zero: "For this exercise, <b>all reviews are completed</b>"
-            one: "For this exercise, there is still <b>1 review remaining</b> to be completed"
-            other: "For this exercise, there are <b>%{count} reviews remaining</b> to be completed"
-        remaining_user:
-          html:
-            zero: "For this user, <b>all reviews</b> are completed"
-            one: "For this user, there is still <b>1 review remaining</b> to be completed"
-            other: "For this user, there are still <b>%{count} reviews remaining</b> to be completed"
-        remaining:
-          html:
-            zero: "There are <b>no reviews remaining</b> to completed"
-            one: "There is still <b>one review remaining</b> to be completed"
-            other: "There are still <b>%{count} reviews remaining</b> to be completed"
-        progress:
-          finished: "%{review_count} reviews have been finished."
-          unfinished: "%{review_count} reviews have not been finished yet."
+      submission_for_by: "Submission for %{for} by %{by}"
       submission:
-        title: "Submission metadata"
-        time:
-          html: "This submission was made <b>%{time_ago} ago</b>. It was made on <b>%{made_on}</b>"
-        previous_attempts:
-          html:
-            zero: "The user made <b>no attempts</b> before this submission."
-            one: "The user made <b>1 attempt</b> before this submission."
-            other: "The user made <b>%{count} attempts</b> before this submission."
-        time_to_series_deadline:
-          html: "Between deadline and submission time there was <b>%{time_ago}</b>"
+        time_html: "This submission was made at <b>%{time}</b>"
+        previous_attempts_html:
+          zero: "The user made <b>no attempts</b> before this submission."
+          one: "The user made <b>1 attempt</b> before this submission."
+          other: "The user made <b>%{count} attempts</b> before this submission."
     review_actions:
+      automatically_mark: Automatically mark as completed when changing submission
+      progress: Progress
       direction:
         next: Volgende
         prev: Vorige
@@ -48,18 +23,17 @@ en:
           header: "Change state"
         failure: "Could not set state"
       category:
-        id: "Random review"
         user: "Review for same user"
         exercise: "Review for same exercise"
-      overview:
-        annotations:
-          count: "Amount of annotations by teacher"
-          amount:
-            zero: "No annotations"
-            one: "One annotation"
-            other: "%{count} annotations"
-        title: "Overview of all submissions that were reviewed"
-        short_title: "Change submission"
+    overview:
+      annotations:
+        count: "Amount of annotations by teacher"
+        amount:
+          zero: "No annotations"
+          one: "One annotation"
+          other: "%{count} annotations"
+      title: "Overview of all submissions that were reviewed"
+      short_title: "Change submission"
     edit:
       title: "Change submission of %{user} for %{exercise}"
     submissions_table:

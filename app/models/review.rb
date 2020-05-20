@@ -16,8 +16,12 @@ class Review < ApplicationRecord
 
   belongs_to :review_session
   belongs_to :review_user
+  belongs_to :user
   belongs_to :review_exercise
   belongs_to :submission, optional: true
+
+  delegate :user, to: :review_user
+  delegate :exercise, to: :review_exercise
 
   before_create :generate_id
   before_create :determine_submission
@@ -36,16 +40,6 @@ class Review < ApplicationRecord
     [review_user.user.submissions.of_exercise(review_exercise.exercise).before_deadline(submission.created_at).count - 1, 0].max
   end
 
-  def session_metadata
-    incompleted = review_session.reviews.incomplete
-    {
-      exercise_remaining: incompleted.where(review_exercise: review_exercise).count,
-      user_remaining: incompleted.where(review_user: review_user).count,
-      remaining: incompleted.count,
-      total: review_session.reviews.count
-    }
-  end
-
   def time_to_deadline
     {
       deadline: submission.exercise.series.find_by(course: submission.course).deadline,
@@ -59,10 +53,6 @@ class Review < ApplicationRecord
     reviews_same_user = others.where(review_user: review_user).order(:id)
 
     {
-      id: {
-        prev: others.where('id < ?', id).last,
-        next: others.find_by('id > ?', id)
-      },
       exercise: {
         prev: reviews_same_exercise.where('id < ?', id).last,
         next: reviews_same_exercise.find_by('id > ?', id)

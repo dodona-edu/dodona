@@ -1,43 +1,18 @@
 nl:
   reviews:
     show:
-      action_title: "Acties"
-      metadata_title: "Metadata"
       review: "Feedback geven"
       no_linked_submission: "Er is geen oplossing van deze gebruiker gevonden voor deze oefening die voor de deadline van deze evaluatie werdt gemaakt."
-    review_metadata:
-      session:
-        title: "Evaluatie metadata"
-        remaining_exercise:
-          html:
-            zero: "Voor deze opgave zijn er <b>geen reviews meer</b> af te werken"
-            one: "Voor deze opgave resteert er <b>nog 1 onafgewerkte review</b>"
-            other: "Voor deze opgave resteren er <b>nog %{count} onafgewerkte reviews</b>"
-        remaining_user:
-          html:
-            zero: "Voor deze gebruiker zijn <b>alle reviews afgewerkt</b>"
-            one: "Voor deze gebruiker resteert er <b>1 review om af te werken</b>"
-            other: "Voor deze gebruiker resteren er <b>nog %{count} reviews om af te werken</b>"
-        remaining:
-          html:
-            zero: "Er zijn <b>geen reviews meer</b> af te werken"
-            one: "Er is nog <b>1 review</b> om af te werken"
-            other: "Er zijn nog <b>%{count} reviews</b> af te werken"
-        progress:
-          finished: "%{review_count} reviews zijn afgerond."
-          unfinished: "%{review_count} reviews zijn nog niet afgerond."
+      submission_for_by: "Oplossing voor %{for} door %{by}"
       submission:
-        title: "Metadata van oplossing"
-        time:
-          html: "Deze indiening werd <b>%{time_ago} geleden</b> gemaakt. Deze werd gemaakt op <b>%{made_on}</b>"
-        previous_attempts:
-          html:
-            zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor deze oefening."
-            one: "De gebruiker had <b>1 voorgaande poging</b> nodig voor deze oefening."
-            other: "De gebruiker had <b>%{count} pogingen</b> nodig voor deze oefening."
-        time_to_series_deadline:
-          html: "Tussen deadline en indiening zat er <b>%{time_ago}</b>"
+        time_html: "Deze oplossing werd om <b>%{time}</b> gemaakt."
+        previous_attempts_html:
+          zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor deze oefening."
+          one: "De gebruiker had <b>1 voorgaande poging</b> nodig voor deze oefening."
+          other: "De gebruiker had <b>%{count} pogingen</b> nodig voor deze oefening."
     review_actions:
+      automatically_mark: Markeer automatisch als afgewerkt bij veranderen van oplossing
+      progress: Vooruitgang
       direction:
         next: Volgende
         prev: Vorige
@@ -48,17 +23,16 @@ nl:
           header: "Status aanpassen"
         failure: "De status kon niet ingesteld worden"
       category:
-        id: "Willekeurige review"
-        user: "Review voor zelfde gebruiker"
-        exercise: "Review voor zelfde oefening"
-      overview:
-        annotations:
-          count: "Aantal opmerkingen door lesgever"
-          amount:
-            zero: "Geen opmerkingen"
-            one: "1 opmerking"
-            other: "%{count} opmerkingen"
-        title: "Overzicht van alle gereviewde indieningen"
+        user: "Zelfde gebruiker"
+        exercise: "Zelfde oefening"
+    overview:
+      annotations:
+        count: "Aantal opmerkingen door lesgever"
+        amount:
+          zero: "Geen opmerkingen"
+          one: "1 opmerking"
+          other: "%{count} opmerkingen"
+      title: "Overzicht van alle gereviewde indieningen"
     edit:
       title: "Oplossing van %{user} voor %{exercise} veranderen"
       short_title: "Oplossing veranderen"

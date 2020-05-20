@@ -129,20 +129,14 @@ module ApplicationHelper
   end
 
   def sanitize(html)
-    tags = Rails::Html::SafeListSanitizer.allowed_tags.to_a
-    tags += %w[table thead tbody tr td th colgroup col style svg circle line rect path summary details]
-    attributes = Rails::Html::SafeListSanitizer.allowed_attributes.to_a
-    attributes += %w[style target data-toggle data-parent data-tab data-line data-element id x1 y1 x2 y2 stroke stroke-width fill cx cy r]
-    # Filteres allowed tags and attributes
+    @tags ||= Rails::Html::SafeListSanitizer.allowed_tags.to_a + %w[table thead tbody tr td th colgroup col style svg circle line rect path summary details]
+    @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a + %w[style target data-toggle data-parent data-tab data-line data-element id x1 y1 x2 y2 stroke stroke-width fill cx cy r]
+
+    # Filters allowed tags and attributes
     sanitized = ActionController::Base.helpers.sanitize html,
-                                                        tags: tags,
-                                                        attributes: attributes
-    # If an anchor has a target, disable the referer
-    doc = Nokogiri::HTML::DocumentFragment.parse(sanitized)
-    doc.css('a[target*=\'_blank\']').each do |a|
-      a['rel'] = 'noopener noreferrer'
-    end
-    doc.to_html.html_safe
+                                                        tags: @tags,
+                                                        attributes: @attributes
+    sanitized.html_safe
   end
 
   def markdown(source)

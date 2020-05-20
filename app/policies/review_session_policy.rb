@@ -19,6 +19,10 @@ class ReviewSessionPolicy < ApplicationPolicy
     record.users.include?(user) && record.released
   end
 
+  def set_multi_user?
+    course_admin?
+  end
+
   def add_user?
     course_admin?
   end

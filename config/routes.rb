@@ -182,6 +182,7 @@ Rails.application.routes.draw do
     resources :review_sessions, only: %i[show new edit create update destroy] do
       member do
         get 'overview'
+        post 'set_multi_user'
         post 'add_user'
         post 'remove_user'
       end

@@ -9,7 +9,17 @@
                    locals: {
                        eager: false,
                        course_labels: @course_labels,
-                       institutions: Institution.of_course_by_members(@course)
+                       institutions: Institution.of_course_by_members(@course),
+                       actions: [
+                         {
+                           text: t('.add_enrolled'),
+                           action: set_multi_user_review_session_path(@review_session, type: 'enrolled', format: :js)
+                         },
+                         {
+                           text: t('.add_submitted'),
+                           action: set_multi_user_review_session_path(@review_session, type: 'submitted', format: :js)
+                         }
+                       ]
                    } %>
         <div id="users-table-wrapper">
           <%= render partial: 'members_table',

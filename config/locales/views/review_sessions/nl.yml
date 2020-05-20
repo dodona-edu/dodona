@@ -19,6 +19,8 @@ nl:
       title: Gebruikers aanpassen
       delete_title: Evaluatie verwijderen
       delete_consequences: Het verwijderen van een evaluatie zal ook alle feedback die binnen de evaluatie gegeven werd verwijderen.
+      add_enrolled: Studenten in deze evaluatie vervangen door alle ingeschreven studenten
+      add_submitted: Studenten in deze evaluatie vervangen door alle studenten die indienden
     destroy: Verwijderen
     form:
       deadline-help_html: "De deadline wordt gebruikt om de default oplossingen te selecteren waarop je feedback geeft. De laatste oplossing voor deze deadline wordt gebruikt. <b>Let op:</b> je kan de deadline achteraf niet meer aanpassen."

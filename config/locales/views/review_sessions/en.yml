@@ -19,6 +19,8 @@ en:
       title: Edit users
       delete_title: Delete evaluation
       delete_consequences: Deleting an evaluation will also delete all feedback that was given within the evaluation.
+      add_enrolled: Set students in this evaluation to all enrolled students
+      add_submitted: Set students in this evaluation to all students who submitted
     destroy: Delete
     form:
       deadline-help: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."

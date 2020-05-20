@@ -23,6 +23,7 @@ class ReviewSessionControllerTest < ActionDispatch::IntegrationTest
         deadline: DateTime.now + 4.days
       }
     }
+    @series.review_session.update(users: @users)
 
     assert_response :redirect
     assert_equal @users.count * @exercises.count, @series.review_session.reviews.count
@@ -35,6 +36,7 @@ class ReviewSessionControllerTest < ActionDispatch::IntegrationTest
         deadline: DateTime.now + 4.days
       }
     }
+    @series.review_session.update(users: @users)
 
     assert_response :redirect
     assert_equal @users.count * @exercises.count, @series.review_session.reviews.count
@@ -50,6 +52,7 @@ class ReviewSessionControllerTest < ActionDispatch::IntegrationTest
         deadline: DateTime.now + 4.days
       }
     }
+    @series.review_session.update(users: @users)
 
     assert_response :redirect
     assert_equal @users.count * @exercises.count, @series.review_session.reviews.count
@@ -68,6 +71,7 @@ class ReviewSessionControllerTest < ActionDispatch::IntegrationTest
         deadline: DateTime.now + 4.days
       }
     }
+    @series.review_session.update(users: @series.course.enrolled_members)
 
     random_review = @series.review_session.reviews.sample
     assert_not_nil random_review
@@ -93,6 +97,7 @@ class ReviewSessionControllerTest < ActionDispatch::IntegrationTest
       review_session: { series_id: @series.id, deadline: DateTime.now + 4.days }
     }
     review_session = @series.review_session
+    review_session.update(users: @series.course.enrolled_members)
     review_session.update(released: false)
 
     reviews = review_session.reviews.decided.includes(:submission)
@@ -123,6 +128,7 @@ class ReviewSessionControllerTest < ActionDispatch::IntegrationTest
       }
     }
     review_session = @series.review_session
+    review_session.update(users: @series.course.enrolled_members)
     review_session.update(released: false)
 
     reviews = review_session.reviews.decided.includes(:submission)
@@ -181,6 +187,7 @@ class ReviewSessionControllerTest < ActionDispatch::IntegrationTest
       }
     }
     review_session = @series.review_session
+    review_session.update(users: @series.course.enrolled_members)
     random_review = review_session.reviews.decided.sample
 
     get review_session_review_path(review_session, random_review)
@@ -207,6 +214,7 @@ class ReviewSessionControllerTest < ActionDispatch::IntegrationTest
                         deadline: DateTime.now + 4.days }
     }
     review_session = @series.review_session
+    review_session.update(users: @series.course.enrolled_members)
     annotations = []
     review_session.reviews.decided.each do |review|
       annotations << review.submission.annotations.create(review_session: review_session, user: @course_admin, annotation_text: Faker::Lorem.sentences(number: 3), line_nr: 0)

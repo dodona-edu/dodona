@@ -42,3 +42,5 @@ en:
       remove_user: Remove student from evaluation
       remove_user_consequences: "If this student already received feedback it will be deleted."
       add_user: Add student to evaluation
+      no_started: "# started"
+      no_accepted: "# solved"

@@ -42,3 +42,5 @@ nl:
       remove_user: Student verwijderen uit evaluatie
       remove_user_consequences: "Als deze student al feedback gekregen had, zal deze verwijderd worden."
       add_user: Student toevoegen aan evaluatie
+      no_started: "# gestarte oefeningen"
+      no_accepted: "# opgeloste oefeningen"

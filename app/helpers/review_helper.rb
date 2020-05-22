@@ -12,6 +12,6 @@ module ReviewHelper
   private
 
   def button(text, disabled)
-    button_tag(text, class: 'btn btn-default btn-text', disabled: disabled)
+    button_tag(text, class: 'btn-text', disabled: disabled)
   end
 end

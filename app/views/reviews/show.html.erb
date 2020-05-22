@@ -6,10 +6,8 @@
 
 <div class="row" id="review-page">
   <div class="col-xs-12 col-md-push-9 col-md-3 review-metadata">
-    <div class="card">
-      <div class="card-supporting-text card-border review-actions-holder">
-        <%= render partial: 'review_actions', locals: { review_session: @review.review_session, review: @review } %>
-      </div>
+    <div class="card review-actions-holder">
+      <%= render partial: 'review_actions', locals: { review_session: @review.review_session, review: @review } %>
     </div>
   </div>
   <div class="col-xs-12 col-md-pull-3 col-md-9 review-submission">
@@ -19,14 +17,30 @@
       </div>
       <div class="card-supporting-text card-border">
         <div class="pull-right">
-          <%= link_to edit_review_path(@review), class: "btn btn-text btn-primary" do %>
-            <%= t("reviews.edit.short_title") %>
+          <% if @review.submission.present? %>
+            <div class="review-metadata-submission">
+              <p><%= t('.submission.previous_attempts_html', count: @review.previous_attempts) %></p>
+            </div>
           <% end %>
+          <div class="pull-right">
+            <%= link_to edit_review_path(@review), class: "btn btn-text" do %>
+              <%= t("reviews.edit.short_title") %>
+            <% end %>
+          </div>
         </div>
         <% if @review.submission.present? %>
-          <div class="review-metadata-submission">
-            <p><%= t('.submission.time_html', time: l(@review.submission.created_at, format: :submission)) %></p>
-            <p><%= t('.submission.previous_attempts_html', count: @review.previous_attempts) %></p>
+          <% submission = @review.submission %>
+          <div class="submission-summary clearfix">
+            <span class='status-icon pull-left'><%= submission_status_icon(submission, 36) %></span>
+            <span class="status-line">
+              <%= Submission.human_enum_name(:status, submission.status) %>
+              <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>
+                &middot; <span class='text-muted'><%= submission.summary %></span>
+              <% end %>
+            </span>
+            <span class="by-line">
+              <span class="text-muted small"><%= l submission.created_at, format: :submission %></span>
+            </span>
           </div>
           <div class="code-table" data-submission-id="<%= @review.submission.id %>">
             <%= @review.submission.judge.renderer.new(@review.submission, current_user).parse %>

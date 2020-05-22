@@ -12,4 +12,11 @@ class ReviewExercise < ApplicationRecord
   belongs_to :exercise
   belongs_to :review_session
   has_many :reviews, dependent: :destroy
+
+  def metadata
+    {
+      done: reviews.complete.count,
+      total: reviews.count
+    }
+  end
 end

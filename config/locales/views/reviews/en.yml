@@ -11,10 +11,12 @@ en:
           one: "The user made <b>1 attempt</b> before this submission."
           other: "The user made <b>%{count} attempts</b> before this submission."
     review_actions:
-      automatically_mark: Automatically mark as completed when changing submission
+      automatically_mark: Automatically mark as completed
+      auto-mark-help: This makes it so that submission are automatically marked as completed if you use the previos, next and random buttons.
       progress: Progress
       direction:
         next: Volgende
+        random: Random
         prev: Vorige
       completed:
         button:
@@ -23,8 +25,8 @@ en:
           header: "Change state"
         failure: "Could not set state"
       category:
-        user: "Review for same user"
-        exercise: "Review for same exercise"
+        user: "This user"
+        exercise: "This exercise"
     overview:
       annotations:
         count: "Amount of annotations by teacher"

@@ -11,20 +11,22 @@ nl:
           one: "De gebruiker had <b>1 voorgaande poging</b> nodig voor deze oefening."
           other: "De gebruiker had <b>%{count} pogingen</b> nodig voor deze oefening."
     review_actions:
-      automatically_mark: Markeer automatisch als afgewerkt bij veranderen van oplossing
+      automatically_mark: Automatisch als afgewerkt markeren
+      auto-mark-help: Hierbij worden oplossingen automatisch als afgewerkt gemarkeerd als je de vorige, volgende en random knoppen gebruikt.
       progress: Vooruitgang
       direction:
         next: Volgende
+        random: Random
         prev: Vorige
       completed:
         button:
-          completed: "Markeren als afgewerkt"
-          unfinished: "Markeren als onafgewerkt"
+          completed: "Als afgewerkt markeren"
+          unfinished: "Als onafgewerkt markeren"
           header: "Status aanpassen"
         failure: "De status kon niet ingesteld worden"
       category:
-        user: "Zelfde gebruiker"
-        exercise: "Zelfde oefening"
+        user: "Deze gebruiker"
+        exercise: "Deze oefening"
     overview:
       annotations:
         count: "Aantal opmerkingen door lesgever"

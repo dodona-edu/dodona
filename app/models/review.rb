@@ -55,10 +55,12 @@ class Review < ApplicationRecord
     {
       exercise: {
         prev: reviews_same_exercise.where('id < ?', id).last,
+        random: reviews_same_exercise.complete.where.not(id: id).order('RAND()').first,
         next: reviews_same_exercise.find_by('id > ?', id)
       },
       user: {
         prev: reviews_same_user.where('id < ?', id).last,
+        random: reviews_same_user.complete.where.not(id: id).order('RAND()').first,
         next: reviews_same_user.find_by('id > ?', id)
       }
     }

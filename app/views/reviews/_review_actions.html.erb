@@ -11,7 +11,7 @@
       <% metadata = @review.review_user.metadata %>
       <span class="review-actions-progress" data-html="true" data-toggle="tooltip" title="<%= t('review_sessions.show.progress.finished', review_count: metadata[:done]) %> <%= t('review_sessions.show.progress.unfinished', review_count: (metadata[:total] - metadata[:done])) %>">
         <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-          <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="correct"></line>
+          <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
           <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
         </svg>
       </span>
@@ -26,7 +26,7 @@
       <% metadata = @review.review_exercise.metadata %>
       <span class="review-actions-progress" data-html="true" data-toggle="tooltip" title="<%= t('review_sessions.show.progress.finished', review_count: metadata[:done]) %> <%= t('review_sessions.show.progress.unfinished', review_count: (metadata[:total] - metadata[:done])) %>">
         <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-          <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="correct"></line>
+          <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
           <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
         </svg>
       </span>

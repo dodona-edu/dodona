@@ -4,48 +4,62 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title', series: @review_session.series.name) %></h2>
       </div>
-      <div class="card-title-fab">
-        <%= link_to edit_review_session_path(@review_session) do %>
-          <button class="btn btn-primary btn-fab mdi mdi-36 mdi-pencil">
-          </button>
-        <% end %>
-      </div>
       <div class="card-supporting-text">
+        <% metadata = @review_session.metadata %>
         <div class="row">
-          <% metadata = @review_session.metadata %>
-          <div class="col-xs-push-6 col-xs-6 col-sm-3 col-sm-push-9">
-            <%= link_to review_session_path(@review_session, review_session: { released: !@review_session.released }), class: "btn btn-primary btn-text", method: :patch do %>
-              <% if !@review_session.released %>
-                <span class="text"><%= t('.release') %></span>
-              <% else %>
-                <span class="text"><%= t('.unrelease') %></span>
-              <% end %>
-            <% end %>
-          </div>
-          <div class="col-xs-6 col-sm-3 col-sm-pull-3">
+          <div class="col-xs-6">
             <span data-toggle="tooltip" title="<%= t('.progress.finished', review_count: metadata[:done]) %> <%= t('.progress.unfinished', review_count: (metadata[:total] - metadata[:done])) %>">
               <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-                <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="correct"></line>
+                <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
                 <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
               </svg>
             </span>
           </div>
-          <div class="col-xs-6 col-sm-3 col-sm-pull-3">
-            <% if @review_session.reviews.incomplete.any? %>
-              <%= link_to t('.next_incomplete_review'), @review_session.next_incomplete_review %>
+          <div class="col-xs-6">
+            <% if metadata[:next_incomplete_review].present? %>
+              <%= link_to t('.next_incomplete_review'), metadata[:next_incomplete_review] %>
             <% end %>
           </div>
         </div>
+        <% metadata[:per_exercise].each do |ex_meta| %>
+          <div class="row">
+            <div class="col-xs-12">
+              <h4><%= ex_meta[:name] %></h4>
+            </div>
+            <div class="col-xs-6">
+              <span data-toggle="tooltip" title="<%= t('.progress.finished', review_count: ex_meta[:done]) %> <%= t('.progress.unfinished', review_count: (ex_meta[:total] - ex_meta[:done])) %>">
+                <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
+                  <line x1="0" y1="0.5" x2="<%= ex_meta[:done].to_f / ex_meta[:total] %>" y2="0.5" class="info"></line>
+                  <line x1="<%= ex_meta[:done].to_f / ex_meta[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
+                </svg>
+              </span>
+            </div>
+            <div class="col-xs-6">
+              <% if ex_meta[:next_incomplete_review].present? %>
+                <%= link_to t('.next_incomplete_review'), ex_meta[:next_incomplete_review] %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
         <span class="help-block"><%= t '.deadline_html', deadline: l(@review_session.deadline, format: :submission) %></span>
       </div>
       <div class="card-actions card-border">
-        <% if policy(@review_session).destroy? %>
+        <%= link_to t('review_sessions.edit.title'), edit_review_session_path(@review_session), class: "btn-text" %>
+        <%= link_to (@review_session.released ? t('.unrelease') : t('.release')),
+                    review_session_path(@review_session, review_session: { released: !@review_session.released }),
+                    class: "btn-primary btn-text",
+                    method: :patch %>
+        <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
+          <i class="mdi mdi-dots-vertical"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li>
           <%= link_to t('review_sessions.destroy'),
                       review_session_path(@review_session),
                       method: :delete,
-                      data: { confirm: t('general.are_you_sure') },
-                      class: "btn btn-primary btn-text" %>
-        <% end %>
+                      data: { confirm: t('general.are_you_sure') } %>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="card">

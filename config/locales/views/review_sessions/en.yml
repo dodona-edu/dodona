@@ -27,7 +27,7 @@ en:
       clear: Remove all students
       add_enrolled: All enrolled students
       add_submitted: All students with submissions
-    destroy: Delete
+    destroy: Delete evaluation
     form:
       deadline-help_html: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
     review_table:

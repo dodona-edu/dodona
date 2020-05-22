@@ -38,14 +38,20 @@ class ReviewSession < ApplicationRecord
     super(new_exercises)
   end
 
-  def next_incomplete_review
-    reviews.incomplete.order(id: :asc).first
-  end
-
   def metadata
     {
       done: reviews.complete.count,
-      total: reviews.count
+      total: reviews.count,
+      next_incomplete_review: reviews.incomplete.order(id: :asc).first,
+      per_exercise: exercises.map do |ex|
+        revs = reviews.includes(:review_exercise).where(review_exercises: { exercise_id: ex.id })
+        {
+          name: ex.name,
+          done: revs.complete.count,
+          total: revs.count,
+          next_incomplete_review: revs.incomplete.order(id: :asc).first
+        }
+      end
     }
   end
 

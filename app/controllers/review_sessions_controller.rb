@@ -18,7 +18,8 @@ class ReviewSessionsController < ApplicationController
       redirect_to review_session_path(@series.review_session)
       return
     end
-    @review_session = ReviewSession.new(series: @series, deadline: @series.deadline)
+    @course = @series.course
+    @review_session = ReviewSession.new(series: @series, deadline: @series.deadline || Time.current)
     authorize @review_session
   end
 

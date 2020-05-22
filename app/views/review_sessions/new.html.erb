@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-xs-10">
     <div class="card series-edit">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t(".create_session") %></h2>
@@ -13,6 +13,14 @@
       </div>
       <div class="card-supporting-text card-border">
         <%= render 'form', review_session: @review_session %>
+        <h4><%= t '.exercises' %></h4>
+        <%= render partial: 'activities/activities_table', locals: {
+            series: @review_session.series,
+            activities: @review_session.series.exercises,
+            get_activity_path: ->(ex) {course_series_activity_path @review_session.series.course, @review_session.series, ex},
+            user: current_user,
+            open_in_new: true
+        } %>
       </div>
       <div class="card-actions card-border">
         <button type="submit" class="btn btn-primary btn-text" form="new_review_session"><%= t '.next' %></button>

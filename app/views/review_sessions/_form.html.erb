@@ -29,7 +29,7 @@
     <div class="field form-group">
       <%= f.label :deadline, class: "col-sm-3 control-label" %>
       <div class='col-sm-6'>
-        <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>
+        <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true data-max-date="<%= Time.current.httpdate %>">
           <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
           <span class="input-group-btn">
             <button class="btn btn-default" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>

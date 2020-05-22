@@ -23,7 +23,7 @@ en:
       add_submitted: Set students in this evaluation to all students who submitted
     destroy: Delete
     form:
-      deadline-help: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
+      deadline-help_html: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
     review_table:
       user: User
       review_finished: Feedback completed

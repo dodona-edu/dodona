@@ -42,6 +42,19 @@
                 <% end %>
               </li>
             <% end %>
+            <% if policy(series).create_review_session? %>
+              <li>
+                <% if series.review_session.present? %>
+                  <%= link_to review_session_path(series.review_session) do %>
+                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("review_sessions.show.view_session") %>
+                  <% end %>
+                <% else %>
+                  <%= link_to new_review_session_path(series_id: series.id) do %>
+                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("review_sessions.new.create_session") %>
+                  <% end %>
+                <% end %>
+              </li>
+            <% end %>
             <% if policy(series).edit? && !series.open? %>
               <li>
                 <%= link_to series_path(series, token: series.access_token) do %>
@@ -68,19 +81,6 @@
               <li>
                 <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: {confirm: t("submissions.index.confirm_reevaluate_submissions")} do %>
                   <i class='mdi mdi-replay mdi-18'></i> <%= t("submissions.index.reevaluate_submissions") %>
-                <% end %>
-              </li>
-            <% end %>
-            <% if policy(series).create_review_session? %>
-              <li>
-                <% if series.review_session.present? %>
-                  <%= link_to review_session_path(series.review_session) do %>
-                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("review_sessions.show.view_session") %>
-                  <% end %>
-                <% else %>
-                  <%= link_to new_review_session_path(series_id: series.id) do %>
-                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("review_sessions.new.create_session") %>
-                  <% end %>
                 <% end %>
               </li>
             <% end %>

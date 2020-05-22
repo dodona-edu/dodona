@@ -181,10 +181,11 @@ Rails.application.routes.draw do
 
     resources :review_sessions, only: %i[show new edit create update destroy] do
       member do
+        get 'add_users'
         get 'overview'
-        post 'set_multi_user'
         post 'add_user'
         post 'remove_user'
+        post 'set_multi_user'
       end
       resources :reviews, only: %i[show edit update]
     end

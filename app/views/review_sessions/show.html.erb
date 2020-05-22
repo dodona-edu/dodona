@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="card review-show">
+    <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title', series: @review_session.series.name) %></h2>
       </div>
@@ -38,6 +38,17 @@
         </div>
         <span class="help-block"><%= t '.deadline_html', deadline: l(@review_session.deadline, format: :submission) %></span>
       </div>
+      <div class="card-actions card-border">
+        <% if policy(@review_session).destroy? %>
+          <%= link_to t('review_sessions.destroy'),
+                      review_session_path(@review_session),
+                      method: :delete,
+                      data: { confirm: t('general.are_you_sure') },
+                      class: "btn btn-primary btn-text" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="card">
       <div class="card-supporting-text card-border">
         <%= render 'review_table', reviews: @reviews, review_session: @review_session %>
       </div>

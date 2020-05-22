@@ -1,7 +1,7 @@
 class ReviewSessionsController < ApplicationController
   include SeriesHelper
 
-  before_action :set_review_session, only: %i[show edit update destroy overview set_multi_user add_user remove_user mark_undecided_complete]
+  before_action :set_review_session, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -36,6 +36,11 @@ class ReviewSessionsController < ApplicationController
     @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_sessions.show.review_session'), review_session_url(@review_session)], [I18n.t('review_sessions.edit.title'), '#']]
   end
 
+  def add_users
+    edit
+    @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_sessions.show.review_session'), review_session_url(@review_session)], [I18n.t('review_sessions.add_users.title'), '#']]
+  end
+
   def create
     @review_session = ReviewSession.new(permitted_attributes(ReviewSession))
     authorize @review_session
@@ -43,7 +48,7 @@ class ReviewSessionsController < ApplicationController
 
     respond_to do |format|
       if @review_session.save
-        format.html { redirect_to edit_review_session_path(@review_session) }
+        format.html { redirect_to add_users_review_session_path(@review_session) }
         format.json { render :show, status: :created, location: @review_session }
       else
         format.html { render :new }
@@ -70,6 +75,8 @@ class ReviewSessionsController < ApplicationController
               @review_session.series.course.enrolled_members
             when 'submitted'
               @review_session.series.course.enrolled_members.where(id: Submission.where(exercise_id: @review_session.exercises, course_id: @review_session.series.course_id).select('DISTINCT user_id'))
+            when 'none'
+              []
             end
     @review_session.update(users: users) unless users.nil?
   end

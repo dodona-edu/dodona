@@ -11,6 +11,10 @@ class ReviewSessionPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def add_users?
+    course_admin?
+  end
+
   def destroy?
     course_admin?
   end

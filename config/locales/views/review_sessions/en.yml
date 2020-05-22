@@ -16,12 +16,17 @@ en:
       create_session: Evaluate series
       explanation_html: "Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released."
       next: Next
+    add_users:
+      title: Add users
     edit:
       title: Edit users
-      delete_title: Delete evaluation
-      delete_consequences: Deleting an evaluation will also delete all feedback that was given within the evaluation.
-      add_enrolled: Set students in this evaluation to all enrolled students
-      add_submitted: Set students in this evaluation to all students who submitted
+    edit_users:
+      users_selected: selected students
+      to_review_session: To evaluation
+      mass_edit: Set students globally
+      clear: Remove all students
+      add_enrolled: All enrolled students
+      add_submitted: All students with submissions
     destroy: Delete
     form:
       deadline-help_html: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."

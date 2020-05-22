@@ -19,7 +19,7 @@
             <%= button_to remove_user_review_session_path(@review_session, user_id: user.id),
                           remote: true,
                           title: t('.remove_user'),
-                          data: { confirm: t('.remove_user_consequences') },
+                          data: { confirm: confirm ? t('.remove_user_consequences') : nil },
                           class: 'btn btn-sm btn-danger' do %>
               <i class="mdi mdi-delete mdi-18"></i>
             <% end %>

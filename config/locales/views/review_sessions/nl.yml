@@ -1,7 +1,7 @@
 nl:
   review_sessions:
     show:
-      view_session: "Toon evaluatie"
+      view_session: "Evaluatie bekijken"
       review_session: "Evaluatie"
       title: "Evaluatie voor %{series}"
       release: Feedback vrijgeven
@@ -12,8 +12,8 @@ nl:
         finished: "%{review_count} oplossingen hebben afgewerkte feedback."
         unfinished: "%{review_count} oplossingen hebben nog geen afgewerkte feedback."
     new:
-      create_session: Evalueren
-      explanation_html: "Bij het evalueren van een reeks kies je eerst een deadline. Dan kies je de gebruikers die in de evaluatie opgenomen werden en geef je hen feedback. Wanneer je de feedback vrijgeeft krijgen de gebruikers in de evaluatie een notificatie."
+      create_session: Reeks evalueren
+      explanation_html: "Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddelijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft."
       next: Volgende
     edit:
       title: Gebruikers aanpassen
@@ -23,7 +23,7 @@ nl:
       add_submitted: Studenten in deze evaluatie vervangen door alle studenten die indienden
     destroy: Verwijderen
     form:
-      deadline-help_html: "De deadline wordt gebruikt om de default oplossingen te selecteren waarop je feedback geeft. De laatste oplossing voor deze deadline wordt gebruikt. <b>Let op:</b> je kan de deadline achteraf niet meer aanpassen."
+      deadline-help_html: "Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie. <b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren."
     review_table:
       user: Gebruiker
       review_finished: Feedback afgewerkt

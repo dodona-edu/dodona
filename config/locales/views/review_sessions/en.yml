@@ -12,8 +12,8 @@ en:
         finished: "%{review_count} submissions have completed feedback."
         unfinished: "%{review_count} submissions don't have completed feedback."
     new:
-      create_session: Evaluate
-      explanation_html: "When evaluating a series you first choose a deadline. Then you select the users included in the evaluation and give them feedback. When you release the feedback, the users in the evaluation get a notification."
+      create_session: Evaluate series
+      explanation_html: "Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released."
       next: Next
     edit:
       title: Edit users

@@ -14,6 +14,7 @@ nl:
     new:
       exercises: Oefeningen
       create_session: Reeks evalueren
+      explanation_title: "Wat is een evaluatie?"
       explanation_html: "Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddelijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft."
       next: Volgende
     add_users:

@@ -55,9 +55,9 @@
 
         <td>
           <% if activity.accessible?(current_user, @course) %>
-            <%= link_to activity.name, get_activity_path.call(activity), target: (local_assigns[:open_in_new] ? '_blank' : nil) %>
+            <%= link_to activity.name, get_activity_path.call(activity) %>
           <% elsif activity.access_public? %>
-            <%= link_to activity.name, activity_path(activity), target: (local_assigns[:open_in_new] ? '_blank' : nil) %>
+            <%= link_to activity.name, activity_path(activity) %>
           <% else %>
             <%= activity.name %>
           <% end %>

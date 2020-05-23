@@ -1,26 +1,19 @@
 <div class="row">
-  <div class="col-xs-10">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card series-edit">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t(".create_session") %></h2>
       </div>
       <div class="card-supporting-text">
-        <div class="row">
-          <div class="col-sm-offset-3 col-sm-6">
+        <div class="col-md-6 col-sm-12 col-md-push-6">
+          <div class="callout callout-info">
+            <h4><%= t ".explanation_title" %></h4>
             <%= t ".explanation_html" %>
           </div>
         </div>
-      </div>
-      <div class="card-supporting-text card-border">
-        <%= render 'form', review_session: @review_session %>
-        <h4><%= t '.exercises' %></h4>
-        <%= render partial: 'activities/activities_table', locals: {
-            series: @review_session.series,
-            activities: @review_session.series.exercises,
-            get_activity_path: ->(ex) {course_series_activity_path @review_session.series.course, @review_session.series, ex},
-            user: current_user,
-            open_in_new: true
-        } %>
+        <div class="col-md-6 col-sm-12 col-md-pull-6">
+          <%= render 'form', review_session: @review_session %>
+        </div>
       </div>
       <div class="card-actions card-border">
         <button type="submit" class="btn btn-primary btn-text" form="new_review_session"><%= t '.next' %></button>

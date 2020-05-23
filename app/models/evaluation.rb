@@ -21,6 +21,7 @@ class Evaluation < ApplicationRecord
   has_many :exercises, through: :evaluation_exercises
 
   validates :deadline, presence: true
+  validate :deadline_in_past
 
   before_save :manage_feedbacks
   after_save :manage_user_notifications
@@ -73,6 +74,10 @@ class Evaluation < ApplicationRecord
   end
 
   private
+
+  def deadline_in_past
+    errors.add(:deadline, 'should be in the past') if deadline > Time.current
+  end
 
   def manage_feedbacks
     existing = feedbacks.to_a

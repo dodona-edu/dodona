@@ -179,7 +179,7 @@ Rails.application.routes.draw do
       delete 'destroy_all', on: :collection
     end
 
-    resources :review_sessions, only: %i[show new edit create update destroy] do
+    resources :evaluations, only: %i[show new edit create update destroy] do
       member do
         get 'add_users'
         get 'overview'
@@ -187,9 +187,9 @@ Rails.application.routes.draw do
         post 'remove_user'
         post 'set_multi_user'
       end
-      resources :reviews, only: %i[show edit update]
+      resources :feedbacks, only: %i[show edit update]
     end
-    resources :reviews, only: %i[show edit update]
+    resources :feedbacks, only: %i[show edit update]
 
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'

@@ -4,7 +4,7 @@ import { fetch } from "util.js";
 export interface UserAnnotationFormData {
     annotation_text: string;
     line_nr: number | null;
-    review_session_id: number | undefined;
+    evaluation_id: number | undefined;
 }
 
 export type UserAnnotationEditor = (ua: UserAnnotation, cb: CallableFunction) => HTMLElement;
@@ -26,7 +26,7 @@ export interface UserAnnotationData {
     permission: UserAnnotationPermissionData;
     released: boolean;
     rendered_markdown: string;
-    review_session_id: number | null;
+    evaluation_id: number | null;
     url: string;
     user: UserAnnotationUserData;
 }
@@ -39,7 +39,7 @@ export class UserAnnotation extends Annotation {
     public readonly permissions: UserAnnotationPermissionData;
     private readonly __rawText: string;
     public readonly released: boolean;
-    public readonly reviewSessionId: number | null;
+    public readonly evaluationId: number | null;
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
 
@@ -52,7 +52,7 @@ export class UserAnnotation extends Annotation {
         this.permissions = data.permission;
         this.released = data.released;
         this.__rawText = data.annotation_text;
-        this.reviewSessionId = data.review_session_id;
+        this.evaluationId = data.evaluation_id;
         this.url = data.url;
         this.user = data.user;
     }

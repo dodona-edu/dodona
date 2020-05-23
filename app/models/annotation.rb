@@ -2,21 +2,21 @@
 #
 # Table name: annotations
 #
-#  id                :bigint           not null, primary key
-#  line_nr           :integer
-#  submission_id     :integer
-#  user_id           :integer
-#  annotation_text   :text(65535)
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  review_session_id :bigint
+#  id              :bigint           not null, primary key
+#  line_nr         :integer
+#  submission_id   :integer
+#  user_id         :integer
+#  annotation_text :text(65535)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  evaluation_id   :bigint
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
 
   belongs_to :submission
   belongs_to :user
-  belongs_to :review_session, optional: true
+  belongs_to :evaluation, optional: true
 
   validates :user, presence: true
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 2048 }
@@ -26,7 +26,7 @@ class Annotation < ApplicationRecord
 
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
-  scope :released, -> { where(review_session_id: nil).or(where(review_sessions: { released: true })) }
+  scope :released, -> { where(evaluation_id: nil).or(where(evaluations: { released: true })) }
 
   after_save :create_notification
   after_destroy :destroy_notification
@@ -34,13 +34,13 @@ class Annotation < ApplicationRecord
   private
 
   def create_notification
-    return if review_session.present?
+    return if evaluation.present?
 
     Notification.find_by(notifiable: submission)&.destroy
     Notification.create(notifiable: submission, user: submission.user, message: 'annotations.index.new_annotation')
   end
 
   def destroy_notification
-    Notification.find_by(notifiable: submission)&.destroy unless submission.annotations.left_joins(:review_session).released.any?
+    Notification.find_by(notifiable: submission)&.destroy unless submission.annotations.left_joins(:evaluation).released.any?
   end
 end

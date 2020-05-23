@@ -1,0 +1,59 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'submission' %>
+<% end %>
+
+<% content_for :container_class do %>container-fluid<% end %>
+
+<div class="row" id="feedback-page">
+  <div class="col-xs-12 col-md-push-9 col-md-3 feedback-metadata">
+    <div class="card feedback-actions-holder">
+      <%= render partial: 'feedback_actions', locals: { evaluation: @feedback.evaluation, feedback: @feedback } %>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-pull-3 col-md-9 feedback-submission">
+    <div class="card feedback-show">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t '.submission_for_by', for: @feedback.exercise.name, by: @feedback.user.full_name %></h2>
+      </div>
+      <div class="card-supporting-text card-border">
+        <div class="pull-right">
+          <% if @feedback.submission.present? %>
+            <div class="feedback-metadata-submission">
+              <p><%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts) %></p>
+            </div>
+          <% end %>
+          <div class="pull-right">
+            <%= link_to edit_feedback_path(@feedback), class: "btn btn-text" do %>
+              <%= t("feedbacks.edit.short_title") %>
+            <% end %>
+          </div>
+        </div>
+        <% if @feedback.submission.present? %>
+          <% submission = @feedback.submission %>
+          <div class="submission-summary clearfix">
+            <span class='status-icon pull-left'><%= submission_status_icon(submission, 36) %></span>
+            <span class="status-line">
+              <%= Submission.human_enum_name(:status, submission.status) %>
+              <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>
+                &middot; <span class='text-muted'><%= submission.summary %></span>
+              <% end %>
+            </span>
+            <span class="by-line">
+              <span class="text-muted small"><%= l submission.created_at, format: :submission %></span>
+            </span>
+          </div>
+          <div class="code-table" data-submission-id="<%= @feedback.submission.id %>">
+            <%= @feedback.submission.judge.renderer.new(@feedback.submission, current_user).parse %>
+          </div>
+        <% else %>
+          <%= t('.no_linked_submission') %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<% if @feedback.submission.present? %>
+  <script>
+    $(() => window.dodona.codeListing.setEvaluation(<%= @feedback.evaluation.id %>));
+  </script>
+<% end %>

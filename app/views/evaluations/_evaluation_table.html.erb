@@ -1,0 +1,40 @@
+<table class="table table-resource">
+  <thead>
+    <tr>
+      <th><%= t('.user') %></th>
+      <% feedbacks[:exercises].each do |exercise| %>
+        <th><%= exercise.name %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% evaluation.users.order(last_name: :asc, first_name: :asc).each do |user| %>
+      <% feedback_l = feedbacks[:feedbacks][user.id] %>
+      <tr>
+        <td><%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %></td>
+        <% feedback_l.each do |feedback| %>
+          <%
+            if feedback.submission.blank?
+              submission_status = "not-started"
+            elsif feedback.submission.accepted
+              submission_status = "correct"
+            else
+              submission_status = "wrong"
+            end
+          %>
+          <td class="feedback-table-center">
+            <span class='feedback <%= submission_status %>'>
+              <%= link_to evaluation_feedback_path(evaluation, feedback), class: "btn btn-icon" do %>
+                <% if feedback.completed? %>
+                  <i class="mdi mdi-comment-check-outline mdi-24" title="<%= t ".submission_" + submission_status %><%= t ".feedback_finished" %>"></i>
+                <% else %>
+                  <i class="mdi mdi-comment-outline mdi-24" title="<%= t ".submission_" + submission_status %><%= t ".feedback_unstarted" %>"></i>
+                <% end %>
+              <% end %>
+            </span>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

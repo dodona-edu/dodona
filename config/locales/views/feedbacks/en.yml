@@ -1,0 +1,43 @@
+en:
+  feedbacks:
+    show:
+      feedback: "Give feedback"
+      no_linked_submission: "We couldn't find a submission of this user for this exercise that was made before the deadline of this evaluation."
+      submission_for_by: "Submission for %{for} by %{by}"
+      submission:
+        time_html: "This submission was made at <b>%{time}</b>"
+        previous_attempts_html:
+          zero: "The user made <b>no attempts</b> before this submission."
+          one: "The user made <b>1 attempt</b> before this submission."
+          other: "The user made <b>%{count} attempts</b> before this submission."
+    feedback_actions:
+      automatically_mark: Automatically mark as completed
+      auto-mark-help: This makes it so that submission are automatically marked as completed if you use the previos, next and random buttons.
+      progress: Progress
+      direction:
+        next: Volgende
+        random: Random
+        prev: Vorige
+      completed:
+        button:
+          completed: "Mark as completed"
+          unfinished: "Mark as unfinished"
+          header: "Change state"
+        failure: "Could not set state"
+      category:
+        user: "This user"
+        exercise: "This exercise"
+    overview:
+      annotations:
+        count: "Amount of annotations by teacher"
+        amount:
+          zero: "No annotations"
+          one: "One annotation"
+          other: "%{count} annotations"
+      title: "Overview of all submissions that were given feedback"
+    edit:
+      title: "Change submission of %{user} for %{exercise}"
+      short_title: "Change submission"
+    submissions_table:
+      update-submission: "Change to this submission"
+      confirm: "Are you sure? All annotations on the previous submission will be deleted."

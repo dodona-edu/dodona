@@ -1,0 +1,46 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-resource submissions-table">
+    <thead>
+      <tr>
+        <th class="status-column"></th>
+        <th><%= t "submissions.submissions_table.time" %></th>
+        <th><%= t "submissions.submissions_table.status" %></th>
+        <th><%= t "submissions.submissions_table.summary" %></th>
+        <th class="actions"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% submissions.each do |submission| %>
+        <tr>
+          <td>
+            <%= submission_status_icon(submission) %>
+            <% if submission.annotated? %>
+              <i class="mdi mdi-comment-text-outline mdi-18 colored-secondary" data-toggle="tooltip" data-placement="top" title="<%= t('submissions.submissions_table.annotated') %>"></i>
+            <% end %>
+          </td>
+          <td>
+            <span><%= l submission.created_at, format: :submission %></span>
+          </td>
+          <td>
+            <%= Submission.human_enum_name(:status, submission.status) %>
+          </td>
+          <td>
+            <%= submission.summary %>
+          </td>
+          <td class="actions">
+            <%= link_to submission, class: "btn btn-sm", title: t("submissions.submission.view_solution") do %>
+              <i class="mdi mdi-open-in-new mdi-18"></i>
+            <% end %>
+            <% unless @feedback.submission.id == submission.id %>
+              <%= link_to feedback_path(@feedback, feedback: { submission_id: submission.id }), class: "btn btn-sm btn-primary", title: t(".update-submission"), confirm: t('.confirm'), method: :patch do %>
+                <i class="mdi mdi-check mdi-18"></i>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<center><%= page_navigation_links submissions, true, 'feedbacks', action: 'edit' %></center>

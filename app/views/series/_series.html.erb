@@ -42,15 +42,15 @@
                 <% end %>
               </li>
             <% end %>
-            <% if policy(series).create_review_session? %>
+            <% if policy(series).create_evaluation? %>
               <li>
-                <% if series.review_session.present? %>
-                  <%= link_to review_session_path(series.review_session) do %>
-                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("review_sessions.show.view_session") %>
+                <% if series.evaluation.present? %>
+                  <%= link_to evaluation_path(series.evaluation) do %>
+                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.show.view_evaluation") %>
                   <% end %>
                 <% else %>
-                  <%= link_to new_review_session_path(series_id: series.id) do %>
-                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("review_sessions.new.create_session") %>
+                  <%= link_to new_evaluation_path(series_id: series.id) do %>
+                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.new.create_evaluation") %>
                   <% end %>
                 <% end %>
               </li>
@@ -100,9 +100,9 @@
               <% end %>
             </li>
           <% end %>
-          <% if series.review_session.present? && policy(series.review_session).overview? %>
-              <%= link_to overview_review_session_path(series.review_session) do %>
-                <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.review_session_overview") %>
+          <% if series.evaluation.present? && policy(series.evaluation).overview? %>
+              <%= link_to overview_evaluation_path(series.evaluation) do %>
+                <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.evaluation_overview") %>
               <% end %>
           <% end %>
         </ul>

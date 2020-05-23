@@ -23,8 +23,8 @@ nl:
       programming_language: Programmeertaal
       event: Event
       institution: Onderwijsinstelling
-      review_session: Evaluatie
-      review: Feedback
+      evaluation: Evaluatie
+      feedback: Feedback
     attributes:
       api_token:
         description: Beschrijving
@@ -162,7 +162,7 @@ nl:
           started: Begonnen
           finished: Klaar
           failed: Er liep iets fout
-      review_session:
+      evaluation:
         series: Reeks
         users: Gebruikers
         exercises: Oefeningen

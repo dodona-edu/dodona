@@ -1,0 +1,47 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'evaluation' %>
+<% end %>
+<%= form_for evaluation, html: { class: "form-horizontal feedback-form" } do |f| %>
+  <div>
+    <%= f.hidden_field :series_id %>
+    <h4><%= evaluation.series.name %> <span class="small"><%= evaluation.series.course.name %></span></h4>
+
+    <%= render partial: 'exercises_table', locals: {
+      series: @evaluation.series,
+      exercises: @evaluation.series.exercises,
+    } %>
+
+    <br><b>Deadline</b><br>
+
+    <div class="field form-group">
+      <div class='col-sm-12'>
+        <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true data-max-date="<%= Time.current.httpdate %>">
+          <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+            <button class="btn btn-default" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
+          </span>
+        </div>
+      </div>
+      <span class="help-block col-sm-12"><%= t(".deadline-help_html") %></span>
+    </div>
+  </div>
+
+  <% if evaluation.errors.any? %>
+    <div>
+      <div class="callout callout-danger" id="error_explanation">
+        <h4><%= t('errors.validation_errors', count: evaluation.errors.count) %></h4>
+        <ul>
+          <% evaluation.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<script>
+  $(function() {
+    dodona.initDeadlinePicker("#deadline-group");
+  });
+</script>

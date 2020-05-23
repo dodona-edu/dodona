@@ -31,7 +31,7 @@ en:
       series_scoresheet: Series scoresheet
       best_is_not_last: Your best submission is not your last submission! Click to check (and edit/submit) your best submission.
       show_overview: Show all learning activity descriptions
-      review_session_overview: Show feedback
+      evaluation_overview: Show feedback
     edit:
       title: Edit series
       add_activities: Add activities

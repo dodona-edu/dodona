@@ -1,2 +1,2 @@
 window.dodona.index.doSearch();
-$('#users-count-wrapper').text("<%= number_with_delimiter @review_session.users.count, delimiter: " " %>")
+$('#users-count-wrapper').html("<%= t("review_sessions.edit_users.users_selected_html", count: @review_session.users.count) %>")

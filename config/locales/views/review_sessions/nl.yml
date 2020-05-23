@@ -18,14 +18,25 @@ nl:
       explanation_html: "Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddelijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft."
       next: Volgende
     add_users:
-      title: Gebruikers toevoegen
+      title: Gebruikers selecteren
+      explanation_title: "Waarom moet ik gebruikers selecteren?"
+      explanation_part1: "Een evaluatie bestaat uit de oefeningen van een oefeningenreeks, gekoppeld aan een groep studenten. Via de knoppen kan je eenvoudig alle gebruikers van de cursus selecteren of enkel wie minstens een keer heeft ingediend voor deze oefeningenreeks."
+      explanation_part2: "Je kunt hieronder ook individuele studenten toevoegen of verwijderen door te zoeken op hun naam of een eventueel label. De studentenlijst kan ook later nog worden aangepast."
+      users: "gebruikers"
+      this_course: "zijn ingeschreven voor deze cursus"
+      this_series: "hebben minstens 1 keer ingediend"
+      select_users: "deze gebruikers selecteren"
     edit:
       title: Gebruikers aanpassen
     edit_users:
       users_selected: geselecteerde studenten
+      users_selected_html:
+        zero: "Je hebt op dit moment <b>geen gebruikers</b> geselecteerd."
+        one: "Je hebt op dit moment <b>1 gebruiker</b> geselecteerd."
+        other: "Je hebt op dit moment <b>%{count} gebruikers</b> geselecteerd."
       to_review_session: Naar evaluatie
-      mass_edit: Studenten globaal aanpassen
-      clear: Alle studenten verwijderen
+      mass_edit: Welke studenten wil je evalueren?
+      clear: Alle gebruikers verwijderen
       add_enrolled: Alle ingeschreven studenten
       add_submitted: Alle studenten die indienden
     destroy: Evaluatie verwijderen

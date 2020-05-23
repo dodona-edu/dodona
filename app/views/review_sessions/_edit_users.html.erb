@@ -1,30 +1,5 @@
 <div class="card">
-  <div class="card-supporting-text card-border">
-    <div class="row">
-      <div class="col-xs-12 col-sm-9">
-        <div class="card-subtitle">
-          <h4><%= t('.mass_edit') %></h4>
-        </div>
-        <%= link_to t('.clear'), set_multi_user_review_session_path(@review_session, type: 'none', format: :js), remote: true, class: "btn btn-text", method: :post %>
-        <%= link_to t('.add_submitted'), set_multi_user_review_session_path(@review_session, type: 'submitted', format: :js), remote: true, class: "btn btn-text", method: :post %>
-        <%= link_to t('.add_enrolled'), set_multi_user_review_session_path(@review_session, type: 'enrolled', format: :js), remote: true, class: "btn btn-text", method: :post %>
-      </div>
-      <div class="col-xs-12 col-sm-3 admin-card-stat">
-        <h1 id="users-count-wrapper"><%= number_with_delimiter @review_session.users.count, delimiter: " " %></h1>
-        <%= t '.users_selected' %>
-      </div>
-    </div>
-  </div>
-  <div class="card-actions card-border">
-    <%= link_to t('.to_review_session'), review_session_path(@review_session), class: "btn btn-text btn-primary" %>
-  </div>
-</div>
-
-<div class="card">
-  <div class="card-title card-title-colored">
-    <h2 class="card-title-text"><%= title %></h2>
-  </div>
-  <div class="card-supporting-text card-border">
+  <div class="card-supporting-text">
     <%= render partial: 'layouts/searchbar',
                locals: {
                eager: false,

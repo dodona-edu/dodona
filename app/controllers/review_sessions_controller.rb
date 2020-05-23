@@ -38,6 +38,8 @@ class ReviewSessionsController < ApplicationController
 
   def add_users
     edit
+    @user_count_course = @review_session.series.course.enrolled_members.count
+    @user_count_series = @review_session.series.course.enrolled_members.where(id: Submission.where(exercise_id: @review_session.exercises, course_id: @review_session.series.course_id).select('DISTINCT user_id')).count
     @crumbs = [[@review_session.series.course.name, course_url(@review_session.series.course)], [@review_session.series.name, series_url(@review_session.series)], [I18n.t('review_sessions.show.review_session'), review_session_url(@review_session)], [I18n.t('review_sessions.add_users.title'), '#']]
   end
 

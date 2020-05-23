@@ -18,14 +18,25 @@ en:
       explanation_html: "Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released."
       next: Next
     add_users:
-      title: Add users
+      title: Select users
+      explanation_title: "Why do I have to select users?"
+      explanation_part1: "An evaluation consists out of exercises from a single exercise series coupled with a group of students. Using the buttons you can easily select all users of this course or only who submitted at least once to any of the exercises in this series."
+      explanation_part2: "You can also add and remove individual students below by searching for their name or any label. You can also edit the users of this review later on."
+      users: "users"
+      this_course: "are registered for this course"
+      this_series: "submitted at least once"
+      select_users: "select these users"
     edit:
       title: Edit users
     edit_users:
       users_selected: selected students
+      users_selected_html:
+        zero: "You have selected <b>zero users</b>."
+        one: "You have selected <b>one user</b>."
+        other: "You have selected <b>%{count} users</b>."
       to_review_session: To evaluation
-      mass_edit: Set students globally
-      clear: Remove all students
+      mass_edit: Which students do you want to evaluate?
+      clear: Remove all users
       add_enrolled: All enrolled students
       add_submitted: All students with submissions
     destroy: Delete evaluation

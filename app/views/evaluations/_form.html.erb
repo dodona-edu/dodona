@@ -13,7 +13,7 @@
 
     <br><b>Deadline</b><br>
 
-    <div class="field form-group">
+    <div class="field form-group<%= " has-error" if evaluation.deadline > Time.current %>">
       <div class='col-sm-12'>
         <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true data-max-date="<%= Time.current.httpdate %>">
           <%= f.text_field :deadline, class: "form-control", 'data-input': true %>

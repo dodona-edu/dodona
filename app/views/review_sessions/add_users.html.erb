@@ -37,7 +37,8 @@
               <span id="users-count-wrapper">
                 <%= t("review_sessions.edit_users.users_selected_html", count: @review_session.users.count) %>
               </span>
-              <%= link_to t('review_sessions.edit_users.clear'), set_multi_user_review_session_path(@review_session, type: 'none', format: :js), remote: true, method: :post %>.</p>
+              <%= link_to t('review_sessions.edit_users.clear'), set_multi_user_review_session_path(@review_session, type: 'none', format: :js), remote: true, method: :post %>.
+            </p>
           </div>
         </div>
       </div>
@@ -45,6 +46,10 @@
         <%= link_to t('review_sessions.edit_users.to_review_session'), review_session_path(@review_session), class: "btn btn-text btn-primary" %>
       </div>
     </div>
-    <%= render partial: 'edit_users', locals: { confirm: false } %>
+    <div class="card">
+      <div class="card-supporting-text">
+        <%= render partial: 'edit_users', locals: { confirm: false } %>
+      </div>
+    </div>
   </div>
 </div>

@@ -38,6 +38,7 @@ en:
         one: "You have currently selected <b>one user</b>."
         other: "You have currently selected <b>%{count} users</b>."
       to_review_session: To evaluation
+      back_to_review_session: Back to evaluation
       mass_edit: Which students do you want to evaluate?
       clear: Remove all users
       add_enrolled: All enrolled students
@@ -61,6 +62,7 @@ en:
       no_submission: "No submission"
     members_table:
       remove_user: Remove student from evaluation
-      remove_user_consequences: "If this student already received feedback it will be deleted."
+      remove_user_consequences: "If this student already received feedback, it will be deleted. Are you sure you want to remove this student?"
+      remove_users_consequences: "If these students already received feedback, it will be deleted. Are you sure want to remove these students?"
       add_user: Add student to evaluation
       status: Progress

@@ -41,6 +41,7 @@ nl:
         one: "Je hebt op dit moment <b>1 gebruiker</b> geselecteerd."
         other: "Je hebt op dit moment <b>%{count} gebruikers</b> geselecteerd."
       to_review_session: Naar evaluatie
+      back_to_review_session: Terug naar evaluatie
       mass_edit: Welke studenten wil je evalueren?
       clear: Alle gebruikers verwijderen
       add_enrolled: Alle ingeschreven studenten
@@ -64,6 +65,7 @@ nl:
       no_submission: "Geen oplossing"
     members_table:
       remove_user: Student verwijderen uit evaluatie
-      remove_user_consequences: "Als deze student al feedback gekregen had, zal deze verwijderd worden."
+      remove_user_consequences: "Als deze student al feedback gekregen had, dan zal deze verwijderd worden. Ben je zeker dat je deze student wil verwijderen?"
+      remove_users_consequences: "Als deze studenten al feedback gekregen had, dan zal deze verwijderd worden. Ben je zeker dat je deze studenten wil verwijderen?"
       add_user: Student toevoegen aan evaluatie
       status: Voortgang

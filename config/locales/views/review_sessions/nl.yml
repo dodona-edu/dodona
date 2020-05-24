@@ -22,10 +22,10 @@ nl:
       explanation_title: "Waarom moet ik gebruikers selecteren?"
       explanation_part1: "Een evaluatie bestaat uit de oefeningen van een oefeningenreeks, gekoppeld aan een groep studenten. Via de knoppen kan je eenvoudig alle gebruikers van de cursus selecteren of enkel wie minstens een keer heeft ingediend voor deze oefeningenreeks."
       explanation_part2: "Je kunt hieronder ook individuele studenten toevoegen of verwijderen door te zoeken op hun naam of een eventueel label. De studentenlijst kan ook later nog worden aangepast."
-      users: "gebruikers"
+      users: "studenten"
       this_course: "zijn ingeschreven voor deze cursus"
       this_series: "hebben minstens 1 keer ingediend"
-      select_users: "deze gebruikers selecteren"
+      select_users: "gebruikers selecteren"
     edit:
       title: Gebruikers aanpassen
     edit_users:
@@ -60,5 +60,4 @@ nl:
       remove_user: Student verwijderen uit evaluatie
       remove_user_consequences: "Als deze student al feedback gekregen had, zal deze verwijderd worden."
       add_user: Student toevoegen aan evaluatie
-      no_started: "# gestarte oefeningen"
-      no_accepted: "# opgeloste oefeningen"
+      status: Voortgang

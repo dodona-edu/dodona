@@ -22,7 +22,7 @@ en:
       explanation_title: "Why do I have to select users?"
       explanation_part1: "An evaluation consists out of exercises from a single exercise series coupled with a group of students. Using the buttons you can easily select all users of this course or only who submitted at least once to any of the exercises in this series."
       explanation_part2: "You can also add and remove individual students below by searching for their name or any label. You can also edit the users of this review later on."
-      users: "users"
+      users: "students"
       this_course: "are registered for this course"
       this_series: "submitted at least once"
       select_users: "select these users"
@@ -31,9 +31,9 @@ en:
     edit_users:
       users_selected: selected students
       users_selected_html:
-        zero: "You have selected <b>zero users</b>."
-        one: "You have selected <b>one user</b>."
-        other: "You have selected <b>%{count} users</b>."
+        zero: "You have currently selected <b>zero users</b>."
+        one: "You have currently selected <b>one user</b>."
+        other: "You have currently selected <b>%{count} users</b>."
       to_review_session: To evaluation
       mass_edit: Which students do you want to evaluate?
       clear: Remove all users
@@ -60,5 +60,4 @@ en:
       remove_user: Remove student from evaluation
       remove_user_consequences: "If this student already received feedback it will be deleted."
       add_user: Add student to evaluation
-      no_started: "# started"
-      no_accepted: "# solved"
+      status: Progress

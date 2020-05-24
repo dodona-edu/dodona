@@ -4,13 +4,19 @@ nl:
       view_session: "Evaluatie bekijken"
       review_session: "Evaluatie"
       title: "Evaluatie voor %{series}"
+      explanation_title: "Hoe evalueer ik een oplossing?"
+      explanation_part1_html: "In de samenvattende tabel kan je naast een oefening op <i class='mdi mdi-chevron-right mdi-18'></i> klikken. Je komt dan op een nog te bekijken oplossing van een willekeurige student terecht. Vervolgens kan je indien gewenst feedback op de code geven en de oplossing als afgewerkt markeren. Bemerk dat je ook een oplossing als afgewerkt kan markeren zonder feedback achter te laten. We hebben alvast alle oefeningen zonder ingediende oplossing als afgewerkt gemarkeerd."
+      explanation_part2_html: "Ter herinnering, de studenten krijgen de gegeven feedback <b>niet</b> automatisch te zien, daarvoor dien je hieronder op 'Feedback vrijgeven' te klikken."
+      users: "studenten"
       release: Feedback vrijgeven
       unrelease: Feedback verbergen
-      deadline_html: De oplossingen voor deze evaluatie werden bepaald met als deadline <b>%{deadline}</b>.
-      next_incomplete_review: Volgende onafgewerkte oplossing
+      deadline_html: Deze evaluatie van <b>%{users} studenten</b> bevat de oplossingen van <b>%{exercises} oefeningen</b> met als deadline <b>%{deadline}</b>.
+      next_incomplete_review: Ga naar de volgende onafgewerkte feedback
+      evaluation_progress: Evaluatie voortgang
+      progress_html: "<b>%{review_count} van de %{review_total}</b> oplossingen hebben afgewerkte feedback."
       progress:
-        finished: "%{review_count} oplossingen hebben afgewerkte feedback."
-        unfinished: "%{review_count} oplossingen hebben nog geen afgewerkte feedback."
+        finished: xx
+        unfinished: xx
     new:
       exercises: Oefeningen
       create_session: Reeks evalueren

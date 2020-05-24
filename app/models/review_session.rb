@@ -46,6 +46,7 @@ class ReviewSession < ApplicationRecord
       per_exercise: exercises.map do |ex|
         revs = reviews.includes(:review_exercise).where(review_exercises: { exercise_id: ex.id })
         {
+          exercise: ex,
           name: ex.name,
           done: revs.complete.count,
           total: revs.count,

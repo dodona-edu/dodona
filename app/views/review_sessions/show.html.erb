@@ -5,43 +5,19 @@
         <h2 class="card-title-text"><%= t('.title', series: @review_session.series.name) %></h2>
       </div>
       <div class="card-supporting-text">
-        <% metadata = @review_session.metadata %>
         <div class="row">
-          <div class="col-xs-6">
-            <span data-toggle="tooltip" title="<%= t('.progress.finished', review_count: metadata[:done]) %> <%= t('.progress.unfinished', review_count: (metadata[:total] - metadata[:done])) %>">
-              <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-                <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
-                <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
-              </svg>
-            </span>
+          <div class="col-lg-6 col-md-12 col-lg-push-6">
+            <div class="callout callout-info">
+              <h4><%= t ".explanation_title" %></h4>
+              <p><%= t ".explanation_part1_html" %></p>
+              <p><%= t ".explanation_part2_html" %></p>
+            </div>
           </div>
-          <div class="col-xs-6">
-            <% if metadata[:next_incomplete_review].present? %>
-              <%= link_to t('.next_incomplete_review'), metadata[:next_incomplete_review] %>
-            <% end %>
+          <div class="col-lg-6 col-md-12 col-lg-pull-6">
+            <p><%= t '.deadline_html', users: @review_session.users.count, exercises: @review_session.exercises.count, deadline: l(@review_session.deadline, format: :submission) %></p>
+            <%= render partial: 'exercises_progress_table', locals: { metadata: @review_session.metadata, series: @review_session.series } %>
           </div>
         </div>
-        <% metadata[:per_exercise].each do |ex_meta| %>
-          <div class="row">
-            <div class="col-xs-12">
-              <h4><%= ex_meta[:name] %></h4>
-            </div>
-            <div class="col-xs-6">
-              <span data-toggle="tooltip" title="<%= t('.progress.finished', review_count: ex_meta[:done]) %> <%= t('.progress.unfinished', review_count: (ex_meta[:total] - ex_meta[:done])) %>">
-                <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-                  <line x1="0" y1="0.5" x2="<%= ex_meta[:done].to_f / ex_meta[:total] %>" y2="0.5" class="info"></line>
-                  <line x1="<%= ex_meta[:done].to_f / ex_meta[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
-                </svg>
-              </span>
-            </div>
-            <div class="col-xs-6">
-              <% if ex_meta[:next_incomplete_review].present? %>
-                <%= link_to t('.next_incomplete_review'), ex_meta[:next_incomplete_review] %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-        <span class="help-block"><%= t '.deadline_html', deadline: l(@review_session.deadline, format: :submission) %></span>
       </div>
       <div class="card-actions card-border">
         <%= link_to t('review_sessions.edit.title'), edit_review_session_path(@review_session), class: "btn-text" %>
@@ -63,7 +39,7 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-supporting-text card-border">
+      <div class="card-supporting-text">
         <%= render 'review_table', reviews: @reviews, review_session: @review_session %>
       </div>
     </div>

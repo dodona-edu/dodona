@@ -17,6 +17,7 @@ class FeedbacksController < ApplicationController
       [I18n.t('evaluations.show.evaluation'), evaluation_path(@feedback.evaluation)],
       [I18n.t('feedbacks.show.feedback'), '#']
     ]
+    @title = I18n.t('feedbacks.show.feedback')
   end
 
   def edit
@@ -30,6 +31,7 @@ class FeedbacksController < ApplicationController
       [I18n.t('evaluations.show.evaluation'), evaluation_path(@feedback.evaluation)],
       [I18n.t('feedbacks.edit.short_title'), '#']
     ]
+    @title = I18n.t('feedbacks.edit.short_title')
   end
 
   def update

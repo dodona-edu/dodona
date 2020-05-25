@@ -12,6 +12,7 @@ class EvaluationsController < ApplicationController
     redirect_to add_users_evaluation_path(@evaluation) if @evaluation.users.count == 0
     @feedbacks = @evaluation.evaluation_sheet
     @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, series_url(@evaluation.series)], [I18n.t('evaluations.show.evaluation'), '#']]
+    @title = I18n.t('evaluations.show.evaluation')
   end
 
   def new
@@ -21,6 +22,7 @@ class EvaluationsController < ApplicationController
     end
     @course = @series.course
     @evaluation = Evaluation.new(series: @series, deadline: @series.deadline || Time.current)
+    @title = I18n.t('evaluations.new.create_evaluation')
     authorize @evaluation
   end
 
@@ -40,6 +42,7 @@ class EvaluationsController < ApplicationController
       [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
       [I18n.t('evaluations.edit.title'), '#']
     ]
+    @title = I18n.t('evaluations.edit.title')
   end
 
   def add_users
@@ -52,6 +55,7 @@ class EvaluationsController < ApplicationController
       [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
       [I18n.t('evaluations.add_users.title'), '#']
     ]
+    @title = I18n.t('evaluations.add_users.title')
   end
 
   def create
@@ -126,6 +130,7 @@ class EvaluationsController < ApplicationController
       [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)],
       [I18n.t('evaluations.overview.title'), '#']
     ]
+    @title = I18n.t('evaluations.overview.title')
   end
 
   private

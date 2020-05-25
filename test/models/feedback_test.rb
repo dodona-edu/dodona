@@ -21,10 +21,10 @@ class FeedbackTest < ActiveSupport::TestCase
     @users.each do |u|
       series.course.enrolled_members << u
       @exercises.each do |e|
-        create :submission, user: u, exercise: e, course: series.course
+        create :submission, user: u, exercise: e, course: series.course, created_at: Time.current - 1.hour
       end
     end
-    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.zone.now + 1.hour
+    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.current
     @user_count = @users.count
     @exercise_count = @exercises.count
     @zeus = create :zeus

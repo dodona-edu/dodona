@@ -8,7 +8,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     @users.each do |user|
       user.enrolled_courses << @series.course
       @exercises.each do |ex|
-        create :submission, exercise: ex, user: user, course: @series.course, status: :correct
+        create :submission, exercise: ex, user: user, course: @series.course, status: :correct, created_at: Time.current - 1.hour
       end
     end
     @course_admin = create(:staff)
@@ -20,7 +20,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
-        deadline: DateTime.now + 4.days
+        deadline: DateTime.now
       }
     }
     @series.evaluation.update(users: @users)
@@ -33,7 +33,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
-        deadline: DateTime.now + 4.days
+        deadline: DateTime.now
       }
     }
     @series.evaluation.update(users: @users)
@@ -49,7 +49,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
-        deadline: DateTime.now + 4.days
+        deadline: DateTime.now
       }
     }
     @series.evaluation.update(users: @users)
@@ -68,7 +68,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
-        deadline: DateTime.now + 4.days
+        deadline: DateTime.now
       }
     }
     @series.evaluation.update(users: @series.course.enrolled_members)
@@ -94,7 +94,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'Notifications should be made when a feedback is released' do
     post evaluations_path, params: {
-      evaluation: { series_id: @series.id, deadline: DateTime.now + 4.days }
+      evaluation: { series_id: @series.id, deadline: DateTime.now }
     }
     evaluation = @series.evaluation
     evaluation.update(users: @series.course.enrolled_members)
@@ -124,7 +124,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
-        deadline: DateTime.now + 4.days
+        deadline: DateTime.now
       }
     }
     evaluation = @series.evaluation
@@ -183,7 +183,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
-        deadline: DateTime.now + 4.days
+        deadline: DateTime.now
       }
     }
     evaluation = @series.evaluation
@@ -211,7 +211,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   test 'When a feedback session gets deleted, all the annotations created should be unset & therefor released' do
     post evaluations_path, params: {
       evaluation: { series_id: @series.id,
-                    deadline: DateTime.now + 4.days }
+                    deadline: DateTime.now }
     }
     evaluation = @series.evaluation
     evaluation.update(users: @series.course.enrolled_members)
@@ -236,7 +236,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   test 'When there is already a feedback session for this series, we should redirect to the ready made one when a user wants to create a new one' do
     post evaluations_path, params: {
       evaluation: { series_id: @series.id,
-                    deadline: DateTime.now + 4.days }
+                    deadline: DateTime.now }
     }
 
     evaluation_count = Evaluation.where(series: @series).count
@@ -249,7 +249,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
     post evaluations_path, params: {
       evaluation: { series_id: @series,
-                    deadline: DateTime.now + 4.days,
+                    deadline: DateTime.now,
                     users: @users.map(&:id),
                     exercises: @exercises.map(&:id) }
     }
@@ -275,7 +275,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
-        deadline: DateTime.now + 4.days
+        deadline: DateTime.now
       }
     }
     random_student = create :student
@@ -305,7 +305,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
-        deadline: DateTime.now + 4.days
+        deadline: DateTime.now
       }
     }
 
@@ -353,7 +353,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
-        deadline: DateTime.now + 4.days
+        deadline: DateTime.now
       }
     }
 

@@ -19,7 +19,7 @@
     "iframe-resizer": "^4.2.10",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.5.1",
-    "moment": "^2.25.3",
+    "moment": "^2.26.0",
     "typeahead.js": "^0.11.1",
     "typescript": "^3.9.2"
   },

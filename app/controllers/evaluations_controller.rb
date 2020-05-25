@@ -9,6 +9,7 @@ class EvaluationsController < ApplicationController
   has_scope :by_course_labels, as: 'course_labels', type: :array
 
   def show
+    redirect_to add_users_evaluation_path(@evaluation) if @evaluation.users.count == 0
     @feedbacks = @evaluation.evaluation_sheet
     @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, series_url(@evaluation.series)], [I18n.t('evaluations.show.evaluation'), '#']]
   end

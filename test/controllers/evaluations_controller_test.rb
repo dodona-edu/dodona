@@ -358,6 +358,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     }
 
     evaluation = @series.evaluation
+    evaluation.update(users: @users)
     random_student = create :student
     student_from_evaluation = @users.sample
     assert_not student_from_evaluation.admin_of?(@series.course)

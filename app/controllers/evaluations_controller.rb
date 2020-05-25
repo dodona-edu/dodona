@@ -92,16 +92,19 @@ class EvaluationsController < ApplicationController
               []
             end
     @evaluation.update(users: users) unless users.nil?
+    render 'refresh_users'
   end
 
   def add_user
     user = @evaluation.series.course.subscribed_members.find(params[:user_id])
     @evaluation.update(users: @evaluation.users + [user])
+    render 'refresh_users'
   end
 
   def remove_user
     user = @evaluation.series.course.subscribed_members.find(params[:user_id])
     @evaluation.update(users: @evaluation.users - [user])
+    render 'refresh_users'
   end
 
   def mark_undecided_complete

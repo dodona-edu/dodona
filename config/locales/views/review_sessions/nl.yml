@@ -17,6 +17,8 @@ nl:
       progress:
         finished: xx
         unfinished: xx
+      evaluation_details: Detailoverzicht
+      evaluation_details_info_html: Deze tabel geeft een detailoverzicht van alle oplossingen in de evaluatie.<br> Het gekleurde streepje geeft de status van de oplossing aan (niet ingediend, correct of fout), het vinkje in de tekstballon of deze oplossing al bekeken is.
     new:
       exercises: Oefeningen
       create_session: Reeks evalueren
@@ -51,12 +53,11 @@ nl:
       deadline-help_html: "Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie. <b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren."
     review_table:
       user: Gebruiker
-      review_finished: Feedback afgewerkt
-      review_undecided: Lege oplossing die nog niet als afgewerkt werd gemarkeerd
-      review_unstarted: Feedback nog niet afgewerkt
-      submission_empty: Lege oplossing
-      submission_accepted: Juiste oplossing
-      submission_wrong: Foute oplossing
+      review_finished: evaluatie afgewerkt
+      review_unstarted: evaluatie nog niet afgewerkt
+      submission_not-started: "Geen oplossing, "
+      submission_correct: "Juiste oplossing, "
+      submission_wrong: "Foute oplossing, "
     overview:
       title: Overzicht
       released: Er werd feedback gegeven op je code

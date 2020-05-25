@@ -40,4 +40,25 @@
     display: inline-block;
   }
 }
+.review-table-center {
+  text-align: center;
+}
+.review {
+  padding-bottom: 6px;
+  &.correct {
+    border-bottom: 3px solid @success-300;
+  }
+  &.wrong {
+    border-bottom: 3px solid @danger-300;
+  }
+  &.not-started {
+    border-bottom: 3px solid @hairlinegray;
+  }
+  .mdi-comment-check-outline {
+    color: @text-disabled;
+  }
+  .mdi-comment-check-outline:hover {
+    color: @text-color;
+  }
+}
 

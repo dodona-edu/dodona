@@ -11,25 +11,27 @@
     <% review_session.users.order(last_name: :asc, first_name: :asc).each do |user| %>
       <% review_l = reviews[:reviews][user.id] %>
       <tr>
-        <td><%= user.full_name %></td>
+        <td><%= link_to user.full_name, course_member_path(@review_session.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %></td>
         <% review_l.each do |review| %>
+          <%
+            if review.submission.blank?
+              submission_status = "not-started"
+            elsif review.submission.accepted
+              submission_status = "correct"
+            else
+              submission_status = "wrong"
+            end
+          %>
           <td class="review-table-center">
-            <%= link_to review_session_review_path(review_session, review), class: "btn btn-icon" do %>
-              <% if review.completed? %>
-                <i class="mdi mdi-comment-check-outline mdi-24" title="<%= t ".review_finished" %>"></i>
-              <% elsif review.submission.nil? %>
-                <i class="mdi mdi-comment-question-outline mdi-24" title="<%= t ".review_undecided" %>"></i>
-              <% else %>
-                <i class="mdi mdi-comment-remove-outline mdi-24" title="<%= t ".review_unstarted" %>"></i>
+            <span class='review <%= submission_status %>'>
+              <%= link_to review_session_review_path(review_session, review), class: "btn btn-icon" do %>
+                <% if review.completed? %>
+                  <i class="mdi mdi-comment-check-outline mdi-24" title="<%= t ".submission_" + submission_status %><%= t ".review_finished" %>"></i>
+                <% else %>
+                  <i class="mdi mdi-comment-outline mdi-24" title="<%= t ".submission_" + submission_status %><%= t ".review_unstarted" %>"></i>
+                <% end %>
               <% end %>
-              <% if review.submission.blank? %>
-                <i class="mdi mdi-file-cancel-outline mdi-24" title="<%= t ".submission_empty" %>"></i>
-              <% elsif review.submission.accepted %>
-                <i class="mdi mdi-file-check-outline mdi-24" title="<%= t ".submission_accepted" %>"></i>
-              <% else %>
-                <i class="mdi mdi-file-remove-outline mdi-24" title="<%= t ".submission_wrong" %>"></i>
-              <% end %>
-            <% end %>
+            </span>
           </td>
         <% end %>
       </tr>

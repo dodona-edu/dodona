@@ -40,6 +40,8 @@
     </div>
     <div class="card">
       <div class="card-supporting-text">
+        <h4><%= t ".evaluation_details" %></h4>
+        <p class="h4-info-text"><%= t ".evaluation_details_info_html" %></p>
         <%= render 'review_table', reviews: @reviews, review_session: @review_session %>
       </div>
     </div>

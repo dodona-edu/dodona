@@ -14,6 +14,8 @@ en:
       next_incomplete_review: Go to the next unreviewed solution
       evaluation_progress: Evaluation progress
       progress_html: "<b>%{review_count} of the %{review_total}</b> submissions have completed feedback."
+      evaluation_details: Evaluation details
+      evaluation_details_info_html: This table gives an overview of all submissions in this evaluation.<br> The colored bar shows the status of the submission (no submission, correct or wrong) and the check mark inside the speech bubble if the submission was reviewed already.
     new:
       exercises: Exercises
       create_session: Evaluate series
@@ -48,12 +50,11 @@ en:
       deadline-help_html: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
     review_table:
       user: User
-      review_finished: Feedback completed
-      review_undecided: Empty submission that was not marked as completed
-      review_unstarted: Feedback not yet completed
-      submission_empty: Empty submission
-      submission_accepted: Correct submission
-      submission_wrong: Wrong submission
+      review_finished: evaluation completed
+      review_unstarted: evaluation not yet completed
+      submission_not-started: "No submission, "
+      submission_correct: "Correct submission, "
+      submission_wrong: "Wrong submission, "
     overview:
       title: Overview
       released: Feedback was added to your code.

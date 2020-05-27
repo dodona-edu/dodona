@@ -46,10 +46,21 @@
   &.not-started {
     border-bottom: 3px solid @hairlinegray;
   }
-  .mdi-comment-check-outline {
+  .done {
     color: @text-disabled;
   }
-  .mdi-comment-check-outline:hover {
+  .done:hover {
     color: @text-color;
+  }
+}
+.user-feedback-row {
+  display: flex;
+  justify-content: space-between;
+
+  a .done {
+    color: @text-secondary;
+  }
+  .active a i {
+    color: @info-500;
   }
 }

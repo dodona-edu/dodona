@@ -53,6 +53,7 @@ en:
       deadline-help_html: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
     evaluation_table:
       user: User
+    feedback_status:
       feedback_finished: evaluation completed
       feedback_unstarted: evaluation not yet completed
       submission_not-started: "No submission, "

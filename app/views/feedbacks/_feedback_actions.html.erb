@@ -4,40 +4,22 @@
 
 <% feedback_pointers = @feedback.siblings %>
 <div class="card-supporting-text">
-  <div class="routing-actions">
-    <div class="page-subtitle">
-      <h4><%= t('.category.user') %></h4>
-      <div class="flex-spacer"></div>
-      <% metadata = @feedback.evaluation_user.metadata %>
-      <span class="feedback-actions-progress" data-html="true" data-toggle="tooltip" title="<%= t('evaluations.show.progress.finished', feedback_count: metadata[:done]) %> <%= t('evaluations.show.progress.unfinished', feedback_count: (metadata[:total] - metadata[:done])) %>">
-        <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-          <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
-          <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
-        </svg>
-      </span>
-    </div>
-    <%= feedback_action_button t('.direction.prev'), feedback_pointers[:user][:prev] %>
-    <%= feedback_action_button t('.direction.random'), feedback_pointers[:user][:random] %>
-    <%= feedback_action_button t('.direction.next'), feedback_pointers[:user][:next] %>
 
-    <div class="page-subtitle">
-      <h4><%= t('.category.exercise') %></h4>
-      <div class="flex-spacer"></div>
-      <% metadata = @feedback.evaluation_exercise.metadata %>
-      <span class="feedback-actions-progress" data-html="true" data-toggle="tooltip" title="<%= t('evaluations.show.progress.finished', feedback_count: metadata[:done]) %> <%= t('evaluations.show.progress.unfinished', feedback_count: (metadata[:total] - metadata[:done])) %>">
-        <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-          <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
-          <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
-        </svg>
-      </span>
-    </div>
-    <%= feedback_action_button t('.direction.prev'), feedback_pointers[:exercise][:prev] %>
-    <%= feedback_action_button t('.direction.random'), feedback_pointers[:exercise][:random] %>
-    <%= feedback_action_button t('.direction.next'), feedback_pointers[:exercise][:next] %>
+  <div class="page-subtitle">
+    <h4><%= t('.category.exercise') %></h4>
+    <div class="flex-spacer"></div>
+    <% metadata = @feedback.evaluation_exercise.metadata %>
+    <span class="feedback-actions-progress" data-html="true" data-toggle="tooltip" title="<%= t('evaluations.show.progress.finished', feedback_count: metadata[:done]) %> <%= t('evaluations.show.progress.unfinished', feedback_count: (metadata[:total] - metadata[:done])) %>">
+      <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
+        <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
+        <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
+      </svg>
+    </span>
   </div>
-</div>
 
-<div class="card-supporting-text card-border">
+  <%= feedback_action_button t('.direction.random'), feedback_pointers[:exercise][:random] %>
+  <%= feedback_action_button t('.direction.next'), feedback_pointers[:exercise][:next] %>
+
   <%= form_for @feedback, remote: true do |f| %>
     <center>
       <div class="form-group">
@@ -53,6 +35,16 @@
     </div>
   <% end %>
 </div>
+
+<div class="card-supporting-text card-border">
+  <h4><%= @feedback.user.full_name %></h4>
+  <div class="user-feedback-row">
+    <% @feedback.evaluation.feedbacks.joins(:evaluation_user).where("evaluation_users.user_id" => @feedback.user.id).each do |feedback| %>
+      <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: @feedback } %>
+    <% end %>
+  </div>
+</div>
+
 <script>
   $(() => window.dodona.interceptNavClicks("<%= feedback_url(@feedback, feedback: { completed: true }) %>"))
 </script>

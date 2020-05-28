@@ -36,7 +36,7 @@ class Feedback < ApplicationRecord
   scope :undecided, -> { where(submission: nil) }
 
   def previous_attempts
-    [user.submissions.of_exercise(exercise).before_deadline(submission.created_at).count - 1, 0].max
+    [user.submissions.of_exercise(exercise).before_deadline(submission.created_at).count, 0].max
   end
 
   def time_to_deadline

@@ -14,9 +14,6 @@ nl:
       next_incomplete_feedback: Ga naar de volgende onafgewerkte feedback
       evaluation_progress: Evaluatie voortgang
       progress_html: "<b>%{feedback_count} van de %{feedback_total}</b> oplossingen hebben afgewerkte feedback."
-      progress:
-        finished: xx
-        unfinished: xx
       evaluation_details: Detailoverzicht
       evaluation_details_info_html: Deze tabel geeft een detailoverzicht van alle oplossingen in de evaluatie.<br> Het gekleurde streepje geeft de status van de oplossing aan (niet ingediend, correct of fout), het vinkje in de tekstballon of deze oplossing al afgewerkt is.
     new:

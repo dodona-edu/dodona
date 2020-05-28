@@ -16,9 +16,6 @@ en:
       evaluation_details: Evaluation details
       evaluation_details_info_html: This table gives an overview of all submissions in this evaluation.<br> The colored bar shows the status of the submission (no submission, correct or wrong) and the check mark inside the speech bubble if the submission was completed already.
       progress_html: "<b>%{feedback_count} of the %{feedback_total}</b> submissions have completed feedback."
-      progress:
-        finished: xx
-        unfinished: xx
     new:
       exercises: Exercises
       create_evaluation: Evaluate series

@@ -3,45 +3,57 @@
 <% end %>
 
 <% feedback_pointers = @feedback.siblings %>
-<div class="card-supporting-text">
+<% state = !@feedback.completed ? "completed": "unfinished" %>
 
-  <div class="page-subtitle">
-    <h4><%= t('.category.exercise') %></h4>
-    <div class="flex-spacer"></div>
-    <% metadata = @feedback.evaluation_exercise.metadata %>
-    <span class="feedback-actions-progress" data-html="true" data-toggle="tooltip" title="<%= t('evaluations.show.progress.finished', feedback_count: metadata[:done]) %> <%= t('evaluations.show.progress.unfinished', feedback_count: (metadata[:total] - metadata[:done])) %>">
-      <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
-        <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
-        <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
-      </svg>
-    </span>
+<div class="card feedback-actions-holder">
+  <div class="card-supporting-text">
+
+    <div class="page-subtitle">
+      <h4><%= t('.category.exercise') %></h4>
+      <div class="flex-spacer"></div>
+      <% metadata = @feedback.evaluation_exercise.metadata %>
+      <span class="feedback-actions-progress" data-html="true" data-toggle="tooltip" title="<%= t('evaluations.show.progress_html', feedback_count: metadata[:done], feedback_total: metadata[:total]) %>">
+        <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
+          <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
+          <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>
+        </svg>
+      </span>
+    </div>
+    <div class="checkbox-inline">
+      <input type="checkbox" name="feedback-completed" checked>
+      <label class="checkbox-label" for="feedback-completed">Feedback afgewerkt</label>
+    </div>
   </div>
 
-  <%= feedback_action_button t('.direction.random'), feedback_pointers[:exercise][:random] %>
-  <%= feedback_action_button t('.direction.next'), feedback_pointers[:exercise][:next] %>
-
-  <%= form_for @feedback, remote: true do |f| %>
+  <div class="card-supporting-text card-border">
     <center>
-      <div class="form-group">
-        <% state = !@feedback.completed ? "completed": "unfinished" %>
-        <%= f.submit t(".completed.button.#{state}"), class: "btn btn-primary btn-text" %>
-      </div>
+      <%= link_to "#", class: "btn btn-text btn-primary" do %>
+        <%= t('.direction.next') %> + <i class="mdi mdi-comment-check-outline mdi-18"></i>
+      <% end %>
     </center>
-    <%= f.hidden_field :completed, value: !@feedback.completed %>
-    <div class="form-group">
-      <input id="auto-mark" type="checkbox" name="auto_mark" <%= "checked" if @auto_mark %>>
-      <label class="checkbox-label" for="auto-mark"><%= t('.automatically_mark') %></label>
-      <span class="help-block"><%= t(".auto-mark-help") %></span>
-    </div>
-  <% end %>
-</div>
-
-<div class="card-supporting-text card-border">
-  <h4><%= @feedback.user.full_name %></h4>
-  <div class="user-feedback-row">
-    <% @feedback.evaluation.feedbacks.joins(:evaluation_user).where("evaluation_users.user_id" => @feedback.user.id).each do |feedback| %>
-      <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: @feedback } %>
+    <br>
+    <%= form_for @feedback, remote: true do |f| %>
+      <%= f.hidden_field :completed, value: !@feedback.completed %>
+      <div class="checkbox-inline">
+        <input id="auto-mark" type="checkbox" name="auto_mark" <%= "checked" if @auto_mark %>>
+        <label class="checkbox-label" for="auto-mark"><%= t('.automatically_mark') %></label>
+        <span class="help-block"><%= t(".auto-mark-help") %></span>
+      </div>
+      <span><%# there must be something between 2 checkbox-inline elements %></span>
+      <div class="checkbox-inline">
+        <input type="checkbox" name="skip-completed" checked>
+        <label class="checkbox-label" for="skip-completed">Afgewerkte oplossingen overslaan</label>
+      </div>
     <% end %>
+  </div>
+
+  <div class="card-supporting-text card-border">
+    <h4><%= @feedback.user.full_name %></h4>
+    <div class="user-feedback-row">
+      <% @feedback.evaluation.feedbacks.joins(:evaluation_user).where("evaluation_users.user_id" => @feedback.user.id).each do |feedback| %>
+        <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: @feedback } %>
+      <% end %>
+    </div>
   </div>
 </div>
 

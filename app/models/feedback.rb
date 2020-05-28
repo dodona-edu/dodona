@@ -36,7 +36,7 @@ class Feedback < ApplicationRecord
   scope :undecided, -> { where(submission: nil) }
 
   def previous_attempts
-    [user.submissions.of_exercise(exercise).before_deadline(submission.created_at).count, 0].max
+    user.submissions.of_exercise(exercise).before_deadline(submission.created_at).count
   end
 
   def time_to_deadline
@@ -47,21 +47,11 @@ class Feedback < ApplicationRecord
   end
 
   def siblings
-    others = evaluation.feedbacks
-    feedbacks_same_exercise = others.where(evaluation_exercise: evaluation_exercise).order(:id)
-    feedbacks_same_user = others.where(evaluation_user: evaluation_user).order(:id)
+    feedbacks_same_exercise = evaluation.feedbacks.where(evaluation_exercise: evaluation_exercise).order(:id)
 
     {
-      exercise: {
-        prev: feedbacks_same_exercise.where('id < ?', id).last,
-        random: feedbacks_same_exercise.incomplete.where.not(id: id).order('RAND()').first,
-        next: feedbacks_same_exercise.find_by('id > ?', id)
-      },
-      user: {
-        prev: feedbacks_same_user.where('id < ?', id).last,
-        random: feedbacks_same_user.incomplete.where.not(id: id).order('RAND()').first,
-        next: feedbacks_same_user.find_by('id > ?', id)
-      }
+      next: feedbacks_same_exercise.find_by('id > ?', id),
+      next_unseen: feedbacks_same_exercise.incomplete.find_by('id > ?', id)
     }
   end
 

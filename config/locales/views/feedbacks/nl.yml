@@ -12,7 +12,8 @@ nl:
           other: "De gebruiker had <b>%{count} pogingen</b> nodig voor deze oefening."
     feedback_actions:
       automatically_mark: Automatisch als afgewerkt markeren
-      auto-mark-help: Hierbij worden oplossingen automatisch als afgewerkt gemarkeerd als je de vorige, volgende en random knoppen gebruikt.
+      skip_completed: Afgewerkte oplossingen overslaan
+      auto-mark-help: Hierbij worden oplossingen automatisch als afgewerkt gemarkeerd als je de volgende knop gebruikt.
       progress: Vooruitgang
       direction:
         next: Volgende

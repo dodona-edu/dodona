@@ -12,7 +12,8 @@ en:
           other: "The user made <b>%{count} attempts</b> before this submission."
     feedback_actions:
       automatically_mark: Automatically mark as completed
-      auto-mark-help: This makes it so that submission are automatically marked as completed if you use the previos, next and random buttons.
+      skip_completed: Skip completed submissions
+      auto-mark-help: This makes it so that submission are automatically marked as completed if you use the next button.
       progress: Progress
       direction:
         next: Volgende

@@ -10,7 +10,6 @@ class FeedbacksController < ApplicationController
   has_scope :by_status, as: 'status'
 
   def show
-    @auto_mark = params[:auto_mark]
     @crumbs = [
       [@feedback.evaluation.series.course.name, course_url(@feedback.evaluation.series.course)],
       [@feedback.evaluation.series.name, breadcrumb_series_path(@feedback.evaluation.series, current_user)],
@@ -35,7 +34,6 @@ class FeedbacksController < ApplicationController
   end
 
   def update
-    @auto_mark = params[:auto_mark]
     @feedback.update(permitted_attributes(@feedback))
     respond_to do |format|
       format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }

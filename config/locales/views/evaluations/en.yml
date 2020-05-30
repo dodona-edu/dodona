@@ -27,10 +27,13 @@ en:
       explanation_title: "Why do I have to select users?"
       explanation_part1: "An evaluation consists out of exercises from a single exercise series coupled with a group of students. Using the buttons you can easily select all users of this course or only who submitted at least once to any of the exercises in this series."
       explanation_part2: "You can also add and remove individual students below by searching for their name or any label. You can also edit the users of this evaluation later on."
-      users: "students"
-      this_course: "are registered for this course"
-      this_series: "submitted at least once"
-      select_users: "select these users"
+      users_in_course_html:
+        one: "<h1>1 <small>student</small></h1> is registered for this course"
+        other: "<h1>%{count} <small>students</small></h1> are registered for this course"
+      users_submitted_html:
+        one: "<h1>1 <small>student</small></h1> submitted at least once"
+        other: "<h1>%{count} <small>students</small></h1> submitted at least once"
+      select_users: "Select these users"
     edit:
       title: Edit users
     edit_users:

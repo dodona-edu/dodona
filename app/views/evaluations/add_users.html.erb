@@ -20,14 +20,14 @@
             <div class="row">
               <div class="col-xs-6">
                 <div class="user-select-option">
-                  <h1><%= @user_count_course %> <small><%= t('evaluations.add_users.users') %></small></h1> <%= t('evaluations.add_users.this_course') %>
+                  <%= t('evaluations.add_users.users_in_course_html', count: @user_count_course) %>
                   <div class="clearfix"></div>
                   <%= link_to t('evaluations.add_users.select_users'), set_multi_user_evaluation_path(@evaluation, type: 'enrolled', format: :js), remote: true, class: "btn-text", method: :post %>
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="user-select-option">
-                  <h1><%= @user_count_series %> <small><%= t('evaluations.add_users.users') %></small></h1> <%= t('evaluations.add_users.this_series') %>
+                  <%= t('evaluations.add_users.users_submitted_html', count: @user_count_series) %>
                   <div class="clearfix"></div>
                   <%= link_to t('evaluations.add_users.select_users'), set_multi_user_evaluation_path(@evaluation, type: 'submitted', format: :js), remote: true, class: "btn-text", method: :post %>
                 </div>

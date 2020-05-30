@@ -35,8 +35,19 @@ function interceptFeedbackActionClicks(
     let autoMark = autoMarkCheckBox.checked;
     let skipCompleted = skipCompletedCheckBox.checked;
 
+    if (nextURL === null && !skipCompleted) {
+        nextButton.setAttribute("disabled", "1");
+    } else if (skipCompleted && nextUnseenURL == null) {
+        nextButton.setAttribute("disabled", "1");
+    } else {
+        nextButton.removeAttribute("disabled");
+    }
+
     nextButton.addEventListener("click", async event => {
         event.preventDefault();
+        if (nextButton.getAttribute("disabled") === "1") {
+            return;
+        }
         if (autoMark) {
             await setCompletedStatus(currentURL, true);
         }

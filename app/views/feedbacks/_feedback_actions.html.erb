@@ -51,9 +51,9 @@
 <script>
   <% siblings = @feedback.siblings %>
   window.dodona.interceptFeedbackActionClicks(
-    "<%= feedback_url(@feedback, format: :js) %>",
-    "<%= feedback_url(siblings[:next]) %>",
-    "<%= feedback_url(siblings[:next_unseen]) %>",
+    <%= raw feedback_url(@feedback, format: :js).to_json %>,
+    <%= raw (siblings[:next].present? ? feedback_url(siblings[:next]) : nil).to_json %>,
+    <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,
     "<%= t('.direction.next') %>"
   );
   $(() => window.dodona.initTooltips());

@@ -4,7 +4,7 @@ class FeedbacksController < ApplicationController
   before_action :set_feedback, only: %i[show edit update]
 
   has_scope :by_filter, as: 'filter' do |_controller, scope, value|
-    scope.by_filter(value, true, true)
+    scope.by_filter(value, skip_user: true, skip_exercise: true)
   end
 
   has_scope :by_status, as: 'status'

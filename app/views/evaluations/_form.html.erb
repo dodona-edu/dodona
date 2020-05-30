@@ -4,7 +4,7 @@
 <%= form_for evaluation, html: { class: "form-horizontal feedback-form" } do |f| %>
   <div>
     <%= f.hidden_field :series_id %>
-    <h4><%= evaluation.series.name %> <span class="small"><%= evaluation.series.course.name %></span></h4>
+    <h4 class="evaluation-form-title"><%= evaluation.series.name %> <span class="small"><%= evaluation.series.course.name %></span></h4>
 
     <%= render partial: 'exercises_table', locals: {
       series: @evaluation.series,

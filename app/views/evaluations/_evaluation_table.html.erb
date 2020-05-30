@@ -1,23 +1,25 @@
-<table class="table table-resource">
-  <thead>
-    <tr>
-      <th><%= t('.user') %></th>
-      <% feedbacks[:exercises].each do |exercise| %>
-        <th class="feedback-table-center"><%= exercise.name %></th>
-      <% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% evaluation.users.order(last_name: :asc, first_name: :asc).each do |user| %>
-      <% feedback_l = feedbacks[:feedbacks][user.id] %>
+<div class="table-scroll-wrapper status-table-wrapper">
+  <table class="table table-resource">
+    <thead>
       <tr>
-        <td><%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %></td>
-        <% feedback_l.each do |feedback| %>
-          <td class="feedback-table-center">
-            <%= render partial: 'feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback } %>
-          </td>
+        <th class="user-name"><%= t('.user') %></th>
+        <% feedbacks[:exercises].each do |exercise| %>
+          <th class="status-header"><%= exercise.name %></th>
         <% end %>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% evaluation.users.order(last_name: :asc, first_name: :asc).each do |user| %>
+        <% feedback_l = feedbacks[:feedbacks][user.id] %>
+        <tr>
+          <td class="user-name ellipsis-overflow"><%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %></td>
+          <% feedback_l.each do |feedback| %>
+            <td class="status">
+              <%= render partial: 'feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback } %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -61,10 +61,15 @@ nl:
       submission_wrong: "Foute oplossing, "
     overview:
       title: Evaluatie-overzicht
+      explanation: Een cursusbeheerder evalueerde je oplossingen voor de reeks "%{series}". Je laatste oplossing voor %{deadline} werd gebruikt, behalve als de cursusbeheerder dit veranderde. Merk op dat dit niet noodzakelijk betekent dat er feedback toevoegd werd aan je oplossingen.
       released: Er werd feedback gegeven op je code
       exercise: Oefening
-      no_annotations: "# annotations"
-      no_submission: "Geen oplossing"
+      no_annotations: "# annotaties"
+      annotation_count:
+        zero: "Geen annotaties"
+        one: "Één annotatie"
+        other: "%{count} annotaties"
+      no_submission: "Je had geen tijdige oplossing voor deze oefening"
     members_table:
       remove_user: Student verwijderen uit evaluatie
       remove_user_consequences: "Als deze student al feedback gekregen had, dan zal deze verwijderd worden. Ben je zeker dat je deze student wil verwijderen?"

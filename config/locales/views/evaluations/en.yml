@@ -61,10 +61,15 @@ en:
       submission_wrong: "Wrong submission, "
     overview:
       title: Evaluation overview
+      explanation: A course admin evaluated your submissions for the series "%{series}". Your last submission before %{deadline} was used, unless the course admin changed it. Note that this doesn't necessarily mean feedback was added to your submissions.
       released: Feedback was added to your code.
       exercise: Exercise
       no_annotations: "# annotations"
-      no_submission: "No submission"
+      annotation_count:
+        other: "No annotations"
+        one: "One annotation"
+        other: "%{count} annotations"
+      no_submission: "You had no timely submission for this exercise"
     members_table:
       remove_user: Remove student from evaluation
       remove_user_consequences: "If this student already received feedback, it will be deleted. Are you sure you want to remove this student?"

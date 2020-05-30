@@ -57,7 +57,7 @@ nl:
       submission_correct: "Juiste oplossing, "
       submission_wrong: "Foute oplossing, "
     overview:
-      title: Overzicht
+      title: Evaluatie-overzicht
       released: Er werd feedback gegeven op je code
       exercise: Oefening
       no_annotations: "# annotations"

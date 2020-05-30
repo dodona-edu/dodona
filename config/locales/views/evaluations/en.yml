@@ -57,7 +57,7 @@ en:
       submission_correct: "Correct submission, "
       submission_wrong: "Wrong submission, "
     overview:
-      title: Overview
+      title: Evaluation overview
       released: Feedback was added to your code.
       exercise: Exercise
       no_annotations: "# annotations"

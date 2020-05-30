@@ -36,11 +36,15 @@ class Feedback < ApplicationRecord
   scope :undecided, -> { where(submission: nil) }
 
   def previous_attempts
-    user.submissions.of_exercise(exercise).before_deadline(submission.created_at).count
+    user.submissions.of_exercise(exercise).in_course(evaluation.series.course).before_deadline(submission.created_at).count
   end
 
   def later_attempts
-    user.submissions.of_exercise(exercise).where('created_at > ?', submission.created_at).count
+    user.submissions.of_exercise(exercise).in_course(evaluation.series.course).where('created_at > ?', submission.created_at).count
+  end
+
+  def total_attempts
+    user.submissions.of_exercise(exercise).in_course(evaluation.series.course).count
   end
 
   def time_to_deadline

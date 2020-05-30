@@ -31,7 +31,7 @@
             <%= link_to submission, class: "btn btn-sm", title: t("submissions.submission.view_solution") do %>
               <i class="mdi mdi-open-in-new mdi-18"></i>
             <% end %>
-            <% unless @feedback.submission.id == submission.id %>
+            <% unless @feedback.submission&.id == submission.id %>
               <%= link_to feedback_path(@feedback, feedback: { submission_id: submission.id }), class: "btn btn-sm btn-primary", title: t(".update-submission"), confirm: t('.confirm'), method: :patch do %>
                 <i class="mdi mdi-check mdi-18"></i>
               <% end %>

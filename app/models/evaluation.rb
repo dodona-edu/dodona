@@ -62,7 +62,7 @@ class Evaluation < ApplicationRecord
     exercise_ids = exercises.pluck(:id)
     users = evaluation_users.includes(:user).map(&:user)
 
-    all_feedbacks = feedbacks.includes(evaluation_exercise: [:exercise], evaluation_user: [:user]).to_a
+    all_feedbacks = feedbacks.includes(:submission, evaluation_exercise: [:exercise], evaluation_user: [:user]).to_a
     fbs = users.map do |user|
       [user.id, all_feedbacks.select { |fb| fb.evaluation_user.user == user }.sort_by { |fb| exercise_ids.find_index fb.evaluation_exercise.exercise.id }]
     end.to_h

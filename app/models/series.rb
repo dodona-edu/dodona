@@ -84,7 +84,7 @@ class Series < ApplicationRecord
 
   # @param [Object] options {deadline (optional), user}
   def completed?(options)
-    ActivityStatus.add_status_for(options[:user], self)
+    ActivityStatus.add_status_for_user_and_series(options[:user], self)
     if options[:deadline]
       activities.all? { |a| a.accepted_before_deadline_for?(options[:user], self) }
     else

@@ -7,7 +7,7 @@
    else
      user = current_user
    end %>
-<% ActivityStatus.add_status_for(user, series, [:last_submission, :best_submission]) if loaded %>
+<% ActivityStatus.add_status_for_user_and_series(user, series, [:last_submission, :best_submission]) if loaded %>
 
 <div class="card card-supporting-text series"
      id="series-card-<%= series.id %>"

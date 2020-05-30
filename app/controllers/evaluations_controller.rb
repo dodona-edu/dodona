@@ -36,6 +36,9 @@ class EvaluationsController < ApplicationController
                           .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
                           .where(status: %i[course_admin student])
                           .paginate(page: parse_pagination_param(params[:page]))
+
+    ActivityStatus.add_status_for_series(@evaluation.series, [:last_submission])
+
     @crumbs = [
       [@evaluation.series.course.name, course_url(@evaluation.series.course)],
       [@evaluation.series.name, series_url(@evaluation.series)],

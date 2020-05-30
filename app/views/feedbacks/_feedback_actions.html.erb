@@ -2,11 +2,7 @@
   <%= javascript_pack_tag 'evaluation' %>
 <% end %>
 
-<% feedback_pointers = @feedback.siblings %>
-<% state = !@feedback.completed ? "completed": "unfinished" %>
-
 <div class="card-supporting-text">
-
   <div class="page-subtitle">
     <h4><%= t('.category.exercise') %></h4>
     <div class="flex-spacer"></div>

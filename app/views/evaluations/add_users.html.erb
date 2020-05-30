@@ -20,16 +20,20 @@
             <div class="row">
               <div class="col-xs-6">
                 <div class="user-select-option">
-                  <%= t('evaluations.add_users.users_in_course_html', count: @user_count_course) %>
-                  <div class="clearfix"></div>
-                  <%= link_to t('evaluations.add_users.select_users'), set_multi_user_evaluation_path(@evaluation, type: 'enrolled', format: :js), remote: true, class: "btn-text", method: :post %>
+                  <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'enrolled', format: :js), remote: true, method: :post do %>
+                    <%= t('evaluations.add_users.users_in_course_html', count: @user_count_course) %>
+                    <div class="clearfix"></div>
+                    <div class="btn-text"><%= t('.select_users') %></div>
+                  <% end %>
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="user-select-option">
-                  <%= t('evaluations.add_users.users_submitted_html', count: @user_count_series) %>
-                  <div class="clearfix"></div>
-                  <%= link_to t('evaluations.add_users.select_users'), set_multi_user_evaluation_path(@evaluation, type: 'submitted', format: :js), remote: true, class: "btn-text", method: :post %>
+                  <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'submitted', format: :js), remote: true, method: :post do %>
+                    <%= t('evaluations.add_users.users_submitted_html', count: @user_count_series) %>
+                    <div class="clearfix"></div>
+                    <div class="btn-text"><%= t('.select_users') %></div>
+                  <% end %>
                 </div>
               </div>
             </div>

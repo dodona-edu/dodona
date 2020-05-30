@@ -10,6 +10,9 @@ en:
           zero: "The user made <b>no attempts</b> before this submission."
           one: "The user made <b>1 attempt</b> before this submission."
           other: "The user made <b>%{count} attempts</b> before this submission."
+        later_attempts_html:
+          one: "The user made <b>1 attempt</b> after this submission."
+          other: "The user made <b>%{count} attempts</b> after this submission."
     feedback_actions:
       automatically_mark: Automatically mark as completed
       skip_completed: Skip completed submissions

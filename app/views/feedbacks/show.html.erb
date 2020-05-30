@@ -20,7 +20,10 @@
               <div class="feedback-metadata-submission">
                 <p>
                   <%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts) %>
-                  <% if @feedback.previous_attempts > 0 %>
+                  <% if @feedback.later_attempts > 0 %>
+                    <%= t('.submission.later_attempts_html', count: @feedback.later_attempts) %>
+                  <% end %>
+                  <% if @feedback.later_attempts + @feedback.previous_attempts > 0 %>
                     <%= link_to edit_feedback_path(@feedback) do %>
                       <%= t("feedbacks.edit.short_title") %>
                     <% end %>

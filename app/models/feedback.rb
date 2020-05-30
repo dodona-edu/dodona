@@ -39,6 +39,10 @@ class Feedback < ApplicationRecord
     user.submissions.of_exercise(exercise).before_deadline(submission.created_at).count
   end
 
+  def later_attempts
+    user.submissions.of_exercise(exercise).where('created_at > ?', submission.created_at).count
+  end
+
   def time_to_deadline
     {
       deadline: submission.exercise.series.find_by(course: submission.course).deadline,

@@ -68,3 +68,5 @@ nl:
       remove_users_consequences: "Als deze studenten al feedback gekregen had, dan zal deze verwijderd worden. Ben je zeker dat je deze studenten wil verwijderen?"
       add_user: Student toevoegen aan evaluatie
       status: Voortgang
+    user_progress:
+      not_submitted: Niet ingediend

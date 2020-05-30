@@ -68,3 +68,5 @@ en:
       remove_users_consequences: "If these students already received feedback, it will be deleted. Are you sure want to remove these students?"
       add_user: Add student to evaluation
       status: Progress
+    user_progress:
+      not_submitted: Not submitted

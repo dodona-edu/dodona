@@ -50,6 +50,7 @@ en:
     delete:
       title: Delete series
       confirm: Please confirm you want to delete this series.
+      confirm_evaluation: Note there is an evaluation linked to this series. If you delete this series all feedback in that evaluation will be deleted as well.
     scoresheet:
       user: User
       explanation: "Showing the number of correctly solved exercises and completed reading activities before the deadline"

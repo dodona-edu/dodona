@@ -37,7 +37,13 @@
             <% end %>
             <% if policy(series).destroy? %>
               <li>
-                <%= link_to series_path(series), method: :delete, data: {confirm: t("series.delete.confirm")} do %>
+                <%
+                    confirm = t('series.delete.confirm')
+                    if series.evaluation.present?
+                      confirm += " " + t('series.delete.confirm_evaluation')
+                    end
+                 %>
+                <%= link_to series_path(series), method: :delete, data: {confirm: confirm} do %>
                   <i class='mdi mdi-delete mdi-18'></i> <%= t("series.delete.title") %>
                 <% end %>
               </li>

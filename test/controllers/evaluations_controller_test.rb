@@ -208,31 +208,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect # Redirect to sign in page
   end
 
-  test 'When a feedback session gets deleted, all the annotations created should be unset & therefor released' do
-    post evaluations_path, params: {
-      evaluation: { series_id: @series.id,
-                    deadline: DateTime.now }
-    }
-    evaluation = @series.evaluation
-    evaluation.update(users: @series.course.enrolled_members)
-    annotations = []
-    evaluation.feedbacks.decided.each do |feedback|
-      annotations << feedback.submission.annotations.create(evaluation: evaluation, user: @course_admin, annotation_text: Faker::Lorem.sentences(number: 3), line_nr: 0)
-    end
-
-    assert_not_empty annotations
-    evaluation.destroy
-
-    annotations.each do |annotation|
-      annotation.reload
-      assert_nil annotation.evaluation
-
-      get submission_annotations_path(annotation.submission, format: :json)
-      json_response = JSON.parse(@response.body)
-      assert_equal 1, json_response.size, 'The one annotation is visible here, since the feedback session is deleted'
-    end
-  end
-
   test 'When there is already a feedback session for this series, we should redirect to the ready made one when a user wants to create a new one' do
     post evaluations_path, params: {
       evaluation: { series_id: @series.id,

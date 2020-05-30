@@ -12,7 +12,7 @@
 class Evaluation < ApplicationRecord
   belongs_to :series
 
-  has_many :annotations, dependent: :nullify
+  has_many :annotations, dependent: :destroy
   has_many :evaluation_exercises, dependent: :destroy
   has_many :evaluation_users, dependent: :destroy
   has_many :feedbacks, dependent: :destroy

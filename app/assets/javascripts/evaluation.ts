@@ -1,13 +1,14 @@
 import { fetch } from "util.js";
 
-async function setCompletedStatus(url: string, status: boolean): Promise<Response> {
-    return fetch(url, {
+async function setCompletedStatus(url: string, status: boolean): Promise<void> {
+    const resp = await fetch(url, {
         method: "PATCH",
         body: JSON.stringify({
             feedback: { completed: status }
         }),
         headers: { "Content-Type": "application/json" }
     });
+    eval(await resp.text());
 }
 
 function interceptFeedbackActionClicks(
@@ -47,8 +48,7 @@ function interceptFeedbackActionClicks(
     });
 
     completed.addEventListener("input", async () => {
-        const resp = await setCompletedStatus(currentURL, completed.checked);
-        eval(await resp.text());
+        await setCompletedStatus(currentURL, completed.checked);
     });
 
     autoMarkCheckBox.addEventListener("input", async () => {

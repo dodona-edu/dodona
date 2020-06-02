@@ -10,12 +10,14 @@ class AddEvaluations < ActiveRecord::Migration[6.0]
     create_table :evaluation_exercises do |t|
       t.references :evaluation, foreign_key: true
       t.references :exercise, foreign_key: { to_table: :activities }, type: :integer
+      t.index [:exercise_id, :evaluation_id], unique: true
       t.timestamps
     end
 
     create_table :evaluation_users do |t|
       t.references :evaluation, foreign_key: true
       t.references :user, foreign_key: true, type: :integer
+      t.index [:user_id, :evaluation_id], unique: true
       t.timestamps
     end
 

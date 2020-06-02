@@ -12,6 +12,7 @@ class EvaluationUser < ApplicationRecord
   belongs_to :user
   belongs_to :evaluation
   has_many :feedbacks, dependent: :destroy
+  validates :user_id, uniqueness: { scope: :evaluation_id }
 
   def metadata
     {

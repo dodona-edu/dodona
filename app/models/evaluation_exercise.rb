@@ -12,6 +12,7 @@ class EvaluationExercise < ApplicationRecord
   belongs_to :exercise
   belongs_to :evaluation
   has_many :feedbacks, dependent: :destroy
+  validates :exercise_id, uniqueness: { scope: :evaluation_id }
 
   def metadata
     {

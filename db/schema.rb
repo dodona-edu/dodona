@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["evaluation_id"], name: "index_evaluation_exercises_on_evaluation_id"
+    t.index ["exercise_id", "evaluation_id"], name: "index_evaluation_exercises_on_exercise_id_and_evaluation_id", unique: true
     t.index ["exercise_id"], name: "index_evaluation_exercises_on_exercise_id"
   end
 
@@ -204,6 +205,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["evaluation_id"], name: "index_evaluation_users_on_evaluation_id"
+    t.index ["user_id", "evaluation_id"], name: "index_evaluation_users_on_user_id_and_evaluation_id", unique: true
     t.index ["user_id"], name: "index_evaluation_users_on_user_id"
   end
 

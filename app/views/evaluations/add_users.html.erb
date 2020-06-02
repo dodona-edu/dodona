@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'evaluation' %>
+<% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card evaluation-user-select">
@@ -20,19 +23,21 @@
             <div class="row">
               <div class="col-xs-6">
                 <div class="user-select-option">
-                  <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'enrolled', format: :js), remote: true, method: :post do %>
+                  <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'enrolled', format: :js) do %>
                     <%= t('evaluations.add_users.users_in_course_html', count: @user_count_course) %>
                     <div class="clearfix"></div>
-                    <div class="btn-text"><%= t('.select_users') %></div>
+                    <i class="loader mdi mdi-spin mdi-loading hidden"></i>
+                    <div class="button btn-text"><%= t('.select_users') %></div>
                   <% end %>
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="user-select-option">
-                  <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'submitted', format: :js), remote: true, method: :post do %>
+                  <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'submitted', format: :js) do %>
                     <%= t('evaluations.add_users.users_submitted_html', count: @user_count_series) %>
                     <div class="clearfix"></div>
-                    <div class="btn-text"><%= t('.select_users') %></div>
+                    <i class="loader mdi mdi-spin mdi-loading hidden"></i>
+                    <div class="button btn-text"><%= t('.select_users') %></div>
                   <% end %>
                 </div>
               </div>
@@ -57,3 +62,6 @@
     </div>
   </div>
 </div>
+<script>
+  $(window.dodona.interceptAddMultiUserClicks);
+</script>

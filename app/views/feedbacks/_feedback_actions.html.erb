@@ -42,7 +42,10 @@
 <div class="card-supporting-text card-border">
   <h4><%= @feedback.user.full_name %></h4>
   <div class="user-feedback-row">
-    <% @feedback.evaluation.feedbacks.joins(:evaluation_user).where("evaluation_users.user_id" => @feedback.user.id).each do |feedback| %>
+    <% @feedback.evaluation.evaluation_exercises.map do |ex|
+          Feedback.find_by(evaluation_user: @feedback.evaluation_user,
+                           evaluation_exercise: ex)
+        end.each do |feedback| %>
       <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: @feedback } %>
     <% end %>
   </div>

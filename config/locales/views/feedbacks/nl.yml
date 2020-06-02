@@ -25,17 +25,13 @@ nl:
       progress: Vooruitgang
       direction:
         next: Volgende
-        random: Random
-        prev: Vorige
       completed:
         button:
           completed: "Als afgewerkt markeren"
           unfinished: "Als onafgewerkt markeren"
           header: "Status aanpassen"
         failure: "De status kon niet ingesteld worden"
-      category:
-        user: "Deze gebruiker"
-        exercise: "Deze oefening"
+      exercise_progress: "%{feedback_count} / %{feedback_total} evaluaties afgewerkt"
     overview:
       annotations:
         count: "Aantal opmerkingen door lesgever"

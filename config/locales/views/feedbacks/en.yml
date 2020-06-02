@@ -25,17 +25,13 @@ en:
       progress: Progress
       direction:
         next: Volgende
-        random: Random
-        prev: Vorige
       completed:
         button:
           completed: "Mark as completed"
           unfinished: "Mark as unfinished"
           header: "Change state"
         failure: "Could not set state"
-      category:
-        user: "This user"
-        exercise: "This exercise"
+      exercise_progress: "%{feedback_count} / %{feedback_total} evaluations completed"
     overview:
       annotations:
         count: "Amount of annotations by teacher"

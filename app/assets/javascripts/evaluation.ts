@@ -18,7 +18,6 @@ function interceptFeedbackActionClicks(
     buttonText: string
 ): void {
     const nextButton = document.getElementById("next-feedback-button");
-    const completed = document.getElementById("feedback-completed") as HTMLInputElement;
     const autoMarkCheckBox = document.getElementById("auto-mark") as HTMLInputElement;
     const skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
 

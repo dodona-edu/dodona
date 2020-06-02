@@ -48,6 +48,7 @@ function interceptFeedbackActionClicks(
         if (nextButton.getAttribute("disabled") === "1") {
             return;
         }
+        nextButton.setAttribute("disabled", "1");
         if (autoMark) {
             await setCompletedStatus(currentURL, true);
         }

@@ -59,10 +59,6 @@ function interceptFeedbackActionClicks(
         }
     });
 
-    completed.addEventListener("input", async () => {
-        await setCompletedStatus(currentURL, completed.checked);
-    });
-
     autoMarkCheckBox.addEventListener("input", async () => {
         autoMark = autoMarkCheckBox.checked;
         localStorage.setItem("feedbackPrefs", JSON.stringify({ autoMark, skipCompleted }));

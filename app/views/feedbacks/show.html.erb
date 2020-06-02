@@ -68,6 +68,9 @@
 </div>
 <% if @feedback.submission.present? %>
   <script>
-    $(() => window.dodona.codeListing.setEvaluation(<%= @feedback.evaluation.id %>));
+    $(() => {
+      window.dodona.codeListing.setEvaluation(<%= @feedback.evaluation.id %>)
+      $(".nav.nav-tabs li:last-child a").tab("show");
+    });
   </script>
 <% end %>

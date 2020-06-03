@@ -7,7 +7,7 @@
    else
      user = current_user
    end %>
-<% ActivityStatus.add_status_for(user, series, [:last_submission, :best_submission]) if loaded %>
+<% ActivityStatus.add_status_for_user_and_series(user, series, [:last_submission, :best_submission]) if loaded %>
 
 <div class="card card-supporting-text series"
      id="series-card-<%= series.id %>"
@@ -37,8 +37,27 @@
             <% end %>
             <% if policy(series).destroy? %>
               <li>
-                <%= link_to series_path(series), method: :delete, data: {confirm: t("series.delete.confirm")} do %>
+                <%
+                    confirm = t('series.delete.confirm')
+                    if series.evaluation.present?
+                      confirm += " " + t('series.delete.confirm_evaluation')
+                    end
+                 %>
+                <%= link_to series_path(series), method: :delete, data: {confirm: confirm} do %>
                   <i class='mdi mdi-delete mdi-18'></i> <%= t("series.delete.title") %>
+                <% end %>
+              </li>
+            <% end %>
+            <% if policy(series).create_evaluation? %>
+              <li>
+                <% if series.evaluation.present? %>
+                  <%= link_to evaluation_path(series.evaluation) do %>
+                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.show.view_evaluation") %>
+                  <% end %>
+                <% else %>
+                  <%= link_to new_evaluation_path(series_id: series.id) do %>
+                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.new.create_evaluation") %>
+                  <% end %>
                 <% end %>
               </li>
             <% end %>
@@ -83,9 +102,14 @@
           <% if policy(series).download_submissions? %>
             <li>
               <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
-               <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_submissions") %>
+                <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_submissions") %>
               <% end %>
             </li>
+          <% end %>
+          <% if series.evaluation.present? && policy(series.evaluation).overview? %>
+              <%= link_to overview_evaluation_path(series.evaluation) do %>
+                <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.evaluation_overview") %>
+              <% end %>
           <% end %>
         </ul>
       </div>

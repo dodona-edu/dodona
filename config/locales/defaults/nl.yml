@@ -20,6 +20,11 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 nl:
+  date:
+    day_names: ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"]
+    abbr_day_names: ["Zon", "Maa", "Din", "Woe", "Don", "Vri", "Zat"]
+    month_names: [null, "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"]
+    abbr_month_names: [null, "Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
   time:
     formats:
       annotation: '%e %B %Y, %H:%M'

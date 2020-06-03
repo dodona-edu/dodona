@@ -3,7 +3,7 @@ Rails.application.configure do
 
   config.default_host = 'www.example.com'
   config.sandbox_host = 'sandbox.example.com'
-  config.action_controller.asset_host = 'www.example.com'
+  config.action_controller.asset_host = nil
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that

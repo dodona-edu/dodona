@@ -4,11 +4,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.2'
+gem 'rails', '~> 6.0.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 4.3.3'
+gem 'puma', '~> 4.3.5'
 # Use less for stylesheets
 gem 'less-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -16,7 +16,7 @@ gem 'uglifier', '>= 4.1.20'
 # This needs to be here for less :(
 gem 'therubyracer', platforms: :ruby
 
-gem 'webpacker', '~> 5.0.1'
+gem 'webpacker', '~> 5.1.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.10.0'
@@ -26,7 +26,7 @@ gem 'jbuilder', '~> 2.10.0'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-gem 'image_processing', '~> 1.10.3'
+gem 'image_processing', '~> 1.11.0'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '~> 1.4.6', require: false
@@ -48,9 +48,9 @@ gem 'sinatra', '~>2.0.8'
 gem 'will_paginate', '~>3.3.0'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown', '~>2.1.0'
+gem 'kramdown', '~>2.2.1'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.18.0'
+gem 'rouge', '3.19.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -89,7 +89,7 @@ gem 'annotate', '~> 3.1.1'
 
 # Use Capistrano for deployment
 gem 'capistrano-passenger', '~> 0.2.0', group: :development
-gem 'capistrano-rails', '~> 1.4.0', group: :development
+gem 'capistrano-rails', '~> 1.5.0', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
 gem 'capistrano3-delayed-job', '~> 1.7.6'
@@ -98,7 +98,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 3.6.0'
+gem 'i18n-js', '~> 3.7.0'
 gem 'rails-i18n', '~> 6.0.0'
 
 # email exceptions
@@ -129,22 +129,22 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.10'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.11.0'
+gem 'faker', '~> 2.12.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 0.9.14'
-gem 'rack-mini-profiler', '~> 2.0.1'
+gem 'rack-mini-profiler', '~> 2.0.2'
 gem 'stackprof', '~> 0.2.15'
 
 # Datadog
-gem 'ddtrace', '~> 0.35.2'
+gem 'ddtrace', '~> 0.36.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.11.2'
   # Factory bot for factories
-  gem 'factory_bot_rails', '~> 5.1.1'
+  gem 'factory_bot_rails', '~> 5.2.0'
 
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.4'
@@ -153,10 +153,10 @@ group :development, :test do
   gem 'minitest-utils', '~> 0.4.6'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', '~> 11.1.2', platforms: %i[mri mingw x64_mingw]
+  gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.32.1'
+  gem 'capybara', '~> 3.32.2'
   gem 'selenium-webdriver', '~> 3.142.7'
 end
 
@@ -170,7 +170,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.2.1'
-  gem 'web-console', '~> 4.0.1'
+  gem 'web-console', '~> 4.0.2'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb

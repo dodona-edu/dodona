@@ -31,6 +31,7 @@ nl:
       series_scoresheet: Statusoverzicht
       best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
       show_overview: Alle opgaven en leesactiviteiten bekijken
+      evaluation_overview: Feedback bekijken
     edit:
       title: Reeks bewerken
       add_activities: Activiteiten toevoegen
@@ -48,7 +49,8 @@ nl:
       access-help: Als de zichtbaarheid van de reeks op verborgen staat ingesteld, dan krijgen studenten met deze geheime link toegang.
     delete:
       title: Reeks verwijderen
-      confirm: Bent u zeker dat u deze reeks wilt verwijderen?
+      confirm: Ben je zeker dat je deze reeks wilt verwijderen?
+      confirm_evaluation: Merk op dat er een evaluatie aan deze reeks gelinked is. Als je de reeks verwijderd zal alle feedback binnen die evaluatie ook verwijderd worden.
     scoresheet:
       user: Gebruiker
       explanation: "Toont het aantal correct opgeloste oefeningen en afgewerkte leesactiviteiten voor het verstrijken van de deadline"

@@ -1,0 +1,47 @@
+nl:
+  feedbacks:
+    show:
+      feedback: "Feedback geven"
+      no_linked_submission: "Er is geen oplossing van deze gebruiker gevonden voor deze oefening die voor de deadline van deze evaluatie werdt gemaakt."
+      submission_for_by: "Oplossing voor %{for} door %{by}"
+      submission:
+        time_html: "Deze oplossing werd om <b>%{time}</b> gemaakt."
+        previous_attempts_html:
+          zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor deze oefening."
+          one: "De gebruiker had <b>1 voorgaande poging</b> voor deze oefening."
+          other: "De gebruiker had <b>%{count} voorgaande pogingen</b> voor deze oefening."
+        later_attempts_html:
+          zero: "De gebruiker had <b>geen latere poging</b> voor deze oefening."
+          one: "De gebruiker heeft <b>1 latere poging</b> voor deze oefening."
+          other: "De gebruiker had <b>%{count} latere pogingen</b> voor deze oefening."
+        total_attempts_html:
+          zero: "De gebruiker had <b>geen poging</b> voor deze oefening."
+          one: "De gebruiker heeft <b>1 poging</b> voor deze oefening."
+          other: "De gebruiker had <b>%{count} pogingen</b> voor deze oefening."
+    feedback_actions:
+      automatically_mark: Automatisch als afgewerkt markeren
+      skip_completed: Afgewerkte oplossingen overslaan
+      auto-mark-help: Hierbij worden oplossingen automatisch als afgewerkt gemarkeerd als je de volgende knop gebruikt.
+      progress: Vooruitgang
+      direction:
+        next: Volgende
+      mark_as_done: Evaluatie afwerken
+      evaluation_done: Evaluatie afgewerkt
+      undo: Ongedaan maken
+      completed:
+        failure: "De status kon niet ingesteld worden"
+      exercise_progress: "%{feedback_count} / %{feedback_total} evaluaties afgewerkt"
+    overview:
+      annotations:
+        count: "Aantal opmerkingen door lesgever"
+        amount:
+          zero: "Geen opmerkingen"
+          one: "1 opmerking"
+          other: "%{count} opmerkingen"
+      title: "Overzicht van alle oplossingen die feedback kregen"
+    edit:
+      title: "Oplossing van %{user} voor %{exercise} veranderen"
+      short_title: "Selecteer een andere ingediende oplossing."
+    submissions_table:
+      update-submission: "Veranderen naar deze oplossing"
+      confirm: "Ben je zeker? Alle annotaties op de vorige oplossing zullen verwijderd worden."

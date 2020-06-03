@@ -125,7 +125,7 @@ function initSeriesEdit() {
     init();
 }
 
-function initSeriesForm() {
+function initDeadlinePicker(selector) {
     function init() {
         if (I18n.locale === "nl") {
             const Dutch = {
@@ -149,10 +149,10 @@ function initSeriesForm() {
             };
             flatpickr.localize(Dutch);
         }
-        $("#deadline-group").flatpickr();
+        $(selector).flatpickr();
     }
 
     init();
 }
 
-export { initSeriesEdit, initSeriesForm };
+export { initSeriesEdit, initDeadlinePicker };

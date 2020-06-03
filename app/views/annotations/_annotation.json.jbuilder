@@ -10,3 +10,4 @@ json.permission do
   json.update policy(annotation).update?
   json.destroy policy(annotation).destroy?
 end
+json.released AnnotationPolicy.new(annotation.submission.user, annotation).show?

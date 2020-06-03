@@ -4,8 +4,8 @@ class AnnotationPolicy < ApplicationPolicy
       if user&.zeus?
         scope.all
       elsif user
-        common = scope.joins(:submission)
-        common.where(submissions: { user: user }).or(common.where(submissions: { course_id: user.administrating_courses.map(&:id) }))
+        common = scope.joins(:submission).left_joins(:evaluation)
+        common.released.where(submissions: { user: user }).or(common.where(submissions: { course_id: user.administrating_courses.map(&:id) }))
       else
         scope.none
       end
@@ -21,7 +21,10 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def show?
-    SubmissionPolicy.new(user, record.submission).show?
+    return false unless SubmissionPolicy.new(user, record.submission).show?
+    return true if record.evaluation.blank?
+
+    record.evaluation.released
   end
 
   def update?
@@ -36,7 +39,7 @@ class AnnotationPolicy < ApplicationPolicy
     if record.class == Annotation
       %i[annotation_text]
     else # new record
-      %i[annotation_text line_nr]
+      %i[annotation_text line_nr evaluation_id]
     end
   end
 end

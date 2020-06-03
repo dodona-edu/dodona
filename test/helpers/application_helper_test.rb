@@ -81,12 +81,4 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     clean_html = sanitize dirty_html
     assert_equal dirty_html, clean_html
   end
-
-  test 'sanitize helper should add \'rel="noopener noreferrer"\'' do
-    dirty_html = <<~HTML
-      <a target="_blank" href="cookies.com">
-    HTML
-    clean_html = sanitize dirty_html
-    assert_match(/rel="noopener noreferrer"/, clean_html)
-  end
 end

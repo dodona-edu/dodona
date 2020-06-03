@@ -92,6 +92,10 @@ class SeriesPolicy < ApplicationPolicy
     course_member?
   end
 
+  def create_evaluation?
+    course_admin?
+  end
+
   def permitted_attributes
     # record is the Series class on create
     if course_admin? || record == Series

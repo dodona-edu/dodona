@@ -21,7 +21,7 @@ en:
       not_solved: Not yet solved
     form:
       edit_activity: Edit activity
-      open_on_github: Open on GitHub
+      open_on_github: Open in repository
       labels_delimiter: "Use a comma to delimit labels"
       labels: New label
       info: Information

@@ -1,4 +1,4 @@
 nl:
-    annotations:
-        index:
-            new_annotation: "Er is een nieuwe opmerking op je code"
+  annotations:
+    index:
+      new_annotation: "Er is een nieuwe opmerking op je code"

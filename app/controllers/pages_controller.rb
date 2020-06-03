@@ -10,7 +10,7 @@ class PagesController < ApplicationController
     @crumbs = []
     if current_user
       @recent_exercises = current_user.recent_exercises(5)
-      ActivityStatus.add_status_for_activities(current_user, @recent_exercises, [last_submission: [:course]])
+      ActivityStatus.add_status_for_user_and_activities(current_user, @recent_exercises, [last_submission: [:course]])
 
       course_memberships = current_user.course_memberships.includes(course: %i[institution series]).select(&:subscribed?)
       @subscribed_courses = course_memberships.map(&:course)

@@ -11,7 +11,6 @@ Rails.application.config.content_security_policy do |policy|
 
   if Rails.env.development?
     # Allow webpack-dev-server
-    # Don't allow datadog
     policy.connect_src :self, 'https://pandora.ugent.be',
                        'https://www.google-analytics.com',
                        'https://*.googleapis.com',
@@ -19,7 +18,6 @@ Rails.application.config.content_security_policy do |policy|
   else
     policy.connect_src :self, 'https://pandora.ugent.be',
                        'https://www.google-analytics.com',
-                       'https://rum-http-intake.logs.datadoghq.com',
                        'https://*.googleapis.com'
   end
 
@@ -35,8 +33,6 @@ Rails.application.config.content_security_policy do |policy|
 
   policy.style_src   :self, :unsafe_inline, 'https://fonts.googleapis.com',
                      'https://cdn.materialdesignicons.com'
-
-  policy.report_uri  'https://dodona.report-uri.com/r/d/csp/enforce'
 end
 
 # Rails.application.config.content_security_policy_report_only = true

@@ -106,3 +106,4 @@ nl:
       fields:
         annotation_text: 'Annotatie tekst'
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'
+      not_released: Deze annotatie is nog niet zichtbaar voor studenten

@@ -1,0 +1,34 @@
+<%
+    parts = series.exercises.map do |exercise|
+        if exercise.accepted_for?(user, series)
+            "correct"
+        elsif exercise.started_for?(user, series)
+            "wrong"
+        else
+            "not-started"
+        end
+    end
+
+    tooltip = series.exercises.map do |exercise|
+      submission = exercise.last_submission(user, series)
+      "#{exercise.name}: #{submission.present? ? Submission.human_enum_name("status", submission.status) : t('.not_submitted')}"
+    end.join "<br/>"
+
+    fraction = 1.0 / parts.length
+    cumulativePercent = 0
+
+    parts = parts.map do |part|
+        startX, startY = [cumulativePercent, 0.5]
+        cumulativePercent += fraction
+        endX, endY = [cumulativePercent, 0.5]
+
+        "<line class='#{part}' x1='#{startX}' y1='#{startY}' x2='#{endX}' y2='#{endY}' />"
+    end
+%>
+
+<%# You might think that this span here is useless, but you think wrong: https://github.com/twbs/bootstrap/issues/20381 %>
+<span data-html="true" data-toggle='tooltip' title="<%= tooltip %>">
+  <svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='progress-chart'>
+    <%= raw parts.join("") %>
+  </svg>
+</span>

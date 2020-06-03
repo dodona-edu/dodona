@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     post '/toggle_demo_mode' => 'pages#toggle_demo_mode'
     post '/toggle_dark_mode' => 'pages#toggle_dark_mode'
 
+    get '/status' => redirect("https://p.datadoghq.com/sb/sil3oh7xurb0ujwu-3dfa8d0b077b83f3afbee49f0641abfd"), :as => :status
+
     concern :mediable do
       member do
         constraints host: Rails.configuration.default_host do
@@ -149,13 +151,14 @@ Rails.application.routes.draw do
     resources :annotations, only: %i[index show create update destroy]
 
     resources :submissions, only: %i[index show create edit] do
-      resources :annotations, only: %i[index create]
+      resources :annotations, only: %i[index create], as: 'submission_annotations'
       post 'mass_rejudge', on: :collection
       member do
         get 'download'
         get 'evaluate'
         get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }, as: 'media'
       end
+      resources :annotations, only: [:index, :create, :update, :destroy], format: :json
     end
 
     resources :users do
@@ -178,11 +181,23 @@ Rails.application.routes.draw do
       delete 'destroy_all', on: :collection
     end
 
+    resources :evaluations, only: %i[show new edit create update destroy] do
+      member do
+        get 'add_users'
+        get 'overview'
+        post 'add_user'
+        post 'remove_user'
+        post 'set_multi_user'
+      end
+      resources :feedbacks, only: %i[show edit update]
+    end
+    resources :feedbacks, only: %i[show edit update]
 
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'
       get 'punchcard', to: 'statistics#punchcard'
     end
+
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -24,7 +24,7 @@ en:
       auto-mark-help: This makes it so that submission are automatically marked as completed if you use the next button.
       progress: Progress
       direction:
-        next: Volgende
+        next: Next
       mark_as_done: Mark as done
       evaluation_done: Evaluation completed
       undo: Undo

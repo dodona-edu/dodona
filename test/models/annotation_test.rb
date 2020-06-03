@@ -9,6 +9,7 @@
 #  annotation_text :text(65535)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  evaluation_id   :bigint
 #
 require 'test_helper'
 

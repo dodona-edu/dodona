@@ -24,6 +24,7 @@ export class CodeListing {
     public readonly submissionId: number;
 
     private readonly markingClass: string = "marked";
+    private evaluationId: number;
 
     private readonly badge: HTMLSpanElement;
     private readonly table: HTMLTableElement;
@@ -53,6 +54,10 @@ export class CodeListing {
         this.globalAnnotationGroups = document.querySelector<HTMLDivElement>(annotationsGlobalGroups);
 
         this.initAnnotations();
+    }
+
+    setEvaluation(id: number): void {
+        this.evaluationId = id;
     }
 
     // /////////////////////////////////////////////////////////////////////////
@@ -401,7 +406,8 @@ export class CodeListing {
 
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
-                "line_nr": (line === null ? null : line - 1)
+                "line_nr": (line === null ? null : line - 1),
+                "evaluation_id": this.evaluationId || undefined
             };
 
             try {
@@ -425,7 +431,8 @@ export class CodeListing {
 
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
-                "line_nr": (annotation.line === null ? null : annotation.line - 1)
+                "line_nr": (annotation.line === null ? null : annotation.line - 1),
+                "evaluation_id": annotation.evaluationId || undefined
             };
 
             try {

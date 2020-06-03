@@ -1,0 +1,36 @@
+<div class="table-scroll-wrapper">
+  <table class="table activity-table table-resource">
+    <thead>
+    <tr>
+      <th class='type-icon'></th>
+      <th><%= t "activities.index.activity_title" %></th>
+      <th class='count hidden-xs'><%= t "activities.index.class_progress" %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% local_assigns[:exercises].each do |exercise| %>
+      <tr>
+        <td class='type-icon'>
+          <i class="mdi mdi-file-document-edit-outline mdi-18" title="<%= t "activities.index.type.exercise" %>"></i>
+        </td>
+
+        <td>
+          <%= link_to(exercise.name, course_series_activity_path(local_assigns[:series].course, local_assigns[:series], exercise), target: '_blank') %>
+        </td>
+
+        <td class="hidden-xs">
+          <%= render partial: 'application/progress_chart',
+            locals: {
+              total: local_assigns[:series].course.subscribed_members_count,
+              tried: exercise.users_tried(course: local_assigns[:series].course),
+              correct: exercise.users_correct(course: local_assigns[:series].course),
+              info_tried: 'activities.index.progress_chart_info_tried',
+              info_correct: 'activities.index.progress_chart_info_correct'
+            }
+          %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

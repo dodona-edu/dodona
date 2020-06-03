@@ -4,7 +4,7 @@ class SubmissionsController < ApplicationController
   before_action :ensure_trailing_slash, only: :show
 
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
-    scope.by_filter(value, controller.params[:user_id].present?, controller.params[:activity_id].present?)
+    scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_exercise: controller.params[:activity_id].present?)
   end
 
   has_scope :by_status, as: 'status'

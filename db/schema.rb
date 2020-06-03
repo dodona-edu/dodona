@@ -106,6 +106,8 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
     t.text "annotation_text"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "evaluation_id"
+    t.index ["evaluation_id"], name: "index_annotations_on_evaluation_id"
     t.index ["submission_id"], name: "index_annotations_on_submission_id"
     t.index ["user_id"], name: "index_annotations_on_user_id"
   end
@@ -187,6 +189,35 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "evaluation_exercises", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "evaluation_id"
+    t.integer "exercise_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["evaluation_id"], name: "index_evaluation_exercises_on_evaluation_id"
+    t.index ["exercise_id", "evaluation_id"], name: "index_evaluation_exercises_on_exercise_id_and_evaluation_id", unique: true
+    t.index ["exercise_id"], name: "index_evaluation_exercises_on_exercise_id"
+  end
+
+  create_table "evaluation_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "evaluation_id"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["evaluation_id"], name: "index_evaluation_users_on_evaluation_id"
+    t.index ["user_id", "evaluation_id"], name: "index_evaluation_users_on_user_id_and_evaluation_id", unique: true
+    t.index ["user_id"], name: "index_evaluation_users_on_user_id"
+  end
+
+  create_table "evaluations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "series_id"
+    t.boolean "released", default: false, null: false
+    t.datetime "deadline", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["series_id"], name: "index_evaluations_on_series_id"
+  end
+
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "event_type", null: false
     t.integer "user_id"
@@ -203,6 +234,20 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_exports_on_user_id"
+  end
+
+  create_table "feedbacks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "submission_id"
+    t.bigint "evaluation_id"
+    t.bigint "evaluation_user_id"
+    t.bigint "evaluation_exercise_id"
+    t.boolean "completed", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["evaluation_exercise_id"], name: "index_feedbacks_on_evaluation_exercise_id"
+    t.index ["evaluation_id"], name: "index_feedbacks_on_evaluation_id"
+    t.index ["evaluation_user_id"], name: "index_feedbacks_on_evaluation_user_id"
+    t.index ["submission_id"], name: "index_feedbacks_on_submission_id"
   end
 
   create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -362,6 +407,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
   add_foreign_key "activity_statuses", "activities", on_delete: :cascade
   add_foreign_key "activity_statuses", "series", on_delete: :cascade
   add_foreign_key "activity_statuses", "users", on_delete: :cascade
+  add_foreign_key "annotations", "evaluations"
   add_foreign_key "annotations", "submissions"
   add_foreign_key "annotations", "users"
   add_foreign_key "course_labels", "courses", on_delete: :cascade
@@ -372,8 +418,17 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
   add_foreign_key "course_repositories", "courses"
   add_foreign_key "course_repositories", "repositories"
   add_foreign_key "courses", "institutions"
+  add_foreign_key "evaluation_exercises", "activities", column: "exercise_id"
+  add_foreign_key "evaluation_exercises", "evaluations"
+  add_foreign_key "evaluation_users", "evaluations"
+  add_foreign_key "evaluation_users", "users"
+  add_foreign_key "evaluations", "series"
   add_foreign_key "events", "users", on_delete: :cascade
   add_foreign_key "exports", "users"
+  add_foreign_key "feedbacks", "evaluation_exercises"
+  add_foreign_key "feedbacks", "evaluation_users"
+  add_foreign_key "feedbacks", "evaluations"
+  add_foreign_key "feedbacks", "submissions"
   add_foreign_key "notifications", "users"
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"

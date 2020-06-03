@@ -1,6 +1,4 @@
-import { initSeriesEdit, initSeriesForm } from "series.js";
+import { initSeriesEdit, initDeadlinePicker } from "series.js";
 
 window.dodona.initSeriesEdit = initSeriesEdit;
-window.dodona.initSeriesForm = initSeriesForm;
-
-
+window.dodona.initDeadlinePicker = initDeadlinePicker;

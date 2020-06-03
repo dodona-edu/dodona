@@ -4,6 +4,7 @@ import { fetch } from "util.js";
 export interface UserAnnotationFormData {
     annotation_text: string;
     line_nr: number | null;
+    evaluation_id: number | undefined;
 }
 
 export type UserAnnotationEditor = (ua: UserAnnotation, cb: CallableFunction) => HTMLElement;
@@ -23,7 +24,9 @@ export interface UserAnnotationData {
     id: number;
     line_nr: number;
     permission: UserAnnotationPermissionData;
+    released: boolean;
     rendered_markdown: string;
+    evaluation_id: number | null;
     url: string;
     user: UserAnnotationUserData;
 }
@@ -35,6 +38,8 @@ export class UserAnnotation extends Annotation {
     public readonly id: number;
     public readonly permissions: UserAnnotationPermissionData;
     private readonly __rawText: string;
+    public readonly released: boolean;
+    public readonly evaluationId: number | null;
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
 
@@ -45,7 +50,9 @@ export class UserAnnotation extends Annotation {
         this.editor = editFn;
         this.id = data.id;
         this.permissions = data.permission;
+        this.released = data.released;
         this.__rawText = data.annotation_text;
+        this.evaluationId = data.evaluation_id;
         this.url = data.url;
         this.user = data.user;
     }
@@ -81,11 +88,9 @@ export class UserAnnotation extends Annotation {
 
     public static async getAll(submission: number,
         editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
-        return fetch(`/submissions/${submission}/annotations.json`)
-            .then(resp => resp.json())
-            .then(json => json.map(data =>
-                new UserAnnotation(data, editFn)
-            ));
+        const response = await fetch(`/submissions/${submission}/annotations.json`);
+        const json = await response.json();
+        return json.map(data => new UserAnnotation(data, editFn));
     }
 
     protected get meta(): string {
@@ -105,6 +110,10 @@ export class UserAnnotation extends Annotation {
 
     public get removable(): boolean {
         return this.permissions.destroy;
+    }
+
+    public get visible(): boolean {
+        return this.released;
     }
 
     public async remove(): Promise<void> {

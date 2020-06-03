@@ -1,0 +1,47 @@
+en:
+  feedbacks:
+    show:
+      feedback: "Give feedback"
+      no_linked_submission: "We couldn't find a submission of this user for this exercise that was made before the deadline of this evaluation."
+      submission_for_by: "Submission for %{for} by %{by}"
+      submission:
+        time_html: "This submission was made at <b>%{time}</b>"
+        previous_attempts_html:
+          zero: "The user made <b>no attempts</b> before this submission."
+          one: "The user made <b>1 attempt</b> before this submission."
+          other: "The user made <b>%{count} attempts</b> before this submission."
+        later_attempts_html:
+          zero: "The user made <b>no attempts</b> after this submission."
+          one: "The user made <b>1 attempt</b> after this submission."
+          other: "The user made <b>%{count} attempts</b> after this submission."
+        total_attempts_html:
+          zero: "The user has <b>no attempts</b> for this exercise."
+          one: "The user has <b>1 attempt</b> for this exercise."
+          other: "The user has <b>%{count} attempts</b> for this exercise."
+    feedback_actions:
+      automatically_mark: Automatically mark as completed
+      skip_completed: Skip completed submissions
+      auto-mark-help: This makes it so that submission are automatically marked as completed if you use the next button.
+      progress: Progress
+      direction:
+        next: Volgende
+      mark_as_done: Mark as done
+      evaluation_done: Evaluation completed
+      undo: Undo
+      completed:
+        failure: "Could not set state"
+      exercise_progress: "%{feedback_count} / %{feedback_total} evaluations completed"
+    overview:
+      annotations:
+        count: "Amount of annotations by teacher"
+        amount:
+          zero: "No annotations"
+          one: "One annotation"
+          other: "%{count} annotations"
+      title: "Overview of all submissions that were given feedback"
+    edit:
+      title: "Change submission of %{user} for %{exercise}"
+      short_title: "Select another submission."
+    submissions_table:
+      update-submission: "Change to this submission"
+      confirm: "Are you sure? All annotations on the previous submission will be deleted."

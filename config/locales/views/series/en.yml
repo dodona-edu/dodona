@@ -31,6 +31,7 @@ en:
       series_scoresheet: Series scoresheet
       best_is_not_last: Your best submission is not your last submission! Click to check (and edit/submit) your best submission.
       show_overview: Show all learning activity descriptions
+      evaluation_overview: Show feedback
     edit:
       title: Edit series
       add_activities: Add activities
@@ -49,6 +50,7 @@ en:
     delete:
       title: Delete series
       confirm: Please confirm you want to delete this series.
+      confirm_evaluation: Note there is an evaluation linked to this series. If you delete this series all feedback in that evaluation will be deleted as well.
     scoresheet:
       user: User
       explanation: "Showing the number of correctly solved exercises and completed reading activities before the deadline"

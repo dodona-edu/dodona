@@ -68,6 +68,13 @@ function interceptFeedbackActionClicks(
     skipCompletedCheckBox.addEventListener("input", async () => {
         skipCompleted = skipCompletedCheckBox.checked;
         localStorage.setItem("feedbackPrefs", JSON.stringify({ autoMark, skipCompleted }));
+        if (nextURL === null && !skipCompleted) {
+            nextButton.setAttribute("disabled", "1");
+        } else if (skipCompleted && nextUnseenURL == null) {
+            nextButton.setAttribute("disabled", "1");
+        } else {
+            nextButton.removeAttribute("disabled");
+        }
     });
 }
 

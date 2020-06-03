@@ -2,7 +2,9 @@
   <td>
     <%= submission_status_icon(submission) %>
     <% if submission.annotated? %>
-      <i class="mdi mdi-comment-text-outline mdi-18 colored-secondary" data-toggle="tooltip" data-placement="top" title="<%= t('submissions.submissions_table.annotated') %>"></i>
+      <%= link_to submission_url(submission, anchor: "code"), title: t('submissions.submissions_table.annotated'), data: { toggle: "tooltip", placement: "top" } do %>
+        <i class="mdi mdi-comment-text-outline mdi-18 colored-secondary"></i>
+      <% end %>
     <% end %>
   </td>
   <% if user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>

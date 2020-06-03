@@ -171,7 +171,7 @@ class Submission < ApplicationRecord
   end
 
   def annotated?
-    annotations.any?
+    annotations.left_joins(:evaluation).released.any?
   end
 
   def skip_rate_limit_check?

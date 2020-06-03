@@ -1,16 +1,5 @@
 import { fetch } from "util.js";
 
-async function setCompletedStatus(url: string, status: boolean): Promise<void> {
-    const resp = await fetch(url, {
-        method: "PATCH",
-        body: JSON.stringify({
-            feedback: { completed: status }
-        }),
-        headers: { "Content-Type": "application/json" }
-    });
-    eval(await resp.text());
-}
-
 function interceptFeedbackActionClicks(
     currentURL: string,
     nextURL: string,
@@ -49,7 +38,15 @@ function interceptFeedbackActionClicks(
         }
         nextButton.setAttribute("disabled", "1");
         if (autoMark) {
-            await setCompletedStatus(currentURL, true);
+            const resp = await fetch(currentURL, {
+                method: "PATCH",
+                body: JSON.stringify({ feedback: { completed: true } }),
+                headers: { "Content-Type": "application/json" }
+            });
+            eval(await resp.text());
+            // Button was replaced, so `nextButton` reference is outdated. For
+            // the same reason we need to repeat the disabling.
+            document.getElementById("next-feedback-button").setAttribute("disabled", "1");
         }
         if (skipCompleted) {
             window.location.href = nextUnseenURL;

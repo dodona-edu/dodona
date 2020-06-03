@@ -58,8 +58,9 @@ class Feedback < ApplicationRecord
     feedbacks_same_exercise = evaluation.feedbacks.where(evaluation_exercise: evaluation_exercise).order(:id)
 
     {
-      next: feedbacks_same_exercise.find_by('id > ?', id),
-      next_unseen: feedbacks_same_exercise.incomplete.find_by('id > ?', id)
+      next: feedbacks_same_exercise.find_by('id > ?', id) || feedbacks_same_exercise.first,
+      # We use id < self.id here for the cycle because we could otherwise find ourselves.
+      next_unseen: feedbacks_same_exercise.incomplete.find_by('id > ?', id) || feedbacks_same_exercise.incomplete.find_by('id < ?', id)
     }
   end
 

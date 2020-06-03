@@ -334,7 +334,7 @@ export class CodeListing {
 
     private createAnnotationForm(id: string,
         annotation: Annotation | null,
-        onSubmit: (f: HTMLFormElement) => void,
+        onSubmit: (f: HTMLFormElement) => Promise<void>,
         onCancel: (f: HTMLFormElement) => void): HTMLFormElement {
         const form = document.createElement("form") as HTMLFormElement;
         form.classList.add("annotation-submission");
@@ -380,7 +380,13 @@ export class CodeListing {
         }
 
         // Submission handler.
-        sendButton.addEventListener("click", () => onSubmit(form));
+        sendButton.addEventListener("click", async () => {
+            if (sendButton.getAttribute("disabled") !== "1") {
+                sendButton.setAttribute("disabled", "1");
+                await onSubmit(form);
+                sendButton.removeAttribute("disabled");
+            }
+        });
 
         inputField.addEventListener("keydown", e => {
             if (e.code === "Enter" && e.shiftKey) {

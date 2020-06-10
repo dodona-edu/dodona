@@ -1,6 +1,6 @@
 module ApplicationHelper
   def custom_icon(name, **options)
-    content_tag :i, class: "custom-material-icons #{name} #{options[:class]}" do
+    tag.i class: "custom-material-icons #{name} #{options[:class]}" do
       render partial: "application/icons/#{name}"
     end
   end

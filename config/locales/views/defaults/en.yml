@@ -58,6 +58,7 @@ en:
     are_you_sure: "Are you sure?"
     confirm_reset_token: 'Are you sure? The old token/link will not be usable anymore when you generate a new one.'
     generate_token: 'Generate new'
+    please_wait: 'Please wait...'
   errors:
     no_rights: Sorry, you are not allowed to access this page.
     validation_errors:

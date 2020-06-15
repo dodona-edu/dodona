@@ -1,7 +1,8 @@
 en:
   deadlines:
-    missed:
-      "missed deadline"
+    missed: missed deadline
     relative:
       ago: "%{time_ago} ago"
       in: "in %{time_left}"
+    validate:
+      should_be_in_past: 'should be in the past'

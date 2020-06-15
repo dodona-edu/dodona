@@ -76,7 +76,7 @@ class Evaluation < ApplicationRecord
   private
 
   def deadline_in_past
-    errors.add(:deadline, 'should be in the past') if deadline.present? && deadline > Time.current
+    errors.add(:deadline, I18n.t('deadlines.validate.should_be_in_past')) if deadline.present? && deadline > Time.current
   end
 
   def manage_feedbacks

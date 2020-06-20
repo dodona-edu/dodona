@@ -40,6 +40,7 @@ class User < ApplicationRecord
   has_many :course_memberships, dependent: :restrict_with_error
   has_many :repository_admins, dependent: :restrict_with_error
   has_many :courses, through: :course_memberships
+  has_many :identities, dependent: :destroy
   has_many :events, dependent: :restrict_with_error
   has_many :exports, dependent: :destroy
   has_many :notifications, dependent: :destroy

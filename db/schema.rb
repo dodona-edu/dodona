@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_18_115755) do
+ActiveRecord::Schema.define(version: 2020_06_18_115756) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -250,6 +250,17 @@ ActiveRecord::Schema.define(version: 2020_06_18_115755) do
     t.index ["submission_id"], name: "index_feedbacks_on_submission_id"
   end
 
+  create_table "identities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "identifier", null: false
+    t.bigint "provider_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["provider_id", "identifier"], name: "index_identities_on_provider_id_and_identifier", unique: true
+    t.index ["provider_id", "user_id"], name: "index_identities_on_provider_id_and_user_id", unique: true
+    t.index ["user_id"], name: "fk_rails_5373344100"
+  end
+
   create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
@@ -442,6 +453,8 @@ ActiveRecord::Schema.define(version: 2020_06_18_115755) do
   add_foreign_key "feedbacks", "evaluation_users"
   add_foreign_key "feedbacks", "evaluations"
   add_foreign_key "feedbacks", "submissions"
+  add_foreign_key "identities", "providers", on_delete: :cascade
+  add_foreign_key "identities", "users", on_delete: :cascade
   add_foreign_key "notifications", "users"
   add_foreign_key "providers", "institutions", on_delete: :cascade
   add_foreign_key "repositories", "judges"

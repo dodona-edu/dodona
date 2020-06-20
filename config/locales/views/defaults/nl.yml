@@ -58,6 +58,7 @@ nl:
     are_you_sure: "Ben je zeker?"
     confirm_reset_token: 'Ben je zeker? De oude token/link zal niet meer bruikbaar zijn als je een nieuwe genereert.'
     generate_token: 'Genereer nieuw'
+    please_wait: 'Even geduld...'
   errors:
     no_rights: Sorry, je hebt geen toegangsrechten tot deze pagina.
     validation_errors:

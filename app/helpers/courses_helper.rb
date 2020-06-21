@@ -22,7 +22,7 @@ module CoursesHelper
                   class: 'btn-text'
         end
       else
-        content_tag :p, t('courses.registration.registration_closed')
+        tag.p t('courses.registration.registration_closed')
       end
     elsif membership.pending?
       link_to t('courses.registration.remove_from_pending'),
@@ -30,7 +30,7 @@ module CoursesHelper
               method: :post,
               class: 'btn-text'
     else
-      content_tag :p, t('courses.registration.already_a_member')
+      tag.p t('courses.registration.already_a_member')
     end
   end
 end

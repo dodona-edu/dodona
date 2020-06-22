@@ -404,7 +404,7 @@ GEM
     url (0.3.2)
     warden (1.2.8)
       rack (>= 2.0.6)
-    web-console (4.0.2)
+    web-console (4.0.3)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
@@ -502,7 +502,7 @@ DEPENDENCIES
   therubyracer
   tzinfo-data
   uglifier (>= 4.1.20)
-  web-console (~> 4.0.2)
+  web-console (~> 4.0.3)
   webpacker (~> 5.1.1)
   will_paginate (~> 3.3.0)
 

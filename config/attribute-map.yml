@@ -1,3 +1,4 @@
+# Order is respected upon duplicates.
 "urn:oid:2.5.4.42": "first_name"
 "urn:oid:2.5.4.4": "last_name"
 "urn:oid:2.16.840.1.113730.3.1.241": "last_name"

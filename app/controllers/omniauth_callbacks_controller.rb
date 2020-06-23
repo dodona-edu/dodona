@@ -20,6 +20,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def saml
+    request.env['omniauth.auth'].info
     p "test"
   end
 

@@ -1,4 +1,5 @@
 require 'omniauth'
+require_relative 'attributes.rb'
 require_relative 'settings.rb'
 
 module OmniAuth
@@ -38,10 +39,17 @@ module OmniAuth
         fail!(:invalid_ticket, $!)
       end
 
+      # Catchall phase.
       def other_phase
         p "otter fase"
         p current_path
         call_app!
+      end
+
+      # Configure the information hash.
+      info do
+        # Map the raw attributes to the civilised names.
+        OmniAuth::Strategies::SAML::Attributes.resolve(@attributes)
       end
 
       def on_callback_path?
@@ -67,6 +75,13 @@ module OmniAuth
         # TODO ENABLE
         #parsed_response.is_valid?
 
+        # Set the attributes.
+        @name_id = parsed_response.name_id
+        @session_index = parsed_response.sessionindex
+        @attributes = parsed_response.attributes
+        @saml_response = parsed_response
+
+        # Return to the omniauth controller.
         yield
       end
 

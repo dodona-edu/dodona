@@ -8,7 +8,10 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   MAERLANT_TID = 'https://kabl-sgr25.smartschool.be'.freeze
   BLACKLIST = [UGENT_TID, WAREGEM_TID, TSM_TID, CVO_TSM_TID, MAERLANT_TID].freeze
 
-  def smartschool
+  # Provider callbacks.
+
+  def google_oauth2
+    oauth_hash[:info][:institution] = oauth_hash.extra[:raw_info][:hd]
     oauth_login
   end
 
@@ -16,10 +19,15 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     oauth_login
   end
 
-  def google_oauth2
-    oauth_hash[:info][:institution] = oauth_hash.extra[:raw_info][:hd]
+  def saml
+    p "test"
+  end
+
+  def smartschool
     oauth_login
   end
+
+  # Error handler.
 
   def failure
     reason = request.params['error_message'] \

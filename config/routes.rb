@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+  devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
   root 'pages#home'
 
   authenticated :user, ->(user) { user.zeus? } do
     mount DelayedJobWeb, at: '/dj'
+  end
+
+  # SAML routes.
+  devise_scope :user do
+    post '/users/saml/auth' => 'omniauth_callbacks#saml' # backwards compatibility
   end
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
@@ -26,7 +31,7 @@ Rails.application.routes.draw do
     concern :mediable do
       member do
         constraints host: Rails.configuration.default_host do
-          get 'media/*media', to: 'activities#media', constraints: { media: /.*/ }, as: :media
+          get 'media/*media', to: 'activities#media', constraints: {media: /.*/}, as: :media
         end
       end
     end
@@ -108,7 +113,7 @@ Rails.application.routes.draw do
             root to: 'activities#description', as: 'description'
             get 'media/*media',
                 to: 'activities#media',
-                constraints: { media: /.*/ },
+                constraints: {media: /.*/},
                 as: 'description_media'
           end
         end
@@ -122,7 +127,7 @@ Rails.application.routes.draw do
             root to: 'activities#description'
             get 'media/*media',
                 to: 'activities#media',
-                constraints: { media: /.*/ }
+                constraints: {media: /.*/}
           end
         end
       end
@@ -156,7 +161,7 @@ Rails.application.routes.draw do
       member do
         get 'download'
         get 'evaluate'
-        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }, as: 'media'
+        get 'media/*media', to: 'submissions#media', constraints: {media: /.*/}, as: 'media'
       end
       resources :annotations, only: [:index, :create, :update, :destroy], format: :json
     end

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
-    get '/sign_in(/:idp)' => 'pages#sign_in_page', as: 'sign_in'
+    get '/sign_in' => 'pages#sign_in_page', as: 'sign_in'
 
     get '/institution_not_supported' => 'pages#institution_not_supported'
     get '/about' => 'pages#about'

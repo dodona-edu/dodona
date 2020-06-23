@@ -61,7 +61,9 @@ module OmniAuth
               private_key: private_key,
               security: {
                   authn_requests_signed: true,
-                  embed_sign: true
+                  digest_method: XMLSecurity::Document::SHA256,
+                  embed_sign: true,
+                  signature_method: XMLSecurity::Document::RSA_SHA256
               }
           }
         end

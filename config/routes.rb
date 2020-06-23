@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     post '/users/saml/auth' => 'omniauth_callbacks#saml' # backwards compatibility
   end
 
+  # TODO ADD LOGOUT ROUTE
+
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do

@@ -36,7 +36,7 @@ module OmniAuth
           end
         end
       rescue OneLogin::RubySaml::ValidationError
-        fail!(:invalid_ticket, $!)
+        fail!(:invalid_response, $!)
       end
 
       # Catchall phase.
@@ -51,6 +51,13 @@ module OmniAuth
         # Map the raw attributes to the civilised names.
         OmniAuth::Strategies::SAML::Attributes.resolve(@attributes)
       end
+
+      # Configure the uid.
+      uid do
+        info['username'] || @name_id
+      end
+
+      extra { {institution: @institution} }
 
       def on_callback_path?
         # Intercept requests sent to /users/saml/auth and forward those to the
@@ -72,7 +79,6 @@ module OmniAuth
         parsed_response.settings.idp_cert = inst_settings[:idp_cert]
 
         # Validate the response.
-        # TODO ENABLE
         #parsed_response.is_valid?
 
         # Set the attributes.

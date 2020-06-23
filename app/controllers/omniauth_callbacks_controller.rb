@@ -8,10 +8,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   MAERLANT_TID = 'https://kabl-sgr25.smartschool.be'.freeze
   BLACKLIST = [UGENT_TID, WAREGEM_TID, TSM_TID, CVO_TSM_TID, MAERLANT_TID].freeze
 
+  # Disable CSRF since the token information is lost.
+  skip_before_action :verify_authenticity_token
+
   # Provider callbacks.
 
   def google_oauth2
-    oauth_hash[:info][:institution] = oauth_hash.extra[:raw_info][:hd]
+    auth_hash[:info][:institution] = auth_hash.extra[:raw_info][:hd]
     oauth_login
   end
 
@@ -20,8 +23,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def saml
-    request.env['omniauth.auth'].info
-    p "test"
+    user = User.find_by(username: auth_hash.uid)
+    user ||= User.from_email(oauth_email)
+    if user.blank?
+      institution = auth_hash.extra.institution
+      user = User.from_institution(auth_hash, institution)
+    end
+    try_login!(user)
   end
 
   def smartschool
@@ -32,8 +40,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def failure
     reason = request.params['error_message'] \
-                  || request.params['error_description'] \
-                  || t('devise.omniauth_callbacks.unknown_failure')
+                    || request.params['error_description'] \
+                    || t('devise.omniauth_callbacks.unknown_failure')
     if is_navigational_format?
       set_flash_message :notice,
                         :failure,
@@ -45,27 +53,27 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private
 
-  def oauth_hash
+  def auth_hash
     request.env['omniauth.auth']
   end
 
   def provider
-    oauth_hash.provider
+    auth_hash.provider
   end
 
   def institution_identifier
-    oauth_hash.info.institution
+    auth_hash.info.institution
   end
 
   def oauth_email
-    oauth_hash.info.email
+    auth_hash.info.email
   end
 
   def institution_matches?(user)
     return true if user.institution.nil?
 
     if user.institution&.identifier != institution_identifier \
-           || user.institution&.provider != provider
+             || user.institution&.provider != provider
       user.errors.add(:institution, 'mismatch')
       false
     else
@@ -84,7 +92,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user = User.from_email(oauth_email)
       if user.blank?
         institution = create_institution
-        user = User.from_institution(oauth_hash, institution)
+        user = User.from_institution(auth_hash, institution)
       end
       try_login!(user)
     end
@@ -112,7 +120,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     raise 'User should not be nil here' if user.nil?
 
     if institution_matches?(user)
-      user.update_from_oauth(oauth_hash, Institution.from_identifier(institution_identifier))
+      user.update_from_oauth(auth_hash, Institution.from_identifier(institution_identifier))
       if user.errors.none?
         sign_in_and_redirect user, event: :authentication
         if is_navigational_format?
@@ -131,11 +139,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def redirect_with_errors!(user)
     logger.info "User was unable to login because of reason: '#{user.errors.full_messages.to_sentence}'. More info about the request below:\n" \
-      "#{oauth_hash.pretty_inspect}"
+      "#{auth_hash.pretty_inspect}"
 
-    ApplicationMailer.with(authinfo: oauth_hash, errors: user.errors.inspect)
-                     .user_unable_to_log_in
-                     .deliver_later
+    ApplicationMailer.with(authinfo: auth_hash, errors: user.errors.inspect)
+        .user_unable_to_log_in
+        .deliver_later
 
     if is_navigational_format?
       set_flash_message \
@@ -174,22 +182,22 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def institution_created
     logger.info "Institution with identifier #{institution_identifier} created (#{provider}). " \
       "See below for more info about the request:\n" \
-      "#{oauth_hash.pretty_inspect}"
+      "#{auth_hash.pretty_inspect}"
 
-    ApplicationMailer.with(authinfo: oauth_hash)
-                     .institution_created
-                     .deliver_later
+    ApplicationMailer.with(authinfo: auth_hash)
+        .institution_created
+        .deliver_later
   end
 
   def institution_creation_failed(errors)
     logger.info "Failed to created institution with identifier #{institution_identifier} (#{provider}). " \
       "See below for more info about the request:\n" \
-      "#{oauth_hash.pretty_inspect}" \
+      "#{auth_hash.pretty_inspect}" \
       "#{errors}"
 
-    ApplicationMailer.with(authinfo: oauth_hash, errors: errors.inspect)
-                     .institution_creation_failed
-                     .deliver_later
+    ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
+        .institution_creation_failed
+        .deliver_later
   end
 
   def no_institution_found!

@@ -2,6 +2,12 @@
 #require_relative('../../lib/SAML/saml_controller.rb')
 #require_relative('../../lib/SAML/idp_settings_adapter.rb')
 #require_relative('../../lib/SAML/my_resource_validator.rb')
+
+## SAML.
+require_relative '../../lib/SAML/strategy.rb'
+require_relative '../../lib/SAML/setup.rb'
+
+# Error handling.
 require_relative('../../lib/devise/custom_failure.rb')
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
@@ -247,25 +253,28 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  config.omniauth :smartschool,
-                  Rails.application.credentials.smartschool_client_id,
-                  Rails.application.credentials.smartschool_client_secret
+  config.omniauth :google_oauth2,
+                  Rails.application.credentials.google_client_id,
+                  Rails.application.credentials.google_client_secret
 
   config.omniauth :office365,
                   Rails.application.credentials.office365_client_id,
                   Rails.application.credentials.office365_client_secret
 
-  config.omniauth :google_oauth2,
-                  Rails.application.credentials.google_client_id,
-                  Rails.application.credentials.google_client_secret
+  config.omniauth :saml, setup: OmniAuth::Strategies::SAML::Setup
+
+  config.omniauth :smartschool,
+                  Rails.application.credentials.smartschool_client_id,
+                  Rails.application.credentials.smartschool_client_secret
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
   #
-  config.warden do |manager|
-    manager.failure_app = CustomFailure
-  end
+  # TODO disabled for development purposes
+  #config.warden do |manager|
+  #  manager.failure_app = CustomFailure
+  #end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
@@ -314,48 +323,4 @@ Devise.setup do |config|
   ## You can set a handler object that takes the response for a failed SAML request and the strategy,
   ## and implements a #handle method. This method can then redirect the user, return error messages, etc.
   ## config.saml_failed_callback = nil
-  #
-  ## Configure with your SAML settings (see ruby-saml's README for more information: https://github.com/onelogin/ruby-saml).
-  #config.saml_configure do |settings|
-  #  # assertion_consumer_service_url is required starting with ruby-saml 1.4.3: https://github.com/onelogin/ruby-saml#updating-from-142-to-143
-  #  settings.assertion_consumer_service_url = "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/auth"
-  #  settings.assertion_consumer_service_binding = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
-  #  settings.name_identifier_format = 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
-  #  settings.issuer = "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/metadata"
-  #  settings.authn_context = ''
-  #  settings.certificate = IO.read('/home/dodona/cert.pem') if File.file?('/home/dodona/cert.pem')
-  #  settings.private_key = IO.read('/home/dodona/key.pem') if File.file?('/home/dodona/key.pem')
-  #  settings.security[:authn_requests_signed] = true
-  #  settings.security[:embed_sign] = true
-  #  settings.idp_slo_target_url = 'https://ideq.ugent.be/simplesaml/saml2/idp/SingleLogoutService.php'
-  #  settings.idp_sso_target_url = 'https://ideq.ugent.be/simplesaml/saml2/idp/SSOService.php'
-  #  settings.idp_cert = <<~CERT.chomp
-  #    MIIFMDCCBBigAwIBAgIQAy7rsc3GwUd4Cmd35/hqQjANBgkqhkiG9w0BAQsFADBkMQswCQYD
-  #    VQQGEwJOTDEWMBQGA1UECBMNTm9vcmQtSG9sbGFuZDESMBAGA1UEBxMJQW1zdGVyZGFtMQ8w
-  #    DQYDVQQKEwZURVJFTkExGDAWBgNVBAMTD1RFUkVOQSBTU0wgQ0EgMzAeFw0xNTA4MDUwMDAw
-  #    MDBaFw0xODA4MDkxMjAwMDBaMIGDMQswCQYDVQQGEwJCRTEYMBYGA1UECBMPT29zdC1WbGFh
-  #    bmRlcmVuMQ0wCwYDVQQHEwRHZW50MRowGAYDVQQKExFVbml2ZXJzaXRlaXQgR2VudDEXMBUG
-  #    A1UECxMORGFubnkgQm9sbGFlcnQxFjAUBgNVBAMTDWlkZXEudWdlbnQuYmUwggEiMA0GCSqG
-  #    SIb3DQEBAQUAA4IBDwAwggEKAoIBAQCsvNQsxWZLzB4tQ69M8NQv9i7J8t7ybfzN+eOIUwik
-  #    TEMGmdLqNwab6MTJJEPl0RpxzDzc7sky5ysYOzAw6qa95/6Apnl3MLqXa8C+yYTLz5kxbA+7
-  #    xJ16mGm1tHem9cusimfvLDTBYjLHGMTxvJOwDUG78KlT5CfJ2oSNYcyx9AI4z9TeccJz2nTK
-  #    itYEQHjgXCQl+5z5wnPkU97YQWDQ6+c0oRo/6Q1jzL2fP4IG23YSAS0FTY2ntzVIEQl04yLv
-  #    /iKVo5RpVj9iTTLX/QIp61LtsgC0Q2pIAp5OaAJoJ+SgxOTEUDMuEIuUi2pcpJDs4/7SIJxT
-  #    4yQ6r9lT8lo3AgMBAAGjggG8MIIBuDAfBgNVHSMEGDAWgBRn/YggFCeYxwnSJRm76VERY3VQ
-  #    YjAdBgNVHQ4EFgQUYpS3fBMuqU0oAvI6354A6LP/NhowGAYDVR0RBBEwD4INaWRlcS51Z2Vu
-  #    dC5iZTAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMGsG
-  #    A1UdHwRkMGIwL6AtoCuGKWh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9URVJFTkFTU0xDQTMu
-  #    Y3JsMC+gLaArhilodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVEVSRU5BU1NMQ0EzLmNybDBC
-  #    BgNVHSAEOzA5MDcGCWCGSAGG/WwBATAqMCgGCCsGAQUFBwIBFhxodHRwczovL3d3dy5kaWdp
-  #    Y2VydC5jb20vQ1BTMG4GCCsGAQUFBwEBBGIwYDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3Au
-  #    ZGlnaWNlcnQuY29tMDgGCCsGAQUFBzAChixodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-  #    VEVSRU5BU1NMQ0EzLmNydDAMBgNVHRMBAf8EAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCDuCU4
-  #    9W/+o10SSmq8gEHAD0CJIRR3wfTQZ3SObS7tuKfuT0kwcmWVvja3OzmH9MlX0aLa4lEaWkb6
-  #    JAUUQexSPutgbv/mgU11YVnadDMcRIiC3L2sftlcSYLlayqBnOAQHm/5T/VV5rOrPUA2yarN
-  #    8eg9PMqciE628obp2ujaLFmiecw3hT+N/laQbE2i0x6bCq3lgzSo3jOp/DAj78mplMkHVJv/
-  #    dVgqzxkRKTzM1qYJcrcmJPS/Cuem89H8upodvT35Rag8xQqQDRLGA/UI7K4YLhQwotGpcnYA
-  #    bz3vMhScwCLJdsz04d/d6Gm0SQkK3hzsuIFx0G69u/8/fbGi
-  #  CERT
-  #end
-
 end

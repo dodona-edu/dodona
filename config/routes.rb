@@ -1,17 +1,17 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
-  root 'pages#home'
-
   authenticated :user, ->(user) { user.zeus? } do
     mount DelayedJobWeb, at: '/dj'
   end
 
-  # SAML routes.
+  # Authentication routes.
+  devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
+  root 'pages#home'
+
   devise_scope :user do
     post '/users/saml/auth' => 'omniauth_callbacks#saml' # backwards compatibility
   end
 
-  # TODO ADD LOGOUT ROUTE
+  delete '/users/sign_out' => 'saml_session_controller#destroy'
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 

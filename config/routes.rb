@@ -9,9 +9,10 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     post '/users/saml/auth' => 'omniauth_callbacks#saml' # backwards compatibility
+    get '/users/saml/metadata' => 'saml_sessions#metadata'
   end
 
-  delete '/users/sign_out' => 'saml_session_controller#destroy'
+  delete '/users/sign_out' => 'saml_sessions#destroy'
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 

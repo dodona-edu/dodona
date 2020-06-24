@@ -14,7 +14,7 @@ module OmniAuth
 
         def setup
           @env['omniauth.params'] ||= {}
-          @env['omniauth.strategy'].options.merge!(OmniAuth::Strategies::SAML::Settings.defaults)
+          @env['omniauth.strategy'].options.merge!(OmniAuth::Strategies::SAML::Settings.base)
           @env['omniauth.strategy'].options.merge!(configure)
         end
 

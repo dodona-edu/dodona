@@ -4,7 +4,7 @@ module OmniAuth
       class Settings
         ASSERTION_ERROR_INSTITUTIONS_ENTITY_IDS = %w(https://idp.hogent.be/idp https://idp.howest.be/idp/shibboleth)
 
-        def self.defaults
+        def self.base
           # Load the certificate and private key if on staging/production.
           certificate = IO.read('/home/dodona/cert.pem') if File.file?('/home/dodona/cert.pem')
           private_key = IO.read('/home/dodona/key.pem') if File.file?('/home/dodona/key.pem')

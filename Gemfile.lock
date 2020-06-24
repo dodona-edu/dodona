@@ -487,7 +487,7 @@ DEPENDENCIES
   recaptcha (~> 5.5.0)
   rouge (= 3.20.0)
   rubocop-rails (~> 2.6.0)
-  ruby-saml
+  ruby-saml (~> 1.11.0)
   rubyzip (~> 2.3.0)
   selenium-webdriver (~> 3.142.7)
   simplecov (~> 0.18.5)

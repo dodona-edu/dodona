@@ -1,5 +1,8 @@
 require_relative 'settings.rb'
 
+# Inspired by:
+# https://madeintandem.com/blog/configuring-rails-app-single-sign-saml-multiple-providers/
+
 module OmniAuth
   module Strategies
     class SAML

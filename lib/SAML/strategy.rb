@@ -2,6 +2,9 @@ require 'omniauth'
 require_relative 'attributes.rb'
 require_relative 'settings.rb'
 
+# Original at:
+# https://github.com/omniauth/omniauth-saml/blob/master/lib/omniauth/strategies/saml.rb
+
 module OmniAuth
   module Strategies
     class SAML

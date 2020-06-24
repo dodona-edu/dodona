@@ -1,5 +1,8 @@
 require_relative 'settings.rb'
 
+# Original at:
+# https://github.com/apokalipto/devise_saml_authenticatable/blob/master/lib/devise_saml_authenticatable/saml_mapped_attributes.rb
+
 module OmniAuth
   module Strategies
     class SAML

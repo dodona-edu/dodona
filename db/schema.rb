@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_14_085908) do
+ActiveRecord::Schema.define(version: 2020_06_18_115755) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -303,6 +303,19 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
     t.index ["name"], name: "index_programming_languages_on_name", unique: true
   end
 
+  create_table "providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "type", default: "Provider::Saml", null: false
+    t.bigint "institution_id", null: false
+    t.string "identifier"
+    t.text "certificate"
+    t.string "entity_id"
+    t.string "slo_url"
+    t.string "sso_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["institution_id"], name: "fk_rails_ba691498dd"
+  end
+
   create_table "repositories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "remote"
@@ -430,6 +443,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_085908) do
   add_foreign_key "feedbacks", "evaluations"
   add_foreign_key "feedbacks", "submissions"
   add_foreign_key "notifications", "users"
+  add_foreign_key "providers", "institutions", on_delete: :cascade
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"

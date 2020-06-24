@@ -21,6 +21,7 @@ class Institution < ApplicationRecord
   enum provider: { smartschool: 0, office365: 1, saml: 2, google_oauth2: 3 }
 
   has_many :users, dependent: :restrict_with_error
+  has_many :providers, inverse_of: :institution, dependent: :restrict_with_error
   has_many :courses, dependent: :restrict_with_error
 
   validates :identifier, uniqueness: { allow_blank: true, case_sensitive: false }

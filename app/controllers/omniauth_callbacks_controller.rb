@@ -23,12 +23,10 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def saml
-    # Attempt to find the user by its username.
-    user = User.find_by(username: auth_hash.uid)
-    # If no user was found, attempt to find by email address.
-    user ||= User.from_email(oauth_email)
+    # Find the user.
+    user = saml_find_user
     if user.blank?
-      # User was still not found, create new one.
+      # User was still not found, create a new one.
       institution = auth_hash.extra.institution
       user = User.from_institution(auth_hash, institution)
     end
@@ -55,6 +53,14 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   private
+
+  def saml_find_user
+    # Attempt to find the user by its username.
+    return User.find_by(username: auth_hash.uid) if auth_hash.uid.present?
+
+    # Attempt to find the user by its email address.
+    User.from_email(oauth_email)
+  end
 
   def auth_hash
     request.env['omniauth.auth']

@@ -42,13 +42,6 @@ module OmniAuth
         fail!(:invalid_response, $!)
       end
 
-      # Catchall phase.
-      def other_phase
-        p "otter fase"
-        p current_path
-        call_app!
-      end
-
       # Configure the information hash.
       info do
         # Map the raw attributes to the civilised names.
@@ -82,7 +75,7 @@ module OmniAuth
         parsed_response.settings.idp_cert = inst_settings[:idp_cert]
 
         # Validate the response.
-        #parsed_response.is_valid?
+        parsed_response.is_valid?
 
         # Set the attributes.
         @name_id = parsed_response.name_id

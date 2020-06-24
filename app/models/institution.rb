@@ -18,19 +18,16 @@
 
 class Institution < ApplicationRecord
   NEW_INSTITUTION_NAME = 'n/a'.freeze
+
+  # TODO: remove this after 4.0 has been deployed. Will break
+  #       migration 20200619201239_extract_institution_auth_to_providers.
   enum provider: { smartschool: 0, office365: 1, saml: 2, google_oauth2: 3 }
 
   has_many :users, dependent: :restrict_with_error
   has_many :providers, inverse_of: :institution, dependent: :restrict_with_error
   has_many :courses, dependent: :restrict_with_error
 
-  validates :identifier, uniqueness: { allow_blank: true, case_sensitive: false }
-  validates :logo, :short_name, :provider, presence: true
-  validates :sso_url, :slo_url, :certificate, :entity_id, presence: true, if: :saml?
+  validates :logo, :short_name, presence: true
 
   scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
-
-  def self.from_identifier(identifier)
-    find_by(identifier: identifier) if identifier.present?
-  end
 end

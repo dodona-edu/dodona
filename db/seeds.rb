@@ -8,19 +8,28 @@
 
 if Rails.env.development?
 
-  puts 'Creating institution'
+  puts 'Creating institutions'
 
-  ugent = Institution.create name: 'Universiteit Gent (login werkt niet in develop)', short_name: 'UGent', logo: 'UGent.png', sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://ugent.be', provider: :saml
+  ugent = Institution.create name: 'Universiteit Gent (login werkt niet in develop)', short_name: 'UGent', logo: 'UGent.png'
+  college_waregem = Institution.create name: 'College Waregem', short_name: 'College Waregem', logo: 'collegewaregem.png'
+  sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'collegewaregem.png'
+  slo = Institution.create name: 'SLO Wetenschappen', short_name: 'SLOW', logo: 'ugent.png'
+  college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.png'
+  sint_bavo = Institution.create name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg'
 
-  college_waregem = Institution.create name: 'College Waregem', short_name: 'College Waregem', logo: 'collegewaregem.png', provider: :office365, identifier: '9fdf506a-3be0-4f07-9e03-908ceeae50b4'
+  puts 'Creating providers'
 
-  sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'collegewaregem.png', provider: :office365, identifier: 'af15916d-7d77-43f9-b366-ae98d0fe36be'
+  # Office 365.
+  Provider::Office365.create institution: college_waregem, identifier: '9fdf506a-3be0-4f07-9e03-908ceeae50b4'
+  Provider::Office365.create institution: sg_paulus, identifier: 'af15916d-7d77-43f9-b366-ae98d0fe36be'
+  Provider::Office365.create institution: sint_bavo, identifier: 'a1d4c74b-2a28-46a6-89a5-912641f59eae'
 
-  slo = Institution.create name: 'SLO Wetenschappen', short_name: 'SLOW', logo: 'ugent.png', provider: :smartschool, identifier: 'https://slow.smartschool.be'
+  # SAML.
+  Provider::Saml.create institution: ugent, sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://ugent.be'
 
-  college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.png', provider: :smartschool, identifier: 'https://college-ieper.smartschool.be'
-
-  sint_bavo = Institution.create(name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg', provider: 'office365', identifier: 'a1d4c74b-2a28-46a6-89a5-912641f59eae')
+  # Smartschool.
+  Provider::Smartschool.create institution: slo, identifier: 'https://slow.smartschool.be'
+  Provider::Smartschool.create institution: college_ieper, identifier: 'https://college-ieper.smartschool.be'
 
   puts 'Creating users'
 

@@ -145,8 +145,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{auth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: auth_hash, errors: user.errors.inspect)
-        .user_unable_to_log_in
-        .deliver_later
+                     .user_unable_to_log_in
+                     .deliver_later
 
     if is_navigational_format?
       set_flash_message \
@@ -188,8 +188,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{auth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: auth_hash)
-        .institution_created
-        .deliver_later
+                     .institution_created
+                     .deliver_later
   end
 
   def institution_creation_failed(errors)
@@ -199,8 +199,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{errors}"
 
     ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
-        .institution_creation_failed
-        .deliver_later
+                     .institution_creation_failed
+                     .deliver_later
   end
 
   def no_institution_found!

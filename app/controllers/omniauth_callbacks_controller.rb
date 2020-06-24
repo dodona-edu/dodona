@@ -23,9 +23,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def saml
+    # Attempt to find the user by its username.
     user = User.find_by(username: auth_hash.uid)
+    # If no user was found, attempt to find by email address.
     user ||= User.from_email(oauth_email)
     if user.blank?
+      # User was still not found, create new one.
       institution = auth_hash.extra.institution
       user = User.from_institution(auth_hash, institution)
     end
@@ -40,8 +43,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def failure
     reason = request.params['error_message'] \
-                    || request.params['error_description'] \
-                    || t('devise.omniauth_callbacks.unknown_failure')
+                     || request.params['error_description'] \
+                     || t('devise.omniauth_callbacks.unknown_failure')
     if is_navigational_format?
       set_flash_message :notice,
                         :failure,
@@ -73,7 +76,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     return true if user.institution.nil?
 
     if user.institution&.identifier != institution_identifier \
-             || user.institution&.provider != provider
+              || user.institution&.provider != provider
       user.errors.add(:institution, 'mismatch')
       false
     else

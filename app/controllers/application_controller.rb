@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  protect_from_forgery with: :exception, prepend: true
+  protect_from_forgery with: :null_session
 
   before_action :store_current_location,
                 except: %i[media sign_in_page institution_not_supported],

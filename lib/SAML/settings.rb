@@ -11,10 +11,10 @@ module OmniAuth
 
           {
               assertion_consumer_service_binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-              assertion_consumer_service_url: "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/auth",
+              assertion_consumer_service_url: "https://#{Rails.configuration.default_host}/users/saml/auth",
               authn_context: '',
               certificate: certificate,
-              issuer: "https://#{Socket.gethostbyname(Socket.gethostname).first.downcase}/users/saml/metadata",
+              issuer: "https://#{Rails.configuration.default_host}/users/saml/metadata",
               name_identifier_format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
               private_key: private_key,
               security: {

@@ -1,8 +1,3 @@
-#require_relative('../../lib/SAML/metadata.rb')
-#require_relative('../../lib/SAML/saml_controller.rb')
-#require_relative('../../lib/SAML/idp_settings_adapter.rb')
-#require_relative('../../lib/SAML/my_resource_validator.rb')
-
 ## SAML.
 require_relative '../../lib/SAML/strategy.rb'
 require_relative '../../lib/SAML/setup.rb'

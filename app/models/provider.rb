@@ -3,7 +3,7 @@ class Provider < ApplicationRecord
 
   has_many :identities, inverse_of: :provider, dependent: :destroy
 
-  PROVIDERS = [Provider::Saml].freeze
+  PROVIDERS = [Provider::Saml, Provider::Smartschool].freeze
 
   def self.for_sym(sym)
     match = PROVIDERS.select { |prov| prov.sym == sym }.first

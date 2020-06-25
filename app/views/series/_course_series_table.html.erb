@@ -61,7 +61,7 @@
                 confirm += " " + t('series.delete.confirm_evaluation')
               end
            %>
-          <%= link_to s, method: :delete, data: {confirm: s}, class: "btn btn-sm btn-danger", title: t("series.delete.title") do %>
+          <%= link_to s, method: :delete, data: {confirm: confirm}, class: "btn btn-sm btn-danger", title: t("series.delete.title") do %>
             <i class="mdi mdi-18 mdi-delete"></i>
           <% end %>
         <% end %>

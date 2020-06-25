@@ -33,11 +33,11 @@ if Rails.env.development?
 
   puts 'Creating users'
 
-  zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus, institution: nil, token: 'zeus'
+  zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus, institution: ugent, token: 'zeus'
 
-  staff = User.create username: 'staff', first_name: 'Stijn', last_name: 'Taff', email: 'stijn.taff@ugent.be', permission: :staff, institution: nil, token: 'staff'
+  staff = User.create username: 'staff', first_name: 'Stijn', last_name: 'Taff', email: 'stijn.taff@ugent.be', permission: :staff, institution: ugent, token: 'staff'
 
-  jelix = User.create username: 'jvdrfeu', first_name: 'Jelix', last_name: 'Vanderfeught', email: 'jelix.vanderfeught@ugent.be', permission: :student, institution: nil, token: 'student'
+  jelix = User.create username: 'jvdrfeu', first_name: 'Jelix', last_name: 'Vanderfeught', email: 'jelix.vanderfeught@ugent.be', permission: :student, institution: ugent, token: 'student'
 
   mart = User.create username: 'mbesuere', first_name: 'Mart', last_name: 'Besuere', email: 'mart.besuere@ugent.be', permission: :student, institution: ugent
 
@@ -53,6 +53,14 @@ if Rails.env.development?
                 email: "#{first_name}.#{last_name}.#{username}@UGent.BE".downcase,
                 permission: :student,
                 institution: ugent
+  end
+
+  puts 'Creating identities'
+
+  User.find_each do |user|
+    Identity.create provider: user.institution.providers.first,
+                    identifier: user.username,
+                    user: user
   end
 
   puts 'Creating API tokens'

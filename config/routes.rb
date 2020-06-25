@@ -9,17 +9,18 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     post '/users/saml/auth' => 'omniauth_callbacks#saml' # backwards compatibility
-    get '/users/saml/metadata' => 'saml_sessions#metadata'
   end
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
-    devise_scope :user do
-      namespace :auth, path: '' do
+    namespace :auth, path: '' do
+      devise_scope :user do
         get '/sign_in' => 'authentication#sign_in', as: 'sign_in'
         delete '/sign_out' => 'authentication#destroy', as: 'sign_out'
       end
+
+      get '/users/saml/metadata' => 'saml#metadata'
     end
 
     get '/institution_not_supported' => 'pages#institution_not_supported'

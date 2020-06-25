@@ -104,7 +104,7 @@ class ApplicationController < ActionController::Base
         head :forbidden
       end
     elsif current_user.nil?
-      redirect_to sign_in_path
+      redirect_to auth_sign_in_path
     else
       flash[:alert] = I18n.t('errors.no_rights')
       if request.referer.present? && URI.parse(request.referer).host == request.host

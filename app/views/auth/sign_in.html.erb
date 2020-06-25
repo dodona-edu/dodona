@@ -9,9 +9,10 @@
       <%
           # TODO: This distinction is no longer required as saml uses omniauth
           #       now. However, this is kept for now to retain the previous order
-          #       of institutions. Remove this when refactoring the sign-in page.
+          #       of institutions. Remove this when restyling the sign-in page.
       %>
-      <% @institutions.saml.each do |institution| %>
+      <% @providers.saml.each do |provider| %>
+        <% institution = provider.institution %>
         <%= link_to user_saml_omniauth_authorize_path(institution: institution), class: 'institution-sign-in' do %>
           <div class="col-sm-6 col-lg-4">
             <div class="option-btn">

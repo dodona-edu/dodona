@@ -1,0 +1,10 @@
+nl:
+  auth:
+    sign_in:
+      select-institution: "Selecteer je onderwijsinstelling"
+      sign_in: "Aanmelden"
+      has_to_have_institution: "Enkel accounts die gelinkt zijn aan een onderwijsinstelling worden ondersteund."
+      sign-in-with-smartschool: "Inloggen met Smartschool"
+      sign-in-with-office-365: "Inloggen met Office 365"
+      sign-in-with-g-suite: "Inloggen met G Suite"
+      multiple-identites: 'Het is nog niet mogelijk om meer dan één aanmeldingsprovider per account te hebben.'

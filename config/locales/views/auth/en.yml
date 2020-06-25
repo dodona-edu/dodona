@@ -1,0 +1,10 @@
+en:
+  auth:
+    sign_in:
+      select-institution: "Please select your institution"
+      sign_in: "Sign in"
+      has_to_have_institution: "Only accounts linked to an institution are supported."
+      sign-in-with-smartschool: "Sign in with Smartschool"
+      sign-in-with-office-365: "Sign in with Office 365"
+      sign-in-with-g-suite: "Sign in with G Suite"
+      multiple-identites: 'Multiple authentication providers for the same user are not yet supported.'

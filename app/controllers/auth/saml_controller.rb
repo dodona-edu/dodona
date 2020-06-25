@@ -1,6 +1,6 @@
 require_relative '../../../lib/SAML/metadata.rb'
 
-class Auth::SamlController < ActionController::Base
+class Auth::SamlController < ApplicationController
   def metadata
     render xml: OmniAuth::Strategies::SAML::Metadata.generate
   end

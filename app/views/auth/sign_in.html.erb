@@ -13,7 +13,7 @@
       %>
       <% @providers.saml.each do |provider| %>
         <% institution = provider.institution %>
-        <%= link_to user_saml_omniauth_authorize_path(institution: institution), class: 'institution-sign-in' do %>
+        <%= link_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: provider), class: 'institution-sign-in' do %>
           <div class="col-sm-6 col-lg-4">
             <div class="option-btn">
               <div class="option-btn-img">
@@ -29,7 +29,7 @@
           </div>
         <% end %>
       <% end %>
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -44,7 +44,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -59,7 +59,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -81,7 +81,7 @@
       </div>
     </div>
     <div class="sign-in-dialog-institutions row">
-      <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -96,7 +96,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -111,7 +111,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_google_oauth2_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::GSuite.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -133,7 +133,7 @@
       </div>
     </div>
     <div class="sign-in-dialog-institutions row">
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -148,7 +148,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -163,7 +163,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -178,7 +178,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -193,7 +193,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -208,7 +208,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_office365_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -223,7 +223,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">
@@ -238,7 +238,7 @@
           </div>
         </div>
       <% end %>
-      <%= link_to user_smartschool_omniauth_authorize_path, class: 'institution-sign-in' do %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
         <div class="col-sm-6 col-lg-4">
           <div class="option-btn">
             <div class="option-btn-img">

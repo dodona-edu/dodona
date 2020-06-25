@@ -69,10 +69,11 @@ module OmniAuth
         parsed_response = OneLogin::RubySaml::Response.new(raw, opts)
         parsed_response.soft = false
 
-        # Find the institution
-        @institution = find_institution(parsed_response)
-        inst_settings = OmniAuth::Strategies::SAML::Settings.for_institution(@institution)
-        parsed_response.settings.idp_cert = inst_settings[:idp_cert]
+        # Find the provider
+        provider = find_provider(parsed_response)
+        @institution = provider&.institution
+        prov_settings = OmniAuth::Strategies::SAML::Settings.for_provider(provider)
+        parsed_response.settings.idp_cert = prov_settings[:idp_cert]
 
         # Validate the response.
         parsed_response.is_valid?
@@ -87,9 +88,9 @@ module OmniAuth
         yield
       end
 
-      def find_institution(response)
+      def find_provider(response)
         # Consider the issuer as the entity id.
-        Institution.find_by(entity_id: response.issuers.first)
+        Provider.find_by(entity_id: response.issuers.first)
       end
 
       def response_options

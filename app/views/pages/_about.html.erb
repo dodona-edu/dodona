@@ -9,7 +9,7 @@
         <h1>Dodona</h1>
         <p class='lead'><%= t ".learn-to-code" %><br><%= t ".higher-education" %></p>
         <% unless current_user.present? %>
-          <%= link_to t(".sign-in"), auth_sign_in_path, class: 'btn btn-primary btn-lg' %>
+          <%= link_to t(".sign-in"), sign_in_path, class: 'btn btn-primary btn-lg' %>
         <% end %>
       </div>
       <div class="hidden-xs col-sm-4 col-md-5">

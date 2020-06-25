@@ -53,7 +53,7 @@ module OmniAuth
         info['username'] || @name_id
       end
 
-      extra { {institution: @institution} }
+      extra { {provider: @provider} }
 
       def on_callback_path?
         # Intercept requests sent to /users/saml/auth and forward those to the
@@ -70,9 +70,8 @@ module OmniAuth
         parsed_response.soft = false
 
         # Find the provider
-        provider = find_provider(parsed_response)
-        @institution = provider&.institution
-        prov_settings = OmniAuth::Strategies::SAML::Settings.for_provider(provider)
+        @provider = find_provider(parsed_response)
+        prov_settings = OmniAuth::Strategies::SAML::Settings.for_provider(@provider)
         parsed_response.settings.idp_cert = prov_settings[:idp_cert]
 
         # Validate the response.

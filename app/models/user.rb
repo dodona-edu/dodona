@@ -116,6 +116,8 @@ class User < ApplicationRecord
   before_save :nullify_empty_username
   before_save :nullify_empty_email
 
+  accepts_nested_attributes_for :identities, limit: 1
+
   scope :by_permission, ->(permission) { where(permission: permission) }
   scope :by_institution, ->(institution) { where(institution: institution) }
 
@@ -255,26 +257,16 @@ class User < ApplicationRecord
     end
   end
 
-  # update and return user using an omniauth authentication hash
-  def update_from_oauth(oauth_hash, auth_inst)
+  # Update the user using the data provided in the omniauth hash.
+  def update_from_provider(auth_hash, auth_provider)
     tap do |user|
-      user.username = oauth_hash.uid
-      user.email = oauth_hash.info.email
-      user.first_name = oauth_hash.info.first_name
-      user.last_name = oauth_hash.info.last_name
-      user.institution = auth_inst if user.institution.nil?
+      user.username = auth_hash.uid
+      user.email = auth_hash.info.email
+      user.first_name = auth_hash.info.first_name
+      user.last_name = auth_hash.info.last_name
+      user.institution = auth_provider.institution if user.institution.nil?
       user.save
     end
-  end
-
-  def self.from_institution(auth, institution)
-    # try to look up existing users
-    # using username and institution
-    user = find_by(username: auth.uid, institution: institution)
-    # create a new user within the institution
-    # if nothing was found
-    user = new(institution: institution) if user.nil?
-    user
   end
 
   def self.from_email(email)

@@ -8,13 +8,13 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   devise_scope :user do
-    post '/users/saml/auth' => 'omniauth_callbacks#saml' # backwards compatibility
+    post '/users/saml/auth' => 'auth/omniauth_callbacks#saml' # backwards compatibility
   end
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
-    namespace :auth, path: '' do
+    namespace :auth, path: '', as: '' do
       devise_scope :user do
         get '/sign_in' => 'authentication#sign_in', as: 'sign_in'
         delete '/sign_out' => 'authentication#destroy', as: 'sign_out'

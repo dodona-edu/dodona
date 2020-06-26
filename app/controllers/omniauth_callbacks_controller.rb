@@ -56,10 +56,14 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def saml_find_user
     # Attempt to find the user by its username.
-    return User.find_by(username: auth_hash.uid) if auth_hash.uid.present?
+    user = User.find_by(username: auth_hash.uid)
+    return user if user.present?
 
     # Attempt to find the user by its email address.
-    User.from_email(oauth_email)
+    user = User.from_email(oauth_email)
+
+    # Return the user if the username was not set.
+    user&.username.blank? ? user : nil
   end
 
   def auth_hash

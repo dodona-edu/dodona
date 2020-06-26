@@ -30,4 +30,8 @@ class Institution < ApplicationRecord
   validates :logo, :short_name, presence: true
 
   scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
+
+  def uses_smartschool?
+    providers.any? { |provider| provider.type == Provider::Smartschool.name }
+  end
 end

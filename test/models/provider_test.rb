@@ -16,7 +16,9 @@
 require 'test_helper'
 
 class ProviderTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'provider factories' do
+    AUTH_PROVIDERS.each do |provider|
+      create provider
+    end
+  end
 end

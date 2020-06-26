@@ -11,5 +11,5 @@
 #
 class Identity < ApplicationRecord
   belongs_to :provider, inverse_of: :identities
-  belongs_to :user
+  belongs_to :user, inverse_of: :identities
 end

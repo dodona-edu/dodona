@@ -19,15 +19,7 @@
 require 'test_helper'
 
 class InstitutionTest < ActiveSupport::TestCase
-  test 'saml factory' do
-    create :saml_institution
-  end
-
-  test 'smartschool factory' do
-    create :smartschool_institution
-  end
-
-  test 'office365 factory' do
-    create :office365_institution
+  test 'institution factory' do
+    create :institution
   end
 end

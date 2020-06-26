@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   end
 
   # Authentication routes.
-  devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
+  devise_for :users, controllers: {omniauth_callbacks: 'auth/omniauth_callbacks'}
   root 'pages#home'
 
   devise_scope :user do

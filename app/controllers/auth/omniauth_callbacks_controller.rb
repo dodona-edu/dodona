@@ -1,4 +1,7 @@
 class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  # Saml entity id for UGent.
+  UGENT_SAML_ENTITY_ID = 'https://identity.ugent.be/simplesaml/saml2/idp/metadata.php'.freeze
+
   # Tenant ID's of known Office365 organisations
   # who should use another sign in method
   # TODO refactor using redirect providers
@@ -58,10 +61,10 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def try_login!
     # Find the identity.
-    identity = find_identity
+    identity, user = find_identity_and_user
     if identity.blank?
       # Create a new user and identity.
-      user = User.new institution: provider&.institution
+      user = User.new institution: provider&.institution if user.blank?
       identity = user.identities.build identifier: auth_uid, provider: provider
     end
 
@@ -69,7 +72,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     raise 'Identity should not be nil here' if identity.nil?
 
     # Update the user information from the authentication response.
-    user = identity.user
     user.update_from_provider(auth_hash, provider)
     return redirect_with_errors!(user) if user.errors.any?
 
@@ -79,17 +81,17 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   # ==> Utilities.
 
-  def find_identity
+  def find_identity_and_user
     # Attempt to find the identity by its identifier.
     identity = Identity.find_by(identifier: auth_uid, provider: provider)
-    return identity if identity.present? && auth_uid.present?
+    return [identity, identity.user] if identity.present? && auth_uid.present?
 
     # No username was provided, try to find the user using the email address.
     user = User.from_email(auth_email)
-    return nil if user.blank?
+    return [nil, nil] if user.blank?
 
     # Find an identity for the user at the current provider.
-    Identity.find_by(provider: provider, user: user)
+    [Identity.find_by(provider: provider, user: user), user]
   end
 
   def find_or_create_oauth_provider
@@ -137,6 +139,10 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     redirect_to root_path
   end
 
+  def ugent_saml_provider
+    Provider::Saml.find_by(entity_id: UGENT_SAML_ENTITY_ID)
+  end
+
   # ==> Shorthands.
 
   def auth_hash
@@ -148,6 +154,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def auth_provider_type
+    return nil if auth_hash.blank?
+
     auth_hash.provider
   end
 
@@ -201,7 +209,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     elsif oauth_provider_id == UGENT_TID
       # If an UGent-user logs in using Office365,
       # redirect to saml login
-      redirect_to sign_in_path
+      redirect_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: ugent_saml_provider)
     elsif oauth_provider_id == TSM_TID || oauth_provider_id == CVO_TSM_TID
       redirect_to omniauth_authorize_path(:user, Provider::Office365.sym)
     elsif oauth_provider_id == MAERLANT_TID

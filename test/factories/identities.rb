@@ -11,5 +11,12 @@
 #
 FactoryBot.define do
   factory :identity do
+    provider
+    user
+    identifier { user.username || SecureRandom.uuid }
+
+    after :create do |identity|
+      identity.user.identities << identity
+    end
   end
 end

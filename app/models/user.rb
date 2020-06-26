@@ -40,7 +40,7 @@ class User < ApplicationRecord
   has_many :course_memberships, dependent: :restrict_with_error
   has_many :repository_admins, dependent: :restrict_with_error
   has_many :courses, through: :course_memberships
-  has_many :identities, dependent: :destroy
+  has_many :identities, dependent: :destroy, inverse_of: :user
   has_many :events, dependent: :restrict_with_error
   has_many :exports, dependent: :destroy
   has_many :notifications, dependent: :destroy
@@ -106,6 +106,7 @@ class User < ApplicationRecord
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
   validate :email_only_blank_if_smartschool
+  validate :max_one_institution
 
   token_generator :token
 
@@ -127,7 +128,11 @@ class User < ApplicationRecord
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
 
   def email_only_blank_if_smartschool
-    errors.add(:email, 'should not be blank when institution does not use smartschool') if email.blank? && !institution&.smartschool?
+    errors.add(:email, 'should not be blank when institution does not use smartschool') if email.blank? && !institution&.uses_smartschool?
+  end
+
+  def max_one_institution
+    errors.add(:institution, 'must be unique') if identities.map(&:provider).map(&:institution_id).uniq.count > 1
   end
 
   def full_name

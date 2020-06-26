@@ -82,13 +82,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def find_identity
     # Attempt to find the identity by its identifier.
     identity = Identity.find_by(identifier: auth_uid, provider: provider)
-    return identity if identity.present?
+    return identity if identity.present? && auth_uid.present?
 
-    # If the username is available and the provider is saml, regardless of
-    # whether the identity exists, don't try to match the email address.
-    return identity if auth_uid.present? && auth_provider_type == Provider::Saml.sym
-
-    # No username was provided, try to find the user by the email address.
+    # No username was provided, try to find the user using the email address.
     user = User.from_email(auth_email)
     return nil if user.blank?
 
@@ -207,18 +203,14 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # redirect to saml login
       redirect_to sign_in_path
     elsif oauth_provider_id == TSM_TID || oauth_provider_id == CVO_TSM_TID
-      redirect_to omniauth_authorize_path(:users, Provider::Office365.sym)
+      redirect_to omniauth_authorize_path(:user, Provider::Office365.sym)
     elsif oauth_provider_id == MAERLANT_TID
-      redirect_to omniauth_authorize_path(:users, Provider::GSuite.sym)
+      redirect_to omniauth_authorize_path(:user, Provider::GSuite.sym)
     end
   end
 
   def provider_missing!
-    set_flash_message \
-      :notice,
-      :failure,
-      kind: auth_provider_type,
-      reason: I18n.t('auth.sign_in.errors.missing-provider')
+    flash_failure I18n.t('auth.sign_in.errors.missing-provider')
     redirect_to sign_in_path
   end
 end

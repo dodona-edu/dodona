@@ -15,7 +15,7 @@
 #
 class Provider::Saml < Provider
   validates :certificate, :entity_id, :sso_url, :slo_url, presence: true
-  validates :entity_id, uniqueness: true
+  validates :entity_id, uniqueness: {case_sensitive: false}
 
   validates :identifier, absence: true
 

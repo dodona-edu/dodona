@@ -14,6 +14,8 @@
 #  updated_at     :datetime         not null
 #
 class Provider < ApplicationRecord
+  enum mode: { prefer: 0, redirect: 1 }
+
   PROVIDERS = [Provider::GSuite, Provider::Office365, Provider::Saml, Provider::Smartschool].freeze
 
   belongs_to :institution, inverse_of: :providers
@@ -24,6 +26,8 @@ class Provider < ApplicationRecord
   scope :office365, -> { where(type: Provider::Office365.name) }
   scope :saml, -> { where(type: Provider::Saml.name) }
   scope :smartschool, -> { where(type: Provider::Smartschool.name) }
+
+  validates :mode, presence: true
 
   def self.for_sym(sym)
     sym = sym.to_sym

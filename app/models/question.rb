@@ -14,6 +14,14 @@ class Question < Annotation
     QuestionPolicy
   end
 
+  def mark_in_progress
+    self.question_state = :in_progress
+  end
+
+  def mark_resolved
+    self.question_state = :answered
+  end
+
   # Disable notification creation & deletion
   def create_notification; end
 

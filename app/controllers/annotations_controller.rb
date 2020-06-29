@@ -1,6 +1,6 @@
 class AnnotationsController < ApplicationController
   before_action :set_submission, only: %i[create]
-  before_action :set_annotation, only: %i[show update destroy]
+  before_action :set_annotation, only: %i[show update destroy in_progress resolved]
 
   has_scope :by_submission, as: :submission_id
   has_scope :by_user, as: :user_id
@@ -40,6 +40,20 @@ class AnnotationsController < ApplicationController
       else
         format.json { render json: @annotation.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def in_progress
+    @annotation.mark_in_progress
+    respond_to do |format|
+      format.json { render :show, status: :ok, location: @annotation }
+    end
+  end
+
+  def resolved
+    @annotation.mark_resolved
+    respond_to do |format|
+      format.json { render :show, status: :ok, location: @annotation }
     end
   end
 

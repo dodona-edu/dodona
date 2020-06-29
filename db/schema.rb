@@ -109,6 +109,8 @@ ActiveRecord::Schema.define(version: 2020_08_05_113636) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "evaluation_id"
+    t.string "type"
+    t.integer "question_state"
     t.index ["evaluation_id"], name: "index_annotations_on_evaluation_id"
     t.index ["submission_id"], name: "index_annotations_on_submission_id"
     t.index ["user_id"], name: "index_annotations_on_user_id"

@@ -29,7 +29,7 @@
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^7.3.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jest": "^23.16.0",
+    "eslint-plugin-jest": "^23.17.1",
     "jest": "^25.5.4",
     "jest-junit": "^11.0.1",
     "ts-jest": "^25.5.1",

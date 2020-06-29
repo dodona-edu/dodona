@@ -160,7 +160,7 @@ GEM
     factory_bot_rails (6.0.0)
       factory_bot (~> 6.0.0)
       railties (>= 5.0.0)
-    faker (2.12.0)
+    faker (2.13.0)
       i18n (>= 1.6, < 2)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
@@ -453,7 +453,7 @@ DEPENDENCIES
   ed25519
   exception_notification (~> 4.4.0)
   factory_bot_rails (~> 6.0.0)
-  faker (~> 2.12.0)
+  faker (~> 2.13.0)
   flamegraph (~> 0.9.5)
   foreman!
   has_scope (~> 0.7.2)

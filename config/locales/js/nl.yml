@@ -111,3 +111,7 @@ nl:
         annotation_text: 'Annotatie tekst'
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'
       not_released: Deze annotatie is nog niet zichtbaar voor studenten
+    user_question:
+      update: Vraag updaten
+      send: Vraag versturen
+      delete_confirm: 'Ben je zeker dat je deze vraag wilt verwijderen?'

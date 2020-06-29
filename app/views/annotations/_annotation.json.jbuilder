@@ -11,3 +11,4 @@ json.permission do
   json.destroy policy(annotation).destroy?
 end
 json.released AnnotationPolicy.new(annotation.submission.user, annotation).show?
+json.type annotation.type&.downcase || 'annotation'

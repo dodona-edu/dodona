@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t('.title') %></h2>
+      </div>
+      <div class="card-supporting-text">
+        <h4><%= t('.questions.open') %></h4>
+        <%= render 'question_table', questions: @open %>
+
+
+        <h4><%= t('.questions.in_progress') %></h4>
+        <%= render 'question_table', questions: @in_progress %>
+
+
+        <h4><%= t('.questions.closed') %></h4>
+        <%= render 'question_table', questions: @closed %>
+      </div>
+    </div>
+  </div>
+</div>

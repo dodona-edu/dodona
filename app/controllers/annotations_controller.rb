@@ -16,11 +16,17 @@ class AnnotationsController < ApplicationController
     args = permitted_attributes(Annotation)
     args[:user] = current_user
     args[:submission] = @submission
-    @annotation = Annotation.new(args)
+
+    @annotation = if current_user.student? @submission.course
+                    Question.new(args)
+                  else
+                    Annotation.new(args)
+                  end
+
     authorize @annotation
     respond_to do |format|
       if @annotation.save
-        format.json { render :show, status: :created, location: @annotation }
+        format.json { render :show, status: :created, location: @annotation, as: Annotation}
       else
         format.json { render json: @annotation.errors, status: :unprocessable_entity }
       end

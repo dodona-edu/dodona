@@ -186,6 +186,10 @@ class User < ApplicationRecord
     zeus? || admin_of?(course)
   end
 
+  def student?(course)
+    !course_admin? course
+  end
+
   def a_course_admin?
     admin? || administrating_courses.any?
   end

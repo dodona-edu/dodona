@@ -6,6 +6,7 @@ nl:
       edit: Cursus bewerken
       submissions: Ingediende oplossingen
       statistics: Statistieken
+      questions: "Vragen"
     form:
       teacher-help: Optioneel. Kan gebruikers helpen om je cursus te vinden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je cursus correct gesorteerd zal worden.
@@ -155,3 +156,13 @@ nl:
     copy_courses_table:
       info: "Cursus"
       users: "# gebruikers"
+    questions:
+      title: "Vragen gesteld door studenten"
+      questions:
+        open: "Ontbeantwoorde vragen"
+        in_progress: "Vragen worden beantwoord"
+        closed: "Vragen werden beantwoord"
+  submissions:
+    show:
+      questions:
+        add_global: "Stel een vraag over je code"

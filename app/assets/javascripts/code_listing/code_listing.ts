@@ -36,11 +36,14 @@ export class CodeListing {
     private readonly showErrorAnnotations: HTMLButtonElement;
     private readonly annotationToggles: HTMLDivElement;
 
-    constructor(submissionId: number, code: string, codeLines: number) {
+    private readonly questionMode: boolean;
+
+    constructor(submissionId: number, code: string, codeLines: number, questionMode: boolean = false) {
         this.annotations = new Map<number, Annotation[]>();
         this.code = code;
         this.codeLines = codeLines;
         this.submissionId = submissionId;
+        this.questionMode = questionMode;
 
         this.badge = document.querySelector<HTMLSpanElement>(badge);
         this.table = document.querySelector<HTMLTableElement>("table.code-listing");
@@ -352,7 +355,9 @@ export class CodeListing {
               ${I18n.t("js.user_annotation.cancel")}
             </button>
             <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
-              ${annotation !== null ? I18n.t("js.user_annotation.update") : I18n.t("js.user_annotation.send")}
+              ${this.questionMode ?
+        (annotation !== null ? I18n.t("js.user_question.update") : I18n.t("js.user_question.send")):
+        (annotation !== null ? I18n.t("js.user_annotation.update") : I18n.t("js.user_annotation.send"))}
             </button>
           </div>
         `;
@@ -373,7 +378,8 @@ export class CodeListing {
         // Deletion handler.
         if (deleteButton !== null) {
             deleteButton.addEventListener("click", async () => {
-                if (confirm(I18n.t("js.user_annotation.delete_confirm"))) {
+                const confirmText = this.questionMode ? I18n.t("js.user_question.delete_confirm") : I18n.t("js.user_annotation.delete_confirm");
+                if (confirm(confirmText)) {
                     annotation.remove().then(() => this.removeAnnotation(annotation));
                 }
             });

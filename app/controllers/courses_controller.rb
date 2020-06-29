@@ -190,6 +190,12 @@ class CoursesController < ApplicationController
     end
   end
 
+  def questions
+    @open = @course.open_questions
+    @in_progress = @course.in_progress_questions
+    @closed = @course.closed_questions
+  end
+
   def update_membership
     user = User.find params[:user]
     respond_to do |format|

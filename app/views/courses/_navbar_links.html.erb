@@ -20,4 +20,8 @@
                   title: t('.edit'),
                   icon: 'pencil',
                   if: policy(@course).edit? %>
+  <%= navbar_link url: questions_course_path(@course),
+                  title: t('.questions'),
+                  icon: 'help',
+                  if: policy(@course).questions? %>
 <% end %>

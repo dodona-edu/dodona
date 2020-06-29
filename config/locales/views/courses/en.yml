@@ -6,6 +6,7 @@ en:
       edit: Edit course
       submissions: Submissions for this course
       statistics: "Statistics of this course"
+      questions: "Questions"
     form:
       teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
@@ -159,3 +160,13 @@ en:
     copy_courses_table:
       info: "Course"
       users: "# users"
+    questions:
+      title: "Questions asked by students"
+      questions:
+        open: "Unanswered questions"
+        in_progress: "Questions are being answered"
+        closed: "Questions have been answered"
+  submissions:
+    show:
+      questions:
+        add_global: "Pose a question about your code"

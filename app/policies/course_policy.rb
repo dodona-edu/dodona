@@ -138,6 +138,10 @@ class CoursePolicy < ApplicationPolicy
     show?
   end
 
+  def questions?
+    course_admin? #&& !record.questions.empty?
+  end
+
   def export?
     return true if zeus?
 

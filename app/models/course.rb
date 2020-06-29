@@ -125,6 +125,28 @@ class Course < ApplicationRecord
            through: :course_memberships,
            source: :user
 
+  has_many :questions, through: :submissions
+  has_many :open_questions,
+           lambda {
+             where question_state: :unanswered
+           },
+           through: :submissions,
+           source: :questions
+
+  has_many :in_progress_questions,
+           lambda {
+             where question_state: :in_progress
+           },
+           through: :submissions,
+           source: :questions
+
+  has_many :closed_questions,
+           lambda {
+             where question_state: :answered
+           },
+           through: :submissions,
+           source: :questions
+
   validates :name, presence: true
   validates :year, presence: true
   validate :should_have_institution_when_visible_for_institution
@@ -155,7 +177,7 @@ class Course < ApplicationRecord
   def homepage_series(passed_series = 1)
     with_deadlines = series.select(&:open?).reject { |s| s.deadline.nil? }.sort_by(&:deadline)
     passed_deadlines = with_deadlines
-                       .select { |s| s.deadline < Time.zone.now && s.deadline > Time.zone.now - 1.week }[-1 * passed_series, 1 * passed_series]
+                         .select { |s| s.deadline < Time.zone.now && s.deadline > Time.zone.now - 1.week }[-1 * passed_series, 1 * passed_series]
     future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }
     passed_deadlines.to_a + future_deadlines.to_a
   end
@@ -221,9 +243,9 @@ class Course < ApplicationRecord
 
   def correct_solutions(_options = {})
     Submission.where(status: 'correct', course: self)
-              .select(:exercise_id, :user_id)
-              .distinct
-              .count
+      .select(:exercise_id, :user_id)
+      .distinct
+      .count
   end
 
   invalidateable_instance_cacheable(:correct_solutions, ->(this, _options) { format(CORRECT_SOLUTIONS_CACHE_STRING, id: this.id) })
@@ -250,8 +272,8 @@ class Course < ApplicationRecord
   def scoresheet
     sorted_series = series
     sorted_users = subscribed_members.order('course_memberships.status ASC')
-                                     .order(permission: :asc)
-                                     .order(last_name: :asc, first_name: :asc)
+                     .order(permission: :asc)
+                     .order(last_name: :asc, first_name: :asc)
 
     hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).map do |series_info, user|
       scores = series_info[1]
@@ -283,11 +305,11 @@ class Course < ApplicationRecord
 
   def labels_csv
     sorted_course_memberships = course_memberships
-                                .where.not(status: %i[unsubscribed pending])
-                                .includes(:user)
-                                .order(status: :asc)
-                                .order(Arel.sql('users.permission ASC'))
-                                .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
+                                  .where.not(status: %i[unsubscribed pending])
+                                  .includes(:user)
+                                  .order(status: :asc)
+                                  .order(Arel.sql('users.permission ASC'))
+                                  .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
     data = CSV.generate(force_quotes: true) do |csv|
       csv << %w[id username last_name first_name email labels]
       sorted_course_memberships.each do |cm|

@@ -147,7 +147,7 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 6.0.0'
 
   # test template rendering
-  gem 'rails-controller-testing', '~> 1.0.4'
+  gem 'rails-controller-testing', '~> 1.0.5'
 
   # I18N default locale & better test reporter
   gem 'minitest-utils', '~> 0.4.6'

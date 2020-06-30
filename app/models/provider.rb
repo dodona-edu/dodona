@@ -12,6 +12,8 @@
 #  sso_url        :string(255)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  mode           :integer          default("prefer"), not null
+#  active         :boolean          default(TRUE)
 #
 class Provider < ApplicationRecord
   enum mode: { prefer: 0, redirect: 1 }

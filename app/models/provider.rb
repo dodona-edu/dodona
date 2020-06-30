@@ -45,7 +45,7 @@ class Provider < ApplicationRecord
     return if institution.blank?
 
     # Find the current preferred provider.
-    preferred_provider = Provider.find_by(institution: institution, mode: :prefer)
+    preferred_provider = institution.preferred_provider
 
     # Already a preferred provider.
     return if preferred_provider.present?
@@ -61,7 +61,7 @@ class Provider < ApplicationRecord
     return if institution.blank?
 
     # Find the current preferred provider.
-    preferred_provider = Provider.find_by(institution: institution, mode: :prefer)
+    preferred_provider = institution.preferred_provider
 
     # No preferred provider yet.
     return if preferred_provider.blank?

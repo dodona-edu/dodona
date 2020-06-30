@@ -153,7 +153,9 @@ export abstract class Annotation {
 
     protected abstract get title(): string;
 
-    protected abstract get editTitle(): string;
+    protected get editTitle(): string {
+        return "";
+    }
 
     public async update(data): Promise<Annotation> {
         // Do nothing.

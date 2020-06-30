@@ -56,7 +56,7 @@ gem 'rouge', '3.20.0'
 gem 'builder', '~>3.2.4'
 
 # generate diffs
-gem 'diff-lcs', '~>1.3'
+gem 'diff-lcs', '~>1.4'
 
 # code editor
 gem 'ace-rails-ap', '~>4.3'

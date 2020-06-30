@@ -16,6 +16,7 @@ interface UserAnnotationUserData {
 interface UserAnnotationPermissionData {
     update: boolean;
     destroy: boolean;
+    resolvable: boolean;
 }
 
 export interface UserAnnotationData {
@@ -29,6 +30,7 @@ export interface UserAnnotationData {
     evaluation_id: number | null;
     url: string;
     user: UserAnnotationUserData;
+    type: string;
 }
 
 export class UserAnnotation extends Annotation {
@@ -45,7 +47,7 @@ export class UserAnnotation extends Annotation {
 
     constructor(data: UserAnnotationData, editFn: UserAnnotationEditor) {
         const line = data.line_nr === null ? null : data.line_nr + 1;
-        super(line, data.rendered_markdown, "user");
+        super(line, data.rendered_markdown, data.type == "question" ? "question" : "user");
         this.createdAt = data.created_at;
         this.editor = editFn;
         this.id = data.id;
@@ -58,8 +60,8 @@ export class UserAnnotation extends Annotation {
     }
 
     public static async create(formData: UserAnnotationFormData,
-        submissionId: number,
-        editFn: UserAnnotationEditor): Promise<UserAnnotation> {
+                               submissionId: number,
+                               editFn: UserAnnotationEditor): Promise<UserAnnotation> {
         const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -87,7 +89,7 @@ export class UserAnnotation extends Annotation {
     }
 
     public static async getAll(submission: number,
-        editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
+                               editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
         const response = await fetch(`/submissions/${submission}/annotations.json`);
         const json = await response.json();
         return json.map(data => new UserAnnotation(data, editFn));
@@ -102,6 +104,10 @@ export class UserAnnotation extends Annotation {
 
     public get modifiable(): boolean {
         return this.permissions.update;
+    }
+
+    public get resolvable(): boolean {
+        return this.permissions.resolvable;
     }
 
     public get rawText(): string {
@@ -140,5 +146,26 @@ export class UserAnnotation extends Annotation {
             return new UserAnnotation(data, this.editor);
         }
         throw new Error();
+    }
+
+    protected get editTitle(): string {
+        if (this.type === "question") {
+            return I18n.t("js.user_question.edit");
+        }
+        return I18n.t("js.user_annotation.edit");
+    }
+
+    protected async resolve(): Promise<void> {
+        return fetch(`/annotations/${this.id}/resolved`, {
+            method: "POST",
+        })
+            .then(async response => {
+                const json = await response.json();
+                this.permissions.resolvable = json.permission.resolvable;
+                if (!this.permissions.resolvable) {
+                    const resolveButton = this.__html.querySelector("a.question-control-button.question-resolve");
+                    resolveButton.remove();
+                }
+            });
     }
 }

@@ -1,4 +1,4 @@
-export type AnnotationType = "error" | "info" | "user" | "warning";
+export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
 
 export abstract class Annotation {
     private static idCounter = 0;
@@ -33,6 +33,10 @@ export abstract class Annotation {
         // Do nothing.
     }
 
+    protected async resolve(): Promise<void> {
+        // Do nothing
+    }
+
     public get global(): boolean {
         return this.line === null;
     }
@@ -63,10 +67,23 @@ export abstract class Annotation {
             const link = document.createElement("a");
             link.addEventListener("click", () => this.edit());
             link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
-            link.title = I18n.t("js.user_annotation.edit");
+            link.title = this.editTitle;
 
             const icon = document.createElement("i");
             icon.classList.add("mdi", "mdi-pencil");
+            link.appendChild(icon);
+
+            header.appendChild(link);
+        }
+
+        if (this.resolvable) {
+            const link = document.createElement("a");
+            link.addEventListener("click", () => this.resolve());
+            link.classList.add("btn", "btn-icon", "question-control-button", "question-resolve");
+            link.title = I18n.t("js.user_question.resolve");
+
+            const icon = document.createElement("i");
+            icon.classList.add("mdi", "mdi-check");
             link.appendChild(icon);
 
             header.appendChild(link);
@@ -110,6 +127,10 @@ export abstract class Annotation {
         return false;
     }
 
+    public get resolvable(): boolean {
+        return false;
+    }
+
     public get rawText(): string {
         return this.text;
     }
@@ -131,6 +152,8 @@ export abstract class Annotation {
     }
 
     protected abstract get title(): string;
+
+    protected abstract get editTitle(): string;
 
     public async update(data): Promise<Annotation> {
         // Do nothing.

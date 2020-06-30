@@ -9,6 +9,7 @@ end
 json.permission do
   json.update policy(annotation).update?
   json.destroy policy(annotation).destroy?
+  json.resolvable policy(annotation).resolvable?
 end
 json.released AnnotationPolicy.new(annotation.submission.user, annotation).show?
 json.type annotation.type&.downcase || 'annotation'

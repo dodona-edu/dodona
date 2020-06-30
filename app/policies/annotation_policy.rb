@@ -35,7 +35,7 @@ class AnnotationPolicy < ApplicationPolicy
     record&.user == user
   end
 
-  def mark_resolved
+  def resolvable?
     false
   end
 

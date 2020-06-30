@@ -14,7 +14,7 @@ const annotationFormDelete = ".annotation-delete-button";
 const annotationFormSubmit = ".annotation-submission-button";
 const badge = "#badge_code";
 
-const ANNOTATION_ORDER = ["error", "user", "warning", "info"];
+const ANNOTATION_ORDER = ["error", "user", "warning", "info", "question"];
 
 export class CodeListing {
     private readonly annotations: Map<number, Annotation[]>;

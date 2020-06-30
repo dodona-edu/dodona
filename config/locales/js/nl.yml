@@ -97,6 +97,7 @@ nl:
         info: Opmerking
         user: Commentaar
         warning: Waarschuwing
+        question: Vraag
     code:
       copy-to-clipboard: Kopieer code naar klembord
     user_annotation:
@@ -112,6 +113,8 @@ nl:
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'
       not_released: Deze annotatie is nog niet zichtbaar voor studenten
     user_question:
-      update: Vraag updaten
-      send: Vraag versturen
+      update: 'Vraag updaten'
+      send: 'Vraag versturen'
+      edit: 'Vraag aanpassen'
       delete_confirm: 'Ben je zeker dat je deze vraag wilt verwijderen?'
+      resolve: 'Als behandeld markeren'

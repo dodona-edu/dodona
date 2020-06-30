@@ -26,7 +26,7 @@ class AnnotationsController < ApplicationController
     authorize @annotation
     respond_to do |format|
       if @annotation.save
-        format.json { render :show, status: :created, location: @annotation, as: Annotation}
+        format.json { render :show, status: :created, location: @annotation, as: Annotation }
       else
         format.json { render json: @annotation.errors, status: :unprocessable_entity }
       end
@@ -44,16 +44,26 @@ class AnnotationsController < ApplicationController
   end
 
   def in_progress
-    @annotation.mark_in_progress
-    respond_to do |format|
-      format.json { render :show, status: :ok, location: @annotation }
+    if @annotation.mark_in_progress
+      respond_to do |format|
+        format.json { render :show, status: :ok, location: @annotation }
+      end
+    else
+      respond_to do |format|
+        format.json { raise ActiveRecord::RecordInvalid }
+      end
     end
   end
 
   def resolved
-    @annotation.mark_resolved
-    respond_to do |format|
-      format.json { render :show, status: :ok, location: @annotation }
+    if @annotation.mark_resolved
+      respond_to do |format|
+        format.json { render :show, status: :ok, location: @annotation }
+      end
+    else
+      respond_to do |format|
+        format.json { raise ActiveRecord::RecordInvalid }
+      end
     end
   end
 

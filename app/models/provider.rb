@@ -28,6 +28,8 @@ class Provider < ApplicationRecord
   scope :smartschool, -> { where(type: Provider::Smartschool.name) }
 
   validates :mode, presence: true
+  validate :at_least_one_preferred
+  validate :at_most_one_preferred
 
   def self.for_sym(sym)
     sym = sym.to_sym
@@ -35,5 +37,42 @@ class Provider < ApplicationRecord
     return match if match.present?
 
     raise 'Unknown provider type.'
+  end
+
+  private
+
+  def at_least_one_preferred
+    return if institution.blank?
+
+    # Find the current preferred provider.
+    preferred_provider = Provider.find_by(institution: institution, mode: :prefer)
+
+    # Already a preferred provider.
+    return if preferred_provider.present?
+
+    # Current provider is preferred.
+    return if prefer?
+
+    # Invalid.
+    errors.add(:mode, 'must be preferred')
+  end
+
+  def at_most_one_preferred
+    return if institution.blank?
+
+    # Find the current preferred provider.
+    preferred_provider = Provider.find_by(institution: institution, mode: :prefer)
+
+    # No preferred provider yet.
+    return if preferred_provider.blank?
+
+    # Current provider is not preferred.
+    return unless prefer?
+
+    # Current provider is the preferred provider.
+    return if preferred_provider.id == id
+
+    # Invalid.
+    errors.add(:mode, 'may not be preferred')
   end
 end

@@ -21,4 +21,21 @@ class ProviderTest < ActiveSupport::TestCase
       create provider
     end
   end
+
+  test 'at least one preferred provider per institution' do
+    institution = create :institution
+
+    redirect_prov = build :provider, institution: institution, mode: :redirect
+    assert_not redirect_prov.valid?
+
+    create :provider, institution: institution
+  end
+
+  test 'at most one preferred provider per institution' do
+    institution = create :institution
+    create :provider, institution: institution
+
+    second = build :provider, institution: institution
+    assert_not second.valid?
+  end
 end

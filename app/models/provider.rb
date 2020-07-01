@@ -18,13 +18,14 @@
 class Provider < ApplicationRecord
   enum mode: { prefer: 0, redirect: 1 }
 
-  PROVIDERS = [Provider::GSuite, Provider::Office365, Provider::Saml, Provider::Smartschool].freeze
+  PROVIDERS = [Provider::GSuite, Provider::Lti, Provider::Office365, Provider::Saml, Provider::Smartschool].freeze
 
   belongs_to :institution, inverse_of: :providers
 
   has_many :identities, inverse_of: :provider, dependent: :destroy
 
   scope :gsuite, -> { where(type: Provider::GSuite.name) }
+  scope :lti, -> {where(type: Provider::Lti.name)}
   scope :office365, -> { where(type: Provider::Office365.name) }
   scope :saml, -> { where(type: Provider::Saml.name) }
   scope :smartschool, -> { where(type: Provider::Smartschool.name) }

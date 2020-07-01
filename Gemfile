@@ -71,7 +71,9 @@ gem 'ruby-saml', '~> 1.11.0'
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.0'
 gem 'omniauth-oauth2', '~> 1.6.0'
+gem 'omniauth_openid_connect', '~> 0.3.5'
 
+# Json webtokens
 gem 'jwt', '~> 2.2.1'
 
 # contact mail form
@@ -88,11 +90,11 @@ gem 'pretender', '~> 0.3.4'
 gem 'annotate', '~> 3.1.1'
 
 # Use Capistrano for deployment
+gem 'capistrano3-delayed-job', '~> 1.7.6'
 gem 'capistrano-passenger', '~> 0.2.0', group: :development
 gem 'capistrano-rails', '~> 1.6.1', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
-gem 'capistrano3-delayed-job', '~> 1.7.6'
 
 gem 'bcrypt_pbkdf'
 gem 'ed25519'

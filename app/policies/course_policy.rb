@@ -139,7 +139,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def questions?
-    course_admin? #&& !record.questions.empty?
+    course_admin?
   end
 
   def export?

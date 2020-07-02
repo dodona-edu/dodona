@@ -243,9 +243,9 @@ class Course < ApplicationRecord
 
   def correct_solutions(_options = {})
     Submission.where(status: 'correct', course: self)
-      .select(:exercise_id, :user_id)
-      .distinct
-      .count
+              .select(:exercise_id, :user_id)
+              .distinct
+              .count
   end
 
   invalidateable_instance_cacheable(:correct_solutions, ->(this, _options) { format(CORRECT_SOLUTIONS_CACHE_STRING, id: this.id) })
@@ -272,8 +272,8 @@ class Course < ApplicationRecord
   def scoresheet
     sorted_series = series
     sorted_users = subscribed_members.order('course_memberships.status ASC')
-                     .order(permission: :asc)
-                     .order(last_name: :asc, first_name: :asc)
+                                     .order(permission: :asc)
+                                     .order(last_name: :asc, first_name: :asc)
 
     hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).map do |series_info, user|
       scores = series_info[1]
@@ -305,11 +305,11 @@ class Course < ApplicationRecord
 
   def labels_csv
     sorted_course_memberships = course_memberships
-                                  .where.not(status: %i[unsubscribed pending])
-                                  .includes(:user)
-                                  .order(status: :asc)
-                                  .order(Arel.sql('users.permission ASC'))
-                                  .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
+                                .where.not(status: %i[unsubscribed pending])
+                                .includes(:user)
+                                .order(status: :asc)
+                                .order(Arel.sql('users.permission ASC'))
+                                .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
     data = CSV.generate(force_quotes: true) do |csv|
       csv << %w[id username last_name first_name email labels]
       sorted_course_memberships.each do |cm|

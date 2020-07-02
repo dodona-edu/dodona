@@ -426,10 +426,10 @@ class CoursesController < ApplicationController
 
   def copy_options
     params.require(:copy_options)
-      .permit(:base_id,
-              :admins,
-              :hide_series,
-              :exercises,
-              :deadlines)
+          .permit(:base_id,
+                  :admins,
+                  :hide_series,
+                  :exercises,
+                  :deadlines)
   end
 end

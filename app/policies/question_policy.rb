@@ -23,5 +23,4 @@ class QuestionPolicy < AnnotationPolicy
   def course_admin?
     user.course_admin? record.submission.course
   end
-
 end

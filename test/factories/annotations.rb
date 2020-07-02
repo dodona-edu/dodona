@@ -17,5 +17,8 @@ FactoryBot.define do
     annotation_text { 'This code does not contain the right parameters' }
     submission
     user
+
+    factory :question, class: 'Question' do
+    end
   end
 end

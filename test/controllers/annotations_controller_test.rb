@@ -148,4 +148,126 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
   end
+
+  test 'student can create a question' do
+    student = create :student
+    sign_in student
+    student_submission = create :submission, user: student
+
+    post submission_annotations_url(student_submission), params: {
+      annotation: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :created
+
+    post submission_annotations_url(student_submission), params: {
+      annotation: {
+        line_nr: nil,
+        annotation_text: 'Ik heb een vraag over mijn code - Globaal'
+      },
+      format: :json
+    }
+
+    assert_response :created
+
+    assert_equal student.questions.count, 2, 'Student must have been able to create 2 questions'
+  end
+
+  test 'students can only have 5 unanswered questions' do
+    student = create :student
+    sign_in student
+    student_submission = create :submission, user: student
+
+    create_list :question, 5, submission: student_submission, user: student
+
+    assert_equal student.questions.count, 5, 'Created questions are available'
+    assert_equal student.questions.where(question_state: :unanswered).count, 5, 'Created questions are unanswered'
+
+    post submission_annotations_url(student_submission), params: {
+      annotation: {
+        line_nr: nil,
+        annotation_text: 'Ik heb een vraag over mijn code - Globaal'
+      },
+      format: :json
+    }
+
+    assert_response :forbidden
+  end
+
+  test 'questions can evolve from unanswered to in progress or to answered' do
+    student = create :student
+    student_submission = create :submission, user: student
+
+    questions = create_list :question, 5, submission: student_submission, user: student
+
+    assert_equal student_submission.questions.where(question_state: :unanswered).count, 5, 'All questions should start unanswered'
+    assert_equal student_submission.questions.where(question_state: :in_progress).count, 0, 'All questions should start unanswered'
+    assert_equal student_submission.questions.where(question_state: :answered).count, 0, 'All questions should start unanswered'
+
+    questions.each do |question|
+      post in_progress_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response :ok
+    end
+    assert_equal student_submission.questions.where(question_state: :unanswered).count, 0, 'All questions should be transformed to in progress'
+    assert_equal student_submission.questions.where(question_state: :in_progress).count, 5, 'All questions should be transformed to in progress'
+    assert_equal student_submission.questions.where(question_state: :answered).count, 0, 'All questions should be transformed to in progress'
+
+    questions.each do |question|
+      post resolved_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response :ok
+    end
+    assert_equal student_submission.questions.where(question_state: :unanswered).count, 0, 'All questions should be transformed to answered'
+    assert_equal student_submission.questions.where(question_state: :in_progress).count, 0, 'All questions should be transformed to answered'
+    assert_equal student_submission.questions.where(question_state: :answered).count, 5, 'All questions should be transformed to answered'
+  end
+
+  test 'questions can evolve from unanswered to answered without going trough in progress -- In person explanation' do
+    student = create :student
+    student_submission = create :submission, user: student
+
+    questions = create_list :question, 5, submission: student_submission, user: student
+
+    assert_equal student_submission.questions.where(question_state: :unanswered).count, 5, 'All questions should start unanswered'
+    assert_equal student_submission.questions.where(question_state: :in_progress).count, 0, 'All questions should start unanswered'
+    assert_equal student_submission.questions.where(question_state: :answered).count, 0, 'All questions should start unanswered'
+
+    questions.each do |question|
+      post resolved_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response :ok
+    end
+    assert_equal student_submission.questions.where(question_state: :unanswered).count, 0, 'All questions should be transformed to answered'
+    assert_equal student_submission.questions.where(question_state: :in_progress).count, 0, 'All questions should be transformed to answered'
+    assert_equal student_submission.questions.where(question_state: :answered).count, 5, 'All questions should be transformed to answered'
+  end
+
+  test 'a student can mark their own questions answered' do
+    student = create :student
+    student_submission = create :submission, user: student
+
+    questions = create_list :question, 5, submission: student_submission, user: student
+
+    assert_equal student_submission.questions.where(question_state: :unanswered).count, 5, 'All questions should start unanswered'
+    assert_equal student_submission.questions.where(question_state: :in_progress).count, 0, 'All questions should start unanswered'
+    assert_equal student_submission.questions.where(question_state: :answered).count, 0, 'All questions should start unanswered'
+
+    sign_in student
+    questions.each do |question|
+      post resolved_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response :ok
+    end
+    assert_equal student_submission.questions.where(question_state: :unanswered).count, 0, 'All questions should be transformed to answered'
+    assert_equal student_submission.questions.where(question_state: :in_progress).count, 0, 'All questions should be transformed to answered'
+    assert_equal student_submission.questions.where(question_state: :answered).count, 5, 'All questions should be transformed to answered'
+  end
 end

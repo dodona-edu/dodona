@@ -162,6 +162,14 @@ nl:
         open: "Ontbeantwoorde vragen"
         in_progress: "Vragen worden beantwoord"
         closed: "Vragen werden beantwoord"
+        title: "Vragen"
+      table:
+        user: "Gebruiker"
+        question: "Vraag"
+      no_questions: "Er zijn geen vragen beschikbaar"
+      buttons:
+        to_in_progress: "Vraag in behandeling plaatsen"
+        to_resolved: "Vraag als behandeld markeren"
   submissions:
     show:
       questions:

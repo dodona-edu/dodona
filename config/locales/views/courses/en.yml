@@ -166,6 +166,14 @@ en:
         open: "Unanswered questions"
         in_progress: "Questions are being answered"
         closed: "Questions have been answered"
+        title: "Questions"
+      table:
+        user: "User"
+        question: "Question"
+      no_questions: "There are no questions available"
+      buttons:
+        to_in_progress: "Move question to in progress"
+        to_resolved: "Mark question as answered"
   submissions:
     show:
       questions:

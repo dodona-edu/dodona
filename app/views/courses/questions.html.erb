@@ -1,3 +1,7 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'course' %>
+<% end %>
+
 <div class="row">
   <div class="col-xs-12 col-sm-10 col-sm-offset-1">
     <div class="card">
@@ -6,16 +10,37 @@
       </div>
       <div class="card-supporting-text">
         <h4><%= t('.questions.open') %></h4>
-        <%= render 'question_table', questions: @open %>
-
+        <div class="question-table-open">
+          <%= render 'question_table', questions: @open %>
+        </div>
 
         <h4><%= t('.questions.in_progress') %></h4>
-        <%= render 'question_table', questions: @in_progress %>
-
+        <div class="question-table-in-progress">
+          <%= render 'question_table', questions: @in_progress %>
+        </div>
 
         <h4><%= t('.questions.closed') %></h4>
-        <%= render 'question_table', questions: @closed %>
+        <div class="question-table-closed">
+          <%= render 'question_table', questions: @closed %>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<script type="application/javascript">
+    const card = document.querySelector(".card");
+    const timer = window.dodona.questionsAutoReload(card, 10000, (element, counter) => {
+        fetch("<% questions_course_path @course %>", {
+            headers: {
+                "accept": "text/javascript",
+                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                "x-requested-with": "XMLHttpRequest",
+            },
+            credentials: "same-origin",
+        })
+            .then(req => req.text())
+            .then(resp => eval(resp));
+    });
+    timer.toggle(1);
+</script>

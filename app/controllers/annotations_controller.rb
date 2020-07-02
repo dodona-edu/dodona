@@ -44,25 +44,30 @@ class AnnotationsController < ApplicationController
   end
 
   def in_progress
-    if @annotation.mark_in_progress
-      respond_to do |format|
-        format.json { render :show, status: :ok, location: @annotation }
-      end
-    else
-      respond_to do |format|
-        format.json { raise ActiveRecord::RecordInvalid }
+    @annotation.mark_in_progress
+    respond_to do |format|
+      format.json { render :show, status: :ok, location: @annotation }
+      format.js do
+        @open_questions = @annotation.submission.course.open_questions
+        @in_progress_questions = @annotation.submission.course.in_progress_questions
+        render 'annotations/in_progress', status: :ok
       end
     end
   end
 
   def resolved
-    if @annotation.mark_resolved
-      respond_to do |format|
-        format.json { render :show, status: :ok, location: @annotation }
-      end
-    else
-      respond_to do |format|
-        format.json { raise ActiveRecord::RecordInvalid }
+    orig_state = @annotation.question_state
+    @annotation.mark_resolved
+    respond_to do |format|
+      format.json { render :show, status: :ok, location: @annotation }
+      format.js do
+        if orig_state == :unanswered
+          @open_questions = @annotation.submission.course.open_questions
+        else
+          @in_progress_questions = @annotation.submission.course.in_progress_questions
+        end
+        @closed_questions = @annotation.submission.course.closed_questions
+        render 'annotations/resolved', status: :ok
       end
     end
   end

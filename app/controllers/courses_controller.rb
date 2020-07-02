@@ -94,10 +94,10 @@ class CoursesController < ApplicationController
         # rubocop:disable Style/MultilineTernaryOperator
         Series.new(
           series_memberships: @copy_options[:exercises] ?
-                                  s.series_memberships.map do |sm|
-                                    SeriesMembership.new(activity: sm.activity, order: sm.order)
-                                  end :
-                                  [],
+                                s.series_memberships.map do |sm|
+                                  SeriesMembership.new(activity: sm.activity, order: sm.order)
+                                end :
+                                [],
           name: s.name,
           description: s.description,
           visibility: @copy_options[:hide_series] ? :hidden : s.visibility,
@@ -191,9 +191,26 @@ class CoursesController < ApplicationController
   end
 
   def questions
+    authorize @course, :questions?
+    @title = I18n.t('courses.questions.questions.title')
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.questions.questions.title'), '#']]
+    @course_labels = CourseLabel.where(course: @course)
+
     @open = @course.open_questions
     @in_progress = @course.in_progress_questions
     @closed = @course.closed_questions
+
+    respond_to do |format|
+      format.js do
+        render partial: 'reload_questions_table', locals: { open_questions: @open, in_progress_questions: @in_progress, closed_questions: @closed }
+      end
+      format.html do
+        render 'questions'
+      end
+      format.json do
+        @questions = @course.questions
+      end
+    end
   end
 
   def update_membership
@@ -409,10 +426,10 @@ class CoursesController < ApplicationController
 
   def copy_options
     params.require(:copy_options)
-          .permit(:base_id,
-                  :admins,
-                  :hide_series,
-                  :exercises,
-                  :deadlines)
+      .permit(:base_id,
+              :admins,
+              :hide_series,
+              :exercises,
+              :deadlines)
   end
 end

@@ -1,9 +1,38 @@
-<table class="table">
-  <tbody>
-  <% questions.each do |question| %>
+<% unless questions.nil? or questions.empty? %>
+  <table class="table activity-table table-resource">
+    <thead>
     <tr>
-      <th><%= question.question_text %></th>
+      <th><%= t('courses.questions.table.user') %></th>
+      <th><%= t('courses.questions.table.question') %></th>
+      <th></th>
     </tr>
-  <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+    <% questions.each do |question| %>
+      <tr class="question">
+        <td class="user-full-name"><%= question.user.full_name %></td>
+        <td class="text" title="<%= question.question_text %>"><%= question.question_text %></td>
+        <td class="buttons">
+          <% if question.unanswered? %>
+            <%= button_to in_progress_annotation_path(question), remote: true do %>
+              <i class="mdi mdi-chevron-right mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
+            <% end %>
+          <% end %>
+          <% if question.unanswered? or question.in_progress? %>
+            <%= button_to resolved_annotation_path(question), remote: true do %>
+              <i class="mdi mdi-chevron-right mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
+            <% end %>
+          <% end %>
+        </td>
+        <td class="link">
+          <%= link_to submission_path(question.submission, anchor: 'code'), class: 'btn btn-icon' do %>
+            <i class="mdi mdi-chevron-right mdi-18"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <%= t('courses.questions.no_questions') %>
+<% end %>

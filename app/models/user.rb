@@ -100,6 +100,7 @@ class User < ApplicationRecord
            source: :repository
 
   has_many :annotations, dependent: :restrict_with_error
+  has_many :questions, dependent: :restrict_with_error
 
   devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 saml smartschool]
 

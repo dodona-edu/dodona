@@ -1,4 +1,4 @@
-function mouse(element, delay, callback, pollingInterval= 10): object {
+function timerWithoutUserInteraction(element, delay, callback, pollingInterval= 10): object {
     element.pollingInterval = pollingInterval;
 
     // Counter Object
@@ -44,6 +44,6 @@ function mouse(element, delay, callback, pollingInterval= 10): object {
     return element.ms;
 }
 
-export { mouse };
+export { timerWithoutUserInteraction };
 
 

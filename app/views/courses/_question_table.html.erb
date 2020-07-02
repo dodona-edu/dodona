@@ -14,13 +14,13 @@
         <td class="text" title="<%= question.question_text %>"><%= question.question_text %></td>
         <td class="buttons">
           <% if question.unanswered? %>
-            <%= button_to in_progress_annotation_path(question), remote: true do %>
-              <i class="mdi mdi-chevron-right mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
+            <%= link_to in_progress_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
+              <i class="mdi mdi-progress-check mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
             <% end %>
           <% end %>
           <% if question.unanswered? or question.in_progress? %>
-            <%= button_to resolved_annotation_path(question), remote: true do %>
-              <i class="mdi mdi-chevron-right mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
+            <%= link_to resolved_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
+              <i class="mdi mdi-check mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
             <% end %>
           <% end %>
         </td>

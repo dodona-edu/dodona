@@ -33,11 +33,11 @@ if Rails.env.development?
 
   puts 'Creating users'
 
-  zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus, institution: ugent, token: 'zeus'
+  zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus, institution: nil, token: 'zeus'
 
-  staff = User.create username: 'staff', first_name: 'Stijn', last_name: 'Taff', email: 'stijn.taff@ugent.be', permission: :staff, institution: ugent, token: 'staff'
+  staff = User.create username: 'staff', first_name: 'Stijn', last_name: 'Taff', email: 'stijn.taff@ugent.be', permission: :staff, institution: nil, token: 'staff'
 
-  jelix = User.create username: 'jvdrfeu', first_name: 'Jelix', last_name: 'Vanderfeught', email: 'jelix.vanderfeught@ugent.be', permission: :student, institution: ugent, token: 'student'
+  jelix = User.create username: 'jvdrfeu', first_name: 'Jelix', last_name: 'Vanderfeught', email: 'jelix.vanderfeught@ugent.be', permission: :student, institution: nil, token: 'student'
 
   mart = User.create username: 'mbesuere', first_name: 'Mart', last_name: 'Besuere', email: 'mart.besuere@ugent.be', permission: :student, institution: ugent
 
@@ -58,9 +58,11 @@ if Rails.env.development?
   puts 'Creating identities'
 
   User.find_each do |user|
-    Identity.create provider: user.institution.providers.first,
-                    identifier: user.username,
-                    user: user
+    if user.institution.present?
+      Identity.create provider: user.institution.providers.first,
+                      identifier: user.username,
+                      user: user
+    end
   end
 
   puts 'Creating API tokens'
@@ -122,7 +124,7 @@ if Rails.env.development?
   big_activity_repo = Repository.create name: 'A lot of python activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
 
   Dir.glob("#{big_activity_repo.full_path}/*")
-      .select {|f| File.directory? f}
+      .select { |f| File.directory? f }
       .each do |dir|
     20.times do |i|
       FileUtils.cp_r(dir, dir + i.to_s)

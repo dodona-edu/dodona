@@ -5,9 +5,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # ==> Failure route.
 
   def failure
-    flash_failure request.params['error_message'] \
-                                                   || request.params['error_description'] \
-                                                   || I18n.t('devise.omniauth_callbacks.unknown_failure')
+    flash_failure(request.params['error_message'] ||
+                      request.params['error_description'] ||
+                      I18n.t('devise.omniauth_callbacks.unknown_failure'))
     redirect_to root_path
   end
 
@@ -51,7 +51,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def try_login!
     # Ensure the preferred provider is used.
     # TODO add link providers.
-    # return redirect_to_preferred_provider! unless provider.prefer?
+    return redirect_to_preferred_provider! unless provider.prefer?
 
     # Find the identity.
     identity, user = find_identity_and_user
@@ -69,7 +69,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     return redirect_with_errors!(user) if user.errors.any?
 
     # User successfully updated, finish the authentication procedure.
-    sign_in_and_redirect user, event: :authentication
+    sign_in user, event: :authentication
+    redirect_to_target!(user)
   end
 
   # ==> Utilities.
@@ -140,6 +141,10 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     redirect_to root_path
   end
 
+  def redirect_to_target!(user)
+    redirect_to auth_target || after_sign_in_path_for(user)
+  end
+
   # ==> Shorthands.
 
   def auth_hash
@@ -154,6 +159,16 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     return nil if auth_hash.blank?
 
     auth_hash.provider.to_sym
+  end
+
+  def auth_redirect_params
+    auth_hash.extra[:redirect_params].to_h || {}
+  end
+
+  def auth_target
+    return nil if auth_hash.extra[:target].blank?
+
+    "#{auth_hash.extra[:target]}?#{auth_redirect_params.to_param}"
   end
 
   def auth_uid

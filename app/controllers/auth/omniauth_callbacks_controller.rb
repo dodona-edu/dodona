@@ -1,18 +1,4 @@
 class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  # Saml entity id for UGent.
-  UGENT_SAML_ENTITY_ID = 'https://identity.ugent.be/simplesaml/saml2/idp/metadata.php'.freeze
-
-  # Tenant ID's of known Office365 organisations
-  # who should use another sign in method
-  # TODO refactor using redirect providers
-  #      https://github.com/dodona-edu/dodona/issues/2067
-  UGENT_TID = 'd7811cde-ecef-496c-8f91-a1786241b99c'.freeze
-  WAREGEM_TID = '9fdf506a-3be0-4f07-9e03-908ceeae50b4'.freeze
-  TSM_TID = 'https://tsm.smartschool.be'.freeze
-  CVO_TSM_TID = 'https://cvotsm.smartschool.be'.freeze
-  MAERLANT_TID = 'https://kabl-sgr25.smartschool.be'.freeze
-  BLACKLIST = [UGENT_TID, WAREGEM_TID, TSM_TID, CVO_TSM_TID, MAERLANT_TID].freeze
-
   # Disable CSRF since the token information is lost.
   skip_before_action :verify_authenticity_token
 
@@ -20,8 +6,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def failure
     flash_failure request.params['error_message'] \
-                                                  || request.params['error_description'] \
-                                                  || I18n.t('devise.omniauth_callbacks.unknown_failure')
+                                                   || request.params['error_description'] \
+                                                   || I18n.t('devise.omniauth_callbacks.unknown_failure')
     redirect_to root_path
   end
 
@@ -50,7 +36,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def generic_oauth
     return provider_missing! if oauth_provider_id.blank?
-    return provider_blacklisted! if BLACKLIST.include?(oauth_provider_id)
 
     # Find the provider for the current institution. If no provider exists yet,
     # a new one will be created.
@@ -60,6 +45,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def try_login!
+    # Ensure the preferred provider is used.
+    return redirect_to_preferred_provider! unless provider.prefer?
+
     # Find the identity.
     identity, user = find_identity_and_user
     if identity.blank?
@@ -123,6 +111,14 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     set_flash_message :notice, :failure, kind: auth_provider_type || 'OAuth2', reason: reason
   end
 
+  def redirect_to_preferred_provider!
+    # Find the preferred provider for the current institution.
+    preferred_provider = provider.institution.preferred_provider
+
+    # Redirect to the provider.
+    redirect_to omniauth_authorize_path(:user, preferred_provider.class.sym, provider: preferred_provider)
+  end
+
   def redirect_with_errors!(resource)
     logger.info "User was unable to login because of reason: '#{resource.errors.full_messages.to_sentence}'. More info about the request below:\n" \
         "#{auth_hash.pretty_inspect}"
@@ -137,10 +133,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def redirect_with_flash!(message)
     flash_failure message
     redirect_to root_path
-  end
-
-  def ugent_saml_provider
-    Provider::Saml.find_by(entity_id: UGENT_SAML_ENTITY_ID)
   end
 
   # ==> Shorthands.
@@ -198,23 +190,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
                      .institution_creation_failed
                      .deliver_later
-  end
-
-  def provider_blacklisted!
-    if oauth_provider_id == WAREGEM_TID
-      # College Waregem uses two emails,
-      # but we only allow <name>@sgpaulus.eu
-      flash_failure I18n.t('auth.sign_in.blacklist.sgpaulus')
-      redirect_to sign_in_path
-    elsif oauth_provider_id == UGENT_TID
-      # If an UGent-user logs in using Office365,
-      # redirect to saml login
-      redirect_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: ugent_saml_provider)
-    elsif oauth_provider_id == TSM_TID || oauth_provider_id == CVO_TSM_TID
-      redirect_to omniauth_authorize_path(:user, Provider::Office365.sym)
-    elsif oauth_provider_id == MAERLANT_TID
-      redirect_to omniauth_authorize_path(:user, Provider::GSuite.sym)
-    end
   end
 
   def provider_missing!

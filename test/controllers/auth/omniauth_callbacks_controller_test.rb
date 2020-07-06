@@ -3,9 +3,6 @@ require 'test_helper'
 class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
 
-  UGENT_O365_IDENTIFIER = 'd7811cde-ecef-496c-8f91-a1786241b99c'.freeze
-  UGENT_SAML_ENTITY_ID = 'https://identity.ugent.be/simplesaml/saml2/idp/metadata.php'.freeze
-
   def omniauth_mock_identity(identity, params = {})
     # Generic hash.
     auth_hash = {
@@ -111,21 +108,23 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'ugent user trying to login with office365 should be redirected to SAML login' do
+  test 'user trying to login with redirect provider should be redirected to preferred' do
     # Setup.
-    provider = create :saml_provider, entity_id: UGENT_SAML_ENTITY_ID
-    user = create :user
-    identity = create :identity, provider: provider, user: user
+    institution = create :institution
+    preferred_provider = create :provider, institution: institution
+    redirect_provider = create :office365_provider, institution: institution, mode: :redirect
+    user = build :user
+    identity = build :identity, provider: redirect_provider, user: user
     omniauth_mock_identity identity,
-                           provider: Provider::Office365.sym,
+                           provider: redirect_provider.class.sym,
                            info: {
-                             institution: UGENT_O365_IDENTIFIER
+                             institution: redirect_provider.identifier
                            }
 
-    get omniauth_url(Provider::Office365.new)
+    get omniauth_url(redirect_provider)
     follow_redirect!
 
-    assert_redirected_to %r{/users/auth/saml/}
+    assert_redirected_to %r{/users/auth/#{preferred_provider.class.sym}/}
     assert_nil @controller.current_user
   end
 

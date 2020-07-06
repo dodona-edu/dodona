@@ -7,11 +7,13 @@
 #  institution_id :bigint           not null
 #  identifier     :string(255)
 #  certificate    :text(65535)
+#  entity_id      :string(255)
 #  slo_url        :string(255)
 #  sso_url        :string(255)
-#  saml_entity_id :string(255)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  mode           :integer          default("prefer"), not null
+#  active         :boolean          default(TRUE)
 #
 class Provider::Saml < Provider
   validates :certificate, :entity_id, :sso_url, :slo_url, presence: true

@@ -31,6 +31,10 @@ class Institution < ApplicationRecord
 
   scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
 
+  def preferred_provider
+    Provider.find_by(institution: self, mode: :prefer)
+  end
+
   def uses_smartschool?
     providers.any? { |provider| provider.type == Provider::Smartschool.name }
   end

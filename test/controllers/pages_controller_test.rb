@@ -27,12 +27,6 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should get sign in page' do
-    get sign_in_url
-    assert_response :success
-    assert_template :sign_in_page
-  end
-
   test 'should get contact page' do
     get contact_url
     assert_response :success

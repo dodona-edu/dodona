@@ -24,21 +24,20 @@ module OmniAuth
         private
 
         def configure
-          # Obtain the id of the institution from the parameters.
+          # Obtain the id of the provider from the parameters.
           params = Rack::Request.new(@env).params.symbolize_keys
-          id = params[:institution]
+          id = params[:provider]
           return {} if id.blank?
 
-          # Obtain the saml parameters for the institution.
-          institution = Institution.find_by(id: id)
-          return failure! if institution.blank?
+          # Obtain the saml parameters for the provider.
+          provider = Provider::Saml.find_by(id: id)
+          return failure! if provider.blank?
 
-          OmniAuth::Strategies::SAML::Settings.for_institution(institution)
+          OmniAuth::Strategies::SAML::Settings.for_provider(provider)
         end
 
         def failure!
-          # TODO redirect
-          raise "Invalid institution."
+          raise "Invalid provider."
         end
       end
     end

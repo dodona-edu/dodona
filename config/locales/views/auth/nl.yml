@@ -1,0 +1,13 @@
+nl:
+  auth:
+    sign_in:
+      select-institution: "Selecteer je onderwijsinstelling"
+      sign_in: "Aanmelden"
+      sign-in-with-smartschool: "Inloggen met Smartschool"
+      sign-in-with-office-365: "Inloggen met Office 365"
+      sign-in-with-g-suite: "Inloggen met G Suite"
+      blacklist:
+        sgpaulus: Use your sgpaulus-account (firstname.lastname@sgpaulus.eu) to sign in to Dodona.
+      errors:
+        institution-creation: Er ging iets mis tijdens het aanmaken van een nieuwe onderwijsinstelling.
+        missing-provider: Enkel accounts die gelinkt zijn aan een onderwijsinstelling worden ondersteund.

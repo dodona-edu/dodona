@@ -174,6 +174,7 @@ export class UserAnnotation extends Annotation {
 
     protected async progress(): Promise<void> {
         return this.changeQuestionState(`/annotations/${this.id}/in_progress`,
+            // eslint-disable-next-line @typescript-eslint/camelcase
             json => this.permissions.in_progressable = json.permission.in_progressable,
             () => !this.permissions.in_progressable,
             "a.question-control-button.question-in_progress");

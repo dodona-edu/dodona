@@ -6,7 +6,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   def omniauth_mock_identity(identity, params = {})
     # Generic hash.
     auth_hash = {
-      provider: identity.provider.class.sym,
+      provider: identity.provider.class.sym.to_s,
       uid: identity.identifier,
       info: {
         email: identity.user.email,

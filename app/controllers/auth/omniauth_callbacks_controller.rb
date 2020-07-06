@@ -148,7 +148,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def auth_provider_type
     return nil if auth_hash.blank?
 
-    auth_hash.provider
+    auth_hash.provider.to_sym
   end
 
   def auth_uid

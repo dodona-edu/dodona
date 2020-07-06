@@ -166,6 +166,8 @@ nl:
       table:
         user: "Gebruiker"
         question: "Vraag"
+        time_since: "Tijd verstreken sinds stellen vraag"
+        exercise: "Oefening"
       no_questions: "Er zijn geen vragen beschikbaar"
       buttons:
         to_in_progress: "Vraag in behandeling plaatsen"

@@ -170,6 +170,8 @@ en:
       table:
         user: "User"
         question: "Question"
+        time_since: "Time since asking question"
+        exercise: "Exercise"
       no_questions: "There are no questions available"
       buttons:
         to_in_progress: "Move question to in progress"

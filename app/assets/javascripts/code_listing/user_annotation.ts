@@ -91,7 +91,7 @@ export class UserAnnotation extends Annotation {
     }
 
     public static async getAll(submission: number,
-        editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
+                               editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
         const response = await fetch(`/submissions/${submission}/annotations.json`);
         const json = await response.json();
         return json.map(data => new UserAnnotation(data, editFn));
@@ -184,9 +184,15 @@ export class UserAnnotation extends Annotation {
                 "Accept": "application/json",
             }
         }).then(async response => {
-            const json = await response.json();
-            const newAnnotation: Annotation = new UserAnnotation(json, this.editor);
-            window.dodona.codeListing.updateAnnotation(this, newAnnotation);
+            if (response.ok) {
+                const json = await response.json();
+                const newAnnotation: Annotation = new UserAnnotation(json, this.editor);
+                window.dodona.codeListing.updateAnnotation(this, newAnnotation);
+            } else if (response.status === 404) {
+                // Question was deleted
+                window.dodona.codeListing.removeAnnotation(this);
+                this.__html.remove();
+            }
         });
     }
 }

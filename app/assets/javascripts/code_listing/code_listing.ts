@@ -86,7 +86,7 @@ export class CodeListing {
     // Annotation management ///////////////////////////////////////////////////
     // /////////////////////////////////////////////////////////////////////////
 
-    private addAnnotation(annotation: Annotation): void {
+    public addAnnotation(annotation: Annotation): void {
         const line = annotation.global ? 0 : annotation.line;
 
         if (!this.annotations.has(line)) {
@@ -156,7 +156,7 @@ export class CodeListing {
         this.updateViewState();
     }
 
-    private updateAnnotation(original: Annotation, updated: Annotation): void {
+    public updateAnnotation(original: Annotation, updated: Annotation): void {
         const origLine = original.global ? 0 : original.line;
         const updLine = updated.global ? 0 : updated.line;
 

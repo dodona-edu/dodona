@@ -166,39 +166,27 @@ export class UserAnnotation extends Annotation {
     }
 
     protected async resolve(): Promise<void> {
-        return this.changeQuestionState(`/annotations/${this.id}/resolved`,
-            json => this.permissions.resolvable = json.permission.resolvable,
-            () => !this.permissions.resolvable,
-            "a.question-control-button.question-resolve");
+        return this.changeQuestionState("resolved");
     }
 
     protected async progress(): Promise<void> {
-        return this.changeQuestionState(`/annotations/${this.id}/in_progress`,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            json => this.permissions.in_progressable = json.permission.in_progressable,
-            () => !this.permissions.in_progressable,
-            "a.question-control-button.question-in_progress");
+        return this.changeQuestionState("in_progress");
     }
 
     protected async unresolve(): Promise<void> {
-        return this.changeQuestionState(`/annotations/${this.id}/unresolve`,
-            json => this.permissions.unresolvable = json.permission.unresolvable,
-            () => !this.permissions.unresolvable,
-            "a.question-control-button.question-unresolve");
+        return this.changeQuestionState("unresolve");
     }
 
-    protected changeQuestionState(url, stateChange, condition, cssSelector): Promise<void> {
-        return fetch(url, {
+    protected changeQuestionState(key): Promise<void> {
+        return fetch(`/annotations/${this.id}/${key}`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
             }
         }).then(async response => {
             const json = await response.json();
-            stateChange(json);
-            if (condition()) {
-                this.__html.querySelector(cssSelector).remove();
-            }
+            const newAnnotation: Annotation = new UserAnnotation(json, this.editor);
+            window.dodona.codeListing.updateAnnotation(this, newAnnotation);
         });
     }
 }

@@ -22,4 +22,12 @@ class InstitutionTest < ActiveSupport::TestCase
   test 'institution factory' do
     create :institution
   end
+
+  test 'get prefered provider' do
+    institution = create :institution
+    prefered = create :provider, institution: institution
+    create_list :provider, 4, institution: institution, mode: :redirect
+
+    assert prefered, institution.preferred_provider
+  end
 end

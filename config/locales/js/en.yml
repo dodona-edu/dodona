@@ -118,4 +118,7 @@ en:
       edit: 'Edit question'
       delete_confirm: 'Are you sure you want to delete this question?'
       resolve: 'Mark as resolved'
+      in_progress: 'Mark question as in progress'
+      unresolve: 'Mark as unresolved'
+
 

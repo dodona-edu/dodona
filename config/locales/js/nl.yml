@@ -118,3 +118,5 @@ nl:
       edit: 'Vraag aanpassen'
       delete_confirm: 'Ben je zeker dat je deze vraag wilt verwijderen?'
       resolve: 'Als behandeld markeren'
+      in_progress: 'In behandeling markeren'
+      unresolve: 'Vraag terug open stellen'

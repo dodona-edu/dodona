@@ -167,6 +167,7 @@ Rails.application.routes.draw do
 
     resources :annotations, format: :json do
       member do
+        post 'unresolve'
         post 'in_progress'
         post 'resolved'
       end

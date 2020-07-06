@@ -6,17 +6,21 @@ class QuestionPolicy < AnnotationPolicy
     record.submission.user == user && unanswered_question_count < 5 && total_question_count < 15
   end
 
-  def resolvable?
-    record.user == user && !record.answered?
-  end
-
-  def resolved?
-    record.user == user || course_admin?
+  def unresolve?
+    course_admin? && !record.unanswered?
   end
 
   def in_progress?
-    course_admin?
+    course_admin? && !record.in_progress?
   end
+
+  def resolved?
+    return true if course_admin? && !record.answered?
+    return false if record.user != user
+
+    record.unanswered?
+  end
+
 
   private
 

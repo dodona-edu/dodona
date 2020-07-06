@@ -16,6 +16,8 @@ interface UserAnnotationUserData {
 interface UserAnnotationPermissionData {
     update: boolean;
     destroy: boolean;
+    unresolvable: boolean;
+    in_progressable: boolean;
     resolvable: boolean;
 }
 
@@ -110,6 +112,14 @@ export class UserAnnotation extends Annotation {
         return this.permissions.resolvable;
     }
 
+    public get inProgressable(): boolean {
+        return this.permissions.in_progressable;
+    }
+
+    public get unresolvable(): boolean {
+        return this.permissions.unresolvable;
+    }
+
     public get rawText(): string {
         return this.__rawText;
     }
@@ -156,16 +166,38 @@ export class UserAnnotation extends Annotation {
     }
 
     protected async resolve(): Promise<void> {
-        return fetch(`/annotations/${this.id}/resolved`, {
+        return this.changeQuestionState(`/annotations/${this.id}/resolved`,
+            json => this.permissions.resolvable = json.permission.resolvable,
+            () => !this.permissions.resolvable,
+            "a.question-control-button.question-resolve");
+    }
+
+    protected async progress(): Promise<void> {
+        return this.changeQuestionState(`/annotations/${this.id}/in_progress`,
+            json => this.permissions.in_progressable = json.permission.in_progressable,
+            () => !this.permissions.in_progressable,
+            "a.question-control-button.question-in_progress");
+    }
+
+    protected async unresolve(): Promise<void> {
+        return this.changeQuestionState(`/annotations/${this.id}/unresolve`,
+            json => this.permissions.unresolvable = json.permission.unresolvable,
+            () => !this.permissions.unresolvable,
+            "a.question-control-button.question-unresolve");
+    }
+
+    protected changeQuestionState(url, stateChange, condition, cssSelector): Promise<void> {
+        return fetch(url, {
             method: "POST",
-        })
-            .then(async response => {
-                const json = await response.json();
-                this.permissions.resolvable = json.permission.resolvable;
-                if (!this.permissions.resolvable) {
-                    const resolveButton = this.__html.querySelector("a.question-control-button.question-resolve");
-                    resolveButton.remove();
-                }
-            });
+            headers: {
+                "Accept": "application/json",
+            }
+        }).then(async response => {
+            const json = await response.json();
+            stateChange(json);
+            if (condition()) {
+                this.__html.querySelector(cssSelector).remove();
+            }
+        });
     }
 }

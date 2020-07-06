@@ -27,12 +27,17 @@
           <%= time_ago_in_words question.created_at %>
         </td>
         <td class="buttons">
-          <% if question.unanswered? %>
+          <% if policy(question).unresolve? %>
+            <%= link_to in_progress_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
+              <i class="mdi mdi-progress-close mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
+            <% end %>
+          <% end %>
+          <% if policy(question).in_progress? %>
             <%= link_to in_progress_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
               <i class="mdi mdi-progress-check mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
             <% end %>
           <% end %>
-          <% if question.unanswered? or question.in_progress? %>
+          <% if policy(question).resolved? %>
             <%= link_to resolved_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
               <i class="mdi mdi-check mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
             <% end %>

@@ -1,6 +1,6 @@
 class AnnotationsController < ApplicationController
   before_action :set_submission, only: %i[create]
-  before_action :set_annotation, only: %i[show update destroy in_progress resolved]
+  before_action :set_annotation, only: %i[show update destroy unresolve in_progress resolved]
 
   has_scope :by_submission, as: :submission_id
   has_scope :by_user, as: :user_id
@@ -43,32 +43,27 @@ class AnnotationsController < ApplicationController
     end
   end
 
+  def unresolve
+    @annotation.mark_unresolved
+    respond_to do |format|
+      format.json { render :show, status: :ok, location: @annotation }
+      format.js(&method(:reload_question_table))
+    end
+  end
+
   def in_progress
     @annotation.mark_in_progress
     respond_to do |format|
       format.json { render :show, status: :ok, location: @annotation }
-      format.js do
-        @open_questions = @annotation.submission.course.open_questions
-        @in_progress_questions = @annotation.submission.course.in_progress_questions
-        render 'annotations/in_progress', status: :ok
-      end
+      format.js(&method(:reload_question_table))
     end
   end
 
   def resolved
-    orig_state = @annotation.question_state
     @annotation.mark_resolved
     respond_to do |format|
       format.json { render :show, status: :ok, location: @annotation }
-      format.js do
-        if orig_state == :unanswered
-          @open_questions = @annotation.submission.course.open_questions
-        else
-          @in_progress_questions = @annotation.submission.course.in_progress_questions
-        end
-        @closed_questions = @annotation.submission.course.closed_questions
-        render 'annotations/resolved', status: :ok
-      end
+      format.js(&method(:reload_question_table))
     end
   end
 
@@ -78,6 +73,13 @@ class AnnotationsController < ApplicationController
   end
 
   private
+
+  def reload_question_table
+    @open_questions = @annotation.submission.course.open_questions
+    @in_progress_questions = @annotation.submission.course.in_progress_questions
+    @closed_questions = @annotation.submission.course.closed_questions
+    render partial: 'courses/reload_questions_table', status: :ok, locals: { open_questions: @open, in_progress_questions: @in_progress, closed_questions: @closed }
+  end
 
   def set_submission
     @submission = Submission.find_by(id: params[:submission_id])

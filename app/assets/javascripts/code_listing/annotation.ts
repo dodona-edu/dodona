@@ -37,6 +37,14 @@ export abstract class Annotation {
         // Do nothing
     }
 
+    protected async progress(): Promise<void> {
+        // Do nothing
+    }
+
+    protected async unresolve(): Promise<void> {
+        // Do nothing
+    }
+
     public get global(): boolean {
         return this.line === null;
     }
@@ -89,6 +97,32 @@ export abstract class Annotation {
             header.appendChild(link);
         }
 
+        if (this.inProgressable) {
+            const link = document.createElement("a");
+            link.addEventListener("click", () => this.progress());
+            link.classList.add("btn", "btn-icon", "question-control-button", "question-in_progress");
+            link.title = I18n.t("js.user_question.in_progress");
+
+            const icon = document.createElement("i");
+            icon.classList.add("mdi", "mdi-progress-check");
+            link.appendChild(icon);
+
+            header.appendChild(link);
+        }
+
+        if (this.unresolvable) {
+            const link = document.createElement("a");
+            link.addEventListener("click", () => this.unresolve());
+            link.classList.add("btn", "btn-icon", "question-control-button", "question-unresolve");
+            link.title = I18n.t("js.user_question.unresolve");
+
+            const icon = document.createElement("i");
+            icon.classList.add("mdi", "mdi-progress-close");
+            link.appendChild(icon);
+
+            header.appendChild(link);
+        }
+
         return header;
     }
 
@@ -128,6 +162,14 @@ export abstract class Annotation {
     }
 
     public get resolvable(): boolean {
+        return false;
+    }
+
+    public get inProgressable(): boolean {
+        return false;
+    }
+
+    public get unresolvable(): boolean {
         return false;
     }
 

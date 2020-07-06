@@ -35,6 +35,10 @@ class Annotation < ApplicationRecord
     'annotations/annotation'
   end
 
+  def mark_unresolved
+    raise ActionController::MethodNotAllowed
+  end
+
   def mark_in_progress
     raise ActionController::MethodNotAllowed
   end

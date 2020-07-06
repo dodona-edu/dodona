@@ -116,6 +116,10 @@
         .dot-error {
           background-color: @danger-500;
         }
+
+        .dot-question {
+          background-color: @question-500;
+        }
       }
 
       // General lighter background on the right side
@@ -225,8 +229,12 @@
     }
   }
 
+  .annotation.question, .annotation.user {
+    border-left-width: 5px;
+  }
+
   .annotation.question {
-    border-left-color: @danger-200;
+    border-left-color: @question-500;
   }
 
   .annotation.error {
@@ -243,7 +251,6 @@
 
   .annotation.user {
     border-left-color: @success-500;
-    border-left-width: 5px;
   }
 
   .annotation.machine-annotation {

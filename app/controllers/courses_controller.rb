@@ -196,7 +196,7 @@ class CoursesController < ApplicationController
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.questions.questions.title'), '#']]
     @course_labels = CourseLabel.where(course: @course)
 
-    @open = @course.open_questions
+    @open = @course.open_questions.paginate(page: parse_pagination_param(params[:page]))
     @in_progress = @course.in_progress_questions
     @closed = @course.closed_questions
 

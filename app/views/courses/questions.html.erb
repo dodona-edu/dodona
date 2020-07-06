@@ -13,6 +13,9 @@
         <div class="question-table-open">
           <%= render 'question_table', questions: @open %>
         </div>
+        <% if @open.try(:total_pages) %>
+          <center><%= page_navigation_links @open, false, "courses", action: 'questions' %></center>
+        <% end %>
 
         <h4><%= t('.questions.in_progress') %></h4>
         <div class="question-table-in-progress">

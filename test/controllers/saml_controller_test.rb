@@ -7,26 +7,13 @@ class SamlControllerTest < ActionDispatch::IntegrationTest
 
     sign_in user
 
-    delete destroy_user_session_path(idp: institution.short_name)
+    delete users_sign_out_path
 
-    assert_equal institution.slo_url, @response.location.split('?').first
-    assert_nil @controller.current_user
-  end
-
-  test 'logout without saml (using oauth)' do
-    institution = create :smartschool_institution
-    user = create :user, institution: institution
-
-    sign_in user
-
-    delete destroy_user_session_path
-
-    assert_redirected_to root_url
     assert_nil @controller.current_user
   end
 
   test 'SAML metadata' do
-    get metadata_user_session_path
+    get users_saml_metadata_path
     assert_response :success
   end
 end

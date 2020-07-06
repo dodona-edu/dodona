@@ -33,20 +33,6 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_template :sign_in_page
   end
 
-  test 'should redirect to SAML sign in' do
-    institution = create(:institution)
-    get sign_in_url(idp: institution.short_name)
-    assert_response :redirect
-    assert_redirected_to new_user_session_url(idp: institution.short_name)
-  end
-
-  test 'should redirect to SSO' do
-    institution = create(:institution)
-    get new_user_session_url(idp: institution.short_name)
-    assert_response :redirect
-    assert_equal institution.sso_url, response.location.split('?').first
-  end
-
   test 'should get contact page' do
     get contact_url
     assert_response :success

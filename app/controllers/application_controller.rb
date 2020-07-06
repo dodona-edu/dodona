@@ -45,11 +45,7 @@ class ApplicationController < ActionController::Base
     stored_location_for(:user) || root_path
   end
 
-  Warden::Manager.after_authentication do |user, auth, _opts|
-    if user.institution.nil?
-      idp = Institution.find_by(short_name: auth.env['rack.session'][:current_idp])
-      user.update(institution: idp)
-    end
+  Warden::Manager.after_authentication do |user, _auth, _opts|
     if user.email.blank? && !user.institution&.smartschool?
       raise "User with id #{user.id} should not have a blank email " \
             'if the provider is not smartschool'

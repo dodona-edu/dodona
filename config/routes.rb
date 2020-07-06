@@ -1,15 +1,22 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
-  root 'pages#home'
-
   authenticated :user, ->(user) { user.zeus? } do
     mount DelayedJobWeb, at: '/dj'
+  end
+
+  # Authentication routes.
+  devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
+  root 'pages#home'
+
+  devise_scope :user do
+    post '/users/saml/auth' => 'omniauth_callbacks#saml' # backwards compatibility
+    get '/users/saml/metadata' => 'saml_sessions#metadata'
+    delete '/users/sign_out' => 'saml_sessions#destroy'
   end
 
   get '/:locale' => 'pages#home', locale: /(en)|(nl)/
 
   scope '(:locale)', locale: /en|nl/ do
-    get '/sign_in(/:idp)' => 'pages#sign_in_page', as: 'sign_in'
+    get '/sign_in' => 'pages#sign_in_page', as: 'sign_in'
 
     get '/institution_not_supported' => 'pages#institution_not_supported'
     get '/about' => 'pages#about'
@@ -26,7 +33,7 @@ Rails.application.routes.draw do
     concern :mediable do
       member do
         constraints host: Rails.configuration.default_host do
-          get 'media/*media', to: 'activities#media', constraints: { media: /.*/ }, as: :media
+          get 'media/*media', to: 'activities#media', constraints: {media: /.*/}, as: :media
         end
       end
     end
@@ -108,7 +115,7 @@ Rails.application.routes.draw do
             root to: 'activities#description', as: 'description'
             get 'media/*media',
                 to: 'activities#media',
-                constraints: { media: /.*/ },
+                constraints: {media: /.*/},
                 as: 'description_media'
           end
         end
@@ -122,7 +129,7 @@ Rails.application.routes.draw do
             root to: 'activities#description'
             get 'media/*media',
                 to: 'activities#media',
-                constraints: { media: /.*/ }
+                constraints: {media: /.*/}
           end
         end
       end
@@ -156,7 +163,7 @@ Rails.application.routes.draw do
       member do
         get 'download'
         get 'evaluate'
-        get 'media/*media', to: 'submissions#media', constraints: { media: /.*/ }, as: 'media'
+        get 'media/*media', to: 'submissions#media', constraints: {media: /.*/}, as: 'media'
       end
       resources :annotations, only: [:index, :create, :update, :destroy], format: :json
     end

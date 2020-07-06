@@ -32,18 +32,17 @@
 </div>
 
 <script type="application/javascript">
-    const card = document.querySelector(".card");
-    const timer = window.dodona.questionsAutoReload(card, 10000, (element, counter) => {
-        fetch("<% questions_course_path @course %>", {
-            headers: {
-                "accept": "text/javascript",
-                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-                "x-requested-with": "XMLHttpRequest",
-            },
-            credentials: "same-origin",
-        })
-            .then(req => req.text())
-            .then(resp => eval(resp));
-    });
-    timer.toggle(1);
+  const card = document.querySelector(".card");
+  const timer = window.dodona.questionsAutoReload(card, 10000, (element, counter) => {
+      fetch("<% questions_course_path @course %>", {
+          headers: {
+              "accept": "text/javascript",
+              "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+              "x-requested-with": "XMLHttpRequest",
+          },
+          credentials: "same-origin",
+      })
+          .then(req => req.text())
+          .then(resp => eval(resp));
+  });
 </script>

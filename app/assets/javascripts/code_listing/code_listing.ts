@@ -263,7 +263,8 @@ export class CodeListing {
             annotationButton.addEventListener("click", () => this.handleAnnotateLine(codeLine));
 
             const annotationButtonIcon = document.createElement("i") as HTMLElement;
-            annotationButtonIcon.classList.add("mdi", "mdi-comment-plus-outline", "mdi-18");
+            const clazz = this.questionMode ? "mdi-comment-question-outline" : "mdi-comment-plus-outline";
+            annotationButtonIcon.classList.add("mdi", clazz, "mdi-18");
             annotationButton.appendChild(annotationButtonIcon);
 
             codeLine.querySelector(".rouge-gutter").prepend(annotationButton);

@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   before_action :store_current_location,
-                except: %i[media sign_in_page institution_not_supported],
+                except: %i[media sign_in institution_not_supported],
                 unless: -> { devise_controller? || remote_request? }
 
   before_action :skip_session,
@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   end
 
   Warden::Manager.after_authentication do |user, _auth, _opts|
-    if user.email.blank? && !user.institution&.smartschool?
+    if user.email.blank? && !user.institution&.uses_smartschool?
       raise "User with id #{user.id} should not have a blank email " \
             'if the provider is not smartschool'
     end

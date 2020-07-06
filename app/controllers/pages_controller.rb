@@ -22,11 +22,6 @@ class PagesController < ApplicationController
     end
   end
 
-  def sign_in_page
-    @institutions = Institution.all
-    @title = I18n.t('pages.sign_in_page.sign_in')
-  end
-
   def institution_not_supported; end
 
   def about; end

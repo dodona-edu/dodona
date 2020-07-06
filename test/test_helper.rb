@@ -11,6 +11,7 @@ require 'faker'
 require 'rails/test_help'
 require 'mocha/minitest'
 
+require 'testhelpers/constants'
 require 'testhelpers/stub_helper'
 require 'testhelpers/delayed_job_helper'
 require 'testhelpers/crud_helper'
@@ -28,6 +29,7 @@ OmniAuth.config.test_mode = true
 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
+  include Constants
   include StubHelper
   include DelayedJobHelper
   include RemoteHelper

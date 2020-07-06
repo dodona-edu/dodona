@@ -26,13 +26,15 @@ module OmniAuth
           }
         end
 
-        def self.for_institution(institution)
-          context = ASSERTION_ERROR_INSTITUTIONS_ENTITY_IDS.include?(institution.entity_id) ? false : ""
+        def self.for_provider(provider)
+          raise 'Not a SAML provider.' unless provider.is_a?(Provider::Saml)
+
+          context = ASSERTION_ERROR_INSTITUTIONS_ENTITY_IDS.include?(provider.entity_id) ? false : ""
           {
               authn_context: context,
-              idp_cert: institution.certificate,
-              idp_slo_target_url: institution.slo_url,
-              idp_sso_target_url: institution.sso_url
+              idp_cert: provider.certificate,
+              idp_slo_target_url: provider.slo_url,
+              idp_sso_target_url: provider.sso_url
           }
         end
       end

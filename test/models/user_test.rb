@@ -160,29 +160,19 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'only smartschool users can have blank email' do
-    smartschool = create :smartschool_institution
-    office365 = create :office365_institution
-    saml = create :saml_institution
+    # Validate that smartschool institutions are valid.
+    smartschool = create :smartschool_provider
+    smartschool_user = build :user, institution: smartschool.institution
+    smartschool_user.email = nil
+    assert smartschool.valid?
 
-    user = build :user, institution: office365
-    user.email = nil
-    assert_not user.valid?
-
-    user = build :user, institution: saml
-    user.email = nil
-    assert_not user.valid?
-
-    user = build :user, institution: nil
-    user.email = nil
-    assert_not user.valid?
-
-    user = build :user, institution: smartschool
-    user.email = nil
-    assert user.valid?
-
-    user = build :user, institution: smartschool
-    user.email = nil
-    assert user.valid?
+    # Validate that every other institution is invalid.
+    (AUTH_PROVIDERS - [:smartschool_provider]).each do |provider_name|
+      provider = create provider_name
+      user = build :user, institution: provider.institution
+      user.email = nil
+      assert_not user.valid?
+    end
   end
 
   def oauth_hash_for(user)
@@ -196,25 +186,25 @@ class UserTest < ActiveSupport::TestCase
     oauth_hash
   end
 
-  # there was a bug where a smartschool user's update_from_oauth would set their
-  # email to an empty string, which would create a RecordNotUnique exception
+  # REGRESSION: bug where a smartschool user's update_from_oauth would set
+  # their email to an empty string, which would create a RecordNotUnique exception
   test 'two smartschool users without empty string email' do
-    smartschool = create :smartschool_institution
+    smartschool = create :smartschool_provider
 
-    first = build :user, institution: smartschool
+    first = build :user, institution: smartschool.institution
     first.email = ''
     assert first.save
 
-    second = build :user, institution: smartschool
+    second = build :user, institution: smartschool.institution
     second.email = ''
     assert second.save
 
-    assert first.update_from_oauth(oauth_hash_for(first), smartschool).valid?
-    assert second.update_from_oauth(oauth_hash_for(second), smartschool).valid?
+    assert first.update_from_provider(oauth_hash_for(first), smartschool).valid?
+    assert second.update_from_provider(oauth_hash_for(second), smartschool).valid?
   end
 
   test 'should transform empty username into nil' do
-    saml = create :saml_institution
+    saml = create :institution
 
     user = create :user, institution: saml
     user.update(username: '')
@@ -223,10 +213,8 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'should allow two users with empty usernames' do
-    saml = create :saml_institution
-
-    user1 = create :user, institution: saml
-    user2 = create :user, institution: saml
+    user1 = create :user
+    user2 = create :user
 
     assert user1.update(username: '')
     assert user2.update(username: '')

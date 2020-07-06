@@ -40,6 +40,7 @@ class User < ApplicationRecord
   has_many :course_memberships, dependent: :restrict_with_error
   has_many :repository_admins, dependent: :restrict_with_error
   has_many :courses, through: :course_memberships
+  has_many :identities, dependent: :destroy, inverse_of: :user
   has_many :events, dependent: :restrict_with_error
   has_many :exports, dependent: :destroy
   has_many :notifications, dependent: :destroy
@@ -105,6 +106,7 @@ class User < ApplicationRecord
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
   validate :email_only_blank_if_smartschool
+  validate :max_one_institution
 
   token_generator :token
 
@@ -115,6 +117,8 @@ class User < ApplicationRecord
   before_save :nullify_empty_username
   before_save :nullify_empty_email
 
+  accepts_nested_attributes_for :identities, limit: 1
+
   scope :by_permission, ->(permission) { where(permission: permission) }
   scope :by_institution, ->(institution) { where(institution: institution) }
 
@@ -124,7 +128,11 @@ class User < ApplicationRecord
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
 
   def email_only_blank_if_smartschool
-    errors.add(:email, 'should not be blank when institution does not use smartschool') if email.blank? && !institution&.smartschool?
+    errors.add(:email, 'should not be blank when institution does not use smartschool') if email.blank? && !institution&.uses_smartschool?
+  end
+
+  def max_one_institution
+    errors.add(:institution, 'must be unique') if identities.map(&:provider).map(&:institution_id).uniq.count > 1
   end
 
   def full_name
@@ -254,26 +262,16 @@ class User < ApplicationRecord
     end
   end
 
-  # update and return user using an omniauth authentication hash
-  def update_from_oauth(oauth_hash, auth_inst)
+  # Update the user using the data provided in the omniauth hash.
+  def update_from_provider(auth_hash, auth_provider)
     tap do |user|
-      user.username = oauth_hash.uid
-      user.email = oauth_hash.info.email
-      user.first_name = oauth_hash.info.first_name
-      user.last_name = oauth_hash.info.last_name
-      user.institution = auth_inst if user.institution.nil?
+      user.username = auth_hash.uid
+      user.email = auth_hash.info.email
+      user.first_name = auth_hash.info.first_name
+      user.last_name = auth_hash.info.last_name
+      user.institution = auth_provider.institution if user.institution.nil?
       user.save
     end
-  end
-
-  def self.from_institution(auth, institution)
-    # try to look up existing users
-    # using username and institution
-    user = find_by(username: auth.uid, institution: institution)
-    # create a new user within the institution
-    # if nothing was found
-    user = new(institution: institution) if user.nil?
-    user
   end
 
   def self.from_email(email)

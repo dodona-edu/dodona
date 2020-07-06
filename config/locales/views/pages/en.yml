@@ -1,12 +1,5 @@
 en:
   pages:
-    sign_in_page:
-      select-institution: "Please select your institution"
-      sign_in: "Sign in"
-      has_to_have_institution: "Only accounts linked to an institution are supported."
-      sign-in-with-smartschool: "Sign in with Smartschool"
-      sign-in-with-office-365: "Sign in with Office 365"
-      sign-in-with-g-suite: "Sign in with G Suite"
     about:
       intro_html: "The Dodona platform contains hundreds of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with the credentials of your institution. Dodona is still in active development, any bug report or suggestion is welcome trough the <a href='/contact'>contact form</a>."
       sign-in: Sign in

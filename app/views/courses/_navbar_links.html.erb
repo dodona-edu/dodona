@@ -23,5 +23,6 @@
   <%= navbar_link url: questions_course_path(@course),
                   title: t('.questions'),
                   icon: 'help',
+                  class: (@course.open_questions.any? ? 'notification' : ''),
                   if: policy(@course).questions? %>
 <% end %>

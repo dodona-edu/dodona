@@ -21,7 +21,6 @@ class QuestionPolicy < AnnotationPolicy
     record.unanswered?
   end
 
-
   private
 
   def course_admin?

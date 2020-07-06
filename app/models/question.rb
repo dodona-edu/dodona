@@ -22,7 +22,6 @@ class Question < Annotation
   end
 
   def mark_in_progress
-
     self.question_state = :in_progress
     save
   end

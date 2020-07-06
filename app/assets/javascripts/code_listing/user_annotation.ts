@@ -91,7 +91,7 @@ export class UserAnnotation extends Annotation {
     }
 
     public static async getAll(submission: number,
-                               editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
+        editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
         const response = await fetch(`/submissions/${submission}/annotations.json`);
         const json = await response.json();
         return json.map(data => new UserAnnotation(data, editFn));

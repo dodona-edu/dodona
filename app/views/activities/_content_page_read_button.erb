@@ -8,9 +8,11 @@
   <span id='content_page_read_action'>
     <% read_url = read_activity_url(activity) %>
     <% read_url = read_course_activity_url(course, activity) if course.present? %>
-    <%= link_to read_url, method: :post, remote: true, class: 'btn btn-primary with-text btn-fab-extended' do %>
-      <i class="mdi mdi-clipboard-check-outline icon"></i>
-      <span class="text"><%= t('activities.show.mark_as_read') %></span>
+    <%= form_tag read_url, method: :post, remote: true do %>
+      <%= button_tag class: 'btn btn-primary with-text btn-fab-extended', data: {disable_with: t('general.please_wait')} do %>
+        <i class="mdi mdi-clipboard-check-outline icon"></i>
+        <span class="text"><%= t('activities.show.mark_as_read') %></span>
+      <% end %>
     <% end %>
   </span>
 <% end %>

@@ -48,25 +48,25 @@ gem 'sinatra', '~>2.0.8'
 gem 'will_paginate', '~>3.3.0'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown', '~>2.2.1'
+gem 'kramdown', '~>2.3.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.19.0'
+gem 'rouge', '3.20.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
 
 # generate diffs
-gem 'diff-lcs', '~>1.3'
+gem 'diff-lcs', '~>1.4'
 
 # code editor
 gem 'ace-rails-ap', '~>4.3'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>9.7.6'
+gem 'autoprefixer-rails', '~>9.8.4'
 
 # saml authentication
-gem 'devise', '~>4.7.1'
-gem 'devise_saml_authenticatable', '~> 1.5.0'
+gem 'devise', '~>4.7.2'
+gem 'ruby-saml', '~> 1.11.0'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.0'
@@ -102,8 +102,8 @@ gem 'i18n-js', '~> 3.7.0'
 gem 'rails-i18n', '~> 6.0.0'
 
 # email exceptions
-gem 'exception_notification', '~> 4.4.0'
-gem 'httparty', '~> 0.18.0'
+gem 'exception_notification', '~> 4.4.1'
+gem 'httparty', '~> 0.18.1'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
@@ -129,7 +129,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.10'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.12.0'
+gem 'faker', '~> 2.13.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -138,16 +138,16 @@ gem 'rack-mini-profiler', '~> 2.0.2'
 gem 'stackprof', '~> 0.2.15'
 
 # Datadog
-gem 'ddtrace', '~> 0.36.0'
+gem 'ddtrace', '~> 0.37.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.11.2'
   # Factory bot for factories
-  gem 'factory_bot_rails', '~> 5.2.0'
+  gem 'factory_bot_rails', '~> 6.0.0'
 
   # test template rendering
-  gem 'rails-controller-testing', '~> 1.0.4'
+  gem 'rails-controller-testing', '~> 1.0.5'
 
   # I18N default locale & better test reporter
   gem 'minitest-utils', '~> 0.4.6'
@@ -156,13 +156,13 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.32.2'
+  gem 'capybara', '~> 3.33.0'
   gem 'selenium-webdriver', '~> 3.142.7'
 end
 
 group :test do
   # for measuring coverage
-  gem 'codecov', '~> 0.1.16', require: false
+  gem 'codecov', '~> 0.1.17', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.18.5', require: false
 end
@@ -170,11 +170,11 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.2.1'
-  gem 'web-console', '~> 4.0.2'
+  gem 'web-console', '~> 4.0.3'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.5.2'
+  gem 'rubocop-rails', '~> 2.6.0'
   gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

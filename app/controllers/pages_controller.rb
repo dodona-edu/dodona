@@ -23,10 +23,6 @@ class PagesController < ApplicationController
   end
 
   def sign_in_page
-    if params[:idp].present?
-      session[:current_idp] = params[:idp]
-      redirect_to new_user_session_url(idp: params[:idp])
-    end
     @institutions = Institution.all
     @title = I18n.t('pages.sign_in_page.sign_in')
   end

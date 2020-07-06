@@ -6,8 +6,13 @@
       </h1>
     </div>
     <div class="sign-in-dialog-institutions row">
+      <%
+          # TODO: This distinction is no longer required as saml uses omniauth
+          #       now. However, this is kept for now to retain the previous order
+          #       of institutions. Remove this when refactoring the sign-in page.
+      %>
       <% @institutions.saml.each do |institution| %>
-        <%= link_to sign_in_path(idp: institution.short_name), class: 'institution-sign-in' do %>
+        <%= link_to user_saml_omniauth_authorize_path(institution: institution), class: 'institution-sign-in' do %>
           <div class="col-sm-6 col-lg-4">
             <div class="option-btn">
               <div class="option-btn-img">

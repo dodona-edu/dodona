@@ -1,7 +1,8 @@
 nl:
   deadlines:
-    missed:
-      "deadline gemist"
+    missed: deadline gemist
     relative:
       ago: "%{time_ago} geleden"
       in: "binnen %{time_left}"
+    validate:
+      should_be_in_past: 'moet in het verleden liggen'

@@ -3,7 +3,7 @@ class InstitutionsController < ApplicationController
 
   def index
     authorize Institution
-    @institutions = Institution.all.order(provider: :desc, name: :asc).to_a
+    @institutions = Institution.all.order(name: :asc).to_a
     empty_institutions = @institutions.select { |i| i.name == Institution::NEW_INSTITUTION_NAME }
     @institutions = empty_institutions + (@institutions - empty_institutions)
     @title = I18n.t('institutions.index.title')

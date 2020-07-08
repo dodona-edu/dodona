@@ -8,6 +8,11 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get homepage as json' do
+    get root_url(format: :json)
+    assert_response :success
+  end
+
   test 'should get signed in homepage' do
     sign_in(create(:user))
     get root_url

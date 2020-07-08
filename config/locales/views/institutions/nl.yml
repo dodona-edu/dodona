@@ -8,3 +8,5 @@ nl:
     show:
       staff: "Lesgevers"
       edit: "Onderwijsinstelling aanpassen"
+      providers:
+        number_of_identities: Logins

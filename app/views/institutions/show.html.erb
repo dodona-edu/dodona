@@ -6,9 +6,6 @@
           <span class="profile-line">
             <span class="name"><%= @institution.name %></span> (<%= @institution.short_name %>)
           </span>
-          <span class="profile-byline text-muted">
-            <%= t("activerecord.attributes.institution.providers.#{@institution.provider}") %> (<%= @institution.saml? ? @institution.entity_id : @institution.identifier %>)
-          </span>
         </div>
         <div class="row">
           <div class="col-xs-12">
@@ -24,6 +21,33 @@
           <% end %>
         </div>
       <% end %>
+    </div>
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= Institution.human_attribute_name(:providers) %></h2>
+      </div>
+      <div class="card-supporting-text">
+        <div class="table-scroll-wrapper">
+          <table class="table table-index table-resource">
+            <thead>
+            <tr>
+              <th><%= Provider.human_attribute_name(:type) %></th>
+              <th><%= Provider.human_attribute_name(:identifier) %></th>
+              <th><%= t('.providers.number_of_identities') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @institution.providers.each do |provider| %>
+              <tr>
+                <td><%= t("activerecord.attributes.provider.#{provider.class.sym}") %></td>
+                <td><%= provider.identifier_string %></td>
+                <td><%= provider.identities.count %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>

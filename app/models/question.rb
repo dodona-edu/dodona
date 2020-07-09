@@ -16,6 +16,10 @@ class Question < Annotation
     QuestionPolicy
   end
 
+  def self.per_page
+    10
+  end
+
   # Disable notification creation & deletion
   def create_notification; end
 

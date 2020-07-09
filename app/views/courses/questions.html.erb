@@ -13,33 +13,42 @@
         <div class="question-table-open">
           <%= render 'question_table', questions: @open %>
         </div>
+        <% if @open.try(:total_pages) %>
+          <center><%= page_navigation_links @open, false, 'courses', action: 'questions', param_name: 'open_page' %></center>
+        <% end %>
 
         <h4><%= t('.questions.in_progress') %></h4>
         <div class="question-table-in-progress">
           <%= render 'question_table', questions: @in_progress %>
         </div>
+        <% if @in_progress.try(:total_pages) %>
+          <center><%= page_navigation_links @in_progress, false, 'courses', action: 'questions', param_name: 'in_progress_page' %></center>
+        <% end %>
 
         <h4><%= t('.questions.closed') %></h4>
         <div class="question-table-closed">
           <%= render 'question_table', questions: @closed %>
         </div>
+        <% if @closed.try(:total_pages) %>
+          <center><%= page_navigation_links @closed, false, 'courses', action: 'questions', param_name: 'closed_page' %></center>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
 
 <script type="application/javascript">
-  const card = document.querySelector(".card");
-  const timer = window.dodona.questionsAutoReload(card, 10000, () => {
-      fetch("<% questions_course_path @course %>", {
-          headers: {
-              "accept": "text/javascript",
-              "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-              "x-requested-with": "XMLHttpRequest",
-          },
-          credentials: "same-origin",
-      })
-          .then(req => req.text())
-          .then(resp => eval(resp));
-  });
+    const card = document.querySelector(".card");
+    const timer = window.dodona.questionsAutoReload(card, 10000, () => {
+        fetch("<% questions_course_path @course %>", {
+            headers: {
+                "accept": "text/javascript",
+                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                "x-requested-with": "XMLHttpRequest",
+            },
+            credentials: "same-origin",
+        })
+            .then(req => req.text())
+            .then(resp => eval(resp));
+    });
 </script>

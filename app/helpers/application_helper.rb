@@ -219,10 +219,11 @@ module ApplicationHelper
   end
 
   def page_navigation_links(pages, remote = false, controller = '', params = {}, action = 'index')
+    param_name = params[:param_name] || 'page'
     if remote
-      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { controller: controller, action: action, format: nil }.merge(params))
+      will_paginate(pages, param_name: param_name, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { controller: controller, action: action, format: nil }.merge(params))
     else
-      will_paginate(pages, class: 'pagination', inner_window: 2, outer_window: 0, renderer: BootstrapLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { format: nil }.merge(params))
+      will_paginate(pages, param_name: param_name, class: 'pagination', inner_window: 2, outer_window: 0, renderer: BootstrapLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { format: nil }.merge(params))
     end
   end
 end

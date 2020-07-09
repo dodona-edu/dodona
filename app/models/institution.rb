@@ -25,6 +25,10 @@ class Institution < ApplicationRecord
     Provider.find_by(institution: self, mode: :prefer)
   end
 
+  def uses_lti?
+    providers.any? { |provider| provider.type == Provider::Lti.name }
+  end
+
   def uses_smartschool?
     providers.any? { |provider| provider.type == Provider::Smartschool.name }
   end

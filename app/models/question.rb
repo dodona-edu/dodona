@@ -16,21 +16,6 @@ class Question < Annotation
     QuestionPolicy
   end
 
-  def mark_unresolved
-    self.question_state = :unanswered
-    save
-  end
-
-  def mark_in_progress
-    self.question_state = :in_progress
-    save
-  end
-
-  def mark_resolved
-    self.question_state = :answered
-    save
-  end
-
   # Disable notification creation & deletion
   def create_notification; end
 

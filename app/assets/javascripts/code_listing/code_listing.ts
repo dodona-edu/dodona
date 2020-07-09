@@ -341,6 +341,8 @@ export class CodeListing {
         onSubmit: (f: HTMLFormElement) => Promise<void>,
         onCancel: (f: HTMLFormElement) => void): HTMLFormElement {
         const form = document.createElement("form") as HTMLFormElement;
+        const type = this.questionMode ? "user_question" : "user_annotation";
+
         form.classList.add("annotation-submission");
         form.id = id;
         form.innerHTML = `
@@ -356,9 +358,7 @@ export class CodeListing {
               ${I18n.t("js.user_annotation.cancel")}
             </button>
             <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
-              ${this.questionMode ?
-        (annotation !== null ? I18n.t("js.user_question.update") : I18n.t("js.user_question.send")):
-        (annotation !== null ? I18n.t("js.user_annotation.update") : I18n.t("js.user_annotation.send"))}
+                ${(annotation !== null ? I18n.t(`js.${type}.update`) : I18n.t(`js.${type}.send`))}
             </button>
           </div>
         `;
@@ -379,7 +379,8 @@ export class CodeListing {
         // Deletion handler.
         if (deleteButton !== null) {
             deleteButton.addEventListener("click", async () => {
-                const confirmText = this.questionMode ? I18n.t("js.user_question.delete_confirm") : I18n.t("js.user_annotation.delete_confirm");
+                const type = this.questionMode? "user_question" : "user_annotation";
+                const confirmText = I18n.t(`js.${type}.delete_confirm`);
                 if (confirm(confirmText)) {
                     annotation.remove().then(() => this.removeAnnotation(annotation));
                 }

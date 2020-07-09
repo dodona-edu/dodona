@@ -13,9 +13,6 @@
         <div class="question-table-open">
           <%= render 'question_table', questions: @open %>
         </div>
-        <% if @open.try(:total_pages) %>
-          <center><%= page_navigation_links @open, false, "courses", action: 'questions' %></center>
-        <% end %>
 
         <h4><%= t('.questions.in_progress') %></h4>
         <div class="question-table-in-progress">
@@ -33,7 +30,7 @@
 
 <script type="application/javascript">
   const card = document.querySelector(".card");
-  const timer = window.dodona.questionsAutoReload(card, 10000, (element, counter) => {
+  const timer = window.dodona.questionsAutoReload(card, 10000, () => {
       fetch("<% questions_course_path @course %>", {
           headers: {
               "accept": "text/javascript",

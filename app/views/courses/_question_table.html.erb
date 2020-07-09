@@ -1,57 +1,56 @@
 <% unless questions.nil? or questions.empty? %>
-  <table class="table activity-table table-resource">
-    <thead>
-    <tr>
-      <th><%= t('courses.questions.table.user') %></th>
-      <th><%= t('courses.questions.table.exercise') %></th>
-      <th><%= t('courses.questions.table.question') %></th>
-      <th><%= t('courses.questions.table.time_since') %></th>
-      <th></th>
+<table class="table activity-table table-resource">
+  <thead>
+  <tr>
+    <th><%= t('courses.questions.table.user') %></th>
+    <th><%= t('courses.questions.table.exercise') %></th>
+    <th><%= t('courses.questions.table.question') %></th>
+    <th><%= t('courses.questions.table.time_since') %></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% questions.each do |question| %>
+    <tr class="question">
+      <td class="user-full-name">
+        <%= link_to question.user do %>
+          <%= question.user.full_name %>
+        <% end %>
+      </td>
+      <td class="exercise">
+        <%= link_to course_activity_path(question.submission.course, question.submission.exercise) do %>
+          <%= question.submission.exercise.name %>
+        <% end %>
+      </td>
+      <td class="text" title="<%= question.question_text %>"><%= question.question_text %></td>
+      <td>
+        <%= time_ago_in_words question.created_at %>
+      </td>
+      <td class="buttons">
+        <% if policy(question).unresolve? %>
+          <%= link_to in_progress_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
+            <i class="mdi mdi-progress-close mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
+          <% end %>
+        <% end %>
+        <% if policy(question).in_progress? %>
+          <%= link_to in_progress_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
+            <i class="mdi mdi-progress-check mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
+          <% end %>
+        <% end %>
+        <% if policy(question).resolved? %>
+          <%= link_to resolved_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
+            <i class="mdi mdi-check mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
+          <% end %>
+        <% end %>
+      </td>
+      <td class="link">
+        <%= link_to submission_path(question.submission, anchor: 'code'), class: 'btn btn-icon' do %>
+          <i class="mdi mdi-chevron-right mdi-18"></i>
+        <% end %>
+      </td>
     </tr>
-    </thead>
-    <tbody>
-    <% questions.each do |question| %>
-      <tr class="question">
-        <td class="user-full-name">
-          <%= link_to question.user do %>
-            <%= question.user.full_name %>
-          <% end %>
-        </td>
-        <td class="exercise">
-          <%= link_to course_activity_path(question.submission.course, question.submission.exercise) do %>
-            <%= question.submission.exercise.name %>
-          <% end %>
-        </td>
-        <td class="text" title="<%= question.question_text %>"><%= question.question_text %></td>
-        <td>
-          <%= time_ago_in_words question.created_at %>
-        </td>
-        <td class="buttons">
-          <% if policy(question).unresolve? %>
-            <%= link_to in_progress_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
-              <i class="mdi mdi-progress-close mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
-            <% end %>
-          <% end %>
-          <% if policy(question).in_progress? %>
-            <%= link_to in_progress_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
-              <i class="mdi mdi-progress-check mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
-            <% end %>
-          <% end %>
-          <% if policy(question).resolved? %>
-            <%= link_to resolved_annotation_path(question), remote: true, method: :post, class: 'btn btn-icon' do %>
-              <i class="mdi mdi-check mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
-            <% end %>
-          <% end %>
-        </td>
-        <td class="link">
-          <%= link_to submission_path(question.submission, anchor: 'code'), class: 'btn btn-icon' do %>
-            <i class="mdi mdi-chevron-right mdi-18"></i>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <%= t('courses.questions.no_questions') %>
+  <% end %>
+  </tbody>
+</table>
+<% else %><%= t('courses.questions.no_questions') %>
 <% end %>

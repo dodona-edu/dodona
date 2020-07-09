@@ -44,7 +44,7 @@ class AnnotationsController < ApplicationController
   end
 
   def unresolve
-    @annotation.mark_unresolved
+    @annotation.unanswered!
     respond_to do |format|
       format.json { render :show, status: :ok, location: @annotation }
       format.js(&method(:reload_question_table))
@@ -52,7 +52,7 @@ class AnnotationsController < ApplicationController
   end
 
   def in_progress
-    @annotation.mark_in_progress
+    @annotation.in_progress!
     respond_to do |format|
       format.json { render :show, status: :ok, location: @annotation }
       format.js(&method(:reload_question_table))
@@ -60,7 +60,7 @@ class AnnotationsController < ApplicationController
   end
 
   def resolved
-    @annotation.mark_resolved
+    @annotation.answered!
     respond_to do |format|
       format.json { render :show, status: :ok, location: @annotation }
       format.js(&method(:reload_question_table))
@@ -75,10 +75,10 @@ class AnnotationsController < ApplicationController
   private
 
   def reload_question_table
-    @open_questions = @annotation.submission.course.open_questions
-    @in_progress_questions = @annotation.submission.course.in_progress_questions
-    @closed_questions = @annotation.submission.course.closed_questions
-    render partial: 'courses/reload_questions_table', status: :ok, locals: { open_questions: @open, in_progress_questions: @in_progress, closed_questions: @closed }
+    open = @annotation.submission.course.open_questions
+    in_progress = @annotation.submission.course.in_progress_questions
+    closed = @annotation.submission.course.closed_questions
+    render partial: 'courses/reload_questions_table', status: :ok, locals: { open_questions: open, in_progress_questions: in_progress, closed_questions: closed }
   end
 
   def set_submission

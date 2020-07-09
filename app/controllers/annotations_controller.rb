@@ -17,7 +17,7 @@ class AnnotationsController < ApplicationController
     args[:user] = current_user
     args[:submission] = @submission
 
-    @annotation = if current_user.student?
+    @annotation = if !current_user.course_admin?(@submission.course)
                     Question.new(args)
                   else
                     Annotation.new(args)

@@ -48,7 +48,7 @@ class FeedbackCodeRenderer
   end
 
   def add_messages(submission, messages, user)
-    user_is_student = user.student?
+    user_is_student = !user.course_admin?(submission.course)
     user_perm = if user_is_student
                   QuestionPolicy.new(user, Question.new(submission: submission, user: user)).create?
                 else

@@ -8,3 +8,5 @@ en:
     show:
       staff: "Staff"
       edit: "Edit institution"
+      providers:
+        number_of_identities: Identities

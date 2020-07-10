@@ -21,6 +21,10 @@ class Provider::Saml < Provider
 
   validates :identifier, absence: true
 
+  def identifier_string
+    entity_id
+  end
+
   def self.sym
     :saml
   end

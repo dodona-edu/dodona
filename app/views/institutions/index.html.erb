@@ -13,19 +13,18 @@
               <th><%= Institution.human_attribute_name(:short_name) %></th>
               <th><%= t('.number_of_users') %></th>
               <th><%= t('.number_of_courses') %></th>
-              <th><%= Institution.human_attribute_name(:provider) %></th>
+              <th><%= Institution.human_attribute_name(:providers) %></th>
               <th class="actions"></th>
             </tr>
             </thead>
             <tbody>
             <% @institutions.each do |institution| %>
               <tr>
-                <% institution_identifier = institution.saml? ? institution.entity_id : institution.identifier %>
-                <td><%= link_to institution.name == Institution::NEW_INSTITUTION_NAME ? institution_identifier : institution.name, institution %></td>
+                <td><%= link_to institution.name, institution %></td>
                 <td><%= institution.short_name %></td>
                 <td><%= link_to institution.users.count, users_url(institution_id: institution.id) %></td>
                 <td><%= link_to institution.courses.count, courses_url(institution_id: institution.id) %></td>
-                <td><%= t("activerecord.attributes.institution.providers.#{institution.provider}") %></td>
+                <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
                 <td class="actions">
                   <% if policy(institution).edit? %>
                     <%= link_to edit_institution_path(institution), title: t("institutions.index.edit"), class: "btn btn-sm btn-default" do %>

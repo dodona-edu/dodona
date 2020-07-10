@@ -140,12 +140,12 @@ en:
       institution:
         name: Name
         short_name: Short name
-        provider: Login type
-        providers:
-          saml: SAML
-          office365: Office 365
-          smartschool: Smartschool
-          google_oauth2: G Suite
+        providers: Login types
+      provider:
+        saml: SAML
+        office365: Office 365
+        smartschool: Smartschool
+        google_oauth2: G Suite
       event:
         event_type: Type
         user: User

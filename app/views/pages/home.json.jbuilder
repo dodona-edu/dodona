@@ -7,5 +7,4 @@ if current_user
     json.partial! 'series/series', series: series
   end
 end
-json.version Dodona::Application::VERSION
-json.min_supported_client Dodona::Application::MIN_SUPPORTED_CLIENT
+json.partial! 'pages/static_home'

@@ -18,7 +18,10 @@ class PagesController < ApplicationController
       @grouped_courses = @subscribed_courses.sort_by(&:year).reverse.group_by(&:year)
       @homepage_series = @subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
     else
-      render 'static_home'
+      respond_to do |format|
+        format.html { render :static_home }
+        format.json { render partial: 'static_home' }
+      end
     end
   end
 

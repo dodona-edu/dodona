@@ -33,6 +33,10 @@ class Provider < ApplicationRecord
   validate :at_least_one_preferred
   validate :at_most_one_preferred
 
+  def identifier_string
+    identifier
+  end
+
   def self.for_sym(sym)
     sym = sym.to_sym
     match = PROVIDERS.select { |prov| prov.sym == sym }.first

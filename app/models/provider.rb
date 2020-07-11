@@ -29,7 +29,7 @@ class Provider < ApplicationRecord
   has_many :identities, inverse_of: :provider, dependent: :destroy
 
   scope :gsuite, -> { where(type: Provider::GSuite.name) }
-  scope :lti, -> {where(type: Provider::Lti.name)}
+  scope :lti, -> { where(type: Provider::Lti.name) }
   scope :office365, -> { where(type: Provider::Office365.name) }
   scope :saml, -> { where(type: Provider::Saml.name) }
   scope :smartschool, -> { where(type: Provider::Smartschool.name) }

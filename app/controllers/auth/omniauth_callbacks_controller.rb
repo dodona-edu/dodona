@@ -22,6 +22,10 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     generic_oauth
   end
 
+  def lti
+    try_login!
+  end
+
   def saml
     try_login!
   end
@@ -46,7 +50,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def try_login!
     # Ensure the preferred provider is used.
-    return redirect_to_preferred_provider! unless provider.prefer?
+    # TODO add link providers.
+    # return redirect_to_preferred_provider! unless provider.prefer?
 
     # Find the identity.
     identity, user = find_identity_and_user

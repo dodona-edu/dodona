@@ -25,6 +25,15 @@ FactoryBot.define do
     identifier { SecureRandom.uuid }
   end
 
+  factory :lti_provider, class: Provider::Lti do
+    institution
+
+    authorization_uri { Faker::Internet.url }
+    client_id { SecureRandom.uuid }
+    issuer { Faker::Internet.url }
+    jwks_uri { Faker::Internet.url }
+  end
+
   factory :office365_provider, class: Provider::Office365 do
     institution
     identifier { SecureRandom.uuid }

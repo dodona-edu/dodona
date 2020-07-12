@@ -159,15 +159,17 @@ class UserTest < ActiveSupport::TestCase
     assert_user_exercises user, 3, 2, 1
   end
 
-  test 'only smartschool users can have blank email' do
-    # Validate that smartschool institutions are valid.
-    smartschool = create :smartschool_provider
-    smartschool_user = build :user, institution: smartschool.institution
-    smartschool_user.email = nil
-    assert smartschool.valid?
+  test 'only lti and smartschool users can have blank email' do
+    # Validate that lti and smartschool institutions are valid.
+    %i[lti_provider smartschool_provider].each do |provider_name|
+      provider = create provider_name
+      user = build :user, institution: provider.institution
+      user.email = nil
+      assert user.valid?
+    end
 
     # Validate that every other institution is invalid.
-    (AUTH_PROVIDERS - [:smartschool_provider]).each do |provider_name|
+    (AUTH_PROVIDERS - %i[lti_provider smartschool_provider]).each do |provider_name|
       provider = create provider_name
       user = build :user, institution: provider.institution
       user.email = nil

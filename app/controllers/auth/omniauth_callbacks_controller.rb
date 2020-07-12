@@ -49,13 +49,17 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def try_login!
-    # Ensure the preferred provider is used.
-    # TODO add link providers.
-    return redirect_to_preferred_provider! unless provider.prefer?
+    # Ensure that an appropriate provider is used.
+    return redirect_to_preferred_provider! if provider.redirect?
 
     # Find the identity.
     identity, user = find_identity_and_user
+
     if identity.blank?
+      # If no identity was found and the provider is a link provider, prompt the
+      # user to sign in with a preferred provider.
+      return redirect_to_preferred_provider! if provider.link?
+
       # Create a new user and identity.
       user = User.new institution: provider&.institution if user.blank?
       identity = user.identities.build identifier: auth_uid, provider: provider
@@ -68,12 +72,32 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     user.update_from_provider(auth_hash, provider)
     return redirect_with_errors!(user) if user.errors.any?
 
+    # Link the stored identifier to the signed in user.
+    create_linked_identity!(user)
+
     # User successfully updated, finish the authentication procedure.
     sign_in user, event: :authentication
     redirect_to_target!(user)
   end
 
   # ==> Utilities.
+
+  def create_linked_identity!(user)
+    # Find the link provider and uid in the session.
+    link_provider_id = session.delete(:auth_link_provider_id)
+    link_uid = session.delete(:auth_link_uid)
+    return if link_provider_id.blank? || link_uid.blank?
+
+    # Find the actual provider.
+    link_provider = Provider.find(link_provider_id)
+    return if link_provider.blank?
+
+    # Create the identity for the current user.
+    Identity.create(identifier: link_uid, provider: link_provider, user: user)
+
+    # Set a flash message.
+    set_flash_message :notice, :linked
+  end
 
   def find_identity_and_user
     # Attempt to find the identity by its identifier.
@@ -118,6 +142,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def redirect_to_preferred_provider!
+    # Store the uid and the id of the current provider in the session, to link
+    # the identities after returning.
+    session[:auth_link_provider_id] = provider.id if provider.link?
+    session[:auth_link_uid] = auth_uid if provider.link?
+
     # Find the preferred provider for the current institution.
     preferred_provider = provider.institution.preferred_provider
 
@@ -184,8 +213,10 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def provider
-    return auth_hash.extra.provider if auth_provider_type == Provider::Saml.sym
+    # Extract the provider from the authentication hash.
+    return auth_hash.extra.provider if [Provider::Lti.sym, Provider::Saml.sym].include?(auth_provider_type)
 
+    # Fallback to an oauth provider
     oauth_provider
   end
 

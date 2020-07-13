@@ -170,7 +170,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.2.1'
-  gem 'web-console', '~> 4.0.3'
+  gem 'web-console', '~> 4.0.4'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb

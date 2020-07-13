@@ -144,7 +144,7 @@ group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.11.2'
   # Factory bot for factories
-  gem 'factory_bot_rails', '~> 6.0.0'
+  gem 'factory_bot_rails', '~> 6.1.0'
 
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.5'

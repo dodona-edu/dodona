@@ -6,23 +6,23 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   def omniauth_mock_identity(identity, params = {})
     # Generic hash.
     auth_hash = {
-      provider: identity.provider.class.sym.to_s,
-      uid: identity.identifier,
-      info: {
-        email: identity.user.email,
-        first_name: identity.user.first_name,
-        last_name: identity.user.last_name,
-        institution: identity.provider.identifier
-      },
-      extra: {
-        raw_info: {
-          hd: identity.provider.identifier
+        provider: identity.provider.class.sym.to_s,
+        uid: identity.identifier,
+        info: {
+            email: identity.user.email,
+            first_name: identity.user.first_name,
+            last_name: identity.user.last_name,
+            institution: identity.provider.identifier
+        },
+        extra: {
+            raw_info: {
+                hd: identity.provider.identifier
+            }
         }
-      }
     }.deep_merge(params)
 
     # LTI and SAML include the provider.
-    auth_hash = auth_hash.deep_merge({ extra: { provider: identity.provider } }) if [Provider::Lti, Provider::Saml].include?(identity.provider.class)
+    auth_hash = auth_hash.deep_merge({extra: {provider: identity.provider}}) if [Provider::Lti, Provider::Saml].include?(identity.provider.class)
 
     OmniAuth.config.mock_auth[:default] = OmniAuth::AuthHash.new(auth_hash)
   end
@@ -118,7 +118,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     omniauth_mock_identity identity,
                            provider: redirect_provider.class.sym,
                            info: {
-                             institution: redirect_provider.identifier
+                               institution: redirect_provider.identifier
                            }
 
     get omniauth_url(redirect_provider)
@@ -126,6 +126,37 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to %r{/users/auth/#{preferred_provider.class.sym}/}
     assert_nil @controller.current_user
+  end
+
+  test 'login while already logged in should replace' do
+    AUTH_PROVIDERS.each do |provider_name|
+      # Setup #1.
+      provider = create provider_name
+      user = create :user, institution: provider.institution
+      identity = create :identity, provider: provider, user: user
+
+      # Authenticate #1.
+      omniauth_mock_identity identity
+      get omniauth_url(provider)
+      follow_redirect!
+
+      assert_equal user, @controller.current_user
+
+      # Setup #2.
+      provider2 = create provider_name
+      user2 = create :user, institution: provider2.institution
+      identity2 = create :identity, provider: provider2, user: user2
+
+      # Authenticate #2.
+      omniauth_mock_identity identity2
+      get omniauth_url(provider2)
+      follow_redirect!
+
+      assert_equal user2, @controller.current_user
+
+      # Cleanup.
+      sign_out user2
+    end
   end
 
   test 'user attributes should be updated upon login' do
@@ -136,8 +167,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       identity = create :identity, provider: provider, user: user
       omniauth_mock_identity identity,
                              info: {
-                               first_name: 'Flip',
-                               last_name: 'Flapstaart'
+                                 first_name: 'Flip',
+                                 last_name: 'Flapstaart'
                              }
 
       get omniauth_url(provider)
@@ -163,7 +194,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
       omniauth_mock_identity identity,
                              info: {
-                               email: other_user.email
+                                 email: other_user.email
                              }
 
       assert_emails 1 do

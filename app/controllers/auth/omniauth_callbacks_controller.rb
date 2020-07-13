@@ -75,8 +75,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Link the stored identifier to the signed in user.
     create_linked_identity!(user)
 
-    # User successfully updated, finish the authentication procedure.
-    sign_in user, event: :authentication
+    # User successfully updated, finish the authentication procedure. Force is
+    # required to overwrite the current existing user.
+    sign_in user, event: :authentication, force: true
+
+    # Redirect the user to their destination.
     redirect_to_target!(user)
   end
 

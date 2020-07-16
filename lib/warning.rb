@@ -8,4 +8,4 @@ Warning.singleton_class.prepend(
       super unless warning.match?(PATTERN)
     end
   end
-)
+) if Rails.env.production?

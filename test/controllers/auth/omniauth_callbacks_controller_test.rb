@@ -140,7 +140,9 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       get omniauth_url(provider)
       follow_redirect!
 
-      assert_equal user, @controller.current_user
+      # Compare the id to the session since @controller.current_user is not
+      # correct in this case (limitation of omniauth testing).
+      assert_equal user.id, session['warden.user.user.key'][0][0]
 
       # Setup #2.
       provider2 = create provider_name
@@ -152,7 +154,9 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       get omniauth_url(provider2)
       follow_redirect!
 
-      assert_equal user2, @controller.current_user
+      # Compare the id to the session since @controller.current_user is not
+      # correct in this case (limitation of omniauth testing).
+      assert_equal user2.id, session['warden.user.user.key'][0][0]
 
       # Cleanup.
       sign_out user2

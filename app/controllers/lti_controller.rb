@@ -1,0 +1,2 @@
+class LtiController < ApplicationController
+end

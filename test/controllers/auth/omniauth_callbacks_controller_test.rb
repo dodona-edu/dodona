@@ -6,23 +6,23 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   def omniauth_mock_identity(identity, params = {})
     # Generic hash.
     auth_hash = {
-        provider: identity.provider.class.sym.to_s,
-        uid: identity.identifier,
-        info: {
-            email: identity.user.email,
-            first_name: identity.user.first_name,
-            last_name: identity.user.last_name,
-            institution: identity.provider.identifier
-        },
-        extra: {
-            raw_info: {
-                hd: identity.provider.identifier
-            }
+      provider: identity.provider.class.sym.to_s,
+      uid: identity.identifier,
+      info: {
+        email: identity.user.email,
+        first_name: identity.user.first_name,
+        last_name: identity.user.last_name,
+        institution: identity.provider.identifier
+      },
+      extra: {
+        raw_info: {
+          hd: identity.provider.identifier
         }
+      }
     }.deep_merge(params)
 
     # LTI and SAML include the provider.
-    auth_hash = auth_hash.deep_merge({extra: {provider: identity.provider}}) if [Provider::Lti, Provider::Saml].include?(identity.provider.class)
+    auth_hash = auth_hash.deep_merge({ extra: { provider: identity.provider } }) if [Provider::Lti, Provider::Saml].include?(identity.provider.class)
 
     OmniAuth.config.mock_auth[:default] = OmniAuth::AuthHash.new(auth_hash)
   end
@@ -118,7 +118,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     omniauth_mock_identity identity,
                            provider: redirect_provider.class.sym,
                            info: {
-                               institution: redirect_provider.identifier
+                             institution: redirect_provider.identifier
                            }
 
     get omniauth_url(redirect_provider)
@@ -171,8 +171,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       identity = create :identity, provider: provider, user: user
       omniauth_mock_identity identity,
                              info: {
-                                 first_name: 'Flip',
-                                 last_name: 'Flapstaart'
+                               first_name: 'Flip',
+                               last_name: 'Flapstaart'
                              }
 
       get omniauth_url(provider)
@@ -198,7 +198,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
       omniauth_mock_identity identity,
                              info: {
-                                 email: other_user.email
+                               email: other_user.email
                              }
 
       assert_emails 1 do

@@ -205,6 +205,10 @@ Rails.application.routes.draw do
     end
     resources :feedbacks, only: %i[show edit update]
 
+    scope 'lti', controller: 'lti' do
+      get 'jwks', to: 'lti#jwks'
+    end
+
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'
       get 'punchcard', to: 'statistics#punchcard'

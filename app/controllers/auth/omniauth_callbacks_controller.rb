@@ -141,7 +141,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def flash_failure(reason)
     return unless is_navigational_format?
 
-    set_flash_message :notice, :failure, kind: auth_provider_type || 'OAuth2', reason: reason
+    # Get the provider type.
+    provider_type = auth_provider_type || request.env['omniauth.error.strategy']&.name || 'OAuth2'
+    set_flash_message :notice, :failure, kind: provider_type, reason: reason
   end
 
   def redirect_to_preferred_provider!
@@ -162,8 +164,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         "#{auth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: auth_hash, errors: resource.errors.inspect)
-                     .user_unable_to_log_in
-                     .deliver_later
+        .user_unable_to_log_in
+        .deliver_later
 
     redirect_with_flash! resource.errors.full_messages.to_sentence
   end
@@ -231,8 +233,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{auth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: auth_hash)
-                     .institution_created
-                     .deliver_later
+        .institution_created
+        .deliver_later
   end
 
   def institution_create_failed(errors)
@@ -242,8 +244,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{errors}"
 
     ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
-                     .institution_creation_failed
-                     .deliver_later
+        .institution_creation_failed
+        .deliver_later
   end
 
   def provider_missing!

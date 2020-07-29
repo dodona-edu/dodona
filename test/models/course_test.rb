@@ -27,6 +27,13 @@ class CourseTest < ActiveSupport::TestCase
     assert_not course.secret.blank?
   end
 
+  test 'create course with emoji' do
+    name = 'Programming 🧑‍💻'
+    course = create :course, name: name
+    assert_not_nil course
+    assert_equal course.name, name
+  end
+
   test 'course formatted year should not have spaces' do
     course = create :course, year: '2017 - 2018'
     assert_equal '2017–2018', course.formatted_year

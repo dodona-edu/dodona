@@ -1,6 +1,6 @@
 class ChangeCharacterSetToUtf8Mb4 < ActiveRecord::Migration[6.0]
   CHARSET = 'utf8mb4'
-  COLLATION = 'utf8mb4_0900_ai_ci'
+  COLLATION = 'utf8mb4_unicode_ci'
 
   def db
     ActiveRecord::Base.connection

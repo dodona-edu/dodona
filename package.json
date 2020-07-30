@@ -21,17 +21,17 @@
     "jquery": "^3.5.1",
     "moment": "^2.27.0",
     "typeahead.js": "^0.11.1",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.4",
+    "@types/jest": "^26.0.7",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jest": "^23.18.0",
+    "eslint-plugin-jest": "^23.18.2",
     "jest": "^25.5.4",
-    "jest-junit": "^11.0.1",
+    "jest-junit": "^11.1.0",
     "ts-jest": "^25.5.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "3.11.0"

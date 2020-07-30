@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.10.0'
 gem 'image_processing', '~> 1.11.0'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.4.6', require: false
+gem 'bootsnap', '~> 1.4.7', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -50,7 +50,7 @@ gem 'will_paginate', '~>3.3.0'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.20.0'
+gem 'rouge', '3.21.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -140,7 +140,7 @@ gem 'rack-mini-profiler', '~> 2.0.2'
 gem 'stackprof', '~> 0.2.15'
 
 # Datadog
-gem 'ddtrace', '~> 0.37.0'
+gem 'ddtrace', '~> 0.38.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -164,7 +164,7 @@ end
 
 group :test do
   # for measuring coverage
-  gem 'codecov', '~> 0.2.0', require: false
+  gem 'codecov', '~> 0.2.2', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.18.5', require: false
 end
@@ -176,7 +176,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.6.0'
+  gem 'rubocop-rails', '~> 2.7.1'
   gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

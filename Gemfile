@@ -88,11 +88,11 @@ gem 'pretender', '~> 0.3.4'
 gem 'annotate', '~> 3.1.1'
 
 # Use Capistrano for deployment
+gem 'capistrano3-delayed-job', '~> 1.7.6'
 gem 'capistrano-passenger', '~> 0.2.0', group: :development
 gem 'capistrano-rails', '~> 1.6.1', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
-gem 'capistrano3-delayed-job', '~> 1.7.6'
 
 gem 'bcrypt_pbkdf'
 gem 'ed25519'
@@ -174,7 +174,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.6.0'
+  gem 'rubocop-rails', '~> 2.7.1'
   gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   include Pundit
   include SetCurrentRequestDetails
 
+  MAX_STORED_URL_LENGTH = 1024
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   protect_from_forgery with: :null_session
@@ -137,7 +139,12 @@ class ApplicationController < ActionController::Base
   end
 
   def store_current_location
-    store_location_for(:user, request.url)
+    url = if request.url.length > MAX_STORED_URL_LENGTH
+            request.base_url + request.path
+          else
+            request.url
+          end
+    store_location_for :user, url
   end
 
   def look_for_token

@@ -19,10 +19,12 @@ class FeedbackCodeRenderer
   def add_code
     @builder.div(class: 'code-listing-container') do
       parse
-
-      # Not possible to use clipboard_button_for here since the behaviour is different.
-      @builder.button(class: 'btn btn-default copy-btn', id: "copy-to-clipboard-#{@instance}", title: I18n.t('js.code.copy-to-clipboard'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
-        @builder.i(class: 'mdi mdi-clipboard-text mdi-18') {}
+      # Only display copy button when the submission is not empty
+      if @code.present?
+        # Not possible to use clipboard_button_for here since the behaviour is different.
+        @builder.button(class: 'btn btn-default copy-btn', id: "copy-to-clipboard-#{@instance}", title: I18n.t('js.code.copy-to-clipboard'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+          @builder.i(class: 'mdi mdi-clipboard-text mdi-18') {}
+        end
       end
       @builder.script(type: 'application/javascript') do
         @builder << <<~HEREDOC

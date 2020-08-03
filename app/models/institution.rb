@@ -23,7 +23,7 @@ class Institution < ApplicationRecord
 
   def name
     return self[:name] unless Current.demo_mode
-    
+
     Faker::University.name
   end
 

@@ -255,6 +255,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal username, user.username
   end
 
+  test 'institution name should return a name that is not equal to actual institutio name of the user when in demo mode' do
+    user = create :user
+    institution_name = user.institution&.name
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal institution_name, user.institution&.name
+  end
+
   test 'recent_exercises should return the 3 most recent exercises submissions have been submitted' do
     user = create :user
     exercise1 = create :exercise

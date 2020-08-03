@@ -24,6 +24,7 @@ class Institution < ApplicationRecord
   def name
     return self[:name] unless Current.demo_mode
 
+    Faker::Config.random = Random.new(id + Date.today.yday)
     Faker::University.name
   end
 

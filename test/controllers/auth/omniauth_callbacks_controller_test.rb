@@ -21,14 +21,14 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       }
     }.deep_merge(params)
 
-    # SAML includes the provider.
-    auth_hash = auth_hash.deep_merge({ extra: { provider: identity.provider } }) if identity.provider.class == Provider::Saml
+    # LTI and SAML include the provider.
+    auth_hash = auth_hash.deep_merge({ extra: { provider: identity.provider } }) if [Provider::Lti, Provider::Saml].include?(identity.provider.class)
 
     OmniAuth.config.mock_auth[:default] = OmniAuth::AuthHash.new(auth_hash)
   end
 
   def omniauth_url(provider)
-    send(format('user_%<sym>s_omniauth_authorize_url', sym: provider.class.sym))
+    send(format('user_%<sym>s_omniauth_authorize_url', sym: provider.class.sym), provider: provider)
   end
 
   test 'login with existing identity' do
@@ -128,6 +128,41 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_nil @controller.current_user
   end
 
+  test 'login while already logged in should replace' do
+    AUTH_PROVIDERS.each do |provider_name|
+      # Setup #1.
+      provider = create provider_name
+      user = create :user, institution: provider.institution
+      identity = create :identity, provider: provider, user: user
+
+      # Authenticate #1.
+      omniauth_mock_identity identity
+      get omniauth_url(provider)
+      follow_redirect!
+
+      # Compare the id to the session since @controller.current_user is not
+      # correct in this case (limitation of omniauth testing).
+      assert_equal user.id, session['warden.user.user.key'][0][0]
+
+      # Setup #2.
+      provider2 = create provider_name
+      user2 = create :user, institution: provider2.institution
+      identity2 = create :identity, provider: provider2, user: user2
+
+      # Authenticate #2.
+      omniauth_mock_identity identity2
+      get omniauth_url(provider2)
+      follow_redirect!
+
+      # Compare the id to the session since @controller.current_user is not
+      # correct in this case (limitation of omniauth testing).
+      assert_equal user2.id, session['warden.user.user.key'][0][0]
+
+      # Cleanup.
+      sign_out user2
+    end
+  end
+
   test 'user attributes should be updated upon login' do
     AUTH_PROVIDERS.each do |provider_name|
       # Setup.
@@ -197,8 +232,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_nil @controller.current_user.email
   end
 
-  test 'login with a non-smartschool without email should not work' do
-    (AUTH_PROVIDERS - [:smartschool_provider]).each do |provider_name|
+  test 'login with a non-smartschool or lti provider without email should not work' do
+    (AUTH_PROVIDERS - %i[lti_provider smartschool_provider]).each do |provider_name|
       provider = create provider_name
       user = build :user, email: nil, institution: provider.institution
       identity = build :identity, provider: provider, user: user
@@ -276,7 +311,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   test 'failure handler' do
     AUTH_PROVIDERS.each do |provider_name|
       # Setup.
-      provider = build provider_name
+      provider = create provider_name
       OmniAuth.config.mock_auth[:default] = :invalid_credentials
 
       # Call the authorization url.

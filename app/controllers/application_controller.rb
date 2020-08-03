@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   include Pundit
   include SetCurrentRequestDetails
 
+  MAX_STORED_URL_LENGTH = 1024
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   protect_from_forgery with: :null_session
@@ -46,9 +48,9 @@ class ApplicationController < ActionController::Base
   end
 
   Warden::Manager.after_authentication do |user, _auth, _opts|
-    if user.email.blank? && !user.institution&.uses_smartschool?
+    if user.email.blank? && !user.institution&.uses_smartschool? && !user.institution&.uses_lti?
       raise "User with id #{user.id} should not have a blank email " \
-            'if the provider is not smartschool'
+            'if the provider is not smartschool and not LTI'
     end
   end
 
@@ -137,7 +139,12 @@ class ApplicationController < ActionController::Base
   end
 
   def store_current_location
-    store_location_for(:user, request.url)
+    url = if request.url.length > MAX_STORED_URL_LENGTH
+            request.base_url + request.path
+          else
+            request.url
+          end
+    store_location_for :user, url
   end
 
   def look_for_token

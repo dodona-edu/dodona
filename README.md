@@ -25,8 +25,8 @@ These steps are not required to run the server, but you need docker to actually 
 2. Clone the [docker-images repository](https://github.com/dodona-edu/docker-images).
 3. Build a docker image. The `build.sh` scripts builds all images. But with the initial data, only `dodona-python` is needed. You can build this image with `docker build --pull --force-rm -t "dodona-python" -f "dodona-python.dockerfile" .`.
 
-## Visualisations locally
-These steps are not required to run the server, but are needed to let the visualisations work.
+## Loading visualisations locally
+These steps are not required to run the server, but are needed to let the visualisations load.
 
 1. Install and start `memcached`.
 2. Create the following file `tmp/caching-dev.txt`.

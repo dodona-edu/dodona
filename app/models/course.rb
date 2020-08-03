@@ -248,7 +248,7 @@ class Course < ApplicationRecord
   end
 
   def scoresheet
-    sorted_series = series.reverse
+    sorted_series = series
     sorted_users = subscribed_members.order('course_memberships.status ASC')
                                      .order(permission: :asc)
                                      .order(last_name: :asc, first_name: :asc)

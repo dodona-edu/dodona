@@ -307,6 +307,10 @@ if Rails.env.development?
 
   # Add an empty Submission to the course
   exercise = Exercise.last
+  Series.create name: "Lege, foute inzending na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [exercise]
   Submission.create user: zeus,
                     exercise: exercise,
                     evaluate: false,
@@ -317,8 +321,5 @@ if Rails.env.development?
                     created_at: after_deadline,
                     code: '',
                     result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
-  Series.create name: "Lege, foute inzending na deadline",
-                course: status_test,
-                deadline: deadline,
-                exercises: [exercise]
+
 end

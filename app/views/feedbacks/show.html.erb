@@ -15,7 +15,7 @@
       </div>
       <div class="card-supporting-text card-border">
         <div class="row">
-        <% if (@feedback.submission.present? && @feedback.later_attempts + @feedback.previous_attempts > 0) || @feedback.total_attempts > 0 %>
+        <% if @feedback.total_attempts > 0 %>
           <div class="col-sm-6 col-sm-push-6">
             <div class="feedback-metadata-submission">
               <p>

@@ -1,8 +1,8 @@
 class AddIconToProgrammingLanguages < ActiveRecord::Migration[6.0]
 
-  @@icon_map = {
+  ICON_MAP = {
     'python' => 'language-python',
-    'sh' => 'mdi-bash',
+    'sh' => 'bash',
     'javascript' => 'language-javascript',
     'bash' => 'bash',
     'java' => 'language-java',
@@ -16,7 +16,7 @@ class AddIconToProgrammingLanguages < ActiveRecord::Migration[6.0]
     add_column :programming_languages, :icon, :string
 
     ProgrammingLanguage.all.each do |language|
-      language.update(icon: @@icon_map[language.name])
+      language.update(icon: ICON_MAP[language.name])
     end
   end
 end

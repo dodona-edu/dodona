@@ -159,15 +159,17 @@ class UserTest < ActiveSupport::TestCase
     assert_user_exercises user, 3, 2, 1
   end
 
-  test 'only smartschool users can have blank email' do
-    # Validate that smartschool institutions are valid.
-    smartschool = create :smartschool_provider
-    smartschool_user = build :user, institution: smartschool.institution
-    smartschool_user.email = nil
-    assert smartschool.valid?
+  test 'only lti and smartschool users can have blank email' do
+    # Validate that lti and smartschool institutions are valid.
+    %i[lti_provider smartschool_provider].each do |provider_name|
+      provider = create provider_name
+      user = build :user, institution: provider.institution
+      user.email = nil
+      assert user.valid?
+    end
 
     # Validate that every other institution is invalid.
-    (AUTH_PROVIDERS - [:smartschool_provider]).each do |provider_name|
+    (AUTH_PROVIDERS - %i[lti_provider smartschool_provider]).each do |provider_name|
       provider = create provider_name
       user = build :user, institution: provider.institution
       user.email = nil
@@ -253,6 +255,13 @@ class UserTest < ActiveSupport::TestCase
     username = user.username
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal username, user.username
+  end
+
+  test 'institution name should return a name that is not equal to actual institutio name of the user when in demo mode' do
+    user = create :user
+    institution_name = user.institution&.name
+    Current.any_instance.stubs(:demo_mode).returns(true)
+    assert_not_equal institution_name, user.institution&.name
   end
 
   test 'recent_exercises should return the 3 most recent exercises submissions have been submitted' do

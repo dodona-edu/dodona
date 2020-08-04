@@ -220,7 +220,8 @@ if Rails.env.development?
                           status: before,
                           accepted: before == :correct,
                           created_at: before_deadline,
-                          code: code,
+                          # allow Status Test to contain empty submissions for layout testing
+                          code: rand() > 0.5 ? code : '',
                           result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
       end
       if after != :none

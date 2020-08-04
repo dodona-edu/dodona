@@ -28,6 +28,7 @@ nl:
       user_not_created: "kan gebruiker niet aanmaken"
       unknown_failure: "een onbekende fout is opgetreden"
       failure: "Kan je niet aanmelden met %{kind}, reden: \"%{reason}\"."
+      linked: Omdat je nog niet eerder op Dodona inlogde vanaf Ufora, konden we de gevraagde actie niet uitvoeren. Nu we je UGent-account gekoppeld hebben, zou dit wel moeten lukken. Klik opnieuw op de link in Ufora om opnieuw te proberen.
       success: "Succesvol geautoriseerd met %{kind} account."
     passwords:
       no_token: "Je kunt deze pagina niet bereiken als je geen e-mail hebt ontvangen met wachtwoord reset instructies. Mocht je dit wel hebben ontvangen kijk dan het URL na in je mail of vraag de instructies opnieuw aan."

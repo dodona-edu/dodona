@@ -320,6 +320,10 @@ ActiveRecord::Schema.define(version: 2020_08_03_125737) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "mode", default: 0, null: false
     t.boolean "active", default: true
+    t.string "authorization_uri"
+    t.string "client_id"
+    t.string "issuer"
+    t.string "jwks_uri"
     t.index ["institution_id"], name: "fk_rails_ba691498dd"
   end
 

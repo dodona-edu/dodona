@@ -20,7 +20,7 @@
         <%= raw "<i class='mdi mdi-eye-off mdi-18' title='#{t("activities.index.private")}'></i>" if activity.access_private? %>
         <%= raw "<i class='mdi mdi-delete mdi-18' title='#{t("activities.index.removed")}'></i>" if activity.removed? %>
         <%= raw "<i class='mdi mdi-alert-circle mdi-18' title='#{t("activities.index.invalid")}'></i>" if activity.not_valid? %>
-        <%= raw "<i class='mdi mdi-#{ activity.programming_language&.icon} mdi-18' title='#{"#{activity.programming_language&.name.titleize} #{t("activities.index.type.exercise").downcase}"}'></i>" if activity.exercise? %>
+        <%= raw "<i class='mdi mdi-#{ activity.programming_language&.icon} mdi-18' title='#{t "activities.index.type.exercise_language", language: activity.programming_language.name.titleize}'></i>" if activity.exercise? %>
         <%= raw "<i class='mdi mdi-book-open-variant mdi-18' title='#{t("activities.index.type.content")}'></i>" if activity.content_page? %>
       </td>
       <td class="link">

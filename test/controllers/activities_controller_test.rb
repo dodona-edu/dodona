@@ -111,7 +111,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     @instance.stubs(:media_path).returns(Pathname.new('not-a-real-directory'))
     Repository.any_instance.stubs(:full_path).returns(Pathname.new(Rails.root))
 
-    get(activity_url(@instance) + '/media/icon.png')
+    get media_activity_url(@instance, 'icon.png')
 
     assert_response :success
     assert_equal 'image/png', response.content_type

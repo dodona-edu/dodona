@@ -29,7 +29,7 @@ class RepositoryPolicy < ApplicationPolicy
     user&.zeus?
   end
 
-  def media?
+  def public?
     true
   end
 

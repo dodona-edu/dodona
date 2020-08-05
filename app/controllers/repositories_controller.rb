@@ -1,7 +1,7 @@
 require 'set'
 
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: %i[show edit update destroy media hook reprocess admins add_admin remove_admin courses add_course remove_course]
+  before_action :set_repository, only: %i[show edit update destroy public hook reprocess admins add_admin remove_admin courses add_course remove_course]
 
   # GET /repositories
   # GET /repositories.json
@@ -79,8 +79,8 @@ class RepositoriesController < ApplicationController
     end
   end
 
-  def media
-    file = File.join(@repository.media_path, params[:media])
+  def public
+    file = File.join(@repository.public_path, params[:media])
     raise ActionController::RoutingError, 'Not Found' unless File.file? file
 
     type = Mime::Type.lookup_by_extension File.extname(file)[1..]

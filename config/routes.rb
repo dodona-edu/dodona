@@ -153,7 +153,7 @@ Rails.application.routes.draw do
         get 'reprocess'
         get 'admins'
         get 'courses'
-        get 'public/*media', to: 'repositories#media', constraints: {media: /.*/}
+        get 'public/*media', to: 'repositories#public', constraints: {media: /.*/}, as: 'public'
         post 'add_admin'
         post 'remove_admin'
         post 'add_course'

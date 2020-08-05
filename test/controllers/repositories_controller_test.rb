@@ -26,6 +26,15 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to(@instance)
   end
 
+  test 'should get public media' do
+    @instance.stubs(:public_path).returns(Pathname.new('not-a-real-directory'))
+    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises'))
+    get public_repository_url(@instance, 'CodersApprentice.png')
+
+    assert_response :success
+    assert_equal 'image/png', response.content_type
+  end
+
   test 'should create repository admin on create' do
     assert_difference('RepositoryAdmin.count', 1, 'creating a repository should create a repository admin') do
       create_request

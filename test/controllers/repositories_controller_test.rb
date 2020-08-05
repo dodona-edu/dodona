@@ -14,8 +14,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def request_public_image
-    @instance.stubs(:public_path).returns(Pathname.new('not-a-real-directory'))
-    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises'))
+    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises/echo'))
     get public_repository_url(@instance, 'CodersApprentice.png')
 
     assert_response :success

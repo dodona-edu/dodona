@@ -101,7 +101,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   test 'should get activities media' do
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get(activity_url(@instance) + '/media/icon.png')
+    get media_activity_url(@instance, 'icon.png')
 
     assert_response :success
     assert_equal response.content_type, 'image/png'
@@ -109,9 +109,9 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get public media' do
     @instance.stubs(:media_path).returns(Pathname.new('not-a-real-directory'))
-    Repository.any_instance.stubs(:full_path).returns(Pathname.new(Rails.root))
+    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises/echo'))
 
-    get media_activity_url(@instance, 'icon.png')
+    get media_activity_url(@instance, 'CodersApprentice.png')
 
     assert_response :success
     assert_equal 'image/png', response.content_type
@@ -122,7 +122,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     @instance.update access: :private
 
-    get(activity_url(@instance) + '/media/icon.png')
+    get media_activity_url(@instance, 'icon.png')
 
     assert_response :redirect
   end

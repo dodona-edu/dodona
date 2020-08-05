@@ -1,5 +1,8 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'description' %>
+  <script>
+    window.dodona.initDescription();
+  </script>
   <%= javascript_include_tag 'mathjax/es5/tex-mml-chtml' %>
 <% end %>
 <div class="activity-description">
@@ -27,6 +30,3 @@
     </footer>
   </div>
 </div>
-<script>
-  $(function(){window.dodona.initDescription();});
-</script>

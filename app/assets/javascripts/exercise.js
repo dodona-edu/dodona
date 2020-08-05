@@ -103,7 +103,7 @@ function centerImagesAndTables() {
 }
 
 function initMathJax() {
-    // configure MathJax if loaded
+    // configure MathJax
     window.MathJax = {
         tex: {
             inlineMath: [

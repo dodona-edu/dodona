@@ -192,6 +192,3 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
 gem 'docker-api', '~> 1.34.2'
-
-# To allow sandbox host requesting fonts to dodona host
-gem 'rack-cors', '~> 0.4.0'

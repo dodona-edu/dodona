@@ -13,6 +13,15 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     sign_in @admin
   end
 
+  def request_public_image
+    @instance.stubs(:public_path).returns(Pathname.new('not-a-real-directory'))
+    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises'))
+    get public_repository_url(@instance, 'CodersApprentice.png')
+
+    assert_response :success
+    assert_equal 'image/png', response.content_type
+  end
+
   test_crud_actions
 
   test 'should process activities on create' do
@@ -27,12 +36,12 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get public media' do
-    @instance.stubs(:public_path).returns(Pathname.new('not-a-real-directory'))
-    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises'))
-    get public_repository_url(@instance, 'CodersApprentice.png')
+    request_public_image
+  end
 
-    assert_response :success
-    assert_equal 'image/png', response.content_type
+  test 'public media should be public' do
+    sign_out @admin
+    request_public_image
   end
 
   test 'should create repository admin on create' do

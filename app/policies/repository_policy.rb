@@ -30,7 +30,7 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def media?
-    user&.zeus?
+    true
   end
 
   def admins?

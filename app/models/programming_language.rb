@@ -12,6 +12,8 @@
 #
 
 class ProgrammingLanguage < ApplicationRecord
+  DEFAULT_ICON = 'file-document-edit-outline'.freeze
+
   before_save :fill_fields
 
   has_many :exercises, dependent: :restrict_with_error
@@ -19,5 +21,9 @@ class ProgrammingLanguage < ApplicationRecord
   def fill_fields
     self.editor_name ||= name
     self.extension ||= 'txt'
+  end
+
+  def icon
+    self[:icon] || DEFAULT_ICON
   end
 end

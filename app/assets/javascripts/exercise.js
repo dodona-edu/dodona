@@ -1,6 +1,7 @@
 /* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
 import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
+import { MathJax } from "mathjax";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -104,21 +105,29 @@ function centerImagesAndTables() {
 
 function initMathJax() {
     // configure MathJax if loaded
-    if (typeof MathJax !== "undefined") {
-        // eslint-disable-next-line new-cap
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [
-                    ["$$", "$$"],
-                    ["\\(", "\\)"],
-                ],
-                displayMath: [
-                    ["\\[", "\\]"],
-                ],
-                ignoreClass: "feedback-table",
-            },
-        });
-    }
+    window.MathJax = {
+        tex: {
+          inlineMath: [
+                          ["$$", "$$"],
+                          ["\\(", "\\)"],
+                      ],
+          displayMath: [
+                          ["\\[", "\\]"],
+                      ],
+          autoload: {
+            color: [],
+            colorV2: ['color']
+          },
+          packages: {'[+]': ['noerrors']}
+        },
+        options: {
+          ignoreHtmlClass: "feedback-table",
+          processHtmlClass: 'tex2jax_process'
+        },
+        loader: {
+          load: ['[tex]/noerrors']
+        }
+      };
 }
 
 function initExerciseDescription() {

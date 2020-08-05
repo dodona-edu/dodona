@@ -1,6 +1,6 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'description' %>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+  <%= javascript_include_tag 'mathjax/es5/tex-mml-chtml' %>
 <% end %>
 <div class="activity-description">
   <div class="card-supporting-text">

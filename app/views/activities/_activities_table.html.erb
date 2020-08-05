@@ -47,7 +47,7 @@
 
         <td class='type-icon'>
           <% if activity.exercise? %>
-            <i class="<%= "mdi mdi-#{activity.programming_language&.icon} mdi-18" %>" title="<%= "#{activity.programming_language&.name} #{t "activities.index.type.exercise"}".titleize %>"></i>
+            <i class="<%= "mdi mdi-#{activity.programming_language&.icon} mdi-18" %>" title="<%= "#{activity.programming_language&.name.titleize} #{t "activities.index.type.exercise"}".downcase %>"></i>
           <% elsif activity.content_page? %>
             <i class="mdi mdi-book-open-variant mdi-18" title="<%= t "activities.index.type.content" %>"></i>
           <% end %>

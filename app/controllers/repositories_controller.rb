@@ -1,5 +1,5 @@
 require 'set'
-
+require 'pathname'
 class RepositoriesController < ApplicationController
   before_action :set_repository, only: %i[show edit update destroy public hook reprocess admins add_admin remove_admin courses add_course remove_course]
 
@@ -16,7 +16,10 @@ class RepositoriesController < ApplicationController
   def show
     @title = @repository.name
     @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, '#']]
-    @files = Dir.entries(@repository.public_path)
+    pathname_dir = Pathname.new @repository.public_path
+    @files = Dir[File.join(@repository.public_path, '**/*')] # uses entries in the locally stored Dodona copy of the repository
+             .select { |f| File.file? f } # skip directories such as ., icons/
+             .map { |f| Pathname.new(f).relative_path_from pathname_dir } # make them relative again to be able to create urls
   end
 
   # GET /repositories/new

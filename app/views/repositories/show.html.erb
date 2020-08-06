@@ -63,15 +63,13 @@
           <table class="table table-index table-resource">
             <thead>
               <tr>
-                <th></th>
                 <th><%= t ".public_files" %></th>
               </tr>
             </thead>
             <tbody>
               <% @files.each do |file| %>
                 <tr>
-                  <td><%= file.to_s %></td>
-                  <td><%= link_to file.to_s, file %></td>
+                  <td><%= link_to file.to_s, public_repository_url(@repository, file) %></td>
                 </tr>
               <% end %>
             </tbody>

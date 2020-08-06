@@ -121,7 +121,7 @@ function initMathJax() {
         },
         options: {
             ignoreHtmlClass: "feedback-table",
-            processHtmlClass: "tex2jax_process"
+            processHtmlClass: "tex2jax_process|annotation user"
         },
         loader: {
             load: ["[tex]/noerrors"]
@@ -407,6 +407,6 @@ function onFrameScroll(position) {
 }
 
 export {
-    initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
+    initMathJax, initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
     onFrameMessage, onFrameScroll
 };

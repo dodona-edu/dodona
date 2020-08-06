@@ -7,7 +7,7 @@
       <%= render "getting_started_card" %>
       <%= render 'privacy_disclaimer' %>
     <% else %>
-      <div class="row favorites-row">
+      <div class="card-columns favorites-card-columns">
         <% unless @favorite_courses.empty? %>
           <% @favorite_courses.each do |course| %>
             <div class="col-xs-12 col-sm-12 col-lg-6">

@@ -89,6 +89,7 @@ export abstract class Annotation {
             // Body.
             this.__html.appendChild(this.header);
             this.__html.appendChild(this.body);
+            window.MathJax.typeset();
         }
 
         return this.__html;

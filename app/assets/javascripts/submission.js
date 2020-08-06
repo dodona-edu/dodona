@@ -86,4 +86,32 @@ function contextualizeMediaPaths(parentClass, exercisePath, token) {
     });
 }
 
+function initMathJax() {
+    // configure MathJax
+    window.MathJax = {
+        tex: {
+            inlineMath: [
+                ["$$", "$$"],
+                ["\\(", "\\)"],
+            ],
+            displayMath: [
+                ["\\[", "\\]"],
+            ],
+            autoload: {
+                color: [],
+                colorV2: ["color"]
+            },
+            packages: { "[+]": ["noerrors"] }
+        },
+        options: {
+            processHtmlClass: "tex2jax_process"
+        },
+        loader: {
+            load: ["[tex]/noerrors"]
+        }
+    };
+}
+
+window.dodona.initMathJax = initMathJax;
+
 export { initSubmissionShow };

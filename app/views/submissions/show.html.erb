@@ -1,4 +1,11 @@
 <%= render 'navbar_links' %>
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'submission' %>
+  <script>
+    window.dodona.initMathJax();
+  </script>
+  <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
+<% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">

@@ -77,6 +77,14 @@ class Activity < ApplicationRecord
   scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
   scope :by_type, ->(type) { where(type: type) }
+  # scope :by_description_language, ->(languages) {
+  #  if languages.include? 'en'
+  #    where(description_en_present: true)
+  #  end
+  #  if languages.include? 'nl'
+  #    where(description_nl_present: true)
+  #  end
+  # }
 
   def content_page?
     false

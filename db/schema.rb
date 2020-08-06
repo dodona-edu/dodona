@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_01_135727) do
+ActiveRecord::Schema.define(version: 2020_08_05_113636) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(version: 2020_07_01_135727) do
     t.string "repository_token", limit: 64, null: false
     t.boolean "allow_unsafe", default: false, null: false
     t.string "type", default: "Exercise", null: false
+    t.boolean "description_nl_present", default: false
+    t.boolean "description_en_present", default: false
     t.index ["judge_id"], name: "index_activities_on_judge_id"
     t.index ["name_nl"], name: "index_activities_on_name_nl"
     t.index ["path", "repository_id"], name: "index_activities_on_path_and_repository_id", unique: true

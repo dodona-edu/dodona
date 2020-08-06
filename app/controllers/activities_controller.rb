@@ -44,6 +44,8 @@ class ActivitiesController < ApplicationController
       @activities = @activities.in_repository(@repository)
     end
 
+    @activities = @activities.by_description_language(params[:description_language]) if params[:description_language].present?
+
     unless @activities.empty?
       @activities = apply_scopes(@activities)
       @activities = @activities.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))

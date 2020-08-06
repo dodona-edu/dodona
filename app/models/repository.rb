@@ -174,6 +174,9 @@ class Repository < ApplicationRecord
     act.description_format = Activity.determine_format(act.full_path)
     act.name_en = config['description']&.fetch('names', nil)&.fetch('en', nil)
     act.name_nl = config['description']&.fetch('names', nil)&.fetch('nl', nil)
+    languages = act.description_languages
+    act.description_nl_present = languages.include? 'nl'
+    act.description_en_present = languages.include? 'en'
     act.labels = labels
     act.status = :ok
     act.type = type

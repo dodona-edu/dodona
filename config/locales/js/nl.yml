@@ -33,6 +33,7 @@ nl:
     statuses: Statussen
     event_types: Event types
     activity_types: Activiteitstypes
+    description_languages: Talen waarin de beschrijving beschikbaar is
     label-undeletable: Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.
     configured-institution: de ingestelde onderwijsinstelling
     loading: Aan het laden...

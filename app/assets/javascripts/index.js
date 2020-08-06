@@ -199,14 +199,18 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (urlContainsSearchOpt(action)) {
-                    $link.find("i").removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
+                    $link.find("i")
+                        .removeClass("mdi-checkbox-blank-outline")
+                        .addClass("mdi-checkbox-marked-outline");
                 }
                 $link.click(() => {
                     const child = $link.find("i");
                     if (child.hasClass("mdi-checkbox-blank-outline")) {
-                        child.removeClass("mdi-checkbox-blank-outline").addClass("mdi-checkbox-marked-outline");
+                        child.removeClass("mdi-checkbox-blank-outline")
+                            .addClass("mdi-checkbox-marked-outline");
                     } else {
-                        child.removeClass("mdi-checkbox-marked-outline").addClass("mdi-checkbox-blank-outline");
+                        child.removeClass("mdi-checkbox-marked-outline")
+                            .addClass("mdi-checkbox-blank-outline");
                     }
                     performSearch();
                     return false;

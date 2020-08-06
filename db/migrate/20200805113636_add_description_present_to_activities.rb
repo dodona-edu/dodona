@@ -3,14 +3,9 @@ class AddDescriptionPresentToActivities < ActiveRecord::Migration[6.0]
     add_column :activities, :description_nl_present, :boolean, default: false
     add_column :activities, :description_en_present, :boolean, default: false
 
-    Activities.all.each do |activity|
+    Activity.all.each do |activity|
       languages = activity.description_languages
-      if languages.include? 'en'
-        activity.update description_en_present: true
-      end
-      if languages.include? 'nl'
-        activity.update description_nl_present: true
-      end
+      activity.update description_en_present: languages.include?('en'), description_nl_present: languages.include?('en')
     end
   end
 end

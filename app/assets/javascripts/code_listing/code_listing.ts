@@ -520,7 +520,7 @@ export class CodeListing {
 
             // Show the annotation toggles.
             this.annotationToggles.classList.remove("hide");
-            window.MathJax.typeset();
+            window.MathJax?.typeset();
         } else {
             // No annotations have been added (yet).
             this.badge.innerText = "";

@@ -1,6 +1,6 @@
 declare interface Window {
     dodona: any;
-    MathJax: MathJaxObject;
+    MathJax?: MathJaxObject;
 }
 
 declare class MathJaxObject {

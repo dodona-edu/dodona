@@ -66,14 +66,19 @@
                 <th><%= t ".public_files" %></th>
               </tr>
             </thead>
+            <% if @files.present? %>
             <tbody>
-              <% @files.each do |file| %>
-                <tr>
-                  <td><%= link_to file.to_s, public_repository_url(@repository, file) %></td>
-                </tr>
-              <% end %>
+            <% @files.each do |file| %>
+              <tr>
+                <td><%= link_to file.to_s, public_repository_url(@repository, file) %></td>
+              </tr>
+            <% end %>
             </tbody>
+            <% end %>
           </table>
+          <% if !@files.present? %>
+            <p id="no-public-files"><%= t ".public_files_placeholder", url:  public_repository_url(@repository, '') %></p>
+          <% end %>
         </div>
       </div>
       <% end %>

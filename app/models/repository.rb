@@ -18,6 +18,7 @@ class Repository < ApplicationRecord
 
   ACTIVITY_LOCATIONS = Rails.root.join('data/exercises').freeze
   PUBLIC_DIR = 'public'.freeze
+  MEDIA_DIR = 'media'.freeze
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :remote, presence: true
@@ -47,6 +48,10 @@ class Repository < ApplicationRecord
 
   def public_path
     full_path + PUBLIC_DIR
+  end
+
+  def media_path
+    full_path + MEDIA_DIR
   end
 
   def commit(msg)

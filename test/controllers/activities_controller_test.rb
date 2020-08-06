@@ -111,7 +111,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     @instance.stubs(:media_path).returns(Pathname.new('not-a-real-directory'))
     Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises/echo'))
 
-    get media_activity_url(@instance, 'CodersApprentice.png')
+    get media_activity_url(@instance, 'code.png')
 
     assert_response :success
     assert_equal 'image/png', response.content_type

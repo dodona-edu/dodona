@@ -166,7 +166,7 @@ class ActivitiesController < ApplicationController
     end
 
     file = File.join(@activity.media_path, params[:media])
-    file = File.join(@activity.repository.public_path, params[:media]) unless File.file? file
+    file = File.join(@activity.repository.media_path, params[:media]) unless File.file? file
     raise ActionController::RoutingError, 'Not Found' unless File.file? file
 
     type = Mime::Type.lookup_by_extension File.extname(file)[1..]

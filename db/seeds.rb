@@ -237,8 +237,7 @@ if Rails.env.development?
                           status: before,
                           accepted: before == :correct,
                           created_at: before_deadline,
-                          # allow Status Test to contain empty submissions for layout testing
-                          code: rand() > 0.5 ? code : '',
+                          code: code,
                           result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
       end
       if after != :none
@@ -322,4 +321,22 @@ if Rails.env.development?
                 course: status_test,
                 deadline: deadline,
                 exercises: [status_exercises[:none][:correct], status_exercises[:none][:none]]
+
+  # Add an empty Submission to the course
+  exercise = Exercise.last
+  Series.create name: "Lege, foute inzending na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [exercise]
+  Submission.create user: zeus,
+                    exercise: exercise,
+                    evaluate: false,
+                    skip_rate_limit_check: true,
+                    course: status_test,
+                    status: :wrong,
+                    accepted: false,
+                    created_at: after_deadline,
+                    code: '',
+                    result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
+
 end

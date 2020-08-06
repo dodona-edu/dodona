@@ -43,7 +43,11 @@ class Repository < ApplicationRecord
   has_many :exercises, dependent: :restrict_with_error
 
   def full_path
-    Pathname.new File.join(ACTIVITY_LOCATIONS, path)
+    if path.present?
+      Pathname.new File.join(ACTIVITY_LOCATIONS, path)
+    else
+      ''
+    end
   end
 
   def public_path

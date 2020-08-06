@@ -385,7 +385,12 @@ export class CodeListing {
                 sendButton.setAttribute("disabled", "1");
                 await onSubmit(form);
                 sendButton.removeAttribute("disabled");
-                window.MathJax.typeset();
+                // Ask MathJax to search for math in the annotations
+                if (window.MathJax === undefined) {
+                    console.error("MathJax is not initialized");
+                } else {
+                    window.MathJax.typeset();
+                }
             }
         });
 
@@ -520,7 +525,13 @@ export class CodeListing {
 
             // Show the annotation toggles.
             this.annotationToggles.classList.remove("hide");
-            window.MathJax?.typeset();
+
+            // Ask MathJax to search for math in the annotations
+            if (window.MathJax === undefined) {
+                console.error("MathJax is not initialized");
+            } else {
+                window.MathJax.typeset();
+            }
         } else {
             // No annotations have been added (yet).
             this.badge.innerText = "";

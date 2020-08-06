@@ -20,6 +20,7 @@ nl:
       exercises: Oefeningen
       content_pages: Leesactiviteiten
       learning_activities: Leeractiviteiten
+      public_files: Publieke bestanden
     admins:
       admins: "Beheerders"
       admin_explanation: "De gebruikers die hieronder staan opgelijst zijn de beheerders van deze repository. Deze gebruikers kunnen anderen repository beheerder maken, privé oefeningen uit deze repository zien, oefeningen uit deze repository aanpassen en beheren welke cursussen privé oefeningen uit deze repository gebruiken."

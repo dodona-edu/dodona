@@ -20,6 +20,7 @@ en:
       exercises: Exercises
       content_pages: Reading activities
       learning_activities: Learning activities
+      public_files: Public files
     admins:
       admins: "Administrators"
       admin_explanation: "The users listed below are repository administrators. These users can make others repository admins, view the private exercises in this repository, edit exercises in the repository and manage which courses can use private exercises."

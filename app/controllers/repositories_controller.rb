@@ -16,6 +16,7 @@ class RepositoriesController < ApplicationController
   def show
     @title = @repository.name
     @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, '#']]
+    @files = Dir.entries(@repository.public_path)
   end
 
   # GET /repositories/new

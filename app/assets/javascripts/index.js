@@ -280,7 +280,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             const collection = filterCollections[e.attrs.type];
             $(e.relatedTarget).addClass(`accent-${collection.color(e.attrs)}`)
             // add an attribute to identify duplicate labels in the suggestions @see validateLabel
-                              .attr(LABEL_UNIQUE_ATTR), e.attrs.id);  
+                              .attr(LABEL_UNIQUE_ATTR, e.attrs.id);  
             if (!collection.multi) {
                 const tokens = $field.tokenfield("getTokens");
                 const newTokens = tokens

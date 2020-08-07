@@ -2,25 +2,30 @@ nl:
   pages:
     about:
       what: Wat is Dodona?
-      info_html: "<p>Dodona is een <strong>gratis</strong> online oefenplatform om te leren programmeren. De focus van de applicatie ligt op de eerste plaats op het <strong>automatisch verbeteren</strong> en <strong>geven van feedback</strong> op ingediende oplossingen van programmeeroefeningen.</p>"
-      learning: Een oefenplatform
-      free: Gratis
-      student: Voor student
-      teacher: Voor lesgevers
-      intro_html: "De Dodona-leeromgeving bevat honderden programmeeroefeningen die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen. Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl. Dodona is nog volop in ontwikkeling, eventuele bugs of suggesties mogen dus zeker gemeld worden via het <a href='/contact'>contactformulier</a>."
+      info_html: "<p>Dodona is een <strong>gratis</strong> online oefenplatform om te leren programmeren.
+      De focus van de applicatie ligt op de eerste plaats op het <strong>automatisch verbeteren</strong> en
+      <strong>geven van feedback</strong> op ingediende oplossingen van programmeeroefeningen.
+      Op dit moment ondersteunt Dodona de programmeertalen Python, JavaScript, Java, C#, bash, Prolog, Haskell en R.</p>
+      <p> Op Dodona kunnen lesgevers een eigen cursus aanmaken, opgebouwd uit verschillende oefeningenreeksen.
+      Ze kunnen hiervoor beroep doen op bestaande cursussen en oefeningen, maar kunnen er ook voor kiezen om zelf aan de slag te gaan en eigen oefeningen en lesmateriaal op te stellen.
+      Dankzij de ingebouwde learning analytics en datavisualisaties is het bovendien eenvoudig om de voortgang van studenten te meten. <a href=https://dodona-edu.github.io/en/guides/>Hier</a> vind je enkele handleidingen, vooral gericht op lesgevers.</p>"
+      intro_html: "De Dodona-leeromgeving bevat <strong>honderden programmeeroefeningen</strong> die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen.
+      Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl. Dodona is nog volop in ontwikkeling, eventuele bugs of suggesties mogen dus zeker gemeld worden via het <a href='/contact'>contactformulier</a>."
       sign-in: Aanmelden
       learn-to-code: Leren programmeren
       higher-education: voor secundair en hoger onderwijs
-      features: Kenmerken
+      for-a-student: Dodona voor een student
       write-code: Schrijf code
       hand-in: Dien in
       get-feedback: Krijg feedback
       write-code-text: Schrijf je in voor een cursus en kies een van de honderden programmeeroefeningen.
       hand-in-text: Los de oefening op en dien je code in via de ingebouwde editor.
       get-feedback-text: Je code wordt automatisch getest en na enkele seconden krijg je het resultaat te zien.
-      made_by: Gemaakt door
-      developed_on: Ontwikkeld op GitHub
-      developed_by: Ontwikkeld door UGent
+      made-by: Gemaakt door
+      developed-on: Ontwikkeld op GitHub
+      developed-on-text_html: Een gedetailleerd overzicht van de huidige ontwikkeling van Dodona kan op <a href=https://github.com/dodona-edu/dodona>onze github repository</a> gevonden worden.
+      developed-by: Ontwikkeld door UGent
+      developed-by-text: Dodona werd ontwikkeld aan de Universiteit Gent om practica aan grote groepen studenten te ondersteunen.
     home:
       more-courses: Meer cursussen
       favorites: "Favorieten"

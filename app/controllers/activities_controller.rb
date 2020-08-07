@@ -44,7 +44,7 @@ class ActivitiesController < ApplicationController
       @activities = @activities.in_repository(@repository)
     end
 
-    @activities = @activities.by_description_language(params[:description_language]) if params[:description_language].present?
+    @activities = @activities.by_description_language(params[:description_languages]) if params[:description_languages].present?
 
     unless @activities.empty?
       @activities = apply_scopes(@activities)

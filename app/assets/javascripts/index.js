@@ -17,6 +17,8 @@ const QUERY_FILTER_ID = "#filter-query-tokenfield";
 const FILTER_ICONS_CLASS = ".filter-icon";
 const FILTER_DATA = "filter";
 
+const LABEL_UNIQUE_ATTR = "label-id";
+
 window.dodona.index = {};
 window.dodona.index.baseUrl = window.location.href;
 window.dodona.index.doSearch = () => { };
@@ -258,7 +260,15 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             if (!collection) {
                 return false;
             }
-            return collection.data.map(el => el.name).includes(e.attrs.name);
+            let valid = collection.data.map(el => el.name).includes(e.attrs.name);
+            const newElementId = e.attrs.id.toString(); // ensure comparison is String-based
+            if  (valid && collection.multi){
+                valid = $(".token").filter(function (_index, el) {
+                    // check if a label with this id is not yet present
+                    return newElementId === $(el).attr(LABEL_UNIQUE_ATTR);
+                }).length === 0;
+            }
+            return valid;
         }
 
         function disableLabel() {
@@ -268,8 +278,9 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 
         function enableLabel(e) {
             const collection = filterCollections[e.attrs.type];
-
-            $(e.relatedTarget).addClass(`accent-${collection.color(e.attrs)}`);
+            $(e.relatedTarget).addClass(`accent-${collection.color(e.attrs)}`)
+            // add an attribute to identify duplicate labels in the suggestions @see validateLabel
+                              .attr(LABEL_UNIQUE_ATTR), e.attrs.id);  
             if (!collection.multi) {
                 const tokens = $field.tokenfield("getTokens");
                 const newTokens = tokens

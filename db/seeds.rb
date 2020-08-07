@@ -109,6 +109,7 @@ if Rails.env.development?
   # add some students to the moderated course
   pending = students.sample(60)
   courses[2].pending_members.concat(pending - courses[2].enrolled_members)
+  
   puts 'Adding labels to courses'
   courses.each do |course|
     cl = CourseLabel.create course_id: course.id, name: Faker::CryptoCoin.unique.coin_name, created_at: Time.now, updated_at: Time.now

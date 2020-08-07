@@ -1,16 +1,27 @@
 en:
   pages:
     about:
-      intro_html: "The Dodona platform contains hundreds of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with the credentials of your institution. Dodona is still in active development, any bug report or suggestion is welcome trough the <a href='/contact'>contact form</a>."
+      what: What is Dodona?
+      info_html: "<p>Dodona is a <strong>free</strong> online exercise platform for learning to program.
+      It primarily focuses on <strong>automatic testing</strong> and <strong>giving feedback</strong> on submitted solutions of programming exercises.
+      At the moment Dodona supports the following programming languages Python, Javascript, Java, C#, bash, Prolog, Haskell and R.</p>
+      <p> On Dodona teachers can create their own course, composed of different series of exercises. They can use already existing courses and exercises, 
+      but can also create their own exercises and learning materials.
+      Thanks to the built-in learning analytics and datavisualisations it also is easy to monitor the progress of students. <a href=https://dodona-edu.github.io/en/guides/>Click here</a> for a detailed teacher guide.</p>"
+      intro_html: "The Dodona platform contains <strong>hundreds of programming exercises</strong> that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with the credentials of your institution. Dodona is still in active development, any bug report or suggestion is welcome through the <a href='/contact'>contact form</a>."
       sign-in: Sign in
       learn-to-code: Learn to code
       higher-education: for secondary and higher education
+      features: Features
       write-code: Write code
       hand-in: Hand in
       get-feedback: Get feedback
       write-code-text: Subscribe for a course and pick one of the hundreds of programming exercises.
       hand-in-text: Solve the exercise and hand in using the built-in code editor.
       get-feedback-text: Your code is automatically tested. Get your results in seconds!
+      made_by: Made by
+      developed_on: Developed on GitHub
+      developed_by: Developed by UGent
     home:
       more-courses: More courses
       favorites: "Favorites"

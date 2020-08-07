@@ -17,6 +17,18 @@
       </div>
     </div>
     <div class="row card home-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".what" %><h2>
+      </div>
+      <div class="card-supporting-text info-step">
+        <%= t ".info_html" %>
+        <p><%= t ".intro_html" %></p>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".features" %><h2>
+      </div>
       <div class="card-supporting-text">
         <div class="col-sm-4 info-step">
           <%= image_tag("code.png", class: 'img-responsive') %>
@@ -34,12 +46,27 @@
           <p><%= t ".get-feedback-text" %></p>
         </div>
       </div>
-      <div class="card-supporting-text card-border ugent">
+    </div>
+    <div class="row card home-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".made_by" %><h2>
+      </div>
+      <div class="card-supporting-text card-border">
         <div class="col-xs-12 col-sm-4">
           <%= image_tag("ugent.png", class: 'img-responsive') %>
         </div>
         <div class="col-xs-12 col-sm-8">
-          <p><%= t ".intro_html" %></p>
+          <h3><%= t ".developed_by" %></h3>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border github">
+        <div class="col-xs-12 col-sm-4">
+          <a href="https://github.com/dodona-edu/dodona"><%= image_tag("github.png", class: 'img-responsive') %></a>
+          <p><%= Faker::Lorem.paragraph(sentence_count: 10) %></p>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <a href="https://github.com/dodona-edu/dodona"><h3><%= t ".developed_on" %></h3></a>
+          <p><%= Faker::Lorem.paragraph(sentence_count: 10) %></p>
         </div>
       </div>
     </div>

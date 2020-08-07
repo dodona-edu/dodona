@@ -9,12 +9,12 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     stub_git(Repository.any_instance)
     Repository.any_instance.stubs(:process_activities)
     @instance = create :repository
+    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises/echo'))
     @admin = create :zeus
     sign_in @admin
   end
 
   def request_public_image
-    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises/echo'))
     get public_repository_url(@instance, 'CodersApprentice.png')
 
     assert_response :success

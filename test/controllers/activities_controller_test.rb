@@ -161,6 +161,30 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_equal ex.id, JSON.parse(response.body)[0]['id']
   end
 
+  test 'should get activities with certain description languages available' do
+    english_ex = create :exercise, description_en_present: true
+    get activities_url(format: :json, description_languages: ['en'])
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal english_ex.id, JSON.parse(response.body)[0]['id']
+
+    nl_ex = create :exercise, description_nl_present: true
+    get activities_url(format: :json, description_languages: ['nl'])
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal nl_ex.id, JSON.parse(response.body)[0]['id']
+
+    both_ex = create :exercise, description_nl_present: true, description_en_present: true
+    get activities_url(format: :json, description_languages: ['nl'])
+    assert_equal 2, JSON.parse(response.body).count
+    get activities_url(format: :json, description_languages: ['en'])
+    assert_equal 2, JSON.parse(response.body).count
+    get activities_url(format: :json, description_languages: %w[en nl])
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal both_ex.id, JSON.parse(response.body)[0]['id']
+
+    get activities_url(format: :json, description_languages: [])
+    assert_equal Exercise.count, JSON.parse(response.body).count # should yield all exercises
+  end
+
   test 'should get available activities for series' do
     course = create :course, usable_repositories: [@instance.repository]
     other_exercise = create :exercise

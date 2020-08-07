@@ -29,6 +29,8 @@ FactoryBot.define do
     sequence(:name_nl) { |n| name || "Oefening #{n}" }
     sequence(:name_en) { |n| name || "Exercise #{n}" }
 
+    description_nl_present { false }
+    description_en_present { false }
     access { 'public' }
     status { 'ok' }
     programming_language

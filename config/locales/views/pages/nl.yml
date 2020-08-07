@@ -2,7 +2,7 @@ nl:
   pages:
     about:
       what: Wat is Dodona?
-      info_html: "<p>Dodona is een <strong>gratis</strong> online oefenplatform om te leren programmeren.
+      intro_html: "<p>Dodona is een <strong>gratis</strong> online oefenplatform om te leren programmeren.
       De focus van de applicatie ligt op de eerste plaats op het <strong>automatisch verbeteren</strong> en
       <strong>geven van feedback</strong> op ingediende oplossingen van programmeeroefeningen.
       Op dit moment ondersteunt Dodona de programmeertalen Python, JavaScript, Java, C#, bash, Prolog, Haskell en R.</p>

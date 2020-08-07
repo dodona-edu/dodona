@@ -2,7 +2,7 @@ en:
   pages:
     about:
       what: What is Dodona?
-      info_html: "<p>Dodona is a <strong>free</strong> online exercise platform for learning to program.
+      intro_html: "<p>Dodona is a <strong>free</strong> online exercise platform for learning to program.
       It primarily focuses on <strong>automatic testing</strong> and <strong>giving feedback</strong> on submitted solutions of programming exercises.
       At the moment Dodona supports the following programming languages Python, Javascript, Java, C#, bash, Prolog, Haskell and R.</p>
       <p> On Dodona teachers can create their own course, composed of different series of exercises. They can use already existing courses and exercises, 

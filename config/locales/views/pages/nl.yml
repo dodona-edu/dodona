@@ -8,9 +8,11 @@ nl:
       Op dit moment ondersteunt Dodona de programmeertalen Python, JavaScript, Java, C#, bash, Prolog, Haskell en R.</p>
       <p> Op Dodona kunnen lesgevers een eigen cursus aanmaken, opgebouwd uit verschillende oefeningenreeksen.
       Ze kunnen hiervoor beroep doen op bestaande cursussen en oefeningen, maar kunnen er ook voor kiezen om zelf aan de slag te gaan en eigen oefeningen en lesmateriaal op te stellen.
-      Dankzij de ingebouwde learning analytics en datavisualisaties is het bovendien eenvoudig om de voortgang van studenten te meten. <a href=https://dodona-edu.github.io/en/guides/>Hier</a> vind je enkele handleidingen, vooral gericht op lesgevers.</p>"
-      intro_html: "De Dodona-leeromgeving bevat <strong>honderden programmeeroefeningen</strong> die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen.
-      Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl. Dodona is nog volop in ontwikkeling, eventuele bugs of suggesties mogen dus zeker gemeld worden via het <a href='/contact'>contactformulier</a>."
+      Dankzij de ingebouwde learning analytics en datavisualisaties is het bovendien eenvoudig om de voortgang van studenten te meten.
+      <a href=https://dodona-edu.github.io/en/guides/>Hier</a> vind je enkele handleidingen, vooral gericht op lesgevers.</p>
+      <p> De Dodona-leeromgeving bevat <strong>honderden programmeeroefeningen</strong> die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen.
+      Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl.
+      Dodona is nog volop in ontwikkeling, eventuele bugs of suggesties mogen dus zeker gemeld worden via het <a href='/contact'>contactformulier</a>.</p>"
       sign-in: Aanmelden
       learn-to-code: Leren programmeren
       higher-education: voor secundair en hoger onderwijs

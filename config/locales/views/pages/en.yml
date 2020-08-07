@@ -7,9 +7,11 @@ en:
       At the moment Dodona supports the following programming languages Python, Javascript, Java, C#, bash, Prolog, Haskell and R.</p>
       <p> On Dodona teachers can create their own course, composed of different series of exercises. They can use already existing courses and exercises, 
       but can also create their own exercises and learning materials.
-      Thanks to the built-in learning analytics and datavisualisations it also is easy to monitor the progress of students. <a href=https://dodona-edu.github.io/en/guides/>Here</a> you'll find a number of guides, primarily focused on teachers.</p>"
-      intro_html: "The Dodona platform contains <strong>hundreds of programming exercises</strong> that can be used to master several programming languages.
-      All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with the credentials of your institution. Dodona is still in active development, any bug report or suggestion is welcome through the <a href='/contact'>contact form</a>."
+      Thanks to the built-in learning analytics and datavisualisations it also is easy to monitor the progress of students.
+      <a href=https://dodona-edu.github.io/en/guides/>Here</a> you'll find a number of guides, primarily focused on teachers.</p>
+      <p> The Dodona platform contains <strong>hundreds of programming exercises</strong> that can be used to master several programming languages.
+      All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with the credentials of your institution.
+      Dodona is still in active development, any bug report or suggestion is welcome through the <a href='/contact'>contact form</a>.</p>"
       sign-in: Sign in
       learn-to-code: Learn to code
       higher-education: for secondary and higher education

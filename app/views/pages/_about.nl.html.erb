@@ -1,0 +1,89 @@
+<%= content_for :meta_tags do %>
+  <meta property="og:description" content="<%= t "layout.head.description" %>"/>
+<% end %>
+<div class="home-cover-img">&nbsp;</div>
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="row home-header">
+      <div class="col-xs-12 col-sm-8 col-md-7 home-lead">
+        <h1>Dodona</h1>
+        <p class='lead'>Leren programmeren<br>voor secundair en hoger onderwijs</p>
+        <% unless current_user.present? %>
+          <%= link_to "Aanmelden", sign_in_path, class: 'btn btn-primary btn-lg' %>
+        <% end %>
+      </div>
+      <div class="hidden-xs col-sm-4 col-md-5">
+        <%= image_tag("home.png", class: 'img-responsive') %>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">Wat is Dodona?<h2>
+      </div>
+      <div class="card-supporting-text info-step">
+        <p>
+          Dodona is een <strong>gratis</strong> online oefenplatform om te leren programmeren.
+          De focus van de applicatie ligt op de eerste plaats op het <strong>automatisch verbeteren</strong> en
+          <strong>geven van feedback</strong> op ingediende oplossingen van programmeeroefeningen.
+          Op dit moment ondersteunt Dodona de programmeertalen Python, JavaScript, Java, C#, bash, Prolog, Haskell en R.
+        </p>
+        <p>
+          Op Dodona kunnen lesgevers een eigen cursus aanmaken, opgebouwd uit verschillende oefeningenreeksen.
+          Ze kunnen hiervoor beroep doen op bestaande cursussen en oefeningen, maar kunnen er ook voor kiezen om zelf aan de slag te gaan en eigen oefeningen en lesmateriaal op te stellen.
+          Dankzij de ingebouwde learning analytics en datavisualisaties is het bovendien eenvoudig om de voortgang van studenten te meten.
+          <a href=https://dodona-edu.github.io/en/guides/>Hier</a> vind je enkele handleidingen, vooral gericht op lesgevers.
+        </p>
+        <p>
+          De Dodona-leeromgeving bevat <strong>honderden programmeeroefeningen</strong> die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen.
+          Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl.
+          Dodona is nog volop in ontwikkeling, eventuele bugs of suggesties mogen dus zeker gemeld worden via het <a href='/contact'>contactformulier</a>.
+        </p>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">Dodona voor een student<h2>
+      </div>
+      <div class="card-supporting-text">
+        <div class="col-sm-4 info-step">
+          <%= image_tag("code.png", class: 'img-responsive') %>
+          <h3>Schrijf code</h3>
+          <p>Schrijf je in voor een cursus en kies een van de honderden programmeeroefeningen.</p>
+        </div>
+        <div class="col-sm-4 info-step">
+          <%= image_tag("plane.png", class: 'img-responsive') %>
+          <h3>Dien in</h3>
+          <p>Los de oefening op en dien je code in via de ingebouwde editor.</p>
+        </div>
+        <div class="col-sm-4 info-step">
+          <%= image_tag("feedback.png", class: 'img-responsive') %>
+          <h3>Krijg feedback</h3>
+          <p>Je code wordt automatisch getest en na enkele seconden krijg je het resultaat te zien.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">Gemaakt door<h2>
+      </div>
+      <div class="card-supporting-text card-border">
+        <div class="col-xs-12 col-sm-4">
+          <%= image_tag("ugent.png", class: 'img-responsive') %>
+        </div>
+        <div class="col-xs-12 col-sm-8 ">
+          <h3>Ontwikkeld door UGent</h3>
+          <p>Dodona werd ontwikkeld aan de Universiteit Gent om practica aan grote groepen studenten te ondersteunen.</p>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border github">
+        <div class="col-xs-12 col-sm-4">
+          <a href="https://github.com/dodona-edu/dodona"><%= image_tag("github.png", class: 'img-responsive') %></a>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <h3>Ontwikkeld op GitHub</h3>
+          <p>Een gedetailleerd overzicht van de huidige ontwikkeling van Dodona kan op <a href=https://github.com/dodona-edu/dodona>onze github repository</a> gevonden worden.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

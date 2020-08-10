@@ -1,0 +1,88 @@
+<%= content_for :meta_tags do %>
+  <meta property="og:description" content="<%= t "layout.head.description" %>"/>
+<% end %>
+<div class="home-cover-img">&nbsp;</div>
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="row home-header">
+      <div class="col-xs-12 col-sm-8 col-md-7 home-lead">
+        <h1>Dodona</h1>
+        <p class='lead'>Learn to code<br>for secondary and higher education</p>
+        <% unless current_user.present? %>
+          <%= link_to "Sign in", sign_in_path, class: 'btn btn-primary btn-lg' %>
+        <% end %>
+      </div>
+      <div class="hidden-xs col-sm-4 col-md-5">
+        <%= image_tag("home.png", class: 'img-responsive') %>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">What is Dodona?<h2>
+      </div>
+      <div class="card-supporting-text info-step">
+        <p>
+          Dodona is a <strong>free</strong> online exercise platform for learning to program.
+          It primarily focuses on <strong>automatic testing</strong> and <strong>giving feedback</strong> on submitted solutions of programming exercises.
+          At the moment Dodona supports the following programming languages Python, Javascript, Java, C#, bash, Prolog, Haskell and R.
+        </p>
+        <p> 
+          On Dodona teachers can create their own course, composed of different series of exercises. They can use already existing courses and exercises, 
+          but can also create their own exercises and learning materials.
+          Thanks to the built-in learning analytics and datavisualisations it also is easy to monitor the progress of students.
+          <a href=https://dodona-edu.github.io/en/guides/>Here</a> you'll find a number of guides, primarily focused on teachers.
+        </p>
+        <p>
+          The Dodona platform contains <strong>hundreds of programming exercises</strong> that can be used to master several programming languages.
+          All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with the credentials of your institution.
+          Dodona is still in active development, any bug report or suggestion is welcome through the <a href='/contact'>contact form</a>.
+        </p>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">Dodona for a student<h2>
+      </div>
+      <div class="card-supporting-text">
+        <div class="col-sm-4 info-step">
+          <%= image_tag("code.png", class: 'img-responsive') %>
+          <h3>Write code</h3>
+          <p>Subscribe for a course and pick one of the hundreds of programming exercises.</p>
+        </div>
+        <div class="col-sm-4 info-step">
+          <%= image_tag("plane.png", class: 'img-responsive') %>
+          <h3>Hand in</h3>
+          <p>Solve the exercise and hand in using the built-in code editor.</p>
+        </div>
+        <div class="col-sm-4 info-step">
+          <%= image_tag("feedback.png", class: 'img-responsive') %>
+          <h3>Get feedback</h3>
+          <p>Your code is automatically tested. Get your results in seconds!</p>
+        </div>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text">Made by<h2>
+      </div>
+      <div class="card-supporting-text card-border">
+        <div class="col-xs-12 col-sm-4">
+          <%= image_tag("ugent.png", class: 'img-responsive') %>
+        </div>
+        <div class="col-xs-12 col-sm-8 ">
+          <h3>Developed by UGent</h3>
+          <p>Ghent University developed Dodona, a free webapplication, to assist practice lessons for large groups of students.</p>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border github">
+        <div class="col-xs-12 col-sm-4">
+          <a href="https://github.com/dodona-edu/dodona"><%= image_tag("github.png", class: 'img-responsive') %></a>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+          <h3>Developed on GitHub</h3>
+          <p>A detailed overview of the current development of Dodona can be found at <a href=https://github.com/dodona-edu/dodona>our github repository</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

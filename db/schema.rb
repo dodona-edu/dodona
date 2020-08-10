@@ -306,6 +306,7 @@ ActiveRecord::Schema.define(version: 2020_08_05_113636) do
     t.string "extension", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "icon"
     t.index ["name"], name: "index_programming_languages_on_name", unique: true
   end
 

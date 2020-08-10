@@ -78,6 +78,23 @@ if Rails.env.development?
   %w[red pink purple deep-purple indigo teal orange brown blue-grey].each do |color|
     Label.create name: Faker::GreekPhilosophers.unique.name, color: color
   end
+  
+  puts 'Creating programming languages'
+  ICON_MAP = {
+    'python' => 'language-python',
+    'sh' => 'bash',
+    'javascript' => 'language-javascript',
+    'bash' => 'bash',
+    'java' => 'language-java',
+    'prolog' => 'owl',
+    'haskell' => 'language-haskell',
+    'R' => 'language-r',
+    'csharp' => 'language-csharp',
+    'text' => nil
+  }
+  ICON_MAP.each do |language, icon|
+    ProgrammingLanguage.create name: language, icon: icon
+  end
 
   puts 'Creating courses'
 

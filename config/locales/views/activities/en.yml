@@ -51,6 +51,7 @@ en:
         other: "%{count} users read this."
       type:
         exercise: Exercise
+        exercise_language: "%{language} exercise"
         content: Reading activity
     show:
       code: Code

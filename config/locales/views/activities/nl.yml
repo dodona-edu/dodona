@@ -51,6 +51,7 @@ nl:
         other: "%{count} gebruikers hebben dit gelezen."
       type:
         exercise: Oefening
+        exercise_language: "%{language} oefening"
         content: Leesactiviteit
     show:
       code: Code

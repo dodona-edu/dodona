@@ -77,6 +77,12 @@ class Activity < ApplicationRecord
   scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
   scope :by_type, ->(type) { where(type: type) }
+  scope :by_description_languages, lambda { |languages|
+    by_language = all # allow chaining of scopes
+    by_language = by_language.where(description_en_present: true) if languages.include? 'en'
+    by_language = by_language.where(description_nl_present: true) if languages.include? 'nl'
+    by_language
+  }
 
   def content_page?
     false
@@ -133,14 +139,6 @@ class Activity < ApplicationRecord
 
   def description
     (description_localized || description_nl || description_en || '').force_encoding('UTF-8').scrub
-  end
-
-  # can't be a scope by itself due to conditional chaining of scopes
-  def self.by_description_languages(languages)
-    by_language = all # allow chaining of scopes
-    by_language = by_language.where(description_en_present: true) if languages.include? 'en'
-    by_language = by_language.where(description_nl_present: true) if languages.include? 'nl'
-    by_language
   end
 
   def about_by_precedence(lang = I18n.locale.to_s)

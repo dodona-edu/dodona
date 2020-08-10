@@ -124,17 +124,13 @@
         };
         <% end %>
         <% if local_assigns.fetch :description_languages, false %>
-        const LANGUAGE_MAP = {
-            "English": "en",
-            "Nederlands": "nl"
-        }
         filterCollections["description_languages"] = {
             param: "description_languages",
             paramVal: function (lang) {
-                return LANGUAGE_MAP[lang.id];
+                return lang.id;
             },
             multi: true,
-            data: <%= raw local_assigns.fetch(:description_languages, []).map{|l| {id: l, name: l}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:description_languages, []).map{|l| {id: l, name: t("js.#{l}")}}.to_json %>,
             color: function () {
                 return "light-grey"
             },

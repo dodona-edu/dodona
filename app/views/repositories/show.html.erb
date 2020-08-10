@@ -53,7 +53,7 @@
       </div>
       <div class="card-supporting-text card-border">
         <h3><%= t ".learning_activities" %></h3>
-        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: activities_path(repository_id: @repository.id), eager: true, activity_types: [ContentPage, Exercise], description_languages: ["English", "Nederlands"]}) %>
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: activities_path(repository_id: @repository.id), eager: true, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"]}) %>
         <div id="activities-table-wrapper">
         </div>
       </div>

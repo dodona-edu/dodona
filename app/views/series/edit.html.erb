@@ -84,7 +84,7 @@
         <div class="card-supporting-text card-border">
           <div class="col-xs-12">
             <h4 id="add-activities"><%= t ".add_activities" %></h4>
-            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["English", "Nederlands"]} %>
+            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"]} %>
             <div id="activities-table-wrapper">
             </div>
           </div>

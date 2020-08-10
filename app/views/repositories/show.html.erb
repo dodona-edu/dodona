@@ -58,23 +58,19 @@
         </div>
       </div>
       <% if policy(@repository).public? %>
-        <div class="card-supporting-text">
+        <div class="card-supporting-text card-border">
           <div class="table-scroll-wrapper">
+            <h3><%= t ".public_files" %></h3>
             <% if @files.present?%>
-              <table class="table table-index table-resource">
-                <thead>
-                  <tr>
-                    <th><%= t ".public_files" %></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% @files.each do |file| %>
-                    <tr>
-                      <td><%= link_to file.to_s, public_repository_url(@repository, file) %></td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
+                <table class="table table-index table-resource">
+                  <tbody>
+                    <% @files.each do |file| %>
+                      <tr>
+                        <td><%= link_to file.to_s, public_repository_url(@repository, file) %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
             <% else %>
               <p class="lead text-center"><%= t ".public_files_placeholder", url:  public_repository_url(@repository, '') %></p>
             <% end %>

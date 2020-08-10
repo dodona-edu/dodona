@@ -53,8 +53,9 @@ class Repository < ApplicationRecord
   def public_files
     pathname_dir = Pathname.new public_path
     Dir[File.join(public_path, '**/*')] # uses entries in the locally stored Dodona copy of the repository
-      .select { |f| File.file? f } # skip directories such as ., icons/
-      .map { |f| Pathname.new(f).relative_path_from pathname_dir } # make them relative again to be able to create urls
+      .map { |f| Pathname.new f }
+      .select { |path| path.file? && path.readable? } # skip directories such as ., icons/
+      .map { |path| path.relative_path_from pathname_dir } # make them relative again to be able to create urls
   end
 
   def media_path

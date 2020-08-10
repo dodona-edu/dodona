@@ -21,7 +21,7 @@ nl:
       content_pages: Leesactiviteiten
       learning_activities: Leeractiviteiten
       public_files: Publieke bestanden
-      public_files_info: "Bestanden in de /public/ map van de repository worden hier opgelijst en kunnen gebruikt worden in cursus-, reeks- en oefeningenbeschrijvingen onder de url %{url}."
+      public_files_info_html: "Bestanden in de <code>/public</code> map van een repository kunnen overal op Dodona gebruikt worden, bijvoorbeeld in cursus-, reeks- en oefeningenbeschrijvingen, via onderstaande url."
       public_files_placeholder: "Deze repository bevat geen publieke bestanden"
       file_name: Bestandsnaam
       file_url: URL

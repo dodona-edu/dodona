@@ -21,7 +21,7 @@ en:
       content_pages: Reading activities
       learning_activities: Learning activities
       public_files: Public files
-      public_files_info: "Files in the /public/ directory of the repository are listed here and will be available to use in course, series and exercise descriptions under the url %{url}."
+      public_files_info_html: "Files in the <code>/public/</code> directory of a repository can be used anywhere on Dodona, for example in course, series and exercise descriptions using the url below."
       public_files_placeholder: This repository has no public files.
       file_name: File name
       file_url: URL

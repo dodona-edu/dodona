@@ -5,7 +5,7 @@ class AddDescriptionPresentToActivities < ActiveRecord::Migration[6.0]
 
     Activity.all.each do |activity|
       languages = activity.description_languages
-      activity.update description_en_present: languages.include?('en'), description_nl_present: languages.include?('en')
+      activity.update description_en_present: languages.include?('en'), description_nl_present: languages.include?('nl')
     end
   end
 end

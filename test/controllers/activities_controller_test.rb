@@ -162,25 +162,28 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get activities with certain description languages available' do
-    english_ex = create :exercise, description_en_present: true
+    # @instance has a Dutch and Englisch description
     get activities_url(format: :json, description_languages: ['en'])
     assert_equal 1, JSON.parse(response.body).count
-    assert_equal english_ex.id, JSON.parse(response.body)[0]['id']
+    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
 
-    nl_ex = create :exercise, description_nl_present: true
     get activities_url(format: :json, description_languages: ['nl'])
     assert_equal 1, JSON.parse(response.body).count
-    assert_equal nl_ex.id, JSON.parse(response.body)[0]['id']
+    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
 
-    both_ex = create :exercise, description_nl_present: true, description_en_present: true
-    get activities_url(format: :json, description_languages: ['nl'])
-    assert_equal 2, JSON.parse(response.body).count
-    get activities_url(format: :json, description_languages: ['en'])
-    assert_equal 2, JSON.parse(response.body).count
     get activities_url(format: :json, description_languages: %w[en nl])
     assert_equal 1, JSON.parse(response.body).count
-    assert_equal both_ex.id, JSON.parse(response.body)[0]['id']
+    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
 
+    # create exercises to obtain all possible condition combinations
+    create :exercise, description_en_present: true
+    create :exercise, description_nl_present: true
+    create :exercise, description_nl_present: true, description_en_present: true
+
+    get activities_url(format: :json, description_languages: ['nl'])
+    assert_equal 3, JSON.parse(response.body).count
+    get activities_url(format: :json, description_languages: ['en'])
+    assert_equal 3, JSON.parse(response.body).count
     get activities_url(format: :json, description_languages: [])
     assert_equal Exercise.count, JSON.parse(response.body).count # should yield all exercises
   end

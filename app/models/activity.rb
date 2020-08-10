@@ -135,8 +135,9 @@ class Activity < ApplicationRecord
     (description_localized || description_nl || description_en || '').force_encoding('UTF-8').scrub
   end
 
-  def self.by_description_language(languages)
-    by_language = unscoped
+  # can't be a scope by itself due to conditional chaining of scopes
+  def self.by_description_languages(languages)
+    by_language = all # allow chaining of scopes
     by_language = by_language.where(description_en_present: true) if languages.include? 'en'
     by_language = by_language.where(description_nl_present: true) if languages.include? 'nl'
     by_language

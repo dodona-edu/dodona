@@ -17,7 +17,8 @@ class Repository < ApplicationRecord
   include Gitable
 
   ACTIVITY_LOCATIONS = Rails.root.join('data/exercises').freeze
-  MEDIA_DIR = 'public'.freeze
+  PUBLIC_DIR = 'public'.freeze
+  MEDIA_DIR = 'media'.freeze
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :remote, presence: true
@@ -43,6 +44,18 @@ class Repository < ApplicationRecord
 
   def full_path
     Pathname.new File.join(ACTIVITY_LOCATIONS, path)
+  end
+
+  def public_path
+    full_path + PUBLIC_DIR
+  end
+
+  def public_files
+    pathname_dir = Pathname.new public_path
+    Dir[File.join(public_path, '**/*')] # uses entries in the locally stored Dodona copy of the repository
+      .map { |f| Pathname.new f }
+      .select { |path| path.file? && path.readable? } # skip directories such as ., icons/
+      .map { |path| path.relative_path_from pathname_dir } # make them relative again to be able to create urls
   end
 
   def media_path

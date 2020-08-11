@@ -9,8 +9,16 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     stub_git(Repository.any_instance)
     Repository.any_instance.stubs(:process_activities)
     @instance = create :repository
+    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises/echo'))
     @admin = create :zeus
     sign_in @admin
+  end
+
+  def request_public_image
+    get public_repository_url(@instance, 'CodersApprentice.png')
+
+    assert_response :success
+    assert_equal 'image/png', response.content_type
   end
 
   test_crud_actions
@@ -24,6 +32,15 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     Repository.any_instance.expects(:process_activities)
     get reprocess_repository_path(@instance)
     assert_redirected_to(@instance)
+  end
+
+  test 'should get public media' do
+    request_public_image
+  end
+
+  test 'public media should be public' do
+    sign_out @admin
+    request_public_image
   end
 
   test 'should create repository admin on create' do

@@ -260,9 +260,12 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             if (!collection) {
                 return false;
             }
+            // check whether we have a label for the input
             let valid = collection.data.map(el => el.name).includes(e.attrs.name);
-            const newElementId = e.attrs.id.toString(); // ensure comparison is String-based
             if (valid && collection.multi) {
+                // if multi, we can have multiple labels but we do not want duplication
+                // therefore we use an id to distinguish labels and prevent the same label from appearing twice
+                const newElementId = e.attrs.id.toString(); // ensure comparison is String-based
                 valid = $(".token").filter(function (_index, el) {
                     // check if a label with this id is not yet present
                     return newElementId === $(el).attr(LABEL_UNIQUE_ATTR);

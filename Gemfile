@@ -59,7 +59,7 @@ gem 'builder', '~>3.2.4'
 gem 'diff-lcs', '~>1.4'
 
 # code editor
-gem 'ace-rails-ap', '~>4.3'
+gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
 gem 'autoprefixer-rails', '~>9.8.6'
@@ -136,11 +136,11 @@ gem 'faker', '~> 2.13.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 0.9.14'
-gem 'rack-mini-profiler', '~> 2.0.3'
+gem 'rack-mini-profiler', '~> 2.0.4'
 gem 'stackprof', '~> 0.2.15'
 
 # Datadog
-gem 'ddtrace', '~> 0.38.0'
+gem 'ddtrace', '~> 0.39.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -164,7 +164,7 @@ end
 
 group :test do
   # for measuring coverage
-  gem 'codecov', '~> 0.2.3', require: false
+  gem 'codecov', '~> 0.2.5', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.18.5', require: false
 end

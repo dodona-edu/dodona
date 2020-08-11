@@ -29,6 +29,10 @@ class RepositoryPolicy < ApplicationPolicy
     user&.zeus?
   end
 
+  def public?
+    true
+  end
+
   def admins?
     user&.repository_admin?(record)
   end

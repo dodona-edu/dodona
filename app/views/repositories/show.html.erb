@@ -52,11 +52,37 @@
         <% end %>
       </div>
       <div class="card-supporting-text card-border">
-        <h3><%= t ".learning_activities" %></h3>
+        <h4><%= t ".learning_activities" %></h4>
         <%= render(partial: 'layouts/searchbar', locals: {baseUrl: activities_path(repository_id: @repository.id), eager: true, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"]}) %>
         <div id="activities-table-wrapper">
         </div>
       </div>
+      <% if policy(@repository).public? %>
+        <div class="card-supporting-text card-border">
+          <h4><%= t ".public_files" %></h4>
+          <p class="h4-info-text"><%= t ".public_files_info_html" %></p>
+          <div class="table-scroll-wrapper">
+            <% if @files.present?%>
+                <table class="table table-index table-resource">
+                  <thead>
+                    <td><%= t ".file_name"%></td>
+                    <td><%= t ".file_url" %></td>
+                  </thead>
+                  <tbody>
+                    <% @files.each do |file| %>
+                      <tr>
+                        <td><%= file.to_s %></td>
+                        <td><%= link_to public_repository_url(@repository, file) %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+            <% else %>
+              <p class="lead text-center"><%= t ".public_files_placeholder"%></p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

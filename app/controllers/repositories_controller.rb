@@ -1,7 +1,7 @@
 require 'set'
 
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: %i[show edit update destroy hook reprocess admins add_admin remove_admin courses add_course remove_course]
+  before_action :set_repository, only: %i[show edit update destroy public hook reprocess admins add_admin remove_admin courses add_course remove_course]
 
   # GET /repositories
   # GET /repositories.json
@@ -16,6 +16,7 @@ class RepositoriesController < ApplicationController
   def show
     @title = @repository.name
     @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, '#']]
+    @files = @repository.public_files
   end
 
   # GET /repositories/new
@@ -77,6 +78,18 @@ class RepositoriesController < ApplicationController
       format.html { redirect_to repositories_url, notice: I18n.t('controllers.destroyed', model: Repository.model_name.human) }
       format.json { head :no_content }
     end
+  end
+
+  def public
+    file = File.join(@repository.public_path, params[:media])
+    raise ActionController::RoutingError, 'Not Found' unless File.file? file
+
+    type = Mime::Type.lookup_by_extension File.extname(file)[1..]
+    type = 'text/plain; charset=utf-8' if type.nil? || type == 'text/plain'
+
+    # Support If-Modified-Since caching
+    send_file file, disposition: 'inline', type: type \
+      if stale? last_modified: File.mtime(file)
   end
 
   def admins

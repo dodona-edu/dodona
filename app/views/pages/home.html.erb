@@ -1,5 +1,6 @@
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'favorite_course_buttons' %>
+  <%= javascript_pack_tag 'homepage' %>
 <% end %>
 <div class="row">
   <div class="col-xs-12 col-sm-6 col-lg-8">
@@ -7,10 +8,10 @@
       <%= render "getting_started_card" %>
       <%= render 'privacy_disclaimer' %>
     <% else %>
-      <div class="row favorites-row">
+      <div class="masonry-root favorites-row">
         <% unless @favorite_courses.empty? %>
           <% @favorite_courses.each do |course| %>
-            <div class="col-xs-12 col-sm-12 col-lg-6">
+            <div class="masonry-cell">
               <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
             </div>
           <% end %>
@@ -30,9 +31,9 @@
             <h3><%= Course.format_year year %></h3>
           </div>
         <% end %>
-        <div class="row row-<%= year.parameterize %>">
+        <div class="masonry-root row-<%= year.parameterize %>">
           <% courses.each do |course| %>
-            <div class="col-xs-12 col-sm-12 col-lg-6">
+            <div class="masonry-cell">
               <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
             </div>
           <% end %>
@@ -59,5 +60,6 @@
 <script type="text/javascript">
     $(function () {
         dodona.initFavoriteButtons();
+        new window.dodona.MasonryClass();
     });
 </script>

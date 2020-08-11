@@ -51,6 +51,11 @@
           </small>
         </div>
       </td>
+      <td class="description-languages">
+        <div class="text-muted">
+          <%= raw activity.description_languages.map {|language| "<span class='clickable-token' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
+        </div>
+      </td>
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>
           <a href="#" class="btn btn-icon remove-activity" title="<%= t "series.edit.remove_activity" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_activity_path(series.course, series, activity)%>" data-activity_id="<%= activity.id %>" data-activity_name="<%= activity.name %>">

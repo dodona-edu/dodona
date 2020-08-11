@@ -37,6 +37,11 @@
           </small>
         </div>
       </td>
+      <td class="description-languages">
+        <div class="text-muted">
+          <%= raw activity.description_languages.map {|language| "<span class='clickable-token' title='#{t("js.#{language}")}' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
+        </div>
+      </td>
       <td class="series-activities-table-labels">
         <span class="<%= activity.programming_language ? "clickable-token" : "" %>" data-type="programming_languages" data-name="<%= activity.programming_language&.name %>"><%= activity.programming_language&.name || "" %></span>
         <div class="text-muted">
@@ -49,11 +54,6 @@
               <%= raw labels.map {|label| "<span class='clickable-token' data-type='labels' data-name='#{label.name}'>#{label.name}</span>"}.join(", ") %>
             <% end %>
           </small>
-        </div>
-      </td>
-      <td class="description-languages">
-        <div class="text-muted">
-          <%= raw activity.description_languages.map {|language| "<span class='clickable-token' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
         </div>
       </td>
       <td class="actions">

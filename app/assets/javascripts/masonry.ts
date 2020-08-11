@@ -20,7 +20,7 @@ export class Masonry {
         this.roots = Array.prototype.map.call(rootElements, (rootElement: HTMLElement) => {
             const cellElements: HTMLCollectionOf<Element> = rootElement.getElementsByClassName("masonry-cell");
             const cells: CustomElement[] = Array.prototype.map.call(cellElements, (cellElement: HTMLElement) => {
-                // Use child size because the cell size itsef is changed a lot which causes gaps at the end of the columns  
+                // Use child size because the cell size itsef is changed a lot which causes gaps at the end of the columns
                 const child: CSSStyleDeclaration = getComputedStyle(cellElement.children[0]);
                 return {
                     outerHeight: parseInt(child.height) + parseInt(child.marginBottom) + parseInt(child.marginTop),
@@ -31,7 +31,6 @@ export class Masonry {
         });
         // do the first layout
         this.onResize();
-
     }
 
     onResize(): void {
@@ -49,7 +48,7 @@ export class Masonry {
 
                 // divide...
                 for (const cell of root.cells) {
-                    const minOuterHeight = Math.min(...columns.map((column) => column.outerHeight));
+                    const minOuterHeight = Math.min(...columns.map(column => column.outerHeight));
                     const column = columns.find(column => column.outerHeight == minOuterHeight);
                     column.cells.push(cell);
                     column.outerHeight += cell.outerHeight;
@@ -70,8 +69,9 @@ export class Masonry {
                     // leftover space at the bottom of the column
                     // to prevent the first cell of the next column
                     // to be rendered at the bottom of this column
-                    if (column.cells.length !== 0)
+                    if (column.cells.length !== 0) {
                         column.cells[column.cells.length - 1].element.style.flexBasis = String(column.cells[column.cells.length - 1].element.offsetHeight + masonryHeight - column.outerHeight - 1) + "px";
+                    }
                 }
 
                 // set the masonry height to trigger

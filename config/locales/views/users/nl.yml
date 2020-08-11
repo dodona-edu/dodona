@@ -32,15 +32,15 @@ nl:
       timezone: Je tijdzone staat ingesteld op
       stats: Statistieken
       download_my_submissions: Mijn oplossingen exporteren
+      api_tokens: API tokens
+      active_tokens: Actieve tokens
+      create_new_token: Nieuw token aanmaken
+      token_help_html: API tokens laten andere programma's zoals de <a href="https://github.com/thepieterdc/dodona-plugin-jetbrains">Dodona plugin voor Jetbrains IDE's</a> toe om voor jou Dodona te gebruiken zonder je wachtwoord te moeten delen. Deze programma's zullen volledige toegang hebben tot jouw account, maar je kan die toegang gemakkelijk intrekken door het token te verwijderen onderaan deze pagina.
+      description_help: De beschrijving is een geheugensteuntje zodat jij weet welk programma een bepaalde token gebruikt. Zo kan je eenvoudig bepaalde permissies intrekken zonder je andere tokens te moeten verwijderen.
     users_table:
       staff: Beheerder
       zeus: Zeus
       course_admin: cursusbeheerder
       no_institution: Deze gebruiker heeft geen onderwijsinstelling
-    edit:
-      api_tokens: API tokens
-      active_tokens: Actieve tokens
-      create_new_token: Nieuw token aanmaken
-      token_help_html: API tokens laten andere programma's zoals de <a href="https://github.com/thepieterdc/dodona-plugin-jetbrains">Dodona plugin voor Jetbrains IDE's</a> toe om voor jou Dodona te gebruiken zonder je wachtwoord te moeten delen. Deze programma's zullen volledige toegang hebben tot jouw account, maar je kan die toegang gemakkelijk intrekken door het token te verwijderen onderaan deze pagina.
     repository_users_table:
       no_institution: "Geen onderwijsinstelling"

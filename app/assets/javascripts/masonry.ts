@@ -36,7 +36,7 @@ export class Masonry {
     onResize(): void {
         for (const root of this.roots) {
             // only layout when the number of columns has changed
-            const newColumnNumber = 2;
+            const newColumnNumber = window.innerWidth > 1024 ? 2 : 1;
             if (newColumnNumber != root.columnNumber) {
                 // initialize
                 root.columnNumber = newColumnNumber;

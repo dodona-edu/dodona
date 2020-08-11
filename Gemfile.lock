@@ -114,7 +114,7 @@ GEM
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
     childprocess (3.0.0)
-    codecov (0.2.3)
+    codecov (0.2.5)
       colorize
       json
       simplecov
@@ -478,7 +478,7 @@ DEPENDENCIES
   capistrano-yarn (~> 2.0.2)
   capistrano3-delayed-job (~> 1.7.6)
   capybara (~> 3.33.0)
-  codecov (~> 0.2.3)
+  codecov (~> 0.2.5)
   daemons (~> 1.3)
   dalli (~> 2.7.10)
   ddtrace (~> 0.38.0)

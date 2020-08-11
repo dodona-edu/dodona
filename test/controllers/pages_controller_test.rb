@@ -49,4 +49,18 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to root_url
   end
+
+  test 'should get profile when logged in' do
+    user = create :user
+    sign_in user
+    get profile_url
+    assert_response :redirect
+    assert_redirected_to user_path(user)
+  end
+
+  test 'should not get profile when logged out' do
+    get profile_url
+    assert_response :redirect
+    assert_redirected_to sign_in_url
+  end
 end

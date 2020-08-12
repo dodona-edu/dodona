@@ -1,6 +1,6 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'submission' %>
-  <%= javascript_pack_tag 'pythia_submission' if @feedback.submission.judge.renderer == PythiaRenderer %>
+  <%= javascript_pack_tag 'pythia_submission' if @feedback.submission&.judge&.renderer == PythiaRenderer %>
 <% end %>
 
 <div class="row" id="feedback-page">

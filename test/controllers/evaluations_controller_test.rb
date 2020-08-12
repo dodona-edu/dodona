@@ -4,13 +4,16 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @series = create :series, exercise_count: 2, deadline: DateTime.now + 4.hours
     @exercises = @series.exercises
-    @users = (0..2).map { |_| create :user }
-    @users.each do |user|
+    @submitted_users = (0..2).map { |_| create :user }
+    @submitted_users.each do |user|
       user.enrolled_courses << @series.course
       @exercises.each do |ex|
         create :submission, exercise: ex, user: user, course: @series.course, status: :correct, created_at: Time.current - 1.hour
       end
     end
+    @no_submission_user = create :user
+    @no_submission_user.enrolled_courses << @series.course
+    @users = @submitted_users + [@no_submission_user]
     @course_admin = create(:staff)
     @course_admin.administrating_courses << @series.course
     sign_in @course_admin
@@ -100,24 +103,30 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     evaluation.update(users: @series.course.enrolled_members)
     evaluation.update(released: false)
 
-    feedbacks = evaluation.feedbacks.decided.includes(:submission)
+    feedbacks = evaluation.feedbacks.includes(:submission)
+    feedback_annotations = 0
+    normal_annotations = 0
     feedbacks.each do |feedback|
+      next if feedback.submission.nil?
+
       # Annotation bound to Feedback
       evaluation.annotations.create(submission: feedback.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @course_admin)
+      feedback_annotations += 1
 
       # Normal annotation
       Annotation.create(submission: feedback.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @course_admin)
+      normal_annotations += 1
     end
-    assert_equal feedbacks.count, Notification.all.count, 'only notifications for the annotations without a feedback session'
+    assert_equal normal_annotations, Notification.all.count, 'only notifications for the annotations without a feedback session'
 
     evaluation.feedbacks.each do |feedback|
       feedback.update(completed: true)
     end
-    assert_equal feedbacks.count, Notification.all.count, 'no new notification should be made upon completing a feedback'
+    assert_equal normal_annotations, Notification.all.count, 'no new notification should be made upon completing a feedback'
 
     evaluation.update(released: true)
 
-    assert_equal feedbacks.count + @users.count, Notification.all.count, 'A new notification per user should be made upon releasing a feedback session, along with keeping the notifications made for annotations without a feedback session'
+    assert_equal normal_annotations + @users.count, Notification.all.count, 'A new notification per user should be made upon releasing a feedback session, along with keeping the notifications made for annotations without a feedback session'
   end
 
   test 'non released annotations are not queryable' do
@@ -140,7 +149,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       Annotation.create(submission: feedback.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @course_admin)
     end
 
-    student = @users.sample
+    student = @submitted_users.sample
     assert_not_nil student
     picked_submission = evaluation.feedbacks.joins(:evaluation_user).where(evaluation_users: { user: student }).decided.sample.submission
 
@@ -206,6 +215,22 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     sign_in random_user
     get evaluation_feedback_path(evaluation, random_feedback)
     assert_response :redirect # Redirect to sign in page
+  end
+
+  test 'feedback page should work even when there are no submissions' do
+    post evaluations_path, params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    evaluation = @series.evaluation
+    evaluation.update(users: @series.course.enrolled_members)
+    feedback = evaluation.feedbacks.where(submission_id: nil).sample
+    assert_not_nil feedback, 'should have feedback without submission'
+
+    get evaluation_feedback_path(evaluation, feedback)
+    assert_response :success
   end
 
   test 'When there is already a feedback session for this series, we should redirect to the ready made one when a user wants to create a new one' do

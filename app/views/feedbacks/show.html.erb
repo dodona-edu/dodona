@@ -4,6 +4,7 @@
     window.dodona.initMathJax();
   </script>
   <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
+  <%= javascript_pack_tag 'pythia_submission' if @feedback.submission&.judge&.renderer == PythiaRenderer %>
 <% end %>
 
 <div class="row" id="feedback-page">
@@ -19,6 +20,7 @@
       </div>
       <div class="card-supporting-text card-border">
         <div class="row">
+        <% if @feedback.total_attempts > 0 %>
           <div class="col-sm-6 col-sm-push-6">
             <div class="feedback-metadata-submission">
               <p>
@@ -42,6 +44,9 @@
             </div>
           </div>
           <div class="col-sm-6 col-sm-pull-6">
+          <% else %>
+          <div class="col-sm-12">
+          <% end %>
             <% if @feedback.submission.present? %>
               <% submission = @feedback.submission %>
               <div class="submission-summary clearfix">

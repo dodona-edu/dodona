@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.10.0'
 gem 'image_processing', '~> 1.11.0'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.4.6', require: false
+gem 'bootsnap', '~> 1.4.7', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -50,7 +50,7 @@ gem 'will_paginate', '~>3.3.0'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.20.0'
+gem 'rouge', '3.21.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -59,10 +59,10 @@ gem 'builder', '~>3.2.4'
 gem 'diff-lcs', '~>1.4'
 
 # code editor
-gem 'ace-rails-ap', '~>4.3'
+gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>9.8.4'
+gem 'autoprefixer-rails', '~>9.8.6'
 
 # saml authentication
 gem 'devise', '~>4.7.2'
@@ -71,7 +71,9 @@ gem 'ruby-saml', '~> 1.11.0'
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.0'
 gem 'omniauth-oauth2', '~> 1.6.0'
+gem 'omniauth_openid_connect', '~> 0.3.5'
 
+# Json webtokens
 gem 'jwt', '~> 2.2.1'
 
 # contact mail form
@@ -88,11 +90,11 @@ gem 'pretender', '~> 0.3.4'
 gem 'annotate', '~> 3.1.1'
 
 # Use Capistrano for deployment
+gem 'capistrano3-delayed-job', '~> 1.7.6'
 gem 'capistrano-passenger', '~> 0.2.0', group: :development
-gem 'capistrano-rails', '~> 1.5.0', group: :development
+gem 'capistrano-rails', '~> 1.6.1', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
-gem 'capistrano3-delayed-job', '~> 1.7.6'
 
 gem 'bcrypt_pbkdf'
 gem 'ed25519'
@@ -107,7 +109,7 @@ gem 'httparty', '~> 0.18.1'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.10.9'
+gem 'nokogiri', '~> 1.10.10'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -134,17 +136,17 @@ gem 'faker', '~> 2.13.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 0.9.14'
-gem 'rack-mini-profiler', '~> 2.0.2'
+gem 'rack-mini-profiler', '~> 2.0.4'
 gem 'stackprof', '~> 0.2.15'
 
 # Datadog
-gem 'ddtrace', '~> 0.37.0'
+gem 'ddtrace', '~> 0.39.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.11.2'
   # Factory bot for factories
-  gem 'factory_bot_rails', '~> 6.0.0'
+  gem 'factory_bot_rails', '~> 6.1.0'
 
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.5'
@@ -162,7 +164,7 @@ end
 
 group :test do
   # for measuring coverage
-  gem 'codecov', '~> 0.1.17', require: false
+  gem 'codecov', '~> 0.2.5', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.18.5', require: false
 end
@@ -170,11 +172,11 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.2.1'
-  gem 'web-console', '~> 4.0.3'
+  gem 'web-console', '~> 4.0.4'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.6.0'
+  gem 'rubocop-rails', '~> 2.7.1'
   gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

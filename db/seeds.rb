@@ -74,6 +74,23 @@ if Rails.env.development?
                     user: user
   end
 
+  puts 'Creating programming languages'
+  ICON_MAP = {
+    'python' => 'language-python',
+    'sh' => 'bash',
+    'javascript' => 'language-javascript',
+    'bash' => 'bash',
+    'java' => 'language-java',
+    'prolog' => 'owl',
+    'haskell' => 'language-haskell',
+    'R' => 'language-r',
+    'csharp' => 'language-csharp',
+    'text' => nil
+  }
+  ICON_MAP.each do |language, icon|
+    ProgrammingLanguage.create name: language, icon: icon
+  end
+
   puts 'Creating courses'
 
   courses = []
@@ -304,4 +321,22 @@ if Rails.env.development?
                 course: status_test,
                 deadline: deadline,
                 exercises: [status_exercises[:none][:correct], status_exercises[:none][:none]]
+
+  # Add an empty Submission to the course
+  exercise = Exercise.last
+  Series.create name: "Lege, foute inzending na deadline",
+                course: status_test,
+                deadline: deadline,
+                exercises: [exercise]
+  Submission.create user: zeus,
+                    exercise: exercise,
+                    evaluate: false,
+                    skip_rate_limit_check: true,
+                    course: status_test,
+                    status: :wrong,
+                    accepted: false,
+                    created_at: after_deadline,
+                    code: '',
+                    result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
+
 end

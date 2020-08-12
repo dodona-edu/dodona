@@ -153,6 +153,7 @@ Rails.application.routes.draw do
         get 'reprocess'
         get 'admins'
         get 'courses'
+        get 'public/*media', to: 'repositories#public', constraints: {media: /.*/}, as: 'public'
         post 'add_admin'
         post 'remove_admin'
         post 'add_course'
@@ -204,6 +205,10 @@ Rails.application.routes.draw do
       resources :feedbacks, only: %i[show edit update]
     end
     resources :feedbacks, only: %i[show edit update]
+
+    scope 'lti', controller: 'lti' do
+      get 'jwks', to: 'lti#jwks'
+    end
 
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'

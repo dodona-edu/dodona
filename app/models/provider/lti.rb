@@ -19,18 +19,12 @@
 #  issuer            :string(255)
 #  jwks_uri          :string(255)
 #
-class Provider::Saml < Provider
-  validates :certificate, :entity_id, :sso_url, :slo_url, presence: true
-  validates :authorization_uri, :client_id, :issuer, :jwks_uri, absence: true
-  validates :entity_id, uniqueness: { case_sensitive: false }
-
+class Provider::Lti < Provider
+  validates :certificate, :entity_id, :sso_url, :slo_url, absence: true
   validates :identifier, absence: true
-
-  def identifier_string
-    entity_id
-  end
+  validates :authorization_uri, :client_id, :issuer, :jwks_uri, presence: true
 
   def self.sym
-    :saml
+    :lti
   end
 end

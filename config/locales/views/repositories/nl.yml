@@ -20,6 +20,11 @@ nl:
       exercises: Oefeningen
       content_pages: Leesactiviteiten
       learning_activities: Leeractiviteiten
+      public_files: Publieke bestanden
+      public_files_info_html: "Bestanden in de <code>/public</code> map van een repository kunnen overal op Dodona gebruikt worden, bijvoorbeeld in cursus-, reeks- en oefeningenbeschrijvingen, via onderstaande url."
+      public_files_placeholder: "Deze repository bevat geen publieke bestanden"
+      file_name: Bestandsnaam
+      file_url: URL
     admins:
       admins: "Beheerders"
       admin_explanation: "De gebruikers die hieronder staan opgelijst zijn de beheerders van deze repository. Deze gebruikers kunnen anderen repository beheerder maken, privé oefeningen uit deze repository zien, oefeningen uit deze repository aanpassen en beheren welke cursussen privé oefeningen uit deze repository gebruiken."

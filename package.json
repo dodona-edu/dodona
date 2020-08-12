@@ -6,12 +6,12 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@babel/preset-typescript": "^7.10.1",
+    "@babel/preset-typescript": "^7.10.4",
     "@rails/activestorage": "^6.0.3",
     "@rails/ujs": "^6.0.3",
     "@rails/webpacker": "5.1.1",
     "@types/d3": "^5.7.2",
-    "@types/jquery": "^3.5.0",
+    "@types/jquery": "^3.5.1",
     "clipboard": "^2.0.6",
     "d3": "^5.15.1",
     "dragula": "^3.7.2",
@@ -21,17 +21,17 @@
     "jquery": "^3.5.1",
     "moment": "^2.27.0",
     "typeahead.js": "^0.11.1",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.3",
+    "@types/jest": "^26.0.9",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
-    "eslint": "^7.3.1",
+    "eslint": "^7.5.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jest": "^23.17.1",
+    "eslint-plugin-jest": "^23.20.0",
     "jest": "^25.5.4",
-    "jest-junit": "^11.0.1",
+    "jest-junit": "^11.1.0",
     "ts-jest": "^25.5.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "3.11.0"

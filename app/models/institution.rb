@@ -21,8 +21,19 @@ class Institution < ApplicationRecord
 
   scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
 
+  def name
+    return self[:name] unless Current.demo_mode
+
+    Faker::Config.random = Random.new(id + Date.today.yday)
+    Faker::University.name
+  end
+
   def preferred_provider
     Provider.find_by(institution: self, mode: :prefer)
+  end
+
+  def uses_lti?
+    providers.any? { |provider| provider.type == Provider::Lti.name }
   end
 
   def uses_smartschool?

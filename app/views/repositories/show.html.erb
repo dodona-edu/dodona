@@ -72,7 +72,7 @@
                     <% @files.each do |file| %>
                       <tr>
                         <td><%= file.to_s %></td>
-                        <td><%= link_to public_repository_url(@repository, file) %></td>
+                        <td><%= link_to nil, public_repository_url(@repository, media: file) %></td>
                       </tr>
                     <% end %>
                   </tbody>

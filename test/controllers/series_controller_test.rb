@@ -12,6 +12,13 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions except: %i[new index create_redirect update_redirect destroy_redirect]
 
+  test 'should show course with exercise with nil programming language' do
+    exercise = create :exercise, programming_language: nil
+    @instance.exercises << exercise
+    get series_url(@instance)
+    assert_response :success
+  end
+
   test 'should get new for course' do
     course = create :course
     get new_course_series_url(course)

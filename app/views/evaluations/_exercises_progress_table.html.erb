@@ -12,7 +12,7 @@
     <% local_assigns[:metadata][:per_exercise].each do |meta| %>
       <tr>
         <td class='type-icon'>
-          <i class="<%="mdi mdi-#{meta[:exercise].programming_language&.icon} mdi-18"%>" title="<%= "#{t "activities.index.type.exercise_language", language: meta[:exercise].programming_language.name.titleize}" %>"></i>
+          <i class="<%="mdi mdi-#{meta[:exercise].programming_language&.icon} mdi-18"%>" title="<%= "#{t "activities.index.type.exercise_language", language: meta[:exercise].programming_language&.name&.titleize}" %>"></i>
         </td>
 
         <td>

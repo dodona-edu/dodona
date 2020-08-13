@@ -7,7 +7,6 @@ interface CustomElement {
 
 export class Masonry {
     static readonly screenLgMin = 1200;
-    static readonly gridGutterWidth = 30;
 
     roots: CustomElement[];
 
@@ -61,21 +60,11 @@ export class Masonry {
 
                 // ...and conquer
                 let order = 0;
-                let colCount = 0;
                 for (const column of columns) {
                     for (const cell of column.cells) {
                         cell.element.style.order = String(order++);
                         // set the cell's flex-basis to 0
                         cell.element.style.flexBasis = "0";
-
-                        if (colCount !== 0 && colCount !== columns.length - 1) {
-                            cell.element.style.paddingLeft = Math.floor(Masonry.gridGutterWidth/2) + "px";
-                            cell.element.style.paddingRight = Math.ceil(Masonry.gridGutterWidth/2) + "px";
-                        } else if (colCount === 0) {
-                            cell.element.style.paddingRight = Math.ceil(Masonry.gridGutterWidth/2) + "px";
-                        } else {
-                            cell.element.style.paddingLeft = Math.floor(Masonry.gridGutterWidth/2) + "px";
-                        }
                     }
                     // set flex-basis of the last cell to fill the
                     // leftover space at the bottom of the column
@@ -84,7 +73,6 @@ export class Masonry {
                     if (column.cells.length !== 0) {
                         column.cells[column.cells.length - 1].element.style.flexBasis = String(column.cells[column.cells.length - 1].element.offsetHeight + masonryHeight - column.outerHeight - 1) + "px";
                     }
-                    colCount ++;
                 }
 
                 // set the masonry height to trigger

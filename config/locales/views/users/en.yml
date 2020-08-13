@@ -36,7 +36,7 @@ en:
       active_tokens: Active tokens
       create_new_token: Create new token
       token_help_html: API tokens allow other tools such as the <a href="https://github.com/thepieterdc/dodona-plugin-jetbrains">Dodona plugin for Jetbrains IDEs</a> to access Dodona on your behalf without having to share your password. These tools will have full access to your account, but you can easily revoke that access by removing the token on this page.
-      description_help: The description helps you to remember which program uses a certain token. This allows you to easily withdram permissions without having to delete all your tokens.
+      description_help: The description helps you to remember which program uses a certain token. This allows you to easily withdraw permissions without having to delete all your tokens.
     users_table:
       staff: Staff
       zeus: Zeus

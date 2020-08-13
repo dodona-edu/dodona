@@ -36,7 +36,7 @@ nl:
       activity_title: Titel
       programming_language: "Programmeertaal"
       labels: "Labels"
-      existing_translations: "Beschikbare vertalingen"
+      languages: "Talen"
       repository: "Repository"
       path: "Pad"
       class_progress: Voortgang groep

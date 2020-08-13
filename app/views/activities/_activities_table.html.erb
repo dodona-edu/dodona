@@ -15,6 +15,7 @@
       <th class='status-icon'></th>
       <th class='type-icon'></th>
       <th><%= t "activities.index.activity_title" %></th>
+      <th><%= t "activities.index.existing_translations" %></th>
       <th><%= t "activities.index.labels" %></th>
       <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
         <th class='count hidden-xs'>
@@ -57,14 +58,29 @@
           <% end %>
         </td>
 
-        <td>
-          <% if activity.accessible?(current_user, @course) %>
-            <%= link_to activity.name, get_activity_path.call(activity) %>
-          <% elsif activity.access_public? %>
-            <%= link_to activity.name, activity_path(activity) %>
-          <% else %>
-            <%= activity.name %>
+        <td class="link">
+          <span class="ellipsis-overflow" title="<%= activity.name %>">
+            <% if activity.accessible?(current_user, @course) %>
+              <%= link_to activity.name, get_activity_path.call(activity) %>
+            <% elsif activity.access_public? %>
+              <%= link_to activity.name, activity_path(activity) %>
+            <% else %>
+              <%= activity.name %>
+            <% end %>
+          </span>
+          <% if policy(activity).info? %>
+            <div class="text-muted ellipsis-overflow">
+              <small>
+                <span class="clickable-token" title="<%= activity.repository.name %>: <%= activity.path %>" data-type="repositories" data-name="<%= activity.repository.name %>"><%= activity.repository.name %>: <%= activity.path %></span>
+              </small>
+            </div>
           <% end %>
+        </td>
+
+        <td class="description-languages">
+          <div class="text-muted">
+            <%= raw activity.description_languages.map {|language| "<span class='clickable-token' title='#{t("js.#{language}")}' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
+          </div>
         </td>
 
         <td class="series-activities-table-labels">

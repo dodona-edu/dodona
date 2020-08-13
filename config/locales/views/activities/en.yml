@@ -36,6 +36,7 @@ en:
       activity_title: Title
       programming_language: "Programming language"
       labels: "Labels"
+      existing_translations: "Existing translations"
       repository: "Repository"
       path: "Path"
       class_progress: Class progress

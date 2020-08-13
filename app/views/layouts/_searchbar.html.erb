@@ -123,6 +123,19 @@
             },
         };
         <% end %>
+        <% if local_assigns.fetch :description_languages, false %>
+        filterCollections["description_languages"] = {
+            param: "description_languages",
+            paramVal: function (lang) {
+                return lang.id;
+            },
+            multi: true,
+            data: <%= raw local_assigns.fetch(:description_languages, []).map{|l| {id: l, name: t("js.#{l}")}}.to_json %>,
+            color: function () {
+                return "light-grey"
+            },
+        };
+        <% end %>
 
         dodona.initFilterIndex("<%= local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%= raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, filterCollections);
     });

@@ -5,6 +5,8 @@
 #  id                      :integer          not null, primary key
 #  name_nl                 :string(255)
 #  name_en                 :string(255)
+#  description_nl_present  :boolean
+#  description_en_present  :boolean
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  path                    :string(255)
@@ -69,6 +71,8 @@ FactoryBot.define do
     trait :description_html do
       valid
       description_format { 'html' }
+      description_en_present { true }
+      description_nl_present { true }
       after :build do |content|
         content.stubs(:description_localized).returns <<~EOS
           <h2 id="los-deze-oefening-op">Los deze oefening op</h2>
@@ -82,6 +86,8 @@ FactoryBot.define do
     trait :description_md do
       valid
       description_format { 'md' }
+      description_en_present { true }
+      description_nl_present { true }
       after :build do |exercise|
         exercise.stubs(:description_localized).returns <<~EOS
           ## Los deze oefening op

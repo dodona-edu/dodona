@@ -15,6 +15,7 @@ class ActivitiesController < ApplicationController
   has_scope :by_programming_language, as: 'programming_language'
   has_scope :by_type, as: 'type'
   has_scope :in_repository, as: 'repository_id'
+  has_scope :by_description_languages, as: 'description_languages', type: :array
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }

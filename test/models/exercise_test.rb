@@ -533,6 +533,11 @@ class ExerciseTest < ActiveSupport::TestCase
     series.exercises.destroy(@exercise)
     assert_not_equal old_token, @exercise.reload.access_token
   end
+
+  test 'description language scope should be chainable' do
+    @exercise.update description_nl_present: true, name_nl: 'Wingardium Leviosa', name_en: 'Wingardium Leviosa'
+    assert_equal 1, Exercise.by_name('Wingardium Leviosa').by_description_languages(['nl']).count
+  end
 end
 
 class ExerciseRemoteTest < ActiveSupport::TestCase
@@ -738,7 +743,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
                  @exercise.merged_config_locations['root_config']
   end
 
-  test 'should throw ":abort" when commit does not succed and return an error' do
+  test 'should throw ":abort" when commit does not succeed and return an error' do
     @exercise.repository.stubs(:commit).returns([false, ['not empty']])
     assert_throws :abort do
       @exercise.store_config(config)
@@ -746,7 +751,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
   end
 
   # set at top level, overridden by series, not set at exercise
-  test 'should not write access if initially not present' do
+  test 'should not have write access if initially not present' do
     assert_equal 'public', @exercise.access
     assert_equal Pathname.new('./exercises/series/dirconfig.json'),
                  @exercise.merged_config_locations['access']

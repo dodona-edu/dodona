@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
       </div>
       <div class="card-supporting-text">
-        <%= render partial: 'layouts/searchbar', locals: {labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise]} %>
+        <%= render partial: 'layouts/searchbar', locals: {labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"]} %>
         <div id="activities-table-wrapper">
           <%= render partial: 'activities_table', locals: {activities: @activities} %>
         </div>

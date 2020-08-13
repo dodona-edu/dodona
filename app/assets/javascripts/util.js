@@ -55,7 +55,7 @@ function updateURLParameter(url, param, paramVal) {
 }
 
 function updateArrayURLParameter(url, param, _paramVals) {
-    const paramVals = _paramVals;
+    const paramVals = [...new Set(_paramVals)]; // remove duplicate items
     let TheAnchor = null;
     let newAdditionalURL = "";
     let tempArray = url.split("?");

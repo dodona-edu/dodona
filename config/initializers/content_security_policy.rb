@@ -22,14 +22,16 @@ Rails.application.config.content_security_policy do |policy|
   end
 
   policy.font_src    :self, 'https://fonts.gstatic.com',
-                     'https://cdn.materialdesignicons.com'
+                     'https://cdn.materialdesignicons.com',
+                     'https://cdn.jsdelivr.net/npm/mathjax@3/'
 
   policy.img_src     :self, :data, :https
 
   policy.object_src  :none
 
   policy.script_src  :self, :unsafe_inline, :unsafe_eval,
-                     'https://www.google-analytics.com'
+                     'https://www.google-analytics.com',
+                     'https://cdn.jsdelivr.net/npm/mathjax@3/'
 
   policy.style_src   :self, :unsafe_inline, 'https://fonts.googleapis.com',
                      'https://cdn.materialdesignicons.com'

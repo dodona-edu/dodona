@@ -89,6 +89,12 @@ export abstract class Annotation {
             // Body.
             this.__html.appendChild(this.header);
             this.__html.appendChild(this.body);
+            // Ask MathJax to search for math in the annotations
+            if (window.MathJax === undefined) {
+                console.error("MathJax is not initialized");
+            } else {
+                window.MathJax.typeset();
+            }
         }
 
         return this.__html;

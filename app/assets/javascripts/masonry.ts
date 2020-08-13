@@ -6,7 +6,9 @@ interface CustomElement {
 }
 
 export class Masonry {
-    static readonly minColWidth = 1;
+    static readonly screenLgMin = 1200;
+    static readonly gridGutterWidth = 30;
+    
     roots: CustomElement[];
 
     constructor() {
@@ -36,7 +38,7 @@ export class Masonry {
     onResize(): void {
         for (const root of this.roots) {
             // only layout when the number of columns has changed
-            const newColumnNumber = window.innerWidth > 1024 ? 2 : 1;
+            const newColumnNumber = window.innerWidth > Masonry.screenLgMin ? 2 : 1;
             if (newColumnNumber != root.columnNumber) {
                 // initialize
                 root.columnNumber = newColumnNumber;
@@ -59,11 +61,22 @@ export class Masonry {
 
                 // ...and conquer
                 let order = 0;
+                let col_count = 0;
                 for (const column of columns) {
                     for (const cell of column.cells) {
                         cell.element.style.order = String(order++);
                         // set the cell's flex-basis to 0
                         cell.element.style.flexBasis = "0";
+
+                        if (col_count !== 0 && col_count !== columns.length - 1) {
+                            cell.element.style.paddingLeft = Math.floor(Masonry.gridGutterWidth/2) + "px";
+                            cell.element.style.paddingRight = Math.ceil(Masonry.gridGutterWidth/2) + "px";
+                        } else if (col_count === 0) {
+                            cell.element.style.paddingRight = Math.ceil(Masonry.gridGutterWidth/2) + "px";
+                        } else {
+                            cell.element.style.paddingLeft = Math.floor(Masonry.gridGutterWidth/2) + "px";
+                        }
+                        col_count ++;
                     }
                     // set flex-basis of the last cell to fill the
                     // leftover space at the bottom of the column

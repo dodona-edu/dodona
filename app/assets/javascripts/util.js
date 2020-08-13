@@ -167,6 +167,22 @@ function fetch(url, options = {}) {
     return window.fetch(url, options);
 }
 
+/**
+ * Initializes any element with the clickable-token class to use its data for searching
+ */
+function initTokenClickables() {
+    const $clickableTokens = $(".clickable-token");
+    $clickableTokens.off("click");
+    $clickableTokens.click(function () {
+        const $htmlElement = $(this);
+        const type = $htmlElement.data("type");
+        const name = $htmlElement.data("name");
+        if (dodona.addTokenToSearch) {
+            dodona.addTokenToSearch(type, name);
+        }
+    });
+}
+
 export {
     delay,
     fetch,
@@ -179,4 +195,5 @@ export {
     initCSRF,
     tooltip,
     initTooltips,
+    initTokenClickables
 };

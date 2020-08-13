@@ -1,2 +1,2 @@
-$("#activities-table-wrapper").html("<%= escape_javascript(render partial: 'series_activities_table', locals: {activities: @activities, series: @series}) %>");
+$("#activities-table-wrapper").html("<%= escape_javascript(render partial: 'series_activities_add_table', locals: {activities: @activities, series: @series}) %>");
 dodona.seriesEditActivitiesLoaded();

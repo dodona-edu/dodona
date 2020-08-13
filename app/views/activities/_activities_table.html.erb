@@ -84,7 +84,7 @@
         </td>
 
         <td class="series-activities-table-labels">
-          <%= render partial: 'activites/labels', locals: { activity: activity } %>
+          <%= render partial: 'activities/labels', locals: { activity: activity } %>
         </td>
 
         <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>

@@ -76,7 +76,6 @@ export class Masonry {
                         } else {
                             cell.element.style.paddingLeft = Math.floor(Masonry.gridGutterWidth/2) + "px";
                         }
-                        col_count ++;
                     }
                     // set flex-basis of the last cell to fill the
                     // leftover space at the bottom of the column
@@ -85,6 +84,7 @@ export class Masonry {
                     if (column.cells.length !== 0) {
                         column.cells[column.cells.length - 1].element.style.flexBasis = String(column.cells[column.cells.length - 1].element.offsetHeight + masonryHeight - column.outerHeight - 1) + "px";
                     }
+                    col_count ++;
                 }
 
                 // set the masonry height to trigger

@@ -6,4 +6,8 @@ class PagesPolicy < ApplicationPolicy
   def toggle_dark_mode?
     true
   end
+
+  def profile?
+    user.present?
+  end
 end

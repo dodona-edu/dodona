@@ -9,7 +9,7 @@
     "@babel/preset-typescript": "^7.10.4",
     "@rails/activestorage": "^6.0.3",
     "@rails/ujs": "^6.0.3",
-    "@rails/webpacker": "5.1.1",
+    "@rails/webpacker": "5.2.1",
     "@types/d3": "^5.7.2",
     "@types/jquery": "^3.5.1",
     "clipboard": "^2.0.6",

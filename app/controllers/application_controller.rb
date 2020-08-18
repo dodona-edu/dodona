@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   Warden::Manager.after_set_user do |user, _auth, _opts|
-    Rack::MiniProfiler.authorize_request if user.zeus?
+    Rack::MiniProfiler.authorize_request if user&.zeus?
   end
 
   protected

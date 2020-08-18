@@ -10,7 +10,7 @@ if Rails.env.development?
 
   puts 'Creating institutions'
 
-  ugent = Institution.create name: 'Universiteit Gent (login werkt niet in develop)', short_name: 'UGent', logo: 'UGent.png'
+  ugent = Institution.create name: 'Universiteit Gent', short_name: 'UGent', logo: 'UGent.png'
   college_waregem = Institution.create name: 'College Waregem', short_name: 'College Waregem', logo: 'collegewaregem.png'
   sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'collegewaregem.png'
   slo = Institution.create name: 'SLO Wetenschappen', short_name: 'SLOW', logo: 'ugent.png'
@@ -112,7 +112,8 @@ if Rails.env.development?
 
   courses.each do |course|
     course.administrating_members << mart
-    course.enrolled_members << staff
+    course.administrating_members << staff
+    #course.enrolled_members << staff
     course.enrolled_members << zeus
     course.unsubscribed_members << jelix
     course.enrolled_members.concat(students.sample(80))

@@ -188,6 +188,16 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_equal Exercise.count, JSON.parse(response.body).count # should yield all exercises
   end
 
+  test 'should get activities filtered by judge' do
+    judge = @instance.judge
+    get activities_url(format: :json, judge_id: judge.id)
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
+
+    get_activities_url(format: :json, judge_id: judge.id + 1)
+    assert_equal 0, JSON.parse(response.body).count
+  end
+
   test 'should get available activities for series' do
     course = create :course, usable_repositories: [@instance.repository]
     other_exercise = create :exercise

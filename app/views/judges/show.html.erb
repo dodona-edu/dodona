@@ -29,7 +29,10 @@
             <strong><%= Judge.human_attribute_name("renderer") %>:</strong> <%= @judge.renderer %>
           </p>
           <p>
-            <strong><%= t ".all-submissions" %>:</strong> <%= link_to Submission.of_judge(@judge).count, judge_submissions_path(@judge), title: @judge.name, class: "ellipsis-overflow"  %>
+            <strong><%= t ".all_submissions" %>:</strong> <%= link_to Submission.of_judge(@judge).count, judge_submissions_path(@judge), title: @judge.name, class: "ellipsis-overflow"  %>
+          </p>
+          <p>
+            <strong><%= t ".all_exercises" %>:</strong> <%= link_to Activity.by_judge(@judge.id).count, activities_url(judge_id: @judge.id), title: @judge.name, class: "ellipsis-overflow" %>
           </p>
         </div>
         <div class="col-sm-6 col-xs-12">

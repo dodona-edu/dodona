@@ -1,9 +1,9 @@
 nl:
   judges:
     form:
-      remote-help: "De SSH 'clone url' van de repository waar de judge te vinden is. Dodona heeft de juiste rechten nodig om de repository te kunnen clonen."
-      image-help: De naam van de docker image waarin de judge zal gestart worden. De image zal automatisch gedownload worden van docker hub als ze lokaal niet beschikbaar is.
-      renderer-help: "Kies hier voor 'FeedbackTableRenderer' tenzij je in samenwerking met het Dodona team een eigen renderer geschreven hebt."
+      remote_help: "De SSH 'clone url' van de repository waar de judge te vinden is. Dodona heeft de juiste rechten nodig om de repository te kunnen clonen."
+      image_help: De naam van de docker image waarin de judge zal gestart worden. De image zal automatisch gedownload worden van docker hub als ze lokaal niet beschikbaar is.
+      renderer_help: "Kies hier voor 'FeedbackTableRenderer' tenzij je in samenwerking met het Dodona team een eigen renderer geschreven hebt."
       remote_cant_be_edited_html: De clone URL kan niet aangepast worden nadat de judge werd aangemaakt. Contacteer <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> als het toch aangepast moet worden.
     index:
       title: Alle judges
@@ -12,4 +12,5 @@ nl:
     show:
       judge: Judge
       webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> in zodat de judge op Dodona automatisch geüpdatet wordt bij elke commit:"
-      all-submissions: "Inzendingen voor deze judge"
+      all_submissions: "Inzendingen voor deze judge"
+      all_exercises: "Oefeningen voor deze judge"

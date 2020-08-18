@@ -27,6 +27,7 @@ nl:
     unfavorite-course-do: "Verwijder uit favorieten"
     labels: Labels
     programming_languages: Programmeertalen
+    judges: Judges
     repositories: Repository's
     institutions: Onderwijsinstellingen
     course_labels: Gebruikerlabels

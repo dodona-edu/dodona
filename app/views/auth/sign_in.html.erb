@@ -1,3 +1,6 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'sign_in' %>
+<% end %>
 <div class="row">
   <div class="sign-in-dialog-wrapper">
     <div class="sign-in-dialog-header">
@@ -132,13 +135,22 @@
         <div class="divider"></div>
       </div>
     </div>
-    <div class="sign-in-dialog-institutions row">
-      <div class="card course-search">
-        <%= render partial: 'layouts/searchbar', locals: {institutions:  @providers.all.map{ |provider| provider.institution }, eager: false} %>
+    <div class="row">
+      <div class="col-xs-11" id="scrollable-dropdown-menu">
+        <input class="typeahead" type="text" placeholder="<%= t "institutions.index.title" %>">
       </div>
-      <div id="institution-poviders-table-wrapper">
-        <%= render partial: 'auth/institutions', locals: {institution_providers: @institution_providers} %>
+      <div class="col-xs-1">
+        <a class="btn btn-primary btn-lg" id="sign-in" href=""><%= t 'layout.menu.log_in' %></a>
       </div>
     </div>
   </div>
 </div>
+<script>
+  let institutions = <%= raw @institution_providers.map{|i| {id: i.id, name: i.institution.name, type: i.type}}.to_json %>;
+  let links = {
+    "Provider::GSuite": "<%= omniauth_authorize_path(:user, Provider::GSuite.sym) %>",
+    "Provider::Office365": "<%= omniauth_authorize_path(:user, Provider::Office365.sym) %>",
+    "Provider::Smartschool": "<%= omniauth_authorize_path(:user, Provider::Smartschool.sym) %>",
+  };
+  window.dodona.initInstitutionAutoSelect(institutions, links);
+</script>

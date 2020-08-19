@@ -146,7 +146,7 @@
   </div>
 </div>
 <script>
-  let institutions = <%= raw @oauth_provider.map{|i| {id: i.id, name: i.institution.name, type: i.type}}.to_json %>;
+  let institutions = <%= raw @oauth_providers.map{|i| {id: i.id, name: i.institution.name, type: i.type}}.to_json %>;
   let links = {
     "Provider::GSuite": "<%= omniauth_authorize_path(:user, Provider::GSuite.sym) %>",
     "Provider::Office365": "<%= omniauth_authorize_path(:user, Provider::Office365.sym) %>",

@@ -131,17 +131,15 @@
       <% end %>
     </div>
     <div class="sign-in-divider row">
-      <div class="col-xs-12">
-        <div class="divider"></div>
+        <div class="sign-in-dialog-header">
+          <h1>
+            <small><%= t('.sign-in-help') %></small>
+          </h1>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-11" id="scrollable-dropdown-menu">
-        <input class="typeahead" type="text" placeholder="<%= t "institutions.index.title" %>">
-      </div>
-      <div class="col-xs-1">
-        <a class="btn btn-primary btn-lg" id="sign-in" href=""><%= t 'layout.menu.log_in' %></a>
-      </div>
+    <div class="input-group input-group-lg" id="scrollable-dropdown-menu">
+      <input class="typeahead" type="text" placeholder="<%= t "institutions.index.title" %>">
+        <a class="btn btn-primary btn-lg input-group-addon" id="sign-in" href=""><%= t 'layout.menu.log_in' %></a>
     </div>
   </div>
 </div>

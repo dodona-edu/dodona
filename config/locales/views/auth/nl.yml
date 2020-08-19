@@ -6,6 +6,7 @@ nl:
       sign-in-with-smartschool: "Inloggen met Smartschool"
       sign-in-with-office-365: "Inloggen met Office 365"
       sign-in-with-g-suite: "Inloggen met G Suite"
+      sign-in-help: "Geen idee welke login je kan gebruiken? Zoek hier je onderwijsinstelling:"
       blacklist:
         sgpaulus: Use your sgpaulus-account (firstname.lastname@sgpaulus.eu) to sign in to Dodona.
       errors:

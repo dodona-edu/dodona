@@ -12,10 +12,14 @@ function initInstitutionAutoSelect(institutions, links) {
         highlight: true
     }, {
         name: "institution",
-        display: "name",
+        display: institutionRepresentation,
         limit: institutions.length,
         source: institutionsWithDefaults
     });
+
+    function institutionRepresentation(institution) {
+        return institution.name + " " + institution.type.replace("Provider::", "");
+    }
 
     function institutionsWithDefaults(q, sync) {
         if (q === "") {
@@ -35,7 +39,7 @@ function initInstitutionAutoSelect(institutions, links) {
     const localStorageInstitution = localStorage.getItem("institution");
     if (localStorageInstitution !== undefined) {
         const institution = JSON.parse(localStorageInstitution);
-        $(".typeahead").typeahead("val", institution.name);
+        $(".typeahead").typeahead("val", institutionRepresentation(institution));
         $("#sign-in").attr("href", links[institution.type]);
     }
 }

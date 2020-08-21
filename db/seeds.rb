@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 def submission_summary(status)
-  summary = status == :correct ? 'All tests succeeded.' : "#{Faker::Number.number(digits: 3)} tests failed."
+  summary = status == :correct ? 'All tests succeeded.' : "#{Faker::Number.number(digits: 2)} tests failed."
 end
 
 if Rails.env.development?
@@ -225,7 +225,7 @@ if Rails.env.development?
                             skip_rate_limit_check: true,
                             status: status,
                             accepted: status == :correct,
-                            summary: submission_summary status,
+                            summary: submission_summary(status),
                             code: "print(input())\n",
                             result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
         end
@@ -254,7 +254,7 @@ if Rails.env.development?
                           skip_rate_limit_check: true,
                           course: status_test,
                           status: before,
-                          summary: submission_summary before,
+                          summary: submission_summary(before),
                           accepted: before == :correct,
                           created_at: before_deadline,
                           code: code,
@@ -267,7 +267,7 @@ if Rails.env.development?
                           skip_rate_limit_check: true,
                           course: status_test,
                           status: after,
-                          summary: submission_summary after,
+                          summary: submission_summary(after),
                           accepted: after == :correct,
                           created_at: after_deadline,
                           code: code,
@@ -355,7 +355,7 @@ if Rails.env.development?
                     skip_rate_limit_check: true,
                     course: status_test,
                     status: :wrong,
-                    summary: submission_summary :wrong,
+                    summary: submission_summary(:wrong),
                     accepted: false,
                     created_at: after_deadline,
                     code: '',

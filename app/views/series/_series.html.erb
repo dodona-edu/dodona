@@ -142,7 +142,7 @@
   <% if policy(series).overview? && series.activity_count > 0 %>
     <div class="series-activities-table-wrapper">
       <% if loaded %>
-        <%= render partial: 'activities/activities_table', locals: {
+        <%= render partial: 'activities/series_activities_table', locals: {
             series: series,
             activities: series.activities,
             get_activity_path: get_activity_path,

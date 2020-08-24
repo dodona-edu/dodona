@@ -77,7 +77,7 @@
               <% if @series.activities.empty? %>
                 <p id="no-activities" class="text-center"><%= t ".no_activities" %><br><span class="small"><%= t ".no_activities_bis" %></span></p>
               <% end %>
-              <%= render partial: 'activities/series_activities_table', locals: {activities: @series.activities, series: @series, paginate: false, show_buttons_for_present: true} %>
+              <%= render partial: 'activities/series_activities_add_table', locals: {activities: @series.activities, series: @series, paginate: false, show_buttons_for_present: true} %>
             </div>
           </div>
         </div>

@@ -44,18 +44,7 @@
         </div>
       </td>
       <td class="series-activities-table-labels">
-        <span class="<%= activity.programming_language ? "clickable-token" : "" %>" data-type="programming_languages" data-name="<%= activity.programming_language&.name %>"><%= activity.programming_language&.name || "" %></span>
-        <div class="text-muted">
-          <small>
-            <%# We can't just use activity.labels because a search by labels might restrict the loaded labels %>
-            <% labels = Label.includes(:activities).where(activities: {id: activity.id}).load %>
-            <% if labels.count > 5 %>
-              <span title="<%= labels.map(&:name).join(", ") %>"><%= raw labels.first(5).map {|label| "<span class='clickable-token' data-type='labels' data-name='#{label.name}'>#{label.name}</span>"}.join(", ") + ", ..." %></span>
-            <% else %>
-              <%= raw labels.map {|label| "<span class='clickable-token' data-type='labels' data-name='#{label.name}'>#{label.name}</span>"}.join(", ") %>
-            <% end %>
-          </small>
-        </div>
+        <%= render partial: 'activities/labels', locals: { activity: activity } %>
       </td>
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>

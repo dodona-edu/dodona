@@ -120,7 +120,7 @@ GEM
       simplecov
     colorize (0.8.1)
     commonjs (0.2.7)
-    concurrent-ruby (1.1.6)
+    concurrent-ruby (1.1.7)
     crass (1.0.6)
     css_parser (1.7.1)
       addressable
@@ -447,7 +447,7 @@ GEM
     webfinger (1.1.0)
       activesupport
       httpclient (>= 2.4)
-    webpacker (5.1.1)
+    webpacker (5.2.1)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
@@ -542,7 +542,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 4.1.20)
   web-console (~> 4.0.4)
-  webpacker (~> 5.1.1)
+  webpacker (~> 5.2.1)
   will_paginate (~> 3.3.0)
 
 RUBY VERSION

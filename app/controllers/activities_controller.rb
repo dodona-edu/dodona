@@ -16,6 +16,7 @@ class ActivitiesController < ApplicationController
   has_scope :by_type, as: 'type'
   has_scope :in_repository, as: 'repository_id'
   has_scope :by_description_languages, as: 'description_languages', type: :array
+  has_scope :by_judge, as: 'judge_id'
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
@@ -52,6 +53,7 @@ class ActivitiesController < ApplicationController
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)
     @repositories = policy_scope(Repository.all)
+    @judges = policy_scope(Judge.all)
     @title = I18n.t('activities.index.title')
   end
 

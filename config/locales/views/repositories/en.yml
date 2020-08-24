@@ -1,8 +1,8 @@
 en:
   repositories:
     form:
-      remote-help: "The SSH clone URL of the judge repository. Dodona needs access rights to the repository to be able to clone it."
-      judge-help: "This judge will be used when the exercise doesn't specify one."
+      remote_help: "The SSH clone URL of the judge repository. Dodona needs access rights to the repository to be able to clone it."
+      judge_help: "This judge will be used when the exercise doesn't specify one."
       remote_cant_be_edited_html: The clone URL can't be edited after the repository was created. Contact <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> if it needs to be changed.
     index:
       title: All exercise repositories

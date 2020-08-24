@@ -27,6 +27,7 @@ en:
     unfavorite-course-do: Unfavorite
     labels: Labels
     programming_languages: Programming Languages
+    judges: Judges
     repositories: Repositories
     institutions: Institutions
     course_labels: Member labels

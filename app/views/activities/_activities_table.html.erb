@@ -16,7 +16,7 @@
       <th class='type-icon'></th>
       <th><%= t "activities.index.activity_title" %></th>
       <th><%= t "activities.index.languages" %></th>
-      <th><%= t "activities.index.labels" %></th>
+      <th></th>
       <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
         <th class='count hidden-xs'>
           <% if @course %>

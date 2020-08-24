@@ -16,7 +16,7 @@ class ActivitiesController < ApplicationController
   has_scope :by_type, as: 'type'
   has_scope :in_repository, as: 'repository_id'
   has_scope :by_description_languages, as: 'description_languages', type: :array
-  has_scope :by_judge, as: 'judge_id', if: ->(this) { Pundit.policy!(this.current_user, Judge).index? }
+  has_scope :by_judge, as: 'judge_id'
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }

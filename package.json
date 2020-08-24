@@ -12,6 +12,7 @@
     "@rails/webpacker": "5.1.1",
     "@types/d3": "^5.7.2",
     "@types/jquery": "^3.5.1",
+    "chalk": "^4.1.0",
     "clipboard": "^2.0.6",
     "d3": "^5.15.1",
     "dragula": "^3.7.2",

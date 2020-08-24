@@ -74,7 +74,7 @@ gem 'omniauth-oauth2', '~> 1.7.0'
 gem 'omniauth_openid_connect', '~> 0.3.5'
 
 # Json webtokens
-gem 'jwt', '~> 2.2.1'
+gem 'jwt', '~> 2.2.2'
 
 # contact mail form
 gem 'mail_form', '~> 1.8.0'

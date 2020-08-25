@@ -79,7 +79,7 @@ en:
         next: Next activity
       mark_as_read: Mark as read
       read_at: "Marked as read at %{timestamp}"
-    series_exercises_table:
+    series_activities_add_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
     edit:
       courses: "Courses using this exercise"

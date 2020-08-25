@@ -79,7 +79,7 @@ nl:
         next: Volgende activiteit
       mark_as_read: Markeren als gelezen
       read_at: "Gelezen op %{timestamp}"
-    series_exercises_table:
+    series_activities_add_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:
       courses: "Cursussen die deze oefening gebruiken"

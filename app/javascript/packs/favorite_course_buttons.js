@@ -1,3 +1,3 @@
-import { initFavoriteButtons } from "favorite_course_buttons.js";
+import { initHomePageCards } from "favorite_course_buttons.js";
 
-window.dodona.initFavoriteButtons = initFavoriteButtons;
+window.dodona.initHomePageCards = initHomePageCards;

@@ -1,6 +1,8 @@
 import { Toast } from "./toast";
+import { Masonry } from "./masonry";
 
-function initFavoriteButtons() {
+function initHomePageCards() {
+    const masonry = new Masonry();
     function init() {
         $(".favorite-button").click(toggleFavorite);
     }
@@ -33,7 +35,7 @@ function initFavoriteButtons() {
                 cloneFavButton.attr("title", I18n.t("js.unfavorite-course-do"));
                 cloneFavButton.tooltip();
                 cloneFavButton.click(toggleFavorite);
-                window.dodona.Masonry.onLoad();
+                masonry.onLoad();
             })
             .fail(() => {
                 new Toast(I18n.t("js.favorite-course-failed"));
@@ -56,7 +58,7 @@ function initFavoriteButtons() {
                 if ($(".favorites-row").children().length === 0) {
                     $(".page-subtitle.first").addClass("hidden");
                 }
-                window.dodona.Masonry.onLoad();
+                masonry.onLoad();
             })
             .fail(() => {
                 new Toast(I18n.t("js.unfavorite-course-failed"));
@@ -66,4 +68,4 @@ function initFavoriteButtons() {
     init();
 }
 
-export { initFavoriteButtons };
+export { initHomePageCards };

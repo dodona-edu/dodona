@@ -7,6 +7,7 @@ interface CustomElement {
 
 export class Masonry {
     static readonly screenLgMin = 1200;
+    static readonly bottomPadding = 24;
 
     roots: CustomElement[];
 
@@ -37,7 +38,7 @@ export class Masonry {
     onResize(): void {
         for (const root of this.roots) {
             // only layout when the number of columns has changed
-            const newColumnNumber = window.innerWidth > Masonry.screenLgMin ? 2 : 1;
+            const newColumnNumber = window.innerWidth >= Masonry.screenLgMin ? 2 : 1;
             if (newColumnNumber != root.columnNumber) {
                 // initialize
                 root.columnNumber = newColumnNumber;
@@ -52,7 +53,7 @@ export class Masonry {
                     const minOuterHeight = Math.min(...columns.map(column => column.outerHeight));
                     const column = columns.find(column => column.outerHeight == minOuterHeight);
                     column.cells.push(cell);
-                    column.outerHeight += cell.outerHeight;
+                    column.outerHeight += cell.outerHeight + Masonry.bottomPadding;
                 }
 
                 // calculate masonry height
@@ -78,7 +79,11 @@ export class Masonry {
                 // set the masonry height to trigger
                 // re-rendering of all cells over columns
                 // one pixel more than the tallest column
-                root.element.style.maxHeight = String(masonryHeight + 1) + "px";
+                root.element.style.maxHeight = String(masonryHeight) + "px";
+                if (root.element.className.includes("favorite")) {
+                    console.log(root.cells);
+                    console.log(root.element);
+                }
             }
         }
     }

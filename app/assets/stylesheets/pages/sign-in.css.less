@@ -48,9 +48,15 @@ a.institution-sign-in:active {
 .sign-in-divider .divider {
   margin-top: 45px;
 }
+.card {
+  margin-bottom: 0;
+}
+input:focus {
+  outline: none;
+}
 
 #scrollable-dropdown-menu {
-  margin-bottom: 150px;
+  margin-bottom: 24px;
   .tt-menu {
     max-height: 150px;
     overflow-y: auto;
@@ -67,5 +73,14 @@ a.institution-sign-in:active {
     font-size: 18px;
     min-height: 42px;
     color: @text-color;
+    border-radius: 6px 0 0 6px !important;
+    
   }
-} 
+}
+
+.login-button {
+  display: table-cell;
+  width: 1%;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}

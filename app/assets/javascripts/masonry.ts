@@ -42,7 +42,7 @@ export class Masonry {
             if (newColumnNumber != root.columnNumber) {
                 // initialize
                 root.columnNumber = newColumnNumber;
-                
+
                 // Construct array with empty CustomElements
                 const columns = Array.from(new Array(root.columnNumber)).map(() => ({ outerHeight: 0, cells: []} as CustomElement));
 
@@ -61,7 +61,7 @@ export class Masonry {
                 let order = 0;
                 for (const column of columns) {
                     for (const cell of column.cells) {
-                        cell.element.style.order = String(order++);
+                        cell.element.style.order = `${order++}`;
                         // set the cell's flex-basis to 0
                         cell.element.style.flexBasis = "0";
                     }
@@ -70,18 +70,14 @@ export class Masonry {
                     // to prevent the first cell of the next column
                     // to be rendered at the bottom of this column
                     if (column.cells.length !== 0) {
-                        column.cells[column.cells.length - 1].element.style.flexBasis = String(column.cells[column.cells.length - 1].element.offsetHeight + masonryHeight - column.outerHeight - 1) + "px";
+                        column.cells[column.cells.length - 1].element.style.flexBasis = `${column.cells[column.cells.length - 1].element.offsetHeight + masonryHeight - column.outerHeight - 1}px`;
                     }
                 }
 
                 // set the masonry height to trigger
                 // re-rendering of all cells over columns
                 // one pixel more than the tallest column
-                root.element.style.maxHeight = String(masonryHeight) + "px";
-                if (root.element.className.includes("favorite")) {
-                    console.log(root.cells);
-                    console.log(root.element);
-                }
+                root.element.style.maxHeight = `${masonryHeight}px`;
             }
         }
     }

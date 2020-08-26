@@ -10,7 +10,7 @@ function initInstitutionAutoSelect(institutions, links) {
         local: filteredInstitutions,
     });
 
-    $("#scrollable-dropdown-menu .typeahead").typeahead({
+    const typeaheadRef = $("#scrollable-dropdown-menu .typeahead").typeahead({
         minLength: 0,
         highlight: true
     }, {
@@ -48,13 +48,13 @@ function initInstitutionAutoSelect(institutions, links) {
 
     // Check if there is an institution in localStorage if so set it as default selection.
     const localStorageInstitution = localStorage.getItem("institution");
-    if (localStorageInstitution !== undefined) {
+    if (localStorageInstitution !== null) {
         const institution = JSON.parse(localStorageInstitution);
         $(".typeahead").typeahead("val", institutionRepresentation(institution));
         $("#sign-in").attr("href", links[institution.type]);
         $(".login-button").attr("disabled", false);
     }
-    $("input").focus();
+    typeaheadRef.focus();
 }
 
 export { initInstitutionAutoSelect };

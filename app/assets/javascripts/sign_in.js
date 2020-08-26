@@ -31,7 +31,7 @@ function initInstitutionAutoSelect(institutions, links) {
             institution.search(q, sync);
         }
     }
-    
+
     const institutionRepresentations = filteredInstitutions.map(i => institutionRepresentation(i));
 
     $("input").bind("input", e => {

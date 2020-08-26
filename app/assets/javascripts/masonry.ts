@@ -12,12 +12,12 @@ export class Masonry {
     roots: CustomElement[];
 
     constructor() {
-    // subscribe to load and resize events
-        window.addEventListener("load", () => this.onLoad());
-        window.addEventListener("resize", () => this.onResize());
+        // subscribe to load and resize events
+        window.addEventListener("load", () => this.initMasonryRoots());
+        window.addEventListener("resize", () => this.setCellLayout());
     }
 
-    onLoad(): void {
+    initMasonryRoots(): void {
         const rootElements = document.getElementsByClassName("masonry-root");
         this.roots = Array.prototype.map.call(rootElements, (rootElement: HTMLElement) => {
             const cellElements: HTMLCollectionOf<Element> = rootElement.getElementsByClassName("masonry-cell");
@@ -32,10 +32,10 @@ export class Masonry {
             return { element: rootElement, columnNumber: 0, cells: cells };
         });
         // do the first layout
-        this.onResize();
+        this.setCellLayout();
     }
 
-    onResize(): void {
+    setCellLayout(): void {
         for (const root of this.roots) {
             // only layout when the number of columns has changed
             const newColumnNumber = window.innerWidth >= Masonry.screenLgMin ? 2 : 1;

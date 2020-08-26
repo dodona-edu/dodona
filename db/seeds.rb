@@ -362,5 +362,5 @@ if Rails.env.development?
                     created_at: after_deadline,
                     code: '',
                     result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
-
+  puts Submission.all().count();
 end

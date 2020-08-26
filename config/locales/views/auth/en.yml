@@ -9,6 +9,8 @@ en:
       sign-in-help: "No idea which login you can use? Search for your educational institution bellow:"
       institution-search: "Type to search for your institution"
       ilearn-help: "Users of i-Learn can currently only sign in through the i-Learn website."
+      higher-education: "Higher education"
+      secondary-education: "Secondary education"
       blacklist:
         sgpaulus: Gebruik je sgpaulus-account (voornaam.naam@sgpaulus.eu) om in te loggen op Dodona.
       errors:

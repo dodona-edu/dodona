@@ -7,6 +7,8 @@
       <h1><%= t("layout.menu.log_in") %><br>
         <small><%= t ".select-institution" %></small>
       </h1>
+
+      <h2><%= t ".higher-education" %></h2>
     </div>
     <div class="sign-in-dialog-institutions row">
       <%
@@ -80,7 +82,10 @@
     </div>
     <div class="sign-in-divider row">
       <div class="col-xs-12">
-        <div class="divider"></div>
+        <div class="sign-in-dialog-footer">
+          <h2><%= t ".secondary-education" %></h2>
+          <h1><small><%= t ".ilearn-help" %></small></h1>
+        </div>
       </div>
     </div>
     <div class="sign-in-dialog-institutions row">
@@ -130,15 +135,6 @@
         </div>
       <% end %>
     </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="sign-in-dialog-footer">
-            <h4>
-              <small><%= t ".ilearn-help" %></small>
-            </h4>
-        </div>
-      </div>
-    </div>
     <div class="sign-in-divider row">
       <div class="col-xs-12">
         <div class="sign-in-dialog-header">
@@ -149,9 +145,9 @@
       </div>
     </div>
     <div class="input-group input-group-lg" id="scrollable-dropdown-menu">
-    <div class="card">
-      <input class="typeahead" type="text" placeholder="<%= t ".institution-search" %>">
-    </div>
+      <div class="card">
+        <input class="typeahead" type="text" placeholder="<%= t ".institution-search" %>">
+      </div>
       <a class="btn btn-primary btn-lg login-button" id="sign-in" href="" disabled=true><%= t 'layout.menu.log_in' %></a>
     </div>
   </div>

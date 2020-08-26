@@ -130,16 +130,27 @@
         </div>
       <% end %>
     </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="sign-in-dialog-footer">
+            <h4>
+              <small><%= t ".ilearn-help" %></small>
+            </h4>
+        </div>
+      </div>
+    </div>
     <div class="sign-in-divider row">
+      <div class="col-xs-12">
         <div class="sign-in-dialog-header">
           <h1>
             <small><%= t('.sign-in-help') %></small>
           </h1>
+        </div>
       </div>
     </div>
     <div class="input-group input-group-lg" id="scrollable-dropdown-menu">
     <div class="card">
-      <input class="typeahead" type="text" placeholder="<%= t ".institution-search" %>" title="<%= t ".ilearn-help" %>">
+      <input class="typeahead" type="text" placeholder="<%= t ".institution-search" %>">
     </div>
       <a class="btn btn-primary btn-lg login-button" id="sign-in" href="" disabled=true><%= t 'layout.menu.log_in' %></a>
     </div>

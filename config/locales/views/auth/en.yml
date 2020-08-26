@@ -7,6 +7,7 @@ en:
       sign-in-with-office-365: "Sign in with Office 365"
       sign-in-with-g-suite: "Sign in with G Suite"
       sign-in-help: "No idea which login you can use? Search for your educational institution bellow:"
+      institution-search: "Type to search for your institution"
       blacklist:
         sgpaulus: Gebruik je sgpaulus-account (voornaam.naam@sgpaulus.eu) om in te loggen op Dodona.
       errors:

@@ -39,7 +39,7 @@ export class Masonry {
         for (const root of this.roots) {
             // only layout when the number of columns has changed
             const newColumnNumber = window.innerWidth >= Masonry.screenLgMin ? 2 : 1;
-            if (newColumnNumber != root.columnNumber) {
+            if (newColumnNumber !== root.columnNumber) {
                 // initialize
                 root.columnNumber = newColumnNumber;
 

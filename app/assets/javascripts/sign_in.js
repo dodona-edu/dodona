@@ -31,9 +31,13 @@ function initInstitutionAutoSelect(institutions, links) {
             institution.search(q, sync);
         }
     }
+    
+    const institutionRepresentations = filteredInstitutions.map(i => institutionRepresentation(i));
 
     $("input").bind("input", e => {
-        $(".login-button").attr("disabled", true);
+        const val = e.target.value;
+
+        $(".login-button").attr("disabled", !institutionRepresentations.includes(val));
     });
 
     $(".typeahead").bind("typeahead:select", function (ev, suggestion) {
@@ -50,6 +54,7 @@ function initInstitutionAutoSelect(institutions, links) {
         $("#sign-in").attr("href", links[institution.type]);
         $(".login-button").attr("disabled", false);
     }
+    $("input").focus();
 }
 
 export { initInstitutionAutoSelect };

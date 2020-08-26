@@ -109,7 +109,7 @@ if Rails.env.development?
   courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: '2017-2018', registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
   courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: '2017-2018', registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')
   courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2017-2018', registration: 'open_for_all', visibility: 'hidden', moderated: false, teacher: 'Prof. Kumulus')
-  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2017-2018', registration: 'closed', visibility: 'hidden', moderated: false, teacher: 'Graaf van Rommelgem')
+  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2017-2018', registration: 'closed', visibility: 'visible_for_all', moderated: false, teacher: 'Graaf van Rommelgem')
   courses << Course.create(description: 'This is a test course.', name: 'Old Open for All Test Course', year: '2016-2017', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
   courses << Course.create(description: 'This is a test course.', name: 'Very Old Open for All Test Course', year: '2015-2016', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
 

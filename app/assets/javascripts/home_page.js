@@ -35,7 +35,7 @@ function initHomePageCards() {
                 cloneFavButton.attr("title", I18n.t("js.unfavorite-course-do"));
                 cloneFavButton.tooltip();
                 cloneFavButton.click(toggleFavorite);
-                masonry.onLoad();
+                masonry.initMasonryRoots();
             })
             .fail(() => {
                 new Toast(I18n.t("js.favorite-course-failed"));
@@ -58,7 +58,7 @@ function initHomePageCards() {
                 if ($(".favorites-row").children().length === 0) {
                     $(".page-subtitle.first").addClass("hidden");
                 }
-                masonry.onLoad();
+                masonry.initMasonryRoots();
             })
             .fail(() => {
                 new Toast(I18n.t("js.unfavorite-course-failed"));

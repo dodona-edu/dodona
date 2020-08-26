@@ -42,11 +42,9 @@ export class Masonry {
             if (newColumnNumber != root.columnNumber) {
                 // initialize
                 root.columnNumber = newColumnNumber;
-                const columns = Array.from(new Array(root.columnNumber)).map( () => {
-                    const rootElement: CustomElement = { outerHeight: 0 };
-                    rootElement.cells = [];
-                    return rootElement;
-                });
+                
+                // Construct array with empty CustomElements
+                const columns = Array.from(new Array(root.columnNumber)).map(() => ({ outerHeight: 0, cells: []} as CustomElement));
 
                 // divide...
                 for (const cell of root.cells) {

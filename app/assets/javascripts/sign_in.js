@@ -2,12 +2,12 @@
 
 function initInstitutionAutoSelect(institutions, links) {
     // Filter institutions without name
-    institutions = institutions.filter(institution => institution.name !== "");
+    const filteredInstitutions = institutions.filter(institution => institution.name !== "n/a");
 
     const institution = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace("name"),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: institutions,
+        local: filteredInstitutions,
     });
 
     $("#scrollable-dropdown-menu .typeahead").typeahead({
@@ -16,7 +16,7 @@ function initInstitutionAutoSelect(institutions, links) {
     }, {
         name: "institution",
         display: institutionRepresentation,
-        limit: institutions.length,
+        limit: filteredInstitutions.length,
         source: institutionsWithDefaults
     });
 
@@ -31,8 +31,8 @@ function initInstitutionAutoSelect(institutions, links) {
             institution.search(q, sync);
         }
     }
-    
-    $('input').bind("input", (e) => {
+
+    $("input").bind("input", e => {
         $(".login-button").attr("disabled", true);
     });
 

@@ -49,7 +49,7 @@ export class Masonry {
                 // divide...
                 for (const cell of root.cells) {
                     const minOuterHeight = Math.min(...columns.map(column => column.outerHeight));
-                    const column = columns.find(column => column.outerHeight == minOuterHeight);
+                    const column = columns.find(column => column.outerHeight === minOuterHeight);
                     column.cells.push(cell);
                     column.outerHeight += cell.outerHeight + Masonry.bottomPadding;
                 }

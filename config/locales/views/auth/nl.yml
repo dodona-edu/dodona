@@ -8,6 +8,7 @@ nl:
       sign-in-with-g-suite: "Inloggen met G Suite"
       sign-in-help: "Geen idee welke login je kan gebruiken? Zoek hier je onderwijsinstelling:"
       institution-search: "Typ om jou instelling te vinden"
+      ilearn-help: "i-Learn gebruikers kunnen momenteel enkel inloggen met de i-Learn website."
       blacklist:
         sgpaulus: Use your sgpaulus-account (firstname.lastname@sgpaulus.eu) to sign in to Dodona.
       errors:

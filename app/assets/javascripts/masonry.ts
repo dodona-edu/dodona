@@ -21,7 +21,7 @@ export class Masonry {
         const rootElements = document.getElementsByClassName("masonry-root");
         this.roots = Array.from(rootElements).map((rootElement: HTMLElement) => {
             const cellElements: HTMLCollectionOf<Element> = rootElement.getElementsByClassName("masonry-cell");
-            const cells: CustomElement[] = Array.prototype.map.call(cellElements, (cellElement: HTMLElement) => {
+            const cells: CustomElement[] = Array.from(cellElements).map((cellElement: HTMLElement) => {
                 // Use child size because the cell size itself is changed a lot which causes gaps at the end of the columns
                 const child: CSSStyleDeclaration = getComputedStyle(cellElement.children[0]);
                 return {

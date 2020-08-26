@@ -3,12 +3,14 @@
 <% end %>
 <div class="row">
   <div class="sign-in-dialog-wrapper">
-    <div class="sign-in-dialog-header">
-      <h1><%= t("layout.menu.log_in") %><br>
-        <small><%= t ".select-institution" %></small>
-      </h1>
+    <div class="sign-in-divider row">
+      <div class="sign-in-dialog-header">
+        <h1><%= t("layout.menu.log_in") %><br>
+          <small><%= t ".select-institution" %></small>
+        </h1>
 
-      <h2><%= t ".higher-education" %></h2>
+        <h2><%= t ".higher-education" %></h2>
+      </div>
     </div>
     <div class="sign-in-dialog-institutions row">
       <%
@@ -81,12 +83,10 @@
       <% end %>
     </div>
     <div class="sign-in-divider row">
-      <div class="col-xs-12">
         <div class="sign-in-dialog-footer">
-          <h2><%= t ".secondary-education" %></h2>
-          <h1><small><%= t ".ilearn-help" %></small></h1>
+          <h2><%= t ".secondary-education" %><br>
+          <small><%= t ".ilearn-help" %></small></h2>
         </div>
-      </div>
     </div>
     <div class="sign-in-dialog-institutions row">
       <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
@@ -136,12 +136,10 @@
       <% end %>
     </div>
     <div class="sign-in-divider row">
-      <div class="col-xs-12">
         <div class="sign-in-dialog-header">
           <h1>
             <small><%= t('.sign-in-help') %></small>
           </h1>
-        </div>
       </div>
     </div>
     <div class="input-group input-group-lg" id="scrollable-dropdown-menu">

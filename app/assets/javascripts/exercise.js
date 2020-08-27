@@ -125,7 +125,7 @@ function initMathJax() {
         },
         loader: {
             load: ["[tex]/noerrors"]
-        }
+        },
     };
     return window.MathJax;
 }

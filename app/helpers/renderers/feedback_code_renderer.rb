@@ -83,7 +83,7 @@ class FeedbackCodeRenderer
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
         let mathJaxWasInitialized = new Promise((resolve, _) => {
-          window.MathJax = window.dodona.initMathJax();
+          window.dodona.initMathJax();
           window.MathJax = {
             startup: {
               ready: () => {

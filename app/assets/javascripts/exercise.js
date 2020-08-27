@@ -127,6 +127,7 @@ function initMathJax() {
             load: ["[tex]/noerrors"]
         }
     };
+    return window.MathJax;
 }
 
 function initExerciseDescription() {

@@ -73,7 +73,8 @@
 </div>
 <% if @feedback.submission.present? %>
   <script>
-    mathJaxWasInitialized.then(() => {
+    // This promise makes sure that this code executes after MathJax is initialized.
+    mathJaxPromise.then(() => {
       window.dodona.codeListing.setEvaluation(<%= @feedback.evaluation.id %>)
       $(".nav.nav-tabs li:last-child a").tab("show");
     });

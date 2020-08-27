@@ -82,12 +82,13 @@ class FeedbackCodeRenderer
 
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
-        let mathJaxWasInitialized = new Promise((resolve, _) => {
+        let mathJaxPromise = new Promise((resolve, _) => {
           window.dodona.initMathJax();
           window.MathJax = {
             startup: {
               ready: () => {
                 MathJax.startup.defaultReady();
+                // This promise will resolve when MathJax initialization is complete.
                 MathJax.startup.promise.then(() => {$(() => {
                     window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, #{@code.to_json}, #{@code.lines.length});
                     window.dodona.codeListing.addMachineAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
@@ -105,7 +106,7 @@ class FeedbackCodeRenderer
     end
     @builder.script(type: 'application/javascript', src: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js', id: 'MathJax-script') do
     end
-    
+
     self
   end
 

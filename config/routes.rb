@@ -88,10 +88,10 @@ Rails.application.routes.draw do
     resources :courses do
       resources :series, only: %i[new index] do
         resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
-        resources :activities, only: %i[show edit update], concerns: %i[submitable infoable], path: '/exercises'
+        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       end
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
-      resources :activities, only: %i[show edit update], concerns: %i[submitable infoable], path: '/exercises'
+      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       resources :submissions, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
         get 'download_labels_csv', on: :collection
@@ -128,7 +128,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :activities, only: %i[index show edit update], concerns: %i[submitable infoable], path: '/exercises' do
+    resources :activities, only: %i[index show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises' do
       member do
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do

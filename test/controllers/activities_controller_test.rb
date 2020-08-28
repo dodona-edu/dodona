@@ -117,6 +117,14 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'image/png', response.content_type
   end
 
+  test 'exercises media should redirect to activities media' do
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    get media_exercise_url(@instance, 'icon.png')
+
+    assert_response :success
+    assert_equal response.content_type, 'image/png'
+  end
+
   test 'should not get private media' do
     sign_out :user
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))

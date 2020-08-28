@@ -1,9 +1,16 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'sign_in' %>
+<% end %>
 <div class="row">
   <div class="sign-in-dialog-wrapper">
-    <div class="sign-in-dialog-header">
-      <h1><%= t("layout.menu.log_in") %><br>
-        <small><%= t ".select-institution" %></small>
-      </h1>
+    <div class="sign-in-divider row">
+      <div class="sign-in-dialog-header">
+        <h1><%= t("layout.menu.log_in") %><br>
+          <small><%= t ".select-institution" %></small>
+        </h1>
+
+        <h2><%= t ".higher-education" %></h2>
+      </div>
     </div>
     <div class="sign-in-dialog-institutions row">
       <%
@@ -76,9 +83,10 @@
       <% end %>
     </div>
     <div class="sign-in-divider row">
-      <div class="col-xs-12">
-        <div class="divider"></div>
-      </div>
+        <div class="sign-in-dialog-footer">
+          <h2><%= t ".secondary-education" %><br>
+          <small><%= t ".ilearn-help" %></small></h2>
+        </div>
     </div>
     <div class="sign-in-dialog-institutions row">
       <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
@@ -128,131 +136,26 @@
       <% end %>
     </div>
     <div class="sign-in-divider row">
-      <div class="col-xs-12">
-        <div class="divider"></div>
+        <div class="sign-in-dialog-header">
+          <h1>
+            <small><%= t('.sign-in-help') %></small>
+          </h1>
       </div>
     </div>
-    <div class="sign-in-dialog-institutions row">
-      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/collegewaregem.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Sint-Paulusschool Campus College<br>
-                <small><%= t('.sign-in-with-office-365') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/sbhg.jpg', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Sint-Bavohumaniora<br>
-                <small><%= t('.sign-in-with-office-365') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/collegeieper.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>College Ieper<br>
-                <small><%= t('.sign-in-with-smartschool') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/mska-roeselare.jpg', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>MSKA Roeselare<br>
-                <small><%= t('.sign-in-with-smartschool') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/dbc-kortrijk.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Don Bosco College Kortrijk<br>
-                <small><%= t('.sign-in-with-smartschool') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/scheppersinstituut.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Scheppersinstituut Wetteren<br>
-                <small><%= t('.sign-in-with-office-365') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/sjc-aalst.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Sint-Jozefscollege Aalst<br>
-                <small><%= t('.sign-in-with-smartschool') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/dering.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Atheneum De Ring Leuven<br>
-                <small><%= t('.sign-in-with-smartschool') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
-      <% end %>
+    <div class="input-group input-group-lg" id="scrollable-dropdown-menu">
+      <div class="card">
+        <input class="typeahead" type="text" placeholder="<%= t ".institution-search" %>">
+      </div>
+      <a class="btn btn-primary btn-lg login-button" id="sign-in" href="" disabled=true><%= t 'layout.menu.log_in' %></a>
     </div>
   </div>
 </div>
+<script>
+  let institutions = <%= raw @oauth_providers.map{|i| {id: i.id, name: i.institution.name, type: i.type}}.to_json %>;
+  let links = {
+    "Provider::GSuite": "<%= omniauth_authorize_path(:user, Provider::GSuite.sym) %>",
+    "Provider::Office365": "<%= omniauth_authorize_path(:user, Provider::Office365.sym) %>",
+    "Provider::Smartschool": "<%= omniauth_authorize_path(:user, Provider::Smartschool.sym) %>",
+  };
+  window.dodona.initInstitutionAutoSelect(institutions, links);
+</script>

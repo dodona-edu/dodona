@@ -1,9 +1,5 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'submission' %>
-  <script>
-    window.MathJax = window.dodona.initMathJax();
-  </script>
-  <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
   <%= javascript_pack_tag 'pythia_submission' if @feedback.submission&.judge&.renderer == PythiaRenderer %>
 <% end %>
 
@@ -77,7 +73,8 @@
 </div>
 <% if @feedback.submission.present? %>
   <script>
-    $(() => {
+    // This promise makes sure that this code executes after MathJax is initialized.
+    window.dodona.mathJaxPromise.then(() => {
       window.dodona.codeListing.setEvaluation(<%= @feedback.evaluation.id %>)
       $(".nav.nav-tabs li:last-child a").tab("show");
     });

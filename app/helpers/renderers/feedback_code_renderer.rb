@@ -82,7 +82,7 @@ class FeedbackCodeRenderer
 
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
-        let mathJaxPromise = new Promise((resolve, _) => {
+        window.dodona.mathJaxPromise = new Promise((resolve, _) => {
           window.dodona.initMathJax();
           window.MathJax = {
             startup: {

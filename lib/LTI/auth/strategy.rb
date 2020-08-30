@@ -17,8 +17,9 @@ module OmniAuth
       def callback_phase
         begin
           super
-        rescue
+        rescue => e
           # Error handling.
+          logger.error(e)
           fail!(:invalid_response, $!)
         end
       end

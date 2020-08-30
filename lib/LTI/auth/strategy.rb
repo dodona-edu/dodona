@@ -19,7 +19,7 @@ module OmniAuth
           super
         rescue => e
           # Error handling.
-          logger.error(e)
+          p e
           fail!(:invalid_response, $!)
         end
       end

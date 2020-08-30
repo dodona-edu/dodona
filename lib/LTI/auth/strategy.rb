@@ -34,7 +34,7 @@ module OmniAuth
         # FIXME: Ufora does not use the correct content selection endpoint, so
         #        depending on the message type, we force this.
         if raw_info[::LTI::Messages::Claims::MESSAGE_TYPE] == ::LTI::Messages::Types::DeepLinkingRequest::TYPE
-          target_link_uri = content_selection_url(host: Rails.configuration.default_host)
+          target_link_uri = content_selection_path
         end
 
         # Configure the info hashes.

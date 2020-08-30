@@ -5,9 +5,14 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # ==> Failure route.
 
   def failure
-    flash_failure(request.params['error_message'] ||
-                      request.params['error_description'] ||
-                      I18n.t('devise.omniauth_callbacks.unknown_failure'))
+    # Find the error message and log it for analysis.
+    error_message = request.params['error_message'] ||
+        request.params['error_description'] ||
+        I18n.t('devise.omniauth_callbacks.unknown_failure')
+    logger.error error_message
+
+    # Show a flash message and redirect.
+    flash_failure error_message
     redirect_to root_path, status: :bad_request
   end
 

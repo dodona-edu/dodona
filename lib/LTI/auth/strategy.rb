@@ -28,6 +28,14 @@ module OmniAuth
         jwt_token = params.symbolize_keys[:id_token]
         raw_info = decode_id_token(jwt_token).raw_attributes
 
+        # Set the redirect url.
+        target_link_uri = raw_info[::LTI::Messages::Claims::TARGET_LINK_URI]
+        # FIXME: Ufora does not use the correct content selection endpoint, so
+        #        depending on the message type, we force this.
+        if raw_info[::LTI::Messages::Claims::MESSAGE_TYPE] == ::LTI::Messages::Types::DeepLinkingRequest::TYPE
+          target_link_uri = content_selection_url
+        end
+
         # Configure the info hashes.
         provider = Provider::Lti.find_by(issuer: raw_info[:iss])
         env['omniauth.auth'] = AuthHash.new(
@@ -45,7 +53,7 @@ module OmniAuth
                     id_token: jwt_token,
                     provider_id: provider&.id
                 },
-                target: raw_info[::LTI::Messages::Claims::TARGET_LINK_URI]
+                target: target_link_uri
             }
         )
 

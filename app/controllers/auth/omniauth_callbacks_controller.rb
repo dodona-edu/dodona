@@ -6,7 +6,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def failure
     # Find the error message and log it for analysis.
-    error_message = request.params['error_message'] ||
+    error_message = failure_message ||
         request.params['error_description'] ||
         I18n.t('devise.omniauth_callbacks.unknown_failure')
     logger.error error_message

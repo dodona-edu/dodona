@@ -29,6 +29,7 @@ module OmniAuth
         raw_info = decode_id_token(jwt_token).raw_attributes
 
         # Configure the info hashes.
+        provider = Provider::Lti.find_by(issuer: raw_info[:iss])
         env['omniauth.auth'] = AuthHash.new(
             provider: name,
             uid: raw_info[:sub],
@@ -39,10 +40,10 @@ module OmniAuth
                 email: raw_info[:email]
             },
             extra: {
-                provider: Provider::Lti.find_by(issuer: raw_info[:iss]),
+                provider: provider,
                 redirect_params: {
                     id_token: jwt_token,
-                    issuer: raw_info[:iss]
+                    provider_id: provider&.id
                 },
                 target: raw_info[::LTI::Messages::Claims::TARGET_LINK_URI]
             }

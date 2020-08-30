@@ -1,0 +1,39 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'lti' %>
+<% end %>
+<div class="row">
+  <div class="col-12">
+    <h2>LTI Content selection (Courses)</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <h3>TODO SHOW ACTUAL OPTIONS HERE, AN ACTIVITY HAS BEEN HARDCODED FOR NOW</h3>
+    <h4>Selected activity</h4>
+
+    <h5>Course</h5>
+    <select id="lti_content_selection_course" class="form-control">
+      <option value="<%= @course.id %>"><%= @course.name %></option>
+    </select>
+    <h5>Series</h5>
+    <select id="lti_content_selection_series" class="form-control">
+      <option value="<%= @series.id %>"><%= @series.name %></option>
+    </select>
+    <h5>Activity</h5>
+    <select id="lti_content_selection_activity" class="form-control">
+      <option value="<%= @activity.id %>"><%= @activity.name %></option>
+    </select>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-12">
+    <button class="btn btn-primary btn-lg" id="lti_content_selection_confirm">Confirm</button>
+  </div>
+</div>
+<script>
+    window.dodona.initLtiContentSelection(
+        "<%= content_selection_path %>",
+        <%= @provider.id %>,
+        "<%= @lti_message.return_url.html_safe %>"
+    );
+</script>

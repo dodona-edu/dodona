@@ -46,7 +46,7 @@
               </div>
               <div class="option-btn-title">
                 <h3><%= school %><br>
-                  <small><%= t('.sign-in-with-office-365') %></small>
+                  <small><%= t('.sign-in-with', provider: 'Office 365') %></small>
                 </h3>
               </div>
               <div><i class="mdi mdi-chevron-right"></i></div>
@@ -62,50 +62,26 @@
         </div>
     </div>
     <div class="sign-in-dialog-institutions row">
-      <%= link_to omniauth_authorize_path(:user, Provider::Smartschool.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/smartschool.png', class: "img-responsive" %>
+      <% [
+        { symbol: Provider::Smartschool.sym, image: 'smartschool.png',   name: 'Smartschool'},
+        { symbol: Provider::Office365.sym,   image: 'office365.png',     name: 'Office 365'},
+        { symbol: Provider::GSuite.sym,      image: 'google_oauth2.png', name: 'G Suite'}
+      ].each do |provider| %>
+        <%= link_to omniauth_authorize_path(:user, provider[:symbol]), class: 'institution-sign-in' do %>
+          <div class="col-sm-6 col-lg-4">
+            <div class="option-btn">
+              <div class="option-btn-img">
+                <%= image_tag "idp/#{provider[:image]}", class: "img-responsive" %>
+              </div>
+              <div class="option-btn-title">
+                <h3><% provider[:name] %><br>
+                  <small><%= t('.sign-in-with', provider: provider[:name]) %></small>
+                </h3>
+              </div>
+              <div><i class="mdi mdi-chevron-right"></i></div>
             </div>
-            <div class="option-btn-title">
-              <h3>Smartschool<br>
-                <small><%= t('.sign-in-with-smartschool') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
           </div>
-        </div>
-      <% end %>
-      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/office365.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>Office 365<br>
-                <small><%= t('.sign-in-with-office-365') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to omniauth_authorize_path(:user, Provider::GSuite.sym), class: 'institution-sign-in' do %>
-        <div class="col-sm-6 col-lg-4">
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag 'idp/google_oauth2.png', class: "img-responsive" %>
-            </div>
-            <div class="option-btn-title">
-              <h3>G Suite<br>
-                <small><%= t('.sign-in-with-g-suite') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
     <div class="sign-in-divider row">
@@ -124,8 +100,8 @@
   </div>
 </div>
 <script>
-  let institutions = <%= raw @oauth_providers.map{|i| {id: i.id, name: i.institution.name, type: i.type}}.to_json %>;
-  let links = {
+  const institutions = <%= raw @oauth_providers.map{|i| {id: i.id, name: i.institution.name, type: i.type}}.to_json %>;
+  const links = {
     "Provider::GSuite": "<%= omniauth_authorize_path(:user, Provider::GSuite.sym) %>",
     "Provider::Office365": "<%= omniauth_authorize_path(:user, Provider::Office365.sym) %>",
     "Provider::Smartschool": "<%= omniauth_authorize_path(:user, Provider::Smartschool.sym) %>",

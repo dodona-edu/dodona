@@ -3,9 +3,7 @@ en:
     sign_in:
       select-institution: "Please select your institution"
       sign_in: "Sign in"
-      sign-in-with-smartschool: "Sign in with Smartschool"
-      sign-in-with-office-365: "Sign in with Office 365"
-      sign-in-with-g-suite: "Sign in with G Suite"
+      sign-in-with: "Sign in with %{provider}"
       sign-in-help: "Don't know which login you can use? Search for your school and click the sign in button:"
       institution-search: "Type to search for your institution"
       ilearn-help: "Users of i-Learn can currently only sign in through the i-Learn website."

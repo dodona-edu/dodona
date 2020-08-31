@@ -177,7 +177,7 @@ group :development do
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-rails', '~> 2.7.1'
-  gem 'spring', '~> 2.1.0'
+  gem 'spring', '~> 2.1.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 
   # Manage processes (webpack, rails, delayed_job, ...)

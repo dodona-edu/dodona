@@ -81,6 +81,21 @@
           </div>
         </div>
       <% end %>
+      <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
+        <div class="col-sm-6 col-lg-4">
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag 'idp/vub.jpg', class: "img-responsive" %>
+            </div>
+            <div class="option-btn-title">
+              <h3>Vrije Universiteit Brussel <br>
+                <small><%= t('.sign-in-with-office-365') %></small>
+              </h3>
+            </div>
+            <div><i class="mdi mdi-chevron-right"></i></div>
+          </div>
+        </div>
+      <% end %>
     </div>
     <div class="sign-in-divider row">
         <div class="sign-in-dialog-footer">

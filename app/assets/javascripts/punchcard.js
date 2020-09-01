@@ -42,7 +42,7 @@ function initPunchcard(url) {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;
         }
-        renderCard(d3.entries(data), unitSize, chart, x, y);
+        renderCard(Object.entries(data), unitSize, chart, x, y);
     };
     d3.json(url)
         .then(processor);

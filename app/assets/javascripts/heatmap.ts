@@ -178,10 +178,10 @@ function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year
         .on("mouseout", () => {
             tooltip.transition().duration(200).style("opacity", 0);
         })
-        .on("mousemove", () => {
+        .on("mousemove", event => {
             tooltip
-                .style("left", `${d3.mouse(chartBox.node())[0] + 10}px`)
-                .style("top", `${d3.mouse(chartBox.node())[1] - tooltip.node().getBoundingClientRect().height - 10}px`);
+                .style("left", `${d3.pointer(event, chartBox.node())[0] + 10}px`)
+                .style("top", `${d3.pointer(event, chartBox.node())[1] - tooltip.node().getBoundingClientRect().height - 10}px`);
         })
         .on("mouseover", d => {
             tooltip.transition().duration(200).style("opacity", .9);

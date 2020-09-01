@@ -38,6 +38,7 @@ module LTI::Messages::Types
           iss: @provider.client_id
       }
       base[LTI::Messages::Claims::DEEP_LINKING_CONTENT_ITEMS] = @items.map(&:as_json)
+      base[LTI::Messages::Claims::DEEP_LINKING_DATA] = 'Brightspace'
       base[LTI::Messages::Claims::MESSAGE_TYPE] = TYPE
       base[LTI::Messages::Claims::VERSION] = "1.3.0"
       base

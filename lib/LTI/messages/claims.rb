@@ -7,6 +7,7 @@ module LTI::Messages
 
     # Deep Linking.
     DEEP_LINKING_CONTENT_ITEMS = 'https://purl.imsglobal.org/spec/lti-dl/claim/content_items'.freeze
+    DEEP_LINKING_DATA = 'https://purl.imsglobal.org/spec/lti-dl/claim/data'.freeze
     DEEP_LINKING_SETTINGS = 'https://purl.imsglobal.org/spec/lti-dl/claim/deep_linking_settings'.freeze
   end
 end

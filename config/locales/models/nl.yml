@@ -147,6 +147,7 @@ nl:
         office365: Office 365
         smartschool: Smartschool
         google_oauth2: G Suite
+        lti: LTI
       event:
         event_type: Type
         user: Gebruiker

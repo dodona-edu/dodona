@@ -6,7 +6,7 @@ module LTI
       # Only load the key if it exists (staging / production).
       return "" unless key
 
-      payload, headers = payload.as_json, {kid: key.kid, typ: 'JWT', use: 'sig'}
+      payload, headers = payload.as_json, {kid: key.kid, typ: 'JWT'}
       payload[:exp] = Time.now.to_i + 3600
       payload[:iat] = Time.now.to_i
       JWT.encode(payload, key.keypair, 'RS256', headers)
@@ -16,7 +16,7 @@ module LTI
       # Only return something if a key is found.
       return [] unless key
 
-      [key.export]
+      [key.export.merge({use: 'sig'})]
     end
 
     def parse_jwks_uri(uri)

@@ -84,6 +84,13 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should show activity info when programming language is nil' do
+    stub_all_activities!
+    @instance.update(programming_language: nil)
+    get info_activity_url(@instance)
+    assert_response :success
+  end
+
   test 'should rescue from exercise not found' do
     not_id = Random.rand(10_000)
     begin

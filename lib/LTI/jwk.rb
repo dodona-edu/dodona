@@ -6,7 +6,7 @@ module LTI
       # Only load the key if it exists (staging / production).
       return "" unless key
 
-      payload, headers = payload.as_json, {kid: key.kid, typ: 'JWT'}
+      payload, headers = payload.as_json, {kid: key.kid, typ: 'JWT', use: 'sig'}
       payload[:exp] = Time.now.to_i + 3600
       payload[:iat] = Time.now.to_i
       JWT.encode(payload, key.keypair, 'RS256', headers)

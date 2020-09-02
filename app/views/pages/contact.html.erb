@@ -26,7 +26,7 @@
             <div class="col-sm-8"><%= f.text_area :message, required: true, class: "form-control", rows: 8 %></div>
           </div>
 
-          <% if Rails.env.production? %>
+          <% if Rails.env.production? || Rails.env.staging? %>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-8">
                 <%= recaptcha_tags %>

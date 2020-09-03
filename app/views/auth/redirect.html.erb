@@ -1,0 +1,39 @@
+<script type="application/javascript">
+    // Our server side detection is not perfect, so sometimes we redirected to this page
+    // even if the page is not in an iframe.
+    function inIframe() {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+
+    if (!inIframe()) {
+        window.location.href = "<%= @browser_path %>";
+    }
+
+    function afterClick() {
+        setTimeout(function () {
+            document.getElementById("before").classList.add("hidden");
+            document.getElementById("after").classList.remove("hidden");
+        }, 1000);
+    }
+</script>
+
+<div id="before">
+  <p><%= t ".first_time" %></p>
+
+  <p>
+    <a class="btn btn-primary btn-lg" href="<%= @path %>" target="_blank" onclick="afterClick()">
+      <%= t ".login" %>
+    </a>
+  </p>
+
+  <p>
+  <p><%= t ".after" %></p>
+</div>
+
+<div id="after" class="hidden">
+  <p><%= t ".after_clicked" %></p>
+</div>

@@ -14,3 +14,10 @@ en:
       errors:
         institution-creation: Something went wrong while creating a new institution.
         missing-provider: Only accounts linked to an institution are supported.
+    redirect:
+      first_time: This is the first time you're logging in to Dodona with a learning platform. That's why you will need to login in a new window (just this once).
+      login: Login in a new window
+      after: After logging in, you'll need to close (and reopen) this window.
+      after_clicked: Now you're logged in, close and reopen this window.
+    redirected:
+      message: You are now logged in as %{name}. Close this window and go back to the learning platform to continue.

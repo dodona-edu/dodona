@@ -21,6 +21,9 @@ Rails.application.routes.draw do
       end
 
       get '/users/saml/metadata' => 'saml#metadata'
+
+      get '/users/lti/redirect', to: 'redirect#redirect'
+      get '/users/lti/do_redirect', to: 'redirect#do_redirect'
     end
 
     get '/institution_not_supported' => 'pages#institution_not_supported'

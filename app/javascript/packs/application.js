@@ -29,7 +29,11 @@ import { initClipboard } from "copy";
 // Initialize clipboard.js
 initClipboard();
 
-$(() => new Drawer());
+// Don't show drawer if we don't want a drawer.
+if (!window.dodona.hideDrawer) {
+    $(() => new Drawer());
+}
+
 
 // Adds the CSRF token to each ajax request
 initCSRF();

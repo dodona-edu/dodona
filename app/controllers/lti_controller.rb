@@ -8,6 +8,8 @@ class LtiController < ApplicationController
   before_action :set_lti_message, only: %i[content_selection]
   before_action :set_lti_provider, only: %i[content_selection]
 
+  layout "embedded"
+
   def content_selection
     # TODO: For testing purposes, the course, series and activity are chosen at
     #       random. This should be replaced by a form that allows the user to

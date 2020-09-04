@@ -1,6 +1,6 @@
 module LTI
   module JWK
-    KEY_PATH = '/home/dodona/lti_key.pem'.freeze
+    KEY_PATH = '/home/dodona/key.pem'.freeze
 
     def encode_and_sign(payload)
       # Only load the key if it exists (staging / production).

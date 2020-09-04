@@ -18,12 +18,14 @@ class LtiController < ApplicationController
   end
 
   def content_selection_payload
+    # Parse the decoded JWT we saved earlier.
+    @lti_message = LTI::Messages::Types::DeepLinkingRequest.new(params[:lti][:decoded_token])
     # Parse arguments.
     activity = Activity.find(params[:lti][:activity])
     url = course_series_activity_url(params[:lti][:course], params[:lti][:series], activity.id)
 
     # Build a new response message.
-    response = LTI::Messages::Types::DeepLinkingResponse.new(@provider)
+    response = LTI::Messages::Types::DeepLinkingResponse.new(@lti_message, @provider)
     response.items << LTI::Messages::Types::DeepLinkingResponse::LtiResourceLink.new(activity.name, url)
 
     render json: { payload: encode_and_sign(response) }

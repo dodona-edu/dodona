@@ -1,5 +1,5 @@
 module LTI::Messages::Types
-  class DeepLinkingResponse
+  class DeepLinkingResponse < ToolJwt
     class LtiResourceLink
       # Type name.
       TYPE = 'ltiResourceLink'.freeze
@@ -12,7 +12,7 @@ module LTI::Messages::Types
         @url = url
       end
 
-      def as_json
+      def as_json(options=nil)
         {
             title: @title,
             type: TYPE,
@@ -24,24 +24,26 @@ module LTI::Messages::Types
     # Type name.
     TYPE = 'LtiDeepLinkingResponse'.freeze
 
-    # Attributes.
+    attr_accessor :deployment_id
+    attr_accessor :data
     attr_accessor :items
+    attr_accessor :message
 
-    def initialize(provider)
+    def initialize(previous_token, provider)
+      super(previous_token, provider)
+      @deployment_id = previous_token.deployment_id
+      @data = previous_token.data
       @items = []
-      @provider = provider
     end
 
-    def as_json
-      base = {
-          aud: @provider.issuer,
-          iss: @provider.client_id
-      }
-      base[LTI::Messages::Claims::DEEP_LINKING_CONTENT_ITEMS] = @items.map(&:as_json)
-      base[LTI::Messages::Claims::DEEP_LINKING_DATA] = 'Brightspace'
-      base["https://purl.imsglobal.org/spec/lti/claim/deployment_id"] = 'c6899818-7062-44d1-b377-5a08097daeb3'
+    def as_json(options=nil)
+      base = super
+      base[LTI::Messages::Claims::DEPLOYMENT_ID] = @deployment_id
+      base[LTI::Messages::Claims::DEEP_LINKING_DATA] = @data if @data.present?
+      base[LTI::Messages::Claims::DEEP_LINKING_MESSAGE] = @message if @message.present?
       base[LTI::Messages::Claims::MESSAGE_TYPE] = TYPE
       base[LTI::Messages::Claims::VERSION] = "1.3.0"
+      base[LTI::Messages::Claims::DEEP_LINKING_CONTENT_ITEMS] = @items.as_json(options)
       base
     end
   end

@@ -8,7 +8,8 @@ const seriesSelectId = "lti_content_selection_series";
 
 export function initLtiContentSelection(payloadUrl: string,
     providerId: number,
-    returnUrl: string): void {
+    returnUrl: string,
+    decodedToken: string): void {
     // Initialise required elements.
     const confirmButton = document.getElementById(confirmButtonId) as HTMLButtonElement;
     const activitySelect = document.getElementById(activitySelectId) as HTMLSelectElement;
@@ -23,7 +24,9 @@ export function initLtiContentSelection(payloadUrl: string,
             course: courseSelect.value,
             // eslint-disable-next-line @typescript-eslint/camelcase
             provider_id: providerId,
-            series: seriesSelect.value
+            series: seriesSelect.value,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            decoded_token: decodedToken
         };
         const responseRaw = await fetch(payloadUrl, {
             headers: { "Content-Type": "application/json" },

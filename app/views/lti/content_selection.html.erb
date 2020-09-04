@@ -34,6 +34,7 @@
     window.dodona.initLtiContentSelection(
         "<%= content_selection_path %>",
         <%= @provider.id %>,
-        "<%= @lti_message.return_url.html_safe %>"
+        "<%= @lti_message.return_url.html_safe %>",
+        <%= @lti_message.to_json.html_safe %>
     );
 </script>

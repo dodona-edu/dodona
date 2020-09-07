@@ -307,7 +307,7 @@ GEM
       httpclient
       json-jwt (>= 1.11.0)
       rack (>= 2.1.0)
-    rack-protection (2.0.8.1)
+    rack-protection (2.1.0)
       rack
     rack-proxy (0.6.5)
       rack
@@ -393,10 +393,10 @@ GEM
       docile (~> 1.1)
       simplecov-html (~> 0.11)
     simplecov-html (0.12.2)
-    sinatra (2.0.8.1)
+    sinatra (2.1.0)
       mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.8.1)
+      rack (~> 2.2)
+      rack-protection (= 2.1.0)
       tilt (~> 2.0)
     slack-notifier (2.3.2)
     spring (2.1.1)
@@ -531,7 +531,7 @@ DEPENDENCIES
   rubyzip (~> 2.3.0)
   selenium-webdriver (~> 3.142.7)
   simplecov (~> 0.19.0)
-  sinatra (~> 2.0.8)
+  sinatra (~> 2.1.0)
   slack-notifier (~> 2.3.2)
   spring (~> 2.1.1)
   spring-watcher-listen (~> 2.0.1)

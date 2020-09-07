@@ -7,8 +7,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def failure
     # Find the error message and log it for analysis.
     error_message = failure_message ||
-        request.params['error_description'] ||
-        I18n.t('devise.omniauth_callbacks.unknown_failure')
+                    request.params['error_description'] ||
+                    I18n.t('devise.omniauth_callbacks.unknown_failure')
     logger.error error_message
 
     # Show a flash message and redirect.
@@ -169,8 +169,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         "#{auth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: auth_hash, errors: resource.errors.inspect)
-        .user_unable_to_log_in
-        .deliver_later
+                     .user_unable_to_log_in
+                     .deliver_later
 
     redirect_with_flash! resource.errors.full_messages.to_sentence
   end
@@ -238,8 +238,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{auth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: auth_hash)
-        .institution_created
-        .deliver_later
+                     .institution_created
+                     .deliver_later
   end
 
   def institution_create_failed(errors)
@@ -249,8 +249,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       "#{errors}"
 
     ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
-        .institution_creation_failed
-        .deliver_later
+                     .institution_creation_failed
+                     .deliver_later
   end
 
   def provider_missing!

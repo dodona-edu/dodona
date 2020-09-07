@@ -31,8 +31,9 @@ module OmniAuth
 
         # Set the redirect url.
         target_link_uri = raw_info[::LTI::Messages::Claims::TARGET_LINK_URI]
-        # FIXME: Ufora does not use the correct content selection endpoint, so
-        #        depending on the message type, we force this.
+
+        # Ufora does not use the correct content selection endpoint, so
+        # depending on the message type, we force this.
         if raw_info[::LTI::Messages::Claims::MESSAGE_TYPE] == ::LTI::Messages::Types::DeepLinkingRequest::TYPE
           target_link_uri = content_selection_path
         end

@@ -1,18 +1,5 @@
 module LTI::Messages
   module Claims
-    # OpenID
-    OPENID_ISSUER = 'iss'.freeze
-    OPENID_AUDIENCE = 'aud'.freeze
-    OPENID_EXPIRATION = 'exp'.freeze
-    OPENID_ISSUED_AT = 'iat'.freeze
-    OPENID_NONCE = 'nonce'.freeze
-    OPENID_AUTHORIZED_PARTY = 'azp'.freeze
-    OPENID_SUBJECT = 'sub'.freeze
-    OPENID_GIVEN_NAME = 'given_name'.freeze
-    OPENID_FAMILY_NAME = 'family_name'.freeze
-    OPENID_NAME = 'name'.freeze
-    OPENID_EMAIL = 'email'.freeze
-
     # Common & launch request.
     MESSAGE_TYPE = 'https://purl.imsglobal.org/spec/lti/claim/message_type'.freeze
     TARGET_LINK_URI = 'https://purl.imsglobal.org/spec/lti/claim/target_link_uri'.freeze

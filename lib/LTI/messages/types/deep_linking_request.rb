@@ -35,21 +35,21 @@ module LTI::Messages::Types
       @auto_create = settings[AUTO_CREATE]
       @title = settings[TITLE]
       @text = settings[TEXT]
-      @data = settings[DATA]
+      @data = settings[DATA] if settings[DATA].present?
     end
 
-    def as_json(options=nil)
+    def as_json(options = nil)
       base = super(options)
       settings = {}
-      settings[RETURN_URL] = @return_url
-      settings[ACCEPT_TYPES] = @accept_types
-      settings[ACCEPT_PRESENTATION_DOCUMENT_TARGETS] = @accept_presentation_document_targets
-      settings[ACCEPT_MEDIA_TYPES] = @accept_media_types.nil?
-      settings[ACCEPT_MULTIPLE] = @accept_multiple.nil?
-      settings[AUTO_CREATE] = @auto_create unless @auto_create.nil?
-      settings[TITLE] = @title
-      settings[TEXT] = @text
-      settings[DATA] = @data
+      settings[RETURN_URL] = return_url
+      settings[ACCEPT_TYPES] = accept_types
+      settings[ACCEPT_PRESENTATION_DOCUMENT_TARGETS] = accept_presentation_document_targets
+      settings[ACCEPT_MEDIA_TYPES] = accept_media_types.nil?
+      settings[ACCEPT_MULTIPLE] = accept_multiple.nil?
+      settings[AUTO_CREATE] = auto_create if auto_create.present?
+      settings[TITLE] = title
+      settings[TEXT] = text
+      settings[DATA] = data if data.present?
       base[LTI::Messages::Claims::DEEP_LINKING_SETTINGS] = settings
       base
     end

@@ -177,6 +177,17 @@
       display: block;
       word-break: break-word;
 
+      // Override the normal pre padding & coloring
+      pre {
+        padding: 0;
+        background-color: transparent;
+        margin-bottom: 0;
+        border: none;
+        border-radius: 0;
+        white-space: pre-wrap;
+        line-height: 20px;
+      }
+
       // Stylize the embedded code block
       .highlighter-rouge div.highlight {
         padding: 5px 10px;

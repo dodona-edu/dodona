@@ -9,7 +9,7 @@ const seriesSelectId = "lti_content_selection_series";
 export function initLtiContentSelection(payloadUrl: string,
     providerId: number,
     returnUrl: string,
-    decodedToken: string): void {
+    decodedToken: object): void {
     // Initialise required elements.
     const confirmButton = document.getElementById(confirmButtonId) as HTMLButtonElement;
     const activitySelect = document.getElementById(activitySelectId) as HTMLSelectElement;

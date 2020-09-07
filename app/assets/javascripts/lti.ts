@@ -7,7 +7,6 @@ const courseSelectId = "lti_content_selection_course";
 const seriesSelectId = "lti_content_selection_series";
 
 export function initLtiContentSelection(payloadUrl: string,
-    providerId: number,
     returnUrl: string,
     decodedToken: object): void {
     // Initialise required elements.
@@ -22,8 +21,6 @@ export function initLtiContentSelection(payloadUrl: string,
         const data = {
             activity: activitySelect.value,
             course: courseSelect.value,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            provider_id: providerId,
             series: seriesSelect.value,
             // eslint-disable-next-line @typescript-eslint/camelcase
             decoded_token: decodedToken

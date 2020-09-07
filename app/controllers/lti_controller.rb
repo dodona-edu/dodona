@@ -6,7 +6,7 @@ class LtiController < ApplicationController
   include LTI::Messages
 
   before_action :set_lti_message, only: %i[content_selection]
-  before_action :set_lti_provider, only: %i[content_selection content_selection_payload]
+  before_action :set_lti_provider, only: %i[content_selection]
 
   def content_selection
     # TODO: For testing purposes, the course, series and activity are chosen at

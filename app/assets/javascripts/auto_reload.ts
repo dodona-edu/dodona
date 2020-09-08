@@ -10,12 +10,12 @@
  * To prevent responding to too many events, they are throttled with requestAnimationFrame.
  */
 export class InactiveTimeout {
-    timeout: number = 0;
-    interactionElement: HTMLElement;
-    callback: () => void;
-    delay: number;
-    listener: () => void;
-    started: boolean = false;
+    private timeout: number = 0;
+    private interactionElement: HTMLElement;
+    private readonly callback: () => void;
+    private readonly delay: number;
+    private readonly listener: () => void;
+    private started: boolean = false;
 
     /**
      * Initialize an inactive timeout. This will not start the timers.
@@ -35,6 +35,10 @@ export class InactiveTimeout {
                 this.startTimeout();
             });
         };
+    }
+
+    isStarted(): boolean {
+        return this.started;
     }
 
     start(): void {

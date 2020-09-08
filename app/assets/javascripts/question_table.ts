@@ -64,7 +64,7 @@ export class QuestionTable {
     }
 
     refresh(): void {
-        const url = setParam(this.refreshUrl, "refresh", this.timeout.started.toString());
+        const url = setParam(this.refreshUrl, "refresh", this.timeout.isStarted().toString());
         fetch(url, {
             headers: {
                 "accept": "text/javascript",
@@ -105,7 +105,7 @@ export class QuestionTable {
     private updatePaginationLinks(): void {
         document.querySelectorAll(`#${refreshElementId} .pagination a`).forEach(e => {
             const link = e as HTMLLinkElement;
-            link.href = setParam(link.href, "refresh", this.timeout.started.toString());
+            link.href = setParam(link.href, "refresh", this.timeout.isStarted().toString());
         });
     }
 }

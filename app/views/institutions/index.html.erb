@@ -22,8 +22,8 @@
               <tr>
                 <td><%= link_to institution.name, institution %></td>
                 <td><%= institution.short_name %></td>
-                <td><%= link_to institution.users.count, users_url(institution_id: institution.id) %></td>
-                <td><%= link_to institution.courses.count, courses_url(institution_id: institution.id) %></td>
+                <td><%= link_to institution.users.length, users_url(institution_id: institution.id) %></td>
+                <td><%= link_to institution.courses.length, courses_url(institution_id: institution.id) %></td>
                 <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
                 <td class="actions">
                   <% if policy(institution).edit? %>

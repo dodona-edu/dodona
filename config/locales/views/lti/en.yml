@@ -1,0 +1,12 @@
+en:
+  lti:
+    content_selection:
+      intro: Choose below which course, series or activity you want to add.
+      course_title: Course
+      course_select: Choose a course to view series and activities
+      no_content: Dodona does not support content for types %{types}.
+    series_and_activities:
+      series_title: Series
+      series_select: Choose a series or leave empty to choose a course
+      activity_title: Activities
+      activity_select: Choose an activity of leave empty to choose a series

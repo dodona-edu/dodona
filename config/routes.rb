@@ -212,6 +212,7 @@ Rails.application.routes.draw do
 
     scope 'lti', controller: 'lti' do
       get 'content_selection', to: 'lti#content_selection'
+      get 'series_and_activities', to: 'lti#series_and_activities'
       post 'content_selection', to: 'lti#content_selection_payload'
       get 'jwks', to: 'lti#jwks'
     end

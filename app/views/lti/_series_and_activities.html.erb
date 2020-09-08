@@ -1,0 +1,21 @@
+<label for="lti_content_selection_series"><%= t ".series_title" %></label>
+<select id="lti_content_selection_series" class="form-control">
+  <option value=""><%= t ".series_select" %></option>
+  <% @series.each do |item| %>
+    <option value="<%= item.id %>"><%= item.name %></option>
+  <% end %>
+</select>
+
+<% @series.each do |series| %>
+  <div class="activities-container hidden" id="series-activities-<%= series.id %>">
+    <label for="lti_content_selection_activity"><%= t ".activity_title" %></label>
+    <select class="form-control" <%= "multiple" if @multiple %>>
+    <% unless @multiple %>
+      <option value=""><%= t ".activity_select" %></option>
+    <% end %>
+    <% series.activities.each do |item| %>
+      <option value="<%= item.id %>"><%= item.name %></option>
+    <% end %>
+    </select>
+  </div>
+<% end %>

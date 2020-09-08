@@ -10,7 +10,7 @@
  * To prevent responding to too many events, they are throttled with requestAnimationFrame.
  */
 export class InactiveTimeout {
-    timout: number = 0;
+    timeout: number = 0;
     interactionElement: HTMLElement;
     callback: () => void;
     delay: number;
@@ -31,7 +31,7 @@ export class InactiveTimeout {
 
         this.listener = () => {
             requestAnimationFrame(() => {
-                clearTimeout(this.timout);
+                clearTimeout(this.timeout);
                 this.startTimeout();
             });
         };
@@ -60,14 +60,14 @@ export class InactiveTimeout {
     }
 
     private startTimeout(): void {
-        this.timout = window.setTimeout(() => {
+        this.timeout = window.setTimeout(() => {
             this.callback();
             this.startTimeout();
         }, this.delay);
     }
 
     private endTimeout(): void {
-        window.clearTimeout(this.timout);
-        this.timout = 0;
+        window.clearTimeout(this.timeout);
+        this.timeout = 0;
     }
 }

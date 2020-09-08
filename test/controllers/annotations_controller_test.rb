@@ -218,7 +218,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_equal student_submission.questions.where(question_state: :answered).count, 0, 'All questions should be transformed to in progress'
 
     questions.each do |question|
-      post resolved_annotation_path(question), params: {
+      post resolve_annotation_path(question), params: {
         format: :json
       }
       assert_response :ok
@@ -239,7 +239,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_equal student_submission.questions.where(question_state: :answered).count, 0, 'All questions should start unanswered'
 
     questions.each do |question|
-      post resolved_annotation_path(question), params: {
+      post resolve_annotation_path(question), params: {
         format: :json
       }
       assert_response :ok
@@ -261,7 +261,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     sign_in student
     questions.each do |question|
-      post resolved_annotation_path(question), params: {
+      post resolve_annotation_path(question), params: {
         format: :json
       }
       assert_response :ok

@@ -191,26 +191,14 @@ class CoursesController < ApplicationController
   end
 
   def questions
-    authorize @course, :questions?
     @title = I18n.t('courses.questions.questions.title')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.questions.questions.title'), '#']]
-    @course_labels = CourseLabel.where(course: @course)
 
-    @open = @course.open_questions.paginate(page: parse_pagination_param(params[:open_page]))
-    @in_progress = @course.in_progress_questions.paginate(page: parse_pagination_param(params[:in_progress_page]))
-    @closed = @course.closed_questions.paginate(page: parse_pagination_param(params[:closed_page]))
-
-    respond_to do |format|
-      format.js do
-        render partial: 'reload_questions_table', locals: { open_questions: @open, in_progress_questions: @in_progress, closed_questions: @closed }
-      end
-      format.html do
-        render 'questions'
-      end
-      format.json do
-        @questions = @course.questions
-      end
-    end
+    @refresh = ActiveModel::Type::Boolean.new.cast(params[:refresh] || 'true')
+    @questions = @course.questions
+    @open = @questions.where(question_state: :unanswered).paginate(page: parse_pagination_param(params[:open_page]))
+    @in_progress = @questions.where(question_state: :in_progress).paginate(page: parse_pagination_param(params[:in_progress_page]))
+    @closed = @questions.where(question_state: :answered).paginate(page: parse_pagination_param(params[:closed_page]))
   end
 
   def update_membership

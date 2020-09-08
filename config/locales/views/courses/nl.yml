@@ -159,10 +159,11 @@ nl:
     questions:
       title: "Vragen gesteld door studenten"
       questions:
-        open: "Ontbeantwoorde vragen"
-        in_progress: "Vragen worden beantwoord"
-        closed: "Vragen werden beantwoord"
+        open: "Onbeantwoorde vragen"
+        in_progress: "Vragen in behandeling"
+        closed: "Beantwoorde vragen"
         title: "Vragen"
+        auto_refresh: Vragen automatisch vernieuwen (elke 2 seconden als de pagina niet gebruikt wordt)
       table:
         user: "Gebruiker"
         question: "Vraag"
@@ -171,7 +172,8 @@ nl:
       no_questions: "Er zijn geen vragen beschikbaar"
       buttons:
         to_in_progress: "Vraag in behandeling plaatsen"
-        to_resolved: "Vraag als behandeld markeren"
+        to_resolved: "Vraag als beantwoord markeren"
+        to_unresolved: "Vraag als onbeantwoord markeren"
   submissions:
     show:
       questions:

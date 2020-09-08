@@ -4,17 +4,19 @@
 <%= render partial: 'navbar_links' %>
 <div class="row">
   <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-    <div class="card">
+    <div class="card" id="question-refresh-container">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title') %></h2>
       </div>
-      <div class="card-supporting-text">
+      <div class="card-supporting-text" id="question-container">
+        <%= check_box_tag :enable_refresh, "1", @refresh %>
+        <%= label_tag :enable_refresh, t('.questions.auto_refresh'), class: 'checkbox-label' %>
         <h4><%= t('.questions.open') %></h4>
         <div class="question-table-open">
           <%= render 'question_table', questions: @open %>
         </div>
         <% if @open.try(:total_pages) %>
-          <center><%= page_navigation_links @open, false, 'courses', action: 'questions', param_name: 'open_page' %></center>
+          <center><%= page_navigation_links @open, false, 'courses', action: 'questions', param_name: 'open_page', params: {refresh: @refresh} %></center>
         <% end %>
 
         <h4><%= t('.questions.in_progress') %></h4>
@@ -22,7 +24,7 @@
           <%= render 'question_table', questions: @in_progress %>
         </div>
         <% if @in_progress.try(:total_pages) %>
-          <center><%= page_navigation_links @in_progress, false, 'courses', action: 'questions', param_name: 'in_progress_page' %></center>
+          <center><%= page_navigation_links @in_progress, false, 'courses', action: 'questions', param_name: 'in_progress_page', params: {refresh: @refresh} %></center>
         <% end %>
 
         <h4><%= t('.questions.closed') %></h4>
@@ -30,7 +32,7 @@
           <%= render 'question_table', questions: @closed %>
         </div>
         <% if @closed.try(:total_pages) %>
-          <center><%= page_navigation_links @closed, false, 'courses', action: 'questions', param_name: 'closed_page' %></center>
+          <center><%= page_navigation_links @closed, false, 'courses', action: 'questions', param_name: 'closed_page', params: {refresh: @refresh} %></center>
         <% end %>
       </div>
     </div>
@@ -38,17 +40,5 @@
 </div>
 
 <script type="application/javascript">
-    const card = document.querySelector(".card");
-    const timer = window.dodona.questionsAutoReload(card, 10000, () => {
-        fetch("<% questions_course_path @course %>", {
-            headers: {
-                "accept": "text/javascript",
-                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-                "x-requested-with": "XMLHttpRequest",
-            },
-            credentials: "same-origin",
-        })
-            .then(req => req.text())
-            .then(resp => eval(resp));
-    });
+    new window.dodona.questionTable("<%= questions_course_path @course %>", <%= @refresh %>);
 </script>

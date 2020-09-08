@@ -120,5 +120,7 @@ en:
       resolve: 'Mark as resolved'
       in_progress: 'Mark question as in progress'
       unresolve: 'Mark as unresolved'
+      deleted: This question was deleted by another user
+      conflict: The status of this question was already changed by another user
 
 

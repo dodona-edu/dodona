@@ -43,7 +43,7 @@ class AnnotationPolicy < ApplicationPolicy
     false
   end
 
-  def resolved?
+  def resolve?
     false
   end
 

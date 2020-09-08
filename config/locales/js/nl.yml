@@ -120,3 +120,5 @@ nl:
       resolve: 'Als behandeld markeren'
       in_progress: 'In behandeling markeren'
       unresolve: 'Vraag terug open stellen'
+      deleted: Deze vraag is verwijderd door een andere gebruiker
+      conflict: De status van deze vraag is al aangepast door een andere gebruiker

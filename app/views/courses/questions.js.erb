@@ -1,0 +1,3 @@
+document.querySelector(".question-table-open").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @open}) %>";
+document.querySelector(".question-table-in-progress").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @in_progress}) %>";
+document.querySelector(".question-table-closed").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @closed}) %>";

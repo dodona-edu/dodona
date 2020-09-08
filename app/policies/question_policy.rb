@@ -7,23 +7,28 @@ class QuestionPolicy < AnnotationPolicy
   end
 
   def unresolve?
-    course_admin? && !record.unanswered?
+    return false if record.unanswered? || !transition?
+
+    user.course_admin?(record.submission.course)
   end
 
   def in_progress?
-    course_admin? && !record.in_progress?
+    return false if record.in_progress? || !transition?
+
+    user.course_admin?(record.submission.course) && !record.in_progress?
   end
 
-  def resolved?
-    return true if course_admin? && !record.answered?
-    return false if record.user != user
+  def resolve?
+    return false if record.answered? || !transition?
 
-    record.unanswered?
+    user.course_admin?(record.submission.course) || record.user == user
   end
 
   private
 
-  def course_admin?
-    user.course_admin? record.submission.course
+  def transition?
+    return true if record.transition_from.blank?
+
+    record.question_state.to_s == record.transition_from
   end
 end

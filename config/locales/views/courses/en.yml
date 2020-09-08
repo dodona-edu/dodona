@@ -164,9 +164,10 @@ en:
       title: "Questions asked by students"
       questions:
         open: "Unanswered questions"
-        in_progress: "Questions are being answered"
-        closed: "Questions have been answered"
+        in_progress: "Questions in progress"
+        closed: "Answered questions"
         title: "Questions"
+        auto_refresh: Automatically refresh questions (every 2 seconds if the page is unused)
       table:
         user: "User"
         question: "Question"
@@ -176,6 +177,7 @@ en:
       buttons:
         to_in_progress: "Move question to in progress"
         to_resolved: "Mark question as answered"
+        to_unresolved: "Mark question as unresolved"
   submissions:
     show:
       questions:

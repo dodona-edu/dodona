@@ -1,6 +1,6 @@
 class AnnotationsController < ApplicationController
   before_action :set_submission, only: %i[create]
-  before_action :set_annotation, only: %i[show update destroy unresolve in_progress resolved]
+  before_action :set_annotation, only: %i[show update destroy unresolve in_progress resolve]
 
   has_scope :by_submission, as: :submission_id
   has_scope :by_user, as: :user_id
@@ -47,7 +47,6 @@ class AnnotationsController < ApplicationController
     @annotation.unanswered!
     respond_to do |format|
       format.json { render :show, status: :ok, location: @annotation }
-      format.js(&method(:reload_question_table))
     end
   end
 
@@ -55,15 +54,13 @@ class AnnotationsController < ApplicationController
     @annotation.in_progress!
     respond_to do |format|
       format.json { render :show, status: :ok, location: @annotation }
-      format.js(&method(:reload_question_table))
     end
   end
 
-  def resolved
+  def resolve
     @annotation.answered!
     respond_to do |format|
       format.json { render :show, status: :ok, location: @annotation }
-      format.js(&method(:reload_question_table))
     end
   end
 
@@ -74,19 +71,13 @@ class AnnotationsController < ApplicationController
 
   private
 
-  def reload_question_table
-    open = @annotation.submission.course.open_questions
-    in_progress = @annotation.submission.course.in_progress_questions
-    closed = @annotation.submission.course.closed_questions
-    render partial: 'courses/reload_questions_table', status: :ok, locals: { open_questions: open, in_progress_questions: in_progress, closed_questions: closed }
-  end
-
   def set_submission
     @submission = Submission.find_by(id: params[:submission_id])
   end
 
   def set_annotation
     @annotation = Annotation.find(params[:id])
+    @annotation.transition_from = params[:from] if params[:from] && @annotation.is_a?(Question)
     authorize @annotation
   end
 end

@@ -19,6 +19,9 @@ class Question < Annotation
   enum question_state: { unanswered: 0, in_progress: 1, answered: 2 }
   alias_attribute :question_text, :annotation_text
 
+  # Saves from which expected state the question should migrate, to prevent unexpected state changes.
+  attr_accessor :transition_from
+
   default_scope { order(created_at: :desc) }
 
   # Fix for routing. Otherwise it would require question_url instead of the annotation_url

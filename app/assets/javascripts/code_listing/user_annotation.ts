@@ -16,9 +16,9 @@ interface UserAnnotationUserData {
 interface UserAnnotationPermissionData {
     update: boolean;
     destroy: boolean;
-    unresolvable: boolean;
-    in_progressable: boolean;
-    resolvable: boolean;
+    unresolve: boolean;
+    in_progress: boolean;
+    resolve: boolean;
 }
 
 export interface UserAnnotationData {
@@ -109,15 +109,15 @@ export class UserAnnotation extends Annotation {
     }
 
     public get resolvable(): boolean {
-        return this.permissions.resolvable;
+        return this.permissions.resolve;
     }
 
     public get inProgressable(): boolean {
-        return this.permissions.in_progressable;
+        return this.permissions.in_progress;
     }
 
     public get unresolvable(): boolean {
-        return this.permissions.unresolvable;
+        return this.permissions.unresolve;
     }
 
     public get rawText(): string {

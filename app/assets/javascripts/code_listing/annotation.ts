@@ -73,7 +73,7 @@ export abstract class Annotation {
         // Update button.
         if (this.modifiable) {
             const link = document.createElement("a");
-            link.addEventListener("click", () => this.edit());
+            link.addEventListener("click", (e) => {this.edit();});
             link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
             link.title = this.editTitle;
 

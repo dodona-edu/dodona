@@ -169,7 +169,7 @@ Rails.application.routes.draw do
       member do
         post 'unresolve'
         post 'in_progress'
-        post 'resolved'
+        post 'resolve'
       end
     end
 

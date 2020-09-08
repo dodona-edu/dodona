@@ -8,8 +8,8 @@ import {
 } from "course.js";
 
 import {
-    timerWithoutUser
-} from "code_listing/auto_reload.ts";
+    QuestionTable
+} from "question_table.ts";
 
 window.dodona.initSeriesReorder = initSeriesReorder;
 window.dodona.initCourseForm = initCourseForm;
@@ -18,4 +18,4 @@ window.dodona.initCourseShow = initCourseShow;
 window.dodona.initCourseMembers = initCourseMembers;
 window.dodona.loadUsers = loadUsers;
 
-window.dodona.questionsAutoReload = timerWithoutUser;
+window.dodona.questionTable = QuestionTable;

@@ -10,7 +10,7 @@
  * To prevent responding to too many events, they are throttled with requestAnimationFrame.
  */
 export class InactiveTimeout {
-    timout: NodeJS.Timeout | null;
+    timout: number = 0;
     interactionElement: HTMLElement;
     callback: () => void;
     delay: number;
@@ -54,20 +54,20 @@ export class InactiveTimeout {
         }
         this.started = false;
         this.endTimeout();
-        this.interactionElement.removeEventListener("mousemove", this.listener, { passive: true });
-        this.interactionElement.removeEventListener("touchmove", this.listener, { passive: true });
-        window.removeEventListener("scroll", this.listener, { passive: true });
+        this.interactionElement.removeEventListener("mousemove", this.listener);
+        this.interactionElement.removeEventListener("touchmove", this.listener);
+        window.removeEventListener("scroll", this.listener);
     }
 
     private startTimeout(): void {
-        this.timout = setTimeout(() => {
+        this.timout = window.setTimeout(() => {
             this.callback();
             this.startTimeout();
         }, this.delay);
     }
 
     private endTimeout(): void {
-        clearTimeout(this.timout);
-        this.timout = null;
+        window.clearTimeout(this.timout);
+        this.timout = 0;
     }
 }

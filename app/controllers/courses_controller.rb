@@ -196,9 +196,9 @@ class CoursesController < ApplicationController
 
     @refresh = ActiveModel::Type::Boolean.new.cast(params[:refresh] || 'true')
     @questions = @course.questions
-    @open = @questions.where(question_state: :unanswered).paginate(page: parse_pagination_param(params[:open_page]))
-    @in_progress = @questions.where(question_state: :in_progress).paginate(page: parse_pagination_param(params[:in_progress_page]))
-    @closed = @questions.where(question_state: :answered).paginate(page: parse_pagination_param(params[:closed_page]))
+    @open = @course.open_questions.paginate(page: parse_pagination_param(params[:open_page]))
+    @in_progress = @course.in_progress_questions.paginate(page: parse_pagination_param(params[:in_progress_page]))
+    @closed = @course.closed_questions.paginate(page: parse_pagination_param(params[:closed_page]))
   end
 
   def update_membership

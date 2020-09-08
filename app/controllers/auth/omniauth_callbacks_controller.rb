@@ -168,7 +168,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # (for example, UGent SAML doesn't).
     # We try our best to detect an iframe with the Sec-Fetch-Dest header, but at the time of
     # writing, Firefox and Safari don't support it.
-    if provider.type == "Provider::Lti" && request.headers["Sec-Fetch-Dest"] != "document"
+    if provider.type == 'Provider::Lti' && request.headers['Sec-Fetch-Dest'] != 'document'
       # The header is nil, in which case we don't know if it is an iframe or not, or the header is
       # "iframe", in which case we do know it is an iframe.
       # Anyway, we save the original target, and redirect to a web page.

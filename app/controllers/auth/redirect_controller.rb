@@ -1,5 +1,4 @@
 class Auth::RedirectController < ApplicationController
-
   layout 'embedded'
 
   def redirect
@@ -20,17 +19,16 @@ class Auth::RedirectController < ApplicationController
       end
       session.delete(:manual_redirect)
       redirect_to omniauth_authorize_path(:user, params[:sym], provider: params[:provider])
+    elsif session[:original_redirect]
+      # This is the second time we hit this path: we were redirected from the main provider.
+      # There is an original target, so we are not in an iframe. Redirect to the original target.
+      original = session[:original_redirect]
+      session.delete(:original_redirect)
+      redirect_to original
     else
-      # This is the second time we hit this path, as the redirect from the main provider.
-      if session[:original_redirect]
-        # We have a saved original target, so we are not in an iframe.
-        original = session[:original_redirect]
-        session.delete(:original_redirect)
-        redirect_to original
-      else
-        # We are in an iframe, so tell the user that they should close the page.
-        render 'auth/redirected'
-      end
+      # This is the second time we hit this path: we were redirected from the main provider.
+      # We are in an iframe, so tell the user that they should close the page.
+      render 'auth/redirected'
     end
   end
 end

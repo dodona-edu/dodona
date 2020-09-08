@@ -166,7 +166,7 @@ export class UserAnnotation extends Annotation {
     }
 
     protected async resolve(): Promise<void> {
-        return this.changeQuestionState("resolved");
+        return this.changeQuestionState("resolve");
     }
 
     protected async progress(): Promise<void> {

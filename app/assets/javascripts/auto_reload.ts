@@ -18,7 +18,7 @@ export class InactiveTimeout {
     private started: boolean = false;
 
     /**
-     * Initialize an inactive timeout. This will not start the timers.
+     * Initialize an inactive timeout. This will not start the timer.
      *
      * @param {HTMLElement} element The element for detecting user interaction.
      * @param {number} delay The delay in ms.
@@ -37,10 +37,16 @@ export class InactiveTimeout {
         };
     }
 
+    /**
+     * @return {boolean} True if the timer is running.
+     */
     isStarted(): boolean {
         return this.started;
     }
 
+    /**
+     * Start the timer. Does nothing if they are already started.
+     */
     start(): void {
         if (this.started) {
             return;
@@ -52,6 +58,9 @@ export class InactiveTimeout {
         this.startTimeout();
     }
 
+    /**
+     * Stop the timer. Does nothing if already stopped.
+     */
     end(): void {
         if (!this.started) {
             return;

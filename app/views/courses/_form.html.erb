@@ -141,6 +141,16 @@
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-moderated-help" %></span>
     </div>
   </div>
+
+  <div class="<%= course.new_record? ? "stepper-part stepper-border" : "card-supporting-text card-border" %>">
+    <h4><%= t('.questions.title') %></h4>
+    <div class="field form-group">
+      <div class="col-sm-offset-3 col-sm-6">
+        <%= f.check_box :enabled_questions %>
+        <%= f.label :enabled_questions, t('.questions.toggle-label'), class: 'checkbox-label' %>
+      </div>
+    </div>
+  </div>
 <% end %>
 <script>
     dodona.initCourseForm();

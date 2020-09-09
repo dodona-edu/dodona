@@ -2,20 +2,21 @@
 #
 # Table name: courses
 #
-#  id             :integer          not null, primary key
-#  name           :string(255)
-#  year           :string(255)
-#  secret         :string(255)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  description    :text(65535)
-#  visibility     :integer
-#  registration   :integer
-#  color          :integer
-#  teacher        :string(255)      default("")
-#  institution_id :bigint
-#  search         :string(4096)
-#  moderated      :boolean          default(FALSE), not null
+#  id                :integer          not null, primary key
+#  name              :string(255)
+#  year              :string(255)
+#  secret            :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  description       :text(65535)
+#  visibility        :integer
+#  registration      :integer
+#  color             :integer
+#  teacher           :string(255)      default("")
+#  institution_id    :bigint
+#  search            :string(4096)
+#  moderated         :boolean          default(FALSE), not null
+#  enabled_questions :boolean          default(FALSE), not null
 #
 
 require 'securerandom'

@@ -194,7 +194,8 @@ class CoursesController < ApplicationController
     @title = I18n.t('courses.questions.questions.title')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.questions.questions.title'), '#']]
 
-    @refresh = ActiveModel::Type::Boolean.new.cast(params[:refresh] || 'true')
+    flash.now[:notice] = t('courses.questions.warning') unless @course.enabled_questions?
+    @refresh = params.fetch(:refresh, @course.enabled_questions?)
     @questions = @course.questions
     @open = @course.open_questions.paginate(page: parse_pagination_param(params[:open_page]))
     @in_progress = @course.in_progress_questions.paginate(page: parse_pagination_param(params[:in_progress_page]))

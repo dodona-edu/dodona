@@ -1,5 +1,7 @@
 class QuestionPolicy < AnnotationPolicy
   def create?
+    return false unless record.submission.course.enabled_questions?
+
     all_questions_for_submission = user.questions.where(submission: record.submission)
     total_question_count = all_questions_for_submission.count
     unanswered_question_count = all_questions_for_submission.where(question_state: :unanswered).count

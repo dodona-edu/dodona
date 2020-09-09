@@ -15,6 +15,7 @@
 #
 class Question < Annotation
   before_create :set_question_state
+  after_commit :clear_transition
 
   enum question_state: { unanswered: 0, in_progress: 1, answered: 2 }
   alias_attribute :question_text, :annotation_text
@@ -47,5 +48,9 @@ class Question < Annotation
 
   def set_question_state
     self.question_state = :unanswered
+  end
+
+  def clear_transition
+    @transition_from = nil
   end
 end

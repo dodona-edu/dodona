@@ -1,6 +1,8 @@
 import { Annotation } from "code_listing/annotation";
 import { fetch } from "util.js";
 
+export type QuestionState = "unanswered" | "answered" | "in_progress";
+
 export interface UserAnnotationFormData {
     annotation_text: string;
     line_nr: number | null;
@@ -33,6 +35,7 @@ export interface UserAnnotationData {
     url: string;
     user: UserAnnotationUserData;
     type: string;
+    question_state: QuestionState | null;
 }
 
 export class UserAnnotation extends Annotation {
@@ -46,6 +49,7 @@ export class UserAnnotation extends Annotation {
     public readonly evaluationId: number | null;
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
+    private readonly questionState: string | null;
 
     constructor(data: UserAnnotationData, editFn: UserAnnotationEditor) {
         const line = data.line_nr === null ? null : data.line_nr + 1;
@@ -59,6 +63,7 @@ export class UserAnnotation extends Annotation {
         this.evaluationId = data.evaluation_id;
         this.url = data.url;
         this.user = data.user;
+        this.questionState = data.question_state;
     }
 
     public static async create(formData: UserAnnotationFormData,
@@ -165,20 +170,34 @@ export class UserAnnotation extends Annotation {
         return I18n.t("js.user_annotation.edit");
     }
 
-    protected async resolve(): Promise<void> {
-        return this.changeQuestionState("resolve");
+    private selfUpdate(): void {
+        fetch(`/annotations/${this.id}`, {
+            headers: {
+                "Accept": "application/json"
+            }
+        })
+            .then(r => r.json())
+            .then(r => {
+                const newAnnotation: Annotation = new UserAnnotation(r, this.editor);
+                window.dodona.codeListing.updateAnnotation(this, newAnnotation);
+            });
     }
 
-    protected async progress(): Promise<void> {
-        return this.changeQuestionState("in_progress");
+    protected async resolve(): Promise<void> {
+        return this.changeState("resolve");
+    }
+
+    protected async inProgress(): Promise<void> {
+        return this.changeState("in_progress");
     }
 
     protected async unresolve(): Promise<void> {
-        return this.changeQuestionState("unresolve");
+        return this.changeState("unresolve");
     }
 
-    protected changeQuestionState(key): Promise<void> {
-        return fetch(`/annotations/${this.id}/${key}`, {
+    protected changeState(newState: string): Promise<void> {
+        console.assert(this.questionState != null, "questions must have a state");
+        return fetch(`/annotations/${this.id}/${newState}?from=${this.questionState}`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -187,11 +206,19 @@ export class UserAnnotation extends Annotation {
             if (response.ok) {
                 const json = await response.json();
                 const newAnnotation: Annotation = new UserAnnotation(json, this.editor);
+                console.log("New annotation is", newAnnotation);
                 window.dodona.codeListing.updateAnnotation(this, newAnnotation);
             } else if (response.status === 404) {
-                // Question was deleted
+                // Someone already deleted this question.
+                new dodona.Toast(I18n.t("js.user_question.deleted"));
                 window.dodona.codeListing.removeAnnotation(this);
                 this.__html.remove();
+            } else if (response.status == 403) {
+                // Someone already changed the status of this question.
+                new dodona.Toast(I18n.t("js.user_question.conflict"));
+                // We now need to update the annotation, but we don't have the new data.
+                // Get the annotation from the backend.
+                this.selfUpdate();
             }
         });
     }

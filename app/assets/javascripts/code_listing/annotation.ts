@@ -33,16 +33,16 @@ export abstract class Annotation {
         // Do nothing.
     }
 
-    protected async resolve(): Promise<void> {
-        // Do nothing
+    protected resolve(): void {
+        // Do nothing.
     }
 
-    protected async progress(): Promise<void> {
-        // Do nothing
+    protected inProgress(): void {
+        // Do nothing.
     }
 
-    protected async unresolve(): Promise<void> {
-        // Do nothing
+    protected unresolve(): void {
+        // Do nothing.
     }
 
     public get global(): boolean {
@@ -73,7 +73,7 @@ export abstract class Annotation {
         // Update button.
         if (this.modifiable) {
             const link = document.createElement("a");
-            link.addEventListener("click", e => this.edit());
+            link.addEventListener("click", () => this.edit());
             link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
             link.title = this.editTitle;
 
@@ -99,7 +99,7 @@ export abstract class Annotation {
 
         if (this.inProgressable) {
             const link = document.createElement("a");
-            link.addEventListener("click", () => this.progress());
+            link.addEventListener("click", () => this.inProgress());
             link.classList.add("btn", "btn-icon", "question-control-button", "question-in_progress");
             link.title = I18n.t("js.user_question.in_progress");
 

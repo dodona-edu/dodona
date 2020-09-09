@@ -14,7 +14,6 @@
 #  question_state  :integer
 #
 class Question < Annotation
-  before_create :set_question_state
   after_commit :clear_transition
 
   enum question_state: { unanswered: 0, in_progress: 1, answered: 2 }
@@ -37,6 +36,10 @@ class Question < Annotation
 
   def self.per_page
     10
+  end
+
+  after_initialize do |question|
+    question.question_state ||= 'unanswered'
   end
 
   # Disable notification creation & deletion

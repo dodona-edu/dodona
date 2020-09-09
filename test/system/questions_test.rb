@@ -10,15 +10,16 @@ class QuestionsTest < ApplicationSystemTestCase
 
   setup do
     @code_lines = Faker::Lorem.sentences(number: 5)
-    @instance = create :correct_submission, result: File.read(Rails.root.join('db/results/python-result.json')), code: @code_lines.join("\n")
-    @instance.exercise.judge.renderer = PythiaRenderer
-    @instance.exercise.judge.save
-    @student = @instance.user
+    @course = create :course, enabled_questions: true
+    @submission = create :correct_submission, result: File.read(Rails.root.join('db/results/python-result.json')), code: @code_lines.join("\n"), course: @course
+    @submission.exercise.judge.renderer = PythiaRenderer
+    @submission.exercise.judge.save
+    @student = @submission.user
     sign_in @student
   end
 
   test 'Can pose question for each line of the available lines of code' do
-    visit(submission_path(id: @instance.id))
+    visit(submission_path(id: @submission.id))
     click_link 'Code'
 
     within '.code-listing' do
@@ -37,7 +38,7 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'Can pose global question about code' do
-    visit(submission_path(id: @instance.id))
+    visit(submission_path(id: @submission.id))
     click_link 'Code'
 
     within '.code-table' do
@@ -48,7 +49,7 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'Can submit a question' do
-    visit(submission_path(id: @instance.id))
+    visit(submission_path(id: @submission.id))
     click_link 'Code'
 
     question = Faker::Lorem.question
@@ -77,11 +78,11 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'student can mark a question as resolved' do
-    q = create :question, submission: @instance, user: @student
+    q = create :question, submission: @submission, user: @student
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
     assert q.unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @instance.id))
+    visit(submission_path(id: @submission.id))
     click_link 'Code'
 
     question_div = find('div.annotation.question')

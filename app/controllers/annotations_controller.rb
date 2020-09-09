@@ -13,15 +13,16 @@ class AnnotationsController < ApplicationController
   def show; end
 
   def create
-    args = permitted_attributes(Annotation)
+    clazz = if current_user.course_admin?(@submission.course)
+              Annotation
+            else
+              Question
+            end
+    args = permitted_attributes(clazz)
     args[:user] = current_user
     args[:submission] = @submission
 
-    @annotation = if !current_user.course_admin?(@submission.course)
-                    Question.new(args)
-                  else
-                    Annotation.new(args)
-                  end
+    @annotation = clazz.new(args)
 
     authorize @annotation
     respond_to do |format|

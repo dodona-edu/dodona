@@ -21,6 +21,8 @@ FactoryBot.define do
     user
 
     factory :question, class: 'Question' do
+      # Only the submitter can create questions
+      before(:create) { |question| question.user = question.submission.user }
     end
   end
 end

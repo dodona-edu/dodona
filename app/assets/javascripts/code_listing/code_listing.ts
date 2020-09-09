@@ -1,4 +1,4 @@
-import { Annotation } from "code_listing/annotation";
+import { Annotation, AnnotationType } from "code_listing/annotation";
 import { MachineAnnotation, MachineAnnotationData } from "code_listing/machine_annotation";
 import { UserAnnotation, UserAnnotationData, UserAnnotationFormData } from "code_listing/user_annotation";
 
@@ -14,7 +14,19 @@ const annotationFormDelete = ".annotation-delete-button";
 const annotationFormSubmit = ".annotation-submission-button";
 const badge = "#badge_code";
 
-const ANNOTATION_ORDER = ["error", "user", "warning", "info", "question"];
+type OrderGroup = "error" | "conversation" | "warning" | "info";
+
+// Map in which annotation group the annotation should appear.
+const GROUP_MAPPING: Record<AnnotationType, OrderGroup> = {
+    "error": "error",
+    "user": "conversation",
+    "warning": "warning",
+    "info": "info",
+    "question": "conversation"
+};
+
+// Order the groups. We use the same order as appearance in the mapping.
+const GROUP_ORDER: OrderGroup[] = Array.from(new Set(Object.values(GROUP_MAPPING)));
 
 export class CodeListing {
     private readonly annotations: Map<number, Annotation[]>;
@@ -187,7 +199,7 @@ export class CodeListing {
     private appendAnnotationToGlobal(annotation: Annotation): void {
         // Append the annotation.
         this.globalAnnotationGroups
-            .querySelector<HTMLDivElement>(`.annotation-group-${annotation.type}`)
+            .querySelector<HTMLDivElement>(`.annotation-group-${GROUP_MAPPING[annotation.type]}`)
             .appendChild(annotation.html);
 
         // Add the padding to the global annotation list.
@@ -199,7 +211,7 @@ export class CodeListing {
         const row = this.table.querySelector<HTMLTableRowElement>(`#line-${line}`);
 
         const cell = row.querySelector<HTMLDivElement>(`#annotation-cell-${line}`);
-        if (cell.querySelector(`.annotation-group-${annotation.type}`) === null) {
+        if (cell.querySelector(`.annotation-group-${GROUP_MAPPING[annotation.type]}`) === null) {
             // Create the dot.
             const dot = document.createElement("span") as HTMLSpanElement;
             dot.classList.add("dot", "hide");
@@ -207,7 +219,7 @@ export class CodeListing {
             row.querySelector<HTMLTableDataCellElement>(".rouge-gutter").prepend(dot);
 
             // Create annotation groups.
-            ANNOTATION_ORDER.forEach((type: string) => {
+            GROUP_ORDER.forEach((type: string) => {
                 const group = document.createElement("div") as HTMLDivElement;
                 group.classList.add(`annotation-group-${type}`);
                 cell.appendChild(group);
@@ -215,7 +227,7 @@ export class CodeListing {
         }
 
         // Append the annotation.
-        cell.querySelector<HTMLDivElement>(`.annotation-group-${annotation.type}`)
+        cell.querySelector<HTMLDivElement>(`.annotation-group-${GROUP_MAPPING[annotation.type]}`)
             .appendChild(annotation.html);
     }
 
@@ -225,7 +237,7 @@ export class CodeListing {
 
     private initAnnotations(): void {
         // Create global annotation groups.
-        ANNOTATION_ORDER.forEach((type: string) => {
+        GROUP_ORDER.forEach((type: string) => {
             const group = document.createElement("div") as HTMLDivElement;
             group.classList.add(`annotation-group-${type}`);
             this.globalAnnotationGroups.appendChild(group);
@@ -294,7 +306,7 @@ export class CodeListing {
             // Configure the dot.
             if (colours.length > 0) {
                 // Remove previous colours.
-                dot.classList.remove("hide", ...ANNOTATION_ORDER.map(type => `dot-${type}`));
+                dot.classList.remove("hide", ...GROUP_ORDER.map(type => `dot-${type}`));
 
                 // Add new colours.
                 dot.classList.add(...colours);

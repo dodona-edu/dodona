@@ -44,6 +44,7 @@ class Activity < ApplicationRecord
   enum status: { ok: 0, not_valid: 1, removed: 2 }
 
   belongs_to :repository
+  belongs_to :judge, optional: true
   belongs_to :programming_language, optional: true
   has_many :activity_read_states, dependent: :destroy
   has_many :activity_statuses, dependent: :destroy

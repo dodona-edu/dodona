@@ -4,6 +4,7 @@ import { Masonry } from "./masonry";
 function initHomePageCards() {
     const masonry = new Masonry();
     function init() {
+        masonry.initMasonryRoots();
         $(".favorite-button").click(toggleFavorite);
     }
 

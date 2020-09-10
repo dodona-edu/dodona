@@ -386,4 +386,38 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       sign_out user
     end
   end
+
+  test 'cannot delete if question was answered' do
+    question = create :question, submission: @submission, question_state: :answered
+
+    delete annotation_url(question)
+    assert_not response.successful?
+
+    question = create :question, submission: @submission, question_state: :unanswered
+
+    delete annotation_url(question)
+    assert_response :no_content
+  end
+
+  test 'cannot modify if question was answered' do
+    question = create :question, submission: @submission, question_state: :answered
+
+    put annotation_path(question), params: {
+      annotation: {
+        annotation_text: 'Changed'
+      },
+      format: :json
+    }
+    assert_response :forbidden
+
+    question = create :question, submission: @submission, question_state: :unanswered
+
+    put annotation_path(question), params: {
+      annotation: {
+        annotation_text: 'Changed'
+      },
+      format: :json
+    }
+    assert_response :success
+  end
 end

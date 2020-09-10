@@ -26,6 +26,20 @@ class QuestionPolicy < AnnotationPolicy
     user.course_admin?(record.submission.course) || record.user == user
   end
 
+  def update?
+    # Don't allow editing if the question was answered.
+    return false if record.answered?
+
+    record&.user == user
+  end
+
+  def destroy?
+    # Don't allow removing if the question was answered.
+    return false if record.answered?
+
+    record&.user == user
+  end
+
   private
 
   def transition?

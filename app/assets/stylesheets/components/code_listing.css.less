@@ -245,7 +245,9 @@
   .annotation.machine-annotation {
     .annotation-text {
       font-family: @font-family-monospace;
+      // pre-wrap for browsers that don't support break-spaces.
       white-space: pre-wrap;
+      white-space: break-spaces;
     }
   }
 

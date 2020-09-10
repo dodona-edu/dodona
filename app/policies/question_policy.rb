@@ -3,12 +3,9 @@ class QuestionPolicy < AnnotationPolicy
     # If there is no course, don't allow questions.
     return false if record.submission.course.nil?
     return false unless record.submission.course.enabled_questions?
-    return false unless record.submission.user == user
 
-    all_questions_for_submission = user.questions.where(submission: record.submission)
-    total_question_count = all_questions_for_submission.count
-    unanswered_question_count = all_questions_for_submission.where(question_state: :unanswered).count
-    unanswered_question_count < 5 && total_question_count < 15
+    # Only the submitter (ie. the student) may create questions.
+    record.submission.user == user
   end
 
   def unresolve?

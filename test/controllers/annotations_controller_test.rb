@@ -255,24 +255,6 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_not @submission.questions.any?
   end
 
-  test 'students can only have 5 unanswered questions' do
-    create_list :question, 5, submission: @submission
-    create_list :question, 2, question_state: :answered, submission: @submission
-
-    assert_equal @submission.user.questions.count, 7, 'Created questions are available'
-    assert_equal @submission.user.questions.where(question_state: :unanswered).count, 5, 'Created questions are unanswered'
-
-    post submission_annotations_url(@submission), params: {
-      annotation: {
-        line_nr: nil,
-        annotation_text: 'Ik heb een vraag over mijn code - Globaal'
-      },
-      format: :json
-    }
-
-    assert_response :forbidden
-  end
-
   test 'questions can transition from unanswered' do
     zeus = create :zeus
     staff = create :staff

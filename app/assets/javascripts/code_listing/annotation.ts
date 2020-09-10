@@ -152,7 +152,7 @@ export abstract class Annotation {
     }
 
     get important(): boolean {
-        return this.type === "error" || this.type === "user";
+        return this.type === "error" || this.type === "user" || this.type == "question";
     }
 
     protected abstract get meta(): string;

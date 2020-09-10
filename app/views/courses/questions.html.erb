@@ -9,7 +9,7 @@
         <h2 class="card-title-text"><%= t('.title') %></h2>
       </div>
       <div class="card-supporting-text" id="question-container">
-        <%= check_box_tag :enable_refresh, checked: @refresh %>
+        <%= check_box_tag :enable_refresh, "1", @refresh %>
         <%= label_tag :enable_refresh, t('.questions.auto_refresh'), class: 'checkbox-label' %>
         <h4><%= t('.questions.open') %></h4>
         <div class="question-table-open">

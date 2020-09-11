@@ -1,18 +1,10 @@
 // Identifiers.
-import { fetch } from "util.js";
+import { fetch, makeInvisible, makeVisible } from "util.js";
 
 const confirmButtonId = "lti_content_selection_confirm";
 const activitySelectId = "lti_content_selection_activity";
 const courseSelectId = "lti_content_selection_course";
 const seriesSelectId = "lti_content_selection_series";
-
-function showElement(bar: HTMLElement): void {
-    bar.style.visibility = "visible";
-}
-
-function hideElement(bar: HTMLElement): void {
-    bar.style.visibility = "hidden";
-}
 
 function deactivateSelect(container: HTMLElement | null): void {
     if (!container) {
@@ -50,11 +42,11 @@ export function initLtiContentSelection(payloadUrl: string,
         seriesContainer.innerHTML = "";
 
         if (id === "") {
-            hideElement(confirmButton);
+            makeInvisible(confirmButton);
             return;
         }
-        showElement(confirmButton);
-        showElement(progressBar);
+        makeVisible(confirmButton);
+        makeVisible(progressBar);
         const url = new URL(baseUrl);
         url.pathname = "/lti/series_and_activities";
         url.searchParams.append("id", id);
@@ -71,7 +63,7 @@ export function initLtiContentSelection(payloadUrl: string,
             .then(resp => resp.text())
             .then(data => {
                 eval(data);
-                hideElement(progressBar);
+                makeInvisible(progressBar);
             });
         console.log(response);
         console.log(`Selected ${id}`);

@@ -166,7 +166,7 @@ nl:
         in_progress: "Vragen in behandeling"
         closed: "Beantwoorde vragen"
         title: "Vragen"
-        auto_refresh: Vragen automatisch vernieuwen (elke 2 seconden als de pagina niet gebruikt wordt)
+        auto_refresh: Vragen automatisch vernieuwen
       table:
         user: "Gebruiker"
         question: "Vraag"

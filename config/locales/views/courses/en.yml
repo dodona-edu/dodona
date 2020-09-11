@@ -170,7 +170,7 @@ en:
         in_progress: "Questions in progress"
         closed: "Answered questions"
         title: "Questions"
-        auto_refresh: Automatically refresh questions (every 2 seconds if the page is unused)
+        auto_refresh: Automatically refresh questions
       table:
         user: "User"
         question: "Question"

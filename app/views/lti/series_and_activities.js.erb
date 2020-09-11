@@ -1,1 +1,1 @@
-$("#series").html("<%= escape_javascript(render partial: 'series_and_activities', locals: {series: @series, multiple: @multiple}) %>");
+document.getElementById("series").innerHTML = "<%= escape_javascript(render partial: 'series_and_activities', locals: {series: @series, multiple: @multiple}) %>";

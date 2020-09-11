@@ -12,8 +12,7 @@ class LtiController < ApplicationController
 
   def content_selection
     @supported = @lti_message.accept_types.include?(LTI::Messages::Types::DeepLinkingResponse::LtiResourceLink::TYPE)
-    courses = policy_scope(Course.all)
-    @grouped_courses = courses.group_by(&:year)
+    @grouped_courses = policy_scope(Course.all).group_by(&:year)
     @multiple = @lti_message.accept_multiple
   end
 

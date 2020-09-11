@@ -175,7 +175,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # We are not saving the entire URL, since this can be lengthy
       # and cause problems overflowing the session.
       session[:original_redirect] = URI.parse(target_path(:user)).path
-      redirect_to users_lti_redirect_path(sym: preferred_provider.class.sym, provider: preferred_provider)
+      redirect_to lti_redirect_path(sym: preferred_provider.class.sym, provider: preferred_provider)
     else
       # Redirect to the provider.
       redirect_to omniauth_authorize_path(:user, preferred_provider.class.sym, provider: preferred_provider)

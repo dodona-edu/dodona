@@ -14,10 +14,3 @@ en:
       errors:
         institution-creation: Something went wrong while creating a new institution.
         missing-provider: Only accounts linked to an institution are supported.
-    redirect:
-      first_time: Since this is the first time you are logging in to Dodona from this learning platform, you will need to login in a new window to link your account.
-      login: Login in a new window
-      after: After you have linked your account, please close this window and try again.
-      after_clicked: Now that you have logged in, you can close this window and try again.
-    redirected:
-      message: You are now logged in as %{name}. Close this window and go back to the learning platform to continue.

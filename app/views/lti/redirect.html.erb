@@ -1,39 +1,26 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'lti' %>
+<% end %>
 <script type="application/javascript">
     // Our server side detection is not perfect, so sometimes we redirected to this page
     // even if the page is not in an iframe.
-    function inIframe() {
-        try {
-            return window.self !== window.top;
-        } catch (e) {
-            return true;
-        }
-    }
-
-    if (!inIframe()) {
-        window.location.href = "<%= @browser_path %>";
-    }
-
-    function afterClick() {
-        setTimeout(function () {
-            document.getElementById("before").classList.add("hidden");
-            document.getElementById("after").classList.remove("hidden");
-        }, 1000);
-    }
+    // This should be done before the HTML below, to prevent the HTML from flashing.
+    window.dodona.ltiMaybeRedirect("<%= @browser_path %>");
 </script>
 
-<div id="before">
+<div id="lti_before_text">
   <p><%= t ".first_time" %></p>
-
   <p>
-    <a class="btn btn-primary btn-lg" href="<%= @path %>" target="_blank" onclick="afterClick()">
+    <a class="btn btn-primary btn-lg" id="lti_redirect_button" href="<%= @path %>" target="_blank">
       <%= t ".login" %>
     </a>
-  </p>
-
-  <p>
   <p><%= t ".after" %></p>
 </div>
 
-<div id="after" class="hidden">
+<div id="lti_after_text" class="hidden">
   <p><%= t ".after_clicked" %></p>
 </div>
+
+<script type="application/javascript">
+    window.dodona.initLtiRedirect();
+</script>

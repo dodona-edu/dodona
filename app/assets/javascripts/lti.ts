@@ -1,5 +1,28 @@
 // Identifiers.
 import { fetch, makeInvisible, makeVisible } from "util.js";
+import { isInIframe } from "iframe";
+
+const redirectButtonId = "lti_redirect_button";
+const beforeTextId = "lti_before_text";
+const afterTextId = "lti_after_text";
+
+export function ltiMaybeRedirect(browserPath: string): void {
+    // If we are not in an iframe, redirect immediately.
+    if (!isInIframe()) {
+        window.location.href = browserPath;
+    }
+}
+
+export function initLtiRedirect(): void {
+    document.getElementById(redirectButtonId).addEventListener("click", () => {
+        // After the user clicks, we wait a bit and then show the text assuming
+        // the user has logged in.
+        setTimeout(function () {
+            document.getElementById(beforeTextId).classList.add("hidden");
+            document.getElementById(afterTextId).classList.remove("hidden");
+        }, 1000);
+    });
+}
 
 const confirmButtonId = "lti_content_selection_confirm";
 const activitySelectId = "lti_content_selection_activity";

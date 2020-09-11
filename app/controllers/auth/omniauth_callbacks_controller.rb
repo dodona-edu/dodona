@@ -13,7 +13,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # Show a flash message and redirect.
     flash_failure error_message
-    redirect_to root_path, status: :bad_request
+    redirect_to root_path
   end
 
   # ==> Provider callbacks.
@@ -103,7 +103,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Create the identity for the current user.
     Identity.create(identifier: link_uid, provider: link_provider, user: user)
 
-    unless session[:hide_flash]
+    if session[:hide_flash].blank?
       # Set a flash message.
       set_flash_message :notice, :linked
     end
@@ -168,13 +168,14 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # (for example, UGent SAML doesn't).
     # We try our best to detect an iframe with the Sec-Fetch-Dest header, but at the time of
     # writing, Firefox and Safari don't support it.
-    if provider.type == 'Provider::Lti' && request.headers['Sec-Fetch-Dest'] != 'document'
+    if auth_provider_type == Provider::Lti.sym && request.headers['Sec-Fetch-Dest'] != 'document'
       # The header is nil, in which case we don't know if it is an iframe or not, or the header is
       # "iframe", in which case we do know it is an iframe.
       # Anyway, we save the original target, and redirect to a web page.
-      # Don't save the complete URL, since they contain potentially big params.
+      # We are not saving the entire URL, since this can be lengthy
+      # and cause problems overflowing the session.
       session[:original_redirect] = URI.parse(target_path(:user)).path
-      redirect_to users_lti_redirect_path(sym: preferred_provider.class.sym, provider: preferred_provider)
+      redirect_to lti_redirect_path(sym: preferred_provider.class.sym, provider: preferred_provider)
     else
       # Redirect to the provider.
       redirect_to omniauth_authorize_path(:user, preferred_provider.class.sym, provider: preferred_provider)

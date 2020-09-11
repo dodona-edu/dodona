@@ -38,12 +38,12 @@
         <td>
           <% if policy(question).unresolve? %>
             <%= link_to unresolve_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
-              <i class="mdi mdi-progress-close mdi-18" title="<%= t('courses.questions.buttons.to_unresolved') %>"></i>
+              <i class="mdi mdi-restart mdi-18" title="<%= t('courses.questions.buttons.to_unresolved') %>"></i>
             <% end %>
           <% end %>
           <% if policy(question).in_progress? %>
             <%= link_to in_progress_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
-              <i class="mdi mdi-progress-check mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
+              <i class="mdi mdi-comment-search-outline mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
             <% end %>
           <% end %>
           <% if policy(question).resolve? %>

@@ -104,7 +104,7 @@ export abstract class Annotation {
             link.title = I18n.t("js.user_question.in_progress");
 
             const icon = document.createElement("i");
-            icon.classList.add("mdi", "mdi-progress-check");
+            icon.classList.add("mdi", "mdi-comment-search-outline");
             link.appendChild(icon);
 
             header.appendChild(link);
@@ -117,7 +117,7 @@ export abstract class Annotation {
             link.title = I18n.t("js.user_question.unresolve");
 
             const icon = document.createElement("i");
-            icon.classList.add("mdi", "mdi-progress-close");
+            icon.classList.add("mdi", "mdi-restart");
             link.appendChild(icon);
 
             header.appendChild(link);

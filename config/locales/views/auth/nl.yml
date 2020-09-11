@@ -15,9 +15,9 @@ nl:
         institution-creation: Er ging iets mis tijdens het aanmaken van een nieuwe onderwijsinstelling.
         missing-provider: Enkel accounts die gelinkt zijn aan een onderwijsinstelling worden ondersteund.
     redirect:
-      first_time: Dit is de eerste keer dat je bij Dodona aanmeldt met een leerplatform. Daarom moet je nu eenmalig aanmelden in een nieuw venster.
+      first_time: Aangezien dit de eerste keer is dat je je aanmeldt bij Dodona via dit leerplatform, dien je eenmalig aan te melden in een nieuw venster.
       login: Aanmelden in een nieuw venster
-      after: Na het aanmelden moet je dit venster sluiten (en opnieuw openen).
+      after: Nadat je aangemeld bent, moet je dit venster sluiten en de actie opnieuw uitvoeren.
       after_clicked: Nu je aangemeld bent, moet je dit venster sluiten en opnieuw openen.
     redirected:
       message: Je bent nu aangemeld bij Dodona als %{name}. Sluit deze pagina en ga terug naar de leeromgeving om verder te gaan.

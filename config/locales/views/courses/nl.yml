@@ -170,7 +170,7 @@ nl:
       table:
         user: "Gebruiker"
         question: "Vraag"
-        time_since: "Tijd verstreken sinds stellen vraag"
+        time_since: "Leeftijd"
         exercise: "Oefening"
       no_questions: "Er zijn geen vragen beschikbaar"
       buttons:

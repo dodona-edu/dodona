@@ -1,5 +1,13 @@
 <% if questions.present? %>
-  <table class="table activity-table table-resource">
+  <table class="table table-resource question-table">
+    <colgroup>
+      <col class="name"/>
+      <col class="exercise"/>
+      <col/>
+      <col class="age"/>
+      <col class="actions"/>
+      <col class="link"/>
+    </colgroup>
     <thead>
     <tr>
       <th><%= t('courses.questions.table.user') %></th>
@@ -7,43 +15,44 @@
       <th><%= t('courses.questions.table.question') %></th>
       <th><%= t('courses.questions.table.time_since') %></th>
       <th></th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
     <% questions.each do |question| %>
-      <tr class="question">
-        <td class="user-full-name">
+      <tr>
+        <td>
           <%= link_to question.user do %>
             <%= question.user.full_name %>
           <% end %>
         </td>
-        <td class="exercise">
+        <td>
           <%= link_to course_activity_path(question.submission.course, question.submission.exercise) do %>
             <%= question.submission.exercise.name %>
           <% end %>
         </td>
-        <td class="text" title="<%= question.question_text %>"><%= question.question_text %></td>
+        <td title="<%= question.question_text %>"><%= question.question_text %></td>
         <td>
           <%= time_ago_in_words question.created_at %>
         </td>
-        <td class="buttons">
+        <td>
           <% if policy(question).unresolve? %>
-            <%= link_to unresolve_annotation_path(question), class: 'btn btn-icon state-changer', data: {from: question.question_state} do %>
+            <%= link_to unresolve_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
               <i class="mdi mdi-progress-close mdi-18" title="<%= t('courses.questions.buttons.to_unresolved') %>"></i>
             <% end %>
           <% end %>
           <% if policy(question).in_progress? %>
-            <%= link_to in_progress_annotation_path(question), class: 'btn btn-icon state-changer', data: {from: question.question_state} do %>
+            <%= link_to in_progress_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
               <i class="mdi mdi-progress-check mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
             <% end %>
           <% end %>
           <% if policy(question).resolve? %>
-            <%= link_to resolve_annotation_path(question), class: 'btn btn-icon state-changer', data: {from: question.question_state} do %>
+            <%= link_to resolve_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
               <i class="mdi mdi-check mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
             <% end %>
           <% end %>
         </td>
-        <td class="link">
+        <td>
           <%= link_to submission_path(question.submission, anchor: 'code'), class: 'btn btn-icon' do %>
             <i class="mdi mdi-chevron-right mdi-18"></i>
           <% end %>

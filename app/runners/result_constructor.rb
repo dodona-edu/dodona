@@ -210,7 +210,7 @@ class ResultConstructor
     if json.empty?
       send command
     else
-      send command, json
+      send command, **json
     end
   end
 

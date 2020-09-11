@@ -10,16 +10,16 @@ class Auth::RedirectController < ApplicationController
   end
 
   def do_redirect
-    if session[:manual_redirect]
+    if session[:manual_redirect].present?
       # This is the first we hit this path, so redirect to the provider.
-      unless params[:browser]
+      if params[:browser].blank?
         # If we were called in an iframe, don't redirect at the end of the process.
         session.delete(:original_redirect)
         session[:hide_flash] = true
       end
       session.delete(:manual_redirect)
       redirect_to omniauth_authorize_path(:user, params[:sym], provider: params[:provider])
-    elsif session[:original_redirect]
+    elsif session[:original_redirect].present?
       # This is the second time we hit this path: we were redirected from the main provider.
       # There is an original target, so we are not in an iframe. Redirect to the original target.
       original = session[:original_redirect]

@@ -114,10 +114,10 @@ nl:
       not_released: Deze annotatie is nog niet zichtbaar voor studenten
     user_question:
       update: 'Vraag aanpassen'
-      send: 'Vraag versturen'
+      send: 'Vraag stellen'
       edit: 'Vraag aanpassen'
       delete_confirm: 'Ben je zeker dat je deze vraag wilt verwijderen?'
-      resolve: 'Als behandeld markeren'
+      resolve: 'Als beantwoord markeren'
       in_progress: 'In behandeling markeren'
       unresolve: 'Vraag terug open stellen'
       deleted: Deze vraag is verwijderd door een andere gebruiker

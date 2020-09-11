@@ -267,12 +267,16 @@ export class CodeListing {
         const globalButton = document.querySelector(annotationGlobalAdd);
         globalButton.addEventListener("click", () => this.handleAnnotateGlobal());
 
+        const type = this.questionMode? "user_question" : "user_annotation";
+        const title = I18n.t(`js.${type}.send`);
+
         // Inline annotations.
         const codeLines = this.table.querySelectorAll(".lineno");
         codeLines.forEach((codeLine: HTMLTableRowElement) => {
             const annotationButton = document.createElement("button") as HTMLButtonElement;
             annotationButton.classList.add("btn", "btn-primary", "annotation-button");
             annotationButton.addEventListener("click", () => this.handleAnnotateLine(codeLine));
+            annotationButton.title = title;
 
             const annotationButtonIcon = document.createElement("i") as HTMLElement;
             const clazz = this.questionMode ? "mdi-comment-question-outline" : "mdi-comment-plus-outline";

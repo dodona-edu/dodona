@@ -175,7 +175,7 @@ ActiveRecord::Schema.define(version: 2020_09_09_121638) do
     t.bigint "institution_id"
     t.string "search", limit: 4096
     t.boolean "moderated", default: false, null: false
-    t.boolean "enabled_questions", default: false, null: false
+    t.boolean "enabled_questions", default: true, null: false
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 

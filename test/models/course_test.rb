@@ -16,7 +16,7 @@
 #  institution_id    :bigint
 #  search            :string(4096)
 #  moderated         :boolean          default(FALSE), not null
-#  enabled_questions :boolean          default(FALSE), not null
+#  enabled_questions :boolean          default(TRUE), not null
 #
 
 require 'test_helper'

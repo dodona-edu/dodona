@@ -10,7 +10,7 @@ module LtiHelper
       # We can have multiple ids.
       activities = Activity.find(activity_ids)
       activities.map do |activity|
-        url = course_series_activity_url(course_id, series_id, activity.id)
+        url = lti_activity_url(course_id, series_id, activity)
         LTI::Messages::Types::DeepLinkingResponse::LtiResourceLink.new(activity.name, url)
       end
     elsif series_id.present?
@@ -22,6 +22,10 @@ module LtiHelper
       url = lti_course_url(course)
       [LTI::Messages::Types::DeepLinkingResponse::LtiResourceLink.new(course.name, url)]
     end
+  end
+
+  def lti_activity_url(course_id, series_id, activity)
+    course_series_activity_url(course_id, series_id, activity.id)
   end
 
   def lti_course_url(course)

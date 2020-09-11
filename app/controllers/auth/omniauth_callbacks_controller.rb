@@ -13,7 +13,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # Show a flash message and redirect.
     flash_failure error_message
-    redirect_to root_path, status: :bad_request
+    redirect_to root_path
   end
 
   # ==> Provider callbacks.

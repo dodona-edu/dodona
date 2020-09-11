@@ -10,12 +10,15 @@
   <div class="activities-container hidden" id="series-activities-<%= series.id %>">
     <label for="lti_content_selection_activity"><%= t ".activity_title" %></label>
     <select class="form-control" <%= "multiple" if @multiple %>>
-    <% unless @multiple %>
-      <option value=""><%= t ".activity_select" %></option>
-    <% end %>
-    <% series.activities.each do |item| %>
-      <option value="<%= item.id %>"><%= item.name %></option>
-    <% end %>
+      <% unless @multiple %>
+        <option value=""><%= t ".activity_select" %></option>
+      <% end %>
+      <% series.activities.each do |item| %>
+        <option value="<%= item.id %>"><%= item.name %></option>
+      <% end %>
     </select>
+    <% if @multiple %>
+      <span class="small"><%= t ".multiple" %></span>
+    <% end %>
   </div>
 <% end %>

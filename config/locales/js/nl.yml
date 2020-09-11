@@ -125,6 +125,6 @@ nl:
       delete_confirm: 'Ben je zeker dat je deze vraag wilt verwijderen?'
       resolve: 'Als beantwoord markeren'
       in_progress: 'In behandeling markeren'
-      unresolve: 'Vraag terug open stellen'
+      unresolve: Vraag terug openen
       deleted: Deze vraag is verwijderd door een andere gebruiker
       conflict: De status van deze vraag is al aangepast door een andere gebruiker

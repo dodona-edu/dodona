@@ -211,6 +211,7 @@ Rails.application.routes.draw do
       get 'redirect', to: 'lti#redirect', as: 'lti_redirect'
       get 'do_redirect', to: 'lti#do_redirect', as: 'lti_do_redirect'
       get 'content_selection', to: 'lti#content_selection'
+      get 'series_and_activities', to: 'lti#series_and_activities'
       post 'content_selection', to: 'lti#content_selection_payload'
       get 'jwks', to: 'lti#jwks'
     end

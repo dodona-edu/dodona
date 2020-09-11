@@ -2,6 +2,7 @@ require_relative '../../lib/LTI/jwk.rb'
 require_relative '../../lib/LTI/messages.rb'
 
 class LtiController < ApplicationController
+  include LtiHelper
   include LTI::JWK
   include LTI::Messages
 
@@ -40,25 +41,25 @@ class LtiController < ApplicationController
   end
 
   def content_selection
-    # TODO: For testing purposes, the course, series and activity are chosen at
-    #       random. This should be replaced by a form that allows the user to
-    #       select something themself.
-    @series = Series.first
-    @course = @series.course
-    @activity = @series.activities.first
+    @supported = @lti_message.accept_types.include?(LTI::Messages::Types::DeepLinkingResponse::LtiResourceLink::TYPE)
+    @grouped_courses = policy_scope(Course.all).group_by(&:year)
+    @multiple = @lti_message.accept_multiple
+  end
+
+  def series_and_activities
+    # Eager load the activities
+    @course = Course.includes(series: [:activities]).find_by(id: params[:id])
+    @series = policy_scope(@course.series)
+    @multiple = ActiveModel::Type::Boolean.new.cast(params[:multiple])
   end
 
   def content_selection_payload
     # Parse the JWT token we have decoded in the first step.
     @lti_message = LTI::Messages::Types::DeepLinkingRequest.new(params[:lti][:decoded_token])
 
-    # Parse the chosen activity.
-    activity = Activity.find(params[:lti][:activity])
-    url = course_series_activity_url(params[:lti][:course], params[:lti][:series], activity.id)
-
     # Build a new response message.
     response = LTI::Messages::Types::DeepLinkingResponse.new(@lti_message)
-    response.items << LTI::Messages::Types::DeepLinkingResponse::LtiResourceLink.new(activity.name, url)
+    response.items += lti_resource_links_from(params)
 
     render json: { payload: encode_and_sign(response) }
   end

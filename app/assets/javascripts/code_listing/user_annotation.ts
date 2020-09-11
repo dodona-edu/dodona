@@ -49,7 +49,7 @@ export class UserAnnotation extends Annotation {
     public readonly evaluationId: number | null;
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
-    private readonly questionState: string | null;
+    private readonly questionState: QuestionState | null;
 
     constructor(data: UserAnnotationData, editFn: UserAnnotationEditor) {
         const line = data.line_nr === null ? null : data.line_nr + 1;
@@ -106,7 +106,16 @@ export class UserAnnotation extends Annotation {
         const timestamp = I18n.l("time.formats.annotation", this.createdAt);
         const user = this.user.name;
 
-        return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });
+        if (this.type === "question") {
+            const questionState = I18n.t(`js.question.state.${this.questionState}`);
+            return I18n.t("js.user_question.meta", {
+                user: user,
+                time: timestamp,
+                state: questionState
+            });
+        } else {
+            return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });
+        }
     }
 
     public get modifiable(): boolean {
@@ -206,7 +215,6 @@ export class UserAnnotation extends Annotation {
             if (response.ok) {
                 const json = await response.json();
                 const newAnnotation: Annotation = new UserAnnotation(json, this.editor);
-                console.log("New annotation is", newAnnotation);
                 window.dodona.codeListing.updateAnnotation(this, newAnnotation);
             } else if (response.status === 404) {
                 // Someone already deleted this question.

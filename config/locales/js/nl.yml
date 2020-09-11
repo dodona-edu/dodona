@@ -98,6 +98,11 @@ nl:
         user: Commentaar
         warning: Waarschuwing
         question: Vraag
+    question:
+      state:
+        unanswered: Onbeantwoord
+        answered: Beantwoord
+        in_progress: In behandeling
     code:
       copy-to-clipboard: Kopieer code naar klembord
     user_annotation:
@@ -113,6 +118,7 @@ nl:
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'
       not_released: Deze annotatie is nog niet zichtbaar voor studenten
     user_question:
+      meta: "%{user} · %{time} · %{state}"
       update: 'Vraag aanpassen'
       send: 'Vraag stellen'
       edit: 'Vraag aanpassen'

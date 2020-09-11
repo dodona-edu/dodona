@@ -98,6 +98,11 @@ en:
         user: Comment
         warning: Warning
         question: Question
+    question:
+      state:
+        unanswered: Unanswered
+        answered: Answered
+        in_progress: In progress
     code:
       copy-to-clipboard: Copy code to clipboard
     user_annotation:
@@ -113,6 +118,7 @@ en:
       delete_confirm: 'Are you sure you want to delete this annotation?'
       not_released: This annotation is not yet visible for students
     user_question:
+      meta: "%{user} · %{time} · %{state}"
       update: 'Update question'
       send: 'Pose question'
       edit: 'Edit question'

@@ -19,13 +19,15 @@
           <center><%= page_navigation_links @open, false, 'courses', action: 'questions', param_name: 'open_page', params: {refresh: @refresh} %></center>
         <% end %>
 
-        <h4><%= t('.questions.in_progress') %></h4>
-        <div class="question-table-in-progress">
-          <%= render 'question_table', questions: @in_progress %>
-        </div>
-        <% if @in_progress.try(:total_pages) %>
-          <center><%= page_navigation_links @in_progress, false, 'courses', action: 'questions', param_name: 'in_progress_page', params: {refresh: @refresh} %></center>
-        <% end %>
+        <section id="questions-in-progress" class="<%= 'hidden' if @in_progress.empty? %>">
+          <h4><%= t('.questions.in_progress') %></h4>
+          <div class="question-table-in-progress">
+            <%= render 'question_table', questions: @in_progress %>
+          </div>
+          <% if @in_progress.try(:total_pages) %>
+            <center><%= page_navigation_links @in_progress, false, 'courses', action: 'questions', param_name: 'in_progress_page', params: {refresh: @refresh} %></center>
+          <% end %>
+        </section>
 
         <h4><%= t('.questions.closed') %></h4>
         <div class="question-table-closed">

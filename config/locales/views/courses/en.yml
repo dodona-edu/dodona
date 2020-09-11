@@ -6,7 +6,7 @@ en:
       edit: Edit course
       submissions: Submissions for this course
       statistics: "Statistics of this course"
-      questions: "Questions"
+      questions: Questions from students
     form:
       teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.

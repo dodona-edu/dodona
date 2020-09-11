@@ -52,21 +52,16 @@ export function initLtiContentSelection(payloadUrl: string,
         url.searchParams.append("id", id);
         url.searchParams.append("multiple", multiple.toString());
 
-        const response = await fetch(url, {
+        fetch(url, {
             headers: {
                 "accept": "text/javascript",
-                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-                "x-requested-with": "XMLHttpRequest",
-            },
-            credentials: "same-origin",
+            }
         })
             .then(resp => resp.text())
             .then(data => {
                 eval(data);
                 makeInvisible(progressBar);
             });
-        console.log(response);
-        console.log(`Selected ${id}`);
     });
 
     // Listen on clicks for series

@@ -208,6 +208,8 @@ Rails.application.routes.draw do
     resources :feedbacks, only: %i[show edit update]
 
     scope 'lti', controller: 'lti' do
+      get 'redirect', to: 'lti#redirect', as: 'lti_redirect'
+      get 'do_redirect', to: 'lti#do_redirect', as: 'lti_do_redirect'
       get 'content_selection', to: 'lti#content_selection'
       post 'content_selection', to: 'lti#content_selection_payload'
       get 'jwks', to: 'lti#jwks'

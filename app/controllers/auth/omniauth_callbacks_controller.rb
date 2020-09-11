@@ -103,8 +103,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Create the identity for the current user.
     Identity.create(identifier: link_uid, provider: link_provider, user: user)
 
-    # Set a flash message.
-    set_flash_message :notice, :linked
+    if session[:hide_flash].blank?
+      # Set a flash message.
+      set_flash_message :notice, :linked
+    end
+    session.delete(:hide_flash)
   end
 
   def find_identity_and_user
@@ -160,8 +163,23 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Find the preferred provider for the current institution.
     preferred_provider = provider.institution.preferred_provider
 
-    # Redirect to the provider.
-    redirect_to omniauth_authorize_path(:user, preferred_provider.class.sym, provider: preferred_provider)
+    # If this is the first time a user is logging in with LTI, we do something special: LTI
+    # related screens are often shown inside an iframe, which some providers don't support
+    # (for example, UGent SAML doesn't).
+    # We try our best to detect an iframe with the Sec-Fetch-Dest header, but at the time of
+    # writing, Firefox and Safari don't support it.
+    if auth_provider_type == Provider::Lti.sym && request.headers['Sec-Fetch-Dest'] != 'document'
+      # The header is nil, in which case we don't know if it is an iframe or not, or the header is
+      # "iframe", in which case we do know it is an iframe.
+      # Anyway, we save the original target, and redirect to a web page.
+      # We are not saving the entire URL, since this can be lengthy
+      # and cause problems overflowing the session.
+      session[:original_redirect] = URI.parse(target_path(:user)).path
+      redirect_to lti_redirect_path(sym: preferred_provider.class.sym, provider: preferred_provider)
+    else
+      # Redirect to the provider.
+      redirect_to omniauth_authorize_path(:user, preferred_provider.class.sym, provider: preferred_provider)
+    end
   end
 
   def redirect_with_errors!(resource)
@@ -181,10 +199,14 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def redirect_to_target!(user)
-    redirect_to auth_target || after_sign_in_path_for(user)
+    redirect_to target_path(user)
   end
 
   # ==> Shorthands.
+
+  def target_path(user)
+    auth_target || after_sign_in_path_for(user)
+  end
 
   def auth_hash
     request.env['omniauth.auth']

@@ -8,6 +8,37 @@ class LtiController < ApplicationController
   before_action :set_lti_message, only: %i[content_selection]
   before_action :set_lti_provider, only: %i[content_selection]
 
+  layout 'embedded'
+
+  def redirect
+    @path = lti_do_redirect_path(sym: params[:sym], provider: params[:provider])
+    @browser_path = lti_do_redirect_path(sym: params[:sym], provider: params[:provider], browser: true)
+    session[:manual_redirect] = true
+  end
+
+  def do_redirect
+    if session[:manual_redirect].present?
+      # This is the first we hit this path, so redirect to the provider.
+      if params[:browser].blank?
+        # If we were called in an iframe, don't redirect at the end of the process.
+        session.delete(:original_redirect)
+        session[:hide_flash] = true
+      end
+      session.delete(:manual_redirect)
+      redirect_to omniauth_authorize_path(:user, params[:sym], provider: params[:provider])
+    elsif session[:original_redirect].present?
+      # This is the second time we hit this path: we were redirected from the main provider.
+      # There is an original target, so we are not in an iframe. Redirect to the original target.
+      original = session[:original_redirect]
+      session.delete(:original_redirect)
+      redirect_to original
+    else
+      # This is the second time we hit this path: we were redirected from the main provider.
+      # We are in an iframe, so tell the user that they should close the page.
+      render 'redirected'
+    end
+  end
+
   def content_selection
     # TODO: For testing purposes, the course, series and activity are chosen at
     #       random. This should be replaced by a form that allows the user to

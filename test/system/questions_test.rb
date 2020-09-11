@@ -65,7 +65,7 @@ class QuestionsTest < ApplicationSystemTestCase
         text_area.fill_in with: question
       end
 
-      click_button 'Send question'
+      click_button 'Ask question'
 
       assert_text question
       # Also acts as sleep until full ajax call is completed

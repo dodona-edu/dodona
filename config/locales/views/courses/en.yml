@@ -45,6 +45,9 @@ en:
       moderated-automatically-help: Registered users are approved automatically.
       moderated-moderated-help: Registered users need to be approved by a course admin.
       secret-link-placeholder: "This link will be generated after creation"
+      questions:
+        title: Questions
+        toggle-label: Allow students to pose questions
     index:
       title: All courses
       users: "Users"

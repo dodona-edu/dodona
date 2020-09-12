@@ -24,6 +24,8 @@ module OmniAuth
           # Redirect the user to the federated sign-in page.
           redirect saml_auth_request.create(settings)
         end
+      rescue RuntimeError
+        fail!(:invalid_response, $!)
       end
 
       # User has signed in at IDP and is returned to Dodona.

@@ -31,13 +31,9 @@ module OmniAuth
 
           # Obtain the saml parameters for the provider.
           provider = Provider::Saml.find_by(id: id)
-          return failure! if provider.blank?
+          return {} if provider.blank?
 
           OmniAuth::Strategies::SAML::Settings.for_provider(provider)
-        end
-
-        def failure!
-          raise "Invalid provider."
         end
       end
     end

@@ -187,7 +187,7 @@
                       <%= link_to t('.sample_solution_submit'), activity_scoped_url(activity: @activity, series: @series, course: @course, options: {from_solution: fname}), class: "btn-text" %>
                     </div>
                     <div class="code-table">
-                      <%= raw FeedbackCodeRenderer.new(code, @activity.programming_language&.name).add_code.html %>
+                      <%= raw FeedbackCodeRenderer.new(code, @activity.programming_language&.editor_name).add_code.html %>
                     </div>
                   </div>
                 <% end %>

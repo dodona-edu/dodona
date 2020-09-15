@@ -16,7 +16,7 @@
           <%= render 'question_table', questions: @open %>
         </div>
         <% if @open.try(:total_pages) %>
-          <center><%= page_navigation_links @open, false, 'courses', action: 'questions', param_name: 'open_page', params: {refresh: @refresh} %></center>
+          <center><%= page_navigation_links @open, false, 'courses', {refresh: @refresh}, 'questions', 'open_page' %></center>
         <% end %>
 
         <section id="questions-in-progress" class="<%= 'hidden' if @in_progress.empty? %>">
@@ -25,7 +25,7 @@
             <%= render 'question_table', questions: @in_progress %>
           </div>
           <% if @in_progress.try(:total_pages) %>
-            <center><%= page_navigation_links @in_progress, false, 'courses', action: 'questions', param_name: 'in_progress_page', params: {refresh: @refresh} %></center>
+            <center><%= page_navigation_links @in_progress, false, 'courses', {refresh: @refresh}, 'questions', 'in_progress_page' %></center>
           <% end %>
         </section>
 
@@ -34,7 +34,7 @@
           <%= render 'question_table', questions: @closed %>
         </div>
         <% if @closed.try(:total_pages) %>
-          <center><%= page_navigation_links @closed, false, 'courses', action: 'questions', param_name: 'closed_page', params: {refresh: @refresh} %></center>
+          <center><%= page_navigation_links @closed, false, 'courses', {refresh: @refresh}, 'questions', 'closed_page' %></center>
         <% end %>
       </div>
     </div>

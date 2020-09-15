@@ -30,7 +30,7 @@ class QuestionPolicy < AnnotationPolicy
     # Don't allow editing if the question was answered.
     return false if record.answered?
 
-    record&.user == user
+    record.user == user
   end
 
   def destroy?

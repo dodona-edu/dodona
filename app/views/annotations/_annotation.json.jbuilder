@@ -15,4 +15,4 @@ json.permission do
   json.resolve policy(annotation).resolve?
 end
 json.released AnnotationPolicy.new(annotation.submission.user, annotation).show?
-json.type annotation.type&.downcase || 'annotation'
+json.type annotation.type&.downcase

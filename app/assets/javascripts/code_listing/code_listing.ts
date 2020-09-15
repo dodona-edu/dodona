@@ -267,7 +267,7 @@ export class CodeListing {
         const globalButton = document.querySelector(annotationGlobalAdd);
         globalButton.addEventListener("click", () => this.handleAnnotateGlobal());
 
-        const type = this.questionMode? "user_question" : "user_annotation";
+        const type = this.questionMode ? "user_question" : "user_annotation";
         const title = I18n.t(`js.${type}.send`);
 
         // Inline annotations.
@@ -395,7 +395,7 @@ export class CodeListing {
         // Deletion handler.
         if (deleteButton !== null) {
             deleteButton.addEventListener("click", async () => {
-                const type = this.questionMode? "user_question" : "user_annotation";
+                const type = this.questionMode ? "user_question" : "user_annotation";
                 const confirmText = I18n.t(`js.${type}.delete_confirm`);
                 if (confirm(confirmText)) {
                     annotation.remove().then(() => this.removeAnnotation(annotation));

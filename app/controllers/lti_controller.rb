@@ -9,7 +9,7 @@ class LtiController < ApplicationController
   before_action :set_lti_message, only: %i[content_selection]
   before_action :set_lti_provider, only: %i[content_selection]
 
-  layout 'embedded'
+  layout 'lti'
 
   def redirect
     @path = lti_do_redirect_path(sym: params[:sym], provider: params[:provider])

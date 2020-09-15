@@ -1,6 +1,6 @@
-document.querySelector(".question-table-open").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @open}) %>";
-document.querySelector(".question-table-in-progress").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @in_progress}) %>";
-document.querySelector(".question-table-closed").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @closed}) %>";
+document.querySelector(".question-table-open").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @open, refresh: @refresh, param_name: 'open_page'}) %>";
+document.querySelector(".question-table-in-progress").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @in_progress, refresh: @refresh, param_name: 'in_progress_page'}) %>";
+document.querySelector(".question-table-closed").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @closed, refresh: @refresh, param_name: 'closed_page'}) %>";
 <% if @in_progress.empty? %>
   document.getElementById("questions-in-progress").classList.add("hidden");
 <% else %>

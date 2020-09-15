@@ -13,29 +13,20 @@
         <%= label_tag :enable_refresh, t('.questions.auto_refresh'), class: 'checkbox-label' %>
         <h4><%= t('.questions.open') %></h4>
         <div class="question-table-open">
-          <%= render 'question_table', questions: @open %>
+          <%= render 'question_table', questions: @open, refresh: @refresh, param_name: 'open_page' %>
         </div>
-        <% if @open.try(:total_pages) %>
-          <center><%= page_navigation_links @open, false, 'courses', {refresh: @refresh}, 'questions', 'open_page' %></center>
-        <% end %>
 
         <section id="questions-in-progress" class="<%= 'hidden' if @in_progress.empty? %>">
           <h4><%= t('.questions.in_progress') %></h4>
           <div class="question-table-in-progress">
-            <%= render 'question_table', questions: @in_progress %>
+            <%= render 'question_table', questions: @in_progress, refresh: @refresh, param_name: 'in_progress_page' %>
           </div>
-          <% if @in_progress.try(:total_pages) %>
-            <center><%= page_navigation_links @in_progress, false, 'courses', {refresh: @refresh}, 'questions', 'in_progress_page' %></center>
-          <% end %>
         </section>
 
         <h4><%= t('.questions.closed') %></h4>
         <div class="question-table-closed">
-          <%= render 'question_table', questions: @closed %>
+          <%= render 'question_table', questions: @closed, refresh: @refresh, param_name: 'closed_page' %>
         </div>
-        <% if @closed.try(:total_pages) %>
-          <center><%= page_navigation_links @closed, false, 'courses', {refresh: @refresh}, 'questions', 'closed_page' %></center>
-        <% end %>
       </div>
     </div>
   </div>

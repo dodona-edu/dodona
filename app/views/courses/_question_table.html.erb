@@ -64,3 +64,6 @@
 <% else %>
   <%= t('courses.questions.no_questions') %>
 <% end %>
+<% if questions.try(:total_pages) %>
+  <center><%= page_navigation_links questions, false, 'courses', {refresh: refresh}, 'questions', param_name %></center>
+<% end %>

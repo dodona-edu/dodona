@@ -94,10 +94,10 @@ class CoursesController < ApplicationController
         # rubocop:disable Style/MultilineTernaryOperator
         Series.new(
           series_memberships: @copy_options[:exercises] ?
-                                s.series_memberships.map do |sm|
-                                  SeriesMembership.new(activity: sm.activity, order: sm.order)
-                                end :
-                                [],
+                                  s.series_memberships.map do |sm|
+                                    SeriesMembership.new(activity: sm.activity, order: sm.order)
+                                  end :
+                                  [],
           name: s.name,
           description: s.description,
           visibility: @copy_options[:hide_series] ? :hidden : s.visibility,

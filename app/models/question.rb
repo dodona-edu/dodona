@@ -34,6 +34,10 @@ class Question < Annotation
     QuestionPolicy
   end
 
+  def to_partial_path
+    'annotations/annotation'
+  end
+
   after_initialize do |question|
     question.question_state ||= 'unanswered'
   end

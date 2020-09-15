@@ -33,10 +33,6 @@ class Annotation < ApplicationRecord
   after_save :create_notification
   after_destroy :destroy_notification
 
-  def to_partial_path
-    'annotations/annotation'
-  end
-
   private
 
   def create_notification

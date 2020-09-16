@@ -30,6 +30,15 @@ class SeriesTest < ActiveSupport::TestCase
     assert_not_nil @series
   end
 
+  test 'series name and description with emoji' do
+    name = '✨ Introduction ✨'
+    description = 'First steps 👣 in programming 💻 Python 🐍'
+    series = create :series, name: name, description: description
+    assert_not_nil series
+    assert_equal series.name, name
+    assert_equal series.description, description
+  end
+
   test 'deadline? and pending? with deadlines in the future' do
     @series.deadline = Time.current + 2.minutes
     assert_equal true, @series.deadline?

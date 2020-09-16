@@ -2,7 +2,7 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @programming_language.name %></h2>
+        <h2 class="card-title-text"><i class="mdi mdi-<%= @programming_language.icon %> icon title-icon"></i><%= @programming_language.name %></h2>
         <% if policy(@programming_language).edit? %>
           <div class="card-title-fab">
             <%= render 'application/fab_link', url: edit_programming_language_path(@programming_language), icon: 'pencil' %>

@@ -1,13 +1,10 @@
 /* globals Bloodhound */
 
 function initInstitutionAutoSelect(institutions, links) {
-    // Filter institutions without name
-    const filteredInstitutions = institutions.filter(institution => institution.name !== "n/a");
-
     const institution = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace("name"),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: filteredInstitutions,
+        local: institutions,
     });
 
     const typeaheadRef = $("#scrollable-dropdown-menu .typeahead").typeahead({
@@ -16,7 +13,7 @@ function initInstitutionAutoSelect(institutions, links) {
     }, {
         name: "institution",
         display: institutionRepresentation,
-        limit: filteredInstitutions.length,
+        limit: institutions.length,
         source: institutionsWithDefaults
     });
 
@@ -32,7 +29,7 @@ function initInstitutionAutoSelect(institutions, links) {
         }
     }
 
-    const institutionRepresentations = filteredInstitutions.map(i => institutionRepresentation(i));
+    const institutionRepresentations = institutions.map(i => institutionRepresentation(i));
 
     $("input").bind("input", e => {
         const val = e.target.value;

@@ -1,6 +1,11 @@
 import { Annotation, AnnotationType } from "code_listing/annotation";
 import { MachineAnnotation, MachineAnnotationData } from "code_listing/machine_annotation";
-import { UserAnnotation, UserAnnotationData, UserAnnotationFormData } from "code_listing/user_annotation";
+import {
+    UserAnnotation,
+    UserAnnotationData,
+    UserAnnotationFormData
+} from "code_listing/user_annotation";
+import { createUserAnnotation, getAllUserAnnotations } from "code_listing/question_annotation";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";
@@ -142,7 +147,7 @@ export class CodeListing {
 
     // noinspection JSUnusedGlobalSymbols used by FeedbackCodeRenderer.
     public async loadUserAnnotations(): Promise<void> {
-        return UserAnnotation.getAll(this.submissionId,
+        return getAllUserAnnotations(this.submissionId,
             (a, cb) => this.createUpdateAnnotationForm(a, cb))
             .then(annotations => {
                 annotations.forEach(annotation => this.addAnnotation(annotation));
@@ -447,7 +452,7 @@ export class CodeListing {
             };
 
             try {
-                const annotation = await UserAnnotation.create(annotationData, this.submissionId,
+                const annotation = await createUserAnnotation(annotationData, this.submissionId,
                     (a, cb) => this.createUpdateAnnotationForm(a, cb));
                 this.addAnnotation(annotation);
                 form.remove();

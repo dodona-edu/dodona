@@ -60,6 +60,11 @@ class PagesController < ApplicationController
     end
   end
 
+  def profile
+    authorize :pages
+    redirect_to user_path(current_user)
+  end
+
   private
 
   def contact_params

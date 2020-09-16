@@ -298,7 +298,7 @@ class FeedbackTableRenderer
 
   def source(_, messages)
     @builder.div(class: 'code-table', 'data-submission-id': @submission.id) do
-      @builder << FeedbackCodeRenderer.new(@code, @submission.exercise.programming_language&.name)
+      @builder << FeedbackCodeRenderer.new(@code, @programming_language)
                                       .add_messages(@submission, messages, @user)
                                       .add_code
                                       .html

@@ -6,6 +6,7 @@ en:
       edit: Edit course
       submissions: Submissions for this course
       statistics: "Statistics of this course"
+      questions: Questions from students
     form:
       teacher-help: Optional. Can help users find your course.
       year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
@@ -44,6 +45,9 @@ en:
       moderated-automatically-help: Registered users are approved automatically.
       moderated-moderated-help: Registered users need to be approved by a course admin.
       secret-link-placeholder: "This link will be generated after creation"
+      questions:
+        title: Questions
+        toggle-label: Allow students to pose questions
     index:
       title: All courses
       users: "Users"
@@ -159,3 +163,26 @@ en:
     copy_courses_table:
       info: "Course"
       users: "# users"
+    questions:
+      title: "Questions asked by students"
+      questions:
+        open: "Unanswered questions"
+        in_progress: "Questions in progress"
+        closed: "Answered questions"
+        title: "Questions"
+        auto_refresh: Automatically refresh questions
+      table:
+        user: "User"
+        question: "Question"
+        time_since: "Age"
+        exercise: "Exercise"
+      no_questions: "There are no questions available"
+      buttons:
+        to_in_progress: "Move question to in progress"
+        to_resolved: "Mark question as answered"
+        to_unresolved: "Mark question as unresolved"
+      warning: Questions are disabled. Enable them in the course options.
+  submissions:
+    show:
+      questions:
+        add_global: "Pose a question about your code"

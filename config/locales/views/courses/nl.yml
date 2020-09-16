@@ -6,6 +6,7 @@ nl:
       edit: Cursus bewerken
       submissions: Ingediende oplossingen
       statistics: Statistieken
+      questions: Vragen van studenten
     form:
       teacher-help: Optioneel. Kan gebruikers helpen om je cursus te vinden.
       year-help: Een jaar van de vorm jjjj-jjjj zorgt er voor dat je cursus correct gesorteerd zal worden.
@@ -44,6 +45,9 @@ nl:
       moderated-automatically-help: Geregistreerde gebruikers worden automatisch goedgekeurd.
       moderated-moderated-help: Geregistreerde gebruikers moeten worden goedgekeurd door een cursusbeheerder.
       secret-link-placeholder: "De link wordt gegenereerd na aanmaak van deze cursus"
+      questions:
+        title: Vragen
+        toggle-label: Sta toe dat studenten vragen stellen
     index:
       title: Alle cursussen
       users: "Gebruikers"
@@ -155,3 +159,26 @@ nl:
     copy_courses_table:
       info: "Cursus"
       users: "# gebruikers"
+    questions:
+      title: "Vragen gesteld door studenten"
+      questions:
+        open: "Onbeantwoorde vragen"
+        in_progress: "Vragen in behandeling"
+        closed: "Beantwoorde vragen"
+        title: "Vragen"
+        auto_refresh: Vragen automatisch vernieuwen
+      table:
+        user: "Gebruiker"
+        question: "Vraag"
+        time_since: "Leeftijd"
+        exercise: "Oefening"
+      no_questions: "Er zijn geen vragen beschikbaar"
+      buttons:
+        to_in_progress: "Vraag in behandeling plaatsen"
+        to_resolved: "Vraag als beantwoord markeren"
+        to_unresolved: "Vraag als onbeantwoord markeren"
+      warning: Vragen zijn uitgeschakeld. Schakel dit in in de cursusopties.
+  submissions:
+    show:
+      questions:
+        add_global: "Stel een vraag over je code"

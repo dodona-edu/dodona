@@ -190,6 +190,18 @@ class CoursesController < ApplicationController
     end
   end
 
+  def questions
+    @title = I18n.t('courses.questions.questions.title')
+    @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.questions.questions.title'), '#']]
+
+    flash.now[:notice] = t('courses.questions.warning') unless @course.enabled_questions?
+    @refresh = params.fetch(:refresh, @course.enabled_questions?)
+    @questions = @course.questions
+    @open = @course.open_questions.paginate(page: parse_pagination_param(params[:open_page]), per_page: 10)
+    @in_progress = @course.in_progress_questions.paginate(page: parse_pagination_param(params[:in_progress_page]), per_page: 10)
+    @closed = @course.closed_questions.paginate(page: parse_pagination_param(params[:closed_page]), per_page: 10)
+  end
+
   def update_membership
     user = User.find params[:user]
     respond_to do |format|

@@ -17,6 +17,9 @@ class RepositoriesController < ApplicationController
     @title = @repository.name
     @crumbs = [[I18n.t('repositories.index.title'), repositories_path], [@repository.name, '#']]
     @files = @repository.public_files
+    @labels = policy_scope(@repository.labels)
+    @programming_languages = policy_scope(@repository.programming_languages)
+    @judges = policy_scope(@repository.judges)
   end
 
   # GET /repositories/new

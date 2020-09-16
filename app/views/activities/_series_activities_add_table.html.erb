@@ -1,9 +1,10 @@
-<table class="table activities-table table-resource">
+<table class="table activity-table table-resource">
   <colgroup>
     <col/>
     <col/>
     <col class="col-xs-5"/>
-    <col class="col-xs-5"/>
+    <col class="col-xs-1">
+    <col class="col-xs-4"/>
     <col class="col-xs-1"/>
   </colgroup>
   <tbody>
@@ -17,11 +18,11 @@
         <% end %>
       </td>
       <td class="status-icon">
-        <span class="pull-right">
-          <%= raw "<i class='mdi mdi-eye-off mdi-18' title='#{t("activities.index.private")}'></i>" if activity.access_private? %>
-          <%= raw "<i class='mdi mdi-delete mdi-18' title='#{t("activities.index.removed")}'></i>" if activity.removed? %>
-          <%= raw "<i class='mdi mdi-alert-circle mdi-18' title='#{t("activities.index.invalid")}'></i>" if activity.not_valid? %>
-        </span>
+        <%= raw "<i class='mdi mdi-eye-off mdi-18' title='#{t("activities.index.private")}'></i>" if activity.access_private? %>
+        <%= raw "<i class='mdi mdi-delete mdi-18' title='#{t("activities.index.removed")}'></i>" if activity.removed? %>
+        <%= raw "<i class='mdi mdi-alert-circle mdi-18' title='#{t("activities.index.invalid")}'></i>" if activity.not_valid? %>
+        <%= raw "<i class='mdi mdi-#{ activity.programming_language&.icon} mdi-18' title='#{t "activities.index.type.exercise_language", language: activity.programming_language&.name&.titleize}'></i>" if activity.exercise? %>
+        <%= raw "<i class='mdi mdi-book-open-variant mdi-18' title='#{t("activities.index.type.content")}'></i>" if activity.content_page? %>
       </td>
       <td class="link">
         <span class="ellipsis-overflow" title="<%= activity.name %>">
@@ -37,19 +38,13 @@
           </small>
         </div>
       </td>
-      <td class="series-activities-table-labels">
-        <span class="<%= activity.programming_language ? "clickable-token" : "" %>" data-type="programming_languages" data-name="<%= activity.programming_language&.name %>"><%= activity.programming_language&.name || "" %></span>
+      <td class="description-languages">
         <div class="text-muted">
-          <small>
-            <%# We can't just use activity.labels because a search by labels might restrict the loaded labels %>
-            <% labels = Label.includes(:activities).where(activities: {id: activity.id}).load %>
-            <% if labels.count > 5 %>
-              <span title="<%= labels.map(&:name).join(", ") %>"><%= raw labels.first(5).map {|label| "<span class='clickable-token' data-type='labels' data-name='#{label.name}'>#{label.name}</span>"}.join(", ") + ", ..." %></span>
-            <% else %>
-              <%= raw labels.map {|label| "<span class='clickable-token' data-type='labels' data-name='#{label.name}'>#{label.name}</span>"}.join(", ") %>
-            <% end %>
-          </small>
+          <%= raw activity.description_languages.map {|language| "<span class='clickable-token' title='#{t("js.#{language}")}' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
         </div>
+      </td>
+      <td class="series-activities-table-labels">
+        <%= render partial: 'activities/labels', locals: { activity: activity } %>
       </td>
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>

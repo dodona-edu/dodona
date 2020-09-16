@@ -1,5 +1,12 @@
 @dot-size: 9px;
 
+// Annotation colors
+@annotation-question: @color-purple;
+@annotation-user: @success-500;
+@annotation-error: @danger-500;
+@annotation-warning: @warning-500;
+@annotation-info: @info-500;
+
 .code-table {
   .code-listing-container {
     position: relative;
@@ -102,19 +109,23 @@
         }
 
         .dot-info {
-          background-color: @info-500;
+          background-color: @annotation-info;
         }
 
         .dot-warning {
-          background-color: @warning-500;
+          background-color: @annotation-warning;
         }
 
         .dot-user {
-          background-color: @success-300
+          background-color: @annotation-user
         }
 
         .dot-error {
-          background-color: @danger-500;
+          background-color: @annotation-error;
+        }
+
+        .dot-question {
+          background-color: @annotation-question;
         }
       }
 
@@ -160,7 +171,7 @@
         color: @text-secondary;
       }
 
-      .annotation-edit {
+      .annotation-edit, .question-resolve, .question-in_progress, .question-unresolve {
         float: right;
         margin-top: 4px;
       }
@@ -176,6 +187,17 @@
     .annotation-text {
       display: block;
       word-break: break-word;
+
+      // Override the normal pre padding & coloring
+      pre {
+        padding: 0;
+        background-color: transparent;
+        margin-bottom: 0;
+        border: none;
+        border-radius: 0;
+        white-space: pre-wrap;
+        line-height: 20px;
+      }
 
       // Stylize the embedded code block
       .highlighter-rouge div.highlight {
@@ -214,27 +236,36 @@
     }
   }
 
+  .annotation.question, .annotation.user {
+    border-left-width: 5px;
+  }
+
+  .annotation.question {
+    border-left-color: @annotation-question;
+  }
+
   .annotation.error {
-    border-left-color: @danger-500;
+    border-left-color: @annotation-error;
   }
 
   .annotation.warning {
-    border-left-color: @warning-500;
+    border-left-color: @annotation-warning;
   }
 
   .annotation.info {
-    border-left-color: @info-500;
+    border-left-color: @annotation-info;
   }
 
   .annotation.user {
-    border-left-color: @success-500;
-    border-left-width: 5px;
+    border-left-color: @annotation-user;
   }
 
   .annotation.machine-annotation {
     .annotation-text {
       font-family: @font-family-monospace;
+      // pre-wrap for browsers that don't support break-spaces.
       white-space: pre-wrap;
+      white-space: break-spaces;
     }
   }
 
@@ -250,7 +281,7 @@
       margin-bottom: 12px;
       text-align: right;
 
-      .annotation-control-button {
+      .annotation-control-button, .question-control-button {
         margin-left: 3px;
       }
 

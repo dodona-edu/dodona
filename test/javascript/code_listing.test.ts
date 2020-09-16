@@ -3,6 +3,11 @@ import { CodeListing } from "code_listing/code_listing";
 let codeListing;
 
 beforeEach(() => {
+    // Mock MathJax
+    window.MathJax = {} as MathJaxObject;
+    // Mock typeset function of MathJax
+    window.MathJax.typeset = () => "";
+
     document.body.innerHTML = `
     <a href="#" data-toggle="tab">Code <span class="badge" id="badge_code"></span></a>
     <div class="code-table" data-submission-id="54">

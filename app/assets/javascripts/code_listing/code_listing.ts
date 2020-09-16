@@ -1,6 +1,11 @@
-import { Annotation } from "code_listing/annotation";
+import { Annotation, AnnotationType } from "code_listing/annotation";
 import { MachineAnnotation, MachineAnnotationData } from "code_listing/machine_annotation";
-import { UserAnnotation, UserAnnotationData, UserAnnotationFormData } from "code_listing/user_annotation";
+import {
+    UserAnnotation,
+    UserAnnotationData,
+    UserAnnotationFormData
+} from "code_listing/user_annotation";
+import { createUserAnnotation, getAllUserAnnotations } from "code_listing/question_annotation";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";
@@ -14,7 +19,19 @@ const annotationFormDelete = ".annotation-delete-button";
 const annotationFormSubmit = ".annotation-submission-button";
 const badge = "#badge_code";
 
-const ANNOTATION_ORDER = ["error", "user", "warning", "info"];
+type OrderGroup = "error" | "conversation" | "warning" | "info";
+
+// Map in which annotation group the annotation should appear.
+const GROUP_MAPPING: Record<AnnotationType, OrderGroup> = {
+    "error": "error",
+    "user": "conversation",
+    "warning": "warning",
+    "info": "info",
+    "question": "conversation"
+};
+
+// Order the groups. We use the same order as appearance in the mapping.
+const GROUP_ORDER: OrderGroup[] = Array.from(new Set(Object.values(GROUP_MAPPING)));
 
 export class CodeListing {
     private readonly annotations: Map<number, Annotation[]>;
@@ -36,11 +53,14 @@ export class CodeListing {
     private readonly showErrorAnnotations: HTMLButtonElement;
     private readonly annotationToggles: HTMLDivElement;
 
-    constructor(submissionId: number, code: string, codeLines: number) {
+    private readonly questionMode: boolean;
+
+    constructor(submissionId: number, code: string, codeLines: number, questionMode: boolean = false) {
         this.annotations = new Map<number, Annotation[]>();
         this.code = code;
         this.codeLines = codeLines;
         this.submissionId = submissionId;
+        this.questionMode = questionMode;
 
         this.badge = document.querySelector<HTMLSpanElement>(badge);
         this.table = document.querySelector<HTMLTableElement>("table.code-listing");
@@ -83,7 +103,7 @@ export class CodeListing {
     // Annotation management ///////////////////////////////////////////////////
     // /////////////////////////////////////////////////////////////////////////
 
-    private addAnnotation(annotation: Annotation): void {
+    public addAnnotation(annotation: Annotation): void {
         const line = annotation.global ? 0 : annotation.line;
 
         if (!this.annotations.has(line)) {
@@ -127,7 +147,7 @@ export class CodeListing {
 
     // noinspection JSUnusedGlobalSymbols used by FeedbackCodeRenderer.
     public async loadUserAnnotations(): Promise<void> {
-        return UserAnnotation.getAll(this.submissionId,
+        return getAllUserAnnotations(this.submissionId,
             (a, cb) => this.createUpdateAnnotationForm(a, cb))
             .then(annotations => {
                 annotations.forEach(annotation => this.addAnnotation(annotation));
@@ -153,7 +173,7 @@ export class CodeListing {
         this.updateViewState();
     }
 
-    private updateAnnotation(original: Annotation, updated: Annotation): void {
+    public updateAnnotation(original: Annotation, updated: Annotation): void {
         const origLine = original.global ? 0 : original.line;
         const updLine = updated.global ? 0 : updated.line;
 
@@ -184,7 +204,7 @@ export class CodeListing {
     private appendAnnotationToGlobal(annotation: Annotation): void {
         // Append the annotation.
         this.globalAnnotationGroups
-            .querySelector<HTMLDivElement>(`.annotation-group-${annotation.type}`)
+            .querySelector<HTMLDivElement>(`.annotation-group-${GROUP_MAPPING[annotation.type]}`)
             .appendChild(annotation.html);
 
         // Add the padding to the global annotation list.
@@ -196,7 +216,7 @@ export class CodeListing {
         const row = this.table.querySelector<HTMLTableRowElement>(`#line-${line}`);
 
         const cell = row.querySelector<HTMLDivElement>(`#annotation-cell-${line}`);
-        if (cell.querySelector(`.annotation-group-${annotation.type}`) === null) {
+        if (cell.querySelector(`.annotation-group-${GROUP_MAPPING[annotation.type]}`) === null) {
             // Create the dot.
             const dot = document.createElement("span") as HTMLSpanElement;
             dot.classList.add("dot", "hide");
@@ -204,7 +224,7 @@ export class CodeListing {
             row.querySelector<HTMLTableDataCellElement>(".rouge-gutter").prepend(dot);
 
             // Create annotation groups.
-            ANNOTATION_ORDER.forEach((type: string) => {
+            GROUP_ORDER.forEach((type: string) => {
                 const group = document.createElement("div") as HTMLDivElement;
                 group.classList.add(`annotation-group-${type}`);
                 cell.appendChild(group);
@@ -212,7 +232,7 @@ export class CodeListing {
         }
 
         // Append the annotation.
-        cell.querySelector<HTMLDivElement>(`.annotation-group-${annotation.type}`)
+        cell.querySelector<HTMLDivElement>(`.annotation-group-${GROUP_MAPPING[annotation.type]}`)
             .appendChild(annotation.html);
     }
 
@@ -222,7 +242,7 @@ export class CodeListing {
 
     private initAnnotations(): void {
         // Create global annotation groups.
-        ANNOTATION_ORDER.forEach((type: string) => {
+        GROUP_ORDER.forEach((type: string) => {
             const group = document.createElement("div") as HTMLDivElement;
             group.classList.add(`annotation-group-${type}`);
             this.globalAnnotationGroups.appendChild(group);
@@ -252,15 +272,20 @@ export class CodeListing {
         const globalButton = document.querySelector(annotationGlobalAdd);
         globalButton.addEventListener("click", () => this.handleAnnotateGlobal());
 
+        const type = this.questionMode ? "user_question" : "user_annotation";
+        const title = I18n.t(`js.${type}.send`);
+
         // Inline annotations.
         const codeLines = this.table.querySelectorAll(".lineno");
         codeLines.forEach((codeLine: HTMLTableRowElement) => {
             const annotationButton = document.createElement("button") as HTMLButtonElement;
             annotationButton.classList.add("btn", "btn-primary", "annotation-button");
             annotationButton.addEventListener("click", () => this.handleAnnotateLine(codeLine));
+            annotationButton.title = title;
 
             const annotationButtonIcon = document.createElement("i") as HTMLElement;
-            annotationButtonIcon.classList.add("mdi", "mdi-comment-plus-outline", "mdi-18");
+            const clazz = this.questionMode ? "mdi-comment-question-outline" : "mdi-comment-plus-outline";
+            annotationButtonIcon.classList.add("mdi", clazz, "mdi-18");
             annotationButton.appendChild(annotationButtonIcon);
 
             codeLine.querySelector(".rouge-gutter").prepend(annotationButton);
@@ -290,7 +315,7 @@ export class CodeListing {
             // Configure the dot.
             if (colours.length > 0) {
                 // Remove previous colours.
-                dot.classList.remove("hide", ...ANNOTATION_ORDER.map(type => `dot-${type}`));
+                dot.classList.remove("hide", ...GROUP_ORDER.map(type => `dot-${type}`));
 
                 // Add new colours.
                 dot.classList.add(...colours);
@@ -337,6 +362,8 @@ export class CodeListing {
         onSubmit: (f: HTMLFormElement) => Promise<void>,
         onCancel: (f: HTMLFormElement) => void): HTMLFormElement {
         const form = document.createElement("form") as HTMLFormElement;
+        const type = this.questionMode ? "user_question" : "user_annotation";
+
         form.classList.add("annotation-submission");
         form.id = id;
         form.innerHTML = `
@@ -352,7 +379,7 @@ export class CodeListing {
               ${I18n.t("js.user_annotation.cancel")}
             </button>
             <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
-              ${annotation !== null ? I18n.t("js.user_annotation.update") : I18n.t("js.user_annotation.send")}
+                ${(annotation !== null ? I18n.t(`js.${type}.update`) : I18n.t(`js.${type}.send`))}
             </button>
           </div>
         `;
@@ -373,7 +400,9 @@ export class CodeListing {
         // Deletion handler.
         if (deleteButton !== null) {
             deleteButton.addEventListener("click", async () => {
-                if (confirm(I18n.t("js.user_annotation.delete_confirm"))) {
+                const type = this.questionMode ? "user_question" : "user_annotation";
+                const confirmText = I18n.t(`js.${type}.delete_confirm`);
+                if (confirm(confirmText)) {
                     annotation.remove().then(() => this.removeAnnotation(annotation));
                 }
             });
@@ -385,6 +414,12 @@ export class CodeListing {
                 sendButton.setAttribute("disabled", "1");
                 await onSubmit(form);
                 sendButton.removeAttribute("disabled");
+                // Ask MathJax to search for math in the annotations
+                if (window.MathJax === undefined) {
+                    console.error("MathJax is not initialized");
+                } else {
+                    window.MathJax.typeset();
+                }
             }
         });
 
@@ -417,8 +452,9 @@ export class CodeListing {
             };
 
             try {
-                const annotation = await UserAnnotation.create(annotationData, this.submissionId,
-                    (a, cb) => this.createUpdateAnnotationForm(a, cb));
+                const mode = this.questionMode ? "question" : "annotation";
+                const annotation = await createUserAnnotation(annotationData, this.submissionId,
+                    (a, cb) => this.createUpdateAnnotationForm(a, cb), mode);
                 this.addAnnotation(annotation);
                 form.remove();
             } catch (err) {
@@ -519,6 +555,13 @@ export class CodeListing {
 
             // Show the annotation toggles.
             this.annotationToggles.classList.remove("hide");
+
+            // Ask MathJax to search for math in the annotations
+            if (window.MathJax === undefined) {
+                console.error("MathJax is not initialized");
+            } else {
+                window.MathJax.typeset();
+            }
         } else {
             // No annotations have been added (yet).
             this.badge.innerText = "";

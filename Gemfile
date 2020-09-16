@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.6'
+ruby '2.7.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 4.3.5'
+gem 'puma', '~> 4.3.6'
 # Use less for stylesheets
 gem 'less-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -16,10 +16,10 @@ gem 'uglifier', '>= 4.1.20'
 # This needs to be here for less :(
 gem 'therubyracer', platforms: :ruby
 
-gem 'webpacker', '~> 5.1.1'
+gem 'webpacker', '~> 5.2.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.10.0'
+gem 'jbuilder', '~> 2.10.1'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.10.0'
 gem 'image_processing', '~> 1.11.0'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.4.7', require: false
+gem 'bootsnap', '~> 1.4.8', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -42,7 +42,7 @@ gem 'daemons', '~>1.3'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.3'
-gem 'sinatra', '~>2.0.8'
+gem 'sinatra', '~>2.1.0'
 
 # pagination
 gem 'will_paginate', '~>3.3.0'
@@ -50,7 +50,7 @@ gem 'will_paginate', '~>3.3.0'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.21.0'
+gem 'rouge', '3.23.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -70,11 +70,11 @@ gem 'ruby-saml', '~> 1.11.0'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.0'
-gem 'omniauth-oauth2', '~> 1.6.0'
+gem 'omniauth-oauth2', '~> 1.7.0'
 gem 'omniauth_openid_connect', '~> 0.3.5'
 
 # Json webtokens
-gem 'jwt', '~> 2.2.1'
+gem 'jwt', '~> 2.2.2'
 
 # contact mail form
 gem 'mail_form', '~> 1.8.0'
@@ -140,7 +140,7 @@ gem 'rack-mini-profiler', '~> 2.0.4'
 gem 'stackprof', '~> 0.2.15'
 
 # Datadog
-gem 'ddtrace', '~> 0.39.0'
+gem 'ddtrace', '~> 0.40.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -164,9 +164,9 @@ end
 
 group :test do
   # for measuring coverage
-  gem 'codecov', '~> 0.2.5', require: false
+  gem 'codecov', '~> 0.2.11', require: false
   gem 'minitest-ci', '~> 3.4.0'
-  gem 'simplecov', '~> 0.18.5', require: false
+  gem 'simplecov', '~> 0.19.0', require: false
 end
 
 group :development do
@@ -177,7 +177,7 @@ group :development do
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-rails', '~> 2.7.1'
-  gem 'spring', '~> 2.1.0'
+  gem 'spring', '~> 2.1.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 
   # Manage processes (webpack, rails, delayed_job, ...)
@@ -191,4 +191,4 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
-gem 'docker-api', '~> 1.34.2'
+gem 'docker-api', '~> 2.0.0'

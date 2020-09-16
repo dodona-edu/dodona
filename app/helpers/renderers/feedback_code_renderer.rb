@@ -48,12 +48,21 @@ class FeedbackCodeRenderer
   end
 
   def add_messages(submission, messages, user)
-    user_may_annotate = AnnotationPolicy.new(user, Annotation.new(submission: submission, user: user)).create?
+    user_is_student = !user.course_admin?(submission.course)
+    user_perm = if user_is_student
+                  QuestionPolicy.new(user, Question.new(submission: submission, user: user)).create?
+                else
+                  AnnotationPolicy.new(user, Annotation.new(submission: submission, user: user)).create?
+                end
 
     @builder.div(id: 'feedback-table-options', class: 'feedback-table-options') do
-      if user_may_annotate
+      if user_perm
         @builder.button(class: 'btn-text', id: 'add_global_annotation') do
-          @builder.text!(I18n.t('submissions.show.annotations.add_global'))
+          if user_is_student
+            @builder.text!(I18n.t('submissions.show.questions.add_global'))
+          else
+            @builder.text!(I18n.t('submissions.show.annotations.add_global'))
+          end
         end
       end
 
@@ -82,15 +91,31 @@ class FeedbackCodeRenderer
 
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
-        $(() => {
-          window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, #{@code.to_json}, #{@code.lines.length});
-          window.dodona.codeListing.addMachineAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
-          #{'window.dodona.codeListing.initAnnotateButtons();' if user_may_annotate}
-          window.dodona.codeListing.loadUserAnnotations();
-          window.dodona.codeListing.showAnnotations();
+        window.dodona.mathJaxPromise = new Promise((resolve, _) => {
+          window.dodona.initMathJax();
+          window.MathJax = {
+            startup: {
+              ready: () => {
+                MathJax.startup.defaultReady();
+                // This promise will resolve when MathJax initialization is complete.
+                MathJax.startup.promise.then(() => {$(() => {
+                    window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, #{@code.to_json}, #{@code.lines.length}, #{user_is_student});
+                    window.dodona.codeListing.addMachineAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
+                    #{'window.dodona.codeListing.initAnnotateButtons();' if user_perm}
+                    window.dodona.codeListing.loadUserAnnotations();
+                    window.dodona.codeListing.showAnnotations();
+                    resolve();
+                  });
+                });
+              }
+            }
+          };
         });
       HEREDOC
     end
+    @builder.script(type: 'application/javascript', src: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js', id: 'MathJax-script') do
+    end
+
     self
   end
 

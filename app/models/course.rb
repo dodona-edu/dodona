@@ -2,20 +2,21 @@
 #
 # Table name: courses
 #
-#  id             :integer          not null, primary key
-#  name           :string(255)
-#  year           :string(255)
-#  secret         :string(255)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  description    :text(65535)
-#  visibility     :integer
-#  registration   :integer
-#  color          :integer
-#  teacher        :string(255)      default("")
-#  institution_id :bigint
-#  search         :string(4096)
-#  moderated      :boolean          default(FALSE), not null
+#  id                :integer          not null, primary key
+#  name              :string(255)
+#  year              :string(255)
+#  secret            :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  description       :text(65535)
+#  visibility        :integer
+#  registration      :integer
+#  color             :integer
+#  teacher           :string(255)      default("")
+#  institution_id    :bigint
+#  search            :string(4096)
+#  moderated         :boolean          default(FALSE), not null
+#  enabled_questions :boolean          default(TRUE), not null
 #
 
 require 'securerandom'
@@ -124,6 +125,28 @@ class Course < ApplicationRecord
            },
            through: :course_memberships,
            source: :user
+
+  has_many :questions, through: :submissions
+  has_many :open_questions,
+           lambda {
+             where question_state: :unanswered
+           },
+           through: :submissions,
+           source: :questions
+
+  has_many :in_progress_questions,
+           lambda {
+             where question_state: :in_progress
+           },
+           through: :submissions,
+           source: :questions
+
+  has_many :closed_questions,
+           lambda {
+             where question_state: :answered
+           },
+           through: :submissions,
+           source: :questions
 
   validates :name, presence: true
   validates :year, presence: true

@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     get '/about' => 'pages#about'
     get '/data' => 'pages#data'
     get '/privacy' => 'pages#privacy'
+    get '/profile' => 'pages#profile', as: 'profile'
 
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'
@@ -87,10 +88,10 @@ Rails.application.routes.draw do
     resources :courses do
       resources :series, only: %i[new index] do
         resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
-        resources :activities, only: %i[show edit update], concerns: %i[submitable infoable], path: '/exercises'
+        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       end
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
-      resources :activities, only: %i[show edit update], concerns: %i[submitable infoable], path: '/exercises'
+      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       resources :submissions, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
         get 'download_labels_csv', on: :collection
@@ -101,6 +102,7 @@ Rails.application.routes.draw do
         get 'subscribe/:secret', to: 'courses#registration', as: 'registration'
         get 'manage_series'
         get 'scoresheet'
+        get 'questions'
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'
@@ -127,7 +129,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :activities, only: %i[index show edit update], concerns: %i[submitable infoable], path: '/exercises' do
+    resources :activities, only: %i[index show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises' do
       member do
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do
@@ -162,6 +164,14 @@ Rails.application.routes.draw do
     end
 
     resources :annotations, only: %i[index show create update destroy]
+
+    resources :annotations, format: :json do
+      member do
+        post 'unresolve'
+        post 'in_progress'
+        post 'resolve'
+      end
+    end
 
     resources :submissions, only: %i[index show create edit] do
       resources :annotations, only: %i[index create], as: 'submission_annotations'
@@ -207,6 +217,11 @@ Rails.application.routes.draw do
     resources :feedbacks, only: %i[show edit update]
 
     scope 'lti', controller: 'lti' do
+      get 'redirect', to: 'lti#redirect', as: 'lti_redirect'
+      get 'do_redirect', to: 'lti#do_redirect', as: 'lti_do_redirect'
+      get 'content_selection', to: 'lti#content_selection'
+      get 'series_and_activities', to: 'lti#series_and_activities'
+      post 'content_selection', to: 'lti#content_selection_payload'
       get 'jwks', to: 'lti#jwks'
     end
 

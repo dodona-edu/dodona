@@ -33,6 +33,7 @@ class Provider < ApplicationRecord
   scope :office365, -> { where(type: Provider::Office365.name) }
   scope :saml, -> { where(type: Provider::Saml.name) }
   scope :smartschool, -> { where(type: Provider::Smartschool.name) }
+  scope :by_institution, ->(institution) { where(institution_id: institution) }
 
   validates :mode, presence: true
   validate :at_least_one_preferred

@@ -1,0 +1,37 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'course' %>
+<% end %>
+<%= render partial: 'navbar_links' %>
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+    <div class="card" id="question-refresh-container">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t('.title') %></h2>
+      </div>
+      <div class="card-supporting-text" id="question-container">
+        <%= check_box_tag :enable_refresh, "1", @refresh %>
+        <%= label_tag :enable_refresh, t('.questions.auto_refresh'), class: 'checkbox-label' %>
+        <h4><%= t('.questions.open') %></h4>
+        <div class="question-table-open">
+          <%= render 'question_table', questions: @open, refresh: @refresh, param_name: 'open_page' %>
+        </div>
+
+        <section id="questions-in-progress" class="<%= 'hidden' if @in_progress.empty? %>">
+          <h4><%= t('.questions.in_progress') %></h4>
+          <div class="question-table-in-progress">
+            <%= render 'question_table', questions: @in_progress, refresh: @refresh, param_name: 'in_progress_page' %>
+          </div>
+        </section>
+
+        <h4><%= t('.questions.closed') %></h4>
+        <div class="question-table-closed">
+          <%= render 'question_table', questions: @closed, refresh: @refresh, param_name: 'closed_page', progress: false %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="application/javascript">
+    new window.dodona.questionTable("<%= questions_course_path @course %>", <%= @refresh %>);
+</script>

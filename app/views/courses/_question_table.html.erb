@@ -1,0 +1,69 @@
+<% if questions.present? %>
+  <table class="table table-resource question-table">
+    <colgroup>
+      <col class="name"/>
+      <col class="exercise"/>
+      <col/>
+      <col class="age"/>
+      <col class="actions"/>
+      <col class="link"/>
+    </colgroup>
+    <thead>
+    <tr>
+      <th><%= t('courses.questions.table.user') %></th>
+      <th><%= t('courses.questions.table.exercise') %></th>
+      <th><%= t('courses.questions.table.question') %></th>
+      <th><%= t('courses.questions.table.time_since') %></th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% questions.each do |question| %>
+      <tr>
+        <td>
+          <%= link_to question.user do %>
+            <%= question.user.full_name %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to course_activity_path(question.submission.course, question.submission.exercise) do %>
+            <%= question.submission.exercise.name %>
+          <% end %>
+        </td>
+        <td title="<%= question.question_text %>"><%= question.question_text %></td>
+        <td>
+          <%= time_ago_in_words question.created_at %>
+        </td>
+        <td>
+          <% if policy(question).unresolve? %>
+            <%= link_to unresolve_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
+              <i class="mdi mdi-restart mdi-18" title="<%= t('courses.questions.buttons.to_unresolved') %>"></i>
+            <% end %>
+          <% end %>
+          <% if policy(question).in_progress? && !question.answered? %>
+            <%= link_to in_progress_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
+              <i class="mdi mdi-comment-processing-outline mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
+            <% end %>
+          <% end %>
+          <% if policy(question).resolve? %>
+            <%= link_to resolve_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
+              <i class="mdi mdi-check mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to submission_path(question.submission, anchor: 'code'), class: 'btn btn-icon' do %>
+            <i class="mdi mdi-chevron-right mdi-18"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <%= t('courses.questions.no_questions') %>
+<% end %>
+<% if questions.try(:total_pages) %>
+  <center><%= page_navigation_links questions, false, 'courses', {refresh: refresh}, 'questions', param_name %></center>
+<% end %>

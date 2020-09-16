@@ -1,4 +1,7 @@
 <%= render 'navbar_links' %>
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'activities' %>
+<% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card">
@@ -53,7 +56,7 @@
       </div>
       <div class="card-supporting-text card-border">
         <h4><%= t ".learning_activities" %></h4>
-        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: activities_path(repository_id: @repository.id), eager: true, activity_types: [ContentPage, Exercise]}) %>
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: activities_path(repository_id: @repository.id), eager: true, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"], labels: @labels, programming_languages: @programming_languages, judges: @judges}) %>
         <div id="activities-table-wrapper">
         </div>
       </div>

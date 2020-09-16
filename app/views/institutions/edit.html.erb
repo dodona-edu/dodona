@@ -21,6 +21,7 @@
             <thead>
             <tr>
               <th><%= Provider.human_attribute_name(:type) %></th>
+              <th><%= Provider.human_attribute_name(:mode) %></th>
               <th><%= Provider.human_attribute_name(:identifier) %></th>
               <th><%= t('institutions.show.providers.number_of_identities') %></th>
             </tr>
@@ -29,6 +30,7 @@
             <% @institution.providers.each do |provider| %>
               <tr>
                 <td><%= t("activerecord.attributes.provider.#{provider.class.sym}") %></td>
+                <td><%= provider.mode %></td>
                 <td><%= provider.identifier_string %></td>
                 <td><%= provider.identities.count %></td>
               </tr>

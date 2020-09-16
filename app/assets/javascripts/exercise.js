@@ -1,4 +1,4 @@
-/* globals Bloodhound,Strip,MathJax,ace,ga,initStrip */
+/* globals Bloodhound,Strip,ace,ga,initStrip */
 import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 
@@ -103,22 +103,30 @@ function centerImagesAndTables() {
 }
 
 function initMathJax() {
-    // configure MathJax if loaded
-    if (typeof MathJax !== "undefined") {
-        // eslint-disable-next-line new-cap
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [
-                    ["$$", "$$"],
-                    ["\\(", "\\)"],
-                ],
-                displayMath: [
-                    ["\\[", "\\]"],
-                ],
-                ignoreClass: "feedback-table",
+    // configure MathJax
+    window.MathJax = {
+        tex: {
+            inlineMath: [
+                ["$$", "$$"],
+                ["\\(", "\\)"],
+            ],
+            displayMath: [
+                ["\\[", "\\]"],
+            ],
+            autoload: {
+                color: [],
+                colorV2: ["color"]
             },
-        });
-    }
+            packages: { "[+]": ["noerrors"] }
+        },
+        options: {
+            ignoreHtmlClass: "feedback-table",
+            processHtmlClass: "tex2jax_process|annotation user"
+        },
+        loader: {
+            load: ["[tex]/noerrors"]
+        }
+    };
 }
 
 function initExerciseDescription() {
@@ -399,6 +407,6 @@ function onFrameScroll(position) {
 }
 
 export {
-    initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
+    initMathJax, initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
     onFrameMessage, onFrameScroll
 };

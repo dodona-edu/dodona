@@ -35,6 +35,18 @@ class AnnotationPolicy < ApplicationPolicy
     record&.user == user
   end
 
+  def unresolve?
+    false
+  end
+
+  def in_progress?
+    false
+  end
+
+  def resolve?
+    false
+  end
+
   def permitted_attributes
     if record.class == Annotation
       %i[annotation_text]

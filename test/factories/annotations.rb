@@ -10,6 +10,8 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  evaluation_id   :bigint
+#  type            :string(255)      default("Annotation"), not null
+#  question_state  :integer
 #
 FactoryBot.define do
   factory :annotation do
@@ -17,5 +19,10 @@ FactoryBot.define do
     annotation_text { 'This code does not contain the right parameters' }
     submission
     user
+
+    factory :question, class: 'Question' do
+      # Only the submitter can create questions
+      before(:create) { |question| question.user = question.submission.user }
+    end
   end
 end

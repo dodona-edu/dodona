@@ -9,8 +9,19 @@ The documentation of this project can be found at https://dodona-edu.github.io.
 ## Development Setup
 
 1. Install and start `mysql` or `mariadb`.
-2. If using `mysql`, add `sql-mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'` to the `/etc/mysql/mysql.conf.d/mysqld.cnf` file.
-3. Create dodona user (with password 'dodona') with create database permissions.
+2. If using `mysql`, change the `sql-mode` in the `mysqld` configuration block:
+    ```
+    sql-mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'
+    ```
+3. Create a `dodona` user with access to the `dodona` and `dodona_test-N` databases. You will need as much test databases as hou have CPU threads.
+    ```sql
+    CREATE USER 'dodona'@'localhost' IDENTIFIED BY 'dodona';
+    GRANT ALL ON dodona.* TO 'dodona';
+    GRANT ALL ON dodona_test.* TO 'dodona';
+    GRANT ALL ON dodona_test-0.* TO 'dodona';
+    ...
+    GRANT ALL ON dodona_test-3.* TO 'dodona';
+    ```
 4. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
 5. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
 6. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database form step 4)
@@ -53,26 +64,6 @@ If this does not work out of the box you can add the following lines to your `/e
 
 ## Running on Windows
 
-Some gems (such as therubyracer) are not supported on Windows. However it is possible to run Dodona using [WSL](https://docs.microsoft.com/en-us/windows/wsl/about). Note: using [WSL2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-index), these steps are probably not necessary.
-
-* Dodona itself must be run in WSL. The Ubuntu WSL distribution is known to work.
-* The database can be run in either Windows or WSL. If you run the database in Windows, you must change `host` from `localhost` to `127.0.0.1` (in `config/database.yml`). Otherwise Ruby will attempt to connect using sockets, which won't work.
-
-### Docker
-
-Docker runs in Windows, and requires some tweaks to communicate with WSL.
-
-* Enable the TCP daemon in the [Docker settings](https://docs.docker.com/docker-for-windows/#general).
-* Set the environment variable `DOCKER_URL` to the url of the Docker daemon. Otherwise Ruby will again attempt to connect using sockets.
-* Dodona uses [bind mounts](https://docs.docker.com/storage/bind-mounts/) to share a folder with the container. As Dodona runs in WSL and Docker in Windows, this does not work out of the box.
-  * By default, WSL uses paths of the form `/mnt/c/users/blabla`. However, Docker uses `/c/users/blabla`. You need to change the mount location in WSL. (See also [in this blog post](https://nickjanetakis.com/blog/setting-up-docker-for-windows-and-wsl-to-work-flawlessly#ensure-volume-mounts-work) and the [reference documentation](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#set-wsl-launch-settings).)
-  * Open or create the config file by running `sudo nano /etc/wsl.conf` in WSL and insert this:
-    ```
-    [automount]
-    root = /
-    options = "metadata,umask=22,fmask=11"
-    ```
-    This will also give Windows folders proper permissions in WSL.
-  
-  * There is another problem: Dodona creates a temporary folder in `/tmp` (inside WSL), which is not accessible to Docker. A solution is setting the `TMPDIR` environment variable (in WSL when running Dodona). Set `TMPDIR` to a folder on your Windows drive, like `/c/ubuntu-tmp`. As Dodona will then pass `/c/ubuntu-tmp` to Docker, it will be able to access the folder.
-* This is not specific to Dodona, but when you build Docker images in Windows, you need special care to ensure files have the proper permissions (executable) and have the correct line endings.
+Some gems (such as therubyracer) and dependencies (such as memcached) do not work on Windows.
+You should use [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/about) instead, and run everything inside WSL.
+This means you use WSL for the database, memcached, git, Docker, etc.

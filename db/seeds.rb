@@ -6,6 +6,11 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# separate method as always Submission.create is used instead of a factory
+def submission_summary(status)
+  summary = status == :correct ? 'All tests succeeded.' : "#{Faker::Number.number(digits: 2)} tests failed."
+end
+
 if Rails.env.development?
 
   puts 'Creating institutions'
@@ -74,6 +79,11 @@ if Rails.env.development?
                     user: user
   end
 
+  puts 'Creating labels'
+  %w[red pink purple deep-purple indigo teal orange brown blue-grey].each do |color|
+    Label.create name: Faker::GreekPhilosophers.unique.name, color: color
+  end
+  
   puts 'Creating programming languages'
   ICON_MAP = {
     'python' => 'language-python',
@@ -121,6 +131,15 @@ if Rails.env.development?
   # add some students to the moderated course
   pending = students.sample(60)
   courses[2].pending_members.concat(pending - courses[2].enrolled_members)
+  
+  puts 'Adding labels to courses'
+  courses.each do |course|
+    cl = CourseLabel.create course_id: course.id, name: Faker::CryptoCoin.unique.coin_name, created_at: Time.now, updated_at: Time.now
+    course.enrolled_members.sample(2).each do |student|
+      CourseMembershipLabel.create course_membership_id: CourseMembership.find_by(course_id: course.id, user_id: student.id).id,
+                                   course_label_id: cl.id
+    end
+  end
 
   puts 'Create & clone judge'
 
@@ -207,6 +226,7 @@ if Rails.env.development?
                             skip_rate_limit_check: true,
                             status: status,
                             accepted: status == :correct,
+                            summary: submission_summary(status),
                             code: "print(input())\n",
                             result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
         end
@@ -235,6 +255,7 @@ if Rails.env.development?
                           skip_rate_limit_check: true,
                           course: status_test,
                           status: before,
+                          summary: submission_summary(before),
                           accepted: before == :correct,
                           created_at: before_deadline,
                           code: code,
@@ -247,6 +268,7 @@ if Rails.env.development?
                           skip_rate_limit_check: true,
                           course: status_test,
                           status: after,
+                          summary: submission_summary(after),
                           accepted: after == :correct,
                           created_at: after_deadline,
                           code: code,
@@ -334,6 +356,7 @@ if Rails.env.development?
                     skip_rate_limit_check: true,
                     course: status_test,
                     status: :wrong,
+                    summary: submission_summary(:wrong),
                     accepted: false,
                     created_at: after_deadline,
                     code: '',

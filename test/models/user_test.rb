@@ -24,6 +24,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil create(:user)
   end
 
+  test 'user with emoji in username' do
+    name = '🕴'
+    user = create :user, username: name
+    assert_not_nil user
+    assert_equal user.username, name
+  end
+
   test 'user without username should have token' do
     user = create :user, institution: nil
     assert_not_nil user.token

@@ -2,20 +2,21 @@
 #
 # Table name: courses
 #
-#  id             :integer          not null, primary key
-#  name           :string(255)
-#  year           :string(255)
-#  secret         :string(255)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  description    :text(65535)
-#  visibility     :integer
-#  registration   :integer
-#  color          :integer
-#  teacher        :string(255)      default("")
-#  institution_id :bigint
-#  search         :string(4096)
-#  moderated      :boolean          default(FALSE), not null
+#  id                :integer          not null, primary key
+#  name              :string(255)
+#  year              :string(255)
+#  secret            :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  description       :text(65535)
+#  visibility        :integer
+#  registration      :integer
+#  color             :integer
+#  teacher           :string(255)      default("")
+#  institution_id    :bigint
+#  search            :string(4096)
+#  moderated         :boolean          default(FALSE), not null
+#  enabled_questions :boolean          default(TRUE), not null
 #
 
 require 'test_helper'
@@ -25,6 +26,13 @@ class CourseTest < ActiveSupport::TestCase
     course = create :course
     assert_not_nil course
     assert_not course.secret.blank?
+  end
+
+  test 'create course with emoji' do
+    name = 'Programming 🧑‍💻'
+    course = create :course, name: name
+    assert_not_nil course
+    assert_equal course.name, name
   end
 
   test 'course formatted year should not have spaces' do

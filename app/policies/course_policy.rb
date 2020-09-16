@@ -138,6 +138,10 @@ class CoursePolicy < ApplicationPolicy
     show?
   end
 
+  def questions?
+    course_admin?
+  end
+
   def export?
     return true if zeus?
 
@@ -147,7 +151,7 @@ class CoursePolicy < ApplicationPolicy
   def permitted_attributes
     # record is the Course class on create
     if course_admin? || (record == Course && user&.admin?)
-      %i[name year description visibility registration color teacher institution_id moderated]
+      %i[name year description visibility registration color teacher institution_id moderated enabled_questions]
     else
       []
     end

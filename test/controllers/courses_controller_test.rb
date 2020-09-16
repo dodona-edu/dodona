@@ -551,4 +551,24 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
     assert response.body.include?(courses_url)
   end
+
+  test 'super admins are able to view questions' do
+    super_admins = @admins.reject(&:student?)
+    with_users_signed_in super_admins do |who|
+      # Create some questions so we actually render something
+      submission = create :submission, course: @course
+      create :question, question_state: :answered, submission: submission
+      create :question, question_state: :unanswered, submission: submission
+      create :question, question_state: :in_progress, submission: submission
+      get questions_course_path(@course)
+      assert :ok, "#{who} should be able to view questions"
+    end
+  end
+
+  test 'not admins cannot view questions' do
+    with_users_signed_in @not_admins do |who|
+      get questions_course_path(@course)
+      assert :ok, "#{who} should not be able to view questions"
+    end
+  end
 end

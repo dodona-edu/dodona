@@ -22,12 +22,24 @@
 
 .sign-in-dialog-wrapper h1 {
   line-height: 1;
-  margin-bottom: 15px;
 }
 
 .sign-in-dialog-wrapper h1 small {
   line-height: 2;
   font-size: 50%;
+}
+
+.sign-in-dialog-wrapper h2 {
+  line-height: 1;
+  margin-top: 15px;
+  small {
+    font-size: 50%;
+  }
+}
+
+.sign-in-dialog-footer {
+  padding: 15px;
+  padding-top: 0;
 }
 
 .sign-in-dialog-header {
@@ -47,4 +59,41 @@ a.institution-sign-in:active {
 
 .sign-in-divider .divider {
   margin-top: 45px;
+}
+
+input:focus {
+  outline: none;
+}
+
+#scrollable-dropdown-menu {
+  .card {
+    margin-bottom: 0;
+  }
+  margin-bottom: 150px;
+  .tt-menu {
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: white;
+    width: 100%;
+  }
+
+  .tt-selectable:hover {
+    background-color: lightskyblue;
+  }
+
+  .tt-input, .tt-hint {
+    border: none;
+    font-size: 18px;
+    min-height: 42px;
+    color: @text-color;
+    border-radius: 6px 0 0 6px !important;
+    
+  }
+}
+
+.login-button {
+  display: table-cell;
+  width: 1%;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
 }

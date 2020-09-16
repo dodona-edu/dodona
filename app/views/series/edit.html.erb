@@ -77,14 +77,14 @@
               <% if @series.activities.empty? %>
                 <p id="no-activities" class="text-center"><%= t ".no_activities" %><br><span class="small"><%= t ".no_activities_bis" %></span></p>
               <% end %>
-              <%= render partial: 'activities/series_activities_table', locals: {activities: @series.activities, series: @series, paginate: false, show_buttons_for_present: true} %>
+              <%= render partial: 'activities/series_activities_add_table', locals: {activities: @series.activities, series: @series, paginate: false, show_buttons_for_present: true} %>
             </div>
           </div>
         </div>
         <div class="card-supporting-text card-border">
           <div class="col-xs-12">
             <h4 id="add-activities"><%= t ".add_activities" %></h4>
-            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise]} %>
+            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"]} %>
             <div id="activities-table-wrapper">
             </div>
           </div>

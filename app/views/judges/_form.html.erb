@@ -23,7 +23,7 @@
     </div>
     <span class="help-block col-sm-offset-3 col-sm-6">
       <% if judge.new_record? %>
-        <%= t ".remote-help" %>
+        <%= t ".remote_help" %>
       <% else %>
         <%= t('.remote_cant_be_edited_html') %>
       <% end %>
@@ -32,11 +32,11 @@
   <div class="field form-group">
     <%= f.label :image, :class => "col-sm-3 control-label" %>
     <div class="col-sm-6"><%= f.text_field :image, class: "form-control" %></div>
-    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".image-help" %></span>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".image_help" %></span>
   </div>
   <div class="field form-group">
     <%= f.label :renderer, :class => "col-sm-3 control-label" %>
     <div class="col-sm-6"><%= f.select :renderer, FeedbackTableRenderer.renderers.map {|r| r.to_s}, {}, {class: "form-control"} %></div>
-    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".renderer-help" %></span>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".renderer_help" %></span>
   </div>
 <% end %>

@@ -1,0 +1,21 @@
+nl:
+  lti:
+    content_selection:
+      intro: Kies hieronder welke cursus, reeks of leeractiviteit je wilt toevoegen.
+      course_title: Cursus
+      course_select: Kies een cursus om reeksen en leeractiviteiten te zien
+      no_content: Dodona ondersteunt geen inhoud voor de types %{types}.
+      confirm: Bevestigen
+    series_and_activities:
+      series_title: Reeks
+      series_select: Kies een reeks of kies niets om een cursus te kiezen
+      activity_title: Activiteit
+      activity_select: Kies een leeractiviteit of kies niets om een reeks te kiezen
+      multiple: Gebruik Ctrl of Command om meerdere activiteiten te kiezen
+    redirect:
+      first_time: Aangezien dit de eerste keer is dat je je aanmeldt bij Dodona via dit leerplatform, dien je eenmalig aan te melden in een nieuw venster.
+      login: Aanmelden in een nieuw venster
+      after: Nadat je aangemeld bent, moet je dit venster sluiten en de actie opnieuw uitvoeren.
+      after_clicked: Nu je aangemeld bent, moet je dit venster sluiten en opnieuw openen.
+    redirected:
+      message: Je bent nu aangemeld bij Dodona als %{name}. Sluit deze pagina en ga terug naar de leeromgeving om verder te gaan.

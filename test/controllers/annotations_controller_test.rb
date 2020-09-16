@@ -149,3 +149,275 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 end
+
+# Separate class, since this needs separate setup
+class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
+  def setup
+    questionable_course = create :course, enabled_questions: true
+    @submission = create :correct_submission, code: "line1\nline2\nline3\n", course: questionable_course
+    sign_in @submission.user
+  end
+
+  test 'student can create a question' do
+    post submission_annotations_url(@submission), params: {
+      question: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :created
+    assert @submission.questions.any?
+  end
+
+  test 'student cannot create a question if disabled for course' do
+    course = create :course, enabled_questions: false
+    submission = create :submission, course: course
+    sign_in submission.user
+
+    post submission_annotations_url(submission), params: {
+      question: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :forbidden
+
+    assert_equal submission.user.questions.count, 0, 'Student is not allowed to create questions'
+  end
+
+  test 'student cannot create question if no course' do
+    submission = create :submission, course: nil
+    sign_in submission.user
+
+    post submission_annotations_url(submission), params: {
+      question: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :forbidden
+
+    assert_equal submission.user.questions.count, 0, 'Student is not allowed to create questions without course'
+  end
+
+  test 'random user cannot create question' do
+    sign_in create(:user)
+    post submission_annotations_url(@submission), params: {
+      question: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :forbidden
+  end
+
+  test 'zeus cannot create question' do
+    sign_in create(:zeus)
+    post submission_annotations_url(@submission), params: {
+      annotation: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :created
+    assert_not @submission.questions.any?
+  end
+
+  test 'staff cannot create question' do
+    sign_in create(:staff)
+    post submission_annotations_url(@submission), params: {
+      question: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :forbidden
+  end
+
+  test 'course admin cannot create question' do
+    admin = create(:staff)
+    @submission.course.administrating_members = [admin]
+    sign_in admin
+    post submission_annotations_url(@submission), params: {
+      annotation: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :created
+    assert_not @submission.questions.any?
+  end
+
+  test 'questions can transition from unanswered' do
+    zeus = create :zeus
+    staff = create :staff
+    @submission.course.administrating_members = [create(:staff)]
+    admin = @submission.course.administrating_members[0]
+    random = create :user
+
+    users = [[zeus, true], [staff, false], [admin, true], [random, false]]
+
+    users.each do |user, valid|
+      sign_in user
+
+      # Unanswered -> in progress
+      question = create :question, submission: @submission, question_state: :unanswered
+      post in_progress_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response valid ? :ok : :forbidden
+
+      # Unanswered -> answered
+      question = create :question, submission: @submission, question_state: :unanswered
+      post resolve_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response valid ? :ok : :forbidden
+
+      # Unanswered -> unanswered
+      question = create :question, submission: @submission, question_state: :unanswered
+      post unresolve_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response :forbidden
+
+      sign_out user
+    end
+  end
+
+  test 'a student can mark their own questions answered' do
+    # Unanswered -> answered
+    question = create :question, submission: @submission, question_state: :unanswered
+    post resolve_annotation_path(question), params: {
+      format: :json
+    }
+    assert_response :ok
+
+    # Answered -> answered
+    question = create :question, submission: @submission, question_state: :answered
+    post resolve_annotation_path(question), params: {
+      format: :json
+    }
+    assert_response :forbidden
+
+    # In progress -> answered
+    question = create :question, submission: @submission, question_state: :in_progress
+    post resolve_annotation_path(question), params: {
+      format: :json
+    }
+    assert_response :ok
+  end
+
+  test 'questions can transition from in_progress' do
+    zeus = create :zeus
+    staff = create :staff
+    @submission.course.administrating_members = [create(:staff)]
+    admin = @submission.course.administrating_members[0]
+    random = create :user
+
+    users = [[zeus, true], [staff, false], [admin, true], [random, false]]
+    users.each do |user, valid|
+      sign_in user
+
+      # In progress -> in progress
+      question = create :question, submission: @submission, question_state: :in_progress
+      post in_progress_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response :forbidden
+
+      # In progress -> answered
+      question = create :question, submission: @submission, question_state: :in_progress
+      post resolve_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response valid ? :ok : :forbidden
+
+      # In progress -> unanswered
+      question = create :question, submission: @submission, question_state: :in_progress
+      post unresolve_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response valid ? :ok : :forbidden
+
+      sign_out user
+    end
+  end
+
+  test 'questions can transition from answered' do
+    zeus = create :zeus
+    staff = create :staff
+    @submission.course.administrating_members = [create(:staff)]
+    admin = @submission.course.administrating_members[0]
+    random = create :user
+
+    users = [[zeus, true], [staff, false], [admin, true], [random, false]]
+    users.each do |user, valid|
+      sign_in user
+
+      # Answered -> in progress
+      question = create :question, submission: @submission, question_state: :answered
+      post in_progress_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response valid ? :ok : :forbidden
+
+      # Answered -> answered
+      question = create :question, submission: @submission, question_state: :answered
+      post resolve_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response :forbidden
+
+      # Answered -> unanswered
+      question = create :question, submission: @submission, question_state: :answered
+      post unresolve_annotation_path(question), params: {
+        format: :json
+      }
+      assert_response valid ? :ok : :forbidden
+
+      sign_out user
+    end
+  end
+
+  test 'cannot delete if question was answered' do
+    question = create :question, submission: @submission, question_state: :answered
+
+    delete annotation_url(question)
+    assert_not response.successful?
+
+    question = create :question, submission: @submission, question_state: :unanswered
+
+    delete annotation_url(question)
+    assert_response :no_content
+  end
+
+  test 'cannot modify if question was answered' do
+    question = create :question, submission: @submission, question_state: :answered
+
+    put annotation_path(question), params: {
+      annotation: {
+        annotation_text: 'Changed'
+      },
+      format: :json
+    }
+    assert_response :forbidden
+
+    question = create :question, submission: @submission, question_state: :unanswered
+
+    put annotation_path(question), params: {
+      question: {
+        annotation_text: 'Changed'
+      },
+      format: :json
+    }
+    assert_response :success
+  end
+end

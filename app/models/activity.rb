@@ -5,6 +5,8 @@
 #  id                      :integer          not null, primary key
 #  name_nl                 :string(255)
 #  name_en                 :string(255)
+#  description_nl_present  :boolean
+#  description_en_present  :boolean
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  path                    :string(255)
@@ -42,6 +44,7 @@ class Activity < ApplicationRecord
   enum status: { ok: 0, not_valid: 1, removed: 2 }
 
   belongs_to :repository
+  belongs_to :judge, optional: true
   belongs_to :programming_language, optional: true
   has_many :activity_read_states, dependent: :destroy
   has_many :activity_statuses, dependent: :destroy
@@ -75,6 +78,13 @@ class Activity < ApplicationRecord
   scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
   scope :by_type, ->(type) { where(type: type) }
+  scope :by_judge, ->(judge) { where(judge_id: judge) }
+  scope :by_description_languages, lambda { |languages|
+    by_language = all # allow chaining of scopes
+    by_language = by_language.where(description_en_present: true) if languages.include? 'en'
+    by_language = by_language.where(description_nl_present: true) if languages.include? 'nl'
+    by_language
+  }
 
   def content_page?
     false

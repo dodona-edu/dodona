@@ -1,4 +1,4 @@
-export type AnnotationType = "error" | "info" | "user" | "warning";
+export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
 
 export abstract class Annotation {
     private static idCounter = 0;
@@ -33,6 +33,18 @@ export abstract class Annotation {
         // Do nothing.
     }
 
+    protected resolve(): void {
+        // Do nothing.
+    }
+
+    protected inProgress(): void {
+        // Do nothing.
+    }
+
+    protected unresolve(): void {
+        // Do nothing.
+    }
+
     public get global(): boolean {
         return this.line === null;
     }
@@ -63,10 +75,49 @@ export abstract class Annotation {
             const link = document.createElement("a");
             link.addEventListener("click", () => this.edit());
             link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
-            link.title = I18n.t("js.user_annotation.edit");
+            link.title = this.editTitle;
 
             const icon = document.createElement("i");
             icon.classList.add("mdi", "mdi-pencil");
+            link.appendChild(icon);
+
+            header.appendChild(link);
+        }
+
+        if (this.resolvable) {
+            const link = document.createElement("a");
+            link.addEventListener("click", () => this.resolve());
+            link.classList.add("btn", "btn-icon", "question-control-button", "question-resolve");
+            link.title = I18n.t("js.user_question.resolve");
+
+            const icon = document.createElement("i");
+            icon.classList.add("mdi", "mdi-check");
+            link.appendChild(icon);
+
+            header.appendChild(link);
+        }
+
+        if (this.inProgressable) {
+            const link = document.createElement("a");
+            link.addEventListener("click", () => this.inProgress());
+            link.classList.add("btn", "btn-icon", "question-control-button", "question-in_progress");
+            link.title = I18n.t("js.user_question.in_progress");
+
+            const icon = document.createElement("i");
+            icon.classList.add("mdi", "mdi-comment-processing-outline");
+            link.appendChild(icon);
+
+            header.appendChild(link);
+        }
+
+        if (this.unresolvable) {
+            const link = document.createElement("a");
+            link.addEventListener("click", () => this.unresolve());
+            link.classList.add("btn", "btn-icon", "question-control-button", "question-unresolve");
+            link.title = I18n.t("js.user_question.unresolve");
+
+            const icon = document.createElement("i");
+            icon.classList.add("mdi", "mdi-restart");
             link.appendChild(icon);
 
             header.appendChild(link);
@@ -89,18 +140,36 @@ export abstract class Annotation {
             // Body.
             this.__html.appendChild(this.header);
             this.__html.appendChild(this.body);
+            // Ask MathJax to search for math in the annotations
+            if (window.MathJax === undefined) {
+                console.error("MathJax is not initialized");
+            } else {
+                window.MathJax.typeset();
+            }
         }
 
         return this.__html;
     }
 
     get important(): boolean {
-        return this.type === "error" || this.type === "user";
+        return this.type === "error" || this.type === "user" || this.type == "question";
     }
 
     protected abstract get meta(): string;
 
     public get modifiable(): boolean {
+        return false;
+    }
+
+    public get resolvable(): boolean {
+        return false;
+    }
+
+    public get inProgressable(): boolean {
+        return false;
+    }
+
+    public get unresolvable(): boolean {
         return false;
     }
 
@@ -125,6 +194,10 @@ export abstract class Annotation {
     }
 
     protected abstract get title(): string;
+
+    protected get editTitle(): string {
+        return "";
+    }
 
     public async update(data): Promise<Annotation> {
         // Do nothing.

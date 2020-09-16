@@ -84,6 +84,13 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should show activity info when programming language is nil' do
+    stub_all_activities!
+    @instance.update(programming_language: nil)
+    get info_activity_url(@instance)
+    assert_response :success
+  end
+
   test 'should rescue from exercise not found' do
     not_id = Random.rand(10_000)
     begin
@@ -115,6 +122,14 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal 'image/png', response.content_type
+  end
+
+  test 'exercises media should redirect to activities media' do
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+    get media_exercise_url(@instance, 'icon.png')
+
+    assert_response :success
+    assert_equal response.content_type, 'image/png'
   end
 
   test 'should not get private media' do
@@ -159,6 +174,43 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     get activities_url(format: :json, type: Exercise.name)
     assert_equal 1, JSON.parse(response.body).count
     assert_equal ex.id, JSON.parse(response.body)[0]['id']
+  end
+
+  test 'should get activities with certain description languages available' do
+    # @instance has a Dutch and Englisch description
+    get activities_url(format: :json, description_languages: ['en'])
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
+
+    get activities_url(format: :json, description_languages: ['nl'])
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
+
+    get activities_url(format: :json, description_languages: %w[en nl])
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
+
+    # create exercises to obtain all possible condition combinations
+    create :exercise, description_en_present: true
+    create :exercise, description_nl_present: true
+    create :exercise, description_nl_present: true, description_en_present: true
+
+    get activities_url(format: :json, description_languages: ['nl'])
+    assert_equal 3, JSON.parse(response.body).count
+    get activities_url(format: :json, description_languages: ['en'])
+    assert_equal 3, JSON.parse(response.body).count
+    get activities_url(format: :json, description_languages: [])
+    assert_equal Exercise.count, JSON.parse(response.body).count # should yield all exercises
+  end
+
+  test 'should get activities filtered by judge' do
+    judge = @instance.judge
+    get activities_url(format: :json, judge_id: judge.id)
+    assert_equal 1, JSON.parse(response.body).count
+    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
+
+    get activities_url(format: :json, judge_id: Judge.all.last.id + 1)
+    assert_equal 0, JSON.parse(response.body).count
   end
 
   test 'should get available activities for series' do

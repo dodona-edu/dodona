@@ -2,6 +2,7 @@
 
 import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop.js";
+import { initTokenClickables } from "./util.js";
 
 const DRAG_AND_DROP_ARGS = {
     table_selector: ".series-activity-list tbody",
@@ -57,19 +58,6 @@ function initSeriesEdit() {
                     addingActivityFailed($row);
                 });
             return false;
-        });
-    }
-
-    function initTokenClickables() {
-        const $clickableTokens = $(".clickable-token");
-        $clickableTokens.off("click");
-        $clickableTokens.click(function () {
-            const $htmlElement = $(this);
-            const type = $htmlElement.data("type");
-            const name = $htmlElement.data("name");
-            if (dodona.addTokenToSearch) {
-                dodona.addTokenToSearch(type, name);
-            }
         });
     }
 

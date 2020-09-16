@@ -1,5 +1,10 @@
 declare interface Window {
     dodona: any;
+    MathJax: MathJaxObject;
+}
+
+declare class MathJaxObject {
+    typeset() :void;
 }
 
 declare module I18n {

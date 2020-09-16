@@ -29,6 +29,15 @@ class Repository < ApplicationRecord
 
   belongs_to :judge
   has_many :activities, dependent: :restrict_with_error
+  has_many :labels,
+           through: :activities,
+           source: :labels
+  has_many :programming_languages,
+           through: :activities,
+           source: :programming_language
+  has_many :judges,
+           through: :activities,
+           source: :judge
   has_many :repository_admins, dependent: :restrict_with_error
   has_many :admins,
            through: :repository_admins,
@@ -187,6 +196,9 @@ class Repository < ApplicationRecord
     act.description_format = Activity.determine_format(act.full_path)
     act.name_en = config['description']&.fetch('names', nil)&.fetch('en', nil)
     act.name_nl = config['description']&.fetch('names', nil)&.fetch('nl', nil)
+    languages = act.description_languages
+    act.description_nl_present = languages.include? 'nl'
+    act.description_en_present = languages.include? 'en'
     act.labels = labels
     act.status = :ok
     act.type = type

@@ -1,4 +1,5 @@
 json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :created_at, :updated_at
+json.extract! annotation, :question_state if annotation.is_a?(Question)
 json.rendered_markdown markdown(annotation.annotation_text)
 json.submission_url submission_url(annotation.submission, format: :json)
 json.url annotation_url(annotation, format: :json)
@@ -9,5 +10,9 @@ end
 json.permission do
   json.update policy(annotation).update?
   json.destroy policy(annotation).destroy?
+  json.unresolve policy(annotation).unresolve?
+  json.in_progress policy(annotation).in_progress?
+  json.resolve policy(annotation).resolve?
 end
 json.released AnnotationPolicy.new(annotation.submission.user, annotation).show?
+json.type annotation.type&.downcase

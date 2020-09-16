@@ -1,0 +1,124 @@
+<% get_activity_path ||= method(:activity_path) %>
+<% if defined? user
+     user = user || current_user
+   else
+     user = current_user
+   end %>
+
+<div class="table-scroll-wrapper">
+  <table class="table activity-table table-resource">
+    <thead>
+    <tr>
+      <th class='status-icon'></th>
+      <th class='type-icon'></th>
+      <th><%= t "activities.index.activity_title" %></th>
+      <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
+        <th class='count hidden-xs'>
+          <% if @course %>
+            <%= t "activities.index.class_progress" %>
+            <% unless series.progress_enabled %>
+              <i class="mdi mdi-eye-off mdi-12 progress_visibility"
+               data-toggle="tooltip"
+               data-placement="top"
+               title="<%= t('activities.index.class_progress_visibility_disabled') %>"
+              >
+              </i>
+            <% end %>
+          <% end %>
+        </th>
+      <% end %>
+      <% if user_signed_in? %>
+        <th class='status ellipsis-overflow' title="<%= t "activities.index.status" %>"><%= t "activities.index.status" %></th>
+        <th class='status-icon'></th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% local_assigns[:activities].each do |activity| %>
+      <tr>
+        <td class='status-icon'>
+          <% if user_signed_in? %>
+            <% if current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course) %>
+              <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
+            <% end %>
+            <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
+          <% end %>
+        </td>
+
+        <td class='type-icon'>
+          <% if activity.exercise? %>
+            <i class="<%= "mdi mdi-#{activity.programming_language&.icon} mdi-18" %>" title="<%= "#{t "activities.index.type.exercise_language", language: activity.programming_language&.name&.titleize}" %>"></i>
+          <% elsif activity.content_page? %>
+            <i class="mdi mdi-book-open-variant mdi-18" title="<%= t "activities.index.type.content" %>"></i>
+          <% end %>
+        </td>
+
+        <td>
+          <% if activity.accessible?(current_user, @course) %>
+            <%= link_to activity.name, get_activity_path.call(activity) %>
+          <% elsif activity.access_public? %>
+            <%= link_to activity.name, activity_path(activity) %>
+          <% else %>
+            <%= activity.name %>
+          <% end %>
+        </td>
+
+        <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
+          <td class="hidden-xs">
+            <% if activity.exercise? %>
+              <% if @course %>
+                <%= render partial: 'application/progress_chart',
+                  locals: {
+                    total: @course.subscribed_members_count,
+                    tried: activity.users_tried(course: @course),
+                    correct: activity.users_correct(course: @course),
+                    info_tried: 'activities.index.progress_chart_info_tried',
+                    info_correct: 'activities.index.progress_chart_info_correct'
+                  }
+                %>
+              <% else %>
+                <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-right text-muted" do %>
+                  <%= activity.users_correct %>/<%= activity.users_tried %>
+                <% end %>
+              <% end %>
+            <% elsif activity.content_page? %>
+              <% if @course %>
+                <%= render partial: 'application/read_chart',
+                  locals: {
+                    total: @course.subscribed_members_count,
+                    read: activity.users_read(course: @course),
+                    info_read: 'activities.index.progress_chart_info_read'
+                  }
+                %>
+              <% else %>
+                <%= content_tag :span, title: t('activities.activity.read_tooltip'), class: "text-right text-muted" do %>
+                  <%= t 'activities.activity.read_by', count: activity.users_read %>
+                <% end %>
+              <% end %>
+            <% end %>
+          </td>
+        <% end %>
+
+        <% if user_signed_in? %>
+          <td>
+            <%= render partial: 'activities/user_status', locals: {activity: activity, series: local_assigns[:series], user: user} %>
+          </td>
+          <td>
+            <% if activity.exercise? && (activity.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course)) %>
+              <% options = current_user == user ? {} : {user_id: user.id} %>
+              <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
+                          title: t('layout.menu.my_submissions'),
+                          class: 'btn-icon' do %>
+                <i class="mdi mdi-chevron-right mdi-18"></i>
+              <% end %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<% if activities.try(:total_pages) %>
+  <center><%= page_navigation_links activities, true, "activities" %></center>
+<% end %>

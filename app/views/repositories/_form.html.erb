@@ -23,7 +23,7 @@
     </div>
     <span class="help-block col-sm-offset-3 col-sm-6">
       <% if repository.new_record? %>
-        <%= t ".remote-help" %>
+        <%= t ".remote_help" %>
       <% else %>
         <%= t('.remote_cant_be_edited_html') %>
       <% end %>
@@ -32,6 +32,6 @@
   <div class="field form-group">
     <%= f.label :judge, :class => "col-sm-3 control-label" %>
     <div class="col-sm-6"><%= f.select :judge_id, Judge.all.collect {|j| [j.name, j.id]}, {}, {class: "form-control"} %></div>
-    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".judge-help" %></span>
+    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".judge_help" %></span>
   </div>
 <% end %>

@@ -24,16 +24,6 @@ class Question < Annotation
 
   default_scope { order(created_at: :desc) }
 
-  # Fix for routing. Otherwise it would require question_url instead of the annotation_url
-  def self.model_name
-    superclass.model_name
-  end
-
-  # Fix the above fix
-  def self.policy_class
-    QuestionPolicy
-  end
-
   def to_partial_path
     'annotations/annotation'
   end

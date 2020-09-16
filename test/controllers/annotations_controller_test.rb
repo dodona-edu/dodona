@@ -160,7 +160,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
 
   test 'student can create a question' do
     post submission_annotations_url(@submission), params: {
-      annotation: {
+      question: {
         line_nr: 1,
         annotation_text: 'Ik heb een vraag over mijn code - Lijn'
       },
@@ -176,7 +176,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     sign_in submission.user
 
     post submission_annotations_url(submission), params: {
-      annotation: {
+      question: {
         line_nr: 1,
         annotation_text: 'Ik heb een vraag over mijn code - Lijn'
       },
@@ -192,7 +192,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     sign_in submission.user
 
     post submission_annotations_url(submission), params: {
-      annotation: {
+      question: {
         line_nr: 1,
         annotation_text: 'Ik heb een vraag over mijn code - Lijn'
       },
@@ -206,7 +206,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   test 'random user cannot create question' do
     sign_in create(:user)
     post submission_annotations_url(@submission), params: {
-      annotation: {
+      question: {
         line_nr: 1,
         annotation_text: 'Ik heb een vraag over mijn code - Lijn'
       },
@@ -231,7 +231,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   test 'staff cannot create question' do
     sign_in create(:staff)
     post submission_annotations_url(@submission), params: {
-      annotation: {
+      question: {
         line_nr: 1,
         annotation_text: 'Ik heb een vraag over mijn code - Lijn'
       },
@@ -413,7 +413,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     question = create :question, submission: @submission, question_state: :unanswered
 
     put annotation_path(question), params: {
-      annotation: {
+      question: {
         annotation_text: 'Changed'
       },
       format: :json

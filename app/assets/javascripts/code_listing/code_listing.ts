@@ -452,8 +452,9 @@ export class CodeListing {
             };
 
             try {
+                const mode = this.questionMode ? "question" : "annotation";
                 const annotation = await createUserAnnotation(annotationData, this.submissionId,
-                    (a, cb) => this.createUpdateAnnotationForm(a, cb));
+                    (a, cb) => this.createUpdateAnnotationForm(a, cb), mode);
                 this.addAnnotation(annotation);
                 form.remove();
             } catch (err) {

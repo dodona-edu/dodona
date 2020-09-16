@@ -74,7 +74,7 @@ export class QuestionAnnotation extends UserAnnotation {
             headers: { "Content-Type": "application/json" },
             method: "PATCH",
             body: JSON.stringify({
-                annotation: formData
+                question: formData
             })
         });
         const data = await response.json();
@@ -135,11 +135,11 @@ function annotationFromData(data: UserAnnotationData,
 
 export async function createUserAnnotation(formData: UserAnnotationFormData,
     submissionId: number,
-    editFn: UserAnnotationEditor): Promise<UserAnnotation> {
+    editFn: UserAnnotationEditor, mode: string = "annotation"): Promise<UserAnnotation> {
     const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ annotation: formData })
+        body: JSON.stringify({ [mode]: formData })
     });
     const data = await response.json();
 

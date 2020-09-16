@@ -27,7 +27,7 @@ class AnnotationsController < ApplicationController
     authorize @annotation
     respond_to do |format|
       if @annotation.save
-        format.json { render :show, status: :created, location: @annotation, as: Annotation }
+        format.json { render :show, status: :created, location: @annotation.becomes(Annotation), as: Annotation }
       else
         format.json { render json: @annotation.errors, status: :unprocessable_entity }
       end
@@ -37,7 +37,7 @@ class AnnotationsController < ApplicationController
   def update
     respond_to do |format|
       if @annotation.update(permitted_attributes(@annotation))
-        format.json { render :show, status: :ok, location: @annotation }
+        format.json { render :show, status: :ok, location: @annotation.becomes(Annotation) }
       else
         format.json { render json: @annotation.errors, status: :unprocessable_entity }
       end
@@ -47,21 +47,21 @@ class AnnotationsController < ApplicationController
   def unresolve
     @annotation.unanswered!
     respond_to do |format|
-      format.json { render :show, status: :ok, location: @annotation }
+      format.json { render :show, status: :ok, location: @annotation.becomes(Annotation) }
     end
   end
 
   def in_progress
     @annotation.in_progress!
     respond_to do |format|
-      format.json { render :show, status: :ok, location: @annotation }
+      format.json { render :show, status: :ok, location: @annotation.becomes(Annotation) }
     end
   end
 
   def resolve
     @annotation.answered!
     respond_to do |format|
-      format.json { render :show, status: :ok, location: @annotation }
+      format.json { render :show, status: :ok, location: @annotation.becomes(Annotation) }
     end
   end
 

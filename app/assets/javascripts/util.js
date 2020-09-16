@@ -183,6 +183,24 @@ function initTokenClickables() {
     });
 }
 
+/**
+ * Make an element invisible by applying "visibility: hidden".
+ *
+ * @param {HTMLElement} element The element to hide.
+ */
+function makeInvisible(element) {
+    element.style.visibility = "hidden";
+}
+
+/**
+ * Make an element visible by applying "visibility: visible".
+ *
+ * @param {HTMLElement} element The element to show.
+ */
+function makeVisible(element) {
+    element.style.visibility = "visible";
+}
+
 export {
     delay,
     fetch,
@@ -195,5 +213,7 @@ export {
     initCSRF,
     tooltip,
     initTooltips,
-    initTokenClickables
+    initTokenClickables,
+    makeInvisible,
+    makeVisible
 };

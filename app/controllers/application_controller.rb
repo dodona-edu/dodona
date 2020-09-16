@@ -39,6 +39,10 @@ class ApplicationController < ActionController::Base
     policy.script_src(*sources)
   end
 
+  content_security_policy do |policy|
+    policy.frame_ancestors '*'
+  end
+
   def after_sign_in_path_for(_resource)
     stored_location_for(:user) || root_path
   end

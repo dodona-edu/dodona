@@ -1,0 +1,42 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'lti' %>
+<% end %>
+
+<div class="row">
+  <p class="col-xs-12">
+    <%= t ".intro" %>
+  </p>
+</div>
+
+<% if @supported %>
+  <label for="lti_content_selection_course"><%= t ".course_title" %></label>
+  <select id="lti_content_selection_course" class="form-control">
+    <option value=""><%= t ".course_select" %></option>
+    <% @grouped_courses.each do |year, courses| %>
+      <optgroup label="<%= Course.format_year year %>">
+        <% courses.each do |course| %>
+          <option value="<%= course.id %>"><%= course.name %></option>
+        <% end %>
+      </optgroup>
+    <% end %>
+  </select>
+  <div id="lti-progress" class="dodona-progress dodona-progress-indeterminate">
+    <div class="progressbar bar bar1" style="width: 0%;"></div>
+    <div class="bufferbar bar bar2" style="width: 100%;"></div>
+    <div class="auxbar bar bar3" style="width: 0%;"></div>
+  </div>
+<% else %>
+  <%= t ".no_content", types: @lti_message.accept_types %>
+<% end %>
+
+<div id="series" style="padding-bottom: 10px"></div>
+
+<button class="btn btn-primary btn-lg" style="visibility: hidden" id="lti_content_selection_confirm"><%= t ".confirm" %></button>
+<script>
+    window.dodona.initLtiContentSelection(
+        "<%= content_selection_path %>",
+        "<%= @lti_message.return_url.html_safe %>",
+        <%= @lti_message.accept_multiple %>,
+        <%= @lti_message.to_json.html_safe %>
+    );
+</script>

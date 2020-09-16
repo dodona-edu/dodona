@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="<%= I18n.locale.to_s %>" class="lti-frame">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= yield :meta_tags %>
+  <title>Dodona<%= " - #{@title}" if @title %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://cdn.materialdesignicons.com/5.2.45/css/materialdesignicons.min.css" rel="stylesheet" type='text/css'>
+  <% if session[:dark].nil? %>
+    <%= stylesheet_link_tag "application-dark", media: '(prefers-color-scheme: dark)' %>
+    <%= stylesheet_link_tag "application", media: '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)' %>
+    <script>
+      window.dodona = window.dodona || {};
+      window.dodona.darkMode = false;
+      window.dodona.hideDrawer = true;
+
+      const lightModeCSS = '<%= stylesheet_link_tag "application", media: "all" %>';
+      document.addEventListener("DOMContentLoaded", () => {
+          if (window.matchMedia("(prefers-color-scheme)").media === "not all") {
+              document.head.insertAdjacentHTML("beforeend", lightModeCSS);
+          }
+      });
+    </script>
+  <% else %>
+    <%= stylesheet_link_tag "application#{session[:dark] ? '-dark' : ''}", media: 'all' %>
+    <script>
+      window.dodona = window.dodona || {};
+      window.dodona.darkMode = <%= session.include?(:dark) && session[:dark] %>;
+      window.dodona.hideDrawer = true;
+    </script>
+  <% end %>
+
+  <%= javascript_pack_tag 'application' %>
+  <%= javascript_include_tag 'application' %>
+  <%= yield :javascripts %>
+  <%= render 'layouts/ga_analytics' %>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+</head>
+<body>
+<%= render 'layouts/main_container' %>
+<div class="toasts"></div>
+<script>
+    I18n = I18n || {};
+    I18n.locale = "<%= I18n.locale %>";
+    dodona.checkTimeZone(<%= @time_zone_offset %>);
+</script>
+</body>
+</html>

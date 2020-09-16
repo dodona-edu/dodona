@@ -7,6 +7,10 @@
 <% end %>
 <%= render 'navbar_links' %>
 
+<% if @not_registered && @lti_launch %>
+  <%= render 'courses/not_a_member_dialog' %>
+<% end %>
+
 <% if @series.present?
   previous_activity, next_activity = previous_next_activity_path(@series, @activity)
   previous_link = previous_activity || breadcrumb_series_path(@series, current_user)

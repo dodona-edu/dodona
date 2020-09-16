@@ -140,6 +140,9 @@ nl:
       not_logged_in: Je moet ingelogd zijn om je te registreren
       key_mismatch: De sleutel kwam niet overeen
       registration_closed: "Registratie gesloten."
+      lti_title: Welkom
+      lti: "We merken dat je een link volgde uit %{lms}, maar dat je nog niet bent ingeschreven voor deze cursus. Klik op registreren om dat wel te doen zodat de lesgever je kan opvolgen."
+      lms_default: "een andere leeromgeving"
     favorite:
       succeeded: "Cursus aan favorieten toegevoegd"
       failed: "Cursus aan favorieten toevoegen mislukt"

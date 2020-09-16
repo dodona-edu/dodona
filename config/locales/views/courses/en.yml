@@ -144,6 +144,9 @@ en:
       not_logged_in: You need to be logged in to register
       key_mismatch: "The key didn't match"
       registration_closed: "Registration closed."
+      lti_title: Welkom
+      lti: "We've noticed you followed a link from %{lms}, but you're not registered for this course yet. Click on register to enable the course administrator to follow your progress."
+      lms_default: "another learning environment"
     favorite:
       succeeded: "Course favorited"
       failed: "Failed favoriting course"

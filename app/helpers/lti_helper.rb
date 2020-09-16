@@ -1,6 +1,9 @@
 require_relative '../../lib/LTI/messages.rb'
 
 module LtiHelper
+  include LTI::JWK
+  include LTI::Messages
+
   def lti_resource_links_from(params)
     activity_ids = params[:lti][:activities] || []
     series_id = params[:lti][:series]

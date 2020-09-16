@@ -177,7 +177,11 @@ nl:
         to_in_progress: "Vraag in behandeling plaatsen"
         to_resolved: "Vraag als beantwoord markeren"
         to_unresolved: "Vraag als onbeantwoord markeren"
-      warning: Vragen zijn uitgeschakeld. Schakel dit in in de cursusopties.
+      status:
+        disabled: Vragen zijn uitgeschakeld.
+        enabled: Vragen zijn ingeschakeld.
+        enable: Schakel vragen in.
+        disable: Schakel vragen uit.
   submissions:
     show:
       questions:

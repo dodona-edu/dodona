@@ -131,6 +131,7 @@ class CoursesController < ApplicationController
       if @course.update(permitted_attributes(@course))
         format.html { redirect_to @course, notice: I18n.t('controllers.updated', model: Course.model_name.human) }
         format.json { render :show, status: :ok, location: @course }
+        format.js { render :reload_questions }
       else
         format.html { render :edit }
         format.json { render json: @course.errors, status: :unprocessable_entity }
@@ -194,7 +195,6 @@ class CoursesController < ApplicationController
     @title = I18n.t('courses.questions.questions.title')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.questions.questions.title'), '#']]
 
-    flash.now[:notice] = t('courses.questions.warning') unless @course.enabled_questions?
     @refresh = params.fetch(:refresh, @course.enabled_questions?)
     @questions = @course.questions
     @open = @course.open_questions.paginate(page: parse_pagination_param(params[:open_page]), per_page: 10)

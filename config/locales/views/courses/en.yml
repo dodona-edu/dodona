@@ -181,7 +181,11 @@ en:
         to_in_progress: "Move question to in progress"
         to_resolved: "Mark question as answered"
         to_unresolved: "Mark question as unresolved"
-      warning: Questions are disabled. Enable them in the course options.
+      status:
+        disabled: Questions are disabled.
+        enabled: Questions are enabled.
+        enable: Enable them.
+        disable: Disable them.
   submissions:
     show:
       questions:

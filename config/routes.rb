@@ -102,6 +102,7 @@ Rails.application.routes.draw do
         get 'subscribe/:secret', to: 'courses#registration', as: 'registration'
         get 'manage_series'
         get 'scoresheet'
+        get 'questions'
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'
@@ -163,6 +164,14 @@ Rails.application.routes.draw do
     end
 
     resources :annotations, only: %i[index show create update destroy]
+
+    resources :annotations, format: :json do
+      member do
+        post 'unresolve'
+        post 'in_progress'
+        post 'resolve'
+      end
+    end
 
     resources :submissions, only: %i[index show create edit] do
       resources :annotations, only: %i[index create], as: 'submission_annotations'

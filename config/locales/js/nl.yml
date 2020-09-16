@@ -97,6 +97,12 @@ nl:
         info: Opmerking
         user: Commentaar
         warning: Waarschuwing
+        question: Vraag
+    question:
+      state:
+        unanswered: Onbeantwoord
+        answered: Beantwoord
+        in_progress: In behandeling
     code:
       copy-to-clipboard: Kopieer code naar klembord
     user_annotation:
@@ -111,3 +117,14 @@ nl:
         annotation_text: 'Annotatie tekst'
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'
       not_released: Deze annotatie is nog niet zichtbaar voor studenten
+    user_question:
+      meta: "%{user} · %{time} · %{state}"
+      update: 'Vraag aanpassen'
+      send: 'Vraag stellen'
+      edit: 'Vraag aanpassen'
+      delete_confirm: 'Ben je zeker dat je deze vraag wilt verwijderen?'
+      resolve: 'Als beantwoord markeren'
+      in_progress: 'In behandeling markeren'
+      unresolve: Vraag terug openen
+      deleted: Deze vraag is verwijderd door een andere gebruiker
+      conflict: De status van deze vraag is al aangepast door een andere gebruiker

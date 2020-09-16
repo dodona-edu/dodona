@@ -10,6 +10,8 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  evaluation_id   :bigint
+#  type            :string(255)      default("Annotation"), not null
+#  question_state  :integer
 #
 require 'test_helper'
 

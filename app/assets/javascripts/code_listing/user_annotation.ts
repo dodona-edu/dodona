@@ -1,4 +1,4 @@
-import { Annotation } from "code_listing/annotation";
+import { Annotation, AnnotationType } from "code_listing/annotation";
 import { fetch } from "util.js";
 
 export interface UserAnnotationFormData {
@@ -13,7 +13,7 @@ interface UserAnnotationUserData {
     name: string;
 }
 
-interface UserAnnotationPermissionData {
+export interface UserAnnotationPermissionData {
     update: boolean;
     destroy: boolean;
 }
@@ -29,10 +29,11 @@ export interface UserAnnotationData {
     evaluation_id: number | null;
     url: string;
     user: UserAnnotationUserData;
+    type: string;
 }
 
 export class UserAnnotation extends Annotation {
-    private readonly editor: UserAnnotationEditor;
+    protected readonly editor: UserAnnotationEditor;
 
     public readonly createdAt: string;
     public readonly id: number;
@@ -43,9 +44,10 @@ export class UserAnnotation extends Annotation {
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
 
-    constructor(data: UserAnnotationData, editFn: UserAnnotationEditor) {
+    constructor(data: UserAnnotationData,
+        editFn: UserAnnotationEditor, type: AnnotationType = "user") {
         const line = data.line_nr === null ? null : data.line_nr + 1;
-        super(line, data.rendered_markdown, "user");
+        super(line, data.rendered_markdown, type);
         this.createdAt = data.created_at;
         this.editor = editFn;
         this.id = data.id;
@@ -55,22 +57,6 @@ export class UserAnnotation extends Annotation {
         this.evaluationId = data.evaluation_id;
         this.url = data.url;
         this.user = data.user;
-    }
-
-    public static async create(formData: UserAnnotationFormData,
-        submissionId: number,
-        editFn: UserAnnotationEditor): Promise<UserAnnotation> {
-        const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ annotation: formData })
-        });
-        const data = await response.json();
-
-        if (response.ok) {
-            return new UserAnnotation(data, editFn);
-        }
-        throw new Error();
     }
 
     protected edit(): void {
@@ -84,13 +70,6 @@ export class UserAnnotation extends Annotation {
         editButton.classList.add("hide");
 
         this.__html.querySelector(".annotation-text").replaceWith(editor);
-    }
-
-    public static async getAll(submission: number,
-        editFn: UserAnnotationEditor): Promise<UserAnnotation[]> {
-        const response = await fetch(`/submissions/${submission}/annotations.json`);
-        const json = await response.json();
-        return json.map(data => new UserAnnotation(data, editFn));
     }
 
     protected get meta(): string {
@@ -140,5 +119,9 @@ export class UserAnnotation extends Annotation {
             return new UserAnnotation(data, this.editor);
         }
         throw new Error();
+    }
+
+    protected get editTitle(): string {
+        return I18n.t("js.user_annotation.edit");
     }
 }

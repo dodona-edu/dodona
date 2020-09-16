@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_05_113636) do
+ActiveRecord::Schema.define(version: 2020_09_09_121638) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -109,6 +109,8 @@ ActiveRecord::Schema.define(version: 2020_08_05_113636) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "evaluation_id"
+    t.string "type", default: "Annotation", null: false
+    t.integer "question_state"
     t.index ["evaluation_id"], name: "index_annotations_on_evaluation_id"
     t.index ["submission_id"], name: "index_annotations_on_submission_id"
     t.index ["user_id"], name: "index_annotations_on_user_id"
@@ -173,6 +175,7 @@ ActiveRecord::Schema.define(version: 2020_08_05_113636) do
     t.bigint "institution_id"
     t.string "search", limit: 4096
     t.boolean "moderated", default: false, null: false
+    t.boolean "enabled_questions", default: true, null: false
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 

@@ -20,4 +20,9 @@
                   title: t('.edit'),
                   icon: 'pencil',
                   if: policy(@course).edit? %>
+  <%= navbar_link url: questions_course_path(@course),
+                  title: t('.questions'),
+                  icon: 'account-question',
+                  class: (@course.open_questions.any? ? 'notification notification-left' : ''),
+                  if: policy(@course).questions? %>
 <% end %>

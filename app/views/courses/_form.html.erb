@@ -85,6 +85,18 @@
         </div>
       </div>
     <% end %>
+
+    <div class="field form-group">
+      <%= f.label :questions, t(".questions.title"), class: 'col-sm-3 control-label' %>
+      <div class="col-sm-6">
+        <div class="checkbox">
+          <%= label_tag do %>
+            <%= f.check_box :enabled_questions %>
+            <span class="checkbox-label"><%= t ".questions.toggle-label" %></span>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="<%= course.new_record? ? "stepper-part stepper-border" : "card-supporting-text card-border" %>">

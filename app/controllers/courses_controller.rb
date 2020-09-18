@@ -1,5 +1,9 @@
 class CoursesController < ApplicationController
+  include SetLtiMessage
+
   before_action :set_course_and_current_membership, except: %i[index new create]
+  before_action :set_lti_message, only: %i[show]
+  before_action :set_lti_provider, only: %i[show]
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_institution, as: 'institution_id'
@@ -233,7 +237,7 @@ class CoursesController < ApplicationController
 
   def subscribe
     redirect_unless_secret_correct if @course.secret_required?(current_user)
-    return if performed? # return if redirect happenned
+    return if performed? # return if redirect happened
 
     respond_to do |format|
       if current_user.member_of? @course
@@ -392,7 +396,7 @@ class CoursesController < ApplicationController
   end
 
   def subscription_succeeded_response(format)
-    format.html { redirect_to @course, notice: I18n.t('courses.registration.subscribed_successfully') }
+    format.html { redirect_back(fallback_location: @course, notice: I18n.t('courses.registration.subscribed_successfully')) }
     format.json { render :show, status: :created, location: @course }
   end
 

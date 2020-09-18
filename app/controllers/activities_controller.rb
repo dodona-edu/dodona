@@ -1,11 +1,14 @@
 class ActivitiesController < ApplicationController
   include SeriesHelper
+  include SetLtiMessage
 
   before_action :set_activity, only: %i[show description edit update media info read]
   before_action :set_course, only: %i[show edit update media info read]
   before_action :set_series, only: %i[show edit update info read]
   before_action :ensure_trailing_slash, only: :show
   before_action :allow_iframe, only: %i[description]
+  before_action :set_lti_message, only: %i[show]
+  before_action :set_lti_provider, only: %i[show]
   # Some activity descriptions load JavaScript from their description. Rails has extra protections against loading unprivileged javascript.
   skip_before_action :verify_authenticity_token, only: [:media]
   skip_before_action :redirect_to_default_host, only: %i[description media]
@@ -73,7 +76,9 @@ class ActivitiesController < ApplicationController
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.accessible?(current_user, @course)
 
     @series = Series.find_by(id: params[:series_id])
-    flash.now[:alert] = I18n.t('activities.show.not_a_member') if @course && !current_user&.member_of?(@course)
+    @not_registered = @course && !current_user&.member_of?(@course)
+    flash.now[:alert] = I18n.t('activities.show.not_a_member') if @not_registered
+    @current_membership = CourseMembership.where(course: @course, user: current_user).first if @lti_launch && @not_registered
     if @activity.exercise?
       @submissions = @activity.submissions.includes(:annotations)
       @submissions = @submissions.in_course(@course) if @course.present? && current_user&.member_of?(@course)

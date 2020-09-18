@@ -1,9 +1,11 @@
 class SeriesController < ApplicationController
   include ExportHelper
+  include SetLtiMessage
 
   before_action :set_series, except: %i[index new create indianio_download]
-
   before_action :check_token, only: %i[show overview]
+  before_action :set_lti_message, only: %i[show]
+  before_action :set_lti_provider, only: %i[show]
 
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
     scope.at_least_one_started_in_series(Series.find(controller.params[:id]))
@@ -30,6 +32,7 @@ class SeriesController < ApplicationController
   # GET /series/1.json
   def show
     @course = @series.course
+    @current_membership = CourseMembership.where(course: @course, user: current_user).first
     @title = @series.name
     @crumbs = [[@course.name, course_path(@course)], [@series.name, '#']]
     @user = User.find(params[:user_id]) if params[:user_id] && current_user&.course_admin?(@course)

@@ -14,10 +14,17 @@ module LTI::Messages::Types
     # Claims in the launch presentation
     LAUNCH_PRESENTATION_LOCALE = 'locale'.freeze
 
-    attr_reader :resource_link_id
-    attr_reader :resource_link_description
-    attr_reader :resource_link_title
+    # Claims in the platform properties
+    PLATFORM_GUID = 'guid'.freeze
+    PLATFORM_CONTACT_EMAIL = 'contact_email'.freeze
+    PLATFORM_DESCRIPTION = 'description'.freeze
+    PLATFORM_NAME = 'name'.freeze
+    PLATFORM_URL = 'url'.freeze
+
+
+    attr_reader :resource_link_id, :resource_link_description, :resource_link_title
     attr_reader :launch_presentation_locale
+    attr_reader :platform_guid, :platform_contact_email, :platform_description, :platform_name, :platform_url
 
     def initialize(token_body)
       super(token_body)
@@ -27,6 +34,12 @@ module LTI::Messages::Types
       @resource_link_title = resource_link[RESOURCE_LINK_TITLE]
       launch_presentation = token_body[LTI::Messages::Claims::LAUNCH_PRESENTATION] || {}
       @launch_presentation_locale = launch_presentation[LAUNCH_PRESENTATION_LOCALE]
+      platform = token_body[LTI::Messages::Claims::PLATFORM] || {}
+      @platform_guid = platform[PLATFORM_GUID]
+      @platform_contact_email = platform[PLATFORM_CONTACT_EMAIL]
+      @platform_description = platform[PLATFORM_DESCRIPTION]
+      @platform_name = platform[PLATFORM_NAME]
+      @platform_url = platform[PLATFORM_URL]
     end
 
     def as_json(options = nil)
@@ -39,6 +52,13 @@ module LTI::Messages::Types
       lp = {}
       lp[LAUNCH_PRESENTATION_LOCALE] = launch_presentation_locale if launch_presentation_locale.present?
       base[LTI::Messages::Claims::LAUNCH_PRESENTATION] = lp if lp.present?
+      platform = {}
+      platform[PLATFORM_GUID] = platform_guid if platform_guid.present?
+      platform[PLATFORM_CONTACT_EMAIL] = platform_contact_email if platform_contact_email.present?
+      platform[PLATFORM_DESCRIPTION] = platform_description if platform_description.present?
+      platform[PLATFORM_NAME] = platform_name if platform_name.present?
+      platform[PLATFORM_URL] = platform_url if platform_url.present?
+      base[LTI::Messages::Claims::PLATFORM] = platform if platform.present?
       base
     end
   end

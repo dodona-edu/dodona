@@ -7,6 +7,7 @@ module LTI::Messages
     DEPLOYMENT_ID = 'https://purl.imsglobal.org/spec/lti/claim/deployment_id'.freeze
     RESOURCE_LINK = 'https://purl.imsglobal.org/spec/lti/claim/resource_link'.freeze
     LAUNCH_PRESENTATION = 'https://purl.imsglobal.org/spec/lti/claim/launch_presentation'.freeze
+    PLATFORM = 'https://purl.imsglobal.org/spec/lti/claim/tool_platform'.freeze
 
     # Deep Linking.
     DEEP_LINKING_CONTENT_ITEMS = 'https://purl.imsglobal.org/spec/lti-dl/claim/content_items'.freeze

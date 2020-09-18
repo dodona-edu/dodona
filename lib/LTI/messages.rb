@@ -18,6 +18,8 @@ module LTI
       message_type = parsed_token[::LTI::Messages::Claims::MESSAGE_TYPE]
       if message_type == ::LTI::Messages::Types::DeepLinkingRequest::TYPE
         return ::LTI::Messages::Types::DeepLinkingRequest.new(parsed_token)
+      elsif message_type == ::LTI::Messages::Types::ResourceLaunchRequest::TYPE
+        return ::LTI::Messages::Types::ResourceLaunchRequest.new(parsed_token)
       end
 
       # Not implemented / invalid type.

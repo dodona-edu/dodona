@@ -1,10 +1,5 @@
-require_relative '../../lib/LTI/jwk.rb'
-require_relative '../../lib/LTI/messages.rb'
-
 class LtiController < ApplicationController
-  include LtiHelper
-  include LTI::JWK
-  include LTI::Messages
+  include SetLtiMessage
 
   before_action :set_lti_message, only: %i[content_selection]
   before_action :set_lti_provider, only: %i[content_selection]
@@ -59,22 +54,12 @@ class LtiController < ApplicationController
 
     # Build a new response message.
     response = LTI::Messages::Types::DeepLinkingResponse.new(@lti_message)
-    response.items += lti_resource_links_from(params)
+    response.items += helpers.lti_resource_links_from(params)
 
     render json: { payload: encode_and_sign(response) }
   end
 
   def jwks
     render json: { keys: keyset }
-  end
-
-  private
-
-  def set_lti_message
-    @lti_message = parse_message(params[:id_token], params[:provider_id])
-  end
-
-  def set_lti_provider
-    @provider = Provider::Lti.find(params[:provider_id])
   end
 end

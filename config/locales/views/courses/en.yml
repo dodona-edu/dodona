@@ -144,8 +144,8 @@ en:
       not_logged_in: You need to be logged in to register
       key_mismatch: "The key didn't match"
       registration_closed: "Registration closed."
-      lti_title: Welcome
-      lti: "We've noticed you followed a link from %{lms}, but you're not registered for this course yet. Click on register to enable the course administrator to follow your progress."
+      lti_title: Welcome to Dodona!
+      lti: "You followed a link from %{lms} to this page. To correctly store your submissions, you should register for this course on Dodona. You can do this easily by clicking the "register" button below, or later from the course page."
       lms_default: "another learning environment"
     favorite:
       succeeded: "Course favorited"

@@ -140,8 +140,8 @@ nl:
       not_logged_in: Je moet ingelogd zijn om je te registreren
       key_mismatch: De sleutel kwam niet overeen
       registration_closed: "Registratie gesloten."
-      lti_title: Welkom
-      lti: "We merken dat je een link volgde uit %{lms}, maar dat je nog niet bent ingeschreven voor deze cursus. Klik op registreren om dat wel te doen zodat de lesgever je kan opvolgen."
+      lti_title: Welkom op Dodona!
+      lti: "Je volgde een link uit %{lms} naar deze pagina. Om je ingediende oplossingen correct bij te houden is het nodig om je op Dodona te registreren voor deze cursus. Dat kan eenvoudig door hieronder op registreren te klikken, of later vanaf de cursuspagina."
       lms_default: "een andere leeromgeving"
     favorite:
       succeeded: "Cursus aan favorieten toegevoegd"

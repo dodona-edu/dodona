@@ -1,11 +1,11 @@
 /* globals ga */
 
+import { isInIframe } from "iframe";
+
 /*
  * Function to delay some other function until it isn't
  * called for "ms" ms
  */
-import { isInIframe } from "iframe";
-
 const delay = (function () {
     let timer = 0;
     return function (callback, ms) {

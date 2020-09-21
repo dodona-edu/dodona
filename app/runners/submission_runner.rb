@@ -193,21 +193,21 @@ class SubmissionRunner
       rc = ResultConstructor.new @submission.user.lang
       rc.feed(stdout.force_encoding('utf-8'))
       rc.result(timeout)
-             rescue ResultConstructorError => e
-               if [134, 137, 143].include? exit_status
-                 description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
-                 build_error description, description, [
-                   build_message("Judge exited with <strong>status code #{exit_status}.</strong>", 'staff', 'html'),
-                   build_message('<strong>Standard Error:</strong>', 'staff', 'html'),
-                   build_message(stderr, 'staff'),
-                   build_message('<strong>Standard Output:</strong>', 'staff', 'html'),
-                   build_message(stdout, 'staff')
-                 ]
-               else
-                 messages = [build_message(e.title, 'staff', 'plain')]
-                 messages << build_message(e.description, 'staff') unless e.description.nil?
-                 build_error 'internal error', 'internal error', messages
-               end
+    rescue ResultConstructorError => e
+      if [134, 137, 143].include? exit_status
+        description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
+        build_error description, description, [
+          build_message("Judge exited with <strong>status code #{exit_status}.</strong>", 'staff', 'html'),
+          build_message('<strong>Standard Error:</strong>', 'staff', 'html'),
+          build_message(stderr, 'staff'),
+          build_message('<strong>Standard Output:</strong>', 'staff', 'html'),
+          build_message(stdout, 'staff')
+        ]
+      else
+        messages = [build_message(e.title, 'staff', 'plain')]
+        messages << build_message(e.description, 'staff') unless e.description.nil?
+        build_error 'internal error', 'internal error', messages
+      end
     end
 
     result[:messages] ||= []

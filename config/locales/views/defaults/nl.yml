@@ -7,6 +7,10 @@ nl:
       enable_demo_mode: "Demo modus inschakelen"
       disable_dark_mode: "Donkere modus uitschakelen"
       enable_dark_mode: "Donkere modus inschakelen"
+    iframe:
+      title: Welkom bij Dodona
+      body: Het lijkt erop dat je Dodona gebruikt binnen een andere webpagina. Dat zorgt ervoor dat Dodona mogelijk niet goed werkt.
+      button: Openen in nieuw tabblad
   layout:
     head:
       description: Online leren programmeren voor secundair en hoger onderwijs.

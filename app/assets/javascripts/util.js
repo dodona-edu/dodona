@@ -4,6 +4,8 @@
  * Function to delay some other function until it isn't
  * called for "ms" ms
  */
+import { isInIframe } from "iframe";
+
 const delay = (function () {
     let timer = 0;
     return function (callback, ms) {
@@ -134,6 +136,12 @@ function checkTimeZone(offset) {
     }
 }
 
+function checkIframe() {
+    if (isInIframe()) {
+        $("#iframe-warning").removeClass("hidden");
+    }
+}
+
 // add CSRF token to each ajax-request
 function initCSRF() {
     $(() => {
@@ -210,6 +218,7 @@ export {
     getArrayURLParameter,
     logToGoogle,
     checkTimeZone,
+    checkIframe,
     initCSRF,
     tooltip,
     initTooltips,

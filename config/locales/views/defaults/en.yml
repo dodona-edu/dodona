@@ -7,6 +7,10 @@ en:
       enable_demo_mode: "Enable demo mode"
       disable_dark_mode: "Disable dark mode"
       enable_dark_mode: "Enable dark mode"
+    iframe:
+      title: Welcome to Dodona
+      body: It looks like you're using Dodona inside another webpage. This may cause Dodona to malfunction.
+      button: Open in new tab
   layout:
     head:
       description: Learn to code for secondary and higher education.

@@ -227,4 +227,15 @@ module ApplicationHelper
     end
   end
   # rubocop:enable Metrics/ParameterLists
+
+  def set_locale(locale, user)
+    # We support BCP47 tags, but they can contain more than just the language, so extract only the language.
+    locale = locale.to_s.split('-').first
+    begin
+      I18n.locale = locale
+    rescue I18n::InvalidLocale
+      I18n.locale = I18n.default_locale
+    end
+    user&.update(lang: I18n.locale.to_s) if user&.lang != I18n.locale.to_s
+  end
 end

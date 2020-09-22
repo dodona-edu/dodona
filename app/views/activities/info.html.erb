@@ -112,7 +112,7 @@
                 <div class="clearfix visible-sm-block"></div>
                 <div title="<%= activity_config_explanation 'network_enabled' %>" class="col-md-4 col-sm-6 col-xs-6 activity-detail">
                   <%
-                      if @config['network_enabled']
+                      if @config.dig('evaluation', 'network_enabled')
                         network_icon = 'mdi-wan'
                         network_config_name = t('.network_enabled')
                   else

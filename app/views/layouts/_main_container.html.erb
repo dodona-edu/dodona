@@ -14,11 +14,7 @@
       </div>
     <% end %>
     <div class='alert alert-warning hidden' id="iframe-warning">
-      <strong><%= t("layout.messages.warning") %></strong> <%= t("layouts.iframe.body") %>
-      <%= link_to t('layouts.iframe.button'),
-                  request.original_url,
-                  method: :get,
-                  target: '_blank' %>
+      <strong><%= t("layout.messages.warning") %></strong> <%= t("layout.messages.iframe", url: request.original_url).html_safe %>
     </div>
     <% if user_signed_in? && current_user != true_user %>
       <div class='alert alert-info'>

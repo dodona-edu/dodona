@@ -7,10 +7,6 @@ nl:
       enable_demo_mode: "Demo modus inschakelen"
       disable_dark_mode: "Donkere modus uitschakelen"
       enable_dark_mode: "Donkere modus inschakelen"
-    iframe:
-      title: Welkom bij Dodona
-      body: Het lijkt erop dat je Dodona gebruikt binnen een andere webpagina. Dat zorgt ervoor dat Dodona mogelijk niet goed werkt.
-      button: Openen in nieuw tabblad
   layout:
     head:
       description: Online leren programmeren voor secundair en hoger onderwijs.
@@ -29,6 +25,7 @@ nl:
       info: Ter info
       success: Geweldig
       time_zone_html: Je tijdzone staat momenteel ingesteld op <strong>%{time_zone}</strong>, maar dit lijkt niet overeen te komen met je lokale tijd. Je kan van tijdzone wisselen op je <a href='%{profile_edit}'>profielpagina</a>.
+      iframe: Het lijkt erop dat je Dodona gebruikt binnen een andere webpagina waardoor mogelijk niet alles goed werkt. Laat dit weten aan je lesgever zodat hij het probleem kan oplossen door een instelling in de leeromgeving aan te passen. Ondertussen kan je <a href='%{url}' target='_blank'>op deze link klikken</a> om Dodona te openen in een nieuw venster.
     menu:
       manual: Gebruikershandleiding
       activities: Leeractiviteiten

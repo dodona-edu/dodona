@@ -22,7 +22,7 @@
     <% questions.each do |question| %>
       <tr>
         <td>
-          <%= link_to question.user do %>
+          <%= link_to course_member_path(@course, question.user) do %>
             <%= question.user.full_name %>
           <% end %>
         </td>

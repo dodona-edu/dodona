@@ -83,23 +83,25 @@ class ApplicationHelperTest < ActiveSupport::TestCase
   end
 
   test 'language tags are used correctly' do
-    user = create :user
-    set_locale('nl-BE', user)
+    def current_user
+      create :user
+    end
+    self.locale = 'nl-BE'
     assert_equal :nl, I18n.locale
 
-    set_locale('nl', user)
+    self.locale = 'nl'
     assert_equal :nl, I18n.locale
 
-    set_locale('en', user)
+    self.locale = 'en'
     assert_equal :en, I18n.locale
 
-    set_locale('en-UK', user)
+    self.locale = 'en-UK'
     assert_equal :en, I18n.locale
 
-    set_locale(:en, user)
+    self.locale = :en
     assert_equal :en, I18n.locale
 
-    set_locale('garbage-stuff-does-not_exist', user)
+    self.locale = 'garbage-stuff-does-not_exist'
     assert_equal I18n.default_locale, I18n.locale
   end
 end

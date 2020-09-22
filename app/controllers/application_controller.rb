@@ -122,7 +122,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    helpers.set_locale(params[:locale] || current_user&.lang || I18n.default_locale, current_user)
+    helpers.locale = params[:locale] || current_user&.lang || I18n.default_locale
   end
 
   def default_url_options

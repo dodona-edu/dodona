@@ -13,9 +13,10 @@ nl:
       activity_select: Kies een leeractiviteit of kies niets om een reeks te kiezen
       multiple: Gebruik Ctrl of Command om meerdere activiteiten te kiezen
     redirect:
-      first_time: Aangezien dit de eerste keer is dat je je aanmeldt bij Dodona via dit leerplatform, dien je eenmalig aan te melden in een nieuw venster.
+      welcome: Welkom bij Dodona
+      first_time: Dit is de eerste keer dat je gebruik maakt van de koppeling tussen Dodona en Ufora. Om toegang te krijgen tot je cursussen moeten we eenmalig je Ufora-profiel linken met je UGent-account. Klik hiervoor op onderstaande knop om een nieuw venster te openen en in te loggen met je UGent-account.
       login: Aanmelden in een nieuw venster
-      after: Nadat je aangemeld bent, moet je dit venster sluiten en de actie opnieuw uitvoeren.
-      after_clicked: Nu je aangemeld bent, moet je dit venster sluiten en opnieuw openen.
+      after: Nadat je account gekoppeld is, moet je dit dialoogvenster sluiten en opnieuw op de initiële link klikken. Alles zou dan correct moeten werken.
+      after_clicked: Als je account gekoppeld is, sluit dit dialoogvenster en klik opnieuw op de initiële link.
     redirected:
-      message: Je bent nu aangemeld bij Dodona als %{name}. Sluit deze pagina en ga terug naar de leeromgeving om verder te gaan.
+      message: Je bent nu aangemeld bij Dodona als %{name}. Sluit deze pagina, ga terug naar Ufora en klik opnieuw op de initiële link.

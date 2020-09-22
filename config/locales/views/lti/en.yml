@@ -13,9 +13,10 @@ en:
       activity_select: Choose an activity of leave empty to choose a series
       multiple: Select multiple activities by using Ctrl or Command
     redirect:
-      first_time: Since this is the first time you are logging in to Dodona from this learning platform, you will need to login in a new window to link your account.
+      welcome: Welcome to Dodona
+      first_time: This is the first time you are using the link between Dodona and Ufora. To gain access to your courses, we need to link your Ufora profile with your UGent account once. Click on the button below to open a new window and log in with your UGent account.
       login: Login in a new window
-      after: After you have linked your account, please close this window and try again.
-      after_clicked: Now that you have logged in, you can close this window and try again.
+      after: After your account is linked, you need to close this dialog and click the initial link again. Everything should then work correctly.
+      after_clicked: When your account is linked, close this dialog and click the initial link again.
     redirected:
-      message: You are now logged in as %{name}. Close this window and go back to the learning platform to continue.
+      message: You are now logged in as %{name}. Close this page, go back to Ufora and click the initial link again.

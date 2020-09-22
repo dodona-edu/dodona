@@ -9,8 +9,9 @@
 </script>
 
 <div id="lti_before_text">
+  <h2><%= t ".welcome" %></h2>
   <p><%= t ".first_time" %></p>
-  <p>
+  <p class="text-center">
     <a class="btn btn-primary btn-lg" id="lti_redirect_button" href="<%= @path %>" target="_blank">
       <%= t ".login" %>
     </a>

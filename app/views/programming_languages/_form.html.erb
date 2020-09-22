@@ -23,4 +23,18 @@
     <%= f.label :extension, :class => "col-sm-3 control-label" %>
     <div class="col-sm-4"><%= f.text_field :extension, class: "form-control" %></div>
   </div>
+
+  <div class="field form-group">
+    <%= f.label :icon, :class => "col-sm-3 control-label" %>
+    <div class="col-sm-4"><%= f.text_field :icon, class: "form-control" %></div>
+    <div class="control-icon">
+      <i id="icon-preview" class="mdi mdi-<%= f.object.icon %> icon"></i>
+    </div>
+  </div>
 <% end %>
+
+<script>
+  document.getElementById("programming_language_icon").addEventListener('input', (e) => {
+      document.getElementById("icon-preview").classList = `mdi icon mdi-${e.target.value}`;
+  })
+</script>

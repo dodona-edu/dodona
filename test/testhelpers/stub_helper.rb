@@ -9,7 +9,7 @@ module StubHelper
 
   def stub_status(exercise, status)
     exercise.stubs(:status).returns(status)
-    Exercise.statuses.keys.each do |key|
+    Exercise.statuses.each_key do |key|
       exercise.stubs("#{key}?".to_sym).returns(key == status)
     end
   end

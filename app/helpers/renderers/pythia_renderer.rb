@@ -1,10 +1,6 @@
 class PythiaRenderer < FeedbackTableRenderer
   include ActionView::Helpers::JavaScriptHelper
 
-  def initialize(submission, user)
-    super(submission, user)
-  end
-
   def parse
     tutor_init
     super

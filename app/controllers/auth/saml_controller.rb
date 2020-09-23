@@ -1,4 +1,4 @@
-require_relative '../../../lib/SAML/metadata.rb'
+require_relative '../../../lib/SAML/metadata'
 
 class Auth::SamlController < ApplicationController
   def metadata

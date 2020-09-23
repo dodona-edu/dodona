@@ -78,9 +78,11 @@ class Repository < ApplicationRecord
                'Dodona <dodona@ugent.be>'
              end
     _out, error, status = Open3.capture3('git', 'commit', "--author=\"#{author}\"", '-am', "#{msg}\n\nThis commit was created automatically by Dodona.", chdir: full_path.to_path)
+    # rubocop:disable Style/SoleNestedConditional
     if Rails.env.production?
       _out, error, status = Open3.capture3('git push', chdir: full_path.to_path) if status.success?
     end
+    # rubocop:enable Style/SoleNestedConditional
     [status.success?, error]
   end
 
@@ -117,8 +119,7 @@ class Repository < ApplicationRecord
                           .map { |d, c| [d, Activity.find_by(repository_token: c['internals']['token'], repository_id: id)] }
                           .reject { |_, e| e.nil? }
                           .group_by { |_, e| e }
-                          .map { |e, l| [e, l.map { |elem| elem[0] }] }
-                          .to_h
+                          .transform_values { |l| l.map { |elem| elem[0] } }
     handled_directories = []
     handled_activity_ids = []
     new_activities = []
@@ -140,7 +141,7 @@ class Repository < ApplicationRecord
 
     repository_activities = Activity.where(repository_id: id)
     repository_activities.reject { |a| handled_activity_ids.include? a.id }.each do |act|
-      if dirs.include?(act.full_path) && !handled_directories.include?(act.full_path)
+      if dirs.include?(act.full_path) && handled_directories.exclude?(act.full_path)
         handled_directories.push act.full_path
         if activity_dirs_and_configs.select { |d, _| d == act.full_path }.first.nil?
           act.update(status: :not_valid)

@@ -59,12 +59,12 @@ class Activity < ApplicationRecord
   token_generator :repository_token, length: 64
   token_generator :access_token
 
+  before_save :check_validity
+  before_save :generate_access_token, if: :access_changed?
   before_create :generate_id
   before_create :generate_repository_token,
                 if: ->(ex) { ex.repository_token.nil? }
   before_create :generate_access_token
-  before_save :check_validity
-  before_save :generate_access_token, if: :access_changed?
   before_update :update_config
 
   scope :content_pages, -> { where(type: ContentPage.name) }
@@ -109,7 +109,7 @@ class Activity < ApplicationRecord
   end
 
   def name
-    first_string_present send('name_' + I18n.locale.to_s),
+    first_string_present send("name_#{I18n.locale}"),
                          name_nl,
                          name_en,
                          path&.split('/')&.last
@@ -178,7 +178,7 @@ class Activity < ApplicationRecord
   end
 
   def merged_dirconfig
-    Pathname.new('./' + path).parent.descend # all parent directories
+    Pathname.new("./#{path}").parent.descend # all parent directories
             .map { |dir| read_dirconfig dir } # try reading their dirconfigs
             .compact # remove nil entries
             .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
@@ -186,7 +186,7 @@ class Activity < ApplicationRecord
   end
 
   def merged_dirconfig_locations
-    Pathname.new('./' + path).parent.descend # all parent directories
+    Pathname.new("./#{path}").parent.descend # all parent directories
             .map { |dir| read_dirconfig_locations dir } # try reading their dirconfigs
             .compact # remove nil entries
             .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
@@ -339,7 +339,7 @@ class Activity < ApplicationRecord
   end
 
   def self.determine_format(full_exercise_path)
-    if !Dir.glob(full_exercise_path + DESCRIPTION_DIR + 'description.*.html').empty?
+    if !Dir.glob(full_exercise_path.join(DESCRIPTION_DIR, 'description.*.html')).empty?
       'html'
     else
       'md'

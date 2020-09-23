@@ -13,6 +13,7 @@ AllCops:
     - "vendor/**/*"
     - "node_modules/**/*"
   TargetRubyVersion: 2.7
+  NewCops: enable
 
 Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
@@ -70,4 +71,6 @@ Style/FrozenStringLiteralComment:
 Style/MultilineBlockChain:
   Enabled: false
 Style/NumericPredicate:
+  Enabled: false
+Style/OptionalBooleanParameter:
   Enabled: false

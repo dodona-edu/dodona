@@ -43,8 +43,8 @@ FactoryBot.define do
     institution
 
     entity_id { Faker::Internet.url }
-    sso_url { entity_id + '/SSO' }
-    slo_url { entity_id + '/SLO' }
+    sso_url { "#{entity_id}/SSO" }
+    slo_url { "#{entity_id}/SLO" }
     certificate { Faker::Crypto.sha256 }
   end
 

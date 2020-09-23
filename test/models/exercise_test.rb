@@ -609,11 +609,11 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   end
 
   test 'dirconfig_file? should return true if the basename is "dirconfig.json"' do
-    assert Exercise.dirconfig_file?(@exercise.full_path + '/dirconfig.json')
+    assert Exercise.dirconfig_file?(@exercise.full_path.join('dirconfig.json'))
   end
 
   test 'dirconfig_file? should return false if the basename is not "dirconfig.json"' do
-    assert_not Exercise.dirconfig_file?(@exercise.full_path + '/otherconfig.json')
+    assert_not Exercise.dirconfig_file?(@exercise.full_path.join('otherconfig.json'))
   end
 
   test 'safe_delete should not destroy exercise if status is not removed' do

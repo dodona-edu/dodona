@@ -47,9 +47,9 @@ class SubmissionRunner
                        'natural_language' => @submission.user.lang)
 
     # update with links to resources in docker container needed for processing submission
-    config.deep_merge!('resources' => (@mountdst + @hidden_path + 'resources').to_path,
-                       'source' => (@mountdst + @hidden_path + 'submission' + 'source').to_path,
-                       'judge' => (@mountdst + @hidden_path + 'judge').to_path,
+    config.deep_merge!('resources' => @mountdst.join(@hidden_path, 'resources').to_path,
+                       'source' => @mountdst.join(@hidden_path, 'submission', 'source').to_path,
+                       'judge' => @mountdst.join(@hidden_path, 'judge').to_path,
                        'workdir' => '/home/runner/workdir')
 
     config
@@ -72,16 +72,16 @@ class SubmissionRunner
     @mountsrc = Pathname.new Dir.mktmpdir(nil, @mac ? '/tmp' : nil)
 
     # put submission in the submission dir
-    (@mountsrc + @hidden_path).mkdir
-    (@mountsrc + @hidden_path + 'submission').mkdir
-    (@mountsrc + @hidden_path + 'submission' + 'source').open('w') do |file|
+    @mountsrc.join(@hidden_path).mkdir
+    @mountsrc.join(@hidden_path, 'submission').mkdir
+    @mountsrc.join(@hidden_path, 'submission', 'source').open('w') do |file|
       file.write(@submission.code)
     end
 
     # put workdir, evaluation and judge directories in working directory
-    copy_or_create(@exercise.full_path + 'workdir', @mountsrc + 'workdir')
-    copy_or_create(@exercise.full_path + 'evaluation', @mountsrc + @hidden_path + 'resources')
-    copy_or_create(@judge.full_path, @mountsrc + @hidden_path + 'judge')
+    copy_or_create(@exercise.full_path.join('workdir'), @mountsrc.join('workdir'))
+    copy_or_create(@exercise.full_path.join('evaluation'), @mountsrc.join(@hidden_path, 'resources'))
+    copy_or_create(@judge.full_path, @mountsrc.join(@hidden_path, 'judge'))
   end
 
   def execute
@@ -95,7 +95,7 @@ class SubmissionRunner
       # TODO: move entry point to docker container definition
       Cmd: ['/main.sh',
             # judge entry point
-            (@mountdst + @hidden_path + 'judge' + 'run').to_path],
+            @mountdst.join(@hidden_path, 'judge', 'run').to_path],
       Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
       name: "dodona-#{@submission.id}", # assuming unique during execution
       OpenStdin: true,
@@ -108,7 +108,7 @@ class SubmissionRunner
         BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }].filter { Rails.env.production? || Rails.env.staging? },
         PidsLimit: 256,
         Binds: ["#{@mountsrc}:#{@mountdst}",
-                "#{@mountsrc + 'workdir'}:#{@config['workdir']}"]
+                "#{@mountsrc.join('workdir')}:#{@config['workdir']}"]
       }
     }
 
@@ -232,7 +232,7 @@ class SubmissionRunner
     result = execute
   rescue StandardError => e
     result = build_error 'internal error', 'internal error', [
-      build_message(e.message + "\n" + e.backtrace.inspect, 'staff')
+      build_message("#{e.message}\n#{e.backtrace.inspect}", 'staff')
     ]
   ensure
     finalize

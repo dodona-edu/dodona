@@ -1,4 +1,4 @@
-require_relative '../../lib/LTI/messages.rb'
+require_relative '../../lib/LTI/messages'
 
 module LtiHelper
   def lti_resource_links_from(params)

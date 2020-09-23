@@ -8,7 +8,7 @@ gem 'rails', '~> 6.0.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 4.3.6'
+gem 'puma', '~> 5.0.0'
 # Use less for stylesheets
 gem 'less-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -26,7 +26,7 @@ gem 'jbuilder', '~> 2.10.1'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-gem 'image_processing', '~> 1.11.0'
+gem 'image_processing', '~> 1.12.0'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '~> 1.4.8', require: false
@@ -62,10 +62,10 @@ gem 'diff-lcs', '~>1.4'
 gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>9.8.6'
+gem 'autoprefixer-rails', '~>10.0.0'
 
 # saml authentication
-gem 'devise', '~>4.7.2'
+gem 'devise', '~>4.7.3'
 gem 'ruby-saml', '~> 1.11.0'
 
 # omniauth
@@ -131,12 +131,12 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.10'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.13.0'
+gem 'faker', '~> 2.14.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 0.9.14'
-gem 'rack-mini-profiler', '~> 2.0.4'
+gem 'rack-mini-profiler', '~> 2.1.0'
 gem 'stackprof', '~> 0.2.15'
 
 # Datadog
@@ -176,7 +176,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.7.1'
+  gem 'rubocop-rails', '~> 2.8.1'
   gem 'spring', '~> 2.1.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

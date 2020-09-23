@@ -9,8 +9,19 @@
         <h2 class="card-title-text"><%= t('.title') %></h2>
       </div>
       <div class="card-supporting-text" id="question-container">
-        <%= check_box_tag :enable_refresh, "1", @refresh %>
-        <%= label_tag :enable_refresh, t('.questions.auto_refresh'), class: 'checkbox-label' %>
+        <div class="alert alert-info hidden-print">
+          <%= t @course.enabled_questions? ? ".status.enabled" : ".status.disabled" %>
+          <%= link_to t(@course.enabled_questions? ? ".status.disable" : ".status.enable"),
+                      course_path(@course, course: {enabled_questions: !@course.enabled_questions?}),
+                      method: :patch,
+                      remote: true %>
+        </div>
+
+        <div>
+          <%= check_box_tag :enable_refresh, "1", @refresh %>
+          <%= label_tag :enable_refresh, t('.questions.auto_refresh'), class: 'checkbox-label' %>
+        </div>
+
         <h4><%= t('.questions.open') %></h4>
         <div class="question-table-open">
           <%= render 'question_table', questions: @open, refresh: @refresh, param_name: 'open_page' %>

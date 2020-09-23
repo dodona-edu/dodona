@@ -23,7 +23,7 @@ import "polyfills.js";
 import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";
-import { checkTimeZone, initCSRF, initTooltips } from "util.js";
+import { checkTimeZone, checkIframe, initCSRF, initTooltips } from "util.js";
 import { initClipboard } from "copy";
 
 // Initialize clipboard.js
@@ -46,4 +46,5 @@ dodona.checkTimeZone = checkTimeZone;
 dodona.Toast = Toast;
 dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
+dodona.checkIframe = checkIframe;
 window.dodona = dodona;

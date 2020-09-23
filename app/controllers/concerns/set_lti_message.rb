@@ -10,6 +10,7 @@ module SetLtiMessage
   def set_lti_message
     @lti_message = parse_message(params[:id_token], params[:provider_id])
     @lti_launch = @lti_message.is_a?(LTI::Messages::Types::ResourceLaunchRequest)
+    helpers.locale = @lti_message&.launch_presentation_locale if @lti_message&.launch_presentation_locale.present?
   end
 
   def set_lti_provider

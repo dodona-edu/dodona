@@ -1,5 +1,7 @@
 /* globals ga */
 
+import { isInIframe } from "iframe";
+
 /*
  * Function to delay some other function until it isn't
  * called for "ms" ms
@@ -134,6 +136,12 @@ function checkTimeZone(offset) {
     }
 }
 
+function checkIframe() {
+    if (isInIframe()) {
+        $("#iframe-warning").removeClass("hidden");
+    }
+}
+
 // add CSRF token to each ajax-request
 function initCSRF() {
     $(() => {
@@ -210,6 +218,7 @@ export {
     getArrayURLParameter,
     logToGoogle,
     checkTimeZone,
+    checkIframe,
     initCSRF,
     tooltip,
     initTooltips,

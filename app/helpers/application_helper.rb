@@ -163,6 +163,17 @@ module ApplicationHelper
     "<i class=\"mdi mdi-#{icon} mdi-#{size} colored-#{color}\"></i>".html_safe
   end
 
+  def locale=(language_code)
+    # We support BCP47 tags, but they can contain more than just the language, so extract only the language.
+    language = language_code.to_s.split('-').first
+    begin
+      I18n.locale = language
+    rescue I18n::InvalidLocale
+      I18n.locale = I18n.default_locale
+    end
+    current_user&.update(lang: I18n.locale.to_s) if current_user&.lang != I18n.locale.to_s
+  end
+
   def options_for_enum(object, enum)
     options = enums_to_translated_options_array(object.class.name, enum.to_s)
     options_for_select(options, object.send(enum))

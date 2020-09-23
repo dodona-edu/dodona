@@ -81,4 +81,27 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     clean_html = sanitize dirty_html
     assert_equal dirty_html, clean_html
   end
+
+  test 'language tags are used correctly' do
+    def current_user
+      create :user
+    end
+    self.locale = 'nl-BE'
+    assert_equal :nl, I18n.locale
+
+    self.locale = 'nl'
+    assert_equal :nl, I18n.locale
+
+    self.locale = 'en'
+    assert_equal :en, I18n.locale
+
+    self.locale = 'en-UK'
+    assert_equal :en, I18n.locale
+
+    self.locale = :en
+    assert_equal :en, I18n.locale
+
+    self.locale = 'garbage-stuff-does-not_exist'
+    assert_equal I18n.default_locale, I18n.locale
+  end
 end

@@ -104,8 +104,10 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     if remote_request? || sandbox?
       if current_user.nil?
+        # rubocop:disable Rails/RenderInline
         render status: :unauthorized,
                inline: 'You are not authorized to view this page.'
+        # rubocop:enable Rails/RenderInline
       else
         head :forbidden
       end

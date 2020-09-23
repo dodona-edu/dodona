@@ -78,9 +78,11 @@ class Repository < ApplicationRecord
                'Dodona <dodona@ugent.be>'
              end
     _out, error, status = Open3.capture3('git', 'commit', "--author=\"#{author}\"", '-am', "#{msg}\n\nThis commit was created automatically by Dodona.", chdir: full_path.to_path)
+    # rubocop:disable Style/SoleNestedConditional
     if Rails.env.production?
       _out, error, status = Open3.capture3('git push', chdir: full_path.to_path) if status.success?
     end
+    # rubocop:enable Style/SoleNestedConditional
     [status.success?, error]
   end
 

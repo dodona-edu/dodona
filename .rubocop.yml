@@ -72,3 +72,5 @@ Style/MultilineBlockChain:
   Enabled: false
 Style/NumericPredicate:
   Enabled: false
+Style/OptionalBooleanParameter:
+  Enabled: false

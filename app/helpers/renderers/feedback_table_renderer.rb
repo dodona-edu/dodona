@@ -7,6 +7,7 @@ class FeedbackTableRenderer
   @renderers = [FeedbackTableRenderer]
 
   def self.inherited(cl)
+    super
     @renderers << cl
   end
 

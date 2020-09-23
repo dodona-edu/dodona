@@ -204,10 +204,6 @@ module ApplicationHelper
   end
 
   class AjaxLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
-    def initialize
-      # @base_url_params.delete(:format)
-    end
-
     protected
 
     def html_container(html)

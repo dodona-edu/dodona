@@ -57,9 +57,7 @@ class SubmissionsController < ApplicationController
     para[:code].gsub!(/\r\n?/, "\n")
     para[:evaluate] = true # immediately evaluate after create
     course = Course.find(para[:course_id]) if para[:course_id].present?
-    if para[:course_id].present?
-      para.delete(:course_id) unless course.subscribed_members.include?(current_user)
-    end
+    para.delete(:course_id) if para[:course_id].present? && course.subscribed_members.exclude?(current_user)
     submission = Submission.new(para)
     can_submit = true
     if submission.exercise.present?

@@ -156,11 +156,11 @@ class Submission < ApplicationRecord
 
   def clear_fs
     # If we were destroyed or if we were never saved to the database, delete this submission's directory
-    # rubocop:disable Style/GuardClause
+    # rubocop:disable Style/GuardClause, Style/SoleNestedConditional
     if destroyed? || new_record?
       FileUtils.remove_entry_secure(fs_path) if File.exist?(fs_path)
     end
-    # rubocop:enable Style/GuardClause
+    # rubocop:enable Style/GuardClause, Style/SoleNestedConditional
   end
 
   def on_filesystem?

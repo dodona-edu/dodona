@@ -180,9 +180,10 @@ class Submission < ApplicationRecord
   end
 
   def evaluate_delayed(priority = :normal)
-    queue = if priority == :high
+    queue = case priority
+            when :high
               'high_priority_submissions'
-            elsif priority == :low
+            when :low
               'low_priority_submissions'
             else
               'submissions'

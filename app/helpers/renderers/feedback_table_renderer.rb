@@ -222,9 +222,10 @@ class FeedbackTableRenderer
     @builder.div(class: 'messages') do
       msgs.each do |msg|
         permission = msg.is_a?(Hash) && msg.key?(:permission) ? msg[:permission] : 'student'
-        tooltip = if permission == 'zeus'
+        tooltip = case permission
+                  when 'zeus'
                     I18n.t('submissions.show.message_zeus')
-                  elsif permission == 'staff'
+                  when 'staff'
                     I18n.t('submissions.show.message_staff')
                   else
                     ''

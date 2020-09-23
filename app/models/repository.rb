@@ -117,8 +117,7 @@ class Repository < ApplicationRecord
                           .map { |d, c| [d, Activity.find_by(repository_token: c['internals']['token'], repository_id: id)] }
                           .reject { |_, e| e.nil? }
                           .group_by { |_, e| e }
-                          .map { |e, l| [e, l.map { |elem| elem[0] }] }
-                          .to_h
+                          .transform_values { |l| l.map { |elem| elem[0] } }
     handled_directories = []
     handled_activity_ids = []
     new_activities = []

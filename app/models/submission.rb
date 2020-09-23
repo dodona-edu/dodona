@@ -38,13 +38,13 @@ class Submission < ApplicationRecord
   validate :maximum_code_length, on: :create
   validate :not_rate_limited?, on: :create, unless: :skip_rate_limit_check?
 
-  before_update :update_fs
   before_save :report_if_internal_error
   after_create :evaluate_delayed, if: :evaluate?
-  after_save :update_exercise_status
-  after_save :invalidate_caches
+  before_update :update_fs
   after_destroy :invalidate_caches
   after_destroy :clear_fs
+  after_save :update_exercise_status
+  after_save :invalidate_caches
   after_rollback :clear_fs
 
   default_scope { order(id: :desc) }

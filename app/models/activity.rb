@@ -59,12 +59,12 @@ class Activity < ApplicationRecord
   token_generator :repository_token, length: 64
   token_generator :access_token
 
+  before_save :check_validity
+  before_save :generate_access_token, if: :access_changed?
   before_create :generate_id
   before_create :generate_repository_token,
                 if: ->(ex) { ex.repository_token.nil? }
   before_create :generate_access_token
-  before_save :check_validity
-  before_save :generate_access_token, if: :access_changed?
   before_update :update_config
 
   scope :content_pages, -> { where(type: ContentPage.name) }

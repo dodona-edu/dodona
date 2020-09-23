@@ -114,9 +114,9 @@ class User < ApplicationRecord
   before_save :set_token
   before_save :set_time_zone
   before_save :split_last_name, unless: :first_name?, if: :last_name?
-  before_update :check_permission_change
   before_save :nullify_empty_username
   before_save :nullify_empty_email
+  before_update :check_permission_change
 
   accepts_nested_attributes_for :identities, limit: 1
 

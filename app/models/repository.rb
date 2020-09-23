@@ -140,7 +140,7 @@ class Repository < ApplicationRecord
 
     repository_activities = Activity.where(repository_id: id)
     repository_activities.reject { |a| handled_activity_ids.include? a.id }.each do |act|
-      if dirs.include?(act.full_path) && !handled_directories.include?(act.full_path)
+      if dirs.include?(act.full_path) && handled_directories.exclude?(act.full_path)
         handled_directories.push act.full_path
         if activity_dirs_and_configs.select { |d, _| d == act.full_path }.first.nil?
           act.update(status: :not_valid)

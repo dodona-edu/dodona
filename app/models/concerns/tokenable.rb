@@ -19,7 +19,7 @@ module Tokenable
                                   .tr('1lL0oO', '')
                                   .slice(0, length)
         end until (new_token.length == length) && \
-          !(unique && self.class.where(token_name => new_token).exists?)
+          !(unique && self.class.exists?(token_name => new_token))
         self[token_name] = new_token
       end
     end

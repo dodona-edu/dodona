@@ -1,7 +1,7 @@
 require 'pathname'
 require 'fileutils'
 
-require 'testhelpers/git_helper.rb'
+require 'testhelpers/git_helper'
 
 module RemoteHelper
   def local_remote(sample_dir = nil)

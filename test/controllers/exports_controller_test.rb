@@ -63,7 +63,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
         subs = [1] if subs.empty?
         subs
       end
-    end .flatten.length
+    end.flatten.length
 
     post series_exports_path(@series), params: { all: true, all_students: true }
     assert_redirected_to exports_path
@@ -93,7 +93,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
         subs = [1] if subs.empty?
         subs
       end
-    end .flatten.length
+    end.flatten.length
     assert_zip ActiveStorage::Blob.last.download, solution_count: zip_submission_count, data: @data
   end
 
@@ -112,7 +112,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
       sample_exercises.map do |ex|
         ex.submissions.of_user(u).in_course(@series.course).before_deadline(@series.deadline).limit(1).first
       end
-    end .flatten.length
+    end.flatten.length
     post series_exports_path(@series), params: options
     assert_zip ActiveStorage::Blob.last.download, options
   end
@@ -158,9 +158,9 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
       @course.users.map do |user|
         series.exercises.map do |exercise|
           [exercise.submissions.of_user(user).in_course(@course).count, 1].max
-        end .sum
-      end .sum
-    end .sum
+        end.sum
+      end.sum
+    end.sum
     post courses_exports_path(@course), params: options
     options[:group_by] = 'series'
     assert_zip ActiveStorage::Blob.last.download, options

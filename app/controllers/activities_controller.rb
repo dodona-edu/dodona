@@ -130,7 +130,7 @@ class ActivitiesController < ApplicationController
   end
 
   def read
-    @course = nil if @course.blank? || !@course.subscribed_members.include?(current_user)
+    @course = nil if @course.blank? || @course.subscribed_members.exclude?(current_user)
     read_state = ActivityReadState.new activity: @activity,
                                        course: @course,
                                        user: current_user

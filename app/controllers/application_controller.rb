@@ -134,7 +134,7 @@ class ApplicationController < ActionController::Base
   end
 
   def trailing_slash?
-    request.env['REQUEST_URI'].match(/[^\?]+/).to_s.last == '/'
+    request.env['REQUEST_URI'].match(/[^?]+/).to_s.last == '/'
   end
 
   def store_current_location
@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
     # Sessions are not needed for the JSON API
     skip_session
 
-    token.gsub!(/Token token=\"(.*)\"/, '\1')
+    token.gsub!(/Token token="(.*)"/, '\1')
     # only allow urlsafe base64 characters to pass
     token.gsub!(/[^A-Za-z0-9_\-]/, '')
 

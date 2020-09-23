@@ -41,7 +41,7 @@ class SubmissionsController < ApplicationController
   end
 
   def show
-    @title = I18n.t('submissions.show.submission') + ' - ' + @submission.exercise.name
+    @title = "#{I18n.t('submissions.show.submission')} - #{@submission.exercise.name}"
     course = @submission.course
     @crumbs = if course.present?
                 [[course.name, course_path(course)], [@submission.exercise.name, course_activity_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), '#']]

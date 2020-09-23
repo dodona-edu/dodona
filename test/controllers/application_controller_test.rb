@@ -13,7 +13,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not store last location if too big' do
-    location = root_path params: { foo: 'b' + ('a' * 1024) + 'r' }
+    location = root_path params: { foo: "b#{('a' * 1024)}r" }
     get location
     assert_response :success
     assert_not_equal session[:user_return_to], location

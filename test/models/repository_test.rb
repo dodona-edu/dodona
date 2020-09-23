@@ -93,7 +93,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
 
   test 'should not create new labels when they are already present' do
     Label.create(name: 'label4')
-    @remote.update_json(@echo.path + '/config.json') do |json|
+    @remote.update_json("#{@echo.path}/config.json") do |json|
       json['labels'] << 'label4'
       json
     end
@@ -204,7 +204,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   test 'should copy valid token for new exercise' do
     new_dir = 'echo2'
     @remote.copy_dir(@echo.path, new_dir)
-    @remote.update_json(new_dir + '/config.json', 'add token to new exercise') do |json|
+    @remote.update_json("#{new_dir}/config.json", 'add token to new exercise') do |json|
       json['internals']['token'] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
       json
     end
@@ -225,7 +225,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should overwrite memory limit that is too high' do
-    @remote.update_json(@echo.path + '/config.json', 'set a ridiculous memory limit') do |json|
+    @remote.update_json("#{@echo.path}/config.json", 'set a ridiculous memory limit') do |json|
       json['evaluation']['memory_limit'] = 500_000_000_000
       json
     end
@@ -235,7 +235,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should convert to content page' do
-    @remote.update_json(@echo.path + '/config.json', 'convert to content page') do |json|
+    @remote.update_json("#{@echo.path}/config.json", 'convert to content page') do |json|
       json['type'] = 'content'
       json
     end

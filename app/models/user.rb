@@ -137,7 +137,7 @@ class User < ApplicationRecord
   end
 
   def full_name
-    name = (first_name || '') + ' ' + (last_name || '')
+    name = "#{(first_name || '')} #{(last_name || '')}"
     first_string_present name, 'n/a'
   end
 

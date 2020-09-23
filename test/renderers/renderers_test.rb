@@ -29,7 +29,7 @@ class RenderersTest < ActiveSupport::TestCase
   end
 
   test 'should not strip for exercise marked unsafe' do
-    json = (FILES_LOCATION + 'output.json').read
+    json = FILES_LOCATION.join('output.json').read
     exercise = create :exercise
     exercise.update(allow_unsafe: true)
     submission = create :submission, result: json, user: create(:zeus), exercise: exercise, status: :correct
@@ -38,7 +38,7 @@ class RenderersTest < ActiveSupport::TestCase
   end
 
   test 'should not strip for exercise marked unsafe (pythia)' do
-    json = (FILES_LOCATION + 'pythia_output.json').read
+    json = FILES_LOCATION.join('pythia_output.json').read
     exercise = create :exercise
     exercise.update(allow_unsafe: true)
     submission = create :submission, result: json, user: create(:zeus), exercise: exercise, status: :correct
@@ -47,7 +47,7 @@ class RenderersTest < ActiveSupport::TestCase
   end
 
   test 'should include exercise token if exercise rendered for is private' do
-    json = (FILES_LOCATION + 'output.json').read
+    json = FILES_LOCATION.join('output.json').read
     exercise = create :exercise
     exercise.update(access: :private)
     submission = create :submission, result: json, user: create(:zeus), exercise: exercise, status: :correct

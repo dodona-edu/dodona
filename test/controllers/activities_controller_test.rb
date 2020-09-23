@@ -370,7 +370,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get(activity_url(@instance) + '/media/robots.txt')
+    get("#{activity_url(@instance)}/media/robots.txt")
 
     assert_response :success
     assert_equal response.content_type, 'text/plain; charset=utf-8'
@@ -471,7 +471,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get(activity_url(@instance) + '/media/icon.png')
+    get("#{activity_url(@instance)}/media/icon.png")
 
     assert_response :success
     assert_equal response.content_type, 'image/png'
@@ -483,7 +483,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     create :submission, exercise: @instance, user: @user
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get(activity_url(@instance) + '/media/icon.png')
+    get("#{activity_url(@instance)}/media/icon.png")
 
     assert_response :success
     assert_equal response.content_type, 'image/png'
@@ -500,7 +500,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     get course_series_activity_url(series.course, series, @instance)
     assert_response :success, 'should have access to activity'
 
-    get(course_series_activity_url(series.course, series, @instance) + 'media/icon.png')
+    get("#{course_series_activity_url(series.course, series, @instance)}media/icon.png")
 
     assert_response :success, 'should have access to activity media'
     assert_equal response.content_type, 'image/png'
@@ -511,7 +511,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     Exercise.any_instance.stubs(:ok?).returns(false)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
-    get(activity_url(@instance) + 'media/icon.png')
+    get("#{activity_url(@instance)}media/icon.png")
 
     assert_redirected_to root_url
   end
@@ -521,7 +521,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     Exercise.any_instance.stubs(:ok?).returns(false)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     sign_out @user
-    get(activity_url(@instance) + 'media/icon.png')
+    get("#{activity_url(@instance)}media/icon.png")
 
     assert_redirected_to sign_in_url
   end
@@ -529,7 +529,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should not have access to activity media when user has no access to private activity' do
     @instance = create(:exercise, :description_html, access: :private)
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
-    get(activity_url(@instance) + 'media/icon.png')
+    get("#{activity_url(@instance)}media/icon.png")
 
     assert_redirected_to root_url
   end

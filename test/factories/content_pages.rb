@@ -23,7 +23,7 @@
 #  type                    :string(255)      default("Exercise"), not null
 #
 
-require File.dirname(__FILE__) + '/../testhelpers/stub_helper.rb'
+require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"
 using StubHelper
 
 FactoryBot.define do

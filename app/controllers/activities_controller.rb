@@ -51,7 +51,7 @@ class ActivitiesController < ApplicationController
 
     unless @activities.empty?
       @activities = apply_scopes(@activities)
-      @activities = @activities.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
+      @activities = @activities.order("name_#{I18n.locale}").order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
     end
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)
@@ -67,7 +67,7 @@ class ActivitiesController < ApplicationController
     @activities = policy_scope(Activity)
     @activities = @activities.or(Activity.where(repository: @course.usable_repositories))
     @activities = apply_scopes(@activities)
-    @activities = @activities.order('name_' + I18n.locale.to_s).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
+    @activities = @activities.order("name_#{I18n.locale}").order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
   end
 
   def show

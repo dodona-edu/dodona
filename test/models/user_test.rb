@@ -110,7 +110,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user.first_name, user.short_name
 
     user.first_name = nil
-    assert_equal ' ' + user.last_name, user.short_name
+    assert_equal " #{user.last_name}", user.short_name
 
     user.last_name = nil
     assert_equal 'n/a', user.short_name

@@ -19,14 +19,15 @@ module ExportHelper
       @options = get_options(kwargs[:options])
       @list = kwargs[:list]
       @users = kwargs[:users]
-      if @item.is_a?(Series)
+      case @item
+      when Series
         @list = @item.exercises if all?
         @users = @item.course.users if @users.nil?
-      elsif @item.is_a?(Course)
+      when Course
         @list = @item.series if all?
         @users = @item.users if @users.nil?
         initialize_series_per_exercise # depends on @list
-      elsif @item.is_a?(User)
+      when User
         @list = @item.courses if all?
         @users = [@item]
         initialize_series_per_exercise
@@ -212,11 +213,12 @@ module ExportHelper
     end
 
     def bundle
-      if @item.is_a?(Series)
+      case @item
+      when Series
         @options[:deadline] = @item.deadline || Time.current.tomorrow if deadline? # Prevent nil-deadline if series has no deadline
         submissions = get_submissions_for_series(@list, @users)
         exercises = @list
-      elsif @item.is_a?(Course)
+      when Course
         submissions = get_submissions_for_course(@list, @users)
         exercises = @list.map(&:exercises).flatten
       else # is User

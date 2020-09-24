@@ -5,6 +5,7 @@ class ResultConstructorError < StandardError
   attr_accessor :title, :description
 
   def initialize(title, description = nil)
+    super()
     @title = title
     @description = description
   end

@@ -5,6 +5,7 @@ class AggregatedConfigErrors < StandardError
               :errors
 
   def initialize(repository, errors)
+    super()
     @repository = repository
     @errors = errors.uniq(&:path)
   end

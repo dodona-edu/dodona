@@ -36,10 +36,9 @@ class ActivityStatus < ApplicationRecord
   scope :in_series, ->(series) { where(series: series) }
   scope :for_user, ->(user) { where(user: user) }
 
+  before_validation :initialise_series_id_non_nil, if: -> { new_record? }
   before_create :initialise_values_for_content_page, if: -> { activity.content_page? }
   before_create :initialise_values_for_exercise, if: -> { activity.exercise? }
-
-  before_validation :initialise_series_id_non_nil, if: -> { new_record? }
 
   def best_is_last?
     accepted == solved

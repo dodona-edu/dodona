@@ -106,8 +106,7 @@ module ActivityHelper
     include ApplicationHelper
     include ActivityHelper
 
-    attr_reader :footnote_urls
-    attr_reader :first_image
+    attr_reader :footnote_urls, :first_image
 
     def initialize(activity, request)
       @activity = activity

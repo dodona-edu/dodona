@@ -5,6 +5,7 @@ class ConfigParseError < StandardError
               :json
 
   def initialize(repository, path, parse_error)
+    super()
     @repository = repository
     @path = path
     # ew.

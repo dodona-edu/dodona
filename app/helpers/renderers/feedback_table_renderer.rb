@@ -7,6 +7,7 @@ class FeedbackTableRenderer
   @renderers = [FeedbackTableRenderer]
 
   def self.inherited(cl)
+    super
     @renderers << cl
   end
 
@@ -70,10 +71,10 @@ class FeedbackTableRenderer
           @builder.li(class: ('active' if i.zero?)) do
             id = "##{(t[:description] || 'test').parameterize}-#{i}"
             @builder.a(href: id, 'data-toggle': 'tab') do
-              @builder.text!((t[:description] || 'Test').upcase_first + ' ')
+              @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
               badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id
-              @builder.span(class: 'badge', id: 'badge_' + badge_id) do
+              @builder.span(class: 'badge', id: "badge_#{badge_id}") do
                 @builder.text! tab_count(t)
               end
             end
@@ -82,7 +83,7 @@ class FeedbackTableRenderer
         if show_code_tab
           @builder.li(class: ('active' if submission[:groups].blank?)) do
             @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
-              @builder.text!(I18n.t('submissions.show.code') + ' ')
+              @builder.text!("#{I18n.t('submissions.show.code')} ")
               @builder.span(class: 'badge', id: 'badge_code')
             end
           end
@@ -222,9 +223,10 @@ class FeedbackTableRenderer
     @builder.div(class: 'messages') do
       msgs.each do |msg|
         permission = msg.is_a?(Hash) && msg.key?(:permission) ? msg[:permission] : 'student'
-        tooltip = if permission == 'zeus'
+        tooltip = case permission
+                  when 'zeus'
                     I18n.t('submissions.show.message_zeus')
-                  elsif permission == 'staff'
+                  when 'staff'
                     I18n.t('submissions.show.message_staff')
                   else
                     ''
@@ -317,7 +319,7 @@ class FeedbackTableRenderer
   end
 
   def determine_diff_type(test)
-    output = (test[:expected].to_s || '') + "\n" + (test[:generated].to_s || '')
+    output = "#{(test[:expected].to_s || '')}\n#{(test[:generated].to_s || '')}"
     if output.split("\n", -1).map(&:length).max < 55
       'split'
     else

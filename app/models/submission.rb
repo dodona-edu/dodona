@@ -38,13 +38,13 @@ class Submission < ApplicationRecord
   validate :maximum_code_length, on: :create
   validate :not_rate_limited?, on: :create, unless: :skip_rate_limit_check?
 
-  before_update :update_fs
   before_save :report_if_internal_error
   after_create :evaluate_delayed, if: :evaluate?
-  after_save :update_exercise_status
-  after_save :invalidate_caches
+  before_update :update_fs
   after_destroy :invalidate_caches
   after_destroy :clear_fs
+  after_save :update_exercise_status
+  after_save :invalidate_caches
   after_rollback :clear_fs
 
   default_scope { order(id: :desc) }
@@ -156,11 +156,11 @@ class Submission < ApplicationRecord
 
   def clear_fs
     # If we were destroyed or if we were never saved to the database, delete this submission's directory
-    # rubocop:disable Style/GuardClause
+    # rubocop:disable Style/GuardClause, Style/SoleNestedConditional
     if destroyed? || new_record?
       FileUtils.remove_entry_secure(fs_path) if File.exist?(fs_path)
     end
-    # rubocop:enable Style/GuardClause
+    # rubocop:enable Style/GuardClause, Style/SoleNestedConditional
   end
 
   def on_filesystem?
@@ -180,9 +180,10 @@ class Submission < ApplicationRecord
   end
 
   def evaluate_delayed(priority = :normal)
-    queue = if priority == :high
+    queue = case priority
+            when :high
               'high_priority_submissions'
-            elsif priority == :low
+            when :low
               'low_priority_submissions'
             else
               'submissions'

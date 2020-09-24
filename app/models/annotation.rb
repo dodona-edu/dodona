@@ -30,8 +30,8 @@ class Annotation < ApplicationRecord
   scope :by_user, ->(user_id) { where(user_id: user_id) }
   scope :released, -> { where(evaluation_id: nil).or(where(evaluations: { released: true })) }
 
-  after_save :create_notification
   after_destroy :destroy_notification
+  after_save :create_notification
 
   private
 

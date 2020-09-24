@@ -22,10 +22,10 @@ class Feedback < ApplicationRecord
   delegate :user, to: :evaluation_user
   delegate :exercise, to: :evaluation_exercise
 
+  before_save :manage_annotations_after_submission_update
   before_create :generate_id
   before_create :determine_submission
   before_destroy :destroy_related_annotations
-  before_save :manage_annotations_after_submission_update
 
   validate :submission_user_exercise_correct
 

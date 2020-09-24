@@ -93,7 +93,8 @@ en:
       request_registration: Request registration
       unsubscribe: Unregister
       exercise_series: Exercise series
-      no_series_yet: This course currently contains no exercises nor series. Click the "Manage series" button to get started!
+      no_series_yet: This course currently contains no exercises nor series.
+      get_started_adding: 'Click the "Manage series" button to get started!'
       users: Users
       series: series
       download_submissions: Export student submissions

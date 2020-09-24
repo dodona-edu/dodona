@@ -41,7 +41,7 @@ class SubmissionsController < ApplicationController
   end
 
   def show
-    @title = I18n.t('submissions.show.submission') + ' - ' + @submission.exercise.name
+    @title = "#{I18n.t('submissions.show.submission')} - #{@submission.exercise.name}"
     course = @submission.course
     @crumbs = if course.present?
                 [[course.name, course_path(course)], [@submission.exercise.name, course_activity_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
@@ -57,9 +57,7 @@ class SubmissionsController < ApplicationController
     para[:code].gsub!(/\r\n?/, "\n")
     para[:evaluate] = true # immediately evaluate after create
     course = Course.find(para[:course_id]) if para[:course_id].present?
-    if para[:course_id].present?
-      para.delete(:course_id) unless course.subscribed_members.include?(current_user)
-    end
+    para.delete(:course_id) if para[:course_id].present? && course.subscribed_members.exclude?(current_user)
     submission = Submission.new(para)
     can_submit = true
     if submission.exercise.present?

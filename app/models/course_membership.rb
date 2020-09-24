@@ -24,9 +24,9 @@ class CourseMembership < ApplicationRecord
   validate :at_least_one_admin_per_course
 
   before_create { self.status ||= :student }
+  after_destroy :invalidate_caches
   after_save :invalidate_caches
   after_save :delete_unused_course_labels
-  after_destroy :invalidate_caches
 
   scope :by_institution, ->(institution) { where(user: User.by_institution(institution)) }
   scope :by_permission, ->(permission) { where(user: User.by_permission(permission)) }

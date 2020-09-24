@@ -1,7 +1,7 @@
 require 'pathname'
 require 'fileutils'
 
-require 'testhelpers/git_helper.rb'
+require 'testhelpers/git_helper'
 
 module RemoteHelper
   def local_remote(sample_dir = nil)
@@ -62,7 +62,7 @@ class TempRepository < GitRepository
   end
 
   def add_dir(src_path, msg: nil)
-    FileUtils.cp_r Dir[src_path + '/*'], @path
+    FileUtils.cp_r Dir["#{src_path}/*"], @path
     msg ||= "add #{src_path}"
     commit msg
   end

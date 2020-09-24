@@ -92,7 +92,7 @@ module ApplicationHelper
     render partial: 'navbar_link', locals: locals
   end
 
-  def activatable_link_to(url, options = nil)
+  def activatable_link_to(url, options = nil, &block)
     if current_page?(url)
       options ||= {}
       if options[:class]
@@ -101,9 +101,7 @@ module ApplicationHelper
         options[:class] = 'active'
       end
     end
-    link_to url, options do
-      yield
-    end
+    link_to url, options, &block
   end
 
   def clipboard_button_for(selector)
@@ -206,10 +204,6 @@ module ApplicationHelper
   end
 
   class AjaxLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
-    def initialize
-      # @base_url_params.delete(:format)
-    end
-
     protected
 
     def html_container(html)

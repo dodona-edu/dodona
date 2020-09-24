@@ -376,10 +376,7 @@ class CoursesController < ApplicationController
     membership = CourseMembership.where(user: user, course: @course).first
     return false unless membership
 
-    if membership.course_admin?
-      authorize @course, :update_course_admin_membership? unless user == current_user
-    end
-
+    authorize @course, :update_course_admin_membership? if membership.course_admin? && user != current_user
     authorize @course, :update_course_admin_membership? if status == 'course_admin'
 
     membership.update(status: status).tap do |success|

@@ -11,7 +11,7 @@
 #  updated_at :datetime         not null
 #
 
-require File.dirname(__FILE__) + '/../testhelpers/stub_helper.rb'
+require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"
 using StubHelper
 
 FactoryBot.define do

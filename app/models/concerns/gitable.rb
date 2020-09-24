@@ -37,6 +37,6 @@ module Gitable
   end
 
   def github_remote?
-    remote =~ %r{^(git@)|(https:\/\/)(github|gitlab)}
+    remote =~ %r{^(git@)|(https://)(github|gitlab)}
   end
 end

@@ -24,8 +24,8 @@ class Evaluation < ApplicationRecord
   validate :deadline_in_past
 
   before_save :manage_feedbacks
-  after_save :manage_user_notifications
   before_destroy :destroy_notification
+  after_save :manage_user_notifications
 
   def users=(new_users)
     removed = users - new_users

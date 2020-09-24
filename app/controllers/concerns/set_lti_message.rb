@@ -1,5 +1,5 @@
-require_relative '../../../lib/LTI/jwk.rb'
-require_relative '../../../lib/LTI/messages.rb'
+require_relative '../../../lib/LTI/jwk'
+require_relative '../../../lib/LTI/messages'
 
 module SetLtiMessage
   extend ActiveSupport::Concern

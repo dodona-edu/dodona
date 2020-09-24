@@ -44,8 +44,8 @@ class Series < ApplicationRecord
   token_generator :access_token, length: 5
   token_generator :indianio_token
 
-  before_create :generate_access_token
   before_save :regenerate_activity_tokens, if: :visibility_changed?
+  before_create :generate_access_token
   after_save :invalidate_activity_statuses, if: :saved_change_to_deadline?
 
   scope :visible, -> { where(visibility: :open) }

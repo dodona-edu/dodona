@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_09_121638) do
+ActiveRecord::Schema.define(version: 2020_09_24_072242) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -111,7 +111,9 @@ ActiveRecord::Schema.define(version: 2020_09_09_121638) do
     t.bigint "evaluation_id"
     t.string "type", default: "Annotation", null: false
     t.integer "question_state"
+    t.integer "last_updated_by_id", null: false
     t.index ["evaluation_id"], name: "index_annotations_on_evaluation_id"
+    t.index ["last_updated_by_id"], name: "index_annotations_on_last_updated_by_id"
     t.index ["submission_id"], name: "index_annotations_on_submission_id"
     t.index ["user_id"], name: "index_annotations_on_user_id"
   end
@@ -439,6 +441,7 @@ ActiveRecord::Schema.define(version: 2020_09_09_121638) do
   add_foreign_key "annotations", "evaluations"
   add_foreign_key "annotations", "submissions"
   add_foreign_key "annotations", "users"
+  add_foreign_key "annotations", "users", column: "last_updated_by_id"
   add_foreign_key "course_labels", "courses", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_labels", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_memberships", on_delete: :cascade

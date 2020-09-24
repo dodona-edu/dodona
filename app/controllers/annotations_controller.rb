@@ -36,7 +36,9 @@ class AnnotationsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @annotation.update(permitted_attributes(@annotation))
+      args = permitted_attributes(@annotation)
+      args[:last_updated_by] = current_user
+      if @annotation.update(args)
         format.json { render :show, status: :ok, location: @annotation.becomes(Annotation) }
       else
         format.json { render json: @annotation.errors, status: :unprocessable_entity }

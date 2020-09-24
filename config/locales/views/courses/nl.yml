@@ -102,7 +102,8 @@ nl:
       request_registration: Registratieverzoek indienen
       unsubscribe: Uitschrijven
       exercise_series: Oefeningenreeksen
-      no_series_yet: 'Deze cursus bevat nog geen reeksen met oefeningen. Klik op de knop "Reeksen beheren" om aan de slag te gaan.'
+      no_series_yet: Deze cursus bevat nog geen reeksen met oefeningen.
+      get_started_adding: 'Klik op de knop "Reeksen beheren" om aan de slag te gaan.'
       users: Gebruikers
       series: reeksen
       download_submissions: Oplossingen van studenten exporteren

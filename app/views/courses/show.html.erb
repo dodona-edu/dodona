@@ -108,7 +108,7 @@
       </div>
     </div>
     <% if @series.empty? %>
-      <p class="lead text-center"><%= t ".no_series_yet" %></p>
+      <p class="lead text-center"><%= t ".no_series_yet" %> <%= t ".get_started_adding" if policy(@course).manage_series? %></p>
     <% end %>
     <div id="series-listing">
       <% @series.first(@series_loaded).each do |series| %>

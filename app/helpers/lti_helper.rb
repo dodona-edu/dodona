@@ -2,7 +2,7 @@ require_relative '../../lib/LTI/messages'
 
 module LtiHelper
   def lti_resource_links_from(params)
-    activity_ids = params[:lti][:activities] || []
+    activity_ids = params[:lti][:activities]&.reject(&:blank?) || []
     series_id = params[:lti][:series]
     course_id = params[:lti][:course]
 

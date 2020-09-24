@@ -170,6 +170,7 @@ nl:
         in_progress: "Vragen in behandeling"
         closed: "Beantwoorde vragen"
         title: "Vragen"
+        page_title: "Vragen (%{count})"
         auto_refresh: Vragen automatisch vernieuwen
       ago: "%{when} geleden"
       last_edited_by:

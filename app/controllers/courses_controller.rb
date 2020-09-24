@@ -196,7 +196,6 @@ class CoursesController < ApplicationController
   end
 
   def questions
-    @title = I18n.t('courses.questions.questions.title')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.questions.questions.title'), '#']]
 
     @refresh = ActiveRecord::Type::Boolean.new.deserialize(params.fetch(:refresh, @course.enabled_questions?.to_s))
@@ -212,6 +211,7 @@ class CoursesController < ApplicationController
                        .order(updated_at: :desc)
                        .includes(:user, :last_updated_by, submission: [:exercise])
                        .paginate(page: parse_pagination_param(params[:answered_page]), per_page: 10)
+    @title = I18n.t('courses.questions.questions.page_title', count: @course.unanswered_questions.count)
   end
 
   def update_membership

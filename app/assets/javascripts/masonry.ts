@@ -12,7 +12,8 @@ export class Masonry {
     roots: CustomElement[];
 
     constructor() {
-        // subscribe to resize events
+        // subscribe to load and resize events
+        window.addEventListener("load", () => this.initMasonryRoots());
         window.addEventListener("resize", () => this.setCellLayout());
     }
 

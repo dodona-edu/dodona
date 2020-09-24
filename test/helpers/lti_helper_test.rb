@@ -50,7 +50,7 @@ class LtiHelperTest < ActionDispatch::IntegrationTest
     assert_equal(1, result.length)
     item = result[0]
     assert_equal(@series.name, item.title)
-    assert_equal(lti_series_url(@course.id, @series), item.url)
+    assert_equal(lti_series_url(@series), item.url)
   end
 
   test 'resource link is for hidden series if series is selected' do
@@ -67,7 +67,7 @@ class LtiHelperTest < ActionDispatch::IntegrationTest
     assert_equal(1, result.length)
     item = result[0]
     assert_equal(@series.name, item.title)
-    assert_equal(lti_series_url(@course.id, @series), item.url)
+    assert_equal(lti_series_url(@series), item.url)
   end
 
   test 'resource link is for activity if activity is selected' do

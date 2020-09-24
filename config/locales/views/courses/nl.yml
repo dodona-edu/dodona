@@ -171,11 +171,6 @@ nl:
         closed: "Beantwoorde vragen"
         title: "Vragen"
         auto_refresh: Vragen automatisch vernieuwen
-      table:
-        user: "Gebruiker"
-        question: "Vraag"
-        time_since: "Leeftijd"
-        exercise: "Oefening"
       no_questions: "Er zijn geen vragen beschikbaar"
       buttons:
         to_in_progress: "Vraag in behandeling plaatsen"

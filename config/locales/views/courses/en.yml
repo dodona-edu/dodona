@@ -175,14 +175,9 @@ en:
         closed: "Answered questions"
         title: "Questions"
         auto_refresh: Automatically refresh questions
-      table:
-        user: "User"
-        question: "Question"
-        time_since: "Age"
-        exercise: "Exercise"
       no_questions: "There are no questions available"
       buttons:
-        to_in_progress: "Move question to in progress"
+        to_in_progress: "Mark question as in progress"
         to_resolved: "Mark question as answered"
         to_unresolved: "Mark question as unresolved"
       status:

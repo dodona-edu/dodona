@@ -2,7 +2,7 @@ require_relative '../../lib/LTI/messages'
 
 module LtiHelper
   def lti_resource_links_from(params)
-    activity_ids = params[:lti][:activities] || []
+    activity_ids = params[:lti][:activities]&.reject(&:blank?) || []
     series_id = params[:lti][:series]
     course_id = params[:lti][:course]
 
@@ -15,7 +15,7 @@ module LtiHelper
       end
     elsif series_id.present?
       series = Series.find(series_id)
-      url = lti_series_url(course_id, series)
+      url = lti_series_url(series)
       [LTI::Messages::Types::DeepLinkingResponse::LtiResourceLink.new(series.name, url)]
     else
       course = Course.find(course_id)
@@ -36,11 +36,11 @@ module LtiHelper
     end
   end
 
-  def lti_series_url(course_id, series)
+  def lti_series_url(series)
     if series.hidden?
       series_url(series, token: series.access_token)
     else
-      course_url(course_id, anchor: series.anchor)
+      series_url(series)
     end
   end
 end

@@ -1,5 +1,9 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'submission' %>
+  <script>
+    window.dodona.initMathJax();
+  </script>
+  <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
   <%= javascript_pack_tag 'pythia_submission' if submission.judge.renderer == PythiaRenderer %>
 <% end %>
 

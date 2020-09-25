@@ -1,5 +1,9 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'description' %>
+  <script>
+    window.dodona.initMathJax();
+  </script>
+  <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
 <% end %>
 <div class="activity-description">
   <div class="card-supporting-text">
@@ -27,6 +31,5 @@
   </div>
 </div>
 <script>
-  window.dodona.initDescription();
+  $(() => window.dodona.initDescription());
 </script>
-<script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>

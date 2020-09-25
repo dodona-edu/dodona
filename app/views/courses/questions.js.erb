@@ -7,3 +7,8 @@ document.querySelector(".question-table-answered").innerHTML = "<%= escape_javas
   document.getElementById("questions-in-progress").classList.remove("hidden");
 <% end %>
 dodona.setDocumentTitle("Dodona - <%= @title %>");
+<% if @unanswered.any? %>
+  dodona.dotManager.requestDot("questions");
+<% else %>
+  dodona.dotManager.releaseDot("questions");
+<% end %>

@@ -212,6 +212,7 @@ class CoursesController < ApplicationController
                        .includes(:user, :last_updated_by, submission: [:exercise])
                        .paginate(page: parse_pagination_param(params[:answered_page]), per_page: 10)
     @title = I18n.t('courses.questions.questions.page_title', count: @course.unanswered_questions.count)
+    @dot_icon.push(:questions) if @unanswered.any?
   end
 
   def update_membership

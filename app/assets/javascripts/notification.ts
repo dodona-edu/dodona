@@ -1,3 +1,4 @@
+import { FaviconManager } from "favicon";
 import { fetch } from "util.js";
 /**
  * Model for a notification in the navbar. It adds three listeners to the notification view:
@@ -15,13 +16,15 @@ export class Notification {
     private readonly element: Element;
     private readonly url: string;
     private readonly notifiableUrl: string;
+    private readonly faviconManager: FaviconManager;
     private read: boolean;
 
-    constructor(id: number, url: string, read: boolean, notifiableUrl: string, installClickHandler: boolean) {
+    constructor(id: number, url: string, read: boolean, notifiableUrl: string, installClickHandler: boolean, manager: FaviconManager) {
         this.element = document.querySelector(`.notification[data-id="${id}"]`);
         this.read = read;
         this.url = url;
         this.notifiableUrl = notifiableUrl;
+        this.faviconManager = manager;
 
         this.element.querySelector(".read-toggle-button").addEventListener("click", event => {
             this.toggleRead();
@@ -63,12 +66,10 @@ export class Notification {
         }
         if (document.querySelectorAll(".notification.unread").length === 0) {
             document.querySelector("#navbar-notifications .dropdown-toggle")?.classList?.remove("notification");
-            document.querySelector("link[rel=\"shortcut icon\"][href=\"/icon-not.png\"]")?.setAttribute("href", "/icon.png");
-            document.querySelector("link[rel=\"shortcut icon\"][href=\"/favicon-not.ico\"]")?.setAttribute("href", "/favicon.ico");
+            this.faviconManager.releaseDot("notifications");
         } else {
             document.querySelector("#navbar-notifications .dropdown-toggle")?.classList?.add("notification");
-            document.querySelector("link[rel=\"shortcut icon\"][href=\"/icon.png\"]")?.setAttribute("href", "/icon-not.png");
-            document.querySelector("link[rel=\"shortcut icon\"][href=\"/favicon.ico\"]")?.setAttribute("href", "/favicon-not.ico");
+            this.faviconManager.requestDot("notifications");
         }
     }
 

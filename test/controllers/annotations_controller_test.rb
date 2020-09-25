@@ -269,21 +269,33 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
 
       # Unanswered -> in progress
       question = create :question, submission: @submission, question_state: :unanswered
-      post in_progress_annotation_path(question), params: {
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :in_progress
+        },
         format: :json
       }
       assert_response valid ? :ok : :forbidden
 
       # Unanswered -> answered
       question = create :question, submission: @submission, question_state: :unanswered
-      post resolve_annotation_path(question), params: {
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :answered
+        },
         format: :json
       }
       assert_response valid ? :ok : :forbidden
 
       # Unanswered -> unanswered
       question = create :question, submission: @submission, question_state: :unanswered
-      post unresolve_annotation_path(question), params: {
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :unanswered
+        },
         format: :json
       }
       assert_response :forbidden
@@ -295,21 +307,33 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   test 'a student can mark their own questions answered' do
     # Unanswered -> answered
     question = create :question, submission: @submission, question_state: :unanswered
-    post resolve_annotation_path(question), params: {
+    patch annotation_path(question), params: {
+      from: question.question_state,
+      question: {
+        question_state: :answered
+      },
       format: :json
     }
     assert_response :ok
 
     # Answered -> answered
     question = create :question, submission: @submission, question_state: :answered
-    post resolve_annotation_path(question), params: {
+    patch annotation_path(question), params: {
+      from: question.question_state,
+      question: {
+        question_state: :answered
+      },
       format: :json
     }
     assert_response :forbidden
 
     # In progress -> answered
     question = create :question, submission: @submission, question_state: :in_progress
-    post resolve_annotation_path(question), params: {
+    patch annotation_path(question), params: {
+      from: question.question_state,
+      question: {
+        question_state: :answered
+      },
       format: :json
     }
     assert_response :ok
@@ -328,27 +352,79 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
 
       # In progress -> in progress
       question = create :question, submission: @submission, question_state: :in_progress
-      post in_progress_annotation_path(question), params: {
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :in_progress
+        },
         format: :json
       }
       assert_response :forbidden
 
       # In progress -> answered
       question = create :question, submission: @submission, question_state: :in_progress
-      post resolve_annotation_path(question), params: {
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :answered
+        },
         format: :json
       }
       assert_response valid ? :ok : :forbidden
 
       # In progress -> unanswered
       question = create :question, submission: @submission, question_state: :in_progress
-      post unresolve_annotation_path(question), params: {
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :unanswered
+        },
         format: :json
       }
       assert_response valid ? :ok : :forbidden
 
       sign_out user
     end
+  end
+
+  test 'question cannot transition if already changed' do
+    sign_in create :zeus
+
+    question = create :question, submission: @submission, question_state: :unanswered
+    patch annotation_path(question), params: {
+      from: :answered,
+      question: {
+        question_state: :in_progress
+      },
+      format: :json
+    }
+    assert_response :forbidden
+
+    patch annotation_path(question), params: {
+      question: {
+        question_state: :in_progress
+      },
+      format: :json
+    }
+    assert_response :ok
+
+    question = create :question, submission: @submission, question_state: :answered
+    patch annotation_path(question), params: {
+      from: :unanswered,
+      question: {
+        question_state: :in_progress
+      },
+      format: :json
+    }
+    assert_response :forbidden
+
+    patch annotation_path(question), params: {
+      question: {
+        question_state: :in_progress
+      },
+      format: :json
+    }
+    assert_response :ok
   end
 
   test 'questions can transition from answered' do
@@ -364,21 +440,33 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
 
       # Answered -> in progress
       question = create :question, submission: @submission, question_state: :answered
-      post in_progress_annotation_path(question), params: {
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :in_progress
+        },
         format: :json
       }
       assert_response valid ? :ok : :forbidden
 
       # Answered -> answered
       question = create :question, submission: @submission, question_state: :answered
-      post resolve_annotation_path(question), params: {
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :answered
+        },
         format: :json
       }
       assert_response :forbidden
 
       # Answered -> unanswered
       question = create :question, submission: @submission, question_state: :answered
-      post unresolve_annotation_path(question), params: {
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :unanswered
+        },
         format: :json
       }
       assert_response valid ? :ok : :forbidden
@@ -403,7 +491,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     question = create :question, submission: @submission, question_state: :answered
 
     put annotation_path(question), params: {
-      annotation: {
+      question: {
         annotation_text: 'Changed'
       },
       format: :json

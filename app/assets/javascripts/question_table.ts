@@ -40,7 +40,7 @@ export class QuestionTable {
 
             // The user clicked one of the buttons, so handle the event.
             e.preventDefault();
-            this.changeStatus(link.href, link.dataset["from"]);
+            this.changeStatus(link.href, link.dataset["from"], link.dataset["to"]);
         });
 
         // Set up auto refresh.
@@ -81,17 +81,24 @@ export class QuestionTable {
      * Change the status of a question.
      * This function will reload the question table after the network operations complete.
      *
-     * @param {string} changeUrl The url to invoke, changing the status.
-     * @param {string} from The status you expect the question to currently have. This allows us
-     *                      to detect race conditions.
+     * @param {string} url The url to invoke, changing the status.
+     * @param {string} from The expected state of the question.
+     * @param {string} to The new state.
      */
-    changeStatus(changeUrl: string, from: string): void {
-        const url = setParam(changeUrl, "from", from);
+    changeStatus(url: string, from: string, to: string): void {
         fetch(url, {
-            method: "POST",
+            method: "PATCH",
             headers: {
                 "Accept": "application/json",
-            }
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                from: from,
+                question: {
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    question_state: to
+                }
+            })
         }).then(response => {
             if (response.status == 404) {
                 new dodona.Toast(I18n.t("js.user_question.deleted"));

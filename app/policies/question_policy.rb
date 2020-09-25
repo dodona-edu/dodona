@@ -8,26 +8,23 @@ class QuestionPolicy < AnnotationPolicy
     record.submission.user == user
   end
 
-  def unresolve?
-    return false if record.unanswered? || !transition?
+  def transition?(to, from = nil)
+    # Check if the expected state is the same as the actual state.
+    return false if from.present? && record.question_state.to_s != from.to_s
+    # Don't allow transition if already in the requested state
+    return false if record.question_state.to_s == to.to_s
+    # Only the course admins can transition, except for the answered state.
+    return true if to.to_s == 'answered' && record.user == user
 
     user.course_admin?(record.submission.course)
-  end
-
-  def in_progress?
-    return false if record.in_progress? || !transition?
-
-    user.course_admin?(record.submission.course)
-  end
-
-  def resolve?
-    return false if record.answered? || !transition?
-
-    user.course_admin?(record.submission.course) || record.user == user
   end
 
   def update?
-    # Don't allow editing if the question was answered.
+    # If we are updating the state, authorize the state.
+    return transition?(record.transition_to, record.transition_from) if transitioning?
+
+    # Otherwise, we are updating the text of the annotation.
+    # Only allow if the question was not answered yet.
     return false if record.answered?
 
     record.user == user
@@ -37,14 +34,20 @@ class QuestionPolicy < AnnotationPolicy
     # Don't allow removing if the question was answered.
     return false if record.answered?
 
-    record&.user == user
+    record.user == user
+  end
+
+  def permitted_attributes_for_update
+    if transitioning?
+      %i[question_state]
+    else
+      super
+    end
   end
 
   private
 
-  def transition?
-    return true if record.transition_from.blank?
-
-    record.question_state.to_s == record.transition_from
+  def transitioning?
+    record.transition_to.present?
   end
 end

@@ -1,4 +1,4 @@
-import { Annotation } from "code_listing/annotation";
+import { Annotation, QuestionState } from "code_listing/annotation";
 import { fetch } from "util.js";
 import {
     UserAnnotation,
@@ -7,12 +7,8 @@ import {
     UserAnnotationPermissionData
 } from "code_listing/user_annotation";
 
-export type QuestionState = "unanswered" | "answered" | "in_progress";
-
 interface QuestionAnnotationPermissionData extends UserAnnotationPermissionData {
-    unresolve: boolean;
-    in_progress: boolean;
-    resolve: boolean;
+    transition: {[state in QuestionState]: boolean};
 }
 
 export interface QuestionAnnotationData extends UserAnnotationData {
@@ -41,32 +37,12 @@ export class QuestionAnnotation extends UserAnnotation {
         });
     }
 
-    public get resolvable(): boolean {
-        return this.permissions.resolve;
-    }
-
-    public get inProgressable(): boolean {
-        return this.permissions.in_progress;
-    }
-
-    public get unresolvable(): boolean {
-        return this.permissions.unresolve;
+    public transitionable(to: QuestionState): boolean {
+        return this.permissions.transition[to];
     }
 
     protected get editTitle(): string {
         return I18n.t("js.user_question.edit");
-    }
-
-    protected async resolve(): Promise<void> {
-        return this.changeState("resolve");
-    }
-
-    protected async inProgress(): Promise<void> {
-        return this.changeState("in_progress");
-    }
-
-    protected async unresolve(): Promise<void> {
-        return this.changeState("unresolve");
     }
 
     public async update(formData: UserAnnotationFormData): Promise<Annotation> {
@@ -85,12 +61,20 @@ export class QuestionAnnotation extends UserAnnotation {
         throw new Error();
     }
 
-    protected changeState(newState: string): Promise<void> {
-        return fetch(`/annotations/${this.id}/${newState}?from=${this.questionState}`, {
-            method: "POST",
+    protected async transition(newState: QuestionState): Promise<void> {
+        fetch(this.url, {
+            method: "PATCH",
             headers: {
                 "Accept": "application/json",
-            }
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                from: this.questionState,
+                question: {
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    question_state: newState
+                }
+            })
         }).then(async response => {
             if (response.ok) {
                 const json = await response.json();

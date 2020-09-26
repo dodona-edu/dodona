@@ -13,7 +13,7 @@ class AnnotationsController < ApplicationController
   def show; end
 
   def create
-    clazz = if current_user.course_admin?(@submission.course)
+    clazz = if current_user&.course_admin?(@submission.course)
               Annotation
             else
               Question

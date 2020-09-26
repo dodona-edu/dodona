@@ -158,6 +158,18 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     sign_in @submission.user
   end
 
+  test 'not logged in is rejected' do
+    sign_out @submission.user
+    post submission_annotations_url(@submission), params: {
+      question: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :unauthorized
+  end
+
   test 'student can create a question' do
     post submission_annotations_url(@submission), params: {
       question: {

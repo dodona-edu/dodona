@@ -91,7 +91,7 @@ class FeedbackCodeRenderer
 
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
-        window.dodona.afterInitialMathJaxTypeset.push(() => {
+        window.MathJax.startup.promise.then(() => {
           window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, #{@code.to_json}, #{@code.lines.length}, #{user_is_student});
           window.dodona.codeListing.addMachineAnnotations(#{messages.map { |o| Hash[o.each_pair.to_a] }.to_json});
           #{'window.dodona.codeListing.initAnnotateButtons();' if user_perm}

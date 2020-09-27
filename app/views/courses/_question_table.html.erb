@@ -36,18 +36,18 @@
           <%= time_ago_in_words question.created_at %>
         </td>
         <td>
-          <% if policy(question).unresolve? %>
-            <%= link_to unresolve_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
+          <% if policy(question).transition?(:unanswered) %>
+            <%= link_to annotation_path(question), data: {from: question.question_state, to: :unanswered}, class: 'btn btn-icon state-changer' do %>
               <i class="mdi mdi-restart mdi-18" title="<%= t('courses.questions.buttons.to_unresolved') %>"></i>
             <% end %>
           <% end %>
-          <% if policy(question).in_progress? && !question.answered? %>
-            <%= link_to in_progress_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
+          <% if policy(question).transition?(:in_progress) && !question.answered? %>
+            <%= link_to annotation_path(question), data: {from: question.question_state, to: :in_progress}, class: 'btn btn-icon state-changer' do %>
               <i class="mdi mdi-comment-processing-outline mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
             <% end %>
           <% end %>
-          <% if policy(question).resolve? %>
-            <%= link_to resolve_annotation_path(question), class: 'btn btn-icon state-changer', data: { from: question.question_state } do %>
+          <% if policy(question).transition?(:answered) %>
+            <%= link_to annotation_path(question), data: {from: question.question_state, to: :answered}, class: 'btn btn-icon state-changer' do %>
               <i class="mdi mdi-check mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
             <% end %>
           <% end %>

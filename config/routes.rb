@@ -165,13 +165,7 @@ Rails.application.routes.draw do
 
     resources :annotations, only: %i[index show create update destroy]
 
-    resources :annotations, format: :json do
-      member do
-        post 'unresolve'
-        post 'in_progress'
-        post 'resolve'
-      end
-    end
+    resources :annotations, format: :json
 
     resources :submissions, only: %i[index show create edit] do
       resources :annotations, only: %i[index create], as: 'submission_annotations'

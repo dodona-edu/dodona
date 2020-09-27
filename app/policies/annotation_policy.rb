@@ -35,23 +35,15 @@ class AnnotationPolicy < ApplicationPolicy
     record&.user == user
   end
 
-  def unresolve?
+  def transition?(_from, _to = nil)
     false
   end
 
-  def in_progress?
-    false
+  def permitted_attributes_for_create
+    %i[annotation_text line_nr evaluation_id]
   end
 
-  def resolve?
-    false
-  end
-
-  def permitted_attributes
-    if record.class == Annotation
-      %i[annotation_text]
-    else # new record
-      %i[annotation_text line_nr evaluation_id]
-    end
+  def permitted_attributes_for_update
+    %i[annotation_text]
   end
 end

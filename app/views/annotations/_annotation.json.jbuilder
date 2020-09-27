@@ -10,9 +10,11 @@ end
 json.permission do
   json.update policy(annotation).update?
   json.destroy policy(annotation).destroy?
-  json.unresolve policy(annotation).unresolve?
-  json.in_progress policy(annotation).in_progress?
-  json.resolve policy(annotation).resolve?
+  json.transition do
+    Question.question_states.each_key do |state|
+      json.set! state, policy(annotation).transition?(state)
+    end
+  end
 end
 json.released AnnotationPolicy.new(annotation.submission.user, annotation).show?
 json.type annotation.type&.downcase

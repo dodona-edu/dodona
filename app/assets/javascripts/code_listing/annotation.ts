@@ -1,4 +1,5 @@
 export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
+export type QuestionState = "unanswered" | "answered" | "in_progress";
 
 export abstract class Annotation {
     private static idCounter = 0;
@@ -30,18 +31,6 @@ export abstract class Annotation {
     }
 
     protected edit(): void {
-        // Do nothing.
-    }
-
-    protected resolve(): void {
-        // Do nothing.
-    }
-
-    protected inProgress(): void {
-        // Do nothing.
-    }
-
-    protected unresolve(): void {
         // Do nothing.
     }
 
@@ -84,9 +73,9 @@ export abstract class Annotation {
             header.appendChild(link);
         }
 
-        if (this.resolvable) {
+        if (this.transitionable("answered")) {
             const link = document.createElement("a");
-            link.addEventListener("click", () => this.resolve());
+            link.addEventListener("click", () => this.transition("answered"));
             link.classList.add("btn", "btn-icon", "question-control-button", "question-resolve");
             link.title = I18n.t("js.user_question.resolve");
 
@@ -97,9 +86,9 @@ export abstract class Annotation {
             header.appendChild(link);
         }
 
-        if (this.inProgressable) {
+        if (this.transitionable("in_progress")) {
             const link = document.createElement("a");
-            link.addEventListener("click", () => this.inProgress());
+            link.addEventListener("click", () => this.transition("in_progress"));
             link.classList.add("btn", "btn-icon", "question-control-button", "question-in_progress");
             link.title = I18n.t("js.user_question.in_progress");
 
@@ -110,9 +99,9 @@ export abstract class Annotation {
             header.appendChild(link);
         }
 
-        if (this.unresolvable) {
+        if (this.transitionable("unanswered")) {
             const link = document.createElement("a");
-            link.addEventListener("click", () => this.unresolve());
+            link.addEventListener("click", () => this.transition("unanswered"));
             link.classList.add("btn", "btn-icon", "question-control-button", "question-unresolve");
             link.title = I18n.t("js.user_question.unresolve");
 
@@ -141,11 +130,7 @@ export abstract class Annotation {
             this.__html.appendChild(this.header);
             this.__html.appendChild(this.body);
             // Ask MathJax to search for math in the annotations
-            if (window.MathJax === undefined) {
-                console.error("MathJax is not initialized");
-            } else {
-                window.MathJax.typeset();
-            }
+            window.MathJax.typeset();
         }
 
         return this.__html;
@@ -161,15 +146,7 @@ export abstract class Annotation {
         return false;
     }
 
-    public get resolvable(): boolean {
-        return false;
-    }
-
-    public get inProgressable(): boolean {
-        return false;
-    }
-
-    public get unresolvable(): boolean {
+    public transitionable(to: QuestionState): boolean {
         return false;
     }
 
@@ -202,5 +179,9 @@ export abstract class Annotation {
     public async update(data): Promise<Annotation> {
         // Do nothing.
         return data;
+    }
+
+    protected async transition(to: QuestionState): Promise<void> {
+        // Do nothing.
     }
 }

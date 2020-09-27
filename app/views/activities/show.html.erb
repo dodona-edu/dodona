@@ -2,6 +2,10 @@
   <%= javascript_pack_tag 'exercise' %>
   <% if @activity.exercise? %>
     <%= javascript_pack_tag 'submission' %>
+    <script>
+      window.dodona.initMathJax();
+    </script>
+    <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
     <%= javascript_pack_tag 'pythia_submission' if @activity.judge.renderer == PythiaRenderer %>
   <% end %>
 <% end %>

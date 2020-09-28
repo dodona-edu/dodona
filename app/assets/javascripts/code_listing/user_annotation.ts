@@ -30,6 +30,7 @@ export interface UserAnnotationData {
     url: string;
     user: UserAnnotationUserData;
     type: string;
+    last_updated_by: UserAnnotationUserData;
 }
 
 export class UserAnnotation extends Annotation {
@@ -43,6 +44,7 @@ export class UserAnnotation extends Annotation {
     public readonly evaluationId: number | null;
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
+    public readonly lastUpdatedBy: UserAnnotationUserData;
 
     constructor(data: UserAnnotationData,
         editFn: UserAnnotationEditor, type: AnnotationType = "user") {
@@ -57,6 +59,7 @@ export class UserAnnotation extends Annotation {
         this.evaluationId = data.evaluation_id;
         this.url = data.url;
         this.user = data.user;
+        this.lastUpdatedBy = data.last_updated_by;
     }
 
     protected edit(): void {

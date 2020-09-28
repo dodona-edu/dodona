@@ -11,12 +11,15 @@
     width: 150px;
   }
 
-  .clickable-row {
-    cursor: pointer;
-  }
-
   td.actions {
     vertical-align: middle;
+  }
+
+  .selection-row {
+    cursor: pointer;
+    &:hover {
+      background-color: @table-hover-bg;
+    }
   }
 
   table-layout: fixed;

@@ -41,7 +41,7 @@ export class QuestionTable {
                 return;
             }
 
-            const tr = target.closest<HTMLElement>("tr.clickable-row");
+            const tr = target.closest<HTMLElement>("tr.selection-row");
             if (tr) {
                 e.preventDefault();
                 window.open(tr.dataset["href"]);

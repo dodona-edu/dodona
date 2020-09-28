@@ -1,5 +1,5 @@
 <% if questions.present? %>
-  <table class="table question-table table-hover">
+  <table class="table question-table">
     <colgroup>
       <col class="name"/>
       <col/>
@@ -8,7 +8,7 @@
     </colgroup>
     <tbody>
     <% questions.each do |question| %>
-      <tr class="clickable-row" data-href="<%= submission_url(question.submission, anchor: 'code') %>">
+      <tr class="selection-row" data-href="<%= submission_url(question.submission, anchor: 'code') %>">
         <td>
           <%= question.user.full_name %>
         </td>

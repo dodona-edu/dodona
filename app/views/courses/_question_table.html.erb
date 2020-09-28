@@ -19,12 +19,10 @@
           </div>
         </td>
         <td>
-          <% if question.unanswered? %>
-            <%= time_ago_in_words question.created_at %>
-          <% else %>
-            <%= question.last_updated_by.full_name %>
+          <%= t "courses.questions.ago", when: time_ago_in_words(question.created_at) %>
+          <% unless question.unanswered? %>
             <div class="text-muted ellipsis-overflow">
-              <%= time_ago_in_words question.created_at %>
+              <%= t "courses.questions.last_edited_by.#{question.question_state}", who: question.last_updated_by.full_name %>
             </div>
           <% end %>
         </td>

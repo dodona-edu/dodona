@@ -175,6 +175,10 @@ en:
         closed: "Answered questions"
         title: "Questions"
         auto_refresh: Automatically refresh questions
+      ago: "%{when} ago"
+      last_edited_by:
+        answered: "Answered by %{who}"
+        in_progress: "In progress with %{who}"
       no_questions:
         answered: "There are no answered questions at the moment."
         in_progress: "There are no questions in progress at the moment."

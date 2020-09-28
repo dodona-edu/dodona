@@ -171,6 +171,10 @@ nl:
         closed: "Beantwoorde vragen"
         title: "Vragen"
         auto_refresh: Vragen automatisch vernieuwen
+      ago: "%{when} geleden"
+      last_edited_by:
+        answered: "Beantwoord door %{who}"
+        in_progress: "In behandeling bij %{who}"
       no_questions:
         answered: "Er zijn momenteel geen beantwoorde vragen."
         in_progress: "Er zijn momenteel geen vragen in behandeling."

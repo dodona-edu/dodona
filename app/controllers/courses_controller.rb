@@ -203,7 +203,7 @@ class CoursesController < ApplicationController
     @unanswered = @course.unanswered_questions
                          .order(created_at: :asc)
                          .includes(:user, :last_updated_by, submission: [:exercise])
-                         .paginate(page: parse_pagination_param(params[:answered_page]), per_page: 10)
+                         .paginate(page: parse_pagination_param(params[:unanswered_page]), per_page: 10)
     @in_progress = @course.in_progress_questions
                           .order(updated_at: :desc)
                           .includes(:user, :last_updated_by, submission: [:exercise])
@@ -211,7 +211,7 @@ class CoursesController < ApplicationController
     @answered = @course.answered_questions
                        .order(updated_at: :desc)
                        .includes(:user, :last_updated_by, submission: [:exercise])
-                       .paginate(page: parse_pagination_param(params[:unanswered_page]), per_page: 10)
+                       .paginate(page: parse_pagination_param(params[:answered_page]), per_page: 10)
   end
 
   def update_membership

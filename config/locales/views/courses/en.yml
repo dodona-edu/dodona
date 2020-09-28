@@ -175,7 +175,10 @@ en:
         closed: "Answered questions"
         title: "Questions"
         auto_refresh: Automatically refresh questions
-      no_questions: "There are no questions available"
+      no_questions:
+        answered: "There are no answered questions at the moment."
+        in_progress: "There are no questions in progress at the moment."
+        unanswered: "There are no unanswered questions at the moment."
       buttons:
         to_in_progress: "Mark question as in progress"
         to_resolved: "Mark question as answered"

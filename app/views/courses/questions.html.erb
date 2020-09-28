@@ -23,20 +23,20 @@
         </div>
 
         <h4><%= t('.questions.open') %></h4>
-        <div class="question-table-open">
-          <%= render 'question_table', questions: @open, refresh: @refresh, param_name: 'open_page' %>
+        <div class="question-table-unanswered">
+          <%= render 'question_table', questions: @unanswered, refresh: @refresh, state: :unanswered %>
         </div>
 
         <section id="questions-in-progress" class="<%= 'hidden' if @in_progress.empty? %>">
           <h4><%= t('.questions.in_progress') %></h4>
           <div class="question-table-in-progress">
-            <%= render 'question_table', questions: @in_progress, refresh: @refresh, param_name: 'in_progress_page' %>
+            <%= render 'question_table', questions: @in_progress, refresh: @refresh, state: :in_progress %>
           </div>
         </section>
 
         <h4><%= t('.questions.closed') %></h4>
-        <div class="question-table-closed">
-          <%= render 'question_table', questions: @closed, refresh: @refresh, param_name: 'closed_page' %>
+        <div class="question-table-answered">
+          <%= render 'question_table', questions: @answered, refresh: @refresh, state: :answered %>
         </div>
       </div>
     </div>

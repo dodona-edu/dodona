@@ -50,8 +50,8 @@
     </tbody>
   </table>
 <% else %>
-  <%= t('courses.questions.no_questions') %>
+  <%= t("courses.questions.no_questions.#{state}") %>
 <% end %>
 <% if questions.try(:total_pages) %>
-  <center><%= page_navigation_links questions, false, 'courses', { refresh: refresh }, 'questions', param_name %></center>
+  <center><%= page_navigation_links questions, false, 'courses', { refresh: refresh }, 'questions', "#{state}_page" %></center>
 <% end %>

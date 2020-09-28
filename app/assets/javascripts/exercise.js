@@ -104,7 +104,6 @@ function centerImagesAndTables() {
 
 function initMathJax() {
     // configure MathJax
-    window.dodona.afterInitialMathJaxTypeset = [];
     window.MathJax = {
         tex: {
             inlineMath: [
@@ -126,14 +125,6 @@ function initMathJax() {
         },
         loader: {
             load: ["[tex]/noerrors"]
-        },
-        startup: {
-            ready: () => {
-                window.MathJax.startup.defaultReady();
-                window.MathJax.startup.promise.then(() => {
-                    window.dodona.afterInitialMathJaxTypeset.forEach(f => f());
-                });
-            }
         }
     };
 }

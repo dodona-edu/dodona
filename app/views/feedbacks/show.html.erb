@@ -77,7 +77,7 @@
 </div>
 <% if @feedback.submission.present? %>
   <script>
-    window.dodona.afterInitialMathJaxTypeset.push(() => {
+    window.MathJax.startup.promise.then(() => {
       window.dodona.codeListing.setEvaluation(<%= @feedback.evaluation.id %>)
       $(".nav.nav-tabs li:last-child a").tab("show");
     });

@@ -128,7 +128,7 @@ gem 'possibly', '~> 1.0.1'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 2.7.10'
+gem 'dalli', '~> 2.7.11'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.14.0'

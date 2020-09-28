@@ -77,7 +77,7 @@ gem 'omniauth_openid_connect', '~> 0.3.5'
 gem 'jwt', '~> 2.2.2'
 
 # contact mail form
-gem 'mail_form', '~> 1.8.0'
+gem 'mail_form', '~> 1.8.1'
 gem 'recaptcha', '~> 5.5.0', require: 'recaptcha/rails'
 
 # authorization

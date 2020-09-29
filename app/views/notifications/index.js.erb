@@ -1,0 +1,11 @@
+document.querySelector(".notification-dropdown").innerHTML = "<%= escape_javascript render(partial: 'notifications/small_notifications_table', locals: { notifications: @notifications }) %>";
+<% if @notifications.any? %>
+    document.getElementById("navbar-notifications").classList.remove("hidden");
+<% end %>
+<% if @unread_notifications.any? %>
+  document.querySelector("#navbar-notifications .dropdown-toggle").classList.add("notification")
+  dodona.dotManager.requestDot("notifications");
+<% else %>
+  document.querySelector("#navbar-notifications .dropdown-toggle").classList.remove("notification")
+  dodona.dotManager.releaseDot("notifications");
+<% end %>

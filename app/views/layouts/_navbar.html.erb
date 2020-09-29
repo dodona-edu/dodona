@@ -26,14 +26,17 @@
       <ul id="navbar" class="dropdown-nav collapse">
         <%= content_for :navbar %>
         <% if user_signed_in? %>
-          <% if @last_notifications.any? && current_page?(notifications_path).! %>
-            <li id="navbar-notifications" class="dropdown">
+          <% if current_page?(notifications_path).! %>
+            <li id="navbar-notifications" class="dropdown <%= "hidden" unless @last_notifications.any? %>">
               <a href="#" class="dropdown-toggle<%= " notification" if @unread_notifications.any? %>" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="mdi mdi-24 mdi-bell"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-right notification-dropdown">
                 <%= render partial: 'notifications/small_notifications_table', locals: { notifications: @last_notifications } %>
               </div>
+              <script>
+                $(function() { setInterval(dodona.checkNotifications, 60 * 1000); })
+              </script>
             </li>
           <% end %>
           <li class="dropdown">

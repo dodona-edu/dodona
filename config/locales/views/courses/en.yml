@@ -173,7 +173,7 @@ en:
         open: "Unanswered questions"
         in_progress: "Questions in progress"
         closed: "Answered questions"
-        page_title: "Questions (%{count})"
+        page_title: "(%{count}) Questions"
         title: "Questions"
         auto_refresh: Automatically refresh questions
       ago: "%{when} ago"

@@ -211,7 +211,12 @@ class CoursesController < ApplicationController
                        .order(updated_at: :desc)
                        .includes(:user, :last_updated_by, submission: [:exercise])
                        .paginate(page: parse_pagination_param(params[:answered_page]), per_page: 10)
-    @title = I18n.t('courses.questions.questions.page_title', count: @course.unanswered_questions.count)
+    count = @course.unanswered_questions.count
+    @title = if count == 0
+               I18n.t('courses.questions.questions.title')
+             else
+               I18n.t('courses.questions.questions.page_title', count: count)
+             end
     @dot_icon.push(:questions) if @unanswered.any?
   end
 

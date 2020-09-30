@@ -35,7 +35,7 @@
                 <%= render partial: 'notifications/small_notifications_table', locals: { notifications: @last_notifications } %>
               </div>
               <script>
-                $(function() { setInterval(dodona.checkNotifications, 60 * 1000); })
+                $(function() { setInterval(dodona.Notification.checkNotifications, 60 * 1000); })
               </script>
             </li>
           <% end %>

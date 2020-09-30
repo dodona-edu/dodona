@@ -82,9 +82,9 @@ export class Notification {
     visit(): void {
         window.location.href = this.notifiableUrl;
     }
-}
 
-export async function checkNotifications(): Promise<void> {
-    const response = await fetch("/notifications.js?per_page=5");
-    eval(await response.text());
+    static async checkNotifications(): Promise<void> {
+        const response = await fetch("/notifications.js?per_page=5");
+        eval(await response.text());
+    }
 }

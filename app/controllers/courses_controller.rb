@@ -199,11 +199,19 @@ class CoursesController < ApplicationController
     @title = I18n.t('courses.questions.questions.title')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.questions.questions.title'), '#']]
 
-    @refresh = params.fetch(:refresh, @course.enabled_questions?)
-    @questions = @course.questions
-    @open = @course.open_questions.paginate(page: parse_pagination_param(params[:open_page]), per_page: 10)
-    @in_progress = @course.in_progress_questions.paginate(page: parse_pagination_param(params[:in_progress_page]), per_page: 10)
-    @closed = @course.closed_questions.paginate(page: parse_pagination_param(params[:closed_page]), per_page: 10)
+    @refresh = ActiveRecord::Type::Boolean.new.deserialize(params.fetch(:refresh, @course.enabled_questions?.to_s))
+    @unanswered = @course.unanswered_questions
+                         .order(created_at: :asc)
+                         .includes(:user, :last_updated_by, submission: [:exercise])
+                         .paginate(page: parse_pagination_param(params[:unanswered_page]), per_page: 10)
+    @in_progress = @course.in_progress_questions
+                          .order(updated_at: :desc)
+                          .includes(:user, :last_updated_by, submission: [:exercise])
+                          .paginate(page: parse_pagination_param(params[:in_progress_page]), per_page: 10)
+    @answered = @course.answered_questions
+                       .order(updated_at: :desc)
+                       .includes(:user, :last_updated_by, submission: [:exercise])
+                       .paginate(page: parse_pagination_param(params[:answered_page]), per_page: 10)
   end
 
   def update_membership

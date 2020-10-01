@@ -118,7 +118,8 @@ nl:
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'
       not_released: Deze annotatie is nog niet zichtbaar voor studenten
     user_question:
-      meta: "%{user} · %{time} · %{state}"
+      meta_unanswered: "%{user} · %{time} · %{state}"
+      meta_else: "%{user} · %{time} · %{state} door %{last}"
       update: 'Vraag aanpassen'
       send: 'Vraag stellen'
       edit: 'Vraag aanpassen'

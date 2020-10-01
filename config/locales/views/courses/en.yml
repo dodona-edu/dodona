@@ -175,14 +175,16 @@ en:
         closed: "Answered questions"
         title: "Questions"
         auto_refresh: Automatically refresh questions
-      table:
-        user: "User"
-        question: "Question"
-        time_since: "Age"
-        exercise: "Exercise"
-      no_questions: "There are no questions available"
+      ago: "%{when} ago"
+      last_edited_by:
+        answered: "Answered by %{who}"
+        in_progress: "In progress with %{who}"
+      no_questions:
+        answered: "There are no answered questions at the moment."
+        in_progress: "There are no questions in progress at the moment."
+        unanswered: "There are no unanswered questions at the moment."
       buttons:
-        to_in_progress: "Move question to in progress"
+        to_in_progress: "Mark question as in progress"
         to_resolved: "Mark question as answered"
         to_unresolved: "Mark question as unresolved"
       status:

@@ -7,6 +7,10 @@ json.user do
   json.name annotation.user.full_name
   json.url user_url(annotation.user)
 end
+json.last_updated_by do
+  json.name annotation.last_updated_by.full_name
+  json.url user_url(annotation.last_updated_by)
+end
 json.permission do
   json.update policy(annotation).update?
   json.destroy policy(annotation).destroy?

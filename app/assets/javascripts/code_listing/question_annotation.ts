@@ -28,13 +28,22 @@ export class QuestionAnnotation extends UserAnnotation {
     protected get meta(): string {
         const timestamp = I18n.l("time.formats.annotation", this.createdAt);
         const user = this.user.name;
-
         const questionState = I18n.t(`js.question.state.${this.questionState}`);
-        return I18n.t("js.user_question.meta", {
-            user: user,
-            time: timestamp,
-            state: questionState
-        });
+
+        if (this.questionState === "unanswered") {
+            return I18n.t("js.user_question.meta_unanswered", {
+                user: user,
+                time: timestamp,
+                state: questionState
+            });
+        } else {
+            return I18n.t("js.user_question.meta_else", {
+                user: user,
+                time: timestamp,
+                state: questionState,
+                last: this.lastUpdatedBy.name
+            });
+        }
     }
 
     public transitionable(to: QuestionState): boolean {

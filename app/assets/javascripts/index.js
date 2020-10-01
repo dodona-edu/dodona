@@ -6,8 +6,8 @@ import {
     getURLParameter,
     updateArrayURLParameter,
     updateURLParameter,
+    fetch
 } from "./util.js";
-import fetch from "isomorphic-fetch";
 
 const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
@@ -85,9 +85,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         $("#progress-filter").css("visibility", "visible");
         fetch(updateURLParameter(url, "format", "js"), {
             headers: {
-                "accept": "text/javascript",
-                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-                "x-requested-with": "XMLHttpRequest",
+                "accept": "text/javascript"
             },
             credentials: "same-origin",
         })

@@ -149,6 +149,13 @@
             }
         }
         <% end %>
-        dodona.initFilterIndex("<%= local_assigns.fetch :baseUrl, "" %>", <%= local_assigns.fetch :eager, false %>, <%= raw (local_assigns.fetch :actions, false).to_json %>, <%= local_assigns.fetch :init_filter, true %>, filterCollections);
+        dodona.initFilterIndex(
+            "<%= local_assigns.fetch :baseUrl, "" %>",
+            <%= local_assigns.fetch :eager, false %>,
+            <%= raw (local_assigns.fetch :actions, false).to_json %>,
+            <%= local_assigns.fetch :init_filter, true %>,
+            filterCollections,
+            "<%= local_assigns.fetch :refresh_element, "" %>"
+        );
     });
 </script>

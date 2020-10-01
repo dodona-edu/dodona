@@ -32,10 +32,10 @@
           <%
              actions << {icon: 'replay', text: t(".reevaluate_submissions"), confirm: t(".confirm_reevaluate_submissions"), action: mass_rejudge_submissions_path(user_id: @user&.id, activity_id: @activity&.id, course_id: @course&.id, series_id: @series&.id, judge_id: @judge&.id)} if policy(Submission).mass_rejudge?
              actions << {icon: 'done', text: t('.most_recent_correct'), search: {most_recent_correct_per_user: true}} if @activity
-             actions << {icon: 'file-eye', text: t('.watch_submissions'), js: 'dodona.toggleIndexReload()'}
+             actions << {icon: 'file-eye', text: t('.watch_submissions'), search: {refresh: true}, click: 'window.dodona.toggleIndexReload()'}
           %>
         <% end %>
-        <%= render partial: 'layouts/searchbar', locals: {actions: actions, course_labels: @course_labels, statuses: Submission.statuses.keys} %>
+        <%= render partial: 'layouts/searchbar', locals: {actions: actions, course_labels: @course_labels, statuses: Submission.statuses.keys, refresh_element: "#submissions-table-wrapper"} %>
         <div id="submissions-table-wrapper">
           <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: @user} %>
         </div>

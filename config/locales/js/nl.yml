@@ -17,7 +17,7 @@ nl:
     copy-to-clipboard: Klik om te kopiëren
     copy-success: Gekopieerd!
     copy-fail: Druk Ctrl-C om te kopiëren
-    filter-options: Filter opties
+    options: Opties
     actions: Acties
     favorite-course-succeeded: Cursus toegevoegd aan favorieten
     favorite-course-failed: Cursus aan favorieten toevoegen mislukt

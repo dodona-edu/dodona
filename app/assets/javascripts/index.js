@@ -8,6 +8,7 @@ import {
     updateURLParameter,
     fetch
 } from "./util.js";
+import { InactiveTimeout } from "./auto_reload";
 
 const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
@@ -18,11 +19,11 @@ const FILTER_ICONS_CLASS = ".filter-icon";
 const FILTER_DATA = "filter";
 
 const LABEL_UNIQUE_ATTR = "label-id";
-const RELOAD_SECONDS = 1;
+const RELOAD_SECONDS = 2;
 
 window.dodona.index = {};
 window.dodona.index.baseUrl = window.location.href;
-window.dodona.index.periodicReload = false;
+window.dodona.index.periodicReload = null;
 window.dodona.index.doSearch = () => { };
 
 function setBaseUrl(_baseUrl) {
@@ -30,7 +31,7 @@ function setBaseUrl(_baseUrl) {
     window.dodona.index.doSearch();
 }
 
-function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections) {
+function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections, refreshElement = null) {
     const updateAddressBar = !_baseUrl;
 
     function init() {
@@ -43,6 +44,8 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         if (actions) {
             initActions();
         }
+
+        initRefresh();
     }
 
     function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
@@ -176,20 +179,24 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                     });
                 }
             });
-            search(
-                updateAddressBar,
-                window.dodona.index.baseUrl,
-                $(QUERY_FILTER_ID).val(),
-                filterCollections,
-                extraParams
-            );
+            // Update the search function with the new params.
+            window.dodona.index.doSearch = () => {
+                search(
+                    updateAddressBar,
+                    window.dodona.index.baseUrl,
+                    $(QUERY_FILTER_ID).val(),
+                    filterCollections,
+                    extraParams
+                );
+            };
+            window.dodona.index.doSearch();
         }
 
         $actions.removeClass("hidden");
         if (searchOptions.length > 0) {
             $actions
                 .find("ul")
-                .append("<li class='dropdown-header'>" + I18n.t("js.filter-options") + "</li>");
+                .append("<li class='dropdown-header'>" + I18n.t("js.options") + "</li>");
             searchOptions.forEach(function (action, id) {
                 const $link = $(
                     `<a class="action" href='#' ${
@@ -213,6 +220,9 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                     } else {
                         child.removeClass("mdi-checkbox-marked-outline")
                             .addClass("mdi-checkbox-blank-outline");
+                    }
+                    if (action.click) {
+                        eval(action.click);
                     }
                     performSearch();
                     return false;
@@ -389,6 +399,22 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         doSearch = temp;
     }
 
+    function initRefresh() {
+        if (refreshElement) {
+            window.dodona.index.periodicReload = new InactiveTimeout(
+                document.querySelector(refreshElement),
+                RELOAD_SECONDS * 1000,
+                () => {
+                    // Don't pass the function directly, since that doesn't update.
+                    window.dodona.index.doSearch();
+                }
+            );
+            if (getURLParameter("refresh") === "true") {
+                window.dodona.index.periodicReload.start();
+            }
+        }
+    }
+
     init();
 }
 
@@ -412,23 +438,14 @@ function initFilterButtons() {
 
 
 function toggleIndexReload() {
-    if (window.dodona.index.periodicReload) {
-        window.dodona.index.periodicReload = false;
-    } else {
-        console.log("Starting reload...");
-        window.dodona.index.periodicReload = true;
-        const indexReload = () => {
-            if (window.dodona.index.periodicReload) {
-                window.dodona.index.doSearch();
-                setTimeout(indexReload, RELOAD_SECONDS * 1000);
-                console.log("Reloaded.");
-            } else {
-                console.log("Stopped reloading.");
-            }
-        };
-        indexReload();
+    const loader = window.dodona.index.periodicReload;
+    if (loader !== null) {
+        if (loader.isStarted()) {
+            loader.end();
+        } else {
+            loader.start();
+        }
     }
-    return true;
 }
 
 export { initFilterButtons, initFilterIndex, setBaseUrl, toggleIndexReload };

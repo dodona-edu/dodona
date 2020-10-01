@@ -19,10 +19,14 @@ module LTI
 
     def parse_jwks_uri(uri)
       # Download the jwks keyset from the provider.
-      keys = JSON.parse(HTTPClient.new.get_content(uri)).with_indifferent_access
+      keys = JSON.parse(get_jwsk_content(uri)).with_indifferent_access
 
       # Parse the keys.
       JSON::JWK::Set.new keys[:keys]
+    end
+
+    def get_jwsk_content(uri)
+      HTTPClient.new.get_content(uri)
     end
 
     private

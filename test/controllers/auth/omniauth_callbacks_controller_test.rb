@@ -340,4 +340,24 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       assert_nil @controller.current_user
     end
   end
+
+  test 'lti redirects to main provider' do
+    main_provider = create :provider
+    provider = create :lti_provider, institution: main_provider.institution, mode: :link
+    user = build :user, institution: provider.institution
+    identity = build :identity, provider: provider, user: user
+    omniauth_mock_identity identity
+
+    # Test "inside iframe"
+    get omniauth_url(provider)
+    follow_redirect!
+    assert_redirected_to lti_redirect_path(provider: main_provider.id, sym: main_provider.class.sym)
+
+    # Test outside iframe
+    get omniauth_url(provider)
+    follow_redirect!(headers: {
+      'Sec-Fetch-Dest' => 'document'
+    })
+    assert_redirected_to omniauth_url(main_provider)
+  end
 end

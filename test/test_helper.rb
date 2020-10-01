@@ -18,6 +18,7 @@ require 'testhelpers/crud_helper'
 require 'testhelpers/git_helper'
 require 'testhelpers/remote_helper'
 require 'testhelpers/export_zip_helper'
+require 'testhelpers/lti_test_helper'
 
 # automatically set locale for all routes
 require 'minitest/utils/rails/locale'

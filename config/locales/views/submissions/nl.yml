@@ -17,7 +17,7 @@ nl:
       title: Alle oplossingen
       for: voor
       from: van
-      watch_submissions: Nieuwe oplossingen inladen
+      watch_submissions: Oplossingen automatisch herladen
       most_recent_correct: Meest recente correcte oplossing per gebruiker
       reevaluate_submissions: Oplossingen hertesten
       confirm_reevaluate_submissions: Ben je zeker dat je deze oplossingen wil hertesten?

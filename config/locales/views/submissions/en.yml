@@ -18,7 +18,7 @@ en:
       for: for
       from: from
       most_recent_correct: Most recent correct submissions per user
-      watch_submissions: Watch for new submissions
+      watch_submissions: Automatically reload submissions
       reevaluate_submissions: Retest submissions
       confirm_reevaluate_submissions: Are you sure you want to retest these submissions?
       reevaluating_submissions:

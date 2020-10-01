@@ -26,7 +26,7 @@
           </span>
         </h2>
       </div>
-      <div class="card-supporting-text">
+      <div class="card-supporting-text" id="refresh_element">
         <% actions = [] %>
         <% if current_user&.course_admin?(@course) %>
           <%
@@ -35,7 +35,7 @@
              actions << {icon: 'file-eye', text: t('.watch_submissions'), search: {refresh: true}, click: 'window.dodona.toggleIndexReload()'}
           %>
         <% end %>
-        <%= render partial: 'layouts/searchbar', locals: {actions: actions, course_labels: @course_labels, statuses: Submission.statuses.keys, refresh_element: "#submissions-table-wrapper"} %>
+        <%= render partial: 'layouts/searchbar', locals: {actions: actions, course_labels: @course_labels, statuses: Submission.statuses.keys, refresh_element: "#refresh_element"} %>
         <div id="submissions-table-wrapper">
           <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: @user} %>
         </div>

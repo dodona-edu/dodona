@@ -6,6 +6,7 @@
  * - "mousemove", detects when the mouse moves inside the element
  * - "touchmove", detects when the user touches inside the element
  * - "scroll", detects when the element scrolls
+ * - "onkeydown", when the user interacting with an input element
  *
  * To prevent responding to too many events, they are throttled with requestAnimationFrame.
  */
@@ -54,6 +55,7 @@ export class InactiveTimeout {
         this.started = true;
         this.interactionElement.addEventListener("mousemove", this.listener, { passive: true });
         this.interactionElement.addEventListener("touchmove", this.listener, { passive: true });
+        this.interactionElement.addEventListener("keydown", this.listener, { passive: true });
         window.addEventListener("scroll", this.listener, { passive: true });
         this.startTimeout();
     }
@@ -69,6 +71,7 @@ export class InactiveTimeout {
         this.endTimeout();
         this.interactionElement.removeEventListener("mousemove", this.listener);
         this.interactionElement.removeEventListener("touchmove", this.listener);
+        this.interactionElement.removeEventListener("keydown", this.listener);
         window.removeEventListener("scroll", this.listener);
     }
 

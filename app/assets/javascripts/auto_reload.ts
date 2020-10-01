@@ -75,6 +75,17 @@ export class InactiveTimeout {
         window.removeEventListener("scroll", this.listener);
     }
 
+    /**
+     * Call start if stopped and end if started.
+     */
+    toggle(): void {
+        if (this.started) {
+            this.end();
+        } else {
+            this.start();
+        }
+    }
+
     private startTimeout(): void {
         this.timeout = window.setTimeout(() => {
             this.callback();

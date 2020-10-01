@@ -438,14 +438,7 @@ function initFilterButtons() {
 
 
 function toggleIndexReload() {
-    const loader = window.dodona.index.periodicReload;
-    if (loader !== null) {
-        if (loader.isStarted()) {
-            loader.end();
-        } else {
-            loader.start();
-        }
-    }
+    window.dodona.index.periodicReload.toggle();
 }
 
 export { initFilterButtons, initFilterIndex, setBaseUrl, toggleIndexReload };

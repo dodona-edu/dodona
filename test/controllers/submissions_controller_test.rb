@@ -102,6 +102,18 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, JSON.parse(response.body).count
   end
 
+  test 'submission http caching works' do
+    get submissions_path
+    assert_response :ok
+    assert_not_empty @response.headers['ETag']
+    assert_not_empty @response.headers['Last-Modified']
+    get submissions_path, headers: {
+      'If-None-Match' => @response.headers['ETag'],
+      'If-Modified-Since' => @response.headers['Last-Modified']
+    }
+    assert_response :not_modified
+  end
+
   test 'should add submissions to delayed_job queue' do
     submission = nil
     assert_jobs_enqueued(1) do

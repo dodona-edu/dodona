@@ -571,4 +571,17 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       assert :ok, "#{who} should not be able to view questions"
     end
   end
+
+  test 'question page title is correct' do
+    sign_in @admins.first
+    get questions_course_path(@course)
+    assert_select 'title', /^([^0-9]*)$/
+
+    submission = create :submission, course: @course
+    create :question, question_state: :answered, submission: submission
+    create :question, question_state: :unanswered, submission: submission
+    create :question, question_state: :in_progress, submission: submission
+    get questions_course_path(@course)
+    assert_select 'title', /\(1\)/
+  end
 end

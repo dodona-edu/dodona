@@ -63,6 +63,30 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
       'url' => lti_activity_url(series.course.id, series.id, series.exercises.first)
     }], items
   end
+
+  test 'missing kid is handled gracefully' do
+    payload = lti_payload('nonce', 'target', 'LtiResourceLinkRequest')
+    id_token = encode_jwt(payload)
+    course = create :course
+
+    # Change the kid in the original key, so we can simulate the rotation used by Ufora.
+    LTI::JWK.module_eval do
+      def get_jwsk_content(_uri)
+        LtiTestHelper.jwks_content('kid')
+      end
+    end
+
+    get course_path course, id_token: id_token, provider_id: @provider.id
+    assert_response :ok
+    assert_not_empty flash[:error]
+
+    # Restore the module
+    LTI::JWK.module_eval do
+      def get_jwsk_content(_uri)
+        LtiTestHelper.jwks_content
+      end
+    end
+  end
 end
 
 class LtiFlowTest < ActionDispatch::IntegrationTest

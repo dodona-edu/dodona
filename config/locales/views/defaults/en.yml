@@ -26,6 +26,7 @@ en:
       success: Great
       time_zone_html: Your time zone is currently set to <strong>%{time_zone}</strong>, but this doesn't seem to match with your local time. You can switch time zones on your <a href='%{profile_edit}'>profile page</a>.
       iframe: It seems that you are using Dodona within another webpage, so not everything may work properly. Let your teacher know so that he can solve the problem by adjusting a setting in the learning environment. In the meantime, you can click <a href='%{url}' target='_blank'>this link</a> to open Dodona in a new window.
+      kid: There was an error when communicating with Ufora. You should re-open this page.
     menu:
       manual: User manual
       activities: Activities

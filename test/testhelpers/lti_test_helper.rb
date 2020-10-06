@@ -51,8 +51,10 @@ module LtiTestHelper
     JWT.decode(payload, key.keypair, false, algorithm: 'RS256').first
   end
 
-  def self.jwks_content
+  def self.jwks_content(kid = nil)
     pk = OpenSSL::PKey::RSA.new(File.read(FILES_LOCATION.join('public_key.pem')))
-    { keys: [JWT::JWK.create_from(pk).export.merge({ use: 'sig' })] }.to_json
+    options = { use: 'sig' }
+    options[:kid] = kid if kid
+    { keys: [JWT::JWK.create_from(pk).export.merge(options)] }.to_json
   end
 end

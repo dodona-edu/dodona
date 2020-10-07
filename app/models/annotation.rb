@@ -2,16 +2,17 @@
 #
 # Table name: annotations
 #
-#  id              :bigint           not null, primary key
-#  line_nr         :integer
-#  submission_id   :integer
-#  user_id         :integer
-#  annotation_text :text(65535)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  evaluation_id   :bigint
-#  type            :string(255)      default("Annotation"), not null
-#  question_state  :integer
+#  id                 :bigint           not null, primary key
+#  line_nr            :integer
+#  submission_id      :integer
+#  user_id            :integer
+#  annotation_text    :text(65535)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  evaluation_id      :bigint
+#  type               :string(255)      default("Annotation"), not null
+#  question_state     :integer
+#  last_updated_by_id :integer          not null
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
@@ -19,6 +20,7 @@ class Annotation < ApplicationRecord
   belongs_to :submission
   belongs_to :user
   belongs_to :evaluation, optional: true
+  belongs_to :last_updated_by, class_name: 'User'
 
   validates :user, presence: true
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 2048 }
@@ -30,6 +32,7 @@ class Annotation < ApplicationRecord
   scope :by_user, ->(user_id) { where(user_id: user_id) }
   scope :released, -> { where(evaluation_id: nil).or(where(evaluations: { released: true })) }
 
+  before_validation :set_last_updated_by, on: :create
   after_destroy :destroy_notification
   after_save :create_notification
 
@@ -44,5 +47,9 @@ class Annotation < ApplicationRecord
 
   def destroy_notification
     Notification.find_by(notifiable: submission)&.destroy unless submission.annotations.left_joins(:evaluation).released.any?
+  end
+
+  def set_last_updated_by
+    self.last_updated_by = user
   end
 end

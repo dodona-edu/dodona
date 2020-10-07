@@ -17,10 +17,10 @@
   <meta name="msapplication-TileColor" content="#2196F3"/>
   <meta name="msapplication-TileImage" content="/icon.png"/>
   <link rel="apple-touch-icon-precomposed" href="/icon.png"/>
-  <link rel="shortcut icon" sizes="192x192" href="<%= @unread_notifications&.any? ? "/icon-not.png" : "/icon.png" %>">
-  <link rel="shortcut icon" href="<%= @unread_notifications&.any? ? "/favicon-not.ico" : "/favicon.ico" %>">
+  <link rel="shortcut icon" sizes="192x192" href="<%= @dot_icon&.any? ? "/icon-not.png" : "/icon.png" %>">
+  <link rel="shortcut icon" href="<%= @dot_icon&.any? ? "/favicon-not.ico" : "/favicon.ico" %>">
   <link rel="manifest" href="/manifest.json">
-  <title>Dodona<%= " - #{@title}" if @title %></title>
+  <title><%= "#{@title} - " if @title %>Dodona</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
   <link href="https://cdn.materialdesignicons.com/5.2.45/css/materialdesignicons.min.css" rel="stylesheet" type='text/css'>
   <% if session[:dark].nil? && current_user.present? %>
@@ -29,6 +29,7 @@
     <script>
       window.dodona = window.dodona || {};
       window.dodona.darkMode = false;
+      window.dodona.dotCount = <%= @dot_icon.to_json.html_safe %>;
       const lightModeCSS = '<%= stylesheet_link_tag "application", media: "all" %>';
       const darkModeCSS = '<%= stylesheet_link_tag "application-dark", media: "all" %>';
 
@@ -63,6 +64,7 @@
     <script>
       window.dodona = window.dodona || {};
       window.dodona.darkMode = <%= session.include?(:dark) && session[:dark] %>;
+      window.dodona.dotCount = <%= @dot_icon&.to_json&.html_safe || "[]" %>;
     </script>
   <% end %>
 

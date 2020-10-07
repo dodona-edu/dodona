@@ -17,7 +17,7 @@ en:
     copy-to-clipboard: Click to copy
     copy-success: Copied!
     copy-fail: Press Ctrl-C to copy
-    filter-options: Filter options
+    options: Options
     actions: Actions
     favorite-course-succeeded: Favorited course
     favorite-course-failed: Favoriting course failed
@@ -118,7 +118,8 @@ en:
       delete_confirm: 'Are you sure you want to delete this annotation?'
       not_released: This annotation is not yet visible for students
     user_question:
-      meta: "%{user} · %{time} · %{state}"
+      meta_unanswered: "%{user} · %{time} · %{state}"
+      meta_else: "%{user} · %{time} · %{state} by %{last}"
       update: 'Update question'
       send: 'Ask question'
       edit: 'Edit question'

@@ -34,13 +34,19 @@ export class QuestionTable {
             }
             const target = e.target as HTMLElement;
             const link = target.closest<HTMLLinkElement>(`a.${stateChangeLinkClass}`);
-            if (!link) {
+            if (link) {
+                // The user clicked one of the buttons, so handle the event.
+                e.preventDefault();
+                this.changeStatus(link.href, link.dataset["from"], link.dataset["to"]);
                 return;
             }
 
-            // The user clicked one of the buttons, so handle the event.
-            e.preventDefault();
-            this.changeStatus(link.href, link.dataset["from"], link.dataset["to"]);
+            const tr = target.closest<HTMLElement>("tr.selection-row");
+            if (tr) {
+                e.preventDefault();
+                window.open(tr.dataset["href"]);
+                return;
+            }
         });
 
         // Set up auto refresh.

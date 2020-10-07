@@ -186,5 +186,8 @@ class ApplicationController < ActionController::Base
         true
       end
     end
+    # This variable counts for which services the dot in the favicon should be shown.
+    # On most pages this will be empty or contain :notifications
+    @dot_icon = @unread_notifications.any? ? %i[notifications] : []
   end
 end

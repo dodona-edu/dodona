@@ -10,6 +10,7 @@ import {
 import {
     QuestionTable
 } from "question_table.ts";
+import { setDocumentTitle } from "util.js";
 
 window.dodona.initSeriesReorder = initSeriesReorder;
 window.dodona.initCourseForm = initCourseForm;
@@ -19,3 +20,4 @@ window.dodona.initCourseMembers = initCourseMembers;
 window.dodona.loadUsers = loadUsers;
 
 window.dodona.questionTable = QuestionTable;
+window.dodona.setDocumentTitle = setDocumentTitle;

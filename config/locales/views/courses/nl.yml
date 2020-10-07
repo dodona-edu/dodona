@@ -170,13 +170,16 @@ nl:
         in_progress: "Vragen in behandeling"
         closed: "Beantwoorde vragen"
         title: "Vragen"
+        page_title: "(%{count}) Vragen"
         auto_refresh: Vragen automatisch vernieuwen
-      table:
-        user: "Gebruiker"
-        question: "Vraag"
-        time_since: "Leeftijd"
-        exercise: "Oefening"
-      no_questions: "Er zijn geen vragen beschikbaar"
+      ago: "%{when} geleden"
+      last_edited_by:
+        answered: "Beantwoord door %{who}"
+        in_progress: "In behandeling bij %{who}"
+      no_questions:
+        answered: "Er zijn momenteel geen beantwoorde vragen."
+        in_progress: "Er zijn momenteel geen vragen in behandeling."
+        unanswered: "Er zijn momenteel geen onbeantwoorde vragen."
       buttons:
         to_in_progress: "Vraag in behandeling plaatsen"
         to_resolved: "Vraag als beantwoord markeren"

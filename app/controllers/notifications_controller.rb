@@ -4,7 +4,8 @@ class NotificationsController < ApplicationController
   def index
     authorize Notification
     @title = I18n.t('notifications.index.title')
-    @notifications = Notification.where(user: current_user).paginate(page: parse_pagination_param(params[:page]))
+    @notifications = current_user.notifications.paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
+    @unread_notifications = @notifications.any? ? current_user.notifications.where(read: false).to_a : []
   end
 
   def update

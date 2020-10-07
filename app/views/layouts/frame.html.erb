@@ -31,7 +31,7 @@
 </head>
 <body>
 <%# Open links in the parent window %>
-<base target="_parent">
+<base target="_parent" href="<%= request.original_url %>">
   <%= yield %>
 </body>
 </html>

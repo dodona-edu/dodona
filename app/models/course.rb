@@ -127,7 +127,7 @@ class Course < ApplicationRecord
            source: :user
 
   has_many :questions, through: :submissions
-  has_many :open_questions,
+  has_many :unanswered_questions,
            lambda {
              where question_state: :unanswered
            },
@@ -141,7 +141,7 @@ class Course < ApplicationRecord
            through: :submissions,
            source: :questions
 
-  has_many :closed_questions,
+  has_many :answered_questions,
            lambda {
              where question_state: :answered
            },

@@ -2,24 +2,23 @@
 #
 # Table name: annotations
 #
-#  id              :bigint           not null, primary key
-#  line_nr         :integer
-#  submission_id   :integer
-#  user_id         :integer
-#  annotation_text :text(65535)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  evaluation_id   :bigint
-#  type            :string(255)      default("Annotation"), not null
-#  question_state  :integer
+#  id                 :bigint           not null, primary key
+#  line_nr            :integer
+#  submission_id      :integer
+#  user_id            :integer
+#  annotation_text    :text(65535)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  evaluation_id      :bigint
+#  type               :string(255)      default("Annotation"), not null
+#  question_state     :integer
+#  last_updated_by_id :integer          not null
 #
 class Question < Annotation
   after_commit :clear_transition
 
   enum question_state: { unanswered: 0, in_progress: 1, answered: 2 }
   alias_attribute :question_text, :annotation_text
-
-  default_scope { order(created_at: :desc) }
 
   # Used to authorize the transitions
   attr_accessor :transition_to, :transition_from

@@ -1,5 +1,6 @@
 import { FaviconManager } from "favicon";
 import { fetch } from "util.js";
+
 /**
  * Model for a notification in the navbar. It adds three listeners to the notification view:
  *
@@ -80,5 +81,10 @@ export class Notification {
 
     visit(): void {
         window.location.href = this.notifiableUrl;
+    }
+
+    static async checkNotifications(): Promise<void> {
+        const response = await fetch("/notifications.js?per_page=5");
+        eval(await response.text());
     }
 }

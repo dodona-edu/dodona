@@ -18,7 +18,6 @@
     "dragula": "^3.7.3",
     "first-input-delay": "^0.1.3",
     "iframe-resizer": "^4.2.11",
-    "isomorphic-fetch": "^3.0.0",
     "jquery": "^3.5.1",
     "moment": "^2.29.0",
     "typeahead.js": "^0.11.1",

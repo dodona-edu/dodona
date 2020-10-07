@@ -17,7 +17,7 @@ en:
     copy-to-clipboard: Click to copy
     copy-success: Copied!
     copy-fail: Press Ctrl-C to copy
-    filter-options: Filter options
+    options: Options
     actions: Actions
     favorite-course-succeeded: Favorited course
     favorite-course-failed: Favoriting course failed

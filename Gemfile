@@ -8,7 +8,7 @@ gem 'rails', '~> 6.0.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.0.0'
+gem 'puma', '~> 5.0.2'
 # Use less for stylesheets
 gem 'less-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -62,7 +62,7 @@ gem 'diff-lcs', '~>1.4'
 gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.0.0'
+gem 'autoprefixer-rails', '~>10.0.1'
 
 # saml authentication
 gem 'devise', '~>4.7.3'
@@ -140,7 +140,7 @@ gem 'rack-mini-profiler', '~> 2.1.0'
 gem 'stackprof', '~> 0.2.15'
 
 # Datadog
-gem 'ddtrace', '~> 0.40.0'
+gem 'ddtrace', '~> 0.41.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

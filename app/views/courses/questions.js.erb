@@ -1,8 +1,14 @@
-document.querySelector(".question-table-open").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @open, refresh: @refresh, param_name: 'open_page'}) %>";
-document.querySelector(".question-table-in-progress").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @in_progress, refresh: @refresh, param_name: 'in_progress_page'}) %>";
-document.querySelector(".question-table-closed").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @closed, refresh: @refresh, param_name: 'closed_page'}) %>";
+document.querySelector(".question-table-unanswered").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @unanswered, refresh: @refresh, state: :unanswered}) %>";
+document.querySelector(".question-table-in-progress").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @in_progress, refresh: @refresh, state: :in_progress}) %>";
+document.querySelector(".question-table-answered").innerHTML = "<%= escape_javascript(render partial: 'courses/question_table', locals: {questions: @answered, refresh: @refresh, state: :answered}) %>";
 <% if @in_progress.empty? %>
   document.getElementById("questions-in-progress").classList.add("hidden");
 <% else %>
   document.getElementById("questions-in-progress").classList.remove("hidden");
+<% end %>
+dodona.setDocumentTitle("<%= @title %> - Dodona");
+<% if @unanswered.any? %>
+  dodona.dotManager.requestDot("questions");
+<% else %>
+  dodona.dotManager.releaseDot("questions");
 <% end %>

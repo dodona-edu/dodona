@@ -25,7 +25,7 @@ class QuestionPolicy < AnnotationPolicy
 
     # Otherwise, we are updating the text of the annotation.
     # Only allow if the question was not answered yet.
-    return false if record.answered?
+    return false unless record.unanswered?
 
     record.user == user
   end

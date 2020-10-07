@@ -1,60 +1,46 @@
 <% if questions.present? %>
-  <table class="table table-resource question-table">
+  <table class="table question-table">
     <colgroup>
       <col class="name"/>
-      <col class="exercise"/>
       <col/>
       <col class="age"/>
       <col class="actions"/>
-      <col class="link"/>
     </colgroup>
-    <thead>
-    <tr>
-      <th><%= t('courses.questions.table.user') %></th>
-      <th><%= t('courses.questions.table.exercise') %></th>
-      <th><%= t('courses.questions.table.question') %></th>
-      <th><%= t('courses.questions.table.time_since') %></th>
-      <th></th>
-      <th></th>
-    </tr>
-    </thead>
     <tbody>
     <% questions.each do |question| %>
-      <tr>
+      <tr class="selection-row" data-href="<%= submission_url(question.submission, anchor: 'code') %>">
         <td>
-          <%= link_to course_member_path(@course, question.user) do %>
-            <%= question.user.full_name %>
+          <%= question.user.full_name %>
+        </td>
+        <td>
+          <%= question.submission.exercise.name %>
+          <div class="ellipsis-overflow text-muted">
+            <%= question.question_text %>
+          </div>
+        </td>
+        <td>
+          <%= t "courses.questions.ago", when: time_ago_in_words(question.created_at) %>
+          <% unless question.unanswered? %>
+            <div class="text-muted ellipsis-overflow">
+              <%= t "courses.questions.last_edited_by.#{question.question_state}", who: question.last_updated_by.full_name %>
+            </div>
           <% end %>
         </td>
-        <td>
-          <%= link_to course_activity_path(question.submission.course, question.submission.exercise) do %>
-            <%= question.submission.exercise.name %>
-          <% end %>
-        </td>
-        <td title="<%= question.question_text %>"><%= question.question_text %></td>
-        <td>
-          <%= time_ago_in_words question.created_at %>
-        </td>
-        <td>
+        <td class="actions">
           <% if policy(question).transition?(:unanswered) %>
-            <%= link_to annotation_path(question), data: {from: question.question_state, to: :unanswered}, class: 'btn btn-icon state-changer' do %>
+            <%= link_to annotation_path(question), data: { from: question.question_state, to: :unanswered }, class: 'btn btn-sm btn-default state-changer' do %>
               <i class="mdi mdi-restart mdi-18" title="<%= t('courses.questions.buttons.to_unresolved') %>"></i>
             <% end %>
           <% end %>
           <% if policy(question).transition?(:in_progress) && !question.answered? %>
-            <%= link_to annotation_path(question), data: {from: question.question_state, to: :in_progress}, class: 'btn btn-icon state-changer' do %>
+            <%= link_to annotation_path(question), data: { from: question.question_state, to: :in_progress }, class: 'btn btn-sm btn-default state-changer' do %>
               <i class="mdi mdi-comment-processing-outline mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
             <% end %>
           <% end %>
           <% if policy(question).transition?(:answered) %>
-            <%= link_to annotation_path(question), data: {from: question.question_state, to: :answered}, class: 'btn btn-icon state-changer' do %>
+            <%= link_to annotation_path(question), data: { from: question.question_state, to: :answered }, class: 'btn btn-sm btn-default state-changer' do %>
               <i class="mdi mdi-check mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
             <% end %>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to submission_path(question.submission, anchor: 'code'), class: 'btn btn-icon' do %>
-            <i class="mdi mdi-chevron-right mdi-18"></i>
           <% end %>
         </td>
       </tr>
@@ -62,8 +48,8 @@
     </tbody>
   </table>
 <% else %>
-  <%= t('courses.questions.no_questions') %>
+  <%= t("courses.questions.no_questions.#{state}") %>
 <% end %>
 <% if questions.try(:total_pages) %>
-  <center><%= page_navigation_links questions, false, 'courses', {refresh: refresh}, 'questions', param_name %></center>
+  <center><%= page_navigation_links questions, false, 'courses', { refresh: refresh }, 'questions', "#{state}_page" %></center>
 <% end %>

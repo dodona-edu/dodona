@@ -209,6 +209,15 @@ function makeVisible(element) {
     element.style.visibility = "visible";
 }
 
+/**
+ * Set the title of the webpage.
+ *
+ * @param {string} title The new title.
+ */
+function setDocumentTitle(title) {
+    document.title = title;
+}
+
 export {
     delay,
     fetch,
@@ -224,5 +233,6 @@ export {
     initTooltips,
     initTokenClickables,
     makeInvisible,
-    makeVisible
+    makeVisible,
+    setDocumentTitle
 };

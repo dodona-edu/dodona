@@ -25,6 +25,7 @@ import { Toast } from "toast";
 import { Notification } from "notification";
 import { checkTimeZone, checkIframe, initCSRF, initTooltips } from "util.js";
 import { initClipboard } from "copy";
+import { FaviconManager } from "favicon";
 
 // Initialize clipboard.js
 initClipboard();
@@ -42,6 +43,7 @@ $(initTooltips);
 
 // Use a global dodona object to prevent polluting the global na
 const dodona = window.dodona || {};
+dodona.dotManager = new FaviconManager(dodona.dotCount || []);
 dodona.checkTimeZone = checkTimeZone;
 dodona.Toast = Toast;
 dodona.Notification = Notification;

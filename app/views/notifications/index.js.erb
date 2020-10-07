@@ -1,4 +1,4 @@
-document.querySelector(".notification-dropdown").innerHTML = "<%= escape_javascript render(partial: 'notifications/small_notifications_table', locals: { notifications: @notifications }) %>";
+$(".notification-dropdown").html("<%= escape_javascript render(partial: 'notifications/small_notifications_table', locals: { notifications: @notifications }) %>");
 <% if @notifications.any? %>
     document.getElementById("navbar-notifications").classList.remove("hidden");
 <% end %>

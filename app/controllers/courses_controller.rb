@@ -200,15 +200,15 @@ class CoursesController < ApplicationController
 
     @refresh = ActiveRecord::Type::Boolean.new.deserialize(params.fetch(:refresh, @course.enabled_questions?.to_s))
     @unanswered = @course.unanswered_questions
-                         .order(created_at: :asc)
+                         .reorder(created_at: :asc)
                          .includes(:user, :last_updated_by, submission: [:exercise])
                          .paginate(page: parse_pagination_param(params[:unanswered_page]), per_page: 10)
     @in_progress = @course.in_progress_questions
-                          .order(updated_at: :desc)
+                          .reorder(updated_at: :desc)
                           .includes(:user, :last_updated_by, submission: [:exercise])
                           .paginate(page: parse_pagination_param(params[:in_progress_page]), per_page: 10)
     @answered = @course.answered_questions
-                       .order(updated_at: :desc)
+                       .reorder(updated_at: :desc)
                        .includes(:user, :last_updated_by, submission: [:exercise])
                        .paginate(page: parse_pagination_param(params[:answered_page]), per_page: 10)
     count = @course.unanswered_questions.count

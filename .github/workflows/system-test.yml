@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use ruby 2.7
-      uses: actions/setup-ruby@v1
+      uses: ruby/setup-ruby@v1.47.0
       with:
         ruby-version: 2.7.2
     - name: Use node 12

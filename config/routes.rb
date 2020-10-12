@@ -165,7 +165,7 @@ Rails.application.routes.draw do
 
     resources :annotations, only: %i[index show create update destroy]
 
-    resources :annotations, format: :json
+    get 'questions', to: 'annotations#question_index'
 
     resources :submissions, only: %i[index show create edit] do
       resources :annotations, only: %i[index create], as: 'submission_annotations'

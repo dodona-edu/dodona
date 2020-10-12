@@ -5,9 +5,46 @@ class AnnotationsController < ApplicationController
   has_scope :by_submission, as: :submission_id
   has_scope :by_user, as: :user_id
 
+  has_scope :by_filter, as: 'filter' do |controller, scope, value|
+    scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_exercise: controller.params[:exercise_id].present?)
+  end
+
   def index
     authorize Annotation
     @annotations = apply_scopes(policy_scope(Annotation.all))
+  end
+
+  def question_index
+    authorize Question, :index?
+    @questions = policy_scope(Question).merge(apply_scopes(Question).all)
+
+    if params[:question_state]
+      @questions = @questions.where(question_state: params[:question_state])
+    end
+
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+      @questions = @questions.by_course(params[:course_id])
+    end
+
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+    end
+
+    @course_membership = CourseMembership.find_by(user: @user, course: @course) if @user.present? && @course.present?
+    @questions = @questions.order(created_at: :desc).paginate(page: parse_pagination_param(params[:page]))
+    @activities = policy_scope(Activity.all)
+    @courses = policy_scope(Course.all)
+    @title = I18n.t('questions.index.title')
+    if @user
+      @crumbs = []
+      @crumbs << if @course.present?
+                   [@user.full_name, course_member_path(@course, @user)]
+                 else
+                   [@user.full_name, user_path(@user)]
+                 end
+      @crumbs << [@title, '#']
+    end
   end
 
   def show; end

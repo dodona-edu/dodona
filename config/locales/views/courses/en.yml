@@ -180,6 +180,7 @@ en:
       last_edited_by:
         answered: "Answered by %{who}"
         in_progress: "In progress with %{who}"
+        unanswered: "Unanswered"
       no_questions:
         answered: "There are no answered questions at the moment."
         in_progress: "There are no questions in progress at the moment."

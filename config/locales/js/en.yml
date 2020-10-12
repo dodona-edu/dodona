@@ -37,6 +37,7 @@ en:
     description_languages: Languages for which there is a description available
     en: English
     nl: Dutch
+    courses: Courses
     label-undeletable: This label can't be deleted because it was set in the dirconfig file of a parent directory of the learning activity.
     configured-institution: the configured institution
     loading: Loading...

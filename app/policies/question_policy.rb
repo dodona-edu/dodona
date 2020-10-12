@@ -1,4 +1,8 @@
 class QuestionPolicy < AnnotationPolicy
+  def index?
+    user
+  end
+
   def create?
     # If there is no course, don't allow questions.
     return false if record.submission.course.nil?

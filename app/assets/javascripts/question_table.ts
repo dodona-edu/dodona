@@ -22,9 +22,15 @@ function setParam(
 
 export class QuestionTable {
     refreshUrl: string
-    timeout: InactiveTimeout
 
-    constructor(refreshUrl: string, autoStart: boolean) {
+    /**
+     * Initiate the question table. The table containing the questions should have the html id
+     * {@link questionContainerId}.
+     *
+     * @param {string} refreshUrl The URL of the page or section to use as refresh URL.
+     * @param {boolean} enableClick If clicking the row should be intercepted or not.
+     */
+    constructor(refreshUrl: string, enableClick: boolean) {
         this.refreshUrl = refreshUrl;
 
         // Listen to the buttons to change state.
@@ -42,40 +48,16 @@ export class QuestionTable {
             }
 
             const tr = target.closest<HTMLElement>("tr.selection-row");
-            if (tr) {
+            if (enableClick && tr) {
                 e.preventDefault();
                 window.open(tr.dataset["href"]);
                 return;
             }
         });
-
-        // Set up auto refresh.
-        const element = document.getElementById(refreshElementId);
-        this.timeout = new InactiveTimeout(element, 2000, () => this.refresh());
-        if (autoStart) {
-            this.timeout.start();
-        }
-
-        // Listen to the enabling/disabling or automatic refreshes.
-        document.getElementById(refreshCheckboxId).addEventListener("change", e => {
-            if ((e.target as HTMLInputElement).checked) {
-                console.log("Enabling...");
-                this.timeout.start();
-            } else {
-                console.log("Disabling...");
-                this.timeout.end();
-            }
-            this.updatePaginationLinks();
-        });
     }
 
     refresh(): void {
-        // Include existing params, e.g. pagination.
-        const url = new URL(this.refreshUrl, window.location.origin);
-        url.search = window.location.search;
-        // Update the refresh param.
-        const updatedUrl = setParam(url.toString(), "refresh", this.timeout.isStarted().toString());
-        fetch(updatedUrl, {
+        fetch(this.getRefreshUrl(), {
             headers: {
                 "accept": "text/javascript",
                 "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
@@ -85,6 +67,12 @@ export class QuestionTable {
         })
             .then(req => req.text())
             .then(resp => eval(resp));
+    }
+
+    protected getRefreshUrl(): string {
+        const url = new URL(this.refreshUrl, window.location.origin);
+        url.search = window.location.search;
+        return url.toString();
     }
 
     /**
@@ -118,8 +106,39 @@ export class QuestionTable {
             this.refresh();
         });
     }
+}
 
-    private updatePaginationLinks(): void {
+export class RefreshingQuestionTable extends QuestionTable {
+    timeout: InactiveTimeout
+
+    constructor(refreshUrl: string, autoStart: boolean) {
+        super(refreshUrl, true);
+
+        // Set up auto refresh.
+        const element = document.getElementById(refreshElementId);
+        this.timeout = new InactiveTimeout(element, 2000, () => this.refresh());
+        if (autoStart) {
+            this.timeout.start();
+        }
+
+        // Listen to the enabling/disabling or automatic refreshes.
+        document.getElementById(refreshCheckboxId).addEventListener("change", e => {
+            if ((e.target as HTMLInputElement).checked) {
+                console.log("Enabling...");
+                this.timeout.start();
+            } else {
+                console.log("Disabling...");
+                this.timeout.end();
+            }
+            this.updatePaginationLinks();
+        });
+    }
+
+    protected getRefreshUrl(): string {
+        return setParam(super.getRefreshUrl(), "refresh", this.timeout.isStarted().toString());
+    }
+
+    protected updatePaginationLinks(): void {
         document.querySelectorAll(`#${refreshElementId} .pagination a`).forEach(e => {
             const link = e as HTMLLinkElement;
             link.href = setParam(link.href, "refresh", this.timeout.isStarted().toString());

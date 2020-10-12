@@ -31,10 +31,12 @@ en:
       manual: User manual
       activities: Activities
       my_submissions: My submissions
+      my_questions: My questions
       my_exports: My exports
       submissions: Submissions
       users: Users
       courses: Courses
+      questions: Questions
       institutions: Institutions
       events: Events
       judges: Judges

@@ -2,3 +2,12 @@ en:
   annotations:
     index:
       new_annotation: "There is a new remark on your code"
+  questions:
+    index:
+      title: All questions
+      from: van
+    courses: Courses
+    question:
+      filter-by-user: "Only show questions from this user"
+      filter-by-exercise: "Only show questions on this exercise"
+      view: View question

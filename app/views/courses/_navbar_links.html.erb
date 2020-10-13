@@ -23,6 +23,7 @@
   <%= navbar_link url: questions_course_path(@course),
                   title: t('.questions'),
                   icon: 'account-question',
+                  id: 'question-navbar-link',
                   class: (@course.unanswered_questions.any? ? 'notification notification-left' : ''),
                   if: policy(@course).questions? %>
 <% end %>

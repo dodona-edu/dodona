@@ -122,3 +122,9 @@ export class QuestionTable {
         });
     }
 }
+
+export function toggleQuestionNavDot(show: boolean): void {
+    const element = document.getElementById("question-navbar-link");
+    element.classList.toggle("notification", show);
+    element.classList.toggle("notification-left", show);
+}

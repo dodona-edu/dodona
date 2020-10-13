@@ -12,3 +12,4 @@ dodona.setDocumentTitle("<%= @title %> - Dodona");
 <% else %>
   dodona.dotManager.releaseDot("questions");
 <% end %>
+dodona.toggleQuestionNavDot(<%= @unanswered.any? %>);

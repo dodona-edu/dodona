@@ -22,11 +22,13 @@
              data-toggle="tooltip"
              data-placement="top"></i>
           <%= link_to question.user.full_name, course_member_path(question.submission.course, question.user), title: question.user.full_name, class: "ellipsis-overflow" %>
+          <% unless @course.present? %>
           <div class="ellipsis-overflow text-muted icon-indent">
             <span class="clickable-token" title="<%= question.submission.course.name %>" data-type="courses" data-name="<%= question.submission.course.name %>">
               <%= question.submission.course.name %>
             </span>
           </div>
+          <% end %>
         </td>
         <td>
           <i class="mdi mdi-filter-outline mdi-18 filter-icon"

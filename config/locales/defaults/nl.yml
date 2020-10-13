@@ -22,9 +22,9 @@
 nl:
   date:
     day_names: ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"]
-    abbr_day_names: ["Zon", "Maa", "Din", "Woe", "Don", "Vri", "Zat"]
+    abbr_day_names: ["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"]
     month_names: [null, "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"]
-    abbr_month_names: [null, "Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
+    abbr_month_names: [null, "Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
   time:
     formats:
       annotation: '%e %B %Y, %H:%M'

@@ -39,7 +39,15 @@
         line-height: 20px;
       }
 
+      // Highlight for the line numbers.
       .lineno.marked {
+        background-color: @warning-500;
+        // Only do the line number, don't extend to the full height
+        background-clip: content-box;
+      }
+
+      // Highlight for the code itself.
+      .lineno.marked .rouge-code pre {
         background-color: @warning-500;
       }
 

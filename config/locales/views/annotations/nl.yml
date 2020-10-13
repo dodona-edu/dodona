@@ -6,6 +6,7 @@ nl:
     index:
       title: Alle vragen
       from: van
+      watch: Vragen automatisch herladen
     courses: Cursussen
     question:
       filter-by-user: "Toon enkel vragen van deze gebruiker"

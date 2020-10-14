@@ -224,7 +224,7 @@ module ExportHelper
                [filename, submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id]
              else
                row = [filename, user.full_name, user.id, submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id, submission&.created_at]
-               labels? && row << @users_labels[user].map(&:name).join(';')
+               row << @users_labels[user].map(&:name).join(';') if labels?
                row
              end
     end

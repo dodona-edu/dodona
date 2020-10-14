@@ -75,7 +75,13 @@ class ExportsController < ApplicationController
   def create(item, list)
     authorize item, :export?
     authorize @user, :export? if @user
-    authorize item, :course_admin? if @user.blank? && (item.class == Series || item.class == Course)
+
+    if @user.blank? && (item.class == Series || item.class == Course)
+      authorize item, :course_admin?
+      params[:include_labels] = true
+    else
+      params.remove(:include_labels)
+    end
 
     Export.create(user: current_user).delay(queue: 'exports').start(item, list, ([@user] if @user), params)
     respond_to do |format|

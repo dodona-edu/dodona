@@ -52,6 +52,7 @@ en:
       email: Email
       subject: Subject
       message: Message
+      prompt: Contact us if the problem persists.
     create_contact:
       mail_sent: "Your message has been sent. Thanks for getting in touch."
       captcha_failed: reCAPTCHA could not be verified; please try again.

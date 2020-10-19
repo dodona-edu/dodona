@@ -25,7 +25,7 @@ class Series < ApplicationRecord
   include Cacheable
   include Tokenable
 
-  USER_COMPLETED_CACHE_STRING = '/series/%<id>s/deadline/%<deadline>s/user/%<user_id>s/completed'.freeze
+  USER_COMPLETED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/completed'.freeze
   USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started'.freeze
   USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong'.freeze
 
@@ -46,7 +46,7 @@ class Series < ApplicationRecord
 
   before_save :regenerate_activity_tokens, if: :visibility_changed?
   before_create :generate_access_token
-  after_save :invalidate_activity_statuses, if: :saved_change_to_deadline?
+  after_save :invalidate_activity_statuses_and_caches, if: :saved_change_to_deadline?
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }
@@ -93,7 +93,7 @@ class Series < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:completed?,
-                                    ->(this, options) { format(USER_COMPLETED_CACHE_STRING, user_id: options[:user].id.to_s, deadline: options[:deadline] ? options[:deadline].to_s : 'global', id: this.id.to_s) })
+                                    ->(this, options) { format(USER_COMPLETED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
 
   def completed_before_deadline?(user)
     completed?(deadline: deadline, user: user)
@@ -169,7 +169,19 @@ class Series < ApplicationRecord
     end
   end
 
-  def invalidate_activity_statuses
+  def invalidate_activity_statuses_and_caches
     ActivityStatus.delete_by(series: self)
+    # Remove the caches for each user.
+    exercises.includes(submissions: :user)
+             .flat_map { |exercise| exercise.submissions.map(&:user) }
+             .uniq
+             .each { |user| invalidate_caches(user) }
+  end
+
+  def invalidate_caches(user)
+    # Delete all caches for this series.
+    invalidate_completed?(user: user)
+    invalidate_started?(user: user)
+    invalidate_wrong?(user: user)
   end
 end

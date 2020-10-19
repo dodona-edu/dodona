@@ -25,6 +25,7 @@ class SeriesMembership < ApplicationRecord
 
   def invalidate_caches
     course.invalidate_activities_count_cache
+    series.delay.invalidate_status_cache
   end
 
   def regenerate_activity_token

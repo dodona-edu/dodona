@@ -176,6 +176,47 @@ class SeriesTest < ActiveSupport::TestCase
     end
   end
 
+  test 'removing solved exercise and re-adding with changed deadline results in correct status' do
+    with_cache do
+      now = Time.zone.now
+      original_deadline = now + 3.days
+
+      course = create :course
+      series = create :series, course: course, deadline: original_deadline
+      user = create :user
+
+      exercise = create :exercise
+      series.exercises << exercise
+      content_page = create :content_page
+      series.content_pages << content_page
+
+      ActivityReadState.create activity: content_page,
+                               course: course,
+                               user: user
+
+      create :correct_submission, user: user, course: course, exercise: exercise, created_at: now + 2.days
+      ActivityStatus.clear_status_store
+      assert_equal true, series.completed_before_deadline?(user)
+
+      series.exercises.delete(exercise)
+      series.reload
+      ActivityStatus.clear_status_store
+
+      assert_equal true, series.completed_before_deadline?(user)
+
+      series.update(deadline: now + 1.day)
+
+      ActivityStatus.clear_status_store
+      assert_equal true, series.completed_before_deadline?(user)
+
+      series.exercises << exercise
+      ActivityStatus.clear_status_store
+      series.reload
+
+      assert_equal false, series.completed_before_deadline?(user)
+    end
+  end
+
   test 'enabling indianio_support should generate a new token if there was none' do
     @series.indianio_support = true
     assert_not_nil @series.indianio_token

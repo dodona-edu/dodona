@@ -22,6 +22,15 @@ class AnnotationsController < ApplicationController
       @questions = @questions.where(question_state: params[:question_state])
     end
 
+    if ActiveRecord::Type::Boolean.new.deserialize(params[:administrating])
+      @questions = @questions
+                     .joins(:submission)
+                     .left_joins(:evaluation)
+                     .where(submissions: { course_id: current_user.administrating_courses.map(&:id) })
+    end
+
+    @questions = @questions.includes(:user, :last_updated_by, submission: [:exercise])
+
     if params[:course]
       @course = Course.find(params[:course])
       @questions = @questions.by_course(params[:course])

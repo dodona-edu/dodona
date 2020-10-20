@@ -20,10 +20,10 @@ nl:
       info: in demo modus verbergt Dodona de echte namen van alle gebruikers.
       switch_back: Demo modus uitschakelen.
     messages:
-      warning: Opgepast
-      danger: Oh nee
-      info: Ter info
-      success: Geweldig
+      warning: Opgepast!
+      danger: Oh nee!
+      info: "Ter info:"
+      success: Geweldig!
       time_zone_html: Je tijdzone staat momenteel ingesteld op <strong>%{time_zone}</strong>, maar dit lijkt niet overeen te komen met je lokale tijd. Je kan van tijdzone wisselen op je <a href='%{profile_edit}'>profielpagina</a>.
       iframe: Het lijkt erop dat je Dodona gebruikt binnen een andere webpagina waardoor mogelijk niet alles goed werkt. Laat dit weten aan je lesgever zodat hij het probleem kan oplossen door een instelling in de leeromgeving aan te passen. Ondertussen kan je <a href='%{url}' target='_blank'>op deze link klikken</a> om Dodona te openen in een nieuw venster.
       kid: Er ging iets verkeerd tijdens het communiceren met Ufora. Je opent deze pagina best opnieuw.

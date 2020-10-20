@@ -1,11 +1,13 @@
 <div id="main-container" class="<%= content_for?(:container_class) ? yield(:container_class) : "container" %> main">
   <div class="page-messages hidden-print">
     <% flash.each do |key, value| %>
-      <% unless value.nil? %>
-        <%= content_tag(:div, raw("<strong>#{t("layout.messages.info")}:</strong> ") + value, :class => "alert alert-info") if key == "notice" %>
-        <%= content_tag(:div, raw("<strong>#{t("layout.messages.danger")}!</strong> ") + value, :class => "alert alert-danger") if key == "error" %>
-        <%= content_tag(:div, raw("<strong>#{t("layout.messages.warning")}!</strong> ") + value, :class => "alert alert-warning") if key == "alert" %>
-        <%= content_tag(:div, raw("<strong>#{t("layout.messages.success")}!</strong> ") + value, :class => "alert alert-success") if key == "success" %>
+      <% type = flash_to_bootstrap(key) %>
+      <% if value.present? && type.present? %>
+        <div class="alert alert-<%= type %>">
+          <strong><%= t("layout.messages.#{type}") %></strong>
+          <%= value %>
+          <%= link_to(t('pages.contact.prompt'), contact_path) if flash[:contact] %>
+        </div>
       <% end %>
     <% end %>
     <% if user_signed_in? %>

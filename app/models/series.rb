@@ -171,6 +171,10 @@ class Series < ApplicationRecord
 
   def invalidate_activity_statuses_and_caches
     ActivityStatus.delete_by(series: self)
+    delay.invalidate_status_cache
+  end
+
+  def invalidate_status_cache
     # Remove the caches for each user.
     exercises.includes(submissions: :user)
              .flat_map { |exercise| exercise.submissions.map(&:user) }

@@ -13,13 +13,13 @@ module CoursesHelper
                   subscribe_course_path(@course, secret: secret),
                   title: t('courses.registration.registration-tooltip'),
                   method: :post,
-                  class: 'btn-text'
+                  class: 'btn-text btn-primary'
         else
           link_to t('courses.show.subscribe'),
                   subscribe_course_path(@course, secret: secret),
                   title: t('courses.registration.registration-tooltip'),
                   method: :post,
-                  class: 'btn-text'
+                  class: 'btn-text btn-primary'
         end
       else
         tag.p t('courses.registration.registration_closed')

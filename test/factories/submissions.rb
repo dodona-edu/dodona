@@ -63,11 +63,12 @@ FactoryBot.define do
     end
 
     trait :within_course do
-      series
+      course
     end
 
     factory :wrong_submission, traits: [:wrong]
     factory :correct_submission, traits: [:correct]
+    factory :course_submission, traits: [:within_course]
 
     trait :rate_limited do
       skip_rate_limit_check { false }

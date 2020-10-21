@@ -45,6 +45,7 @@ nl:
     no_selection: Er moet ten minste één iets gekozen worden om oplossingen te kunnen downloaden.
     mark_as_read: Als gelezen markeren
     mark_as_unread: Als ongelezen markeren
+    question_states: Toestand
     months:
       long:
         jan: Januari

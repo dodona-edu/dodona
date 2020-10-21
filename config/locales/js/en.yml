@@ -45,6 +45,7 @@ en:
     no_selection: You must select at least one item before being able to download solutions.
     mark_as_read: Mark as read
     mark_as_unread: Mark as unread
+    question_states: Status
     months:
       long:
         jan: January

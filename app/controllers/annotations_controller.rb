@@ -18,18 +18,14 @@ class AnnotationsController < ApplicationController
     authorize Question, :index?
     @questions = policy_scope(Question).merge(apply_scopes(Question).all)
 
-    if params[:question_state]
-      @questions = @questions.where(question_state: params[:question_state])
-    end
+    @questions = @questions.where(question_state: params[:question_state]) if params[:question_state]
 
     if ActiveRecord::Type::Boolean.new.deserialize(params[:administrating])
       @questions = @questions
-                     .joins(:submission)
-                     .left_joins(:evaluation)
-                     .where(submissions: { course_id: current_user.administrating_courses.map(&:id) })
+                   .joins(:submission)
+                   .left_joins(:evaluation)
+                   .where(submissions: { course_id: current_user.administrating_courses.map(&:id) })
     end
-
-    @questions = @questions.includes(:user, :last_updated_by, submission: [:exercise])
 
     if params[:course]
       @course = Course.find(params[:course])
@@ -38,9 +34,10 @@ class AnnotationsController < ApplicationController
       @questions = @questions.by_course(params[:course_id])
     end
 
-    if params[:user_id]
-      @user = User.find(params[:user_id])
-    end
+    @user = User.find(params[:user_id]) if params[:user_id]
+
+    # Preload dependencies for efficiency
+    @questions = @questions.includes(:user, :last_updated_by, submission: %i[exercise course])
 
     @course_membership = CourseMembership.find_by(user: @user, course: @course) if @user.present? && @course.present?
     @questions = @questions.order(created_at: :desc).paginate(page: parse_pagination_param(params[:page]))

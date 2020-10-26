@@ -21,10 +21,16 @@ class SeriesMembership < ApplicationRecord
   validates :series_id, uniqueness: { scope: :activity_id }
   after_create :invalidate_caches
   after_destroy :invalidate_caches
+  after_destroy :invalidate_status
   after_destroy :regenerate_activity_token
 
   def invalidate_caches
     course.invalidate_activities_count_cache
+    series.delay.invalidate_status_cache
+  end
+
+  def invalidate_status
+    ActivityStatus.delete_by(series: series, activity: activity)
   end
 
   def regenerate_activity_token

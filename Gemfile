@@ -140,7 +140,7 @@ gem 'rack-mini-profiler', '~> 2.1.0'
 gem 'stackprof', '~> 0.2.15'
 
 # Datadog
-gem 'ddtrace', '~> 0.41.0'
+gem 'ddtrace', '~> 0.42.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

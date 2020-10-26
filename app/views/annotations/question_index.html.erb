@@ -23,11 +23,9 @@
       </div>
       <div class="card-supporting-text" id="refresh-element">
         <% actions = [] %>
-        <% if current_user&.admin? %>
-          <%
-            actions << { icon: 'file-eye', text: t('questions.index.watch'), search: { refresh: true }, click: 'window.dodona.toggleIndexReload()' }
-            actions << { icon: 'done', text: t('questions.index.strict'), search: {administrating: true} }
-          %>
+        <% if current_user&.a_course_admin? %>
+          <% actions << { text: t('questions.index.watch'), search: { refresh: true }, click: 'window.dodona.toggleIndexReload()' } %>
+          <% actions << { text: t('questions.index.everything'), search: { everything: true } } if @unfiltered %>
         <% end %>
         <%= render partial: 'layouts/searchbar', locals: { actions: actions, refresh_element: "#refresh-element", courses: @courses, question_states: Question.question_states.keys } %>
         <div id="questions-table-wrapper">

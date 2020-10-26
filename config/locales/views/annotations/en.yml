@@ -7,7 +7,7 @@ en:
       title: All questions
       from: van
       watch: Automatically reload questions
-      strict: Only show my courses
+      everything: Show all questions
     courses: Courses
     question:
       filter-by-user: "Only show questions from this user"

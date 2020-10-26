@@ -7,7 +7,7 @@ nl:
       title: Alle vragen
       from: van
       watch: Vragen automatisch herladen
-      strict: Enkel mijn cursussen tonen
+      everything: Alle vragen tonen
     courses: Cursussen
     question:
       filter-by-user: "Toon enkel vragen van deze gebruiker"

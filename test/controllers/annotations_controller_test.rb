@@ -54,7 +54,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     create :question, submission: s1
     create :question, submission: s2
 
-    get questions_url, params: { filter: 'abcd', format: :json }
+    get questions_url, params: { filter: 'abcd', everything: true, format: :json }
 
     assert_equal 1, JSON.parse(response.body).count
   end
@@ -92,8 +92,6 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should be able to filter by user' do
-    u = create :zeus
-    sign_in u
     s1 = create :course_submission
     s2 = create :course_submission
     create :question, submission: s1

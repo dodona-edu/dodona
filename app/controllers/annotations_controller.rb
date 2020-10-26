@@ -4,6 +4,7 @@ class AnnotationsController < ApplicationController
 
   has_scope :by_submission, as: :submission_id
   has_scope :by_user, as: :user_id
+  has_scope :by_course, as: :course_id
 
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
     scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_exercise: controller.params[:exercise_id].present?)
@@ -16,25 +17,23 @@ class AnnotationsController < ApplicationController
 
   def question_index
     authorize Question, :index?
+    @user = User.find(params[:user_id]) if params[:user_id]
+    @course = Course.find(params[:course]) if params[:course]
+
     @questions = policy_scope(Question).merge(apply_scopes(Question).all)
-
     @questions = @questions.where(question_state: params[:question_state]) if params[:question_state]
+    @questions = @questions.by_course(@course.id) if @course.present?
 
-    if ActiveRecord::Type::Boolean.new.deserialize(params[:administrating])
+    @unfiltered = @user.nil? && @course.nil? && params[:course_id].nil?
+
+    # By default, filter only for the courses a user is an admin of, unless we are in filtering by course or user, or
+    # the user has explicitly asked to view all questions.
+    if @unfiltered && current_user&.a_course_admin? && !ActiveRecord::Type::Boolean.new.deserialize(params[:everything])
       @questions = @questions
                    .joins(:submission)
                    .left_joins(:evaluation)
                    .where(submissions: { course_id: current_user.administrating_courses.map(&:id) })
     end
-
-    if params[:course]
-      @course = Course.find(params[:course])
-      @questions = @questions.by_course(params[:course])
-    elsif params[:course_id]
-      @questions = @questions.by_course(params[:course_id])
-    end
-
-    @user = User.find(params[:user_id]) if params[:user_id]
 
     # Preload dependencies for efficiency
     @questions = @questions.includes(:user, :last_updated_by, submission: %i[exercise course])

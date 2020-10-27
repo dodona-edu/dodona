@@ -20,6 +20,9 @@ Delayed::Worker.queue_attributes = {
 # rubocop:disable SuppressedException
 class SubmissionDjPlugin < Delayed::Plugin
   callbacks do |lifecycle|
+    lifecycle.before(:perform) do |_worker, _job, *_args|
+      ActivityStatus.clear_status_store
+    end
     lifecycle.after(:failure) do |_worker, job, *_args|
       if job.payload_object.object.is_a?(Submission)
         sub = job.payload_object.object

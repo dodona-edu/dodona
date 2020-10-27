@@ -21,6 +21,8 @@
 require 'test_helper'
 
 class SeriesTest < ActiveSupport::TestCase
+  include CacheHelper
+
   setup do
     stub_all_activities!
     @series = create :series
@@ -116,6 +118,103 @@ class SeriesTest < ActiveSupport::TestCase
     ActivityStatus.clear_status_store
 
     assert_equal true, series.completed_before_deadline?(user)
+  end
+
+  test 'changing deadline clears status cache' do
+    with_cache do
+      now = Time.zone.now
+      original_deadline = now + 3.days
+
+      course = create :course
+      series = create :series, course: course, deadline: original_deadline
+      user = create :user
+
+      exercise = create :exercise
+      series.exercises << exercise
+
+      create :wrong_submission, created_at: now - 3.days, user: user, course: course, exercise: exercise
+
+      assert_equal false, series.completed_before_deadline?(user)
+
+      # Move the deadline up
+      series.update(deadline: now + 5.days)
+      # Simulate we have a new request
+      ActivityStatus.clear_status_store
+
+      assert_equal false, series.completed_before_deadline?(user)
+
+      create :correct_submission, created_at: now + 2.days, user: user, course: course, exercise: exercise
+
+      # Restore the original deadline
+      series.update(deadline: original_deadline)
+      ActivityStatus.clear_status_store
+
+      assert_equal true, series.completed_before_deadline?(user)
+    end
+  end
+
+  test 'adding/removing exercises clears status cache' do
+    with_cache do
+      course = create :course
+      series = create :series, course: course
+      user = create :user
+
+      exercise = create :exercise
+      series.exercises << exercise
+
+      create :correct_submission, user: user, course: course, exercise: exercise
+      assert_equal true, series.completed_before_deadline?(user)
+
+      # Simulate we have a new request
+      ActivityStatus.clear_status_store
+
+      exercise = create :exercise
+      series.exercises << exercise
+
+      series.reload
+      assert_equal false, series.completed_before_deadline?(user)
+    end
+  end
+
+  test 'removing solved exercise and re-adding with changed deadline results in correct status' do
+    with_cache do
+      now = Time.zone.now
+      original_deadline = now + 3.days
+
+      course = create :course
+      series = create :series, course: course, deadline: original_deadline
+      user = create :user
+
+      exercise = create :exercise
+      series.exercises << exercise
+      content_page = create :content_page
+      series.content_pages << content_page
+
+      ActivityReadState.create activity: content_page,
+                               course: course,
+                               user: user
+
+      create :correct_submission, user: user, course: course, exercise: exercise, created_at: now + 2.days
+      ActivityStatus.clear_status_store
+      assert_equal true, series.completed_before_deadline?(user)
+
+      series.exercises.delete(exercise)
+      series.reload
+      ActivityStatus.clear_status_store
+
+      assert_equal true, series.completed_before_deadline?(user)
+
+      series.update(deadline: now + 1.day)
+
+      ActivityStatus.clear_status_store
+      assert_equal true, series.completed_before_deadline?(user)
+
+      series.exercises << exercise
+      ActivityStatus.clear_status_store
+      series.reload
+
+      assert_equal false, series.completed_before_deadline?(user)
+    end
   end
 
   test 'enabling indianio_support should generate a new token if there was none' do

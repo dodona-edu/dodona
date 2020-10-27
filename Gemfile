@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.1'
+ruby '2.7.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3'
@@ -50,7 +50,7 @@ gem 'will_paginate', '~>3.3.0'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.23.0'
+gem 'rouge', '3.24.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -78,7 +78,7 @@ gem 'jwt', '~> 2.2.2'
 
 # contact mail form
 gem 'mail_form', '~> 1.8.1'
-gem 'recaptcha', '~> 5.5.0', require: 'recaptcha/rails'
+gem 'recaptcha', '~> 5.6.0', require: 'recaptcha/rails'
 
 # authorization
 gem 'pundit', '~> 2.1.0'
@@ -100,7 +100,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 3.7.0'
+gem 'i18n-js', '~> 3.8.0'
 gem 'rails-i18n', '~> 6.0.0'
 
 # email exceptions
@@ -164,7 +164,7 @@ end
 
 group :test do
   # for measuring coverage
-  gem 'codecov', '~> 0.2.11', require: false
+  gem 'codecov', '~> 0.2.12', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.19.0', require: false
 end

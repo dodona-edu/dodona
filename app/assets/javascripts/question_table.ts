@@ -70,8 +70,12 @@ export class QuestionTable {
     }
 
     refresh(): void {
-        const url = setParam(this.refreshUrl, "refresh", this.timeout.isStarted().toString());
-        fetch(url, {
+        // Include existing params, e.g. pagination.
+        const url = new URL(this.refreshUrl, window.location.origin);
+        url.search = window.location.search;
+        // Update the refresh param.
+        const updatedUrl = setParam(url.toString(), "refresh", this.timeout.isStarted().toString());
+        fetch(updatedUrl, {
             headers: {
                 "accept": "text/javascript",
                 "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
@@ -121,4 +125,10 @@ export class QuestionTable {
             link.href = setParam(link.href, "refresh", this.timeout.isStarted().toString());
         });
     }
+}
+
+export function toggleQuestionNavDot(show: boolean): void {
+    const element = document.getElementById("question-navbar-link");
+    element.classList.toggle("notification", show);
+    element.classList.toggle("notification-left", show);
 }

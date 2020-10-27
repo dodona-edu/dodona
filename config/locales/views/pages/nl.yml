@@ -52,6 +52,7 @@ nl:
       email: Email
       subject: Onderwerp
       message: Bericht
+      prompt: Contacteer ons als het probleem zich blijft voordoen.
     create_contact:
       captcha_failed: reCAPTCHA kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."

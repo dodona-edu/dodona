@@ -183,6 +183,15 @@ module ApplicationHelper
     end
   end
 
+  def flash_to_bootstrap(klass)
+    {
+      'notice' => 'info',
+      'danger' => 'error',
+      'alert' => 'warning',
+      'success' => 'success'
+    }[klass]
+  end
+
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
     protected
 

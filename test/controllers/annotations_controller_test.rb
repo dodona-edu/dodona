@@ -84,11 +84,6 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     get questions_url, params: { course_id: s1.course.id, format: :json }
 
     assert_equal 1, JSON.parse(response.body).count
-
-    # "Course" mode
-    get questions_url, params: { course: s2.course.id, format: :json }
-
-    assert_equal 1, JSON.parse(response.body).count
   end
 
   test 'should be able to filter by user' do

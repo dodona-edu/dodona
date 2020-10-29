@@ -18,13 +18,11 @@ class AnnotationsController < ApplicationController
   def question_index
     authorize Question, :index?
     @user = User.find(params[:user_id]) if params[:user_id]
-    @course = Course.find(params[:course]) if params[:course]
 
     @questions = policy_scope(Question).merge(apply_scopes(Question).all)
     @questions = @questions.where(question_state: params[:question_state]) if params[:question_state]
-    @questions = @questions.by_course(@course.id) if @course.present?
 
-    @unfiltered = @user.nil? && @course.nil? && params[:course_id].nil?
+    @unfiltered = @user.nil? && params[:course_id].nil?
 
     # By default, filter only for the courses a user is an admin of, unless we are in filtering by course or user, or
     # the user has explicitly asked to view all questions.
@@ -38,20 +36,12 @@ class AnnotationsController < ApplicationController
     # Preload dependencies for efficiency
     @questions = @questions.includes(:user, :last_updated_by, submission: %i[exercise course])
 
-    @course_membership = CourseMembership.find_by(user: @user, course: @course) if @user.present? && @course.present?
     @questions = @questions.order(created_at: :desc).paginate(page: parse_pagination_param(params[:page]))
     @activities = policy_scope(Activity.all)
-    @courses = policy_scope(Course.all) if @course.blank?
+    @courses = policy_scope(Course.all)
     @title = I18n.t('questions.index.title')
     @crumbs = []
-    @crumbs << [@course.name, course_path(@course)] if @course.present?
-    if @user
-      @crumbs << if @course.present?
-                   [@user.full_name, course_member_path(@course, @user)]
-                 else
-                   [@user.full_name, user_path(@user)]
-                 end
-    end
+    @crumbs << [@user.full_name, user_path(@user)] if @user.present?
     @crumbs << [@title, '#']
   end
 

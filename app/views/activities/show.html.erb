@@ -139,7 +139,7 @@ end %>
           <i class="mdi mdi-chevron-left icon"></i><span class="text"><%= previous_tooltip %></span>
         <% end %>
       <% end %>
-      <%= render partial: 'content_page_read_button', locals: {activity: @activity, course: @series&.course, user: current_user, read_state: @read_state} %>
+      <%= render partial: 'content_page_read_button', locals: {activity: @activity, course: @course, user: current_user, read_state: @read_state} %>
       <% if @series.present? %>
         <%= link_to next_link, class: 'content-page-action btn-fab-extended right next' do %>
           <span class="text"><%= next_tooltip %></span>

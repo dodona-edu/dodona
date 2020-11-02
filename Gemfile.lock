@@ -74,7 +74,7 @@ GEM
       rake (>= 10.4, < 14.0)
     ast (2.4.1)
     attr_required (1.0.1)
-    autoprefixer-rails (10.0.1.0)
+    autoprefixer-rails (10.0.1.2)
       execjs
     bcrypt (3.1.16)
     bcrypt_pbkdf (1.0.1)

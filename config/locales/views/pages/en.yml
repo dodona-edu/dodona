@@ -1,7 +1,6 @@
 en:
   pages:
     about:
-      intro_html: "The Dodona platform contains hundreds of programming exercises that can be used to master several programming languages. All exercises come with automatic feedback on correctness, execution time and/or programming style. You can sign in with the credentials of your institution. Dodona is still in active development, any bug report or suggestion is welcome trough the <a href='/contact'>contact form</a>."
       sign-in: Sign in
       learn-to-code: Learn to code
       higher-education: for secondary and higher education
@@ -11,6 +10,8 @@ en:
       write-code-text: Subscribe for a course and pick one of the hundreds of programming exercises.
       hand-in-text: Solve the exercise and hand in using the built-in code editor.
       get-feedback-text: Your code is automatically tested. Get your results in seconds!
+      we: Faculty of Sciences
+      elixir: ELIXIR Belgium
     home:
       more-courses: More courses
       favorites: "Favorites"

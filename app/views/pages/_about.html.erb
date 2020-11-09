@@ -34,12 +34,24 @@
           <p><%= t ".get-feedback-text" %></p>
         </div>
       </div>
-      <div class="card-supporting-text card-border ugent">
-        <div class="col-xs-12 col-sm-4">
-          <%= image_tag("ugent.png", class: 'img-responsive') %>
+      <div class="card-supporting-text card-border">
+        <%= render partial: 'description' %>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-supporting-text ugent">
+        <%= render partial: 'team' %>
+      </div>
+      <div class="card-supporting-text card-border supporters">
+        <div class="col-xs-12 col-sm-4 center-vertical">
+          <%= link_to "https://www.ugent.be/we/#{I18n.locale}", title: t(".we") do %>
+            <%= image_tag("we.#{I18n.locale}.png", class: 'img-responsive') %>
+          <% end %>
         </div>
-        <div class="col-xs-12 col-sm-8">
-          <p><%= t ".intro_html" %></p>
+        <div class="col-xs-12 col-sm-3 center-vertical">
+          <%= link_to "https://www.elixir-belgium.org/", title: t(".elixir") do %>
+            <%= image_tag("elixir.png", class: 'img-responsive') %>
+          <% end %>
         </div>
       </div>
     </div>

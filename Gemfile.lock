@@ -413,7 +413,7 @@ GEM
     sshkit (1.21.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stackprof (0.2.15)
+    stackprof (0.2.16)
     swd (1.2.0)
       activesupport (>= 3)
       attr_required (>= 0.0.5)
@@ -535,7 +535,7 @@ DEPENDENCIES
   slack-notifier (~> 2.3.2)
   spring (~> 2.1.1)
   spring-watcher-listen (~> 2.0.1)
-  stackprof (~> 0.2.15)
+  stackprof (~> 0.2.16)
   therubyracer
   tzinfo-data
   uglifier (>= 4.1.20)

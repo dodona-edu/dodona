@@ -424,7 +424,7 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.10)
-    tzinfo (1.2.7)
+    tzinfo (1.2.8)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
@@ -437,7 +437,7 @@ GEM
       public_suffix
     warden (1.2.9)
       rack (>= 2.0.9)
-    web-console (4.0.4)
+    web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
@@ -456,7 +456,7 @@ GEM
     will_paginate (3.3.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.4.0)
+    zeitwerk (2.4.1)
 
 PLATFORMS
   ruby
@@ -539,7 +539,7 @@ DEPENDENCIES
   therubyracer
   tzinfo-data
   uglifier (>= 4.1.20)
-  web-console (~> 4.0.4)
+  web-console (~> 4.1.0)
   webpacker (~> 5.2.1)
   will_paginate (~> 3.3.0)
 

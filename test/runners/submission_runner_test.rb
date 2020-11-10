@@ -16,7 +16,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     @submission = create :submission,
                          user: @user,
                          course: @course,
-                         exercise: @exercise
+                         activity: @exercise
   end
 
   STRIKE_ERROR = 'DE HAVENVAKBOND STAAKT!!1!'.freeze
@@ -204,7 +204,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   test 'errors outside of docker startup should be sent to slack' do
     Delayed::Backend::ActiveRecord::Job.delete_all
     Rails.env.stubs(:"production?").returns(true)
-    Submission.any_instance.stubs(:judge).raises(STRIKE_ERROR)
+    Exercise.any_instance.stubs(:judge).raises(STRIKE_ERROR)
     ExceptionNotifier.stubs(:notify_exception).twice
     Docker::Container.stubs(:create).returns(docker_mock)
     @submission.evaluate_delayed

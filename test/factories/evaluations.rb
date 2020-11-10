@@ -15,7 +15,7 @@ FactoryBot.define do
     deadline { series.deadline }
     released { false }
     exercises { series.exercises }
-    users { series.course.submissions.where(exercise: exercises).map(&:user).uniq }
+    users { series.course.submissions.where(activity: exercises).map(&:user).uniq }
   end
 
   trait :released do

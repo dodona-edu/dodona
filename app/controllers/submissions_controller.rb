@@ -47,12 +47,12 @@ class SubmissionsController < ApplicationController
   end
 
   def show
-    @title = "#{I18n.t('submissions.show.submission')} - #{@submission.exercise.name}"
+    @title = "#{I18n.t('submissions.show.submission')} - #{@submission.activity.name}"
     course = @submission.course
     @crumbs = if course.present?
-                [[course.name, course_path(course)], [@submission.exercise.name, course_activity_path(course, @submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
+                [[course.name, course_path(course)], [@submission.activity.name, course_activity_path(course, @submission.activity)], [I18n.t('submissions.show.submission'), '#']]
               else
-                [[@submission.exercise.name, activity_path(@submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
+                [[@submission.activity.name, activity_path(@submission.activity)], [I18n.t('submissions.show.submission'), '#']]
               end
   end
 
@@ -66,12 +66,13 @@ class SubmissionsController < ApplicationController
     para.delete(:course_id) if para[:course_id].present? && course.subscribed_members.exclude?(current_user)
     submission = Submission.new(para)
     can_submit = true
-    if submission.exercise.present?
-      can_submit &&= Pundit.policy!(current_user, submission.exercise).submit?
-      can_submit &&= submission.exercise.accessible?(current_user, course)
+    if submission.activity.present?
+      can_submit &&= Pundit.policy!(current_user, submission.activity).submit?
+      can_submit &&= submission.activity.accessible?(current_user, course)
     end
     if can_submit && submission.save
-      render json: { status: 'ok', id: submission.id, exercise_id: submission.exercise_id, course_id: submission.course_id, url: submission_url(submission, format: :json) }
+      # Include both activity_id and exercise_id for compatibility
+      render json: { status: 'ok', id: submission.id, exercise_id: submission.activity_id, activity_id: submission.activity_id, course_id: submission.course_id, url: submission_url(submission, format: :json) }
     else
       submission.errors.add(:exercise, 'not permitted') unless can_submit
       render json: { status: 'failed', errors: submission.errors }, status: :unprocessable_entity
@@ -82,9 +83,9 @@ class SubmissionsController < ApplicationController
     respond_to do |format|
       format.html do
         if @submission.course.nil?
-          redirect_to activity_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+          redirect_to activity_url(@submission.activity, anchor: 'submission-card', edit_submission: @submission)
         else
-          redirect_to course_activity_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+          redirect_to course_activity_url(@submission.course, @submission.activity, anchor: 'submission-card', edit_submission: @submission)
         end
       end
     end
@@ -92,7 +93,7 @@ class SubmissionsController < ApplicationController
 
   def download
     data = @submission.code
-    filename = @submission.exercise.file_name
+    filename = @submission.exercise&.file_name || 'submission.txt'
     send_data data, type: 'application/octet-stream', filename: filename, disposition: 'attachment', x_sendfile: true
   end
 
@@ -102,7 +103,7 @@ class SubmissionsController < ApplicationController
   end
 
   def media
-    redirect_to media_activity_url(@submission.exercise, params[:media], token: params[:token])
+    redirect_to media_activity_url(@submission.activity, params[:media], token: params[:token])
   end
 
   def mass_rejudge
@@ -136,7 +137,7 @@ class SubmissionsController < ApplicationController
     @judge = Judge.find(params[:judge_id]) if params[:judge_id]
 
     if @activity
-      @submissions = @submissions.of_exercise(@activity)
+      @submissions = @submissions.of_activity(@activity)
       if @course
         @submissions = @submissions.in_course(@course)
       elsif @series

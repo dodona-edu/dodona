@@ -33,10 +33,10 @@
         <td>
           <i class="mdi mdi-filter-outline mdi-18 filter-icon"
              title="<%= t('questions.question.filter-by-exercise') %>"
-             data-filter="<%= question.submission.exercise.name %>"
+             data-filter="<%= question.submission.activity.name %>"
              data-toggle="tooltip"
              data-placement="top"></i>
-            <%= link_to question.submission.exercise.name, course_exercise_path(question.submission.course, question.submission.exercise) %>
+            <%= link_to question.submission.activity.name, course_activity_path(question.submission.course, question.submission.activity) %>
           <div class="ellipsis-overflow text-muted icon-indent">
             <%= question.question_text %>
           </div>

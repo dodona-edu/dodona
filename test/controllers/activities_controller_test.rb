@@ -316,7 +316,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get edit submission with show' do
-    submission = create :submission, exercise: @instance
+    submission = create :submission, activity: @instance
 
     Submission.expects(:find).with(submission.id.to_s).returns(submission)
 
@@ -403,7 +403,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'user should be able to see invalid activity when he has submissions, but not when closed' do
     @instance = create :exercise, :nameless
-    create :submission, exercise: @instance, user: @user
+    create :submission, activity: @instance, user: @user
     show_activity
     assert_response :success
   end
@@ -480,7 +480,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should get activity media because user has submissions' do
     @instance = create(:exercise, :description_html)
     Exercise.any_instance.stubs(:ok?).returns(false)
-    create :submission, exercise: @instance, user: @user
+    create :submission, activity: @instance, user: @user
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
     get("#{activity_url(@instance)}/media/icon.png")

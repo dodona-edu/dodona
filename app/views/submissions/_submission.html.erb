@@ -27,15 +27,15 @@
     <td>
       <i class="mdi mdi-filter-outline mdi-18 filter-icon"
         title="<%= t('.filter-submissions-by-exercise') %>"
-        data-filter="<%= submission.exercise.name %>"
+        data-filter="<%= submission.activity.name %>"
         data-toggle="tooltip"
         data-placement="top"
       >
       </i>
       <% if submission.course.nil? %>
-        <%= link_to submission.exercise.name, activity_path(submission.exercise) %>
+        <%= link_to submission.activity.name, activity_path(submission.activity) %>
       <% else %>
-        <%= link_to submission.exercise.name, course_activity_path(submission.course, submission.exercise) %>
+        <%= link_to submission.activity.name, course_activity_path(submission.course, submission.activity) %>
       <% end %>
     </td>
   <% end %>

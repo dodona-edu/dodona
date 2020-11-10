@@ -147,22 +147,22 @@ class UserTest < ActiveSupport::TestCase
 
     assert_user_exercises user, 0, 0, 0
 
-    create :wrong_submission, user: user, exercise: exercise1
-    create :wrong_submission, user: user, exercise: exercise1
-    create :wrong_submission, user: user, exercise: exercise1
+    create :wrong_submission, user: user, activity: exercise1
+    create :wrong_submission, user: user, activity: exercise1
+    create :wrong_submission, user: user, activity: exercise1
     assert_user_exercises user, 1, 0, 1
 
-    create :correct_submission, user: user, exercise: exercise1
-    create :correct_submission, user: user, exercise: exercise1
+    create :correct_submission, user: user, activity: exercise1
+    create :correct_submission, user: user, activity: exercise1
     assert_user_exercises user, 1, 1, 0
 
-    create :correct_submission, user: user, exercise: exercise2
+    create :correct_submission, user: user, activity: exercise2
     assert_user_exercises user, 2, 2, 0
 
-    create :wrong_submission, user: user, exercise: exercise3
+    create :wrong_submission, user: user, activity: exercise3
     assert_user_exercises user, 3, 2, 1
 
-    create :submission, user: user, exercise: exercise3
+    create :submission, user: user, activity: exercise3
     assert_user_exercises user, 3, 2, 1
   end
 
@@ -276,7 +276,7 @@ class UserTest < ActiveSupport::TestCase
     exercise1 = create :exercise
     exercise2 = create :exercise
     create :series, exercises: [exercise1, exercise2]
-    create :submission, user: user, exercise: exercise1
+    create :submission, user: user, activity: exercise1
     assert_equal [exercise1], user.recent_exercises
   end
 

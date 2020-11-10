@@ -186,10 +186,10 @@ module ExportHelper
                    headers
                  end
           submissions.each do |submission|
-            exercises_per_user[submission.user.id].add(submission.exercise.id)
-            filename = get_filename submission.user, submission.exercise, submission
+            exercises_per_user[submission.user.id].add(submission.activity.id)
+            filename = get_filename submission.user, submission.activity, submission
             write_submission(zio, submission, filename)
-            csv_submission(csv, submission.user, submission.exercise, submission, filename)
+            csv_submission(csv, submission.user, submission.activity, submission, filename)
           end
           if all_students? # Loop over all user/exercise-combinations to write an empty file to include them in the zip
             users.each do |user|
@@ -240,17 +240,17 @@ module ExportHelper
         exercises = @list.map(&:exercises).flatten
       else # is User
         submissions = get_submissions_for_user(@list)
-        exercises = submissions.map(&:exercise).uniq
+        exercises = submissions.map(&:activity).uniq
       end
 
       { data: generate_zip_data(@users, exercises, submissions), filename: zip_filename }
     end
 
     def get_submissions_for_series(selected_exercises, users)
-      submissions = Submission.all.where(user_id: users.map(&:id), exercise_id: selected_exercises.map(&:id)).includes(:user, :exercise)
+      submissions = Submission.all.where(user_id: users.map(&:id), activity_id: selected_exercises.map(&:id)).includes(:user, :activity)
       submissions = submissions.before_deadline(@options[:deadline]) if deadline?
-      submissions = submissions.group(:user_id, :exercise_id).most_recent if only_last_submission?
-      submissions.sort_by { |s| [selected_exercises.map(&:id).index(s.exercise_id), users.map(&:id).index(s.user_id), s.id] }
+      submissions = submissions.group(:user_id, :activity_id).most_recent if only_last_submission?
+      submissions.sort_by { |s| [selected_exercises.map(&:id).index(s.activity_id), users.map(&:id).index(s.user_id), s.id] }
     end
 
     def get_submissions_for_course(selected_series, users)
@@ -261,7 +261,7 @@ module ExportHelper
     end
 
     def get_submissions_for_user(selected_courses)
-      return Submission.of_user(@item).includes(:user, :exercise) if all? # allow submissions without a course
+      return Submission.of_user(@item).includes(:user, :activity) if all? # allow submissions without a course
 
       selected_courses.map { |course| get_submissions_for_course(course.series, @users) }.flatten
     end

@@ -33,16 +33,16 @@ class Annotation < ApplicationRecord
   scope :released, -> { where(evaluation_id: nil).or(where(evaluations: { released: true })) }
   scope :by_course, ->(course_id) { where(submission: Submission.in_course(Course.find(course_id))) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
-  scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
+  scope :by_activity_name, ->(name) { where(submission: Submission.by_activity_name(name)) }
 
   before_validation :set_last_updated_by, on: :create
   after_destroy :destroy_notification
   after_save :create_notification
 
-  scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
+  scope :by_filter, lambda { |filter, skip_user:, skip_activity:|
     filter.split(' ').map(&:strip).select(&:present?).map do |part|
       scopes = []
-      scopes << by_exercise_name(part) unless skip_exercise
+      scopes << by_activity_name(part) unless skip_activity
       scopes << by_username(part) unless skip_user
       scopes.any? ? merge(scopes.reduce(&:or)) : self
     end.reduce(includes(submission: [:exercise], user: []), &:merge)

@@ -4,7 +4,7 @@
     window.dodona.initMathJax();
   </script>
   <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
-  <%= javascript_pack_tag 'pythia_submission' if submission.judge.renderer == PythiaRenderer %>
+  <%= javascript_pack_tag 'pythia_submission' if submission.judge&.renderer == PythiaRenderer %>
 <% end %>
 
 
@@ -12,9 +12,9 @@
   <span class="description">
     <%= t "submissions.show.submission_for" %>
     <% if submission.course.nil? %>
-      <%= link_to submission.exercise.name, activity_path(submission.exercise) %>
+      <%= link_to submission.activity.name, activity_path(submission.activity) %>
     <% else %>
-      <%= link_to submission.exercise.name, course_activity_path(submission.course, submission.exercise) %>
+      <%= link_to submission.activity.name, course_activity_path(submission.course, submission.activity) %>
     <% end %>
     <% if current_user.course_admin?(submission.course) %>
       <%= t "submissions.show.by" %>
@@ -41,5 +41,6 @@
 </div>
 
 <% unless submission.queued? or submission.running? %>
-  <%= submission.judge.renderer.new(submission, current_user).parse %>
+  <% renderer = submission.judge&.renderer || FeedbackTableRenderer %>
+  <%= renderer.new(submission, current_user).parse %>
 <% end %>

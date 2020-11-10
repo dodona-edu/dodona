@@ -33,7 +33,6 @@ class Exercise < Activity
 
   belongs_to :judge
   belongs_to :programming_language, optional: true
-  has_many :submissions, dependent: :restrict_with_error
 
   before_save :check_memory_limit
 
@@ -150,7 +149,7 @@ class Exercise < Activity
   end
 
   def self.move_relations(from, to)
-    from.submissions.each { |s| s.update(exercise: to) }
+    from.submissions.each { |s| s.update(activity: to) }
     super
   end
 

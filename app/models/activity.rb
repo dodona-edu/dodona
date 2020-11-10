@@ -53,6 +53,9 @@ class Activity < ApplicationRecord
   has_many :courses, -> { distinct }, through: :series
   has_many :activity_labels, dependent: :destroy
   has_many :labels, through: :activity_labels
+  # Content pages can also have submissions, since they can be converted
+  # from normal exercises
+  has_many :submissions, dependent: :restrict_with_error
 
   validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
 

@@ -76,7 +76,7 @@ class SeriesTest < ActiveSupport::TestCase
     create :correct_submission,
            created_at: Time.zone.now,
            course: course,
-           exercise: series.exercises[0],
+           activity: series.exercises[0],
            user: user
 
     assert_equal true, series.completed_before_deadline?(user)
@@ -132,7 +132,7 @@ class SeriesTest < ActiveSupport::TestCase
       exercise = create :exercise
       series.exercises << exercise
 
-      create :wrong_submission, created_at: now - 3.days, user: user, course: course, exercise: exercise
+      create :wrong_submission, created_at: now - 3.days, user: user, course: course, activity: exercise
 
       assert_equal false, series.completed_before_deadline?(user)
 
@@ -143,7 +143,7 @@ class SeriesTest < ActiveSupport::TestCase
 
       assert_equal false, series.completed_before_deadline?(user)
 
-      create :correct_submission, created_at: now + 2.days, user: user, course: course, exercise: exercise
+      create :correct_submission, created_at: now + 2.days, user: user, course: course, activity: exercise
 
       # Restore the original deadline
       series.update(deadline: original_deadline)
@@ -162,7 +162,7 @@ class SeriesTest < ActiveSupport::TestCase
       exercise = create :exercise
       series.exercises << exercise
 
-      create :correct_submission, user: user, course: course, exercise: exercise
+      create :correct_submission, user: user, course: course, activity: exercise
       assert_equal true, series.completed_before_deadline?(user)
 
       # Simulate we have a new request
@@ -194,7 +194,7 @@ class SeriesTest < ActiveSupport::TestCase
                                course: course,
                                user: user
 
-      create :correct_submission, user: user, course: course, exercise: exercise, created_at: now + 2.days
+      create :correct_submission, user: user, course: course, activity: exercise, created_at: now + 2.days
       ActivityStatus.clear_status_store
       assert_equal true, series.completed_before_deadline?(user)
 
@@ -294,43 +294,43 @@ class SeriesTest < ActiveSupport::TestCase
         case i
         when 0 # Wrong submission before deadline
           s = create :wrong_submission,
-                     exercise: exercise,
+                     activity: exercise,
                      user: u,
                      created_at: (deadline - 2.minutes),
                      course: course
           expected_submissions << s.id
         when 1 # Wrong, then correct submission before deadline
           create :correct_submission,
-                 exercise: exercise,
+                 activity: exercise,
                  user: u,
                  created_at: (deadline - 2.minutes),
                  course: course
           s = create :correct_submission,
-                     exercise: exercise,
+                     activity: exercise,
                      user: u,
                      created_at: (deadline - 1.minute),
                      course: course
           expected_submissions << s.id
         when 2 # Wrong submission after deadline
           create :wrong_submission,
-                 exercise: exercise,
+                 activity: exercise,
                  user: u,
                  created_at: (deadline + 2.minutes),
                  course: course
         when 3 # Correct submission after deadline
           create :correct_submission,
-                 exercise: exercise,
+                 activity: exercise,
                  user: u,
                  created_at: (deadline + 2.minutes),
                  course: course
         when 4 # Correct submission before deadline not in course
           create :correct_submission,
-                 exercise: exercise,
+                 activity: exercise,
                  user: u,
                  created_at: (deadline - 2.minutes)
         when 5 # Correct submission after deadline not in course
           create :correct_submission,
-                 exercise: exercise,
+                 activity: exercise,
                  user: u,
                  created_at: (deadline + 2.minutes)
         end
@@ -362,7 +362,7 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal expected_read_states.to_set, scoresheet[:read_states].values.map(&:id).to_set
     # Hash mapping is correct.
     scoresheet[:submissions].each do |key, submission|
-      assert_equal [submission.user_id, submission.exercise.id], key
+      assert_equal [submission.user_id, submission.activity.id], key
     end
   end
 
@@ -373,7 +373,7 @@ class SeriesTest < ActiveSupport::TestCase
     deadline = series.deadline
     # Wrong submission before deadline
     create :wrong_submission,
-           exercise: series.exercises.first,
+           activity: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
 
@@ -389,7 +389,7 @@ class SeriesTest < ActiveSupport::TestCase
     # Correct submission before deadline
     create :correct_submission,
            course: series.course,
-           exercise: series.exercises.first,
+           activity: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
 
@@ -404,7 +404,7 @@ class SeriesTest < ActiveSupport::TestCase
     deadline = series.deadline
     # Correct submission before deadline
     create :correct_submission,
-           exercise: series.exercises.first,
+           activity: series.exercises.first,
            user: user,
            created_at: (deadline - 2.minutes)
 
@@ -419,7 +419,7 @@ class SeriesTest < ActiveSupport::TestCase
     deadline = series.deadline
     # Wrong submission after deadline
     create :wrong_submission,
-           exercise: series.exercises.first,
+           activity: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
 
@@ -435,7 +435,7 @@ class SeriesTest < ActiveSupport::TestCase
     # Correct submission after deadline
     create :correct_submission,
            course: series.course,
-           exercise: series.exercises.first,
+           activity: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
 
@@ -450,7 +450,7 @@ class SeriesTest < ActiveSupport::TestCase
     deadline = series.deadline
     # Correct submission after deadline
     create :correct_submission,
-           exercise: series.exercises.first,
+           activity: series.exercises.first,
            user: user,
            created_at: (deadline + 2.minutes)
 
@@ -465,7 +465,7 @@ class SeriesTest < ActiveSupport::TestCase
     deadline = series.deadline
     # Correct submission before deadline
     create :correct_submission,
-           exercise: series.exercises.first,
+           activity: series.exercises.first,
            user: user,
            course: series.course,
            created_at: (deadline - 2.minutes)
@@ -482,7 +482,7 @@ class SeriesTest < ActiveSupport::TestCase
 
     # Wrong submission before deadline
     create :wrong_submission,
-           exercise: series.exercises.first,
+           activity: series.exercises.first,
            user: user,
            course: series.course,
            created_at: (deadline - 2.minutes)
@@ -508,7 +508,7 @@ class SeriesTest < ActiveSupport::TestCase
 
     # Correct submission before deadline
     create :correct_submission,
-           exercise: series.exercises.first,
+           activity: series.exercises.first,
            user: user,
            course: series.course,
            created_at: (deadline - 2.minutes)

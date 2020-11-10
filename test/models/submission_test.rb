@@ -31,7 +31,7 @@ class SubmissionTest < ActiveSupport::TestCase
       submission.exercise = content_page
     end
 
-    assert_not submission.update(exercise_id: content_page.id)
+    assert_not submission.update(activity_id: content_page.id)
   end
 
   test 'submissions should be rate limited for a user' do

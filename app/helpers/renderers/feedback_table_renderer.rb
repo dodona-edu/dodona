@@ -23,13 +23,13 @@ class FeedbackTableRenderer
     @builder = Builder::XmlMarkup.new
     @code = submission.code
     @user = user
-    @exercise = submission.exercise
-    @programming_language = @exercise.programming_language&.editor_name
+    @activity = submission.activity
+    @programming_language = submission.exercise&.programming_language&.editor_name
   end
 
   def parse
     if @result.present?
-      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
+      @builder.div(class: 'feedback-table', "data-exercise_id": @activity.id) do
         if @result[:messages].present?
           @builder.div(class: 'row feedback-table-messages') do
             messages(@result[:messages])
@@ -39,7 +39,7 @@ class FeedbackTableRenderer
         init_js
       end.html_safe
     else
-      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
+      @builder.div(class: 'feedback-table', "data-exercise_id": @activity.id) do
         @builder.div(class: 'row feedback-table-messages') do
           messages([{ description: I18n.t('submissions.show.reading_failed'), format: 'plain' }])
         end
@@ -293,8 +293,8 @@ class FeedbackTableRenderer
 
   def init_js
     @builder.script do
-      token = @exercise.access_private? ? "'#{@exercise.access_token}'" : 'undefined'
-      @builder << "dodona.initSubmissionShow('feedback-table', '#{activity_path(nil, @exercise)}', #{token});"
+      token = @activity.access_private? ? "'#{@activity.access_token}'" : 'undefined'
+      @builder << "dodona.initSubmissionShow('feedback-table', '#{activity_path(nil, @activity)}', #{token});"
     end
   end
 
@@ -352,7 +352,7 @@ class FeedbackTableRenderer
   end
 
   def safe(html)
-    if @exercise.allow_unsafe?
+    if @activity.allow_unsafe?
       html
     else
       sanitize html

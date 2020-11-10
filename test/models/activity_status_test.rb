@@ -32,7 +32,7 @@ class ActivityStatusTest < ActiveSupport::TestCase
     assert_not as1.started
     assert_not as2.started
 
-    create :submission, exercise: activity, course: course, status: :correct, user: user
+    create :submission, activity: activity, course: course, status: :correct, user: user
 
     as1.reload
     as2.reload

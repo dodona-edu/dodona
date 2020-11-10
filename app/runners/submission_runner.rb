@@ -17,8 +17,10 @@ class SubmissionRunner
     # definition of submission
     @submission = submission
 
-    # derive exercise and judge definitions from submission
+    # derive exercise definitions from submission
     @exercise = submission.exercise
+    raise 'cannot judge submission linked to content page' if @exercise.nil?
+
     @judge = @exercise.judge
 
     # create name for hidden directory in docker container

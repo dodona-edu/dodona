@@ -21,7 +21,7 @@ class FeedbackTest < ActiveSupport::TestCase
     @users.each do |u|
       series.course.enrolled_members << u
       @exercises.each do |e|
-        create :submission, user: u, exercise: e, course: series.course, created_at: Time.current - 1.hour
+        create :submission, user: u, activity: e, course: series.course, created_at: Time.current - 1.hour
       end
     end
     @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.current
@@ -59,7 +59,7 @@ class FeedbackTest < ActiveSupport::TestCase
     feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
     user = feedback.user
     exercise = feedback.exercise
-    submission = create :submission, user: user, exercise: exercise, course: @evaluation.series.course
+    submission = create :submission, user: user, activity: exercise, course: @evaluation.series.course
 
     feedback.submission.annotations.create(evaluation_id: @evaluation.id, annotation_text: 'blah', line_nr: 0, user: @zeus)
 

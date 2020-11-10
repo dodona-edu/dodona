@@ -201,7 +201,7 @@ class User < ApplicationRecord
   def attempted_exercises(options)
     s = submissions.judged
     s = s.in_course(options[:course]) if options[:course].present?
-    s.select('distinct exercise_id').count
+    s.select('distinct activity_id').count
   end
 
   invalidateable_instance_cacheable(:attempted_exercises,
@@ -210,7 +210,7 @@ class User < ApplicationRecord
   def correct_exercises(options)
     s = submissions.where(status: :correct)
     s = s.in_course(options[:course]) if options[:course].present?
-    s.select('distinct exercise_id').count
+    s.select('distinct activity_id').count
   end
 
   invalidateable_instance_cacheable(:correct_exercises,
@@ -221,8 +221,7 @@ class User < ApplicationRecord
   end
 
   def recent_exercises(limit = 3)
-    # If a user has submitted to a content page this will include `nil` values. So we compact to throw those away.
-    submissions.select('distinct exercise_id').limit(limit).includes(:exercise).map(&:exercise).compact
+    submissions.select('distinct activity_id').limit(limit).includes(:activity).map(&:activity).select(&:exercise?)
   end
 
   def pending_series

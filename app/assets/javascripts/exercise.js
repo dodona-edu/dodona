@@ -221,7 +221,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         return $.post("/submissions.json", {
             submission: {
                 code: code,
-                exercise_id: exerciseId,
+                activity_id: exerciseId,
                 course_id: courseId,
             },
         });

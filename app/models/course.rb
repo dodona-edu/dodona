@@ -244,7 +244,7 @@ class Course < ApplicationRecord
 
   def correct_solutions(_options = {})
     Submission.where(status: 'correct', course: self)
-              .select(:exercise_id, :user_id)
+              .select(:activity_id, :user_id)
               .distinct
               .count
   end

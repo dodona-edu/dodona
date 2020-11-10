@@ -173,7 +173,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
   test 'move_relations should move submissions from one exercise to the other' do
     exercise1 = create :exercise
-    create :submission, exercise: exercise1
+    create :submission, activity: exercise1
     exercise2 = create :exercise
     assert_equal 1, exercise1.submissions.count
     assert_equal 0, exercise2.submissions.count
@@ -197,45 +197,45 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 0, e.users_tried(course: course1)
     assert_equal 0, e.users_tried(course: course2)
 
-    create :submission, user: users_c1[0], course: course1, exercise: e, status: :wrong
+    create :submission, user: users_c1[0], course: course1, activity: e, status: :wrong
 
     assert_equal 1, e.users_tried
     assert_equal 1, e.users_tried(course: course1)
     assert_equal 0, e.users_tried(course: course2)
 
-    create :submission, user: users_c2[0], course: course2, exercise: e, status: :wrong
+    create :submission, user: users_c2[0], course: course2, activity: e, status: :wrong
 
     assert_equal 2, e.users_tried
     assert_equal 1, e.users_tried(course: course1)
     assert_equal 1, e.users_tried(course: course2)
 
-    create :submission, user: users_all[0], exercise: e, status: :wrong
+    create :submission, user: users_all[0], activity: e, status: :wrong
 
     assert_equal 3, e.users_tried
     assert_equal 1, e.users_tried(course: course1)
     assert_equal 1, e.users_tried(course: course2)
 
     users_c1.each do |user|
-      create :submission, user: user, course: course1, exercise: e, status: :wrong
+      create :submission, user: user, course: course1, activity: e, status: :wrong
     end
     assert_equal 7, e.users_tried
     assert_equal 5, e.users_tried(course: course1)
     assert_equal 1, e.users_tried(course: course2)
 
     users_c2.each do |user|
-      create :submission, user: user, course: course2, exercise: e, status: :wrong
+      create :submission, user: user, course: course2, activity: e, status: :wrong
     end
     assert_equal 11, e.users_tried
     assert_equal 5, e.users_tried(course: course1)
     assert_equal 5, e.users_tried(course: course2)
     users_all.each do |user|
-      create :submission, user: user, exercise: e, status: :wrong
+      create :submission, user: user, activity: e, status: :wrong
     end
     assert_equal 15, e.users_tried
     assert_equal 5, e.users_tried(course: course1)
     assert_equal 5, e.users_tried(course: course2)
     users_all.each do |user|
-      create :submission, user: user, exercise: e, status: :running
+      create :submission, user: user, activity: e, status: :running
     end
     assert_equal 15, e.users_tried
     assert_equal 5, e.users_tried(course: course1)
@@ -257,32 +257,32 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 0, e.users_correct(course: course1)
     assert_equal 0, e.users_correct(course: course2)
 
-    create :wrong_submission, user: user_c1, course: course1, exercise: e
+    create :wrong_submission, user: user_c1, course: course1, activity: e
     assert_equal 0, e.users_correct
     assert_equal 0, e.users_correct(course: course1)
     assert_equal 0, e.users_correct(course: course2)
 
-    create :correct_submission, user: user_c1, course: course1, exercise: e
+    create :correct_submission, user: user_c1, course: course1, activity: e
     assert_equal 1, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 0, e.users_correct(course: course2)
 
-    create :wrong_submission, user: user_c2, course: course2, exercise: e
+    create :wrong_submission, user: user_c2, course: course2, activity: e
     assert_equal 1, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 0, e.users_correct(course: course2)
 
-    create :correct_submission, user: user_c2, course: course2, exercise: e
+    create :correct_submission, user: user_c2, course: course2, activity: e
     assert_equal 2, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 1, e.users_correct(course: course2)
 
-    create :wrong_submission, user: user_all, exercise: e
+    create :wrong_submission, user: user_all, activity: e
     assert_equal 2, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 1, e.users_correct(course: course2)
 
-    create :correct_submission, user: user_all, exercise: e
+    create :correct_submission, user: user_all, activity: e
     assert_equal 3, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 1, e.users_correct(course: course2)
@@ -290,13 +290,13 @@ class ExerciseTest < ActiveSupport::TestCase
 
   test 'solved_for' do
     create :wrong_submission,
-           exercise: @exercise,
+           activity: @exercise,
            user: @user
 
     assert_equal false, @exercise.solved_for?(@user)
 
     create :correct_submission,
-           exercise: @exercise,
+           activity: @exercise,
            user: @user
 
     assert_equal true, @exercise.solved_for?(@user)
@@ -304,7 +304,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
   test 'solved_for should retry finding ActivityStatus when it fails once' do
     create :wrong_submission,
-           exercise: @exercise,
+           activity: @exercise,
            user: @user
 
     ActivityStatus.stubs(:find_or_create_by)
@@ -315,7 +315,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
   test 'solved_for should not retry finding ActivityStatus when it fails twice' do
     create :wrong_submission,
-           exercise: @exercise,
+           activity: @exercise,
            user: @user
 
     ActivityStatus.stubs(:find_or_create_by)
@@ -331,7 +331,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     first = create :wrong_submission,
                    user: @user,
-                   exercise: @exercise,
+                   activity: @exercise,
                    created_at: @date
 
     assert_equal first, @exercise.last_submission!(@user)
@@ -340,7 +340,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     second = create :correct_submission,
                     user: @user,
-                    exercise: @exercise,
+                    activity: @exercise,
                     created_at: @date + 1.minute
 
     assert_equal second, @exercise.last_submission!(@user)
@@ -352,14 +352,14 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :wrong_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            created_at: @date
 
     assert_nil @exercise.last_correct_submission!(@user)
 
     correct = create :correct_submission,
                      user: @user,
-                     exercise: @exercise,
+                     activity: @exercise,
                      created_at: @date + 1.second
 
     assert_equal correct, @exercise.last_correct_submission!(@user)
@@ -367,7 +367,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :wrong_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            created_at: @date + 2.seconds
 
     assert_equal correct, @exercise.last_correct_submission!(@user)
@@ -378,14 +378,14 @@ class ExerciseTest < ActiveSupport::TestCase
 
     wrong = create :wrong_submission,
                    user: @user,
-                   exercise: @exercise,
+                   activity: @exercise,
                    created_at: @date
 
     assert_equal wrong, @exercise.best_submission!(@user)
 
     correct = create :correct_submission,
                      user: @user,
-                     exercise: @exercise,
+                     activity: @exercise,
                      created_at: @date + 10.seconds
 
     assert_equal correct, @exercise.best_submission!(@user)
@@ -393,7 +393,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :wrong_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            created_at: @date + 1.minute
 
     assert_equal correct, @exercise.best_submission!(@user)
@@ -404,14 +404,14 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :correct_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            created_at: @date
 
     assert @exercise.best_is_last_submission?(@user)
 
     create :wrong_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            created_at: @date + 10.seconds
 
     assert_not @exercise.best_is_last_submission?(@user)
@@ -422,21 +422,21 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :wrong_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            created_at: @date
 
     assert_not @exercise.accepted_for?(@user)
 
     create :correct_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            created_at: @date + 10.seconds
 
     assert @exercise.accepted_for?(@user)
 
     create :wrong_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            created_at: @date + 1.minute
 
     assert_not @exercise.accepted_for?(@user)
@@ -452,7 +452,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :correct_submission,
            course: course,
-           exercise: @exercise,
+           activity: @exercise,
            user: @user
 
     series.each do |series_it|
@@ -466,7 +466,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :correct_submission,
            user: @user,
-           exercise: @exercise
+           activity: @exercise
 
     series.each do |series_it|
       assert_not @exercise.accepted_for?(@user, series_it)
@@ -474,7 +474,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :wrong_submission,
            user: @user,
-           exercise: @exercise
+           activity: @exercise
 
     series.each do |series_it|
       assert_not @exercise.accepted_for?(@user, series_it)
@@ -482,7 +482,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :correct_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            course: courses[0]
 
     assert @exercise.accepted_for?(@user, series[0])
@@ -490,7 +490,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
     create :correct_submission,
            user: @user,
-           exercise: @exercise,
+           activity: @exercise,
            course: courses[1]
 
     series.each do |series_it|
@@ -630,7 +630,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
   test 'safe_delete should not destroy exercise if it has submissions' do
     @exercise.status = 2 # set status to removed
     user = create :user
-    submission = create :submission, exercise: @exercise, user: user
+    submission = create :submission, activity: @exercise, user: user
     @exercise.submissions.concat(submission) # Add a submission
     @exercise.safe_destroy
     assert_equal @repository.exercises.first, @exercise

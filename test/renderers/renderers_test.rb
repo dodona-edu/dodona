@@ -32,7 +32,7 @@ class RenderersTest < ActiveSupport::TestCase
     json = FILES_LOCATION.join('output.json').read
     exercise = create :exercise
     exercise.update(allow_unsafe: true)
-    submission = create :submission, result: json, user: create(:zeus), exercise: exercise, status: :correct
+    submission = create :submission, result: json, user: create(:zeus), activity: exercise, status: :correct
 
     assert_match %r{<script>alert.*</script>}, FeedbackTableRenderer.new(submission, submission.user).parse
   end
@@ -41,7 +41,7 @@ class RenderersTest < ActiveSupport::TestCase
     json = FILES_LOCATION.join('pythia_output.json').read
     exercise = create :exercise
     exercise.update(allow_unsafe: true)
-    submission = create :submission, result: json, user: create(:zeus), exercise: exercise, status: :correct
+    submission = create :submission, result: json, user: create(:zeus), activity: exercise, status: :correct
 
     assert_match %r{<script>alert.*</script>}, PythiaRenderer.new(submission, submission.user).parse
   end
@@ -50,7 +50,7 @@ class RenderersTest < ActiveSupport::TestCase
     json = FILES_LOCATION.join('output.json').read
     exercise = create :exercise
     exercise.update(access: :private)
-    submission = create :submission, result: json, user: create(:zeus), exercise: exercise, status: :correct
+    submission = create :submission, result: json, user: create(:zeus), activity: exercise, status: :correct
 
     assert_match exercise.access_token, FeedbackTableRenderer.new(submission, submission.user).parse
   end

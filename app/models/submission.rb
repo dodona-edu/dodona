@@ -27,7 +27,11 @@ class Submission < ApplicationRecord
 
   enum status: { unknown: 0, correct: 1, wrong: 2, "time limit exceeded": 3, running: 4, queued: 5, "runtime error": 6, "compilation error": 7, "memory limit exceeded": 8, "internal error": 9, "output limit exceeded": 10 }
 
-  belongs_to :exercise
+  belongs_to :activity
+  # We can also be linked to a reading exercise, so the exercise is not always present.
+  belongs_to :exercise, optional: true, class_name: 'Exercise', foreign_key: :activity_id, inverse_of: :submissions
+  # Backwards compatibility for the API
+  alias_attribute :exercise_id, :activity_id
   belongs_to :user
   belongs_to :course, optional: true
   has_one :judge, through: :exercise
@@ -37,6 +41,7 @@ class Submission < ApplicationRecord
 
   validate :maximum_code_length, on: :create
   validate :not_rate_limited?, on: :create, unless: :skip_rate_limit_check?
+  validate :activity_is_exercise, on: %i[create update]
 
   before_save :report_if_internal_error
   after_create :evaluate_delayed, if: :evaluate?
@@ -49,20 +54,20 @@ class Submission < ApplicationRecord
 
   default_scope { order(id: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
-  scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
+  scope :of_activity, ->(activity) { where activity_id: activity.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
   scope :in_course, ->(course) { where course_id: course.id }
-  scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
-  scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
+  scope :in_series, ->(series) { where(course_id: series.course.id).where(activity: series.activities) }
+  scope :of_judge, ->(judge) { where(activity_id: Exercise.where(judge_id: judge.id)) }
 
   scope :judged, -> { where.not(status: %i[running queued]) }
-  scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
+  scope :by_activity_name, ->(name) { where(activity: Activity.by_name(name)) }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
     filter.split(' ').map(&:strip).select(&:present?).map do |part|
       scopes = []
-      scopes << by_exercise_name(part) unless skip_exercise
+      scopes << by_activity_name(part) unless skip_exercise
       scopes << by_username(part) unless skip_user
       scopes.any? ? merge(scopes.reduce(&:or)) : self
     end.reduce(&:merge)
@@ -225,8 +230,19 @@ class Submission < ApplicationRecord
     errors.add(:submission, 'rate limited') if time_since_previous < SECONDS_BETWEEN_SUBMISSIONS.seconds
   end
 
+  def activity=(activity)
+    # Simulate previous behaviour.
+    raise ActiveRecord::AssociationTypeMismatch unless activity.exercise?
+
+    super(activity)
+  end
+
+  def activity_is_exercise
+    errors.add(:activity, 'wrong type') if activity.present? && !activity.exercise?
+  end
+
   def fs_path
-    File.join(BASE_PATH, (course_id.present? ? course_id.to_s : 'no_course'), user_id.to_s, exercise_id.to_s, fs_key)
+    File.join(BASE_PATH, (course_id.present? ? course_id.to_s : 'no_course'), user_id.to_s, activity_id.to_s, fs_key)
   end
 
   def fs_key
@@ -258,10 +274,16 @@ class Submission < ApplicationRecord
   def update_exercise_status
     return if status.in?(%i[queued running])
 
+    # If we are linked to a reading activity, don't update anything.
+    return if exercise.blank?
+
     exercise.activity_statuses_for(user, course).each(&:update_values)
   end
 
   def invalidate_caches
+    # If we are linked to a reading activity, don't invalidate anything.
+    return if exercise.blank?
+
     exercise.invalidate_delayed_users_correct
     exercise.invalidate_delayed_users_tried
     user.invalidate_attempted_exercises
@@ -353,10 +375,10 @@ class Submission < ApplicationRecord
 
   def old_fs_path
     c_id = course_id_changed? ? course_id_was : course_id
-    e_id = exercise_id_changed? ? exercise_id_was : exercise_id
+    a_id = activity_id_changed? ? activity_id_was : activity_id
     u_id = user_id_changed? ? user_id_was : user_id
 
-    File.join(BASE_PATH, (c_id.present? ? c_id.to_s : 'no_course'), u_id.to_s, e_id.to_s, fs_key)
+    File.join(BASE_PATH, (c_id.present? ? c_id.to_s : 'no_course'), u_id.to_s, a_id.to_s, fs_key)
   end
 
   def update_fs

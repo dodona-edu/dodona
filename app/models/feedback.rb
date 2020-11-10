@@ -36,15 +36,15 @@ class Feedback < ApplicationRecord
   scope :undecided, -> { where(submission: nil) }
 
   def previous_attempts
-    user.submissions.of_exercise(exercise).in_course(evaluation.series.course).before_deadline(submission.created_at).count
+    user.submissions.of_activity(exercise).in_course(evaluation.series.course).before_deadline(submission.created_at).count
   end
 
   def later_attempts
-    user.submissions.of_exercise(exercise).in_course(evaluation.series.course).where('created_at > ?', submission.created_at).count
+    user.submissions.of_activity(exercise).in_course(evaluation.series.course).where('created_at > ?', submission.created_at).count
   end
 
   def total_attempts
-    user.submissions.of_exercise(exercise).in_course(evaluation.series.course).count
+    user.submissions.of_activity(exercise).in_course(evaluation.series.course).count
   end
 
   def time_to_deadline
@@ -68,7 +68,7 @@ class Feedback < ApplicationRecord
 
   def determine_submission
     # First because the default order is id: :desc
-    self.submission = user.submissions.of_exercise(exercise).before_deadline(evaluation.deadline).first
+    self.submission = user.submissions.of_activity(exercise).before_deadline(evaluation.deadline).first
     self.completed = true if submission.nil?
   end
 
@@ -91,6 +91,6 @@ class Feedback < ApplicationRecord
 
   def submission_user_exercise_correct
     errors.add(:submission, 'user should be the same as in the evaluation') if submission.present? && submission.user_id != user.id
-    errors.add(:submission, 'exercise should be the same as in the evaluation') if submission.present? && submission.exercise_id != exercise.id
+    errors.add(:submission, 'exercise should be the same as in the evaluation') if submission.present? && submission.activity_id != exercise.id
   end
 end

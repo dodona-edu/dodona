@@ -44,7 +44,8 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    %i[code exercise_id course_id]
+    # Exercise id is kept for API compatibility
+    %i[code exercise_id activity_id course_id]
   end
 
   private

@@ -3,7 +3,7 @@ require 'test_helper'
 class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers Submission, attrs: %i[code exercise_id]
+  crud_helpers Submission, attrs: %i[code activity_id]
 
   setup do
     stub_all_activities!
@@ -19,8 +19,8 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     c = create :course, series_count: 1, activities_per_series: 1
     e = c.series.first.exercises.first
 
-    submissions = users.map { |u| create :correct_submission, user: u, exercise: e, course: c }
-    users.each { |u| create :wrong_submission, user: u, exercise: e, course: c }
+    submissions = users.map { |u| create :correct_submission, user: u, activity: e, course: c }
+    users.each { |u| create :wrong_submission, user: u, activity: e, course: c }
 
     # create a correct submission with another exercise, to check if
     # most_recent works
@@ -42,8 +42,8 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     sign_in u
     e1 = create :exercise, name_en: 'abcd'
     e2 = create :exercise, name_en: 'efgh'
-    create :submission, exercise: e1, user: u
-    create :submission, exercise: e2, user: u
+    create :submission, activity: e1, user: u
+    create :submission, activity: e2, user: u
 
     get submissions_url, params: { filter: 'abcd', format: :json }
 
@@ -129,14 +129,14 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not create submission for content page' do
     attrs = generate_attr_hash
-    attrs[:exercise_id] = create(:content_page).id
+    attrs[:activity_id] = create(:content_page).id
     create_request(attr_hash: attrs)
     assert_response :unprocessable_entity
   end
 
   test 'create submission should respond bad_request without an exercise' do
     attrs = generate_attr_hash
-    attrs.delete(:exercise_id)
+    attrs.delete(:activity_id)
     create_request(attr_hash: attrs)
     assert_response :unprocessable_entity
   end
@@ -146,7 +146,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     course = create :course
     course.subscribed_members << @zeus
     course.series << create(:series)
-    course.series.first.exercises << Exercise.find(attrs[:exercise_id])
+    course.series.first.exercises << Exercise.find(attrs[:activity_id])
     attrs[:course_id] = course.id
 
     submission = create_request_expect attr_hash: attrs
@@ -158,7 +158,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   test 'unregistered user submitting to private exercise in moderated course should fail' do
     attrs = generate_attr_hash
     course = create :course, moderated: true
-    exercise = Exercise.find(attrs[:exercise_id])
+    exercise = Exercise.find(attrs[:activity_id])
     exercise.update(access: :private)
     course.series << create(:series)
     course.series.first.exercises << exercise
@@ -174,7 +174,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   test 'should get submission edit page' do
     get edit_submission_path(@instance)
     assert_redirected_to activity_url(
-      @instance.exercise,
+      @instance.activity,
       anchor: 'submission-card',
       edit_submission: @instance
     )
@@ -194,12 +194,12 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'submission media should redirect to exercise media' do
     get media_submission_path(@instance, 'dank_meme.jpg')
-    assert_redirected_to media_activity_path(@instance.exercise, 'dank_meme.jpg')
+    assert_redirected_to media_activity_path(@instance.activity, 'dank_meme.jpg')
   end
 
   test 'submission media should redirect to exercise media and keep token' do
-    get media_submission_path(@instance, 'dank_meme.jpg', token: @instance.exercise.access_token)
-    assert_redirected_to media_activity_path(@instance.exercise, 'dank_meme.jpg', token: @instance.exercise.access_token)
+    get media_submission_path(@instance, 'dank_meme.jpg', token: @instance.activity.access_token)
+    assert_redirected_to media_activity_path(@instance.activity, 'dank_meme.jpg', token: @instance.activity.access_token)
   end
 
   def rejudge_submissions(**params)

@@ -38,7 +38,8 @@ FactoryBot.define do
     end
 
     user
-    exercise
+    association :activity, factory: :exercise
+    exercise { activity }
 
     initialize_with { new(attributes) }
 

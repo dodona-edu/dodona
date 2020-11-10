@@ -7,7 +7,7 @@ class AnnotationsController < ApplicationController
   has_scope :by_course, as: :course_id
 
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
-    scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_exercise: controller.params[:exercise_id].present?)
+    scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_activity: controller.params[:exercise_id].present?)
   end
 
   def index
@@ -34,7 +34,7 @@ class AnnotationsController < ApplicationController
     end
 
     # Preload dependencies for efficiency
-    @questions = @questions.includes(:user, :last_updated_by, submission: %i[exercise course])
+    @questions = @questions.includes(:user, :last_updated_by, submission: %i[activity course])
 
     @questions = @questions.order(created_at: :desc).paginate(page: parse_pagination_param(params[:page]))
     @activities = policy_scope(Activity.all)

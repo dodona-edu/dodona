@@ -24,7 +24,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     activity = create :exercise
     create :submission,
            user: user,
-           exercise: activity
+           activity: activity
     activity.update(type: ContentPage.name)
 
     sign_in(user)

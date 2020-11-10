@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_24_072242) do
+ActiveRecord::Schema.define(version: 2020_11_09_102745) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -387,7 +387,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
   end
 
   create_table "submissions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "exercise_id"
+    t.integer "activity_id"
     t.integer "user_id"
     t.string "summary"
     t.datetime "created_at", null: false
@@ -397,10 +397,10 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.integer "course_id"
     t.string "fs_key", limit: 24
     t.index ["accepted"], name: "index_submissions_on_accepted"
+    t.index ["activity_id", "user_id", "accepted", "created_at"], name: "ex_us_ac_cr_index"
+    t.index ["activity_id", "user_id", "status", "created_at"], name: "ex_us_st_cr_index"
+    t.index ["activity_id"], name: "index_submissions_on_activity_id"
     t.index ["course_id"], name: "index_submissions_on_course_id"
-    t.index ["exercise_id", "user_id", "accepted", "created_at"], name: "ex_us_ac_cr_index"
-    t.index ["exercise_id", "user_id", "status", "created_at"], name: "ex_us_st_cr_index"
-    t.index ["exercise_id"], name: "index_submissions_on_exercise_id"
     t.index ["fs_key"], name: "index_submissions_on_fs_key", unique: true
     t.index ["status"], name: "index_submissions_on_status"
     t.index ["user_id"], name: "index_submissions_on_user_id"
@@ -471,7 +471,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
   add_foreign_key "series", "courses"
   add_foreign_key "series_memberships", "activities"
   add_foreign_key "series_memberships", "series"
-  add_foreign_key "submissions", "activities", column: "exercise_id"
+  add_foreign_key "submissions", "activities"
   add_foreign_key "submissions", "courses"
   add_foreign_key "submissions", "users"
   add_foreign_key "users", "institutions"

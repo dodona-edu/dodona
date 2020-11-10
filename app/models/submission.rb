@@ -260,7 +260,10 @@ class Submission < ApplicationRecord
   end
 
   def self.rejudge(submissions, priority = :low)
-    submissions.each { |s| s.evaluate_delayed(priority) }
+    submissions
+      .includes(:activity)
+      .filter { |s| s.activity.exercise? }
+      .each { |s| s.evaluate_delayed(priority) }
   end
 
   def self.normalize_status(status)

@@ -8,7 +8,7 @@ gem 'rails', '~> 6.0.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.0.2'
+gem 'puma', '~> 5.0.4'
 # Use less for stylesheets
 gem 'less-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -26,10 +26,10 @@ gem 'jbuilder', '~> 2.10.1'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-gem 'image_processing', '~> 1.12.0'
+gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.4.8', require: false
+gem 'bootsnap', '~> 1.5.0', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -136,11 +136,11 @@ gem 'faker', '~> 2.14.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 0.9.14'
-gem 'rack-mini-profiler', '~> 2.1.0'
-gem 'stackprof', '~> 0.2.15'
+gem 'rack-mini-profiler', '~> 2.2.0'
+gem 'stackprof', '~> 0.2.16'
 
 # Datadog
-gem 'ddtrace', '~> 0.41.0'
+gem 'ddtrace', '~> 0.42.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -166,13 +166,13 @@ group :test do
   # for measuring coverage
   gem 'codecov', '~> 0.2.12', require: false
   gem 'minitest-ci', '~> 3.4.0'
-  gem 'simplecov', '~> 0.19.0', require: false
+  gem 'simplecov', '~> 0.19.1', require: false
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.2.1'
-  gem 'web-console', '~> 4.0.4'
+  gem 'web-console', '~> 4.1.0'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb

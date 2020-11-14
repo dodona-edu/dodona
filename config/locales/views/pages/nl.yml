@@ -1,7 +1,6 @@
 nl:
   pages:
     about:
-      intro_html: "De Dodona-leeromgeving bevat honderden programmeeroefeningen die gebruikt kunnen worden om diverse programmeertalen onder de knie te krijgen. Alle oefeningen zijn voorzien van automatische feedback op correctheid, snelheid en/of programmeerstijl. Dodona is nog volop in ontwikkeling, eventuele bugs of suggesties mogen dus zeker gemeld worden via het <a href='/contact'>contactformulier</a>."
       sign-in: Aanmelden
       learn-to-code: Leren programmeren
       higher-education: voor secundair en hoger onderwijs
@@ -11,6 +10,8 @@ nl:
       write-code-text: Schrijf je in voor een cursus en kies een van de honderden programmeeroefeningen.
       hand-in-text: Los de oefening op en dien je code in via de ingebouwde editor.
       get-feedback-text: Je code wordt automatisch getest en na enkele seconden krijg je het resultaat te zien.
+      we: Faculteit Wetenschappen
+      elixir: ELIXIR Belgium
     home:
       more-courses: Meer cursussen
       favorites: "Favorieten"

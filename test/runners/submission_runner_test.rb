@@ -109,6 +109,12 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     @submission.evaluate
   end
 
+  test 'evaluating submission without exercise should error' do
+    s = create :submission, :for_content_page
+    exception = assert_raise(Exception) { s.evaluate }
+    assert_equal 'cannot judge submission linked to content page', exception.message
+  end
+
   test 'correct submission should be accepted and correct' do
     summary = 'Wow. Such code. Many variables.'
     evaluate_with_stubbed_docker output: {

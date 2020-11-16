@@ -31,13 +31,13 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
-  test 'should be able to search by exercise name' do
+  test 'should be able to search by activity name' do
     u = create :user
     sign_in u
     e1 = create :exercise, name_en: 'abcd'
     e2 = create :exercise, name_en: 'efgh'
-    s1 = create :submission, exercise: e1, user: u
-    s2 = create :submission, exercise: e2, user: u
+    s1 = create :submission, :for_content_page, activity: e1, user: u
+    s2 = create :submission, activity: e2, user: u
     create :question, submission: s1
     create :question, submission: s2
 

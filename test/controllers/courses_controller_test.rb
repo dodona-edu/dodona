@@ -584,4 +584,16 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     get questions_course_path(@course)
     assert_select 'title', /\(1\)/
   end
+
+  test 'can view questions without exercises' do
+    s = create :submission, :for_content_page, course: @course
+    create :question, submission: s
+
+    # Check that the test is useful.
+    assert_nil s.exercise
+
+    sign_in @admins.first
+    get questions_course_path(@course)
+    assert_response :success
+  end
 end

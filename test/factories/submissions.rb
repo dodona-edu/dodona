@@ -74,5 +74,15 @@ FactoryBot.define do
     trait :rate_limited do
       skip_rate_limit_check { false }
     end
+
+    trait :for_content_page do
+      after(:create) do |submission|
+        # Convert the exercise to a reading activity
+        # The exercise is now nil
+        submission.exercise.type = 'ContentPage'
+        submission.exercise.save
+        submission.reload
+      end
+    end
   end
 end

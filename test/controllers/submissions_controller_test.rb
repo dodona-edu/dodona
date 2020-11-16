@@ -37,6 +37,30 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'can view submission without exercise' do
+    c = create :course
+    s = create :submission, :for_content_page, course: c
+    create :question, submission: s
+
+    # Check that the test is useful.
+    assert_nil s.exercise
+
+    get submission_url s
+    assert_response :success
+  end
+
+  test 'can view submissions without exercise' do
+    c = create :course
+    s = create :submission, :for_content_page, course: c
+    create :question, submission: s
+
+    # Check that the test is useful.
+    assert_nil s.exercise
+
+    get submissions_url
+    assert_response :success
+  end
+
   test 'should be able to search by exercise name' do
     u = create :user
     sign_in u
@@ -134,6 +158,25 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test 'should not create submission for content page as exercise' do
+    attrs = generate_attr_hash
+    attrs[:exercise_id] = create(:content_page).id
+    attrs.delete(:activity_id)
+    create_request(attr_hash: attrs)
+    assert_response :unprocessable_entity
+  end
+
+  test 'can create submission for content page as exercise' do
+    attrs = generate_attr_hash
+    exercise = create :exercise
+    attrs[:exercise_id] = exercise.id
+    attrs.delete(:activity_id)
+    create_request(attr_hash: attrs)
+    assert_response :ok
+    results = JSON.parse response.body
+    assert_equal results['activity_id'], exercise.id
+  end
+
   test 'create submission should respond bad_request without an exercise' do
     attrs = generate_attr_hash
     attrs.delete(:activity_id)
@@ -210,6 +253,15 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   test 'should rejudge all submissions' do
     create(:series, :with_submissions)
     assert_jobs_enqueued(Submission.count) do
+      rejudge_submissions
+    end
+  end
+
+  test 'should not rejudge submissions without exercise' do
+    series = create(:series, :with_submissions)
+    s = create(:submission, :for_content_page)
+    series.exercises << s.activity
+    assert_jobs_enqueued(Submission.count - 1) do
       rejudge_submissions
     end
   end

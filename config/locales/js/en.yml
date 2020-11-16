@@ -37,6 +37,7 @@ en:
     description_languages: Languages for which there is a description available
     en: English
     nl: Dutch
+    courses: Courses
     label-undeletable: This label can't be deleted because it was set in the dirconfig file of a parent directory of the learning activity.
     configured-institution: the configured institution
     loading: Loading...
@@ -44,6 +45,7 @@ en:
     no_selection: You must select at least one item before being able to download solutions.
     mark_as_read: Mark as read
     mark_as_unread: Mark as unread
+    question_states: Status
     months:
       long:
         jan: January

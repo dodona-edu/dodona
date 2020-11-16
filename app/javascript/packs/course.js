@@ -8,7 +8,7 @@ import {
 } from "course.js";
 
 import {
-    QuestionTable,
+    RefreshingQuestionTable,
     toggleQuestionNavDot
 } from "question_table.ts";
 import { setDocumentTitle } from "util.js";
@@ -20,6 +20,6 @@ window.dodona.initCourseShow = initCourseShow;
 window.dodona.initCourseMembers = initCourseMembers;
 window.dodona.loadUsers = loadUsers;
 
-window.dodona.questionTable = QuestionTable;
+window.dodona.questionTable = RefreshingQuestionTable;
 window.dodona.setDocumentTitle = setDocumentTitle;
 window.dodona.toggleQuestionNavDot = toggleQuestionNavDot;

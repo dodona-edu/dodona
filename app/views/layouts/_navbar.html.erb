@@ -56,6 +56,7 @@
               <li class="dropdown-header"><%= current_user.full_name %></li>
               <li><%= link_to t("layout.menu.profile"), current_user %></li>
               <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
+              <li><%= link_to t("layout.menu.my_questions"), questions_path(user_id: current_user) %></li>
               <% if Export.where(user: current_user).any? %>
                 <li><%= link_to t("layout.menu.my_exports"), exports_path %></li>
               <% end %>

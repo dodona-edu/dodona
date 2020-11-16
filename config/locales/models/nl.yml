@@ -25,6 +25,7 @@ nl:
       institution: Onderwijsinstelling
       evaluation: Evaluatie
       feedback: Feedback
+      question: Vraag
     attributes:
       api_token:
         description: Beschrijving
@@ -169,3 +170,8 @@ nl:
         exercises: Oefeningen
         deadline: Deadline
         released: Vrijgegeven
+      question:
+        question_states:
+          unanswered: Onbeantwoord
+          in_progress: In behandeling
+          answered: Beantwoord

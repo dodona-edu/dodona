@@ -57,6 +57,15 @@
               <% end %>
             </li>
           <% end %>
+          <% if policy(Question).index? %>
+            <li>
+              <%= activatable_link_to questions_path,
+                                      class: 'drawer-list-item' do %>
+                <i class="mdi mdi-account-question mdi-24"></i>
+                <%= t("layout.menu.questions") %>
+              <% end %>
+            </li>
+          <% end %>
           <% if policy(Judge).index? %>
             <li>
               <%= activatable_link_to judges_path,

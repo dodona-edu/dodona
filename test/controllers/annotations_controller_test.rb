@@ -31,6 +31,73 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test 'should be able to search by exercise name' do
+    u = create :user
+    sign_in u
+    e1 = create :exercise, name_en: 'abcd'
+    e2 = create :exercise, name_en: 'efgh'
+    s1 = create :submission, exercise: e1, user: u
+    s2 = create :submission, exercise: e2, user: u
+    create :question, submission: s1
+    create :question, submission: s2
+
+    get questions_url, params: { filter: 'abcd', format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to search by user name' do
+    u1 = create :user, last_name: 'abcd'
+    u2 = create :user, last_name: 'efgh'
+    s1 = create :submission, user: u1
+    s2 = create :submission, user: u2
+    create :question, submission: s1
+    create :question, submission: s2
+
+    get questions_url, params: { filter: 'abcd', everything: true, format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to filter by status' do
+    u = create :user
+    sign_in u
+    s = create :submission, user: u
+    create :question, question_state: :in_progress, submission: s
+    create :question, question_state: :unanswered, submission: s
+    create :question, question_state: :answered, submission: s
+
+    get questions_url, params: { question_state: 'answered', format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to filter by course' do
+    u = create :user
+    sign_in u
+    s1 = create :course_submission, user: u
+    s2 = create :course_submission, user: u
+    create :question, submission: s1
+    create :question, submission: s2
+
+    # Filter mode
+    get questions_url, params: { course_id: s1.course.id, format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to filter by user' do
+    s1 = create :course_submission
+    s2 = create :course_submission
+    create :question, submission: s1
+    create :question, submission: s2
+
+    # Filter mode
+    get questions_url, params: { user_id: s1.user_id, format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
   test 'annotation index should contain all annotations user can see' do
     user = create :user
     other_user = create :user

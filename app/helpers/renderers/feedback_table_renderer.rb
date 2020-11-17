@@ -68,9 +68,18 @@ class FeedbackTableRenderer
     @builder.div(class: 'card-tab') do
       @builder.ul(class: 'nav nav-tabs') do
         submission[:groups]&.each_with_index do |t, i|
+          permission = t[:permission] || 'student'
+          tooltip = case permission
+                    when 'zeus'
+                      I18n.t('submissions.show.tab_zeus')
+                    when 'staff'
+                      I18n.t('submissions.show.tab_staff')
+                    else
+                      ''
+                    end
           @builder.li(class: ('active' if i.zero?)) do
             id = "##{(t[:description] || 'test').parameterize}-#{i}"
-            @builder.a(href: id, 'data-toggle': 'tab') do
+            @builder.a(href: id, 'data-toggle': 'tab', class: "tab-#{permission}", title: tooltip) do
               @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
               badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id

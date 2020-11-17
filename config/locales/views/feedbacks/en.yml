@@ -3,7 +3,8 @@ en:
     show:
       feedback: "Give feedback"
       no_linked_submission: "We couldn't find a submission of this user for this exercise that was made before the deadline of this evaluation."
-      submission_for_by: "Submission for %{for} by %{by}"
+      submission_for: "Submission for"
+      by: "by"
       submission:
         time_html: "This submission was made at <b>%{time}</b>"
         previous_attempts_html:

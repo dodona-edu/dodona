@@ -62,3 +62,5 @@ en:
       reading_failed: "Something went wrong while loading your results. Try again later or resubmit your solution if the problem persists."
       message_staff: This message is only visible for course admins
       message_zeus: This message is only visible for administrators
+      tab_staff: This tab is only visible for course admins
+      tab_zeus: This tab is only visisble for administrators

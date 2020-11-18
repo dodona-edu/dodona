@@ -62,3 +62,5 @@ nl:
       reading_failed: "Er ging iets fout bij het laden van je resultaten. Probeer later opnieuw of dien je oplossing opnieuw in."
       message_staff: Dit bericht is enkel zichtbaar voor cursusbeheerders
       message_zeus: Dit bericht is enkel zichtbaar voor admins
+      tab_staff: Dit tabblad is enkel zichtbaar voor cursusbeheerders
+      tab_zeus: Dit tabblad is enkel zichtbaar voor admins

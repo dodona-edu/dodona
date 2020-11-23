@@ -104,7 +104,7 @@ class PythiaRenderer < FeedbackTableRenderer
       @builder << '$(function() {'
       @builder << "$('#tutor').appendTo('body');"
       @builder << "var code = \"#{escaped}\";"
-      @builder << 'dodona.initPythiaSubmissionShow(code);});'
+      @builder << "dodona.initPythiaSubmissionShow(code, '#{activity_path(nil, @exercise)}');});"
     end
 
     # Tutor HTML

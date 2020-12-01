@@ -29,7 +29,6 @@ class AnnotationsController < ApplicationController
     if @unfiltered && current_user&.a_course_admin? && !ActiveRecord::Type::Boolean.new.deserialize(params[:everything])
       @questions = @questions
                    .joins(:submission)
-                   .left_joins(:evaluation)
                    .where(submissions: { course_id: current_user.administrating_courses.map(&:id) })
     end
 

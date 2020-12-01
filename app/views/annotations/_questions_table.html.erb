@@ -78,7 +78,7 @@
   </table>
 </div>
 <% if questions.try(:total_pages) %>
-  <center><%= page_navigation_links questions, true, "questions" %></center>
+  <center><%= page_navigation_links questions, true, "annotations", {}, 'question_index' %></center>
 <% end %>
 <script type="text/javascript">
     $(function () {

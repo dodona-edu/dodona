@@ -35,6 +35,7 @@ en:
       status: Status
       result: Result
       code: Code
+      score: Grade
       line: Line
       reevaluate: Retest
       your_output: Your output

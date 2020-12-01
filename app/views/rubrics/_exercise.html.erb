@@ -1,0 +1,29 @@
+<div class="card rubrics-card">
+  <div class="card-supporting-text" id="evaluation-score-templates">
+    <h4><%= evaluation_exercise.exercise.name %></h4>
+
+    <% if evaluation_exercise.rubrics.empty? %>
+      <p>Er zijn nog geen rubrics voor deze oefening.</p>
+    <% else %>
+      <%= render 'rubrics/table', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+    <% end %>
+  </div>
+  <div class="card-actions card-border">
+    <% if evaluation_exercise.rubrics.empty? %>
+      <%= link_to 'Kopiëren van een andere oefening', "#copy-rubric-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
+                  data: { toggle: 'collapse', parent: "#card-#{evaluation_exercise.id}" } %>
+    <% end %>
+    <%= link_to 'Nieuwe rubric maken', "#new-rubric-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
+                data: { toggle: 'collapse', parent: "#card-#{evaluation_exercise.id}" } %>
+  </div>
+  <div class="panel">
+    <div class="card-supporting-text collapse <%= " in" if new&.errors.present? %>" id="new-rubric-exercise-<%= evaluation_exercise.id %>">
+      <%= render 'rubrics/form', rubric: new || Rubric.new, evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="card-supporting-text collapse" id="copy-rubric-exercise-<%= evaluation_exercise.id %>">
+      <%= render 'rubrics/copy', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="table-scroll-wrapper status-table-wrapper">
+  <table class="table table-resource">
+    <thead>
+      <tr>
+        <th class="user-name"><%= t('.user') %></th>
+        <% feedbacks[:evaluation_exercises].each do |exercise| %>
+          <th class="status-header"><%= exercise.exercise.name %> (/<%= format_score exercise.maximum_score %>)</th>
+        <% end %>
+        <th class="status-header">Totaal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% evaluation.users.order(last_name: :asc, first_name: :asc).each do |user| %>
+        <% feedback_l = feedbacks[:feedbacks][user.id] %>
+        <tr>
+          <td class="user-name ellipsis-overflow"><%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %></td>
+          <% feedback_l.each do |feedback| %>
+            <td class="status">
+              <%= render partial: 'grade_status', locals: { evaluation: feedback.evaluation, feedback: feedback } %>
+            </td>
+          <% end %>
+          <td class="status"><%= format_score feedback_l.map(&:score).sum %> / <%= format_score feedback_l.map(&:maximum_score).sum %></td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td class="user-name ellipsis-overflow">Gemiddelde</td>
+      <% feedbacks[:evaluation_exercises].each do |exercise| %>
+        <td class="status-header">
+          <% if exercise.rubrics.present? %>
+            <%= format_score(exercise.feedbacks.map(&:score).sum / exercise.feedbacks.count) %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+      <% end %>
+      <td></td>
+    </tr>
+    </tfoot>
+  </table>
+</div>

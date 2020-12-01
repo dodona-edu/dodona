@@ -29,6 +29,7 @@ nl:
       mark_as_done: Evaluatie afwerken
       evaluation_done: Evaluatie afgewerkt
       undo: Ongedaan maken
+      waiting_on_score: Deze oplossing heeft nog niet alle punten gekregen
       completed:
         failure: "De status kon niet ingesteld worden"
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluaties afgewerkt"

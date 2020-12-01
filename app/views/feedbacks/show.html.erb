@@ -85,7 +85,12 @@
   <script>
     window.MathJax.startup.promise.then(() => {
       window.dodona.codeListing.setEvaluation(<%= @feedback.evaluation.id %>)
-      $(".nav.nav-tabs li:last-child a").tab("show");
+      <%# If there is a "score" tab, don't select it by default. %>
+      <% if @renderer.show_evaluation_tab? || @renderer.show_score_tab? %>
+        $(".nav.nav-tabs li:nth-last-child(2) a").tab("show");
+      <% else %>
+        $(".nav.nav-tabs li:last-child a").tab("show");
+      <% end %>
     });
   </script>
 <% end %>

@@ -1,0 +1,25 @@
+nl:
+  rubrics:
+    form:
+      description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden. Dit is zichtbaar voor de studenten.
+      visible: Zichtbaar
+      visible-help: Of de score zichtbaar zal zijn voor studenten eens de evaluatie vrijgegeven is.
+      save: Opslaan
+    copy:
+      copy: Kopiëren
+      exercise: Oefening
+    table:
+      name: "Naam"
+      description: "Beschrijving"
+      maximum: "Maximale score"
+      visible: "Zichtbaarheid"
+      visible-yes: "Punten worden zichtbaar voor studenten na vrijgave evaluatie"
+      visible-no: "Punten zijn niet zichtbaar voor studenten"
+      delete: Verwijderen
+      edit: Bewerken
+    index:
+      title: Rubrics
+      add-new: Nieuw sjabloon toevoegen aan %{exercise}
+      empty: Er zijn geen puntensjablonen voor deze oefening. Je kan er toevoegen door op "Nieuw sjabloon toevoegen" te klikken.
+      to_evaluation: Naar evaluatie
+      back_to_evaluation: Terug naar evaluatie

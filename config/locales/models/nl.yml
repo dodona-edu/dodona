@@ -176,3 +176,8 @@ nl:
           unanswered: Onbeantwoord
           in_progress: In behandeling
           answered: Beantwoord
+      rubric:
+        name: Naam
+        description: Beschrijving
+        maximum: Maximum
+        visible: Zichtbaar

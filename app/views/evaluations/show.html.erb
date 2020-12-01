@@ -20,6 +20,7 @@
         </div>
       </div>
       <div class="card-actions card-border">
+        <%= link_to t('evaluations.edit_rubrics'), evaluation_rubrics_path(@evaluation), class: "btn-text" %>
         <%= link_to t('evaluations.edit.title'), edit_evaluation_path(@evaluation), class: "btn-text" %>
         <%= link_to (@evaluation.released ? t('.unrelease') : t('.release')),
                     evaluation_path(@evaluation, evaluation: { released: !@evaluation.released }),
@@ -30,19 +31,40 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-right">
           <li>
-          <%= link_to t('evaluations.destroy'),
-                      evaluation_path(@evaluation),
-                      method: :delete,
-                      data: { confirm: t('general.are_you_sure') } %>
+            <%= link_to t('evaluations.destroy'),
+                        evaluation_path(@evaluation),
+                        method: :delete,
+                        data: { confirm: t('general.are_you_sure') } %>
+          </li>
+          <li>
+            <%= link_to t('evaluations.download'),
+                        export_evaluation_path(@evaluation, format: :csv) %>
           </li>
         </ul>
       </div>
     </div>
     <div class="card">
       <div class="card-supporting-text">
-        <h4><%= t ".evaluation_details" %></h4>
-        <p class="h4-info-text"><%= t ".evaluation_details_info_html" %></p>
-        <%= render 'evaluation_table', feedbacks: @feedbacks, evaluation: @evaluation %>
+        <div class="card-tab">
+          <ul id="user-tabs" class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#evaluation-details" data-toggle="tab"><%= t '.evaluation_details' %></a></li>
+            <% if @evaluation.graded? %>
+              <li role="presentation"><a href="#grading-details" data-toggle="tab"><%= t '.grading_details' %></a></li>
+            <% end %>
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="evaluation-details">
+              <p class="help-block"><%= t ".evaluation_details_info_html" %></p>
+              <%= render 'evaluation_table', feedbacks: @feedbacks, evaluation: @evaluation %>
+            </div>
+            <% if @evaluation.graded? %>
+              <div role="tabpanel" class="tab-pane" id="grading-details">
+                <p class="help-block"><%= t ".grading_details_info_html" %></p>
+                <%= render 'evaluation_grade_table', feedbacks: @feedbacks, evaluation: @evaluation %>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -175,3 +175,8 @@ en:
           unanswered: Unanswered
           in_progress: In progress
           answered: Answered
+      rubric:
+        name: Name
+        description: Description
+        maximum: Maximum
+        visible: Visible

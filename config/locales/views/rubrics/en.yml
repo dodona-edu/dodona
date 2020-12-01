@@ -1,0 +1,28 @@
+en:
+  rubrics:
+    form:
+      description-help: A description is optional. Markdown formatting can be used. This is visible to the students.
+      visible: Visible
+      visible-help: If the score becomes visible to students once the evaluation is released.
+      save: Save
+    copy:
+      copy: Copy
+      exercise: Exercise
+    table:
+      name: "Name"
+      description: "Description"
+      maximum: "Maximum score"
+      visible: "Visibility"
+      visible-yes: "Score becomes visible to students once evaluation is released"
+      visible-no: "Score is not visible to students"
+      delete: Delete
+      edit: Edit
+    index:
+      title: Rubrics
+      explanation_title: "Wat is a scoring scheme?"
+      explanation_part1: "With a scoring scheme you decide how you want to grade the submissions in this evaluation. You can create a number of score templates for every exercise. A score template defines the elements you want to grade during feedback."
+      explanation_part2: "If you don't want to do grading on Dodona, you can click 'Go to evaluation'."
+      add-new: Add new template to %{exercise}
+      empty: There are no score templates for this exercise. Add one by clicking the "Add new template" button.
+      to_evaluation: To evaluation
+      back_to_evaluation: Back to evaluation

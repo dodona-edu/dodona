@@ -121,6 +121,15 @@
   background-color: @btn-hover-background;
 }
 
+.btn-text:disabled {
+  color: @text-disabled;
+
+  &:hover {
+    background-color: transparent;
+    color: @text-disabled;
+  }
+}
+
 .btn-fab {
   border-radius: 50%;
   height: 56px;

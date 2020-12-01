@@ -6,21 +6,27 @@
   <% if @feedback.completed %>
     <span class='uncomplete-feedback'>
       <i class="mdi mdi-comment-check-outline mdi-18"></i>&nbsp;<b><%= t ".evaluation_done" %></b>&nbsp;
-      <%= link_to feedback_path(@feedback, feedback: { completed: false }), method: :patch,  remote: true, class: "btn-icon", title: t(".undo") do %>
+      <%= link_to feedback_path(@feedback, feedback: { completed: false }), method: :patch, remote: true, class: "btn-icon", title: t(".undo") do %>
         <i class="mdi mdi-undo-variant mdi-18"></i>
       <% end %>
     </span>
   <% else %>
-    <%= link_to feedback_path(@feedback, feedback: { completed: true }), method: :patch, class:'btn-text complete-feedback', remote: true do %>
+    <%= button_to feedback_path(@feedback, feedback: { completed: true }),
+                  disabled: !policy(@feedback).complete?,
+                  method: :patch,
+                  class: 'btn-text complete-feedback',
+                  remote: true do %>
       <i class="mdi mdi-comment-check-outline mdi-18"></i>&nbsp;<span><%= t ".mark_as_done" %></span>
     <% end %>
-
+    <%# unless policy(@feedback).complete? %>
+    <!--      <span class="help-block"><%#= t('.waiting_on_score') %></span>-->
+    <%# end %>
   <% end %>
 </div>
 
 <div class="card-supporting-text card-border">
   <center>
-    <%= link_to "#", class: "btn btn-text btn-primary", id: "next-feedback-button" do %>
+    <%= button_tag class: "btn btn-text btn-primary", id: "next-feedback-button" do %>
       <%= t('.direction.next') %>
     <% end %>
   </center>
@@ -37,6 +43,29 @@
   </div>
 </div>
 
+<% if @feedback.evaluation_exercise.rubrics.present? %>
+  <div class="card-supporting-text card-border">
+    <h4 class="ellipsis-overflow">Punten</h4>
+    <% @feedback.evaluation_exercise.rubrics.each do |rubric| %>
+      <% score = @score_map.fetch(rubric.id, Score.new(rubric: rubric, feedback: @feedback)) %>
+      <div class="row">
+        <div class="col-sm-12">
+          <strong><%= rubric.name %></strong>
+        </div>
+      </div>
+      <div class="row row-no-gutters form-row">
+        <% if @feedback.completed? %>
+          <div class="col-sm-12">
+            <%= format_score score.score %> / <%= format_score rubric.maximum %>
+          </div>
+        <% else %>
+          <%= render 'scores/feedback_form', score: score, rubric: rubric %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
 <div class="card-supporting-text card-border">
   <h4 class="ellipsis-overflow" title="<%= @feedback.exercise.name %>"><%= @feedback.exercise.name %></h4>
   <% metadata = @feedback.evaluation_exercise.metadata %>
@@ -51,21 +80,23 @@
   <h4 class="ellipsis-overflow" title="<%= @feedback.user.full_name %>"><%= @feedback.user.full_name %></h4>
   <div class="user-feedback-row">
     <% @feedback.evaluation.evaluation_exercises.map do |ex|
-          Feedback.find_by(evaluation_user: @feedback.evaluation_user,
-                           evaluation_exercise: ex)
-        end.each do |feedback| %>
+      Feedback.find_by(evaluation_user: @feedback.evaluation_user,
+                       evaluation_exercise: ex)
+    end.each do |feedback| %>
       <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: @feedback } %>
     <% end %>
   </div>
 </div>
 
 <script>
-  <% siblings = @feedback.siblings %>
-  window.dodona.interceptFeedbackActionClicks(
-    <%= raw feedback_url(@feedback, format: :js).to_json %>,
-    <%= raw (siblings[:next].present? ? feedback_url(siblings[:next]) : nil).to_json %>,
-    <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,
-    "<%= t('.direction.next') %>"
-  );
-  $(() => window.dodona.initTooltips());
+    <% siblings = @feedback.siblings %>
+    window.dodona.interceptFeedbackActionClicks(
+        <%= raw feedback_url(@feedback, format: :js).to_json %>,
+        <%= raw (siblings[:next].present? ? feedback_url(siblings[:next]) : nil).to_json %>,
+        <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,
+        "<%= t('.direction.next') %>",
+        <%= policy(@feedback).complete? %>
+    );
+    window.dodona.initScoreForms(<%= raw @feedback.rubrics.map(&:id).to_json %>);
+    $(() => window.dodona.initTooltips());
 </script>

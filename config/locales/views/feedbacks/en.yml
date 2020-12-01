@@ -29,6 +29,7 @@ en:
       mark_as_done: Mark as done
       evaluation_done: Evaluation completed
       undo: Undo
+      waiting_on_score: This solution is not fully graded
       completed:
         failure: "Could not set state"
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluations completed"

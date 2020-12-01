@@ -16,6 +16,8 @@ nl:
       progress_html: "<b>%{feedback_count} van de %{feedback_total}</b> oplossingen hebben afgewerkte feedback."
       evaluation_details: Detailoverzicht
       evaluation_details_info_html: Deze tabel geeft een detailoverzicht van alle oplossingen in de evaluatie.<br> Het gekleurde streepje geeft de status van de oplossing aan (niet ingediend, correct of fout), het vinkje in de tekstballon of deze oplossing al afgewerkt is.
+      grading_details: Puntenboek
+      grading_details_info_html: Deze tabel toont het puntenboek voor deze evaluatie. Het totaal per gebruiker is de som van de punten van de oefeningen.<br> Het gekleurde streepje geeft de status van de oplossing aan (niet ingediend, correct of fout). Als de punten zwart van kleur zijn, is de evaluatie afgewerkt.
     new:
       exercises: Oefeningen
       create_evaluation: Reeks evalueren
@@ -34,6 +36,14 @@ nl:
         one: "<h1>1 <small>student</small></h1> heeft minstens 1 keer ingediend"
         other: "<h1>%{count} <small>studenten</small></h1> hebben minstens 1 keer ingediend"
       select_users: "Gebruikers selecteren"
+    add_rubrics:
+      title: Rubrics toevoegen
+      explanation_title: "Wat is een rubric?"
+      explanation_part1: "Bij een rubric beslis je hoe je punten wilt geven aan de oplossingen in deze evaluatie. Per oefening kan je een aantal rubrics opstellen."
+      explanation_part2: "Als je geen punten wilt geven in Dodona kan je onmiddellijk op '%{button}' klikken."
+    rubrics:
+      title: Rubrics aanpassen
+      to_evaluation: Naar evaluatie
     edit:
       title: Gebruikers aanpassen
     edit_users:
@@ -48,10 +58,17 @@ nl:
       clear: Alle gebruikers verwijderen
       add_enrolled: Alle ingeschreven studenten
       add_submitted: Alle studenten die indienden
+    edit_rubrics: Rubrics aanpassen
     destroy: Evaluatie verwijderen
+    download: Punten downloaden
     form:
       deadline-help_html: "Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie. <b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren."
+      grading: Punten
+      grading-label: Punten inschakelen
+      grading-help: "Kies of je in Dodona punten wilt geven aan oplossingen. Je kan dit later altijd aanpassen."
     evaluation_table:
+      user: Gebruiker
+    evaluation_grade_table:
       user: Gebruiker
     feedback_status:
       feedback_finished: evaluatie afgewerkt

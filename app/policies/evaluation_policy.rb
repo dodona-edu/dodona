@@ -15,6 +15,18 @@ class EvaluationPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def add_rubrics?
+    course_admin?
+  end
+
+  def rubrics?
+    course_admin?
+  end
+
+  def manage_scores?
+    course_admin?
+  end
+
   def destroy?
     course_admin?
   end
@@ -39,11 +51,15 @@ class EvaluationPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def export?
+    course_admin?
+  end
+
   def permitted_attributes
     if record.instance_of?(Evaluation)
       %i[released deadline user_ids exercise_ids]
     else
-      %i[series_id deadline user_ids exercise_ids]
+      %i[series_id deadline user_ids exercise_ids graded]
     end
   end
 

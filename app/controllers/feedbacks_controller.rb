@@ -1,7 +1,8 @@
 class FeedbacksController < ApplicationController
   include SeriesHelper
+  include RescueJsonResponse
 
-  before_action :set_feedback, only: %i[show edit update]
+  before_action :set_feedback, only: %i[show edit update refresh]
 
   has_scope :by_filter, as: 'filter' do |_controller, scope, value|
     scope.by_filter(value, skip_user: true, skip_exercise: true)
@@ -17,6 +18,8 @@ class FeedbacksController < ApplicationController
       [I18n.t('feedbacks.show.feedback'), '#']
     ]
     @title = I18n.t('feedbacks.show.feedback')
+
+    @score_map = @feedback.scores.index_by(&:rubric_id)
   end
 
   def edit
@@ -34,11 +37,17 @@ class FeedbacksController < ApplicationController
   end
 
   def update
-    @feedback.update(permitted_attributes(@feedback))
+    @feedback.update!(permitted_attributes(@feedback))
     respond_to do |format|
       format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
       format.json { render :show, status: :ok, location: @feedback }
-      format.js
+      format.js {}
+    end
+  end
+
+  def refresh
+    respond_to do |format|
+      format.js { render 'feedbacks/update' }
     end
   end
 
@@ -47,5 +56,6 @@ class FeedbacksController < ApplicationController
   def set_feedback
     @feedback = Feedback.find(params[:id])
     authorize @feedback
+    @score_map = @feedback.scores.index_by(&:rubric_id)
   end
 end

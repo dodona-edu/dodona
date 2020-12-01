@@ -52,7 +52,11 @@
         </div>
       </div>
       <div class="card-actions card-border">
-        <%= link_to t('evaluations.edit_users.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+        <% if @graded %>
+          <%= link_to t('evaluations.new.next'), add_rubrics_evaluation_path(@evaluation, creating: true), class: "btn btn-text btn-primary" %>
+        <% else %>
+          <%= link_to t('evaluations.new.next'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+        <% end %>
       </div>
     </div>
     <div class="card">

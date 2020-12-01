@@ -19,6 +19,9 @@ class Feedback < ApplicationRecord
   belongs_to :evaluation_exercise
   belongs_to :submission, optional: true
 
+  has_many :scores, dependent: :destroy
+  has_many :rubrics, through: :evaluation_exercise
+
   delegate :user, to: :evaluation_user
   delegate :exercise, to: :evaluation_exercise
 
@@ -62,6 +65,14 @@ class Feedback < ApplicationRecord
       # We use id < self.id here for the cycle because we could otherwise find ourselves.
       next_unseen: feedbacks_same_exercise.incomplete.find_by('id > ?', id) || feedbacks_same_exercise.incomplete.find_by('id < ?', id)
     }
+  end
+
+  def score
+    scores.map(&:score).sum
+  end
+
+  def maximum_score
+    rubrics.map(&:maximum).sum
   end
 
   private

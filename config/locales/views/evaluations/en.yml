@@ -16,6 +16,8 @@ en:
       evaluation_details: Evaluation details
       evaluation_details_info_html: This table gives an overview of all submissions in this evaluation.<br> The colored bar shows the status of the submission (no submission, correct or wrong) and the check mark inside the speech bubble if the submission was completed already.
       progress_html: "<b>%{feedback_count} of the %{feedback_total}</b> submissions have completed feedback."
+      grading_details: Grade book
+      grading_details_info_html: This table shows the grade book for the evaluation. The total per user is the sum of the scores for the exercises.<br> The colored bar shows the status of the submission (no submission, correct or wrong). If the score is black, the evaluation is completed.
     new:
       exercises: Exercises
       create_evaluation: Evaluate series
@@ -34,6 +36,14 @@ en:
         one: "<h1>1 <small>student</small></h1> submitted at least once"
         other: "<h1>%{count} <small>students</small></h1> submitted at least once"
       select_users: "Select these users"
+    add_rubrics:
+      title: Add rubrics
+      explanation_title: "Wat is a rubric?"
+      explanation_part1: "With a rubric you decide how you want to grade the submissions in this evaluation. You can create a number of rubrics for each exercise."
+      explanation_part2: "If you don't want to do grading on Dodona, you can click '%{button}'."
+    rubrics:
+      title: Edit rubrics
+      to_evaluation: To evaluation
     edit:
       title: Edit users
     edit_users:
@@ -48,10 +58,17 @@ en:
       clear: Remove all users
       add_enrolled: All enrolled students
       add_submitted: All students with submissions
+    edit_rubrics: Edit rubrics
     destroy: Delete evaluation
+    download: Download grades
     form:
       deadline-help_html: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
+      grading: Grading
+      grading-label: Enable grading
+      grading-help: "Choose if you want to grade submissions in Dodona. You can always choose to add grading later."
     evaluation_table:
+      user: User
+    evaluation_grade_table:
       user: User
     feedback_status:
       feedback_finished: evaluation completed

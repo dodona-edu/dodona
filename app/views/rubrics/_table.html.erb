@@ -1,0 +1,66 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'rubric' %>
+<% end %>
+<% amount = evaluation_exercise.rubrics.size %>
+<table class="table table-resource rubrics-table" id="table-for-<%= evaluation_exercise.id %>">
+  <thead>
+  <tr>
+    <th><%= t ".name" %></th>
+    <th><%= t ".description" %></th>
+    <th><%= t ".maximum" %></th>
+    <th><%= t ".visible" %></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if amount >= 2 %>
+    <tr>
+      <td>Totaal</td>
+      <td class="description">Som van alle rubrics</td>
+      <td class="maximum"><%= format_score evaluation_exercise.rubrics.map(&:maximum).sum %></td>
+      <td class="visibility">
+        <% if evaluation_exercise.rubrics.map(&:visible).any? %>
+          <i class="mdi mdi-eye mdi-18 colored-secondary" title="<%= t ".visible-yes" %>"></i>
+        <% else %>
+          <i class="mdi mdi-eye-off mdi-18 colored-secondary" title="<%= t ".visible-no" %>"></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <% evaluation_exercise.rubrics.each do |rubric| %>
+    <tr>
+      <td><%= rubric.name %></td>
+      <td class="description"><%= markdown rubric.description %></td>
+      <td class="maximum"><%= format_score rubric.maximum %></td>
+      <td class="visibility">
+        <% if rubric.visible %>
+          <i class="mdi mdi-eye mdi-18 colored-secondary" title="<%= t ".visible-yes" %>"></i>
+        <% else %>
+          <i class="mdi mdi-eye-off mdi-18 colored-secondary" title="<%= t ".visible-no" %>"></i>
+        <% end %>
+      </td>
+      <td class="actions">
+        <%= button_to evaluation_rubric_path(evaluation, rubric),
+                      title: t('.delete'),
+                      method: :delete,
+                      remote: true,
+                      data: { confirm: t('general.are_you_sure') },
+                      class: 'btn btn-sm btn-default btn-danger' do %>
+          <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
+        <% end %>
+        <%= link_to '#', title: t('.edit'), class: 'btn btn-sm btn-default edit-button', data: { rubric: rubric.id } do %>
+          <i class="mdi mdi-pencil mdi-18" aria-hidden='true'></i>
+        <% end %>
+      </td>
+    </tr>
+    <tr class="hidden" id="form-row-<%= rubric.id %>">
+      <td colspan="5">
+        <%= render 'rubrics/form', rubric: rubric, evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<script>
+    window.dodona.initInlineEditButton(document.getElementById("table-for-<%= evaluation_exercise.id %>"));
+</script>

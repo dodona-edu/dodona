@@ -19,6 +19,9 @@ class Evaluation < ApplicationRecord
 
   has_many :users, through: :evaluation_users
   has_many :exercises, through: :evaluation_exercises
+  has_many :rubrics, through: :evaluation_exercises
+
+  attribute :graded, :boolean
 
   validates :deadline, presence: true
   validate :deadline_in_past
@@ -58,19 +61,25 @@ class Evaluation < ApplicationRecord
   end
 
   def evaluation_sheet
-    exercises = evaluation_exercises.includes(:exercise).map(&:exercise)
+    eval_exercises = evaluation_exercises.includes(:exercise)
+    exercises = eval_exercises.map(&:exercise)
     exercise_ids = exercises.pluck(:id)
     users = evaluation_users.includes(:user).map(&:user)
 
-    all_feedbacks = feedbacks.includes(:submission, evaluation_exercise: [:exercise], evaluation_user: [:user]).to_a
+    all_feedbacks = feedbacks.includes(:submission, :scores, evaluation_exercise: %i[exercise rubrics], evaluation_user: [:user]).to_a
     fbs = users.map do |user|
       [user.id, all_feedbacks.select { |fb| fb.evaluation_user.user == user }.sort_by { |fb| exercise_ids.find_index fb.evaluation_exercise.exercise.id }]
     end.to_h
 
     {
+      evaluation_exercises: evaluation_exercises,
       exercises: exercises,
       feedbacks: fbs
     }
+  end
+
+  def graded?
+    rubrics.any?
   end
 
   private

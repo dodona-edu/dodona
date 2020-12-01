@@ -1,7 +1,8 @@
 class EvaluationsController < ApplicationController
   include SeriesHelper
+  include EvaluationHelper
 
-  before_action :set_evaluation, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete]
+  before_action :set_evaluation, only: %i[show edit add_users add_rubrics rubrics update destroy overview set_multi_user add_user remove_user mark_undecided_complete export]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -59,6 +60,33 @@ class EvaluationsController < ApplicationController
       [I18n.t('evaluations.add_users.title'), '#']
     ]
     @title = I18n.t('evaluations.add_users.title')
+    @graded = ActiveModel::Type::Boolean.new.cast(params['graded'])
+  end
+
+  def add_rubrics
+    edit
+    @user_count_course = @evaluation.series.course.enrolled_members.count
+    @user_count_series = @evaluation.series.course.enrolled_members.where(id: Submission.where(exercise_id: @evaluation.exercises, course_id: @evaluation.series.course_id).select('DISTINCT user_id')).count
+    @crumbs = [
+      [@evaluation.series.course.name, course_url(@evaluation.series.course)],
+      [@evaluation.series.name, series_url(@evaluation.series)],
+      [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
+      [I18n.t('evaluations.add_rubrics.title'), '#']
+    ]
+    @title = I18n.t('evaluations.add_rubrics.title')
+  end
+
+  def rubrics
+    edit
+    @user_count_course = @evaluation.series.course.enrolled_members.count
+    @user_count_series = @evaluation.series.course.enrolled_members.where(id: Submission.where(exercise_id: @evaluation.exercises, course_id: @evaluation.series.course_id).select('DISTINCT user_id')).count
+    @crumbs = [
+      [@evaluation.series.course.name, course_url(@evaluation.series.course)],
+      [@evaluation.series.name, series_url(@evaluation.series)],
+      [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
+      [I18n.t('evaluations.rubrics.title'), '#']
+    ]
+    @title = I18n.t('evaluations.rubrics.title')
   end
 
   def create
@@ -68,7 +96,7 @@ class EvaluationsController < ApplicationController
 
     respond_to do |format|
       if @evaluation.save
-        format.html { redirect_to add_users_evaluation_path(@evaluation) }
+        format.html { redirect_to add_users_evaluation_path(@evaluation, graded: @evaluation.graded) }
         format.json { render :show, status: :created, location: @evaluation }
       else
         format.html { render :new }
@@ -134,6 +162,16 @@ class EvaluationsController < ApplicationController
       [I18n.t('evaluations.overview.title'), '#']
     ]
     @title = I18n.t('evaluations.overview.title')
+  end
+
+  def export
+    respond_to do |format|
+      format.csv do
+        headers['Content-Type'] = 'text/csv'
+        headers['Content-Disposition'] = "attachment; filename=export-#{@evaluation.id}.csv"
+        send_data evaluation_to_csv(@evaluation)
+      end
+    end
   end
 
   private

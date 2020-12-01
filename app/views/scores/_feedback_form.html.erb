@@ -1,0 +1,28 @@
+<% url = score.persisted? ? evaluation_score_path(@feedback.evaluation, score) : evaluation_scores_path(@feedback.evaluation) %>
+<%= form_for score, url: '#',
+             namespace: rubric.id,
+             html: { class: "form-inline score-form col-md-7 col-xs-9", id: "#{rubric.id}-score-form", data: { url: url, new: score.persisted?, feedback_link: evaluation_feedback_path(@feedback.evaluation, @feedback) } } do |f| %>
+  <%= f.hidden_field :expected_score, value: score.score, class: "expected-score" %>
+  <div class="form-group input">
+    <div class="control-wrapper">
+      <%= f.number_field :score, required: true, class: "form-control score-input", step: 0.01, min: 0, max: rubric.maximum %>
+      <div class="dodona-progress dodona-progress-indeterminate" style="visibility: hidden;">
+        <div class="progressbar bar bar1" style="width: 0;"></div>
+        <div class="bufferbar bar bar2" style="width: 100%;"></div>
+        <div class="auxbar bar bar3" style="width: 0;"></div>
+      </div>
+    </div>
+  </div>
+  <%= f.hidden_field :rubric_id, class: "rubric" %>
+  <%= f.hidden_field :feedback_id, class: "feedback" %>
+<% end %>
+<div class="col-xs-3">
+  / <%= format_score(rubric.maximum) %>
+</div>
+<% if @score_map.key?(rubric.id) %>
+  <div class="col-md-2 col-xs-12">
+    <%= button_to evaluation_score_path(@feedback.evaluation, score), method: :delete, remote: true, class: "btn btn-sm btn-default btn-danger" do %>
+      <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
+    <% end %>
+  </div>
+<% end %>

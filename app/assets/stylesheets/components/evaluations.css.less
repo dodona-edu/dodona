@@ -10,9 +10,47 @@
   justify-content: center;
   align-items: center;
   line-height: normal;
+  width: 100%;
 }
 .feedback-metadata .uncomplete-feedback {
   display: flex;
+}
+
+.feedback-metadata .form-row {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+}
+
+.feedback-metadata .score-form.form-inline {
+  .form-group.input {
+    width: 100%;
+
+    .control-wrapper {
+      display: inline-block;
+      width: 90%;
+      margin-right: 5px;
+
+      .form-control {
+        width: 100%;
+      }
+
+      .form-control.in-progress {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .dodona-progress .bar {
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+    }
+  }
+
+  .form-group.maximum {
+    text-align: right;
+    width: 20%;
+  }
 }
 
 .evaluation-user-select {
@@ -51,10 +89,10 @@
   &.not-started {
     border-bottom: 3px solid @hairlinegray;
   }
-  .done {
+  .done, .provisional {
     color: @text-disabled;
   }
-  .done:hover {
+  .done:hover, .provisional:hover {
     color: @text-color;
   }
 }

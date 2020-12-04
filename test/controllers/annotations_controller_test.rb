@@ -31,6 +31,13 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test 'pagination is generated correctly' do
+    submission = create :submission, :within_course
+    create_list :question, 31, submission: submission
+    get questions_url, params: { everything: true }
+    assert_select 'a[href=?]', questions_path(page: 2, everything: true)
+  end
+
   test 'should be able to search by exercise name' do
     u = create :user
     sign_in u

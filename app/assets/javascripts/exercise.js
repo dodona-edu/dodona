@@ -56,7 +56,15 @@ function initLabelsEdit(labels, undeletableLabels) {
 }
 
 function showLightbox(content) {
-    Strip.show(content.images, { side: "top" }, content.index);
+    Strip.show(content.images, {
+        side: "top",
+        onShow: function () {
+            // There might have been math in the image captions, so ask
+            // MathJax to search for new math (but only in the captions).
+            window.MathJax.typeset([".strp-caption"]);
+        }
+    }, content.index);
+
     // Transfer focus back to the document body to allow the lightbox to be closed.
     // https://github.com/dodona-edu/dodona/issues/1759.
     document.body.focus();

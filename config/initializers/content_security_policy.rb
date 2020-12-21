@@ -22,7 +22,7 @@ Rails.application.config.content_security_policy do |policy|
   end
 
   policy.font_src    :self, 'https://fonts.gstatic.com',
-                     'https://cdn.materialdesignicons.com',
+                     'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/',
                      'https://cdn.jsdelivr.net/npm/mathjax@3/'
 
   policy.img_src     :self, :data, :https
@@ -33,8 +33,9 @@ Rails.application.config.content_security_policy do |policy|
                      'https://www.google-analytics.com',
                      'https://cdn.jsdelivr.net/npm/mathjax@3/'
 
-  policy.style_src   :self, :unsafe_inline, 'https://fonts.googleapis.com',
-                     'https://cdn.materialdesignicons.com'
+  policy.style_src   :self, :unsafe_inline,
+                     'https://fonts.googleapis.com',
+                     'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/'
 end
 
 # Rails.application.config.content_security_policy_report_only = true

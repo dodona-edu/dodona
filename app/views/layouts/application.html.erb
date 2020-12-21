@@ -22,7 +22,7 @@
   <link rel="manifest" href="/manifest.json">
   <title><%= "#{@title} - " if @title %>Dodona</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-  <link href="https://cdn.materialdesignicons.com/5.2.45/css/materialdesignicons.min.css" rel="stylesheet" type='text/css'>
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet" type='text/css'>
   <% if session[:dark].nil? && current_user.present? %>
     <%= stylesheet_link_tag "application-dark", media: '(prefers-color-scheme: dark)' %>
     <%= stylesheet_link_tag "application", media: '(prefers-color-scheme: no-preference), (prefers-color-scheme: light)' %>

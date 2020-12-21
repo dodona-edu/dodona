@@ -50,6 +50,6 @@ class SubmissionPolicy < ApplicationPolicy
   private
 
   def course_admin?
-    record.class == Submission && user&.course_admin?(record&.course)
+    record.instance_of?(Submission) && user&.course_admin?(record&.course)
   end
 end

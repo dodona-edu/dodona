@@ -100,33 +100,33 @@ class LCSHtmlDiffer
     case chunk.action
     when '-'
       builder << %(<tr>
-                     <td class="line-nr">#{(chunk.old_position + 1)}</td>
+                     <td class="line-nr">#{chunk.old_position + 1}</td>
                      <td class="line-nr"></td>
                      <td class="del">#{CGI.escape_html(chunk.old_element)}</td>
                    </tr>)
     when '+'
       builder << %(<tr>
                      <td class="line-nr"></td>
-                     <td class="line-nr">#{(chunk.new_position + 1)}</td>
+                     <td class="line-nr">#{chunk.new_position + 1}</td>
                      <td class="ins">#{CGI.escape_html(chunk.new_element)}</td>
                    </tr>)
     when '='
       builder << %(<tr>
-                     <td class="line-nr">#{(chunk.old_position + 1)}</td>
-                     <td class="line-nr">#{(chunk.new_position + 1)}</td>
+                     <td class="line-nr">#{chunk.old_position + 1}</td>
+                     <td class="line-nr">#{chunk.new_position + 1}</td>
                      <td class="unchanged">#{CGI.escape_html(chunk.old_element)}</td>
                    </tr>)
     when '!'
       # The new_element and old_element fields have been preprocessed
       # in the constructor and therefore don't need to be escaped.
       builder << %(<tr>
-                     <td class="line-nr">#{(chunk.old_position + 1)}</td>
+                     <td class="line-nr">#{chunk.old_position + 1}</td>
                      <td class="line-nr"></td>
                      <td class="del">#{chunk.old_element}</td>
                    </tr>
                    <tr>
                      <td class="line-nr"></td>
-                     <td class="line-nr">#{(chunk.new_position + 1)}</td>
+                     <td class="line-nr">#{chunk.new_position + 1}</td>
                      <td class="ins">#{chunk.new_element}</td>
                    </tr>)
     end

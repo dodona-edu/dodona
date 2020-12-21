@@ -20,6 +20,5 @@
 #  series_id_non_nil           :integer          not null
 #
 FactoryBot.define do
-  factory :activity_status do
-  end
+  factory :activity_status
 end

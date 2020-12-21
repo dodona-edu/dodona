@@ -158,12 +158,12 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def course_admin?
-    record.class == Course && user&.course_admin?(record)
+    record.instance_of?(Course) && user&.course_admin?(record)
   end
 
   private
 
   def course_member?
-    record.class == Course && user&.member_of?(record)
+    record.instance_of?(Course) && user&.member_of?(record)
   end
 end

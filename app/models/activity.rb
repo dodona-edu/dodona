@@ -282,7 +282,7 @@ class Activity < ApplicationRecord
     nil_status = [activity_status_for(user, nil)]
     return nil_status if course.nil?
 
-    nil_status + series_memberships.joins(:series).where('course_id = ?', course.id).map do |series_membership|
+    nil_status + series_memberships.joins(:series).where(series: { course_id: course.id }).map do |series_membership|
       activity_status_for(user, series_membership.series)
     end
   end
@@ -339,10 +339,10 @@ class Activity < ApplicationRecord
   end
 
   def self.determine_format(full_exercise_path)
-    if !Dir.glob(full_exercise_path.join(DESCRIPTION_DIR, 'description.*.html')).empty?
-      'html'
-    else
+    if Dir.glob(full_exercise_path.join(DESCRIPTION_DIR, 'description.*.html')).empty?
       'md'
+    else
+      'html'
     end
   end
 

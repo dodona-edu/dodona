@@ -144,7 +144,7 @@ gem 'ddtrace', '~> 0.43.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 1.11.2'
+  gem 'mocha', '~> 1.12.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.1.0'
 

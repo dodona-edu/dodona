@@ -12,8 +12,9 @@
 #
 FactoryBot.define do
   factory :score do
-    score_item { nil }
-    feedback { nil }
-    score { '9.99' }
+    feedback
+    rubric { create :rubric, evaluation_exercise: feedback.evaluation_exercise }
+    score { '6.00' }
+    last_updated_by { create :user }
   end
 end

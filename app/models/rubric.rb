@@ -3,8 +3,8 @@
 # Table name: rubrics
 #
 #  id                     :bigint           not null, primary key
-#  evaluation_exercise_id :bigint
-#  maximum                :decimal(5, 2)
+#  evaluation_exercise_id :bigint           not null
+#  maximum                :decimal(5, 2)    not null
 #  name                   :string(255)      not null
 #  visible                :boolean          default(TRUE), not null
 #  description            :text(65535)
@@ -41,6 +41,8 @@ class Rubric < ApplicationRecord
 
     undo_complete_feedbacks
   end
+
+  private
 
   def undo_complete_feedbacks
     evaluation_exercise

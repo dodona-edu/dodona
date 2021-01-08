@@ -1,19 +1,24 @@
 # == Schema Information
 #
-# Table name: score_items
+# Table name: rubrics
 #
 #  id                     :bigint           not null, primary key
 #  evaluation_exercise_id :bigint           not null
-#  maximum                :decimal(10, )    not null
+#  maximum                :decimal(5, 2)    not null
 #  name                   :string(255)      not null
 #  visible                :boolean          default(TRUE), not null
+#  description            :text(65535)
+#  last_updated_by_id     :integer          not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
-require 'test_helper'
+FactoryBot.define do
+  factory :rubric do
+    sequence(:name) { |n| "Rubric #{n}" }
 
-class ScoreItemTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+    evaluation_exercise
+    maximum { '10.00' }
+    visible { true }
+    last_updated_by { create :user }
+  end
 end

@@ -21,6 +21,7 @@ class Evaluation < ApplicationRecord
   has_many :exercises, through: :evaluation_exercises
   has_many :rubrics, through: :evaluation_exercises
 
+  # Only used when creating the evaluation, not saved to the database.
   attribute :graded, :boolean
 
   validates :deadline, presence: true

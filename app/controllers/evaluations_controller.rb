@@ -64,29 +64,11 @@ class EvaluationsController < ApplicationController
   end
 
   def add_rubrics
-    edit
-    @user_count_course = @evaluation.series.course.enrolled_members.count
-    @user_count_series = @evaluation.series.course.enrolled_members.where(id: Submission.where(exercise_id: @evaluation.exercises, course_id: @evaluation.series.course_id).select('DISTINCT user_id')).count
-    @crumbs = [
-      [@evaluation.series.course.name, course_url(@evaluation.series.course)],
-      [@evaluation.series.name, series_url(@evaluation.series)],
-      [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
-      [I18n.t('evaluations.add_rubrics.title'), '#']
-    ]
-    @title = I18n.t('evaluations.add_rubrics.title')
+    add_or_edit_rubrics I18n.t('evaluations.add_rubrics.title')
   end
 
   def rubrics
-    edit
-    @user_count_course = @evaluation.series.course.enrolled_members.count
-    @user_count_series = @evaluation.series.course.enrolled_members.where(id: Submission.where(exercise_id: @evaluation.exercises, course_id: @evaluation.series.course_id).select('DISTINCT user_id')).count
-    @crumbs = [
-      [@evaluation.series.course.name, course_url(@evaluation.series.course)],
-      [@evaluation.series.name, series_url(@evaluation.series)],
-      [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
-      [I18n.t('evaluations.rubrics.title'), '#']
-    ]
-    @title = I18n.t('evaluations.rubrics.title')
+    add_or_edit_rubrics I18n.t('evaluations.rubrics.title')
   end
 
   def create
@@ -183,5 +165,18 @@ class EvaluationsController < ApplicationController
 
   def set_series
     @series = Series.find(params[:series_id])
+  end
+
+  def add_or_edit_rubrics(title)
+    edit
+    @user_count_course = @evaluation.series.course.enrolled_members.count
+    @user_count_series = @evaluation.series.course.enrolled_members.where(id: Submission.where(exercise_id: @evaluation.exercises, course_id: @evaluation.series.course_id).select('DISTINCT user_id')).count
+    @crumbs = [
+      [@evaluation.series.course.name, course_url(@evaluation.series.course)],
+      [@evaluation.series.name, series_url(@evaluation.series)],
+      [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
+      [title, '#']
+    ]
+    @title = title
   end
 end

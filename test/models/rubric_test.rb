@@ -32,7 +32,7 @@ class RubricTest < ActiveSupport::TestCase
     create :rubric, evaluation_exercise: eval_exercise
 
     eval_exercise.feedbacks.each do |f|
-      refute f.completed?
+      assert_not f.completed?
     end
   end
 
@@ -54,7 +54,7 @@ class RubricTest < ActiveSupport::TestCase
     rubric.update(maximum: '20.0')
 
     eval_exercise.feedbacks.each do |f|
-      refute f.completed?
+      assert_not f.completed?
     end
   end
 

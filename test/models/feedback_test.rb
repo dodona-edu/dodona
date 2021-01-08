@@ -24,7 +24,7 @@ class FeedbackTest < ActiveSupport::TestCase
         create :submission, user: u, exercise: e, course: series.course, created_at: Time.current - 1.hour
       end
     end
-    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.current
+    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.current - 1.second
     @user_count = @users.count
     @exercise_count = @exercises.count
     @zeus = create :zeus
@@ -65,5 +65,14 @@ class FeedbackTest < ActiveSupport::TestCase
 
     feedback.update(submission_id: submission.id)
     assert_equal 0, submission.annotations.count
+  end
+
+  test 'score calculations are correct' do
+    feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
+    s1 = create :score, feedback: feedback, score: '5.0'
+    s2 = create :score, feedback: feedback, score: '6.0'
+
+    assert feedback.score == s1.score + s2.score
+    assert feedback.maximum_score == s1.rubric.maximum + s2.rubric.maximum
   end
 end

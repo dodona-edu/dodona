@@ -11,7 +11,7 @@
 #
 FactoryBot.define do
   factory :evaluation do
-    series { create :series, :with_submissions, deadline: DateTime.now + 1.hour }
+    series { create :series, :with_submissions, deadline: DateTime.now - 1.hour }
     deadline { series.deadline }
     released { false }
     exercises { series.exercises }

@@ -42,8 +42,6 @@ class Rubric < ApplicationRecord
     undo_complete_feedbacks
   end
 
-  private
-
   def undo_complete_feedbacks
     evaluation_exercise
       .feedbacks

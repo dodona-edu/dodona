@@ -349,6 +349,36 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'rubric page for a feedback session is only available for course admins' do
+    post evaluations_path, params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    random_student = create :student
+    evaluation = @series.evaluation
+    staff_member = create :staff
+    @series.course.administrating_members << staff_member
+
+    get rubrics_evaluation_path(evaluation)
+    assert_response :success
+
+    sign_out @course_admin
+    get rubrics_evaluation_path(evaluation)
+    assert_response :redirect
+
+    sign_in random_student
+    get rubrics_evaluation_path(evaluation)
+    assert_response :redirect
+    sign_out random_student
+
+    assert_not_nil staff_member
+    sign_in staff_member
+    get rubrics_evaluation_path(evaluation)
+    assert_response :success
+  end
+
   test 'Show page should only be available to zeus and course admins' do
     post evaluations_path, params: {
       evaluation: {

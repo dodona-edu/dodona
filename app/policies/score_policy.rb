@@ -31,7 +31,11 @@ class ScorePolicy < ApplicationPolicy
   end
 
   def destroy?
-    course_admin? && !record.feedback.completed
+    return false if record.feedback.completed?
+
+    return false unless course_admin?
+
+    record.expected_score == record.score
   end
 
   def permitted_attributes_for_create

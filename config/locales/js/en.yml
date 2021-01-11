@@ -134,3 +134,4 @@ en:
     score:
       conflict: This score was already changed by another user
       unknown: An unexpected error occured when saving the score
+      confirm: Are you sure?

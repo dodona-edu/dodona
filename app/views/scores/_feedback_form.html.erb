@@ -21,7 +21,7 @@
 </div>
 <% if @score_map.key?(rubric.id) %>
   <div class="col-md-2 col-xs-12">
-    <%= button_to evaluation_score_path(@feedback.evaluation, score), method: :delete, remote: true, class: "btn btn-sm btn-default btn-danger" do %>
+    <%= button_tag class: "btn btn-sm btn-default btn-danger delete-button" do %>
       <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
     <% end %>
   </div>

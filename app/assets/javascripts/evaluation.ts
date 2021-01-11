@@ -129,6 +129,7 @@ class Score {
     private expectedScore: HTMLInputElement;
     private spinner: HTMLElement;
     private readonly form: HTMLElement;
+    private readonly deleteButton: HTMLElement;
 
     private readonly rubricId: string;
     private readonly feedbackId: string;
@@ -140,6 +141,7 @@ class Score {
         this.input = form.querySelector("input.score-input");
         this.spinner = form.querySelector(".dodona-progress");
         this.expectedScore = form.querySelector("input.expected-score");
+        this.deleteButton = form.parentElement.querySelector(".delete-button");
         this.feedbackId = form.querySelector("input.feedback").value;
         this.rubricId = form.querySelector("input.rubric").value;
         this.existing = form.dataset.new === "true";
@@ -166,10 +168,17 @@ class Score {
             }
             this.sendUpdate();
         });
+        if (this.deleteButton) {
+            this.deleteButton.addEventListener("click", e => {
+                e.preventDefault();
+                if (window.confirm(I18n.t("js.score.confirm"))) {
+                    this.delete();
+                }
+            });
+        }
     }
 
     private sendUpdate(): void {
-        console.log(this);
         let data;
         if (this.existing) {
             data = {
@@ -194,6 +203,17 @@ class Score {
             method = "POST";
         }
 
+        this.doRequest(method, data);
+    }
+
+    private delete(): void {
+        this.doRequest("delete", {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            expected_score: this.expectedScore.value
+        });
+    }
+
+    private doRequest(method: string, data: object): void {
         this.markBusy();
         fetch(this.link, {
             method: method,

@@ -13,12 +13,14 @@ class ScorePolicy < ApplicationPolicy
   end
 
   def create?
+    return false if record.feedback.completed?
+
     course_admin?
   end
 
   def update?
     # If the feedback is completed, don't allow updates.
-    return false if record.feedback.completed
+    return false if record.feedback.completed?
 
     # If the user is not a course admin, don't allow updates.
     return false unless course_admin?
@@ -43,7 +45,7 @@ class ScorePolicy < ApplicationPolicy
   private
 
   def course_admin?
-    course = record.feedback.evaluation.series.course
-    user.course_admin?(course)
+    course = record&.feedback&.evaluation&.series&.course
+    user&.course_admin?(course)
   end
 end

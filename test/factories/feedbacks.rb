@@ -15,7 +15,8 @@ FactoryBot.define do
   factory :feedback do
     submission
     evaluation
-    evaluation_user { create :user }
-    evaluation_exercise { create :exercise }
+    completed { false }
+    evaluation_user { create :evaluation_user, evaluation: evaluation, user: submission.user }
+    evaluation_exercise { create :evaluation_exercise, evaluation: evaluation, exercise: submission.exercise }
   end
 end

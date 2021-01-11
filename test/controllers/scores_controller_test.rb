@@ -85,11 +85,53 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not update score if expected is different' do
     score = create :score, rubric: @rubric, feedback: @feedback, score: '10.0'
-    @feedback.update!(completed: false)
 
     patch evaluation_score_path(@evaluation, score, format: :json), params: {
       score: {
         score: '6.0',
+        expected_score: '11.0'
+      }
+    }
+    assert_response :forbidden
+  end
+
+  test 'should delete score if course admin' do
+    [
+      [@staff_member, :no_content],
+      [create(:student), :forbidden],
+      [create(:staff), :forbidden],
+      [create(:zeus), :no_content],
+      [nil, :unauthorized]
+    ].each do |user, expected|
+      sign_in user if user.present?
+      score = create :score, rubric: @rubric, feedback: @feedback
+      delete evaluation_score_path(@evaluation, score, format: :json), params: {
+        score: {
+          expected_score: score.score.to_s
+        }
+      }
+      assert_response expected
+      sign_out user if user.present?
+    end
+  end
+
+  test 'should not delete score if feedback is completed' do
+    score = create :score, rubric: @rubric, feedback: @feedback
+    @feedback.update!(completed: true)
+
+    delete evaluation_score_path(@evaluation, score, format: :json), params: {
+      score: {
+        expected_score: score.score.to_s
+      }
+    }
+    assert_response :forbidden
+  end
+
+  test 'should not delete score if expected is different' do
+    score = create :score, rubric: @rubric, feedback: @feedback, score: '10.0'
+
+    delete evaluation_score_path(@evaluation, score, format: :json), params: {
+      score: {
         expected_score: '11.0'
       }
     }

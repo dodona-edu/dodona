@@ -32,7 +32,7 @@ class RubricPolicy < ApplicationPolicy
   private
 
   def course_admin?
-    course = record.evaluation_exercise.evaluation.series.course
-    user.course_admin?(course)
+    course = record&.evaluation_exercise&.evaluation&.series&.course
+    user&.course_admin?(course)
   end
 end

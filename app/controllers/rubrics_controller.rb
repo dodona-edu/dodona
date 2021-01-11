@@ -4,12 +4,6 @@ class RubricsController < ApplicationController
   before_action :set_rubric, only: %i[destroy update]
   before_action :set_evaluation
 
-  def index
-    @crumbs << [I18n.t('rubrics.index.title'), '#']
-    @title = I18n.t('rubrics.index.title')
-    @creating = ActiveRecord::Type::Boolean.new.deserialize(params.fetch(:creating, '0'))
-  end
-
   def copy
     from = EvaluationExercise.find(params[:copy][:from])
     to = EvaluationExercise.find(params[:copy][:to])
@@ -23,7 +17,6 @@ class RubricsController < ApplicationController
 
     respond_to do |format|
       format.js { render 'rubrics/refresh', locals: { new: nil, evaluation_exercise: to } }
-      format.json { render :show, status: :ok, location: [@evaluation] }
     end
   end
 

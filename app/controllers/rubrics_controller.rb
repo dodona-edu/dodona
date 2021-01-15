@@ -43,12 +43,15 @@ class RubricsController < ApplicationController
 
   def add_all
     @rubric = Rubric.new(permitted_attributes(Rubric, :create))
-    authorize @rubric
     @rubric.last_updated_by = current_user
-    @evaluation.evaluation_exercises.each do |evaluation_exercise|
-      new_rubric = @rubric.dup
-      new_rubric.evaluation_exercise = evaluation_exercise
-      new_rubric.save!
+    # Add all rubrics or none.
+    @evaluation.transaction do
+      @evaluation.evaluation_exercises.each do |evaluation_exercise|
+        new_rubric = @rubric.dup
+        new_rubric.evaluation_exercise = evaluation_exercise
+        authorize new_rubric
+        new_rubric.save!
+      end
     end
 
     redirect_to add_rubrics_evaluation_path(@evaluation)

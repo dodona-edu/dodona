@@ -35,6 +35,35 @@ class RubricsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'should add rubrics to all if course administrator' do
+    [
+      [@staff_member, :ok],
+      [create(:student), :no],
+      [create(:staff), :no],
+      [create(:zeus), :ok],
+      [nil, :no]
+    ].each do |user, expected|
+      sign_in user if user.present?
+      post add_all_evaluation_rubrics_path(@evaluation), params: {
+        rubric: {
+          name: 'Test',
+          description: 'Test',
+          maximum: '20.0'
+        }
+      }
+      assert_response :redirect
+      @evaluation.evaluation_exercises.reload
+      @evaluation.evaluation_exercises.each do |e|
+        if expected == :ok
+          assert_equal 1, e.rubrics.length
+          e.update!(rubrics: [])
+        end
+        assert_empty e.rubrics
+      end
+      sign_out user if user.present?
+    end
+  end
+
   test 'should update rubric if course administrator' do
     exercise = @evaluation.evaluation_exercises.first
     rubric = create :rubric, evaluation_exercise: exercise,

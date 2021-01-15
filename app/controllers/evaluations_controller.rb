@@ -64,10 +64,12 @@ class EvaluationsController < ApplicationController
   end
 
   def add_rubrics
-    add_or_edit_rubrics I18n.t('evaluations.add_rubrics.title')
+    @new_rubrics = true
+    add_or_edit_rubrics I18n.t('evaluations.rubrics.title_add')
   end
 
   def rubrics
+    @new_rubrics = false
     add_or_edit_rubrics I18n.t('evaluations.rubrics.title')
   end
 
@@ -178,5 +180,6 @@ class EvaluationsController < ApplicationController
       [title, '#']
     ]
     @title = title
+    render 'rubrics'
   end
 end

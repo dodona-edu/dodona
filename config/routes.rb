@@ -214,6 +214,7 @@ Rails.application.routes.draw do
       end
       resources :rubrics, only: %i[create destroy update] do
         post 'copy', on: :collection
+        post 'add_all', on: :collection
       end
       resources :scores, only: %i[show create update destroy]
     end

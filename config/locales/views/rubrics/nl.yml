@@ -23,3 +23,8 @@ nl:
       empty: Er zijn geen puntensjablonen voor deze oefening. Je kan er toevoegen door op "Nieuw sjabloon toevoegen" te klikken.
       to_evaluation: Naar evaluatie
       back_to_evaluation: Terug naar evaluatie
+    exercise:
+      nothing: Er zijn nog geen rubrics voor deze oefening.
+      copy: Rubric kopiëren van een andere oefening
+      add: Nieuwe rubric maken
+      all: Rubric toevoegen aan alle oefeningen

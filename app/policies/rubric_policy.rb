@@ -21,6 +21,10 @@ class RubricPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def add_all?
+    course_admin?
+  end
+
   def permitted_attributes_for_create
     %i[evaluation_exercise_id maximum name visible description]
   end

@@ -26,3 +26,8 @@ en:
       empty: There are no score templates for this exercise. Add one by clicking the "Add new template" button.
       to_evaluation: To evaluation
       back_to_evaluation: Back to evaluation
+    exercise:
+      nothing: There are no rubrics for this exercise yet.
+      copy: Copy rubric from another exercise
+      add: Create new rubric
+      all: Add rubric to all exercises

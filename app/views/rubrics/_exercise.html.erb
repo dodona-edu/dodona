@@ -3,17 +3,15 @@
     <h4><%= evaluation_exercise.exercise.name %></h4>
 
     <% if evaluation_exercise.rubrics.empty? %>
-      <p>Er zijn nog geen rubrics voor deze oefening.</p>
+      <p><%= t 'rubrics.exercise.nothing' %></p>
     <% else %>
       <%= render 'rubrics/table', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
     <% end %>
   </div>
   <div class="card-actions card-border">
-    <% if evaluation_exercise.rubrics.empty? %>
-      <%= link_to 'Kopiëren van een andere oefening', "#copy-rubric-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
-                  data: { toggle: 'collapse', parent: "#panels-#{evaluation_exercise.id}" } %>
-    <% end %>
-    <%= link_to 'Nieuwe rubric maken', "#new-rubric-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
+    <%= link_to t('rubrics.exercise.copy'), "#copy-rubric-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
+                data: { toggle: 'collapse', parent: "#panels-#{evaluation_exercise.id}" } %>
+    <%= link_to t('rubrics.exercise.add'), "#new-rubric-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
                 data: { toggle: 'collapse', parent: "#panels-#{evaluation_exercise.id}" } %>
   </div>
   <div id="panels-<%= evaluation_exercise.id %>">

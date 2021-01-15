@@ -41,6 +41,19 @@ class RubricsController < ApplicationController
     end
   end
 
+  def add_all
+    @rubric = Rubric.new(permitted_attributes(Rubric, :create))
+    authorize @rubric
+    @rubric.last_updated_by = current_user
+    @evaluation.evaluation_exercises.each do |evaluation_exercise|
+      new_rubric = @rubric.dup
+      new_rubric.evaluation_exercise = evaluation_exercise
+      new_rubric.save!
+    end
+
+    redirect_to add_rubrics_evaluation_path(@evaluation)
+  end
+
   def destroy
     @rubric.destroy!
     respond_to do |format|

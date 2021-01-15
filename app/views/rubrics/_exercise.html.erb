@@ -11,19 +11,19 @@
   <div class="card-actions card-border">
     <% if evaluation_exercise.rubrics.empty? %>
       <%= link_to 'Kopiëren van een andere oefening', "#copy-rubric-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
-                  data: { toggle: 'collapse', parent: "#card-#{evaluation_exercise.id}" } %>
+                  data: { toggle: 'collapse', parent: "#panels-#{evaluation_exercise.id}" } %>
     <% end %>
     <%= link_to 'Nieuwe rubric maken', "#new-rubric-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
-                data: { toggle: 'collapse', parent: "#card-#{evaluation_exercise.id}" } %>
+                data: { toggle: 'collapse', parent: "#panels-#{evaluation_exercise.id}" } %>
   </div>
-  <div class="panel">
-    <div class="card-supporting-text collapse <%= " in" if new&.errors.present? %>" id="new-rubric-exercise-<%= evaluation_exercise.id %>">
-      <%= render 'rubrics/form', rubric: new || Rubric.new, evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
-    </div>
-  </div>
-  <div class="panel">
-    <div class="card-supporting-text collapse" id="copy-rubric-exercise-<%= evaluation_exercise.id %>">
-      <%= render 'rubrics/copy', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+  <div id="panels-<%= evaluation_exercise.id %>">
+    <div class="panel">
+      <div class="card-supporting-text collapse panel <%= " in" if new&.errors.present? %>" id="new-rubric-exercise-<%= evaluation_exercise.id %>">
+        <%= render 'rubrics/form', rubric: new || Rubric.new, evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+      </div>
+      <div class="card-supporting-text collapse panel" id="copy-rubric-exercise-<%= evaluation_exercise.id %>">
+        <%= render 'rubrics/copy', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+      </div>
     </div>
   </div>
 </div>

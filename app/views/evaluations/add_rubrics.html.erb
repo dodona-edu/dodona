@@ -21,10 +21,10 @@
         <%= link_to t('evaluations.new.next'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
       </div>
     </div>
-    <div class="card">
-      <div class="card-supporting-text">
-        TODO
+    <% @evaluation.evaluation_exercises.each do |evaluation_exercise| %>
+      <div id="card-<%= evaluation_exercise.id %>">
+        <%= render 'rubrics/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>

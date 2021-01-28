@@ -16,8 +16,8 @@ en:
       evaluation_details: Evaluation details
       evaluation_details_info_html: This table gives an overview of all submissions in this evaluation.<br> The colored bar shows the status of the submission (no submission, correct or wrong) and the check mark inside the speech bubble if the submission was completed already.
       progress_html: "<b>%{feedback_count} of the %{feedback_total}</b> submissions have completed feedback."
-      grading_details: Grade book
-      grading_details_info_html: This table shows the grade book for the evaluation. The total per user is the sum of the scores for the exercises.<br> The colored bar shows the status of the submission (no submission, correct or wrong). If the score is black, the evaluation is completed.
+      grading_details: Grade overview
+      grading_details_info_html: This table shows the grade overview for the evaluation. The total per user is the sum of the scores for the exercises.<br> The colored bar shows the status of the submission (no submission, correct or wrong). If the score is black, the evaluation is completed.
     new:
       exercises: Exercises
       create_evaluation: Evaluate series

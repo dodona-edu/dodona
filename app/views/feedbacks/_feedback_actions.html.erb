@@ -43,7 +43,20 @@
 <% if @feedback.evaluation_exercise.rubrics.present? %>
   <div class="card-supporting-text card-border">
     <h4 class="ellipsis-overflow">Punten</h4>
-    <% @feedback.evaluation_exercise.rubrics.each do |rubric| %>
+    <% rubrics = @feedback.evaluation_exercise.rubrics %>
+    <% if rubrics.length > 1 %>
+      <div class="row">
+        <div class="col-sm-12">
+          <strong>Totaal</strong>
+        </div>
+      </div>
+      <div class="row row-no-gutters form-row">
+        <div class="col-sm-12">
+          <%= format_score @feedback.score %> / <%= format_score @feedback.maximum_score %>
+        </div>
+      </div>
+    <% end %>
+    <% rubrics.each do |rubric| %>
       <% score = @score_map.fetch(rubric.id, Score.new(rubric: rubric, feedback: @feedback)) %>
       <div class="row">
         <div class="col-sm-12">

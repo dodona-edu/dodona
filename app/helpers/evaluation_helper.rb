@@ -4,7 +4,7 @@ module EvaluationHelper
   include ActionView::Helpers::NumberHelper
 
   def format_score(score)
-    number_with_precision(score, precision: 2)
+    number_with_precision(score, precision: 2, strip_insignificant_zeros: true)
   end
 
   def scores_to_csv(evaluation)

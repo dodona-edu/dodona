@@ -1,4 +1,4 @@
-<div class="table-scroll-wrapper status-table-wrapper">
+<div class="table-scroll-wrapper status-table-wrapper score-table">
   <table class="table table-resource">
     <thead>
     <tr>
@@ -13,7 +13,7 @@
     <tr>
       <td class="user-name ellipsis-overflow">Gemiddelde</td>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
-        <td class="status-header">
+        <td class="status">
           <% if exercise.rubrics.present? %>
             <%= format_score(exercise.feedbacks.map(&:score).sum / exercise.feedbacks.count) %>
           <% else %>

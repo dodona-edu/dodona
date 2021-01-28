@@ -2,7 +2,7 @@ class EvaluationsController < ApplicationController
   include SeriesHelper
   include EvaluationHelper
 
-  before_action :set_evaluation, only: %i[show edit add_users add_rubrics rubrics update destroy overview set_multi_user add_user remove_user mark_undecided_complete export]
+  before_action :set_evaluation, only: %i[show edit add_users add_rubrics rubrics update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_scores]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -148,12 +148,10 @@ class EvaluationsController < ApplicationController
     @title = I18n.t('evaluations.overview.title')
   end
 
-  def export
+  def export_scores
     respond_to do |format|
       format.csv do
-        headers['Content-Type'] = 'text/csv'
-        headers['Content-Disposition'] = "attachment; filename=export-#{@evaluation.id}.csv"
-        send_data evaluation_to_csv(@evaluation)
+        send_data scores_to_csv(@evaluation), type: 'text/csv', disposition: "attachment; filename=export-#{@evaluation.id}.csv"
       end
     end
   end

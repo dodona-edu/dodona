@@ -409,4 +409,63 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       sign_out person
     end
   end
+
+  test 'score export is only available for course admins' do
+    # Create an evaluation, a rubric and add a score.
+    post evaluations_path, params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    evaluation = @series.evaluation
+    evaluation.update(users: @series.course.enrolled_members)
+    exercise = evaluation.evaluation_exercises.sample
+    rubric = create :rubric, evaluation_exercise: exercise
+    feedback = exercise.feedbacks.sample
+    score = create :score, rubric: rubric, feedback: feedback
+
+    get export_scores_evaluation_path evaluation, format: :csv
+    assert_response :success
+    assert_equal 'text/csv', response.content_type
+
+    # Check the contents of the csv file.
+    csv = CSV.parse response.body
+    assert_equal 1 + evaluation.evaluation_users.length, csv.size
+
+    header = csv.shift
+    assert_equal 2 + evaluation.evaluation_exercises.length * 2, header.length
+
+    # The exercise with a rubric has a different max.
+    rubric_exercise_position = header.index { |h| h == "#{exercise.exercise.name} Score" }
+    csv.each do |line|
+      # Check the exercise with the rubric.
+      # First up, the score. Only one user has a score for this.
+      exported_score = BigDecimal(line.delete_at(rubric_exercise_position))
+      if line[1] == feedback.evaluation_user.user.email
+        assert_equal score.score, exported_score
+      else
+        assert exported_score.zero?
+      end
+      # The max score of the exercise with rubric.
+      exported_max = BigDecimal(line.delete_at(rubric_exercise_position))
+      assert_equal rubric.maximum, exported_max
+
+      # All other scores should be zero.
+      assert_equal(true, line[2..].all? { |e| BigDecimal(e).zero? })
+    end
+
+    sign_out @course_admin
+
+    # No log in
+    get export_scores_evaluation_path evaluation, format: :csv
+    assert_response :redirect # Redirect to sign in page
+
+    random_user = @users.sample
+    assert_not random_user.admin_of?(@series.course)
+
+    sign_in random_user
+    get export_scores_evaluation_path evaluation, format: :csv
+    assert_response :redirect # Redirect to sign in page
+  end
 end

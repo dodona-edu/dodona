@@ -68,11 +68,11 @@ class Feedback < ApplicationRecord
   end
 
   def score
-    scores.map(&:score).sum
+    scores.map(&:score).sum(BigDecimal('0'))
   end
 
   def maximum_score
-    rubrics.map(&:maximum).sum
+    rubrics.map(&:maximum).sum(BigDecimal('0'))
   end
 
   private

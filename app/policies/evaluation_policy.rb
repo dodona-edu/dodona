@@ -51,7 +51,7 @@ class EvaluationPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def export?
+  def export_scores?
     course_admin?
   end
 

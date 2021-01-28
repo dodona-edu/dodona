@@ -204,7 +204,7 @@ Rails.application.routes.draw do
         get 'overview'
         get 'add_rubrics'
         get 'rubrics'
-        get 'export'
+        get 'export_scores'
         post 'add_user'
         post 'remove_user'
         post 'set_multi_user'

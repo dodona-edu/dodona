@@ -37,7 +37,9 @@ class FeedbacksController < ApplicationController
   end
 
   def update
-    @feedback.update!(permitted_attributes(@feedback))
+    attrs = permitted_attributes(@feedback)
+    attrs['scores_attributes'].each { |s| s['last_updated_by_id'] = current_user.id } if attrs['scores_attributes'].present?
+    @feedback.update!(attrs)
     respond_to do |format|
       format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
       format.json { render :show, status: :ok, location: @feedback }

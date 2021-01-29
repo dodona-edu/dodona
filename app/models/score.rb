@@ -20,6 +20,8 @@ class Score < ApplicationRecord
   belongs_to :last_updated_by, class_name: 'User'
 
   def out_of_bounds?
+    return false if score.nil?
+
     score < BigDecimal('0') || score > rubric.maximum
   end
 end

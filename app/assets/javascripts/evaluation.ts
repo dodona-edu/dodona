@@ -205,7 +205,7 @@ class Score {
             return {
                 score: this.input.value,
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                rubric_id: this.this.rubricId
+                rubric_id: this.rubricId
             };
         }
     }

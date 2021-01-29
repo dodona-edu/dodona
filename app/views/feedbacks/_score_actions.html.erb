@@ -21,9 +21,10 @@
     </div>
     <%= f.hidden_field :rubric_id, class: "rubric" %>
     <%= f.hidden_field :feedback_id, class: "feedback" %>
+    <%= f.hidden_field :id, class: "id" %>
   <% end %>
   <div class="col-xs-3">
-    / <a class="score-click" href="#" title="Klik om de maximumscore te geven"><%= format_score(rubric.maximum) %></a>
+    / <a class="score-click" href="#" title="<%= t '.give_max_one' %>"><%= format_score(rubric.maximum) %></a>
   </div>
   <% if @score_map.key?(rubric.id) %>
     <div class="col-md-2 col-xs-12">

@@ -47,12 +47,20 @@
     <% if rubrics.length > 1 %>
       <div class="row">
         <div class="col-sm-12">
-          <strong>Totaal</strong>
+          <strong><%= t ".total" %></strong>
         </div>
       </div>
       <div class="row row-no-gutters form-row">
-        <div class="col-sm-12">
+        <div class="col-xs-8">
           <%= format_score @feedback.score %> / <%= format_score @feedback.maximum_score %>
+        </div>
+        <div class="col-xs-4 score-buttons">
+          <%= button_tag class: "btn btn-sm btn-default", id: 'zero-button', title: t(".give_zero_all") do %>
+            <i class="mdi mdi-numeric-0 mdi-18" aria-hidden='true'></i>
+          <% end %>
+          <%= button_tag class: "btn btn-sm btn-default", id: 'max-button', title: t(".give_max_all") do %>
+            <i class="mdi mdi-numeric-10 mdi-18" aria-hidden='true'></i>
+          <% end %>
         </div>
       </div>
     <% end %>
@@ -70,7 +78,7 @@
           </div>
         </div>
       <% else %>
-        <%= render 'scores/feedback_form', score: score, rubric: rubric %>
+        <%= render 'feedbacks/score_actions', score: score, rubric: rubric %>
       <% end %>
     <% end %>
   </div>
@@ -107,6 +115,6 @@
         "<%= t('.direction.next') %>",
         <%= policy(@feedback).complete? %>
     );
-    window.dodona.initScoreForms(<%= raw @feedback.rubrics.map(&:id).to_json %>);
+    window.dodona.initScoreForms(<%= raw feedback_url(@feedback).to_json %>, <%= raw @feedback.rubrics.map(&:id).to_json %>);
     $(() => window.dodona.initTooltips());
 </script>

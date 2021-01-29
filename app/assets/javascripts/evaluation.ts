@@ -136,6 +136,7 @@ class Score {
     private readonly existing: boolean;
     private readonly link: string;
     private readonly feedbackLink: string;
+    private readonly id: string;
 
     constructor(element: HTMLElement) {
         const form = element.querySelector(".score-form") as HTMLFormElement;
@@ -146,6 +147,7 @@ class Score {
         this.feedbackId = (form.querySelector("input.feedback") as HTMLInputElement).value;
         this.rubricId = (form.querySelector("input.rubric") as HTMLInputElement).value;
         this.maxLink = element.querySelector("a.score-click");
+        this.id = (form.querySelector("input.id") as HTMLInputElement).value;
         this.existing = form.dataset.new === "true";
         this.link = form.dataset.url;
         this.feedbackLink = form.dataset.feedbackLink;
@@ -153,13 +155,17 @@ class Score {
         this.initListeners();
     }
 
+    public getMax(): string {
+        return this.maxLink.textContent;
+    }
+
     private initListeners(): void {
         let valueOnFocus = "";
         this.input.addEventListener("focus", e => {
-            valueOnFocus = e.target.value;
+            valueOnFocus = (e.target as HTMLInputElement).value;
         });
         this.input.addEventListener("blur", e => {
-            if (valueOnFocus === e.target.value) {
+            if (valueOnFocus === (e.target as HTMLInputElement).value) {
                 console.log("Value not changed, aborting...");
                 return;
             }
@@ -182,6 +188,26 @@ class Score {
             this.input.value = (e.target as HTMLElement).textContent;
             this.sendUpdate();
         });
+    }
+
+    public setData(value: string): void {
+        this.input.value = value;
+    }
+
+    public getDataForNested(): object {
+        // If not existing, include ID.
+        if (this.existing) {
+            return {
+                id: this.id,
+                score: this.input.value,
+            };
+        } else {
+            return {
+                score: this.input.value,
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                rubric_id: this.this.rubricId
+            };
+        }
     }
 
     private sendUpdate(): void {
@@ -259,17 +285,73 @@ class Score {
         }).then(async response => eval(await response.text()));
     }
 
-    private markBusy(): void {
+    public markBusy(): void {
         this.input.classList.add("in-progress");
         this.spinner.style.visibility = "visible";
     }
 }
 
-function initScoreForms(rubrics: [string]): void {
+function initScoreForms(feedbackUrl, rubrics: [string]): void {
+    const forms = [];
     for (const rubric of rubrics) {
         const form = document.getElementById(`${rubric}-score-form-wrapper`) as HTMLElement;
-        new Score(form);
+        forms.push(new Score(form));
     }
+
+    const zeroButton = document.getElementById("zero-button") as HTMLButtonElement;
+    const maxButton = document.getElementById("max-button") as HTMLButtonElement;
+    zeroButton.addEventListener("click", e => {
+        e.preventDefault();
+        zeroButton.disabled = true;
+        maxButton.disabled = true;
+        forms.forEach(f => f.markBusy());
+        // Update all rubrics.
+        const values = forms.map(f => {
+            f.setData("0");
+            return f.getDataForNested();
+        });
+        fetch(feedbackUrl, {
+            method: "PATCH",
+            headers: {
+                "Accept": "text/javascript",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                feedback: {
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    scores_attributes: values
+                }
+            })
+        }).then(r => {
+            forms[0].requestRefresh();
+        });
+    });
+    maxButton.addEventListener("click", e => {
+        e.preventDefault();
+        zeroButton.disabled = true;
+        maxButton.disabled = true;
+        forms.forEach(f => f.markBusy());
+        // Update all rubrics.
+        const values = forms.map(f => {
+            f.setData(f.getMax());
+            return f.getDataForNested();
+        });
+        fetch(feedbackUrl, {
+            method: "PATCH",
+            headers: {
+                "Accept": "text/javascript",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                feedback: {
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    scores_attributes: values
+                }
+            })
+        }).then(r => {
+            forms[0].requestRefresh();
+        });
+    });
 }
 
 export { interceptAddMultiUserClicks, interceptFeedbackActionClicks, initScoreForms };

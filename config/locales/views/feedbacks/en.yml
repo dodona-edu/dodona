@@ -33,6 +33,11 @@ en:
       completed:
         failure: "Could not set state"
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluations completed"
+      total: "Totaal"
+      give_max_all: "Assign the maximal score to all rubrics"
+      give_zero_all: "Assign 0 to all rubrics"
+    score_actions:
+      give_max_one: "Assign the maximal score to this rubric"
     overview:
       annotations:
         count: "Amount of annotations by teacher"

@@ -36,6 +36,7 @@ class FeedbackPolicy < ApplicationPolicy
   def permitted_attributes
     attrs = %i[submission_id]
     attrs << :completed if complete?
+    attrs << { scores_attributes: %i[score id rubric_id] }
     attrs
   end
 

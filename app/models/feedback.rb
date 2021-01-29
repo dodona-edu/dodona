@@ -32,6 +32,8 @@ class Feedback < ApplicationRecord
 
   validate :submission_user_exercise_correct
 
+  accepts_nested_attributes_for :scores
+
   scope :complete, -> { where(completed: true) }
   scope :incomplete, -> { where(completed: false) }
 

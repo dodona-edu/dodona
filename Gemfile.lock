@@ -77,7 +77,7 @@ GEM
     autoprefixer-rails (10.1.0.0)
       execjs
     bcrypt (3.1.16)
-    bcrypt_pbkdf (1.0.1)
+    bcrypt_pbkdf (1.1.0)
     bindata (2.4.8)
     bindex (0.8.1)
     bootsnap (1.5.1)

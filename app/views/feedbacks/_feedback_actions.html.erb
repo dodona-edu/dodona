@@ -30,8 +30,13 @@
   <br>
   <div class="checkbox-inline">
     <input id="auto-mark" type="checkbox" name="auto_mark" checked>
-    <label class="checkbox-label" for="auto-mark"><%= t('.automatically_mark') %></label>
-    <span class="help-block"><%= t(".auto-mark-help") %></span>
+    <label class="checkbox-label"
+           for="auto-mark"
+           data-toggle="tooltip"
+           data-placement="bottom"
+           title="<%= t(".auto-mark-help") %>">
+      <%= t('.automatically_mark') %>
+    </label>
   </div>
   <br>
   <div class="checkbox-inline">

@@ -5,7 +5,12 @@
   <%= f.hidden_field :expected_score, value: score.score, class: "expected-score" %>
   <div class="form-group input">
     <div class="control-wrapper">
-      <%= f.number_field :score, required: true, class: "form-control score-input", step: 0.01, min: 0, max: rubric.maximum %>
+      <%= f.number_field :score, required: true,
+                         class: "form-control score-input",
+                         step: 0.01,
+                         min: 0,
+                         max: rubric.maximum,
+                         value: format_score(f.object.score, 'en') %>
       <div class="dodona-progress dodona-progress-indeterminate" style="visibility: hidden;">
         <div class="progressbar bar bar1" style="width: 0;"></div>
         <div class="bufferbar bar bar2" style="width: 100%;"></div>

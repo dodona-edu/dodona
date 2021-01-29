@@ -18,4 +18,8 @@ class Score < ApplicationRecord
   belongs_to :rubric
   belongs_to :feedback
   belongs_to :last_updated_by, class_name: 'User'
+
+  def out_of_bounds?
+    score < BigDecimal('0') || score > rubric.maximum
+  end
 end

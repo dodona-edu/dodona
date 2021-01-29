@@ -43,7 +43,7 @@ class ScorePolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_update
-    %i[score]
+    %i[score expected_score]
   end
 
   private

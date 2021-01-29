@@ -1,4 +1,4 @@
-import { fetch } from "util.js";
+import { fetch, updateURLParameter } from "util.js";
 
 const defaultOptions = JSON.stringify({
     autoMark: true,
@@ -264,11 +264,11 @@ class Score {
                 eval(await response.text());
             } else if ([403, 404, 422].includes(response.status)) {
                 new dodona.Toast(I18n.t("js.score.conflict"));
-                this.requestRefresh();
+                this.requestRefresh(this.id);
             } else {
                 new dodona.Toast(I18n.t("js.score.unknown"));
                 console.error("Unexpected error when saving score.");
-                this.requestRefresh();
+                this.requestRefresh(this.id);
             }
             if (activeId) {
                 document.getElementById(activeId)?.focus();
@@ -276,8 +276,9 @@ class Score {
         });
     }
 
-    private requestRefresh(): void {
-        fetch(this.feedbackLink + "refresh", {
+    private requestRefresh(warnings: string = ""): void {
+        const url = updateURLParameter(this.feedbackLink + "refresh", "warnings", warnings);
+        fetch(url, {
             method: "post",
             headers: {
                 "Accept": "text/javascript"

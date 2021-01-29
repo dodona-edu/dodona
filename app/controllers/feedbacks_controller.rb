@@ -46,6 +46,7 @@ class FeedbacksController < ApplicationController
   end
 
   def refresh
+    @warnings = params[:warnings]
     respond_to do |format|
       format.js { render 'feedbacks/update' }
     end

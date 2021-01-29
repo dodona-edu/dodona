@@ -3,7 +3,7 @@ require 'csv'
 module EvaluationHelper
   include ActionView::Helpers::NumberHelper
 
-  def format_score(score, lang=nil)
+  def format_score(score, lang = nil)
     number_with_precision(score, precision: 2, strip_insignificant_zeros: true, locale: lang)
   end
 

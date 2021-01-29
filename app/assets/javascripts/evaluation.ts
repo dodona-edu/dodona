@@ -125,11 +125,11 @@ function interceptAddMultiUserClicks(): void {
 }
 
 class Score {
-    private input: HTMLInputElement;
-    private expectedScore: HTMLInputElement;
-    private spinner: HTMLElement;
-    private readonly form: HTMLElement;
+    private readonly input: HTMLInputElement;
+    private readonly expectedScore: HTMLInputElement;
+    private readonly spinner: HTMLElement;
     private readonly deleteButton: HTMLElement;
+    private readonly maxLink: HTMLElement;
 
     private readonly rubricId: string;
     private readonly feedbackId: string;
@@ -137,17 +137,18 @@ class Score {
     private readonly link: string;
     private readonly feedbackLink: string;
 
-    constructor(form: HTMLFormElement) {
+    constructor(element: HTMLElement) {
+        const form = element.querySelector(".score-form") as HTMLFormElement;
         this.input = form.querySelector("input.score-input");
         this.spinner = form.querySelector(".dodona-progress");
-        this.expectedScore = form.querySelector("input.expected-score");
+        this.expectedScore = form.querySelector(".score-form input.expected-score");
         this.deleteButton = form.parentElement.querySelector(".delete-button");
-        this.feedbackId = form.querySelector("input.feedback").value;
-        this.rubricId = form.querySelector("input.rubric").value;
+        this.feedbackId = (form.querySelector("input.feedback") as HTMLInputElement).value;
+        this.rubricId = (form.querySelector("input.rubric") as HTMLInputElement).value;
+        this.maxLink = element.querySelector("a.score-click");
         this.existing = form.dataset.new === "true";
         this.link = form.dataset.url;
         this.feedbackLink = form.dataset.feedbackLink;
-        this.form = form;
 
         this.initListeners();
     }
@@ -176,6 +177,11 @@ class Score {
                 }
             });
         }
+        this.maxLink.addEventListener("click", e => {
+            e.preventDefault();
+            this.input.value = (e.target as HTMLElement).textContent;
+            this.sendUpdate();
+        });
     }
 
     private sendUpdate(): void {
@@ -261,7 +267,7 @@ class Score {
 
 function initScoreForms(rubrics: [string]): void {
     for (const rubric of rubrics) {
-        const form = document.getElementById(`${rubric}-score-form`) as HTMLFormElement;
+        const form = document.getElementById(`${rubric}-score-form-wrapper`) as HTMLElement;
         new Score(form);
     }
 }

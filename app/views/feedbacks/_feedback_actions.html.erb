@@ -63,15 +63,15 @@
           <strong><%= rubric.name %></strong>
         </div>
       </div>
-      <div class="row row-no-gutters form-row">
-        <% if @feedback.completed? %>
+      <% if @feedback.completed? %>
+        <div class="row">
           <div class="col-sm-12">
             <%= format_score score.score %> / <%= format_score rubric.maximum %>
           </div>
-        <% else %>
-          <%= render 'scores/feedback_form', score: score, rubric: rubric %>
-        <% end %>
-      </div>
+        </div>
+      <% else %>
+        <%= render 'scores/feedback_form', score: score, rubric: rubric %>
+      <% end %>
     <% end %>
   </div>
 <% end %>

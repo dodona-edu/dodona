@@ -93,7 +93,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     course = create :course
     cm = CourseMembership.create(user: u1, course: course, status: :student)
     CourseMembership.create(user: u2, course: course, status: :student)
-    CourseLabel.create(name: 'test', course_memberships: [cm])
+    CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
     create :submission, status: :correct, user: u1, course: course
     create :submission, status: :wrong, user: u2, course: course
 

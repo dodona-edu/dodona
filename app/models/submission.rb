@@ -27,8 +27,8 @@ class Submission < ApplicationRecord
 
   enum status: { unknown: 0, correct: 1, wrong: 2, "time limit exceeded": 3, running: 4, queued: 5, "runtime error": 6, "compilation error": 7, "memory limit exceeded": 8, "internal error": 9, "output limit exceeded": 10 }
 
-  belongs_to :exercise
-  belongs_to :user
+  belongs_to :exercise, optional: false
+  belongs_to :user, optional: false
   belongs_to :course, optional: true
   has_one :judge, through: :exercise
   has_one :notification, as: :notifiable, dependent: :destroy

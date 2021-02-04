@@ -1,156 +1,55 @@
 import { fetch, updateURLParameter } from "util.js";
 
+interface ActionOptions {
+    currentURL: string;
+    currentRefreshURL: string;
+    feedbackId: string;
+    nextURL: string | null;
+    nextUnseenURL: string | null;
+    buttonText: string;
+    allowNext: boolean;
+    rubrics: [string];
+}
+
 const defaultOptions = JSON.stringify({
     autoMark: true,
     skipCompleted: true
 });
 
-function interceptFeedbackActionClicks(
-    currentURL: string,
-    nextURL: string,
-    nextUnseenURL: string,
-    buttonText: string,
-    allowNext: boolean
-): void {
-    const nextButton = document.getElementById("next-feedback-button");
-    const autoMarkCheckBox = document.getElementById("auto-mark") as HTMLInputElement;
-    const skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
-
-    // Track if we are allowed to click next if auto mark is on.
-    // If auto mark is on, we must consider if we are allowed to mark it as completed or not.
-    let allowNextAutoMark = true;
-    // Track if there is a next exercise.
-    let allowNextOrder = true;
-
-    function syncNextButtonDisabledState(): void {
-        nextButton.disabled = !allowNextAutoMark || !allowNextOrder;
-    }
-
-    function setNextWithAutoMark(): void {
-        nextButton.innerHTML = `${buttonText} + <i class="mdi mdi-comment-check-outline mdi-18"></i>`;
-        allowNextAutoMark = allowNext;
-        syncNextButtonDisabledState();
-    }
-
-    function setNextWithoutAutoMark(): void {
-        nextButton.innerHTML = buttonText;
-        allowNextAutoMark = true;
-        syncNextButtonDisabledState();
-    }
-
-    const feedbackPrefs = window.localStorage.getItem("feedbackPrefs") || defaultOptions;
-    let { autoMark, skipCompleted } = JSON.parse(feedbackPrefs);
-    autoMarkCheckBox.checked = autoMark;
-    skipCompletedCheckBox.checked = skipCompleted;
-    if (autoMark) {
-        setNextWithAutoMark();
-    }
-
-    if (nextURL === null && !skipCompleted) {
-        allowNextOrder = false;
-    } else if (skipCompleted && nextUnseenURL == null) {
-        allowNextOrder = false;
-    } else {
-        allowNextOrder = true;
-    }
-
-    syncNextButtonDisabledState();
-
-    nextButton.addEventListener("click", async event => {
-        event.preventDefault();
-        if (nextButton.disabled) {
-            return;
-        }
-        nextButton.disabled = true;
-        if (autoMark) {
-            const resp = await fetch(currentURL, {
-                method: "PATCH",
-                body: JSON.stringify({ feedback: { completed: true } }),
-                headers: { "Content-Type": "application/json" }
-            });
-            eval(await resp.text());
-            // Button was replaced, so `nextButton` reference is outdated. For
-            // the same reason we need to repeat the disabling.
-            document.getElementById("next-feedback-button").disabled = true;
-        }
-        if (skipCompleted) {
-            window.location.href = nextUnseenURL;
-        } else {
-            window.location.href = nextURL;
-        }
-    });
-
-    autoMarkCheckBox.addEventListener("input", async () => {
-        autoMark = autoMarkCheckBox.checked;
-        localStorage.setItem("feedbackPrefs", JSON.stringify({ autoMark, skipCompleted }));
-        if (autoMark) {
-            setNextWithAutoMark();
-        } else {
-            setNextWithoutAutoMark();
-        }
-    });
-
-    skipCompletedCheckBox.addEventListener("input", async () => {
-        skipCompleted = skipCompletedCheckBox.checked;
-        localStorage.setItem("feedbackPrefs", JSON.stringify({ autoMark, skipCompleted }));
-        if (nextURL === null && !skipCompleted) {
-            nextButton.setAttribute("disabled", "1");
-        } else if (skipCompleted && nextUnseenURL == null) {
-            nextButton.setAttribute("disabled", "1");
-        } else {
-            nextButton.removeAttribute("disabled");
-        }
-    });
-}
-
-function interceptAddMultiUserClicks(): void {
-    let running = false;
-    document.querySelectorAll(".user-select-option a").forEach(option => {
-        option.addEventListener("click", async event => {
-            if (!running) {
-                running = true;
-                event.preventDefault();
-                const button = option.querySelector(".button");
-                const loader = option.querySelector(".loader");
-                button.classList.add("hidden");
-                loader.classList.remove("hidden");
-                const response = await fetch(option.getAttribute("href"), { method: "POST" });
-                eval(await response.text());
-                loader.classList.add("hidden");
-                button.classList.remove("hidden");
-                running = false;
-            }
-        });
-    });
-}
-
-class Score {
+/**
+ * Manages a single score in the feedback actions.
+ *
+ * As with the general feedback actions, almost all changes
+ * result in a request to the server to replace the current HTML.
+ */
+class ScoreForm {
     private readonly input: HTMLInputElement;
     private readonly expectedScore: HTMLInputElement;
     private readonly spinner: HTMLElement;
     private readonly deleteButton: HTMLElement;
     private readonly maxLink: HTMLElement;
 
+    private readonly parent: FeedbackActions;
     private readonly rubricId: string;
-    private readonly feedbackId: string;
     private readonly existing: boolean;
     private readonly link: string;
-    private readonly feedbackLink: string;
     private readonly id: string;
 
-    constructor(element: HTMLElement) {
+    private disabled = false;
+
+    constructor(element: HTMLElement, parent: FeedbackActions) {
+        this.parent = parent;
+
         const form = element.querySelector(".score-form") as HTMLFormElement;
         this.input = form.querySelector("input.score-input");
         this.spinner = form.querySelector(".dodona-progress");
         this.expectedScore = form.querySelector(".score-form input.expected-score");
         this.deleteButton = form.parentElement.querySelector(".delete-button");
-        this.feedbackId = (form.querySelector("input.feedback") as HTMLInputElement).value;
         this.rubricId = (form.querySelector("input.rubric") as HTMLInputElement).value;
         this.maxLink = element.querySelector("a.score-click");
         this.id = (form.querySelector("input.id") as HTMLInputElement).value;
         this.existing = form.dataset.new === "true";
         this.link = form.dataset.url;
-        this.feedbackLink = form.dataset.feedbackLink;
 
         this.initListeners();
     }
@@ -166,14 +65,12 @@ class Score {
         });
         this.input.addEventListener("blur", e => {
             if (valueOnFocus === (e.target as HTMLInputElement).value) {
-                console.log("Value not changed, aborting...");
                 return;
             }
             if (!this.input.reportValidity()) {
-                console.log("Data is not valid, aborting...");
                 return;
             }
-            this.sendUpdate();
+            this.sendUpdate(e.relatedTarget as HTMLElement);
         });
         if (this.deleteButton) {
             this.deleteButton.addEventListener("click", e => {
@@ -210,7 +107,7 @@ class Score {
         }
     }
 
-    private sendUpdate(): void {
+    private sendUpdate(newFocus: HTMLElement | null = null): void {
         let data;
         if (this.existing) {
             data = {
@@ -222,7 +119,7 @@ class Score {
             data = {
                 score: this.input.value,
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                feedback_id: this.feedbackId,
+                feedback_id: this.parent.options.feedbackId,
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 rubric_id: this.rubricId
             };
@@ -235,7 +132,7 @@ class Score {
             method = "POST";
         }
 
-        this.doRequest(method, data);
+        this.doRequest(method, data, newFocus);
     }
 
     private delete(): void {
@@ -245,7 +142,9 @@ class Score {
         });
     }
 
-    private doRequest(method: string, data: object): void {
+    private doRequest(method: string, data: object, newFocus: HTMLElement | null = null): void {
+        // Save the element that has focus.
+        const activeId = newFocus?.id;
         this.markBusy();
         fetch(this.link, {
             method: method,
@@ -257,18 +156,15 @@ class Score {
                 score: data
             })
         }).then(async response => {
-            // Save the element that has focus.
-            const activeId = document.activeElement?.id;
             if (response.ok) {
                 // Evaluate the response, which will update the view.
                 eval(await response.text());
             } else if ([403, 404, 422].includes(response.status)) {
                 new dodona.Toast(I18n.t("js.score.conflict"));
-                this.requestRefresh(this.id);
+                await this.parent.refresh(this.id);
             } else {
                 new dodona.Toast(I18n.t("js.score.unknown"));
-                console.error("Unexpected error when saving score.");
-                this.requestRefresh(this.id);
+                await this.parent.refresh(this.id);
             }
             if (activeId) {
                 document.getElementById(activeId)?.focus();
@@ -276,83 +172,223 @@ class Score {
         });
     }
 
-    private requestRefresh(warnings: string = ""): void {
-        const url = updateURLParameter(this.feedbackLink + "refresh", "warnings", warnings);
-        fetch(url, {
+    public markBusy(): void {
+        this.disableInputs();
+        this.input.classList.add("in-progress");
+        this.spinner.style.visibility = "visible";
+    }
+
+    public disableInputs(): void {
+        this.input.disabled = true;
+        this.disabled = false;
+    }
+}
+
+/**
+ * Manage the feedback actions. This class is a little unusual,
+ * as the amount of stuff it does is minimal. In a lot of cases,
+ * a request is sent to the server, with rails replacing the actions
+ * with the updated HTML. If we use Vue one day, we might rewrite this.
+ */
+class FeedbackActions {
+    readonly options: ActionOptions;
+
+    private readonly nextButton: HTMLButtonElement;
+    private readonly autoMarkCheckBox: HTMLInputElement;
+    private readonly skipCompletedCheckBox: HTMLInputElement;
+    private readonly allScoresZeroButton: HTMLButtonElement | null;
+    private readonly allScoresMaxButton: HTMLButtonElement | null;
+
+    private readonly scoreForms: ScoreForm[];
+    private allowNextAutoMark: boolean = true;
+    private allowNextOrder: boolean = true;
+
+    constructor(options: ActionOptions) {
+        this.options = options;
+
+        // Next/complete buttons
+        this.nextButton = document.getElementById("next-feedback-button") as HTMLButtonElement;
+        this.autoMarkCheckBox = document.getElementById("auto-mark") as HTMLInputElement;
+        this.skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
+
+        // Score forms
+        this.scoreForms = [];
+        for (const rubric of this.options.rubrics) {
+            const form = document.getElementById(`${rubric}-score-form-wrapper`) as HTMLElement;
+            if (form !== null) {
+                this.scoreForms.push(new ScoreForm(form, this));
+            }
+        }
+
+        this.allScoresZeroButton = document.getElementById("zero-button") as HTMLButtonElement;
+        this.allScoresMaxButton = document.getElementById("max-button") as HTMLButtonElement;
+
+        this.initialiseNextButtons();
+        this.initScoreForms();
+    }
+
+    syncNextButtonDisabledState(): void {
+        this.nextButton.disabled = !this.allowNextAutoMark || !this.allowNextOrder;
+    }
+
+    setNextWithAutoMark(): void {
+        this.nextButton.innerHTML =
+            `${this.options.buttonText} + <i class="mdi mdi-comment-check-outline mdi-18"></i>`;
+        this.allowNextAutoMark = this.options.allowNext;
+        this.syncNextButtonDisabledState();
+    }
+
+    setNextWithoutAutoMark(): void {
+        this.nextButton.innerHTML = this.options.buttonText;
+        this.allowNextAutoMark = true;
+        this.syncNextButtonDisabledState();
+    }
+
+    disableInputs(): void {
+        this.nextButton.disabled = true;
+        this.scoreForms.forEach(s => s.disableInputs());
+    }
+
+    update(data): Promise<void> {
+        this.disableInputs();
+        return fetch(this.options.currentURL, {
+            method: "PATCH",
+            body: JSON.stringify({ feedback: data }),
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/javascript"
+            }
+        }).then(async response => {
+            if (response.ok) {
+                eval(await response.text());
+            } else {
+                new dodona.Toast(I18n.t("js.score.unknown"));
+            }
+        });
+    }
+
+    /**
+     * Refresh the actions from the server.
+     * @param {string} warning - Score to mark with a warning.
+     */
+    async refresh(warning: string = ""): Promise<void> {
+        const url = updateURLParameter(this.options.currentRefreshURL, "warning", warning);
+        const response = await fetch(url, {
             method: "post",
             headers: {
                 "Accept": "text/javascript"
             }
-        }).then(async response => eval(await response.text()));
+        });
+        eval(await response.text());
     }
 
-    public markBusy(): void {
-        this.input.classList.add("in-progress");
-        this.spinner.style.visibility = "visible";
+    initialiseNextButtons(): void {
+        const feedbackPrefs = window.localStorage.getItem("feedbackPrefs") || defaultOptions;
+        let { autoMark, skipCompleted } = JSON.parse(feedbackPrefs);
+        this.autoMarkCheckBox.checked = autoMark;
+        this.skipCompletedCheckBox.checked = skipCompleted;
+        if (autoMark) {
+            this.setNextWithAutoMark();
+        }
+
+        if (this.options.nextURL === null && !skipCompleted) {
+            this.allowNextOrder = false;
+        } else if (skipCompleted && this.options.nextUnseenURL == null) {
+            this.allowNextOrder = false;
+        } else {
+            this.allowNextOrder = true;
+        }
+
+        this.syncNextButtonDisabledState();
+
+        this.nextButton.addEventListener("click", async event => {
+            event.preventDefault();
+            if (this.nextButton.disabled) {
+                return;
+            }
+            this.disableInputs();
+            if (autoMark) {
+                await this.update({
+                    completed: true
+                });
+            }
+            if (skipCompleted) {
+                window.location.href = this.options.nextUnseenURL;
+            } else {
+                window.location.href = this.options.nextURL;
+            }
+        });
+
+        this.autoMarkCheckBox.addEventListener("input", async () => {
+            autoMark = this.autoMarkCheckBox.checked;
+            localStorage.setItem("feedbackPrefs", JSON.stringify({ autoMark, skipCompleted }));
+            if (autoMark) {
+                this.setNextWithAutoMark();
+            } else {
+                this.setNextWithoutAutoMark();
+            }
+        });
+
+        this.skipCompletedCheckBox.addEventListener("input", async () => {
+            skipCompleted = this.skipCompletedCheckBox.checked;
+            localStorage.setItem("feedbackPrefs", JSON.stringify({ autoMark, skipCompleted }));
+            if (this.options.nextURL === null && !skipCompleted) {
+                this.nextButton.setAttribute("disabled", "1");
+            } else if (skipCompleted && this.options.nextUnseenURL == null) {
+                this.nextButton.setAttribute("disabled", "1");
+            } else {
+                this.nextButton.removeAttribute("disabled");
+            }
+        });
+    }
+
+    initScoreForms(): void {
+        this.allScoresZeroButton?.addEventListener("click", async e => {
+            e.preventDefault();
+            const values = this.scoreForms.map(f => {
+                f.markBusy();
+                f.setData("0");
+                return f.getDataForNested();
+            });
+            await this.update({
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                scores_attributes: values
+            });
+        });
+        this.allScoresMaxButton?.addEventListener("click", async e => {
+            e.preventDefault();
+            const values = this.scoreForms.map(f => {
+                f.markBusy();
+                f.setData(f.getMax());
+                return f.getDataForNested();
+            });
+            await this.update({
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                scores_attributes: values
+            });
+        });
     }
 }
 
-function initScoreForms(feedbackUrl, rubrics: [string]): void {
-    const forms = [];
-    for (const rubric of rubrics) {
-        const form = document.getElementById(`${rubric}-score-form-wrapper`) as HTMLElement;
-        forms.push(new Score(form));
-    }
-
-    const zeroButton = document.getElementById("zero-button") as HTMLButtonElement;
-    const maxButton = document.getElementById("max-button") as HTMLButtonElement;
-    zeroButton.addEventListener("click", e => {
-        e.preventDefault();
-        zeroButton.disabled = true;
-        maxButton.disabled = true;
-        forms.forEach(f => f.markBusy());
-        // Update all rubrics.
-        const values = forms.map(f => {
-            f.setData("0");
-            return f.getDataForNested();
-        });
-        fetch(feedbackUrl, {
-            method: "PATCH",
-            headers: {
-                "Accept": "text/javascript",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                feedback: {
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    scores_attributes: values
-                }
-            })
-        }).then(r => {
-            forms[0].requestRefresh();
-        });
-    });
-    maxButton.addEventListener("click", e => {
-        e.preventDefault();
-        zeroButton.disabled = true;
-        maxButton.disabled = true;
-        forms.forEach(f => f.markBusy());
-        // Update all rubrics.
-        const values = forms.map(f => {
-            f.setData(f.getMax());
-            return f.getDataForNested();
-        });
-        fetch(feedbackUrl, {
-            method: "PATCH",
-            headers: {
-                "Accept": "text/javascript",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                feedback: {
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    scores_attributes: values
-                }
-            })
-        }).then(r => {
-            forms[0].requestRefresh();
+function interceptAddMultiUserClicks(): void {
+    let running = false;
+    document.querySelectorAll(".user-select-option a").forEach(option => {
+        option.addEventListener("click", async event => {
+            if (!running) {
+                running = true;
+                event.preventDefault();
+                const button = option.querySelector(".button");
+                const loader = option.querySelector(".loader");
+                button.classList.add("hidden");
+                loader.classList.remove("hidden");
+                const response = await fetch(option.getAttribute("href"), { method: "POST" });
+                eval(await response.text());
+                loader.classList.add("hidden");
+                button.classList.remove("hidden");
+                running = false;
+            }
         });
     });
 }
 
-export { interceptAddMultiUserClicks, interceptFeedbackActionClicks, initScoreForms };
+export { interceptAddMultiUserClicks, FeedbackActions };

@@ -209,16 +209,16 @@ Rails.application.routes.draw do
         post 'remove_user'
         post 'set_multi_user'
       end
-      resources :feedbacks, only: %i[show edit update] do
-        post 'refresh', on: :member
-      end
+      resources :feedbacks, only: %i[show edit update]
       resources :rubrics, only: %i[create destroy update] do
         post 'copy', on: :collection
         post 'add_all', on: :collection
       end
       resources :scores, only: %i[show create update destroy]
     end
-    resources :feedbacks, only: %i[show edit update]
+    resources :feedbacks, only: %i[show edit update] do
+      post 'refresh', on: :member
+    end
 
     scope 'lti', controller: 'lti' do
       get 'redirect', to: 'lti#redirect', as: 'lti_redirect'

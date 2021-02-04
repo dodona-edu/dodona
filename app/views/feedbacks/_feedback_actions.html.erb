@@ -56,20 +56,22 @@
         </div>
       </div>
       <div class="row row-no-gutters form-row">
-        <div class="col-xs-8">
+        <div class="col-xs-8 total-score" data-total="<%= @feedback.score %>">
           <%= format_score @feedback.score %> / <%= format_score @feedback.maximum_score %>
         </div>
-        <div class="col-xs-4 score-buttons">
-          <%= button_tag class: "btn btn-sm btn-default", id: 'zero-button', title: t(".give_zero_all") do %>
-            <i class="mdi mdi-numeric-0 mdi-18" aria-hidden='true'></i>
-          <% end %>
-          <%= button_tag class: "btn btn-sm btn-default", id: 'max-button', title: t(".give_max_all") do %>
-            <i class="mdi mdi-numeric-10 mdi-18" aria-hidden='true'></i>
-          <% end %>
-        </div>
+        <% unless @feedback.completed? %>
+          <div class="col-xs-4 score-buttons">
+            <%= button_tag class: "btn btn-sm btn-default", id: 'zero-button', title: t(".give_zero_all") do %>
+              <i class="mdi mdi-numeric-0 mdi-18" aria-hidden='true'></i>
+            <% end %>
+            <%= button_tag class: "btn btn-sm btn-default", id: 'max-button', title: t(".give_max_all") do %>
+              <i class="mdi mdi-numeric-10 mdi-18" aria-hidden='true'></i>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     <% end %>
-    <% rubrics.each do |rubric| %>
+    <% rubrics.each_with_index do |rubric, index| %>
       <% score = @score_map.fetch(rubric.id, Score.new(rubric: rubric, feedback: @feedback)) %>
       <div class="row">
         <div class="col-sm-12">
@@ -83,7 +85,7 @@
           </div>
         </div>
       <% else %>
-        <%= render 'feedbacks/score_actions', score: score, rubric: rubric %>
+        <%= render 'feedbacks/score_actions', score: score, rubric: rubric, index: index %>
       <% end %>
     <% end %>
   </div>
@@ -113,13 +115,15 @@
 
 <script>
     <% siblings = @feedback.siblings %>
-    window.dodona.interceptFeedbackActionClicks(
-        <%= raw feedback_url(@feedback, format: :js).to_json %>,
-        <%= raw (siblings[:next].present? ? feedback_url(siblings[:next]) : nil).to_json %>,
-        <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,
-        "<%= t('.direction.next') %>",
-        <%= policy(@feedback).complete? %>
-    );
-    window.dodona.initScoreForms(<%= raw feedback_url(@feedback).to_json %>, <%= raw @feedback.rubrics.map(&:id).to_json %>);
+    new window.dodona.FeedbackActions({
+        currentURL: <%= raw feedback_url(@feedback).to_json %>,
+        currentRefreshURL: <%= raw refresh_feedback_url(@feedback).to_json %>,
+        feedbackId: <%= @feedback.id %>,
+        nextURL: <%= raw (siblings[:next].present? ? feedback_url(siblings[:next]) : nil).to_json %>,
+        nextUnseenURL: <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,
+        buttonText: "<%= t('.direction.next') %>",
+        allowNext: <%= policy(@feedback).complete? %>,
+        rubrics: <%= raw @feedback.rubrics.map(&:id).to_json %>
+    });
     $(() => window.dodona.initTooltips());
 </script>

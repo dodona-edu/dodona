@@ -345,6 +345,7 @@ class FeedbackActions {
     initScoreForms(): void {
         this.allScoresZeroButton?.addEventListener("click", async e => {
             e.preventDefault();
+            this.disableInputs();
             const values = this.scoreForms.map(f => {
                 f.markBusy();
                 f.setData("0");
@@ -357,6 +358,7 @@ class FeedbackActions {
         });
         this.allScoresMaxButton?.addEventListener("click", async e => {
             e.preventDefault();
+            this.disableInputs();
             const values = this.scoreForms.map(f => {
                 f.markBusy();
                 f.setData(f.getMax());

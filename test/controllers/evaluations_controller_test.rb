@@ -32,6 +32,23 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
   end
 
+  test 'only graded session redirects to rubrics' do
+    post evaluations_path, params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now,
+        graded: true
+      }
+    }
+    evaluation = @series.evaluation
+
+    get add_users_evaluation_path(evaluation, graded: true)
+    assert_select "a[href^='#{add_rubrics_evaluation_path(evaluation)}']", true
+
+    get add_users_evaluation_path(evaluation, graded: false)
+    assert_select "a[href^='#{add_rubrics_evaluation_path(evaluation)}']", false
+  end
+
   test 'Can remove user from feedback' do
     post evaluations_path, params: {
       evaluation: {
@@ -376,6 +393,36 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil staff_member
     sign_in staff_member
     get rubrics_evaluation_path(evaluation)
+    assert_response :success
+  end
+
+  test 'add rubric page for a feedback session is only available for course admins' do
+    post evaluations_path, params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    random_student = create :student
+    evaluation = @series.evaluation
+    staff_member = create :staff
+    @series.course.administrating_members << staff_member
+
+    get add_rubrics_evaluation_path(evaluation)
+    assert_response :success
+
+    sign_out @course_admin
+    get add_rubrics_evaluation_path(evaluation)
+    assert_response :redirect
+
+    sign_in random_student
+    get add_rubrics_evaluation_path(evaluation)
+    assert_response :redirect
+    sign_out random_student
+
+    assert_not_nil staff_member
+    sign_in staff_member
+    get add_rubrics_evaluation_path(evaluation)
     assert_response :success
   end
 

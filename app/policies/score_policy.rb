@@ -4,8 +4,13 @@ class ScorePolicy < ApplicationPolicy
       if user&.zeus?
         scope.all
       elsif user
-        common = scope.joins(:submission, :feedback)
-        common.released.where(submissions: { user: user }).or(common.where(submissions: { course_id: user.administrating_courses.map(&:id) }))
+        common = scope.joins(:rubric, feedback: [:evaluation_user, { evaluation: :series }])
+        # Students - visible if own score, if rubric is visible and if evaluation is released.
+        students = common.where(feedbacks: { evaluations: { released: true }, evaluation_users: { user: user } }, rubrics: { visible: true })
+        # Staff - visible if course administrator
+        staff = common.where(feedbacks: { evaluation: { series: { course_id: user.administrating_courses.map(&:id) } } })
+
+        students.or(staff)
       else
         scope.none
       end

@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.12.13",
-    "@rails/activestorage": "^6.0.3",
+    "@rails/activestorage": "^6.1.1",
     "@rails/ujs": "^6.0.3",
     "@rails/webpacker": "5.2.1",
     "@types/d3": "^5.16.3",

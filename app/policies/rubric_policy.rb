@@ -1,10 +1,4 @@
 class RubricPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
-    end
-  end
-
   def edit?
     course_admin?
   end

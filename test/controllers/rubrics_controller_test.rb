@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RubricsControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @evaluation = create :evaluation
+    @evaluation = create :evaluation, :with_submissions
     @staff_member = create :staff
     @evaluation.series.course.administrating_members << @staff_member
     sign_in @staff_member

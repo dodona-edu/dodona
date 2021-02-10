@@ -2,6 +2,7 @@ require 'test_helper'
 
 class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
+  include EvaluationHelper
 
   crud_helpers Submission, attrs: %i[code exercise_id]
 
@@ -243,6 +244,69 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     exercise = series.exercises.sample
     assert_jobs_enqueued(exercise.submissions.count) do
       rejudge_submissions activity_id: exercise.id
+    end
+  end
+
+  def expected_score_string(s)
+    "#{format_score(s.score)} / #{format_score(s.rubric.maximum)}"
+  end
+
+  test 'should only show allowed grades for students' do
+    evaluation = create :evaluation, :released, :with_submissions
+    evaluation_exercise = evaluation.evaluation_exercises.first
+    visible_rubric = create :rubric, evaluation_exercise: evaluation_exercise
+    hidden_rubric = create :rubric, evaluation_exercise: evaluation_exercise, visible: false
+    feedback = evaluation.feedbacks.first
+    submission = feedback.submission
+    s1 = create :score, feedback: feedback, rubric: visible_rubric, score: BigDecimal('5.00')
+    s2 = create :score, feedback: feedback, rubric: hidden_rubric, score: BigDecimal('7.00')
+
+    sign_in submission.user
+    get submission_url(id: submission.id)
+
+    assert_match visible_rubric.description, response.body
+    assert_no_match hidden_rubric.description, response.body
+    assert_match expected_score_string(s1), response.body
+    assert_no_match expected_score_string(s2), response.body
+
+    evaluation.update!(released: false)
+    get submission_url(id: submission.id)
+
+    assert_no_match visible_rubric.description, response.body
+    assert_no_match hidden_rubric.description, response.body
+    assert_no_match expected_score_string(s1), response.body
+    assert_no_match expected_score_string(s2), response.body
+  end
+
+  test 'shows all grades for zeus & staff members' do
+    evaluation = create :evaluation, :released, :with_submissions
+    evaluation_exercise = evaluation.evaluation_exercises.first
+    visible_rubric = create :rubric, evaluation_exercise: evaluation_exercise
+    hidden_rubric = create :rubric, evaluation_exercise: evaluation_exercise, visible: false
+    feedback = evaluation.feedbacks.first
+    submission = feedback.submission
+    s1 = create :score, feedback: feedback, rubric: visible_rubric, score: BigDecimal('5.00')
+    s2 = create :score, feedback: feedback, rubric: hidden_rubric, score: BigDecimal('7.00')
+
+    staff = create :staff
+    staff.administrating_courses << evaluation.series.course
+    [@zeus, staff].each do |user|
+      sign_in user
+
+      get submission_url(id: submission.id)
+
+      assert_match visible_rubric.description, response.body
+      assert_match hidden_rubric.description, response.body
+      assert_match expected_score_string(s1), response.body
+      assert_match expected_score_string(s2), response.body
+
+      evaluation.update!(released: false)
+      get submission_url(id: submission.id)
+
+      assert_match visible_rubric.description, response.body
+      assert_match hidden_rubric.description, response.body
+      assert_match expected_score_string(s1), response.body
+      assert_match expected_score_string(s2), response.body
     end
   end
 end

@@ -2,18 +2,9 @@ require 'test_helper'
 
 class UserPolicyTest < ActiveSupport::TestCase
   setup do
+    @evaluation = create :evaluation, :with_submissions
     @staff_member = create :staff
-    series = create :series, exercise_count: 2
-    series.course.administrating_members << @staff_member
-    @users = [create(:user)]
-    @exercises = series.exercises
-    @users.each do |u|
-      series.course.enrolled_members << u
-      @exercises.each do |e|
-        create :correct_submission, user: u, exercise: e, course: series.course, created_at: Time.current - 1.hour
-      end
-    end
-    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.current - 1.second
+    @evaluation.series.course.administrating_members << @staff_member
 
     exercise = @evaluation.evaluation_exercises.first
     @feedback = @evaluation.feedbacks.first

@@ -28,7 +28,7 @@ class FeedbacksTest < ApplicationSystemTestCase
         submission.exercise.judge.save
       end
     end
-    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.current - 1.second
+    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises
 
     exercise = @evaluation.evaluation_exercises.first
     @rubric_first = create :rubric, evaluation_exercise: exercise,

@@ -15,16 +15,9 @@ require 'test_helper'
 
 class FeedbackTest < ActiveSupport::TestCase
   setup do
-    series = create :series, exercise_count: 2
-    @users = [create(:user), create(:user)]
-    @exercises = series.exercises
-    @users.each do |u|
-      series.course.enrolled_members << u
-      @exercises.each do |e|
-        create :submission, user: u, exercise: e, course: series.course, created_at: Time.current - 1.hour
-      end
-    end
-    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.current - 1.second
+    @evaluation = create :evaluation, :with_submissions, user_count: 2
+    @users = @evaluation.users
+    @exercises = @evaluation.series.exercises
     @user_count = @users.count
     @exercise_count = @exercises.count
     @zeus = create :zeus

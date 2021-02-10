@@ -17,17 +17,16 @@ require 'test_helper'
 class RubricTest < ActiveSupport::TestCase
   def setup
     series = create :series, exercise_count: 2
-    @users = [create(:user), create(:user)]
-    @exercises = series.exercises
-    @users.each do |u|
+    users = [create(:user), create(:user)]
+    users.each do |u|
       series.course.enrolled_members << u
-      create :submission, user: u, exercise: @exercises.first, course: series.course, created_at: Time.current - 1.hour
+      create :submission, user: u, exercise: series.exercises.first, course: series.course, created_at: Time.current - 1.hour
     end
-    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.current
+    @evaluation = create :evaluation, series: series, users: users, exercises: series.exercises
   end
 
   test 'completed feedbacks are uncompleted' do
-    @evaluation.feedbacks.each { |f| f.update(completed: true) }
+    @evaluation.feedbacks.each { |f| f.update!(completed: true) }
     eval_exercise = @evaluation.evaluation_exercises.find { |e| e.exercise.submissions.count == 2 }
     create :rubric, evaluation_exercise: eval_exercise
 

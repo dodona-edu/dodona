@@ -11,14 +11,32 @@
 #
 FactoryBot.define do
   factory :evaluation do
-    series { create :series, :with_submissions, deadline: DateTime.now - 1.hour }
-    deadline { series.deadline }
+    series { create :series, deadline: DateTime.now - 1.minute }
+    deadline { series.deadline || DateTime.now - 1.minute }
     released { false }
     exercises { series.exercises }
     users { series.course.submissions.where(exercise: exercises).map(&:user).uniq }
-  end
 
-  trait :released do
-    released { true }
+    transient do
+      user_count { 1 }
+    end
+
+    trait :released do
+      released { true }
+    end
+
+    trait :with_submissions do
+      series do
+        s = create :series, exercise_count: 2, deadline: DateTime.now
+        users = create_list :user, user_count
+        users.each do |u|
+          s.course.enrolled_members << u
+          s.exercises.each do |e|
+            create :correct_submission, user: u, exercise: e, course: s.course, created_at: s.deadline - 1.hour
+          end
+        end
+        s
+      end
+    end
   end
 end

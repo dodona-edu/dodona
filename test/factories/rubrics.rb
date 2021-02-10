@@ -20,5 +20,6 @@ FactoryBot.define do
     maximum { '10.00' }
     visible { true }
     last_updated_by { create :user }
+    description { Faker::Lorem.unique.sentence }
   end
 end

@@ -55,7 +55,7 @@ class SubmissionsController < ApplicationController
                 [[@submission.exercise.name, activity_path(@submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
               end
     @scores = policy_scope(Score.where(feedback: @submission.feedbacks).joins(:rubric))
-    @scores = @scores.group_by { |s| s.feedback }.map { |f, s| [f, s.group_by(&:rubric)] }
+    @scores = @scores.group_by(&:feedback).map { |f, s| [f, s.group_by(&:rubric)] }
   end
 
   def create

@@ -52,3 +52,11 @@ nl:
     submissions_table:
       update-submission: "Veranderen naar deze oplossing"
       confirm: "Ben je zeker? Alle annotaties op de vorige oplossing zullen verwijderd worden."
+    score_table:
+      total_score: Totaalscore
+      total_description: Het totaal. Dit is niet noodzakelijk de som van alle subscores.
+      score_breakdown: Puntenverdeling
+    score_link:
+      score: "Score: %{score} / %{max}"
+      view_breakdown: Puntenverdeling bekijken
+      view_feedback: Ga naar de feedback

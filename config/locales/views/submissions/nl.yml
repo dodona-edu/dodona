@@ -35,7 +35,6 @@ nl:
       status: Status
       result: Resultaat
       code: Code
-      score: Punten
       line: Regel
       reevaluate: Hertesten
       your_output: Jouw uitvoer

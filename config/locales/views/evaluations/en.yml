@@ -81,6 +81,7 @@ en:
       released: Feedback was added to your code.
       exercise: Exercise
       no_annotations: "# annotations"
+      grade: Grade
       annotation_count:
         zero: "No feedback was given"
         one: "One annotation"

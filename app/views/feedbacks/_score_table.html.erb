@@ -1,0 +1,24 @@
+<div class="collapse score-details" id="<%= "score-details-#{feedback.id}" %>">
+  <h4><%= t "feedbacks.score_table.score_breakdown" %></h4>
+  <table class="table table-condensed">
+    <% if feedback.scores.length >= 1 %>
+      <tr>
+        <td>
+          <%= t "feedbacks.score_table.total_score" %><br>
+          <span class="text-muted small"><%= t "feedbacks.score_table.total_description" %></span>
+        </td>
+        <td><%= format_score feedback.score %> / <%= format_score feedback.maximum_score %></td>
+      </tr>
+    <% end %>
+    <% rubric_scores.each do |rubric, score| %>
+      <% score = score.first %>
+      <tr>
+        <td>
+          <%= rubric.name %><br>
+          <span class="text-muted small"><%= rubric.description %></span>
+        </td>
+        <td><%= format_score score.score %> / <%= format_score rubric.maximum %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

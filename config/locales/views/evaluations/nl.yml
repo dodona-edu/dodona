@@ -81,6 +81,7 @@ nl:
       released: Er werd feedback gegeven op je code
       exercise: Oefening
       no_annotations: "# annotaties"
+      grade: Score
       annotation_count:
         zero: "Er werd geen feedback gegeven"
         one: "Één annotatie"

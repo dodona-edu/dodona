@@ -44,7 +44,7 @@
     <div class="col-md-6">
       <% @scores.each do |feedback, rubric_scores | %>
         <span class="score">
-          <%= render 'feedbacks/score_link', feedback: feedback, rubric_scores: rubric_scores, show_edit: true %>
+          <%= render 'feedbacks/score_link', feedback: feedback, rubric_scores: rubric_scores, clickable: true %>
         </span>
       <% end %>
     </div>

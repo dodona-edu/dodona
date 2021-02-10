@@ -13,14 +13,17 @@
             <tr>
               <th><%= t('.exercise') %></th>
               <th><%= t('.no_annotations') %></th>
+              <th><%= t('.grade') %></th>
               <th class="actions"></th>
             </tr>
           </thead>
           <tbody>
             <% @feedbacks.each do |fb| %>
+              <% scores = policy_scope(fb.scores).group_by(&:rubric) %>
               <tr>
                 <td><%= link_to fb.exercise.name, activity_path(fb.exercise) %></td>
                 <td><%= fb.submission.present? ? t('.annotation_count', count: fb.submission.annotations.count) : t('.no_submission') %></td>
+                <td><%= render 'feedbacks/score_link', feedback: fb, rubric_scores: scores, clickable: false %></td>
                 <td class="actions">
                   <% if fb.submission.present? %>
                     <%= link_to submission_path(fb.submission, anchor: 'code') do %>

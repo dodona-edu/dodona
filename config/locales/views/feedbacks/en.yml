@@ -58,5 +58,6 @@ en:
       score_breakdown: Grade breakdown
     score_link:
       score: "Grade: %{score} / %{max}"
+      score_short: "%{score} / %{max}"
       view_breakdown: View grade breakdown
       view_feedback: Go to the feedback

@@ -58,5 +58,6 @@ nl:
       score_breakdown: Puntenverdeling
     score_link:
       score: "Score: %{score} / %{max}"
+      score_short: "%{score} / %{max}"
       view_breakdown: Puntenverdeling bekijken
       view_feedback: Ga naar de feedback

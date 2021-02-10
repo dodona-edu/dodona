@@ -1,7 +1,7 @@
 <div class="collapse score-details" id="<%= "score-details-#{feedback.id}" %>">
   <h4><%= t "feedbacks.score_table.score_breakdown" %></h4>
   <table class="table table-condensed">
-    <% if feedback.scores.length >= 1 %>
+    <% if feedback.scores.length > 1 %>
       <tr>
         <td>
           <%= t "feedbacks.score_table.total_score" %><br>
@@ -14,7 +14,11 @@
       <% score = score.first %>
       <tr>
         <td>
-          <%= rubric.name %><br>
+          <%= rubric.name %>
+          <% unless rubric.visible %>
+            <i class="mdi mdi-android mdi-18 colored-secondary" title="<%= t "rubrics.table.visible-no" %>"></i>
+          <% end %>
+          <br>
           <span class="text-muted small"><%= rubric.description %></span>
         </td>
         <td><%= format_score score.score %> / <%= format_score rubric.maximum %></td>

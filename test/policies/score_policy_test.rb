@@ -43,4 +43,10 @@ class UserPolicyTest < ActiveSupport::TestCase
     assert_equal [@score1], Pundit.policy_scope!(@feedback.evaluation_user.user, Score)
     assert_equal [], Pundit.policy_scope!(random, Score)
   end
+
+  test 'not logged in can see nothing' do
+    assert_equal [], Pundit.policy_scope!(nil, Score)
+    @evaluation.update!(released: true)
+    assert_equal [], Pundit.policy_scope!(nil, Score)
+  end
 end

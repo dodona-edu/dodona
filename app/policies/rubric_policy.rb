@@ -1,8 +1,4 @@
 class RubricPolicy < ApplicationPolicy
-  def edit?
-    course_admin?
-  end
-
   def update?
     course_admin?
   end

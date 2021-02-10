@@ -180,9 +180,6 @@ group :development do
   gem 'spring', '~> 2.1.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 
-  # Manage processes (webpack, rails, delayed_job, ...)
-  gem 'foreman', github: 'andrewmcodes/foreman'
-
   # for opening letters
   gem 'letter_opener', '~> 1.7.0'
 end

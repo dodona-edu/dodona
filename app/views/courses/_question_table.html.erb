@@ -19,7 +19,9 @@
           </div>
         </td>
         <td>
-          <%= t "courses.questions.ago", when: time_ago_in_words(question.created_at) %>
+          <span title="<%= l question.created_at, format: :question %>">
+            <%= t "courses.questions.ago", when: time_ago_in_words(question.created_at) %>
+          </span>
           <% unless question.unanswered? %>
             <div class="text-muted ellipsis-overflow">
               <%= t "courses.questions.last_edited_by.#{question.question_state}", who: question.last_updated_by.full_name %>

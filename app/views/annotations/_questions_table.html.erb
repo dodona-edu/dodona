@@ -48,7 +48,9 @@
           </span>
         </td>
         <td>
-          <%= t "courses.questions.ago", when: time_ago_in_words(question.created_at) %>
+          <span title="<%= l question.created_at, format: :question %>">
+            <%= t "courses.questions.ago", when: time_ago_in_words(question.created_at) %>
+          </span>
         </td>
         <td class="actions">
           <% if policy(question).transition?(:unanswered) %>

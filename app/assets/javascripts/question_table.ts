@@ -124,10 +124,8 @@ export class RefreshingQuestionTable extends QuestionTable {
         // Listen to the enabling/disabling or automatic refreshes.
         document.getElementById(refreshCheckboxId).addEventListener("change", e => {
             if ((e.target as HTMLInputElement).checked) {
-                console.log("Enabling...");
                 this.timeout.start();
             } else {
-                console.log("Disabling...");
                 this.timeout.end();
             }
             this.updatePaginationLinks();

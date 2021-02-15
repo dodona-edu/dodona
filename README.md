@@ -49,6 +49,7 @@ The simplest way to start the server is with the `rails s` command. But this wil
 - With `bin/webpack-dev-server` your javascript is reloaded live and you can see development output.
 
 To run all these processes at the same time, the foreman gem is used. To start the rails server, delayed job and the webpack dev server, simply run `bin/server`.
+The foreman gem is [not bundled with Dodona](https://github.com/ddollar/foreman/wiki/Don%27t-Bundle-Foreman). Install it globally with `gem install foreman`.
 
 This has one letdown: debugging with `byebug` is broken. You can run `bin/server norails` to only start webpack and delayed_job in foreman and then run `rails s` in a different terminal to be able to use `byebug` again.
 

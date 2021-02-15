@@ -5,4 +5,4 @@ if [ "$1" = "norails" ]
 then
     formation="$formation,web=0"
 fi
-bundle exec foreman start -f Procfile.dev "$formation"
+foreman start -f Procfile.dev "$formation"

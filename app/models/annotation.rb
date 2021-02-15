@@ -40,7 +40,7 @@ class Annotation < ApplicationRecord
   after_save :create_notification
 
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
-    filter.split(' ').map(&:strip).select(&:present?).map do |part|
+    filter.split.map(&:strip).select(&:present?).map do |part|
       scopes = []
       scopes << by_exercise_name(part) unless skip_exercise
       scopes << by_username(part) unless skip_user

@@ -36,7 +36,7 @@ class ActivityPolicy < ApplicationPolicy
 
     user.administrating_courses
         .joins(course_repositories: :repository)
-        .where('repositories.id = ?', record.repository.id)
+        .where(repositories: { id: record.repository.id })
         .any?
   end
 

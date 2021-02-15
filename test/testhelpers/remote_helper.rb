@@ -10,6 +10,7 @@ module RemoteHelper
     repository
   end
 end
+
 class TempRepository < GitRepository
   REMOTES_LOCATION = Rails.root.join('test/remotes')
 

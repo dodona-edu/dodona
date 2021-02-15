@@ -383,6 +383,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_143708) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["feedback_id"], name: "index_scores_on_feedback_id"
     t.index ["last_updated_by_id"], name: "index_scores_on_last_updated_by_id"
+    t.index ["rubric_id", "feedback_id"], name: "index_scores_on_rubric_id_and_feedback_id", unique: true
     t.index ["rubric_id"], name: "index_scores_on_rubric_id"
   end
 

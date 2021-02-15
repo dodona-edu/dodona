@@ -32,6 +32,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
       }
       assert_response expected
       sign_out user if user.present?
+      Score.where(rubric: @rubric, feedback: @feedback).first.destroy! if expected == :created
     end
   end
 
@@ -112,6 +113,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
       }
       assert_response expected
       sign_out user if user.present?
+      score.destroy!
     end
   end
 

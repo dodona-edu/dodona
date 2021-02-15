@@ -1,20 +1,3 @@
-Delayed::Worker.destroy_failed_jobs = false # Keep failed jobs for logging
-Delayed::Worker.sleep_delay = 5 # seconds sleep if no job, default 5
-Delayed::Worker.max_attempts = 3 # default is 25
-Delayed::Worker.max_run_time = 2.hours
-Delayed::Worker.read_ahead = 2 # default is 5
-Delayed::Worker.raise_signal_exceptions = :term # on kill release job
-Delayed::Worker.logger = Logger.new(Rails.root.join('log/delayed_job.log'))
-Delayed::Worker.default_queue_name = 'default'
-Delayed::Worker.queue_attributes = {
-  default: { priority: 0 },
-  statistics: { priority: 10 },
-  exports: { priority: 20 },
-  low_priority_submissions: { priority: 10 },
-  submissions: { priority: 0 },
-  high_priority_submission: { priority: -10 }
-}
-
 # If a submission delayed job fails: set the status to failed and add log
 # https://www.rubydoc.info/github/collectiveidea/delayed_job/Delayed/Lifecycle
 # rubocop:disable SuppressedException
@@ -54,8 +37,28 @@ class SubmissionDjPlugin < Delayed::Plugin
 end
 # rubocop:enable SuppressedException
 
-Delayed::Worker.plugins << SubmissionDjPlugin
+Rails.application.configure do
+  config.after_initialize do
+    Delayed::Worker.destroy_failed_jobs = false # Keep failed jobs for logging
+    Delayed::Worker.sleep_delay = 5 # seconds sleep if no job, default 5
+    Delayed::Worker.max_attempts = 3 # default is 25
+    Delayed::Worker.max_run_time = 2.hours
+    Delayed::Worker.read_ahead = 2 # default is 5
+    Delayed::Worker.raise_signal_exceptions = :term # on kill release job
+    Delayed::Worker.logger = Logger.new(Rails.root.join('log/delayed_job.log'))
+    Delayed::Worker.default_queue_name = 'default'
+    Delayed::Worker.queue_attributes = {
+      default: { priority: 0 },
+      statistics: { priority: 10 },
+      exports: { priority: 20 },
+      low_priority_submissions: { priority: 10 },
+      submissions: { priority: 0 },
+      high_priority_submission: { priority: -10 }
+    }
+    Delayed::Worker.plugins << SubmissionDjPlugin
 
-Delayed::Backend::ActiveRecord.configure do |config|
-  config.reserve_sql_strategy = :default_sql
+    Delayed::Backend::ActiveRecord.configure do |config|
+      config.reserve_sql_strategy = :default_sql
+    end
+  end
 end

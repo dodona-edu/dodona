@@ -410,6 +410,8 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     exercise = evaluation.evaluation_exercises.sample
     rubric = create :rubric, evaluation_exercise: exercise
     feedback = exercise.feedbacks.sample
+    # Sometimes there already is a score, so delete it first.
+    Score.destroy_by(rubric: rubric, feedback: feedback)
     score = create :score, rubric: rubric, feedback: feedback
 
     get export_scores_evaluation_path evaluation, format: :csv

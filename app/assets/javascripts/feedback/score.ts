@@ -20,8 +20,6 @@ export default class ScoreForm {
     private readonly link: string;
     private readonly id: string;
 
-    private disabled = false;
-
     constructor(element: HTMLElement, parent: FeedbackActions) {
         this.parent = parent;
 
@@ -165,6 +163,5 @@ export default class ScoreForm {
 
     public disableInputs(): void {
         this.input.disabled = true;
-        this.disabled = false;
     }
 }

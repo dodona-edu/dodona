@@ -60,20 +60,33 @@ export default class FeedbackActions {
         this.initScoreForms();
     }
 
-    syncNextButtonDisabledState(): void {
+    private syncNextButtonDisabledState(): void {
         this.nextButton.disabled = !this.allowNextAutoMark || !this.allowNextOrder;
     }
 
-    setNextWithAutoMark(): void {
+    private setNextWithAutoMark(): void {
         this.nextButton.innerHTML =
             `${this.options.buttonText} + <i class="mdi mdi-comment-check-outline mdi-18"></i>`;
         this.allowNextAutoMark = this.options.allowNext;
         this.syncNextButtonDisabledState();
     }
 
-    setNextWithoutAutoMark(): void {
+    private setNextWithoutAutoMark(): void {
         this.nextButton.innerHTML = this.options.buttonText;
         this.allowNextAutoMark = true;
+        this.syncNextButtonDisabledState();
+    }
+
+    private checkAndSetNext(skipCompleted: boolean): void {
+        if (skipCompleted) {
+            // If we skip the completed feedbacks, we can only proceed of we have a next unseen url.
+            this.allowNextOrder = this.options.nextUnseenURL !== null;
+        } else {
+            // If we don't skip the completed feedbacks, we can proceed if we have a next url.
+            this.allowNextOrder = this.options.nextURL !== null;
+        }
+
+        // Ensure the button is synced with `allowNextOrder`.
         this.syncNextButtonDisabledState();
     }
 
@@ -123,16 +136,7 @@ export default class FeedbackActions {
         if (autoMark) {
             this.setNextWithAutoMark();
         }
-
-        if (this.options.nextURL === null && !skipCompleted) {
-            this.allowNextOrder = false;
-        } else if (skipCompleted && this.options.nextUnseenURL == null) {
-            this.allowNextOrder = false;
-        } else {
-            this.allowNextOrder = true;
-        }
-
-        this.syncNextButtonDisabledState();
+        this.checkAndSetNext(skipCompleted);
 
         this.nextButton.addEventListener("click", async event => {
             event.preventDefault();
@@ -165,13 +169,7 @@ export default class FeedbackActions {
         this.skipCompletedCheckBox.addEventListener("input", async () => {
             skipCompleted = this.skipCompletedCheckBox.checked;
             localStorage.setItem("feedbackPrefs", JSON.stringify({ autoMark, skipCompleted }));
-            if (this.options.nextURL === null && !skipCompleted) {
-                this.nextButton.setAttribute("disabled", "1");
-            } else if (skipCompleted && this.options.nextUnseenURL == null) {
-                this.nextButton.setAttribute("disabled", "1");
-            } else {
-                this.nextButton.removeAttribute("disabled");
-            }
+            this.checkAndSetNext(skipCompleted);
         });
     }
 

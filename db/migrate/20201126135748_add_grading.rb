@@ -6,7 +6,6 @@ class AddGrading < ActiveRecord::Migration[6.0]
       t.string :name, null: false
       t.boolean :visible, null: false, default: true
       t.text :description
-      t.references :last_updated_by, foreign_key: { to_table: :users }, null: false, type: :integer
 
       t.timestamps
     end

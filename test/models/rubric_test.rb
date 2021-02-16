@@ -8,7 +8,6 @@
 #  name                   :string(255)      not null
 #  visible                :boolean          default(TRUE), not null
 #  description            :text(65535)
-#  last_updated_by_id     :integer          not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #

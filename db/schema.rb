@@ -367,11 +367,9 @@ ActiveRecord::Schema.define(version: 2021_02_22_143708) do
     t.string "name", null: false
     t.boolean "visible", default: true, null: false
     t.text "description"
-    t.integer "last_updated_by_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["evaluation_exercise_id"], name: "index_rubrics_on_evaluation_exercise_id"
-    t.index ["last_updated_by_id"], name: "index_rubrics_on_last_updated_by_id"
   end
 
   create_table "scores", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -504,7 +502,6 @@ ActiveRecord::Schema.define(version: 2021_02_22_143708) do
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"
   add_foreign_key "rubrics", "evaluation_exercises"
-  add_foreign_key "rubrics", "users", column: "last_updated_by_id"
   add_foreign_key "scores", "feedbacks"
   add_foreign_key "scores", "rubrics"
   add_foreign_key "scores", "users", column: "last_updated_by_id"

@@ -8,7 +8,6 @@
 #  name                   :string(255)      not null
 #  visible                :boolean          default(TRUE), not null
 #  description            :text(65535)
-#  last_updated_by_id     :integer          not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -16,7 +15,8 @@ class Rubric < ApplicationRecord
   belongs_to :evaluation_exercise
 
   has_many :scores, dependent: :destroy
-  belongs_to :last_updated_by, class_name: 'User'
+  # Who updated the rubric. This is used to modify scores if necessary.
+  attr_accessor :last_updated_by
 
   after_create :undo_complete_feedbacks_and_set_blank_to_zero
   after_update :undo_complete_feedbacks_if_maximum_changed

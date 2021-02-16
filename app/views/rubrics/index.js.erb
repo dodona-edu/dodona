@@ -1,0 +1,2 @@
+<%# Refreshes the rubrics for one exercise. %>
+$("#card-<%= evaluation_exercise.id %>").html("<%= escape_javascript(render 'rubrics/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");

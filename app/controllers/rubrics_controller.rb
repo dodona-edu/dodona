@@ -26,7 +26,7 @@ class RubricsController < ApplicationController
     end
 
     respond_to do |format|
-      format.js { render 'rubrics/refresh', locals: { new: nil, evaluation_exercise: to } }
+      format.js { render 'rubrics/index', locals: { new: nil, evaluation_exercise: to } }
     end
   end
 
@@ -35,7 +35,7 @@ class RubricsController < ApplicationController
     args[:last_updated_by] = current_user
     @rubric.update!(args)
     respond_to do |format|
-      format.js { render 'rubrics/refresh', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
+      format.js { render 'rubrics/index', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
       format.json { render :show, status: :ok, location: [@evaluation, @rubric] }
     end
   end
@@ -45,7 +45,7 @@ class RubricsController < ApplicationController
     @rubric.last_updated_by = current_user
     @rubric.save!
     respond_to do |format|
-      format.js { render 'rubrics/refresh', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
+      format.js { render 'rubrics/index', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
       format.json { render :show, status: :created, location: [@evaluation, @rubric] }
     end
   end

@@ -214,9 +214,7 @@ Rails.application.routes.draw do
       end
       resources :scores, only: %i[show create update destroy]
     end
-    resources :feedbacks, only: %i[show edit update] do
-      post 'refresh', on: :member
-    end
+    resources :feedbacks, only: %i[show edit update]
 
     scope 'lti', controller: 'lti' do
       get 'redirect', to: 'lti#redirect', as: 'lti_redirect'

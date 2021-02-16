@@ -62,6 +62,8 @@ en:
       user: User
     evaluation_grade_table:
       user: User
+      total: Total
+      average: Average
     feedback_status:
       feedback_finished: evaluation completed
       feedback_unstarted: evaluation not yet completed

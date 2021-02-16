@@ -8,10 +8,13 @@ en:
     copy:
       copy: Copy
       exercise: Exercise
+      choose: "-- Choose an exercise --"
     table:
       name: "Name"
       description: "Description"
       maximum: "Maximum score"
+      total: "Total"
+      total-description: "Sum of all rubrics"
       visible: "Visibility"
       visible-yes: "Score becomes visible to students once evaluation is released"
       visible-no: "Score is not visible to students"

@@ -83,6 +83,10 @@ class Evaluation < ApplicationRecord
     rubrics.any?
   end
 
+  def maximum_score
+    rubrics.map(&:maximum).sum(BigDecimal(0))
+  end
+
   private
 
   def deadline_in_past

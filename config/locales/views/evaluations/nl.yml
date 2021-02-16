@@ -62,6 +62,8 @@ nl:
       user: Gebruiker
     evaluation_grade_table:
       user: Gebruiker
+      total: Totaal
+      average: Gemiddelde
     feedback_status:
       feedback_finished: evaluatie afgewerkt
       feedback_unstarted: evaluatie nog niet afgewerkt

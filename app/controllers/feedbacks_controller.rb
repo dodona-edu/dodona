@@ -2,7 +2,7 @@ class FeedbacksController < ApplicationController
   include SeriesHelper
   include RescueJsonResponse
 
-  before_action :set_feedback, only: %i[show edit update refresh]
+  before_action :set_feedback, only: %i[show edit update]
 
   has_scope :by_filter, as: 'filter' do |_controller, scope, value|
     scope.by_filter(value, skip_user: true, skip_exercise: true)
@@ -20,6 +20,11 @@ class FeedbacksController < ApplicationController
     @title = I18n.t('feedbacks.show.feedback')
 
     @score_map = @feedback.scores.index_by(&:rubric_id)
+    # If we refresh all scores because of a conflict, we want to make
+    # sure the user is aware the update was not successful. By setting
+    # the rubric ID in the `warning` param, it will be rendered with
+    # the bootstrap warning classes.
+    @warning = params[:warning]
   end
 
   def edit
@@ -45,14 +50,7 @@ class FeedbacksController < ApplicationController
     respond_to do |format|
       format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
       format.json { render :show, status: :ok, location: @feedback }
-      format.js {}
-    end
-  end
-
-  def refresh
-    @warning = params[:warning]
-    respond_to do |format|
-      format.js { render 'feedbacks/update' }
+      format.js { render :show }
     end
   end
 

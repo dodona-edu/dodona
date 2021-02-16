@@ -6,6 +6,10 @@ import FeedbackActions from "feedback/actions";
  *
  * As with the general feedback actions, almost all changes
  * result in a request to the server to replace the current HTML.
+ *
+ * When a score is updated, the server sends a js response that will
+ * replace the HTML for the given score. Afterwards, the `FeedbackActions`
+ * instance will be notified.
  */
 export default class ScoreForm {
     private readonly input: HTMLInputElement;
@@ -15,7 +19,7 @@ export default class ScoreForm {
     private readonly maxLink: HTMLElement;
 
     private readonly parent: FeedbackActions;
-    private readonly rubricId: string;
+    public readonly rubricId: string;
     private readonly existing: boolean;
     private readonly link: string;
     private readonly id: string;
@@ -70,8 +74,12 @@ export default class ScoreForm {
         });
     }
 
-    public setData(value: string): void {
+    public set data(value: string) {
         this.input.value = value;
+    }
+
+    public get data(): string {
+        return this.input.value;
     }
 
     public getDataForNested(): object {

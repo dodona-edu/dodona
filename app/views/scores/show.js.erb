@@ -1,0 +1,7 @@
+<%# This does two steps: replace the HTML of the score, and then notify the action class. %>
+<%# The index is set with JS once known. %>
+$("#<%= @score.rubric.id %>-score-form-wrapper")
+    .replaceWith("<%= escape_javascript(render 'feedbacks/score_actions', score: @score, rubric: @score.rubric, index: @order) %>");
+window.dodona.feedbackActions.initScoreForm("<%= @score.rubric.id %>");
+window.dodona.feedbackActions.setTotal("<%= format_score @total %>");
+window.dodona.feedbackActions.setAllowNext(<%= policy(@feedback).complete? %>);

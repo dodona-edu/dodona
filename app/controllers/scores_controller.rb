@@ -9,27 +9,27 @@ class ScoresController < ApplicationController
     @score.last_updated_by = current_user
     authorize @score
     @score.save!
-    set_feedback_and_score_map
+    set_common
     respond_to do |format|
-      format.js { render 'feedbacks/update' }
+      format.js { render :show }
       format.json { render :show, status: :created, location: [@evaluation, @score] }
     end
   end
 
   def update
     @score.update!(permitted_attributes(Score))
-    set_feedback_and_score_map
+    set_common
     respond_to do |format|
-      format.js { render 'feedbacks/update' }
+      format.js { render :show }
       format.json { render :show, location: [@evaluation, @score] }
     end
   end
 
   def destroy
     @score.destroy!
-    set_feedback_and_score_map
+    set_common
     respond_to do |format|
-      format.js { render 'feedbacks/update' }
+      format.js { render 'feedbacks/show' }
       format.json { render json: {}, status: :no_content }
     end
   end
@@ -47,8 +47,10 @@ class ScoresController < ApplicationController
     authorize @score
   end
 
-  def set_feedback_and_score_map
+  def set_common
     @feedback = @score.feedback
     @score_map = @feedback.scores.index_by(&:rubric_id)
+    @order = @score.feedback.evaluation_exercise.rubrics.order(:id).find_index { |r| r.id == @score.rubric_id }
+    @total = @score.feedback.score
   end
 end

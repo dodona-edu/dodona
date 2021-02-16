@@ -8,10 +8,13 @@ nl:
     copy:
       copy: Kopiëren
       exercise: Oefening
+      choose: "-- Kies een oefening --"
     table:
       name: "Naam"
       description: "Beschrijving"
       maximum: "Maximale score"
+      total: "Totaal"
+      total-description: "Som van alle rubrics"
       visible: "Zichtbaarheid"
       visible-yes: "Punten worden zichtbaar voor studenten na vrijgave evaluatie"
       visible-no: "Punten zijn niet zichtbaar voor studenten"

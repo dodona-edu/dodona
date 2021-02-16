@@ -7,7 +7,7 @@
                               evaluation.evaluation_exercises.includes(:exercise).filter { |o| o.id != evaluation_exercise.id },
                               :id,
                               ->(e) { e.exercise.name },
-                              { include_blank: "-- Kies een oefening --" }, { class: "form-control" } %>
+                              { include_blank: t("rubrics.copy.choose") }, { class: "form-control" } %>
     </div>
   </div>
   <div class="form-group">

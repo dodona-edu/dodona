@@ -3,7 +3,6 @@ import ScoreForm from "feedback/score";
 
 interface ActionOptions {
     currentURL: string;
-    currentRefreshURL: string;
     feedbackId: string;
     nextURL: string | null;
     nextUnseenURL: string | null;
@@ -27,12 +26,14 @@ export default class FeedbackActions {
     readonly options: ActionOptions;
 
     private readonly nextButton: HTMLButtonElement;
+    private readonly completeButton: HTMLButtonElement;
     private readonly autoMarkCheckBox: HTMLInputElement;
     private readonly skipCompletedCheckBox: HTMLInputElement;
     private readonly allScoresZeroButton: HTMLButtonElement | null;
     private readonly allScoresMaxButton: HTMLButtonElement | null;
+    private readonly scoreSumElement: HTMLSpanElement | null;
 
-    private readonly scoreForms: ScoreForm[];
+    private scoreForms: ScoreForm[];
     private allowNextAutoMark: boolean = true;
     private allowNextOrder: boolean = true;
 
@@ -43,14 +44,14 @@ export default class FeedbackActions {
         this.nextButton = document.getElementById("next-feedback-button") as HTMLButtonElement;
         this.autoMarkCheckBox = document.getElementById("auto-mark") as HTMLInputElement;
         this.skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
+        this.completeButton = document.querySelector(".complete-feedback") as HTMLButtonElement;
+
+        this.scoreSumElement = document.getElementById("score-sum");
 
         // Score forms
         this.scoreForms = [];
         for (const rubric of this.options.rubrics) {
-            const form = document.getElementById(`${rubric}-score-form-wrapper`) as HTMLElement;
-            if (form !== null) {
-                this.scoreForms.push(new ScoreForm(form, this));
-            }
+            this.initScoreForm(rubric);
         }
 
         this.allScoresZeroButton = document.getElementById("zero-button") as HTMLButtonElement;
@@ -113,19 +114,40 @@ export default class FeedbackActions {
         });
     }
 
-    /**
-     * Refresh the actions from the server.
-     * @param {string} warning - Score to mark with a warning.
-     */
     async refresh(warning: string = ""): Promise<void> {
-        const url = updateURLParameter(this.options.currentRefreshURL, "warning", warning);
+        const url = updateURLParameter(this.options.currentURL, "warning", warning);
         const response = await fetch(url, {
-            method: "post",
             headers: {
                 "Accept": "text/javascript"
             }
         });
         eval(await response.text());
+    }
+
+    initScoreForm(rubricId: string): void {
+        // Remove existing score forms.
+        this.scoreForms = this.scoreForms.filter(form => form.rubricId !== rubricId);
+        // Get new form. This assumes the HTML has been set already.
+        const form = document.getElementById(`${rubricId}-score-form-wrapper`) as HTMLElement;
+        // If the form is null, we can't edit the score for some reason.
+        if (form !== null) {
+            this.scoreForms.push(new ScoreForm(form, this));
+        }
+    }
+
+    setTotal(newTotal: string): void {
+        this.scoreSumElement.innerText = newTotal;
+    }
+
+    setAllowNext(allowNext: boolean): void {
+        this.options.allowNext = allowNext;
+        this.completeButton.disabled = !allowNext;
+        const autoMark = this.autoMarkCheckBox.checked;
+        if (autoMark) {
+            this.setNextWithAutoMark();
+        } else {
+            this.setNextWithoutAutoMark();
+        }
     }
 
     initialiseNextButtons(): void {
@@ -179,7 +201,7 @@ export default class FeedbackActions {
             this.disableInputs();
             this.scoreForms.forEach(f => {
                 f.markBusy();
-                f.setData("0");
+                f.data = "0";
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
             await this.update({
@@ -192,7 +214,7 @@ export default class FeedbackActions {
             this.disableInputs();
             this.scoreForms.forEach(f => {
                 f.markBusy();
-                f.setData(f.getMax());
+                f.data = f.getMax();
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
             await this.update({

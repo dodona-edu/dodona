@@ -6,12 +6,14 @@
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
         <th class="status-header"><%= exercise.exercise.name %> (/<%= format_score exercise.maximum_score %>)</th>
       <% end %>
-      <th class="status-header">Totaal</th>
+      <th class="status-header">
+        <%= t ".total" %> (/ <%= format_score @evaluation.maximum_score %>)
+      </th>
     </tr>
     </thead>
     <tbody>
     <tr>
-      <td class="user-name ellipsis-overflow">Gemiddelde</td>
+      <td class="user-name ellipsis-overflow"><%= t ".average" %></td>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
         <td class="status">
           <% if exercise.rubrics.present? %>

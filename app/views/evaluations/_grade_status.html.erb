@@ -16,7 +16,7 @@
             <span><%= format_score feedback.score %></span>
         </span>
       <% else %>
-        <span class="provisional" title="<%= feedback.exercise.name %>: <%= t "evaluations.feedback_status..submission_" + submission_status %><%= t "evaluations.feedback_status.feedback_unstarted" %>">
+        <span class="provisional" title="<%= feedback.exercise.name %>: <%= t "evaluations.feedback_status.submission_" + submission_status %><%= t "evaluations.feedback_status.feedback_unstarted" %>">
           <%= format_score feedback.score %>
         </span>
       <% end %>

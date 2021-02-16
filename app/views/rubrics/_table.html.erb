@@ -15,8 +15,8 @@
   <tbody>
   <% if amount >= 2 %>
     <tr>
-      <td>Totaal</td>
-      <td class="description">Som van alle rubrics</td>
+      <td><%= t ".total" %></td>
+      <td class="description"><%= t ".total-description" %></td>
       <td class="maximum"><%= format_score evaluation_exercise.rubrics.map(&:maximum).sum %></td>
       <td class="visibility">
         <% if evaluation_exercise.rubrics.map(&:visible).any? %>

@@ -47,7 +47,7 @@
 
 <% if @feedback.evaluation_exercise.rubrics.present? %>
   <div class="card-supporting-text card-border">
-    <% rubrics = @feedback.evaluation_exercise.rubrics %>
+    <% rubrics = @feedback.evaluation_exercise.rubrics.order(:id) %>
     <% if rubrics.length > 1 %>
       <div class="row">
         <div class="col-sm-12">
@@ -56,7 +56,7 @@
       </div>
       <div class="row row-no-gutters form-row">
         <div class="col-xs-8 total-score" data-total="<%= @feedback.score %>">
-          <%= format_score @feedback.score %> / <%= format_score @feedback.maximum_score %>
+          <span id="score-sum"><%= format_score @feedback.score %></span> / <%= format_score @feedback.maximum_score %>
         </div>
         <% unless @feedback.completed? %>
           <div class="col-xs-4 score-buttons">
@@ -114,9 +114,8 @@
 
 <script>
     <% siblings = @feedback.siblings %>
-    new window.dodona.FeedbackActions({
+    window.dodona.feedbackActions = new window.dodona.FeedbackActions({
         currentURL: <%= raw feedback_url(@feedback).to_json %>,
-        currentRefreshURL: <%= raw refresh_feedback_url(@feedback).to_json %>,
         feedbackId: <%= @feedback.id %>,
         nextURL: <%= raw (siblings[:next].present? ? feedback_url(siblings[:next]) : nil).to_json %>,
         nextUnseenURL: <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,

@@ -746,7 +746,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
   test 'should throw ":abort" when commit does not succeed and return an error' do
     @exercise.repository.stubs(:commit).returns([false, ['not empty']])
     assert_throws :abort do
-      @exercise.store_config(config)
+      @exercise.store_config({ new: 'config' })
     end
   end
 

@@ -30,7 +30,7 @@ class FeedbackPolicy < ApplicationPolicy
     found_rubrics = record.scores.map(&:rubric_id).to_set
 
     # For every template, there should be a score
-    required_rubrics.subset?(found_rubrics)
+    required_rubrics == found_rubrics
   end
 
   def permitted_attributes

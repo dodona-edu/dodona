@@ -59,6 +59,8 @@ jobs:
       run: |
         git config --global user.email "dodona@ugent.be"
         git config --global user.name "Dodona"
+        sudo sysctl fs.inotify.max_user_watches=524288
+        sudo sysctl -p
         bundle exec rails test
   lint:
     runs-on: ubuntu-latest

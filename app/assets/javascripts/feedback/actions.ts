@@ -177,11 +177,11 @@ export default class FeedbackActions {
         this.allScoresZeroButton?.addEventListener("click", async e => {
             e.preventDefault();
             this.disableInputs();
-            const values = this.scoreForms.map(f => {
+            this.scoreForms.forEach(f => {
                 f.markBusy();
                 f.setData("0");
-                return f.getDataForNested();
             });
+            const values = this.scoreForms.map(f => f.getDataForNested());
             await this.update({
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 scores_attributes: values
@@ -190,11 +190,11 @@ export default class FeedbackActions {
         this.allScoresMaxButton?.addEventListener("click", async e => {
             e.preventDefault();
             this.disableInputs();
-            const values = this.scoreForms.map(f => {
+            this.scoreForms.forEach(f => {
                 f.markBusy();
                 f.setData(f.getMax());
-                return f.getDataForNested();
             });
+            const values = this.scoreForms.map(f => f.getDataForNested());
             await this.update({
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 scores_attributes: values

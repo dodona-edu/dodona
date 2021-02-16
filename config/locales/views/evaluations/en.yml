@@ -36,13 +36,6 @@ en:
         one: "<h1>1 <small>student</small></h1> submitted at least once"
         other: "<h1>%{count} <small>students</small></h1> submitted at least once"
       select_users: "Select these users"
-    rubrics:
-      title: Edit rubrics
-      to_evaluation: To evaluation
-      title_add: Add rubrics
-      explanation_title: "Wat is a rubric?"
-      explanation_part1: "With a rubric you decide how you want to grade the submissions in this evaluation. You can create a number of rubrics for each exercise."
-      explanation_part2: "If you don't want to do grading on Dodona, you can click '%{button}'."
     edit:
       title: Edit users
     edit_users:

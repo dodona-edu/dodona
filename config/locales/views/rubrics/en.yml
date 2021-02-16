@@ -18,14 +18,13 @@ en:
       delete: Delete
       edit: Edit
     index:
-      title: Rubrics
-      explanation_title: "Wat is a scoring scheme?"
-      explanation_part1: "With a scoring scheme you decide how you want to grade the submissions in this evaluation. You can create a number of score templates for every exercise. A score template defines the elements you want to grade during feedback."
-      explanation_part2: "If you don't want to do grading on Dodona, you can click 'Go to evaluation'."
-      add-new: Add new template to %{exercise}
-      empty: There are no score templates for this exercise. Add one by clicking the "Add new template" button.
+      title: Edit rubrics
       to_evaluation: To evaluation
-      back_to_evaluation: Back to evaluation
+    new:
+      title: Add rubrics
+      explanation_title: "Wat is a rubric?"
+      explanation_part1: "With a rubric you decide how you want to grade the submissions in this evaluation. You can create a number of rubrics for each exercise."
+      explanation_part2: "If you don't want to do grading on Dodona, you can click '%{button}'."
     exercise:
       nothing: There are no rubrics for this exercise yet.
       copy: Copy rubric from another exercise

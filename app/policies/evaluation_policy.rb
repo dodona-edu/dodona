@@ -15,10 +15,6 @@ class EvaluationPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def add_rubrics?
-    course_admin?
-  end
-
   def rubrics?
     course_admin?
   end

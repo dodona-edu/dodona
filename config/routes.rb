@@ -202,15 +202,13 @@ Rails.application.routes.draw do
       member do
         get 'add_users'
         get 'overview'
-        get 'add_rubrics'
-        get 'rubrics'
         get 'export_scores'
         post 'add_user'
         post 'remove_user'
         post 'set_multi_user'
       end
       resources :feedbacks, only: %i[show edit update]
-      resources :rubrics, only: %i[create destroy update] do
+      resources :rubrics, only: %i[create destroy update index new] do
         post 'copy', on: :collection
         post 'add_all', on: :collection
       end

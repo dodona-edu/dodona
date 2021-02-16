@@ -1,0 +1,20 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'evaluation' %>
+<% end %>
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="card evaluation-user-select">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @title %></h2>
+      </div>
+      <div class="card-actions card-border">
+        <%= link_to t('.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+      </div>
+    </div>
+    <% @evaluation.evaluation_exercises.each do |evaluation_exercise| %>
+      <div id="card-<%= evaluation_exercise.id %>">
+        <%= render 'rubrics/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
+      </div>
+    <% end %>
+  </div>
+</div>

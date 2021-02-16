@@ -43,10 +43,10 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     evaluation = @series.evaluation
 
     get add_users_evaluation_path(evaluation, graded: true)
-    assert_select "a[href^='#{add_rubrics_evaluation_path(evaluation)}']", true
+    assert_select "a[href^='#{new_evaluation_rubric_path(evaluation)}']", true
 
     get add_users_evaluation_path(evaluation, graded: false)
-    assert_select "a[href^='#{add_rubrics_evaluation_path(evaluation)}']", false
+    assert_select "a[href^='#{new_evaluation_rubric_path(evaluation)}']", false
   end
 
   test 'Can remove user from feedback' do
@@ -364,66 +364,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       get evaluation_feedback_path(evaluation, feedback)
       assert_response :redirect
     end
-  end
-
-  test 'rubric page for a feedback session is only available for course admins' do
-    post evaluations_path, params: {
-      evaluation: {
-        series_id: @series.id,
-        deadline: DateTime.now
-      }
-    }
-    random_student = create :student
-    evaluation = @series.evaluation
-    staff_member = create :staff
-    @series.course.administrating_members << staff_member
-
-    get rubrics_evaluation_path(evaluation)
-    assert_response :success
-
-    sign_out @course_admin
-    get rubrics_evaluation_path(evaluation)
-    assert_response :redirect
-
-    sign_in random_student
-    get rubrics_evaluation_path(evaluation)
-    assert_response :redirect
-    sign_out random_student
-
-    assert_not_nil staff_member
-    sign_in staff_member
-    get rubrics_evaluation_path(evaluation)
-    assert_response :success
-  end
-
-  test 'add rubric page for a feedback session is only available for course admins' do
-    post evaluations_path, params: {
-      evaluation: {
-        series_id: @series.id,
-        deadline: DateTime.now
-      }
-    }
-    random_student = create :student
-    evaluation = @series.evaluation
-    staff_member = create :staff
-    @series.course.administrating_members << staff_member
-
-    get add_rubrics_evaluation_path(evaluation)
-    assert_response :success
-
-    sign_out @course_admin
-    get add_rubrics_evaluation_path(evaluation)
-    assert_response :redirect
-
-    sign_in random_student
-    get add_rubrics_evaluation_path(evaluation)
-    assert_response :redirect
-    sign_out random_student
-
-    assert_not_nil staff_member
-    sign_in staff_member
-    get add_rubrics_evaluation_path(evaluation)
-    assert_response :success
   end
 
   test 'Show page should only be available to zeus and course admins' do

@@ -98,7 +98,7 @@ class RubricsControllerTest < ActionDispatch::IntegrationTest
       [nil, :unauthorized]
     ].each do |user, expected|
       sign_in user if user.present?
-      post rubrics_evaluation_path(@evaluation, format: :json), params: {
+      post evaluation_rubrics_path(@evaluation, format: :json), params: {
         rubric: {
           name: 'Code re-use',
           description: 'After test',
@@ -113,7 +113,7 @@ class RubricsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not create rubric for invalid data' do
     # Missing data
-    post rubrics_evaluation_path(@evaluation, format: :json), params: {
+    post evaluation_rubrics_path(@evaluation, format: :json), params: {
       rubric: {
         name: 'Code re-use',
         evaluation_exercise_id: @evaluation.evaluation_exercises.first.id
@@ -122,7 +122,7 @@ class RubricsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
 
     # Negative maximum
-    post rubrics_evaluation_path(@evaluation, format: :json), params: {
+    post evaluation_rubrics_path(@evaluation, format: :json), params: {
       rubric: {
         name: 'Code re-use',
         maximum: '-20.0',
@@ -156,6 +156,36 @@ class RubricsControllerTest < ActionDispatch::IntegrationTest
 
       sign_out user if user.present?
       exercise.update!(rubrics: [])
+    end
+  end
+
+  test 'add rubric page for a feedback session is only available for course admins' do
+    [
+      [@staff_member, :success],
+      [create(:student), :redirect],
+      [create(:staff), :redirect],
+      [create(:zeus), :success],
+      [nil, :redirect]
+    ].each do |user, expected|
+      sign_in user if user.present?
+      get new_evaluation_rubric_path(@evaluation)
+      assert_response expected
+      sign_out user if user.present?
+    end
+  end
+
+  test 'rubric page for a feedback session is only available for course admins' do
+    [
+      [@staff_member, :success],
+      [create(:student), :redirect],
+      [create(:staff), :redirect],
+      [create(:zeus), :success],
+      [nil, :redirect]
+    ].each do |user, expected|
+      sign_in user if user.present?
+      get evaluation_rubrics_path(@evaluation)
+      assert_response expected
+      sign_out user if user.present?
     end
   end
 end

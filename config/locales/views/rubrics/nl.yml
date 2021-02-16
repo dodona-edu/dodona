@@ -18,11 +18,13 @@ nl:
       delete: Verwijderen
       edit: Bewerken
     index:
-      title: Rubrics
-      add-new: Nieuw sjabloon toevoegen aan %{exercise}
-      empty: Er zijn geen puntensjablonen voor deze oefening. Je kan er toevoegen door op "Nieuw sjabloon toevoegen" te klikken.
+      title: Rubrics aanpassen
       to_evaluation: Naar evaluatie
-      back_to_evaluation: Terug naar evaluatie
+    new:
+      title: Rubrics toevoegen
+      explanation_title: "Wat is een rubric?"
+      explanation_part1: "Bij een rubric beslis je hoe je punten wilt geven aan de oplossingen in deze evaluatie. Per oefening kan je een aantal rubrics opstellen."
+      explanation_part2: "Als je geen punten wilt geven in Dodona kan je onmiddellijk op '%{button}' klikken."
     exercise:
       nothing: Er zijn nog geen rubrics voor deze oefening.
       copy: Rubric kopiëren van een andere oefening

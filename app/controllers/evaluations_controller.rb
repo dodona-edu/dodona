@@ -2,7 +2,7 @@ class EvaluationsController < ApplicationController
   include SeriesHelper
   include EvaluationHelper
 
-  before_action :set_evaluation, only: %i[show edit add_users add_rubrics rubrics update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_scores]
+  before_action :set_evaluation, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_scores]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -61,16 +61,6 @@ class EvaluationsController < ApplicationController
     ]
     @title = I18n.t('evaluations.add_users.title')
     @graded = ActiveModel::Type::Boolean.new.cast(params['graded'])
-  end
-
-  def add_rubrics
-    @new_rubrics = true
-    add_or_edit_rubrics I18n.t('evaluations.rubrics.title_add')
-  end
-
-  def rubrics
-    @new_rubrics = false
-    add_or_edit_rubrics I18n.t('evaluations.rubrics.title')
   end
 
   def create
@@ -165,19 +155,5 @@ class EvaluationsController < ApplicationController
 
   def set_series
     @series = Series.find(params[:series_id])
-  end
-
-  def add_or_edit_rubrics(title)
-    edit
-    @user_count_course = @evaluation.series.course.enrolled_members.count
-    @user_count_series = @evaluation.series.course.enrolled_members.where(id: Submission.where(exercise_id: @evaluation.exercises, course_id: @evaluation.series.course_id).select('DISTINCT user_id')).count
-    @crumbs = [
-      [@evaluation.series.course.name, course_url(@evaluation.series.course)],
-      [@evaluation.series.name, series_url(@evaluation.series)],
-      [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
-      [title, '#']
-    ]
-    @title = title
-    render 'rubrics'
   end
 end

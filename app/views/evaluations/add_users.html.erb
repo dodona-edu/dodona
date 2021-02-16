@@ -53,7 +53,7 @@
       </div>
       <div class="card-actions card-border">
         <% if @graded %>
-          <%= link_to t('evaluations.new.next'), add_rubrics_evaluation_path(@evaluation, creating: true), class: "btn btn-text btn-primary" %>
+          <%= link_to t('evaluations.new.next'), new_evaluation_rubric_path(@evaluation), class: "btn btn-text btn-primary" %>
         <% else %>
           <%= link_to t('evaluations.new.next'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
         <% end %>

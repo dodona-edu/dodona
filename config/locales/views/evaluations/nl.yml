@@ -36,13 +36,6 @@ nl:
         one: "<h1>1 <small>student</small></h1> heeft minstens 1 keer ingediend"
         other: "<h1>%{count} <small>studenten</small></h1> hebben minstens 1 keer ingediend"
       select_users: "Gebruikers selecteren"
-    rubrics:
-      title: Rubrics aanpassen
-      title_add: Rubrics toevoegen
-      to_evaluation: Naar evaluatie
-      explanation_title: "Wat is een rubric?"
-      explanation_part1: "Bij een rubric beslis je hoe je punten wilt geven aan de oplossingen in deze evaluatie. Per oefening kan je een aantal rubrics opstellen."
-      explanation_part2: "Als je geen punten wilt geven in Dodona kan je onmiddellijk op '%{button}' klikken."
     edit:
       title: Gebruikers aanpassen
     edit_users:

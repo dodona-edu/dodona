@@ -78,7 +78,7 @@ gem 'jwt', '~> 2.2.2'
 
 # contact mail form
 gem 'mail_form', '~> 1.9.0'
-gem 'recaptcha', '~> 5.6.0', require: 'recaptcha/rails'
+gem 'recaptcha', '~> 5.7.0', require: 'recaptcha/rails'
 
 # authorization
 gem 'pundit', '~> 2.1.0'

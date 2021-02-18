@@ -21,10 +21,6 @@ class FeedbackPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def refresh?
-    show?
-  end
-
   def complete?
     required_rubrics = record.rubrics.map(&:id).to_set
     found_rubrics = record.scores.map(&:rubric_id).to_set

@@ -77,6 +77,22 @@ class FeedbacksTest < ApplicationSystemTestCase
     assert_button(class: 'complete-feedback', disabled: false)
   end
 
+  test 'can save score with enter' do
+    visit(feedback_path(id: @feedback.id))
+
+    first_input = find(id: "#{@rubric_first.id}-score-form-wrapper").find('.score-input')
+
+    # Submit score using enter key.
+    first_input.fill_in with: '16.0'
+    first_input.send_keys :enter
+    # :enabled makes capybara wait on the refresh
+    find(id: "#{@rubric_first.id}-score-form-wrapper").find('.score-input:enabled')
+
+    @score.reload
+    assert_equal BigDecimal('16'), @score.score
+    assert_button(class: 'complete-feedback', disabled: true)
+  end
+
   test 'concurrent modifications are shown' do
     visit(feedback_path(id: @feedback.id))
 

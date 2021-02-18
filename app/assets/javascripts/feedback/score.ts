@@ -17,6 +17,7 @@ export default class ScoreForm {
     private readonly spinner: HTMLElement;
     private readonly deleteButton: HTMLElement;
     private readonly maxLink: HTMLElement;
+    private readonly form: HTMLFormElement;
 
     private readonly parent: FeedbackActions;
     public readonly rubricId: string;
@@ -27,16 +28,16 @@ export default class ScoreForm {
     constructor(element: HTMLElement, parent: FeedbackActions) {
         this.parent = parent;
 
-        const form = element.querySelector(".score-form") as HTMLFormElement;
-        this.input = form.querySelector("input.score-input");
-        this.spinner = form.querySelector(".dodona-progress");
-        this.expectedScore = form.querySelector(".score-form input.expected-score");
-        this.deleteButton = form.parentElement.querySelector(".delete-button");
-        this.rubricId = (form.querySelector("input.rubric") as HTMLInputElement).value;
+        this.form = element.querySelector(".score-form") as HTMLFormElement;
+        this.input = this.form.querySelector("input.score-input");
+        this.spinner = this.form.querySelector(".dodona-progress");
+        this.expectedScore = this.form.querySelector(".score-form input.expected-score");
+        this.deleteButton = this.form.parentElement.querySelector(".delete-button");
+        this.rubricId = (this.form.querySelector("input.rubric") as HTMLInputElement).value;
         this.maxLink = element.querySelector("a.score-click");
-        this.id = (form.querySelector("input.id") as HTMLInputElement).value;
-        this.existing = form.dataset.new === "true";
-        this.link = form.dataset.url;
+        this.id = (this.form.querySelector("input.id") as HTMLInputElement).value;
+        this.existing = this.form.dataset.new === "true";
+        this.link = this.form.dataset.url;
 
         this.initListeners();
     }
@@ -47,6 +48,7 @@ export default class ScoreForm {
 
     private initListeners(): void {
         let valueOnFocus = "";
+        let updating = false;
         this.input.addEventListener("focus", e => {
             valueOnFocus = (e.target as HTMLInputElement).value;
         });
@@ -57,7 +59,19 @@ export default class ScoreForm {
             if (!this.input.reportValidity()) {
                 return;
             }
+            if (updating) {
+                return;
+            }
+            updating = true;
             this.sendUpdate(e.relatedTarget as HTMLElement);
+        });
+        this.form.addEventListener("submit", e => {
+            e.preventDefault();
+            if (updating) {
+                return;
+            }
+            updating = true;
+            this.sendUpdate(document.activeElement as HTMLElement);
         });
         if (this.deleteButton) {
             this.deleteButton.addEventListener("click", e => {

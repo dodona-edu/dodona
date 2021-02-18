@@ -36,6 +36,16 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'should not create score for invalid data' do
+    post evaluation_scores_path(@evaluation, format: :json), params: {
+      score: {
+        rubric_id: @rubric.id,
+        feedback_id: @feedback.id
+      }
+    }
+    assert_response :unprocessable_entity
+  end
+
   test 'should not create score for completed feedback' do
     @feedback.update!(completed: true)
 
@@ -69,6 +79,17 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
       assert_response expected
       sign_out user if user.present?
     end
+  end
+
+  test 'should not update score for invalid data' do
+    score = create :score, rubric: @rubric, feedback: @feedback
+    patch evaluation_score_path(@evaluation, score, format: :json), params: {
+      score: {
+        score: nil,
+        expected_score: score.score.to_s
+      }
+    }
+    assert_response :unprocessable_entity
   end
 
   test 'should not update score if feedback is completed' do

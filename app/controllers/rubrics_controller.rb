@@ -1,6 +1,4 @@
 class RubricsController < ApplicationController
-  include RescueJsonResponse
-
   before_action :set_rubric, only: %i[destroy update]
   before_action :set_evaluation
 
@@ -22,7 +20,7 @@ class RubricsController < ApplicationController
       new_rubric = rubric.dup
       new_rubric.evaluation_exercise = to
       new_rubric.last_updated_by = current_user
-      new_rubric.save!
+      new_rubric.save
     end
 
     respond_to do |format|
@@ -33,20 +31,26 @@ class RubricsController < ApplicationController
   def update
     args = permitted_attributes(@rubric)
     args[:last_updated_by] = current_user
-    @rubric.update!(args)
     respond_to do |format|
-      format.js { render 'rubrics/index', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
-      format.json { render :show, status: :ok, location: [@evaluation, @rubric] }
+      if @rubric.update(args)
+        format.js { render 'rubrics/index', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
+        format.json { render :show, status: :ok, location: [@evaluation, @rubric] }
+      else
+        format.json { render json: @rubric.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def create
     @rubric = Rubric.new(permitted_attributes(Rubric))
     @rubric.last_updated_by = current_user
-    @rubric.save!
     respond_to do |format|
-      format.js { render 'rubrics/index', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
-      format.json { render :show, status: :created, location: [@evaluation, @rubric] }
+      if @rubric.save
+        format.js { render 'rubrics/index', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
+        format.json { render :show, status: :created, location: [@evaluation, @rubric] }
+      else
+        format.json { render json: @rubric.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -58,7 +62,7 @@ class RubricsController < ApplicationController
       @evaluation.evaluation_exercises.each do |evaluation_exercise|
         new_rubric = @rubric.dup
         new_rubric.evaluation_exercise = evaluation_exercise
-        new_rubric.save!
+        new_rubric.save
       end
     end
 
@@ -66,9 +70,9 @@ class RubricsController < ApplicationController
   end
 
   def destroy
-    @rubric.destroy!
+    @rubric.destroy
     respond_to do |format|
-      format.js { render 'rubrics/refresh', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
+      format.js { render 'rubrics/index', locals: { new: nil, evaluation_exercise: @rubric.evaluation_exercise } }
       format.json { render json: {}, status: :no_content }
     end
   end

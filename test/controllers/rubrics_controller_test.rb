@@ -132,6 +132,17 @@ class RubricsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test 'should not update rubric for invalid data' do
+    rubric = create :rubric
+    # Negative maximum
+    patch evaluation_rubric_path(@evaluation, rubric, format: :json), params: {
+      rubric: {
+        maximum: '-20.0'
+      }
+    }
+    assert_response :unprocessable_entity
+  end
+
   test 'should delete rubric if course administrator' do
     exercise = @evaluation.evaluation_exercises.first
 

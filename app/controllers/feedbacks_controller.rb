@@ -1,6 +1,5 @@
 class FeedbacksController < ApplicationController
   include SeriesHelper
-  include RescueJsonResponse
 
   before_action :set_feedback, only: %i[show edit update]
 
@@ -44,9 +43,11 @@ class FeedbacksController < ApplicationController
   def update
     attrs = permitted_attributes(@feedback)
     attrs['scores_attributes'].each { |s| s['last_updated_by_id'] = current_user.id } if attrs['scores_attributes'].present?
-    @feedback.update!(attrs)
+
+    @feedback.update(attrs)
     # We might have updated scores, so recalculate the map.
     @score_map = @feedback.scores.index_by(&:rubric_id)
+
     respond_to do |format|
       format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
       format.json { render :show, status: :ok, location: @feedback }

@@ -1,6 +1,4 @@
 class ScoresController < ApplicationController
-  include RescueJsonResponse
-
   before_action :set_score, only: %i[update destroy]
   before_action :set_evaluation
 
@@ -8,25 +6,31 @@ class ScoresController < ApplicationController
     @score = Score.new(permitted_attributes(Score))
     @score.last_updated_by = current_user
     authorize @score
-    @score.save!
-    set_common
     respond_to do |format|
-      format.js { render :show }
-      format.json { render :show, status: :created, location: [@evaluation, @score] }
+      if @score.save
+        set_common
+        format.js { render :show }
+        format.json { render :show, status: :created, location: [@evaluation, @score] }
+      else
+        format.json { render json: @score.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def update
-    @score.update!(permitted_attributes(Score))
-    set_common
     respond_to do |format|
-      format.js { render :show }
-      format.json { render :show, location: [@evaluation, @score] }
+      if @score.update(permitted_attributes(Score))
+        set_common
+        format.js { render :show }
+        format.json { render :show, status: :created, location: [@evaluation, @score] }
+      else
+        format.json { render json: @score.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
-    @score.destroy!
+    @score.destroy
     set_common
     respond_to do |format|
       format.js { render 'feedbacks/show' }

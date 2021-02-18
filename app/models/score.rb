@@ -19,6 +19,8 @@ class Score < ApplicationRecord
   belongs_to :feedback
   belongs_to :last_updated_by, class_name: 'User'
 
+  validates :score, presence: true
+
   def out_of_bounds?
     return false if score.nil?
 

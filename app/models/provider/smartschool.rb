@@ -27,4 +27,20 @@ class Provider::Smartschool < Provider
   def self.sym
     :smartschool
   end
+
+  SMARTSCHOOL_SUFFIX = '.smartschool.be'.freeze
+
+  def self.extract_institution_name(auth_hash)
+    institution = auth_hash&.info&.institution
+
+    # Sanity check
+    return Provider.extract_institution_name(auth_hash) unless institution =~ URI::DEFAULT_PARSER.make_regexp
+
+    uri = URI.parse(institution)
+    host = uri.host
+    return Provider.extract_institution_name(auth_hash) unless host.end_with?(SMARTSCHOOL_SUFFIX)
+
+    school_name = host.delete_suffix SMARTSCHOOL_SUFFIX
+    [school_name, school_name]
+  end
 end

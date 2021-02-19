@@ -51,6 +51,10 @@ class Provider < ApplicationRecord
     raise 'Unknown provider type.'
   end
 
+  def self.extract_institution_name(_auth_hash)
+    [Institution::NEW_INSTITUTION_NAME, Institution::NEW_INSTITUTION_NAME]
+  end
+
   private
 
   def at_least_one_preferred

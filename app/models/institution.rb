@@ -20,6 +20,7 @@ class Institution < ApplicationRecord
   validates :logo, :short_name, presence: true
 
   scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
+  scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%").or(where('short_name LIKE ?', "%#{name}%")) }
 
   def name
     return self[:name] unless Current.demo_mode

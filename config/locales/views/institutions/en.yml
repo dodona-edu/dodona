@@ -5,6 +5,7 @@ en:
       number_of_users: "Users"
       number_of_courses: "Courses"
       edit: "Edit institution"
+      no_institutions: "No institutions found"
     show:
       staff: "Staff"
       edit: "Edit institution"

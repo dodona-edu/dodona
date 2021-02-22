@@ -20,7 +20,7 @@ class QuestionPolicy < AnnotationPolicy
     # Only the course admins can transition, except for the answered state.
     return true if to.to_s == 'answered' && record.user == user
 
-    user.course_admin?(record.submission.course)
+    user&.course_admin?(record.submission.course)
   end
 
   def update?

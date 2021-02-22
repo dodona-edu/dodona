@@ -473,6 +473,19 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'questions cannot transition if logged out' do
+    sign_out @submission.user
+    question = create :question, submission: @submission, question_state: :unanswered
+    patch annotation_path(question), params: {
+      from: question.question_state,
+      question: {
+        question_state: :answered
+      },
+      format: :json
+    }
+    assert_response :unauthorized
+  end
+
   test 'question cannot transition if already changed' do
     sign_in create :zeus
 

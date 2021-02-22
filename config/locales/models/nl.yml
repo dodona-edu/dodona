@@ -138,6 +138,7 @@ nl:
       programming_language:
         name: Naam
         editor_name: Editor modus
+        renderer_name: Renderer naam
         extension: Extensie
       institution:
         name: Naam

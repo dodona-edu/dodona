@@ -31,6 +31,19 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test "creating annotation when logged out doesn't result in question creating" do
+    sign_out @zeus
+    post submission_annotations_url(@submission), params: {
+      annotation: {
+        line_nr: 1,
+        annotation_text: 'Not available'
+      },
+      format: :json
+    }
+
+    assert_response :unauthorized
+  end
+
   test 'pagination is generated correctly' do
     submission = create :submission, :within_course
     create_list :question, 31, submission: submission

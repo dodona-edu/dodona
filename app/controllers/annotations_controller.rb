@@ -47,7 +47,10 @@ class AnnotationsController < ApplicationController
   def show; end
 
   def create
-    clazz = if current_user&.course_admin?(@submission.course)
+    # Fail fast if not logged in; otherwise we would always assume a question.
+    raise Pundit::NotAuthorizedError, 'Unauthorized' if current_user.blank?
+
+    clazz = if current_user.course_admin?(@submission.course)
               Annotation
             else
               Question

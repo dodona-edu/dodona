@@ -137,6 +137,7 @@ en:
       programming_language:
         name: Name
         editor_name: Editor mode
+        renderer_name: Renderer name
         extension: Extension
       institution:
         name: Name

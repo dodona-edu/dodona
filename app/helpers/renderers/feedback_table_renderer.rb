@@ -24,7 +24,7 @@ class FeedbackTableRenderer
     @code = submission.code
     @user = user
     @exercise = submission.exercise
-    @programming_language = @exercise.programming_language&.editor_name
+    @programming_language = @exercise.programming_language&.renderer_name
   end
 
   def parse

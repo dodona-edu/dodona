@@ -14,6 +14,7 @@ FactoryBot.define do
   factory :programming_language do
     name { "#{Faker::ProgrammingLanguage.name}#{Faker::Number.unique.positive}" }
     editor_name { name }
+    renderer_name { name }
     extension { name }
   end
 end

@@ -17,6 +17,10 @@
           <%= @programming_language.editor_name %>
         </p>
         <p>
+          <strong><%= ProgrammingLanguage.human_attribute_name("renderer_name") %></strong>
+          <%= @programming_language.renderer_name %>
+        </p>
+        <p>
           <strong><%= ProgrammingLanguage.human_attribute_name("extension") %></strong>
           <%= @programming_language.extension %>
         </p>

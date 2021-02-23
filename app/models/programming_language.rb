@@ -20,6 +20,7 @@ class ProgrammingLanguage < ApplicationRecord
 
   def fill_fields
     self.editor_name ||= name
+    self.renderer_name ||= name
     self.extension ||= 'txt'
   end
 

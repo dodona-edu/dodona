@@ -55,7 +55,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'update series should redirect to course' do
-    instance = update_request_expect
+    instance = update_request_expect(attr_hash: { series: { description: 'new description' } })
     assert_redirected_to course_url(instance.course, series: instance, anchor: instance.anchor)
   end
 

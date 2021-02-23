@@ -5,7 +5,7 @@ ENV['RAILS_ENV'] ||= 'development'
 ENV['NODE_ENV'] = 'production' unless ENV['RAILS_ENV'] == 'development'
 
 # Load the Rails application.
-require_relative 'application'
+require_relative "application"
 
 # Initialize the Rails application.
 Rails.application.initialize!

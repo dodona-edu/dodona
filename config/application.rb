@@ -1,8 +1,6 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
-
-require 'English'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -11,15 +9,15 @@ Bundler.require(*Rails.groups)
 module Dodona
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 6.1
 
     config.dodona_email = 'dodona@ugent.be'
-
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
-    # Appilcation hosts
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # Application hosts
 
     # The main webapp
     config.default_host = 'dodona.localhost'
@@ -37,8 +35,8 @@ module Dodona
     config.i18n.default_locale = :nl
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
-    config.autoload_paths += Dir[Rails.root.join('app', 'helpers', 'renderers')]
-    config.autoload_paths += Dir[Rails.root.join('app', 'models', 'transient')]
+    config.eager_load_paths += Dir[Rails.root.join('app', 'helpers', 'renderers')]
+    config.eager_load_paths += Dir[Rails.root.join('app', 'models', 'transient')]
 
     config.active_job.queue_adapter = :delayed_job
 

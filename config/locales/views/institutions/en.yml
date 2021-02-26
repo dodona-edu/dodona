@@ -6,6 +6,7 @@ en:
       number_of_courses: "Courses"
       edit: "Edit institution"
       no_institutions: "No institutions found"
+      generated_name: "Generated from available data."
     show:
       staff: "Staff"
       edit: "Edit institution"

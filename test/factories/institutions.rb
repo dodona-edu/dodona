@@ -2,12 +2,13 @@
 #
 # Table name: institutions
 #
-#  id         :bigint           not null, primary key
-#  name       :string(255)
-#  short_name :string(255)
-#  logo       :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id             :bigint           not null, primary key
+#  name           :string(255)
+#  short_name     :string(255)
+#  logo           :string(255)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  generated_name :boolean          default(TRUE), not null
 #
 
 FactoryBot.define do

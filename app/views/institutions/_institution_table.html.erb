@@ -13,7 +13,12 @@
     <tbody>
     <% institutions.each do |institution| %>
       <tr>
-        <td><%= link_to institution.name, institution %></td>
+        <td>
+          <%= link_to institution.name, institution %>
+          <% if institution.generated_name? %>
+            <span class="generated-name-icon" title="<%= t 'institutions.index.generated_name' %>"><i class="mdi mdi-18 mdi-cogs icon"></i></span>
+          <% end %>
+        </td>
         <td><%= institution.short_name %></td>
         <td><%= link_to institution.users.length, users_url(institution_id: institution.id) %></td>
         <td><%= link_to institution.courses.length, courses_url(institution_id: institution.id) %></td>

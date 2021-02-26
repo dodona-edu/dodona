@@ -7,9 +7,7 @@ class InstitutionsController < ApplicationController
 
   def index
     authorize Institution
-    # This should be safe, since NEW_INSTITUTION_NAME is a constant defined in code, not user input.
-    order_sql = Arel.sql("CASE name WHEN '#{Institution::NEW_INSTITUTION_NAME}' THEN 1 ELSE 2 END, name")
-    @institutions = apply_scopes(Institution).all.order(order_sql)
+    @institutions = apply_scopes(Institution).all.order(generated_name: :desc, name: :asc)
                                              .includes(:courses, :users, :providers)
                                              .paginate(page: parse_pagination_param(params[:page]))
     @title = I18n.t('institutions.index.title')

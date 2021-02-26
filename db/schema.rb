@@ -283,6 +283,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
     t.string "logo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "generated_name", default: true, null: false
   end
 
   create_table "judges", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

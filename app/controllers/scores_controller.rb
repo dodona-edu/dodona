@@ -53,8 +53,8 @@ class ScoresController < ApplicationController
 
   def set_common
     @feedback = @score.feedback
-    @score_map = @feedback.scores.index_by(&:rubric_id)
-    @order = @score.feedback.evaluation_exercise.rubrics.order(:id).find_index { |r| r.id == @score.rubric_id }
+    @score_map = @feedback.scores.index_by(&:score_item_id)
+    @order = @score.feedback.evaluation_exercise.score_items.order(:id).find_index { |r| r.id == @score.score_item_id }
     @total = @score.feedback.score
   end
 end

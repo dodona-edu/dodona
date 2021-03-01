@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: rubrics
+# Table name: score_item
 #
 #  id                     :bigint           not null, primary key
 #  evaluation_exercise_id :bigint           not null
@@ -13,7 +13,7 @@
 #
 require 'test_helper'
 
-class RubricTest < ActiveSupport::TestCase
+class RScoreItemTest < ActiveSupport::TestCase
   def setup
     series = create :series, exercise_count: 2
     users = [create(:user), create(:user)]
@@ -27,7 +27,7 @@ class RubricTest < ActiveSupport::TestCase
   test 'completed feedbacks are uncompleted' do
     @evaluation.feedbacks.each { |f| f.update!(completed: true) }
     eval_exercise = @evaluation.evaluation_exercises.find { |e| e.exercise.submissions.count == 2 }
-    create :rubric, evaluation_exercise: eval_exercise
+    create :score_item, evaluation_exercise: eval_exercise
 
     eval_exercise.feedbacks.each do |f|
       assert_not f.completed?
@@ -36,7 +36,7 @@ class RubricTest < ActiveSupport::TestCase
 
   test 'bank feedbacks are set to zero' do
     eval_exercise = @evaluation.evaluation_exercises.find { |e| e.exercise.submissions.count == 0 }
-    create :rubric, evaluation_exercise: eval_exercise
+    create :score_item, evaluation_exercise: eval_exercise
 
     eval_exercise.feedbacks.each do |f|
       assert f.completed?
@@ -46,10 +46,10 @@ class RubricTest < ActiveSupport::TestCase
 
   test 'updating maximum scores uncompletes feedbacks' do
     eval_exercise = @evaluation.evaluation_exercises.find { |e| e.exercise.submissions.count == 2 }
-    rubric = create :rubric, evaluation_exercise: eval_exercise
+    score_item = create :score_item, evaluation_exercise: eval_exercise
     @evaluation.feedbacks.each { |f| f.update(completed: true) }
 
-    rubric.update(maximum: '20.0')
+    score_item.update(maximum: '20.0')
 
     eval_exercise.feedbacks.each do |f|
       assert_not f.completed?
@@ -58,10 +58,10 @@ class RubricTest < ActiveSupport::TestCase
 
   test 'updating other attributes does not uncomplete feedbacks' do
     eval_exercise = @evaluation.evaluation_exercises.find { |e| e.exercise.submissions.count == 2 }
-    rubric = create :rubric, evaluation_exercise: eval_exercise
+    score_item = create :score_item, evaluation_exercise: eval_exercise
     @evaluation.feedbacks.each { |f| f.update(completed: true) }
 
-    rubric.update(description: 'Hallo')
+    score_item.update(description: 'Hallo')
 
     eval_exercise.feedbacks.each do |f|
       assert f.completed?
@@ -70,10 +70,10 @@ class RubricTest < ActiveSupport::TestCase
 
   test 'updating maximum scores does uncomplete blank feedbacks' do
     eval_exercise = @evaluation.evaluation_exercises.find { |e| e.exercise.submissions.count == 0 }
-    rubric = create :rubric, evaluation_exercise: eval_exercise
+    score_item = create :score_item, evaluation_exercise: eval_exercise
     @evaluation.feedbacks.each { |f| f.update(completed: true) }
 
-    rubric.update(maximum: '20.0')
+    score_item.update(maximum: '20.0')
 
     eval_exercise.feedbacks.each do |f|
       assert f.completed?
@@ -82,7 +82,7 @@ class RubricTest < ActiveSupport::TestCase
 
   test 'maximum must be positive' do
     assert_raises ActiveRecord::RecordInvalid do
-      create :rubric, maximum: '-10.0'
+      create :score_item, maximum: '-10.0'
     end
   end
 end

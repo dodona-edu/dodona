@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: rubrics
+# Table name: score_items
 #
 #  id                     :bigint           not null, primary key
 #  evaluation_exercise_id :bigint           not null
@@ -11,11 +11,11 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
-class Rubric < ApplicationRecord
+class ScoreItem < ApplicationRecord
   belongs_to :evaluation_exercise
 
   has_many :scores, dependent: :destroy
-  # Who updated the rubric. This is used to modify scores if necessary.
+  # Who updated the score item. This is used to modify scores if necessary.
   attr_accessor :last_updated_by
 
   after_create :undo_complete_feedbacks_and_set_blank_to_zero
@@ -36,7 +36,7 @@ class Rubric < ApplicationRecord
     evaluation_exercise
       .feedbacks
       .find_each do |feedback|
-      Score.create(rubric: self, feedback: feedback, score: 0, last_updated_by: last_updated_by) if feedback.submission.blank?
+      Score.create(score_item: self, feedback: feedback, score: 0, last_updated_by: last_updated_by) if feedback.submission.blank?
     end
 
     undo_complete_feedbacks

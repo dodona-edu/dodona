@@ -248,32 +248,32 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def expected_score_string(s)
-    "#{format_score(s.score)} / #{format_score(s.rubric.maximum)}"
+    "#{format_score(s.score)} / #{format_score(s.score_item.maximum)}"
   end
 
   test 'should only show allowed grades for students' do
     evaluation = create :evaluation, :released, :with_submissions
     evaluation_exercise = evaluation.evaluation_exercises.first
-    visible_rubric = create :rubric, evaluation_exercise: evaluation_exercise
-    hidden_rubric = create :rubric, evaluation_exercise: evaluation_exercise, visible: false
+    visible_score_item = create :score_item, evaluation_exercise: evaluation_exercise
+    hidden_score_item = create :score_item, evaluation_exercise: evaluation_exercise, visible: false
     feedback = evaluation.feedbacks.first
     submission = feedback.submission
-    s1 = create :score, feedback: feedback, rubric: visible_rubric, score: BigDecimal('5.00')
-    s2 = create :score, feedback: feedback, rubric: hidden_rubric, score: BigDecimal('7.00')
+    s1 = create :score, feedback: feedback, score_item: visible_score_item, score: BigDecimal('5.00')
+    s2 = create :score, feedback: feedback, score_item: hidden_score_item, score: BigDecimal('7.00')
 
     sign_in submission.user
     get submission_url(id: submission.id)
 
-    assert_match visible_rubric.description, response.body
-    assert_no_match hidden_rubric.description, response.body
+    assert_match visible_score_item.description, response.body
+    assert_no_match hidden_score_item.description, response.body
     assert_match expected_score_string(s1), response.body
     assert_no_match expected_score_string(s2), response.body
 
     evaluation.update!(released: false)
     get submission_url(id: submission.id)
 
-    assert_no_match visible_rubric.description, response.body
-    assert_no_match hidden_rubric.description, response.body
+    assert_no_match visible_score_item.description, response.body
+    assert_no_match hidden_score_item.description, response.body
     assert_no_match expected_score_string(s1), response.body
     assert_no_match expected_score_string(s2), response.body
   end
@@ -281,12 +281,12 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   test 'shows all grades for zeus & staff members' do
     evaluation = create :evaluation, :released, :with_submissions
     evaluation_exercise = evaluation.evaluation_exercises.first
-    visible_rubric = create :rubric, evaluation_exercise: evaluation_exercise
-    hidden_rubric = create :rubric, evaluation_exercise: evaluation_exercise, visible: false
+    visible_score_item = create :score_item, evaluation_exercise: evaluation_exercise
+    hidden_score_item = create :score_item, evaluation_exercise: evaluation_exercise, visible: false
     feedback = evaluation.feedbacks.first
     submission = feedback.submission
-    s1 = create :score, feedback: feedback, rubric: visible_rubric, score: BigDecimal('5.00')
-    s2 = create :score, feedback: feedback, rubric: hidden_rubric, score: BigDecimal('7.00')
+    s1 = create :score, feedback: feedback, score_item: visible_score_item, score: BigDecimal('5.00')
+    s2 = create :score, feedback: feedback, score_item: hidden_score_item, score: BigDecimal('7.00')
 
     staff = create :staff
     staff.administrating_courses << evaluation.series.course
@@ -295,16 +295,16 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
       get submission_url(id: submission.id)
 
-      assert_match visible_rubric.description, response.body
-      assert_match hidden_rubric.description, response.body
+      assert_match visible_score_item.description, response.body
+      assert_match hidden_score_item.description, response.body
       assert_match expected_score_string(s1), response.body
       assert_match expected_score_string(s2), response.body
 
       evaluation.update!(released: false)
       get submission_url(id: submission.id)
 
-      assert_match visible_rubric.description, response.body
-      assert_match hidden_rubric.description, response.body
+      assert_match visible_score_item.description, response.body
+      assert_match hidden_score_item.description, response.body
       assert_match expected_score_string(s1), response.body
       assert_match expected_score_string(s2), response.body
     end

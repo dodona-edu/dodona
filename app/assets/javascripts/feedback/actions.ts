@@ -8,7 +8,7 @@ interface ActionOptions {
     nextUnseenURL: string | null;
     buttonText: string;
     allowNext: boolean;
-    rubrics: [string];
+    scoreItems: [string];
 }
 
 const defaultOptions = JSON.stringify({
@@ -50,8 +50,8 @@ export default class FeedbackActions {
 
         // Score forms
         this.scoreForms = [];
-        for (const rubric of this.options.rubrics) {
-            this.initScoreForm(rubric);
+        for (const scoreItem of this.options.scoreItems) {
+            this.initScoreForm(scoreItem);
         }
 
         this.allScoresZeroButton = document.getElementById("zero-button") as HTMLButtonElement;
@@ -124,11 +124,11 @@ export default class FeedbackActions {
         eval(await response.text());
     }
 
-    initScoreForm(rubricId: string): void {
+    initScoreForm(scoreItemId: string): void {
         // Remove existing score forms.
-        this.scoreForms = this.scoreForms.filter(form => form.rubricId !== rubricId);
+        this.scoreForms = this.scoreForms.filter(form => form.scoreItemId !== scoreItemId);
         // Get new form. This assumes the HTML has been set already.
-        const form = document.getElementById(`${rubricId}-score-form-wrapper`) as HTMLElement;
+        const form = document.getElementById(`${scoreItemId}-score-form-wrapper`) as HTMLElement;
         // If the form is null, we can't edit the score for some reason.
         if (form !== null) {
             this.scoreForms.push(new ScoreForm(form, this));

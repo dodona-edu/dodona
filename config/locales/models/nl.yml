@@ -176,7 +176,7 @@ nl:
           unanswered: Onbeantwoord
           in_progress: In behandeling
           answered: Beantwoord
-      rubric:
+      score_items:
         name: Naam
         description: Beschrijving
         maximum: Maximum

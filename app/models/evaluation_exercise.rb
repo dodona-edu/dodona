@@ -12,7 +12,7 @@ class EvaluationExercise < ApplicationRecord
   belongs_to :exercise
   belongs_to :evaluation
   has_many :feedbacks, dependent: :destroy
-  has_many :rubrics, dependent: :destroy
+  has_many :score_items, dependent: :destroy
 
   validates :exercise_id, uniqueness: { scope: :evaluation_id }
 
@@ -24,6 +24,6 @@ class EvaluationExercise < ApplicationRecord
   end
 
   def maximum_score
-    rubrics.map(&:maximum).sum
+    score_items.map(&:maximum).sum
   end
 end

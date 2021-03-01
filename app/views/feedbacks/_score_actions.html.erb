@@ -1,7 +1,7 @@
 <% url = score.persisted? ? evaluation_score_path(@feedback.evaluation, score) : evaluation_scores_path(@feedback.evaluation) %>
-<div class="row row-no-gutters form-row" id="<%= "#{rubric.id}-score-form-wrapper" %>">
+<div class="row row-no-gutters form-row" id="<%= "#{score_item.id}-score-form-wrapper" %>">
   <%= form_for score, url: '#',
-               namespace: rubric.id,
+               namespace: score_item.id,
                html: { class: "form-inline score-form col-md-7 col-xs-9", data: { url: url, new: score.persisted? } } do |f| %>
     <%= f.hidden_field :expected_score, value: score.score, class: "expected-score" %>
     <% e = if score&.out_of_bounds?
@@ -24,13 +24,13 @@
         </div>
       </div>
     </div>
-    <%= f.hidden_field :rubric_id, class: "rubric" %>
+    <%= f.hidden_field :score_item_id, class: "score-item" %>
     <%= f.hidden_field :id, class: "id" %>
   <% end %>
   <div class="col-xs-3">
-    / <a class="score-click" href="#" title="<%= t '.give_max_one' %>"><%= format_score(rubric.maximum) %></a>
+    / <a class="score-click" href="#" title="<%= t '.give_max_one' %>"><%= format_score(score_item.maximum) %></a>
   </div>
-  <% if @score_map.key?(rubric.id) %>
+  <% if @score_map.key?(score_item.id) %>
     <div class="col-md-2 col-xs-12">
       <%= button_tag class: "btn btn-sm btn-default btn-danger delete-button" do %>
         <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>

@@ -7,9 +7,9 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
     @evaluation.series.course.administrating_members << @staff_member
     sign_in @staff_member
     exercise = @evaluation.evaluation_exercises.first
-    @rubric = create :rubric, evaluation_exercise: exercise,
-                              description: 'Before test',
-                              maximum: '10.0'
+    @score_item = create :score_item, evaluation_exercise: exercise,
+                                      description: 'Before test',
+                                      maximum: '10.0'
     @feedback = @evaluation.feedbacks.first
     @feedback.update!(completed: false)
   end
@@ -26,20 +26,20 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
       post evaluation_scores_path(@evaluation, format: :json), params: {
         score: {
           score: '5.0',
-          rubric_id: @rubric.id,
+          score_item_id: @score_item.id,
           feedback_id: @feedback.id
         }
       }
       assert_response expected
       sign_out user if user.present?
-      Score.where(rubric: @rubric, feedback: @feedback).first.destroy! if expected == :created
+      Score.where(score_item: @score_item, feedback: @feedback).first.destroy! if expected == :created
     end
   end
 
   test 'should not create score for invalid data' do
     post evaluation_scores_path(@evaluation, format: :json), params: {
       score: {
-        rubric_id: @rubric.id,
+        score_item_id: @score_item.id,
         feedback_id: @feedback.id
       }
     }
@@ -52,7 +52,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
     post evaluation_scores_path(@evaluation, format: :json), params: {
       score: {
         score: '5.0',
-        rubric_id: @rubric.id,
+        score_item_id: @score_item.id,
         feedback_id: @feedback.id
       }
     }
@@ -61,7 +61,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update score if course admin' do
-    score = create :score, rubric: @rubric, feedback: @feedback
+    score = create :score, score_item: @score_item, feedback: @feedback
     [
       [@staff_member, :success],
       [create(:student), :forbidden],
@@ -82,7 +82,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not update score for invalid data' do
-    score = create :score, rubric: @rubric, feedback: @feedback
+    score = create :score, score_item: @score_item, feedback: @feedback
     patch evaluation_score_path(@evaluation, score, format: :json), params: {
       score: {
         score: nil,
@@ -93,7 +93,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not update score if feedback is completed' do
-    score = create :score, rubric: @rubric, feedback: @feedback
+    score = create :score, score_item: @score_item, feedback: @feedback
     @feedback.update!(completed: true)
 
     patch evaluation_score_path(@evaluation, score, format: :json), params: {
@@ -106,7 +106,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not update score if expected is different' do
-    score = create :score, rubric: @rubric, feedback: @feedback, score: '10.0'
+    score = create :score, score_item: @score_item, feedback: @feedback, score: '10.0'
 
     patch evaluation_score_path(@evaluation, score, format: :json), params: {
       score: {
@@ -126,7 +126,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
       [nil, :unauthorized]
     ].each do |user, expected|
       sign_in user if user.present?
-      score = create :score, rubric: @rubric, feedback: @feedback
+      score = create :score, score_item: @score_item, feedback: @feedback
       delete evaluation_score_path(@evaluation, score, format: :json), params: {
         score: {
           expected_score: score.score.to_s
@@ -139,7 +139,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not delete score if feedback is completed' do
-    score = create :score, rubric: @rubric, feedback: @feedback
+    score = create :score, score_item: @score_item, feedback: @feedback
     @feedback.update!(completed: true)
 
     delete evaluation_score_path(@evaluation, score, format: :json), params: {
@@ -151,7 +151,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not delete score if expected is different' do
-    score = create :score, rubric: @rubric, feedback: @feedback, score: '10.0'
+    score = create :score, score_item: @score_item, feedback: @feedback, score: '10.0'
 
     delete evaluation_score_path(@evaluation, score, format: :json), params: {
       score: {

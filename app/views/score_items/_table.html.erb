@@ -1,8 +1,8 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'rubric' %>
+  <%= javascript_pack_tag 'score_item' %>
 <% end %>
-<% amount = evaluation_exercise.rubrics.size %>
-<table class="table table-resource rubrics-table" id="table-for-<%= evaluation_exercise.id %>">
+<% amount = evaluation_exercise.score_items.size %>
+<table class="table table-resource score-items-table" id="table-for-<%= evaluation_exercise.id %>">
   <thead>
   <tr>
     <th><%= t ".name" %></th>
@@ -17,9 +17,9 @@
     <tr>
       <td><%= t ".total" %></td>
       <td class="description"><%= t ".total-description" %></td>
-      <td class="maximum"><%= format_score evaluation_exercise.rubrics.map(&:maximum).sum %></td>
+      <td class="maximum"><%= format_score evaluation_exercise.score_items.map(&:maximum).sum %></td>
       <td class="visibility">
-        <% if evaluation_exercise.rubrics.map(&:visible).any? %>
+        <% if evaluation_exercise.score_items.map(&:visible).any? %>
           <i class="mdi mdi-eye mdi-18 colored-secondary" title="<%= t ".visible-yes" %>"></i>
         <% else %>
           <i class="mdi mdi-eye-off mdi-18 colored-secondary" title="<%= t ".visible-no" %>"></i>
@@ -27,20 +27,20 @@
       </td>
     </tr>
   <% end %>
-  <% evaluation_exercise.rubrics.each do |rubric| %>
+  <% evaluation_exercise.score_items.each do |score_item| %>
     <tr>
-      <td><%= rubric.name %></td>
-      <td class="description"><%= markdown rubric.description %></td>
-      <td class="maximum"><%= format_score rubric.maximum %></td>
+      <td><%= score_item.name %></td>
+      <td class="description"><%= markdown score_item.description %></td>
+      <td class="maximum"><%= format_score score_item.maximum %></td>
       <td class="visibility">
-        <% if rubric.visible %>
+        <% if score_item.visible %>
           <i class="mdi mdi-eye mdi-18 colored-secondary" title="<%= t ".visible-yes" %>"></i>
         <% else %>
           <i class="mdi mdi-eye-off mdi-18 colored-secondary" title="<%= t ".visible-no" %>"></i>
         <% end %>
       </td>
       <td class="actions">
-        <%= button_to evaluation_rubric_path(evaluation, rubric),
+        <%= button_to evaluation_score_item_path(evaluation, score_item),
                       title: t('.delete'),
                       method: :delete,
                       remote: true,
@@ -48,14 +48,14 @@
                       class: 'btn btn-sm btn-default btn-danger' do %>
           <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
         <% end %>
-        <%= link_to '#', title: t('.edit'), class: 'btn btn-sm btn-default edit-button', data: { rubric: rubric.id } do %>
+        <%= link_to '#', title: t('.edit'), class: 'btn btn-sm btn-default edit-button', data: { score_item: score_item.id } do %>
           <i class="mdi mdi-pencil mdi-18" aria-hidden='true'></i>
         <% end %>
       </td>
     </tr>
-    <tr class="hidden" id="form-row-<%= rubric.id %>">
+    <tr class="hidden" id="form-row-<%= score_item.id %>">
       <td colspan="5">
-        <%= render 'rubrics/form', rubric: rubric, evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+        <%= render 'score_items/form', score_item: score_item, evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
       </td>
     </tr>
   <% end %>

@@ -50,7 +50,7 @@ en:
       clear: Remove all users
       add_enrolled: All enrolled students
       add_submitted: All students with submissions
-    edit_rubrics: Edit rubrics
+    edit_score_items: Edit score items
     destroy: Delete evaluation
     download: Download grades
     form:

@@ -45,10 +45,10 @@
   </div>
 </div>
 
-<% if @feedback.evaluation_exercise.rubrics.present? %>
+<% if @feedback.evaluation_exercise.score_items.present? %>
   <div class="card-supporting-text card-border">
-    <% rubrics = @feedback.evaluation_exercise.rubrics.order(:id) %>
-    <% if rubrics.length > 1 %>
+    <% score_items = @feedback.evaluation_exercise.score_items.order(:id) %>
+    <% if score_items.length > 1 %>
       <div class="row">
         <div class="col-sm-12">
           <strong><%= t ".total" %></strong>
@@ -70,21 +70,21 @@
         <% end %>
       </div>
     <% end %>
-    <% rubrics.each_with_index do |rubric, index| %>
-      <% score = @score_map.fetch(rubric.id, Score.new(rubric: rubric, feedback: @feedback)) %>
+    <% score_items.each_with_index do |score_item, index| %>
+      <% score = @score_map.fetch(score_item.id, Score.new(score_item: score_item, feedback: @feedback)) %>
       <div class="row">
         <div class="col-sm-12">
-          <strong><%= rubric.name %></strong>
+          <strong><%= score_item.name %></strong>
         </div>
       </div>
       <% if @feedback.completed? %>
         <div class="row">
           <div class="col-sm-12">
-            <%= format_score score.score %> / <%= format_score rubric.maximum %>
+            <%= format_score score.score %> / <%= format_score score_item.maximum %>
           </div>
         </div>
       <% else %>
-        <%= render 'feedbacks/score_actions', score: score, rubric: rubric, index: index %>
+        <%= render 'feedbacks/score_actions', score: score, score_item: score_item, index: index %>
       <% end %>
     <% end %>
   </div>
@@ -121,7 +121,7 @@
         nextUnseenURL: <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,
         buttonText: "<%= t('.direction.next') %>",
         allowNext: <%= policy(@feedback).complete? %>,
-        rubrics: <%= raw @feedback.rubrics.map(&:id).to_json %>
+        scoreItems: <%= raw @feedback.score_items.map(&:id).to_json %>
     });
     $(() => window.dodona.initTooltips());
 </script>

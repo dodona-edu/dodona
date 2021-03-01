@@ -13,8 +13,8 @@ require 'test_helper'
 class EvaluationExerciseTest < ActiveSupport::TestCase
   test 'maximum score is correct' do
     exercise = create :evaluation_exercise
-    r1 = create :rubric, maximum: '12.0', evaluation_exercise: exercise
-    r2 = create :rubric, maximum: '5.0', evaluation_exercise: exercise
+    r1 = create :score_item, maximum: '12.0', evaluation_exercise: exercise
+    r2 = create :score_item, maximum: '5.0', evaluation_exercise: exercise
 
     assert exercise.maximum_score == r1.maximum + r2.maximum
   end

@@ -18,10 +18,10 @@ class FeedbacksController < ApplicationController
     ]
     @title = I18n.t('feedbacks.show.feedback')
 
-    @score_map = @feedback.scores.index_by(&:rubric_id)
+    @score_map = @feedback.scores.index_by(&:score_item_id)
     # If we refresh all scores because of a conflict, we want to make
     # sure the user is aware the update was not successful. By setting
-    # the rubric ID in the `warning` param, it will be rendered with
+    # the score_item ID in the `warning` param, it will be rendered with
     # the bootstrap warning classes.
     @warning = params[:warning]
   end
@@ -46,7 +46,7 @@ class FeedbacksController < ApplicationController
 
     @feedback.update(attrs)
     # We might have updated scores, so recalculate the map.
-    @score_map = @feedback.scores.index_by(&:rubric_id)
+    @score_map = @feedback.scores.index_by(&:score_item_id)
 
     respond_to do |format|
       format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
@@ -60,6 +60,6 @@ class FeedbacksController < ApplicationController
   def set_feedback
     @feedback = Feedback.find(params[:id])
     authorize @feedback
-    @score_map = @feedback.scores.index_by(&:rubric_id)
+    @score_map = @feedback.scores.index_by(&:score_item_id)
   end
 end

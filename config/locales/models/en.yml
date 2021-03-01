@@ -175,7 +175,7 @@ en:
           unanswered: Unanswered
           in_progress: In progress
           answered: Answered
-      rubric:
+      score_items:
         name: Name
         description: Description
         maximum: Maximum

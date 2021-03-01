@@ -1,3 +1,3 @@
-import { initInlineEditButton } from "rubric.ts";
+import { initInlineEditButton } from "score_item.ts";
 
 window.dodona.initInlineEditButton = initInlineEditButton;

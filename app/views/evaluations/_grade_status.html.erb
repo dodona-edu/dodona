@@ -8,7 +8,7 @@
   end
 %>
 
-<% if feedback.rubrics.present? %>
+<% if feedback.score_items.present? %>
   <span class='feedback <%= submission_status %> <%= "active" if local_assigns[:current] == feedback %>'>
     <%= link_to evaluation_feedback_path(evaluation, feedback), class: "btn btn-icon" do %>
       <% if feedback.completed? %>

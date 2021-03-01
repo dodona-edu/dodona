@@ -4,9 +4,9 @@ class ScorePolicy < ApplicationPolicy
       if user&.zeus?
         scope.all
       elsif user
-        common = scope.joins(:rubric, feedback: [:evaluation_user, { evaluation: :series }])
-        # Students - visible if own score, if rubric is visible and if evaluation is released.
-        students = common.where(feedbacks: { evaluations: { released: true }, evaluation_users: { user: user } }, rubrics: { visible: true })
+        common = scope.joins(:score_item, feedback: [:evaluation_user, { evaluation: :series }])
+        # Students - visible if own score, if score item is visible and if evaluation is released.
+        students = common.where(feedbacks: { evaluations: { released: true }, evaluation_users: { user: user } }, score_items: { visible: true })
         # Staff - visible if course administrator
         staff = common.where(feedbacks: { evaluation: { series: { course_id: user.administrating_courses.map(&:id) } } })
 
@@ -44,7 +44,7 @@ class ScorePolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    %i[score feedback_id rubric_id]
+    %i[score feedback_id score_item_id]
   end
 
   def permitted_attributes_for_update

@@ -3,8 +3,8 @@ export function initInlineEditButton(tableElement: HTMLElement): void {
         item.addEventListener("click", e => {
             e.preventDefault();
             const clicked = (e.target as HTMLElement).closest("a") as HTMLAnchorElement;
-            const rubricId = clicked.dataset.rubric;
-            const row = document.getElementById(`form-row-${rubricId}`);
+            const scoreItemId = clicked.dataset.scoreItem;
+            const row = document.getElementById(`form-row-${scoreItemId}`);
             if (row.classList.contains("hidden")) {
                 row.classList.remove("hidden");
                 clicked.innerHTML = "<i class='mdi mdi-close mdi-18' aria-hidden='true'></i>";

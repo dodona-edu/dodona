@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: rubrics
+# Table name: score_items
 #
 #  id                     :bigint           not null, primary key
 #  evaluation_exercise_id :bigint           not null
@@ -12,8 +12,8 @@
 #  updated_at             :datetime         not null
 #
 FactoryBot.define do
-  factory :rubric do
-    sequence(:name) { |n| "Rubric #{n}" }
+  factory :score_item do
+    sequence(:name) { |n| "Score item #{n}" }
 
     evaluation_exercise
     maximum { '10.00' }

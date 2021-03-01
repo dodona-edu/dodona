@@ -34,10 +34,10 @@ nl:
         failure: "De status kon niet ingesteld worden"
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluaties afgewerkt"
       total: "Totaal"
-      give_max_all: "Geef de maximumscore aan alle rubrics"
-      give_zero_all: "Geef 0 aan alle rubrics"
+      give_max_all: "Geef de maximumscore aan alle scoreonderdelen"
+      give_zero_all: "Geef 0 aan alle scoreonderdelen"
     score_actions:
-      give_max_one: "Geef de maximumscore aan deze rubric"
+      give_max_one: "Geef de maximumscore aan deze scoreonderdelen"
     overview:
       annotations:
         count: "Aantal opmerkingen door lesgever"

@@ -22,17 +22,17 @@ class FeedbackPolicy < ApplicationPolicy
   end
 
   def complete?
-    required_rubrics = record.rubrics.map(&:id).to_set
-    found_rubrics = record.scores.map(&:rubric_id).to_set
+    required_score_items = record.score_items.map(&:id).to_set
+    found_score_items = record.scores.map(&:score_item_id).to_set
 
     # For every template, there should be a score
-    required_rubrics == found_rubrics
+    required_score_items == found_score_items
   end
 
   def permitted_attributes
     attrs = %i[submission_id]
     attrs << :completed if complete?
-    attrs << { scores_attributes: %i[score id rubric_id] }
+    attrs << { scores_attributes: %i[score id score_item_id] }
     attrs
   end
 

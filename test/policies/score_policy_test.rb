@@ -8,8 +8,8 @@ class UserPolicyTest < ActiveSupport::TestCase
 
     exercise = @evaluation.evaluation_exercises.first
     @feedback = @evaluation.feedbacks.first
-    @score1 = create :score, rubric: create(:rubric, evaluation_exercise: exercise, visible: true), feedback: @feedback
-    @score2 = create :score, rubric: create(:rubric, evaluation_exercise: exercise, visible: false), feedback: @feedback
+    @score1 = create :score, score_item: create(:score_item, evaluation_exercise: exercise, visible: true), feedback: @feedback
+    @score2 = create :score, score_item: create(:score_item, evaluation_exercise: exercise, visible: false), feedback: @feedback
   end
 
   test 'zeus can see all scores' do

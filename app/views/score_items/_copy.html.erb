@@ -1,18 +1,18 @@
-<%= form_for(:copy, url: copy_evaluation_rubrics_path(@evaluation), html: { class: 'form-horizontal' }, namespace: evaluation_exercise.id, remote: true) do |f| %>
+<%= form_for(:copy, url: copy_evaluation_score_items_path(@evaluation), html: { class: 'form-horizontal' }, namespace: evaluation_exercise.id, remote: true) do |f| %>
   <%= f.hidden_field :to, value: evaluation_exercise.id %>
   <div class="field form-group">
-    <%= f.label t("rubrics.copy.exercise"), :class => "col-sm-3 control-label" %>
+    <%= f.label t("score_items.copy.exercise"), :class => "col-sm-3 control-label" %>
     <div class="col-sm-6">
       <%= f.collection_select :from,
                               evaluation.evaluation_exercises.includes(:exercise).filter { |o| o.id != evaluation_exercise.id },
                               :id,
                               ->(e) { e.exercise.name },
-                              { include_blank: t("rubrics.copy.choose") }, { class: "form-control" } %>
+                              { include_blank: t("score_items.copy.choose") }, { class: "form-control" } %>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
-      <%= f.submit t("rubrics.copy.copy"), class: "btn btn-primary btn-text" %>
+      <%= f.submit t("score_items.copy.copy"), class: "btn btn-primary btn-text" %>
     </div>
   </div>
 <% end %>

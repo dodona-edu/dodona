@@ -19,7 +19,7 @@ class Evaluation < ApplicationRecord
 
   has_many :users, through: :evaluation_users
   has_many :exercises, through: :evaluation_exercises
-  has_many :rubrics, through: :evaluation_exercises
+  has_many :score_items, through: :evaluation_exercises
 
   # Only used when creating the evaluation, not saved to the database.
   attribute :graded, :boolean
@@ -67,7 +67,7 @@ class Evaluation < ApplicationRecord
     exercise_ids = exercises.pluck(:id)
     users = evaluation_users.includes(:user).map(&:user)
 
-    all_feedbacks = feedbacks.includes(:submission, :scores, evaluation_exercise: %i[exercise rubrics], evaluation_user: [:user]).to_a
+    all_feedbacks = feedbacks.includes(:submission, :scores, evaluation_exercise: %i[exercise score_items], evaluation_user: [:user]).to_a
     fbs = users.map do |user|
       [user.id, all_feedbacks.select { |fb| fb.evaluation_user.user == user }.sort_by { |fb| exercise_ids.find_index fb.evaluation_exercise.exercise.id }]
     end.to_h
@@ -80,11 +80,11 @@ class Evaluation < ApplicationRecord
   end
 
   def graded?
-    rubrics.any?
+    score_items.any?
   end
 
   def maximum_score
-    rubrics.map(&:maximum).sum(BigDecimal(0))
+    score_items.map(&:maximum).sum(BigDecimal(0))
   end
 
   private

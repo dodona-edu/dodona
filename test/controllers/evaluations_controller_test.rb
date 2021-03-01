@@ -32,7 +32,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
   end
 
-  test 'only graded session redirects to rubrics' do
+  test 'only graded session redirects to score items' do
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
@@ -43,10 +43,10 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     evaluation = @series.evaluation
 
     get add_users_evaluation_path(evaluation, graded: true)
-    assert_select "a[href^='#{new_evaluation_rubric_path(evaluation)}']", true
+    assert_select "a[href^='#{new_evaluation_score_item_path(evaluation)}']", true
 
     get add_users_evaluation_path(evaluation, graded: false)
-    assert_select "a[href^='#{new_evaluation_rubric_path(evaluation)}']", false
+    assert_select "a[href^='#{new_evaluation_score_item_path(evaluation)}']", false
   end
 
   test 'Can remove user from feedback' do
@@ -398,7 +398,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'score export is only available for course admins' do
-    # Create an evaluation, a rubric and add a score.
+    # Create an evaluation, a score item and add a score.
     post evaluations_path, params: {
       evaluation: {
         series_id: @series.id,
@@ -408,11 +408,11 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     evaluation = @series.evaluation
     evaluation.update(users: @series.course.enrolled_members)
     exercise = evaluation.evaluation_exercises.sample
-    rubric = create :rubric, evaluation_exercise: exercise
+    score_item = create :score_item, evaluation_exercise: exercise
     feedback = exercise.feedbacks.sample
     # Sometimes there already is a score, so delete it first.
-    Score.destroy_by(rubric: rubric, feedback: feedback)
-    score = create :score, rubric: rubric, feedback: feedback
+    Score.destroy_by(score_item: score_item, feedback: feedback)
+    score = create :score, score_item: score_item, feedback: feedback
 
     get export_scores_evaluation_path evaluation, format: :csv
     assert_response :success
@@ -425,20 +425,20 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     header = csv.shift
     assert_equal 2 + evaluation.evaluation_exercises.length * 2, header.length
 
-    # The exercise with a rubric has a different max.
-    rubric_exercise_position = header.index { |h| h == "#{exercise.exercise.name} Score" }
+    # The exercise with a score item has a different max.
+    score_item_exercise_position = header.index { |h| h == "#{exercise.exercise.name} Score" }
     csv.each do |line|
-      # Check the exercise with the rubric.
+      # Check the exercise with the score item.
       # First up, the score. Only one user has a score for this.
-      exported_score = BigDecimal(line.delete_at(rubric_exercise_position))
+      exported_score = BigDecimal(line.delete_at(score_item_exercise_position))
       if line[1] == feedback.evaluation_user.user.email
         assert_equal score.score, exported_score
       else
         assert exported_score.zero?
       end
-      # The max score of the exercise with rubric.
-      exported_max = BigDecimal(line.delete_at(rubric_exercise_position))
-      assert_equal rubric.maximum, exported_max
+      # The max score of the exercise with score item.
+      exported_max = BigDecimal(line.delete_at(score_item_exercise_position))
+      assert_equal score_item.maximum, exported_max
 
       # All other scores should be zero.
       assert_equal(true, line[2..].all? { |e| BigDecimal(e).zero? })

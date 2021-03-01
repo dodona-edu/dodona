@@ -20,7 +20,7 @@ export default class ScoreForm {
     private readonly form: HTMLFormElement;
 
     private readonly parent: FeedbackActions;
-    public readonly rubricId: string;
+    public readonly scoreItemId: string;
     private readonly existing: boolean;
     private readonly link: string;
     private readonly id: string;
@@ -33,7 +33,7 @@ export default class ScoreForm {
         this.spinner = this.form.querySelector(".dodona-progress");
         this.expectedScore = this.form.querySelector(".score-form input.expected-score");
         this.deleteButton = this.form.parentElement.querySelector(".delete-button");
-        this.rubricId = (this.form.querySelector("input.rubric") as HTMLInputElement).value;
+        this.scoreItemId = (this.form.querySelector("input.score-item") as HTMLInputElement).value;
         this.maxLink = element.querySelector("a.score-click");
         this.id = (this.form.querySelector("input.id") as HTMLInputElement).value;
         this.existing = this.form.dataset.new === "true";
@@ -107,7 +107,7 @@ export default class ScoreForm {
             return {
                 score: this.input.value,
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                rubric_id: this.rubricId
+                score_item_id: this.scoreItemId
             };
         }
     }
@@ -126,7 +126,7 @@ export default class ScoreForm {
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 feedback_id: this.parent.options.feedbackId,
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                rubric_id: this.rubricId
+                score_item_id: this.scoreItemId
             };
         }
 

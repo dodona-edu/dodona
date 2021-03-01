@@ -1,17 +1,17 @@
-<% if rubric.errors.any? %>
+<% if score_item.errors.any? %>
   <div>
     <div class="callout callout-danger" id="error_explanation">
-      <h4><%= t('errors.validation_errors', count: rubric.errors.count) %></h4>
+      <h4><%= t('errors.validation_errors', count: score_item.errors.count) %></h4>
       <ul>
-        <% rubric.errors.full_messages.each do |message| %>
+        <% score_item.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   </div>
 <% end %>
-<%= form_for([evaluation, rubric], html: { class: 'form-horizontal' }, namespace: evaluation_exercise.id, remote: true) do |f| %>
-  <% unless rubric.persisted? %>
+<%= form_for([evaluation, score_item], html: { class: 'form-horizontal' }, namespace: evaluation_exercise.id, remote: true) do |f| %>
+  <% unless score_item.persisted? %>
     <%= f.hidden_field :evaluation_exercise_id, value: evaluation_exercise.id %>
   <% end %>
   <div class="field form-group">
@@ -40,7 +40,7 @@
   </div>
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
-      <%= f.submit t("rubrics.form.save"), class: "btn btn-primary btn-text" %>
+      <%= f.submit t("score_items.form.save"), class: "btn btn-primary btn-text" %>
     </div>
   </div>
 <% end %>

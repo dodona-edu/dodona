@@ -20,7 +20,7 @@ class Feedback < ApplicationRecord
   belongs_to :submission, optional: true
 
   has_many :scores, dependent: :destroy
-  has_many :rubrics, through: :evaluation_exercise
+  has_many :score_items, through: :evaluation_exercise
 
   delegate :user, to: :evaluation_user
   delegate :exercise, to: :evaluation_exercise
@@ -74,7 +74,7 @@ class Feedback < ApplicationRecord
   end
 
   def maximum_score
-    rubrics.map(&:maximum).sum(BigDecimal('0'))
+    score_items.map(&:maximum).sum(BigDecimal('0'))
   end
 
   private

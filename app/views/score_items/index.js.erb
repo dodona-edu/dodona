@@ -1,0 +1,2 @@
+<%# Refreshes the score items for one exercise. %>
+$("#card-<%= evaluation_exercise.id %>").html("<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");

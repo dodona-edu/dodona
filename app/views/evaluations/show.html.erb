@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="card-actions card-border">
-        <%= link_to t('evaluations.edit_rubrics'), evaluation_rubrics_path(@evaluation), class: "btn-text" %>
+        <%= link_to t('evaluations.edit_score_items'), evaluation_score_items_path(@evaluation), class: "btn-text" %>
         <%= link_to t('evaluations.edit.title'), edit_evaluation_path(@evaluation), class: "btn-text" %>
         <%= link_to (@evaluation.released ? t('.unrelease') : t('.release')),
                     evaluation_path(@evaluation, evaluation: { released: !@evaluation.released }),

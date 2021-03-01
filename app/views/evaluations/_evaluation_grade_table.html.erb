@@ -16,7 +16,7 @@
       <td class="user-name ellipsis-overflow"><%= t ".average" %></td>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
         <td class="status">
-          <% if exercise.rubrics.present? %>
+          <% if exercise.score_items.present? %>
             <%= format_score(exercise.feedbacks.map(&:score).sum / exercise.feedbacks.count) %>
           <% else %>
             -

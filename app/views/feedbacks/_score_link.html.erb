@@ -1,4 +1,4 @@
-<% if rubric_scores.length >= 1 %>
+<% if score_item_scores.length >= 1 %>
   <% if clickable %>
     <%= link_to t("feedbacks.score_link.score", score: format_score(feedback.score), max: format_score(feedback.maximum_score)),
                 "#score-details-#{feedback.id}",
@@ -7,7 +7,7 @@
     <%= t("feedbacks.score_link.score_short", score: format_score(feedback.score), max: format_score(feedback.maximum_score)) %>
   <% end %>
 <% end %>
-<% if policy(feedback).show? && clickable && rubric_scores.length >= 1 %>
+<% if policy(feedback).show? && clickable && score_item_scores.length >= 1 %>
   <%= link_to feedback_path(feedback), class: "edit-score btn btn-sm btn-default", title: t("feedbacks.score_link.view_feedback") do %>
     <i class="mdi mdi-pencil mdi-18"></i>
   <% end %>

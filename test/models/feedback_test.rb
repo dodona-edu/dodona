@@ -66,6 +66,6 @@ class FeedbackTest < ActiveSupport::TestCase
     s2 = create :score, feedback: feedback, score: '6.0'
 
     assert feedback.score == s1.score + s2.score
-    assert feedback.maximum_score == s1.rubric.maximum + s2.rubric.maximum
+    assert feedback.maximum_score == s1.score_item.maximum + s2.score_item.maximum
   end
 end

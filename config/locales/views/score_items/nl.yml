@@ -1,5 +1,5 @@
 nl:
-  rubrics:
+  score_items:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden. Dit is zichtbaar voor de studenten.
       visible: Zichtbaar
@@ -14,22 +14,22 @@ nl:
       description: "Beschrijving"
       maximum: "Maximale score"
       total: "Totaal"
-      total-description: "Som van alle rubrics"
+      total-description: "Som van alle scoreonderdelen"
       visible: "Zichtbaarheid"
       visible-yes: "Punten worden zichtbaar voor studenten na vrijgave evaluatie"
       visible-no: "Punten zijn niet zichtbaar voor studenten"
       delete: Verwijderen
       edit: Bewerken
     index:
-      title: Rubrics aanpassen
+      title: Scoreonderdeel aanpassen
       to_evaluation: Naar evaluatie
     new:
-      title: Rubrics toevoegen
-      explanation_title: "Wat is een rubric?"
-      explanation_part1: "Bij een rubric beslis je hoe je punten wilt geven aan de oplossingen in deze evaluatie. Per oefening kan je een aantal rubrics opstellen."
+      title: Scoreonderdeel toevoegen
+      explanation_title: "Wat is een scoreonderdeel?"
+      explanation_part1: "Bij een scoreonderdeel beslis je hoe je punten wilt geven aan de oplossingen in deze evaluatie. Per oefening kan je een aantal scoreonderdelen opstellen."
       explanation_part2: "Als je geen punten wilt geven in Dodona kan je onmiddellijk op '%{button}' klikken."
     exercise:
-      nothing: Er zijn nog geen rubrics voor deze oefening.
-      copy: Rubric kopiëren van een andere oefening
-      add: Nieuwe rubric maken
-      all: Rubric toevoegen aan alle oefeningen
+      nothing: Er zijn nog geen scoreonderdelen voor deze oefening.
+      copy: Scoreonderdeel kopiëren van een andere oefening
+      add: Nieuw scoreonderdeel maken
+      all: Scoreonderdeel toevoegen aan alle oefeningen

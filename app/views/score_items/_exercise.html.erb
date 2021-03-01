@@ -1,0 +1,27 @@
+<div class="card score-items-card">
+  <div class="card-supporting-text" id="evaluation-score-templates">
+    <h4><%= evaluation_exercise.exercise.name %></h4>
+
+    <% if evaluation_exercise.score_items.empty? %>
+      <p><%= t 'score_items.exercise.nothing' %></p>
+    <% else %>
+      <%= render 'score_items/table', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+    <% end %>
+  </div>
+  <div class="card-actions card-border">
+    <%= link_to t('score_items.exercise.copy'), "#copy-score-item-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
+                data: { toggle: 'collapse', parent: "#panels-#{evaluation_exercise.id}" } %>
+    <%= link_to t('score_items.exercise.add'), "#new-score-item-exercise-#{evaluation_exercise.id}", class: 'btn-text toggle-button',
+                data: { toggle: 'collapse', parent: "#panels-#{evaluation_exercise.id}" } %>
+  </div>
+  <div id="panels-<%= evaluation_exercise.id %>">
+    <div class="panel">
+      <div class="card-supporting-text collapse panel <%= " in" if new&.errors.present? %>" id="new-score-item-exercise-<%= evaluation_exercise.id %>">
+        <%= render 'score_items/form', score_item: new || ScoreItem.new, evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+      </div>
+      <div class="card-supporting-text collapse panel" id="copy-score-item-exercise-<%= evaluation_exercise.id %>">
+        <%= render 'score_items/copy', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+      </div>
+    </div>
+  </div>
+</div>

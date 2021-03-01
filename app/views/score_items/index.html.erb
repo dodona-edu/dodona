@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'rubric' %>
+  <%= javascript_pack_tag 'score_item' %>
 <% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
@@ -13,7 +13,7 @@
     </div>
     <% @evaluation.evaluation_exercises.each do |evaluation_exercise| %>
       <div id="card-<%= evaluation_exercise.id %>">
-        <%= render 'rubrics/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
+        <%= render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
       </div>
     <% end %>
   </div>

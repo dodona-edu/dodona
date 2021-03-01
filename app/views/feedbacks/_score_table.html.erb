@@ -10,18 +10,18 @@
         <td><%= format_score feedback.score %> / <%= format_score feedback.maximum_score %></td>
       </tr>
     <% end %>
-    <% rubric_scores.each do |rubric, score| %>
+    <% score_item_scores.each do |score_item, score| %>
       <% score = score.first %>
       <tr>
         <td>
-          <%= rubric.name %>
-          <% unless rubric.visible %>
-            <i class="mdi mdi-android mdi-18 colored-secondary" title="<%= t "rubrics.table.visible-no" %>"></i>
+          <%= score_item.name %>
+          <% unless score_item.visible %>
+            <i class="mdi mdi-android mdi-18 colored-secondary" title="<%= t "score_items.table.visible-no" %>"></i>
           <% end %>
           <br>
-          <span class="text-muted small"><%= rubric.description %></span>
+          <span class="text-muted small"><%= score_item.description %></span>
         </td>
-        <td><%= format_score score.score %> / <%= format_score rubric.maximum %></td>
+        <td><%= format_score score.score %> / <%= format_score score_item.maximum %></td>
       </tr>
     <% end %>
   </table>

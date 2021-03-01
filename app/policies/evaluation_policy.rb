@@ -15,7 +15,7 @@ class EvaluationPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def rubrics?
+  def score_items?
     course_admin?
   end
 

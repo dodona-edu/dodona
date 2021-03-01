@@ -42,16 +42,16 @@
       </span>
     </div>
     <div class="col-md-6">
-      <% @scores.each do |feedback, rubric_scores | %>
+      <% @scores.each do |feedback, score_item_scores | %>
         <span class="score">
-          <%= render 'feedbacks/score_link', feedback: feedback, rubric_scores: rubric_scores, clickable: true %>
+          <%= render 'feedbacks/score_link', feedback: feedback, score_item_scores: score_item_scores, clickable: true %>
         </span>
       <% end %>
     </div>
   </div>
 </div>
-<% @scores.each do |feedback, rubric_scores | %>
-  <%= render 'feedbacks/score_table', feedback: feedback, rubric_scores: rubric_scores %>
+<% @scores.each do |feedback, score_item_scores | %>
+  <%= render 'feedbacks/score_table', feedback: feedback, score_item_scores: score_item_scores %>
 <% end %>
 
 <% unless submission.queued? or submission.running? %>

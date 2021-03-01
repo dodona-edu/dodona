@@ -208,7 +208,7 @@ Rails.application.routes.draw do
         post 'set_multi_user'
       end
       resources :feedbacks, only: %i[show edit update]
-      resources :rubrics, only: %i[create destroy update index new] do
+      resources :score_items, only: %i[create destroy update index new] do
         post 'copy', on: :collection
         post 'add_all', on: :collection
       end

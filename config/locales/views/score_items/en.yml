@@ -1,5 +1,5 @@
 en:
-  rubrics:
+  score_items:
     form:
       description-help: A description is optional. Markdown formatting can be used. This is visible to the students.
       visible: Visible
@@ -14,22 +14,22 @@ en:
       description: "Description"
       maximum: "Maximum score"
       total: "Total"
-      total-description: "Sum of all rubrics"
+      total-description: "Sum of all score items"
       visible: "Visibility"
       visible-yes: "Score becomes visible to students once evaluation is released"
       visible-no: "Score is not visible to students"
       delete: Delete
       edit: Edit
     index:
-      title: Edit rubrics
+      title: Edit score items
       to_evaluation: To evaluation
     new:
-      title: Add rubrics
-      explanation_title: "Wat is a rubric?"
-      explanation_part1: "With a rubric you decide how you want to grade the submissions in this evaluation. You can create a number of rubrics for each exercise."
+      title: Add score items
+      explanation_title: "Wat is a score item?"
+      explanation_part1: "With a score item you decide how you want to grade the submissions in this evaluation. You can create a number of score items for each exercise."
       explanation_part2: "If you don't want to do grading on Dodona, you can click '%{button}'."
     exercise:
-      nothing: There are no rubrics for this exercise yet.
-      copy: Copy rubric from another exercise
-      add: Create new rubric
-      all: Add rubric to all exercises
+      nothing: There are no score items for this exercise yet.
+      copy: Copy score item from another exercise
+      add: Create new score item
+      all: Add score item to all exercises

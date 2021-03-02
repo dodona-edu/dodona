@@ -32,23 +32,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
   end
 
-  test 'only graded session redirects to score items' do
-    post evaluations_path, params: {
-      evaluation: {
-        series_id: @series.id,
-        deadline: DateTime.now,
-        graded: true
-      }
-    }
-    evaluation = @series.evaluation
-
-    get add_users_evaluation_path(evaluation, graded: true)
-    assert_select "a[href^='#{new_evaluation_score_item_path(evaluation)}']", true
-
-    get add_users_evaluation_path(evaluation, graded: false)
-    assert_select "a[href^='#{new_evaluation_score_item_path(evaluation)}']", false
-  end
-
   test 'Can remove user from feedback' do
     post evaluations_path, params: {
       evaluation: {

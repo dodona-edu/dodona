@@ -55,9 +55,6 @@ nl:
     download: Punten downloaden
     form:
       deadline-help_html: "Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie. <b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren."
-      grading: Punten
-      grading-label: Punten inschakelen
-      grading-help: "Kies of je in Dodona punten wilt geven aan oplossingen. Je kan dit later altijd aanpassen."
     evaluation_table:
       user: Gebruiker
     evaluation_grade_table:

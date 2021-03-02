@@ -60,7 +60,6 @@ class EvaluationsController < ApplicationController
       [I18n.t('evaluations.add_users.title'), '#']
     ]
     @title = I18n.t('evaluations.add_users.title')
-    @graded = ActiveModel::Type::Boolean.new.cast(params['graded'])
   end
 
   def create
@@ -70,7 +69,7 @@ class EvaluationsController < ApplicationController
 
     respond_to do |format|
       if @evaluation.save
-        format.html { redirect_to add_users_evaluation_path(@evaluation, graded: @evaluation.graded) }
+        format.html { redirect_to add_users_evaluation_path(@evaluation) }
         format.json { render :show, status: :created, location: @evaluation }
       else
         format.html { render :new }

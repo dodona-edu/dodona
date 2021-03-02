@@ -52,11 +52,7 @@
         </div>
       </div>
       <div class="card-actions card-border">
-        <% if @graded %>
-          <%= link_to t('evaluations.new.next'), new_evaluation_score_item_path(@evaluation), class: "btn btn-text btn-primary" %>
-        <% else %>
-          <%= link_to t('evaluations.new.next'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
-        <% end %>
+        <%= link_to t('evaluations.new.next'), new_evaluation_score_item_path(@evaluation), class: "btn btn-text btn-primary" %>
       </div>
     </div>
     <div class="card">

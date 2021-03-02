@@ -55,7 +55,7 @@ class EvaluationPolicy < ApplicationPolicy
     if record.instance_of?(Evaluation)
       %i[released deadline user_ids exercise_ids]
     else
-      %i[series_id deadline user_ids exercise_ids graded]
+      %i[series_id deadline user_ids exercise_ids]
     end
   end
 

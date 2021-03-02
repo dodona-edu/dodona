@@ -24,19 +24,6 @@
       </div>
       <span class="help-block col-sm-12"><%= t(".deadline-help_html") %></span>
     </div>
-
-    <br><strong><%= t(".grading") %></strong><br>
-    <div class="field form-group">
-      <div class="col-sm-6">
-        <div class="checkbox">
-          <%= label_tag do %>
-            <%= f.check_box :graded %>
-            <span class="checkbox-label"><%= t ".grading-label" %></span>
-          <% end %>
-        </div>
-      </div>
-      <span class="help-block col-sm-12"><%= t(".grading-help") %></span>
-    </div>
   </div>
 
   <% if evaluation.errors.any? %>

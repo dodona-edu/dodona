@@ -12,7 +12,7 @@
 #
 
 FactoryBot.define do
-  factory :institution, class: Institution do
+  factory :institution, class: 'Institution' do
     name { Faker::University.unique.name }
     short_name { name.gsub(/\s+/, '') }
     logo { 'logo.png' }

@@ -37,7 +37,8 @@
         <% end %>
       <% end %>
       <% {'Hogeschool West-Vlaanderen' => 'Howest.jpg', 'UC Leuven Limburg' => 'ucll.png',
-         'Arteveldehogeschool' => 'artevelde.png', 'Vrije Universiteit Brussel' => 'vub.jpg'}.each do |school, logo| %>
+          'Arteveldehogeschool' => 'artevelde.png', 'Vrije Universiteit Brussel' => 'vub.jpg',
+          'Universiteit Antwerpen' => 'ua.png'}.each do |school, logo| %>
         <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
           <div class="col-sm-6 col-lg-4">
             <div class="option-btn">

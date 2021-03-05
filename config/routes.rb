@@ -206,6 +206,7 @@ Rails.application.routes.draw do
         post 'add_user'
         post 'remove_user'
         post 'set_multi_user'
+        post 'modify_grading_visibility'
       end
       resources :feedbacks, only: %i[show edit update]
       resources :score_items, only: %i[create destroy update index new] do
@@ -215,6 +216,7 @@ Rails.application.routes.draw do
       resources :scores, only: %i[show create update destroy]
     end
     resources :feedbacks, only: %i[show edit update]
+    resources :evaluation_exercise, only: %i[update]
 
     scope 'lti', controller: 'lti' do
       get 'redirect', to: 'lti#redirect', as: 'lti_redirect'

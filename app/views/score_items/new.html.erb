@@ -5,60 +5,56 @@
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="card evaluation-user-select">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @title %></h2>
+        <h2 class="card-title-text"><%= t('.title') %></h2>
       </div>
       <div class="card-supporting-text card-border">
-        <div class="row">
-          <div class="col-lg-12">
-            <p><%= t('.explanation_part1') %></p>
-            <p><%= t('.explanation_part2', button: t('score_items.index.to_evaluation')) %></p>
-          </div>
-        </div>
+        <p><%= t('.explanation_part1') %></p>
+        <p><%= t('.explanation_part2') %></p>
       </div>
       <div class="card-actions card-border">
-        <%= link_to t('score_items.index.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+        <%= link_to t('.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+        <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
+          <i class="mdi mdi-dots-vertical"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+              <%= link_to t(".show_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post %>
+            </li>
+            <li>
+              <%= link_to t(".hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post %>
+            </li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-subtitle">
+      <h3><%= t ".exercises" %></h3>
+      <div class="flex-spacer"></div>
+      <div>
+        <a href="#add-score-item-to-all" class="btn with-text btn-primary btn-fab-extended"
+           data-toggle="modal" title="<%= t '.add_all.title' %>">
+          <i class="mdi mdi-plus icon"></i>
+          <span class="text"><%= t '.add_all.text' %></span>
+        </a>
       </div>
     </div>
     <div class="card score-items-card">
       <div class="card-supporting-text">
-        <h4><%= t "score_items.exercise.all" %></h4>
-        <%= form_for(:score_item, html: { class: 'form-horizontal' }, url: add_all_evaluation_score_items_path(@evaluation)) do |f| %>
-          <div class="field form-group">
-            <%= f.label :name, :class => "col-sm-3 control-label" %>
-            <div class="col-sm-6"><%= f.text_field :name, required: true, class: "form-control" %></div>
-          </div>
-          <div class="field form-group">
-            <%= f.label :description, :class => "col-sm-3 control-label" %>
-            <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "2" %></div>
-            <span class="help-block col-sm-offset-3 col-sm-6"><%= t "score_items.form.description-help" %></span>
-          </div>
-          <div class="field form-group">
-            <%= f.label :maximum, :class => "col-sm-3 control-label" %>
-            <div class="col-sm-6"><%= f.number_field :maximum, step: 0.01, min: 0, required: true, class: "form-control" %></div>
-          </div>
-          <div class="field form-group">
-            <%= f.label :visible, t("score_items.form.visible"), class: 'col-sm-3 control-label' %>
-            <div class="col-sm-6">
-              <div class="checkbox">
-                <%= label_tag do %>
-                  <%= f.check_box :visible %>
-                  <span class="checkbox-label"><%= t "score_items.form.visible-help" %></span>
-                <% end %>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-              <%= f.submit t("score_items.form.save"), class: "btn btn-primary btn-text" %>
-            </div>
+        <% @evaluation.evaluation_exercises.each do |evaluation_exercise| %>
+          <div id="card-<%= evaluation_exercise.id %>">
+            <%= render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
           </div>
         <% end %>
       </div>
     </div>
-    <% @evaluation.evaluation_exercises.each do |evaluation_exercise| %>
-      <div id="card-<%= evaluation_exercise.id %>">
-        <%= render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
-      </div>
-    <% end %>
+  </div>
+</div>
+
+<div class="modal fade" id="add-score-item-to-all" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <%= render 'score_items/form',
+               score_item: ScoreItem.new,
+               evaluation_exercise: nil,
+               title: t(".add_all.title"),
+               form_options: { url: add_all_evaluation_score_items_path(@evaluation) } %>
   </div>
 </div>

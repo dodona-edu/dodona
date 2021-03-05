@@ -51,6 +51,10 @@ class EvaluationPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def modify_grading_visibility?
+    course_admin?
+  end
+
   def permitted_attributes
     if record.instance_of?(Evaluation)
       %i[released deadline user_ids exercise_ids]

@@ -2,34 +2,57 @@ en:
   score_items:
     form:
       description-help: A description is optional. Markdown formatting can be used. This is visible to the students.
-      visible: Visible
       visible-help: If the score becomes visible to students once the evaluation is released.
       save: Save
+      close: Close
     copy:
       copy: Copy
       exercise: Exercise
       choose: "-- Choose an exercise --"
     table:
-      name: "Name"
-      description: "Description"
-      maximum: "Maximum score"
       total: "Total"
       total-description: "Sum of all score items"
-      visible: "Visibility"
       visible-yes: "Score becomes visible to students once evaluation is released"
       visible-no: "Score is not visible to students"
       delete: Delete
       edit: Edit
     index:
       title: Edit score items
-      to_evaluation: To evaluation
+      to_evaluation: Back to evaluation
+      summary:
+        zero: No score items configured for this evaluation
+        one: One score item for this evaluation
+        other: "%{count} score items for this evaluation"
     new:
-      title: Add score items
-      explanation_title: "Wat is a score item?"
-      explanation_part1: "With a score item you decide how you want to grade the submissions in this evaluation. You can create a number of score items for each exercise."
-      explanation_part2: "If you don't want to do grading on Dodona, you can click '%{button}'."
+      title: Configure score items
+      explanation_part1: >
+        You can optionally grade the submissions in this evaluation from within Dodona.
+        To do that, you'll first need to specify how you will grade the solutions.
+        You can assign a number of score items to each exercise.
+      explanation_part2: >
+        You can choose to add the same score item to each exercise below.
+        Alternatively, you can modify the items per exercise.
+        If you don't want to grade submissions, you can go directly to the evaluation.
+        You can always change this later.
+      text: Create and add a score item to each exercise in the evaluation.
+      close: Sluiten
+      add_all:
+        text: Add to all
+        title: Add the same score item to all exercises
+      hide_all: Make all score items invisible
+      show_all: Make all score items visible
+      exercises: Exercises
+      to_evaluation: To evaluation
     exercise:
-      nothing: There are no score items for this exercise yet.
-      copy: Copy score item from another exercise
-      add: Create new score item
+      nothing: There are no score items for this exercise yet. You can only grade exercises with at least one score item.
+      copy_title: Copy score item from another exercise to %{name}
+      add_title: Create new score item for %{name}
       all: Add score item to all exercises
+      total: Total
+      edit_title: Edit this score item
+      delete_title: Delete this score item
+      edit_item_title: "Edit %{title}"
+      total_visibility: >
+        Show or hide the calculated total score in Dodona for this exercise when the feedback is released.
+        Individual score items are still visible if they are marked as such.
+      visibility: Show or hide this score item.

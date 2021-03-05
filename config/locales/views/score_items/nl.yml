@@ -2,34 +2,57 @@ nl:
   score_items:
     form:
       description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden. Dit is zichtbaar voor de studenten.
-      visible: Zichtbaar
       visible-help: Of de score zichtbaar zal zijn voor studenten eens de evaluatie vrijgegeven is.
       save: Opslaan
+      close: Sluiten
     copy:
       copy: Kopiëren
       exercise: Oefening
       choose: "-- Kies een oefening --"
     table:
-      name: "Naam"
-      description: "Beschrijving"
-      maximum: "Maximale score"
       total: "Totaal"
       total-description: "Som van alle scoreonderdelen"
-      visible: "Zichtbaarheid"
       visible-yes: "Punten worden zichtbaar voor studenten na vrijgave evaluatie"
       visible-no: "Punten zijn niet zichtbaar voor studenten"
       delete: Verwijderen
       edit: Bewerken
     index:
-      title: Scoreonderdeel aanpassen
-      to_evaluation: Naar evaluatie
+      title: Scoreonderdelen aanpassen
+      to_evaluation: Terug naar evaluatie
+      summary:
+        zero: Geen score-onderdelen in deze evaluatie
+        one: Eén scoreonderdeel in deze evaluatie
+        other: "%{count} scoreonderdelen in deze evaluatie"
     new:
-      title: Scoreonderdeel toevoegen
-      explanation_title: "Wat is een scoreonderdeel?"
-      explanation_part1: "Bij een scoreonderdeel beslis je hoe je punten wilt geven aan de oplossingen in deze evaluatie. Per oefening kan je een aantal scoreonderdelen opstellen."
-      explanation_part2: "Als je geen punten wilt geven in Dodona kan je onmiddellijk op '%{button}' klikken."
+      title: Scoreonderdelen configureren
+      explanation_part1: >
+        Je kan op de oplossingen in deze evaluatie ook punten ingeven op Dodona.
+        Daarvoor moet je wel eerst bepalen waarop je punten zal geven. Binnen Dodona
+        kan je per oefeningen een puntenverdeling opstellen door het toevoegen van scoreonderdelen.
+      explanation_part2: >
+        Hiernaast kan je snel één scoreonderdeel toevoegen aan elke oefeningen in deze evaluatie.
+        Je kan ook per oefening hieronder een aangepaste puntenverdeling uitwerken.
+        Je kan ook direct naar de evaluatie gaan als je geen punten wilt geven in Dodona.
+        Dit kan later altijd aangepast worden.
+      text: Creeër een scoreonderdeel en voeg het toe aan elke oefening in de evaluatie.
+      close: Sluiten
+      add_all:
+        text: Toevoegen aan alle
+        title: Hetzelfde scoreonderdeel toevoegen aan alle oefeningen
+      hide_all: Alles scoreonderdelen verbergen
+      show_all: Alles scoreonderdelen zichtbaar maken
+      exercises: Oefeningen
+      to_evaluation: Naar evaluatie
     exercise:
-      nothing: Er zijn nog geen scoreonderdelen voor deze oefening.
-      copy: Scoreonderdeel kopiëren van een andere oefening
-      add: Nieuw scoreonderdeel maken
+      nothing: Er zijn nog geen scoreonderdelen voor deze oefening. Je kan pas punten geven als er minstens één scoreonderdeel is.
+      copy_title: Scoreonderdeel kopiëren van een andere oefening naar %{name}
+      add_title: Nieuw scoreonderdeel toevoegen aan %{name}
       all: Scoreonderdeel toevoegen aan alle oefeningen
+      total: Totaal
+      edit_title: Bewerk dit scoreonderdeel
+      delete_title: Verwijder dit scoreonderdeel
+      edit_item_title: "%{title} bewerken"
+      total_visibility: >
+        Toon of verberg de berekende totaalscore in Dodona voor deze oefening als de feedback vrijgegeven wordt.
+        Individuele scoreonderdelen zijn nog wel zichtbaar als ze als zodanig gemarkeerd zijn.
+      visibility: Toon of verberg dit scoreonderdeel.

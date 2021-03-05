@@ -26,6 +26,8 @@ nl:
       evaluation: Evaluatie
       feedback: Feedback
       question: Vraag
+      score_item: Scoreonderdeel
+      score: Score
     attributes:
       api_token:
         description: Beschrijving
@@ -176,7 +178,7 @@ nl:
           unanswered: Onbeantwoord
           in_progress: In behandeling
           answered: Beantwoord
-      score_items:
+      score_item:
         name: Naam
         description: Beschrijving
         maximum: Maximum

@@ -84,6 +84,15 @@ class Evaluation < ApplicationRecord
     score_items.map(&:maximum).sum(BigDecimal(0))
   end
 
+  def change_grade_visibility!(visible)
+    evaluation_exercises.each do |e|
+      e.update!(visible_score: visible)
+    end
+    score_items.each do |s|
+      s.update!(visible: visible)
+    end
+  end
+
   private
 
   def deadline_in_past

@@ -26,6 +26,8 @@ en:
       evaluation: Evaluation
       feedback: Feedback
       question: Question
+      score_item: Score item
+      score: Score
     attributes:
       api_token:
         description: Description
@@ -175,7 +177,7 @@ en:
           unanswered: Unanswered
           in_progress: In progress
           answered: Answered
-      score_items:
+      score_item:
         name: Name
         description: Description
         maximum: Maximum

@@ -50,7 +50,7 @@ nl:
       clear: Alle gebruikers verwijderen
       add_enrolled: Alle ingeschreven studenten
       add_submitted: Alle studenten die indienden
-    edit_score_items: Scoreonderdeel aanpassen
+    edit_score_items: Scoreonderdelen aanpassen
     destroy: Evaluatie verwijderen
     download: Punten downloaden
     form:

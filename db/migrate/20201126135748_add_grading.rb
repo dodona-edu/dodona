@@ -19,6 +19,8 @@ class AddGrading < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
+    add_column :evaluation_exercises, :visible_score, :boolean, null: false, default: true
+
     # Each score item may only have one score per feedback.
     add_index :scores, [:score_item_id, :feedback_id], unique: true
   end

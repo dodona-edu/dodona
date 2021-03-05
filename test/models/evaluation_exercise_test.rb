@@ -7,6 +7,7 @@
 #  exercise_id   :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  visible_score :boolean          default(TRUE), not null
 #
 require 'test_helper'
 

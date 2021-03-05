@@ -7,6 +7,7 @@
 #  exercise_id   :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  visible_score :boolean          default(TRUE), not null
 #
 class EvaluationExercise < ApplicationRecord
   belongs_to :exercise
@@ -24,6 +25,6 @@ class EvaluationExercise < ApplicationRecord
   end
 
   def maximum_score
-    score_items.map(&:maximum).sum
+    score_items.map(&:maximum).sum(BigDecimal(0))
   end
 end

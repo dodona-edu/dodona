@@ -135,3 +135,5 @@ nl:
       conflict: Deze score is al aangepast door een andere gebruiker
       unknown: Een onverwachte fout trad op bij het opslaan van de score
       confirm: Bent u zeker?
+    score_item:
+      error: Fout bij bijwerken

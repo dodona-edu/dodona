@@ -1,2 +1,12 @@
 <%# Refreshes the score items for one exercise. %>
-$("#card-<%= evaluation_exercise.id %>").html("<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
+modal = $(".modal-<%= evaluation_exercise.id %>");
+if (modal.is(":visible")) {
+    modal.on("hidden.bs.modal", () => {
+        $("#card-<%= evaluation_exercise.id %>").html("<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
+    }).modal("hide");
+} else {
+    $("#card-<%= evaluation_exercise.id %>").html("<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
+}
+<% if new&.errors&.any? %>
+  $(".modal-<%= evaluation_exercise.id %>").modal();
+<% end %>

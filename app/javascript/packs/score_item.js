@@ -1,3 +1,4 @@
-import { initInlineEditButton } from "score_item.ts";
+import { initInlineEditButton, initVisibilityCheckboxes } from "score_item.ts";
 
 window.dodona.initInlineEditButton = initInlineEditButton;
+window.dodona.initVisibilityCheckboxes = initVisibilityCheckboxes;

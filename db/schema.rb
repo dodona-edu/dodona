@@ -208,6 +208,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_143708) do
     t.integer "exercise_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "visible_score", default: true, null: false
     t.index ["evaluation_id"], name: "index_evaluation_exercises_on_evaluation_id"
     t.index ["exercise_id", "evaluation_id"], name: "index_evaluation_exercises_on_exercise_id_and_evaluation_id", unique: true
     t.index ["exercise_id"], name: "index_evaluation_exercises_on_exercise_id"

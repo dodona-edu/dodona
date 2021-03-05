@@ -2,7 +2,7 @@ class EvaluationsController < ApplicationController
   include SeriesHelper
   include EvaluationHelper
 
-  before_action :set_evaluation, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_scores]
+  before_action :set_evaluation, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_scores modify_grading_visibility]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -88,6 +88,12 @@ class EvaluationsController < ApplicationController
         format.json { render json: @evaluation.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def modify_grading_visibility
+    new_visibility = ActiveModel::Type::Boolean.new.cast(params[:visible])
+    @evaluation.change_grade_visibility!(new_visibility)
+    redirect_back fallback_location: evaluation_score_items_path(@evaluation)
   end
 
   def set_multi_user

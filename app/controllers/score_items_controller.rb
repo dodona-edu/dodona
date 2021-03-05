@@ -36,6 +36,7 @@ class ScoreItemsController < ApplicationController
         format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: @score_item.evaluation_exercise } }
         format.json { render :show, status: :ok, location: [@evaluation, @score_item] }
       else
+        format.js { render 'score_items/index', locals: { new: @score_item, evaluation_exercise: @score_item.evaluation_exercise } }
         format.json { render json: @score_item.errors, status: :unprocessable_entity }
       end
     end
@@ -49,6 +50,7 @@ class ScoreItemsController < ApplicationController
         format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: @score_item.evaluation_exercise } }
         format.json { render :show, status: :created, location: [@evaluation, @score_item] }
       else
+        format.js { render 'score_items/index', locals: { new: @score_item, evaluation_exercise: @score_item.evaluation_exercise } }
         format.json { render json: @score_item.errors, status: :unprocessable_entity }
       end
     end

@@ -440,4 +440,48 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     get export_scores_evaluation_path evaluation, format: :csv
     assert_response :redirect # Redirect to sign in page
   end
+
+  test 'course admins can change grade visibility' do
+    evaluation = create :evaluation, :with_submissions
+    evaluation.series.course.administrating_members << @course_admin
+    from = evaluation.evaluation_exercises.first
+    s1 = create :score_item, evaluation_exercise: from
+    s2 = create :score_item, evaluation_exercise: from
+
+    [
+      [@course_admin, :redirect],
+      [create(:student), :forbidden],
+      [create(:staff), :forbidden],
+      [create(:zeus), :redirect],
+      [nil, :unauthorized]
+    ].each do |user, expected|
+      sign_in user if user.present?
+
+      from.update!(visible_score: false)
+      s1.update!(visible: false)
+      s2.update!(visible: false)
+
+      post modify_grading_visibility_evaluation_path(evaluation, format: :js), params: {
+        visible: true
+      }
+
+      assert_response expected
+
+      from.reload
+      s1.reload
+      s2.reload
+
+      if expected == :redirect
+        assert from.visible_score?
+        assert s1.visible?
+        assert s2.visible?
+      else
+        assert_not from.visible_score?
+        assert_not s1.visible?
+        assert_not s2.visible?
+      end
+
+      sign_out user if user.present?
+    end
+  end
 end

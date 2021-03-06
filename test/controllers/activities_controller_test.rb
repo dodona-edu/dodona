@@ -578,6 +578,52 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     exercises = JSON.parse response.body
     assert_equal 3, exercises.length
   end
+
+  test 'exercise solved in other course should not take into account solutions from different course' do
+    ex = create_exercises_return_valid
+    s1 = create :series
+    s1.exercises << ex
+    s2 = create :series
+    s2.exercises << ex
+    s1.course.enrolled_members << @user
+    s2.course.enrolled_members << @user
+    create :correct_submission, user: @user, course: s1.course, exercise: ex
+    get activity_url(ex, format: :json)
+    resp = JSON.parse response.body
+    assert resp['last_solution_is_best']
+    assert resp['has_solution']
+    assert resp['has_correct_solution']
+    get course_series_activity_url(s1.course, s1, ex, format: :json)
+    resp = JSON.parse response.body
+    assert resp['last_solution_is_best']
+    assert resp['has_solution']
+    assert resp['has_correct_solution']
+    get course_series_activity_url(s2.course, s2, ex, format: :json)
+    resp = JSON.parse response.body
+    assert resp['last_solution_is_best']
+    assert_not resp['has_solution']
+    assert_not resp['has_correct_solution']
+  end
+
+  test 'reading activity read in other course should not take into account read state from different course' do
+    ra = create :content_page
+    s1 = create :series
+    s1.content_pages << ra
+    s2 = create :series
+    s2.content_pages << ra
+    s1.course.enrolled_members << @user
+    s2.course.enrolled_members << @user
+    create :activity_read_state, activity: ra, user: @user, course: s1.course
+    get activity_url(ra, format: :json)
+    resp = JSON.parse response.body
+    assert resp['has_read']
+    get course_series_activity_url(s1.course, s1, ra, format: :json)
+    resp = JSON.parse response.body
+    assert resp['has_read']
+    get course_series_activity_url(s2.course, s2, ra, format: :json)
+    resp = JSON.parse response.body
+    assert_not resp['has_read']
+  end
 end
 
 class ExerciseErrorMailerTest < ActionDispatch::IntegrationTest

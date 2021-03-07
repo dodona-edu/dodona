@@ -1,8 +1,4 @@
 #!/bin/bash
 bundle install
-formation="all=1"
-if [ "$1" = "norails" ]
-then
-    formation="$formation,web=0"
-fi
-foreman start -f Procfile.dev "$formation"
+yarn install
+bundle exec rails s -p 3000 & bundle exec rails jobs:work

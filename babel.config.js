@@ -43,6 +43,8 @@ module.exports = function(api) {
         }
       ]
     ].filter(Boolean),
+    // ignore cumsum.js because of a bug in babel: https://github.com/babel/babel/issues/11038
+    ignore: [new RegExp("d3-array/src/cumsum.js")],
     plugins: [
       "babel-plugin-macros",
       "@babel/plugin-syntax-dynamic-import",

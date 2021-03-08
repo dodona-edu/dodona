@@ -5,8 +5,6 @@
 #  id                      :integer          not null, primary key
 #  name_nl                 :string(255)
 #  name_en                 :string(255)
-#  description_nl_present  :boolean
-#  description_en_present  :boolean
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  path                    :string(255)
@@ -21,6 +19,8 @@
 #  repository_token        :string(64)       not null
 #  allow_unsafe            :boolean          default(FALSE), not null
 #  type                    :string(255)      default("Exercise"), not null
+#  description_nl_present  :boolean          default(FALSE)
+#  description_en_present  :boolean          default(FALSE)
 #
 
 require 'pathname'

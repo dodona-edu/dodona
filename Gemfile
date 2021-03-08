@@ -41,7 +41,7 @@ gem 'delayed_job_active_record', '~> 4.1.5'
 gem 'daemons', '~>1.3'
 
 # dashboard
-gem 'delayed_job_web', '~>1.4.3'
+gem 'delayed_job_web', '~>1.4.4'
 gem 'sinatra', '~>2.1.0'
 
 # pagination

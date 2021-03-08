@@ -42,7 +42,7 @@ function initPunchcard(url) {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;
         }
-        renderCard(d3.entries(data), unitSize, chart, x, y);
+        renderCard(Object.entries(data), unitSize, chart, x, y);
     };
     d3.json(url)
         .then(processor);
@@ -76,7 +76,7 @@ function renderAxes(xAxis, yAxis, chart, innerHeight) {
 }
 
 function renderCard(data, unitSize, chart, x, y) {
-    const maxVal = d3.max(data, d => d.value);
+    const maxVal = d3.max(data, d => d[1]);
     const radius = d3.scaleSqrt()
         .domain([0, maxVal])
         .range([0, unitSize / 2]);
@@ -87,15 +87,15 @@ function renderCard(data, unitSize, chart, x, y) {
         .data(data);
 
     const updates = circles.enter().append("circle");
-    updates.attr("cx", d => x(parseInt(d.key.split(",")[1])))
-        .attr("cy", d => y(parseInt(d.key.split(",")[0])))
+    updates.attr("cx", d => x(parseInt(d[0].split(",")[1])))
+        .attr("cy", d => y(parseInt(d[0].split(",")[0])))
         .transition()
-        .delay(d => 500 + 20 * (parseInt(d.key.split(",")[0]) + parseInt(d.key.split(",")[1])))
+        .delay(d => 500 + 20 * (parseInt(d[0].split(",")[0]) + parseInt(d[0].split(",")[1])))
         .duration(800)
         .ease(d3.easeBackOut)
-        .attr("r", d => radius(d.value));
+        .attr("r", d => radius(d[1]));
     updates.append("svg:title")
-        .text(d => d.value);
+        .text(d => d[1]);
     circles.exit().remove();
 }
 

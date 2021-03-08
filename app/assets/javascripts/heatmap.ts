@@ -178,12 +178,12 @@ function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year
         .on("mouseout", () => {
             tooltip.transition().duration(200).style("opacity", 0);
         })
-        .on("mousemove", () => {
+        .on("mousemove", event => {
             tooltip
-                .style("left", `${d3.mouse(chartBox.node())[0] + 10}px`)
-                .style("top", `${d3.mouse(chartBox.node())[1] - tooltip.node().getBoundingClientRect().height - 10}px`);
+                .style("left", `${d3.pointer(event, chartBox.node())[0] + 10}px`)
+                .style("top", `${d3.pointer(event, chartBox.node())[1] - tooltip.node().getBoundingClientRect().height - 10}px`);
         })
-        .on("mouseover", d => {
+        .on("mouseover", (event, d) => {
             tooltip.transition().duration(200).style("opacity", .9);
             tooltip.html(`${d[1]} ${I18n.t("js.submissions_on")} ${d[0].format("D")} ${longMonthNames[d[0].month()].toLowerCase()} ${d[0].format("YYYY")}`);
         })

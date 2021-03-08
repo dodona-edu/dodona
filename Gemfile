@@ -188,4 +188,4 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
-gem 'docker-api', '~> 2.0.0'
+gem 'docker-api', '~> 2.1.0'

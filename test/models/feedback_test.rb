@@ -62,8 +62,10 @@ class FeedbackTest < ActiveSupport::TestCase
 
   test 'score calculations are correct' do
     feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
-    s1 = create :score, feedback: feedback, score: '5.0'
-    s2 = create :score, feedback: feedback, score: '6.0'
+    si1 = create :score_item, evaluation_exercise: feedback.evaluation_exercise
+    si2 = create :score_item, evaluation_exercise: feedback.evaluation_exercise
+    s1 = create :score, feedback: feedback, score: '5.0', score_item: si1
+    s2 = create :score, feedback: feedback, score: '6.0', score_item: si2
 
     assert feedback.score == s1.score + s2.score
     assert feedback.maximum_score == s1.score_item.maximum + s2.score_item.maximum

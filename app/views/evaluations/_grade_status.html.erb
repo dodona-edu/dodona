@@ -7,21 +7,16 @@
     submission_status = "wrong"
   end
 %>
-
-<% if feedback.score_items.present? %>
-  <span class='feedback <%= submission_status %> <%= "active" if local_assigns[:current] == feedback %>'>
-    <%= link_to evaluation_feedback_path(evaluation, feedback), class: "btn btn-icon" do %>
-      <% if feedback.completed? %>
-        <span title="<%= feedback.exercise.name %>: <%= t "evaluations.feedback_status.submission_" + submission_status %><%= t "evaluations.feedback_status.feedback_finished" %>">
-            <span><%= format_score feedback.score %></span>
-        </span>
-      <% else %>
-        <span class="provisional" title="<%= feedback.exercise.name %>: <%= t "evaluations.feedback_status.submission_" + submission_status %><%= t "evaluations.feedback_status.feedback_unstarted" %>">
-          <%= format_score feedback.score %>
-        </span>
-      <% end %>
+<span class='feedback score-text <%= "active" if local_assigns[:current] == feedback %>'>
+  <%= link_to evaluation_feedback_path(evaluation, feedback) do %>
+    <% if feedback.completed? %>
+      <span title="<%= feedback.exercise.name %>: <%= t "evaluations.feedback_status.submission_" + submission_status %><%= t "evaluations.feedback_status.feedback_finished" %>">
+        <%= format_score feedback.score %>
+      </span>
+    <% else %>
+      <span class="provisional" title="<%= feedback.exercise.name %>: <%= t "evaluations.feedback_status.submission_" + submission_status %><%= t "evaluations.feedback_status.feedback_unstarted" %>">
+        <%= format_score feedback.score %>
+      </span>
     <% end %>
-  </span>
-<% else %>
-  -
-<% end %>
+  <% end %>
+</span>

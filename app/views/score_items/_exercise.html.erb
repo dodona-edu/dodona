@@ -67,16 +67,12 @@
     <tr class="text-muted">
       <td colspan="2" class="wide-description"><%= t '.total' %></td>
       <td class="maximum">
-        <% if maximum_score.zero? %>
-          -
-        <% else %>
-          <%= format_score maximum_score %>
-        <% end %>
+        <%= format_score maximum_score %>
       </td>
       <td class="visibility">
         <%= form_for evaluation_exercise, method: :patch, remote: :true do |f| %>
           <%= f.check_box :visible_score, class: "total-visibility-checkbox",
-                          disabled: maximum_score.zero?,
+                          disabled: maximum_score.nil?,
                           title: t(".total_visibility") %>
         <% end %>
       </td>

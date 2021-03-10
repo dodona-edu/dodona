@@ -12,8 +12,6 @@
 #
 FactoryBot.define do
   factory :score do
-    feedback
-    score_item { create :score_item, evaluation_exercise: feedback.evaluation_exercise }
     score { '6.00' }
     last_updated_by { create :user }
   end

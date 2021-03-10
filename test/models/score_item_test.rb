@@ -14,7 +14,7 @@
 require 'test_helper'
 
 class RScoreItemTest < ActiveSupport::TestCase
-  def setup
+  setup do
     series = create :series, exercise_count: 2
     users = [create(:user), create(:user)]
     users.each do |u|

@@ -15,7 +15,6 @@ FactoryBot.define do
   factory :score_item do
     sequence(:name) { |n| "Score item #{n}" }
 
-    evaluation_exercise
     maximum { '10.00' }
     visible { true }
     last_updated_by { create :user }

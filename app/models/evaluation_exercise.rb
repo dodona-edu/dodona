@@ -25,6 +25,12 @@ class EvaluationExercise < ApplicationRecord
   end
 
   def maximum_score
-    score_items.map(&:maximum).sum(BigDecimal(0))
+    mapped = score_items.map(&:maximum)
+    mapped.sum if mapped.any?
+  end
+
+  def average_score
+    mapped = feedbacks.map(&:score).reject(&:nil?)
+    mapped.sum / mapped.count if mapped.any?
   end
 end

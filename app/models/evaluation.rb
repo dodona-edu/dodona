@@ -81,7 +81,13 @@ class Evaluation < ApplicationRecord
   end
 
   def maximum_score
-    score_items.map(&:maximum).sum(BigDecimal(0))
+    mapped = score_items.map(&:maximum)
+    mapped.sum if mapped.any?
+  end
+
+  def average_score
+    mapped = evaluation_exercises.map(&:average_score).reject(&:blank?)
+    mapped.sum / mapped.length if mapped.any?
   end
 
   def change_grade_visibility!(visible)

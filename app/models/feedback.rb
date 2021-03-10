@@ -70,11 +70,13 @@ class Feedback < ApplicationRecord
   end
 
   def score
-    scores.map(&:score).sum(BigDecimal('0'))
+    mapped = scores.map(&:score)
+    mapped.sum if mapped.any?
   end
 
   def maximum_score
-    score_items.map(&:maximum).sum(BigDecimal('0'))
+    mapped = score_items.map(&:maximum)
+    mapped.sum if mapped.any?
   end
 
   private

@@ -133,7 +133,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not update score item for invalid data' do
-    score_item = create :score_item
+    score_item = create :score_item, evaluation_exercise: @evaluation.evaluation_exercises.sample
     # Negative maximum
     patch evaluation_score_item_path(@evaluation, score_item, format: :json), params: {
       score_item: {

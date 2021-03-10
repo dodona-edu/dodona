@@ -390,11 +390,10 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     }
     evaluation = @series.evaluation
     evaluation.update(users: @series.course.enrolled_members)
-    exercise = evaluation.evaluation_exercises.sample
+    # Add a score to a non-nil submission
+    feedback = evaluation.feedbacks.where.not(submission_id: nil).sample
+    exercise = feedback.evaluation_exercise
     score_item = create :score_item, evaluation_exercise: exercise
-    feedback = exercise.feedbacks.sample
-    # Sometimes there already is a score, so delete it first.
-    Score.destroy_by(score_item: score_item, feedback: feedback)
     score = create :score, score_item: score_item, feedback: feedback
 
     get export_scores_evaluation_path evaluation, format: :csv
@@ -408,23 +407,31 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     header = csv.shift
     assert_equal 2 + evaluation.evaluation_exercises.length * 2, header.length
 
+    # Get which users will have a score
+    # First, the users we added a score for.
+    users = {
+      feedback.evaluation_user.user.email => score.score
+    }
+    evaluation.feedbacks.where(submission_id: nil).map(&:evaluation_user).map(&:user).map(&:email).uniq.each do |u|
+      users[u] = BigDecimal('0')
+    end
+
     # The exercise with a score item has a different max.
     score_item_exercise_position = header.index { |h| h == "#{exercise.exercise.name} Score" }
     csv.each do |line|
-      # Check the exercise with the score item.
-      # First up, the score. Only one user has a score for this.
-      exported_score = BigDecimal(line.delete_at(score_item_exercise_position))
-      if line[1] == feedback.evaluation_user.user.email
-        assert_equal score.score, exported_score
+      # Only one exercise has a score.
+      if users.key?(line[1])
+        exported_score = BigDecimal(line.delete_at(score_item_exercise_position))
+        assert_equal users[line[1]], exported_score
       else
-        assert exported_score.zero?
+        exported_score = line.delete_at(score_item_exercise_position)
+        assert_nil exported_score
       end
-      # The max score of the exercise with score item.
       exported_max = BigDecimal(line.delete_at(score_item_exercise_position))
       assert_equal score_item.maximum, exported_max
 
-      # All other scores should be zero.
-      assert_equal(true, line[2..].all? { |e| BigDecimal(e).zero? })
+      # All other scores should be nil.
+      assert line[2..].all?(&:nil?)
     end
 
     sign_out @course_admin

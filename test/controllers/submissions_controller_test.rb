@@ -214,10 +214,10 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     orig = Delayed::Worker.delay_jobs
     Delayed::Worker.delay_jobs = true # delay all
 
-    before = Delayed::Job.count
-    rejudge_submissions
-    after = Delayed::Job.count
-    assert_equal (after - before), 1, 'should only enqueue a single job which will then enqueue all other jobs'
+    # should only enqueue a single job which will then enqueue all other jobs
+    assert_jobs_enqueued(1) do
+      rejudge_submissions
+    end
 
     Delayed::Worker.delay_jobs = orig
   end

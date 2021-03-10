@@ -180,7 +180,7 @@ class Submission < ApplicationRecord
   end
 
   def evaluate_delayed(priority = :normal)
-    return if status.in?(%i[queued running])
+    return if status.in?(%w[queued running])
 
     queue = case priority
             when :high

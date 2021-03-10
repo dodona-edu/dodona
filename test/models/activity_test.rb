@@ -19,6 +19,8 @@
 #  repository_token        :string(64)       not null
 #  allow_unsafe            :boolean          default(FALSE), not null
 #  type                    :string(255)      default("Exercise"), not null
+#  description_nl_present  :boolean          default(FALSE)
+#  description_en_present  :boolean          default(FALSE)
 #
 
 require 'test_helper'

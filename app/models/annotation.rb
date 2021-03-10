@@ -6,17 +6,19 @@
 #  line_nr            :integer
 #  submission_id      :integer
 #  user_id            :integer
-#  annotation_text    :text(65535)
+#  annotation_text    :text(16777215)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  evaluation_id      :bigint
 #  type               :string(255)      default("Annotation"), not null
 #  question_state     :integer
 #  last_updated_by_id :integer          not null
+#  course_id          :integer          not null
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
 
+  belongs_to :course
   belongs_to :submission
   belongs_to :user
   belongs_to :evaluation, optional: true
@@ -36,6 +38,7 @@ class Annotation < ApplicationRecord
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
 
   before_validation :set_last_updated_by, on: :create
+  before_create :set_course_id
   after_destroy :destroy_notification
   after_save :create_notification
 
@@ -63,5 +66,9 @@ class Annotation < ApplicationRecord
 
   def set_last_updated_by
     self.last_updated_by = user
+  end
+
+  def set_course_id
+    self.course_id = submission.course_id
   end
 end

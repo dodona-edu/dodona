@@ -12,7 +12,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     @zeus = create(:zeus)
     sign_in @zeus
     @code_lines = Faker::Lorem.sentences(number: 5)
-    @instance = create :correct_submission, result: File.read(Rails.root.join('db/results/python-result.json')), code: @code_lines.join("\n")
+    @instance = create :correct_submission, result: File.read(Rails.root.join('db/results/python-result.json')), code: @code_lines.join("\n"), course: create(:course)
     @instance.exercise.judge.renderer = PythiaRenderer
     @instance.exercise.judge.save
   end

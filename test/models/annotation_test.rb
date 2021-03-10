@@ -6,20 +6,21 @@
 #  line_nr            :integer
 #  submission_id      :integer
 #  user_id            :integer
-#  annotation_text    :text(65535)
+#  annotation_text    :text(16777215)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  evaluation_id      :bigint
 #  type               :string(255)      default("Annotation"), not null
 #  question_state     :integer
 #  last_updated_by_id :integer          not null
+#  course_id          :integer          not null
 #
 require 'test_helper'
 
 class AnnotationTest < ActiveSupport::TestCase
   setup do
     @user = create :user, {}
-    @submission = create :submission, code: "line1\nline2\nline3\n", user: @user
+    @submission = create :submission, code: "line1\nline2\nline3\n", user: @user, course: create(:course)
   end
 
   test 'can create line-bound annotation' do

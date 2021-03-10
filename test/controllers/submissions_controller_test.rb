@@ -7,7 +7,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     stub_all_activities!
-    @instance = create :submission
+    @instance = create :correct_submission
     @zeus = create(:zeus)
     sign_in @zeus
   end

@@ -55,7 +55,7 @@ FactoryBot.define do
 
     after :create do |exercise, e|
       e.submission_count.times do
-        create :submission,
+        create :correct_submission,
                exercise: exercise,
                course: e.series&.first&.course,
                user: e.submission_users.sample

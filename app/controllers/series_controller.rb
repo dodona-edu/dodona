@@ -231,7 +231,8 @@ class SeriesController < ApplicationController
 
   def mass_rejudge
     @submissions = Submission.in_series(@series)
-    Submission.rejudge(@submissions)
+    Event.create(event_type: :rejudge, user: current_user, message: "#{@submissions.count} submissions")
+    Submission.rejudge_delayed(@submissions)
   end
 
   private

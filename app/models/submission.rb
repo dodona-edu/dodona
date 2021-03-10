@@ -245,6 +245,10 @@ class Submission < ApplicationRecord
     key
   end
 
+  def self.rejudge_delayed(submissions, priority = :low)
+    delay.rejudge(submissions, priority)
+  end
+
   def self.rejudge(submissions, priority = :low)
     submissions.each { |s| s.evaluate_delayed(priority) }
   end

@@ -180,6 +180,8 @@ class Submission < ApplicationRecord
   end
 
   def evaluate_delayed(priority = :normal)
+    return if status.in?(%w[queued running])
+
     queue = case priority
             when :high
               'high_priority_submissions'
@@ -241,6 +243,10 @@ class Submission < ApplicationRecord
     update_column(:fs_key, self[:fs_key]) unless new_record?
     # rubocop:enable Rails/SkipsModelValidations
     key
+  end
+
+  def self.rejudge_delayed(submissions, priority = :low)
+    delay.rejudge(submissions, priority)
   end
 
   def self.rejudge(submissions, priority = :low)

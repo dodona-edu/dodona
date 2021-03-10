@@ -26,7 +26,7 @@ FactoryBot.define do
       summary { nil }
     end
 
-    # When created, the submission ia queued and the status,
+    # When created, the submission is queued and the status,
     # result and summary are overwritten.
     # Overwrite them again if explicitly given
     after(:create) do |submission, e|

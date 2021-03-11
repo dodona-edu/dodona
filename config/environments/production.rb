@@ -19,6 +19,7 @@ Rails.application.configure do
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'medusa.ugent.be'
+  config.action_controller.asset_host = 'dodona.ugent.be'
 
   # Allowed hostnames
   config.hosts << config.default_host << config.sandbox_host

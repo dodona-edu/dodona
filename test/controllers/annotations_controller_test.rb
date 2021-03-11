@@ -51,6 +51,25 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', questions_path(page: 2, everything: true)
   end
 
+  test 'questions should from courses should be shown to course admins' do
+    u = create :user
+    sign_in u
+    s1 = create :course_submission, user: u
+    s2 = create :course_submission, user: u
+    s3 = create :course_submission, user: u
+    create :question, submission: s1
+    create :question, submission: s2
+    create :question, submission: s3
+    admin = create :user
+    admin.administrating_courses << s1.course
+    admin.administrating_courses << s2.course
+
+    sign_in admin
+    get questions_url(format: :json)
+
+    assert_equal 2, JSON.parse(response.body).count
+  end
+
   test 'should be able to search by exercise name' do
     u = create :user
     sign_in u

@@ -24,6 +24,9 @@
                 <%= ProgrammingLanguage.human_attribute_name("editor_name") %>
               </th>
               <th>
+                <%= ProgrammingLanguage.human_attribute_name("renderer_name") %>
+              </th>
+              <th>
                 <%= ProgrammingLanguage.human_attribute_name("extension") %>
               </th>
               <th>
@@ -45,6 +48,9 @@
                 </td>
                 <td>
                   <%= programming_language.editor_name %>
+                </td>
+                <td>
+                  <%= programming_language.renderer_name %>
                 </td>
                 <td>
                   <%= programming_language.extension %>

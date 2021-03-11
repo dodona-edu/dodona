@@ -2,3 +2,14 @@ nl:
   annotations:
     index:
       new_annotation: "Er is een nieuwe opmerking op je code"
+  questions:
+    index:
+      title: Alle vragen
+      from: van
+      watch: Vragen automatisch herladen
+      everything: Alle vragen tonen
+    courses: Cursussen
+    question:
+      filter-by-user: "Toon enkel vragen van deze gebruiker"
+      filter-by-exercise: "Toon enkel vragen op deze oefening"
+      view: Vraag bekijken

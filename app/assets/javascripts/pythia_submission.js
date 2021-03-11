@@ -2,10 +2,10 @@
 import { showInfoModal } from "./modal.js";
 import { logToGoogle } from "./util.js";
 
-function initPythiaSubmissionShow(submissionCode) {
+function initPythiaSubmissionShow(submissionCode, activityPath) {
     function init() {
         initTutorLinks();
-        initFileViewers();
+        initFileViewers(activityPath);
         if ($(".tutormodal").length == 1) {
             initFullScreen();
         } else {
@@ -50,7 +50,7 @@ function initPythiaSubmissionShow(submissionCode) {
         });
     }
 
-    function initFileViewers() {
+    function initFileViewers(activityPath) {
         $("a.file-link").click(function () {
             const fileName = $(this).text();
             const $tc = $(this).parents(".testcase.contains-file");
@@ -59,7 +59,7 @@ function initPythiaSubmissionShow(submissionCode) {
             if (file.location === "inline") {
                 showInlineFile(fileName, file.content);
             } else if (file.location === "href") {
-                showRealFile(fileName, file.content);
+                showRealFile(fileName, activityPath, file.content);
             }
             return false;
         });
@@ -69,7 +69,8 @@ function initPythiaSubmissionShow(submissionCode) {
         showInfoModal(name, "<div class='code'>" + content + "</div>");
     }
 
-    function showRealFile(name, path) {
+    function showRealFile(name, activityPath, filePath) {
+        const path = activityPath + "/" + filePath;
         const random = Math.floor(Math.random() * 10000 + 1);
         showInfoModal(
             name +

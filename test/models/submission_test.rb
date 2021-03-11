@@ -34,6 +34,16 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not submission.update(exercise_id: content_page.id)
   end
 
+  test 'should not create job for submission which is already queued' do
+    submission = nil
+    assert_jobs_enqueued(1) do
+      submission = create :submission
+    end
+    assert_jobs_enqueued(0) do
+      submission.evaluate_delayed
+    end
+  end
+
   test 'submissions should be rate limited for a user' do
     user = create :user
     create :submission, user: user

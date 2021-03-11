@@ -214,17 +214,22 @@
     border-left: 3px solid @text-secondary;
     padding-left: 25px
   }
-  .message-zeus:before, .message-staff:before {
+  .message-zeus:before, .message-staff:before, .tab-zeus:before, .tab-staff:before {
     font: normal normal normal 24px/1 "Material Design Icons";
     color: @text-secondary;
     font-size: 18px;
+  }
+  .message-zeus:before, .message-staff:before {
     position: absolute;
     left: 22px;
   }
-  .message-zeus:before {
+  .tab-zeus:before, .tab-staff:before {
+    padding-right: 7px;
+  }
+  .message-zeus:before, .tab-zeus:before {
     content: "\F0032";
   }
-  .message-staff:before {
+  .message-staff:before, .tab-staff:before {
     content: "\F0474";
   }
   .message-zeus+.message-zeus:before,

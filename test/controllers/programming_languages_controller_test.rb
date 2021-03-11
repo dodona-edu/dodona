@@ -1,7 +1,7 @@
 class ProgrammingLanguagesControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers ProgrammingLanguage, attrs: %i[name editor_name extension]
+  crud_helpers ProgrammingLanguage, attrs: %i[name editor_name renderer_name extension]
 
   def setup
     @instance = create :programming_language

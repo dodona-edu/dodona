@@ -6,17 +6,19 @@
 #  line_nr            :integer
 #  submission_id      :integer
 #  user_id            :integer
-#  annotation_text    :text(65535)
+#  annotation_text    :text(16777215)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  evaluation_id      :bigint
 #  type               :string(255)      default("Annotation"), not null
 #  question_state     :integer
 #  last_updated_by_id :integer          not null
+#  course_id          :integer          not null
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
 
+  belongs_to :course
   belongs_to :submission
   belongs_to :user
   belongs_to :evaluation, optional: true
@@ -31,10 +33,23 @@ class Annotation < ApplicationRecord
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
   scope :released, -> { where(evaluation_id: nil).or(where(evaluations: { released: true })) }
+  scope :by_course, ->(course_id) { where(submission: Submission.in_course(Course.find(course_id))) }
+  scope :by_username, ->(name) { where(user: User.by_filter(name)) }
+  scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
 
   before_validation :set_last_updated_by, on: :create
+  before_create :set_course_id
   after_destroy :destroy_notification
   after_save :create_notification
+
+  scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
+    filter.split.map(&:strip).select(&:present?).map do |part|
+      scopes = []
+      scopes << by_exercise_name(part) unless skip_exercise
+      scopes << by_username(part) unless skip_user
+      scopes.any? ? merge(scopes.reduce(&:or)) : self
+    end.reduce(includes(submission: [:exercise], user: []), &:merge)
+  }
 
   private
 
@@ -51,5 +66,9 @@ class Annotation < ApplicationRecord
 
   def set_last_updated_by
     self.last_updated_by = user
+  end
+
+  def set_course_id
+    self.course_id = submission.course_id
   end
 end

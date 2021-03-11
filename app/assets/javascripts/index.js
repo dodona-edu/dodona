@@ -261,7 +261,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     function initTokens() {
         const $field = $(TOKENS_FILTER_ID);
 
-        let doSearch = function () {
+        window.dodona.index.doSearch = function () {
             search(updateAddressBar, window.dodona.index.baseUrl, "", filterCollections);
         };
 
@@ -287,7 +287,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 
         function disableLabel() {
             // We need to delay, otherwise tokenfield hasn't finished setting all the right values
-            delay(doSearch, 100);
+            delay(window.dodona.index.doSearch, 100);
         }
 
         function enableLabel(e) {
@@ -308,7 +308,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 }
             }
             // We need to delay, otherwise tokenfield hasn't finished setting all the right values
-            delay(doSearch, 100);
+            delay(window.dodona.index.doSearch, 100);
         }
 
         function customWhitespaceTokenizer(datum) {
@@ -375,8 +375,8 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         dodona.addTokenToSearch = addTokenToSearch;
 
         // Temporarily disable automatic searching when adding new labels
-        const temp = doSearch;
-        doSearch = () => { };
+        const temp = window.dodona.index.doSearch;
+        window.dodona.index.doSearch = () => { };
         const allTokens = [];
         Object.values(filterCollections).forEach(value => {
             if (value.multi) {
@@ -396,7 +396,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             }
         });
         $field.tokenfield("setTokens", allTokens);
-        doSearch = temp;
+        window.dodona.index.doSearch = temp;
     }
 
     function initRefresh() {

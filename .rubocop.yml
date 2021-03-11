@@ -22,6 +22,10 @@ Layout/FirstHashElementIndentation:
 Layout/LineLength:
   Enabled: false
 
+Lint/DuplicateBranch:
+  Enabled: false
+Lint/EmptyBlock:
+  Enabled: false
 Lint/Loop:
   Enabled: false
 

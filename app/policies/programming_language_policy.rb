@@ -27,7 +27,7 @@ class ProgrammingLanguagePolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.zeus?
-      %i[name extension editor_name icon]
+      %i[name extension editor_name renderer_name icon]
     else
       []
     end

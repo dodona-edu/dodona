@@ -97,6 +97,19 @@
             },
         };
         <% end %>
+        <% if local_assigns.fetch :question_states, false %>
+        filterCollections["question_states"] = {
+            param: "question_state",
+            paramVal: function (s) {
+                return s.id;
+            },
+            multi: false,
+            data: <%= raw local_assigns.fetch(:question_states, []).map{|s| {id: s, name: Question.human_enum_name(:question_state, s)}}.to_json %>,
+            color: function () {
+                return "indigo";
+            },
+        };
+        <% end %>
         <% if local_assigns.fetch :event_types, false %>
         filterCollections["event_types"] = {
             param: "type",
@@ -148,6 +161,19 @@
                 return "red";
             }
         }
+        <% end %>
+        <% if local_assigns.fetch :courses, false %>
+        filterCollections["courses"] = {
+            param: "course_id",
+            paramVal: function(course) {
+                return course.id;
+            },
+            multi: false,
+            data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id, name: course.name}}.to_json %>,
+            color: function () {
+                return "orange";
+            }
+        };
         <% end %>
         dodona.initFilterIndex(
             "<%= local_assigns.fetch :baseUrl, "" %>",

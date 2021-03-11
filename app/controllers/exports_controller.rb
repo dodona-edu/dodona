@@ -76,7 +76,7 @@ class ExportsController < ApplicationController
     authorize item, :export?
     authorize @user, :export? if @user
 
-    if @user.blank? && (item.class == Series || item.class == Course)
+    if @user.blank? && (item.instance_of?(Series) || item.instance_of?(Course))
       authorize item, :course_admin?
       params[:with_labels] = true
     else

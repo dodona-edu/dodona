@@ -40,6 +40,7 @@ class ApiTokensControllerTest < ActionDispatch::IntegrationTest
     end
   end
 end
+
 class ApiTokensSignInTest < ActionDispatch::IntegrationTest
   setup do
     @user = create :user
@@ -47,7 +48,7 @@ class ApiTokensSignInTest < ActionDispatch::IntegrationTest
   end
 
   def fetch_root_with_token(token)
-    token = token.token if token.class == ApiToken
+    token = token.token if token.instance_of?(ApiToken)
     get root_url, params: { format: :json },
                   headers: { 'Authorization' => token }
   end

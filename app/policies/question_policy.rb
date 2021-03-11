@@ -1,4 +1,8 @@
 class QuestionPolicy < AnnotationPolicy
+  def index?
+    user
+  end
+
   def create?
     # If there is no course, don't allow questions.
     return false if record.submission.course.nil?
@@ -16,7 +20,7 @@ class QuestionPolicy < AnnotationPolicy
     # Only the course admins can transition, except for the answered state.
     return true if to.to_s == 'answered' && record.user == user
 
-    user.course_admin?(record.submission.course)
+    user&.course_admin?(record.submission.course)
   end
 
   def update?

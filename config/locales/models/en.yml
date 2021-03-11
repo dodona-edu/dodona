@@ -25,6 +25,7 @@ en:
       institution: Institution
       evaluation: Evaluation
       feedback: Feedback
+      question: Question
     attributes:
       api_token:
         description: Description
@@ -136,6 +137,7 @@ en:
       programming_language:
         name: Name
         editor_name: Editor mode
+        renderer_name: Renderer name
         extension: Extension
       institution:
         name: Name
@@ -168,3 +170,8 @@ en:
         exercises: Exercises
         deadline: Deadline
         released: Released
+      question:
+        question_states:
+          unanswered: Unanswered
+          in_progress: In progress
+          answered: Answered

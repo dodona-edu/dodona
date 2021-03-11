@@ -192,7 +192,7 @@ module ApplicationHelper
     }[klass]
   end
 
-  class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
+  class BootstrapLinkRenderer < ::ActionView::Base::LinkRenderer
     protected
 
     def html_container(html)
@@ -212,7 +212,7 @@ module ApplicationHelper
     end
   end
 
-  class AjaxLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
+  class AjaxLinkRenderer < ::ActionView::Base::LinkRenderer
     protected
 
     def html_container(html)

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AnnotationControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @submission = create :correct_submission, code: "line1\nline2\nline3\n"
+    @submission = create :correct_submission, code: "line1\nline2\nline3\n", course: create(:course)
     @zeus = create(:zeus)
     sign_in @zeus
   end
@@ -31,6 +31,93 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test "creating annotation when logged out doesn't result in question creating" do
+    sign_out @zeus
+    post submission_annotations_url(@submission), params: {
+      annotation: {
+        line_nr: 1,
+        annotation_text: 'Not available'
+      },
+      format: :json
+    }
+
+    assert_response :unauthorized
+  end
+
+  test 'pagination is generated correctly' do
+    submission = create :submission, :within_course
+    create_list :question, 31, submission: submission
+    get questions_url, params: { everything: true }
+    assert_select 'a[href=?]', questions_path(page: 2, everything: true)
+  end
+
+  test 'should be able to search by exercise name' do
+    u = create :user
+    sign_in u
+    e1 = create :exercise, name_en: 'abcd'
+    e2 = create :exercise, name_en: 'efgh'
+    s1 = create :submission, exercise: e1, user: u, course: create(:course)
+    s2 = create :submission, exercise: e2, user: u, course: create(:course)
+    create :question, submission: s1
+    create :question, submission: s2
+
+    get questions_url, params: { filter: 'abcd', format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to search by user name' do
+    u1 = create :user, last_name: 'abcd'
+    u2 = create :user, last_name: 'efgh'
+    s1 = create :submission, user: u1, course: create(:course)
+    s2 = create :submission, user: u2, course: create(:course)
+    create :question, submission: s1
+    create :question, submission: s2
+
+    get questions_url, params: { filter: 'abcd', everything: true, format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to filter by status' do
+    u = create :user
+    sign_in u
+    s = create :submission, user: u, course: create(:course)
+    create :question, question_state: :in_progress, submission: s
+    create :question, question_state: :unanswered, submission: s
+    create :question, question_state: :answered, submission: s
+
+    get questions_url, params: { question_state: 'answered', format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to filter by course' do
+    u = create :user
+    sign_in u
+    s1 = create :course_submission, user: u
+    s2 = create :course_submission, user: u
+    create :question, submission: s1
+    create :question, submission: s2
+
+    # Filter mode
+    get questions_url, params: { course_id: s1.course.id, format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to filter by user' do
+    s1 = create :course_submission
+    s2 = create :course_submission
+    create :question, submission: s1
+    create :question, submission: s2
+
+    # Filter mode
+    get questions_url, params: { user_id: s1.user_id, format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
   test 'annotation index should contain all annotations user can see' do
     user = create :user
     other_user = create :user
@@ -40,9 +127,9 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     create :annotation, user: user, submission: (create :submission, user: user, course: course)
     create :annotation, user: user, submission: (create :submission, user: user, course: course)
-    create :annotation, user: user, submission: (create :submission, user: user)
+    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
     create :annotation, user: other_user, submission: (create :submission, user: other_user, course: course)
-    create :annotation, user: other_user, submission: (create :submission, user: other_user)
+    create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 
     get annotations_url(format: :json)
     assert_equal 5, JSON.parse(response.body).count
@@ -60,11 +147,11 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     user = create :user
     other_user = create :user
 
-    create :annotation, user: user, submission: (create :submission, user: user)
-    create :annotation, user: user, submission: (create :submission, user: user)
-    create :annotation, user: user, submission: (create :submission, user: user)
-    create :annotation, user: other_user, submission: (create :submission, user: other_user)
-    create :annotation, user: other_user, submission: (create :submission, user: other_user)
+    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
+    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
+    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
+    create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
+    create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 
     get annotations_url(format: :json, user_id: user.id)
     assert_equal 3, JSON.parse(response.body).count
@@ -397,6 +484,19 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
 
       sign_out user
     end
+  end
+
+  test 'questions cannot transition if logged out' do
+    sign_out @submission.user
+    question = create :question, submission: @submission, question_state: :unanswered
+    patch annotation_path(question), params: {
+      from: question.question_state,
+      question: {
+        question_state: :answered
+      },
+      format: :json
+    }
+    assert_response :unauthorized
   end
 
   test 'question cannot transition if already changed' do

@@ -40,7 +40,7 @@ class EvaluationPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if record.class == Evaluation
+    if record.instance_of?(Evaluation)
       %i[released deadline user_ids exercise_ids]
     else
       %i[series_id deadline user_ids exercise_ids]

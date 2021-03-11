@@ -117,7 +117,10 @@ class Repository < ApplicationRecord
     existing_activities = activity_dirs_and_configs
                           .reject { |_, c| c['internals'].nil? || c['internals']['token'].nil? }
                           .map { |d, c| [d, Activity.find_by(repository_token: c['internals']['token'], repository_id: id)] }
+                          # rubocop:disable Style/CollectionCompact
+                          # This is a false positive for Hash#compact, where this is Array#compact
                           .reject { |_, e| e.nil? }
+                          # rubocop:enable Style/CollectionCompact
                           .group_by { |_, e| e }
                           .transform_values { |l| l.map { |elem| elem[0] } }
     handled_directories = []
@@ -156,7 +159,7 @@ class Repository < ApplicationRecord
 
     activity_dirs_and_configs.reject { |d, _| handled_directories.include? d }.each do |dir, c|
       token = c['internals'] && c['internals']['token']
-      if token&.is_a?(String) && token.length == 64 && Activity.find_by(repository_token: token).nil?
+      if token.is_a?(String) && token.length == 64 && Activity.find_by(repository_token: token).nil?
         act = Activity.new(path: activity_relative_path(dir), repository_id: id, repository_token: token)
       else
         act = Activity.new(path: activity_relative_path(dir), repository_id: id)

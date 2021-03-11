@@ -21,20 +21,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use ruby 2.7
-      uses: ruby/setup-ruby@v1.47.0
+      uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.2
+        bundler-cache: true
     - name: Use node 12
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: Cache Ruby dependencies
-      uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
     - name: Get the Yarn cache directory
       id: yarn-cache
       run: |
@@ -46,11 +40,8 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - name: Install dependencies
+    - name: Install JS dependencies
       run: |
-        gem install bundler:2.1.4
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
         yarn install
     - name: Run tests
       env:
@@ -59,27 +50,18 @@ jobs:
       run: |
         git config --global user.email "dodona@ugent.be"
         git config --global user.name "Dodona"
+        sudo sysctl fs.inotify.max_user_watches=524288
+        sudo sysctl -p
         bundle exec rails test
   lint:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Use ruby 2.7
-      uses: ruby/setup-ruby@v1.47.0
+      uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.2
-    - name: Cache Ruby dependencies
-      uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
-    - name: Install dependencies
-      run: |
-        gem install bundler:2.1.4
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
+        bundler-cache: true
     - name: Lint with rubocop
       env:
         RAILS_ENV: "test"

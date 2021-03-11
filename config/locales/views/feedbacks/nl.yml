@@ -3,7 +3,8 @@ nl:
     show:
       feedback: "Feedback geven"
       no_linked_submission: "Er is geen oplossing van deze gebruiker gevonden voor deze oefening die voor de deadline van deze evaluatie werdt gemaakt."
-      submission_for_by: "Oplossing voor %{for} door %{by}"
+      submission_for: "Oplossing voor"
+      by: "door"
       submission:
         time_html: "Deze oplossing werd om <b>%{time}</b> gemaakt."
         previous_attempts_html:

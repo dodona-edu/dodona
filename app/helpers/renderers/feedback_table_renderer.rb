@@ -24,7 +24,7 @@ class FeedbackTableRenderer
     @code = submission.code
     @user = user
     @exercise = submission.exercise
-    @programming_language = @exercise.programming_language&.editor_name
+    @programming_language = @exercise.programming_language&.renderer_name
   end
 
   def parse
@@ -68,9 +68,18 @@ class FeedbackTableRenderer
     @builder.div(class: 'card-tab') do
       @builder.ul(class: 'nav nav-tabs') do
         submission[:groups]&.each_with_index do |t, i|
+          permission = t[:permission] || 'student'
+          tooltip = case permission
+                    when 'zeus'
+                      I18n.t('submissions.show.tab_zeus')
+                    when 'staff'
+                      I18n.t('submissions.show.tab_staff')
+                    else
+                      ''
+                    end
           @builder.li(class: ('active' if i.zero?)) do
             id = "##{(t[:description] || 'test').parameterize}-#{i}"
-            @builder.a(href: id, 'data-toggle': 'tab') do
+            @builder.a(href: id, 'data-toggle': 'tab', class: "tab-#{permission}", title: tooltip) do
               @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
               badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id
@@ -319,7 +328,7 @@ class FeedbackTableRenderer
   end
 
   def determine_diff_type(test)
-    output = "#{(test[:expected].to_s || '')}\n#{(test[:generated].to_s || '')}"
+    output = "#{test[:expected].to_s || ''}\n#{test[:generated].to_s || ''}"
     if output.split("\n", -1).map(&:length).max < 55
       'split'
     else

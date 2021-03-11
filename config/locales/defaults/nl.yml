@@ -29,6 +29,7 @@ nl:
     formats:
       annotation: '%e %B %Y, %H:%M'
       submission: '%d %B %Y %H:%M:%S'
+      question: '%d %B %Y %H:%M:%S'
   controllers:
     created: "%{model} werd succesvol aangemaakt."
     updated: "%{model} werd succesvol aangepast."

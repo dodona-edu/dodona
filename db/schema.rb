@@ -2,17 +2,17 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_24_072242) do
+ActiveRecord::Schema.define(version: 2021_03_08_102217) do
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -30,10 +30,17 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "activities", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name_nl"
     t.string "name_en"
     t.datetime "created_at", null: false
@@ -61,14 +68,14 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["status"], name: "index_activities_on_status"
   end
 
-  create_table "activity_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "activity_labels", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "activity_id", null: false
     t.bigint "label_id", null: false
     t.index ["activity_id", "label_id"], name: "index_activity_labels_on_activity_id_and_label_id", unique: true
     t.index ["label_id"], name: "fk_rails_0510a660e5"
   end
 
-  create_table "activity_read_states", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "activity_read_states", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "activity_id", null: false
     t.integer "course_id"
     t.integer "user_id", null: false
@@ -79,7 +86,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "fk_rails_96d00253e9"
   end
 
-  create_table "activity_statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "activity_statuses", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.boolean "accepted", default: false, null: false
     t.boolean "accepted_before_deadline", default: false, null: false
     t.boolean "solved", default: false, null: false
@@ -101,7 +108,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "fk_rails_8a05a160e8"
   end
 
-  create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "annotations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "line_nr"
     t.integer "submission_id"
     t.integer "user_id"
@@ -112,13 +119,15 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.string "type", default: "Annotation", null: false
     t.integer "question_state"
     t.integer "last_updated_by_id", null: false
+    t.integer "course_id", null: false
+    t.index ["course_id", "type", "question_state"], name: "index_annotations_on_course_id_and_type_and_question_state"
     t.index ["evaluation_id"], name: "index_annotations_on_evaluation_id"
     t.index ["last_updated_by_id"], name: "index_annotations_on_last_updated_by_id"
     t.index ["submission_id"], name: "index_annotations_on_submission_id"
     t.index ["user_id"], name: "index_annotations_on_user_id"
   end
 
-  create_table "api_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "api_tokens", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "user_id"
     t.string "token_digest"
     t.string "description"
@@ -129,7 +138,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "index_api_tokens_on_user_id"
   end
 
-  create_table "course_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "course_labels", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_id", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -137,14 +146,14 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["course_id", "name"], name: "index_course_labels_on_course_id_and_name", unique: true
   end
 
-  create_table "course_membership_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "course_membership_labels", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_membership_id", null: false
     t.bigint "course_label_id", null: false
     t.index ["course_label_id", "course_membership_id"], name: "unique_label_and_course_membership_index", unique: true
     t.index ["course_membership_id"], name: "fk_rails_7d6a6611cf"
   end
 
-  create_table "course_memberships", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "course_memberships", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_id", null: false
     t.integer "user_id", null: false
     t.integer "status", default: 2, null: false
@@ -156,14 +165,14 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "index_course_memberships_on_user_id"
   end
 
-  create_table "course_repositories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "course_repositories", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_id", null: false
     t.integer "repository_id", null: false
     t.index ["course_id", "repository_id"], name: "index_course_repositories_on_course_id_and_repository_id", unique: true
     t.index ["repository_id"], name: "fk_rails_4d1393e517"
   end
 
-  create_table "courses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "courses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "year"
     t.string "secret"
@@ -181,7 +190,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 
-  create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "delayed_jobs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", size: :medium, null: false
@@ -196,7 +205,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "evaluation_exercises", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "evaluation_exercises", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "evaluation_id"
     t.integer "exercise_id"
     t.datetime "created_at", precision: 6, null: false
@@ -206,7 +215,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["exercise_id"], name: "index_evaluation_exercises_on_exercise_id"
   end
 
-  create_table "evaluation_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "evaluation_users", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "evaluation_id"
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
@@ -216,7 +225,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "index_evaluation_users_on_user_id"
   end
 
-  create_table "evaluations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "evaluations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "series_id"
     t.boolean "released", default: false, null: false
     t.datetime "deadline", null: false
@@ -225,7 +234,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["series_id"], name: "index_evaluations_on_series_id"
   end
 
-  create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "events", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "event_type", null: false
     t.integer "user_id"
     t.string "message", null: false
@@ -235,7 +244,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "fk_rails_0cb5590091"
   end
 
-  create_table "exports", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "exports", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "status", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
@@ -243,7 +252,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "index_exports_on_user_id"
   end
 
-  create_table "feedbacks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "feedbacks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "submission_id"
     t.bigint "evaluation_id"
     t.bigint "evaluation_user_id"
@@ -257,7 +266,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["submission_id"], name: "index_feedbacks_on_submission_id"
   end
 
-  create_table "identities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "identities", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "identifier", null: false
     t.bigint "provider_id", null: false
     t.integer "user_id", null: false
@@ -268,7 +277,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "fk_rails_5373344100"
   end
 
-  create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "institutions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
     t.string "logo"
@@ -276,7 +285,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "judges", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "judges", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "image"
     t.string "path"
@@ -287,13 +296,13 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["name"], name: "index_judges_on_name", unique: true
   end
 
-  create_table "labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "labels", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.integer "color", null: false
     t.index ["name"], name: "index_labels_on_name", unique: true
   end
 
-  create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "notifications", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "message", null: false
     t.boolean "read", default: false, null: false
     t.integer "user_id", null: false
@@ -305,17 +314,18 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
-  create_table "programming_languages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "programming_languages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "editor_name", null: false
     t.string "extension", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "icon"
+    t.string "renderer_name", null: false
     t.index ["name"], name: "index_programming_languages_on_name", unique: true
   end
 
-  create_table "providers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "providers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "type", default: "Provider::Saml", null: false
     t.bigint "institution_id", null: false
     t.string "identifier"
@@ -334,7 +344,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["institution_id"], name: "fk_rails_ba691498dd"
   end
 
-  create_table "repositories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "repositories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "remote"
     t.string "path"
@@ -346,14 +356,14 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["path"], name: "index_repositories_on_path", unique: true
   end
 
-  create_table "repository_admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "repository_admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "repository_id", null: false
     t.integer "user_id", null: false
     t.index ["repository_id", "user_id"], name: "index_repository_admins_on_repository_id_and_user_id", unique: true
     t.index ["user_id"], name: "fk_rails_6b59ad362c"
   end
 
-  create_table "series", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "series", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_id"
     t.string "name"
     t.text "description", size: :medium
@@ -375,7 +385,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["visibility"], name: "index_series_on_visibility"
   end
 
-  create_table "series_memberships", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "series_memberships", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "series_id"
     t.integer "activity_id"
     t.integer "order", default: 999
@@ -386,7 +396,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["series_id"], name: "index_series_memberships_on_series_id"
   end
 
-  create_table "submissions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "submissions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "exercise_id"
     t.integer "user_id"
     t.string "summary"
@@ -406,7 +416,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end
 
-  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "username"
     t.string "first_name"
     t.string "last_name"
@@ -427,6 +437,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "judges"
   add_foreign_key "activities", "programming_languages"
   add_foreign_key "activities", "repositories"
@@ -438,6 +449,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_072242) do
   add_foreign_key "activity_statuses", "activities", on_delete: :cascade
   add_foreign_key "activity_statuses", "series", on_delete: :cascade
   add_foreign_key "activity_statuses", "users", on_delete: :cascade
+  add_foreign_key "annotations", "courses"
   add_foreign_key "annotations", "evaluations"
   add_foreign_key "annotations", "submissions"
   add_foreign_key "annotations", "users"

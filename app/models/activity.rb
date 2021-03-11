@@ -5,8 +5,6 @@
 #  id                      :integer          not null, primary key
 #  name_nl                 :string(255)
 #  name_en                 :string(255)
-#  description_nl_present  :boolean
-#  description_en_present  :boolean
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  path                    :string(255)
@@ -21,6 +19,8 @@
 #  repository_token        :string(64)       not null
 #  allow_unsafe            :boolean          default(FALSE), not null
 #  type                    :string(255)      default("Exercise"), not null
+#  description_nl_present  :boolean          default(FALSE)
+#  description_en_present  :boolean          default(FALSE)
 #
 
 require 'pathname'
@@ -282,7 +282,7 @@ class Activity < ApplicationRecord
     nil_status = [activity_status_for(user, nil)]
     return nil_status if course.nil?
 
-    nil_status + series_memberships.joins(:series).where('course_id = ?', course.id).map do |series_membership|
+    nil_status + series_memberships.joins(:series).where(series: { course_id: course.id }).map do |series_membership|
       activity_status_for(user, series_membership.series)
     end
   end
@@ -339,10 +339,10 @@ class Activity < ApplicationRecord
   end
 
   def self.determine_format(full_exercise_path)
-    if !Dir.glob(full_exercise_path.join(DESCRIPTION_DIR, 'description.*.html')).empty?
-      'html'
-    else
+    if Dir.glob(full_exercise_path.join(DESCRIPTION_DIR, 'description.*.html')).empty?
       'md'
+    else
+      'html'
     end
   end
 

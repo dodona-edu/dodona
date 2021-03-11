@@ -8,11 +8,11 @@
 #  secret            :string(255)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  description       :text(65535)
+#  description       :text(16777215)
 #  visibility        :integer
 #  registration      :integer
 #  color             :integer
-#  teacher           :string(255)      default("")
+#  teacher           :string(255)
 #  institution_id    :bigint
 #  search            :string(4096)
 #  moderated         :boolean          default(FALSE), not null
@@ -126,27 +126,28 @@ class Course < ApplicationRecord
            through: :course_memberships,
            source: :user
 
-  has_many :questions, through: :submissions
+  has_many :annotations, dependent: :restrict_with_error
+  has_many :questions, dependent: :restrict_with_error
   has_many :unanswered_questions,
            lambda {
              where question_state: :unanswered
            },
-           through: :submissions,
-           source: :questions
+           class_name: 'Question',
+           inverse_of: :course
 
   has_many :in_progress_questions,
            lambda {
              where question_state: :in_progress
            },
-           through: :submissions,
-           source: :questions
+           class_name: 'Question',
+           inverse_of: :course
 
   has_many :answered_questions,
            lambda {
              where question_state: :answered
            },
-           through: :submissions,
-           source: :questions
+           class_name: 'Question',
+           inverse_of: :course
 
   validates :name, presence: true
   validates :year, presence: true

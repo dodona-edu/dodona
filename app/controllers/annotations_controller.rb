@@ -27,9 +27,9 @@ class AnnotationsController < ApplicationController
     # By default, filter only for the courses a user is an admin of, unless we are in filtering by course or user, or
     # the user has explicitly asked to view all questions.
     if @unfiltered && current_user&.a_course_admin? && !ActiveRecord::Type::Boolean.new.deserialize(params[:everything])
-      @questions = @questions
-                   .joins(:submission)
-                   .where(submissions: { course_id: current_user.administrating_courses.map(&:id) })
+      @questions = @questions.where(
+        course_id: current_user.administrating_courses.map(&:id)
+      )
     end
 
     # Preload dependencies for efficiency

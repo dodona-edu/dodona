@@ -7,9 +7,9 @@ on:
       - feature/mestra
 
 jobs:
-  deploy:
+  mestra:
     environment: 
-      name: test
+      name: mestra
       url: https://mestra.ugent.be
     runs-on: ubuntu-latest
     steps:
@@ -26,4 +26,4 @@ jobs:
         bundler-cache: true
     - name: Run capistrano
       run: |
-        bundle exec cap test deploy
+        bundle exec cap mestra deploy

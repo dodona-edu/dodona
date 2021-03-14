@@ -1,10 +1,12 @@
 name: Deploy
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - feature/mestra
+  pull_request:
+    types:
+      - review_requested
+#  push:
+#    branches:
+#      - feature/mestra
 
 jobs:
   mestra:

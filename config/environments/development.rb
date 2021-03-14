@@ -8,6 +8,8 @@ Rails.application.configure do
 
   # Application hosts
 
+  config.hosts << "mestra.ugent.be"
+
   # The main webapp
   config.default_host = 'dodona.localhost'
 

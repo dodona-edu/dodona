@@ -8,7 +8,9 @@ on:
 
 jobs:
   deploy:
-    environment: test
+    environment: 
+      name: test
+      url: https://mestra.ugent.be
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code

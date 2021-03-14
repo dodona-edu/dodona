@@ -37,3 +37,13 @@ set :bundle_without, ''
 #     end
 #   end
 # end
+
+namespace :deploy do
+  before :restart, :reset_db do
+    on roles(:web) do
+      within release_path do
+        execute :rake, 'db:reset'
+      end
+    end
+  end
+end

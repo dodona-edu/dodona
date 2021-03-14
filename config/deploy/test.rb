@@ -4,7 +4,7 @@ server 'mestra.ugent.be', user: 'dodona', roles: %i[web app worker], ssh_options
     port: 4840
 }
 
-set :branch, ENV['BRANCH'] || 'feature/mestra'
+set :branch, ENV['GITHUB_SHA'] || 'feature/mestra'
 set :rails_env, :development
 
 set :delayed_job_workers, 3

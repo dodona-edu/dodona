@@ -10,12 +10,16 @@ on:
 
 jobs:
   mestra:
-    if: ${{ github.event.action == 'review_requested' || (github.event.issue.pull_request && github.event.comment.body == 'deploy') }}
+    # if: ${{ github.event.action == 'review_requested' || (github.event.issue.pull_request && github.event.comment.body == 'deploy') }}
     environment: 
       name: mestra
       url: https://mestra.ugent.be
     runs-on: ubuntu-latest
     steps:
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT"
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Install SSH key

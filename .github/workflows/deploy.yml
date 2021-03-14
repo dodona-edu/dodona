@@ -4,12 +4,13 @@ on:
   pull_request:
     types:
       - review_requested
-#  push:
-#    branches:
-#      - feature/mestra
+  issue_comment:
+    types:
+      - created
 
 jobs:
   mestra:
+    if: ${{ github.event.action == 'review_requested' || (github.event.issue.pull_request && github.event.comment.body == 'deploy') }}
     environment: 
       name: mestra
       url: https://mestra.ugent.be

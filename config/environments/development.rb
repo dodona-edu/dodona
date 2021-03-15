@@ -8,6 +8,9 @@ Rails.application.configure do
 
   # Application hosts
 
+  config.hosts << ENV['RAILS_APPLICATION_HOST'] if ENV['RAILS_APPLICATION_HOST'].present?
+  config.hosts << ENV['RAILS_SANDBOX_HOST'] if ENV['RAILS_SANDBOX_HOST'].present?
+
   # The main webapp
   config.default_host = ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost'
 

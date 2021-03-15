@@ -61,10 +61,10 @@
         <% unless @feedback.completed? %>
           <div class="col-xs-4 score-buttons">
             <%= button_tag class: "btn btn-sm btn-default", id: 'zero-button', title: t(".give_zero_all") do %>
-              <i class="mdi mdi-numeric-0 mdi-18" aria-hidden='true'></i>
+              <i class="mdi mdi-thumb-down mdi-18" aria-hidden='true'></i>
             <% end %>
             <%= button_tag class: "btn btn-sm btn-default", id: 'max-button', title: t(".give_max_all") do %>
-              <i class="mdi mdi-numeric-10 mdi-18" aria-hidden='true'></i>
+              <i class="mdi mdi-thumb-up mdi-18" aria-hidden='true'></i>
             <% end %>
           </div>
         <% end %>

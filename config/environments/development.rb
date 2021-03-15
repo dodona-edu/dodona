@@ -121,7 +121,11 @@ Rails.application.configure do
   #   :location => '/usr/sbin/sendmail',
   #   :arguments => '-i -t'
   # }
-  config.action_mailer.perform_deliveries = true
+  if ENV['RAILS_NO_ACTION_MAILER'].present?
+    config.action_mailer.perform_deliveries = false
+  else
+    config.action_mailer.perform_deliveries = true
+  end
   config.action_mailer.raise_delivery_errors = true
 
   config.submissions_storage_path = Rails.root.join('data', 'storage', 'submissions')

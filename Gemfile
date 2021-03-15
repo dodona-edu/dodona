@@ -69,7 +69,7 @@ gem 'devise', '~>4.7.3'
 gem 'ruby-saml', '~> 1.12.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 0.8.1'
+gem 'omniauth-google-oauth2', '~> 0.8.2'
 gem 'omniauth-oauth2', '~> 1.7.1'
 gem 'omniauth_openid_connect', '~> 0.3.5'
 

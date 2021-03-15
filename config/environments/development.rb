@@ -8,17 +8,15 @@ Rails.application.configure do
 
   # Application hosts
 
-  config.hosts << "mestra.ugent.be"
-
   # The main webapp
-  config.default_host = 'dodona.localhost'
+  config.default_host = ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost'
 
   # The sandboxed host with user provided content, without authentication
-  config.sandbox_host = 'sandbox.localhost'
+  config.sandbox_host = ENV['RAILS_SANDBOX_HOST'] || 'sandbox.localhost'
 
   # Where we host our assets (a single domain, for caching)
   # Port is needed somehow...
-  config.action_controller.asset_host = 'dodona.localhost:3000'
+  config.action_controller.asset_host = ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost:3000'
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development

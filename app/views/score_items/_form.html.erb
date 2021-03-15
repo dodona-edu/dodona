@@ -18,6 +18,11 @@
           </ul>
         </div>
       <% end %>
+      <% if score_item&.scores.present? %>
+        <div class="alert alert-info">
+          <%= t '.modify-help' %>
+        </div>
+      <% end %>
       <% if score_item&.new_record? && local_assigns[:models] %>
         <%= f.hidden_field :evaluation_exercise_id, value: evaluation_exercise.id %>
       <% end %>

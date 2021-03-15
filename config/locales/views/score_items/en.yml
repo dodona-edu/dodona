@@ -5,6 +5,7 @@ en:
       visible-help: If the score becomes visible to students once the evaluation is released.
       save: Save
       close: Close
+      modify-help: If you change the maximum, all completed evaluaties with this score item will be marked as uncompleted.
     copy:
       copy: Copy
       exercise: Exercise

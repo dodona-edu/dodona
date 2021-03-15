@@ -5,6 +5,7 @@ nl:
       visible-help: Of de score zichtbaar zal zijn voor studenten eens de evaluatie vrijgegeven is.
       save: Opslaan
       close: Sluiten
+      modify-help: Als je het maximum aanpast zullen alle afgewerkte evaluaties met dit scoreonderdeel terug als onafgewerkt gemarkeerd worden.
     copy:
       copy: Kopiëren
       exercise: Oefening

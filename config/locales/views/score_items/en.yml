@@ -6,6 +6,7 @@ en:
       save: Save
       close: Close
       modify-help: If you change the maximum, all completed evaluaties with this score item will be marked as uncompleted.
+      score-help: The maximal grade for this score item. The grade should be greater than 0, and works in increments of 0.25.
     copy:
       copy: Copy
       exercise: Exercise

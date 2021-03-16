@@ -6,6 +6,7 @@ nl:
       save: Opslaan
       close: Sluiten
       modify-help: Als je het maximum aanpast zullen alle afgewerkte evaluaties met dit scoreonderdeel terug als onafgewerkt gemarkeerd worden.
+      score-help: Het maximaal aantal punten voor dit scoreonderdeel. Het maximum moet groter dan 0 zijn, en werkt in stappen van 0,25.
     copy:
       copy: Kopiëren
       exercise: Oefening

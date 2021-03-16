@@ -43,7 +43,7 @@ export default class ScoreForm {
     }
 
     public getMax(): string {
-        return this.maxLink.textContent;
+        return this.maxLink.dataset.value;
     }
 
     private initListeners(): void {
@@ -83,7 +83,7 @@ export default class ScoreForm {
         }
         this.maxLink.addEventListener("click", e => {
             e.preventDefault();
-            this.input.value = (e.target as HTMLElement).textContent.trim();
+            this.input.value = this.getMax();
             this.sendUpdate();
         });
     }

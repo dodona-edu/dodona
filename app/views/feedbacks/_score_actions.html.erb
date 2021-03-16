@@ -28,7 +28,8 @@
     <%= f.hidden_field :id, class: "id" %>
   <% end %>
   <div class="col-xs-3 col-md-2">
-    / <a class="score-click" href="#" title="<%= t(".give_one", score: format_score(score_item.maximum)) %>">
+    / <a class="score-click" href="#" data-value="<%= format_score(score_item.maximum, lang='en', numeric_only=true) %>"
+         title="<%= t(".give_one", score: format_score(score_item.maximum)) %>">
     <%= format_score(score_item.maximum) %>
   </a>
   </div>

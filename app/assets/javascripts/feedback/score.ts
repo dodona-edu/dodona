@@ -83,7 +83,7 @@ export default class ScoreForm {
         }
         this.maxLink.addEventListener("click", e => {
             e.preventDefault();
-            this.input.value = (e.target as HTMLElement).textContent;
+            this.input.value = (e.target as HTMLElement).textContent.trim();
             this.sendUpdate();
         });
     }

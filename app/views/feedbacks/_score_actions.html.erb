@@ -16,7 +16,7 @@
                            class: "form-control score-input",
                            step: 0.01,
                            tabindex: index + 1,
-                           value: format_score(f.object.score, 'en') %>
+                           value: format_score(f.object.score, lang='en', numeric_only=true) %>
         <div class="dodona-progress dodona-progress-indeterminate">
           <div class="progressbar bar bar1" style="width: 0;"></div>
           <div class="bufferbar bar bar2" style="width: 100%;"></div>

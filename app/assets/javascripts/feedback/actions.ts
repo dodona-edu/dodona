@@ -136,7 +136,10 @@ export default class FeedbackActions {
     }
 
     setTotal(newTotal: string): void {
-        this.scoreSumElement.innerText = newTotal;
+        // Only update the total if we have a total.
+        if (this.scoreSumElement) {
+            this.scoreSumElement.innerText = newTotal;
+        }
     }
 
     setAllowNext(allowNext: boolean): void {

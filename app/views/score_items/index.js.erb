@@ -7,6 +7,3 @@ if (modal.is(":visible")) {
 } else {
     $("#card-<%= evaluation_exercise.id %>").html("<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
 }
-<% if new&.errors&.any? %>
-  $(".modal-<%= evaluation_exercise.id %>").modal();
-<% end %>

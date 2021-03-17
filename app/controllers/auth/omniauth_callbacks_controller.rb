@@ -131,8 +131,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # Provider was not found. Currently, a new institution will be created for
     # every new provider as well.
-    institution = Institution.new name: Institution::NEW_INSTITUTION_NAME,
-                                  short_name: Institution::NEW_INSTITUTION_NAME,
+    name, short_name = provider_type.extract_institution_name(auth_hash)
+    institution = Institution.new name: name,
+                                  short_name: short_name,
                                   logo: "#{auth_provider_type}.png"
     provider = institution.providers.build identifier: oauth_provider_id,
                                            type: provider_type.name

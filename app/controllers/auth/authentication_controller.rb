@@ -24,7 +24,7 @@ class Auth::AuthenticationController < Devise::SessionsController
       .includes(:institution)
       .where(type: @generic_providers.keys)
       .where(mode: :prefer)
-      .where.not(institutions: { name: Institution::NEW_INSTITUTION_NAME }))
+      .where(institutions: { generated_name: false }))
     render 'auth/sign_in'
   end
 end

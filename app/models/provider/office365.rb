@@ -27,4 +27,14 @@ class Provider::Office365 < Provider
   def self.sym
     :office365
   end
+
+  def self.extract_institution_name(auth_hash)
+    # Office 365 has no useful information, so take the domain name of the email.
+    mail = auth_hash&.info&.email
+
+    return Provider.extract_institution_name(auth_hash) unless mail =~ URI::MailTo::EMAIL_REGEXP
+
+    domain = Mail::Address.new(mail).domain
+    [domain, domain]
+  end
 end

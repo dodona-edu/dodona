@@ -33,4 +33,8 @@ class Provider::Saml < Provider
   def self.sym
     :saml
   end
+
+  def self.extract_institution_name(auth_hash)
+    Provider.extract_institution_name(auth_hash)
+  end
 end

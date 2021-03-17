@@ -27,4 +27,8 @@ class Provider::Lti < Provider
   def self.sym
     :lti
   end
+
+  def self.extract_institution_name(auth_hash)
+    Provider.extract_institution_name(auth_hash)
+  end
 end

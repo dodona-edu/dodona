@@ -69,7 +69,7 @@ gem 'devise', '~>4.7.3'
 gem 'ruby-saml', '~> 1.12.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 0.8.1'
+gem 'omniauth-google-oauth2', '~> 0.8.2'
 gem 'omniauth-oauth2', '~> 1.7.1'
 gem 'omniauth_openid_connect', '~> 0.3.5'
 
@@ -109,7 +109,7 @@ gem 'httparty', '~> 0.18.1'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.11.1'
+gem 'nokogiri', '~> 1.11.2'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -131,7 +131,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.11'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.16.0'
+gem 'faker', '~> 2.17.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -140,7 +140,7 @@ gem 'rack-mini-profiler', '~> 2.3.1'
 gem 'stackprof', '~> 0.2.16'
 
 # Datadog
-gem 'ddtrace', '~> 0.45.0'
+gem 'ddtrace', '~> 0.46.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

@@ -5,6 +5,8 @@ nl:
       number_of_users: "Gebruikers"
       number_of_courses: "Cursussen"
       edit: "Onderwijsinstelling aanpassen"
+      no_institutions: "Geen onderwijsinstellingen gevonden"
+      generated_name: "Gegenereerd uit de beschikbare data."
     show:
       staff: "Lesgevers"
       edit: "Onderwijsinstelling aanpassen"

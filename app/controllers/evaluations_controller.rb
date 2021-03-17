@@ -134,13 +134,16 @@ class EvaluationsController < ApplicationController
   end
 
   def overview
-    @feedbacks = policy_scope(Feedback.joins(:evaluation_user).where(evaluation: @evaluation, evaluation_users: { user: current_user }))
     @crumbs = [
       [@evaluation.series.course.name, course_url(@evaluation.series.course)],
       [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)],
       [I18n.t('evaluations.overview.title'), '#']
     ]
     @title = I18n.t('evaluations.overview.title')
+    @feedbacks = Feedback.joins(:evaluation_user)
+                         .where(evaluation: @evaluation, evaluation_users: { user: current_user })
+                         .includes(:evaluation_exercise, scores: :score_item)
+    @feedbacks = policy_scope(@feedbacks)
   end
 
   def export_scores

@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class EvaluationsControllerTest < ActionDispatch::IntegrationTest
+  include EvaluationHelper
+
   def setup
     @series = create :series, exercise_count: 2, deadline: DateTime.now + 4.hours
     @exercises = @series.exercises
@@ -490,5 +492,58 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
       sign_out user if user.present?
     end
+  end
+
+  test 'evaluations overview is only visible if released' do
+    evaluation = create :evaluation, :with_submissions
+    feedback = evaluation.feedbacks.first
+    submission = feedback.submission
+
+    assert_not evaluation.released
+    sign_in submission.user
+    get overview_evaluation_path(evaluation)
+    assert_response :redirect # Redirect to sign in page
+
+    evaluation.update!(released: true)
+    get overview_evaluation_path(evaluation)
+    assert_response :ok
+  end
+
+  def expected_score_string(*args)
+    if args.length == 1
+      "#{format_score(args[0].score)} / #{format_score(args[0].score_item.maximum)}"
+    else
+      "#{format_score(args[0])} / #{format_score(args[1])}"
+    end
+  end
+
+  test 'should only show allowed grades for students' do
+    evaluation = create :evaluation, :released, :with_submissions
+    evaluation_exercise = evaluation.evaluation_exercises.first
+    visible_score_item = create :score_item, evaluation_exercise: evaluation_exercise
+    hidden_score_item = create :score_item, evaluation_exercise: evaluation_exercise, visible: false
+    feedback = evaluation.feedbacks.first
+    submission = feedback.submission
+    s1 = create :score, feedback: feedback, score_item: visible_score_item, score: BigDecimal('5.00')
+    s2 = create :score, feedback: feedback, score_item: hidden_score_item, score: BigDecimal('7.00')
+
+    sign_in submission.user
+
+    # Visible scores are visible
+    get overview_evaluation_path(evaluation)
+    assert_match visible_score_item.description, response.body
+    assert_no_match hidden_score_item.description, response.body
+    assert_match expected_score_string(s1), response.body
+    assert_no_match expected_score_string(s2), response.body
+    assert_match expected_score_string(feedback.score, feedback.maximum_score), response.body
+
+    # Hidden total is not shown
+    evaluation_exercise.update!(visible_score: false)
+    get overview_evaluation_path(evaluation)
+    assert_match visible_score_item.description, response.body
+    assert_no_match hidden_score_item.description, response.body
+    assert_match expected_score_string(s1), response.body
+    assert_no_match expected_score_string(s2), response.body
+    assert_no_match expected_score_string(feedback.score, feedback.maximum_score), response.body
   end
 end

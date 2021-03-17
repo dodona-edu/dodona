@@ -54,10 +54,10 @@ en:
       confirm: "Are you sure? All annotations on the previous submission will be deleted."
     score_table:
       total_score: Total grade
-      total_description: The total. This is not necessarily the sum of the subgrades.
       score_breakdown: Grade breakdown
     score_link:
       score: "Grade: %{score} / %{max}"
       score_short: "%{score} / %{max}"
+      present: "There are %{count} score items"
       view_breakdown: View grade breakdown
       view_feedback: Go to the feedback

@@ -1,28 +1,30 @@
-<div class="collapse score-details" id="<%= "score-details-#{feedback.id}" %>">
-  <h4><%= t "feedbacks.score_table.score_breakdown" %></h4>
+<% total = policy(feedback.evaluation_exercise).show_total? %>
+<% scores = policy_scope(feedback.scores).includes(:score_item) %>
+<% if total || feedback.score_items.present? %>
   <table class="table table-condensed">
-    <% if feedback.scores.length > 1 %>
-      <tr>
+    <% if total %>
+      <tr class="text-muted">
         <td>
-          <%= t "feedbacks.score_table.total_score" %><br>
-          <span class="text-muted small"><%= t "feedbacks.score_table.total_description" %></span>
+          <%= t "feedbacks.score_table.total_score" %>
+          <% unless feedback.evaluation_exercise.visible_score? %>
+            <i class="mdi mdi-android mdi-18 colored-secondary" title="<%= t "score_items.table.visible-no" %>"></i>
+          <% end %>
         </td>
         <td><%= format_score feedback.score %> / <%= format_score feedback.maximum_score %></td>
       </tr>
     <% end %>
-    <% score_item_scores.each do |score_item, score| %>
-      <% score = score.first %>
+    <% scores.each do |score| %>
       <tr>
         <td>
-          <%= score_item.name %>
-          <% unless score_item.visible %>
+          <%= score.score_item.name %>
+          <% unless score.score_item.visible %>
             <i class="mdi mdi-android mdi-18 colored-secondary" title="<%= t "score_items.table.visible-no" %>"></i>
           <% end %>
           <br>
-          <span class="text-muted small"><%= score_item.description %></span>
+          <span class="text-muted small"><%= score.score_item.description %></span>
         </td>
-        <td><%= format_score score.score %> / <%= format_score score_item.maximum %></td>
+        <td><%= format_score score.score %> / <%= format_score score.score_item.maximum %></td>
       </tr>
     <% end %>
   </table>
-</div>
+<% end %>

@@ -21,7 +21,7 @@ class ScoreItem < ApplicationRecord
   after_create :undo_complete_feedbacks_and_set_blank_to_zero
   after_update :undo_complete_feedbacks_if_maximum_changed
 
-  validates :maximum, numericality: { greater_than: 0 }
+  validates :maximum, numericality: { greater_than: 0, less_than: 1000 }
 
   private
 

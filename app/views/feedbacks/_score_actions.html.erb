@@ -15,6 +15,8 @@
         <%= f.number_field :score, required: true,
                            class: "form-control score-input",
                            step: 0.25,
+                           min: -999.99,
+                           max: 999.99,
                            tabindex: index + 1,
                            value: format_score(f.object.score, lang='en', numeric_only=true) %>
         <div class="dodona-progress dodona-progress-indeterminate">

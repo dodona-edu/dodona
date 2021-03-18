@@ -52,7 +52,10 @@ export default class ScoreForm {
         this.input.addEventListener("focus", e => {
             valueOnFocus = (e.target as HTMLInputElement).value;
         });
-        this.input.addEventListener("blur", e => {
+        this.form.addEventListener("submit", e => {
+            e.preventDefault();
+        });
+        this.input.addEventListener("change", e => {
             if (valueOnFocus === (e.target as HTMLInputElement).value) {
                 return;
             }
@@ -64,14 +67,6 @@ export default class ScoreForm {
             }
             updating = true;
             this.sendUpdate(e.relatedTarget as HTMLElement);
-        });
-        this.form.addEventListener("submit", e => {
-            e.preventDefault();
-            if (updating) {
-                return;
-            }
-            updating = true;
-            this.sendUpdate(document.activeElement as HTMLElement);
         });
         if (this.deleteButton) {
             this.deleteButton.addEventListener("click", e => {

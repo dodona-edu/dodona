@@ -36,7 +36,7 @@ class CoursesController < ApplicationController
       return if performed?
     end
     @title = @course.name
-    @series = policy_scope(@course.series)
+    @series = policy_scope(@course.series).includes(:evaluation)
     @series_loaded = params[:secret].present? ? @course.series.count : 2
   end
 

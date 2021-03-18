@@ -6,7 +6,7 @@
 #  type              :string(255)      default("Provider::Saml"), not null
 #  institution_id    :bigint           not null
 #  identifier        :string(255)
-#  certificate       :text(65535)
+#  certificate       :text(16777215)
 #  entity_id         :string(255)
 #  slo_url           :string(255)
 #  sso_url           :string(255)
@@ -26,5 +26,16 @@ class Provider::GSuite < Provider
 
   def self.sym
     :google_oauth2
+  end
+
+  def self.extract_institution_name(auth_hash)
+    # The institution is the domain
+    institution = auth_hash&.info&.institution
+
+    if institution.present?
+      [institution, institution]
+    else
+      Provider.extract_institution_name(auth_hash)
+    end
   end
 end

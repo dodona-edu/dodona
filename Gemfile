@@ -8,7 +8,7 @@ gem 'rails', '~> 6.1.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.2.1'
+gem 'puma', '~> 5.2.2'
 # Use less for stylesheets
 gem 'less-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -41,7 +41,7 @@ gem 'delayed_job_active_record', '~> 4.1.5'
 gem 'daemons', '~>1.3'
 
 # dashboard
-gem 'delayed_job_web', '~>1.4.3'
+gem 'delayed_job_web', '~>1.4.4'
 gem 'sinatra', '~>2.1.0'
 
 # pagination
@@ -69,7 +69,7 @@ gem 'devise', '~>4.7.3'
 gem 'ruby-saml', '~> 1.12.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 0.8.1'
+gem 'omniauth-google-oauth2', '~> 0.8.2'
 gem 'omniauth-oauth2', '~> 1.7.1'
 gem 'omniauth_openid_connect', '~> 0.3.5'
 
@@ -109,7 +109,7 @@ gem 'httparty', '~> 0.18.1'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.11.1'
+gem 'nokogiri', '~> 1.11.2'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -131,7 +131,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.11'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.16.0'
+gem 'faker', '~> 2.17.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -140,7 +140,7 @@ gem 'rack-mini-profiler', '~> 2.3.1'
 gem 'stackprof', '~> 0.2.16'
 
 # Datadog
-gem 'ddtrace', '~> 0.45.0'
+gem 'ddtrace', '~> 0.46.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -164,7 +164,7 @@ end
 
 group :test do
   # For measuring coverage
-  gem 'codecov', '~> 0.4.3', require: false
+  gem 'codecov', '~> 0.5.1', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
 end
@@ -188,4 +188,4 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
-gem 'docker-api', '~> 2.0.0'
+gem 'docker-api', '~> 2.1.0'

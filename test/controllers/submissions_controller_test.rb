@@ -8,7 +8,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     stub_all_activities!
-    @instance = create :submission
+    @instance = create :correct_submission
     @zeus = create(:zeus)
     sign_in @zeus
   end
@@ -206,6 +206,21 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   def rejudge_submissions(**params)
     post mass_rejudge_submissions_path, params: params
     assert_response :success
+  end
+
+  test 'should enqeueue submissions delayed ' do
+    create(:series, :with_submissions)
+
+    # in test env, default and export queues are evaluated inline
+    orig = Delayed::Worker.delay_jobs
+    Delayed::Worker.delay_jobs = true # delay all
+
+    # should only enqueue a single job which will then enqueue all other jobs
+    assert_jobs_enqueued(1) do
+      rejudge_submissions
+    end
+
+    Delayed::Worker.delay_jobs = orig
   end
 
   test 'should rejudge all submissions' do

@@ -109,7 +109,7 @@ class SubmissionsController < ApplicationController
   def mass_rejudge
     authorize Submission
     Event.create(event_type: :rejudge, user: current_user, message: "#{@submissions.count} submissions")
-    Submission.rejudge(@submissions)
+    Submission.rejudge_delayed(@submissions)
     render json: { status: 'ok', message: I18n.t('submissions.index.reevaluating_submissions', count: @submissions.length) }
   end
 

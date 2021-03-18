@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_22_143708) do
+ActiveRecord::Schema.define(version: 2021_03_08_102217) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -119,6 +119,8 @@ ActiveRecord::Schema.define(version: 2021_02_22_143708) do
     t.string "type", default: "Annotation", null: false
     t.integer "question_state"
     t.integer "last_updated_by_id", null: false
+    t.integer "course_id", null: false
+    t.index ["course_id", "type", "question_state"], name: "index_annotations_on_course_id_and_type_and_question_state"
     t.index ["evaluation_id"], name: "index_annotations_on_evaluation_id"
     t.index ["last_updated_by_id"], name: "index_annotations_on_last_updated_by_id"
     t.index ["submission_id"], name: "index_annotations_on_submission_id"
@@ -282,6 +284,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_143708) do
     t.string "logo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "generated_name", default: true, null: false
   end
 
   create_table "judges", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -472,6 +475,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_143708) do
   add_foreign_key "activity_statuses", "activities", on_delete: :cascade
   add_foreign_key "activity_statuses", "series", on_delete: :cascade
   add_foreign_key "activity_statuses", "users", on_delete: :cascade
+  add_foreign_key "annotations", "courses"
   add_foreign_key "annotations", "evaluations"
   add_foreign_key "annotations", "submissions"
   add_foreign_key "annotations", "users"

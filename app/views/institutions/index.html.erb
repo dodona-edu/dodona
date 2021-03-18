@@ -5,37 +5,9 @@
         <h2 class="card-title-text"><%= t('.title') %></h2>
       </div>
       <div class="card-supporting-text">
-        <div class="table-scroll-wrapper">
-          <table class="table table-index table-resource">
-            <thead>
-            <tr>
-              <th><%= Institution.human_attribute_name(:name) %></th>
-              <th><%= Institution.human_attribute_name(:short_name) %></th>
-              <th><%= t('.number_of_users') %></th>
-              <th><%= t('.number_of_courses') %></th>
-              <th><%= Institution.human_attribute_name(:providers) %></th>
-              <th class="actions"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @institutions.each do |institution| %>
-              <tr>
-                <td><%= link_to institution.name, institution %></td>
-                <td><%= institution.short_name %></td>
-                <td><%= link_to institution.users.length, users_url(institution_id: institution.id) %></td>
-                <td><%= link_to institution.courses.length, courses_url(institution_id: institution.id) %></td>
-                <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
-                <td class="actions">
-                  <% if policy(institution).edit? %>
-                    <%= link_to edit_institution_path(institution), title: t("institutions.index.edit"), class: "btn btn-sm btn-default" do %>
-                      <i class="mdi mdi-pencil mdi-18"></i>
-                    <% end %>
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
+        <%= render partial: 'layouts/searchbar' %>
+        <div id="institution-table-wrapper">
+          <%= render partial: 'institution_table', locals: {institutions: @institutions, pagination_opts: @pagination_opts} %>
         </div>
       </div>
     </div>

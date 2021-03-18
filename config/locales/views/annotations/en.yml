@@ -5,7 +5,7 @@ en:
   questions:
     index:
       title: All questions
-      from: van
+      from: from
       watch: Automatically reload questions
       everything: Show all questions
     courses: Courses

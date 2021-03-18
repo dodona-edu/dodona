@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AnnotationControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @submission = create :correct_submission, code: "line1\nline2\nline3\n"
+    @submission = create :correct_submission, code: "line1\nline2\nline3\n", course: create(:course)
     @zeus = create(:zeus)
     sign_in @zeus
   end
@@ -51,13 +51,32 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', questions_path(page: 2, everything: true)
   end
 
+  test 'questions should from courses should be shown to course admins' do
+    u = create :user
+    sign_in u
+    s1 = create :course_submission, user: u
+    s2 = create :course_submission, user: u
+    s3 = create :course_submission, user: u
+    create :question, submission: s1
+    create :question, submission: s2
+    create :question, submission: s3
+    admin = create :user
+    admin.administrating_courses << s1.course
+    admin.administrating_courses << s2.course
+
+    sign_in admin
+    get questions_url(format: :json)
+
+    assert_equal 2, JSON.parse(response.body).count
+  end
+
   test 'should be able to search by exercise name' do
     u = create :user
     sign_in u
     e1 = create :exercise, name_en: 'abcd'
     e2 = create :exercise, name_en: 'efgh'
-    s1 = create :submission, exercise: e1, user: u
-    s2 = create :submission, exercise: e2, user: u
+    s1 = create :submission, exercise: e1, user: u, course: create(:course)
+    s2 = create :submission, exercise: e2, user: u, course: create(:course)
     create :question, submission: s1
     create :question, submission: s2
 
@@ -69,8 +88,8 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   test 'should be able to search by user name' do
     u1 = create :user, last_name: 'abcd'
     u2 = create :user, last_name: 'efgh'
-    s1 = create :submission, user: u1
-    s2 = create :submission, user: u2
+    s1 = create :submission, user: u1, course: create(:course)
+    s2 = create :submission, user: u2, course: create(:course)
     create :question, submission: s1
     create :question, submission: s2
 
@@ -82,7 +101,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   test 'should be able to filter by status' do
     u = create :user
     sign_in u
-    s = create :submission, user: u
+    s = create :submission, user: u, course: create(:course)
     create :question, question_state: :in_progress, submission: s
     create :question, question_state: :unanswered, submission: s
     create :question, question_state: :answered, submission: s
@@ -127,9 +146,9 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     create :annotation, user: user, submission: (create :submission, user: user, course: course)
     create :annotation, user: user, submission: (create :submission, user: user, course: course)
-    create :annotation, user: user, submission: (create :submission, user: user)
+    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
     create :annotation, user: other_user, submission: (create :submission, user: other_user, course: course)
-    create :annotation, user: other_user, submission: (create :submission, user: other_user)
+    create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 
     get annotations_url(format: :json)
     assert_equal 5, JSON.parse(response.body).count
@@ -147,11 +166,11 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     user = create :user
     other_user = create :user
 
-    create :annotation, user: user, submission: (create :submission, user: user)
-    create :annotation, user: user, submission: (create :submission, user: user)
-    create :annotation, user: user, submission: (create :submission, user: user)
-    create :annotation, user: other_user, submission: (create :submission, user: other_user)
-    create :annotation, user: other_user, submission: (create :submission, user: other_user)
+    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
+    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
+    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
+    create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
+    create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 
     get annotations_url(format: :json, user_id: user.id)
     assert_equal 3, JSON.parse(response.body).count

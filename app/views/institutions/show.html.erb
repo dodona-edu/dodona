@@ -5,6 +5,9 @@
         <div>
           <span class="profile-line">
             <span class="name"><%= @institution.name %></span> (<%= @institution.short_name %>)
+            <% if @institution.generated_name? %>
+              <span class="generated-name-icon" title="<%= t 'institutions.index.generated_name' %>"><i class="mdi mdi-18 mdi-cogs icon"></i></span>
+            <% end %>
           </span>
         </div>
         <div class="row">

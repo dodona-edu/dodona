@@ -13,7 +13,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                        :config_stubbed,
                        series: [@series],
                        repository: @repository
-    @submission = create :submission,
+    @submission = create :correct_submission,
                          user: @user,
                          course: @course,
                          exercise: @exercise

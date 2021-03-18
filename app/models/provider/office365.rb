@@ -6,7 +6,7 @@
 #  type              :string(255)      default("Provider::Saml"), not null
 #  institution_id    :bigint           not null
 #  identifier        :string(255)
-#  certificate       :text(65535)
+#  certificate       :text(16777215)
 #  entity_id         :string(255)
 #  slo_url           :string(255)
 #  sso_url           :string(255)
@@ -26,5 +26,15 @@ class Provider::Office365 < Provider
 
   def self.sym
     :office365
+  end
+
+  def self.extract_institution_name(auth_hash)
+    # Office 365 has no useful information, so take the domain name of the email.
+    mail = auth_hash&.info&.email
+
+    return Provider.extract_institution_name(auth_hash) unless mail =~ URI::MailTo::EMAIL_REGEXP
+
+    domain = Mail::Address.new(mail).domain
+    [domain, domain]
   end
 end

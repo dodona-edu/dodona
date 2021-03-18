@@ -1,11 +1,15 @@
 class InstitutionsController < ApplicationController
   before_action :set_institution, only: %i[show edit update]
 
+  has_scope :by_filter, as: 'filter' do |_controller, scope, value|
+    scope.by_name(value)
+  end
+
   def index
     authorize Institution
-    @institutions = Institution.all.order(name: :asc).includes(:courses, :users, :providers).to_a
-    empty_institutions = @institutions.select { |i| i.name == Institution::NEW_INSTITUTION_NAME }
-    @institutions = empty_institutions + (@institutions - empty_institutions)
+    @institutions = apply_scopes(Institution).all.order(generated_name: :desc, name: :asc)
+                                             .includes(:courses, :users, :providers)
+                                             .paginate(page: parse_pagination_param(params[:page]))
     @title = I18n.t('institutions.index.title')
   end
 

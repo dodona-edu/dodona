@@ -6,7 +6,7 @@
 #  type              :string(255)      default("Provider::Saml"), not null
 #  institution_id    :bigint           not null
 #  identifier        :string(255)
-#  certificate       :text(65535)
+#  certificate       :text(16777215)
 #  entity_id         :string(255)
 #  slo_url           :string(255)
 #  sso_url           :string(255)
@@ -49,6 +49,10 @@ class Provider < ApplicationRecord
     return match if match.present?
 
     raise 'Unknown provider type.'
+  end
+
+  def self.extract_institution_name(_auth_hash)
+    [Institution::NEW_INSTITUTION_NAME, Institution::NEW_INSTITUTION_NAME]
   end
 
   private

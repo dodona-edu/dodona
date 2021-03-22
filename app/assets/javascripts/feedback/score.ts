@@ -16,6 +16,7 @@ export default class ScoreForm {
     private readonly expectedScore: HTMLInputElement;
     private readonly spinner: HTMLElement;
     private readonly deleteButton: HTMLElement;
+    private readonly zeroButton: HTMLElement;
     private readonly maxLink: HTMLElement;
     private readonly form: HTMLFormElement;
 
@@ -33,6 +34,7 @@ export default class ScoreForm {
         this.spinner = this.form.querySelector(".dodona-progress");
         this.expectedScore = this.form.querySelector(".score-form input.expected-score");
         this.deleteButton = this.form.parentElement.querySelector(".delete-button");
+        this.zeroButton = this.form.parentElement.querySelector(".single-zero-button");
         this.scoreItemId = (this.form.querySelector("input.score-item") as HTMLInputElement).value;
         this.maxLink = element.querySelector("a.score-click");
         this.id = (this.form.querySelector("input.id") as HTMLInputElement).value;
@@ -76,6 +78,11 @@ export default class ScoreForm {
                 }
             });
         }
+        this.zeroButton.addEventListener("click", e => {
+            e.preventDefault();
+            this.input.value = "0";
+            this.sendUpdate();
+        });
         this.maxLink.addEventListener("click", e => {
             e.preventDefault();
             this.input.value = this.getMax();

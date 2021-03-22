@@ -182,4 +182,23 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     assert_button(class: 'complete-feedback', disabled: false)
   end
+
+  test 'one zero works' do
+    visit(feedback_path(id: @feedback.id))
+
+    expected_first = @score.score
+    assert_button(class: 'complete-feedback', disabled: true)
+
+    score_button = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.single-zero-button')
+    score_button.click
+
+    # :enabled makes capybara wait on the refresh
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:enabled')
+    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:enabled')
+
+    assert_equal expected_first, BigDecimal(first_input.value)
+    assert_equal BigDecimal('0'), BigDecimal(second_input.value)
+
+    assert_button(class: 'complete-feedback', disabled: false)
+  end
 end

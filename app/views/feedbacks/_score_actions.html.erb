@@ -2,7 +2,7 @@
 <div class="row row-no-gutters form-row" id="<%= "#{score_item.id}-score-form-wrapper" %>">
   <%= form_for score, url: '#',
                namespace: score_item.id,
-               html: { class: "form-inline score-form col-md-7 col-xs-9", data: { url: url, new: score.persisted? } } do |f| %>
+               html: { class: "form-inline score-form col-md-6 col-xs-9", data: { url: url, new: score.persisted? } } do |f| %>
     <%= f.hidden_field :expected_score, value: score.score, class: "expected-score" %>
     <% e = if score&.out_of_bounds?
              'has-error'
@@ -33,11 +33,14 @@
     <%= format_score(score_item.maximum) %>
   </a>
   </div>
-  <% if @score_map.key?(score_item.id) %>
-    <div class="col-md-2 col-xs-12 score-buttons">
+  <div class="col-md-3 col-xs-12 score-buttons">
+    <%= button_tag class: "btn-sm btn-text single-zero-button" do %>
+      0
+    <% end %>
+    <% if @score_map.key?(score_item.id) %>
       <%= button_tag class: "btn btn-icon delete-button" do %>
         <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
       <% end %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

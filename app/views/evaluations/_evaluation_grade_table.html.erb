@@ -10,6 +10,8 @@
         <%= t ".total" %>
       </th>
     </tr>
+    <% maximum = @evaluation.maximum_score %>
+    <% average = @evaluation.average_score(feedbacks[:evaluation_exercises]) %>
     <tr>
       <th class="user-name"><%= t ".average" %></th>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
@@ -23,42 +25,25 @@
         </th>
       <% end %>
       <th class="status">
-        <% maximum = @evaluation.maximum_score %>
-        <% average = @evaluation.average_score %>
-        <% if maximum.nil? %>
-          -
-        <% else %>
-          <% if average.nil? %>
-            -
-          <% else %>
-            <%= format_score average %>
-          <% end %>
-          / <%= format_score(maximum) %>
-        <% end %>
+        <%= format_score average %> / <%= format_score maximum %>
       </th>
     </tr>
     </thead>
     <tbody>
     <% evaluation.users.order(last_name: :asc, first_name: :asc).each do |user| %>
       <% feedback_l = feedbacks[:feedbacks][user.id] %>
+      <% average = feedbacks[:averages][user.id] %>
       <tr>
         <td class="user-name ellipsis-overflow">
           <%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %>
         </td>
         <% feedback_l.each do |feedback| %>
           <td class="status">
-            <%= render partial: 'grade_status', locals: { evaluation: feedback.evaluation, feedback: feedback } %>
+            <%= render partial: 'grade_status', locals: { evaluation: @evaluation, feedback: feedback } %>
           </td>
         <% end %>
         <td class="status">
-          <% max_score = @evaluation.maximum_score %>
-          <% scores = feedback_l.map(&:score).reject(&:blank?) %>
-          <% if scores.any? %>
-            <%= format_score(scores.sum) %>
-          <% else %>
-            -
-          <% end %>
-          / <%= format_score max_score %>
+          <%= format_score average %> / <%= format_score maximum %>
         </td>
       </tr>
     <% end %>

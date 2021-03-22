@@ -59,7 +59,7 @@ class Evaluation < ApplicationRecord
   end
 
   def evaluation_sheet
-    eval_exercises = evaluation_exercises.includes(:exercise)
+    eval_exercises = evaluation_exercises.includes(:exercise, :score_items, feedbacks: [:scores])
     exercises = eval_exercises.map(&:exercise)
     exercise_ids = exercises.pluck(:id)
     users = evaluation_users.includes(:user).map(&:user)
@@ -68,11 +68,16 @@ class Evaluation < ApplicationRecord
     fbs = users.map do |user|
       [user.id, all_feedbacks.select { |fb| fb.evaluation_user.user == user }.sort_by { |fb| exercise_ids.find_index fb.evaluation_exercise.exercise.id }]
     end.to_h
+    averages = fbs.map do |user_id, feedbacks|
+      average = feedbacks.map(&:score).reject(&:blank?)
+      [user_id, average.present? ? average.sum : nil]
+    end.to_h
 
     {
-      evaluation_exercises: evaluation_exercises,
+      evaluation_exercises: eval_exercises,
       exercises: exercises,
-      feedbacks: fbs
+      feedbacks: fbs,
+      averages: averages
     }
   end
 
@@ -85,8 +90,11 @@ class Evaluation < ApplicationRecord
     mapped.sum if mapped.any?
   end
 
-  def average_score
-    mapped = evaluation_exercises.map(&:average_score).reject(&:blank?)
+  # To prevent getting all exercises, feedbacks and scores again,
+  # you can pass a list of existing evaluation exercises to this function.
+  # It is recommended to preload the feedbacks & scores.
+  def average_score(eval_execs = nil)
+    mapped = (eval_execs || evaluation_exercises.includes(feedbacks: [:scores])).map(&:average_score).reject(&:nil?)
     mapped.sum / mapped.length if mapped.any?
   end
 

@@ -9,7 +9,9 @@
       </div>
       <div class="card-supporting-text">
         <p class="selected-score-items">
-          <%= t('.summary', count: @evaluation.score_items.count) %><br>
+          <span class="summary-text">
+            <%= t('.summary', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>
+          </span><br>
           <%= link_to t("score_items.new.show_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post %>
           <br>
           <%= link_to t("score_items.new.hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post %>

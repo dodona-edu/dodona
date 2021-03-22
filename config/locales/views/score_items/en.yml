@@ -23,8 +23,8 @@ en:
       to_evaluation: Back to evaluation
       summary:
         zero: No score items configured for this evaluation
-        one: One score item for this evaluation
-        other: "%{count} score items for this evaluation"
+        one: "One score item for this evaluation. Total score: %{score}."
+        other: "%{count} score items for this evaluation. Total score: %{score}."
     new:
       title: Configure score items
       explanation_part1: >
@@ -43,7 +43,7 @@ en:
         title: Add the same score item to all exercises
       hide_all: Make all score items invisible
       show_all: Make all score items visible
-      exercises: Exercises
+      exercises: Exercises (/%{score})
       to_evaluation: To evaluation
     exercise:
       nothing: There are no score items for this exercise yet. You can only grade exercises with at least one score item.

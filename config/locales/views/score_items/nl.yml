@@ -23,8 +23,8 @@ nl:
       to_evaluation: Terug naar evaluatie
       summary:
         zero: Geen score-onderdelen in deze evaluatie
-        one: Eén scoreonderdeel in deze evaluatie
-        other: "%{count} scoreonderdelen in deze evaluatie"
+        one: "Eén scoreonderdeel in deze evaluatie. Totaalscore: %{score}."
+        other: "%{count} scoreonderdelen in deze evaluatie. Totaalscore: %{score}."
     new:
       title: Scoreonderdelen configureren
       explanation_part1: >
@@ -43,7 +43,7 @@ nl:
         title: Hetzelfde scoreonderdeel toevoegen aan alle oefeningen
       hide_all: Alles scoreonderdelen verbergen
       show_all: Alles scoreonderdelen zichtbaar maken
-      exercises: Oefeningen
+      exercises: Oefeningen (/%{score})
       to_evaluation: Naar evaluatie
     exercise:
       nothing: Er zijn nog geen scoreonderdelen voor deze oefening. Je kan pas punten geven als er minstens één scoreonderdeel is.

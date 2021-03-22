@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="page-subtitle">
-      <h3><%= t ".exercises" %></h3>
+      <h3 class="total-title"><%= t ".exercises", score: format_score(@evaluation.maximum_score) %></h3>
       <div class="flex-spacer"></div>
       <div>
         <a href="#add-score-item-to-all" class="btn with-text btn-primary btn-fab-extended"

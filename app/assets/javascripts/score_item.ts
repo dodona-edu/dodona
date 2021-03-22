@@ -26,7 +26,6 @@ function commonCheckboxInit(
         checkbox.addEventListener("change", async event => {
             event.preventDefault();
             const checkbox = event.target as HTMLInputElement;
-            console.log(dataProvider(checkbox.checked));
             checkbox.disabled = true;
             const form = checkbox.closest("form") as HTMLFormElement;
             fetch(form.action, {

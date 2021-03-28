@@ -11,7 +11,8 @@ set :delayed_job_workers, 3
 
 set :bundle_without, ''
 
-#set :linked_files, fetch(:linked_files, []).push('tmp/development_secret.txt')
+# Override ['config/master.key'] from main deploy file, we don't need it on mestra
+set :linked_files, []
 
 namespace :deploy do
   before :restart, :reset_db do

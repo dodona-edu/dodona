@@ -107,9 +107,11 @@
             </li>
           <% end %>
           <% if series.evaluation.present? && policy(series.evaluation).overview? %>
+            <li>
               <%= link_to overview_evaluation_path(series.evaluation) do %>
                 <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.evaluation_overview") %>
               <% end %>
+            </li>
           <% end %>
         </ul>
       </div>

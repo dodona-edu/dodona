@@ -33,7 +33,24 @@ class StatisticsController < ApplicationController
     end
     result = Submission.violin_matrix(course: course, series: series)
     if result.present?
-      # render json: { series: course.homepage_series }
+      render json: { data: result[:value], exercises: series.exercises }
+    else
+      render json: { status: 'not available yet'}, status: :accepted
+    end
+  end
+
+  def stacked_status
+    course = nil
+    if params.key?(:course_id)
+      course = Course.find(params[:course_id])
+    end
+
+    series = nil
+    if params.key?(:series_id)
+      series = Series.find(params[:series_id])
+    end
+    result = Submission.stacked_status_matrix(course: course, series: series)
+    if result.present?
       render json: { data: result[:value], exercises: series.exercises }
     else
       render json: { status: 'not available yet'}, status: :accepted

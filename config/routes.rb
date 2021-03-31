@@ -247,7 +247,8 @@ Rails.application.routes.draw do
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'
       get 'punchcard', to: 'statistics#punchcard'
-      get 'test', to: 'statistics#violin'
+      get 'violin', to: 'statistics#violin'
+      get 'stacked_status', to: 'statistics#stacked_status'
     end
 
   end

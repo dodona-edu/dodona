@@ -31,6 +31,11 @@ class Series < ApplicationRecord
 
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
+  before_save :regenerate_activity_tokens, if: :visibility_changed?
+  before_create :generate_access_token
+  before_destroy :set_being_destroyed
+  after_save :invalidate_activity_statuses_and_caches, if: :saved_change_to_deadline?
+
   belongs_to :course
   has_many :series_memberships, dependent: :destroy
   has_many :activities, through: :series_memberships
@@ -43,10 +48,6 @@ class Series < ApplicationRecord
 
   token_generator :access_token, length: 5
   token_generator :indianio_token
-
-  before_save :regenerate_activity_tokens, if: :visibility_changed?
-  before_create :generate_access_token
-  after_save :invalidate_activity_statuses_and_caches, if: :saved_change_to_deadline?
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }
@@ -187,5 +188,15 @@ class Series < ApplicationRecord
     invalidate_completed?(user: user)
     invalidate_started?(user: user)
     invalidate_wrong?(user: user)
+  end
+
+  def being_destroyed?
+    @being_destroyed
+  end
+
+  private
+
+  def set_being_destroyed
+    @being_destroyed = true
   end
 end

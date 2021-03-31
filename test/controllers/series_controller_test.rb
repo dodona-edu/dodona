@@ -65,6 +65,16 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to course_url(course)
   end
 
+  test 'destroy series should not queue jobs' do
+    @instance = create(:series, :with_submissions)
+    old = Delayed::Worker.delay_jobs
+    Delayed::Worker.delay_jobs = true
+    assert_jobs_enqueued(0) do
+      destroy_request
+    end
+    Delayed::Worker.delay_jobs = old
+  end
+
   test 'should generate scoresheet' do
     series = create(:series, :with_submissions)
     get scoresheet_series_path(series)

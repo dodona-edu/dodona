@@ -52,6 +52,7 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
+  scope :after_moment, ->(moment) { where('submissions.created_at > ?', moment) }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
@@ -295,7 +296,6 @@ class Submission < ApplicationRecord
     submissions = Submission.all
     submissions = submissions.of_user(options[:user]) if options[:user].present?
     submissions = submissions.in_course(options[:course]) if options[:course].present?
-    submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions.where(id: (latest + 1)..)
   end
 
@@ -359,6 +359,7 @@ class Submission < ApplicationRecord
 
   def self.violin_matrix(options = {}, base = { until: 0, value: {}})
     submissions = submissions_since(base[:until], options)
+    submissions = submissions.in_series(options[:series]) if options[:series].present?
     return base unless submissions.any?
 
     value = base[:value]
@@ -369,7 +370,7 @@ class Submission < ApplicationRecord
                               .transform_values(&:count) # calc amount of submissions per user per exercise
                           ) { |_k, v1, v2| v1 + v2 }
     end
-    
+
     value = value
               .group_by{|k,v| k[0]} # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
               .transform_values{|v| v.map{|x| x[1]}} # only retain count (as value)
@@ -382,6 +383,7 @@ class Submission < ApplicationRecord
 
   def self.stacked_status_matrix(options = {}, base = { until: 0, value: {}})
     submissions = submissions_since(base[:until], options)
+    submissions = submissions.in_series(options[:series]) if options[:series].present?
     return base unless submissions.any?
 
     value = base[:value]
@@ -397,6 +399,30 @@ class Submission < ApplicationRecord
       value: value
     }
   end
+
+  def self.timeseries_matrix(options = {}, base = {until: 0, value: {}})
+  submissions = submissions_since(base[:until], options)
+  submissions = submissions.before_deadline(options[:deadline]) if options[:deadline].present?
+  # limiting lower bound filters all dummy data, should be fine for real data
+  # submissions = submissions.after_moment(options[:deadline] - 2.weeks) if options[:deadline].present?
+  return base unless submissions.any?
+
+  value = base[:value]
+
+
+  submissions.in_batches do |subs|
+    value = value.merge(subs.pluck(:exercise_id, :created_at, :status)
+                            .map{|d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]]}
+                            .group_by(&:itself)
+                            .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+  end
+
+  {
+    until: submissions.first.id,
+    value: value
+  }
+end
+
 
   private
 

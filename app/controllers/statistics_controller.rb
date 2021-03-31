@@ -21,7 +21,27 @@ class StatisticsController < ApplicationController
     end
   end
 
+  def violin
+    course = nil
+    if params.key?(:course_id)
+      course = Course.find(params[:course_id])
+    end
+
+    series = nil
+    if params.key?(:series_id)
+      series = Series.find(params[:series_id])
+    end
+    result = Submission.violin_matrix(course: course, series: series)
+    if result.present?
+      # render json: { series: course.homepage_series }
+      render json: { data: result[:value], exercises: series.exercises }
+    else
+      render json: { status: 'not available yet'}, status: :accepted
+    end
+  end
+
   private
+
 
   def set_course_and_user
     @user = nil
@@ -37,6 +57,6 @@ class StatisticsController < ApplicationController
     elsif params.key?(:user_id)
       @user = User.find(params[:user_id])
       authorize @user
-    end
+    end 
   end
 end

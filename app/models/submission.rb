@@ -364,8 +364,30 @@ class Submission < ApplicationRecord
     value = base[:value]
 
     submissions.in_batches do |subs|
-      value = value.merge(subs.pluck(:created_at, :exercise_id)
-                              .map { |d| [d[1], d[0].strftime('%Y-%m-%d')] }
+      value = value.merge(subs.pluck(:exercise_id, :user_id)
+                              .group_by(&:itself) # group by exercise and user
+                              .transform_values(&:count) # calc amount of submissions per user per exercise
+                          ) { |_k, v1, v2| v1 + v2 }
+    end
+    
+    value = value
+              .group_by{|k,v| k[0]} # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
+              .transform_values{|v| v.map{|x| x[1]}} # only retain count (as value)
+
+    {
+      until: submissions.first.id,
+      value: value
+    }
+  end
+
+  def self.stacked_status_matrix(options = {}, base = { until: 0, value: {}})
+    submissions = submissions_since(base[:until], options)
+    return base unless submissions.any?
+
+    value = base[:value]
+
+    submissions.in_batches do |subs|
+      value = value.merge(subs.pluck(:exercise_id, :status)
                               .group_by(&:itself)
                               .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
     end

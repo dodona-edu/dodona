@@ -249,6 +249,7 @@ Rails.application.routes.draw do
       get 'punchcard', to: 'statistics#punchcard'
       get 'violin', to: 'statistics#violin'
       get 'stacked_status', to: 'statistics#stacked_status'
+      get 'timeseries', to: 'statistics#timeseries'
     end
 
   end

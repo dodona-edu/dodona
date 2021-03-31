@@ -1,0 +1,12 @@
+<% content_for :javascripts do %>
+    <%= javascript_pack_tag 'visualisations' %>
+  <% end %>
+  
+  <div id="test-container">
+  </div>
+
+<script type="text/javascript">
+    $(function () {
+        dodona.vtest();
+    });
+</script>

@@ -295,6 +295,7 @@ class Submission < ApplicationRecord
     submissions = Submission.all
     submissions = submissions.of_user(options[:user]) if options[:user].present?
     submissions = submissions.in_course(options[:course]) if options[:course].present?
+    submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions.where(id: (latest + 1)..)
   end
 
@@ -355,6 +356,25 @@ class Submission < ApplicationRecord
              user_id: options[:user].present? ? options[:user].id.to_s : 'global')
     end
   )
+
+  def self.violin_matrix(options = {}, base = { until: 0, value: {}})
+    submissions = submissions_since(base[:until], options)
+    return base unless submissions.any?
+
+    value = base[:value]
+
+    submissions.in_batches do |subs|
+      value = value.merge(subs.pluck(:created_at, :exercise_id)
+                              .map { |d| [d[1], d[0].strftime('%Y-%m-%d')] }
+                              .group_by(&:itself)
+                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+    end
+
+    {
+      until: submissions.first.id,
+      value: value
+    }
+  end
 
   private
 

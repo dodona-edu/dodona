@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  pull_request:
+    types:
+      - review_requested
+      - labeled
+
+jobs:
+  mestra:
+    if: ${{ github.event.action == 'review_requested' || (github.event.action == 'labeled' && github.event.label.name == 'deploy') }}
+    environment: 
+      name: mestra
+      url: https://mestra.ugent.be
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cancel previous deployments
+      uses: styfle/cancel-workflow-action@0.8.0
+      with:
+        access_token: ${{ github.token }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.MESTRA_KEY }}
+        known_hosts: "-"
+    - name: Set up ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+    - name: Run capistrano
+      run: |
+        bundle exec cap mestra deploy
+    - name: Remove deploy label
+      uses: buildsville/add-remove-label@v1
+      with:
+        token: ${{secrets.GITHUB_TOKEN}}
+        label: deploy
+        type: remove

@@ -2,11 +2,11 @@
     <%= javascript_pack_tag 'visualisations' %>
   <% end %>
   
-  <div id="test-container">
+  <div id="violin-container">
   </div>
 
 <script type="text/javascript">
     $(function () {
-        dodona.vtest();
+        dodona.initViolin('/nl/stats/violin?course_id=5&series_id=108');
     });
 </script>

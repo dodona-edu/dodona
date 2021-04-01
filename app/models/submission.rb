@@ -363,14 +363,14 @@ class Submission < ApplicationRecord
     return base unless submissions.any?
 
     value = base[:value]
-
+    puts submissions.pluck(:exercise_id, :user_id, :status)
     submissions.in_batches do |subs|
       value = value.merge(subs.pluck(:exercise_id, :user_id)
                               .group_by(&:itself) # group by exercise and user
                               .transform_values(&:count) # calc amount of submissions per user per exercise
                           ) { |_k, v1, v2| v1 + v2 }
     end
-
+    puts value
     value = value
               .group_by{|k,v| k[0]} # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
               .transform_values{|v| v.map{|x| x[1]}} # only retain count (as value)

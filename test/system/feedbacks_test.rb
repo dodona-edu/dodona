@@ -48,9 +48,6 @@ class FeedbacksTest < ApplicationSystemTestCase
   test 'can fill in scores for each score_item' do
     visit(feedback_path(id: @feedback.id))
 
-    # The "complete" button should be disabled
-    assert_button(class: 'complete-feedback', disabled: true)
-
     first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input')
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input')
 
@@ -63,7 +60,6 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     @score.reload
     assert_equal BigDecimal('9.0'), @score.score
-    assert_button(class: 'complete-feedback', disabled: true)
 
     # Add new score for second score_item
     second_input.fill_in with: '10.0'
@@ -74,7 +70,6 @@ class FeedbacksTest < ApplicationSystemTestCase
     second_score = @score_item_second.scores.first
 
     assert_equal BigDecimal('10.0'), second_score.score
-    assert_button(class: 'complete-feedback', disabled: false)
   end
 
   test 'can save score with enter' do
@@ -90,7 +85,6 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     @score.reload
     assert_equal BigDecimal('16'), @score.score
-    assert_button(class: 'complete-feedback', disabled: true)
   end
 
   test 'concurrent modifications are shown' do
@@ -135,7 +129,6 @@ class FeedbacksTest < ApplicationSystemTestCase
   test 'all zero works' do
     visit(feedback_path(id: @feedback.id))
 
-    assert_button(class: 'complete-feedback', disabled: true)
     click_button(id: 'zero-button')
 
     # :enabled makes capybara wait on the refresh
@@ -144,14 +137,10 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     assert_equal '0', first_input.value
     assert_equal '0', second_input.value
-
-    assert_button(class: 'complete-feedback', disabled: false)
   end
 
   test 'all max works' do
     visit(feedback_path(id: @feedback.id))
-
-    assert_button(class: 'complete-feedback', disabled: true)
     click_button(id: 'max-button')
 
     # :enabled makes capybara wait on the refresh
@@ -160,16 +149,12 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     assert_equal @score_item_first.maximum, BigDecimal(first_input.value)
     assert_equal @score_item_second.maximum, BigDecimal(second_input.value)
-
-    assert_button(class: 'complete-feedback', disabled: false)
   end
 
   test 'one max link works' do
     visit(feedback_path(id: @feedback.id))
 
     expected_first = @score.score
-    assert_button(class: 'complete-feedback', disabled: true)
-
     score_button = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-click')
     score_button.click
 
@@ -179,15 +164,12 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     assert_equal expected_first, BigDecimal(first_input.value)
     assert_equal @score_item_second.maximum, BigDecimal(second_input.value)
-
-    assert_button(class: 'complete-feedback', disabled: false)
   end
 
   test 'one max button works' do
     visit(feedback_path(id: @feedback.id))
 
     expected_first = @score.score
-    assert_button(class: 'complete-feedback', disabled: true)
 
     score_button = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.single-max-button')
     score_button.click
@@ -198,15 +180,12 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     assert_equal expected_first, BigDecimal(first_input.value)
     assert_equal @score_item_second.maximum, BigDecimal(second_input.value)
-
-    assert_button(class: 'complete-feedback', disabled: false)
   end
 
   test 'one zero works' do
     visit(feedback_path(id: @feedback.id))
 
     expected_first = @score.score
-    assert_button(class: 'complete-feedback', disabled: true)
 
     score_button = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.single-zero-button')
     score_button.click
@@ -217,7 +196,5 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     assert_equal expected_first, BigDecimal(first_input.value)
     assert_equal BigDecimal('0'), BigDecimal(second_input.value)
-
-    assert_button(class: 'complete-feedback', disabled: false)
   end
 end

@@ -26,17 +26,8 @@ class FeedbackPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def complete?
-    required_score_items = record.score_items.map(&:id).to_set
-    found_score_items = record.scores.map(&:score_item_id).to_set
-
-    # For every template, there should be a score
-    required_score_items == found_score_items
-  end
-
   def permitted_attributes
-    attrs = %i[submission_id]
-    attrs << :completed if complete?
+    attrs = %i[submission_id completed]
     attrs << { scores_attributes: %i[score id score_item_id] }
     attrs
   end

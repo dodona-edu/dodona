@@ -18,29 +18,17 @@ class ScorePolicy < ApplicationPolicy
   end
 
   def create?
-    return false if record.feedback.completed?
-
     course_admin?
   end
 
   def update?
-    # If the feedback is completed, don't allow updates.
-    return false if record.feedback.completed?
-
-    # If the user is not a course admin, don't allow updates.
-    return false unless course_admin?
-
-    # Check for conflicts. If the score is not what we expected, don't allow
-    # the update.
-    record.expected_score == record.score
+    # The check against the expected score is to detect conflicts
+    course_admin? && record.expected_score == record.score
   end
 
   def destroy?
-    return false if record.feedback.completed?
-
-    return false unless course_admin?
-
-    record.expected_score == record.score
+    # The check against the expected score is to detect conflicts
+    course_admin? && record.expected_score == record.score
   end
 
   def permitted_attributes_for_create

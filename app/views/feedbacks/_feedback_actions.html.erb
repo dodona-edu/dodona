@@ -12,7 +12,6 @@
     </span>
   <% else %>
     <%= button_to feedback_path(@feedback, feedback: { completed: true }),
-                  disabled: !policy(@feedback).complete?,
                   method: :patch,
                   class: 'btn-text complete-feedback',
                   remote: true do %>
@@ -58,16 +57,14 @@
         <div class="col-xs-8 total-score" data-total="<%= @feedback.score %>">
           <span id="score-sum"><%= format_score @feedback.score %></span> / <%= format_score @feedback.maximum_score %>
         </div>
-        <% unless @feedback.completed? %>
-          <div class="col-xs-4 score-buttons">
-            <%= button_tag class: "btn-sm btn-text", id: 'zero-button', title: t(".give_zero_all") do %>
-              0
-            <% end %>
-            <%= button_tag class: "btn-sm btn-text", id: 'max-button', title: t(".give_max_all") do %>
-              MAX
-            <% end %>
-          </div>
-        <% end %>
+        <div class="col-xs-4 score-buttons">
+          <%= button_tag class: "btn-sm btn-text", id: 'zero-button', title: t(".give_zero_all") do %>
+            0
+          <% end %>
+          <%= button_tag class: "btn-sm btn-text", id: 'max-button', title: t(".give_max_all") do %>
+            MAX
+          <% end %>
+        </div>
       </div>
     <% end %>
     <% score_items.each_with_index do |score_item, index| %>
@@ -77,15 +74,7 @@
           <strong><%= score_item.name %></strong>
         </div>
       </div>
-      <% if @feedback.completed? %>
-        <div class="row">
-          <div class="col-sm-12">
-            <%= format_score score.score %> / <%= format_score score_item.maximum %>
-          </div>
-        </div>
-      <% else %>
-        <%= render 'feedbacks/score_actions', score: score, score_item: score_item, index: index %>
-      <% end %>
+      <%= render 'feedbacks/score_actions', score: score, score_item: score_item, index: index %>
     <% end %>
   </div>
 <% end %>
@@ -120,7 +109,6 @@
         nextURL: <%= raw (siblings[:next].present? ? feedback_url(siblings[:next]) : nil).to_json %>,
         nextUnseenURL: <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,
         buttonText: "<%= t('.direction.next') %>",
-        allowNext: <%= policy(@feedback).complete? %>,
         scoreItems: <%= raw @feedback.score_items.map(&:id).to_json %>
     });
     $(() => window.dodona.initTooltips());

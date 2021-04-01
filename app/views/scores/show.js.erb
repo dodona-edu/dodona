@@ -4,4 +4,3 @@ $("#<%= @score.score_item.id %>-score-form-wrapper")
     .replaceWith("<%= escape_javascript(render 'feedbacks/score_actions', score: @score, score_item: @score.score_item, index: @order) %>");
 window.dodona.feedbackActions.initScoreForm("<%= @score.score_item.id %>");
 window.dodona.feedbackActions.setTotal("<%= format_score @total %>");
-window.dodona.feedbackActions.setAllowNext(<%= policy(@feedback).complete? %>);

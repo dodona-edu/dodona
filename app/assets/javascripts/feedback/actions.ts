@@ -7,7 +7,6 @@ interface ActionOptions {
     nextURL: string | null;
     nextUnseenURL: string | null;
     buttonText: string;
-    allowNext: boolean;
     scoreItems: [string];
 }
 
@@ -68,7 +67,7 @@ export default class FeedbackActions {
     private setNextWithAutoMark(): void {
         this.nextButton.innerHTML =
             `${this.options.buttonText} + <i class="mdi mdi-comment-check-outline mdi-18"></i>`;
-        this.allowNextAutoMark = this.options.allowNext;
+        this.allowNextAutoMark = true;
         this.syncNextButtonDisabledState();
     }
 
@@ -139,17 +138,6 @@ export default class FeedbackActions {
         // Only update the total if we have a total.
         if (this.scoreSumElement) {
             this.scoreSumElement.innerText = newTotal;
-        }
-    }
-
-    setAllowNext(allowNext: boolean): void {
-        this.options.allowNext = allowNext;
-        this.completeButton.disabled = !allowNext;
-        const autoMark = this.autoMarkCheckBox.checked;
-        if (autoMark) {
-            this.setNextWithAutoMark();
-        } else {
-            this.setNextWithoutAutoMark();
         }
     }
 

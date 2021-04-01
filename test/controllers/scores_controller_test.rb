@@ -46,20 +46,6 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test 'should not create score for completed feedback' do
-    @feedback.update!(completed: true)
-
-    post evaluation_scores_path(@evaluation, format: :json), params: {
-      score: {
-        score: '5.0',
-        score_item_id: @score_item.id,
-        feedback_id: @feedback.id
-      }
-    }
-
-    assert_response :forbidden
-  end
-
   test 'should update score if course admin' do
     score = create :score, score_item: @score_item, feedback: @feedback
     [
@@ -90,19 +76,6 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
       }
     }
     assert_response :unprocessable_entity
-  end
-
-  test 'should not update score if feedback is completed' do
-    score = create :score, score_item: @score_item, feedback: @feedback
-    @feedback.update!(completed: true)
-
-    patch evaluation_score_path(@evaluation, score, format: :json), params: {
-      score: {
-        score: '6.0',
-        expected_score: score.score.to_s
-      }
-    }
-    assert_response :forbidden
   end
 
   test 'should not update score if expected is different' do
@@ -136,18 +109,6 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
       sign_out user if user.present?
       score.destroy!
     end
-  end
-
-  test 'should not delete score if feedback is completed' do
-    score = create :score, score_item: @score_item, feedback: @feedback
-    @feedback.update!(completed: true)
-
-    delete evaluation_score_path(@evaluation, score, format: :json), params: {
-      score: {
-        expected_score: score.score.to_s
-      }
-    }
-    assert_response :forbidden
   end
 
   test 'should not delete score if expected is different' do

@@ -33,8 +33,13 @@ export default class FeedbackActions {
     private readonly scoreSumElement: HTMLSpanElement | null;
 
     private scoreForms: ScoreForm[];
+    // ID's of the score forms that are updating.
+    private updatingForms: Set<string> = new Set<string>();
+    // Go to the next feedback if all scores have been updated.
+    private nextAfterScoreUpdate: boolean = false;
     private allowNextAutoMark: boolean = true;
     private allowNextOrder: boolean = true;
+    private nextFeedbackAction: Function = null;
 
     constructor(options: ActionOptions) {
         this.options = options;
@@ -123,7 +128,18 @@ export default class FeedbackActions {
         eval(await response.text());
     }
 
+    registerUpdating(scoreItemId: string): void {
+        this.updatingForms.add(scoreItemId);
+    }
+
     initScoreForm(scoreItemId: string): void {
+        if (this.updatingForms.has(scoreItemId)) {
+            this.updatingForms.delete(scoreItemId);
+            if (this.updatingForms.size === 0 && this.nextAfterScoreUpdate) {
+                this.nextFeedbackAction();
+                this.nextAfterScoreUpdate = false;
+            }
+        }
         // Remove existing score forms.
         this.scoreForms = this.scoreForms.filter(form => form.scoreItemId !== scoreItemId);
         // Get new form. This assumes the HTML has been set already.
@@ -151,12 +167,7 @@ export default class FeedbackActions {
         }
         this.checkAndSetNext(skipCompleted);
 
-        this.nextButton.addEventListener("click", async event => {
-            event.preventDefault();
-            if (this.nextButton.disabled) {
-                return;
-            }
-            this.disableInputs();
+        this.nextFeedbackAction = async () => {
             if (autoMark) {
                 await this.update({
                     completed: true
@@ -167,6 +178,21 @@ export default class FeedbackActions {
             } else {
                 window.location.href = this.options.nextURL;
             }
+        };
+
+        this.nextButton.addEventListener("click", async event => {
+            event.preventDefault();
+            if (this.nextButton.disabled) {
+                return;
+            }
+            this.disableInputs();
+            console.log(this.updatingForms);
+            // Wait for score updates before going away.
+            if (this.updatingForms.size > 0) {
+                this.nextAfterScoreUpdate = true;
+                return;
+            }
+            await this.nextFeedbackAction();
         });
 
         this.autoMarkCheckBox.addEventListener("input", async () => {

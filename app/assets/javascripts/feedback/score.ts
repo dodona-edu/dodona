@@ -187,6 +187,7 @@ export default class ScoreForm {
     }
 
     public markBusy(): void {
+        this.parent.registerUpdating(this.scoreItemId);
         this.disableInputs();
         this.input.classList.add("in-progress");
         this.spinner.style.visibility = "visible";

@@ -7,15 +7,14 @@ const width = 1100 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
 
 function vtest() {
-    console.log(d3.json('/nl/stats/violin?course_id=5&series_id=108'));
+    // console.log(d3.json('/nl/stats/violin?course_id=5&series_id=108'));
     // console.log(d3.json('/nl/stats/stacked_status?course_id=5&series_id=108'));
-    // console.log(d3.json('/nl/stats/timeseries?course_id=5&series_id=108'));
+    console.log(d3.json('/nl/stats/timeseries?course_id=5&series_id=108'));
 }
 
 function initViolin(url: string) {
     d3.select(selector).attr("class", "text-center").append("span").text(I18n.t("js.loading"));
     const processor = function (raw): void {
-        console.log(raw);
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;
@@ -52,12 +51,6 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
     let elWidth = width / max;
 
     let maxFreq = d3.max(data, d => d3.max(Object.values(d.freq), (f: {label: string, freq: number}) => f.freq));
-    console.log(data);
-
-
-    console.log(maxFreq);
-    console.log(data);
-    console.log(min, max);
 
     const graph = d3.select(selector)
         .append("svg")
@@ -80,8 +73,6 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
         .domain([0, maxFreq])
         .range([0, y.bandwidth()])
 
-    console.log(yBin.domain());
-
     // Show the X scale
     let x = d3.scaleLinear()
         .domain([min, max])
@@ -97,7 +88,7 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
         .attr("x", width)
         .attr("y", height + 30)
         .text("Amount of submissions")
-        .style("fill", "white")
+        .attr("fill", "currentColor")
         .style("font-size", "11px");
 
     graph
@@ -129,7 +120,6 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
     // add invisible bars between each tick to support cursor functionality
     for (let ex of data) {
         let group = graph.selectAll(`#e${ex.ex_id}`) // html doesn't seem to like numerical id's
-        console.log(group)
         group
             .selectAll("invisibars")
             .data([...Array(max+2).keys()].slice(1, -1))
@@ -154,8 +144,7 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
             .attr("cy", d => y(d.ex_id) + y.bandwidth() / 2)
             .attr("cx", d => x(d.median))
             .attr("r", 4)
-            .attr("stroke", "black")
-            .attr("fill", "white")
+            .attr("fill", "currentColor")
             .attr("pointer-events", "none")
 
     function onMouseOver(d, groupName) {
@@ -173,7 +162,7 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
                 .attr("y1", y(groupName))
                 .attr("y2", y(groupName) + y.bandwidth())
                     .attr("pointer-events", "none")
-                .attr("stroke", "black")
+                .attr("stroke", "currentColor")
                 .style("width", 40);
         location
             .selectAll("cursorText")
@@ -186,11 +175,11 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
                 .attr("y", y(groupName) + y.bandwidth() * 1.5)
                 .attr("text-anchor", "middle")
                 .attr("font-family", "sans-serif")
+                .attr("fill", "currentColor")
                 .attr("font-size", "11px")
     }
 
-    function onMouseOut() {
-        console.log("out")
+    function onMouseOut() { 
         graph.selectAll("#cursor").remove();
     }
 }

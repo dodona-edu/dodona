@@ -4,9 +4,12 @@
   
   <div id="violin-container">
   </div>
+  <div id="stacked_status-container"></div>
 
 <script type="text/javascript">
     $(function () {
         dodona.initViolin('/nl/stats/violin?course_id=5&series_id=108');
+        dodona.initStacked('/nl/stats/stacked_status?course_id=5&series_id=108')
+        dodona.vtest();
     });
 </script>

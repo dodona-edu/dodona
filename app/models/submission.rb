@@ -394,6 +394,9 @@ class Submission < ApplicationRecord
                               .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
     end
 
+    # could also be done in frontend, but this way is easier to keep things consisent with local test data
+    value = value
+              .map{|k, v| {"exercise_id": k[0], "status": k[1], "count": v}}
     {
       until: submissions.first.id,
       value: value

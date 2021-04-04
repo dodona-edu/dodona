@@ -148,7 +148,6 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
             .attr("pointer-events", "none")
 
     function onMouseOver(d, groupName) {
-        console.log(d);
         let location = graph.selectAll("#cursor").data([d]).enter()
             .append("g")
                 .attr("id", "cursor")

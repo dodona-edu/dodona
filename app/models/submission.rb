@@ -405,6 +405,7 @@ class Submission < ApplicationRecord
 
   def self.timeseries_matrix(options = {}, base = {until: 0, value: {}})
   submissions = submissions_since(base[:until], options)
+  submissions = submissions.in_series(options[:series]) if options[:series].present?
   submissions = submissions.before_deadline(options[:deadline]) if options[:deadline].present?
   # limiting lower bound filters all dummy data, should be fine for real data
   # submissions = submissions.after_moment(options[:deadline] - 2.weeks) if options[:deadline].present?
@@ -420,6 +421,9 @@ class Submission < ApplicationRecord
                             .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
   end
 
+  value = value.group_by{|k,v| k[0]}
+  value = value
+            .map{|id,values| [id, values.map{|v| {"date": v[0][1], "status": v[0][2], "count": v[1]}}]}.to_h
   {
     until: submissions.first.id,
     value: value

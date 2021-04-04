@@ -16,7 +16,6 @@ function initStacked(url) {
     d3.select(selector).attr("class", "text-center").append("span")
     .text(I18n.t("js.loading"));
     const processor = function (raw) {
-        console.log(raw);
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;
@@ -45,7 +44,6 @@ function initStacked(url) {
             d['cum_sum'] = prev_sum;
         });
         max_sum[prev_id] = prev_sum;
-        console.log(data);
 
         drawStacked(data, max_sum);
     };
@@ -53,8 +51,6 @@ function initStacked(url) {
 }
 
 function drawStacked(data, max_sum) {
-    console.log(data);
-    console.log(max_sum);
 
     const xTicks = 10;
 
@@ -79,7 +75,6 @@ function drawStacked(data, max_sum) {
         .range([y(y.domain()[y.domain().length - 1]), height/3 + y(y.domain()[y.domain().length - 1])])
         .domain(status_order)
 
-    console.log(legend_y.domain(), legend_y.range())
 
     // Show the X scale
     let x = d3.scaleLinear()

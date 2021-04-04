@@ -2,14 +2,14 @@
     <%= javascript_pack_tag 'visualisations' %>
   <% end %>
   
-  <div id="violin-container">
-  </div>
+  <div id="violin-container"></div>
   <div id="stacked_status-container"></div>
+  <div id="timeseries-container"></div>
 
 <script type="text/javascript">
     $(function () {
         dodona.initViolin('/nl/stats/violin?course_id=5&series_id=108');
         dodona.initStacked('/nl/stats/stacked_status?course_id=5&series_id=108')
-        dodona.vtest();
+        dodona.initTimeseries('/nl/stats/timeseries?course_id=5&series_id=108');
     });
 </script>

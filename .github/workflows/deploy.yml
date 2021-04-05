@@ -3,7 +3,6 @@ name: Deploy
 on:
   pull_request:
     types:
-      - review_requested
       - labeled
 
 jobs:

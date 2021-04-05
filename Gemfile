@@ -35,7 +35,7 @@ gem 'bootsnap', '~> 1.7.3', require: false
 gem 'json-schema', '~> 2.8.1'
 
 # delayed jobs
-gem 'delayed_job_active_record', '~> 4.1.5'
+gem 'delayed_job_active_record', '~> 4.1.6'
 
 # start workers in the background
 gem 'daemons', '~>1.3'

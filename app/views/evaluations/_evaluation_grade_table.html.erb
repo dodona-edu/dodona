@@ -1,7 +1,7 @@
-<div class="table-scroll-wrapper status-table-wrapper score-table">
-  <table class="table table-resource">
-    <thead>
-    <tr class="borderless-row">
+<div class="sticky-wrapper sticky-gradient">
+  <table class="table score-table table-resource sticky-column">
+    <thead class="sticky-header header">
+    <tr class="borderless-row first-header">
       <th class="user-name"><%= t('.user') %></th>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
         <th class="status-header"><%= exercise.exercise.name %></th>
@@ -12,7 +12,7 @@
     </tr>
     <% maximum = @evaluation.maximum_score %>
     <% average = @evaluation.average_score(feedbacks[:evaluation_exercises]) %>
-    <tr>
+    <tr class="second-header">
       <th class="user-name"><%= t ".average" %></th>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
         <th class="status">

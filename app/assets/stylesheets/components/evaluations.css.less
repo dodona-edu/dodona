@@ -112,10 +112,10 @@
 }
 
 .score-table {
-  .table .status, .table .status-header {
-    text-align: right  !important;
-    padding-right: 50px;
-  }
+  // Allows borders to be sticky.
+  border-collapse: separate;
+  // Prevent rows from becoming ugly; we provide scrolling instead.
+  white-space: nowrap;
 
   .score-text {
     a {
@@ -125,6 +125,15 @@
 
   .borderless-row th {
     border-bottom: none;
+    border-top: none;
+  }
+
+  .first-header th {
+    top: 0;
+  }
+
+  .second-header th {
+    top: 32px; // Approx the height of the first header row
   }
 }
 

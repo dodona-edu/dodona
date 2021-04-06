@@ -204,7 +204,12 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   test 'errors outside of docker startup should be sent to slack' do
     Delayed::Backend::ActiveRecord::Job.delete_all
     Rails.env.stubs(:"production?").returns(true)
-    Submission.any_instance.stubs(:judge).raises(STRIKE_ERROR)
+    # create a stubbed judge with fails when used to evaluate a submission,
+    # but which still has a name (for the ExceptionNotifier)
+    studge = Object.new
+    studge.stubs(:name).returns('Studge')
+    studge.stubs(:config).raises(STRIKE_ERROR)
+    Submission.any_instance.stubs(:judge).returns(studge)
     ExceptionNotifier.stubs(:notify_exception).twice
     Docker::Container.stubs(:create).returns(docker_mock)
     @submission.evaluate_delayed

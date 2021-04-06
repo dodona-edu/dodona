@@ -223,6 +223,15 @@ export class CodeListing {
             dot.id = `dot-${line}`;
             row.querySelector<HTMLTableDataCellElement>(".rouge-gutter").prepend(dot);
 
+            // Add a click listener to the dot.
+            dot.addEventListener("click", () => {
+                if (annotation.html.classList.contains("hide")) {
+                    annotation.show();
+                } else {
+                    annotation.hide();
+                }
+            });
+
             // Create annotation groups.
             GROUP_ORDER.forEach((type: string) => {
                 const group = document.createElement("div") as HTMLDivElement;

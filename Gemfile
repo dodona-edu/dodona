@@ -91,7 +91,7 @@ gem 'annotate', '~> 3.1.1'
 
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'
-gem 'capistrano-passenger', '~> 0.2.0', group: :development
+gem 'capistrano-passenger', '~> 0.2.1', group: :development
 gem 'capistrano-rails', '~> 1.6.1', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'

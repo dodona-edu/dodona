@@ -8,15 +8,18 @@ Rails.application.configure do
 
   # Application hosts
 
+  config.hosts << ENV['RAILS_APPLICATION_HOST'] if ENV['RAILS_APPLICATION_HOST'].present?
+  config.hosts << ENV['RAILS_SANDBOX_HOST'] if ENV['RAILS_SANDBOX_HOST'].present?
+
   # The main webapp
-  config.default_host = 'dodona.localhost'
+  config.default_host = ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost'
 
   # The sandboxed host with user provided content, without authentication
-  config.sandbox_host = 'sandbox.localhost'
+  config.sandbox_host = ENV['RAILS_SANDBOX_HOST'] || 'sandbox.localhost'
 
   # Where we host our assets (a single domain, for caching)
   # Port is needed somehow...
-  config.action_controller.asset_host = 'dodona.localhost:3000'
+  config.action_controller.asset_host = ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost:3000'
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
@@ -34,7 +37,7 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  if Rails.root.join('tmp', 'caching-dev.txt').exist? || ENV['RAILS_DO_CACHING'].present?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
@@ -118,7 +121,11 @@ Rails.application.configure do
   #   :location => '/usr/sbin/sendmail',
   #   :arguments => '-i -t'
   # }
-  config.action_mailer.perform_deliveries = true
+  if ENV['RAILS_NO_ACTION_MAILER'].present?
+    config.action_mailer.perform_deliveries = false
+  else
+    config.action_mailer.perform_deliveries = true
+  end
   config.action_mailer.raise_delivery_errors = true
 
   config.submissions_storage_path = Rails.root.join('data', 'storage', 'submissions')

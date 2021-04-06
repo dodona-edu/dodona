@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.11.2'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.7.2', require: false
+gem 'bootsnap', '~> 1.7.3', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -48,7 +48,7 @@ gem 'sinatra', '~>2.1.0'
 gem 'will_paginate', '~>3.3.0'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown', '~>2.3.0'
+gem 'kramdown', '~>2.3.1'
 gem 'kramdown-parser-gfm', '~>1.1.0'
 gem 'rouge', '3.26.0'
 
@@ -100,7 +100,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 3.8.1'
+gem 'i18n-js', '~> 3.8.2'
 gem 'rails-i18n', '~> 6.0.0'
 
 # email exceptions
@@ -140,7 +140,7 @@ gem 'rack-mini-profiler', '~> 2.3.1'
 gem 'stackprof', '~> 0.2.16'
 
 # Datadog
-gem 'ddtrace', '~> 0.46.0'
+gem 'ddtrace', '~> 0.47.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -171,7 +171,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'listen', '~> 3.4.1'
+  gem 'listen', '~> 3.5.1'
   gem 'web-console', '~> 4.1.0'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring

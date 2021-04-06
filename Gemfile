@@ -14,7 +14,7 @@ gem 'less-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 # This needs to be here for less :(
-gem 'therubyracer', platforms: :ruby
+gem 'therubyracer', require: 'v8', platforms: :ruby
 
 gem 'webpacker', '~> 5.2.1'
 

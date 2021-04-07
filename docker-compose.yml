@@ -5,7 +5,13 @@ services:
         image: mariadb
         environment:
             - MYSQL_DATABASE=dodona
+            - MYSQL_USER=dodona
             - MYSQL_ROOT_PASSWORD=dodona
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "--user=root", "--password=dodona", "--silent"]
+            interval: 5s
+            timeout: 1m
+            retries: 12
         ports:
             - "3306:3306"
 

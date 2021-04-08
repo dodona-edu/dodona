@@ -4,10 +4,10 @@ const selector = "#stacked_status-container";
 const margin = { top: 0, right: 10, bottom: 20, left: 70 };
 const width = 1100 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
-const status_order = [
-    'correct', 'wrong', 'compilation error', 'runtime error',
-    'time limit exceeded', 'memory limit exceeded', 'output limit exceeded',
-    'queued', 'running'
+const statusOrder = [
+    "correct", "wrong", "compilation error", "runtime error",
+    "time limit exceeded", "memory limit exceeded", "output limit exceeded",
+    "queued", "running"
 ];
 
 
@@ -41,7 +41,7 @@ function initStacked(url) {
                 prev_sum = 0;
             }
             prev_sum += d.count;
-            d['cum_sum'] = prev_sum;
+            d["cum_sum"] = prev_sum;
         });
         max_sum[prev_id] = prev_sum;
 
@@ -101,27 +101,27 @@ function drawStacked(data, max_sum) {
         .style("font-size", "11px");
 
 
-    let legend = graph.append('g')
+    let legend = graph.append("g")
 
     // add legend colors dots
-    legend.selectAll('dots')
+    legend.selectAll("dots")
         .data(status_order)
         .enter()
-        .append('rect')
-        .attr('y', d => legend_y(d))
-        .attr('x', width * 3 / 4)
-        .attr('width', 15   )
-        .attr('height', 15)
-        .attr('fill', d => color(d));
+        .append("rect")
+        .attr("y", d => legend_y(d))
+        .attr("x", width * 3 / 4)
+        .attr("width", 15   )
+        .attr("height", 15)
+        .attr("fill", d => color(d));
 
     // add legend text
-    legend.selectAll('text')
+    legend.selectAll("text")
         .data(status_order)
         .enter()
-        .append('text')
-        .attr('y', d => legend_y(d) + 11)
-        .attr('x', width * 3 / 4 + 20)
-        .attr('text-anchor', 'start')
+        .append("text")
+        .attr("y", d => legend_y(d) + 11)
+        .attr("x", width * 3 / 4 + 20)
+        .attr("text-anchor", "start")
         .text(d => d)
         .attr("fill", "currentColor")
         .style("font-size", "12px");

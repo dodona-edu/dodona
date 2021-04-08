@@ -4,10 +4,10 @@ const selector = "#timeseries-container";
 const margin = { top: 0, right: 10, bottom: 20, left: 70 };
 const width = 1500 - margin.left - margin.right;
 const height = 1000 - margin.top - margin.bottom;
-const status_order = [
-    'correct', 'wrong', 'compilation error', 'runtime error',
-    'time limit exceeded', 'memory limit exceeded', 'output limit exceeded',
-    'queued', 'running'
+const statusOrder = [
+    "correct", "wrong", "compilation error", "runtime error",
+    "time limit exceeded", "memory limit exceeded", "output limit exceeded",
+    "queued", "running"
 ];
 
 
@@ -72,7 +72,7 @@ function initTimeseries(url) {
                 maxDate = Math.max(maxDate, d.date);
                 stack_sum += d.count;
                 statusVisited += 1;
-                newRecords.push({...d, 'stack_sum': stack_sum})
+                newRecords.push({...d, "stack_sum": stack_sum})
             });
             metaData[ex_id]["maxStack"] = maxStack;
             console.log(newRecords)
@@ -104,7 +104,7 @@ function drawTimeSeries(data, minDate, maxDate, metaData) {
         .domain(Object.keys(data))
         .padding(.4);
     graph.append("g")
-        .attr('transform', `translate(0, ${-y.bandwidth() - 10})`)
+        .attr("transform", `translate(0, ${-y.bandwidth() - 10})`)
         .call(d3.axisLeft(y).tickSize(0))
         .select(".domain").remove();
 
@@ -143,40 +143,40 @@ function drawTimeSeries(data, minDate, maxDate, metaData) {
         .style("font-size", "11px");
 
 
-    let legend = graph.append('g')
+    let legend = graph.append("g")
 
     // add legend colors dots
-    legend.selectAll('dots')
+    legend.selectAll("dots")
         .data(status_order)
         .enter()
-        .append('rect')
-        .attr('y', d => legend_y(d))
-        .attr('x', width * 3 / 4)
-        .attr('width', 15   )
-        .attr('height', 15)
-        .attr('fill', d => color(d));
+        .append("rect")
+        .attr("y", d => legend_y(d))
+        .attr("x", width * 3 / 4)
+        .attr("width", 15   )
+        .attr("height", 15)
+        .attr("fill", d => color(d));
 
     // add legend text
-    legend.selectAll('text')
+    legend.selectAll("text")
         .data(status_order)
         .enter()
-        .append('text')
-        .attr('y', d => legend_y(d) + 11)
-        .attr('x', width * 3 / 4 + 20)
-        .attr('text-anchor', 'start')
+        .append("text")
+        .attr("y", d => legend_y(d) + 11)
+        .attr("x", width * 3 / 4 + 20)
+        .attr("text-anchor", "start")
         .text(d => d)
         .attr("fill", "currentColor")
         .style("font-size", "12px");
 
     // add bars
     for (let ex_id of Object.keys(data)) {
-        let ex_group = graph.append('g')
-            .attr('transform', d => `translate(0, ${y(ex_id) + y.bandwidth() / 2})`);
+        let ex_group = graph.append("g")
+            .attr("transform", d => `translate(0, ${y(ex_id) + y.bandwidth() / 2})`);
         let records = data[ex_id];
         ex_group.selectAll("areas")
             .data(records)
             .enter()
-            .append('path')
+            .append("path")
             .attr("class", d => d[0])
             .style("stroke", "none")
             .style("fill", d => color(d[0]))

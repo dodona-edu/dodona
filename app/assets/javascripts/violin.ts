@@ -7,9 +7,9 @@ const width = 1100 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
 
 function vtest() {
-    // console.log(d3.json('/nl/stats/violin?course_id=5&series_id=108'));
-    // console.log(d3.json('/nl/stats/stacked_status?course_id=5&series_id=108'));
-    console.log(d3.json('/nl/stats/timeseries?course_id=5&series_id=108'));
+    // console.log(d3.json("/nl/stats/violin?course_id=5&series_id=108"));
+    // console.log(d3.json("/nl/stats/stacked_status?course_id=5&series_id=108"));
+    console.log(d3.json("/nl/stats/timeseries?course_id=5&series_id=108"));
 }
 
 function initViolin(url: string) {
@@ -30,7 +30,7 @@ function initViolin(url: string) {
         }))
 
         data.forEach((ex) => {
-            ex['freq'] = ex.counts.reduce((acc, v) => {
+            ex["freq"] = ex.counts.reduce((acc, v) => {
                 acc.hasOwnProperty(v) ? acc[v].freq += 1: acc[v] = {label: v, freq: 1};
                 return acc;
             }, {})
@@ -95,9 +95,9 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
         .selectAll("violins")
         .data(data)
         .enter()
-        .append('g')
-            .attr('transform', d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
-        .append('path')
+        .append("g")
+            .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
+        .append("path")
             .datum(ex =>
                 Object.values(ex.freq)
             )
@@ -115,11 +115,11 @@ function drawViolin(data: Array<{ex_id: string, counts: [number], freq: {}, medi
         .enter()
         .append("g")
         .attr("id", d => `e${d.ex_id}`)
-        .attr('transform', d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
+        .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
 
     // add invisible bars between each tick to support cursor functionality
     for (let ex of data) {
-        let group = graph.selectAll(`#e${ex.ex_id}`) // html doesn't seem to like numerical id's
+        let group = graph.selectAll(`#e${ex.ex_id}`) // html doesn"t seem to like numerical id"s
         group
             .selectAll("invisibars")
             .data([...Array(max+2).keys()].slice(1, -1))

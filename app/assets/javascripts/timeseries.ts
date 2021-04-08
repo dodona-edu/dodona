@@ -10,86 +10,8 @@ const statusOrder = [
     "queued", "running"
 ];
 
-
-
-function initTimeseries(url) {
-    d3.select(selector).attr("class", "text-center").append("span")
-        .text(I18n.t("js.loading"));
-    const processor = function (raw) {
-        console.log(raw);
-        if (raw["status"] == "not available yet") {
-            setTimeout(() => d3.json(url).then(processor), 1000);
-            return;
-        }
-        d3.select(`${selector} *`).remove();
-
-        let data = raw.data;
-        let metaData = {};  // currently only used to track extent for y-axis per exercise
-        let minDate = Date.parse(data[Object.keys(data)[0]][0].date);
-        let maxDate = Date.parse(data[Object.keys(data)[0]][0].date);
-        Object.entries(data).forEach(entry => {
-            let ex_id = entry[0];
-            let records = entry[1];
-            metaData[ex_id] = {};
-            // parse datestring to date
-            records.forEach(r => {
-                r.date = Date.parse(r.date);
-            });
-
-            // sort records by date
-            records.sort((a, b) => {
-                if (a.date === b.date) {
-                    return status_order.indexOf(a.status) - status_order.indexOf(b.status);
-                }
-                return a.date - b.date
-            });
-
-            let prev_date = records[0].date;
-            console.log(records)
-            let stack_sum = 0;     // cumulative sum (per ex) per day
-            let maxStack = 0;      // Used to calculate extent for y-axis
-            // let cum_sum = 0     // cum_sum per ex per status
-            let newRecords = [];   // Construct a new data array where every status is represented
-            let statusVisited = 0; // Used to track if for every day that has datepoints, every status is represented
-            records.forEach(d => {
-                if (prev_date !== d.date) {
-                    // insert empty datapoints to prevent weird jumps in the graph
-                    while (statusVisited !== status_order.length - 1) { // if not all statusses have been visted (for this date), append the unvisited ones
-                        newRecords.push({date: prev_date, status: status_order[statusVisited], count: 0, stack_sum: stack_sum});
-                        statusVisited += 1;
-                    }
-                    prev_date = d.date;
-                    maxStack = Math.max(maxStack, stack_sum);
-                    stack_sum = 0;
-                    statusVisited = 0;
-                }
-                // insert empty datapoints to prevent weird jumps in the graph
-                while (status_order[statusVisited] !== d.status) { // if one or more statusses were skipped, insert them
-                    newRecords.push({date: prev_date, status: status_order[statusVisited], count: 0, stack_sum: stack_sum});
-                    statusVisited += 1;
-                }
-                minDate = Math.min(minDate, d.date);
-                maxDate = Math.max(maxDate, d.date);
-                stack_sum += d.count;
-                statusVisited += 1;
-                newRecords.push({...d, "stack_sum": stack_sum})
-            });
-            metaData[ex_id]["maxStack"] = maxStack;
-            console.log(newRecords)
-            data[ex_id] = d3.groups(newRecords, d => d.status);
-        });
-
-        drawTimeSeries(data, minDate, maxDate, metaData);
-    };
-    d3.json(url)
-        .then(processor);
-}
-
-function drawTimeSeries(data, minDate, maxDate, metaData) {
-    console.log(data);
-    console.log(metaData);
-    console.log(minDate, maxDate)
-
+function drawTimeSeries(data, minDate, maxDate, metaData): void {
+    // position graph
     const graph = d3.select(selector)
         .append("svg")
         .attr("width", width)
@@ -98,8 +20,8 @@ function drawTimeSeries(data, minDate, maxDate, metaData) {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    // Show the Y scale
-    let y = d3.scaleBand()
+    // Show the Y scale for exercises (Big Y scale)
+    const y = d3.scaleBand()
         .range([height-10, 0])
         .domain(Object.keys(data))
         .padding(.4);
@@ -108,30 +30,34 @@ function drawTimeSeries(data, minDate, maxDate, metaData) {
         .call(d3.axisLeft(y).tickSize(0))
         .select(".domain").remove();
 
-    let y_counts = Object.entries(metaData).reduce((acc, v) => {
-            acc[v[0]] =
-                d3.scaleLinear()
-                    .domain([0, v[1].maxStack])
-                    .range([y.bandwidth(), 0])
-            return acc;
-        },
-        {}
-    )
-    let legend_y = d3.scaleBand()
-        .range([y(y.domain()[y.domain().length - 1]), height/3 + y(y.domain()[y.domain().length - 1])])
-        .domain(status_order)
+    // y scales per exercise
+    const yCounts = Object.entries(metaData).reduce((acc, v: [string, {maxStack}]) => {
+        acc[v[0]] = d3.scaleLinear()
+            .domain([0, v[1].maxStack])
+            .range([y.bandwidth(), 0]);
+        return acc;
+    }, {}
+    );
+
+    // y scale for legend elements
+    const legendY = d3.scaleBand()
+        .range([
+            y(y.domain()[y.domain().length - 1]),
+            height/3 + y(y.domain()[y.domain().length - 1])
+        ])
+        .domain(statusOrder);
 
 
     // Show the X scale
-    let x = d3.scaleTime()
+    const x = d3.scaleTime()
         .domain([minDate, maxDate])
-        .range([0, width * 3 / 4 - 20])
+        .range([0, width * 3 / 4 - 20]);
 
 
     // Color scale
-    let color = d3.scaleOrdinal()
+    const color = d3.scaleOrdinal()
         .range(d3.schemeCategory10)
-        .domain(status_order);
+        .domain(statusOrder);
 
     // Add X axis label:
     graph.append("text")
@@ -143,37 +69,37 @@ function drawTimeSeries(data, minDate, maxDate, metaData) {
         .style("font-size", "11px");
 
 
-    let legend = graph.append("g")
+    const legend = graph.append("g");
 
     // add legend colors dots
     legend.selectAll("dots")
-        .data(status_order)
+        .data(statusOrder)
         .enter()
         .append("rect")
-        .attr("y", d => legend_y(d))
+        .attr("y", d => legendY(d))
         .attr("x", width * 3 / 4)
-        .attr("width", 15   )
+        .attr("width", 15)
         .attr("height", 15)
         .attr("fill", d => color(d));
 
     // add legend text
     legend.selectAll("text")
-        .data(status_order)
+        .data(statusOrder)
         .enter()
         .append("text")
-        .attr("y", d => legend_y(d) + 11)
+        .attr("y", d => legendY(d) + 11)
         .attr("x", width * 3 / 4 + 20)
         .attr("text-anchor", "start")
         .text(d => d)
         .attr("fill", "currentColor")
         .style("font-size", "12px");
 
-    // add bars
-    for (let ex_id of Object.keys(data)) {
-        let ex_group = graph.append("g")
-            .attr("transform", d => `translate(0, ${y(ex_id) + y.bandwidth() / 2})`);
-        let records = data[ex_id];
-        ex_group.selectAll("areas")
+    // add areas
+    for (const exId of Object.keys(data)) {
+        const exGroup = graph.append("g")
+            .attr("transform", `translate(0, ${y(exId) + y.bandwidth() / 2})`);
+        const records = data[exId];
+        exGroup.selectAll("areas")
             .data(records)
             .enter()
             .append("path")
@@ -185,20 +111,105 @@ function drawTimeSeries(data, minDate, maxDate, metaData) {
                     .x(r => {
                         return x(r.date);
                     })
-                    .y0(r => y_counts[ex_id](r.stack_sum - r.count) - y.bandwidth())
-                    .y1(r =>  y_counts[ex_id](r.stack_sum) - y.bandwidth())
-                    .curve(d3.curveCatmullRom)
-                    (d[1])
+                    .y0(r => yCounts[exId](r.stack_sum - r.count) - y.bandwidth())
+                    .y1(r => yCounts[exId](r.stack_sum) - y.bandwidth())
+                    .curve(d3.curveCatmullRom)(d[1]);
             });
 
         graph.append("g")
-            .attr("transform", `translate(0, ${y(ex_id) + y.bandwidth()/2})`)
-            .call(d3.axisBottom(x).ticks(10, "%a %b-%d"))
+            .attr("transform", `translate(0, ${y(exId) + y.bandwidth()/2})`)
+            .call(d3.axisBottom(x).ticks(10, "%a %b-%d"));
 
         graph.append("g")
-            .attr("transform", `translate(0, ${y(ex_id) - y.bandwidth()/2})`)
-            .call(d3.axisLeft(y_counts[ex_id]).ticks(5))
+            .attr("transform", `translate(0, ${y(exId) - y.bandwidth()/2})`)
+            .call(d3.axisLeft(yCounts[exId]).ticks(5));
     }
+}
+
+function initTimeseries(url): void {
+    d3.select(selector).attr("class", "text-center").append("span")
+        .text(I18n.t("js.loading"));
+    const processor = function (raw): void {
+        if (raw["status"] == "not available yet") {
+            setTimeout(() => d3.json(url).then(processor), 1000);
+            return;
+        }
+        d3.select(`${selector} *`).remove();
+
+        const data: {string: {date; status; count}[]} = raw.data;
+        const metaData = {}; // currently only used to track extent for y-axis per exercise
+        // pick date of first datapoint (to prevent null checks later on)
+        let minDate = Date.parse(data[Object.keys(data)[0]][0].date);
+        let maxDate = Date.parse(data[Object.keys(data)[0]][0].date);
+        Object.entries(data).forEach(entry => {
+            const exId = entry[0];
+            const records = entry[1];
+            metaData[exId] = {};
+            // parse datestring to date
+            records.forEach(r => {
+                r.date = Date.parse(r.date);
+            });
+
+            // sort records by date
+            records.sort((a, b) => {
+                if (a.date === b.date) {
+                    return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+                }
+                return a.date - b.date;
+            });
+
+            let prevDate = records[0].date;
+            let stackSum = 0; // cumulative sum (per ex) per day
+            let maxStack = 0; // Used to calculate extent for y-axis
+            // let cum_sum = 0      // cum_sum per ex per status
+            // Construct a new data array where every status is represented
+            const newRecords = [];
+            // Used to track if for every day that has datepoints, every status is represented
+            let statusVisited = 0;
+            records.forEach(d => {
+                if (prevDate !== d.date) {
+                    // insert empty datapoints to prevent weird jumps in the graph
+                    // if not all statusses have been visted (for this date), 
+                    // append the unvisited ones
+                    while (statusVisited !== statusOrder.length - 1) {
+                        newRecords.push({
+                            "date": prevDate,
+                            "status": statusOrder[statusVisited],
+                            "count": 0,
+                            "stack_sum": stackSum
+                        });
+                        statusVisited += 1;
+                    }
+                    prevDate = d.date;
+                    maxStack = Math.max(maxStack, stackSum);
+                    stackSum = 0;
+                    statusVisited = 0;
+                }
+                // insert empty datapoints to prevent weird jumps in the graph
+                // if one or more statusses were skipped, insert them
+                while (statusOrder[statusVisited] !== d.status) {
+                    newRecords.push({
+                        "date": prevDate,
+                        "status": statusOrder[statusVisited],
+                        "count": 0,
+                        "stack_sum": stackSum
+                    });
+                    statusVisited += 1;
+                }
+                minDate = Math.min(minDate, d.date);
+                maxDate = Math.max(maxDate, d.date);
+                stackSum += d.count;
+                statusVisited += 1;
+                newRecords.push({ ...d, "stack_sum": stackSum });
+            });
+            metaData[exId]["maxStack"] = maxStack;
+            data[exId] = d3.groups(newRecords, d => d.status);
+        });
+
+        drawTimeSeries(data, minDate, maxDate, metaData);
+    };
+    d3.json(url)
+        .then(processor);
 }
 
 export { initTimeseries };

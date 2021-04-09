@@ -169,7 +169,7 @@ function initTimeseries(url): void {
             records.forEach(d => {
                 if (prevDate !== d.date) {
                     // insert empty datapoints to prevent weird jumps in the graph
-                    // if not all statusses have been visted (for this date), 
+                    // if not all statusses have been visted (for this date),
                     // append the unvisited ones
                     while (statusVisited !== statusOrder.length - 1) {
                         newRecords.push({

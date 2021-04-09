@@ -23,60 +23,47 @@ class StatisticsController < ApplicationController
 
   def violin
     course = nil
-    if params.key?(:course_id)
-      course = Course.find(params[:course_id])
-    end
+    course = Course.find(params[:course_id]) if params.key?(:course_id)
 
     series = nil
-    if params.key?(:series_id)
-      series = Series.find(params[:series_id])
-    end
+    series = Series.find(params[:series_id]) if params.key?(:series_id)
     result = Submission.violin_matrix(course: course, series: series)
     if result.present?
       render json: { data: result[:value], exercises: series.exercises }
     else
-      render json: { status: 'not available yet'}, status: :accepted
+      render json: { status: 'not available yet' }, status: :accepted
     end
   end
 
   def stacked_status
     course = nil
-    if params.key?(:course_id)
-      course = Course.find(params[:course_id])
-    end
+    course = Course.find(params[:course_id]) if params.key?(:course_id)
 
     series = nil
-    if params.key?(:series_id)
-      series = Series.find(params[:series_id])
-    end
+    series = Series.find(params[:series_id]) if params.key?(:series_id)
     result = Submission.stacked_status_matrix(course: course, series: series)
     if result.present?
       render json: { data: result[:value], exercises: series.exercises }
     else
-      render json: { status: 'not available yet'}, status: :accepted
+      render json: { status: 'not available yet' }, status: :accepted
     end
   end
 
   def timeseries
     course = nil
-    if params.key?(:course_id)
-      course = Course.find(params[:course_id])
-    end
+    course = Course.find(params[:course_id]) if params.key?(:course_id)
 
     series = nil
-    if params.key?(:series_id)
-      series = Series.find(params[:series_id])
-    end
+    series = Series.find(params[:series_id]) if params.key?(:series_id)
     result = Submission.timeseries_matrix(course: course, series: series, deadline: series.deadline)
     if result.present?
       render json: { data: result[:value], exercises: series.exercises }
     else
-      render json: { status: 'not available yet'}, status: :accepted
+      render json: { status: 'not available yet' }, status: :accepted
     end
   end
 
   private
-
 
   def set_course_and_user
     @user = nil
@@ -92,6 +79,6 @@ class StatisticsController < ApplicationController
     elsif params.key?(:user_id)
       @user = User.find(params[:user_id])
       authorize @user
-    end 
+    end
   end
 end

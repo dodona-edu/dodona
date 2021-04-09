@@ -71,7 +71,7 @@ function drawStacked(data, maxSum): void {
         .append("rect")
         .attr("y", d => legendY(d))
         .attr("x", width * 3 / 4)
-        .attr("width", 15   )
+        .attr("width", 15)
         .attr("height", 15)
         .attr("fill", d => color(d));
 

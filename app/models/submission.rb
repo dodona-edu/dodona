@@ -357,23 +357,22 @@ class Submission < ApplicationRecord
     end
   )
 
-  def self.violin_matrix(options = {}, base = { until: 0, value: {}})
+  def self.violin_matrix(options = {}, base = { until: 0, value: {} })
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     return base unless submissions.any?
 
     value = base[:value]
-    puts submissions.pluck(:exercise_id, :user_id, :status)
     submissions.in_batches do |subs|
-      value = value.merge(subs.pluck(:exercise_id, :user_id)
-                              .group_by(&:itself) # group by exercise and user
-                              .transform_values(&:count) # calc amount of submissions per user per exercise
-                          ) { |_k, v1, v2| v1 + v2 }
+      value = value.merge(
+        subs.pluck(:exercise_id, :user_id)
+        .group_by(&:itself) # group by exercise and user
+        .transform_values(&:count) # calc amount of submissions per user per exercise
+      ) { |_k, v1, v2| v1 + v2 }
     end
-    puts value
     value = value
-              .group_by{|k,v| k[0]} # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
-              .transform_values{|v| v.map{|x| x[1]}} # only retain count (as value)
+            .group_by { |k, _| k[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
+            .transform_values { |v| v.map { |x| x[1] } } # only retain count (as value)
 
     {
       until: submissions.first.id,
@@ -381,7 +380,7 @@ class Submission < ApplicationRecord
     }
   end
 
-  def self.stacked_status_matrix(options = {}, base = { until: 0, value: {}})
+  def self.stacked_status_matrix(options = {}, base = { until: 0, value: {} })
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     return base unless submissions.any?
@@ -396,40 +395,38 @@ class Submission < ApplicationRecord
 
     # could also be done in frontend, but this way is easier to keep things consisent with local test data
     value = value
-              .map{|k, v| {"exercise_id": k[0], "status": k[1], "count": v}}
+            .map { |k, v| { exercise_id: k[0], status: k[1], count: v } }
     {
       until: submissions.first.id,
       value: value
     }
   end
 
-  def self.timeseries_matrix(options = {}, base = {until: 0, value: {}})
-  submissions = submissions_since(base[:until], options)
-  submissions = submissions.in_series(options[:series]) if options[:series].present?
-  submissions = submissions.before_deadline(options[:deadline]) if options[:deadline].present?
-  # limiting lower bound filters all dummy data, should be fine for real data
-  # submissions = submissions.after_moment(options[:deadline] - 2.weeks) if options[:deadline].present?
-  return base unless submissions.any?
+  def self.timeseries_matrix(options = {}, base = { until: 0, value: {} })
+    submissions = submissions_since(base[:until], options)
+    submissions = submissions.in_series(options[:series]) if options[:series].present?
+    submissions = submissions.before_deadline(options[:deadline]) if options[:deadline].present?
+    # limiting lower bound filters all dummy data, should be fine for real data
+    # submissions = submissions.after_moment(options[:deadline] - 2.weeks) if options[:deadline].present?
+    return base unless submissions.any?
 
-  value = base[:value]
+    value = base[:value]
 
+    submissions.in_batches do |subs|
+      value = value.merge(subs.pluck(:exercise_id, :created_at, :status)
+                              .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] }
+                              .group_by(&:itself)
+                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+    end
 
-  submissions.in_batches do |subs|
-    value = value.merge(subs.pluck(:exercise_id, :created_at, :status)
-                            .map{|d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]]}
-                            .group_by(&:itself)
-                            .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+    value = value.group_by { |k, _| k[0] }
+    value = value
+            .transform_values { |values| values.map { |v| { date: v[0][1], status: v[0][2], count: v[1] } } }
+    {
+      until: submissions.first.id,
+      value: value
+    }
   end
-
-  value = value.group_by{|k,v| k[0]}
-  value = value
-            .map{|id,values| [id, values.map{|v| {"date": v[0][1], "status": v[0][2], "count": v[1]}}]}.to_h
-  {
-    until: submissions.first.id,
-    value: value
-  }
-end
-
 
   private
 

@@ -9,8 +9,9 @@ const statusOrder = [
     "time limit exceeded", "memory limit exceeded", "output limit exceeded",
     "queued", "running"
 ];
+const commonAxis = true;
 
-function drawTimeSeries(data, minDate, maxDate, metaData): void {
+function drawTimeSeries(data, metaData): void {
     // position graph
     const graph = d3.select(selector)
         .append("svg")
@@ -30,11 +31,17 @@ function drawTimeSeries(data, minDate, maxDate, metaData): void {
         .call(d3.axisLeft(y).tickSize(0))
         .select(".domain").remove();
 
-    // y scales per exercise
-    const yCounts = Object.entries(metaData).reduce((acc, v: [string, {maxStack}]) => {
-        acc[v[0]] = d3.scaleLinear()
-            .domain([0, v[1].maxStack])
-            .range([y.bandwidth(), 0]);
+    // common y scale per exercise
+    const interY = d3.scaleLinear()
+        .domain([0, metaData.maxStack])
+        .range([y.bandwidth(), 0]);
+
+    // y scales unique to each exercise (just in case we still want to offer the option)
+    const interYs = Object.entries(metaData["per_ex"]).reduce((acc, v) => {
+        acc[v[0]] =
+            d3.scaleLinear()
+                .domain([0, v[1].maxStack])
+                .range([y.bandwidth(), 0]);
         return acc;
     }, {}
     );
@@ -50,7 +57,7 @@ function drawTimeSeries(data, minDate, maxDate, metaData): void {
 
     // Show the X scale
     const x = d3.scaleTime()
-        .domain([minDate, maxDate])
+        .domain([metaData["minDate"], metaData["maxDate"]])
         .range([0, width * 3 / 4 - 20]);
 
 
@@ -108,11 +115,13 @@ function drawTimeSeries(data, minDate, maxDate, metaData): void {
             .style("fill", d => color(d[0]))
             .attr("d", d => {
                 return d3.area()
-                    .x(r => {
-                        return x(r.date);
-                    })
-                    .y0(r => yCounts[exId](r.stack_sum - r.count) - y.bandwidth())
-                    .y1(r => yCounts[exId](r.stack_sum) - y.bandwidth())
+                    .x(r => x(r.date))
+                    .y0(r => commonAxis ?
+                        interY(r.stack_sum - r.count) - y.bandwidth() :
+                        interYs[exId](r.stack_sum - r.count) - y.bandwidth())
+                    .y1(r => commonAxis ?
+                        interY(r.stack_sum) - y.bandwidth() :
+                        interYs[exId](r.stack_sum) - y.bandwidth())
                     .curve(d3.curveCatmullRom)(d[1]);
             });
 
@@ -122,7 +131,7 @@ function drawTimeSeries(data, minDate, maxDate, metaData): void {
 
         graph.append("g")
             .attr("transform", `translate(0, ${y(exId) - y.bandwidth()/2})`)
-            .call(d3.axisLeft(yCounts[exId]).ticks(5));
+            .call(d3.axisLeft(commonAxis ? interY : interYs[exId]).ticks(5));
     }
 }
 
@@ -137,14 +146,19 @@ function initTimeseries(url): void {
         d3.select(`${selector} *`).remove();
 
         const data: {string: {date; status; count}[]} = raw.data;
-        const metaData = {}; // currently only used to track extent for y-axis per exercise
+        const metaData = {}; // used to store things needed to create scales
         // pick date of first datapoint (to prevent null checks later on)
-        let minDate = Date.parse(data[Object.keys(data)[0]][0].date);
-        let maxDate = Date.parse(data[Object.keys(data)[0]][0].date);
+
+        metaData["minDate"] = Date.parse(data[Object.keys(data)[0]][0].date);
+        metaData["maxDate"] = Date.parse(data[Object.keys(data)[0]][0].date);
+        metaData["maxStack"] = 0;
+        metaData["per_ex"] = {};
+        // let minDate = Date.parse(data[Object.keys(data)[0]][0].date);
+        // let maxDate = Date.parse(data[Object.keys(data)[0]][0].date);
         Object.entries(data).forEach(entry => {
             const exId = entry[0];
             const records = entry[1];
-            metaData[exId] = {};
+            metaData["per_ex"][exId] = {};
             // parse datestring to date
             records.forEach(r => {
                 r.date = Date.parse(r.date);
@@ -196,17 +210,18 @@ function initTimeseries(url): void {
                     });
                     statusVisited += 1;
                 }
-                minDate = Math.min(minDate, d.date);
-                maxDate = Math.max(maxDate, d.date);
+                metaData["minDate"] = Math.min(metaData["minDate"], d.date);
+                metaData["maxDate"] = Math.max(metaData["maxDate"], d.date);
                 stackSum += d.count;
                 statusVisited += 1;
                 newRecords.push({ ...d, "stack_sum": stackSum });
             });
-            metaData[exId]["maxStack"] = maxStack;
+            metaData["maxStack"] = Math.max(maxStack, metaData["maxStack"]);
+            metaData["per_ex"][exId]["maxStack"] = maxStack;
             data[exId] = d3.groups(newRecords, d => d.status);
         });
 
-        drawTimeSeries(data, minDate, maxDate, metaData);
+        drawTimeSeries(data, metaData);
     };
     d3.json(url)
         .then(processor);

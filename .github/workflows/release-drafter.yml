@@ -5,6 +5,7 @@ on:
     # branches to consider in the event; optional, defaults to all
     branches:
       - master
+      - develop
 
 jobs:
   update_draft_release:
@@ -12,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Drafts next release notes as Pull Requests are merged into "develop"
-      - uses: toolmantim/release-drafter@v5.2.0
+      - uses: toolmantim/release-drafter@v5.15.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

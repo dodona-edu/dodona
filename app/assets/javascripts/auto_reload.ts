@@ -38,7 +38,7 @@ export class InactiveTimeout {
      * The timeout element (return value of setTimeout).
      * @private
      */
-    private timeout: number = 0;
+    private timeout = 0;
     private interactionElement: HTMLElement;
     private readonly callback: () => void;
     /**
@@ -59,7 +59,7 @@ export class InactiveTimeout {
     private delay: number;
     private readonly listener: () => void;
     private readonly activeListener: () => void;
-    private started: boolean = false;
+    private started = false;
 
     /**
      * Initialize an inactive timeout. This will not start the timer.

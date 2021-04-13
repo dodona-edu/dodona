@@ -22,6 +22,7 @@ class Feedback < ApplicationRecord
   delegate :user, to: :evaluation_user
   delegate :exercise, to: :evaluation_exercise
 
+  before_save :uncomplete, if: :submission_id_changed?
   before_save :manage_annotations_after_submission_update
   before_create :generate_id
   before_create :determine_submission
@@ -77,6 +78,10 @@ class Feedback < ApplicationRecord
       new = SecureRandom.random_number(2_147_483_646)
     end until Feedback.find_by(id: new).nil?
     self.id = new
+  end
+
+  def uncomplete
+    self.completed = false
   end
 
   def manage_annotations_after_submission_update

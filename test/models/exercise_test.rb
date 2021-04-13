@@ -149,6 +149,13 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_not exercise.accessible?(@user, course)
   end
 
+  test 'exercise should not be accessible if included via hidden series and user is not a member' do
+    exercise = create :exercise
+    course = create :course
+    create :series, course: course, exercises: [exercise], visibility: :hidden
+    assert_not exercise.accessible?(@user, course)
+  end
+
   test 'convert_visibility_to_access should convert "visible" to "public"' do
     assert_equal 'public', Exercise.convert_visibility_to_access('visible')
   end

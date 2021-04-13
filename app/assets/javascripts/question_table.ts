@@ -10,7 +10,7 @@ function setParam(
     urlValue: string,
     param: string,
     value: string,
-    relative: boolean = true): string {
+    relative = true): string {
     const url = new URL(urlValue, window.location.origin);
     url.searchParams.set(param, value);
     if (relative) {
@@ -93,7 +93,7 @@ export class QuestionTable {
             body: JSON.stringify({
                 from: from,
                 question: {
-                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    // eslint-disable-next-line camelcase
                     question_state: to
                 }
             })

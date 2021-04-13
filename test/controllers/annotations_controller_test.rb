@@ -373,6 +373,18 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_not @submission.questions.any?
   end
 
+  test 'even zeus cannot create an annotation on a submission outside of a course' do
+    sign_in create(:zeus)
+    post submission_annotations_url(create(:submission, course: nil)), params: {
+      annotation: {
+        line_nr: 1,
+        annotation_text: 'Ik heb een vraag over mijn code - Lijn'
+      },
+      format: :json
+    }
+    assert_response :forbidden
+  end
+
   test 'questions can transition from unanswered' do
     zeus = create :zeus
     staff = create :staff

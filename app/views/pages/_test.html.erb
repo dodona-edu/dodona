@@ -9,11 +9,9 @@
 <script type="text/javascript">
     $(function () {
         const queryString = window.location.search;
-        console.log(queryString);
         const params = new URLSearchParams(queryString);
         const course_id = params.get('course_id') ? params.get('course_id') : 5;
         const series_id = params.get('series_id') ? params.get('series_id') : 108;
-        console.log(params.get('course_id'))
         dodona.initViolin(`/nl/stats/violin?course_id=${course_id}&series_id=${series_id}`);
         dodona.initStacked(`/nl/stats/stacked_status?course_id=${course_id}&series_id=${series_id}`)
         dodona.initTimeseries(`/nl/stats/timeseries?course_id=${course_id}&series_id=${series_id}`);

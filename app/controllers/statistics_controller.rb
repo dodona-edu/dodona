@@ -30,7 +30,9 @@ class StatisticsController < ApplicationController
 
     result = Submission.violin_matrix(course: course, series: series)
     if result.present?
-      render json: { data: result[:value], exercises: series.exercises }
+      lan = params[:locale]
+      ex_data = series.exercises.map { |ex| [ex.id, lan == 'nl' ? ex.name_nl : ex.name_en] }.to_h
+      render json: { data: result[:value], exercises: ex_data }
     else
       render json: { status: 'not available yet' }, status: :accepted
     end
@@ -45,7 +47,9 @@ class StatisticsController < ApplicationController
 
     result = Submission.stacked_status_matrix(course: course, series: series)
     if result.present?
-      render json: { data: result[:value], exercises: series.exercises }
+      lan = params[:locale]
+      ex_data = series.exercises.map { |ex| [ex.id, lan == 'nl' ? ex.name_nl : ex.name_en] }.to_h
+      render json: { data: result[:value], exercises: ex_data }
     else
       render json: { status: 'not available yet' }, status: :accepted
     end
@@ -60,7 +64,9 @@ class StatisticsController < ApplicationController
 
     result = Submission.timeseries_matrix(course: course, series: series, deadline: series.deadline)
     if result.present?
-      render json: { data: result[:value], exercises: series.exercises }
+      lan = params[:locale]
+      ex_data = series.exercises.map { |ex| [ex.id, lan == 'nl' ? ex.name_nl : ex.name_en] }.to_h
+      render json: { data: result[:value], exercises: ex_data }
     else
       render json: { status: 'not available yet' }, status: :accepted
     end

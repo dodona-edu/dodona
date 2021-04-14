@@ -57,6 +57,9 @@ Rails/HelperInstanceVariable:
   Enabled: false
 Rails/OutputSafety:
   Enabled: false
+Rails/SkipsModelValidations:
+  AllowedMethods:
+    - touch
 Rails/UnknownEnv:
   Environments:
     - development

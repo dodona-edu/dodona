@@ -1,16 +1,24 @@
 import * as d3 from "d3";
 
 
-const selector = "#violin-container";
-const margin = { top: 50, right: 10, bottom: 20, left: 70 };
-const width = 1100 - margin.left - margin.right;
-const height = 500 - margin.top - margin.bottom;
+let selector = undefined;
+const margin = { top: 20, right: 10, bottom: 20, left: 70 };
+let width = 0;
+let height = 0;
 
-function drawViolin(data: {ex_id: string; counts: [number]; freq: {}; median: number}[]): void {
+function drawViolin(data: {
+    "ex_id": string;
+    "counts": [number];
+    "freq": {};
+    "median": number;
+}[]): void {
     const min = d3.min(data, d => d3.min(d.counts));
     const max = d3.max(data, d => d3.max(d.counts));
     const xTicks = 10;
     const elWidth = width / max;
+    height = 300 * Object.keys(data).length;
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
 
     const maxFreq = d3.max(data, d => d3.max(
         Object.values(d.freq), (f: {label: string; freq: number}) => f.freq
@@ -18,15 +26,15 @@ function drawViolin(data: {ex_id: string; counts: [number]; freq: {}; median: nu
 
     const graph = d3.select(selector)
         .append("svg")
-        .attr("width", 1200)
-        .attr("height", 550)
+        .attr("width", width)
+        .attr("height", height)
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
     // Show the Y scale for the exercises (Big Y scale)
     const y = d3.scaleBand()
-        .range([height, 0])
+        .range([innerHeight, 0])
         .domain(data.map(d => d.ex_id))
         .padding(.5);
     graph.append("g")
@@ -41,17 +49,17 @@ function drawViolin(data: {ex_id: string; counts: [number]; freq: {}; median: nu
     // Show the X scale
     const x = d3.scaleLinear()
         .domain([min, max])
-        .range([5, width-5]);
+        .range([5, innerWidth]);
     graph.append("g")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + innerHeight + ")")
         .call(d3.axisBottom(x).ticks(xTicks))
         .select(".domain").remove();
 
     // Add X axis label:
     graph.append("text")
         .attr("text-anchor", "end")
-        .attr("x", width)
-        .attr("y", height + 30)
+        .attr("x", innerWidth)
+        .attr("y", innerHeight)
         .text("Amount of submissions")
         .attr("fill", "currentColor")
         .style("font-size", "11px");
@@ -150,8 +158,13 @@ function drawViolin(data: {ex_id: string; counts: [number]; freq: {}; median: nu
         .attr("pointer-events", "none");
 }
 
-function initViolin(url: string): void {
-    d3.select(selector).attr("class", "text-center").append("span").text(I18n.t("js.loading"));
+function initViolin(url: string, containerId: string): void {
+    selector = containerId;
+    const container = d3.select(selector);
+    container.html(""); // clean up possible previous visualisations
+    container.attr("class", "text-center").append("span").text(I18n.t("js.loading"));
+
+    width = (container.node() as Element).getBoundingClientRect().width;
     const processor = function (raw): void {
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);

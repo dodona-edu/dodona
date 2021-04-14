@@ -1,9 +1,9 @@
 import * as d3 from "d3";
 
-const selector = "#timeseries-container";
-const margin = { top: 0, right: 10, bottom: 20, left: 70 };
-const width = 1500 - margin.left - margin.right;
-const height = 1000 - margin.top - margin.bottom;
+let selector = undefined;
+const margin = { top: 40, right: 10, bottom: 0, left: 70 };
+let width = 0;
+let height = 0;
 const statusOrder = [
     "correct", "wrong", "compilation error", "runtime error",
     "time limit exceeded", "memory limit exceeded", "output limit exceeded",
@@ -12,6 +12,11 @@ const statusOrder = [
 const commonAxis = true;
 
 function drawTimeSeries(data, metaData): void {
+    height = 300 * Object.keys(data).length;
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+
     // position graph
     const graph = d3.select(selector)
         .append("svg")
@@ -23,9 +28,10 @@ function drawTimeSeries(data, metaData): void {
 
     // Show the Y scale for exercises (Big Y scale)
     const y = d3.scaleBand()
-        .range([height-10, 0])
+        .range([innerHeight, 0])
         .domain(Object.keys(data))
-        .padding(.4);
+        .paddingInner(.2)
+        .paddingOuter(.4);
     graph.append("g")
         .attr("transform", `translate(0, ${-y.bandwidth() - 10})`)
         .call(d3.axisLeft(y).tickSize(0))
@@ -49,8 +55,8 @@ function drawTimeSeries(data, metaData): void {
     // y scale for legend elements
     const legendY = d3.scaleBand()
         .range([
-            y(y.domain()[y.domain().length - 1]),
-            height/3 + y(y.domain()[y.domain().length - 1])
+            0,
+            Math.min(200, innerHeight)
         ])
         .domain(statusOrder);
 
@@ -58,7 +64,7 @@ function drawTimeSeries(data, metaData): void {
     // Show the X scale
     const x = d3.scaleTime()
         .domain([metaData["minDate"], metaData["maxDate"]])
-        .range([0, width * 3 / 4 - 20]);
+        .range([0, innerWidth * 3 / 4 - 20]);
 
 
     // Color scale
@@ -67,7 +73,7 @@ function drawTimeSeries(data, metaData): void {
         .domain(statusOrder);
 
 
-    // x-axis
+    // add x-axis
     graph.append("g")
         .attr("transform", `translate(0, ${y(y.domain()[0]) + y.bandwidth()/2})`)
         .call(d3.axisBottom(x).ticks(10, "%a %b-%d"));
@@ -75,8 +81,8 @@ function drawTimeSeries(data, metaData): void {
     // Add X axis label:
     graph.append("text")
         .attr("text-anchor", "end")
-        .attr("x", width * 3 / 4 - 20)
-        .attr("y", height + 30)
+        .attr("x", innerWidth * 3 / 4 - 20)
+        .attr("y", innerHeight + 30)
         .text("Percentage of submissions statuses")
         .attr("fill", "currentColor")
         .style("font-size", "11px");
@@ -90,7 +96,7 @@ function drawTimeSeries(data, metaData): void {
         .enter()
         .append("rect")
         .attr("y", d => legendY(d))
-        .attr("x", width * 3 / 4)
+        .attr("x", innerWidth * 3 / 4)
         .attr("width", 15)
         .attr("height", 15)
         .attr("fill", d => color(d));
@@ -101,7 +107,7 @@ function drawTimeSeries(data, metaData): void {
         .enter()
         .append("text")
         .attr("y", d => legendY(d) + 11)
-        .attr("x", width * 3 / 4 + 20)
+        .attr("x", innerWidth * 3 / 4 + 20)
         .attr("text-anchor", "start")
         .text(d => d)
         .attr("fill", "currentColor")
@@ -138,8 +144,13 @@ function drawTimeSeries(data, metaData): void {
     }
 }
 
-function initTimeseries(url): void {
-    d3.select(selector).attr("class", "text-center").append("span")
+function initTimeseries(url, containerId): void {
+    selector = containerId;
+    const container = d3.select(selector);
+    container.html(""); // clean up possible previous visualisations
+
+    width = (container.node() as Element).getBoundingClientRect().width;
+    container.attr("class", "text-center").append("span")
         .text(I18n.t("js.loading"));
     const processor = function (raw): void {
         if (raw["status"] == "not available yet") {
@@ -151,7 +162,11 @@ function initTimeseries(url): void {
         const data: {string: {date; status; count}[]} = raw.data;
         const metaData = {}; // used to store things needed to create scales
         // pick date of first datapoint (to prevent null checks later on)
-
+        if (Object.keys(data).length === 0) {
+            container.attr("class", "text-center").append("span")
+                .text("There is not enough data to create a graph");
+            return;
+        }
         metaData["minDate"] = Date.parse(data[Object.keys(data)[0]][0].date);
         metaData["maxDate"] = Date.parse(data[Object.keys(data)[0]][0].date);
         metaData["maxStack"] = 0;

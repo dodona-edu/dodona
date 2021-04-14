@@ -1,9 +1,9 @@
 import * as d3 from "d3";
 
-const selector = "#stacked_status-container";
+let selector = "#stacked_status-container";
 const margin = { top: 0, right: 10, bottom: 20, left: 70 };
-const width = 1100 - margin.left - margin.right;
-const height = 500 - margin.top - margin.bottom;
+let width = 0;
+let height = 0;
 const statusOrder = [
     "correct", "wrong", "compilation error", "runtime error",
     "time limit exceeded", "memory limit exceeded", "output limit exceeded",
@@ -12,38 +12,43 @@ const statusOrder = [
 
 function drawStacked(data, maxSum): void {
     const xTicks = 10;
+    height = 300 * Object.keys(data).length;
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
 
     const graph = d3.select(selector)
         .append("svg")
-        .attr("width", 1200)
-        .attr("height", 550)
+        .attr("width", width)
+        .attr("height", height)
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
     // Show the Y scale
     const y = d3.scaleBand()
-        .range([height, 0])
+        .range([innerHeight, 0])
         .domain(data.map(d => d.exercise_id))
         .padding(.5);
     graph.append("g")
         .call(d3.axisLeft(y).tickSize(0))
         .select(".domain").remove();
 
+    // y scale for legend elements
     const legendY = d3.scaleBand()
         .range([
-            y(y.domain()[y.domain().length - 1]),
-            height/3 + y(y.domain()[y.domain().length - 1])]
-        )
+            0,
+            Math.min(200, innerHeight)
+        ])
         .domain(statusOrder);
 
 
     // Show the X scale
     const x = d3.scaleLinear()
         .domain([0, 1])
-        .range([0, width * 3 / 4 - 20]);
+        .range([0, innerWidth * 3 / 4 - 20]);
     graph.append("g")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + innerHeight + ")")
         .call(d3.axisBottom(x).ticks(xTicks));
 
 
@@ -55,8 +60,8 @@ function drawStacked(data, maxSum): void {
     // Add X axis label:
     graph.append("text")
         .attr("text-anchor", "end")
-        .attr("x", width * 3 / 4 - 20)
-        .attr("y", height + 30)
+        .attr("x", innerWidth * 3 / 4 - 20)
+        .attr("y", innerHeight + 30)
         .text("Percentage of submissions statuses")
         .attr("fill", "currentColor")
         .style("font-size", "11px");
@@ -70,7 +75,7 @@ function drawStacked(data, maxSum): void {
         .enter()
         .append("rect")
         .attr("y", d => legendY(d))
-        .attr("x", width * 3 / 4)
+        .attr("x", innerWidth * 3 / 4)
         .attr("width", 15)
         .attr("height", 15)
         .attr("fill", d => color(d));
@@ -81,7 +86,7 @@ function drawStacked(data, maxSum): void {
         .enter()
         .append("text")
         .attr("y", d => legendY(d) + 11)
-        .attr("x", width * 3 / 4 + 20)
+        .attr("x", innerWidth * 3 / 4 + 20)
         .attr("text-anchor", "start")
         .text(d => d)
         .attr("fill", "currentColor")
@@ -99,9 +104,13 @@ function drawStacked(data, maxSum): void {
         .attr("fill", d => color(d.status));
 }
 
-function initStacked(url): void {
-    d3.select(selector).attr("class", "text-center").append("span")
-        .text(I18n.t("js.loading"));
+function initStacked(url, containerId: string): void {
+    selector = containerId;
+    const container = d3.select(selector);
+    container.html(""); // clean up possible previous visualisations
+    container.attr("class", "text-center").append("span").text(I18n.t("js.loading"));
+
+    width = (container.node() as Element).getBoundingClientRect().width;
     const processor = function (raw): void {
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);

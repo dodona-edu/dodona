@@ -16,7 +16,7 @@ function drawViolin(data: {
     const max = d3.max(data, d => d3.max(d.counts));
     const xTicks = 10;
     const elWidth = width / max;
-    height = 300 * Object.keys(data).length;
+    height = 200 * Object.keys(data).length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 

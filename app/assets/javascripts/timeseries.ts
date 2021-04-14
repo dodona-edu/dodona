@@ -12,7 +12,7 @@ const statusOrder = [
 const commonAxis = true;
 
 function drawTimeSeries(data, metaData): void {
-    height = 300 * Object.keys(data).length;
+    height = 200 * Object.keys(data).length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 

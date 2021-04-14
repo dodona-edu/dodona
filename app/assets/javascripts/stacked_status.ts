@@ -12,7 +12,7 @@ const statusOrder = [
 
 function drawStacked(data, maxSum): void {
     const xTicks = 10;
-    height = 300 * Object.keys(data).length;
+    height = 100 * Object.keys(data).length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 

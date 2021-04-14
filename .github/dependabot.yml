@@ -1,0 +1,39 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "13:00"
+    timezone: Europe/Brussels
+  open-pull-requests-limit: 99
+  default_labels:
+    - "dependencies"
+  ignore:
+  - dependency-name: sprockets
+    versions:
+    - ">= 4.a"
+    - "< 5"
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "13:00"
+    timezone: Europe/Brussels
+  open-pull-requests-limit: 99
+  default_labels:
+    - "dependencies"
+  ignore:
+  - dependency-name: webpack-cli
+    versions:
+    - ">= 4.a"
+    - "< 5"
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "13:00"
+    timezone: Europe/Brussels
+  open-pull-requests-limit: 99
+  default_labels:
+    - "dependencies"

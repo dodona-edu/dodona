@@ -17,7 +17,7 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def create?
-    user.course_admin?(record.submission.course)
+    record.submission.course.present? && user.course_admin?(record.submission.course)
   end
 
   def show?

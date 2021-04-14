@@ -52,7 +52,7 @@ function activateSelect(container: HTMLElement | null): void {
 export function initLtiContentSelection(payloadUrl: string,
     returnUrl: string,
     multiple: boolean,
-    decodedToken: object): void {
+    decodedToken: Record<string, unknown>): void {
     // Initialise required elements.
     const confirmButton = document.getElementById(confirmButtonId) as HTMLButtonElement;
     const courseSelect = document.getElementById(courseSelectId) as HTMLSelectElement;
@@ -115,7 +115,7 @@ export function initLtiContentSelection(payloadUrl: string,
             activities: activities,
             series: seriesSelect ? seriesSelect.value : null,
             course: courseSelect.value,
-            // eslint-disable-next-line @typescript-eslint/camelcase
+            // eslint-disable-next-line camelcase
             decoded_token: decodedToken
         };
         const responseRaw = await fetch(payloadUrl, {

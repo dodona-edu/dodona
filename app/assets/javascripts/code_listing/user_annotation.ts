@@ -2,8 +2,11 @@ import { Annotation, AnnotationType } from "code_listing/annotation";
 import { fetch } from "util.js";
 
 export interface UserAnnotationFormData {
+    // eslint-disable-next-line camelcase
     annotation_text: string;
+    // eslint-disable-next-line camelcase
     line_nr: number | null;
+    // eslint-disable-next-line camelcase
     evaluation_id: number | undefined;
 }
 
@@ -19,17 +22,23 @@ export interface UserAnnotationPermissionData {
 }
 
 export interface UserAnnotationData {
+    // eslint-disable-next-line camelcase
     annotation_text: string;
+    // eslint-disable-next-line camelcase
     created_at: string;
     id: number;
+    // eslint-disable-next-line camelcase
     line_nr: number;
     permission: UserAnnotationPermissionData;
     released: boolean;
+    // eslint-disable-next-line camelcase
     rendered_markdown: string;
+    // eslint-disable-next-line camelcase
     evaluation_id: number | null;
     url: string;
     user: UserAnnotationUserData;
     type: string;
+    // eslint-disable-next-line camelcase
     last_updated_by: UserAnnotationUserData;
 }
 

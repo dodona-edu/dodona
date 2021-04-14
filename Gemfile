@@ -66,7 +66,7 @@ gem 'autoprefixer-rails', '~>10.2.4'
 
 # saml authentication
 gem 'devise', '~>4.7.3'
-gem 'ruby-saml', '~> 1.12.0'
+gem 'ruby-saml', '~> 1.12.1'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.2'
@@ -91,7 +91,7 @@ gem 'annotate', '~> 3.1.1'
 
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'
-gem 'capistrano-passenger', '~> 0.2.0', group: :development
+gem 'capistrano-passenger', '~> 0.2.1', group: :development
 gem 'capistrano-rails', '~> 1.6.1', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
@@ -109,7 +109,7 @@ gem 'httparty', '~> 0.18.1'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.11.2'
+gem 'nokogiri', '~> 1.11.3'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -140,7 +140,7 @@ gem 'rack-mini-profiler', '~> 2.3.1'
 gem 'stackprof', '~> 0.2.16'
 
 # Datadog
-gem 'ddtrace', '~> 0.46.0'
+gem 'ddtrace', '~> 0.47.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -171,7 +171,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'listen', '~> 3.5.0'
+  gem 'listen', '~> 3.5.1'
   gem 'web-console', '~> 4.1.0'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring

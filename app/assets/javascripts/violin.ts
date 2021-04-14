@@ -11,7 +11,7 @@ function drawViolin(data: {
     "counts": [number];
     "freq": {};
     "median": number;
-}[]): void {
+}[], exMap: {}): void {
     const min = d3.min(data, d => d3.min(d.counts));
     const max = d3.max(data, d => d3.max(d.counts));
     const xTicks = 10;
@@ -38,7 +38,7 @@ function drawViolin(data: {
         .domain(data.map(d => d.ex_id))
         .padding(.5);
     graph.append("g")
-        .call(d3.axisLeft(y).tickSize(0))
+        .call(d3.axisLeft(y).tickSize(0).tickFormat(t => exMap[t]))
         .select(".domain").remove();
 
     // y scale per exercise
@@ -166,6 +166,7 @@ function initViolin(url: string, containerId: string): void {
 
     width = (container.node() as Element).getBoundingClientRect().width;
     const processor = function (raw): void {
+        console.log(raw);
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;
@@ -191,7 +192,7 @@ function initViolin(url: string, containerId: string): void {
             ex.median = d3.quantile(ex.counts, .5);
         });
 
-        drawViolin(data);
+        drawViolin(data, raw.exercises);
     };
     d3.json(url).then(processor);
 }

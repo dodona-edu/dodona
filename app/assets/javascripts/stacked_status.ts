@@ -10,7 +10,7 @@ const statusOrder = [
     "queued", "running"
 ];
 
-function drawStacked(data, maxSum): void {
+function drawStacked(data, maxSum, exMap): void {
     const xTicks = 10;
     height = 100 * Object.keys(data).length;
     const innerWidth = width - margin.left - margin.right;
@@ -31,7 +31,7 @@ function drawStacked(data, maxSum): void {
         .domain(data.map(d => d.exercise_id))
         .padding(.5);
     graph.append("g")
-        .call(d3.axisLeft(y).tickSize(0))
+        .call(d3.axisLeft(y).tickSize(0).tickFormat(t => exMap[t]))
         .select(".domain").remove();
 
     // y scale for legend elements
@@ -140,7 +140,7 @@ function initStacked(url, containerId: string): void {
         });
         maxSum[prevId] = prevSum;
 
-        drawStacked(data, maxSum);
+        drawStacked(data, maxSum, raw.exercises);
     };
     d3.json(url).then(processor);
 }

@@ -11,7 +11,7 @@ const statusOrder = [
 ];
 const commonAxis = true;
 
-function drawTimeSeries(data, metaData): void {
+function drawTimeSeries(data, metaData, exMap): void {
     height = 200 * Object.keys(data).length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -34,7 +34,7 @@ function drawTimeSeries(data, metaData): void {
         .paddingOuter(.4);
     graph.append("g")
         .attr("transform", `translate(0, ${-y.bandwidth() - 10})`)
-        .call(d3.axisLeft(y).tickSize(0))
+        .call(d3.axisLeft(y).tickSize(0).tickFormat(t => exMap[t]))
         .select(".domain").remove();
 
     // common y scale per exercise
@@ -239,7 +239,7 @@ function initTimeseries(url, containerId): void {
             data[exId] = d3.groups(newRecords, d => d.status);
         });
 
-        drawTimeSeries(data, metaData);
+        drawTimeSeries(data, metaData, raw.exercises);
     };
     d3.json(url)
         .then(processor);

@@ -39,7 +39,7 @@ function commonCheckboxInit(
                 if (response.ok) {
                     eval(await response.text());
                 } else {
-                    // Someone already deleted this question.
+                    // Someone already deleted this score item.
                     new dodona.Toast(I18n.t("js.score_item.error"));
                     checkbox.disabled = false;
                     checkbox.checked = !checkbox.checked;

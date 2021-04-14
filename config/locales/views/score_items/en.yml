@@ -32,8 +32,8 @@ en:
         To do that, you'll first need to specify how you will grade the solutions.
         You can assign a number of score items to each exercise.
       explanation_part2: >
-        You can choose to add the same score item to each exercise below.
-        Alternatively, you can modify the items per exercise.
+        You can assign score items per exercise below.
+        Additionally, you can quickly add the same score item to each exercise.
         If you don't want to grade submissions, you can go directly to the evaluation.
         You can always change this later.
       text: Create and add a score item to each exercise in the evaluation.

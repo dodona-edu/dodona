@@ -24,7 +24,7 @@ class StatisticsController < ApplicationController
   def violin
     series = nil
     series = Series.find(params[:series_id]) if params.key?(:series_id)
-    authorize series
+    # authorize series
 
     course = series.course
 
@@ -39,7 +39,7 @@ class StatisticsController < ApplicationController
   def stacked_status
     series = nil
     series = Series.find(params[:series_id]) if params.key?(:series_id)
-    authorize series
+    # authorize series
 
     course = series.course
 
@@ -54,7 +54,7 @@ class StatisticsController < ApplicationController
   def timeseries
     series = nil
     series = Series.find(params[:series_id]) if params.key?(:series_id)
-    authorize series
+    # authorize series
 
     course = series.course
 

@@ -273,11 +273,11 @@ class UserTest < ActiveSupport::TestCase
 
   test 'recent_exercises should return the 3 most recent exercises submissions have been submitted' do
     user = create :user
-    exercise1 = create :exercise
-    exercise2 = create :exercise
-    create :series, exercises: [exercise1, exercise2]
-    create :submission, user: user, exercise: exercise1
-    assert_equal [exercise1], user.recent_exercises
+    exercises = (0..5).map { create :exercise }
+    create :series, exercises: exercises
+    exercises.each { |e| create :submission, user: user, exercise: e }
+    exercises.take(3).each { |e| create :submission, user: user, exercise: e }
+    assert_equal exercises.take(3).reverse, user.recent_exercises
   end
 
   test 'pending_series should return all series of the users courses that have a deadline' do

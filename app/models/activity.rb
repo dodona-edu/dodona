@@ -255,6 +255,8 @@ class Activity < ApplicationRecord
     if course.present?
       if user&.course_admin? course
         return false unless course.activities.pluck(:id).include? id
+      elsif user&.member_of? course
+        return false unless course.accessible_activities.pluck(:id).include? id
       else
         return false unless course.visible_activities.pluck(:id).include? id
       end

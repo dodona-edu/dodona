@@ -2,7 +2,7 @@ categories:
   - title: "🚀 New Features"
     label: "feature"
   - title: "🐛 Bug Fixes"
-    label: "bug fix"
+    label: "bug"
   - title: "🧰 Maintenance"
     label: "chore"
 exclude-labels:

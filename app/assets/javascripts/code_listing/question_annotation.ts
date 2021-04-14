@@ -12,6 +12,7 @@ interface QuestionAnnotationPermissionData extends UserAnnotationPermissionData 
 }
 
 export interface QuestionAnnotationData extends UserAnnotationData {
+    // eslint-disable-next-line camelcase
     question_state: QuestionState;
 }
 
@@ -80,7 +81,7 @@ export class QuestionAnnotation extends UserAnnotation {
             body: JSON.stringify({
                 from: this.questionState,
                 question: {
-                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    // eslint-disable-next-line camelcase
                     question_state: newState
                 }
             })
@@ -128,7 +129,7 @@ function annotationFromData(data: UserAnnotationData,
 
 export async function createUserAnnotation(formData: UserAnnotationFormData,
     submissionId: number,
-    editFn: UserAnnotationEditor, mode: string = "annotation"): Promise<UserAnnotation> {
+    editFn: UserAnnotationEditor, mode = "annotation"): Promise<UserAnnotation> {
     const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

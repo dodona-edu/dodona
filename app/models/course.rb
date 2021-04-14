@@ -71,20 +71,19 @@ class Course < ApplicationRecord
            through: :series_memberships,
            source: :activity
 
-  has_many :visible_activities,
+  has_many :accessible_activities,
            lambda {
              where(series: { visibility: %i[open hidden] }).distinct
            },
            through: :series,
            source: :activities
 
-  # TODO: Remove and use activities?
-  has_many :visible_exercises,
+  has_many :visible_activities,
            lambda {
-             where(series: { visibility: %i[open hidden] }).distinct
+             where(series: { visibility: %i[open] }).distinct
            },
            through: :series,
-           source: :exercises
+           source: :activities
 
   has_many :subscribed_members,
            lambda {

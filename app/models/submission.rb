@@ -382,6 +382,7 @@ class Submission < ApplicationRecord
       Exception.new("Submission(#{id}) status was changed to internal error"),
       data: {
         host: `hostname`,
+        judge: judge.name,
         submission: inspect,
         url: Rails.application.routes.url_helpers.submission_url('en', self, host: Rails.application.config.default_host)
       }

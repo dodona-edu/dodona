@@ -60,6 +60,17 @@ class FeedbackTest < ActiveSupport::TestCase
     assert_equal 0, submission.annotations.count
   end
 
+  test 'feedback is uncompleted on submission change' do
+    feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
+    user = feedback.user
+    exercise = feedback.exercise
+    submission = create :submission, user: user, exercise: exercise, course: @evaluation.series.course
+
+    feedback.update(completed: true)
+    feedback.update(submission_id: submission.id)
+    assert_not feedback.completed
+  end
+
   test 'score calculations are correct' do
     feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
     si1 = create :score_item, evaluation_exercise: feedback.evaluation_exercise

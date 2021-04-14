@@ -55,7 +55,7 @@ export class CodeListing {
 
     private readonly questionMode: boolean;
 
-    constructor(submissionId: number, code: string, codeLines: number, questionMode: boolean = false) {
+    constructor(submissionId: number, code: string, codeLines: number, questionMode = false) {
         this.annotations = new Map<number, Annotation[]>();
         this.code = code;
         this.codeLines = codeLines;

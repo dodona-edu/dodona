@@ -3,7 +3,7 @@ module.exports = {
     reporters: ["default", "jest-junit"],
     globals: {
         "ts-jest": {
-            tsConfig: {
+            tsconfig: {
                 allowJs: true,
             },
         },

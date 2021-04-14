@@ -66,7 +66,7 @@ gem 'autoprefixer-rails', '~>10.2.4'
 
 # saml authentication
 gem 'devise', '~>4.7.3'
-gem 'ruby-saml', '~> 1.12.0'
+gem 'ruby-saml', '~> 1.12.1'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.2'
@@ -91,7 +91,7 @@ gem 'annotate', '~> 3.1.1'
 
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'
-gem 'capistrano-passenger', '~> 0.2.0', group: :development
+gem 'capistrano-passenger', '~> 0.2.1', group: :development
 gem 'capistrano-rails', '~> 1.6.1', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
@@ -109,7 +109,7 @@ gem 'httparty', '~> 0.18.1'
 gem 'slack-notifier', '~> 2.3.2'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.11.2'
+gem 'nokogiri', '~> 1.11.3'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering

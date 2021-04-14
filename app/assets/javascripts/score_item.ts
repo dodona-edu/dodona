@@ -21,7 +21,7 @@ export function initInlineEditButton(tableElement: HTMLElement): void {
 function commonCheckboxInit(
     element: HTMLElement,
     selector: string,
-    dataProvider: (checked: boolean) => object): void {
+    dataProvider: (checked: boolean) => Record<string, unknown>): void {
     element.querySelectorAll(selector).forEach(checkbox => {
         checkbox.addEventListener("change", async event => {
             event.preventDefault();
@@ -52,9 +52,9 @@ function commonCheckboxInit(
 function initTotalVisibilityCheckboxes(element: HTMLElement): void {
     commonCheckboxInit(element, ".total-visibility-checkbox", checked => {
         return {
-            // eslint-disable-next-line @typescript-eslint/camelcase
+            // eslint-disable-next-line camelcase
             evaluation_exercise: {
-                // eslint-disable-next-line @typescript-eslint/camelcase
+                // eslint-disable-next-line camelcase
                 visible_score: checked
             }
         };
@@ -64,7 +64,7 @@ function initTotalVisibilityCheckboxes(element: HTMLElement): void {
 function initItemVisibilityCheckboxes(element: HTMLElement): void {
     commonCheckboxInit(element, ".visibility-checkbox", checked => {
         return {
-            // eslint-disable-next-line @typescript-eslint/camelcase
+            // eslint-disable-next-line camelcase
             score_item: {
                 visible: checked
             }

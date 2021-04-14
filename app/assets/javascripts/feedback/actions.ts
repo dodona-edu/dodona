@@ -36,10 +36,10 @@ export default class FeedbackActions {
     // ID's of the score forms that are updating.
     private updatingForms: Set<string> = new Set<string>();
     // Go to the next feedback if all scores have been updated.
-    private nextAfterScoreUpdate: boolean = false;
-    private allowNextAutoMark: boolean = true;
-    private allowNextOrder: boolean = true;
-    private nextFeedbackAction: Function = null;
+    private nextAfterScoreUpdate = false;
+    private allowNextAutoMark = true;
+    private allowNextOrder = true;
+    private nextFeedbackAction: () => void = null;
 
     constructor(options: ActionOptions) {
         this.options = options;
@@ -100,7 +100,7 @@ export default class FeedbackActions {
         this.scoreForms.forEach(s => s.disableInputs());
     }
 
-    update(data): Promise<void> {
+    update(data: Record<string, unknown>): Promise<void> {
         this.disableInputs();
         return fetch(this.options.currentURL, {
             method: "PATCH",
@@ -118,7 +118,7 @@ export default class FeedbackActions {
         });
     }
 
-    async refresh(warning: string = ""): Promise<void> {
+    async refresh(warning = ""): Promise<void> {
         const url = updateURLParameter(this.options.currentURL, "warning", warning);
         const response = await fetch(url, {
             headers: {
@@ -222,7 +222,7 @@ export default class FeedbackActions {
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
             await this.update({
-                // eslint-disable-next-line @typescript-eslint/camelcase
+                // eslint-disable-next-line camelcase
                 scores_attributes: values
             });
         });
@@ -235,7 +235,7 @@ export default class FeedbackActions {
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
             await this.update({
-                // eslint-disable-next-line @typescript-eslint/camelcase
+                // eslint-disable-next-line camelcase
                 scores_attributes: values
             });
         });

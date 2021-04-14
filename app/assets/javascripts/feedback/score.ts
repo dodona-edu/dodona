@@ -70,7 +70,7 @@ export default class ScoreForm {
                 return;
             }
             updating = true;
-            this.sendUpdate(e.relatedTarget as HTMLElement);
+            this.sendUpdate(document.activeElement as HTMLElement);
         });
         if (this.deleteButton) {
             this.deleteButton.addEventListener("click", e => {
@@ -105,7 +105,7 @@ export default class ScoreForm {
         return this.input.value;
     }
 
-    public getDataForNested(): object {
+    public getDataForNested(): Record<string, unknown> {
         // If not existing, include ID.
         if (this.existing) {
             return {
@@ -115,7 +115,7 @@ export default class ScoreForm {
         } else {
             return {
                 score: this.input.value,
-                // eslint-disable-next-line @typescript-eslint/camelcase
+                // eslint-disable-next-line camelcase
                 score_item_id: this.scoreItemId
             };
         }
@@ -126,15 +126,15 @@ export default class ScoreForm {
         if (this.existing) {
             data = {
                 score: this.input.value,
-                // eslint-disable-next-line @typescript-eslint/camelcase
+                // eslint-disable-next-line camelcase
                 expected_score: this.expectedScore.value
             };
         } else {
             data = {
                 score: this.input.value,
-                // eslint-disable-next-line @typescript-eslint/camelcase
+                // eslint-disable-next-line camelcase
                 feedback_id: this.parent.options.feedbackId,
-                // eslint-disable-next-line @typescript-eslint/camelcase
+                // eslint-disable-next-line camelcase
                 score_item_id: this.scoreItemId
             };
         }
@@ -151,12 +151,12 @@ export default class ScoreForm {
 
     private delete(): void {
         this.doRequest("delete", {
-            // eslint-disable-next-line @typescript-eslint/camelcase
+            // eslint-disable-next-line camelcase
             expected_score: this.expectedScore.value
         });
     }
 
-    private doRequest(method: string, data: object, newFocus: HTMLElement | null = null): void {
+    private doRequest(method: string, data: Record<string, unknown>, newFocus: HTMLElement | null = null): void {
         // Save the element that has focus.
         const activeId = newFocus?.id;
         this.markBusy();

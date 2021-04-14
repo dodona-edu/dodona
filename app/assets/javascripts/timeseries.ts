@@ -66,6 +66,12 @@ function drawTimeSeries(data, metaData): void {
         .range(d3.schemeCategory10)
         .domain(statusOrder);
 
+
+    // x-axis
+    graph.append("g")
+        .attr("transform", `translate(0, ${y(y.domain()[0]) + y.bandwidth()/2})`)
+        .call(d3.axisBottom(x).ticks(10, "%a %b-%d"));
+
     // Add X axis label:
     graph.append("text")
         .attr("text-anchor", "end")
@@ -125,10 +131,7 @@ function drawTimeSeries(data, metaData): void {
                     .curve(d3.curveCatmullRom)(d[1]);
             });
 
-        graph.append("g")
-            .attr("transform", `translate(0, ${y(exId) + y.bandwidth()/2})`)
-            .call(d3.axisBottom(x).ticks(10, "%a %b-%d"));
-
+        // y axis
         graph.append("g")
             .attr("transform", `translate(0, ${y(exId) - y.bandwidth()/2})`)
             .call(d3.axisLeft(commonAxis ? interY : interYs[exId]).ticks(5));

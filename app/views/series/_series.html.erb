@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+    <%= javascript_pack_tag 'visualisations_series' %>
+<% end %>
 <% get_activity_path ||= ->(ex) {course_series_activity_path series.course_id, series.id, ex} %>
 <% unless defined? loaded %>
   <% loaded = true %>
@@ -140,6 +143,20 @@
       <%= markdown(series.description) %>
     <% end %>
   </div>
+
+  <div>
+    <button class="btn-text pull-right"
+      id="stats-button-<%= series.id %>"
+      onclick="dodona.toggleStats('<%= series.id %>')">
+      Show statistics
+    </button>
+  </div>
+  <div id="stats-tabs-<%= series.id %>" class="tab" style="display: none">
+    <button class="btn-text tablinks" onclick="dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Violin</button>
+    <button class="btn-text tablinks" onclick="dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Stacked Status</button>
+    <button class="btn-text tablinks" onclick="dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
+</div>
+  <div id="stats-container-<%= series.id %>"></div>
 
   <% if policy(series).overview? && series.activity_count > 0 %>
     <div class="series-activities-table-wrapper">

@@ -360,6 +360,7 @@ class Submission < ApplicationRecord
   def self.violin_matrix(options = {}, base = { until: 0, value: {} })
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
+    submissions = submissions.judged
     return base unless submissions.any?
 
     value = base[:value]
@@ -383,6 +384,7 @@ class Submission < ApplicationRecord
   def self.stacked_status_matrix(options = {}, base = { until: 0, value: {} })
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
+    submissions = submissions.judged
     return base unless submissions.any?
 
     value = base[:value]
@@ -406,6 +408,7 @@ class Submission < ApplicationRecord
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.before_deadline(options[:deadline]) if options[:deadline].present?
+    submissions = submissions.judged
     # limiting lower bound filters all dummy data, should be fine for real data
     # submissions = submissions.after_moment(options[:deadline] - 2.weeks) if options[:deadline].present?
     return base unless submissions.any?

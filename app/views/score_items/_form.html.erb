@@ -6,7 +6,7 @@
   </div>
   <% options = {html: { class: 'form-horizontal' }}.merge(form_options) %>
   <% score_item = local_assigns.fetch(:score_item, local_assigns[:models]&.last) %>
-  <%= form_for(local_assigns.fetch(:models, :score_item), options) do |f| %>
+  <%= form_for(local_assigns.fetch(:models, ScoreItem.new), options) do |f| %>
     <div class="modal-body">
       <% if score_item&.errors&.any? %>
         <div class="callout callout-danger" id="error_explanation">

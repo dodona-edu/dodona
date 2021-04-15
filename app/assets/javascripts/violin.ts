@@ -9,9 +9,9 @@ let height = 0;
 function drawViolin(data: {
     "ex_id": string;
     "counts": [number];
-    "freq": {};
+    "freq": Record<string, {label: string; freq: number}>;
     "median": number;
-}[], exMap: {}): void {
+}[], exMap: Record<string, string>): void {
     const min = d3.min(data, d => d3.min(d.counts));
     const max = d3.max(data, d => d3.max(d.counts));
     const xTicks = 10;

@@ -7,7 +7,6 @@ let height = 0;
 const statusOrder = [
     "correct", "wrong", "compilation error", "runtime error",
     "time limit exceeded", "memory limit exceeded", "output limit exceeded",
-    "queued", "running"
 ];
 
 function drawStacked(data, maxSum, exMap): void {

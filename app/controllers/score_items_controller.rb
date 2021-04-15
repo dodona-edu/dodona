@@ -33,10 +33,10 @@ class ScoreItemsController < ApplicationController
     args[:last_updated_by] = current_user
     respond_to do |format|
       if @score_item.update(args)
-        format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: @score_item.evaluation_exercise } }
+        format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: preload_eval_exercise(@score_item) } }
         format.json { render :show, status: :ok, location: [@evaluation, @score_item] }
       else
-        format.js { render 'score_items/index', locals: { new: @score_item, evaluation_exercise: @score_item.evaluation_exercise } }
+        format.js { render 'score_items/index', locals: { new: @score_item, evaluation_exercise: preload_eval_exercise(@score_item) } }
         format.json { render json: @score_item.errors, status: :unprocessable_entity }
       end
     end
@@ -47,10 +47,10 @@ class ScoreItemsController < ApplicationController
     @score_item.last_updated_by = current_user
     respond_to do |format|
       if @score_item.save
-        format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: @score_item.evaluation_exercise } }
+        format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: preload_eval_exercise(@score_item) } }
         format.json { render :show, status: :created, location: [@evaluation, @score_item] }
       else
-        format.js { render 'score_items/index', locals: { new: @score_item, evaluation_exercise: @score_item.evaluation_exercise } }
+        format.js { render 'score_items/index', locals: { new: @score_item, evaluation_exercise: preload_eval_exercise(@score_item) } }
         format.json { render json: @score_item.errors, status: :unprocessable_entity }
       end
     end
@@ -74,7 +74,7 @@ class ScoreItemsController < ApplicationController
   def destroy
     @score_item.destroy
     respond_to do |format|
-      format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: @score_item.evaluation_exercise } }
+      format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: preload_eval_exercise(@score_item) } }
       format.json { render json: {}, status: :no_content }
     end
   end
@@ -86,7 +86,8 @@ class ScoreItemsController < ApplicationController
   end
 
   def set_evaluation
-    @evaluation = Evaluation.find(params[:evaluation_id])
+    # Include a bunch of stuff to reduce number of queries on show pages.
+    @evaluation = Evaluation.includes(evaluation_exercises: :exercise, score_items: :scores).find(params[:evaluation_id])
     authorize @evaluation, :score_items?
 
     @crumbs = [
@@ -94,5 +95,11 @@ class ScoreItemsController < ApplicationController
       [@evaluation.series.name, series_path(@evaluation.series)],
       [I18n.t('evaluations.show.evaluation'), evaluation_path(@evaluation)]
     ]
+  end
+
+  def preload_eval_exercise(item)
+    # Preload the stuff for one exercise and an existing instance.
+    ActiveRecord::Associations::Preloader.new.preload(item.evaluation_exercise, [score_items: :scores])
+    item.evaluation_exercise
   end
 end

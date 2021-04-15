@@ -37,9 +37,6 @@ Rails.application.routes.draw do
 
     get '/status' => redirect("https://p.datadoghq.com/sb/sil3oh7xurb0ujwu-3dfa8d0b077b83f3afbee49f0641abfd"), :as => :status
 
-    # TODO: remove
-    get '/test' => 'pages#_test'
-
     concern :mediable do
       member do
         constraints host: Rails.configuration.default_host do

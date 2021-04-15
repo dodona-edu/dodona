@@ -7,6 +7,7 @@ window.dodona.initViolin = initViolin;
 window.dodona.initStacked = initStacked;
 window.dodona.initTimeseries = initTimeseries;
 window.dodona.toggleStats = toggleStats;
+window.dodona.setActiveToggle = setActiveToggle;
 
 function toggleStats(seriesId) {
     const tabs = document.getElementById(`stats-tabs-${seriesId}`);
@@ -22,4 +23,11 @@ function toggleStats(seriesId) {
         document.getElementById(`stats-container-${seriesId}`).innerHTML = "";
         document.getElementById(`stats-button-${seriesId}`).textContent = "Show statistics";
     }
+}
+
+function setActiveToggle(activeNode) {
+    Array.from(activeNode.parentElement.getElementsByTagName("button")).forEach(element => {
+        element.className = element.className.replace(" active", "");
+    });
+    activeNode.className = activeNode.className + " active";
 }

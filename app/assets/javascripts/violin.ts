@@ -166,7 +166,6 @@ function initViolin(url: string, containerId: string): void {
 
     width = (container.node() as Element).getBoundingClientRect().width;
     const processor = function (raw): void {
-        console.log(raw);
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;

@@ -12,8 +12,10 @@ def submission_summary(status)
 end
 
 if Rails.env.development?
+  start = Time.now
 
-  puts 'Creating institutions'
+
+  puts "Creating institutions (#{Time.now - start})"
 
   ugent = Institution.create name: 'Universiteit Gent (login werkt niet in develop)', short_name: 'UGent', logo: 'UGent.png'
   college_waregem = Institution.create name: 'College Waregem', short_name: 'College Waregem', logo: 'collegewaregem.png'
@@ -22,7 +24,7 @@ if Rails.env.development?
   college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.png'
   sint_bavo = Institution.create name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg'
 
-  puts 'Creating providers'
+  puts "Creating providers (#{Time.now - start})"
 
   # Office 365.
   Provider::Office365.create institution: college_waregem, identifier: '9fdf506a-3be0-4f07-9e03-908ceeae50b4'
@@ -36,7 +38,7 @@ if Rails.env.development?
   Provider::Smartschool.create institution: slo, identifier: 'https://slow.smartschool.be'
   Provider::Smartschool.create institution: college_ieper, identifier: 'https://college-ieper.smartschool.be'
 
-  puts 'Creating users'
+  puts "Creating users (#{Time.now - start})"
 
   zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus, institution: nil, token: 'zeus'
 
@@ -48,7 +50,7 @@ if Rails.env.development?
 
   student = User.create username: 'rbmaerte', first_name: 'Rien', last_name: 'Maertens', email: 'rien.maertens@ugent.be', permission: :student, institution: ugent
 
-  students = Array.new(500) do
+  students = Array.new(250) do
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
     username = Faker::Internet.unique.user_name()
@@ -60,7 +62,7 @@ if Rails.env.development?
                 institution: ugent
   end
 
-  puts 'Creating identities'
+  puts "Creating identities (#{Time.now - start})"
 
   User.find_each do |user|
     if user.institution.present?
@@ -70,7 +72,7 @@ if Rails.env.development?
     end
   end
 
-  puts 'Creating API tokens'
+  puts "Creating API tokens (#{Time.now - start})"
 
   [zeus, staff, jelix, mart, student].each do |user|
     token = user.token || user.username
@@ -79,12 +81,12 @@ if Rails.env.development?
                     user: user
   end
 
-  puts 'Creating labels'
+  puts "Creating labels (#{Time.now - start})"
   %w[red pink purple deep-purple indigo teal orange brown blue-grey].each do |color|
     Label.create name: Faker::GreekPhilosophers.unique.name, color: color
   end
   
-  puts 'Creating programming languages'
+  puts "Creating programming languages (#{Time.now - start})"
   ICON_MAP = {
     'python' => 'language-python',
     'sh' => 'bash',
@@ -101,19 +103,19 @@ if Rails.env.development?
     ProgrammingLanguage.create name: language, icon: icon
   end
 
-  puts 'Creating courses'
+  puts "Creating courses (#{Time.now - start})"
 
   courses = []
 
-  courses << Course.create(description: 'This is a test course.', name: 'Open for All Test Course', year: '2017-2018', registration: 'open_for_all', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: '2017-2018', registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
-  courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: '2017-2018', registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')
-  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2017-2018', registration: 'open_for_all', visibility: 'hidden', moderated: false, teacher: 'Prof. Kumulus')
-  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2017-2018', registration: 'closed', visibility: 'hidden', moderated: false, teacher: 'Graaf van Rommelgem')
-  courses << Course.create(description: 'This is a test course.', name: 'Old Open for All Test Course', year: '2016-2017', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Very Old Open for All Test Course', year: '2015-2016', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Open for All Test Course', year: '2020-2021', registration: 'open_for_all', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: '2020-2021', registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
+  courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: '2020-2021', registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')
+  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2020-2021', registration: 'open_for_all', visibility: 'hidden', moderated: false, teacher: 'Prof. Kumulus')
+  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2020-2021', registration: 'closed', visibility: 'hidden', moderated: false, teacher: 'Graaf van Rommelgem')
+  courses << Course.create(description: 'This is a test course.', name: 'Old Open for All Test Course', year: '2019-2020', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Very Old Open for All Test Course', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
 
-  puts 'Adding users to courses'
+  puts "Adding users to courses (#{Time.now - start})"
 
   courses.each do |course|
     course.administrating_members << mart
@@ -132,7 +134,7 @@ if Rails.env.development?
   pending = students.sample(60)
   courses[2].pending_members.concat(pending - courses[2].enrolled_members)
   
-  puts 'Adding labels to courses'
+  puts "Adding labels to courses (#{Time.now - start})"
   courses.each do |course|
     cl = CourseLabel.create course_id: course.id, name: Faker::CryptoCoin.unique.coin_name, created_at: Time.now, updated_at: Time.now
     course.enrolled_members.sample(2).each do |student|
@@ -141,18 +143,18 @@ if Rails.env.development?
     end
   end
 
-  puts 'Create & clone judge'
+  puts "Create & clone judge (#{Time.now - start})"
 
-  python_judge = Judge.create name: 'python', image: 'dodona-python', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer
+  python_judge = Judge.create name: 'python', image: 'dodona/dodona-python', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer
 
   # Other judges
 
   # prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.com:dodona-edu/judge-prolog.git', renderer: FeedbackTableRenderer
   # bash-judge = Judge.create name: 'bash', image: 'dodona-bash', remote: 'git@github.com:dodona-edu/judge-bash.git', renderer: FeedbackTableRenderer
   # junit_judge = Judge.create name: 'junit', image: 'dodona-java', remote: 'git@github.com:dodona-edu/judge-java.git', renderer: FeedbackTableRenderer
-  Judge.create name: 'javascript', image: 'dodona-nodejs', remote: 'git@github.com:dodona-edu/judge-javascript.git', renderer: FeedbackTableRenderer
+  Judge.create name: 'javascript', image: 'dodona/dodona-nodejs', remote: 'git@github.com:dodona-edu/judge-javascript.git', renderer: FeedbackTableRenderer
 
-  puts 'Create & clone activity repository'
+  puts "Create & clone activity repository (#{Time.now - start})"
 
   activity_repo = Repository.create name: 'Example Python Activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
   activity_repo.process_activities
@@ -162,7 +164,7 @@ if Rails.env.development?
   Dir.glob("#{big_activity_repo.full_path}/*")
       .select { |f| File.directory? f }
       .each do |dir|
-    20.times do |i|
+    10.times do |i|
       FileUtils.cp_r(dir, dir + i.to_s)
     end
   end
@@ -171,7 +173,12 @@ if Rails.env.development?
   contents_list = ContentPage.all.to_a
   exercises_list = Exercise.all.to_a
 
-  puts 'Add series, content pages, exercises, read states and submissions to courses'
+  puts "Add series, content pages, exercises, read states and submissions to courses (#{Time.now - start})"
+
+  # These callback take a good amount of time and aren't necessary
+  ActivityReadState.skip_callback(:save, :after, :invalidate_caches)
+  Submission.skip_callback(:save, :after, :update_exercise_status)
+  Submission.skip_callback(:save, :after, :invalidate_caches)
 
   # Add contents and exercises to test course
   courses.each do |course|
@@ -184,7 +191,7 @@ if Rails.env.development?
                             description: Faker::Lorem.paragraph(sentence_count: 25),
                             course: course,
                             visibility: :closed)
-    20.times do |i|
+    8.times do |i|
       s = Series.create(name: "Reeks #{i}",
                         description: Faker::Lorem.paragraph(sentence_count: 25),
                         course: course)
@@ -234,7 +241,7 @@ if Rails.env.development?
     end
   end
 
-  puts 'Create Status Test course'
+  puts "Create Status Test course (#{Time.now - start})"
 
   status_test = Course.create(name: 'Status Test', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
 
@@ -362,4 +369,5 @@ if Rails.env.development?
                     code: '',
                     result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
 
+  puts "Finished! (#{Time.now - start})"
 end

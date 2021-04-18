@@ -71,15 +71,16 @@ function drawViolin(data: {
         .append("g")
         .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
         .append("path")
-        .datum(ex =>
-            Object.values(ex.freq)
+        .datum(ex => {
+            return Object.values(ex.freq);
+        }
         )
         .style("stroke", "none")
         .style("fill", "#69b3a2")
         .attr("d", d3.area()
-            .x(label => x(label))
-            .y0(freq => -yBin(freq))
-            .y1(freq => yBin(freq))
+            .x(d => x(d.label))
+            .y0(d => -yBin(d.freq))
+            .y1(d => yBin(d.freq))
             .curve(d3.curveCatmullRom)
         );
 

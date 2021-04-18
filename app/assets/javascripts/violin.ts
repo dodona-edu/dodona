@@ -16,7 +16,8 @@ function drawViolin(data: {
     const max = d3.max(data, d => d3.max(d.counts));
     const xTicks = 10;
     const elWidth = width / max;
-    height = 200 * Object.keys(data).length;
+    const yDomain: string[] = Array.from(new Set(data.map(d => d.ex_id)));
+    height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -35,7 +36,7 @@ function drawViolin(data: {
     // Show the Y scale for the exercises (Big Y scale)
     const y = d3.scaleBand()
         .range([innerHeight, 0])
-        .domain(data.map(d => d.ex_id))
+        .domain(yDomain)
         .padding(.5);
     graph.append("g")
         .call(d3.axisLeft(y).tickSize(0).tickFormat(t => exMap[t]))

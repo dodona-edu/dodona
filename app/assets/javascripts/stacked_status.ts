@@ -11,7 +11,9 @@ const statusOrder = [
 
 function drawStacked(data, maxSum, exMap): void {
     const xTicks = 10;
-    height = 100 * Object.keys(data).length;
+    const yDomain = Array.from(new Set(data.map(d => d.exercise_id)));
+    console.log(yDomain);
+    height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -24,10 +26,11 @@ function drawStacked(data, maxSum, exMap): void {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
+    console.log(height, innerHeight, Object.keys(data).length);
     // Show the Y scale
     const y = d3.scaleBand()
         .range([innerHeight, 0])
-        .domain(data.map(d => d.exercise_id))
+        .domain(yDomain)
         .padding(.5);
     graph.append("g")
         .call(d3.axisLeft(y).tickSize(0).tickFormat(t => exMap[t]))
@@ -46,9 +49,6 @@ function drawStacked(data, maxSum, exMap): void {
     const x = d3.scaleLinear()
         .domain([0, 1])
         .range([0, innerWidth * 3 / 4 - 20]);
-    graph.append("g")
-        .attr("transform", "translate(0," + innerHeight + ")")
-        .call(d3.axisBottom(x).ticks(xTicks));
 
 
     // Color scale

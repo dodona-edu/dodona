@@ -2,7 +2,7 @@ import * as d3 from "d3";
 
 
 let selector = undefined;
-const margin = { top: 20, right: 10, bottom: 20, left: 70 };
+const margin = { top: 20, right: 10, bottom: 20, left: 100 };
 let width = 0;
 let height = 0;
 

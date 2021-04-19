@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
 let selector = "";
-const margin = { top: 40, right: 10, bottom: 0, left: 70 };
+const margin = { top: 20, right: 10, bottom: 20, left: 100 };
 let width = 0;
 let height = 0;
 const statusOrder = [
@@ -53,24 +53,30 @@ function drawTimeSeries(data, metaData, exMap): void {
     );
 
     // y scale for legend elements
-    const legendY = d3.scaleBand()
-        .range([
-            0,
-            Math.min(200, innerHeight)
-        ])
-        .domain(statusOrder);
+    // const legendY = d3.scaleBand()
+    //     .range([
+    //         0,
+    //         Math.min(200, innerHeight)
+    //     ])
+    //     .domain(statusOrder);
 
 
     // Show the X scale
     const x = d3.scaleTime()
         .domain([metaData["minDate"], metaData["maxDate"]])
-        .range([0, innerWidth * 3 / 4 - 20]);
+        .range([0, innerWidth]);
 
 
     // Color scale
     const color = d3.scaleOrdinal()
         .range(d3.schemeCategory10)
         .domain(statusOrder);
+
+
+    const tooltip = d3.select(selector).append("div")
+        .attr("class", "d3-tooltip")
+        .attr("pointer-events", "none")
+        .style("opacity", 0);
 
 
     // add x-axis
@@ -81,7 +87,7 @@ function drawTimeSeries(data, metaData, exMap): void {
     // Add X axis label:
     graph.append("text")
         .attr("text-anchor", "end")
-        .attr("x", innerWidth * 3 / 4 - 20)
+        .attr("x", innerWidth)
         .attr("y", innerHeight + 30)
         .text("Percentage of submissions statuses")
         .attr("fill", "currentColor")
@@ -91,27 +97,27 @@ function drawTimeSeries(data, metaData, exMap): void {
     const legend = graph.append("g");
 
     // add legend colors dots
-    legend.selectAll("dots")
-        .data(statusOrder)
-        .enter()
-        .append("rect")
-        .attr("y", d => legendY(d))
-        .attr("x", innerWidth * 3 / 4)
-        .attr("width", 15)
-        .attr("height", 15)
-        .attr("fill", d => color(d));
+    // legend.selectAll("dots")
+    //     .data(statusOrder)
+    //     .enter()
+    //     .append("rect")
+    //     .attr("y", d => legendY(d))
+    //     .attr("x", innerWidth * 3 / 4)
+    //     .attr("width", 15)
+    //     .attr("height", 15)
+    //     .attr("fill", d => color(d));
 
     // add legend text
-    legend.selectAll("text")
-        .data(statusOrder)
-        .enter()
-        .append("text")
-        .attr("y", d => legendY(d) + 11)
-        .attr("x", innerWidth * 3 / 4 + 20)
-        .attr("text-anchor", "start")
-        .text(d => d)
-        .attr("fill", "currentColor")
-        .style("font-size", "12px");
+    // legend.selectAll("text")
+    //     .data(statusOrder)
+    //     .enter()
+    //     .append("text")
+    //     .attr("y", d => legendY(d) + 11)
+    //     .attr("x", innerWidth * 3 / 4 + 20)
+    //     .attr("text-anchor", "start")
+    //     .text(d => d)
+    //     .attr("fill", "currentColor")
+    //     .style("font-size", "12px");
 
     // add areas
     for (const exId of Object.keys(data)) {
@@ -134,6 +140,23 @@ function drawTimeSeries(data, metaData, exMap): void {
                     .y1(r => commonAxis ?
                         interY(rSum ? r.cSumEnd : r.stack_sum) - y.bandwidth() :
                         interYs[exId](rSum ? r.cSumEnd : r.stack_sum) - y.bandwidth())(d[1]);
+            })
+            .on("mouseover", (_, d) => {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(`Status: ${d[0]}`);
+            })
+            .on("mousemove", (e, _) => {
+                tooltip
+                    // using the node itself results in negative coordinates for some reason
+                    .style("left", `${d3.pointer(e, exGroup)[0]-tooltip.node().clientWidth-10}px`)
+                    .style("top", `${d3.pointer(e, exGroup)[1] - 40}px`);
+            })
+            .on("mouseout", () => {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
             });
 
         // y axis
@@ -160,12 +183,13 @@ function initTimeseries(url, containerId): void {
 
         const data: {string: {date; status; count}[]} = raw.data;
         const metaData = {}; // used to store things needed to create scales
-        // pick date of first datapoint (to prevent null checks later on)
+        console.log(raw);
         if (Object.keys(data).length === 0) {
             container.attr("class", "text-center").append("span")
                 .text("There is not enough data to create a graph");
             return;
         }
+        // pick date of first datapoint (to avoid null checks later on)
         metaData["minDate"] = Date.parse(data[Object.keys(data)[0]][0].date);
         metaData["maxDate"] = Date.parse(data[Object.keys(data)[0]][0].date);
         metaData["maxStack"] = 0;

@@ -159,7 +159,7 @@
     <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this); 
       dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
 </div>
-  <div id="stats-container-<%= series.id %>"></div>
+  <div id="stats-container-<%= series.id %>" style="position: relative;"></div>
 
   <% if policy(series).overview? && series.activity_count > 0 %>
     <div class="series-activities-table-wrapper">

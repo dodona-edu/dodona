@@ -10,14 +10,15 @@ const statusOrder = [
 ];
 
 function drawStacked(data, maxSum, exMap): void {
-    const xTicks = 10;
     const yDomain: string[] = Array.from(new Set(data.map(d => d.exercise_id)));
     height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
+    const container = d3.select(selector);
 
-    const graph = d3.select(selector)
+
+    const graph = container
         .append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -34,19 +35,19 @@ function drawStacked(data, maxSum, exMap): void {
         .call(d3.axisLeft(y).tickSize(0).tickFormat(t => exMap[t]))
         .select(".domain").remove();
 
-    // y scale for legend elements
-    const legendY = d3.scaleBand()
-        .range([
-            0,
-            Math.min(200, innerHeight)
-        ])
-        .domain(statusOrder);
+    // // y scale for legend elements
+    // const legendY = d3.scaleBand()
+    //     .range([
+    //         0,
+    //         Math.min(200, innerHeight)
+    //     ])
+    //     .domain(statusOrder);
 
 
     // Show the X scale
     const x = d3.scaleLinear()
         .domain([0, 1])
-        .range([0, innerWidth * 3 / 4 - 20]);
+        .range([0, innerWidth]);
 
 
     // Color scale
@@ -54,40 +55,36 @@ function drawStacked(data, maxSum, exMap): void {
         .range(d3.schemeCategory10)
         .domain(statusOrder);
 
-    // Add X axis label:
-    graph.append("text")
-        .attr("text-anchor", "end")
-        .attr("x", innerWidth * 3 / 4 - 20)
-        .attr("y", innerHeight + 30)
-        .text("Percentage of submissions statuses")
-        .attr("fill", "currentColor")
-        .style("font-size", "11px");
+    const tooltip = d3.select(selector).append("div")
+        .attr("class", "d3-tooltip")
+        .attr("pointer-events", "none")
+        .style("opacity", 0);
 
 
-    const legend = graph.append("g");
+    // const legend = graph.append("g");
 
-    // add legend colors dots
-    legend.selectAll("dots")
-        .data(statusOrder)
-        .enter()
-        .append("rect")
-        .attr("y", d => legendY(d))
-        .attr("x", innerWidth * 3 / 4)
-        .attr("width", 15)
-        .attr("height", 15)
-        .attr("fill", d => color(d));
+    // // add legend colors dots
+    // legend.selectAll("dots")
+    //     .data(statusOrder)
+    //     .enter()
+    //     .append("rect")
+    //     .attr("y", d => legendY(d))
+    //     .attr("x", innerWidth * 3 / 4)
+    //     .attr("width", 15)
+    //     .attr("height", 15)
+    //     .attr("fill", d => color(d));
 
-    // add legend text
-    legend.selectAll("text")
-        .data(statusOrder)
-        .enter()
-        .append("text")
-        .attr("y", d => legendY(d) + 11)
-        .attr("x", innerWidth * 3 / 4 + 20)
-        .attr("text-anchor", "start")
-        .text(d => d)
-        .attr("fill", "currentColor")
-        .style("font-size", "12px");
+    // // add legend text
+    // legend.selectAll("text")
+    //     .data(statusOrder)
+    //     .enter()
+    //     .append("text")
+    //     .attr("y", d => legendY(d) + 11)
+    //     .attr("x", innerWidth * 3 / 4 + 20)
+    //     .attr("text-anchor", "start")
+    //     .text(d => d)
+    //     .attr("fill", "currentColor")
+    //     .style("font-size", "12px");
 
     // add bars
     graph.selectAll("bars")
@@ -98,7 +95,23 @@ function drawStacked(data, maxSum, exMap): void {
         .attr("width", d => x(d.count / maxSum[d.exercise_id]))
         .attr("y", d => y(d.exercise_id))
         .attr("height", y.bandwidth())
-        .attr("fill", d => color(d.status));
+        .attr("fill", d => color(d.status))
+        .on("mouseover", (e, d) => {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+            tooltip.html(`Status: ${d.status}`);
+        })
+        .on("mousemove", (e, _) => {
+            tooltip
+                .style("left", `${d3.pointer(e)[0] - 20}px`)
+                .style("top", `${d3.pointer(e)[1] - 40}px`);
+        })
+        .on("mouseout", () => {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        });
 }
 
 function initStacked(url, containerId: string): void {

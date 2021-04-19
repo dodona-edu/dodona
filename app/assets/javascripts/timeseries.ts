@@ -13,7 +13,7 @@ const rSum = false; // use running sum?
 
 function drawTimeSeries(data, metaData, exMap): void {
     const yDomain: string[] = Array.from(new Set(Object.keys(data)));
-    height = 100 * yDomain.length;
+    // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -166,9 +166,14 @@ function drawTimeSeries(data, metaData, exMap): void {
     }
 }
 
-function initTimeseries(url, containerId): void {
+function initTimeseries(url, containerId, containerHeight: number): void {
+    height = containerHeight;
     selector = containerId;
     const container = d3.select(selector);
+
+    if (!height) {
+        height = container.node().clientHeight;
+    }
     container.html(""); // clean up possible previous visualisations
     //
     width = (container.node() as Element).getBoundingClientRect().width;
@@ -183,7 +188,6 @@ function initTimeseries(url, containerId): void {
 
         const data: {string: {date; status; count}[]} = raw.data;
         const metaData = {}; // used to store things needed to create scales
-        console.log(raw);
         if (Object.keys(data).length === 0) {
             container.attr("class", "text-center").append("span")
                 .text("There is not enough data to create a graph");

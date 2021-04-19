@@ -138,11 +138,6 @@
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
-  <div class="series-description">
-    <%= cache series do %>
-      <%= markdown(series.description) %>
-    <% end %>
-  </div>
 
   <div>
     <button class="btn-text pull-right"
@@ -158,26 +153,34 @@
       dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Stacked Status</button>
     <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this); 
       dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
-</div>
+  </div>
   <div id="stats-container-<%= series.id %>" style="position: relative;"></div>
 
-  <% if policy(series).overview? && series.activity_count > 0 %>
-    <div class="series-activities-table-wrapper">
-      <% if loaded %>
-        <%= render partial: 'activities/series_activities_table', locals: {
-            series: series,
-            activities: series.activities,
-            get_activity_path: get_activity_path,
-            user: user
-        } %>
-      <% else %>
-        <div class="activity-table-skeleton">
-          <div class="skeleton-head"></div>
-          <% series.activity_count.times do %>
-            <div class="skeleton-row"></div>
-          <% end %>
-        </div>
+  <div id="series-content-<%= series.id %>">
+    <div class="series-description">
+      <%= cache series do %>
+        <%= markdown(series.description) %>
       <% end %>
     </div>
-  <% end %>
+
+    <% if policy(series).overview? && series.activity_count > 0 %>
+      <div class="series-activities-table-wrapper">
+        <% if loaded %>
+          <%= render partial: 'activities/series_activities_table', locals: {
+              series: series,
+              activities: series.activities,
+              get_activity_path: get_activity_path,
+              user: user
+          } %>
+        <% else %>
+          <div class="activity-table-skeleton">
+            <div class="skeleton-head"></div>
+            <% series.activity_count.times do %>
+              <div class="skeleton-row"></div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -11,7 +11,7 @@ const statusOrder = [
 
 function drawStacked(data, maxSum, exMap): void {
     const yDomain: string[] = Array.from(new Set(data.map(d => d.exercise_id)));
-    height = 100 * yDomain.length;
+    // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -114,9 +114,14 @@ function drawStacked(data, maxSum, exMap): void {
         });
 }
 
-function initStacked(url, containerId: string): void {
+function initStacked(url, containerId: string, containerHeight: number): void {
+    height = containerHeight;
     selector = containerId;
     const container = d3.select(selector);
+
+    if (!height) {
+        height = container.node().clientHeight;
+    }
     container.html(""); // clean up possible previous visualisations
     container.attr("class", "text-center").append("span").text(I18n.t("js.loading"));
 

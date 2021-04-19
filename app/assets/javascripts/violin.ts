@@ -17,7 +17,7 @@ function drawViolin(data: {
     const xTicks = 10;
     const elWidth = width / max;
     const yDomain: string[] = Array.from(new Set(data.map(d => d.ex_id)));
-    height = 100 * yDomain.length;
+    // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -160,9 +160,14 @@ function drawViolin(data: {
         .attr("pointer-events", "none");
 }
 
-function initViolin(url: string, containerId: string): void {
+function initViolin(url: string, containerId: string, containerHeight: number): void {
+    height = containerHeight;
     selector = containerId;
     const container = d3.select(selector);
+
+    if (!height) {
+        height = container.node().clientHeight;
+    }
     container.html(""); // clean up possible previous visualisations
     container.attr("class", "text-center").append("span").text(I18n.t("js.loading"));
 

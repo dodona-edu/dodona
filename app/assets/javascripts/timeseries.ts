@@ -13,7 +13,6 @@ const rSum = false; // use running sum?
 
 function drawTimeSeries(data, metaData, exMap): void {
     const yDomain: string[] = Array.from(new Set(Object.keys(data)));
-    // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -52,14 +51,6 @@ function drawTimeSeries(data, metaData, exMap): void {
     }, {}
     );
 
-    // y scale for legend elements
-    // const legendY = d3.scaleBand()
-    //     .range([
-    //         0,
-    //         Math.min(200, innerHeight)
-    //     ])
-    //     .domain(statusOrder);
-
 
     // Show the X scale
     const x = d3.scaleTime()
@@ -69,7 +60,7 @@ function drawTimeSeries(data, metaData, exMap): void {
 
     // Color scale
     const color = d3.scaleOrdinal()
-        .range(d3.schemeCategory10)
+        .range(["green", d3.interpolateReds])
         .domain(statusOrder);
 
 
@@ -92,32 +83,6 @@ function drawTimeSeries(data, metaData, exMap): void {
         .text("Percentage of submissions statuses")
         .attr("fill", "currentColor")
         .style("font-size", "11px");
-
-
-    const legend = graph.append("g");
-
-    // add legend colors dots
-    // legend.selectAll("dots")
-    //     .data(statusOrder)
-    //     .enter()
-    //     .append("rect")
-    //     .attr("y", d => legendY(d))
-    //     .attr("x", innerWidth * 3 / 4)
-    //     .attr("width", 15)
-    //     .attr("height", 15)
-    //     .attr("fill", d => color(d));
-
-    // add legend text
-    // legend.selectAll("text")
-    //     .data(statusOrder)
-    //     .enter()
-    //     .append("text")
-    //     .attr("y", d => legendY(d) + 11)
-    //     .attr("x", innerWidth * 3 / 4 + 20)
-    //     .attr("text-anchor", "start")
-    //     .text(d => d)
-    //     .attr("fill", "currentColor")
-    //     .style("font-size", "12px");
 
     // add areas
     for (const exId of Object.keys(data)) {

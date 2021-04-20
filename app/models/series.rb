@@ -176,6 +176,7 @@ class Series < ApplicationRecord
   def invalidate_caches(user)
     # Delete all caches for this series.
     invalidate_completed?(user: user)
+    invalidate_completed?(user: user, deadline: deadline) if deadline.present?
     invalidate_started?(user: user)
     invalidate_wrong?(user: user)
   end

@@ -89,6 +89,30 @@ class SeriesTest < ActiveSupport::TestCase
     assert_not series.completed_before_deadline?(user)
   end
 
+  test 'submitting should invalidate exercise status for series with deadline' do
+    with_cache do
+      course = create :course
+      series = create :series, course: course, deadline: Time.zone.now + 1.day, exercise_count: 1
+      user = create :user
+
+      create :wrong_submission,
+             created_at: Time.zone.now,
+             course: course,
+             exercise: series.exercises[0],
+             user: user
+
+      assert_not series.completed_before_deadline?(user)
+
+      create :correct_submission,
+             created_at: Time.zone.now + 1.hour,
+             course: course,
+             exercise: series.exercises[0],
+             user: user
+
+      assert series.completed_before_deadline?(user)
+    end
+  end
+
   test 'changing deadline and restoring should restore completion status' do
     original_deadline = Time.zone.now + 1.day
 

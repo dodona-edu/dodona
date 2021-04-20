@@ -20,7 +20,7 @@ function toggleStats(seriesId) {
         initViolin(
             `/nl/stats/violin?series_id=${seriesId}`,
             `#stats-container-${seriesId}`,
-            height - tabs.clientHeight
+            height - tabs.clientHeight - 5
         );
     } else {
         tabs.style.display = "none";

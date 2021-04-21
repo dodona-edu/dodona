@@ -24,13 +24,9 @@ jobs:
       with:
         key: ${{ secrets.MESTRA_KEY }}
         known_hosts: "-"
-    - name: Set up ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
-    - name: Run capistrano
+    - name: Run deploy
       run: |
-        bundle exec cap mestra deploy
+        ssh -p 4840 dodona@mestra.ugent.be "./scripts/deploy-mestra.sh $GITHUB_SHA"
     - name: Remove deploy label
       uses: buildsville/add-remove-label@v1
       with:

@@ -67,7 +67,8 @@ function drawTimeSeries(data, metaData, exMap): void {
     const tooltip = d3.select(selector).append("div")
         .attr("class", "d3-tooltip")
         .attr("pointer-events", "none")
-        .style("opacity", 0);
+        .style("opacity", 0)
+        .style("z-index", 5);
 
 
     // add x-axis

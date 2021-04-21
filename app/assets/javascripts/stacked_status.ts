@@ -35,14 +35,6 @@ function drawStacked(data, maxSum, exMap): void {
         .call(d3.axisLeft(y).tickSize(0).tickFormat(t => exMap[t]))
         .select(".domain").remove();
 
-    // // y scale for legend elements
-    // const legendY = d3.scaleBand()
-    //     .range([
-    //         0,
-    //         Math.min(200, innerHeight)
-    //     ])
-    //     .domain(statusOrder);
-
 
     // Show the X scale
     const x = d3.scaleLinear()
@@ -59,32 +51,6 @@ function drawStacked(data, maxSum, exMap): void {
         .attr("class", "d3-tooltip")
         .attr("pointer-events", "none")
         .style("opacity", 0);
-
-
-    // const legend = graph.append("g");
-
-    // // add legend colors dots
-    // legend.selectAll("dots")
-    //     .data(statusOrder)
-    //     .enter()
-    //     .append("rect")
-    //     .attr("y", d => legendY(d))
-    //     .attr("x", innerWidth * 3 / 4)
-    //     .attr("width", 15)
-    //     .attr("height", 15)
-    //     .attr("fill", d => color(d));
-
-    // // add legend text
-    // legend.selectAll("text")
-    //     .data(statusOrder)
-    //     .enter()
-    //     .append("text")
-    //     .attr("y", d => legendY(d) + 11)
-    //     .attr("x", innerWidth * 3 / 4 + 20)
-    //     .attr("text-anchor", "start")
-    //     .text(d => d)
-    //     .attr("fill", "currentColor")
-    //     .style("font-size", "12px");
 
     // add bars
     graph.selectAll("bars")

@@ -46,6 +46,10 @@ en:
     mark_as_read: Mark as read
     mark_as_unread: Mark as unread
     question_states: Status
+    no_data: There is not enough data to create a graph
+    n_submissions: Number of submissions
+    show_stats: Show statistics
+    hide_stats: Hide statistics
     months:
       long:
         jan: January

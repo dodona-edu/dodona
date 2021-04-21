@@ -61,7 +61,7 @@ function drawViolin(data: {
         .attr("text-anchor", "end")
         .attr("x", innerWidth)
         .attr("y", innerHeight)
-        .text("Amount of submissions")
+        .text(I18n.t("js.n_submissions"))
         .attr("fill", "currentColor")
         .style("font-size", "11px");
 

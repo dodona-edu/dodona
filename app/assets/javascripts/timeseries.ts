@@ -155,7 +155,7 @@ function initTimeseries(url, containerId, containerHeight: number): void {
         const metaData = {}; // used to store things needed to create scales
         if (Object.keys(data).length === 0) {
             container.attr("class", "text-center").append("span")
-                .text("There is not enough data to create a graph");
+                .text(I18n.t("js.no_data"));
             return;
         }
         // pick date of first datapoint (to avoid null checks later on)

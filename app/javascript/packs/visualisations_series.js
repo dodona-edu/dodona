@@ -16,7 +16,8 @@ function toggleStats(seriesId) {
     if (tabs.style.display == "none") {
         tabs.style.display = "block";
         content.style.display = "none";
-        document.getElementById(`stats-button-${seriesId}`).textContent = "Hide statistics";
+        setActiveToggle(tabs.childNodes[0]);
+        document.getElementById(`stats-button-${seriesId}`).textContent = I18n.t("js.hide_stats");
         initViolin(
             `/nl/stats/violin?series_id=${seriesId}`,
             `#stats-container-${seriesId}`,
@@ -26,7 +27,7 @@ function toggleStats(seriesId) {
         tabs.style.display = "none";
         content.style.display = "block";
         document.getElementById(`stats-container-${seriesId}`).innerHTML = "";
-        document.getElementById(`stats-button-${seriesId}`).textContent = "Show statistics";
+        document.getElementById(`stats-button-${seriesId}`).textContent = I18n.t("js.show_stats");
     }
 }
 

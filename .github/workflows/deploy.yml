@@ -23,7 +23,7 @@ jobs:
       uses: shimataro/ssh-key-action@v2
       with:
         key: ${{ secrets.MESTRA_KEY }}
-        known_hosts: "-"
+        known_hosts: ${{ secrets.MESTRA_HOST }}
     - name: Run deploy
       run: |
         ssh -p 4840 dodona@mestra.ugent.be "./scripts/deploy-mestra.sh $GITHUB_SHA"

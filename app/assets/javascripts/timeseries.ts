@@ -137,7 +137,9 @@ function initTimeseries(url, containerId, containerHeight: number): void {
     const container = d3.select(selector);
 
     if (!height) {
-        height = container.node().clientHeight;
+        height = container.node().clientHeight - 5;
+        console.log(height);
+        console.log("\n");
     }
     container.html(""); // clean up possible previous visualisations
     //
@@ -154,7 +156,7 @@ function initTimeseries(url, containerId, containerHeight: number): void {
         const data: {string: {date; status; count}[]} = raw.data;
         const metaData = {}; // used to store things needed to create scales
         if (Object.keys(data).length === 0) {
-            container.attr("class", "text-center").append("span")
+            container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
                 .text(I18n.t("js.no_data"));
             return;
         }

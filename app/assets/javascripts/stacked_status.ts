@@ -86,7 +86,10 @@ function initStacked(url, containerId: string, containerHeight: number): void {
     const container = d3.select(selector);
 
     if (!height) {
-        height = container.node().clientHeight;
+        console.log(height);
+        height = container.node().clientHeight - 5;
+        console.log(height);
+        console.log("\n");
     }
     container.html(""); // clean up possible previous visualisations
     container.attr("class", "text-center").append("span").text(I18n.t("js.loading"));

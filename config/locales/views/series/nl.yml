@@ -84,3 +84,6 @@ nl:
         other: "%{count} leeractiviteiten"
       name: "Naam"
       deadline: "Deadline"
+    visualizations:
+      show_stats: "Toon statistieken"
+      hide_stats: "Verberg statistieken"

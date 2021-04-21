@@ -104,7 +104,8 @@ function drawTimeSeries(data, metaData, exMap): void {
                         interYs[exId]((rSum ? r.cSumStart : r.stack_sum - r.count)) - y.bandwidth())
                     .y1(r => commonAxis ?
                         interY(rSum ? r.cSumEnd : r.stack_sum) - y.bandwidth() :
-                        interYs[exId](rSum ? r.cSumEnd : r.stack_sum) - y.bandwidth())(d[1]);
+                        interYs[exId](rSum ? r.cSumEnd : r.stack_sum) - y.bandwidth())
+                    .curve(d3.curveMonotoneX)(d[1]);
             })
             .on("mouseover", (_, d) => {
                 tooltip.transition()
@@ -127,7 +128,11 @@ function drawTimeSeries(data, metaData, exMap): void {
         // y axis
         graph.append("g")
             .attr("transform", `translate(0, ${y(exId) - y.bandwidth()/2})`)
-            .call(d3.axisLeft(commonAxis ? interY : interYs[exId]).ticks(5));
+            .call(d3.axisLeft(commonAxis ? interY : interYs[exId])
+                .tickValues(commonAxis ?
+                    [interY.domain()[0], interY.domain[1]+1] :
+                    [interYs[exId].domain()[0], interYs[exId].domain()[1]+1]
+                ));
     }
 }
 

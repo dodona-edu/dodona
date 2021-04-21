@@ -16,7 +16,8 @@ function toggleStats(seriesId) {
     if (tabs.style.display == "none") {
         tabs.style.display = "block";
         content.style.display = "none";
-        setActiveToggle(tabs.childNodes[0]);
+        console.log(tabs.childNodes[1]);
+        setActiveToggle(tabs.childNodes[1]);
         document.getElementById(`stats-button-${seriesId}`).textContent = I18n.t("js.hide_stats");
         initViolin(
             `/nl/stats/violin?series_id=${seriesId}`,

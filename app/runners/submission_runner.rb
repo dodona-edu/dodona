@@ -128,6 +128,22 @@ class SubmissionRunner
 
       first_try = false
       sleep 1
+      # Create can fail due to timeouts if the worker is under heavy
+      # load. Usually the container is still created, but we just
+      # don't know about it in time. Make sure the old container is
+      # deleted before we retry creating it to avoid name conflicts.
+      begin
+        Docker::Container.get(docker_options[:name]).tap do |c|
+          c.stop
+          c.remove
+        end
+      # rubocop:disable Lint/SuppressedException
+      # If the container does not exist the library raises an
+      # error. We can ignore this error, since we can skip the
+      # previous step anyway in that case.
+      rescue StandardError
+      end
+      # rubocop:enable Lint/SuppressedException
       retry
     end
 

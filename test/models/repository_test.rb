@@ -235,6 +235,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should convert to content page' do
+    assert @echo.submissions.empty?
     @remote.update_json("#{@echo.path}/config.json", 'convert to content page') do |json|
       json['type'] = 'content'
       json
@@ -243,6 +244,29 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.process_activities
     assert @repository.activities.first.content_page?
     assert @repository.activities.first.ok?
+    assert_equal 1, @repository.activities.count
+  end
+
+  test 'should move submissions to clone when converting to content page' do
+    @echo.submissions << create(:submission)
+    submission = @echo.submissions.first
+    @remote.update_json("#{@echo.path}/config.json", 'convert to content page') do |json|
+      json['type'] = 'content'
+      json
+    end
+    @repository.reset
+    @repository.process_activities
+    assert_equal 2, @repository.activities.count
+
+    original = @repository.activities.find { |a| a.id == @echo.id }
+    other = @repository.activities.find { |a| a.id != @echo.id }
+    submission.reload
+
+    assert original.content_page?
+    assert original.ok?
+    assert other.exercise?
+    assert other.removed?
+    assert_equal other.id, submission.exercise_id
   end
 
   test 'should catch invalid dirconfig files' do

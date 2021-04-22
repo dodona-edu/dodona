@@ -94,6 +94,10 @@ class Activity < ApplicationRecord
     false
   end
 
+  def becomes_content_page?
+    exercise? && Activity.parse_type(merged_config['type']) == ContentPage.name
+  end
+
   def full_path
     return Pathname.new '' unless path
 

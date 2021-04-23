@@ -130,6 +130,18 @@ class Repository < ApplicationRecord
     existing_activities.each do |act, directories|
       orig_path = directories.select { |dir| dir == act.full_path }.first || directories.first
       act.path = activity_relative_path orig_path
+
+      # Converting an exercise to a content page causes issues if
+      # submissions exist for that exercise.
+      # Create a new, removed exercise to attach the submissions to.
+      if act.becomes_content_page? && act.submissions.exists?
+        new_act = act.dup
+        new_act.attributes = { path: nil, status: :removed, repository_token: nil }
+        new_act.save
+
+        Submission.where(exercise_id: act.id).update(exercise_id: new_act.id)
+      end
+
       update_activity act
       handled_activity_ids.push act.id
       handled_directories.push orig_path

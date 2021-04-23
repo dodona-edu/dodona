@@ -2,7 +2,7 @@ class PagesController < ApplicationController
   content_security_policy only: %i[contact] do |policy|
     policy.script_src(*(%w[https://www.recaptcha.net https://www.gstatic.com
                            https://www.google.com] + policy.script_src))
-    policy.frame_src 'https://www.google.com'
+    policy.frame_src('https://www.google.com', 'https://www.recaptcha.net')
   end
 
   def home

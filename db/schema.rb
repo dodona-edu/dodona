@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", charset: "utf8mb4", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "evaluation_id"
-    t.string "type", default: "Annotation", null: false
+    t.string "type"
     t.integer "question_state"
     t.integer "last_updated_by_id", null: false
     t.integer "course_id", null: false
@@ -186,7 +186,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
     t.bigint "institution_id"
     t.string "search", limit: 4096
     t.boolean "moderated", default: false, null: false
-    t.boolean "enabled_questions", default: true, null: false
+    t.boolean "enabled_questions", default: false, null: false
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 
@@ -364,6 +364,30 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
     t.index ["user_id"], name: "fk_rails_6b59ad362c"
   end
 
+  create_table "rubrics", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "evaluation_exercise_id", null: false
+    t.decimal "maximum", precision: 5, scale: 2, null: false
+    t.string "name", null: false
+    t.boolean "visible", default: true, null: false
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["evaluation_exercise_id"], name: "index_rubrics_on_evaluation_exercise_id"
+  end
+
+  create_table "scores", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "rubric_id", null: false
+    t.bigint "feedback_id", null: false
+    t.decimal "score", precision: 5, scale: 2, null: false
+    t.integer "last_updated_by_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["feedback_id"], name: "index_scores_on_feedback_id"
+    t.index ["last_updated_by_id"], name: "index_scores_on_last_updated_by_id"
+    t.index ["rubric_id", "feedback_id"], name: "index_scores_on_rubric_id_and_feedback_id", unique: true
+    t.index ["rubric_id"], name: "index_scores_on_rubric_id"
+  end
+
   create_table "series", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_id"
     t.string "name"
@@ -481,6 +505,10 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"
+  add_foreign_key "rubrics", "evaluation_exercises"
+  add_foreign_key "scores", "feedbacks"
+  add_foreign_key "scores", "rubrics"
+  add_foreign_key "scores", "users", column: "last_updated_by_id"
   add_foreign_key "series", "courses"
   add_foreign_key "series_memberships", "activities"
   add_foreign_key "series_memberships", "series"

@@ -33,6 +33,8 @@ class PagesController < ApplicationController
 
   def privacy; end
 
+  def support; end
+
   def toggle_demo_mode
     authorize :pages
     session[:demo] = !Current.demo_mode

@@ -44,7 +44,7 @@ function drawStacked(data, maxSum, exMap): void {
 
     // Color scale
     const color = d3.scaleOrdinal()
-        .range(d3.schemeCategory10)
+        .range(d3.schemeDark2)
         .domain(statusOrder);
 
     const tooltip = d3.select(selector).append("div")

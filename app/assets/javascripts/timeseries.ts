@@ -1,7 +1,8 @@
 import * as d3 from "d3";
+import { formatTitle } from "graph_helper.js";
 
 let selector = "";
-const margin = { top: 20, right: 10, bottom: 20, left: 100 };
+const margin = { top: 20, right: 10, bottom: 20, left: 105 };
 let width = 0;
 let height = 0;
 const statusOrder = [
@@ -31,10 +32,14 @@ function drawTimeSeries(data, metaData, exMap): void {
         .domain(yDomain)
         .paddingInner(.2)
         .paddingOuter(.4);
-    graph.append("g")
-        .attr("transform", `translate(0, ${-y.bandwidth() - 10})`)
-        .call(d3.axisLeft(y).tickSize(0).tickFormat(id => exMap[id]))
+
+    const yAxis = graph.append("g")
+        .call(d3.axisLeft(y).tickSize(0));
+    yAxis
         .select(".domain").remove();
+    yAxis
+        .selectAll(".tick text")
+        .call(formatTitle, margin.left, exMap);
 
     // common y scale per exercise
     const interY = d3.scaleLinear()
@@ -144,8 +149,6 @@ function initTimeseries(url, containerId, containerHeight: number): void {
 
     if (!height) {
         height = container.node().clientHeight - 5;
-        console.log(height);
-        console.log("\n");
     }
     container.html(""); // clean up possible previous visualisations
     //

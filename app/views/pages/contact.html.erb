@@ -8,6 +8,9 @@
         </div>
       </div>
       <div class="card-supporting-text">
+        <div class="callout callout-info">
+          <%= t('.rights_request_redirect_html', url: new_rights_request_path) %>
+        </div>
         <%= form_for @contact_form, url: create_contact_path, html: {class: 'form-horizontal'} do |f| %>
           <div class="field form-group">
             <%= f.label t('.name'), :class => "col-sm-2 control-label" %>

@@ -38,6 +38,10 @@
         <%= f.label :permission, :class => "col-sm-4 control-label" %>
         <div class="col-sm-8"><%= f.select :permission, editable_permissions.map {|key, value| [key.humanize, key]}, {}, {:class => 'form-control', disabled: !can_edit_permissions?(user)} %></div>
       </div>
+    <% elsif user.student? %>
+      <div class="field form-group">
+        <%= link_to t('.request_rights'), new_rights_request_path %>
+      </div>
     <% end %>
   <% end %>
 </div>

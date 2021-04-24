@@ -1,6 +1,7 @@
 en:
   users:
     form:
+      request_rights: Request teacher rights
     index:
       title: All users
       no_users: No users found

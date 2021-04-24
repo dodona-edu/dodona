@@ -1,6 +1,7 @@
 nl:
   users:
     form:
+      request_rights: Lesgeversrechten aanvragen
     index:
       title: Alle gebruikers
       no_users: Geen gebruikers gevonden

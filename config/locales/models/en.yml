@@ -26,6 +26,7 @@ en:
       evaluation: Evaluation
       feedback: Feedback
       question: Question
+      rights_request: Teacher rights request
     attributes:
       api_token:
         description: Description
@@ -175,3 +176,7 @@ en:
           unanswered: Unanswered
           in_progress: In progress
           answered: Answered
+      rights_request:
+        user: User
+        context: Context
+        institution_name: Institution name

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_08_102217) do
+ActiveRecord::Schema.define(version: 2021_04_16_085755) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -364,6 +364,15 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
     t.index ["user_id"], name: "fk_rails_6b59ad362c"
   end
 
+  create_table "rights_requests", charset: "utf8mb4", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "institution_name"
+    t.string "context", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_rights_requests_on_user_id"
+  end
+
   create_table "series", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_id"
     t.string "name"
@@ -481,6 +490,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"
+  add_foreign_key "rights_requests", "users"
   add_foreign_key "series", "courses"
   add_foreign_key "series_memberships", "activities"
   add_foreign_key "series_memberships", "series"

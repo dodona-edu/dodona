@@ -54,6 +54,7 @@ nl:
       subject: Onderwerp
       message: Bericht
       prompt: Contacteer ons als het probleem zich blijft voordoen.
+      rights_request_redirect_html: Wil je lesgeversrechten aanvragen voor je account? Vanaf nu kan je dat <a href="%{url}">hier</a> doen.
     create_contact:
       captcha_failed: reCAPTCHA kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."

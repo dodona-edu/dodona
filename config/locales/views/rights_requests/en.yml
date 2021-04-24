@@ -1,0 +1,12 @@
+en:
+  rights_requests:
+    new:
+      title: Request teacher rights
+    form:
+      institution-help: We do not yet have a proper name for your educational institution. Suggest one here.
+    index:
+      title: Teacher rights requests
+    requests_table:
+      approve: Approve
+      reject: Reject
+      no_institution_provided: Not provided

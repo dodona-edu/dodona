@@ -25,6 +25,9 @@
     </h4>
     <div class="flex-spacer"></div>
     <div class="card-subtitle-actions">
+      <a class="btn btn-icon hidden-print">
+        <i class="mdi mdi-chart-line" onclick="dodona.toggleStats(this, '<%= series.id %>')"></i>
+      </a>
       <div class="btn-group">
         <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
           <i class="mdi mdi-dots-vertical"></i>
@@ -139,13 +142,6 @@
     </div>
   <% end %>
 
-  <div>
-    <button class="btn-text pull-right"
-      id="stats-button-<%= series.id %>"
-      onclick="dodona.toggleStats('<%= series.id %>')">
-      <%= t "series.visualizations.show_stats" %>
-    </button>
-  </div>
   <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle" style="display: none">
     <button class="btn btn-secondary annotation-toggle active" onclick="dodona.setActiveToggle(this); 
       dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Violin</button>

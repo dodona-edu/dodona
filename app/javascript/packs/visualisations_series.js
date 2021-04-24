@@ -9,7 +9,7 @@ window.dodona.initTimeseries = initTimeseries;
 window.dodona.toggleStats = toggleStats;
 window.dodona.setActiveToggle = setActiveToggle;
 
-function toggleStats(seriesId) {
+function toggleStats(button, seriesId) {
     const tabs = document.getElementById(`stats-tabs-${seriesId}`);
     const content = document.getElementById(`series-content-${seriesId}`);
     const height = content.clientHeight;
@@ -18,7 +18,7 @@ function toggleStats(seriesId) {
         content.style.display = "none";
         console.log(tabs.childNodes[1]);
         setActiveToggle(tabs.childNodes[1]);
-        document.getElementById(`stats-button-${seriesId}`).textContent = I18n.t("js.hide_stats");
+        button.className = button.className.replace("chart-line", "format-list-bulleted");
         initViolin(
             `/nl/stats/violin?series_id=${seriesId}`,
             `#stats-container-${seriesId}`,
@@ -28,7 +28,7 @@ function toggleStats(seriesId) {
         tabs.style.display = "none";
         content.style.display = "block";
         document.getElementById(`stats-container-${seriesId}`).innerHTML = "";
-        document.getElementById(`stats-button-${seriesId}`).textContent = I18n.t("js.show_stats");
+        button.className = button.className.replace("format-list-bulleted", "chart-line");
     }
 }
 

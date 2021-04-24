@@ -60,7 +60,7 @@ function drawTimeSeries(data, metaData, exMap): void {
 
     // Color scale
     const color = d3.scaleOrdinal()
-        .range(["green", d3.interpolateReds])
+        .range(d3.schemeDark2)
         .domain(statusOrder);
 
 

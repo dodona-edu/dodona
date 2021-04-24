@@ -1,7 +1,8 @@
 import * as d3 from "d3";
+import { formatTitle } from "graph_helper.js";
 
 let selector = "#stacked_status-container";
-const margin = { top: 20, right: 10, bottom: 20, left: 100 };
+const margin = { top: 20, right: 10, bottom: 20, left: 105 };
 let width = 0;
 let height = 0;
 const statusOrder = [
@@ -31,9 +32,14 @@ function drawStacked(data, maxSum, exMap): void {
         .range([innerHeight, 0])
         .domain(yDomain)
         .padding(.5);
-    graph.append("g")
-        .call(d3.axisLeft(y).tickSize(0).tickFormat(t => exMap[t]))
+
+    const yAxis = graph.append("g")
+        .call(d3.axisLeft(y).tickSize(0).tickPadding(30));
+    yAxis
         .select(".domain").remove();
+    yAxis
+        .selectAll(".tick text")
+        .call(formatTitle, margin.left, exMap);
 
 
     // Show the X scale
@@ -87,10 +93,7 @@ function initStacked(url, containerId: string, containerHeight: number): void {
     const container = d3.select(selector);
 
     if (!height) {
-        console.log(height);
         height = container.node().clientHeight - 5;
-        console.log(height);
-        console.log("\n");
     }
     container.html(""); // clean up possible previous visualisations
     container.attr("class", "text-center").append("span").text(I18n.t("js.loading"));

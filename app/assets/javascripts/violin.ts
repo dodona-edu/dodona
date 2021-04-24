@@ -3,7 +3,7 @@ import { formatTitle } from "graph_helper.js";
 
 
 let selector = undefined;
-const margin = { top: 20, right: 10, bottom: 20, left: 105 };
+const margin = { top: 20, right: 10, bottom: 30, left: 105 };
 let width = 0;
 let height = 0;
 
@@ -68,7 +68,7 @@ function drawViolin(data: {
     graph.append("text")
         .attr("text-anchor", "end")
         .attr("x", innerWidth)
-        .attr("y", innerHeight)
+        .attr("y", innerHeight+margin.top)
         .text(I18n.t("js.n_submissions"))
         .attr("fill", "currentColor")
         .style("font-size", "11px");

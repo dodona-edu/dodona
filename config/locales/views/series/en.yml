@@ -82,6 +82,3 @@ en:
         other: "%{count} activities"
       name: "Name"
       deadline: "Deadline"
-    visualizations:
-      show_stats: "Show statistics"
-      hide_stats: "Hide statistics"

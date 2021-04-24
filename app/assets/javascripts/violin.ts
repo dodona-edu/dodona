@@ -21,6 +21,7 @@ function drawViolin(data: {
     // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
+    const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
     const maxFreq = d3.max(data, d => d3.max(
         Object.values(d.freq), (f: {label: string; freq: number}) => f.freq
@@ -39,13 +40,15 @@ function drawViolin(data: {
         .range([innerHeight, 0])
         .domain(yDomain)
         .padding(.5);
+
     const yAxis = graph.append("g")
-        .call(d3.axisLeft(y).tickSize(0).tickPadding(30));
+        .call(d3.axisLeft(y).tickSize(0))
+        .attr("transform", `translate(-${yAxisPadding}, 0)`);
     yAxis
         .select(".domain").remove();
     yAxis
         .selectAll(".tick text")
-        .call(formatTitle, margin.left, exMap);
+        .call(formatTitle, margin.left-yAxisPadding, exMap, 5);
 
     // y scale per exercise
     const yBin = d3.scaleLinear()

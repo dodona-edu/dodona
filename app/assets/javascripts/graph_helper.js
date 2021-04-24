@@ -4,7 +4,6 @@ function formatTitle(selection, width, exMap) {
     selection.each((datum, i, nodeList) => {
         const text = d3.select(nodeList[i]);
         const words = exMap[datum].split(" ").reverse();
-        const padding = 5;
         let word = "";
         let line = [];
         let lineNumber = 0;
@@ -13,18 +12,18 @@ function formatTitle(selection, width, exMap) {
         const dy = parseFloat(text.attr("dy"));
         let tspan = text.text(null)
             .append("tspan")
-            .attr("x", -padding)
+            .attr("x", 0)
             .attr("y", y)
             .attr("dy", `${dy}em`);
         while (word = words.pop()) {
             line.push(word);
             tspan.text(line.join(" "));
-            if (tspan.node().getComputedTextLength() > width-padding) {
+            if (tspan.node().getComputedTextLength() > width) {
                 line.pop();
                 tspan.text(line.join(" "));
                 line = [word];
                 tspan = text.append("tspan")
-                    .attr("x", -padding)
+                    .attr("x", -0)
                     .attr("y", y)
                     .attr("dy", `${++lineNumber*lineHeight+dy}em`)
                     .text(word)
@@ -33,7 +32,7 @@ function formatTitle(selection, width, exMap) {
         }
         const tSpans = text.selectAll("tspan");
         const breaks = tSpans.size();
-        tSpans.attr("y", -7*(breaks-1)); // should change when changing font size
+        tSpans.attr("y", -5*(breaks-1)); // should change when changing font size
     });
 }
 

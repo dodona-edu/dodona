@@ -87,6 +87,15 @@ function drawStacked(data, maxSum, exMap): void {
                 .duration(500)
                 .style("opacity", 0);
         });
+
+
+    const gridlines = graph.append("g")
+        .call(d3.axisBottom(x).tickValues([.2, .4, .6, .8]).tickFormat(() => "")
+            .tickSize(innerHeight).tickSizeOuter(0));
+    gridlines
+        .select(".domain").remove();
+    console.log(gridlines);
+    gridlines.selectAll("line").style("stroke-dasharray", ("3, 3"));
 }
 
 function initStacked(url, containerId: string, containerHeight: number): void {

@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { formatTitle } from "graph_helper.js";
 
 let selector = "";
-const margin = { top: 20, right: 10, bottom: 20, left: 105 };
+const margin = { top: 20, right: 10, bottom: 20, left: 120 };
 let width = 0;
 let height = 0;
 const statusOrder = [
@@ -16,6 +16,7 @@ function drawTimeSeries(data, metaData, exMap): void {
     const yDomain: string[] = Array.from(new Set(Object.keys(data)));
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
+    const yAxisPadding = 20; // padding between y axis (labels) and the actual graph
 
     // position graph
     const graph = d3.select(selector)
@@ -30,16 +31,16 @@ function drawTimeSeries(data, metaData, exMap): void {
     const y = d3.scaleBand()
         .range([innerHeight, 0])
         .domain(yDomain)
-        .paddingInner(.2)
-        .paddingOuter(.4);
+        .padding(.5);
 
     const yAxis = graph.append("g")
-        .call(d3.axisLeft(y).tickSize(0));
+        .call(d3.axisLeft(y).tickSize(0))
+        .attr("transform", `translate(-${yAxisPadding}, -${y.bandwidth()/2})`);
     yAxis
         .select(".domain").remove();
     yAxis
         .selectAll(".tick text")
-        .call(formatTitle, margin.left, exMap);
+        .call(formatTitle, margin.left-yAxisPadding, exMap);
 
     // common y scale per exercise
     const interY = d3.scaleLinear()

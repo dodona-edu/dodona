@@ -1,1 +1,93 @@
-Hello world!
+<div class="home-cover-img">&nbsp;</div>
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="row home-header">
+      <div class="col-xs-12 col-sm-8 col-md-7 home-lead">
+        <h1>Steun Dodona</h1>
+        <p class='lead'>Gratis leren programmeren<br>voor secundair en hoger onderwijs</p>
+      </div>
+      <div class="hidden-xs col-sm-4 col-md-5">
+        <%= image_tag("home.png", class: 'img-responsive') %>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-supporting-text row">
+        <div class="col-xs-6 col-md-3">
+          <h1><%= number_with_delimiter 7559359, delimiter: " " %></h1>
+          Ingediende oplossingen
+        </div>
+        <div class="col-xs-6 col-md-3">
+          <h1><%= number_with_delimiter 17087, delimiter: " " %></h1>
+          Studenten
+        </div>
+        <div class="col-xs-6 col-md-3">
+          <h1><%= number_with_delimiter 6002, delimiter: " " %></h1>
+          Oefeningen
+        </div>
+        <div class="col-xs-6 col-md-3">
+          <h1><%= number_with_delimiter 800, delimiter: " " %></h1>
+          Scholen
+        </div>
+      </div>
+      <div class="card-supporting-text card-border">
+        <p>
+          Dodona is een online oefenplatform om te <strong>leren programmeren</strong>. Het wil studenten op een zo zinvolle en zo effectief mogelijke manier leren programmeren. Dodona gedraagt zich als een <strong>online co-teacher</strong> die ontworpen is om elke student toegang te geven tot onderwijs van hoge kwaliteit. De focus ligt op het automatisch verbeteren en het geven van <strong>zinvolle feedback</strong> op ingediende oplossingen van de studenten.
+        </p>
+        <p>
+          Dodona wordt <strong>gratis</strong> aangeboden aan scholen en onderwijsinstellingen en dat willen we graag zou houden! Helaas vergt het online houden van dit platform heel wat tijd, net als de ondersteuning voor honderden scholen en duizenden studenten. Je steun gaat <strong>integraal naar personeel</strong> (zoals bijvoorbeeld jobstudenten) die meehelpen met het ontwikkelen van nieuwe features en het ondersteunen van gebruikers.
+        </p>
+        <p>
+          Contacteer ons gerust op <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> voor meer info over dit project.
+        </p>
+      </div>
+      <div class="card-supporting-text card-border">
+        <h3>Hoe kunt u ons steunen?</h3>
+        <p>
+          Dankzij het <a href="https://www.ugent.be/schenken/nl" target="_blank">Universiteitsfonds</a> van de Universiteit Gent kunt u <strong>fiscaal voordelig schenken</strong> aan Dodona. Voor giften vanaf 40 euro ontvangt u een fiscaal attest waarmee u 45% van uw gift recupereert in uw belastingsaangifte. Uw gift komt bovendien <strong>integraal bij ons</strong> terecht.
+        </p>
+        <blockquote>
+          Giften kunnen worden overgemaakt op het rekeningnummer van het Universiteitsfonds zijnde <code>390-0965803-29</code> of IBAN <code>BE26 3900 9658 0329</code> (BIC: <code>BBRUBEBB</code>) met als mededeling <code>Dodona</code>.
+        </blockquote>
+        <p>
+          Wenst u een groter bedrag te schenken of kiest u liever voor sponsoring op factuur? Contacteer ons op <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> en we bekijken samen graag de mogelijkheden.
+        </p>
+      </div>
+    </div>
+    <div class="row card home-card">
+      <div class="card-supporting-text supporters row">
+        <div class="col-xs-12 col-sm-6">
+          <h3>Met de steun van</h3>
+          <p>
+            Dodona wordt ontwikkeld door een team onderzoekers aan de <a href="https://www.ugent.be" target="_blank">Universiteit Gent</a>.
+            Het platform is volledig open source en alle code is beschikbaar op
+            <a href="https://github.com/dodona-edu/dodona" target="_blank">GitHub</a>.
+            De hosting wordt aangeboden door de Universiteit Gent. Daarnaast ontving Dodona al steun in de vorm van onderwijsinnovatieprojecten van de Universiteit Gent en de Faculteit wetenschappen. Ook <a href="https://www.elixir-belgium.org/" target="_blank">ELIXIR Belgium</a> ondersteunde dit project.
+          </p>
+        </div>
+        <div class="col-xs-12 col-sm-6 sponsor-logos">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <%= link_to "https://www.ugent.be/", title: "Universiteit Gent", target: "_blank" do %>
+                <%= image_tag("ugent.png", class: 'img-responsive') %>
+              <% end %>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <%= link_to "https://www.ugent.be/we/#{I18n.locale}", title: "Faculteit Wetenschappen", target: "_blank" do %>
+                <%= image_tag("we.#{I18n.locale}.png", class: 'img-responsive') %>
+              <% end %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <%= link_to "https://www.elixir-belgium.org/", title: "Elixir", target: "_blank" do %>
+                <%= image_tag("elixir.png", class: 'img-responsive') %>
+              <% end %>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

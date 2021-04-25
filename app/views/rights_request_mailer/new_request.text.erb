@@ -1,0 +1,14 @@
+<%= @request.user.full_name %> vraagt om lesgeversrechten. Als context gaf die:
+
+<%= @request.context %>
+
+<% if @request.institution_name.present? %>
+De onderwijsinstelling van deze gebruiker had nog geen manueel
+ingestelde naam. De gebruiker stelt "<%= @request.institution_name %>"
+voor.
+<% elsif @request.user.institution.generated_name %>
+De onderwijsinstelling van deze gebruiker heeft nog geen manueel
+ingestelde naam. De gebruiker heeft er ook geen voorgesteld.
+<% end %>
+
+Ga naar <%= rights_requests_url %> om de openstaande aanvragen te zien.

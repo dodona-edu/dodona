@@ -12,13 +12,23 @@
 class RightsRequest < ApplicationRecord
   belongs_to :user
 
+  after_create :notify_admins
+
   def approve
     user.update(permission: :staff)
     user.institution.update(name: institution_name) if institution_name.present?
     destroy
+    RightsRequestMailer.approved(self).deliver
   end
 
   def reject
     destroy
+    RightsRequestMailer.rejected(self).deliver
+  end
+
+  private
+
+  def notify_admins
+    RightsRequestMailer.new_request(self).deliver
   end
 end

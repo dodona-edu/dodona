@@ -1,48 +1,85 @@
 require 'test_helper'
 
 class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
+  extend CRUDTest
+
+  crud_helpers RightsRequest, attrs: %i[context institution_name]
+
   setup do
-    @rights_request = rights_requests(:one)
+    sign_in create(:student)
   end
 
-  test 'should get index' do
+  test_crud_actions only: %i[new create], except: %i[create_redirect]
+
+  test 'creation should send email' do
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      attrs = generate_attr_hash
+      create_request(attr_hash: attrs)
+      assert_redirected_to root_path
+    end
+  end
+
+  test 'zeus should be able to get index' do
+    create(:rights_request)
+    sign_in create(:zeus)
     get rights_requests_url
     assert_response :success
   end
 
-  test 'should get new' do
-    get new_rights_request_url
-    assert_response :success
+  test 'others should not be able to get index' do
+    create(:rights_request)
+    get rights_requests_url
+    assert_redirected_to root_path
   end
 
-  test 'should create rights_request' do
-    assert_difference('RightsRequest.count') do
-      post rights_requests_url, params: { rights_request: { context: @rights_request.context, institution_name: @rights_request.institution_name, user_id_id: @rights_request.user_id_id } }
+  test 'zeus should be able to approve' do
+    sign_in create(:zeus)
+    req = create(:rights_request)
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      post approve_rights_request_url(req, format: :js)
     end
-
-    assert_redirected_to rights_request_url(RightsRequest.last)
-  end
-
-  test 'should show rights_request' do
-    get rights_request_url(@rights_request)
     assert_response :success
+
+    req = create(:rights_request)
+    post approve_rights_request_url(req)
+    assert_redirected_to rights_requests_path
   end
 
-  test 'should get edit' do
-    get edit_rights_request_url(@rights_request)
-    assert_response :success
-  end
-
-  test 'should update rights_request' do
-    patch rights_request_url(@rights_request), params: { rights_request: { context: @rights_request.context, institution_name: @rights_request.institution_name, user_id_id: @rights_request.user_id_id } }
-    assert_redirected_to rights_request_url(@rights_request)
-  end
-
-  test 'should destroy rights_request' do
-    assert_difference('RightsRequest.count', -1) do
-      delete rights_request_url(@rights_request)
+  test 'approval should update institution name' do
+    sign_in create(:zeus)
+    req = create(:rights_request)
+    req.update(institution_name: req.user.institution.name + 'different')
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      post approve_rights_request_url(req, format: :js)
     end
+    assert_response :success
+    assert_equal req.institution_name, req.user.institution.reload.name
+  end
 
-    assert_redirected_to rights_requests_url
+  test 'others should not be able to approve' do
+    req = create(:rights_request)
+    assert_difference 'ActionMailer::Base.deliveries.size', 0 do
+      post approve_rights_request_url(req)
+    end
+    assert_redirected_to root_path
+  end
+
+  test 'zeus should be able to reject' do
+    sign_in create(:zeus)
+    req = create(:rights_request)
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      post reject_rights_request_url(req, format: :js)
+    end
+    assert_response :success
+
+    req = create(:rights_request)
+    post reject_rights_request_url(req)
+    assert_redirected_to rights_requests_path
+  end
+
+  test 'others should not be able to reject' do
+    req = create(:rights_request)
+    post reject_rights_request_url(req)
+    assert_redirected_to root_path
   end
 end

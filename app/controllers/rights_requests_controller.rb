@@ -19,7 +19,7 @@ class RightsRequestsController < ApplicationController
 
     respond_to do |format|
       if @rights_request.save
-        format.html { redirect_to root_path, notice: 'Rights request was successfully created.' }
+        format.html { redirect_to root_path, notice: I18n.t('rights_requests.create.created') }
         format.json { render :show, status: :created, location: @rights_request }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -31,11 +31,19 @@ class RightsRequestsController < ApplicationController
   def approve
     @rights_request.approve
     @requests = policy_scope(RightsRequest.all)
+    respond_to do |format|
+      format.html { redirect_to rights_requests_path, notice: I18n.t('rights_requests.approve.approved') }
+      format.js
+    end
   end
 
   def reject
     @rights_request.reject
     @requests = policy_scope(RightsRequest.all)
+    respond_to do |format|
+      format.html { redirect_to rights_requests_path, notice: I18n.t('rights_requests.reject.rejected') }
+      format.js
+    end
   end
 
   private

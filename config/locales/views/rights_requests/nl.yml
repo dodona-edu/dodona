@@ -11,3 +11,9 @@ nl:
       approve: Goedkeuren
       reject: Afkeuren
       no_institution_provided: Niet opgegeven
+    create:
+      created: Je aanvraag voor lesgeversrechten werd successvol verzonden.
+    approve:
+      approved: Lesgever goedgekeurd.
+    reject:
+      rejected: Lesgever afgekeurd.

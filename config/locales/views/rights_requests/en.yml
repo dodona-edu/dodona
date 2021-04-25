@@ -11,3 +11,9 @@ en:
       approve: Approve
       reject: Reject
       no_institution_provided: Not provided
+    create:
+      created: Request for teacher rights successfully sent.
+    approve:
+      approved: Teacher approved.
+    reject:
+      rejected: Teacher rejected.

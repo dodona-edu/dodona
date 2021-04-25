@@ -179,5 +179,5 @@ nl:
           answered: Beantwoord
       rights_request:
         user: Gebruiker
-        context: Context
+        context: Motivering
         institution_name: Naam van onderwijsinstelling

@@ -54,7 +54,7 @@ en:
       subject: Subject
       message: Message
       prompt: Contact us if the problem persists.
-      rights_request_redirect_html: Do you want to gain teacher rights for your account? From now on, you can do that <a href="%{url}">here</a>.
+      rights_request_redirect_html: Do you want to request teacher rights for your account? From now on, you can do that <a href="%{url}">using this form</a>.
     create_contact:
       mail_sent: "Your message has been sent. Thanks for getting in touch."
       captcha_failed: reCAPTCHA could not be verified; please try again.
@@ -77,5 +77,3 @@ en:
       support_p3_html: "If you would like to donate a lager amount or wish to sponsor us (by invoice), please contact us at <a href='mailto:dodona@ugent.be'>dodona@ugent.be</a> and we'd be happy to look at the possibilities."
       supported_by: Supported by
       supported_p1_html: "Dodona is run by a small team of researchers at <a href='https://www.ugent.be/en' target='_blank'>Ghent University</a>. The platform is open source and all code is available on <a href='https://github.com/dodona-edu/dodona' target='_blank'>GitHub</a>. The hosting is provided by Ghent University. In addition, Dodona is supported by educational innovation projects from Ghent University and the Faculty of Sciences. <a href='https://www.elixir-belgium.org/' target='_blank'>ELIXIR Belgium</a> also provides some funding."
-
-

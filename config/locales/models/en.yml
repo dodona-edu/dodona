@@ -178,5 +178,5 @@ en:
           answered: Answered
       rights_request:
         user: User
-        context: Context
+        context: Motivation
         institution_name: Institution name

@@ -8,10 +8,10 @@ export class Drawer {
 
         document
             .querySelector(toggleSelector)
-            .addEventListener("click", () => this.toggle());
+            ?.addEventListener("click", () => this.toggle());
         document
             .querySelector(backgroundSelector)
-            .addEventListener("click", () => this.hide());
+            ?.addEventListener("click", () => this.hide());
     }
 
     toggle(): void {

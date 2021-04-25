@@ -48,7 +48,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
   test 'approval should update institution name' do
     sign_in create(:zeus)
     req = create(:rights_request)
-    req.update(institution_name: req.user.institution.name + 'different')
+    req.update(institution_name: "#{req.user.institution.name}-different")
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       post approve_rights_request_url(req, format: :js)
     end

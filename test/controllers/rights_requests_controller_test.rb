@@ -46,10 +46,12 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
       post approve_rights_request_url(req, format: :js)
     end
     assert_response :success
+    assert req.user.reload.staff?
 
     req = create(:rights_request)
     post approve_rights_request_url(req)
     assert_redirected_to rights_requests_path
+    assert req.user.reload.staff?
   end
 
   test 'approval should update institution name' do

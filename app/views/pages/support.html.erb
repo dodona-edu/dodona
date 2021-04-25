@@ -12,22 +12,7 @@
     </div>
     <div class="row card home-card">
       <div class="card-supporting-text row">
-        <div class="col-xs-6 col-md-3">
-          <h1><%= number_with_delimiter @total_submissions, delimiter: " " %></h1>
-          <%= t ".submitted_solutions" %>
-        </div>
-        <div class="col-xs-6 col-md-3">
-          <h1><%= number_with_delimiter @total_users, delimiter: " " %></h1>
-          <%= t ".students" %>
-        </div>
-        <div class="col-xs-6 col-md-3">
-          <h1><%= number_with_delimiter @total_activities, delimiter: " " %></h1>
-          <%= t ".exercises" %>
-        </div>
-        <div class="col-xs-6 col-md-3">
-          <h1><%= number_with_delimiter @total_users, delimiter: " " %></h1>
-          <%= t ".schools" %>
-        </div>
+        <%= render partial: 'metrics' %>
       </div>
       <div class="card-supporting-text card-border">
         <p><%= t ".intro_p1_html" %></p>

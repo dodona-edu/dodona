@@ -16,7 +16,6 @@ function toggleStats(button, seriesId) {
     if (tabs.style.display == "none") {
         tabs.style.display = "block";
         content.style.display = "none";
-        console.log(tabs.childNodes[1]);
         setActiveToggle(tabs.childNodes[1]);
         button.className = button.className.replace("chart-line", "format-list-bulleted");
         initViolin(

@@ -4,6 +4,7 @@ class RightsRequestMailer < ApplicationMailer
     user = request.user
     I18n.with_locale(user&.lang) do
       mail to: %("#{user.full_name}" <#{user.email}>),
+           cc: Rails.application.config.dodona_email,
            subject: I18n.t('rights_request_mailer.approved.subject')
     end
   end
@@ -13,6 +14,7 @@ class RightsRequestMailer < ApplicationMailer
     user = request.user
     I18n.with_locale(user&.lang) do
       mail to: %("#{user.full_name}" <#{user.email}>),
+           cc: Rails.application.config.dodona_email,
            subject: I18n.t('rights_request_mailer.rejected.subject')
     end
   end

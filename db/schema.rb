@@ -367,7 +367,7 @@ ActiveRecord::Schema.define(version: 2021_04_16_085755) do
   create_table "rights_requests", charset: "utf8mb4", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "institution_name"
-    t.string "context", null: false
+    t.text "context", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_rights_requests_on_user_id"

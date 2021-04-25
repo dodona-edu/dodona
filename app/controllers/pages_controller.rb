@@ -34,10 +34,10 @@ class PagesController < ApplicationController
   def privacy; end
 
   def support
-    @total_submissions = Submission.order(id: :desc).limit(1).pluck(:id).first
-    @total_users = User.order(id: :desc).limit(1).pluck(:id).first
+    @total_submissions = Submission.order(id: :desc).limit(1).pick(:id)
+    @total_users = User.order(id: :desc).limit(1).pick(:id)
     @total_activities = Activity.count
-    @total_schools = Institution.order(id: :desc).limit(1).pluck(:id).first
+    @total_schools = Institution.order(id: :desc).limit(1).pick(:id)
   end
 
   def toggle_demo_mode

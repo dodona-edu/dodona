@@ -4,6 +4,7 @@ en:
       title: Request teacher rights
     form:
       institution-help: We do not yet have a proper name for your educational institution. Suggest one here.
+      context_explanation: Some info on why you need these rights should go here...
     index:
       title: Teacher rights requests
     requests_table:

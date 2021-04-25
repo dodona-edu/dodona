@@ -4,6 +4,7 @@ nl:
       title: Lesgeversrechten aanvragen
     form:
       institution-help: We hebben nog geen naam voor je onderwijsinstelling. Stel er hier een voor.
+      context_explanation: Schrijf hier wat info over waarom je deze rechten nodig hebt...
     index:
       title: Aanvragen voor lesgeversrechten
     requests_table:

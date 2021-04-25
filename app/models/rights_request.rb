@@ -12,6 +12,8 @@
 class RightsRequest < ApplicationRecord
   belongs_to :user
 
+  validates :context, presence: true
+
   after_create :notify_admins
 
   def approve

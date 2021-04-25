@@ -9,10 +9,6 @@ class RightsRequestPolicy < ApplicationPolicy
     user&.zeus?
   end
 
-  def show?
-    user&.zeus?
-  end
-
   def create?
     user&.student? && user.rights_request.nil?
   end

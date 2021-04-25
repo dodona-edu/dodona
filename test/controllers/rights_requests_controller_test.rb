@@ -19,6 +19,13 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'creation without motivation should fail' do
+    attrs = generate_attr_hash
+    attrs.delete(:context)
+    create_request(attr_hash: attrs)
+    assert_response :unprocessable_entity
+  end
+
   test 'zeus should be able to get index' do
     create(:rights_request)
     sign_in create(:zeus)

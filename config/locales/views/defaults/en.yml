@@ -48,6 +48,7 @@ en:
       my_courses: My courses
       log_in: Sign in
       log_out: Sign out
+      rights_requests: Teacher rights requests
     footer:
       support_dodona: Support Dodona
       ugent: Ghent University

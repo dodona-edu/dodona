@@ -119,6 +119,15 @@
               <% end %>
             </li>
           <% end %>
+          <% if policy(RightsRequest).index? %>
+            <li>
+              <%= activatable_link_to rights_requests_path,
+                                      class: 'drawer-list-item' do %>
+                <i class="mdi mdi-account-plus mdi-24"></i>
+                <%= t('layout.menu.rights_requests') %>
+              <% end %>
+            </li>
+          <% end %>
           <% if current_user.zeus? %>
             <li>
               <%= activatable_link_to "/dj/overview",

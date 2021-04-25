@@ -15,11 +15,15 @@
         </td>
         <td><span class="wrap-overflow"><%= request.context %></span></td>
         <td>
-          <% if request.institution_name.present? %>
-            <%= request.institution_name %>
-          <% elsif request.user.institution.generated_name %>
-            <i class="mdi mdi-alert colored-warning mdi-18"></i>
-            <%= t('.no_institution_provided') %>
+          <%= link_to request.user.institution do %>
+            <% if request.institution_name.present? %>
+              <%= request.institution_name %>
+            <% elsif request.user.institution.generated_name %>
+              <i class="mdi mdi-alert colored-warning mdi-18"></i>
+              <%= t('.no_institution_provided') %>
+            <% else %>
+              <%= request.user.institution.name %>
+            <% end %>
           <% end %>
         </td>
         <td class="actions">

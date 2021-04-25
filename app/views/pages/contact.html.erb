@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="card-supporting-text">
-        <% if current_user?.student? %>
+        <% if current_user?.student? && current_user?.institution.present? %>
           <div class="callout callout-info">
             <%= t('.rights_request_redirect_html', url: new_rights_request_path) %>
           </div>

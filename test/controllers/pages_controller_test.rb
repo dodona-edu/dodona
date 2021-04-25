@@ -68,4 +68,9 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get support_url
     assert_response :success
   end
+
+  test 'should get about page' do
+    get about_url
+    assert_response :success
+  end
 end

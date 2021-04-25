@@ -94,7 +94,6 @@ function drawStacked(data, maxSum, exMap): void {
             .tickSize(innerHeight).tickSizeOuter(0));
     gridlines
         .select(".domain").remove();
-    console.log(gridlines);
     gridlines.selectAll("line").style("stroke-dasharray", ("3, 3"));
 }
 

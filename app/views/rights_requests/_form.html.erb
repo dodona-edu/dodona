@@ -11,6 +11,10 @@
       </div>
     <% end %>
 
+    <div class="callout callout-info">
+      <%= t '.process_help' %>
+    </div>
+
     <div class="field form-group">
       <%= f.label :context, class: 'col-sm-3 control-label' %>
       <div class="col-sm-9">
@@ -22,7 +26,7 @@
       <div class="field form-group">
         <%= f.label :institution_name, class: 'col-sm-3 control-label' %>
         <div class="col-sm-6">
-          <%= f.text_field :institution_name, class: 'form-control' %>
+          <%= f.text_field :institution_name, class: 'form-control', placeholder: current_user.institution.name %>
         </div>
         <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".institution-help" %></span>
       </div>

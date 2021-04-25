@@ -3,6 +3,7 @@ en:
     new:
       title: Request teacher rights
     form:
+      process_help: We will check your request as soon as possible. You will receive an email once we've responded to it.
       institution-help: We do not yet have a proper name for your educational institution. Suggest one here.
       context_explanation: Some info on why you need these rights should go here...
     index:

@@ -65,7 +65,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get support us page' do
-    get support_url
+    get support_us_url
     assert_response :success
   end
 

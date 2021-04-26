@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     get '/data' => 'pages#data'
     get '/privacy' => 'pages#privacy'
     get '/profile' => 'pages#profile', as: 'profile'
-    get '/support' => 'pages#support'
+    get '/support-us' => 'pages#support'
 
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'

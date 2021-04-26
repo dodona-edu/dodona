@@ -48,7 +48,9 @@ nl:
       my_courses: Mijn cursussen
       log_in: Aanmelden
       log_out: Afmelden
+      rights_requests: Aanvragen voor lesgeversrechten
     footer:
+      support_dodona: Steun Dodona
       ugent: Universiteit Gent
       your_data: Jouw data
       privacy_statement: "Privacyverklaring"

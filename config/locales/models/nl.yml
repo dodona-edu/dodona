@@ -26,6 +26,7 @@ nl:
       evaluation: Evaluatie
       feedback: Feedback
       question: Vraag
+      rights_request: Aanvraag voor lesgeversrechten
     attributes:
       api_token:
         description: Beschrijving
@@ -176,3 +177,7 @@ nl:
           unanswered: Onbeantwoord
           in_progress: In behandeling
           answered: Beantwoord
+      rights_request:
+        user: Gebruiker
+        context: Motivering
+        institution_name: Naam van onderwijsinstelling

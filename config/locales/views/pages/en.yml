@@ -54,9 +54,26 @@ en:
       subject: Subject
       message: Message
       prompt: Contact us if the problem persists.
+      rights_request_redirect_html: Do you want to request teacher rights for your account? From now on, you can do that <a href="%{url}">using this form</a>.
     create_contact:
       mail_sent: "Your message has been sent. Thanks for getting in touch."
       captcha_failed: reCAPTCHA could not be verified; please try again.
     privacy_disclaimer:
       text_html: "Your privacy is important to us. On the <a href=\"%{your_data}\">your data</a> page we explain in clear and understandable language what data we collect and how we use it. Our <a href=\"%{privacy_statement}\">privacy statement</a> contains the legally binding version."
-
+    support:
+      support_dodona: Support Dodona
+      title_l1: Learn to code for free
+      title_l2: for secondary and higher education
+      submitted_solutions: Submitted solutions
+      students: Students
+      exercises: Exercises
+      schools: Schools
+      intro_p1_html: "Dodona is an online exercise platform for <strong>learning to code</strong>. It wants to teach students how to program in the most meaningful and effective way possible. Dodona acts as an <strong>online co-teacher</strong>, designed to give every student access to high quality education. The focus is on automatic corrections and giving meaningful feedback on the <strong>submitted solutions</strong> from students."
+      intro_p2_html: "Dodona is <strong>free to use</strong> for schools and thanks to your support, we would like to keep it that way! Keeping this platform up and running takes a lot of time, just as supporting hundeds of schools and thousands of students. Your support would go <strong>entirely to personnel</strong> (e.g., payed internships) that help developing new features and supporting users."
+      intro_p3_html: "Please contact us at <a href='mailto:dodona@ugent.be'>dodona@ugent.be</a> for more information about this project."
+      how_to_support: How can you support us?
+      support_p1_html: "Thanks to the <a href='https://www.ugent.be/en/ghentuniv/university-fund' target='_blank'>University Fund</a> of Ghent University, you can support us in a <strong>tax-friendly manner</strong>. Donations over 40 euros come with a tax certificate, which allows you to recover 45% trough your personal income tax. There are no additional charges, so we receiver your donation <strong>for the full 100%</strong>."
+      support_p2_html: "You can make a voluntary donation to our project by making a deposit to the account of the University Fund account at <code>BE26 3900 9658 0329</code> (BIC: <code>BBRUBEBB</code>) by mentioning <code>Dodona</code>."
+      support_p3_html: "If you would like to donate a lager amount or wish to sponsor us (by invoice), please contact us at <a href='mailto:dodona@ugent.be'>dodona@ugent.be</a> and we'd be happy to look at the possibilities."
+      supported_by: Supported by
+      supported_p1_html: "Dodona is run by a small team of researchers at <a href='https://www.ugent.be/en' target='_blank'>Ghent University</a>. The platform is open source and all code is available on <a href='https://github.com/dodona-edu/dodona' target='_blank'>GitHub</a>. The hosting is provided by Ghent University. In addition, Dodona is supported by educational innovation projects from Ghent University and the Faculty of Sciences. <a href='https://www.elixir-belgium.org/' target='_blank'>ELIXIR Belgium</a> also provides some funding."

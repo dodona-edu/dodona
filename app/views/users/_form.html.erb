@@ -1,7 +1,9 @@
-<div class="col-md-6 col-md-push-6">
-  <%= render partial: "token_explanation" if current_user.admin? %>
-</div>
-<div class="col-md-6 col-md-pull-6">
+<% if current_user.admin? %>
+  <div class="col-md-6 col-md-push-6">
+    <%= render partial: "token_explanation" %>
+  </div>
+<% end %>
+<div class="<%= current_user.admin? ? "col-md-6 col-md-pull-6" : "col-md-10" %>">
   <%= form_for(user, :html => {:class => 'form-horizontal'}) do |f| %>
     <% if user.errors.any? %>
       <div class="callout callout-danger" id="error_explanation">
@@ -33,11 +35,22 @@
       <%= f.label :time_zone, :class => "col-sm-4 control-label" %>
       <div class="col-sm-8"><%= f.time_zone_select(:time_zone, [ActiveSupport::TimeZone['Brussels'], ActiveSupport::TimeZone['Seoul']], {}, {class: "form-control", disabled: !f.permission?(:time_zone)}) %></div>
     </div>
-    <% if f.permission?(:permission) %>
-      <div class="field form-group">
-        <%= f.label :permission, :class => "col-sm-4 control-label" %>
-        <div class="col-sm-8"><%= f.select :permission, editable_permissions.map {|key, value| [key.humanize, key]}, {}, {:class => 'form-control', disabled: !can_edit_permissions?(user)} %></div>
+    <div class="field form-group">
+      <% can_make_request = policy(RightsRequest).create? %>
+      <% has_request = current_user.rights_request.present? %>
+      <%= f.label :permission, :class => "col-sm-4 control-label" %>
+      <div class="<%= can_make_request || has_request ? "col-sm-4" : "col-sm-8" %>">
+        <%= f.select :permission, User.permissions.map {|key, value| [key.humanize, key]}, {}, {:class => 'form-control', disabled: !f.permission?(:permission)} %>
       </div>
-    <% end %>
+      <% if can_make_request %>
+        <div class="col-sm-4">
+          <%= link_to t('.request_rights'), new_rights_request_path, class: "btn btn-primary btn-text" %>
+        </div>
+      <% elsif has_request %>
+        <div class="col-sm-4">
+          <button class="btn btn-primary btn-text" disabled><%= t('.request_in_progress') %></button>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 </div>

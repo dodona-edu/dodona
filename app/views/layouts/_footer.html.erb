@@ -14,6 +14,6 @@
     <%= link_to t("layout.footer.your_data"), data_path %>
     <% version_info = "Dodona #{Dodona::Application::VERSION}" %>
     <% version_info += " (ruby #{RUBY_VERSION} #{`which ruby`})" if Rails.env.development? || Rails.env.staging? %>
-    <%= link_to version_info, "https://dodona-edu.github.io/#{I18n.locale}/news/" %>
+    <%= link_to version_info, "https://docs.dodona.be/#{I18n.locale}/news/" %>
   </div>
 </footer>

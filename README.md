@@ -4,7 +4,7 @@ The Dodona project aims to provide a solution for the automatic testing of solut
 
 On https://dodona.ugent.be, students can sign in with the credentials of the Smartschool, Office 365, or G Suite account of their school. After signing in, you can subscribe to one of the many courses. Dodona courses consist of several exercise series. Each exercise has a detailed exercise description and an extensive test suite. After submitting a solution to an exercise, a sandboxed background job is started to test the solution, and the result and feedback is displayed within seconds.
 
-The documentation of this project can be found at https://dodona-edu.github.io.
+The documentation of this project can be found at https://docs.dodona.be.
 
 ## Development Setup
 

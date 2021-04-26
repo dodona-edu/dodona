@@ -1,0 +1,6 @@
+nl:
+  rights_request_mailer:
+    approved:
+      subject: "[Dodona] Je vraag naar lesgeversrechten werd goedgekeurd"
+    rejected:
+      subject: "[Dodona] Je vraag naar lesgeversrechten werd niet goedgekeurd"

@@ -211,6 +211,13 @@ Rails.application.routes.draw do
     end
     resources :feedbacks, only: %i[show edit update]
 
+    resources :rights_requests, only: %i[index new create] do
+      member do
+        post 'approve'
+        post 'reject'
+      end
+    end
+
     scope 'lti', controller: 'lti' do
       get 'redirect', to: 'lti#redirect', as: 'lti_redirect'
       get 'do_redirect', to: 'lti#do_redirect', as: 'lti_do_redirect'

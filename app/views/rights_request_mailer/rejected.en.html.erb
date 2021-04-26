@@ -1,0 +1,12 @@
+<div class="message">
+    <p>Hi <%= @request.user.full_name %></p>
+    <p>
+        Your request for teacher rights was not granted. If you think
+        this was done by mistake you should contact us via
+        <a href="mailto:<%= Rails.application.config.dodona_email %>"><%= Rails.application.config.dodona_email %></a>.
+    </p>
+    <p>
+        Kind regards,<br/>
+        Team Dodona
+    </p>
+</div>

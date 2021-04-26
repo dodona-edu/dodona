@@ -13,6 +13,7 @@ Rails.application.configure do
 
   # The main webapp
   config.default_host = ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost'
+  config.action_mailer.default_url_options = { host: ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost:3000' }
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = ENV['RAILS_SANDBOX_HOST'] || 'sandbox.localhost'

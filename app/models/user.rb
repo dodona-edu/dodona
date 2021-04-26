@@ -44,6 +44,7 @@ class User < ApplicationRecord
   has_many :events, dependent: :restrict_with_error
   has_many :exports, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_one  :rights_request, dependent: :destroy
 
   has_many :subscribed_courses,
            lambda {

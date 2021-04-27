@@ -3,7 +3,7 @@ import { formatTitle } from "graph_helper.js";
 
 
 let selector = undefined;
-const margin = { top: 20, right: 50, bottom: 40, left: 105 };
+const margin = { top: 20, right: 60, bottom: 40, left: 105 };
 let width = 0;
 let height = 0;
 

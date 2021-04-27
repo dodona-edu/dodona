@@ -53,6 +53,7 @@ en:
     with: with
     submission: submission
     submissions: submissions
+    total: total
     months:
       long:
         jan: January

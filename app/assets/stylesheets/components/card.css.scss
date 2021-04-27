@@ -219,6 +219,10 @@ a.card-title-link:hover {
   align-items: center;
 }
 
+.card-subtitle-actions > * {
+  margin-left: 10px;
+}
+
 .card-subtitle-actions a {
   color: $text-secondary;
   font-size: 18px;

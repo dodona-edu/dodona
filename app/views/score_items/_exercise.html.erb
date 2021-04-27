@@ -27,7 +27,7 @@
           <td class="description"><%= markdown score_item.description %></td>
           <td class="maximum"><%= format_score score_item.maximum %></td>
           <td class="visibility">
-            <%= form_for [@evaluation, score_item], method: :patch, remote: :true do |f| %>
+            <%= form_for [@evaluation, score_item], namespace: "#{evaluation_exercise.id}_#{score_item.id}", method: :patch, remote: :true do |f| %>
               <%= f.check_box :visible, class: "visibility-checkbox", title: t(".visibility") %>
             <% end %>
           </td>
@@ -54,7 +54,7 @@
         <%= format_score maximum_score %>
       </td>
       <td class="visibility">
-        <%= form_for evaluation_exercise, method: :patch, remote: :true do |f| %>
+        <%= form_for evaluation_exercise, namespace: evaluation_exercise.id, method: :patch, remote: :true do |f| %>
           <%= f.check_box :visible_score, class: "total-visibility-checkbox",
                           disabled: maximum_score.nil?,
                           title: t(".total_visibility") %>

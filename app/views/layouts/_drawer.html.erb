@@ -119,6 +119,15 @@
               <% end %>
             </li>
           <% end %>
+          <% if policy(RightsRequest).index? %>
+            <li>
+              <%= activatable_link_to rights_requests_path,
+                                      class: 'drawer-list-item' do %>
+                <i class="mdi mdi-account-plus mdi-24"></i>
+                <%= t('layout.menu.rights_requests') %>
+              <% end %>
+            </li>
+          <% end %>
           <% if current_user.zeus? %>
             <li>
               <%= activatable_link_to "/dj/overview",
@@ -140,13 +149,13 @@
           <% end %>
         </li>
         <li>
-          <%= link_to "https://dodona-edu.github.io/#{I18n.locale}/news/", class: 'drawer-list-item' do %>
+          <%= link_to "https://docs.dodona.be/#{I18n.locale}/news/", class: 'drawer-list-item' do %>
             <i class="mdi mdi-alert-decagram mdi-24"></i>
             <%= t('layout.menu.news') %>
           <% end %>
         </li>
         <li>
-          <%= link_to "https://dodona-edu.github.io/#{I18n.locale}", class: 'drawer-list-item' do %>
+          <%= link_to "https://docs.dodona.be/#{I18n.locale}", class: 'drawer-list-item' do %>
             <i class="mdi mdi-help-circle mdi-24"></i>
             <%= t('layout.menu.manual') %>
           <% end %>

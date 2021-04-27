@@ -191,6 +191,23 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
                       accepted: false
   end
 
+  test 'one error in docker creation should not result in internal error' do
+    summary = 'Wow. Such code. Many variables.'
+    stub_container = Object.new
+    stub_container.stubs(:stop).once.returns(true)
+    stub_container.stubs(:remove).once.returns(true)
+    Docker::Container.stubs(:get).once.returns(stub_container)
+    Docker::Container.stubs(:create).raises(STRIKE_ERROR).returns(docker_mock(output: {
+      accepted: true,
+      status: 'correct',
+      description: summary
+    }))
+
+    @submission.evaluate
+
+    assert_submission status: 'correct', summary: summary, accepted: true
+  end
+
   test 'random errors should be caught' do
     docker = docker_mock
     docker.stubs(:start).raises(STRIKE_ERROR)

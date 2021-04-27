@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     get '/data' => 'pages#data'
     get '/privacy' => 'pages#privacy'
     get '/profile' => 'pages#profile', as: 'profile'
+    get '/support-us' => 'pages#support'
 
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'
@@ -217,6 +218,13 @@ Rails.application.routes.draw do
     end
     resources :feedbacks, only: %i[show edit update]
     resources :evaluation_exercise, only: %i[update]
+
+    resources :rights_requests, only: %i[index new create] do
+      member do
+        post 'approve'
+        post 'reject'
+      end
+    end
 
     scope 'lti', controller: 'lti' do
       get 'redirect', to: 'lti#redirect', as: 'lti_redirect'

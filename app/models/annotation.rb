@@ -38,7 +38,7 @@ class Annotation < ApplicationRecord
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
 
   before_validation :set_last_updated_by, on: :create
-  before_create :set_course_id
+  before_validation :set_course_id, on: :create
   after_destroy :destroy_notification
   after_save :create_notification
 

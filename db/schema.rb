@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_08_102217) do
+ActiveRecord::Schema.define(version: 2021_04_16_085755) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -365,6 +365,15 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
     t.index ["user_id"], name: "fk_rails_6b59ad362c"
   end
 
+  create_table "rights_requests", charset: "utf8mb4", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "institution_name"
+    t.text "context", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_rights_requests_on_user_id"
+  end
+
   create_table "score_items", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "evaluation_exercise_id", null: false
     t.decimal "maximum", precision: 5, scale: 2, null: false
@@ -506,6 +515,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_102217) do
   add_foreign_key "repositories", "judges"
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"
+  add_foreign_key "rights_requests", "users"
   add_foreign_key "score_items", "evaluation_exercises"
   add_foreign_key "scores", "feedbacks"
   add_foreign_key "scores", "score_items"

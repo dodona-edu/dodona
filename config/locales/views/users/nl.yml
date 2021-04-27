@@ -1,6 +1,8 @@
 nl:
   users:
     form:
+      request_rights: Lesgeversrechten aanvragen
+      request_in_progress: Aanvraag wordt verwerkt
     index:
       title: Alle gebruikers
       no_users: Geen gebruikers gevonden

@@ -63,4 +63,14 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     assert_redirected_to sign_in_url
   end
+
+  test 'should get support us page' do
+    get support_us_url
+    assert_response :success
+  end
+
+  test 'should get about page' do
+    get about_url
+    assert_response :success
+  end
 end

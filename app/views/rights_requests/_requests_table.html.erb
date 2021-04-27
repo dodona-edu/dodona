@@ -1,0 +1,40 @@
+<table class="table table-index table-resource">
+  <thead>
+    <tr>
+      <th><%= RightsRequest.human_attribute_name("user") %></th>
+      <th><%= RightsRequest.human_attribute_name("context") %></th>
+      <th><%= RightsRequest.human_attribute_name("institution_name") %></th>
+      <th class="actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% requests.each do |request| %>
+      <tr>
+        <td>
+          <%= link_to request.user.full_name, request.user, target: "_blank", title: request.user.full_name, class: 'ellipsis-overflow' %>
+        </td>
+        <td><span class="wrap-overflow"><%= request.context %></span></td>
+        <td>
+          <%= link_to request.user.institution do %>
+            <% if request.institution_name.present? %>
+              <%= request.institution_name %>
+            <% elsif request.user.institution.generated_name %>
+              <i class="mdi mdi-alert colored-warning mdi-18"></i>
+              <%= t('.no_institution_provided') %>
+            <% else %>
+              <%= request.user.institution.name %>
+            <% end %>
+          <% end %>
+        </td>
+        <td class="actions">
+          <%= link_to approve_rights_request_path(request), remote: true, method: :post, class: "btn btn-sm btn-success", title: t(".approve") do %>
+            <i class="mdi mdi-check mdi-18"></i>
+          <% end %>
+          <%= link_to reject_rights_request_path(request), remote: true, method: :post, class: "btn btn-sm btn-danger", title: t(".reject") do %>
+            <i class="mdi mdi-close mdi-18"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,6 +1,8 @@
 en:
   users:
     form:
+      request_rights: Request teacher rights
+      request_in_progress: Request is being processed
     index:
       title: All users
       no_users: No users found

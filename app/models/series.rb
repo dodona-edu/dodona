@@ -25,16 +25,15 @@ class Series < ApplicationRecord
   include Cacheable
   include Tokenable
 
-  USER_COMPLETED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/completed'.freeze
-  USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started'.freeze
-  USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong'.freeze
+  USER_COMPLETED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/completed/%<updated_at>s/%<deadline>s'.freeze
+  USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started/%<updated_at>s'.freeze
+  USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong/%<updated_at>s'.freeze
 
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
   before_save :regenerate_activity_tokens, if: :visibility_changed?
   before_create :generate_access_token
-  before_destroy :set_being_destroyed
-  after_save :invalidate_activity_statuses_and_caches, if: :saved_change_to_deadline?
+  after_save :invalidate_activity_statuses, if: :saved_change_to_deadline?
 
   belongs_to :course
   has_many :series_memberships, dependent: :destroy
@@ -94,7 +93,7 @@ class Series < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:completed?,
-                                    ->(this, options) { format(USER_COMPLETED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
+                                    ->(this, options) { format(USER_COMPLETED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s, updated_at: this.updated_at.to_f.to_s, deadline: options[:deadline].present?.to_s) })
 
   def completed_before_deadline?(user)
     completed?(deadline: deadline, user: user)
@@ -111,14 +110,14 @@ class Series < ApplicationRecord
   end
 
   invalidateable_instance_cacheable(:started?,
-                                    ->(this, options) { format(USER_STARTED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
+                                    ->(this, options) { format(USER_STARTED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s, updated_at: this.updated_at.to_f.to_s) })
 
   def wrong?(options)
     activities.any? { |a| a.wrong_for?(options[:user], self) }
   end
 
   invalidateable_instance_cacheable(:wrong?,
-                                    ->(this, options) { format(USER_WRONG_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s) })
+                                    ->(this, options) { format(USER_WRONG_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s, updated_at: this.updated_at.to_f.to_s) })
 
   def indianio_support
     indianio_token.present?
@@ -170,33 +169,15 @@ class Series < ApplicationRecord
     end
   end
 
-  def invalidate_activity_statuses_and_caches
+  def invalidate_activity_statuses
     ActivityStatus.delete_by(series: self)
-    delay.invalidate_status_cache
-  end
-
-  def invalidate_status_cache
-    # Remove the caches for each user.
-    exercises.includes(submissions: :user)
-             .flat_map { |exercise| exercise.submissions.map(&:user) }
-             .uniq
-             .each { |user| invalidate_caches(user) }
   end
 
   def invalidate_caches(user)
     # Delete all caches for this series.
     invalidate_completed?(user: user)
+    invalidate_completed?(user: user, deadline: deadline) if deadline.present?
     invalidate_started?(user: user)
     invalidate_wrong?(user: user)
-  end
-
-  def being_destroyed?
-    @being_destroyed
-  end
-
-  private
-
-  def set_being_destroyed
-    @being_destroyed = true
   end
 end

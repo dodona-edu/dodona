@@ -115,13 +115,36 @@ class SubmissionRunner
     # process submission in docker container
     # TODO: set user with the --user option
     # TODO: set the workdir with the -w option
+    first_try = true
     begin
       container = Docker::Container.create(**docker_options)
     rescue StandardError => e
-      return build_error 'internal error', 'internal error', [
-        build_message("Error creating docker: #{e}", 'staff', 'plain'),
-        build_message(e.backtrace.join("\n"), 'staff')
-      ]
+      unless first_try
+        return build_error 'internal error', 'internal error', [
+          build_message("Error creating docker: #{e}", 'staff', 'plain'),
+          build_message(e.backtrace.join("\n"), 'staff')
+        ]
+      end
+
+      first_try = false
+      sleep 1
+      # Create can fail due to timeouts if the worker is under heavy
+      # load. Usually the container is still created, but we just
+      # don't know about it in time. Make sure the old container is
+      # deleted before we retry creating it to avoid name conflicts.
+      begin
+        Docker::Container.get(docker_options[:name]).tap do |c|
+          c.stop
+          c.remove
+        end
+      # rubocop:disable Lint/SuppressedException
+      # If the container does not exist the library raises an
+      # error. We can ignore this error, since we can skip the
+      # previous step anyway in that case.
+      rescue StandardError
+      end
+      # rubocop:enable Lint/SuppressedException
+      retry
     end
 
     # run the container with a timeout.

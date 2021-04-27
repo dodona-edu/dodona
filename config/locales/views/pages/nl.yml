@@ -54,8 +54,27 @@ nl:
       subject: Onderwerp
       message: Bericht
       prompt: Contacteer ons als het probleem zich blijft voordoen.
+      rights_request_redirect_html: Wil je lesgeversrechten aanvragen voor je account? Vanaf nu kan je dat <a href="%{url}">via dit formulier</a> doen.
     create_contact:
       captcha_failed: reCAPTCHA kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."
     privacy_disclaimer:
       text_html: "Jouw privacy is belangrijk voor ons. Op de <a href=\"%{your_data}\">jouw data</a> pagina leggen we in mensentaal uit welke data we verzamelen en hoe we die gebruiken. De juridisch bindende versie kan je in onze <a href=\"%{privacy_statement}\">privacyverklaring</a> vinden."
+    support:
+      support_dodona: Steun Dodona
+      title_l1: Gratis leren programmeren
+      title_l2: voor secundair en hoger onderwijs
+      submitted_solutions: Ingediende oplossingen
+      students: Studenten
+      exercises: Oefeningen
+      schools: Scholen
+      intro_p1_html: "Dodona is een online oefenplatform om te <strong>leren programmeren</strong>. Het wil studenten op een zo zinvolle en zo effectief mogelijke manier leren programmeren. Dodona gedraagt zich als een <strong>online co-teacher</strong> die ontworpen is om elke student toegang te geven tot onderwijs van hoge kwaliteit. De focus ligt op het automatisch verbeteren en het geven van <strong>zinvolle feedback</strong> op ingediende oplossingen van de studenten."
+      intro_p2_html: "Dodona wordt <strong>gratis</strong> aangeboden aan scholen en onderwijsinstellingen en met uw steun willen we dat graag zou houden! Het online houden van dit platform vergt heel wat tijd, net als de ondersteuning voor honderden scholen en duizenden studenten. Uw steun gaat <strong>integraal naar personeel</strong> (zoals bijvoorbeeld jobstudenten) die meehelpen met het ontwikkelen van nieuwe features en het ondersteunen van gebruikers."
+      intro_p3_html: "Contacteer ons gerust op <a href='mailto:dodona@ugent.be'>dodona@ugent.be</a> voor meer info over dit project."
+      how_to_support: Hoe kunt u ons steunen?
+      support_p1_html: "Dankzij het <a href='https://www.ugent.be/schenken/nl' target='_blank'>Universiteitsfonds</a> van de Universiteit Gent kunt u <strong>fiscaal voordelig schenken</strong> aan Dodona. Voor giften vanaf 40 euro ontvangt u een fiscaal attest waarmee u 45% van uw gift recupereert in uw belastingsaangifte. Uw gift komt bovendien <strong>integraal bij ons</strong> terecht."
+      support_p2_html: "Giften kunnen worden overgemaakt op het rekeningnummer van het Universiteitsfonds zijnde <code>390-0965803-29</code> of IBAN <code>BE26 3900 9658 0329</code> (BIC: <code>BBRUBEBB</code>) met als mededeling <code>Dodona</code>."
+      support_p3_html: "Wenst u een groter bedrag te schenken of kiest u liever voor sponsoring op factuur? Contacteer ons op <a href='mailto:dodona@ugent.be'>dodona@ugent.be</a> en we bekijken samen graag de mogelijkheden."
+      supported_by: Met de steun van
+      supported_p1_html: "Dodona wordt ontwikkeld door een klein team onderzoekers aan de <a href='https://www.ugent.be' target='_blank'>Universiteit Gent</a>. Het platform is volledig open source en alle code is beschikbaar op <a href='https://github.com/dodona-edu/dodona' target='_blank'>GitHub</a>. De hosting wordt aangeboden door de Universiteit Gent. Daarnaast ontving Dodona al steun in de vorm van onderwijsinnovatieprojecten van de Universiteit Gent en de Faculteit Wetenschappen. Ook <a href='https://www.elixir-belgium.org/' target='_blank'>ELIXIR Belgium</a> ondersteunde dit project."
+

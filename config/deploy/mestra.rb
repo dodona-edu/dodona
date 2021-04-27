@@ -7,7 +7,7 @@ server 'mestra.ugent.be', user: 'dodona', roles: %i[web app worker], ssh_options
 set :branch, ENV['GITHUB_SHA'] || 'develop'
 set :rails_env, :development
 
-set :delayed_job_workers, 3
+set :delayed_job_workers, 1
 
 set :bundle_without, ''
 

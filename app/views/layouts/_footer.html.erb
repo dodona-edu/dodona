@@ -7,12 +7,13 @@
     <a href="https://twitter.com/DodonaEdu" target="_blank" rel="noopener">
       <i class="mdi mdi-18 mdi-twitter"></i>
     </a>
+    <%= link_to t("layout.footer.support_dodona"), support_us_path %>
     <%= link_to 'Contact', contact_path %>
     <%= link_to 'Status', status_path, target: "_blank", rel: "noopener" %>
     <%= link_to t("layout.footer.privacy_statement"), privacy_path %>
     <%= link_to t("layout.footer.your_data"), data_path %>
     <% version_info = "Dodona #{Dodona::Application::VERSION}" %>
     <% version_info += " (ruby #{RUBY_VERSION} #{`which ruby`})" if Rails.env.development? || Rails.env.staging? %>
-    <%= link_to version_info, "https://dodona-edu.github.io/#{I18n.locale}/news/" %>
+    <%= link_to version_info, "https://docs.dodona.be/#{I18n.locale}/news/" %>
   </div>
 </footer>

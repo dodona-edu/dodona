@@ -79,13 +79,38 @@ class SeriesTest < ActiveSupport::TestCase
            exercise: series.exercises[0],
            user: user
 
-    assert_equal true, series.completed_before_deadline?(user)
+    assert series.completed_before_deadline?(user)
+    travel 1.second
 
     series.update(deadline: Time.zone.now - 1.day)
 
     ActivityStatus.clear_status_store
 
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed_before_deadline?(user)
+  end
+
+  test 'submitting should invalidate exercise status for series with deadline' do
+    with_cache do
+      course = create :course
+      series = create :series, course: course, deadline: Time.zone.now + 1.day, exercise_count: 1
+      user = create :user
+
+      create :wrong_submission,
+             created_at: Time.zone.now,
+             course: course,
+             exercise: series.exercises[0],
+             user: user
+
+      assert_not series.completed_before_deadline?(user)
+
+      create :correct_submission,
+             created_at: Time.zone.now + 1.hour,
+             course: course,
+             exercise: series.exercises[0],
+             user: user
+
+      assert series.completed_before_deadline?(user)
+    end
   end
 
   test 'changing deadline and restoring should restore completion status' do
@@ -104,20 +129,22 @@ class SeriesTest < ActiveSupport::TestCase
                              course: course,
                              user: user
 
-    assert_equal true, series.completed_before_deadline?(user)
+    assert series.completed_before_deadline?(user)
+    travel 1.second
 
     series.update(deadline: now - 1.day)
 
     ActivityStatus.clear_status_store
 
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed_before_deadline?(user)
+    travel 1.second
 
     # Reset the deadline to the original one to ensure the status was not removed.
     series.update(deadline: original_deadline)
 
     ActivityStatus.clear_status_store
 
-    assert_equal true, series.completed_before_deadline?(user)
+    assert series.completed_before_deadline?(user)
   end
 
   test 'changing deadline clears status cache' do
@@ -134,14 +161,16 @@ class SeriesTest < ActiveSupport::TestCase
 
       create :wrong_submission, created_at: now - 3.days, user: user, course: course, exercise: exercise
 
-      assert_equal false, series.completed_before_deadline?(user)
+      assert_not series.completed_before_deadline?(user)
+      travel 1.second
 
       # Move the deadline up
       series.update(deadline: now + 5.days)
       # Simulate we have a new request
       ActivityStatus.clear_status_store
 
-      assert_equal false, series.completed_before_deadline?(user)
+      assert_not series.completed_before_deadline?(user)
+      travel 1.second
 
       create :correct_submission, created_at: now + 2.days, user: user, course: course, exercise: exercise
 
@@ -149,7 +178,27 @@ class SeriesTest < ActiveSupport::TestCase
       series.update(deadline: original_deadline)
       ActivityStatus.clear_status_store
 
-      assert_equal true, series.completed_before_deadline?(user)
+      assert series.completed_before_deadline?(user)
+    end
+  end
+
+  test 'adding exercises to empty series clears status cache' do
+    with_cache do
+      course = create :course
+      series = create :series, course: course
+      user = create :user
+
+      assert series.completed_before_deadline?(user)
+      travel 1.second
+
+      # Simulate we have a new request
+      ActivityStatus.clear_status_store
+
+      exercise = create :exercise
+      series.exercises << exercise
+      series.reload
+
+      assert_not series.completed_before_deadline?(user)
     end
   end
 
@@ -163,7 +212,8 @@ class SeriesTest < ActiveSupport::TestCase
       series.exercises << exercise
 
       create :correct_submission, user: user, course: course, exercise: exercise
-      assert_equal true, series.completed_before_deadline?(user)
+      assert series.completed_before_deadline?(user)
+      travel 1.second
 
       # Simulate we have a new request
       ActivityStatus.clear_status_store
@@ -172,7 +222,7 @@ class SeriesTest < ActiveSupport::TestCase
       series.exercises << exercise
 
       series.reload
-      assert_equal false, series.completed_before_deadline?(user)
+      assert_not series.completed_before_deadline?(user)
     end
   end
 
@@ -196,24 +246,27 @@ class SeriesTest < ActiveSupport::TestCase
 
       create :correct_submission, user: user, course: course, exercise: exercise, created_at: now + 2.days
       ActivityStatus.clear_status_store
-      assert_equal true, series.completed_before_deadline?(user)
+      assert series.completed_before_deadline?(user)
+      travel 1.second
 
       series.exercises.delete(exercise)
       series.reload
       ActivityStatus.clear_status_store
 
-      assert_equal true, series.completed_before_deadline?(user)
+      assert series.completed_before_deadline?(user)
+      travel 1.second
 
       series.update(deadline: now + 1.day)
 
       ActivityStatus.clear_status_store
-      assert_equal true, series.completed_before_deadline?(user)
+      assert series.completed_before_deadline?(user)
+      travel 1.second
 
       series.exercises << exercise
       ActivityStatus.clear_status_store
       series.reload
 
-      assert_equal false, series.completed_before_deadline?(user)
+      assert_not series.completed_before_deadline?(user)
     end
   end
 

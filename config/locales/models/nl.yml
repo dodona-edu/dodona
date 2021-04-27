@@ -26,6 +26,7 @@ nl:
       evaluation: Evaluatie
       feedback: Feedback
       question: Vraag
+      rights_request: Aanvraag voor lesgeversrechten
       score_item: Scoreonderdeel
       score: Score
     attributes:
@@ -178,6 +179,10 @@ nl:
           unanswered: Onbeantwoord
           in_progress: In behandeling
           answered: Beantwoord
+      rights_request:
+        user: Gebruiker
+        context: Motivering
+        institution_name: Naam van onderwijsinstelling
       score_item:
         name: Naam
         description: Beschrijving

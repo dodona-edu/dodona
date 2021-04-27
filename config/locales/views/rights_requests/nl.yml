@@ -1,0 +1,20 @@
+nl:
+  rights_requests:
+    new:
+      title: Lesgeversrechten aanvragen
+    form:
+      process_help: We bekijken je aanvraag zo snel mogelijk. Je krijgt een email op het moment dat we je aanvraag verwerkt hebben.
+      institution-help: We hebben nog geen naam voor je onderwijsinstelling. Stel er hier een voor.
+      context_explanation: Schrijf hier wat info over waarom je deze rechten nodig hebt...
+    index:
+      title: Aanvragen voor lesgeversrechten
+    requests_table:
+      approve: Goedkeuren
+      reject: Afkeuren
+      no_institution_provided: Niet opgegeven
+    create:
+      created: Je aanvraag voor lesgeversrechten werd successvol verzonden.
+    approve:
+      approved: Lesgever goedgekeurd.
+    reject:
+      rejected: Lesgever afgekeurd.

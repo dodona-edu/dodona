@@ -1,0 +1,42 @@
+<div class="col-sm-12">
+  <%= form_for(rights_request, :html => { :class => 'form-horizontal' }) do |f| %>
+    <% if rights_request.errors.any? %>
+      <div class="callout callout-danger" id="error_explanation">
+        <h4><%= t('errors.validation_errors', count: rights_request.errors.count) %></h4>
+        <ul>
+          <% rights_request.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="callout callout-info">
+      <%= t '.process_help' %>
+    </div>
+
+    <div class="field form-group">
+      <%= f.label :context, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-9">
+        <%= f.text_area :context, class: 'form-control', placeholder: t(".context_explanation") %>
+      </div>
+    </div>
+
+    <% if current_user.institution.generated_name %>
+      <div class="field form-group">
+        <%= f.label :institution_name, class: 'col-sm-3 control-label' %>
+        <div class="col-sm-6">
+          <%= f.text_field :institution_name, class: 'form-control', placeholder: current_user.institution.name %>
+        </div>
+        <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".institution-help" %></span>
+      </div>
+    <% else %>
+      <div class="field form-group">
+        <%= f.label :institution_name, class: 'col-sm-3 control-label' %>
+        <div class="col-sm-6">
+          <%= f.text_field :institution_name, class: 'form-control', disabled: true, value: current_user.institution.name %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -9,6 +9,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.default_host = 'www.example.com'
+  config.action_mailer.default_url_options = { host: 'www.example.com' }
   config.sandbox_host = 'sandbox.example.com'
   config.action_controller.asset_host = nil
 

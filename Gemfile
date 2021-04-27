@@ -29,13 +29,13 @@ gem 'jbuilder', '~> 2.11.2'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.7.3', require: false
+gem 'bootsnap', '~> 1.7.4', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
 
 # delayed jobs
-gem 'delayed_job_active_record', '~> 4.1.5'
+gem 'delayed_job_active_record', '~> 4.1.6'
 
 # start workers in the background
 gem 'daemons', '~>1.3'
@@ -66,7 +66,7 @@ gem 'autoprefixer-rails', '~>10.2.4'
 
 # saml authentication
 gem 'devise', '~>4.7.3'
-gem 'ruby-saml', '~> 1.12.1'
+gem 'ruby-saml', '~> 1.12.2'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.2'
@@ -74,7 +74,7 @@ gem 'omniauth-oauth2', '~> 1.7.1'
 gem 'omniauth_openid_connect', '~> 0.3.5'
 
 # Json webtokens
-gem 'jwt', '~> 2.2.2'
+gem 'jwt', '~> 2.2.3'
 
 # contact mail form
 gem 'mail_form', '~> 1.9.0'
@@ -140,7 +140,7 @@ gem 'rack-mini-profiler', '~> 2.3.1'
 gem 'stackprof', '~> 0.2.16'
 
 # Datadog
-gem 'ddtrace', '~> 0.47.0'
+gem 'ddtrace', '~> 0.48.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -164,7 +164,7 @@ end
 
 group :test do
   # For measuring coverage
-  gem 'codecov', '~> 0.5.1', require: false
+  gem 'codecov', '~> 0.5.2', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
 end

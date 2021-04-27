@@ -1,7 +1,9 @@
 @import "components/btn.css";
 @import "components/callout.css";
 @import "components/card.css";
+@import "components/code_listing.css";
 @import "components/dropdown.css";
+@import "components/evaluations.css";
 @import "components/favorite.css";
 @import "components/code_listing.css";
 @import "components/heatmap.css";
@@ -10,15 +12,15 @@
 @import "components/link.css";
 @import "components/modal.css";
 @import "components/notification.css";
+@import "components/progress-chart.css";
 @import "components/punchcard.css";
-@import "components/evaluations.css";
-@import "components/table.css";
-@import "components/toast.css";
 @import "components/scoresheet.css";
 @import "components/stepper.css";
+@import "components/table.css";
 @import "components/table-toolbar.css";
+@import "components/toast.css";
 @import "components/tutor.css";
-@import "components/progress-chart.css";
+@import "components/violin.css";
 
 .flex-spacer {
   flex-grow: 1;

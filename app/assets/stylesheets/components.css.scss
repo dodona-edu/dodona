@@ -1,9 +1,10 @@
 @import "components/btn";
 @import "components/callout";
 @import "components/card";
-@import "components/dropdown";
-@import "components/favorite";
 @import "components/code_listing";
+@import "components/dropdown";
+@import "components/evaluations";
+@import "components/favorite";
 @import "components/form";
 @import "components/heatmap";
 @import "components/img";
@@ -11,15 +12,15 @@
 @import "components/link";
 @import "components/modal";
 @import "components/notification";
+@import "components/progress-chart";
 @import "components/punchcard";
-@import "components/evaluations";
-@import "components/table";
-@import "components/toast";
 @import "components/scoresheet";
 @import "components/stepper";
+@import "components/table";
 @import "components/table-toolbar";
+@import "components/toast";
 @import "components/tutor";
-@import "components/progress-chart";
+@import "components/violin";
 
 .flex-spacer {
   flex-grow: 1;

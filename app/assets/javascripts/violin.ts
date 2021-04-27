@@ -70,8 +70,8 @@ function drawViolin(data: {
         .attr("x", innerWidth)
         .attr("y", innerHeight+margin.top)
         .text(I18n.t("js.n_submissions"))
-        .attr("fill", "currentColor")
-        .style("font-size", "11px");
+        .attr("class", "violin-label")
+        .attr("fill", "currentColor");
 
     graph
         .selectAll("violins")
@@ -84,8 +84,7 @@ function drawViolin(data: {
             return Object.values(ex.freq);
         }
         )
-        .style("stroke", "none")
-        .style("fill", "#69b3a2")
+        .attr("class", "violin-path")
         .attr("d", d3.area()
             .x(d => x(d.label))
             .y0(d => -yBin(d.freq))
@@ -151,9 +150,8 @@ function drawViolin(data: {
             .attr("width", elWidth)
             .attr("height", y.bandwidth())
             .attr("stroke", "black")
-            .style("visibility", "hidden")
+            .attr("class", "violin-invisibar")
             .attr("pointer-events", "all")
-            .style("fill", "none")
             .on("mouseover", (_, d) => onMouseOver(d, ex.ex_id))
             .on("mouseout", onMouseOut);
     }

@@ -2,8 +2,9 @@ en:
   score_items:
     form:
       description-help: A description is optional. Markdown formatting can be used. This is visible to the students.
-      visible-help: If the score becomes visible to students once the evaluation is released.
+      visible-help: Make the score item visible to students once the evaluation is released.
       save: Save
+      add: Add
       close: Close
       modify-help: If you change the maximum, all completed evaluaties with this score item will be marked as uncompleted.
       score-help: The maximal grade for this score item. The grade should be greater than 0, and works in increments of 0.25.
@@ -21,10 +22,6 @@ en:
     index:
       title: Edit score items
       to_evaluation: Back to evaluation
-      summary:
-        zero: No score items configured for this evaluation
-        one: "One score item for this evaluation. Total score: %{score}."
-        other: "%{count} score items for this evaluation. Total score: %{score}."
     new:
       title: Configure score items
       choose: Do you want to grade submissions in Dodona?
@@ -32,12 +29,17 @@ en:
       yes_explanation: "Create a scoring scheme below"
       no_answer: "Nee"
       no_explanation: "Continue to the evaluation"
+      second_step: "Stel een puntenverdeling op"
+      second_explanation: You can create a grading scheme below for each exercise. You can always change these later.
+      summary:
+        zero: No score items configured for this evaluation
+        one: "One score item for this evaluation, with a maximum score of %{score}."
+        other: "%{count} score items for this evaluation, with a maximum score of %{score}."
       text: Create and add a score item to each exercise in the evaluation.
       close: Sluiten
       add_all: Add score item to all exercises
       hide_all: Make all score items invisible
       show_all: Make all score items visible
-      exercises: Exercises (/%{score})
       to_evaluation: To evaluation
       info: Dodona allows you to grade the submissions in this evaluation. This is optional and can always be changed later.
     exercise:
@@ -45,7 +47,7 @@ en:
       copy_title: Copy score item from another exercise to %{name}
       add_title: Create new score item for %{name}
       all: Add score item to all exercises
-      total: Total
+      max: Maximum score
       edit_title: Edit this score item
       delete_title: Delete this score item
       edit_item_title: "Edit %{title}"

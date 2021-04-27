@@ -65,8 +65,10 @@
               <div class="score-item-toolbar">
                 <div class="score-item-toolbar-tools">
                   <p class="description-text">
-                    <%= t '.second_explenation' %><br>
-                    <%= raw t('.second_stats', items: @evaluation.score_items.count, total: format_score(@evaluation.maximum_score)) %>
+                    <%= t '.second_explanation' %><br>
+                    <span class="summary-text">
+                      <%= raw t('.summary', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>
+                    </span>
                   </p>
                   <div class="btn-group actions">
                     <%= link_to t('.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>

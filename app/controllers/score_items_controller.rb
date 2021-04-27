@@ -23,6 +23,8 @@ class ScoreItemsController < ApplicationController
       new_score_item.save
     end
 
+    # Score items have changed.
+    @evaluation.score_items.reload
     respond_to do |format|
       format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: to } }
     end
@@ -98,6 +100,8 @@ class ScoreItemsController < ApplicationController
   end
 
   def preload_eval_exercise(item)
+    # Reload the evaluation, since one of the items changed.
+    @evaluation.score_items.reload
     # Preload the stuff for one exercise and an existing instance.
     ActiveRecord::Associations::Preloader.new.preload(item.evaluation_exercise, [score_items: :scores])
     item.evaluation_exercise

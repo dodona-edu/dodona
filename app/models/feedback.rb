@@ -70,6 +70,10 @@ class Feedback < ApplicationRecord
     }
   end
 
+  def done_grading?
+    score_items.count == scores.count
+  end
+
   def score
     mapped = scores.map(&:score)
     mapped.sum if mapped.any?

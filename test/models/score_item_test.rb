@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: score_item
+# Table name: score_items
 #
 #  id                     :bigint           not null, primary key
 #  evaluation_exercise_id :bigint           not null
@@ -13,7 +13,7 @@
 #
 require 'test_helper'
 
-class RScoreItemTest < ActiveSupport::TestCase
+class ScoreItemTest < ActiveSupport::TestCase
   setup do
     series = create :series, exercise_count: 2
     users = [create(:user), create(:user)]

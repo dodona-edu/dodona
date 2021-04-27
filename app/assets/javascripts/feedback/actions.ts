@@ -25,8 +25,7 @@ export default class FeedbackActions {
     readonly options: ActionOptions;
 
     private readonly nextButton: HTMLButtonElement;
-    private readonly completeButton: HTMLButtonElement;
-    private readonly autoMarkCheckBox: HTMLInputElement;
+    private readonly autoMarkCheckBox: HTMLInputElement | null;
     private readonly skipCompletedCheckBox: HTMLInputElement;
     private readonly allScoresZeroButton: HTMLButtonElement | null;
     private readonly allScoresMaxButton: HTMLButtonElement | null;
@@ -48,7 +47,6 @@ export default class FeedbackActions {
         this.nextButton = document.getElementById("next-feedback-button") as HTMLButtonElement;
         this.autoMarkCheckBox = document.getElementById("auto-mark") as HTMLInputElement;
         this.skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
-        this.completeButton = document.querySelector(".complete-feedback") as HTMLButtonElement;
 
         this.scoreSumElement = document.getElementById("score-sum");
 
@@ -160,7 +158,9 @@ export default class FeedbackActions {
     initialiseNextButtons(): void {
         const feedbackPrefs = window.localStorage.getItem("feedbackPrefs") || defaultOptions;
         let { autoMark, skipCompleted } = JSON.parse(feedbackPrefs);
-        this.autoMarkCheckBox.checked = autoMark;
+        if (this.autoMarkCheckBox) {
+            this.autoMarkCheckBox.checked = autoMark;
+        }
         this.skipCompletedCheckBox.checked = skipCompleted;
         if (autoMark) {
             this.setNextWithAutoMark();
@@ -195,7 +195,7 @@ export default class FeedbackActions {
             await this.nextFeedbackAction();
         });
 
-        this.autoMarkCheckBox.addEventListener("input", async () => {
+        this.autoMarkCheckBox?.addEventListener("input", async () => {
             autoMark = this.autoMarkCheckBox.checked;
             localStorage.setItem("feedbackPrefs", JSON.stringify({ autoMark, skipCompleted }));
             if (autoMark) {

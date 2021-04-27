@@ -142,7 +142,7 @@
     </div>
   <% end %>
 
-  <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle" style="display: none">
+  <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle stats-tab" style="display: none; align-items: right;">
     <button class="btn btn-secondary annotation-toggle active" onclick="dodona.setActiveToggle(this); 
       dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Violin</button>
     <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this); 

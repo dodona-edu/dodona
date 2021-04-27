@@ -209,7 +209,7 @@ function initTimeseries(url, containerId, containerHeight: number): void {
                     // insert empty datapoints to prevent weird jumps in the graph
                     // if not all statusses have been visted (for this date),
                     // append the unvisited ones
-                    while (statusVisited !== statusOrder.length) {
+                    while (statusVisited < statusOrder.length) {
                         cSum[statusOrder[statusVisited]] += stackSum;
                         newRecords.push({
                             "date": prevDate,

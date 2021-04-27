@@ -1,19 +1,22 @@
 <div class="sticky-wrapper sticky-gradient">
-  <table class="table score-table table-resource sticky-column">
+  <table class="table score-table table-resource sticky-column sticky-column-2">
     <thead class="sticky-header header">
     <tr class="borderless-row first-header">
       <th class="user-name"><%= t('.user') %></th>
-      <% feedbacks[:evaluation_exercises].each do |exercise| %>
-        <th class="status-header"><%= exercise.exercise.name %></th>
-      <% end %>
       <th class="status-header">
         <%= t ".total" %>
       </th>
+      <% feedbacks[:evaluation_exercises].each do |exercise| %>
+        <th class="status-header"><%= exercise.exercise.name %></th>
+      <% end %>
     </tr>
     <% maximum = @evaluation.maximum_score %>
     <% average = @evaluation.average_score(feedbacks[:evaluation_exercises]) %>
     <tr class="second-header">
       <th class="user-name"><%= t ".average" %></th>
+      <th class="status">
+        <%= format_score average %> / <%= format_score maximum %>
+      </th>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
         <th class="status">
           <% max_score = exercise.maximum_score %>
@@ -24,9 +27,6 @@
           <% end %>
         </th>
       <% end %>
-      <th class="status">
-        <%= format_score average %> / <%= format_score maximum %>
-      </th>
     </tr>
     </thead>
     <tbody>

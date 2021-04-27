@@ -18,7 +18,7 @@ export default class ScoreForm {
     private readonly deleteButton: HTMLElement;
     private readonly zeroButton: HTMLElement;
     private readonly maxButton: HTMLElement;
-    private readonly maxLink: HTMLElement;
+    private readonly maxText: HTMLElement;
     private readonly form: HTMLFormElement;
 
     private readonly parent: FeedbackActions;
@@ -38,7 +38,7 @@ export default class ScoreForm {
         this.zeroButton = this.form.parentElement.querySelector(".single-zero-button");
         this.maxButton = this.form.parentElement.querySelector(".single-max-button");
         this.scoreItemId = (this.form.querySelector("input.score-item") as HTMLInputElement).value;
-        this.maxLink = element.querySelector("a.score-click");
+        this.maxText = this.form.querySelector(".input-group-addon");
         this.id = (this.form.querySelector("input.id") as HTMLInputElement).value;
         this.existing = this.form.dataset.new === "true";
         this.link = this.form.dataset.url;
@@ -47,7 +47,7 @@ export default class ScoreForm {
     }
 
     public getMax(): string {
-        return this.maxLink.dataset.value;
+        return this.maxText.dataset.max;
     }
 
     private initListeners(): void {
@@ -83,11 +83,6 @@ export default class ScoreForm {
         this.zeroButton.addEventListener("click", e => {
             e.preventDefault();
             this.input.value = "0";
-            this.sendUpdate();
-        });
-        this.maxLink.addEventListener("click", e => {
-            e.preventDefault();
-            this.input.value = this.getMax();
             this.sendUpdate();
         });
         this.maxButton.addEventListener("click", e => {
@@ -190,6 +185,7 @@ export default class ScoreForm {
         this.parent.registerUpdating(this.scoreItemId);
         this.disableInputs();
         this.input.classList.add("in-progress");
+        this.maxText.classList.add("in-progress");
         this.spinner.style.visibility = "visible";
     }
 

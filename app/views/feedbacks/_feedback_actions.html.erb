@@ -58,12 +58,14 @@
           <span id="score-sum"><%= format_score @feedback.score %></span> / <%= format_score @feedback.maximum_score %>
         </div>
         <div class="col-xs-4 score-buttons">
-          <%= button_tag class: "btn-sm btn-text", id: 'zero-button', title: t(".give_zero_all") do %>
-            0
-          <% end %>
-          <%= button_tag class: "btn-sm btn-text", id: 'max-button', title: t(".give_max_all") do %>
-            MAX
-          <% end %>
+          <div class="btn-group" role="group">
+            <%= button_tag class: "btn btn-default btn-sm", id: 'zero-button', title: t(".give_zero_all") do %>
+              <i class="mdi mdi-thumb-down mdi-12" aria-hidden='true'></i>
+            <% end %>
+            <%= button_tag class: "btn btn-default btn-sm", id: 'max-button', title: t(".give_max_all") do %>
+              <i class="mdi mdi-thumb-up mdi-12" aria-hidden='true'></i>
+            <% end %>
+          </div>
         </div>
       </div>
     <% end %>

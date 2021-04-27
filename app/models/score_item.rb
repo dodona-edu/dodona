@@ -18,31 +18,31 @@ class ScoreItem < ApplicationRecord
   # Who updated the score item. This is used to modify scores if necessary.
   attr_accessor :last_updated_by
 
-  after_create :undo_complete_feedbacks_and_set_blank_to_zero
-  after_update :undo_complete_feedbacks_if_maximum_changed
+  after_create :uncomplete_feedbacks_and_set_blank_to_zero
+  after_update :uncomplete_feedbacks_if_maximum_changed
 
   validates :maximum, numericality: { greater_than: 0, less_than: 1000 }
 
   private
 
-  def undo_complete_feedbacks_if_maximum_changed
+  def uncomplete_feedbacks_if_maximum_changed
     # If we didn't modify the maximum, it has no impact on the existing feedbacks.
     return unless saved_change_to_maximum?
 
-    undo_complete_feedbacks
+    uncomplete_feedbacks
   end
 
-  def undo_complete_feedbacks_and_set_blank_to_zero
+  def uncomplete_feedbacks_and_set_blank_to_zero
     evaluation_exercise
       .feedbacks
       .find_each do |feedback|
       Score.create(score_item: self, feedback: feedback, score: 0, last_updated_by: last_updated_by) if feedback.submission.blank?
     end
 
-    undo_complete_feedbacks
+    uncomplete_feedbacks
   end
 
-  def undo_complete_feedbacks
+  def uncomplete_feedbacks
     evaluation_exercise
       .feedbacks
       .complete

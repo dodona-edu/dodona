@@ -53,6 +53,7 @@ nl:
     with: met
     submission: indiening
     submissions: indieningen
+    total: totaal
     months:
       long:
         jan: Januari

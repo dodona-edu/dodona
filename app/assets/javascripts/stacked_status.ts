@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { formatTitle } from "graph_helper.js";
 
 let selector = "#stacked_status-container";
-const margin = { top: 20, right: 10, bottom: 20, left: 105 };
+const margin = { top: 20, right: 150, bottom: 60, left: 105 };
 let width = 0;
 let height = 0;
 const statusOrder = [
@@ -10,7 +10,12 @@ const statusOrder = [
     "time limit exceeded", "memory limit exceeded", "output limit exceeded",
 ];
 
-function drawStacked(data, maxSum, exMap): void {
+function drawStacked(data: {
+    "cum_sum": number;
+    "count": number;
+    "exercise_id": string;
+    "status": string;
+}[], maxSum, exMap): void {
     const yDomain: string[] = Array.from(new Set(data.map(d => d.exercise_id)));
     // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
@@ -20,10 +25,11 @@ function drawStacked(data, maxSum, exMap): void {
     const container = d3.select(selector);
 
 
-    const graph = container
+    const svg = container
         .append("svg")
         .attr("width", width)
-        .attr("height", height)
+        .attr("height", height);
+    const graph = svg
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
@@ -61,6 +67,35 @@ function drawStacked(data, maxSum, exMap): void {
         .style("opacity", 0)
         .style("z-index", 5);
 
+    const legend = graph.append("g")
+        .attr("transform", `translate(${-margin.left/2}, ${innerHeight + 40})`);
+
+    let legendX = 0;
+    for (const status of statusOrder) {
+        // add legend colors dots
+        const group = legend.append("g");
+
+        group
+            .append("rect")
+            .attr("x", legendX)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill", color(status) as string);
+
+        // add legend text
+        group
+            .append("text")
+            .attr("x", legendX + 20)
+            .attr("y", 12)
+            .attr("text-anchor", "start")
+            .text(status)
+            .attr("fill", "currentColor")
+            .style("font-size", "12px");
+
+        legendX += group.node().getBBox().width + 20;
+    }
+
     // add bars
     graph.selectAll("bars")
         .data(data)
@@ -70,17 +105,19 @@ function drawStacked(data, maxSum, exMap): void {
         .attr("width", d => x(d.count / maxSum[d.exercise_id]))
         .attr("y", d => y(d.exercise_id))
         .attr("height", y.bandwidth())
-        .attr("fill", d => color(d.status))
+        .attr("fill", d => color(d.status) as string)
         .on("mouseover", (e, d) => {
             tooltip.transition()
                 .duration(200)
                 .style("opacity", .9);
-            tooltip.html(`Status: ${d.status}`);
+            tooltip.html(`${d.count}/${maxSum[d.exercise_id]} (${
+                Math.round((d.count) / maxSum[d.exercise_id] * 10000) / 100
+            }%) ${d.status}`);
         })
         .on("mousemove", (e, _) => {
             tooltip
-                .style("left", `${d3.pointer(e)[0] - 20}px`)
-                .style("top", `${d3.pointer(e)[1] - 40}px`);
+                .style("left", `${d3.pointer(e, svg.node())[0]-tooltip.node().clientWidth*1.1}px`)
+                .style("top", `${d3.pointer(e, svg.node())[1]-tooltip.node().clientHeight*1.25}px`);
         })
         .on("mouseout", () => {
             tooltip.transition()
@@ -90,11 +127,24 @@ function drawStacked(data, maxSum, exMap): void {
 
 
     const gridlines = graph.append("g")
-        .call(d3.axisBottom(x).tickValues([.2, .4, .6, .8]).tickFormat(() => "")
+        .call(d3.axisBottom(x).tickValues([.2, .4, .6, .8]).tickFormat((t: number) => `${t*100}%`)
             .tickSize(innerHeight).tickSizeOuter(0));
     gridlines
         .select(".domain").remove();
     gridlines.selectAll("line").style("stroke-dasharray", ("3, 3"));
+
+    for (const ex of data) {
+        const t = maxSum[ex.exercise_id];
+        graph.append("text")
+            .attr("x", innerWidth + 10)
+            .attr("y", y(ex.exercise_id) + y.bandwidth()/2)
+            .text(
+                `${I18n.t("js.total")}: ${t} ${I18n.t(t===1 ?
+                    "js.submission" : "js.submissions")}`
+            )
+            .attr("fill", "currentColor")
+            .style("font-size", "12px");
+    }
 }
 
 function initStacked(url, containerId: string, containerHeight: number): void {
@@ -105,6 +155,7 @@ function initStacked(url, containerId: string, containerHeight: number): void {
     if (!height) {
         height = container.node().clientHeight - 5;
     }
+    container.node().style.height = height;
     container.html(""); // clean up possible previous visualisations
     container.attr("class", "text-center").append("span").text(I18n.t("js.loading"));
 
@@ -115,6 +166,8 @@ function initStacked(url, containerId: string, containerHeight: number): void {
             return;
         }
         d3.select(`${selector} *`).remove();
+        height = 75 * Object.keys(raw.data).length;
+        container.node().style.height = height;
 
         const data = raw.data;
         data.sort((a, b) => {

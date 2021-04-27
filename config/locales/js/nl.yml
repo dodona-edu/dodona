@@ -48,6 +48,11 @@ nl:
     question_states: Toestand
     no_data: Er is niet genoeg data om een grafiek te maken.
     n_submissions: Aantal indieningen
+    user: gebruiker
+    users: gebruikers
+    with: met
+    submission: indiening
+    submissions: indieningen
     months:
       long:
         jan: Januari

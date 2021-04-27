@@ -72,6 +72,38 @@ function initItemVisibilityCheckboxes(element: HTMLElement): void {
     });
 }
 
+export function initScoreItemPanels(): void {
+    const $choicePanel = $("#choice-panel");
+    const $itemPanel = $("#items-panel");
+
+    function init(): void {
+        initPanelLogic();
+        // // Bootstrap's automatic collapsing of other elements in the parent breaks
+        // // when doing manual shows and hides, so we have to do this.
+        $choicePanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $itemPanel.find(".panel-collapse").collapse("hide");
+        });
+        $itemPanel.find(".panel-collapse").on("show.bs.collapse", function () {
+            $choicePanel.find(".panel-collapse").collapse("hide");
+        });
+    }
+
+    function initPanelLogic(): void {
+        $("#yes-grading").click(function () {
+            $itemPanel.find(".step-circle").html("2");
+            $(this)
+                .closest(".panel")
+                .find(".answer")
+                .html($(this).data("answer"));
+            $itemPanel.removeClass("hidden");
+            $itemPanel.find(".panel-collapse").collapse("show");
+            window.scrollTo(0, 0);
+        });
+    }
+
+    init();
+}
+
 export function initVisibilityCheckboxes(element: HTMLElement): void {
     initTotalVisibilityCheckboxes(element);
     initItemVisibilityCheckboxes(element);

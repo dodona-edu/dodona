@@ -27,24 +27,19 @@ en:
         other: "%{count} score items for this evaluation. Total score: %{score}."
     new:
       title: Configure score items
-      explanation_part1: >
-        You can optionally grade the submissions in this evaluation from within Dodona.
-        To do that, you'll first need to specify how you will grade the solutions.
-        You can assign a number of score items to each exercise.
-      explanation_part2: >
-        You can assign score items per exercise below.
-        Additionally, you can quickly add the same score item to each exercise.
-        If you don't want to grade submissions, you can go directly to the evaluation.
-        You can always change this later.
+      choose: Do you want to grade submissions in Dodona?
+      yes_answer: "Yes"
+      yes_explanation: "Create a scoring scheme below"
+      no_answer: "Nee"
+      no_explanation: "Continue to the evaluation"
       text: Create and add a score item to each exercise in the evaluation.
       close: Sluiten
-      add_all:
-        text: Add to all
-        title: Add the same score item to all exercises
+      add_all: Add score item to all exercises
       hide_all: Make all score items invisible
       show_all: Make all score items visible
       exercises: Exercises (/%{score})
       to_evaluation: To evaluation
+      info: Dodona allows you to grade the submissions in this evaluation. This is optional and can always be changed later.
     exercise:
       nothing: There are no score items for this exercise yet. You can only grade exercises with at least one score item.
       copy_title: Copy score item from another exercise to %{name}

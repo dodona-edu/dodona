@@ -27,24 +27,22 @@ nl:
         other: "%{count} scoreonderdelen in deze evaluatie. Totaalscore: %{score}."
     new:
       title: Scoreonderdelen configureren
-      explanation_part1: >
-        Je kan op de oplossingen in deze evaluatie ook punten ingeven op Dodona.
-        Daarvoor moet je wel eerst bepalen waarop je punten zal geven. Binnen Dodona
-        kan je per oefening een puntenverdeling opstellen door het toevoegen van scoreonderdelen.
-      explanation_part2: >
-        Je kan hieronder per oefening een aangepaste puntenverdeling uitwerken.
-        Daarnaast kan je snel één scoreonderdeel toevoegen aan elke oefening in deze evaluatie.
-        Je kan ook direct naar de evaluatie gaan als je geen punten wilt geven in Dodona.
-        Dit kan later altijd aangepast worden.
+      choose: Wil je punten geven aan oplossingen in Dodona?
+      yes_answer: "Ja"
+      yes_explanation: "Stel hieronder een puntenverdeling op"
+      no_answer: "Nee"
+      no_explanation: "Ga door naar de evaluatie"
+      second_step: "Stel een puntenverdeling op"
+      second_explenation: Je kan hieronder per oefening een puntenverdeling opstellen. Je kan deze later altijd aanpassen.
+      second_stats: Je hebt momenteel <strong>%{items}</strong> scoreonderdelen, goed voor een totaalscore van <strong>%{total}</strong>.
       text: Creeër een scoreonderdeel en voeg het toe aan elke oefening in de evaluatie.
       close: Sluiten
-      add_all:
-        text: Toevoegen aan alle
-        title: Hetzelfde scoreonderdeel toevoegen aan alle oefeningen
+      add_all: Scoreonderdeel toevoegen aan alle oefeningen
       hide_all: Alles scoreonderdelen verbergen
       show_all: Alles scoreonderdelen zichtbaar maken
       exercises: Oefeningen (/%{score})
       to_evaluation: Naar evaluatie
+      info: Je kan op Dodona punten geven aan de oplossingen in deze evaluatie. Dit is optioneel en kan later altijd aangepast worden.
     exercise:
       nothing: Er zijn nog geen scoreonderdelen voor deze oefening. Je kan pas punten geven als er minstens één scoreonderdeel is.
       copy_title: Scoreonderdeel kopiëren van een andere oefening naar %{name}

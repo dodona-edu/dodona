@@ -3,58 +3,113 @@
 <% end %>
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="card evaluation-user-select">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t('.title') %></h2>
-      </div>
-      <div class="card-supporting-text card-border">
-        <p><%= t('.explanation_part1') %></p>
-        <p><%= t('.explanation_part2') %></p>
-      </div>
-      <div class="card-actions card-border">
-        <%= link_to t('.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
-        <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
-          <i class="mdi mdi-dots-vertical"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-right">
-            <li>
-              <%= link_to t(".show_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post %>
-            </li>
-            <li>
-              <%= link_to t(".hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post %>
-            </li>
-        </ul>
-      </div>
-    </div>
-    <div class="page-subtitle">
-      <h3 class="total-title"><%= t ".exercises", score: format_score(@evaluation.maximum_score) %></h3>
-      <div class="flex-spacer"></div>
-      <div>
-        <a href="#add-score-item-to-all" class="btn with-text btn-primary btn-fab-extended"
-           data-toggle="modal" title="<%= t '.add_all.title' %>">
-          <i class="mdi mdi-plus icon"></i>
-          <span class="text"><%= t '.add_all.text' %></span>
-        </a>
-      </div>
-    </div>
-    <div class="card score-items-card">
-      <div class="card-supporting-text">
-        <% @evaluation.evaluation_exercises.each do |evaluation_exercise| %>
-          <div id="card-<%= evaluation_exercise.id %>">
-            <%= render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
+    <h2><%= @title %></h2>
+    <p><%= t '.info' %></p>
+    <div id="stepper" class="panel-group stepper" role="tablist">
+      <div id="choice-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">1</span>
+            <a role="button" data-toggle="collapse" href="#choice-step">
+              <%= t('.choose') %>
+              <span class="answer">
+                <%= t('.yes_answer') %>
+              </span>
+            </a>
+          </h4>
+        </div>
+        <div id="choice-step" class="panel-collapse collapse <%= "in" unless @evaluation.score_items.any? %>" role="tabpanel">
+          <div class="panel-body panel-body-transparent">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="option-btn" id="yes-grading">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= t('.yes_answer') %>
+                      <br>
+                      <small><%= t('.yes_explanation') %></small>
+                    </h3>
+                  </div>
+                  <div><i class="mdi mdi-chevron-right"></i></div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <%= link_to evaluation_path(@evaluation), class: "option-btn" do %>
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= t('.no_answer') %>
+                      <br>
+                      <small><%= t('.no_explanation') %></small>
+                    </h3>
+                  </div>
+                  <div><i class="mdi mdi-chevron-right"></i></div>
+                <% end %>
+              </div>
+            </div>
           </div>
-        <% end %>
+        </div>
+      </div>
+
+      <div id="items-panel" class="panel panel-default<%= " hidden" unless @evaluation.score_items.any? %>">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">2</span>
+            <a role="button" data-toggle="collapse" href="#choose-step">
+              <%= t '.second_step' %>
+            </a>
+          </h4>
+        </div>
+        <div id="choose-step" class="panel-collapse collapse<%= " in" if @evaluation.score_items.any? %>" role="tabpanel">
+          <div class="panel-body">
+            <div class="stepper-part">
+              <div class="score-item-toolbar">
+                <div class="score-item-toolbar-tools">
+                  <p class="description-text">
+                    <%= t '.second_explenation' %><br>
+                    <%= raw t('.second_stats', items: @evaluation.score_items.count, total: format_score(@evaluation.maximum_score)) %>
+                  </p>
+                  <div class="btn-group actions">
+                    <%= link_to t('.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+                    <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
+                      <i class="mdi mdi-dots-vertical"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li>
+                        <%= link_to t(".show_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post %>
+                      </li>
+                      <li>
+                        <%= link_to t(".hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post %>
+                      </li>
+                      <li>
+                        <a href="#add-score-item-to-all" data-toggle="modal"><%= t '.add_all' %></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <% @evaluation.evaluation_exercises.each do |evaluation_exercise| %>
+                <div id="card-<%= evaluation_exercise.id %>">
+                  <%= render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
 <div class="modal fade" id="add-score-item-to-all" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <%= render 'score_items/form',
                score_item: ScoreItem.new,
                evaluation_exercise: nil,
-               title: t(".add_all.title"),
+               title: t(".add_all"),
                form_options: { url: add_all_evaluation_score_items_path(@evaluation) } %>
   </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        dodona.initScoreItemPanels();
+    });
+</script>

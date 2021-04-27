@@ -128,6 +128,7 @@ function drawViolin(data: {
             .attr("y", y(groupName) + y.bandwidth() * 1.5)
             .attr("text-anchor", "middle")
             .attr("font-family", "sans-serif")
+            .attr("pointer-events", "none")
             .attr("fill", "currentColor")
             .attr("font-size", "11px");
     }

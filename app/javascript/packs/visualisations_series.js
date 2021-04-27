@@ -14,7 +14,7 @@ function toggleStats(button, seriesId) {
     const content = document.getElementById(`series-content-${seriesId}`);
     const height = content.clientHeight;
     if (tabs.style.display == "none") {
-        tabs.style.display = "block";
+        tabs.style.display = "flex";
         content.style.display = "none";
         setActiveToggle(tabs.childNodes[1]);
         button.className = button.className.replace("chart-line", "format-list-bulleted");

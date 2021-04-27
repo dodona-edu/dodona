@@ -3,7 +3,7 @@ import { formatTitle } from "graph_helper.js";
 
 
 let selector = undefined;
-const margin = { top: 20, right: 10, bottom: 30, left: 105 };
+const margin = { top: 20, right: 10, bottom: 40, left: 105 };
 let width = 0;
 let height = 0;
 
@@ -67,8 +67,8 @@ function drawViolin(data: {
     // Add X axis label:
     graph.append("text")
         .attr("text-anchor", "end")
-        .attr("x", innerWidth)
-        .attr("y", innerHeight+margin.top)
+        .attr("x", 0)
+        .attr("y", innerHeight+margin.top+10)
         .text(I18n.t("js.n_submissions"))
         .attr("class", "violin-label")
         .attr("fill", "currentColor");

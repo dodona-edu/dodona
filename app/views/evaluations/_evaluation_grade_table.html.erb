@@ -37,14 +37,14 @@
         <td class="user-name ellipsis-overflow">
           <%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %>
         </td>
+        <td class="status">
+          <%= format_score average %> / <%= format_score maximum %>
+        </td>
         <% feedback_l.each do |feedback| %>
           <td class="status">
             <%= render partial: 'grade_status', locals: { evaluation: @evaluation, feedback: feedback } %>
           </td>
         <% end %>
-        <td class="status">
-          <%= format_score average %> / <%= format_score maximum %>
-        </td>
       </tr>
     <% end %>
     </tbody>

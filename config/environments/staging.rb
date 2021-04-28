@@ -11,7 +11,7 @@ Rails.application.configure do
   config.sandbox_host = 'naos-sandbox.dodona.be'
 
   # Allowed hostnames
-  config.hosts << config.default_host << config.sandbox_host << "naos.dodona.be"
+  config.hosts << config.default_host << config.sandbox_host
 
   # Where we host our assets (a single domain, for caching)
   config.action_controller.asset_host = 'naos.ugent.be'

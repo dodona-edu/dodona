@@ -8,10 +8,10 @@ Rails.application.configure do
   config.default_host = 'naos.ugent.be'
 
   # The sandboxed host with user provided content, without authentication
-  config.sandbox_host = 'naos-sandbox.duckdns.org'
+  config.sandbox_host = 'naos-sandbox.dodona.be'
 
   # Allowed hostnames
-  config.hosts << config.default_host << config.sandbox_host
+  config.hosts << config.default_host << config.sandbox_host << "naos.dodona.be"
 
   # Where we host our assets (a single domain, for caching)
   config.action_controller.asset_host = 'naos.ugent.be'

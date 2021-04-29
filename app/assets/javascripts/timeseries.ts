@@ -9,8 +9,31 @@ const statusOrder = [
     "correct", "wrong", "compilation error", "runtime error",
     "time limit exceeded", "memory limit exceeded", "output limit exceeded",
 ];
-const commonAxis = false;
-const rSum = false; // use running sum?
+
+
+function insertFakeData(data): void {
+    const end = new Date((data[Object.keys(data)[0]][0].date));
+    const start = new Date(end);
+    start.setDate(start.getDate() - 14);
+    for (const exName of Object.keys(data)) {
+        data[exName] = [];
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            for (let i=0; i < statusOrder.length; i++) {
+                data[exName].push({
+                    "date": new Date(d),
+                    "status": statusOrder[i],
+                    "count": Math.round(Math.random()*20)
+                });
+            }
+        }
+    }
+}
+
+function thresholdTime(n): Function {
+    return (data, min, max) => {
+        return d3.scaleTime().domain([min, max]).ticks(n);
+    };
+}
 
 function drawTimeSeries(data, metaData, exMap): void {
     const yDomain: string[] = Array.from(new Set(Object.keys(data)));
@@ -18,11 +41,13 @@ function drawTimeSeries(data, metaData, exMap): void {
     const innerHeight = height - margin.top - margin.bottom;
     const yAxisPadding = 20; // padding between y axis (labels) and the actual graph
 
-    // position graph
-    const graph = d3.select(selector)
+    const svg = d3.select(selector)
         .append("svg")
         .attr("width", width)
-        .attr("height", height)
+        .attr("height", height);
+
+    // position graph
+    const graph = svg
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
@@ -44,18 +69,8 @@ function drawTimeSeries(data, metaData, exMap): void {
 
     // common y scale per exercise
     const interY = d3.scaleLinear()
-        .domain([0, rSum ? metaData.maxCumulative : metaData.maxStack])
+        .domain([0, metaData["maxStack"]])
         .range([y.bandwidth(), 0]);
-
-    // y scales unique to each exercise (just in case we still want to offer the option)
-    const interYs = Object.entries(metaData["per_ex"]).reduce((acc, v) => {
-        acc[v[0]] =
-            d3.scaleLinear()
-                .domain([0, rSum ? v[1].maxCumulative : v[1].maxStack])
-                .range([y.bandwidth(), 0]);
-        return acc;
-    }, {}
-    );
 
 
     // Show the X scale
@@ -80,7 +95,7 @@ function drawTimeSeries(data, metaData, exMap): void {
     // add x-axis
     graph.append("g")
         .attr("transform", `translate(0, ${y(y.domain()[0]) + y.bandwidth()/2})`)
-        .call(d3.axisBottom(x).ticks(10, "%a %b-%d"));
+        .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, "%a %b-%d"));
 
     // Add X axis label:
     graph.append("text")
@@ -95,36 +110,36 @@ function drawTimeSeries(data, metaData, exMap): void {
     for (const exId of Object.keys(data)) {
         const exGroup = graph.append("g")
             .attr("transform", `translate(0, ${y(exId) + y.bandwidth() / 2})`);
-        const records = data[exId];
+        const stack = data[exId];
         exGroup.selectAll("areas")
-            .data(records)
+            .data(stack)
             .enter()
             .append("path")
-            .attr("class", d => d[0])
+            .attr("class", d => d["key"])
             .style("stroke", "none")
-            .style("fill", d => color(d[0]))
-            .attr("d", d => {
-                return d3.area()
-                    .x(r => x(r.date))
-                    .y0(r => commonAxis ?
-                        interY((rSum ? r.cSumStart : r.stack_sum - r.count)) - y.bandwidth() :
-                        interYs[exId]((rSum ? r.cSumStart : r.stack_sum - r.count)) - y.bandwidth())
-                    .y1(r => commonAxis ?
-                        interY(rSum ? r.cSumEnd : r.stack_sum) - y.bandwidth() :
-                        interYs[exId](rSum ? r.cSumEnd : r.stack_sum) - y.bandwidth())
-                    .curve(d3.curveMonotoneX)(d[1]);
-            })
+            .style("fill", d => color(d["key"]))
+            .attr("d", d3.area()
+                .x(r => x(r["data"]["date"]))
+                .y0(r => interY(r[0]) - y.bandwidth())
+                .y1(r => interY(r[1]) - y.bandwidth())
+                .curve(d3.curveMonotoneX)
+            )
             .on("mouseover", (_, d) => {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(`Status: ${d[0]}`);
+                tooltip.html(`Status: ${d["key"]}`);
             })
             .on("mousemove", (e, _) => {
                 tooltip
-                    // using the node itself results in negative coordinates for some reason
-                    .style("left", `${d3.pointer(e, exGroup)[0]-tooltip.node().clientWidth-10}px`)
-                    .style("top", `${d3.pointer(e, exGroup)[1] - 40}px`);
+                    .style(
+                        "left",
+                        `${d3.pointer(e, svg.node())[0] - tooltip.node().clientWidth * 1.1}px`
+                    )
+                    .style(
+                        "top",
+                        `${d3.pointer(e, svg.node())[1] - tooltip.node().clientHeight * 1.25}px`
+                    );
             })
             .on("mouseout", () => {
                 tooltip.transition()
@@ -135,11 +150,8 @@ function drawTimeSeries(data, metaData, exMap): void {
         // y axis
         graph.append("g")
             .attr("transform", `translate(0, ${y(exId) - y.bandwidth()/2})`)
-            .call(d3.axisLeft(commonAxis ? interY : interYs[exId])
-                .tickValues(commonAxis ?
-                    [interY.domain()[0], interY.domain[1]+1] :
-                    [interYs[exId].domain()[0], interYs[exId].domain()[1]+1]
-                ));
+            .call(d3.axisLeft(interY)
+                .tickValues([0, metaData["maxStack"]]));
     }
 }
 
@@ -161,9 +173,14 @@ function initTimeseries(url, containerId, containerHeight: number): void {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;
         }
+
         d3.select(`${selector} *`).remove();
 
+        height = 150 * Object.keys(raw.data).length;
+        container.node().style.height = height;
+
         const data: {string: {date; status; count}[]} = raw.data;
+        insertFakeData(data);
         const metaData = {}; // used to store things needed to create scales
         if (Object.keys(data).length === 0) {
             container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
@@ -171,97 +188,49 @@ function initTimeseries(url, containerId, containerHeight: number): void {
             return;
         }
         // pick date of first datapoint (to avoid null checks later on)
-        metaData["minDate"] = Date.parse(data[Object.keys(data)[0]][0].date);
-        metaData["maxDate"] = Date.parse(data[Object.keys(data)[0]][0].date);
+        metaData["minDate"] = d3.min(Object.values(data),
+            records => d3.min(records, d =>new Date(d.date)));
+        metaData["maxDate"] = d3.max(Object.values(data),
+            records => d3.max(records, d =>new Date(d.date)));
         metaData["maxStack"] = 0;
-        metaData["maxCumulative"] = 0;
-        metaData["per_ex"] = {};
+        metaData["dateRange"] = Math.round(
+            (metaData["maxDate"].getTime() - metaData["minDate"].getTime()) /
+            (1000 * 3600 * 24)
+        ); // dateRange in days
+        console.log(data);
         // let minDate = Date.parse(data[Object.keys(data)[0]][0].date);
         // let maxDate = Date.parse(data[Object.keys(data)[0]][0].date);
         Object.entries(data).forEach(entry => {
             const exId = entry[0];
-            const records = entry[1];
-            metaData["per_ex"][exId] = {};
+            let records = entry[1];
             // parse datestring to date
             records.forEach(r => {
-                r.date = Date.parse(r.date);
+                r.date = new Date(r.date);
             });
 
-            // sort records by date
-            records.sort((a, b) => {
-                if (a.date === b.date) {
-                    return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
-                }
-                return a.date - b.date;
-            });
+            const binned = d3.bin()
+                .value(d => d.date.getTime())
+                .thresholds(thresholdTime(metaData["dateRange"]))(records);
 
-            let prevDate = records[0].date;
-            let stackSum = 0; // cumulative sum (per ex) per day
-            let maxStack = 0; // Used to calculate extent for y-axis
-            const cSum = {}; // cSum per ex per status
-            statusOrder.forEach(s => cSum[s] = 0);
-            // Construct a new data array where every status is represented
-            const newRecords = [];
-            // Used to track if for every day that has datepoints, every status is represented
-            let statusVisited = 0;
-            records.forEach(d => {
-                if (prevDate !== d.date) {
-                    // insert empty datapoints to prevent weird jumps in the graph
-                    // if not all statusses have been visted (for this date),
-                    // append the unvisited ones
-                    while (statusVisited < statusOrder.length) {
-                        cSum[statusOrder[statusVisited]] += stackSum;
-                        newRecords.push({
-                            "date": prevDate,
-                            "status": statusOrder[statusVisited],
-                            "count": 0,
-                            "stack_sum": stackSum,
-                            "cSumEnd": cSum[statusOrder[statusVisited]],
-                            "cSumStart": !statusVisited ? 0 : cSum[statusOrder[statusVisited-1]]
-                        });
-                        statusVisited += 1;
-                    }
-                    prevDate = d.date;
-                    maxStack = Math.max(maxStack, stackSum);
-                    stackSum = 0;
-                    statusVisited = 0;
-                }
-                // insert empty datapoints to prevent weird jumps in the graph
-                // if one or more statusses were skipped, insert them
-                while (statusOrder[statusVisited] !== d.status) {
-                    cSum[statusOrder[statusVisited]] += stackSum;
-                    newRecords.push({
-                        "date": prevDate,
-                        "status": statusOrder[statusVisited],
-                        "count": 0,
-                        "stack_sum": stackSum,
-                        "cSumEnd": cSum[statusOrder[statusVisited]],
-                        "cSumStart": !statusVisited ? 0 : cSum[statusOrder[statusVisited-1]]
-                    });
-                    statusVisited += 1;
-                }
-                metaData["minDate"] = Math.min(metaData["minDate"], d.date);
-                metaData["maxDate"] = Math.max(metaData["maxDate"], d.date);
-                stackSum += d.count;
-                cSum[d.status] += stackSum;
-                newRecords.push({
-                    ...d,
-                    "stack_sum": stackSum,
-                    "cSumEnd": cSum[d.status],
-                    "cSumStart": !statusVisited ? 0 : cSum[statusOrder[statusVisited-1]]
-                });
-                statusVisited += 1;
+            records = undefined; // records no longer needed
+
+            console.log(binned);
+            binned.forEach((bin, i) => {
+                metaData["maxStack"] = Math.max(metaData["maxStack"], d3.sum(bin, r => r["count"]));
+                binned[i] = bin.reduce((acc, r) => {
+                    acc["date"] = r["date"];
+                    acc[r["status"]] = r["count"];
+                    return acc;
+                }, statusOrder.reduce((acc, s) => { // make sure record is initialized with 0 counts
+                    acc[s] = 0;
+                    return acc;
+                }, {}));
             });
-            metaData["maxStack"] = Math.max(maxStack, metaData["maxStack"]);
-            if (newRecords.length) {
-                metaData["maxCumulative"] = Math.max(
-                    newRecords[newRecords.length - 1].cSumEnd,
-                    metaData["maxCumulative"]);
-            }
-            metaData["per_ex"][exId]["maxStack"] = maxStack;
-            metaData["per_ex"][exId]["maxCumulative"] = newRecords.length ?
-                newRecords[newRecords.length - 1].cSumEnd : 0;
-            data[exId] = d3.groups(newRecords, d => d.status);
+            console.log(metaData["maxStack"]);
+            console.log(binned);
+            const stack = d3.stack().keys(statusOrder)(binned);
+            console.log(stack);
+            data[exId] = stack;
         });
 
         drawTimeSeries(data, metaData, raw.exercises);

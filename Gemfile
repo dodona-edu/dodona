@@ -121,9 +121,6 @@ gem 'rubyzip', '~> 2.3.0'
 # add request server timings to the devtools
 gem 'rails_server_timings', '~> 1.0.8'
 
-# Maybe in Ruby
-gem 'possibly', '~> 1.0.1'
-
 # bootstrap tokenizer
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 

@@ -54,6 +54,12 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Dirichlet', @instance.reload.name
   end
 
+  test 'new series for non-existent course should 404' do
+    assert_raises ActiveRecord::RecordNotFound do
+      get new_course_series_url(Course.reorder(id: :desc).first.id + 1)
+    end
+  end
+
   test 'update series should redirect to course' do
     instance = update_request_expect(attr_hash: { series: { description: 'new description' } })
     assert_redirected_to course_url(instance.course, series: instance, anchor: instance.anchor)

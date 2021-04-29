@@ -47,9 +47,7 @@ class SeriesController < ApplicationController
 
   # GET /series/new
   def new
-    course = Maybe(params[:course_id])
-             .map { |cid| Course.find_by id: cid }
-             .or_nil
+    course = Course.find(params[:course_id])
     authorize course, :add_series?
     @series = Series.new(course: course)
     @title = I18n.t('series.new.title')

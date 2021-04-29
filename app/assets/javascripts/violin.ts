@@ -211,6 +211,11 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
         height = 150 * Object.keys(raw.data).length;
         container.node().style.height = height;
 
+        if (Object.keys(raw.data).length === 0) {
+            container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
+                .text(I18n.t("js.no_data"));
+            return;
+        }
         const data = Object.keys(raw.data).map(k => ({
             "ex_id": k,
             // sort so median is calculated correctly

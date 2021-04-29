@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { bin } from "d3";
 import { formatTitle } from "graph_helper.js";
 
 let selector = "";
@@ -17,20 +18,22 @@ function insertFakeData(data): void {
     start.setDate(start.getDate() - 14);
     for (const exName of Object.keys(data)) {
         data[exName] = [];
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
             for (let i=0; i < statusOrder.length; i++) {
-                data[exName].push({
-                    "date": new Date(d),
-                    "status": statusOrder[i],
-                    "count": Math.round(Math.random()*20)
-                });
+                if (Math.random() > 0.5) {
+                    data[exName].push({
+                        "date": new Date(d),
+                        "status": statusOrder[i],
+                        "count": Math.round(Math.random()*20)
+                    });
+                }
             }
         }
     }
 }
 
-function thresholdTime(n): Function {
-    return (data, min, max) => {
+function thresholdTime(n, min, max): Function {
+    return () => {
         return d3.scaleTime().domain([min, max]).ticks(n);
     };
 }
@@ -197,7 +200,6 @@ function initTimeseries(url, containerId, containerHeight: number): void {
             (metaData["maxDate"].getTime() - metaData["minDate"].getTime()) /
             (1000 * 3600 * 24)
         ); // dateRange in days
-        console.log(data);
         // let minDate = Date.parse(data[Object.keys(data)[0]][0].date);
         // let maxDate = Date.parse(data[Object.keys(data)[0]][0].date);
         Object.entries(data).forEach(entry => {
@@ -210,12 +212,16 @@ function initTimeseries(url, containerId, containerHeight: number): void {
 
             const binned = d3.bin()
                 .value(d => d.date.getTime())
-                .thresholds(thresholdTime(metaData["dateRange"]))(records);
+                .thresholds(
+                    thresholdTime(metaData["dateRange"]+1, metaData["minDate"], metaData["maxDate"])
+                ).domain([metaData["minDate"], metaData["maxDate"]])(records);
+            console.log(binned);
 
             records = undefined; // records no longer needed
 
-            console.log(binned);
             binned.forEach((bin, i) => {
+                const newDate = new Date(metaData["minDate"]);
+                newDate.setDate(newDate.getDate() + i);
                 metaData["maxStack"] = Math.max(metaData["maxStack"], d3.sum(bin, r => r["count"]));
                 binned[i] = bin.reduce((acc, r) => {
                     acc["date"] = r["date"];
@@ -224,12 +230,9 @@ function initTimeseries(url, containerId, containerHeight: number): void {
                 }, statusOrder.reduce((acc, s) => { // make sure record is initialized with 0 counts
                     acc[s] = 0;
                     return acc;
-                }, {}));
+                }, { "date": newDate }));
             });
-            console.log(metaData["maxStack"]);
-            console.log(binned);
             const stack = d3.stack().keys(statusOrder)(binned);
-            console.log(stack);
             data[exId] = stack;
         });
 

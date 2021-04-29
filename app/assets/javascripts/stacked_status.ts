@@ -170,6 +170,12 @@ function initStacked(url, containerId: string, containerHeight: number): void {
         container.node().style.height = height;
 
         const data = raw.data;
+
+        if (data.length === 0) {
+            container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
+                .text(I18n.t("js.no_data"));
+            return;
+        }
         data.sort((a, b) => {
             if (a.exercise_id === b.exercise_id) {
                 return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);

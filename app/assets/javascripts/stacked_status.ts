@@ -172,18 +172,22 @@ function initStacked(url, containerId: string, containerHeight: number): void {
             return;
         }
         d3.select(`${selector} *`).remove();
-        height = 75 * Object.keys(raw.data).length;
-        container
-            .style("height", `${height}px`)
 
         const data = raw.data;
 
         if (data.length === 0) {
-            container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
+            container
+                .style("height", "50px")
+                .append("div")
                 .text(I18n.t("js.no_data"))
                 .style("margin", "auto");
             return;
         }
+
+        height = 75 * Object.keys(raw.data).length;
+        container
+            .style("height", `${height}px`);
+
         data.sort((a, b) => {
             if (a.exercise_id === b.exercise_id) {
                 return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);

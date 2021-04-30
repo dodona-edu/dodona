@@ -12,12 +12,12 @@ function drawViolin(data: {
     "counts": number[];
     "freq": number[][];
     "median": number;
-}[], exMap: Record<string, string>): void {
+}[], exMap: [string, string][]): void {
     const min = d3.min(data, d => d3.min(d.counts));
     const max = d3.max(data, d => d3.max(d.counts));
     const xTicks = 10;
     const elWidth = width / max;
-    const yDomain: string[] = Array.from(new Set(data.map(d => d.ex_id)));
+    const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -196,9 +196,15 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
     if (!height) {
         height = container.node().clientHeight - 5;
     }
-    container.node().style.height = height;
-    container.html(""); // clean up possible previous visualisations
-    container.attr("class", "text-center").append("span").text(I18n.t("js.loading"));
+    container
+        .html("") // clean up possible previous visualisations
+        .style("height", `${height}px`)
+        .style("display", "flex")
+        .style("align-items", "center")
+        .attr("class", "text-center")
+        .append("div")
+        .text(I18n.t("js.loading"))
+        .style("margin", "auto");
 
     width = (container.node() as Element).getBoundingClientRect().width;
     const processor = function (raw): void {
@@ -209,11 +215,12 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
         d3.select(`${selector} *`).remove();
 
         height = 150 * Object.keys(raw.data).length;
-        container.node().style.height = height;
+        container.style("height", `${height}px`);
 
         if (Object.keys(raw.data).length === 0) {
             container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
-                .text(I18n.t("js.no_data"));
+                .text(I18n.t("js.no_data"))
+                .style("margin", "auto");
             return;
         }
         const data = Object.keys(raw.data).map(k => ({

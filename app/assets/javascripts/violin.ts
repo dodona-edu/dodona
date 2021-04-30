@@ -214,15 +214,18 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
         }
         d3.select(`${selector} *`).remove();
 
-        height = 150 * Object.keys(raw.data).length;
-        container.style("height", `${height}px`);
-
         if (Object.keys(raw.data).length === 0) {
-            container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
+            container
+                .style("height", "50px")
+                .append("div")
                 .text(I18n.t("js.no_data"))
                 .style("margin", "auto");
             return;
         }
+
+        height = 150 * Object.keys(raw.data).length;
+        container.style("height", `${height}px`);
+
         const data = Object.keys(raw.data).map(k => ({
             "ex_id": k,
             // sort so median is calculated correctly

@@ -99,14 +99,34 @@ function drawTimeSeries(data, metaData, exMap): void {
         .attr("transform", `translate(0, ${y(y.domain()[0]) + y.bandwidth()/2})`)
         .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, "%a %b-%d"));
 
-    // Add X axis label:
-    graph.append("text")
-        .attr("text-anchor", "end")
-        .attr("x", innerWidth)
-        .attr("y", innerHeight + 30)
-        .text("Percentage of submissions statuses")
-        .attr("fill", "currentColor")
-        .style("font-size", "11px");
+    const legend = graph.append("g")
+        .attr("transform", `translate(${-margin.left/2}, ${innerHeight-margin.top})`);
+
+    let legendX = 0;
+    for (const status of statusOrder) {
+        // add legend colors dots
+        const group = legend.append("g");
+
+        group
+            .append("rect")
+            .attr("x", legendX)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill", color(status) as string);
+
+        // add legend text
+        group
+            .append("text")
+            .attr("x", legendX + 20)
+            .attr("y", 12)
+            .attr("text-anchor", "start")
+            .text(status)
+            .attr("fill", "currentColor")
+            .style("font-size", "12px");
+
+        legendX += group.node().getBBox().width + 20;
+    }
 
     // add areas
     for (const exId of Object.keys(data)) {
@@ -183,18 +203,21 @@ function initTimeseries(url, containerId, containerHeight: number): void {
 
         d3.select(`${selector} *`).remove();
 
-        height = 150 * Object.keys(raw.data).length;
-        container.style("height", `${height}px`);
 
         const data: {string: {date; status; count}[]} = raw.data;
-        insertFakeData(data);
         const metaData = {}; // used to store things needed to create scales
         if (Object.keys(data).length === 0) {
-            container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
+            container
+                .style("height", "50px")
+                .append("div")
                 .text(I18n.t("js.no_data"))
                 .style("margin", "auto");
             return;
         }
+
+        height = 150 * Object.keys(raw.data).length;
+        container.style("height", `${height}px`);
+        insertFakeData(data);
         // pick date of first datapoint (to avoid null checks later on)
         metaData["minDate"] = d3.min(Object.values(data),
             records => d3.min(records, d =>new Date(d.date)));

@@ -189,7 +189,7 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
 
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html(
-                    "<iframe id=\"tutorviz\" width=\"100%\" frameBorder=\"0\" src=\"/tutorviz/tutorviz.html\"></iframe>"
+                    `<iframe id="tutorviz" width="100%" frameBorder="0" src="https://${window.dodona.sandboxHost}/tutorviz/tutorviz.html"></iframe>`
                 );
                 $("#tutorviz").on("load", function () {
                     const content = $("#tutorviz").get(0).contentWindow;

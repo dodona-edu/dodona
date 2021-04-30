@@ -189,11 +189,12 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
 
             $("#tutor #info-modal").on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html(
-                    `<iframe id="tutorviz" width="100%" frameBorder="0" src="https://${window.dodona.sandboxHost}/tutorviz/tutorviz.html"></iframe>`
+                    `<iframe id="tutorviz" width="100%" frameBorder="0" src="http://${window.dodona.sandboxHost}:3000/tutorviz/tutorviz.html"></iframe>`
                 );
                 $("#tutorviz").on("load", function () {
-                    const content = $("#tutorviz").get(0).contentWindow;
-                    content.load(codeTrace);
+                    window.iFrameResize({ log: true, checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(codeTrace) }, "#tutorviz");
+                    // const content = $("#tutorviz").get(0).contentWindow;
+                    // content.load(codeTrace);
                     $("#tutorviz").data("standardheight", content.document.body.scrollHeight);
                     $("#tutorviz").height($("#tutorviz").data("standardheight"));
                 });

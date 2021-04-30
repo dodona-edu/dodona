@@ -23,6 +23,7 @@ class ActivitiesController < ApplicationController
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
+    policy.worker_src -> { ['blob:'] }
   end
 
   content_security_policy only: %i[description] do |policy|

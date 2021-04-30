@@ -1,9 +1,8 @@
 import * as d3 from "d3";
-import { bin } from "d3";
 import { formatTitle } from "graph_helper.js";
 
 let selector = "";
-const margin = { top: 20, right: 10, bottom: 20, left: 120 };
+const margin = { top: 20, right: 20, bottom: 20, left: 120 };
 let width = 0;
 let height = 0;
 const statusOrder = [
@@ -32,14 +31,14 @@ function insertFakeData(data): void {
     }
 }
 
-function thresholdTime(n, min, max): Function {
+function thresholdTime(n, min, max): () => Date[] {
     return () => {
         return d3.scaleTime().domain([min, max]).ticks(n);
     };
 }
 
 function drawTimeSeries(data, metaData, exMap): void {
-    const yDomain: string[] = Array.from(new Set(Object.keys(data)));
+    const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     const yAxisPadding = 20; // padding between y axis (labels) and the actual graph
@@ -166,11 +165,16 @@ function initTimeseries(url, containerId, containerHeight: number): void {
     if (!height) {
         height = container.node().clientHeight - 5;
     }
-    container.html(""); // clean up possible previous visualisations
-    //
+    container
+        .html("") // clean up possible previous visualisations
+        .style("height", `${height}px`) // prevent shrinking after switching graphs
+        .style("display", "flex")
+        .style("align-items", "center")
+        .attr("class", "text-center")
+        .append("div")
+        .text(I18n.t("js.loading"))
+        .style("margin", "auto");
     width = (container.node() as Element).getBoundingClientRect().width;
-    container.attr("class", "text-center").append("span")
-        .text(I18n.t("js.loading"));
     const processor = function (raw): void {
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);
@@ -180,14 +184,15 @@ function initTimeseries(url, containerId, containerHeight: number): void {
         d3.select(`${selector} *`).remove();
 
         height = 150 * Object.keys(raw.data).length;
-        container.node().style.height = height;
+        container.style("height", `${height}px`);
 
         const data: {string: {date; status; count}[]} = raw.data;
         insertFakeData(data);
         const metaData = {}; // used to store things needed to create scales
         if (Object.keys(data).length === 0) {
             container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
-                .text(I18n.t("js.no_data"));
+                .text(I18n.t("js.no_data"))
+                .style("margin", "auto");
             return;
         }
         // pick date of first datapoint (to avoid null checks later on)
@@ -215,7 +220,6 @@ function initTimeseries(url, containerId, containerHeight: number): void {
                 .thresholds(
                     thresholdTime(metaData["dateRange"]+1, metaData["minDate"], metaData["maxDate"])
                 ).domain([metaData["minDate"], metaData["maxDate"]])(records);
-            console.log(binned);
 
             records = undefined; // records no longer needed
 

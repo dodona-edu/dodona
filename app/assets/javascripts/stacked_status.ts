@@ -16,7 +16,7 @@ function drawStacked(data: {
     "exercise_id": string;
     "status": string;
 }[], maxSum, exMap): void {
-    const yDomain: string[] = Array.from(new Set(data.map(d => d.exercise_id)));
+    const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -153,11 +153,17 @@ function initStacked(url, containerId: string, containerHeight: number): void {
     const container = d3.select(selector);
 
     if (!height) {
-        height = container.node().clientHeight - 5;
+        height = container.node()["clientHeight"] - 5;
     }
-    container.node().style.height = height;
-    container.html(""); // clean up possible previous visualisations
-    container.attr("class", "text-center").append("span").text(I18n.t("js.loading"));
+    container
+        .html("") // clean up possible previous visualisations
+        .style("height", `${height}px`)
+        .style("display", "flex")
+        .style("align-items", "center")
+        .attr("class", "text-center")
+        .append("div")
+        .text(I18n.t("js.loading"))
+        .style("margin", "auto");
 
     width = (container.node() as Element).getBoundingClientRect().width;
     const processor = function (raw): void {
@@ -167,13 +173,15 @@ function initStacked(url, containerId: string, containerHeight: number): void {
         }
         d3.select(`${selector} *`).remove();
         height = 75 * Object.keys(raw.data).length;
-        container.node().style.height = height;
+        container
+            .style("height", `${height}px`)
 
         const data = raw.data;
 
         if (data.length === 0) {
             container.attr("class", "text-center").append("div").style("height", `${height+5}px`)
-                .text(I18n.t("js.no_data"));
+                .text(I18n.t("js.no_data"))
+                .style("margin", "auto");
             return;
         }
         data.sort((a, b) => {

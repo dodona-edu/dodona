@@ -31,9 +31,14 @@ function toggleStats(button, seriesId) {
     }
 }
 
-function setActiveToggle(activeNode) {
-    Array.from(activeNode.parentElement.getElementsByTagName("button")).forEach(element => {
-        element.className = element.className.replace(" active", "");
-    });
-    activeNode.className = activeNode.className + " active";
+function setActiveToggle(activeNode) { // returns true if the active tab switched
+    if (!activeNode.className.match(/^(.* )?active( .*)?$/)) {
+        console.log("test");
+        Array.from(activeNode.parentElement.getElementsByTagName("button")).forEach(element => {
+            element.className = element.className.replace(" active", "");
+        });
+        activeNode.className = activeNode.className + " active";
+        return true;
+    }
+    return false;
 }

@@ -1,0 +1,27 @@
+name: Deploy images
+
+on:
+  workflow_dispatch:    
+    inputs:
+      image:
+        description: 'Image to deploy, leave empty for all'     
+        required: false
+
+jobs:
+  deploy:
+    environment: 
+      name: images
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cancel previous deployments
+      uses: styfle/cancel-workflow-action@0.9.0
+      with:
+        access_token: ${{ github.token }}
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.MESTRA_KEY }}
+        known_hosts: ${{ secrets.MESTRA_HOST }}
+    - name: Run deploy
+      run: |
+        echo "deploy images ${{ github.event.inputs.image }}" | ssh -p 4840 dodona@mestra.ugent.be

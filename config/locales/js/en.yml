@@ -54,6 +54,10 @@ en:
     submission: submission
     submissions: submissions
     total: total
+    violin_title: Amount of submissions per user
+    stacked_title: Distribution of submission statuses
+    timeseries_title: Submissions over time
+    ctimeseries_title: First correct submissions over time
     months:
       long:
         jan: January

@@ -1,5 +1,4 @@
 # Will restart delayed job on all worker servers
-
 name: Deploy workers
 
 on:

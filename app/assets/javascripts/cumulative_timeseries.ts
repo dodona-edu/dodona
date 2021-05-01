@@ -92,14 +92,12 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .attr("font-size", "12px");
     tooltipLabel
         .attr("y", margin.top + tooltipLabel.node().getBBox().height);
-    // @ts-ignore
     const tooltipDots = graph.selectAll("dots")
         .data(Object.entries(data), d => d[0])
         .join("circle")
         .attr("r", 4)
         .attr("opacity", 0)
         .style("fill", d => color(d[0]));
-    // @ts-ignore
     const tooltipDotLabels = graph.selectAll("dotlabels")
         .data(Object.entries(data), d => d[0])
         .join("text")
@@ -279,10 +277,8 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
             });
 
             const binned = d3.bin()
-                // @ts-ignore
                 .value(d => d.date.getTime())
                 .thresholds(
-                    // @ts-ignore
                     thresholdTime(metaData["dateRange"]+1, metaData["minDate"], metaData["maxDate"])
                 ).domain([metaData["minDate"], metaData["maxDate"]])(records);
 

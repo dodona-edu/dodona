@@ -194,7 +194,6 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
                 $("#tutorviz").on("load", function () {
                     window.iFrameResize({ log: true, checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(codeTrace) }, "#tutorviz");
                     const content = $("#tutorviz").get(0).contentWindow;
-                    // content.load(codeTrace);
                     $("#tutorviz").data("standardheight", content.document.body.scrollHeight);
                     $("#tutorviz").height($("#tutorviz").data("standardheight"));
                 });

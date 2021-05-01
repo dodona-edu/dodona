@@ -149,6 +149,8 @@
       dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Stacked Status</button>
     <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this) && 
       dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
+    <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this) && 
+      dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Cumulative Timeseries</button>
   </div>
   <div id="stats-container-<%= series.id %>" style="position: relative;"></div>
 

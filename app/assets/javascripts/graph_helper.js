@@ -1,7 +1,6 @@
 import * as d3 from "d3";
 
 function formatTitle(selection, width, exMap) {
-    console.log(exMap);
     selection.each((datum, i, nodeList) => {
         const text = d3.select(nodeList[i]);
         const words = exMap.find(ex => ex[0].toString()===datum.toString())[1].split(" ").reverse();

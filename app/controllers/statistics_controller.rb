@@ -72,6 +72,23 @@ class StatisticsController < ApplicationController
     end
   end
 
+  def cumulative_timeseries
+    series = nil
+    series = Series.find(params[:series_id]) if params.key?(:series_id)
+    # authorize series
+
+    course = series.course
+
+    result = Submission.cumulative_timeseries_matrix(course: course, series: series, deadline: series.deadline)
+    if result.present?
+      lan = params[:locale]
+      ex_data = series.exercises.map { |ex| [ex.id, lan == 'nl' ? ex.name_nl : ex.name_en] }
+      render json: { data: result[:value], exercises: ex_data }
+    else
+      render json: { status: 'not available yet' }, status: :accepted
+    end
+  end
+
   private
 
   def set_course_and_user

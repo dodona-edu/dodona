@@ -4,7 +4,7 @@ let selector = "";
 const margin = { top: 20, right: 40, bottom: 80, left: 40 };
 let width = 0;
 let height = 0;
-const bisect = d3.bisector((d: string) => Date.parse(d)).left;
+const bisector = d3.bisector((d: Date) => d.getTime()).left;
 
 
 function insertFakeData(data): void {
@@ -34,6 +34,9 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
     const exOrder: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
+    const dateFormat = d3.timeFormat("%A %B %d");
+    const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
+    dateArray.unshift(metaData["minDate"]);
 
     const mapEx = (target: string): string =>
         exMap.find(ex => target.toString() === ex[0].toString());
@@ -47,15 +50,12 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
     const graph = svg
         .append("g")
         .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")")
-        .on("mousemove", e => {
-            console.log(bisect(d3.pointer(e, svg.node())[0]));
-        });
+            "translate(" + margin.left + "," + margin.top + ")");
 
     // common y scale per exercise
     const y = d3.scaleLinear()
         .domain([0, metaData["maxSum"]])
-        .range([innerHeight, 0]);
+        .range([innerHeight, margin.top]);
 
     // y axis
     graph.append("g")
@@ -73,17 +73,42 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .domain(exOrder);
 
 
-    const tooltip = d3.select(selector).append("div")
-        .attr("class", "d3-tooltip")
-        .attr("pointer-events", "none")
-        .style("opacity", 0)
-        .style("z-index", 5);
-
-
     // add x-axis
     graph.append("g")
         .attr("transform", `translate(0, ${y(0)})`)
         .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, "%a %b-%d"));
+
+    const tooltip = graph.append("line")
+        .attr("y1", margin.top)
+        .attr("y2", innerHeight)
+        .attr("pointer-events", "none")
+        .attr("stroke", "currentColor")
+        .style("width", 40);
+    const tooltipLabel = graph.append("text")
+        .attr("opacity", 0)
+        .text("_") // dummy text to calculate height
+        .attr("text-anchor", "start")
+        .attr("fill", "currentColor")
+        .attr("font-size", "12px");
+    tooltipLabel
+        .attr("y", margin.top + tooltipLabel.node().getBBox().height);
+    // @ts-ignore
+    const tooltipDots = graph.selectAll("dots")
+        .data(Object.entries(data), d => d[0])
+        .join("circle")
+        .attr("r", 4)
+        .attr("opacity", 0)
+        .style("fill", d => color(d[0]));
+    // @ts-ignore
+    const tooltipDotLabels = graph.selectAll("dotlabels")
+        .data(Object.entries(data), d => d[0])
+        .join("text")
+        .attr("text-anchor", "start")
+        .attr("fill", d => color(d[0]))
+        .attr("opacity", 0)
+        .attr("font-size", "12px");
+
+    let tooltipI = -1;
 
     const legend = svg.append("g");
 
@@ -127,7 +152,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
             .enter()
             .append("path")
             .attr("class", mapEx(exId))
-            .style("stroke", color(mapEx(exId)))
+            .style("stroke", color(exId) as string)
             .style("fill", "none")
             .attr("d", d3.line()
                 .x(p => x(p[0]["x0"]))
@@ -135,6 +160,48 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
                 .curve(d3.curveMonotoneX)
             );
     }
+
+    function bisect(mx: number): {"date": Date; "i": number} {
+        if (!dateArray) {
+            return { "date": new Date(0), "i": 0 };
+        }
+        const date = x.invert(mx);
+        const index = bisector(dateArray, date, 1);
+        const a = index > 0 ? dateArray[index-1] : metaData["minDate"];
+        const b = index < dateArray.length ? dateArray[index] : metaData["maxDate"];
+        if (date.getTime()-a.getTime() > b.getTime()-date.getTime()) {
+            return { "date": b, "i": index };
+        } else {
+            return { "date": a, "i": index-1 };
+        }
+    }
+
+    svg.on("mousemove", e => {
+        if (!dateArray) {
+            return;
+        }
+        const { date, i } = bisect(d3.pointer(e, graph.node())[0]);
+        if (i !== tooltipI) {
+            tooltipI = i;
+            tooltip
+                .attr("opacity", 1)
+                .attr("x1", x(date))
+                .attr("x2", x(date));
+            tooltipLabel
+                .attr("opacity", 1)
+                .text(dateFormat(date))
+                .attr("x", x(date) - tooltipLabel.node().getBBox().width - 5);
+            tooltipDots
+                .attr("opacity", 1)
+                .attr("cx", x(date))
+                .attr("cy", d => y(d[1][i][1]));
+            tooltipDotLabels
+                .attr("opacity", 1)
+                .text(d => d[1][i][1])
+                .attr("x", x(date) + 5)
+                .attr("y", d => y(d[1][i][1])-5);
+        }
+    });
 }
 
 function initCumulativeTimeseries(url, containerId, containerHeight: number): void {
@@ -143,7 +210,7 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
     const container = d3.select(selector);
 
     if (!height) {
-        height = container.node().clientHeight - 5;
+        height = (container.node() as HTMLElement).clientHeight - 5;
     }
     container
         .html("") // clean up possible previous visualisations
@@ -165,7 +232,6 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
 
 
         const data: {string: {date; status; count}[]} = raw.data;
-        console.log(data);
         const metaData = {}; // used to store things needed to create scales
         if (Object.keys(data).length === 0) {
             container
@@ -197,15 +263,16 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
             });
 
             const binned = d3.bin()
+                // @ts-ignore
                 .value(d => d.date.getTime())
                 .thresholds(
+                    // @ts-ignore
                     thresholdTime(metaData["dateRange"]+1, metaData["minDate"], metaData["maxDate"])
                 ).domain([metaData["minDate"], metaData["maxDate"]])(records);
 
             records = undefined; // records no longer needed
             data[exId] = d3.zip(binned, d3.cumsum(binned, d => d.length ? d[0].count : 0));
             metaData["maxSum"] = Math.max(data[exId][data[exId].length-1][1], metaData["maxSum"]);
-            console.log(data[exId]);
         });
 
         drawCumulativeTimeSeries(data, metaData, raw.exercises);

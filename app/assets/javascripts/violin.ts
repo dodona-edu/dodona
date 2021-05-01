@@ -171,7 +171,7 @@ function drawViolin(data: {
         .attr("y", margin.top)
         .attr("width", elWidth)
         .attr("height", innerWidth)
-        .attr("stroke", "black")
+        .attr("stroke", "currentColor")
         .attr("class", "violin-invisibar")
         .attr("pointer-events", "all")
         .on("mouseover", (_, d) => onMouseOver(d))

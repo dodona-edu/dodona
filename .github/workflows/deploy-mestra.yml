@@ -24,7 +24,7 @@ jobs:
         known_hosts: ${{ secrets.MESTRA_HOST }}
     - name: Run deploy
       run: |
-        echo "$GITHUB_SHA mestra" | ssh -p 4840 dodona@mestra.ugent.be
+        echo "deploy mestra $GITHUB_SHA" | ssh -p 4840 dodona@mestra.ugent.be
     - name: Remove deploy label
       uses: buildsville/add-remove-label@v1
       with:

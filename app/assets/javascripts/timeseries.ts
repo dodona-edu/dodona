@@ -9,6 +9,7 @@ const statusOrder = [
     "correct", "wrong", "compilation error", "runtime error",
     "time limit exceeded", "memory limit exceeded", "output limit exceeded",
 ];
+const bisector = d3.bisector((d: Date) => d.getTime()).left;
 
 
 function insertFakeData(data): void {
@@ -42,6 +43,9 @@ function drawTimeSeries(data, metaData, exMap): void {
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     const yAxisPadding = 20; // padding between y axis (labels) and the actual graph
+    const dateFormat = d3.timeFormat("%A %B %d");
+    const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
+    dateArray.unshift(metaData["minDate"]);
 
     const svg = d3.select(selector)
         .append("svg")
@@ -56,7 +60,7 @@ function drawTimeSeries(data, metaData, exMap): void {
 
     // Show the Y scale for exercises (Big Y scale)
     const y = d3.scaleBand()
-        .range([innerHeight, 0])
+        .range([innerHeight, margin.top])
         .domain(yDomain)
         .padding(.5);
 
@@ -93,6 +97,21 @@ function drawTimeSeries(data, metaData, exMap): void {
         .style("opacity", 0)
         .style("z-index", 5);
 
+    const tooltipLine = graph.append("line")
+        .attr("y1", margin.top)
+        .attr("y2", innerHeight-y.bandwidth()*1.5)
+        .attr("pointer-events", "none")
+        .attr("stroke", "currentColor")
+        .style("width", 40);
+    const tooltipLabel = graph.append("text")
+        .attr("opacity", 0)
+        .text("_") // dummy text to calculate height
+        .attr("text-anchor", "start")
+        .attr("fill", "currentColor")
+        .attr("font-size", "12px");
+    tooltipLabel
+        .attr("y", margin.top + tooltipLabel.node().getBBox().height);
+
 
     // add x-axis
     graph.append("g")
@@ -128,6 +147,22 @@ function drawTimeSeries(data, metaData, exMap): void {
         legendX += group.node().getBBox().width + 20;
     }
 
+
+    function bisect(mx: number): {"date": Date; "i": number} {
+        if (!dateArray) {
+            return { "date": new Date(0), "i": 0 };
+        }
+        const date = x.invert(mx);
+        const index = bisector(dateArray, date, 1);
+        const a = index > 0 ? dateArray[index-1] : metaData["minDate"];
+        const b = index < dateArray.length ? dateArray[index] : metaData["maxDate"];
+        if (date.getTime()-a.getTime() > b.getTime()-date.getTime()) {
+            return { "date": b, "i": index };
+        } else {
+            return { "date": a, "i": index-1 };
+        }
+    }
+
     // add areas
     for (const exId of Object.keys(data)) {
         const exGroup = graph.append("g")
@@ -146,14 +181,19 @@ function drawTimeSeries(data, metaData, exMap): void {
                 .y1(r => interY(r[1]) - y.bandwidth())
                 .curve(d3.curveMonotoneX)
             )
-            .on("mouseover", (_, d) => {
+            .on("mouseover", () => {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(`Status: ${d["key"]}`);
             })
-            .on("mousemove", (e, _) => {
+            .on("mousemove", (e, d) => {
+                if (!dateArray) {
+                    return;
+                }
+                console.log(d);
+                const { date, i } = bisect(d3.pointer(e, graph.node())[0]);
                 tooltip
+                    .html(`${d[i][1]-d[i][0]} x ${d["key"]}`)
                     .style(
                         "left",
                         `${d3.pointer(e, svg.node())[0] - tooltip.node().clientWidth * 1.1}px`
@@ -162,11 +202,26 @@ function drawTimeSeries(data, metaData, exMap): void {
                         "top",
                         `${d3.pointer(e, svg.node())[1] - tooltip.node().clientHeight * 1.25}px`
                     );
+                tooltipLine
+                    .attr("opacity", 1)
+                    .attr("x1", x(date))
+                    .attr("x2", x(date));
+                tooltipLabel
+                    .attr("opacity", 1)
+                    .text(dateFormat(date))
+                    .attr(
+                        "x",
+                        x(date) - tooltipLabel.node().getBBox().width - 5 > 0 ?
+                            x(date) - tooltipLabel.node().getBBox().width - 5 :
+                            x(date) + 10
+                    );
             })
             .on("mouseout", () => {
                 tooltip.transition()
                     .duration(500)
                     .style("opacity", 0);
+                tooltipLabel.attr("opacity", 0);
+                tooltipLine.attr("opacity", 0);
             });
 
         // y axis
@@ -228,8 +283,6 @@ function initTimeseries(url, containerId, containerHeight: number): void {
             (metaData["maxDate"].getTime() - metaData["minDate"].getTime()) /
             (1000 * 3600 * 24)
         ); // dateRange in days
-        // let minDate = Date.parse(data[Object.keys(data)[0]][0].date);
-        // let maxDate = Date.parse(data[Object.keys(data)[0]][0].date);
         Object.entries(data).forEach(entry => {
             const exId = entry[0];
             let records = entry[1];

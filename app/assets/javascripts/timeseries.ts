@@ -190,7 +190,6 @@ function drawTimeSeries(data, metaData, exMap): void {
                 if (!dateArray) {
                     return;
                 }
-                console.log(d);
                 const { date, i } = bisect(d3.pointer(e, graph.node())[0]);
                 tooltip
                     .html(`${d[i][1]-d[i][0]} x ${d["key"]}`)

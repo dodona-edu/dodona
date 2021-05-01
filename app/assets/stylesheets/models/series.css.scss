@@ -215,3 +215,9 @@
   justify-content: flex-end;
   flex-direction: row;
 }
+
+.graph-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

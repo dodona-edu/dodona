@@ -15,13 +15,17 @@ function toggleStats(button, seriesId) {
     const tabs = document.getElementById(`stats-tabs-${seriesId}`);
     const content = document.getElementById(`series-content-${seriesId}`);
     const container = document.getElementById(`stats-container-${seriesId}`);
+    const title = document.getElementById(`graph-title-${seriesId}`);
     const height = content.clientHeight;
     if (tabs.style.display == "none") {
         tabs.style.display = "flex";
+        title.style.display = "block";
+        title.innerHTML = I18n.t("js.violin_title");
         container.style.display = "flex";
         content.style.display = "none";
         setActiveToggle(tabs.childNodes[1]);
         button.className = button.className.replace("chart-line", "format-list-bulleted");
+
         initViolin(
             `/nl/stats/violin?series_id=${seriesId}`,
             `#stats-container-${seriesId}`,
@@ -29,6 +33,7 @@ function toggleStats(button, seriesId) {
         );
     } else {
         tabs.style.display = "none";
+        title.style.display = "none";
         content.style.display = "block";
         container.innerHTML = "";
         container.style.display = "none";
@@ -36,8 +41,10 @@ function toggleStats(button, seriesId) {
     }
 }
 
-function setActiveToggle(activeNode) { // returns true if the active tab switched
+function setActiveToggle(activeNode, title, seriesId) { // returns true if the active tab switched
     if (!activeNode.className.match(/^(.* )?active( .*)?$/)) {
+        const titleSpan = document.getElementById(`graph-title-${seriesId}`);
+        titleSpan.innerHTML = I18n.t(`js.${title}`);
         Array.from(activeNode.parentElement.getElementsByTagName("button")).forEach(element => {
             element.className = element.className.replace(" active", "");
         });

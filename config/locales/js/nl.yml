@@ -54,6 +54,10 @@ nl:
     submission: indiening
     submissions: indieningen
     total: totaal
+    violin_title: Aantal indieningen per gebruiker
+    stacked_title: Verdeling van indienigsstatussen
+    timeseries_title: Indieningen over tijd
+    ctimeseries_title: Eerste juiste indieningen over tijd
     months:
       long:
         jan: Januari

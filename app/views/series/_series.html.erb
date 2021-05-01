@@ -141,16 +141,18 @@
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
-
-  <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle stats-tab">
-    <button class="btn btn-secondary annotation-toggle active" onclick="dodona.setActiveToggle(this) && 
-      dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Violin</button>
-    <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this) && 
-      dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Stacked Status</button>
-    <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this) && 
-      dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
-    <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this) && 
-      dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Cumulative Timeseries</button>
+  <div class="graph-header">
+    <span id="graph-title-<%= series.id %>"></span>
+    <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle stats-tab">
+      <button class="btn btn-secondary annotation-toggle active" onclick="dodona.setActiveToggle(this, 'violin_title', <%= series.id %>) && 
+        dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Violin</button>
+      <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this, 'stacked_title', <%= series.id %>) && 
+        dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Stacked Status</button>
+      <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this, 'timeseries_title', <%= series.id %>) && 
+        dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
+      <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this, 'ctimeseries_title', <%= series.id %>) && 
+        dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Cumulative Timeseries</button>
+    </div>
   </div>
   <div id="stats-container-<%= series.id %>" style="position: relative;"></div>
 

@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy Mestra
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - labeled
 
 jobs:
-  mestra:
+  deploy:
     if: ${{ github.event.action == 'review_requested' || (github.event.action == 'labeled' && github.event.label.name == 'deploy') }}
     environment: 
       name: mestra

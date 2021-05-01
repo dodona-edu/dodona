@@ -190,7 +190,12 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
             tooltipLabel
                 .attr("opacity", 1)
                 .text(dateFormat(date))
-                .attr("x", x(date) - tooltipLabel.node().getBBox().width - 5);
+                .attr(
+                    "x",
+                    x(date) - tooltipLabel.node().getBBox().width - 5 > 0 ?
+                        x(date) - tooltipLabel.node().getBBox().width - 5 :
+                        x(date) + 10
+                );
             tooltipDots
                 .attr("opacity", 1)
                 .attr("cx", x(date))
@@ -201,6 +206,17 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
                 .attr("x", x(date) + 5)
                 .attr("y", d => y(d[1][i][1])-5);
         }
+    });
+
+    svg.on("mouseleave", () => {
+        tooltip
+            .attr("opacity", 0);
+        tooltipLabel
+            .attr("opacity", 0);
+        tooltipDots
+            .attr("opacity", 0);
+        tooltipDotLabels
+            .attr("opacity", 0);
     });
 }
 

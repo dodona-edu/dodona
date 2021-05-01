@@ -26,4 +26,4 @@ jobs:
         known_hosts: ${{ secrets.MESTRA_HOST }}
     - name: Run deploy
       run: |
-        echo "${{ github.event.inputs.branch }} naos" | ssh -p 4840 dodona@mestra.ugent.be
+        echo "deploy naos ${{ github.event.inputs.branch }}" | ssh -p 4840 dodona@mestra.ugent.be

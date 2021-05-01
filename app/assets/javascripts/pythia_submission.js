@@ -192,7 +192,7 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
                     `<iframe id="tutorviz" width="100%" frameBorder="0" src="https://${window.dodona.sandboxHost}/tutorviz/tutorviz.html"></iframe>`
                 );
                 $("#tutorviz").on("load", function () {
-                    window.iFrameResize({ log: true, checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(codeTrace) }, "#tutorviz");
+                    window.iFrameResize({ checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(codeTrace) }, "#tutorviz");
                 });
             });
 

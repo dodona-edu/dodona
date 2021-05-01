@@ -14,7 +14,7 @@ window.dodona.setActiveToggle = setActiveToggle;
 function toggleStats(button, seriesId) {
     const tabs = document.getElementById(`stats-tabs-${seriesId}`);
     const content = document.getElementById(`series-content-${seriesId}`);
-    const container = document.getElementById(`stats-container-${seriesId}`)
+    const container = document.getElementById(`stats-container-${seriesId}`);
     const height = content.clientHeight;
     if (tabs.style.display == "none") {
         tabs.style.display = "flex";

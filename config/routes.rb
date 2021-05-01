@@ -247,12 +247,12 @@ Rails.application.routes.draw do
       get 'violin', to: 'statistics#violin'
       get 'stacked_status', to: 'statistics#stacked_status'
       get 'timeseries', to: 'statistics#timeseries'
+      get 'cumulative_timeseries', to: 'statistics#cumulative_timeseries'
     end
-
   end
 
-# For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-# Serve websocket cable requests in-process
-# mount ActionCable.server => '/cable'
+  # Serve websocket cable requests in-process
+  # mount ActionCable.server => '/cable'
 end

@@ -52,7 +52,9 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
-  scope :after_moment, ->(moment) { where('submissions.created_at > ?', moment) }
+  scope :in_time_range, -> (start_date, end_date) { 
+    where('submissions.created_at <= ? AND submissions.created_at >= ?', start_date.to_date, end_date.to_date)
+  }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
@@ -81,6 +83,18 @@ class Submission < ApplicationRecord
 
   scope :most_recent_correct_per_user, lambda { |*|
     correct.group(:user_id).most_recent
+  }
+
+  scope :least_recent, lambda {
+    submissions = select('MIN(submissions.id) as id')
+    Submission.unscoped.joins <<~HEREDOC
+      JOIN (#{submissions.to_sql}) least_recent
+      ON submissions.id = least_recent.id
+    HEREDOC
+  }
+
+  scope :first_correct_per_ex_per_user, lambda { |*|
+    correct.group(:exercise_id, :user_id).least_recent
   }
 
   def initialize(params)
@@ -407,10 +421,8 @@ class Submission < ApplicationRecord
   def self.timeseries_matrix(options = {}, base = { until: 0, value: {} })
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
-    submissions = submissions.before_deadline(options[:deadline]) if options[:deadline].present?
+    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
     submissions = submissions.judged
-    # limiting lower bound filters all dummy data, should be fine for real data
-    # submissions = submissions.after_moment(options[:deadline] - 2.weeks) if options[:deadline].present?
     return base unless submissions.any?
 
     value = base[:value]
@@ -425,6 +437,32 @@ class Submission < ApplicationRecord
     value = value.group_by { |k, _| k[0] }
     value = value
             .transform_values { |values| values.map { |v| { date: v[0][1], status: v[0][2], count: v[1] } } }
+    {
+      until: submissions.first.id,
+      value: value
+    }
+  end
+
+  def self.cumulative_timeseries_matrix(options = {}, base = { until: 0, value: {} })
+    submissions = submissions_since(base[:until], options)
+    submissions = submissions.in_series(options[:series]) if options[:series].present?
+    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline] + 1.day) if options[:deadline].present?
+    submissions = submissions.judged
+    submissions = submissions.first_correct_per_ex_per_user
+    return base unless submissions.any?
+
+    value = base[:value]
+
+    submissions.in_batches do |subs|
+      value = value.merge(subs.pluck(:exercise_id, :created_at)
+                              .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] }
+                              .group_by(&:itself)
+                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+    end
+
+    value = value.group_by { |k, _| k[0] }
+    value = value
+            .transform_values { |values| values.map { |v| { date: v[0][1],  count: v[1] } } }
     {
       until: submissions.first.id,
       value: value

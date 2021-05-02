@@ -61,17 +61,17 @@
         <% end %>
       </td>
       <td class="actions">
-        <%= link_to "#new-form-#{evaluation_exercise.id}",
-                    class: 'btn btn-sm btn-default toggle-button',
-                    title: t('.add_title', name: evaluation_exercise.exercise.name),
-                    data: { toggle: 'modal' } do %>
-          <i class="mdi mdi-plus mdi-18" aria-hidden='true'></i>
-        <% end %>
         <%= link_to "#copy-form-#{evaluation_exercise.id}",
-                    class: 'btn btn-sm btn-default toggle-button',
+                    class: 'btn btn-sm btn-default',
                     title: t('.copy_title', name: evaluation_exercise.exercise.name),
                     data: { toggle: 'modal' } do %>
           <i class="mdi mdi-content-copy mdi-18" aria-hidden='true'></i>
+        <% end %>
+        <%= link_to "#new-form-#{evaluation_exercise.id}",
+                    class: 'btn btn-sm btn-primary',
+                    title: t('.add_title', name: evaluation_exercise.exercise.name),
+                    data: { toggle: 'modal' } do %>
+          <i class="mdi mdi-plus mdi-18" aria-hidden='true'></i>
         <% end %>
       </td>
     </tr>

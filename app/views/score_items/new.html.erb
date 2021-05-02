@@ -71,7 +71,6 @@
                     </span>
                   </p>
                   <div class="btn-group actions">
-                    <%= link_to t('.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
                     <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
                       <i class="mdi mdi-dots-vertical"></i>
                     </a>
@@ -94,6 +93,9 @@
                   <%= render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
                 </div>
               <% end %>
+            </div>
+            <div class="stepper-actions stepper-border">
+              <%= link_to t('.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
             </div>
           </div>
         </div>

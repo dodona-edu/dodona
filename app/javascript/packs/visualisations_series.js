@@ -23,7 +23,7 @@ function toggleStats(button, seriesId) {
         title.innerHTML = I18n.t("js.violin_title");
         container.style.display = "flex";
         content.style.display = "none";
-        setActiveToggle(tabs.childNodes[1]);
+        setActiveToggle(tabs.childNodes[1], "violin_title", seriesId);
         button.className = button.className.replace("chart-line", "format-list-bulleted");
 
         initViolin(

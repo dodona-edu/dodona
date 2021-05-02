@@ -163,14 +163,13 @@ function drawViolin(data: {
     // add invisible bars between each tick to support cursor functionality
     graph
         .selectAll("invisibars")
-        // hack to quickly make list from 1 to 10
         .data(d3.range(1, max+1))
         .enter()
         .append("rect")
         .attr("x", d => x(d) - elWidth/2)
-        .attr("y", margin.top)
+        .attr("y", 0)
         .attr("width", elWidth)
-        .attr("height", innerWidth)
+        .attr("height", innerHeight)
         .attr("stroke", "currentColor")
         .attr("class", "violin-invisibar")
         .attr("pointer-events", "all")
@@ -223,7 +222,7 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
             return;
         }
 
-        height = 150 * Object.keys(raw.data).length;
+        height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
 
         const data = Object.keys(raw.data).map(k => ({

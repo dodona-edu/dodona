@@ -55,7 +55,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
     // common y scale per exercise
     const y = d3.scaleLinear()
         .domain([0, metaData["maxSum"]])
-        .range([innerHeight, margin.top]);
+        .range([innerHeight, 0]);
 
     // y axis
     graph.append("g")
@@ -256,7 +256,7 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
             return;
         }
 
-        height = 150 * Object.keys(raw.data).length;
+        height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
         // insertFakeData(data);
         metaData["minDate"] = d3.min(Object.values(data),

@@ -184,7 +184,7 @@ function initStacked(url, containerId: string, containerHeight: number): void {
             return;
         }
 
-        height = 75 * Object.keys(raw.data).length;
+        height = 75 * raw.exercises.length;
         container
             .style("height", `${height}px`);
 

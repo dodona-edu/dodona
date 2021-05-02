@@ -31,10 +31,10 @@ nl:
       no_explanation: "Ga door naar de evaluatie"
       second_step: "Stel een puntenverdeling op"
       second_explanation: Je kan hieronder per oefening een puntenverdeling opstellen. Je kan deze later altijd aanpassen.
-      summary:
-        zero: Geen scoreonderdelen in deze evaluatie
-        one: "Eén scoreonderdeel in deze evaluatie, met een maximumscore van %{score}."
-        other: "%{count} scoreonderdelen in deze evaluatie, met een maximumscore van %{score}."
+      summary_html:
+        zero: Er zijn <strong>geen</strong> scoreonderdelen in deze evaluatie
+        one: "Er is <strong>één</strong> scoreonderdeel in deze evaluatie, met een maximumscore van <strong>%{score}</strong>."
+        other: "Er zijn <strong>%{count}</strong> scoreonderdelen in deze evaluatie, met een maximumscore van <strong>%{score}</strong>."
       text: Creeër een scoreonderdeel en voeg het toe aan elke oefening in de evaluatie.
       close: Sluiten
       add_all: Scoreonderdeel toevoegen aan alle oefeningen

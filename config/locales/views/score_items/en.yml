@@ -31,10 +31,10 @@ en:
       no_explanation: "Continue to the evaluation"
       second_step: "Stel een puntenverdeling op"
       second_explanation: You can create a grading scheme below for each exercise. You can always change these later.
-      summary:
-        zero: No score items configured for this evaluation
-        one: "One score item for this evaluation, with a maximum score of %{score}."
-        other: "%{count} score items for this evaluation, with a maximum score of %{score}."
+      summary_html:
+        zero: There are <strong>no</strong> score items configured for this evaluation
+        one: "There is <strong>one</strong> score item for this evaluation, with a maximum score of <strong>%{score}</strong>."
+        other: "There are <strong>%{count}</strong> score items for this evaluation, with a maximum score of <strong>%{score}</strong>."
       text: Create and add a score item to each exercise in the evaluation.
       close: Sluiten
       add_all: Add score item to all exercises

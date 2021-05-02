@@ -67,7 +67,7 @@
                   <p class="description-text">
                     <%= t '.second_explanation' %><br>
                     <span class="summary-text">
-                      <%= raw t('.summary', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>
+                      <%= t('.summary_html', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>
                     </span>
                   </p>
                   <div class="btn-group actions">

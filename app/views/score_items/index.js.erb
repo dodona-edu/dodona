@@ -7,4 +7,4 @@ if (modal.is(":visible")) {
 } else {
     $("#card-<%= evaluation_exercise.id %>").html("<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
 }
-$(".summary-text").html("<%= t('score_items.new.summary', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>");
+$(".summary-text").html("<%= t('score_items.new.summary_html', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>");

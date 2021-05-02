@@ -60,7 +60,7 @@ function drawTimeSeries(data, metaData, exMap): void {
 
     // Show the Y scale for exercises (Big Y scale)
     const y = d3.scaleBand()
-        .range([innerHeight, margin.top])
+        .range([innerHeight, 0])
         .domain(yDomain)
         .padding(.5);
 
@@ -269,7 +269,7 @@ function initTimeseries(url, containerId, containerHeight: number): void {
             return;
         }
 
-        height = 150 * Object.keys(raw.data).length;
+        height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
         // insertFakeData(data);
         // pick date of first datapoint (to avoid null checks later on)

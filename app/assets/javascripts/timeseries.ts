@@ -271,7 +271,7 @@ function initTimeseries(url, containerId, containerHeight: number): void {
 
         height = 150 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
-        insertFakeData(data);
+        // insertFakeData(data);
         // pick date of first datapoint (to avoid null checks later on)
         metaData["minDate"] = d3.min(Object.values(data),
             records => d3.min(records, d =>new Date(d.date)));

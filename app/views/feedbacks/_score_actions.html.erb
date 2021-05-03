@@ -2,7 +2,7 @@
 <div class="row row-no-gutters form-row" id="<%= "#{score_item.id}-score-form-wrapper" %>">
   <%= form_for score, url: '#',
                namespace: score_item.id,
-               html: { class: "form-inline score-form col-md-7 col-xs-9", data: { url: url, new: score.persisted? } } do |f| %>
+               html: { class: "form-inline score-form col-xs-12", data: { url: url, new: score.persisted? } } do |f| %>
     <%= f.hidden_field :expected_score, value: score.score, class: "expected-score" %>
     <% e = if score&.out_of_bounds?
              'has-error'
@@ -13,16 +13,29 @@
     <div class="form-group input <%= e %>">
       <div class="control-wrapper">
         <div class="input-group">
+          <div class="input-group-btn">
+            <%= button_tag class: "btn btn-default btn-sm delete-button", type: :button, disabled: !@score_map.key?(score_item.id) do %>
+              <i class="mdi mdi-delete mdi-12" aria-hidden='true'></i>
+            <% end %>
+          </div>
           <%= f.number_field :score, required: true,
                              class: "form-control score-input",
                              step: 0.25,
                              tabindex: index + 1,
                              min: -999.75,
-                           max: 999.75,
-                           value: format_score(f.object.score, lang='en', numeric_only=true) %>
-          <span class="input-group-addon" data-max="<%= format_score(score_item.maximum, lang='en', numeric_only=true) %>">
-            / <%= format_score(score_item.maximum) %>
-          </span>
+                             max: 999.75,
+                             value: format_score(f.object.score, lang='en', numeric_only=true) %>
+          <div class="input-group-btn">
+            <%= button_tag class: "btn btn-default max-text", disabled: true, type: :button, data: { max: format_score(score_item.maximum, lang='en', numeric_only=true) } do %>
+              / <%= format_score(score_item.maximum) %>
+            <% end %>
+            <%= button_tag class: "btn btn-default btn-sm single-zero-button", type: :button do %>
+              <i class="mdi mdi-thumb-down mdi-12" aria-hidden='true'></i>
+            <% end %>
+            <%= button_tag class: "btn btn-default btn-sm single-max-button", type: :button do %>
+              <i class="mdi mdi-thumb-up mdi-12" aria-hidden='true'></i>
+            <% end %>
+          </div>
         </div>
         <div class="dodona-progress dodona-progress-indeterminate">
           <div class="progressbar bar bar1" style="width: 0;"></div>
@@ -34,17 +47,4 @@
     <%= f.hidden_field :score_item_id, class: "score-item" %>
     <%= f.hidden_field :id, class: "id" %>
   <% end %>
-  <div class="col-md-5 col-xs-12 score-buttons">
-    <div class="btn-group" role="group">
-      <%= button_tag class: "btn btn-default btn-sm delete-button", disabled: !@score_map.key?(score_item.id) do %>
-        <i class="mdi mdi-delete mdi-12" aria-hidden='true'></i>
-      <% end %>
-      <%= button_tag class: "btn btn-default btn-sm single-zero-button" do %>
-        <i class="mdi mdi-thumb-down mdi-12" aria-hidden='true'></i>
-      <% end %>
-      <%= button_tag class: "btn btn-default btn-sm single-max-button" do %>
-        <i class="mdi mdi-thumb-up mdi-12" aria-hidden='true'></i>
-      <% end %>
-    </div>
-  </div>
 </div>

@@ -38,7 +38,7 @@ export default class ScoreForm {
         this.zeroButton = this.form.parentElement.querySelector(".single-zero-button");
         this.maxButton = this.form.parentElement.querySelector(".single-max-button");
         this.scoreItemId = (this.form.querySelector("input.score-item") as HTMLInputElement).value;
-        this.maxText = this.form.querySelector(".input-group-addon");
+        this.maxText = this.form.querySelector(".max-text");
         this.id = (this.form.querySelector("input.id") as HTMLInputElement).value;
         this.existing = this.form.dataset.new === "true";
         this.link = this.form.dataset.url;

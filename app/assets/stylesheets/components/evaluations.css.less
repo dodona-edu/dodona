@@ -28,11 +28,33 @@
 
     .control-wrapper {
       display: inline-block;
-      width: 90%;
-      margin-right: 5px;
+      width: 100%;
 
       .form-control {
         width: 100%;
+      }
+
+      .input-group {
+        width: 100%;
+      }
+
+      .input-group-btn {
+        // Override bootstrap
+        width: 1%;
+      }
+
+      .max-text {
+        // Simulate input group addon as a button
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
+        color: @text-color;
+        text-align: center;
+        background-color: @input-group-addon-bg;
+        border: 1px solid @input-group-addon-border-color;
+        opacity: 1;
+        cursor: auto;
       }
 
       .form-control.in-progress, .input-group-addon.in-progress {

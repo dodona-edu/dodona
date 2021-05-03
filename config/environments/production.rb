@@ -19,7 +19,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'dodona.ugent.be' }
 
   # The sandboxed host with user provided content, without authentication
-  config.sandbox_host = 'medusa.ugent.be'
+  config.sandbox_host = 'sandbox.dodona.be'
   config.action_controller.asset_host = 'dodona.ugent.be'
 
   # Allowed hostnames

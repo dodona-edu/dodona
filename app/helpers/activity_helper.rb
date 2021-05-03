@@ -163,18 +163,17 @@ module ActivityHelper
       @footnote_urls = {}
       i = 1
       doc.css('a').each do |anchor|
-        Maybe(anchor.attribute('href')) # get href attribute
-          .map(&:value) # get its value
-          .map { |u| absolutize_url u } # absolutize it
-          .map do |url|
-          # If any of the steps above returned nil, this block isn't executed
+        url = anchor.attribute('href')&.value
+        next if url.nil?
 
-          ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"
-          anchor.add_next_sibling ref
+        url = absolutize_url(url)
+        next if url.nil?
 
-          @footnote_urls[i.to_s] = url
-          i += 1
-        end
+        ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"
+        anchor.add_next_sibling ref
+
+        @footnote_urls[i.to_s] = url
+        i += 1
       end
     end
 

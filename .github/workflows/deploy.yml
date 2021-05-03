@@ -23,14 +23,10 @@ jobs:
       uses: shimataro/ssh-key-action@v2
       with:
         key: ${{ secrets.MESTRA_KEY }}
-        known_hosts: "-"
-    - name: Set up ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
-    - name: Run capistrano
+        known_hosts: ${{ secrets.MESTRA_HOST }}
+    - name: Run deploy
       run: |
-        bundle exec cap mestra deploy
+        echo "$GITHUB_SHA mestra" | ssh -p 4840 dodona@mestra.ugent.be
     - name: Remove deploy label
       uses: buildsville/add-remove-label@v1
       with:

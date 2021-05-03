@@ -283,7 +283,6 @@ GEM
     parallel (1.20.1)
     parser (2.7.2.0)
       ast (~> 2.4.1)
-    possibly (1.0.1)
     premailer (1.12.1)
       addressable
       css_parser (>= 1.6.0)
@@ -515,7 +514,6 @@ DEPENDENCIES
   omniauth-google-oauth2 (~> 0.8.2)
   omniauth-oauth2 (~> 1.7.1)
   omniauth_openid_connect (~> 0.3.5)
-  possibly (~> 1.0.1)
   premailer-rails (~> 1.11.1)
   pretender (~> 0.3.4)
   puma (~> 5.2.2)

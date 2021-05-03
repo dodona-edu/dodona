@@ -5,8 +5,6 @@ class ContactForm < MailForm::Base
   attribute :message, validate: true
   attribute :dodona_user
 
-  append :remote_ip, :user_agent
-
   def headers
     {
       to: Rails.application.config.dodona_email,

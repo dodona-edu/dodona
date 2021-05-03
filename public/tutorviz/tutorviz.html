@@ -11,6 +11,9 @@
 <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.24.custom.css">
 
 <script>
+window.iFrameResizer = {
+  onMessage: (message) => load(message)
+}
 load = function(codeTrace) {
 
   var visualizer = new ExecutionVisualizer('tutorelement', codeTrace,
@@ -28,8 +31,8 @@ load = function(codeTrace) {
   $(window).resize(redrawAllVisualizerArrows);
   $('#tutorelement').scroll(redrawAllVisualizerArrows);
 }
-
 </script>
+<script src="javascript/iframe.min.js"></script>
 <body>
     <div id="tutorelement"></div>
 </body>

@@ -18,6 +18,11 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  content_security_policy only: %i[show] do |policy|
+    # allow sandboxed tutor
+    policy.frame_src -> { [sandbox_url] }
+  end
+
   def index
     authorize Submission
     @submissions = @submissions.includes(:annotations).paginate(page: parse_pagination_param(params[:page]))

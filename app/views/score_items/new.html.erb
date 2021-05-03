@@ -12,9 +12,7 @@
             <span class="step-circle">1</span>
             <a role="button" data-toggle="collapse" href="#choice-step">
               <%= t('.choose') %>
-              <span class="answer">
-                <%= t('.yes_answer') %>
-              </span>
+              <span class="answer"></span>
             </a>
           </h4>
         </div>
@@ -22,7 +20,7 @@
           <div class="panel-body panel-body-transparent">
             <div class="row">
               <div class="col-sm-6">
-                <div class="option-btn" id="yes-grading">
+                <div class="option-btn" id="yes-grading" data-answer="<%= t('.yes_answer') %>">
                   <div class="option-btn-title">
                     <h3>
                       <%= t('.yes_answer') %>

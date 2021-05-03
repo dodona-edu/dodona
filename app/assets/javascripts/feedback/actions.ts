@@ -158,17 +158,20 @@ export default class FeedbackActions {
     initialiseNextButtons(): void {
         const feedbackPrefs = window.localStorage.getItem("feedbackPrefs") || defaultOptions;
         let { autoMark, skipCompleted } = JSON.parse(feedbackPrefs);
-        if (this.autoMarkCheckBox) {
+        // If the checkbox is missing, we are in grade mode.
+        // In that case, we ignore autoMark, since the backend does it for us.
+        const hasAutoMark = this.autoMarkCheckBox !== null;
+        if (hasAutoMark) {
             this.autoMarkCheckBox.checked = autoMark;
         }
         this.skipCompletedCheckBox.checked = skipCompleted;
-        if (autoMark) {
+        if (autoMark && hasAutoMark) {
             this.setNextWithAutoMark();
         }
         this.checkAndSetNext(skipCompleted);
 
         this.nextFeedbackAction = async () => {
-            if (autoMark) {
+            if (autoMark && hasAutoMark) {
                 await this.update({
                     completed: true
                 });

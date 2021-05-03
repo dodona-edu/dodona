@@ -37,9 +37,6 @@ gem 'json-schema', '~> 2.8.1'
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.6'
 
-# start workers in the background
-gem 'daemons', '~>1.3'
-
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'
 gem 'sinatra', '~>2.1.0'

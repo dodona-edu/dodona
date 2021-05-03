@@ -1,5 +1,5 @@
 # Will restart delayed job on all worker servers
-name: Deploy workers
+name: Restart workers
 
 on:
   workflow_dispatch:
@@ -21,4 +21,4 @@ jobs:
         known_hosts: ${{ secrets.MESTRA_HOST }}
     - name: Run deploy
       run: |
-        echo "deploy workers" | ssh -p 4840 dodona@mestra.ugent.be
+        echo "restart workers" | ssh -p 4840 dodona@mestra.ugent.be

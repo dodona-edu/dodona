@@ -16,7 +16,7 @@ gem 'uglifier', '>= 4.1.20'
 # This needs to be here for less :(
 gem 'therubyracer', platforms: :ruby
 
-gem 'webpacker', '~> 5.2.1'
+gem 'webpacker', '~> 5.3.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.2'

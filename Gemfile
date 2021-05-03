@@ -133,7 +133,7 @@ gem 'faker', '~> 2.17.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.0'
-gem 'rack-mini-profiler', '~> 2.3.1'
+gem 'rack-mini-profiler', '~> 2.3.2'
 gem 'stackprof', '~> 0.2.16'
 
 # Datadog

@@ -89,7 +89,7 @@ export function initScoreItemPanels(): void {
     }
 
     function initPanelLogic(): void {
-        $("#yes-grading").click(function () {
+        $("#yes-grading").on("click", function () {
             $itemPanel.find(".step-circle").html("2");
             $(this)
                 .closest(".panel")

@@ -133,7 +133,7 @@ GEM
       delayed_job (> 2.0.3)
       rack-protection (>= 1.5.5)
       sinatra (>= 1.4.4)
-    devise (4.7.3)
+    devise (4.8.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -484,7 +484,7 @@ DEPENDENCIES
   ddtrace (~> 0.48.0)
   delayed_job_active_record (~> 4.1.6)
   delayed_job_web (~> 1.4.4)
-  devise (~> 4.7.3)
+  devise (~> 4.8.0)
   diff-lcs (~> 1.4)
   docker-api (~> 2.1.0)
   ed25519

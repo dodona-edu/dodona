@@ -382,7 +382,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'score export is only available for course admins' do
+  test 'grade export is only available for course admins' do
     # Create an evaluation, a score item and add a score.
     post evaluations_path, params: {
       evaluation: {
@@ -427,13 +427,13 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
         assert_equal users[line[1]], exported_score
       else
         exported_score = line.delete_at(score_item_exercise_position)
-        assert_nil exported_score
+        assert_equal '', exported_score
       end
       exported_max = BigDecimal(line.delete_at(score_item_exercise_position))
       assert_equal score_item.maximum, exported_max
 
       # All other scores should be nil.
-      assert line[2..].all?(&:nil?)
+      assert line[2..].all?(&:empty?)
     end
 
     sign_out @course_admin

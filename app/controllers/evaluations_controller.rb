@@ -149,7 +149,7 @@ class EvaluationsController < ApplicationController
   def export_scores
     respond_to do |format|
       format.csv do
-        send_data scores_to_csv(@evaluation), type: 'text/csv', disposition: "attachment; filename=export-#{@evaluation.id}.csv"
+        send_data @evaluation.grades_csv, type: 'text/csv', disposition: "attachment; filename=export-#{@evaluation.id}.csv"
       end
     end
   end

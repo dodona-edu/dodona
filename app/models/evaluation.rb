@@ -9,6 +9,9 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+
+require 'csv'
+
 class Evaluation < ApplicationRecord
   belongs_to :series
 
@@ -104,6 +107,21 @@ class Evaluation < ApplicationRecord
     end
     score_items.each do |s|
       s.update!(visible: visible)
+    end
+  end
+
+  def grades_csv
+    sheet = evaluation_sheet
+    CSV.generate(force_quotes: true) do |csv|
+      headers = %w[Name Email]
+      headers += sheet[:evaluation_exercises].flat_map { |e| ["#{e.exercise.name} Score", "#{e.exercise.name} Max"] }
+      csv << headers
+      users.order(last_name: :asc, first_name: :asc).each do |user|
+        row = [user.full_name, user.email]
+        feedback_l = sheet[:feedbacks][user.id]
+        row += feedback_l.flat_map { |f| [f.score, f.maximum_score] }
+        csv << row
+      end
     end
   end
 

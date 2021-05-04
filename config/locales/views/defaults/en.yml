@@ -29,7 +29,9 @@ en:
       kid: There was an error when communicating with Ufora. You should re-open this page.
     menu:
       manual: User manual
-      activities: Activities
+      activities: Exercises
+      support_us: Support us
+      contact: Contact
       my_submissions: My submissions
       my_questions: My questions
       my_exports: My exports

@@ -148,8 +148,10 @@
         dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Violin</button>
       <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this, 'stacked_title', <%= series.id %>) && 
         dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Stacked Status</button>
+      <% if false %>
       <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this, 'timeseries_title', <%= series.id %>) && 
         dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
+      <% end %>
       <button class="btn btn-secondary annotation-toggle" onclick="dodona.setActiveToggle(this, 'ctimeseries_title', <%= series.id %>) && 
         dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Cumulative Timeseries</button>
     </div>

@@ -31,6 +31,25 @@ function thresholdTime(n, min, max): () => Date[] {
 }
 
 function drawCumulativeTimeSeries(data, metaData, exMap): void {
+    if (I18n.locale === "nl") {
+        d3.timeFormatDefaultLocale({
+            "dateTime": "%a %b %e %X %Y",
+            "date": "%d%m/%Y",
+            "time": "%H:%M:%S",
+            "periods": ["", ""],
+            "days": [
+                "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"
+            ],
+            "shortDays": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
+            "months": [
+                "Januari", "Februari", "Maart", "April", "Mei",
+                "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"
+            ],
+            "shortMonths": [
+                "Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
+            ]
+        });
+    }
     const exOrder: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -207,6 +226,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
     });
 
     svg.on("mouseleave", () => {
+        tooltipI = -1;
         tooltip
             .attr("opacity", 0);
         tooltipLabel

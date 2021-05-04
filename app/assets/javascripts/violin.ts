@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { json, svg } from "d3";
 import { formatTitle } from "graph_helper.js";
 
 
@@ -15,6 +16,7 @@ function drawViolin(data: {
 }[], exMap: [string, string][]): void {
     const min = d3.min(data, d => d3.min(d.counts));
     const max = d3.max(data, d => d3.max(d.counts));
+    const freqRange = d3.range(min, max+1);
     const xTicks = 10;
     const elWidth = width / max;
     const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
@@ -27,10 +29,11 @@ function drawViolin(data: {
         d.freq, (bin: number[]) => bin.length
     ));
 
-    const graph = d3.select(selector)
+    const svg = d3.select(selector)
         .append("svg")
         .attr("width", width)
-        .attr("height", height)
+        .attr("height", height);
+    const graph = svg
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
@@ -73,6 +76,8 @@ function drawViolin(data: {
         .attr("class", "violin-label")
         .attr("fill", "currentColor");
 
+    let tooltipI = -1;
+
     graph
         .selectAll("violins")
         .data(data)
@@ -82,8 +87,7 @@ function drawViolin(data: {
         .append("path")
         .datum(ex => {
             return ex.freq;
-        }
-        )
+        })
         .attr("class", "violin-path")
         .attr("d", d3.area()
             .x((_, i) => x(i+1))
@@ -92,89 +96,81 @@ function drawViolin(data: {
             .curve(d3.curveCatmullRom)
         );
 
-    graph.selectAll("groups")
-        .data(data)
-        .enter()
-        .append("g")
-        .attr("id", d => `e${d.ex_id}`)
-        .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`);
+    const tooltip = graph.append("line")
+        .attr("y1", 0)
+        .attr("y2", innerHeight)
+        .attr("pointer-events", "none")
+        .attr("opacity", 0)
+        .attr("stroke", "currentColor")
+        .style("width", 40);
+    const tooltipLabel = graph.append("text")
+        .attr("opacity", 0)
+        .text("_") // dummy text to calculate height
+        .attr("text-anchor", "start")
+        .attr("fill", "currentColor")
+        .attr("font-size", "12px");
+    tooltipLabel
+        .attr("y", innerHeight - 10);
+    const tooltipDots = graph.selectAll("dots")
+        .data(data, d => d.ex_id)
+        .join("circle")
+        .attr("r", 4)
+        .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
+        .attr("opacity", 0)
+        .style("fill", "currentColor");
+    const tooltipDotLabels = graph.selectAll("dotlabels")
+        .data(data, d => d.ex_id)
+        .join("text")
+        .attr("text-anchor", "end")
+        .attr("fill", "currentColor")
+        .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
+        .attr("opacity", 0)
+        .attr("font-size", "12px");
 
-
-    function onMouseOver(d): void {
-        for (const ex of data) {
-            const location = graph
-                .append("g")
-                .attr("class", "cursor");
-            location
-                .selectAll("cursorLine")
-                .data([d])
-                .enter()
-                .append("line")
-                .attr("x1", d => x(d))
-                .attr("x2", d => x(d))
-                .attr("y1", y(ex.ex_id))
-                .attr("y2", y(ex.ex_id) + y.bandwidth())
-                .attr("pointer-events", "none")
-                .attr("stroke", "currentColor")
-                .style("width", 40);
-            location
-                .selectAll("cursorTextTop")
-                .data([d])
-                .enter()
-                .append("text")
-                .attr("class", "label")
+    function onMouseOver(e): void {
+        const pos = x.invert(d3.pointer(e, graph.node())[0]);
+        const i = Math.round(pos);
+        if (i !== tooltipI) {
+            tooltipI = i;
+            tooltip
+                .attr("opacity", 1)
+                .attr("x1", x(i))
+                .attr("x2", x(i));
+            const switchSides = !(x(i) - tooltipLabel.node().getBBox().width - 5 > 0);
+            tooltipLabel
+                .attr("opacity", 1)
+                .text(`${i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`)
+                .attr("text-anchor", switchSides ? "start" : "end")
+                .attr("x", switchSides ? x(i) + 10 : x(i) - 10);
+            tooltipDots
+                .attr("opacity", 1)
+                .attr("cx", x(i))
+                .attr("cy", d => -yBin(d.freq[Math.max(0, i-1)].length));
+            tooltipDotLabels
+                .attr("opacity", 1)
                 .text(d => {
-                    const length = ex.freq[d-1].length;
-                    return `${length} ${length !== 1 ?
-                        I18n.t("js.users"):
-                        I18n.t("js.user")} ${I18n.t("js.with")}`;
+                    const freq = d.freq[Math.max(0, i-1)].length;
+                    return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
                 })
-                .attr("x", d => x(d))
-                .attr("y", y(ex.ex_id) - y.bandwidth() * .1)
-                .attr("text-anchor", "middle")
-                .attr("font-family", "sans-serif")
-                .attr("pointer-events", "none")
-                .attr("fill", "currentColor")
-                .attr("font-size", "11px");
-            location
-                .selectAll("cursorTextBottom")
-                .data([d])
-                .enter()
-                .append("text")
-                .attr("class", "label")
-                .text(d => `${d} ${d !== 1 ?
-                    I18n.t("js.submissions") :
-                    I18n.t("js.submission")
-                }`)
-                .attr("x", d => x(d))
-                .attr("y", y(ex.ex_id) + y.bandwidth() * 1.25)
-                .attr("text-anchor", "middle")
-                .attr("font-family", "sans-serif")
-                .attr("pointer-events", "none")
-                .attr("fill", "currentColor")
-                .attr("font-size", "11px");
+                .attr("text-anchor", switchSides ? "start" : "end")
+                .attr("x", switchSides ? x(i)+5 : x(i) - 5)
+                .attr("y", d => -yBin(d.freq[Math.max(0, i-1)].length) - 5);
         }
     }
 
     function onMouseOut(): void {
-        graph.selectAll(".cursor").remove();
+        tooltip
+            .attr("opacity", 0);
+        tooltipLabel
+            .attr("opacity", 0);
+        tooltipDots
+            .attr("opacity", 0);
+        tooltipDotLabels
+            .attr("opacity", 0);
     }
 
-    // add invisible bars between each tick to support cursor functionality
-    graph
-        .selectAll("invisibars")
-        .data(d3.range(1, max+1))
-        .enter()
-        .append("rect")
-        .attr("x", d => x(d) - elWidth/2)
-        .attr("y", 0)
-        .attr("width", elWidth)
-        .attr("height", innerHeight)
-        .attr("stroke", "currentColor")
-        .attr("class", "violin-invisibar")
-        .attr("pointer-events", "all")
-        .on("mouseover", (_, d) => onMouseOver(d))
-        .on("mouseout", onMouseOut);
+    svg.on("mousemove", e => onMouseOver(e)).on("mouseout", onMouseOut);
+
     graph
         .selectAll("medianDot")
         .data(data)

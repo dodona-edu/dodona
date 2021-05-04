@@ -3,9 +3,6 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title') %></h2>
-        <div class="card-title-fab">
-          <%= render 'fab_button', form: "new_contact_form", icon: 'send' %>
-        </div>
       </div>
       <div class="card-supporting-text">
         <div class="col-sm-6">
@@ -49,6 +46,9 @@
             </div>
           <% end %>
         <% end %>
+      </div>
+      <div class="card-actions card-border">
+        <button type="submit" class="btn-primary btn-text pull-right" form="new_contact_form"><%= t('.send') %></a>
       </div>
     </div>
   </div>

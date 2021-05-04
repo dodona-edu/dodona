@@ -56,6 +56,7 @@ nl:
       prompt: Contacteer ons als het probleem zich blijft voordoen.
       rights_request_title: Lesgeversrechten
       rights_request_redirect_html: Wil je lesgeversrechten aanvragen voor je account? Gebruik dan <strong><a href="%{url}">dit formulier</a></strong>.
+      send: Bericht verzenden
     create_contact:
       captcha_failed: reCAPTCHA kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."

@@ -56,6 +56,7 @@ en:
       prompt: Contact us if the problem persists.
       rights_request_title: Teacher rights
       rights_request_redirect_html: Do you want to request teacher rights for your account? Please use <strong><a href="%{url}">this form</a></strong>.
+      send: Send message
     create_contact:
       mail_sent: "Your message has been sent. Thanks for getting in touch."
       captcha_failed: reCAPTCHA could not be verified; please try again.

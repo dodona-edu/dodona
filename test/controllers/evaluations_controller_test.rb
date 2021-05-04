@@ -398,7 +398,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     score_item = create :score_item, evaluation_exercise: exercise
     score = create :score, score_item: score_item, feedback: feedback
 
-    get export_scores_evaluation_path evaluation, format: :csv
+    get export_grades_evaluation_path evaluation, format: :csv
     assert_response :success
     assert_equal 'text/csv', response.content_type
 
@@ -439,14 +439,14 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     sign_out @course_admin
 
     # No log in
-    get export_scores_evaluation_path evaluation, format: :csv
+    get export_grades_evaluation_path evaluation, format: :csv
     assert_response :redirect # Redirect to sign in page
 
     random_user = @users.sample
     assert_not random_user.admin_of?(@series.course)
 
     sign_in random_user
-    get export_scores_evaluation_path evaluation, format: :csv
+    get export_grades_evaluation_path evaluation, format: :csv
     assert_response :redirect # Redirect to sign in page
   end
 

@@ -2,7 +2,7 @@ class EvaluationsController < ApplicationController
   include SeriesHelper
   include EvaluationHelper
 
-  before_action :set_evaluation, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_scores modify_grading_visibility]
+  before_action :set_evaluation, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_grades modify_grading_visibility]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -146,7 +146,7 @@ class EvaluationsController < ApplicationController
     @feedbacks = policy_scope(@feedbacks)
   end
 
-  def export_scores
+  def export_grades
     respond_to do |format|
       format.csv do
         send_data @evaluation.grades_csv, type: 'text/csv', disposition: "attachment; filename=export-#{@evaluation.id}.csv"

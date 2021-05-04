@@ -203,7 +203,7 @@ Rails.application.routes.draw do
       member do
         get 'add_users'
         get 'overview'
-        get 'export_scores'
+        get 'export_grades'
         post 'add_user'
         post 'remove_user'
         post 'set_multi_user'

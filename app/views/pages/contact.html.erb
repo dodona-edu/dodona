@@ -6,12 +6,12 @@
       </div>
       <div class="card-supporting-text">
         <div class="col-sm-6">
-          <p>Gebruik het formulier op deze pagina om een bericht te sturen naar het team achter Dodona. We zullen je vraag zo snel mogelijk via email beantwoorden.</p>
-          <p>Op <a href="https://docs.dodona.be/nl" target = "_blank">docs.dodona.be</a> kan je onze handleiding vinden.</p>
-          <p>Heb je een algemene vraag waarvan het antwoord ook voor anderen van nut kan zijn? Overweeg dan om de vraag te stellen op ons <a href="https://github.com/dodona-edu/dodona/discussions" target = "_blank">GitHub discussieforum</a>. Ook voor het melden van bugs en suggereren van nieuwe features kan je daar terecht.</p>
+          <p><%= t('.contact_p1_html') %></p>
+          <p><%= t('.contact_p2_html') %></p>
+          <p><%= t('.contact_p3_html') %></p>
         </div>
         <div class="col-sm-6">
-          <% if !policy(RightsRequest).create? %>
+          <% if policy(RightsRequest).create? %>
             <div class="callout callout-info">
               <h4><%= t('.rights_request_title') %></h4>
               <%= t('.rights_request_redirect_html', url: new_rights_request_path) %>

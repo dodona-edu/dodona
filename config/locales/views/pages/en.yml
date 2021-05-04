@@ -49,6 +49,9 @@ en:
       unknown: 'unknown'
     contact:
       title: Get in touch
+      contact_p1_html: You can use the form on this page to send a message to Team Dodona. We'll answer your question as soon as possible by email.
+      contact_p2_html: "You can find our manual on <a href='https://docs.dodona.be/en' target = '_blank'>docs.dodona.be</a>."
+      contact_p3_html: "If you have a general question of which the answer can be of use to others, please consider posting it on <a href='https://github.com/dodona-edu/dodona/discussions' target = '_blank'>GitHub Discussions</a>. Reporting a bug or requesting a feature can also be done on GitHub."
       name: Name
       email: Email
       subject: Subject

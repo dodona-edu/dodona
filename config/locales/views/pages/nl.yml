@@ -49,6 +49,9 @@ nl:
       unknown: 'onbekende'
     contact:
       title: Contacteer ons
+      contact_p1_html: Gebruik het formulier op deze pagina om een bericht te sturen naar het team achter Dodona. We zullen je vraag zo snel mogelijk via email beantwoorden.
+      contact_p2_html: "Op <a href='https://docs.dodona.be/nl' target = '_blank'>docs.dodona.be</a> kan je onze handleiding vinden."
+      contact_p3_html: "Heb je een algemene vraag waarvan het antwoord ook voor anderen van nut kan zijn? Overweeg dan om de vraag te stellen op ons <a href='https://github.com/dodona-edu/dodona/discussions' target = '_blank'>GitHub discussieforum</a>. Ook voor het melden van bugs en suggereren van nieuwe features kan je daar terecht."
       name: Naam
       email: Email
       subject: Onderwerp

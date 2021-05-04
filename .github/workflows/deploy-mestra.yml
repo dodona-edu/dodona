@@ -1,6 +1,7 @@
 name: Deploy Mestra
 
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - labeled

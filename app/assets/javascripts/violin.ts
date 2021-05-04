@@ -84,6 +84,7 @@ function drawViolin(data: {
         .enter()
         .append("g")
         .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
+        .attr("pointer-events", "none")
         .append("path")
         .datum(ex => {
             return ex.freq;

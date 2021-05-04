@@ -125,6 +125,7 @@ function drawViolin(data: {
         .attr("text-anchor", "end")
         .attr("fill", "currentColor")
         .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
+        .attr("y", -5)
         .attr("opacity", 0)
         .attr("font-size", "12px");
 
@@ -145,8 +146,7 @@ function drawViolin(data: {
                 .attr("x", switchSides ? x(i) + 10 : x(i) - 10);
             tooltipDots
                 .attr("opacity", 1)
-                .attr("cx", x(i))
-                .attr("cy", d => -yBin(d.freq[Math.max(0, i-1)].length));
+                .attr("cx", x(i));
             tooltipDotLabels
                 .attr("opacity", 1)
                 .text(d => {
@@ -154,12 +154,12 @@ function drawViolin(data: {
                     return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
                 })
                 .attr("text-anchor", switchSides ? "start" : "end")
-                .attr("x", switchSides ? x(i)+5 : x(i) - 5)
-                .attr("y", d => -yBin(d.freq[Math.max(0, i-1)].length) - 5);
+                .attr("x", switchSides ? x(i)+5 : x(i) - 5);
         }
     }
 
     function onMouseOut(): void {
+        tooltipI = -1;
         tooltip
             .attr("opacity", 0);
         tooltipLabel

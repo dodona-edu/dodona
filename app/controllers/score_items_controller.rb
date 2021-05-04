@@ -3,11 +3,13 @@ class ScoreItemsController < ApplicationController
   before_action :set_evaluation
 
   def index
+    authorize ScoreItem
     @crumbs << [I18n.t('score_items.index.title'), '#']
     @title = I18n.t('score_items.index.title')
   end
 
   def new
+    authorize ScoreItem
     @crumbs << [I18n.t('score_items.new.title'), '#']
     @title = I18n.t('score_items.new.title')
   end
@@ -46,6 +48,7 @@ class ScoreItemsController < ApplicationController
 
   def create
     @score_item = ScoreItem.new(permitted_attributes(ScoreItem))
+    authorize @score_item
     @score_item.last_updated_by = current_user
     respond_to do |format|
       if @score_item.save

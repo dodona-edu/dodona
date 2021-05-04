@@ -91,7 +91,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create score item if course administrator' do
     [
-      [@staff_member, :created],
+      [@staff_member, :forbidden],
       [create(:student), :forbidden],
       [create(:staff), :forbidden],
       [create(:zeus), :created],
@@ -112,6 +112,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not create score item for invalid data' do
+    sign_in create(:zeus)
     # Missing data
     post evaluation_score_items_path(@evaluation, format: :json), params: {
       score_item: {
@@ -172,7 +173,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
 
   test 'add score item page for a feedback session is only available for course admins' do
     [
-      [@staff_member, :success],
+      [@staff_member, :redirect],
       [create(:student), :redirect],
       [create(:staff), :redirect],
       [create(:zeus), :success],
@@ -187,7 +188,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
 
   test 'score item page for a feedback session is only available for course admins' do
     [
-      [@staff_member, :success],
+      [@staff_member, :redirect],
       [create(:student), :redirect],
       [create(:staff), :redirect],
       [create(:zeus), :success],

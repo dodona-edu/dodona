@@ -12,7 +12,7 @@ class ScoreItemsTest < ApplicationSystemTestCase
     @evaluation = create :evaluation, :with_submissions
     @staff_member = create :staff
     @evaluation.series.course.administrating_members << @staff_member
-    sign_in @staff_member
+    sign_in create(:zeus)
     @exercise = @evaluation.evaluation_exercises.first
     @score_item = create :score_item, evaluation_exercise: @exercise,
                                       description: 'Before test',

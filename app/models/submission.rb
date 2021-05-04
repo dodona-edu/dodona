@@ -34,6 +34,7 @@ class Submission < ApplicationRecord
   has_one :notification, as: :notifiable, dependent: :destroy
   has_many :annotations, dependent: :destroy
   has_many :questions, dependent: :destroy
+  has_many :feedbacks, dependent: :restrict_with_error
 
   validate :maximum_code_length, on: :create
   validate :not_rate_limited?, on: :create, unless: :skip_rate_limit_check?

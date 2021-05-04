@@ -1,7 +1,8 @@
 class EvaluationsController < ApplicationController
   include SeriesHelper
+  include EvaluationHelper
 
-  before_action :set_evaluation, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete]
+  before_action :set_evaluation, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_grades modify_grading_visibility]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -89,6 +90,12 @@ class EvaluationsController < ApplicationController
     end
   end
 
+  def modify_grading_visibility
+    new_visibility = ActiveModel::Type::Boolean.new.cast(params[:visible])
+    @evaluation.change_grade_visibility!(new_visibility)
+    redirect_back fallback_location: evaluation_score_items_path(@evaluation)
+  end
+
   def set_multi_user
     users = case params[:type]
             when 'enrolled'
@@ -127,13 +134,24 @@ class EvaluationsController < ApplicationController
   end
 
   def overview
-    @feedbacks = policy_scope(Feedback.joins(:evaluation_user).where(evaluation: @evaluation, evaluation_users: { user: current_user }))
     @crumbs = [
       [@evaluation.series.course.name, course_url(@evaluation.series.course)],
       [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)],
       [I18n.t('evaluations.overview.title'), '#']
     ]
     @title = I18n.t('evaluations.overview.title')
+    @feedbacks = Feedback.joins(:evaluation_user)
+                         .where(evaluation: @evaluation, evaluation_users: { user: current_user })
+                         .includes(:evaluation_exercise, scores: :score_item)
+    @feedbacks = policy_scope(@feedbacks)
+  end
+
+  def export_grades
+    respond_to do |format|
+      format.csv do
+        send_data @evaluation.grades_csv, type: 'text/csv', disposition: "attachment; filename=export-#{@evaluation.id}.csv"
+      end
+    end
   end
 
   private

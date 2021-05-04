@@ -59,6 +59,7 @@ class SubmissionsController < ApplicationController
               else
                 [[@submission.exercise.name, activity_path(@submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
               end
+    @feedbacks = policy_scope(@submission.feedbacks).preload(scores: :score_item)
   end
 
   def create

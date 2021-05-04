@@ -27,6 +27,8 @@ en:
       feedback: Feedback
       question: Question
       rights_request: Teacher rights request
+      score_item: Score item
+      score: Score
     attributes:
       api_token:
         description: Description
@@ -180,3 +182,8 @@ en:
         user: User
         context: Motivation
         institution_name: Institution name
+      score_item:
+        name: Name
+        description: Description
+        maximum: Maximum
+        visible: Visible

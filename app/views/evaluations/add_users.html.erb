@@ -52,7 +52,11 @@
         </div>
       </div>
       <div class="card-actions card-border">
-        <%= link_to t('evaluations.edit_users.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+        <% if policy(ScoreItem).new? %>
+          <%= link_to t('evaluations.new.next'), new_evaluation_score_item_path(@evaluation), class: "btn btn-text btn-primary" %>
+        <% else %>
+          <%= link_to t('evaluations.new.next'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+        <% end %>
       </div>
     </div>
     <div class="card">

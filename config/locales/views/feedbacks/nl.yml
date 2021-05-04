@@ -29,9 +29,15 @@ nl:
       mark_as_done: Evaluatie afwerken
       evaluation_done: Evaluatie afgewerkt
       undo: Ongedaan maken
+      waiting_on_score: Deze oplossing heeft nog niet alle punten gekregen
       completed:
         failure: "De status kon niet ingesteld worden"
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluaties afgewerkt"
+      total: "Totaal"
+      give_max_all: "Geef de maximumscore aan alle scoreonderdelen"
+      give_zero_all: "Geef 0 aan alle scoreonderdelen"
+    score_actions:
+      give_one: "Geef %{score} aan dit scoreonderdeel"
     overview:
       annotations:
         count: "Aantal opmerkingen door lesgever"
@@ -46,3 +52,12 @@ nl:
     submissions_table:
       update-submission: "Veranderen naar deze oplossing"
       confirm: "Ben je zeker? Alle annotaties op de vorige oplossing zullen verwijderd worden."
+    score_table:
+      total_score: Totaalscore
+      score_breakdown: Puntenverdeling
+    score_link:
+      score: "Score: %{score} / %{max}"
+      score_short: "%{score} / %{max}"
+      present: "Er zijn %{count} scoreonderdelen"
+      view_breakdown: Puntenverdeling bekijken
+      view_feedback: Ga naar de feedback

@@ -79,7 +79,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, "%a %b-%d"));
 
     const tooltip = graph.append("line")
-        .attr("y1", margin.top)
+        .attr("y1", 0)
         .attr("y2", innerHeight)
         .attr("pointer-events", "none")
         .attr("stroke", "currentColor")

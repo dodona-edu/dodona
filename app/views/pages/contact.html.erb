@@ -3,16 +3,23 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title') %></h2>
-        <div class="card-title-fab">
-          <%= render 'fab_button', form: "new_contact_form", icon: 'send' %>
-        </div>
       </div>
       <div class="card-supporting-text">
-        <% if policy(RightsRequest).create? %>
-          <div class="callout callout-info">
-            <%= t('.rights_request_redirect_html', url: new_rights_request_path) %>
-          </div>
-        <% end %>
+        <div class="col-sm-6">
+          <p><%= t('.contact_p1_html') %></p>
+          <p><%= t('.contact_p2_html') %></p>
+          <p><%= t('.contact_p3_html') %></p>
+        </div>
+        <div class="col-sm-6">
+          <% if policy(RightsRequest).create? %>
+            <div class="callout callout-info">
+              <h4><%= t('.rights_request_title') %></h4>
+              <%= t('.rights_request_redirect_html', url: new_rights_request_path) %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border">
         <%= form_for @contact_form, url: create_contact_path, html: {class: 'form-horizontal'} do |f| %>
           <div class="field form-group">
             <%= f.label t('.name'), :class => "col-sm-2 control-label" %>
@@ -39,6 +46,9 @@
             </div>
           <% end %>
         <% end %>
+      </div>
+      <div class="card-actions card-border">
+        <button type="submit" class="btn-primary btn-text pull-right" form="new_contact_form"><%= t('.send') %></a>
       </div>
     </div>
   </div>

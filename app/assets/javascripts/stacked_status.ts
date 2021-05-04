@@ -110,9 +110,9 @@ function drawStacked(data: {
             tooltip.transition()
                 .duration(200)
                 .style("opacity", .9);
-            tooltip.html(`${d.count}/${maxSum[d.exercise_id]} (${
+            tooltip.html(`${d.status}<br> ${
                 Math.round((d.count) / maxSum[d.exercise_id] * 10000) / 100
-            }%) ${d.status}`);
+            }% (${d.count}/${maxSum[d.exercise_id]})`);
         })
         .on("mousemove", (e, _) => {
             tooltip
@@ -126,9 +126,9 @@ function drawStacked(data: {
         });
 
 
-    const gridlines = graph.append("g")
+    const gridlines = graph.append("g").attr("transform", `translate(0, ${y.bandwidth()/2})`)
         .call(d3.axisBottom(x).tickValues([.2, .4, .6, .8]).tickFormat((t: number) => `${t*100}%`)
-            .tickSize(innerHeight).tickSizeOuter(0));
+            .tickSize(innerHeight-y.bandwidth()).tickSizeOuter(0));
     gridlines
         .select(".domain").remove();
     gridlines.selectAll("line").style("stroke-dasharray", ("3, 3"));
@@ -137,7 +137,7 @@ function drawStacked(data: {
         const t = maxSum[ex.exercise_id];
         graph.append("text")
             .attr("x", innerWidth + 10)
-            .attr("y", y(ex.exercise_id) + y.bandwidth()/2)
+            .attr("y", y(ex.exercise_id) + y.bandwidth())
             .text(
                 `${I18n.t("js.total")}: ${t} ${I18n.t(t===1 ?
                     "js.submission" : "js.submissions")}`

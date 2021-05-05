@@ -10,7 +10,7 @@ const bisector = d3.bisector((d: Date) => d.getTime()).left;
 function insertFakeData(data): void {
     const end = new Date((data[Object.keys(data)[0]][0].date));
     const start = new Date(end);
-    start.setDate(start.getDate() - 14);
+    start.setDate(start.getDate() - 12 * 30);
     for (const exName of Object.keys(data)) {
         data[exName] = [];
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
@@ -85,17 +85,23 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .domain([metaData["minDate"], metaData["maxDate"]])
         .range([0, innerWidth]);
 
-
     // Color scale
     const color = d3.scaleOrdinal()
         .range(d3.schemeDark2)
         .domain(exOrder);
 
+    let ticks = d3.timeDay.filter(d=>d3.timeDay.count(metaData["start"], d) % 2 === 0);
+    let format = "%a %b-%d";
+    if (metaData["dateRange"] > 20) {
+        ticks = d3.timeMonth;
+        format = "%B";
+    }
+
 
     // add x-axis
     graph.append("g")
         .attr("transform", `translate(0, ${y(0)})`)
-        .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, "%a %b-%d"));
+        .call(d3.axisBottom(x).ticks(ticks, format));
 
     const tooltip = graph.append("line")
         .attr("y1", 0)
@@ -110,7 +116,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .attr("fill", "currentColor")
         .attr("font-size", "12px");
     tooltipLabel
-        .attr("y", margin.top + tooltipLabel.node().getBBox().height);
+        .attr("y", tooltipLabel.node().getBBox().height);
     const tooltipDots = graph.selectAll("dots")
         .data(Object.entries(data), d => d[0])
         .join("circle")
@@ -186,7 +192,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         const index = bisector(dateArray, date, 1);
         const a = index > 0 ? dateArray[index-1] : metaData["minDate"];
         const b = index < dateArray.length ? dateArray[index] : metaData["maxDate"];
-        if (date.getTime()-a.getTime() > b.getTime()-date.getTime()) {
+        if (index < dateArray.length && date.getTime()-a.getTime() > b.getTime()-date.getTime()) {
             return { "date": b, "i": index };
         } else {
             return { "date": a, "i": index-1 };
@@ -278,7 +284,7 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
 
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
-        // insertFakeData(data);
+        insertFakeData(data);
         metaData["minDate"] = d3.min(Object.values(data),
             records => d3.min(records, d =>new Date(d.date)));
         metaData["maxDate"] = d3.max(Object.values(data),

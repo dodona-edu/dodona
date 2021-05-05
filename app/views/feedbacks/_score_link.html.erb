@@ -1,0 +1,22 @@
+<%#
+    If the total is visible, show that.
+    If there are other visible scores, display that.
+    Else display nothing.
+%>
+<% total = policy(feedback.evaluation_exercise).show_total? %>
+<% scores = policy_scope(feedback.scores) %>
+<% if total && feedback.score_items.present? %>
+  <%= link_to t("feedbacks.score_link.score", score: format_score(feedback.score), max: format_score(feedback.maximum_score)),
+              "#score-details-#{feedback.id}",
+              title: t("feedbacks.score_link.view_breakdown"), data: { toggle: "collapse" } %>
+<% elsif scores.present? %>
+  <%= link_to t("feedbacks.score_link.present", count: scores.length),
+              "#score-details-#{feedback.id}",
+              title: t("feedbacks.score_link.view_breakdown"), data: { toggle: "collapse" } %>
+<% end %>
+<%# Link to edit screen if needed %>
+<% if policy(feedback).show? && scores.present? %>
+  <%= link_to feedback_path(feedback), class: "edit-score btn btn-sm btn-default", title: t("feedbacks.score_link.view_feedback") do %>
+    <i class="mdi mdi-pencil mdi-18"></i>
+  <% end %>
+<% end %>

@@ -210,6 +210,7 @@ ActiveRecord::Schema.define(version: 2021_04_16_085755) do
     t.integer "exercise_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "visible_score", default: true, null: false
     t.index ["evaluation_id"], name: "index_evaluation_exercises_on_evaluation_id"
     t.index ["exercise_id", "evaluation_id"], name: "index_evaluation_exercises_on_exercise_id_and_evaluation_id", unique: true
     t.index ["exercise_id"], name: "index_evaluation_exercises_on_exercise_id"
@@ -373,6 +374,30 @@ ActiveRecord::Schema.define(version: 2021_04_16_085755) do
     t.index ["user_id"], name: "index_rights_requests_on_user_id"
   end
 
+  create_table "score_items", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "evaluation_exercise_id", null: false
+    t.decimal "maximum", precision: 5, scale: 2, null: false
+    t.string "name", null: false
+    t.boolean "visible", default: true, null: false
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["evaluation_exercise_id"], name: "index_score_items_on_evaluation_exercise_id"
+  end
+
+  create_table "scores", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "score_item_id", null: false
+    t.bigint "feedback_id", null: false
+    t.decimal "score", precision: 5, scale: 2, null: false
+    t.integer "last_updated_by_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["feedback_id"], name: "index_scores_on_feedback_id"
+    t.index ["last_updated_by_id"], name: "index_scores_on_last_updated_by_id"
+    t.index ["score_item_id", "feedback_id"], name: "index_scores_on_score_item_id_and_feedback_id", unique: true
+    t.index ["score_item_id"], name: "index_scores_on_score_item_id"
+  end
+
   create_table "series", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_id"
     t.string "name"
@@ -491,6 +516,10 @@ ActiveRecord::Schema.define(version: 2021_04_16_085755) do
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"
   add_foreign_key "rights_requests", "users"
+  add_foreign_key "score_items", "evaluation_exercises"
+  add_foreign_key "scores", "feedbacks"
+  add_foreign_key "scores", "score_items"
+  add_foreign_key "scores", "users", column: "last_updated_by_id"
   add_foreign_key "series", "courses"
   add_foreign_key "series_memberships", "activities"
   add_foreign_key "series_memberships", "series"

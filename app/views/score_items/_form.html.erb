@@ -1,0 +1,65 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="<%= t("score_items.form.close") %>">
+      <span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title"><%= title %></h4>
+  </div>
+  <% options = {html: { class: 'form-horizontal' }}.merge(form_options) %>
+  <% score_item = local_assigns.fetch(:score_item, local_assigns[:models]&.last) %>
+  <%= form_for(local_assigns.fetch(:models, ScoreItem.new), options) do |f| %>
+    <div class="modal-body">
+      <% if score_item&.errors&.any? %>
+        <div class="callout callout-danger" id="error_explanation">
+          <h4><%= t('errors.validation_errors', :count => score_item.errors.count) %></h4>
+          <ul>
+            <% score_item.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <% if score_item&.scores.present? %>
+        <div class="alert alert-info">
+          <%= t '.modify-help' %>
+        </div>
+      <% end %>
+      <% if score_item&.new_record? && local_assigns[:models] %>
+        <%= f.hidden_field :evaluation_exercise_id, value: evaluation_exercise.id %>
+      <% end %>
+      <div class="field form-group">
+        <%= f.label :name, :class => "col-sm-4 control-label" %>
+        <div class="col-sm-8"><%= f.text_field :name, required: true, class: "form-control" %></div>
+      </div>
+      <div class="field form-group">
+        <%= f.label :description, :class => "col-sm-4 control-label" %>
+        <div class="col-sm-8"><%= f.text_area :description, class: "form-control", rows: "2" %></div>
+        <span class="help-block col-sm-offset-4 col-sm-8"><%= t "score_items.form.description-help" %></span>
+      </div>
+      <div class="field form-group">
+        <%= f.label :maximum, :class => "col-sm-4 control-label" %>
+        <div class="col-sm-8"><%= f.number_field :maximum, step: 0.25, min: 0.25, max: 999.75, required: true, class: "form-control" %></div>
+        <span class="help-block col-sm-offset-4 col-sm-8"><%= t "score_items.form.score-help" %></span>
+      </div>
+      <div class="field form-group">
+        <%= f.label :visible, class: 'col-sm-4 control-label' %>
+        <div class="col-sm-8">
+          <div class="checkbox">
+            <%= label_tag do %>
+              <%= f.check_box :visible %>
+              <span class="checkbox-label">
+                <%= t "score_items.form.visible-help" %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <% if score_item&.new_record? %>
+        <%= f.submit t("score_items.form.add"), class: "btn btn-primary btn-text" %>
+      <% else %>
+        <%= f.submit t("score_items.form.save"), class: "btn btn-primary btn-text" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

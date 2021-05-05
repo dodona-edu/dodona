@@ -27,6 +27,8 @@ nl:
       feedback: Feedback
       question: Vraag
       rights_request: Aanvraag voor lesgeversrechten
+      score_item: Scoreonderdeel
+      score: Score
     attributes:
       api_token:
         description: Beschrijving
@@ -181,3 +183,8 @@ nl:
         user: Gebruiker
         context: Motivering
         institution_name: Naam van onderwijsinstelling
+      score_item:
+        name: Naam
+        description: Beschrijving
+        maximum: Maximum
+        visible: Zichtbaar

@@ -1,0 +1,57 @@
+en:
+  score_items:
+    form:
+      description-help: A description is optional. Markdown formatting can be used. This is visible to the students.
+      visible-help: Make the score item visible to students once the evaluation is released.
+      save: Save
+      add: Add
+      close: Close
+      modify-help: If you change the maximum, all completed evaluaties with this score item will be marked as uncompleted.
+      score-help: The maximal grade for this score item. The grade should be greater than 0, and works in increments of 0.25.
+    copy:
+      copy: Copy
+      exercise: Exercise
+      choose: "-- Choose an exercise --"
+    table:
+      total: "Total"
+      total-description: "Sum of all score items"
+      visible-yes: "Score becomes visible to students once evaluation is released"
+      visible-no: "Score is not visible to students"
+      delete: Delete
+      edit: Edit
+    index:
+      title: Edit score items
+      to_evaluation: Back to evaluation
+    new:
+      title: Configure score items
+      choose: Do you want to grade submissions in Dodona?
+      yes_answer: "Yes"
+      yes_explanation: "Create a scoring scheme below"
+      no_answer: "Nee"
+      no_explanation: "Continue to the evaluation"
+      second_step: "Stel een puntenverdeling op"
+      second_explanation: You can create a grading scheme below for each exercise. You can always change these later.
+      summary_html:
+        zero: There are <strong>no</strong> score items configured for this evaluation
+        one: "There is <strong>one</strong> score item for this evaluation, with a maximum score of <strong>%{score}</strong>."
+        other: "There are <strong>%{count}</strong> score items for this evaluation, with a maximum score of <strong>%{score}</strong>."
+      text: Create and add a score item to each exercise in the evaluation.
+      close: Sluiten
+      add_all: Add score item to all exercises
+      hide_all: Make all score items invisible
+      show_all: Make all score items visible
+      to_evaluation: To evaluation
+      info: Dodona allows you to grade the submissions in this evaluation. This is optional and can always be changed later.
+    exercise:
+      nothing: There are no score items for this exercise yet. You can only grade exercises with at least one score item.
+      copy_title: Copy score item from another exercise to %{name}
+      add_title: Create new score item for %{name}
+      all: Add score item to all exercises
+      max: Maximum score
+      edit_title: Edit this score item
+      delete_title: Delete this score item
+      edit_item_title: "Edit %{title}"
+      total_visibility: >
+        Show or hide the calculated total score in Dodona for this exercise when the feedback is released.
+        Individual score items are still visible if they are marked as such.
+      visibility: Show or hide this score item.

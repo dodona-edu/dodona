@@ -13,6 +13,7 @@
             <tr>
               <th><%= t('.exercise') %></th>
               <th><%= t('.no_annotations') %></th>
+              <th><%= t('.grade') %></th>
               <th class="actions"></th>
             </tr>
           </thead>
@@ -21,12 +22,18 @@
               <tr>
                 <td><%= link_to fb.exercise.name, activity_path(fb.exercise) %></td>
                 <td><%= fb.submission.present? ? t('.annotation_count', count: fb.submission.annotations.count) : t('.no_submission') %></td>
+                <td><%= render 'feedbacks/score_link', feedback: fb %></td>
                 <td class="actions">
                   <% if fb.submission.present? %>
                     <%= link_to submission_path(fb.submission, anchor: 'code') do %>
                       <i class="mdi mdi-chevron-right mdi-18"></i>
                     <% end %>
                   <% end %>
+              </tr>
+              <tr class="collapse" id="<%= "score-details-#{fb.id}" %>">
+                <td colspan="4">
+                  <%= render 'feedbacks/score_table', feedback: fb %>
+                </td>
               </tr>
             <% end %>
           </tbody>

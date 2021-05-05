@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class EvaluationsControllerTest < ActionDispatch::IntegrationTest
+  include EvaluationHelper
+
   def setup
     @series = create :series, exercise_count: 2, deadline: DateTime.now + 4.hours
     @exercises = @series.exercises
@@ -378,5 +380,170 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       assert_response :redirect, 'Should not get access since the user is a student'
       sign_out person
     end
+  end
+
+  test 'grade export is only available for course admins' do
+    # Create an evaluation, a score item and add a score.
+    post evaluations_path, params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    evaluation = @series.evaluation
+    evaluation.update(users: @series.course.enrolled_members)
+    # Add a score to a non-nil submission
+    feedback = evaluation.feedbacks.where.not(submission_id: nil).sample
+    exercise = feedback.evaluation_exercise
+    score_item = create :score_item, evaluation_exercise: exercise
+    score = create :score, score_item: score_item, feedback: feedback
+
+    get export_grades_evaluation_path evaluation, format: :csv
+    assert_response :success
+    assert_equal 'text/csv', response.content_type
+
+    # Check the contents of the csv file.
+    csv = CSV.parse response.body
+    assert_equal 1 + evaluation.evaluation_users.length, csv.size
+
+    header = csv.shift
+    assert_equal 2 + evaluation.evaluation_exercises.length * 2, header.length
+
+    # Get which users will have a score
+    # First, the users we added a score for.
+    users = {
+      feedback.evaluation_user.user.email => score.score
+    }
+    evaluation.feedbacks.where(submission_id: nil).map(&:evaluation_user).map(&:user).map(&:email).uniq.each do |u|
+      users[u] = BigDecimal('0')
+    end
+
+    # The exercise with a score item has a different max.
+    score_item_exercise_position = header.index { |h| h == "#{exercise.exercise.name} Score" }
+    csv.each do |line|
+      # Only one exercise has a score.
+      if users.key?(line[1])
+        exported_score = BigDecimal(line.delete_at(score_item_exercise_position))
+        assert_equal users[line[1]], exported_score
+      else
+        exported_score = line.delete_at(score_item_exercise_position)
+        assert_equal '', exported_score
+      end
+      exported_max = BigDecimal(line.delete_at(score_item_exercise_position))
+      assert_equal score_item.maximum, exported_max
+
+      # All other scores should be nil.
+      assert line[2..].all?(&:empty?)
+    end
+
+    sign_out @course_admin
+
+    # No log in
+    get export_grades_evaluation_path evaluation, format: :csv
+    assert_response :redirect # Redirect to sign in page
+
+    random_user = @users.sample
+    assert_not random_user.admin_of?(@series.course)
+
+    sign_in random_user
+    get export_grades_evaluation_path evaluation, format: :csv
+    assert_response :redirect # Redirect to sign in page
+  end
+
+  test 'course admins can change grade visibility' do
+    evaluation = create :evaluation, :with_submissions
+    evaluation.series.course.administrating_members << @course_admin
+    from = evaluation.evaluation_exercises.first
+    s1 = create :score_item, evaluation_exercise: from
+    s2 = create :score_item, evaluation_exercise: from
+
+    [
+      [@course_admin, :redirect],
+      [create(:student), :forbidden],
+      [create(:staff), :forbidden],
+      [create(:zeus), :redirect],
+      [nil, :unauthorized]
+    ].each do |user, expected|
+      sign_in user if user.present?
+
+      from.update!(visible_score: false)
+      s1.update!(visible: false)
+      s2.update!(visible: false)
+
+      post modify_grading_visibility_evaluation_path(evaluation, format: :js), params: {
+        visible: true
+      }
+
+      assert_response expected
+
+      from.reload
+      s1.reload
+      s2.reload
+
+      if expected == :redirect
+        assert from.visible_score?
+        assert s1.visible?
+        assert s2.visible?
+      else
+        assert_not from.visible_score?
+        assert_not s1.visible?
+        assert_not s2.visible?
+      end
+
+      sign_out user if user.present?
+    end
+  end
+
+  test 'evaluations overview is only visible if released' do
+    evaluation = create :evaluation, :with_submissions
+    feedback = evaluation.feedbacks.first
+    submission = feedback.submission
+
+    assert_not evaluation.released
+    sign_in submission.user
+    get overview_evaluation_path(evaluation)
+    assert_response :redirect # Redirect to sign in page
+
+    evaluation.update!(released: true)
+    get overview_evaluation_path(evaluation)
+    assert_response :ok
+  end
+
+  def expected_score_string(*args)
+    if args.length == 1
+      "#{format_score(args[0].score)} / #{format_score(args[0].score_item.maximum)}"
+    else
+      "#{format_score(args[0])} / #{format_score(args[1])}"
+    end
+  end
+
+  test 'should only show allowed grades for students' do
+    evaluation = create :evaluation, :released, :with_submissions
+    evaluation_exercise = evaluation.evaluation_exercises.first
+    visible_score_item = create :score_item, evaluation_exercise: evaluation_exercise
+    hidden_score_item = create :score_item, evaluation_exercise: evaluation_exercise, visible: false
+    feedback = evaluation.feedbacks.first
+    submission = feedback.submission
+    s1 = create :score, feedback: feedback, score_item: visible_score_item, score: BigDecimal('5.00')
+    s2 = create :score, feedback: feedback, score_item: hidden_score_item, score: BigDecimal('7.00')
+
+    sign_in submission.user
+
+    # Visible scores are visible
+    get overview_evaluation_path(evaluation)
+    assert_match visible_score_item.description, response.body
+    assert_no_match hidden_score_item.description, response.body
+    assert_match expected_score_string(s1), response.body
+    assert_no_match expected_score_string(s2), response.body
+    assert_match expected_score_string(feedback.score, feedback.maximum_score), response.body
+
+    # Hidden total is not shown
+    evaluation_exercise.update!(visible_score: false)
+    get overview_evaluation_path(evaluation)
+    assert_match visible_score_item.description, response.body
+    assert_no_match hidden_score_item.description, response.body
+    assert_match expected_score_string(s1), response.body
+    assert_no_match expected_score_string(s2), response.body
+    assert_no_match expected_score_string(feedback.score, feedback.maximum_score), response.body
   end
 end

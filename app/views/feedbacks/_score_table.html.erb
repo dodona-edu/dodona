@@ -1,0 +1,30 @@
+<% total = policy(feedback.evaluation_exercise).show_total? %>
+<% scores = policy_scope(feedback.scores).includes(:score_item) %>
+<% if total || feedback.score_items.present? %>
+  <table class="table table-condensed">
+    <% if total %>
+      <tr class="text-muted">
+        <td>
+          <%= t "feedbacks.score_table.total_score" %>
+          <% unless feedback.evaluation_exercise.visible_score? %>
+            <i class="mdi mdi-school mdi-18 colored-secondary" title="<%= t "score_items.table.visible-no" %>"></i>
+          <% end %>
+        </td>
+        <td><%= format_score feedback.score %> / <%= format_score feedback.maximum_score %></td>
+      </tr>
+    <% end %>
+    <% scores.each do |score| %>
+      <tr>
+        <td>
+          <%= score.score_item.name %>
+          <% unless score.score_item.visible %>
+            <i class="mdi mdi-school mdi-18 colored-secondary" title="<%= t "score_items.table.visible-no" %>"></i>
+          <% end %>
+          <br>
+          <span class="text-muted small"><%= score.score_item.description %></span>
+        </td>
+        <td><%= format_score score.score %> / <%= format_score score.score_item.maximum %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

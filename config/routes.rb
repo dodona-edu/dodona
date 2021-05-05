@@ -203,13 +203,21 @@ Rails.application.routes.draw do
       member do
         get 'add_users'
         get 'overview'
+        get 'export_grades'
         post 'add_user'
         post 'remove_user'
         post 'set_multi_user'
+        post 'modify_grading_visibility'
       end
       resources :feedbacks, only: %i[show edit update]
+      resources :score_items, only: %i[create destroy update index new] do
+        post 'copy', on: :collection
+        post 'add_all', on: :collection
+      end
+      resources :scores, only: %i[show create update destroy]
     end
     resources :feedbacks, only: %i[show edit update]
+    resources :evaluation_exercise, only: %i[update]
 
     resources :rights_requests, only: %i[index new create] do
       member do

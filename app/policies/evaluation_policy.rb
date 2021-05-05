@@ -15,6 +15,14 @@ class EvaluationPolicy < ApplicationPolicy
     course_admin?
   end
 
+  def score_items?
+    course_admin?
+  end
+
+  def manage_scores?
+    course_admin?
+  end
+
   def destroy?
     course_admin?
   end
@@ -36,6 +44,14 @@ class EvaluationPolicy < ApplicationPolicy
   end
 
   def mark_undecided_complete?
+    course_admin?
+  end
+
+  def export_grades?
+    course_admin?
+  end
+
+  def modify_grading_visibility?
     course_admin?
   end
 

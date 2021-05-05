@@ -57,3 +57,49 @@ tr.gu-mirror {
 .table-fixed {
   table-layout: fixed;
 }
+
+// You should also set the top position for your elements, e.g. top: 0.
+.sticky-header {
+  th {
+    position: sticky;
+    background: @content-bg;
+  }
+}
+
+.sticky-column {
+  thead tr th:first-child {
+    background: @content-bg;
+    position: sticky;
+    left: 0;
+    // Raise index, to prevent sticky column from rolling over the header.
+    z-index: 2;
+  }
+
+  tbody td:first-child {
+    background: @content-bg;
+    position: sticky;
+    left: 0;
+  }
+}
+
+.sticky-wrapper {
+  max-height: ~"calc(100vh - @{footer-height} - @{navbar-height} - @{card-margin-bottom} - @{card-supporting-text-padding})";
+  // If the height is less than this, it becomes impossible to use the table,
+  // so forego the sticky headers a bit.
+  min-height: 400px;
+  overflow-x: auto;
+}
+
+
+@media (max-width: @screen-sm-max) {
+  .sticky-wrapper {
+    max-height: ~"calc(100vh - @{footer-height-sm} - @{navbar-height} - @{card-margin-bottom} - @{card-supporting-text-padding})";
+  }
+}
+
+.table {
+  .placeholder-text {
+    text-align: center;
+    color: @text-secondary;
+  }
+}

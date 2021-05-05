@@ -49,12 +49,17 @@ en:
       unknown: 'unknown'
     contact:
       title: Get in touch
+      contact_p1_html: You can use the form on this page to send a message to Team Dodona. We'll answer your question as soon as possible by email.
+      contact_p2_html: "You can find our manual on <a href='https://docs.dodona.be/en' target = '_blank'>docs.dodona.be</a>."
+      contact_p3_html: "If you have a general question of which the answer can be of use to others, please consider posting it on <a href='https://github.com/dodona-edu/dodona/discussions' target = '_blank'>GitHub Discussions</a>. Reporting a bug or requesting a feature can also be done on GitHub."
       name: Name
       email: Email
       subject: Subject
       message: Message
       prompt: Contact us if the problem persists.
-      rights_request_redirect_html: Do you want to request teacher rights for your account? From now on, you can do that <a href="%{url}">using this form</a>.
+      rights_request_title: Teacher rights
+      rights_request_redirect_html: Do you want to request teacher rights for your account? Please use <strong><a href="%{url}">this form</a></strong>.
+      send: Send message
     create_contact:
       mail_sent: "Your message has been sent. Thanks for getting in touch."
       captcha_failed: reCAPTCHA could not be verified; please try again.

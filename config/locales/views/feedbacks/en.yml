@@ -29,9 +29,15 @@ en:
       mark_as_done: Mark as done
       evaluation_done: Evaluation completed
       undo: Undo
+      waiting_on_score: This solution is not fully graded
       completed:
         failure: "Could not set state"
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluations completed"
+      total: "Total"
+      give_max_all: "Assign the maximal score to all score items"
+      give_zero_all: "Assign 0 to all score items"
+    score_actions:
+      give_one: "Assign %{score} to this score item"
     overview:
       annotations:
         count: "Amount of annotations by teacher"
@@ -46,3 +52,12 @@ en:
     submissions_table:
       update-submission: "Change to this submission"
       confirm: "Are you sure? All annotations on the previous submission will be deleted."
+    score_table:
+      total_score: Total grade
+      score_breakdown: Grade breakdown
+    score_link:
+      score: "Grade: %{score} / %{max}"
+      score_short: "%{score} / %{max}"
+      present: "There are %{count} score items"
+      view_breakdown: View grade breakdown
+      view_feedback: Go to the feedback

@@ -16,7 +16,7 @@ gem 'uglifier', '>= 4.1.20'
 # This needs to be here for less :(
 gem 'therubyracer', platforms: :ruby
 
-gem 'webpacker', '~> 5.2.1'
+gem 'webpacker', '~> 5.3.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.2'
@@ -36,9 +36,6 @@ gem 'json-schema', '~> 2.8.1'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.6'
-
-# start workers in the background
-gem 'daemons', '~>1.3'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'
@@ -65,7 +62,7 @@ gem 'ace-rails-ap', '~>4.4'
 gem 'autoprefixer-rails', '~>10.2.4'
 
 # saml authentication
-gem 'devise', '~>4.7.3'
+gem 'devise', '~>4.8.0'
 gem 'ruby-saml', '~> 1.12.2'
 
 # omniauth
@@ -133,7 +130,7 @@ gem 'faker', '~> 2.17.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.0'
-gem 'rack-mini-profiler', '~> 2.3.1'
+gem 'rack-mini-profiler', '~> 2.3.2'
 gem 'stackprof', '~> 0.2.16'
 
 # Datadog
@@ -160,7 +157,7 @@ group :development, :test do
 end
 
 group :test do
-  # for measuring coverage
+  # For measuring coverage
   gem 'codecov', '~> 0.5.2', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false

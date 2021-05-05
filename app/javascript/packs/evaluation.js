@@ -1,6 +1,7 @@
 import { initDeadlinePicker } from "series.js";
-import { interceptAddMultiUserClicks, interceptFeedbackActionClicks } from "evaluation.ts";
+import { interceptAddMultiUserClicks } from "evaluation.ts";
+import FeedbackActions from "feedback/actions";
 
 window.dodona.initDeadlinePicker = initDeadlinePicker;
-window.dodona.interceptFeedbackActionClicks = interceptFeedbackActionClicks;
 window.dodona.interceptAddMultiUserClicks = interceptAddMultiUserClicks;
+window.dodona.FeedbackActions = FeedbackActions;

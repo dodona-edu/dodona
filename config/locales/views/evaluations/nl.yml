@@ -16,6 +16,8 @@ nl:
       progress_html: "<b>%{feedback_count} van de %{feedback_total}</b> oplossingen hebben afgewerkte feedback."
       evaluation_details: Detailoverzicht
       evaluation_details_info_html: Deze tabel geeft een detailoverzicht van alle oplossingen in de evaluatie.<br> Het gekleurde streepje geeft de status van de oplossing aan (niet ingediend, correct of fout), het vinkje in de tekstballon of deze oplossing al afgewerkt is.
+      grading_details: Puntenoverzicht
+      grading_details_info_html: Deze tabel toont het puntenoverzicht voor deze evaluatie. Het totaal per gebruiker is de som van de punten van de oefeningen.<br> Als de punten grijs zijn is de oplossing nog niet afgewerkt.
     new:
       exercises: Oefeningen
       create_evaluation: Reeks evalueren
@@ -48,11 +50,17 @@ nl:
       clear: Alle gebruikers verwijderen
       add_enrolled: Alle ingeschreven studenten
       add_submitted: Alle studenten die indienden
+    edit_score_items: Scoreonderdelen aanpassen
     destroy: Evaluatie verwijderen
+    download: Punten downloaden
     form:
       deadline-help_html: "Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie. <b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren."
     evaluation_table:
       user: Gebruiker
+    evaluation_grade_table:
+      user: Gebruiker
+      total: Totaal
+      average: Gemiddelde
     feedback_status:
       feedback_finished: evaluatie afgewerkt
       feedback_unstarted: evaluatie nog niet afgewerkt
@@ -65,6 +73,7 @@ nl:
       released: Er werd feedback gegeven op je code
       exercise: Oefening
       no_annotations: "# annotaties"
+      grade: Score
       annotation_count:
         zero: "Er werd geen feedback gegeven"
         one: "Één annotatie"

@@ -19,6 +19,9 @@ class Feedback < ApplicationRecord
   belongs_to :evaluation_exercise
   belongs_to :submission, optional: true
 
+  has_many :scores, dependent: :destroy
+  has_many :score_items, through: :evaluation_exercise
+
   delegate :user, to: :evaluation_user
   delegate :exercise, to: :evaluation_exercise
 
@@ -29,6 +32,8 @@ class Feedback < ApplicationRecord
   before_destroy :destroy_related_annotations
 
   validate :submission_user_exercise_correct
+
+  accepts_nested_attributes_for :scores
 
   scope :complete, -> { where(completed: true) }
   scope :incomplete, -> { where(completed: false) }
@@ -63,6 +68,20 @@ class Feedback < ApplicationRecord
       # We use id < self.id here for the cycle because we could otherwise find ourselves.
       next_unseen: feedbacks_same_exercise.incomplete.find_by('id > ?', id) || feedbacks_same_exercise.incomplete.find_by('id < ?', id)
     }
+  end
+
+  def done_grading?
+    score_items.count == scores.count
+  end
+
+  def score
+    mapped = scores.map(&:score)
+    mapped.sum if mapped.any?
+  end
+
+  def maximum_score
+    mapped = score_items.map(&:maximum)
+    mapped.sum if mapped.any?
   end
 
   private

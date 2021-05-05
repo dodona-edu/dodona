@@ -15,16 +15,9 @@ require 'test_helper'
 
 class FeedbackTest < ActiveSupport::TestCase
   setup do
-    series = create :series, exercise_count: 2
-    @users = [create(:user), create(:user)]
-    @exercises = series.exercises
-    @users.each do |u|
-      series.course.enrolled_members << u
-      @exercises.each do |e|
-        create :submission, user: u, exercise: e, course: series.course, created_at: Time.current - 1.hour
-      end
-    end
-    @evaluation = create :evaluation, series: series, users: @users, exercises: @exercises, deadline: Time.current
+    @evaluation = create :evaluation, :with_submissions, user_count: 2
+    @users = @evaluation.users
+    @exercises = @evaluation.series.exercises
     @user_count = @users.count
     @exercise_count = @exercises.count
     @zeus = create :zeus
@@ -76,5 +69,16 @@ class FeedbackTest < ActiveSupport::TestCase
     feedback.update(completed: true)
     feedback.update(submission_id: submission.id)
     assert_not feedback.completed
+  end
+
+  test 'score calculations are correct' do
+    feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
+    si1 = create :score_item, evaluation_exercise: feedback.evaluation_exercise
+    si2 = create :score_item, evaluation_exercise: feedback.evaluation_exercise
+    s1 = create :score, feedback: feedback, score: '5.0', score_item: si1
+    s2 = create :score, feedback: feedback, score: '6.0', score_item: si2
+
+    assert feedback.score == s1.score + s2.score
+    assert feedback.maximum_score == s1.score_item.maximum + s2.score_item.maximum
   end
 end

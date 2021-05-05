@@ -11,7 +11,7 @@
     "target": "es5",
     "baseUrl": "app",
     "paths": {
-      "*": ["assets/javascripts/*"]
+      "*": ["assets/javascripts/*", "javascript/components/*"]
     },
     "pretty": true
   },

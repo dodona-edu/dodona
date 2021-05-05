@@ -9,17 +9,18 @@
 
 
 import { start as startRails } from "@rails/ujs";
-
 startRails();
 
 import jQuery from "jquery";
-
-// jQuery aliases
 window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
 
 import "polyfills.js";
+
+// import components
+import "components/simple-greeting";
+
 import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";
@@ -34,7 +35,6 @@ initClipboard();
 if (!window.dodona.hideDrawer) {
     $(() => new Drawer());
 }
-
 
 // Adds the CSRF token to each ajax request
 initCSRF();

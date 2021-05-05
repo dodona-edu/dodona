@@ -56,6 +56,7 @@ module.exports = function(api) {
           loose: true
         }
       ],
+      ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
       [
         "@babel/plugin-proposal-object-rest-spread",
         {

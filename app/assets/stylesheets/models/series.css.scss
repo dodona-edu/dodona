@@ -222,7 +222,13 @@
   justify-content: space-between;
 }
 
+.graph-header i {
+  display: none;
+}
+
 .graph-title {
+  display: none;
   font-weight: bold;
   font-size: 16px;
+  margin-right: 5px;
 }

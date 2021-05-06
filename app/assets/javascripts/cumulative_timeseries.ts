@@ -278,7 +278,6 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
 
         d3.select(`${selector} *`).remove();
 
-        console.log(raw);
         const data: {string: {date; status; count}[]} = raw.data;
         const metaData = {}; // used to store things needed to create scales
         if (Object.keys(data).length === 0) {

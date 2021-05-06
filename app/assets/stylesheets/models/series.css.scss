@@ -222,13 +222,15 @@
   justify-content: space-between;
 }
 
-.graph-header .graph-info {
-  display: none;
+.graph-info {
+  margin-left: 5px;
+  display: inline;
+  color: @text-muted
 }
 
 .graph-title {
   display: none;
-  font-weight: bold;
   font-size: 16px;
   margin-right: 5px;
+  align-items: center;
 }

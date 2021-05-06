@@ -21,8 +21,8 @@ function toggleStats(button, seriesId) {
     const height = content.height();
     if (tabs.css("display") == "none") {
         tabs.css("display", "flex");
-        title.css("display", "inline");
-        info.css("display", "inline");
+        title.css("display", "flex");
+        // info.css("display", "inline");
         container.css("display", "flex");
         content.css("display", "none");
         setActiveToggle(tabs.find(".violin").get()[0], "violin", seriesId);
@@ -47,7 +47,7 @@ function toggleStats(button, seriesId) {
 function setActiveToggle(activeNode, title, seriesId) { // returns true if the active tab switched
     if (!activeNode.className.match(/^(.* )?active( .*)?$/)) {
         const card = $(`#series-card-${seriesId}`);
-        const titleSpan = card.find(".graph-title");
+        const titleSpan = card.find(".graph-title span");
         const info = card.find(".graph-info");
 
         titleSpan.html(I18n.t(`js.${title}_title`));

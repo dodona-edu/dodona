@@ -58,6 +58,9 @@ en:
     stacked_title: Distribution of submission statuses
     timeseries_title: Submissions over time
     ctimeseries_title: Users with at least one correct submission
+    violin_desc: This graph displays how many submissions users made for each exercise. The x-axis represents the amount of submissions, while the tickness of the graph represents the amount of users that made x amount of submissions.
+    stacked_desc: This graph displays the distribution of submissions statuses. In other words, of all submissions, how many have status x.
+    ctimeseries_desc: This graph displays the group's progress over time. It keeps track of the amount of users with at least one correct submission.
     months:
       long:
         jan: January

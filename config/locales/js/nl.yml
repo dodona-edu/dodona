@@ -58,6 +58,9 @@ nl:
     stacked_title: Verdeling van indienigsstatussen
     timeseries_title: Indieningen over tijd
     ctimeseries_title: Gebruikers met minstens één correcte indiening
+    violin_desc: Deze grafiek geeft weer hoeveel indieningen gebruikers per oefening gemaakt hebben. De x-as vertegenwoordigd het aantal indieningen en de de dikte van de grafiek geeft aan hoeveel gebruikers x aantal indieningen maakten.
+    stacked_desc: Deze grafiek geeft de verdeling van de indienigsstatussen weer. Met andere woorden, van alle indieningen, hoeveel hebben status x.
+    ctimeseries_desc: Deze grafiek geeft de vooruitgang van de groep weer. Het houdt het aantal gebruikers met ten minste één correcte indiening bij.
     months:
       long:
         jan: Januari

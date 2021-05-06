@@ -143,12 +143,12 @@
   <% end %>
   
   <div class="graph-header">
-    <span>
-      <span class="graph-title""></span>
-      <a class="alert-info hidden-print" >
+    <div class="graph-title">
+      <span></span>
+      <a class="hidden-print" >
         <i class="mdi mdi-alert-circle graph-info"></i>
       </a>
-    </span>
+    </div>
 
     <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle stats-tab">
       <button class="btn btn-secondary annotation-toggle violin" onclick="dodona.setActiveToggle(this, 'violin', <%= series.id %>) && 

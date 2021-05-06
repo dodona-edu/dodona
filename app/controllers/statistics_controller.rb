@@ -83,7 +83,7 @@ class StatisticsController < ApplicationController
     if result.present?
       lan = params[:locale]
       ex_data = series.exercises.map { |ex| [ex.id, lan == 'nl' ? ex.name_nl : ex.name_en] }
-      render json: { data: result[:value], exercises: ex_data }
+      render json: { data: result[:value], exercises: ex_data, students: course.enrolled_members.length }
     else
       render json: { status: 'not available yet' }, status: :accepted
     end

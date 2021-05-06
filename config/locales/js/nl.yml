@@ -57,7 +57,7 @@ nl:
     violin_title: Aantal indieningen per gebruiker
     stacked_title: Verdeling van indienigsstatussen
     timeseries_title: Indieningen over tijd
-    ctimeseries_title: Eerste juiste indieningen over tijd
+    ctimeseries_title: Gebruikers met minstens één correcte indiening
     months:
       long:
         jan: Januari

@@ -190,7 +190,7 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
     const container = d3.select(selector);
 
     if (!height) {
-        height = container.node().clientHeight - 5;
+        height = container.node().getBoundingClientRect().height - 5;
     }
     container
         .html("") // clean up possible previous visualisations

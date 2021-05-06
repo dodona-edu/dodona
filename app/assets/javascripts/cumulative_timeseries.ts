@@ -258,7 +258,7 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
     const container = d3.select(selector);
 
     if (!height) {
-        height = (container.node() as HTMLElement).clientHeight - 5;
+        height = (container.node() as HTMLElement).getBoundingClientRect().height - 5;
     }
     container
         .html("") // clean up possible previous visualisations

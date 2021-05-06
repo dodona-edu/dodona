@@ -115,9 +115,16 @@ function drawStacked(data: {
             }% (${d.count}/${maxSum[d.exercise_id]})`);
         })
         .on("mousemove", (e, _) => {
+            const bbox = tooltip.node().getBoundingClientRect();
             tooltip
-                .style("left", `${d3.pointer(e, svg.node())[0]-tooltip.node().clientWidth*1.1}px`)
-                .style("top", `${d3.pointer(e, svg.node())[1]-tooltip.node().clientHeight*1.25}px`);
+                .style(
+                    "left",
+                    `${d3.pointer(e, svg.node())[0]-bbox.width*1.1}px`
+                )
+                .style(
+                    "top",
+                    `${d3.pointer(e, svg.node())[1]-bbox.height*1.25}px`
+                );
         })
         .on("mouseout", () => {
             tooltip.transition()
@@ -153,7 +160,7 @@ function initStacked(url, containerId: string, containerHeight: number): void {
     const container = d3.select(selector);
 
     if (!height) {
-        height = container.node()["clientHeight"] - 5;
+        height = (container.node() as HTMLElement).getBoundingClientRect().height - 5;
     }
     container
         .html("") // clean up possible previous visualisations

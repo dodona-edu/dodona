@@ -7,18 +7,23 @@ let height = 0;
 const bisector = d3.bisector((d: Date) => d.getTime()).left;
 
 
-function insertFakeData(data): void {
+function insertFakeData(data, maxCount): void {
     const end = new Date((data[Object.keys(data)[0]][0].date));
     const start = new Date(end);
     start.setDate(start.getDate() - 12 * 30);
     for (const exName of Object.keys(data)) {
+        let count = 0;
         data[exName] = [];
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
-            if (Math.random() > 0.5) {
-                data[exName].push({
-                    "date": new Date(d),
-                    "count": Math.round(Math.random()*20)
-                });
+            if (Math.random() > 0.8) {
+                const c = Math.round(Math.random()*5);
+                if (count + c <= maxCount) {
+                    count += c;
+                    data[exName].push({
+                        "date": new Date(d),
+                        "count": c
+                    });
+                }
             }
         }
     }
@@ -73,12 +78,12 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
 
     // common y scale per exercise
     const y = d3.scaleLinear()
-        .domain([0, metaData["maxSum"]])
+        .domain([0, 1])
         .range([innerHeight, 0]);
 
     // y axis
     graph.append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y).ticks(5).tickFormat((v: number) => `${100*v}%`));
 
     // Show the X scale
     const x = d3.scaleTime()
@@ -179,7 +184,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
             .style("fill", "none")
             .attr("d", d3.line()
                 .x(p => x(p[0]["x0"]))
-                .y(p => y(p[1]))
+                .y(p => y(p[1]/metaData["maxSum"]))
                 .curve(d3.curveMonotoneX)
             );
     }
@@ -222,12 +227,15 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
             tooltipDots
                 .attr("opacity", 1)
                 .attr("cx", x(date))
-                .attr("cy", d => y(d[1][i][1]));
+                .attr("cy", d => y(d[1][i][1]/metaData["maxSum"]));
             tooltipDotLabels
                 .attr("opacity", 1)
-                .text(d => d[1][i][1])
+                .text(
+                    d => `${Math.round(d[1][i][1]/metaData["maxSum"]*10000)/100}% 
+                    (${d[1][i][1]}/${metaData["maxSum"]})`
+                )
                 .attr("x", x(date) + 5)
-                .attr("y", d => y(d[1][i][1])-5);
+                .attr("y", d => y(d[1][i][1]/metaData["maxSum"])-5);
         }
     });
 
@@ -270,7 +278,7 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
 
         d3.select(`${selector} *`).remove();
 
-
+        console.log(raw);
         const data: {string: {date; status; count}[]} = raw.data;
         const metaData = {}; // used to store things needed to create scales
         if (Object.keys(data).length === 0) {
@@ -284,12 +292,12 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
 
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
-        insertFakeData(data);
+        insertFakeData(data, raw.students);
         metaData["minDate"] = d3.min(Object.values(data),
             records => d3.min(records, d =>new Date(d.date)));
         metaData["maxDate"] = d3.max(Object.values(data),
             records => d3.max(records, d =>new Date(d.date)));
-        metaData["maxSum"] = 0;
+        metaData["maxSum"] = raw.students ? raw.students : 0;
         metaData["dateRange"] = Math.round(
             (metaData["maxDate"].getTime() - metaData["minDate"].getTime()) /
             (1000 * 3600 * 24)

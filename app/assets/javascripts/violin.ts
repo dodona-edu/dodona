@@ -70,8 +70,8 @@ function drawViolin(data: {
     // Add X axis label:
     graph.append("text")
         .attr("text-anchor", "end")
-        .attr("x", 20)
-        .attr("y", innerHeight+margin.top+10)
+        .attr("x", -5)
+        .attr("y", innerHeight+5)
         .text(I18n.t("js.n_submissions"))
         .attr("class", "violin-label")
         .attr("fill", "currentColor");

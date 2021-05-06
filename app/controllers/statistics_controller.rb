@@ -24,9 +24,9 @@ class StatisticsController < ApplicationController
   def violin
     series = nil
     series = Series.find(params[:series_id]) if params.key?(:series_id)
-    # authorize series
 
     course = series.course
+    # authorize course
 
     result = Submission.violin_matrix(course: course, series: series)
     if result.present?
@@ -41,9 +41,9 @@ class StatisticsController < ApplicationController
   def stacked_status
     series = nil
     series = Series.find(params[:series_id]) if params.key?(:series_id)
-    # authorize series
 
     course = series.course
+    # authorize course
 
     result = Submission.stacked_status_matrix(course: course, series: series)
     if result.present?
@@ -58,9 +58,9 @@ class StatisticsController < ApplicationController
   def timeseries
     series = nil
     series = Series.find(params[:series_id]) if params.key?(:series_id)
-    # authorize series
 
     course = series.course
+    authorize course
 
     result = Submission.timeseries_matrix(course: course, series: series, deadline: series.deadline)
     if result.present?
@@ -75,9 +75,9 @@ class StatisticsController < ApplicationController
   def cumulative_timeseries
     series = nil
     series = Series.find(params[:series_id]) if params.key?(:series_id)
-    # authorize series
 
     course = series.course
+    # authorize course
 
     result = Submission.cumulative_timeseries_matrix(course: course, series: series, deadline: series.deadline)
     if result.present?

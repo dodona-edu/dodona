@@ -134,6 +134,18 @@ class CoursePolicy < ApplicationPolicy
     statistics?
   end
 
+  def violin?
+    statistics?
+  end
+
+  def stacked_status?
+    statistics?
+  end
+
+  def cumulative_timeseries?
+    statistics?
+  end
+
   def media?
     show?
   end

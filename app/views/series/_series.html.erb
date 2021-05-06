@@ -25,9 +25,11 @@
     </h4>
     <div class="flex-spacer"></div>
     <div class="card-subtitle-actions">
-      <a class="btn btn-icon hidden-print">
-        <i class="mdi mdi-chart-line" onclick="dodona.toggleStats(this, '<%= series.id %>')"></i>
-      </a>
+      <% if current_user&.course_admin?(series.course) || true %>
+        <a class="btn btn-icon hidden-print">
+          <i class="mdi mdi-chart-line" onclick="dodona.toggleStats(this, '<%= series.id %>')"></i>
+        </a>
+      <% end %>
       <div class="btn-group">
         <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
           <i class="mdi mdi-dots-vertical"></i>
@@ -142,34 +144,37 @@
     </div>
   <% end %>
   
-  <div class="graph-header">
-    <div class="graph-title">
-      <span></span>
-      <a class="hidden-print" >
-        <i class="mdi mdi-alert-circle graph-info"></i>
-      </a>
-    </div>
 
-    <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle stats-tab">
-      <button class="btn btn-secondary annotation-toggle violin" onclick="dodona.setActiveToggle(this, 'violin', <%= series.id %>) && 
-        dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
-          <%= image_tag session[:dark] ? "violin-lite.svg" : "violin.svg", class: "img-responsive" %>
-        </button>
-      <button class="btn btn-secondary annotation-toggle stacked" onclick="dodona.setActiveToggle(this, 'stacked', <%= series.id %>) && 
-        dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
-          <%= image_tag session[:dark] ? "stacked-bar-chart-lite.svg" : "stacked-bar-chart.svg", class: "img-responsive", style: "fill:white" %>
-        </button>
-      <% if false %>
-      <button class="btn btn-secondary annotation-toggle timeseries" onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>) && 
-        dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
-      <% end %>
-      <button class="btn btn-secondary annotation-toggle ctimeseries" onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>) && 
-        dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
-          <%= image_tag session[:dark] ? "stacked-line-chart-lite.svg" : "stacked-line-chart.svg", class: "img-responsive", style: "fill:white" %>
-        </button>
+  <% if current_user&.course_admin?(series.course) || true %>
+    <div class="graph-header">
+      <div class="graph-title">
+        <span></span>
+        <a class="hidden-print" >
+          <i class="mdi mdi-alert-circle graph-info"></i>
+        </a>
+      </div>
+
+      <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle stats-tab">
+        <button class="btn btn-secondary annotation-toggle violin" onclick="dodona.setActiveToggle(this, 'violin', <%= series.id %>) && 
+          dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
+            <%= image_tag session[:dark] ? "violin-lite.svg" : "violin.svg", class: "img-responsive" %>
+          </button>
+        <button class="btn btn-secondary annotation-toggle stacked" onclick="dodona.setActiveToggle(this, 'stacked', <%= series.id %>) && 
+          dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
+            <%= image_tag session[:dark] ? "stacked-bar-chart-lite.svg" : "stacked-bar-chart.svg", class: "img-responsive", style: "fill:white" %>
+          </button>
+        <% if false %>
+        <button class="btn btn-secondary annotation-toggle timeseries" onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>) && 
+          dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
+        <% end %>
+        <button class="btn btn-secondary annotation-toggle ctimeseries" onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>) && 
+          dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
+            <%= image_tag session[:dark] ? "stacked-line-chart-lite.svg" : "stacked-line-chart.svg", class: "img-responsive", style: "fill:white" %>
+          </button>
+      </div>
     </div>
-  </div>
-  <div class="stats-container" id="stats-container-<%= series.id %>" style="position: relative;"></div>
+    <div class="stats-container" id="stats-container-<%= series.id %>" style="position: relative;"></div>
+  <% end %>
 
   <div class="series-content">
     <div class="series-description">

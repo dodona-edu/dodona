@@ -141,6 +141,7 @@
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
+  
   <div class="graph-header">
     <span>
       <span class="graph-title""></span>
@@ -148,17 +149,24 @@
         <i class="mdi mdi-alert-circle graph-info"></i>
       </a>
     </span>
+
     <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle stats-tab">
       <button class="btn btn-secondary annotation-toggle violin" onclick="dodona.setActiveToggle(this, 'violin', <%= series.id %>) && 
-        dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Violin</button>
+        dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
+          <%= image_tag session[:dark] ? "violin-lite.svg" : "violin.svg", class: "img-responsive" %>
+        </button>
       <button class="btn btn-secondary annotation-toggle stacked" onclick="dodona.setActiveToggle(this, 'stacked', <%= series.id %>) && 
-        dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Stacked Status</button>
+        dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
+          <%= image_tag session[:dark] ? "stacked-bar-chart-lite.svg" : "stacked-bar-chart.svg", class: "img-responsive", style: "fill:white" %>
+        </button>
       <% if false %>
       <button class="btn btn-secondary annotation-toggle timeseries" onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>) && 
         dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
       <% end %>
       <button class="btn btn-secondary annotation-toggle ctimeseries" onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>) && 
-        dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Cumulative Timeseries</button>
+        dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
+          <%= image_tag session[:dark] ? "stacked-line-chart-lite.svg" : "stacked-line-chart.svg", class: "img-responsive", style: "fill:white" %>
+        </button>
     </div>
   </div>
   <div class="stats-container" id="stats-container-<%= series.id %>" style="position: relative;"></div>

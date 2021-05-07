@@ -96,9 +96,10 @@ class Evaluation < ApplicationRecord
   # To prevent getting all exercises, feedbacks and scores again,
   # you can pass a list of existing evaluation exercises to this function.
   # It is recommended to preload the feedbacks & scores.
-  def average_score(eval_execs = nil)
+  def average_score_sum(eval_execs = nil)
+    # This is the sum of the averages of each exercise in this evaluation.
     mapped = (eval_execs || evaluation_exercises.includes(feedbacks: [:scores])).map(&:average_score).reject(&:nil?)
-    mapped.sum / mapped.length if mapped.any?
+    mapped.sum if mapped.any?
   end
 
   def change_grade_visibility!(visible)

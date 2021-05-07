@@ -11,7 +11,7 @@
       <% end %>
     </tr>
     <% maximum = @evaluation.maximum_score %>
-    <% average = @evaluation.average_score(feedbacks[:evaluation_exercises]) %>
+    <% average = @evaluation.average_score_sum(feedbacks[:evaluation_exercises]) %>
     <tr class="second-header">
       <th class="user-name"><%= t ".average" %></th>
       <th class="status">

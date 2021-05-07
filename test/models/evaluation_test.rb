@@ -58,21 +58,19 @@ class EvaluationTest < ActiveSupport::TestCase
   end
 
   test 'no scores result in no average' do
-    assert_nil @evaluation.average_score
+    assert_nil @evaluation.average_score_sum
   end
 
   test 'score items result in no average' do
     add_score_items
 
-    assert_nil @evaluation.average_score
+    assert_nil @evaluation.average_score_sum
   end
 
   test 'scores give correct averages' do
     add_score_items
     add_scores
 
-    # This exercise has two users, each with scores.
-    # (13.5 + 5) / 2 = (18.5) / 2 = 9.25
-    assert_equal BigDecimal('9.25'), @evaluation.average_score
+    assert_equal BigDecimal('18.5'), @evaluation.average_score_sum
   end
 end

@@ -38,8 +38,8 @@ nl:
       text: Creeër een scoreonderdeel en voeg het toe aan elke oefening in de evaluatie.
       close: Sluiten
       add_all: Scoreonderdeel toevoegen aan alle oefeningen
-      hide_all: Alles scoreonderdelen verbergen
-      show_all: Alles scoreonderdelen zichtbaar maken
+      hide_all: Alle scoreonderdelen verbergen
+      show_all: Alle scoreonderdelen zichtbaar maken
       to_evaluation: Naar evaluatie
       info: Je kan op Dodona punten geven aan de oplossingen in deze evaluatie. Dit is optioneel en kan later altijd aangepast worden.
     exercise:

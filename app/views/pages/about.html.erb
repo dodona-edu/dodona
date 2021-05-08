@@ -1,5 +1,23 @@
 <%= render partial: 'about' %>
 
+
+<style>
+  html {
+    --mdc-theme-primary: #00796b;
+    --mdc-button-outline-color: var(--mdc-theme-primary);
+    --mdc-typography-button-font-size: 14px;
+  }
+  mwc-button i.mdi {
+    height: initial;
+    width: initial;
+  }
+</style>
 <simple-greeting name="World"></simple-greeting>
 <metric-label-1 number=5 label="Dit is een test"></metric-label-1>
 <metric-label-2 number=5 label="Dit is een test"></metric-label-2>
+<mwc-button label="standard"></mwc-button>
+<mwc-button outlined label="outlined"></mwc-button>
+<mwc-button raised label="raised"></mwc-button>
+<mwc-button raised label="with icon">
+  <i slot="icon" class="mdi mdi-school"></i>
+</mwc-button>

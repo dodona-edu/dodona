@@ -22,6 +22,7 @@ import "polyfills.js";
 import "components/SimpleGreeting";
 import "components/MetricLabel1";
 import "components/MetricLabel2";
+import "@material/mwc-button";
 
 import { Drawer } from "drawer";
 import { Toast } from "toast";

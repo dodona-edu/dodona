@@ -19,7 +19,8 @@ window.$ = jQuery;
 import "polyfills.js";
 
 // import components
-import "components/simple-greeting";
+//import "components/SimpleGreeting";
+//import "components/MetricLabel1";
 
 import { Drawer } from "drawer";
 import { Toast } from "toast";

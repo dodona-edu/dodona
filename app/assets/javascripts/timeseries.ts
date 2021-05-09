@@ -46,6 +46,7 @@ function drawTimeSeries(data, metaData, exMap): void {
     const dateFormat = d3.timeFormat("%A %B %d");
     const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
     dateArray.unshift(metaData["minDate"]);
+    const rectSize = 25;
 
     const svg = d3.select(selector)
         .append("svg")
@@ -73,12 +74,6 @@ function drawTimeSeries(data, metaData, exMap): void {
         .selectAll(".tick text")
         .call(formatTitle, margin.left-yAxisPadding, exMap);
 
-    // common y scale per exercise
-    const interY = d3.scaleLinear()
-        .domain([0, metaData["maxStack"]])
-        .range([y.bandwidth(), 0]);
-
-
     // Show the X scale
     const x = d3.scaleTime()
         .domain([metaData["minDate"], metaData["maxDate"]])
@@ -86,9 +81,9 @@ function drawTimeSeries(data, metaData, exMap): void {
 
 
     // Color scale
-    const color = d3.scaleOrdinal()
-        .range(d3.schemeDark2)
-        .domain(statusOrder);
+    const color = d3.scaleSequential()
+        .interpolator(d3.interpolateBlues)
+        .domain([0, metaData["maxStack"]]);
 
 
     const tooltip = d3.select(selector).append("div")
@@ -98,8 +93,8 @@ function drawTimeSeries(data, metaData, exMap): void {
         .style("z-index", 5);
 
     const tooltipLine = graph.append("line")
-        .attr("y1", margin.top)
-        .attr("y2", innerHeight-y.bandwidth()*1.5)
+        .attr("y1", 0)
+        .attr("y2", innerHeight)
         .attr("pointer-events", "none")
         .attr("stroke", "currentColor")
         .style("width", 40);
@@ -110,127 +105,67 @@ function drawTimeSeries(data, metaData, exMap): void {
         .attr("fill", "currentColor")
         .attr("font-size", "12px");
     tooltipLabel
-        .attr("y", margin.top + tooltipLabel.node().getBBox().height);
+        .attr("y", innerHeight - tooltipLabel.node().getBBox().height);
 
 
     // add x-axis
     graph.append("g")
-        .attr("transform", `translate(0, ${y(y.domain()[0]) + y.bandwidth()/2})`)
+        .attr("transform", `translate(0, ${innerHeight})`)
         .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, "%a %b-%d"));
 
-    const legend = graph.append("g")
-        .attr("transform", `translate(${-margin.left/2}, ${innerHeight-margin.top})`);
-
-    let legendX = 0;
-    for (const status of statusOrder) {
-        // add legend colors dots
-        const group = legend.append("g");
-
-        group
-            .append("rect")
-            .attr("x", legendX)
-            .attr("y", 0)
-            .attr("width", 15)
-            .attr("height", 15)
-            .attr("fill", color(status) as string);
-
-        // add legend text
-        group
-            .append("text")
-            .attr("x", legendX + 20)
-            .attr("y", 12)
-            .attr("text-anchor", "start")
-            .text(status)
-            .attr("fill", "currentColor")
-            .style("font-size", "12px");
-
-        legendX += group.node().getBBox().width + 20;
-    }
-
-
-    function bisect(mx: number): {"date": Date; "i": number} {
-        if (!dateArray) {
-            return { "date": new Date(0), "i": 0 };
-        }
-        const date = x.invert(mx);
-        const index = bisector(dateArray, date, 1);
-        const a = index > 0 ? dateArray[index-1] : metaData["minDate"];
-        const b = index < dateArray.length ? dateArray[index] : metaData["maxDate"];
-        if (date.getTime()-a.getTime() > b.getTime()-date.getTime()) {
-            return { "date": b, "i": index };
-        } else {
-            return { "date": a, "i": index-1 };
-        }
-    }
-
-    // add areas
-    for (const exId of Object.keys(data)) {
-        const exGroup = graph.append("g")
-            .attr("transform", `translate(0, ${y(exId) + y.bandwidth() / 2})`);
-        const stack = data[exId];
-        exGroup.selectAll("areas")
-            .data(stack)
+    Object.keys(data).forEach(exId => {
+        graph.selectAll("squares")
+            .data(data[exId])
             .enter()
-            .append("path")
-            .attr("class", d => d["key"])
-            .style("stroke", "none")
-            .style("fill", d => color(d["key"]))
-            .attr("d", d3.area()
-                .x(r => x(r["data"]["date"]))
-                .y0(r => interY(r[0]) - y.bandwidth())
-                .y1(r => interY(r[1]) - y.bandwidth())
-                .curve(d3.curveMonotoneX)
-            )
-            .on("mouseover", () => {
+            .append("rect")
+            .attr("rx", 6)
+            .attr("ry", 6)
+            .attr("x", d => x(d["date"])-rectSize/2)
+            .attr("y", y(exId)-rectSize/2)
+            .attr("width", rectSize)
+            .attr("height", rectSize)
+            .attr("fill", d => color(d["sum"]))
+            .on("mouseover", (e, d) => {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
+                let message = `${I18n.t("js.submissions")} :<br>Total: ${d["sum"]}`;
+                statusOrder.forEach(s => { message += `<br>${s}: ${d[s]}` })
+                tooltip.html(message);
+                tooltipLine
+                    .transition()
+                    .duration(100)
+                    .attr("opacity", 1)
+                    .attr("x1", x(d["date"]))
+                    .attr("x2", x(d["date"]));
+                tooltipLabel
+                    .attr("opacity", 1)
+                    .text(dateFormat(d["date"]))
+                    .attr(
+                        "x",
+                        x(d["date"]) - tooltipLabel.node().getBBox().width - 5 > 0 ?
+                            x(d["date"]) - tooltipLabel.node().getBBox().width - 5 :
+                            x(d["date"]) + 10
+                    );
             })
-            .on("mousemove", (e, d) => {
-                if (!dateArray) {
-                    return;
-                }
-                const { date, i } = bisect(d3.pointer(e, graph.node())[0]);
-                tooltip
-                    .html(`${d[i][1]-d[i][0]} x ${d["key"]}`);
+            .on("mousemove", (e, _) => {
                 const bbox = tooltip.node().getBoundingClientRect();
                 tooltip
                     .style(
                         "left",
-                        `${d3.pointer(e, svg.node())[0] - bbox.width * 1.1}px`
+                        `${d3.pointer(e, svg.node())[0]-bbox.width*1.1}px`
                     )
                     .style(
                         "top",
-                        `${d3.pointer(e, svg.node())[1] - bbox.width * 1.25}px`
-                    );
-                tooltipLine
-                    .attr("opacity", 1)
-                    .attr("x1", x(date))
-                    .attr("x2", x(date));
-                tooltipLabel
-                    .attr("opacity", 1)
-                    .text(dateFormat(date))
-                    .attr(
-                        "x",
-                        x(date) - tooltipLabel.node().getBBox().width - 5 > 0 ?
-                            x(date) - tooltipLabel.node().getBBox().width - 5 :
-                            x(date) + 10
+                        `${d3.pointer(e, svg.node())[1]-bbox.height*1.25}px`
                     );
             })
             .on("mouseout", () => {
                 tooltip.transition()
                     .duration(500)
                     .style("opacity", 0);
-                tooltipLabel.attr("opacity", 0);
-                tooltipLine.attr("opacity", 0);
             });
-
-        // y axis
-        graph.append("g")
-            .attr("transform", `translate(0, ${y(exId) - y.bandwidth()/2})`)
-            .call(d3.axisLeft(interY)
-                .tickValues([0, metaData["maxStack"]]));
-    }
+    });
 }
 
 function initTimeseries(url, containerId, containerHeight: number): void {
@@ -273,7 +208,7 @@ function initTimeseries(url, containerId, containerHeight: number): void {
 
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
-        // insertFakeData(data);
+        insertFakeData(data);
         // pick date of first datapoint (to avoid null checks later on)
         metaData["minDate"] = d3.min(Object.values(data),
             records => d3.min(records, d =>new Date(d.date)));
@@ -303,18 +238,19 @@ function initTimeseries(url, containerId, containerHeight: number): void {
             binned.forEach((bin, i) => {
                 const newDate = new Date(metaData["minDate"]);
                 newDate.setDate(newDate.getDate() + i);
-                metaData["maxStack"] = Math.max(metaData["maxStack"], d3.sum(bin, r => r["count"]));
+                let sum = d3.sum(bin, r => r["count"]);
+                metaData["maxStack"] = Math.max(metaData["maxStack"], sum);
                 binned[i] = bin.reduce((acc, r) => {
                     acc["date"] = r["date"];
+                    acc["sum"] = sum;
                     acc[r["status"]] = r["count"];
                     return acc;
                 }, statusOrder.reduce((acc, s) => { // make sure record is initialized with 0 counts
                     acc[s] = 0;
                     return acc;
-                }, { "date": newDate }));
+                }, { "date": newDate, "sum": 0 }));
             });
-            const stack = d3.stack().keys(statusOrder)(binned);
-            data[exId] = stack;
+            data[exId] = binned;
         });
 
         drawTimeSeries(data, metaData, raw.exercises);

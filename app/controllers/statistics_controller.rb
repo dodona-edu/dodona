@@ -60,7 +60,7 @@ class StatisticsController < ApplicationController
     series = Series.find(params[:series_id]) if params.key?(:series_id)
 
     course = series.course
-    authorize course
+    # authorize course
 
     result = Submission.timeseries_matrix(course: course, series: series, deadline: series.deadline)
     if result.present?

@@ -163,7 +163,7 @@
           dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
             <%= image_tag session[:dark] ? "stacked-bar-chart-lite.svg" : "stacked-bar-chart.svg", class: "img-responsive", style: "fill:white" %>
           </button>
-        <% if false %>
+        <% if true %>
         <button class="btn btn-secondary annotation-toggle timeseries" onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>) && 
           dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
         <% end %>

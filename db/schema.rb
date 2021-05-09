@@ -376,7 +376,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.index ["user_id"], name: "index_rights_requests_on_user_id"
   end
 
-  create_table "score_items", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "score_items", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "evaluation_exercise_id", null: false
     t.decimal "maximum", precision: 5, scale: 2, null: false
     t.string "name", null: false
@@ -387,7 +387,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.index ["evaluation_exercise_id"], name: "index_score_items_on_evaluation_exercise_id"
   end
 
-  create_table "scores", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "scores", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "score_item_id", null: false
     t.bigint "feedback_id", null: false
     t.decimal "score", precision: 5, scale: 2, null: false

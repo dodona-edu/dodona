@@ -291,7 +291,7 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
 
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
-        insertFakeData(data, raw.students);
+        // insertFakeData(data, raw.students);
         metaData["minDate"] = d3.min(Object.values(data),
             records => d3.min(records, d =>new Date(d.date)));
         metaData["maxDate"] = d3.max(Object.values(data),

@@ -10,7 +10,7 @@ const bisector = d3.bisector((d: Date) => d.getTime()).left;
 function insertFakeData(data, maxCount): void {
     const end = new Date((data[Object.keys(data)[0]][0].date));
     const start = new Date(end);
-    start.setDate(start.getDate() - 12 * 30);
+    start.setDate(start.getDate() - 14);
     for (const exName of Object.keys(data)) {
         let count = 0;
         data[exName] = [];
@@ -70,6 +70,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .attr("width", width)
         .attr("height", height);
 
+    
     // position graph
     const graph = svg
         .append("g")
@@ -95,13 +96,12 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .range(d3.schemeDark2)
         .domain(exOrder);
 
-    let ticks = d3.timeDay.filter(d=>d3.timeDay.count(metaData["start"], d) % 2 === 0);
+    let ticks = d3.timeDay.filter(d=>d3.timeDay.count(metaData["minDate"], d) % 2 === 0);
     let format = "%a %b-%d";
     if (metaData["dateRange"] > 20) {
         ticks = d3.timeMonth;
         format = "%B";
     }
-
 
     // add x-axis
     graph.append("g")
@@ -139,6 +139,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
     let tooltipI = -1;
 
     const legend = svg.append("g");
+
 
     let legendX = 0;
     for (const ex of exOrder) {

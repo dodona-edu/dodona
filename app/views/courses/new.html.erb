@@ -9,7 +9,7 @@
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">1</span>
-            <a role="button" data-toggle="collapse" href="#type-step">
+            <a role="button" data-bs-toggle="collapse" href="#type-step">
               <%= t('.pick_type') %>
               <span class="answer">
                 <% if @copy_options.present? %>
@@ -57,7 +57,7 @@
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">2</span>
-            <a role="button" data-toggle="collapse" href="#choose-step">
+            <a role="button" data-bs-toggle="collapse" href="#choose-step">
               <%= t('.choose_course') %>
               <span class="answer">
                 <%= @copy_options[:base].name if @copy_options.present? %>
@@ -79,7 +79,7 @@
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">3</span>
-            <a role="button" data-toggle="collapse" href="#form-step">
+            <a role="button" data-bs-toggle="collapse" href="#form-step">
               <%= t('.data_entry') %>
             </a>
           </h4>

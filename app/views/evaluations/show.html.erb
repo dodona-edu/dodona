@@ -28,7 +28,7 @@
                     evaluation_path(@evaluation, evaluation: { released: !@evaluation.released }),
                     class: "btn-primary btn-text",
                     method: :patch %>
-        <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
+        <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
           <i class="mdi mdi-dots-vertical"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-right">
@@ -46,9 +46,9 @@
         <div class="card-tab">
           <ul id="user-tabs" class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
-              <a href="#evaluation-details" data-toggle="tab"><%= t '.evaluation_details' %></a></li>
+              <a href="#evaluation-details" data-bs-toggle="tab"><%= t '.evaluation_details' %></a></li>
             <% if @evaluation.graded? %>
-              <li role="presentation"><a href="#grading-details" data-toggle="tab"><%= t '.grading_details' %></a></li>
+              <li role="presentation"><a href="#grading-details" data-bs-toggle="tab"><%= t '.grading_details' %></a></li>
             <% end %>
           </ul>
           <div class="tab-content">

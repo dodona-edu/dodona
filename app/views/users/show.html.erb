@@ -3,7 +3,7 @@
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <span class="user-icon float-left">
+          <span class="user-icon float-start">
             <% if @user.permission == "student" %>
               <i class="mdi mdi-account mdi-36" title="<%= @user.permission %>">
             <% elsif @user.permission == "staff" %>
@@ -96,7 +96,7 @@
             <%= link_to t(".edit"), edit_user_path(@user), class: "btn-text btn-primary" %>
           <% end %>
           <% if policy(@user).download_submissions? %>
-            <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
+            <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
               <i class="mdi mdi-dots-vertical"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-right">

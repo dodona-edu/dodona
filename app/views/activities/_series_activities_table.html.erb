@@ -18,8 +18,8 @@
             <%= t "activities.index.class_progress" %>
             <% unless series.progress_enabled %>
               <i class="mdi mdi-eye-off mdi-12 progress_visibility"
-               data-toggle="tooltip"
-               data-placement="top"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
                title="<%= t('activities.index.class_progress_visibility_disabled') %>"
               >
               </i>
@@ -77,7 +77,7 @@
                   }
                 %>
               <% else %>
-                <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-right text-muted" do %>
+                <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-end text-muted" do %>
                   <%= activity.users_correct %>/<%= activity.users_tried %>
                 <% end %>
               <% end %>
@@ -91,7 +91,7 @@
                   }
                 %>
               <% else %>
-                <%= content_tag :span, title: t('activities.activity.read_tooltip'), class: "text-right text-muted" do %>
+                <%= content_tag :span, title: t('activities.activity.read_tooltip'), class: "text-end text-muted" do %>
                   <%= t 'activities.activity.read_by', count: activity.users_read %>
                 <% end %>
               <% end %>

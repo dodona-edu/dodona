@@ -349,7 +349,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (message === undefined) {
             message = I18n.t("js.submission-failed");
         }
-        $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
+        $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-bs-dismiss=\"alert\"><span>&times;</span></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
         enableSubmitButton();
     }
 

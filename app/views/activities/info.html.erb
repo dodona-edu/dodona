@@ -173,7 +173,7 @@
               <ul class="nav nav-tabs">
                 <% solutions.map(&:first).each_with_index do |fname, i| %>
                   <li>
-                    <a href="#solution-<%= i %>" data-toggle="tab" aria-expanded="false"><%= fname %></a>
+                    <a href="#solution-<%= i %>" data-bs-toggle="tab" aria-expanded="false"><%= fname %></a>
                   </li>
                 <% end %>
               </ul>

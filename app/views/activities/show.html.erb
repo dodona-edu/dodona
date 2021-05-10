@@ -82,11 +82,11 @@ end %>
         <% end %>
         <ul class="nav nav-tabs">
           <% if policy(@activity).submit? || !user_signed_in? %>
-            <li class="active"><a href="#handin" id="activity-handin-link" data-toggle="tab"><%= t ".handin" %></a></li>
+            <li class="active"><a href="#handin" id="activity-handin-link" data-bs-toggle="tab"><%= t ".handin" %></a></li>
           <% end %>
           <li class="<%= 'active' if !(policy(@activity).submit? || !user_signed_in?) %>">
-            <a href="#submissions" data-toggle="tab" id='activity-submission-link'><%= t ".solutions" %></a></li>
-          <li><a href="#feedback" data-toggle="tab" id='activity-feedback-link' class='hidden'><%= t ".feedback" %></a>
+            <a href="#submissions" data-bs-toggle="tab" id='activity-submission-link'><%= t ".solutions" %></a></li>
+          <li><a href="#feedback" data-bs-toggle="tab" id='activity-feedback-link' class='hidden'><%= t ".feedback" %></a>
           </li>
         </ul>
       </div>

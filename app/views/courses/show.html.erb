@@ -10,12 +10,12 @@
           <% title = [] %>
           <% title.push t(".registration-#{@course.registration}-info", institution: @course.institution&.name) unless @course.open_for_all? %>
           <% title.push t(".moderated-info") if @course.moderated %>
-          <h2 class='card-title-text float-right' title='<%= title.join("\n") %>'>
+          <h2 class='card-title-text float-end' title='<%= title.join("\n") %>'>
             <i class="mdi mdi-account-remove-outline"></i>
           </h2>
         <% end %>
         <% unless @course.visible_for_all? %>
-          <h2 class='card-title-text float-right' title='<%= t ".visibility-#{@course.visibility}-info", institution: @course.institution&.name %>'>
+          <h2 class='card-title-text float-end' title='<%= t ".visibility-#{@course.visibility}-info", institution: @course.institution&.name %>'>
             <i class="mdi mdi-eye-off-outline"></i>
           </h2>
         <% end %>
@@ -61,7 +61,7 @@
             <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn-text', data: {confirm: t('general.are_you_sure')} %>
           <% end %>
           <% if policy(@course).copy? or policy(@course).scoresheet? or policy(@course).download_submissions? %>
-            <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
+            <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
               <i class="mdi mdi-dots-vertical"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-right">

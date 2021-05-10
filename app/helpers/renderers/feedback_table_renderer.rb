@@ -79,7 +79,7 @@ class FeedbackTableRenderer
                     end
           @builder.li(class: ('active' if i.zero?)) do
             id = "##{(t[:description] || 'test').parameterize}-#{i}"
-            @builder.a(href: id, 'data-toggle': 'tab', class: "tab-#{permission}", title: tooltip) do
+            @builder.a(href: id, 'data-bs-toggle': 'tab', class: "tab-#{permission}", title: tooltip) do
               @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
               badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id
@@ -91,7 +91,7 @@ class FeedbackTableRenderer
         end
         if show_code_tab
           @builder.li(class: ('active' if submission[:groups].blank?)) do
-            @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
+            @builder.a(href: '#code-tab', 'data-bs-toggle': 'tab') do
               @builder.text!("#{I18n.t('submissions.show.code')} ")
               @builder.span(class: 'badge', id: 'badge_code')
             end
@@ -141,10 +141,10 @@ class FeedbackTableRenderer
               @builder << I18n.t('submissions.show.correct_tests')
             end
             @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: 'btn btn-secondary active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.button(class: 'btn btn-secondary active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i('', class: 'mdi mdi-eye mdi-18')
               end
-              @builder.button(class: 'btn btn-secondary ', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.button(class: 'btn btn-secondary ', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i('', class: 'mdi mdi-eye-off mdi-18')
               end
             end
@@ -156,10 +156,10 @@ class FeedbackTableRenderer
               @builder << I18n.t('submissions.show.output')
             end
             @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i(class: 'mdi mdi-18 mdi-arrow-split-vertical') {}
               end
-              @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i(class: 'mdi mdi-18 mdi-arrow-split-horizontal') {}
               end
             end

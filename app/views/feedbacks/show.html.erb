@@ -56,7 +56,7 @@
             <% if @feedback.submission.present? %>
               <% submission = @feedback.submission %>
               <div class="submission-summary clearfix">
-                <span class='status-icon float-left'><%= submission_status_icon(submission, 36) %></span>
+                <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
                 <span class="status-line">
                   <%= Submission.human_enum_name(:status, submission.status) %>
                   <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>

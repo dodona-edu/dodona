@@ -78,8 +78,8 @@ module ApplicationHelper
       options[:class] ||= ''
       options[:class] += ' active'
     end
-    options[:'data-toggle'] = 'tooltip'
-    options[:'data-placement'] = 'bottom'
+    options[:'data-bs-toggle'] = 'tooltip'
+    options[:'data-bs-placement'] = 'bottom'
 
     locals = {
       title: options.delete(:title),
@@ -128,7 +128,7 @@ module ApplicationHelper
 
   def sanitize(html)
     @tags ||= Rails::Html::SafeListSanitizer.allowed_tags.to_a + %w[table thead tbody tr td th colgroup col style svg circle line rect path summary details]
-    @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a + %w[style target data-toggle data-parent data-tab data-line data-element id x1 y1 x2 y2 stroke stroke-width fill cx cy r]
+    @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a + %w[style target data-bs-toggle data-parent data-tab data-line data-element id x1 y1 x2 y2 stroke stroke-width fill cx cy r]
 
     # Filters allowed tags and attributes
     sanitized = ActionController::Base.helpers.sanitize html,

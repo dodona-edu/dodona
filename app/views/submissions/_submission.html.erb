@@ -12,8 +12,8 @@
       <i class="mdi mdi-filter-outline mdi-18 filter-icon"
          title="<%= t('.filter-submissions-by-user') %>"
          data-filter="<%= submission.user.full_name %>"
-         data-toggle="tooltip"
-         data-placement="top"
+         data-bs-toggle="tooltip"
+         data-bs-placement="top"
       >
       </i>
       <% if submission.course.nil? %>
@@ -28,8 +28,8 @@
       <i class="mdi mdi-filter-outline mdi-18 filter-icon"
         title="<%= t('.filter-submissions-by-exercise') %>"
         data-filter="<%= submission.exercise.name %>"
-        data-toggle="tooltip"
-        data-placement="top"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
       >
       </i>
       <% if submission.course.nil? %>

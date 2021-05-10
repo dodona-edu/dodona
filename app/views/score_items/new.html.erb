@@ -10,7 +10,7 @@
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">1</span>
-            <a role="button" data-toggle="collapse" href="#choice-step">
+            <a role="button" data-bs-toggle="collapse" href="#choice-step">
               <%= t('.choose') %>
               <span class="answer"></span>
             </a>
@@ -52,7 +52,7 @@
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">2</span>
-            <a role="button" data-toggle="collapse" href="#choose-step">
+            <a role="button" data-bs-toggle="collapse" href="#choose-step">
               <%= t '.second_step' %>
             </a>
           </h4>
@@ -69,7 +69,7 @@
                     </span>
                   </p>
                   <div class="btn-group actions">
-                    <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
+                    <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
                       <i class="mdi mdi-dots-vertical"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
@@ -80,7 +80,7 @@
                         <%= link_to t(".hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post %>
                       </li>
                       <li>
-                        <a href="#add-score-item-to-all" data-toggle="modal"><%= t '.add_all' %></a>
+                        <a href="#add-score-item-to-all" data-bs-toggle="modal"><%= t '.add_all' %></a>
                       </li>
                     </ul>
                   </div>

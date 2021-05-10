@@ -3,7 +3,7 @@ $navbar-collapse-width: $screen-xs-min;
 $navbar-title-collapse-width: $screen-lg-min;
 
 .dodona-navbar {
-  .shadow-z3();
+  @include shadow-z3;
   background: $header-bg;
 
   height: $navbar-height;
@@ -289,7 +289,7 @@ $navbar-title-collapse-width: $screen-lg-min;
       display: inline-block;
     }
     @media (max-width: $navbar-collapse-width) {
-      .shadow-z3();
+      @include shadow-z3;
       position: absolute;
       top: $navbar-height;
       right: 0;

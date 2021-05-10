@@ -90,25 +90,25 @@ button.btn-icon {
 .btn-danger.btn-text {
   background-color: $btn-danger-bg;
   color: $btn-danger-color;
-  .shadow-z1();
+  @include shadow-z1;
 }
 
 .btn-danger.btn-text:hover {
   background-color: $btn-danger-bg;
   color: $btn-danger-color;
-  .shadow-z3();
+  @include shadow-z3;
 }
 
 .btn-primary.btn-text {
   background-color: $btn-accent;
   color: white;
-  .shadow-z1();
+  @include shadow-z1;
 }
 
 .btn-primary.btn-text:hover {
   background-color: $btn-accent;
   color: white;
-  .shadow-z3();
+  @include shadow-z3;
 }
 
 .btn-text.btn-sm {
@@ -255,7 +255,7 @@ form.button_to {
   background-color: $content-bg;
   border-radius: 2px;
   transition: box-shadow 0.1s cubic-bezier(.4, 0, .2, 1);
-  .shadow-z2();
+  @include shadow-z2;
   cursor: pointer;
 
   .option-btn-img {
@@ -279,5 +279,5 @@ form.button_to {
 }
 
 .option-btn:hover {
-  .shadow-z4();
+  @include shadow-z4;
 }

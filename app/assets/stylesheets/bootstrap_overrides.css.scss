@@ -37,7 +37,7 @@ $blockquote-font-size: $font-size-base;
 
 // alerts
 .alert {
-  .shadow-z2();
+  @include shadow-z2;
 }
 
 .alert-link {
@@ -58,7 +58,7 @@ $blockquote-font-size: $font-size-base;
 .popover {
   border-radius: 2px;
   padding: 0px;
-  .shadow-z5();
+  @include shadow-z5;
   z-index: 5;
 }
 
@@ -73,11 +73,11 @@ $blockquote-font-size: $font-size-base;
 
 // buttons
 .btn {
-  .shadow-z1();
+  @include shadow-z1;
 }
 
 .btn:hover {
-  .shadow-z3();
+  @include shadow-z3;
 }
 
 .btn.btn-file,
@@ -88,7 +88,7 @@ $blockquote-font-size: $font-size-base;
 }
 
 .dropdown-menu {
-  .shadow-z5();
+  @include shadow-z5;
 }
 
 // tables
@@ -111,7 +111,7 @@ $blockquote-font-size: $font-size-base;
 // modals
 .modal-content {
   border-radius: 2px;
-  .shadow-z5();
+  @include shadow-z5;
 }
 
 // extra small input elements

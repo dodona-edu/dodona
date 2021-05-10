@@ -1,6 +1,6 @@
 .stepper {
   .panel {
-    .shadow-z0();
+  @include shadow-z0;
     border-radius: 0;
     background-color: transparent;
 
@@ -36,7 +36,7 @@
 
 
     .panel-heading + .panel-collapse > .panel-body {
-      .shadow-z2();
+      @include shadow-z2;
       background-color: $content-bg;
 
       @media (min-width: $screen-sm-min) {
@@ -48,7 +48,7 @@
 
       &.panel-body-transparent {
         background-color: transparent;
-        .shadow-z0();
+        @include shadow-z0;
       }
 
       .row + .row {

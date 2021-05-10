@@ -12,7 +12,7 @@ $card-supporting-text-padding: 16px;
   background: $content-bg;
   border-radius: $border-radius-base;
   transition: box-shadow 0.2s cubic-bezier(.4, 0, .2, 1);
-  .shadow-z2();
+  @include shadow-z2;
   margin-bottom: $card-margin-bottom;
 }
 

@@ -44,7 +44,7 @@ aside.drawer {
     overflow-x: hidden;
 
     background: $content-bg;
-    .shadow-z5();
+    @include shadow-z5;
     transition: .3s;
   }
 

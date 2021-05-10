@@ -5,7 +5,7 @@ th.status-icon {
 .notification {
   &.unread {
     .notification-icon, .read-indicator {
-      color: @info-500;
+      color: $info-500;
     }
   }
 }

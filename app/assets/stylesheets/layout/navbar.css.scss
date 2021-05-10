@@ -1,12 +1,12 @@
-@navbar-height: 50px;
-@navbar-collapse-width: @screen-xs-min;
-@navbar-title-collapse-width: @screen-lg-min;
+$navbar-height: 50px;
+$navbar-collapse-width: $screen-xs-min;
+$navbar-title-collapse-width: $screen-lg-min;
 
 .dodona-navbar {
   .shadow-z3();
-  background: @header-bg;
+  background: $header-bg;
 
-  height: @navbar-height;
+  height: $navbar-height;
 
   display: flex;
 
@@ -46,16 +46,16 @@
   .center {
     flex-shrink: 1;
     flex-grow: 100;
-    @media (min-width: @navbar-collapse-width) {
+    @media (min-width: $navbar-collapse-width) {
       max-width: ~"calc(100vw - 240px)";
     }
-    @media (min-width: @screen-sm-min) {
+    @media (min-width: $screen-sm-min) {
       max-width: 640px;
     }
-    @media (min-width: @screen-md-min) {
+    @media (min-width: $screen-md-min) {
       max-width: 815px;
     }
-    @media (min-width: @screen-lg-min) {
+    @media (min-width: $screen-lg-min) {
       max-width: 945px;
     }
   }
@@ -73,18 +73,18 @@
     // Drawer toggle & brand link
     .drawer-toggle {
       i {
-        line-height: @navbar-height;
+        line-height: $navbar-height;
         font-size: 24px;
       }
 
       border: none;
       outline: none;
       background: none;
-      color: @header-fg;
+      color: $header-fg;
     }
 
     .brand {
-      line-height: @navbar-height;
+      line-height: $navbar-height;
       font-size: 18px;
       padding-left: 18px;
 
@@ -93,8 +93,8 @@
       }
 
       i {
-        line-height: @navbar-height;
-        @media (min-width: @navbar-collapse-width) {
+        line-height: $navbar-height;
+        @media (min-width: $navbar-collapse-width) {
           display: none;
         }
       }
@@ -106,21 +106,21 @@
     flex-shrink: 1;
     flex-grow: 1;
 
-    @media (min-width: @navbar-collapse-width) {
+    @media (min-width: $navbar-collapse-width) {
       max-width: ~"calc(100vw - 240px)";
     }
-    @media (min-width: @screen-sm-min) {
+    @media (min-width: $screen-sm-min) {
       max-width: 640px;
     }
-    @media (min-width: @screen-md-min) {
+    @media (min-width: $screen-md-min) {
       max-width: 815px;
     }
-    @media (min-width: @screen-lg-min) {
+    @media (min-width: $screen-lg-min) {
       max-width: 945px;
     }
 
     .actions {
-      @media (max-width: @navbar-collapse-width) {
+      @media (max-width: $navbar-collapse-width) {
         display: none;
       }
       flex-shrink: 0;
@@ -134,7 +134,7 @@
       li a {
         padding-left: 8px;
         padding-right: 8px;
-        @media (min-width: @navbar-collapse-width) {
+        @media (min-width: $navbar-collapse-width) {
           padding-bottom: 11px;
           &.active {
             padding-bottom: 8px;
@@ -182,13 +182,13 @@
         }
         a {
           padding-left: 0px;
-          color: @text-color;
+          color: $text-color;
           &.btn-icon {
-            color: @text-secondary;
+            color: $text-secondary;
           }
         }
         .notification-overflow a {
-          color: @link-color;
+          color: $link-color;
           &:hover {
             text-decoration: underline;
           }
@@ -206,7 +206,7 @@
       }
 
       .action {
-        @media (min-width: @navbar-collapse-width) {
+        @media (min-width: $navbar-collapse-width) {
           display: none;
         }
       }
@@ -217,7 +217,7 @@
         }
       }
 
-      @media (min-width: (@navbar-title-collapse-width + 1px)) {
+      @media (min-width: ($navbar-title-collapse-width + 1px)) {
         .caret {
           vertical-align: text-top;
         }
@@ -227,16 +227,16 @@
         }
       }
 
-      @media (max-width: (@navbar-collapse-width - 1px)) {
+      @media (max-width: ($navbar-collapse-width - 1px)) {
         .dropdown-menu li.dropdown-header {
           display: none;
         }
       }
 
-      @media (max-width: @navbar-collapse-width) {
+      @media (max-width: $navbar-collapse-width) {
         .dropdown-toggle {
           .caret {
-            @media (max-width: @navbar-title-collapse-width) {
+            @media (max-width: $navbar-title-collapse-width) {
               vertical-align: text-top;
             }
           }
@@ -244,7 +244,7 @@
 
         .dropdown-menu {
           li, a {
-            color: @header-fg;
+            color: $header-fg;
           }
 
           position: relative;
@@ -255,7 +255,7 @@
           background-color: transparent;
           border: 0;
           box-shadow: none;
-          color: @header-fg;
+          color: $header-fg;
           width: 100%;
         }
       }
@@ -263,7 +263,7 @@
   }
 
   .dodona-navbar-toggle {
-    @media (min-width: (@navbar-collapse-width + 1px)) {
+    @media (min-width: ($navbar-collapse-width + 1px)) {
       display: none;
     }
     position: absolute;
@@ -271,10 +271,10 @@
     right: 10px;
     border: none;
     background: none;
-    color: @header-fg;
+    color: $header-fg;
 
     i {
-      line-height: @navbar-height;
+      line-height: $navbar-height;
     }
   }
 
@@ -285,17 +285,17 @@
       transform: translateY(-6px);
     }
 
-    @media (min-width: (@navbar-collapse-width + 1px)) {
+    @media (min-width: ($navbar-collapse-width + 1px)) {
       display: inline-block;
     }
-    @media (max-width: @navbar-collapse-width) {
+    @media (max-width: $navbar-collapse-width) {
       .shadow-z3();
       position: absolute;
-      top: @navbar-height;
+      top: $navbar-height;
       right: 0;
       width: fit-content;
       height: fit-content;
-      background-color: @header-bg;
+      background-color: $header-bg;
 
       li {
         display: block;
@@ -305,13 +305,13 @@
     }
 
     .dropdown-title {
-      @media (min-width: @navbar-collapse-width) {
-        @media (max-width: @navbar-title-collapse-width) {
+      @media (min-width: $navbar-collapse-width) {
+        @media (max-width: $navbar-title-collapse-width) {
           display: none;
         }
       }
       display: inline-block;
-      @media (max-width: @navbar-collapse-width) {
+      @media (max-width: $navbar-collapse-width) {
         padding-left: 25px;
       }
       transform: translateY(-.5em);
@@ -319,7 +319,7 @@
   }
 
   a {
-    color: @header-fg;
+    color: $header-fg;
     text-decoration: none;
   }
 
@@ -338,7 +338,7 @@
   overflow: hidden;
   display: flex;
   //padding-top: 17px;
-  line-height: @navbar-height;
+  line-height: $navbar-height;
 
   .crumb {
     flex-shrink: 10;
@@ -355,14 +355,14 @@
     flex-shrink: 1;
 
     .mdi::before{
-      line-height: @navbar-height;
+      line-height: $navbar-height;
       margin-left: 4px;
       margin-right: 4px;
     }
   }
 
   .crumb, .crumb a, .crumb-separator {
-    color: @header-fg;
+    color: $header-fg;
   }
 
   .crumb a:hover {
@@ -370,7 +370,7 @@
   }
 
   .crumb:last-child:not(:first-child), .crumb:last-child:not(:first-child) a {
-    color: @header-fg-secondary;
+    color: $header-fg-secondary;
     pointer-events: none;
     cursor: default;
   }
@@ -387,7 +387,7 @@ a.notification:before {
   border-radius: 50%;
   border: 1px solid white;
   display: inline-block;
-  background-color: @pending-color;
+  background-color: $pending-color;
   position: relative;
   margin-left: -15px;
   left: 30px;

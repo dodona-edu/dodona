@@ -7,20 +7,20 @@
 // See http://getbootstrap.com/customize/.scss-variables for their names and documentation
 //
 // Example:
-// @linkColor: #ff0000;
+// $linkColor: #ff0000;
 //
 //
 // Color overrides are in theme/theme.css.scss
 
 // other values
-@border-radius-base: 6px;
+$border-radius-base: 6px;
 
 // font stuff
-@font-family-sans-serif: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-@font-size-base: 14px;
-@baseLineHeight: 24px;
-@line-height-base: 1.3846153846;
-@icon-font-path: "/assets/bootstrap/";
+$font-family-sans-serif: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-size-base: 14px;
+$baseLineHeight: 24px;
+$line-height-base: 1.3846153846;
+$icon-font-path: "/assets/bootstrap/";
 h1, h2, h3, h4, h5 {
   font-weight: 300;
   letter-spacing: -0.01em;
@@ -28,7 +28,7 @@ h1, h2, h3, h4, h5 {
   margin: 0;
 }
 
-@blockquote-font-size: @font-size-base;
+$blockquote-font-size: $font-size-base;
 
 // nav bar
 .navbar {
@@ -45,13 +45,13 @@ h1, h2, h3, h4, h5 {
 }
 
 .alert button.close {
-  color: @alert-secondary;
+  color: $alert-secondary;
   opacity: 1;
   text-shadow: initial;
 }
 
 .alert button.close:hover {
-  color: @alert-fg;
+  color: $alert-fg;
 }
 
 // popovers
@@ -104,7 +104,7 @@ h1, h2, h3, h4, h5 {
   line-height: 24px;
   letter-spacing: 0;
   font-size: 12px;
-  color: @text-secondary;
+  color: $text-secondary;
   padding-bottom: 8px;
 }
 
@@ -126,7 +126,7 @@ h1, h2, h3, h4, h5 {
 .help-block {
   font-size: 12px;
   line-height: 14px;
-  color: @text-secondary;
+  color: $text-secondary;
 }
 
 .has-error {
@@ -139,22 +139,22 @@ h1, h2, h3, h4, h5 {
   &.checkbox label,
   &.radio-inline label,
   &.checkbox-inline label  {
-    color: @text-color;
+    color: $text-color;
   }
   .help-block {
-    color: @text-secondary;
+    color: $text-secondary;
   }
   .form-control {
-    border-color: @state-danger-border;
+    border-color: $state-danger-border;
     .box-shadow(inset 0 1px 1px rgba(0, 0, 0, .075));
     &:focus {
-      border-color: darken(@state-danger-border, 10%);
-      @shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten(@state-danger-border, 20%);
-      .box-shadow(@shadow);
+      border-color: darken($state-danger-border, 10%);
+      $shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten($state-danger-border, 20%);
+      .box-shadow($shadow);
     }
   }
   .input-group-btn .btn {
-    border-color: @state-danger-border;
+    border-color: $state-danger-border;
   }
 }
 
@@ -168,22 +168,22 @@ h1, h2, h3, h4, h5 {
   &.checkbox label,
   &.radio-inline label,
   &.checkbox-inline label  {
-    color: @text-color;
+    color: $text-color;
   }
   .help-block {
-    color: @text-secondary;
+    color: $text-secondary;
   }
   .form-control {
-    border-color: @state-warning-border;
+    border-color: $state-warning-border;
     .box-shadow(inset 0 1px 1px rgba(0, 0, 0, .075));
     &:focus {
-      border-color: darken(@state-warning-border, 10%);
-      @shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten(@state-warning-border, 20%);
-      .box-shadow(@shadow);
+      border-color: darken($state-warning-border, 10%);
+      $shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten($state-warning-border, 20%);
+      .box-shadow($shadow);
     }
   }
   .input-group-btn .btn {
-    border-color: @state-warning-border;
+    border-color: $state-warning-border;
   }
 }
 
@@ -196,7 +196,7 @@ h1, h2, h3, h4, h5 {
 // mark
 mark,
 .mark {
-  background-color: @mark-bg;
+  background-color: $mark-bg;
 }
 
 .lead {
@@ -213,4 +213,4 @@ mark,
 }
 
 // Take dark mode into account
-@list-group-bg: @content-bg;
+$list-group-bg: $content-bg;

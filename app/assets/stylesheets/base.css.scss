@@ -1,9 +1,9 @@
 @import "theme/colors.css.scss";
 @import "mixins.css.scss";
 @import "vendor.scss";
-@import "theme/theme-@{theme}.css.scss";
-@import "theme/@{mode}.css.scss";
-@import "theme/rouge-@{theme}.css.scss";
+@import "theme/theme-${theme}.css.scss";
+@import "theme/${mode}.css.scss";
+@import "theme/rouge-${theme}.css.scss";
 @import "bootstrap_overrides.css.scss";
 @import "libraries.css.scss";
 @import "material_icons.css.scss";
@@ -14,11 +14,11 @@
 @import "print.css.scss";
 
 .field_with_errors input {
-  border-color: @danger-fg;
+  border-color: $danger-fg;
 }
 
 .colored-info {
-  color: @brand-info;
+  color: $brand-info;
 }
 
 figcaption {

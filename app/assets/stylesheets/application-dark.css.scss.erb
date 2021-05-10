@@ -3,13 +3,13 @@
 //= depend_on theme/production.css.scss
 
 <% if Rails.env.development? || Rails.env.test? || Rails.env.staging? %>
-@mode: "development";
+$mode: "development";
 <% else %>
-@mode: "production";
+$mode: "production";
 <% end %>
 
 // temporarily use production mode in development
-@mode: "production";
+$mode: "production";
 
-@theme: "dark";
+$theme: "dark";
 @import "base.css.scss";

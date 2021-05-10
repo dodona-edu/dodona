@@ -1,148 +1,148 @@
 .label.accent-red {
-  background-color: @color-red;
-  border-color: darken(@color-red, 20%);
-  color: @label-text;
+  background-color: $color-red;
+  border-color: darken($color-red, 20%);
+  color: $label-text;
 }
 
 .label.accent-pink {
-  background-color: @color-pink;
-  border-color: darken(@color-pink, 20%);
-  color: @label-text;
+  background-color: $color-pink;
+  border-color: darken($color-pink, 20%);
+  color: $label-text;
 }
 
 .label.accent-purple {
-  background-color: @color-purple;
-  border-color: darken(@color-purple, 20%);
-  color: @label-text;
+  background-color: $color-purple;
+  border-color: darken($color-purple, 20%);
+  color: $label-text;
 }
 
 .label.accent-deep-purple {
-  background-color: @color-deep-purple;
-  border-color: darken(@color-deep-purple, 20%);
-  color: @label-text;
+  background-color: $color-deep-purple;
+  border-color: darken($color-deep-purple, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
 .label.accent-indigo {
-  background-color: @color-indigo;
-  border-color: darken(@color-indigo, 20%);
-  color: @label-text;
+  background-color: $color-indigo;
+  border-color: darken($color-indigo, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
 .label.accent-teal {
-  background-color: @color-teal;
-  border-color: darken(@color-teal, 20%);
-  color: @label-text;
+  background-color: $color-teal;
+  border-color: darken($color-teal, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
 .label.accent-orange {
-  background-color: @color-orange;
-  border-color: darken(@color-orange, 20%);
-  color: @label-text;
+  background-color: $color-orange;
+  border-color: darken($color-orange, 20%);
+  color: $label-text;
 }
 
 .label.accent-brown {
-  background-color: @color-brown;
-  border-color: darken(@color-brown, 20%);
-  color: @label-text;
+  background-color: $color-brown;
+  border-color: darken($color-brown, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
 .label.accent-blue-grey {
-  background-color: @color-blue-grey;
-  border-color: darken(@color-blue-grey, 20%);
-  color: @label-text;
+  background-color: $color-blue-grey;
+  border-color: darken($color-blue-grey, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
 .token.accent-red {
-  background-color: @color-red;
-  border-color: darken(@color-red, 20%);
-  color: @label-text;
+  background-color: $color-red;
+  border-color: darken($color-red, 20%);
+  color: $label-text;
 }
 
 .token.accent-pink {
-  background-color: @color-pink;
-  border-color: darken(@color-pink, 20%);
-  color: @label-text;
+  background-color: $color-pink;
+  border-color: darken($color-pink, 20%);
+  color: $label-text;
 }
 
 .token.accent-purple {
-  background-color: @color-purple;
-  border-color: darken(@color-purple, 20%);
-  color: @label-text;
+  background-color: $color-purple;
+  border-color: darken($color-purple, 20%);
+  color: $label-text;
 }
 
 .token.accent-deep-purple {
-  background-color: @color-deep-purple;
-  border-color: darken(@color-deep-purple, 20%);
-  color: @label-text;
+  background-color: $color-deep-purple;
+  border-color: darken($color-deep-purple, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
 .token.accent-indigo {
-  background-color: @color-indigo;
-  border-color: darken(@color-indigo, 20%);
-  color: @label-text;
+  background-color: $color-indigo;
+  border-color: darken($color-indigo, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
 .token.accent-teal {
-  background-color: @color-teal;
-  border-color: darken(@color-teal, 20%);
-  color: @label-text;
+  background-color: $color-teal;
+  border-color: darken($color-teal, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
 .token.accent-orange {
-  background-color: @color-orange;
-  border-color: darken(@color-orange, 20%);
-  color: @label-text;
+  background-color: $color-orange;
+  border-color: darken($color-orange, 20%);
+  color: $label-text;
 }
 
 .token.accent-brown {
-  background-color: @color-brown;
-  border-color: darken(@color-brown, 20%);
-  color: @label-text;
+  background-color: $color-brown;
+  border-color: darken($color-brown, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
 .token.accent-blue-grey {
-  background-color: @color-blue-grey;
-  border-color: darken(@color-blue-grey, 20%);
-  color: @label-text;
+  background-color: $color-blue-grey;
+  border-color: darken($color-blue-grey, 20%);
+  color: $label-text;
 
   a.close {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
@@ -169,8 +169,8 @@
     min-width: 160px;
     margin-top: 2px;
     padding: 5px 0;
-    background-color: @content-bg;
-    border: 1px solid @divider-color;
+    background-color: $content-bg;
+    border: 1px solid $divider-color;
     *border-right-width: 2px;
     *border-bottom-width: 2px;
     border-radius: 6px;

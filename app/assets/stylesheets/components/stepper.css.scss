@@ -20,8 +20,8 @@
         font-size: 12px;
         margin-right: 5px;
         vertical-align: text-bottom;
-        background-color: @navbar-default-bg;
-        color: @navbar-default-color;
+        background-color: $navbar-default-bg;
+        color: $navbar-default-color;
         letter-spacing: 0;
       }
 
@@ -29,7 +29,7 @@
         line-height: 24px;
 
         .answer {
-          color: @text-muted;
+          color: $text-muted;
         }
       }
     }
@@ -37,13 +37,13 @@
 
     .panel-heading + .panel-collapse > .panel-body {
       .shadow-z2();
-      background-color: @content-bg;
+      background-color: $content-bg;
 
-      @media (min-width: @screen-sm-min) {
+      @media (min-width: $screen-sm-min) {
         margin-left: 45px;
       }
       border: none;
-      border-radius: @border-radius-base;
+      border-radius: $border-radius-base;
       padding: 0;
 
       &.panel-body-transparent {
@@ -60,7 +60,7 @@
       }
 
       .stepper-border {
-        border-top: 1px solid @divider-color;
+        border-top: 1px solid $divider-color;
       }
 
       .stepper-actions {

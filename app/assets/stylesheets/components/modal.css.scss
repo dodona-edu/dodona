@@ -20,9 +20,8 @@
 }
 
 .modal .code {
-  font-family: @font-family-monospace;
+  font-family: $font-family-monospace;
   font-size: 13px;
   white-space: pre-wrap;
-  background-color: @body-bg;
+  background-color: $body-bg;
 }
-

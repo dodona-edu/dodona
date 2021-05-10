@@ -1,112 +1,112 @@
 @import "theme-light.css.scss";
 
-@color-red: @red-800;
-@color-pink: @pink-800;
-@color-purple: @purple-800;
-@color-deep-purple: @deep-purple-800;
-@color-indigo: @indigo-800;
-@color-teal: @teal-800;
-@color-orange: @deep-orange-800;
-@color-brown: @brown-800;
-@color-blue-grey: @blue-grey-700;
+$color-red: $red-800;
+$color-pink: $pink-800;
+$color-purple: $purple-800;
+$color-deep-purple: $deep-purple-800;
+$color-indigo: $indigo-800;
+$color-teal: $teal-800;
+$color-orange: $deep-orange-800;
+$color-brown: $brown-800;
+$color-blue-grey: $blue-grey-700;
 
-@primary-700: @light-blue-800;
-@accent-300: @yellow-400;
-@accent-500: @yellow-800;
-@accent-800: lighten(@accent-500, 10%);
-@brand-primary: @accent-500;
+$primary-700: $light-blue-800;
+$accent-300: $yellow-400;
+$accent-500: $yellow-800;
+$accent-800: lighten($accent-500, 10%);
+$brand-primary: $accent-500;
 
-@success-800: @green-200;
-@success-500: @green-300;
-@success-100: @green-800;
-@danger-800: @red-200;
-@danger-500: @red-300;
-@info-500: @light-blue-300;
-@warning-500: @amber-300;
+$success-800: $green-200;
+$success-500: $green-300;
+$success-100: $green-800;
+$danger-800: $red-200;
+$danger-500: $red-300;
+$info-500: $light-blue-300;
+$warning-500: $amber-300;
 
 
 // Boostrap overrides
-@body-bg: @blue-grey-800;
-@content-bg: @blue-grey-900;
-@text-color: @white-text;
-@text-disabled: @white-disabled;
-@text-secondary: @white-secondary;
-@hairlinegray: @white-divider;
+$body-bg: $blue-grey-800;
+$content-bg: $blue-grey-900;
+$text-color: $white-text;
+$text-disabled: $white-disabled;
+$text-secondary: $white-secondary;
+$hairlinegray: $white-divider;
 
-@dropdown-link-color: @text-color;
-@dropdown-border: @hairlinegray;
-@dropdown-divider-bg: @hairlinegray;
-@dropdown-link-hover-color: @text-color;
-@dropdown-link-hover-bg: @body-bg;
+$dropdown-link-color: $text-color;
+$dropdown-border: $hairlinegray;
+$dropdown-divider-bg: $hairlinegray;
+$dropdown-link-hover-color: $text-color;
+$dropdown-link-hover-bg: $body-bg;
 
-@input-bg: @content-bg;
-@input-color: @text-color;
-@input-bg-disabled: @body-bg;
-@btn-default-bg: @content-bg;
-@btn-default-color: @text-color;
+$input-bg: $content-bg;
+$input-color: $text-color;
+$input-bg-disabled: $body-bg;
+$btn-default-bg: $content-bg;
+$btn-default-color: $text-color;
 
-@pre-bg: @content-bg;
-@pre-color: @text-color;
+$pre-bg: $content-bg;
+$pre-color: $text-color;
 
-@code-bg: @body-bg;
-@code-light-bg: @body-bg;
+$code-bg: $body-bg;
+$code-light-bg: $body-bg;
 
-@alert-warning-bg: inherit;
-@alert-info-bg: inherit;
-@alert-danger-bg: inherit;
+$alert-warning-bg: inherit;
+$alert-info-bg: inherit;
+$alert-danger-bg: inherit;
 
-@table-border-color: @hairlinegray;
-@table-bg-accent: @body-bg;
+$table-border-color: $hairlinegray;
+$table-bg-accent: $body-bg;
 
-@nav-link-hover-bg: darken(@body-bg, 3%);
-@nav-tabs-border-color: @hairlinegray;
+$nav-link-hover-bg: darken($body-bg, 3%);
+$nav-tabs-border-color: $hairlinegray;
 
-@modal-content-bg: @content-bg;
-@modal-content-border-color: @hairlinegray;
-@modal-header-border-color: @hairlinegray;
+$modal-content-bg: $content-bg;
+$modal-content-border-color: $hairlinegray;
+$modal-header-border-color: $hairlinegray;
 
-@well-bg: @content-bg;
-@well-border: @hairlinegray;
+$well-bg: $content-bg;
+$well-border: $hairlinegray;
 
-@pagination-bg: @content-bg;
-@pagination-hover-bg: @content-bg;
-@pagination-disabled-bg: @content-bg;
+$pagination-bg: $content-bg;
+$pagination-hover-bg: $content-bg;
+$pagination-disabled-bg: $content-bg;
 
-@panel-bg: @body-bg;
-@panel-default-heading-bg: @body-bg;
-@panel-default-text: @text-color;
-@panel-default-border: @content-bg;
+$panel-bg: $body-bg;
+$panel-default-heading-bg: $body-bg;
+$panel-default-text: $text-color;
+$panel-default-border: $content-bg;
 
 // other overrides
-@text-muted: @white-secondary;
+$text-muted: $white-secondary;
 
 // custom elements
-@btn-hover-background: @body-bg;
-@btn-active-background: @body-bg;
-@toggle-btn-active-bg: @body-bg;
-@toggle-btn-bg: @content-bg;
+$btn-hover-background: $body-bg;
+$btn-active-background: $body-bg;
+$toggle-btn-active-bg: $body-bg;
+$toggle-btn-bg: $content-bg;
 
-@drawer-border: @hairlinegray;
-@drawer-hover: @body-bg;
-@drawer-active: @body-bg;
+$drawer-border: $hairlinegray;
+$drawer-hover: $body-bg;
+$drawer-active: $body-bg;
 
-@feedback-diff-table-header-bg: @body-bg;
-@feedback-diff-table-header-fg: @text-secondary;
-@feedback-diff-table-ins: @green-900;
-@feedback-diff-table-ins-strong: @green-800;
-@feedback-diff-table-del: @red-900;
-@feedback-diff-table-del-strong: @red-800;
+$feedback-diff-table-header-bg: $body-bg;
+$feedback-diff-table-header-fg: $text-secondary;
+$feedback-diff-table-ins: $green-900;
+$feedback-diff-table-ins-strong: $green-800;
+$feedback-diff-table-del: $red-900;
+$feedback-diff-table-del-strong: $red-800;
 
-@skeleton-color: @body-bg;
+$skeleton-color: $body-bg;
 
-@footer-bg: @blue-grey-900;
+$footer-bg: $blue-grey-900;
 
-@heatmap-empty-fg: @body-bg;
-@punchcard-fg: @light-blue-900;
+$heatmap-empty-fg: $body-bg;
+$punchcard-fg: $light-blue-900;
 
-@table-hover-bg: @body-bg;
+$table-hover-bg: $body-bg;
 
-@input-group-addon-bg: @grey-800;
+$input-group-addon-bg: $grey-800;
 
 .activity-description {
     .light-only {

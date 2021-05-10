@@ -23,24 +23,24 @@
 .series-activity-list .status-icon,
 #activities-table-wrapper .status-icon {
   text-align: right;
-  color: @text-secondary;
+  color: $text-secondary;
 }
 
 .deadline-future {
-  color: @text-secondary;
+  color: $text-secondary;
 }
 
 .deadline-passed {
-  color: @danger-fg;
+  color: $danger-fg;
 }
 
 .deadline-ok {
-  color: @success-fg;
+  color: $success-fg;
 }
 
 .submission-status-button {
   a {
-    color: @btn-accent;
+    color: $btn-accent;
   }
 }
 
@@ -74,7 +74,7 @@
     font-size: 22px;
     margin-right: 16px;
     border-radius: 50%;
-    background-color: @series-summary-icon-bg;
+    background-color: $series-summary-icon-bg;
 
     & > .mdi::before{
       line-height: 24px;
@@ -82,71 +82,71 @@
 
     &.deadline-missed .mdi-alarm-off {
       &::before{
-        color: @brand-danger;
+        color: $brand-danger;
       }
-      background-color: @content-bg;
+      background-color: $content-bg;
       position: absolute;
       top: 24px;
       left: 24px;
-      border: 1px solid @content-bg;
+      border: 1px solid $content-bg;
     }
 
     &.deadline-met .mdi-alarm-check {
       &::before{
-        color: @brand-success;
+        color: $brand-success;
       }
-      background-color: @content-bg;
+      background-color: $content-bg;
       position: absolute;
       top: 24px;
       left: 24px;
-      border: 1px solid @content-bg;
+      border: 1px solid $content-bg;
     }
 
     i {
-      color: @series-summary-icon-bg;
-      background: @content-bg;
+      color: $series-summary-icon-bg;
+      background: $content-bg;
       border-radius: 50%;
-      border: 5px solid @content-bg;
+      border: 5px solid $content-bg;
     }
 
     &.wrong {
-      background-color: @brand-danger;
+      background-color: $brand-danger;
 
       i {
-        color: @brand-danger;
+        color: $brand-danger;
       }
     }
 
     &.started, &.completed.deadline-missed {
-      background-color: @brand-success;
+      background-color: $brand-success;
 
       i {
-        color: @brand-success;
+        color: $brand-success;
       }
     }
 
     &.completed:not(.deadline-missed) {
-      @red: @red-500;
-      @orange: @orange-500;
-      @yellow: @yellow-500;
-      @green: @green-500;
-      @blue: @blue-500;
-      @purple: @purple-500;
+      $red: $red-500;
+      $orange: $orange-500;
+      $yellow: $yellow-500;
+      $green: $green-500;
+      $blue: $blue-500;
+      $purple: $purple-500;
 
-      @p1: 10%;
-      @p2: 25%;
-      @p3: 40%;
-      @p4: 60%;
-      @p5: 75%;
-      @p6: 90%;
+      $p1: 10%;
+      $p2: 25%;
+      $p3: 40%;
+      $p4: 60%;
+      $p5: 75%;
+      $p6: 90%;
 
       background-image: linear-gradient(-135deg,
-      @red @p1,
-      @orange @p2,
-      @yellow @p3,
-      @green @p4,
-      @blue @p5,
-      @purple @p6
+      $red $p1,
+      $orange $p2,
+      $yellow $p3,
+      $green $p4,
+      $blue $p5,
+      $purple $p6
       );
 
       i {
@@ -176,12 +176,12 @@
   width: 100%;
 
   .skeleton-head {
-    border-bottom: solid 1px @skeleton-color;
+    border-bottom: solid 1px $skeleton-color;
     height: 33px;
     background-repeat: no-repeat;
-    background-image: linear-gradient(@skeleton-color 100%, transparent 0),
-    linear-gradient(@skeleton-color 100%, transparent 0),
-    linear-gradient(@skeleton-color 100%, transparent 0);
+    background-image: linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0);
     background-size: 56px 12px,
     90px 12px,
     115px 12px;
@@ -191,13 +191,13 @@
   }
 
   .skeleton-row {
-    border-top: solid 1px @skeleton-color;
+    border-top: solid 1px $skeleton-color;
     height: 37px;
     background-repeat: no-repeat;
-    background-image: linear-gradient(@skeleton-color 100%, transparent 0),
-    linear-gradient(@skeleton-color 100%, transparent 0),
-    linear-gradient(@skeleton-color 100%, transparent 0),
-    linear-gradient(@skeleton-color 100%, transparent 0);
+    background-image: linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0);
     background-size: 90px 12px,
     100px 12px,
     90px 12px,

@@ -6,10 +6,10 @@
 }
 
 .toasts .toast {
-  background-color: @toast-bg;
+  background-color: $toast-bg;
   border-radius: 3px;
-  box-shadow: 0 0 2px @toast-inner-shadow, 0 2px 4px @toast-outer-shadow;
-  color: @toast-fg;
+  box-shadow: 0 0 2px $toast-inner-shadow, 0 2px 4px $toast-outer-shadow;
+  color: $toast-fg;
   display: block;
   line-height: 20px;
   margin-top: 8px;
@@ -33,5 +33,5 @@
   height: 20px;
   float: right;
   margin-left: 10px;
-  background-color: @toast-spinner-bg;
+  background-color: $toast-spinner-bg;
 }

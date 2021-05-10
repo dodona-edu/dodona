@@ -27,7 +27,7 @@
 
 .h3-info-text, .h4-info-text, .h5-info-text, .header-info-text {
   font-size: 85%;
-  color: @text-muted;
+  color: $text-muted;
 }
 
 .h3-info-text {
@@ -49,7 +49,7 @@
 }
 
 .spinner {
-  background-color: @spinner-bg;
+  background-color: $spinner-bg;
   border-radius: 100%;
   animation: scaleout 1.5s infinite ease-in-out;
 }
@@ -65,6 +65,6 @@
 }
 
 .alert a {
-  color: @alert-fg;
+  color: $alert-fg;
   font-weight: bold;
 }

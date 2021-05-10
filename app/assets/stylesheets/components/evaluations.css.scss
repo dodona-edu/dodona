@@ -1,4 +1,4 @@
-@media screen and (min-width: @screen-lg) {
+@media screen and (min-width: $screen-lg) {
   .feedback-metadata {
     position: sticky;
     top: 70px !important;
@@ -49,10 +49,10 @@
         font-size: 14px;
         font-weight: 400;
         line-height: 1;
-        color: @text-color;
+        color: $text-color;
         text-align: center;
-        background-color: @input-group-addon-bg;
-        border: 1px solid @input-group-addon-border-color;
+        background-color: $input-group-addon-bg;
+        border: 1px solid $input-group-addon-border-color;
         opacity: 1;
         cursor: auto;
       }
@@ -77,8 +77,8 @@
 
 .evaluation-user-select {
   .user-select-option {
-    border: 1px solid @divider-color;
-    border-radius: @border-radius-base;
+    border: 1px solid $divider-color;
+    border-radius: $border-radius-base;
     text-align: center;
     padding: 6px;
 
@@ -89,7 +89,7 @@
     }
   }
   .user-select-option:hover {
-    border: 1px solid @text-disabled;
+    border: 1px solid $text-disabled;
   }
 
   .user-select-option h1 small {
@@ -103,19 +103,19 @@
 .feedback {
   padding-bottom: 6px;
   &.correct {
-    border-bottom: 3px solid @success-300;
+    border-bottom: 3px solid $success-300;
   }
   &.wrong {
-    border-bottom: 3px solid @danger-300;
+    border-bottom: 3px solid $danger-300;
   }
   &.not-started {
-    border-bottom: 3px solid @hairlinegray;
+    border-bottom: 3px solid $hairlinegray;
   }
   .done, .provisional {
-    color: @text-disabled;
+    color: $text-disabled;
   }
   .done:hover, .provisional:hover {
-    color: @text-color;
+    color: $text-color;
   }
 }
 .user-feedback-row {
@@ -123,17 +123,17 @@
   justify-content: space-around;
 
   a .done {
-    color: @text-secondary;
+    color: $text-secondary;
   }
   .active a i {
-    color: @info-500;
+    color: $info-500;
   }
 }
 .evaluation-form-title {
   line-height: normal;
 }
 
-@user-column-width: 170px;
+$user-column-width: 170px;
 
 .score-table {
   // Allows borders to be sticky.
@@ -143,7 +143,7 @@
 
   .score-text {
     a {
-      color: @text-color;
+      color: $text-color;
     }
   }
 
@@ -161,7 +161,7 @@
   }
 
   .user-name {
-    width: @user-column-width;
+    width: $user-column-width;
   }
 
   .status-header {
@@ -170,22 +170,22 @@
   }
 
   thead tr th:nth-child(2) {
-    background: @content-bg;
+    background: $content-bg;
     position: sticky;
     // Raise index, to prevent sticky column from rolling over the header.
     z-index: 2;
-    left: @user-column-width - 4px;
+    left: $user-column-width - 4px;
   }
 
   tbody td:nth-child(2) {
-    background: @content-bg;
+    background: $content-bg;
     position: sticky;
-    left: @user-column-width - 4px;
+    left: $user-column-width - 4px;
   }
 }
 
 a.score-click {
-  color: @text-color;
+  color: $text-color;
 }
 
 .score-buttons {

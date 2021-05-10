@@ -1,5 +1,5 @@
-@card-margin-bottom: 24px;
-@card-supporting-text-padding: 16px;
+$card-margin-bottom: 24px;
+$card-supporting-text-padding: 16px;
 
 .card {
   display: flex;
@@ -9,15 +9,15 @@
   z-index: auto;
   position: relative;
   overflow: visible;
-  background: @content-bg;
-  border-radius: @border-radius-base;
+  background: $content-bg;
+  border-radius: $border-radius-base;
   transition: box-shadow 0.2s cubic-bezier(.4, 0, .2, 1);
   .shadow-z2();
-  margin-bottom: @card-margin-bottom;
+  margin-bottom: $card-margin-bottom;
 }
 
 .card-media {
-  background-color: @content-bg;
+  background-color: $content-bg;
   background-repeat: repeat;
   background-position: 50% 50%;
   background-size: cover;
@@ -45,9 +45,9 @@
 
 .card-title.card-title-colored {
   color: rgb(0, 0, 0);
-  background-color: @header-bg;
-  border-top-left-radius: @border-radius-base;
-  border-top-right-radius: @border-radius-base;
+  background-color: $header-bg;
+  border-top-left-radius: $border-radius-base;
+  border-top-right-radius: $border-radius-base;
 }
 
 a.card-title-link,
@@ -57,13 +57,13 @@ a.card-title-link:hover {
 }
 
 .card-title.card-colored-accent {
-  color: @header-fg;
-  border-top-left-radius: @border-radius-base;
-  border-top-right-radius: @border-radius-base;
+  color: $header-fg;
+  border-top-left-radius: $border-radius-base;
+  border-top-right-radius: $border-radius-base;
 
   .card-subtitle-text {
     margin-top: 3px;
-    color: @header-fg-secondary;
+    color: $header-fg-secondary;
   }
 
   .card-subtitle-text + .card-subtitle-text {
@@ -76,48 +76,48 @@ a.card-title-link:hover {
 }
 
 .card-title.card-colored-accent.accent-red {
-  background-color: @color-red;
+  background-color: $color-red;
 }
 
 .card-title.card-colored-accent.accent-pink {
-  background-color: @color-pink;
+  background-color: $color-pink;
 }
 
 .card-title.card-colored-accent.accent-purple {
-  background-color: @color-purple;
+  background-color: $color-purple;
 }
 
 .card-title.card-colored-accent.accent-deep-purple {
-  background-color: @color-deep-purple;
+  background-color: $color-deep-purple;
 }
 
 .card-title.card-colored-accent.accent-indigo {
-  background-color: @color-indigo;
+  background-color: $color-indigo;
 }
 
 .card-title.card-colored-accent.accent-teal {
-  background-color: @color-teal;
+  background-color: $color-teal;
 }
 
 .card-title.card-colored-accent.accent-orange {
-  background-color: @color-orange;
+  background-color: $color-orange;
 }
 
 .card-title.card-colored-accent.accent-brown {
-  background-color: @color-brown;
+  background-color: $color-brown;
 }
 
 .card-title.card-colored-accent.accent-blue-grey {
-  background-color: @color-blue-grey;
+  background-color: $color-blue-grey;
 }
 
 .card-title.card-title-plain li a {
   font-weight: 300;
-  color: @text-color;
+  color: $text-color;
 }
 
 .card-title.card-border {
-  border-bottom: 1px solid @divider-color;
+  border-bottom: 1px solid $divider-color;
 }
 
 .card-title-text {
@@ -142,12 +142,12 @@ a.card-title-link:hover {
 
 .card-title-colored .card-title-text,
 .card-title-colored .card-title-text a {
-  color: @header-fg;
+  color: $header-fg;
 }
 
 .card-title-image {
   background: rgba(0, 0, 0, 0.5);
-  color: @header-fg;
+  color: $header-fg;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   height: 61px;
   margin-top: -61px;
@@ -156,7 +156,7 @@ a.card-title-link:hover {
 
 .card-subtitle-text {
   font-size: 14px;
-  color: @text-secondary;
+  color: $text-secondary;
   margin: 0;
   font-weight: normal;
   line-height: 1.1;
@@ -169,14 +169,14 @@ a.card-title-link:hover {
 
 .card-title-colored .card-subtitle-text,
 .card-title-colored .card-subtitle-text a {
-  color: @header-fg-secondary;
+  color: $header-fg-secondary;
 }
 
 .card-supporting-text {
-  color: @text-color;
+  color: $text-color;
   font-size: 14px;
   line-height: 18px;
-  padding: @card-supporting-text-padding;
+  padding: $card-supporting-text-padding;
   .mdi::before{
     line-height: 18px;
   }
@@ -197,7 +197,7 @@ a.card-title-link:hover {
 
 .card-supporting-text.card-border,
 .card-actions.card-border {
-  border-top: 1px solid @divider-color;
+  border-top: 1px solid $divider-color;
 }
 
 .card-title + .card-border {
@@ -220,12 +220,12 @@ a.card-title-link:hover {
 }
 
 .card-subtitle-actions a {
-  color: @text-secondary;
+  color: $text-secondary;
   font-size: 18px;
 }
 
 .card-subtitle-actions a:hover {
-  color: @text-color;
+  color: $text-color;
   font-size: 18px;
 }
 
@@ -267,7 +267,7 @@ a.card-title-link:hover {
   margin-right: 10px;
   height: 55px;
   border: none;
-  border-bottom: 5px solid @header-accent;
+  border-bottom: 5px solid $header-accent;
   font-size: 18px;
   .transition-duration(0.2s);
   .transition-property('height');
@@ -277,17 +277,17 @@ a.card-title-link:hover {
 .card-title-colored .nav-tabs li a,
 .card-title-colored .nav-tabs li a:hover,
 .card-title-colored .nav-tabs li a:focus {
-  color: @header-fg;
+  color: $header-fg;
 }
 
 .card-tab .nav-tabs li a {
-  color: @text-muted;
+  color: $text-muted;
 }
 
 .card-tab .nav-tabs li.active a,
 .card-tab .nav-tabs li a:hover,
 .card-tab .nav-tabs li a:focus {
-  color: @text-color;
+  color: $text-color;
 }
 
 .card-tab .nav-tabs li.active a,
@@ -298,7 +298,7 @@ a.card-title-link:hover {
 .card-title .nav-tabs li a:focus {
   border: none;
   background: inherit;
-  border-bottom: 5px solid @header-accent;
+  border-bottom: 5px solid $header-accent;
   height: 50px;
 }
 
@@ -314,15 +314,15 @@ a.card-title-link:hover {
 
 .card-nav .badge {
   margin-left: 3px;
-  background-color: @header-accent;
+  background-color: $header-accent;
 }
 
 .nav-tabs .badge {
-  background-color: @text-muted;
+  background-color: $text-muted;
 }
 
 .nav-tabs .active .badge {
-  background-color: @header-accent;
+  background-color: $header-accent;
 }
 
 .card-title-fab {

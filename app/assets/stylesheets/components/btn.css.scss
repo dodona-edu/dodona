@@ -11,7 +11,7 @@
 }
 
 .btn-icon {
-  color: @text-secondary;
+  color: $text-secondary;
   box-shadow: none;
   padding: 0;
 }
@@ -21,7 +21,7 @@ button.btn-icon {
 }
 
 .btn-icon:hover {
-  color: @text-color;
+  color: $text-color;
   box-shadow: none;
 }
 
@@ -53,12 +53,12 @@ button.btn-icon {
 
 .btn-down {
   box-shadow: none;
-  color: @text-disabled;
+  color: $text-disabled;
 }
 
 .btn-down:hover {
   box-shadow: none;
-  color: @text-secondary;
+  color: $text-secondary;
 }
 
 // text button
@@ -66,7 +66,7 @@ button.btn-icon {
   background: 0 0;
   border: none;
   border-radius: 2px;
-  color: @btn-accent;
+  color: $btn-accent;
   display: block;
   position: relative;
   height: 36px;
@@ -88,25 +88,25 @@ button.btn-icon {
 }
 
 .btn-danger.btn-text {
-  background-color: @btn-danger-bg;
-  color: @btn-danger-color;
+  background-color: $btn-danger-bg;
+  color: $btn-danger-color;
   .shadow-z1();
 }
 
 .btn-danger.btn-text:hover {
-  background-color: @btn-danger-bg;
-  color: @btn-danger-color;
+  background-color: $btn-danger-bg;
+  color: $btn-danger-color;
   .shadow-z3();
 }
 
 .btn-primary.btn-text {
-  background-color: @btn-accent;
+  background-color: $btn-accent;
   color: white;
   .shadow-z1();
 }
 
 .btn-primary.btn-text:hover {
-  background-color: @btn-accent;
+  background-color: $btn-accent;
   color: white;
   .shadow-z3();
 }
@@ -121,16 +121,16 @@ button.btn-icon {
 
 .btn-text:hover {
   text-decoration: none;
-  color: @btn-accent;
-  background-color: @btn-hover-background;
+  color: $btn-accent;
+  background-color: $btn-hover-background;
 }
 
 .btn-text:disabled {
-  color: @text-disabled;
+  color: $text-disabled;
 
   &:hover {
     background-color: transparent;
-    color: @text-disabled;
+    color: $text-disabled;
   }
 }
 
@@ -174,7 +174,7 @@ button.btn-icon {
   &.right{
     padding-right: 0;
     padding-left: 20px;
-    
+
     .icon {
       padding-left: 12px;
       padding-right: 0;
@@ -208,15 +208,15 @@ button.btn-icon {
 
 .btn-toggle {
   .btn {
-    border: 1px solid @toggle-btn-border;
-    background-color: @toggle-btn-bg;
+    border: 1px solid $toggle-btn-border;
+    background-color: $toggle-btn-bg;
     box-shadow: none;
     outline: none;
   }
 
   .btn.active {
-    border-color: @toggle-btn-active-border;
-    background-color: @toggle-btn-active-bg;
+    border-color: $toggle-btn-active-border;
+    background-color: $toggle-btn-active-bg;
   }
 
   .btn:focus, .btn:active:focus {
@@ -235,10 +235,10 @@ button.btn-icon {
 .btn-icon-inverted {
   &:extend(.btn-icon);
 
-  color: @white-secondary;
+  color: $white-secondary;
 
   &:hover {
-    color: @white-text;
+    color: $white-text;
   }
 }
 
@@ -252,7 +252,7 @@ form.button_to {
   align-items: center;
   margin-bottom: 15px;
   padding: 12px;
-  background-color: @content-bg;
+  background-color: $content-bg;
   border-radius: 2px;
   transition: box-shadow 0.1s cubic-bezier(.4, 0, .2, 1);
   .shadow-z2();

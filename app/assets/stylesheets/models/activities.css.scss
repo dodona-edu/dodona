@@ -6,7 +6,7 @@
 
   th.type-icon, td.type-icon {
     width: 18px;
-    color: @text-secondary;
+    color: $text-secondary;
     padding-left: 0;
     padding-right: 0;
   }
@@ -108,7 +108,7 @@
   height: 16px;
   margin-left: 16px;
   display: block;
-  border-top: 1px solid @text-secondary;
+  border-top: 1px solid $text-secondary;
 }
 
 .footnotes {
@@ -134,7 +134,7 @@ center img {
 
 // white background for transparent images
 .strp-content-element {
-  background-color: @content-bg;
+  background-color: $content-bg;
 }
 
 .courses-using-exercise .course {

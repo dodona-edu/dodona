@@ -30,15 +30,15 @@
     width: 100%;
     table-layout: auto;
     user-select: all;
-    
+
     td {
       vertical-align: top;
 
       &.line-nr {
         text-align: right;
         white-space: pre-wrap;
-        background: @well-bg;
-        color: @gray-light;
+        background: $well-bg;
+        color: $gray-light;
         padding-left: 10px;
         padding-right: 10px;
         user-select: none;
@@ -51,7 +51,7 @@
         word-wrap: break-word;
         word-break: break-all;
         white-space: pre-wrap;
-        font-family: @font-family-monospace;
+        font-family: $font-family-monospace;
         width: 100%;
       }
     }
@@ -69,7 +69,7 @@
 }
 
 #tutorviz {
-  background-color: @content-bg;
+  background-color: $content-bg;
   min-height: 200px;
 }
 
@@ -96,7 +96,7 @@
 
 .tutor-strip {
   position: absolute;
-  color: @content-bg;
+  color: $content-bg;
   width: 20px;
   z-index: 4;
   top: 0;
@@ -129,9 +129,9 @@
 }
 
 .group.correct .tutor-strip {
-  background-color: @brand-success;
+  background-color: $brand-success;
 }
 
 .group.wrong .tutor-strip {
-  background-color: @brand-danger;
+  background-color: $brand-danger;
 }

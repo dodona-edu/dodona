@@ -129,19 +129,19 @@ a.btn-fab .mdi::before {
 }
 
 .filter-icon {
-  color: @text-secondary;
+  color: $text-secondary;
 
-  letter-spacing: -2px; 
+  letter-spacing: -2px;
   /* make sure the tooltip with the filtering information is centered
-  regarding the filter icon (displayed when hovering over the icon) */ 
+  regarding the filter icon (displayed when hovering over the icon) */
 
   cursor: pointer;
   position: relative;
   top: 3px; // move the icon downwards
   margin-right: 3px; // add spacing between text and the icon
 
-  &:hover {  
-    color: @text-color;
+  &:hover {
+    color: $text-color;
   }
 }
 

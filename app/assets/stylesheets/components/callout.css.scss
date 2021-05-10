@@ -2,7 +2,7 @@
 .callout {
   padding: 20px;
   margin: 20px 0;
-  border: 1px solid @callout-border;
+  border: 1px solid $callout-border;
   border-left-width: 5px;
   border-radius: 3px;
 }
@@ -28,25 +28,25 @@
 
 /* Variations */
 .callout-danger {
-  border-left-color: @brand-danger;
+  border-left-color: $brand-danger;
 }
 
 .callout-danger h4 {
-  color: @brand-danger;
+  color: $brand-danger;
 }
 
 .callout-warning {
-  border-left-color: @brand-warning;
+  border-left-color: $brand-warning;
 }
 
 .callout-warning h4 {
-  color: @brand-warning;
+  color: $brand-warning;
 }
 
 .callout-info {
-  border-left-color: @brand-info;
+  border-left-color: $brand-info;
 }
 
 .callout-info h4 {
-  color: @brand-info;
+  color: $brand-info;
 }

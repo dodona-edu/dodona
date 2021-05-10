@@ -47,7 +47,7 @@
 }
 
 a.institution-sign-in {
-  color: @text-color;
+  color: $text-color;
 }
 
 a.institution-sign-in:link,
@@ -85,9 +85,9 @@ input:focus {
     border: none;
     font-size: 18px;
     min-height: 42px;
-    color: @text-color;
+    color: $text-color;
     border-radius: 6px 0 0 6px !important;
-    
+
   }
 }
 

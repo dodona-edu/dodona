@@ -1,9 +1,9 @@
 .table-scroll-wrapper {
   overflow-x: auto;
-  background-image: linear-gradient(to right, @content-bg, @content-bg), linear-gradient(to right, @content-bg, @content-bg), linear-gradient(to right, @hairlinegray, rgba(255, 255, 255, 0)), linear-gradient(to left, @hairlinegray, rgba(255, 255, 255, 0));
+  background-image: linear-gradient(to right, $content-bg, $content-bg), linear-gradient(to right, $content-bg, $content-bg), linear-gradient(to right, $hairlinegray, rgba(255, 255, 255, 0)), linear-gradient(to left, $hairlinegray, rgba(255, 255, 255, 0));
   background-position: left center, right center, left center, right center;
   background-repeat: no-repeat;
-  background-color: @content-bg;
+  background-color: $content-bg;
   background-size: 20px 100%, 20px 100%, 10px 100%, 10px 100%;
   background-attachment: local, local, scroll, scroll;
 }
@@ -62,13 +62,13 @@ tr.gu-mirror {
 .sticky-header {
   th {
     position: sticky;
-    background: @content-bg;
+    background: $content-bg;
   }
 }
 
 .sticky-column {
   thead tr th:first-child {
-    background: @content-bg;
+    background: $content-bg;
     position: sticky;
     left: 0;
     // Raise index, to prevent sticky column from rolling over the header.
@@ -76,14 +76,14 @@ tr.gu-mirror {
   }
 
   tbody td:first-child {
-    background: @content-bg;
+    background: $content-bg;
     position: sticky;
     left: 0;
   }
 }
 
 .sticky-wrapper {
-  max-height: ~"calc(100vh - @{footer-height} - @{navbar-height} - @{card-margin-bottom} - @{card-supporting-text-padding})";
+  max-height: ~"calc(100vh - ${footer-height} - ${navbar-height} - ${card-margin-bottom} - ${card-supporting-text-padding})";
   // If the height is less than this, it becomes impossible to use the table,
   // so forego the sticky headers a bit.
   min-height: 400px;
@@ -91,15 +91,15 @@ tr.gu-mirror {
 }
 
 
-@media (max-width: @screen-sm-max) {
+@media (max-width: $screen-sm-max) {
   .sticky-wrapper {
-    max-height: ~"calc(100vh - @{footer-height-sm} - @{navbar-height} - @{card-margin-bottom} - @{card-supporting-text-padding})";
+    max-height: ~"calc(100vh - ${footer-height-sm} - ${navbar-height} - ${card-margin-bottom} - ${card-supporting-text-padding})";
   }
 }
 
 .table {
   .placeholder-text {
     text-align: center;
-    color: @text-secondary;
+    color: $text-secondary;
   }
 }

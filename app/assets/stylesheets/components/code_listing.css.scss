@@ -1,11 +1,11 @@
-@dot-size: 9px;
+$dot-size: 9px;
 
 // Annotation colors
-@annotation-question: @color-purple;
-@annotation-user: @success-500;
-@annotation-error: @danger-500;
-@annotation-warning: @warning-500;
-@annotation-info: @info-500;
+$annotation-question: $color-purple;
+$annotation-user: $success-500;
+$annotation-error: $danger-500;
+$annotation-warning: $warning-500;
+$annotation-info: $info-500;
 
 .code-table {
   .code-listing-container {
@@ -26,7 +26,7 @@
       overflow-x: auto;
       white-space: nowrap;
 
-      background-color: @well-bg;
+      background-color: $well-bg;
 
       // Override the normal pre padding & coloring
       pre {
@@ -41,14 +41,14 @@
 
       // Highlight for the line numbers.
       .lineno.marked {
-        background-color: @warning-500;
+        background-color: $warning-500;
         // Only do the line number, don't extend to the full height
         background-clip: content-box;
       }
 
       // Highlight for the code itself.
       .lineno.marked .rouge-code pre {
-        background-color: @warning-500;
+        background-color: $warning-500;
       }
 
       .annotation-button {
@@ -103,43 +103,43 @@
           padding-right: 5px;
           margin-left: 20px;
           white-space: nowrap;
-          font-family: @font-family-monospace;
-          color: @gray-light
+          font-family: $font-family-monospace;
+          color: $gray-light
         }
 
         .dot {
           float: left;
           margin-left: 4px;
           margin-top: 4px;
-          height: @dot-size;
-          width: @dot-size;
+          height: $dot-size;
+          width: $dot-size;
           border-radius: 100%;
         }
 
         .dot-info {
-          background-color: @annotation-info;
+          background-color: $annotation-info;
         }
 
         .dot-warning {
-          background-color: @annotation-warning;
+          background-color: $annotation-warning;
         }
 
         .dot-user {
-          background-color: @annotation-user
+          background-color: $annotation-user
         }
 
         .dot-error {
-          background-color: @annotation-error;
+          background-color: $annotation-error;
         }
 
         .dot-question {
-          background-color: @annotation-question;
+          background-color: $annotation-question;
         }
       }
 
       // General lighter background on the right side
       .rouge-code, .annotation-cell {
-        background-color: @body-bg;
+        background-color: $body-bg;
       }
 
       .hide {
@@ -165,18 +165,18 @@
 
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    border: 1px solid @hairlinegray;
+    border: 1px solid $hairlinegray;
     border-left-width: 3px;
-    border-left-color: @grey-500;
+    border-left-color: $grey-500;
 
-    background: @content-bg;
+    background: $content-bg;
 
     white-space: normal;
 
     .annotation-header {
       .annotation-meta {
         font-size: 85%;
-        color: @text-secondary;
+        color: $text-secondary;
       }
 
       .annotation-edit, .question-resolve, .question-in_progress, .question-unresolve {
@@ -212,7 +212,7 @@
         padding: 5px 10px;
         margin-left: 10px;
         margin-right: 10px;
-        background: @code-bg;
+        background: $code-bg;
         border-radius: 3px;
       }
 
@@ -231,14 +231,14 @@
         margin: 10px auto 20px;
 
         max-width: 300px;
-        @media (min-width: @screen-tablet) {
-          max-width: calc(@container-tablet * 0.6);
+        @media (min-width: $screen-tablet) {
+          max-width: calc($container-tablet * 0.6);
         }
-        @media (min-width: @screen-lg) {
-          max-width: calc(@container-desktop * 0.7);
+        @media (min-width: $screen-lg) {
+          max-width: calc($container-desktop * 0.7);
         }
-        @media (min-width: @screen-lg-desktop) {
-          max-width: calc(@container-large-desktop * 0.7);
+        @media (min-width: $screen-lg-desktop) {
+          max-width: calc($container-large-desktop * 0.7);
         }
       }
     }
@@ -249,28 +249,28 @@
   }
 
   .annotation.question {
-    border-left-color: @annotation-question;
+    border-left-color: $annotation-question;
   }
 
   .annotation.error {
-    border-left-color: @annotation-error;
+    border-left-color: $annotation-error;
   }
 
   .annotation.warning {
-    border-left-color: @annotation-warning;
+    border-left-color: $annotation-warning;
   }
 
   .annotation.info {
-    border-left-color: @annotation-info;
+    border-left-color: $annotation-info;
   }
 
   .annotation.user {
-    border-left-color: @annotation-user;
+    border-left-color: $annotation-user;
   }
 
   .annotation.machine-annotation {
     .annotation-text {
-      font-family: @font-family-monospace;
+      font-family: $font-family-monospace;
       // pre-wrap for browsers that don't support break-spaces.
       white-space: pre-wrap;
       white-space: break-spaces;
@@ -305,7 +305,7 @@
     }
 
     .annotation-submission-input.validation-error {
-      border-color: @danger-fg;
+      border-color: $danger-fg;
     }
   }
 

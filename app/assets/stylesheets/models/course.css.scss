@@ -7,7 +7,7 @@
 }
 
 .badge-pending {
-  background-color: @pending-color;
+  background-color: $pending-color;
 }
 
 .card.course {
@@ -21,7 +21,7 @@
 
 .copy-courses-table tbody tr {
   &:hover {
-    background-color: @table-hover-bg;
+    background-color: $table-hover-bg;
     cursor: pointer;
   }
 }
@@ -36,28 +36,28 @@
 .series-sidebar {
   padding: 0;
 
-  @media (min-width: @screen-md-min) {
+  @media (min-width: $screen-md-min) {
     .nav {
-      width: ~"calc((100vw - (@{container-desktop}) / 12 * 10) / 2)";
-      height: ~"calc(100vh - (@{navbar-height} + 20px))";
+      width: ~"calc((100vw - (${container-desktop}) / 12 * 10) / 2)";
+      height: ~"calc(100vh - (${navbar-height} + 20px))";
       overflow-y: auto;
 
       &.affix-bottom {
-        height: ~"calc(100vh - (@{navbar-height} + 120px))";
+        height: ~"calc(100vh - (${navbar-height} + 120px))";
         position: fixed;
         top: 70px !important;
       }
     }
   }
 
-  @media (min-width: @screen-lg-min) {
+  @media (min-width: $screen-lg-min) {
     .nav {
-      width: ~"calc((100% - (@{container-large-desktop}) / 12 * 10) / 2)";
+      width: ~"calc((100% - (${container-large-desktop}) / 12 * 10) / 2)";
     }
   }
 
   .nav > li.header {
-    color: @text-secondary;
+    color: $text-secondary;
   }
 
   .nav > li > a {
@@ -65,19 +65,19 @@
     padding: 6px 6px;
     font-size: 13px;
     font-weight: 500;
-    color: @text-disabled;
+    color: $text-disabled;
   }
 
   .nav > li.active > a,
   .nav > li.active > a:hover {
-    border-left: 2px solid @primary-800;
+    border-left: 2px solid $primary-800;
     padding-left: 4px;
-    color: @text-secondary;
+    color: $text-secondary;
   }
 
   .nav > li > a:hover {
-    border-left: 1px solid @primary-800;
+    border-left: 1px solid $primary-800;
     padding-left: 5px;
-    color: @text-secondary;
+    color: $text-secondary;
   }
 }

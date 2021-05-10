@@ -7,7 +7,7 @@ input[type="radio"], input[type="checkbox"] {
   }
 
   &:disabled + .checkbox-label {
-    color: @text-disabled;
+    color: $text-disabled;
     cursor: no-drop;
   }
 

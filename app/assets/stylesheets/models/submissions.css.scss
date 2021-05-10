@@ -12,17 +12,17 @@
     border-radius: 0;
   }
   .label.label-danger {
-    color: @brand-danger;
-    border-color: @brand-danger;
-    background-color: @content-bg;
+    color: $brand-danger;
+    border-color: $brand-danger;
+    background-color: $content-bg;
   }
   .label.label-success {
-    color: @brand-success;
-    border-color: @brand-success;
-    background-color: @content-bg;
+    color: $brand-success;
+    border-color: $brand-success;
+    background-color: $content-bg;
   }
   .description {
-    background-color: @code-bg;
+    background-color: $code-bg;
     pre {
       border: none;
     }
@@ -31,16 +31,16 @@
     margin: 0px 15px;
   }
   .group {
-    background-color: @content-bg;
+    background-color: $content-bg;
     margin-bottom: 12px;
     border-left: 4px solid gray;
     position: relative;
 
     &.correct {
-      border-left-color: @brand-success;
+      border-left-color: $brand-success;
     }
     &.wrong {
-      border-left-color: @brand-danger;
+      border-left-color: $brand-danger;
     }
   }
   .testcase {
@@ -60,18 +60,18 @@
 
     &.correct {
       .indicator {
-        color: @brand-success;
+        color: $brand-success;
       }
     }
     &.wrong {
       .indicator {
-        color: @brand-danger;
+        color: $brand-danger;
       }
     }
   }
   .test .output,
   .code {
-    font-family: @font-family-monospace;
+    font-family: $font-family-monospace;
     font-size: 13px;
     white-space: pre-wrap;
     overflow-wrap: break-word;
@@ -93,8 +93,8 @@
       font-weight: normal;
       padding-left: 5px;
       padding-right: 5px;
-      background: @feedback-diff-table-header-bg;
-      color: @feedback-diff-table-header-fg;
+      background: $feedback-diff-table-header-bg;
+      color: $feedback-diff-table-header-fg;
       vertical-align: center;
     }
     .del,
@@ -106,27 +106,27 @@
       word-wrap: break-word;
       word-break: break-all;
       white-space: pre-wrap;
-      font-family: @font-family-monospace;
+      font-family: $font-family-monospace;
       strong {
         font-weight: normal;
         border-radius: 0.2em;
       }
     }
     .ins {
-      background: @feedback-diff-table-ins;
+      background: $feedback-diff-table-ins;
     }
     .del {
-      background: @feedback-diff-table-del;
+      background: $feedback-diff-table-del;
     }
     .ins strong {
-      background: @feedback-diff-table-ins-strong;
+      background: $feedback-diff-table-ins-strong;
     }
     .del strong {
-      background: @feedback-diff-table-del-strong;
+      background: $feedback-diff-table-del-strong;
     }
     .line-nr {
-      background: @feedback-diff-table-header-bg;
-      color: @feedback-diff-table-header-fg;
+      background: $feedback-diff-table-header-bg;
+      color: $feedback-diff-table-header-fg;
       padding-left: 10px;
       padding-right: 10px;
     }
@@ -182,7 +182,7 @@
     border: none;
   }
   .linter pre.lineno {
-    border-right: 1px solid @divider-color;
+    border-right: 1px solid $divider-color;
     padding-right: 25px;
   }
   .linter td.code {
@@ -211,12 +211,12 @@
     margin-right: 1em;
   }
   .message-zeus, .message-staff {
-    border-left: 3px solid @text-secondary;
+    border-left: 3px solid $text-secondary;
     padding-left: 25px
   }
   .message-zeus:before, .message-staff:before, .tab-zeus:before, .tab-staff:before {
     font: normal normal normal 24px/1 "Material Design Icons";
-    color: @text-secondary;
+    color: $text-secondary;
     font-size: 18px;
   }
   .message-zeus:before, .message-staff:before {
@@ -237,12 +237,12 @@
     content: '';
   }
   .tab-link-marker {
-    background: @brand-warning !important;
+    background: $brand-warning !important;
   }
 }
 
 #editor-result .ace_content {
-  background-color: @code-light-bg;
+  background-color: $code-light-bg;
   cursor: default;
 }
 
@@ -255,19 +255,19 @@ iframe.file {
 }
 
 .colored-correct {
-  color: @brand-success;
+  color: $brand-success;
 }
 
 .colored-wrong {
-  color: @brand-danger;
+  color: $brand-danger;
 }
 
 .colored-warning {
-  color: @brand-warning;
+  color: $brand-warning;
 }
 
 .colored-secondary {
-  color: @text-secondary;
+  color: $text-secondary;
 }
 
 .submission-summary {

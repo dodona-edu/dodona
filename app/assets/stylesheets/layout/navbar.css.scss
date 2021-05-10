@@ -47,7 +47,7 @@ $navbar-title-collapse-width: $screen-lg-min;
     flex-shrink: 1;
     flex-grow: 100;
     @media (min-width: $navbar-collapse-width) {
-      max-width: ~"calc(100vw - 240px)";
+      //max-width: ~"calc(100vw - 240px)";
     }
     @media (min-width: $screen-sm-min) {
       max-width: 640px;
@@ -107,7 +107,7 @@ $navbar-title-collapse-width: $screen-lg-min;
     flex-grow: 1;
 
     @media (min-width: $navbar-collapse-width) {
-      max-width: ~"calc(100vw - 240px)";
+      //max-width: ~"calc(100vw - 240px)";
     }
     @media (min-width: $screen-sm-min) {
       max-width: 640px;
@@ -331,7 +331,7 @@ $navbar-title-collapse-width: $screen-lg-min;
 
 /* breadcrumbs */
 .crumbs {
-  max-width: ~"calc(100vw - 180px)";
+  //max-width: ~"calc(100vw - 180px)";
   flex-shrink: 1;
   white-space: nowrap;
   text-overflow: ellipsis;

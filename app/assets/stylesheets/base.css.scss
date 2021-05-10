@@ -1,9 +1,13 @@
 @import "theme/colors.css.scss";
 @import "mixins.css.scss";
 @import "vendor.scss";
-@import "theme/theme-${theme}.css.scss";
-@import "theme/${mode}.css.scss";
-@import "theme/rouge-${theme}.css.scss";
+@import "theme/theme-light.css.scss";
+@import "theme/production.css.scss";
+@import "theme/rouge-light.css.scss";
+// TODO
+// @import "theme/theme-#{theme}.css.scss";
+// @import "theme/#{mode}.css.scss";
+// @import "theme/rouge-#{theme}.css.scss";
 @import "bootstrap_overrides.css.scss";
 @import "libraries.css.scss";
 @import "material_icons.css.scss";

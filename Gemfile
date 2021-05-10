@@ -9,12 +9,10 @@ gem 'rails', '~> 6.1.3'
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
 gem 'puma', '~> 5.2.2'
-# Use less for stylesheets
-gem 'less-rails', '~> 5.0'
+# Use sass for stylesheets
+gem 'sassc-rails', '~> 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
-# This needs to be here for less :(
-gem 'therubyracer', platforms: :ruby
 
 gem 'webpacker', '~> 5.3.0'
 

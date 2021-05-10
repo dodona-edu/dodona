@@ -25,7 +25,7 @@
         <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
         <td class="actions">
           <% if policy(institution).edit? %>
-            <%= link_to edit_institution_path(institution), title: t("institutions.index.edit"), class: "btn btn-sm btn-default" do %>
+            <%= link_to edit_institution_path(institution), title: t("institutions.index.edit"), class: "btn btn-sm btn-secondary" do %>
               <i class="mdi mdi-pencil mdi-18"></i>
             <% end %>
           <% end %>

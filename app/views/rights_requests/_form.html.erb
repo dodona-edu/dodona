@@ -16,7 +16,7 @@
     </div>
 
     <div class="field form-group">
-      <%= f.label :context, class: 'col-sm-3 control-label' %>
+      <%= f.label :context, class: 'col-sm-3 col-form-label' %>
       <div class="col-sm-9">
         <%= f.text_area :context, class: 'form-control', placeholder: t(".context_explanation") %>
       </div>
@@ -24,7 +24,7 @@
 
     <% if current_user.institution.generated_name %>
       <div class="field form-group">
-        <%= f.label :institution_name, class: 'col-sm-3 control-label' %>
+        <%= f.label :institution_name, class: 'col-sm-3 col-form-label' %>
         <div class="col-sm-6">
           <%= f.text_field :institution_name, class: 'form-control', placeholder: current_user.institution.name %>
         </div>
@@ -32,7 +32,7 @@
       </div>
     <% else %>
       <div class="field form-group">
-        <%= f.label :institution_name, class: 'col-sm-3 control-label' %>
+        <%= f.label :institution_name, class: 'col-sm-3 col-form-label' %>
         <div class="col-sm-6">
           <%= f.text_field :institution_name, class: 'form-control', disabled: true, value: current_user.institution.name %>
         </div>

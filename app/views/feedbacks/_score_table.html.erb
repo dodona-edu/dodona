@@ -1,7 +1,7 @@
 <% total = policy(feedback.evaluation_exercise).show_total? %>
 <% scores = policy_scope(feedback.scores).includes(:score_item) %>
 <% if total || feedback.score_items.present? %>
-  <table class="table table-condensed">
+  <table class="table table-sm">
     <% if total %>
       <tr class="text-muted">
         <td>

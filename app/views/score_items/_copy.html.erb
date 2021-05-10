@@ -9,7 +9,7 @@
     <div class="modal-body">
       <%= f.hidden_field :to, value: evaluation_exercise.id %>
       <div class="field form-group">
-        <%= f.label t("score_items.copy.exercise"), :class => "col-sm-3 control-label" %>
+        <%= f.label t("score_items.copy.exercise"), :class => "col-sm-3 col-form-label" %>
         <div class="col-sm-6">
           <%= f.collection_select :from,
                                   evaluation.evaluation_exercises.filter { |o| o.id != evaluation_exercise.id },

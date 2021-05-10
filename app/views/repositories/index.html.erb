@@ -40,17 +40,17 @@
                 <td><%= link_to repository.judge.name, repository.judge %></td>
                 <td class="actions">
                   <% if policy(repository).admins? %>
-                    <%= link_to admins_repository_path(repository), class: "btn btn-sm btn-default", title: t(".admins") do %>
+                    <%= link_to admins_repository_path(repository), class: "btn btn-sm btn-secondary", title: t(".admins") do %>
                       <i class="mdi mdi-account-multiple mdi-18"></i>
                     <% end %>
                   <% end %>
                   <% if policy(repository).courses? %>
-                    <%= link_to courses_repository_path(repository), class: "btn btn-sm btn-default", title: t(".courses") do %>
+                    <%= link_to courses_repository_path(repository), class: "btn btn-sm btn-secondary", title: t(".courses") do %>
                       <i class="mdi mdi-book-multiple mdi-18"></i>
                     <% end %>
                   <% end %>
                   <% if policy(repository).edit? %>
-                    <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-default", title: t(".edit") do %>
+                    <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-secondary", title: t(".edit") do %>
                       <i class="mdi mdi-pencil mdi-18"></i>
                     <% end %>
                   <% end %>

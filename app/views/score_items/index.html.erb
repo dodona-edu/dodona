@@ -16,7 +16,7 @@
           <br>
           <%= link_to t("score_items.new.hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post %>
         </p>
-        <%= link_to t('score_items.index.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary pull-right" %>
+        <%= link_to t('score_items.index.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary float-right" %>
 
         <% @evaluation.evaluation_exercises.each do |evaluation_exercise| %>
           <div id="card-<%= evaluation_exercise.id %>">

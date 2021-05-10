@@ -12,7 +12,7 @@
             <p>When signing into Dodona, we exclusively use the authentication system of your school or institution. Examples of these are Smartschool and Office 365 for secondary education and SAML for higher education. This means that under no circumstances, Dodona gets access to your password. What we do get access to when signing in are your <b>name</b>, <b>username</b> and <b>email address</b>. We need these data to identify you correctly and to be able to contact you in case of any problems. Next to that, we also store the <b>institution</b> you used to sign in, your <b>preferred language</b> and your <b>local timezone</b>. Your timezone is needed to display any deadlines set by  courses correctly.</p>
             <p>You can check these data for yourself on your profile page. Your profile is also visible for the teachers of the courses you subscribed to.</p>
           </div>
-          <div class="col-sm-4 col-lg-3 col-lg-offset-1 hidden-xs"><%= image_tag "outline-account_circle.svg", class: "img-responsive", style: "width:90%" %></div>
+          <div class="col-sm-4 col-lg-3 col-lg-offset-1 hidden-xs"><%= image_tag "outline-account_circle.svg", class: "img-fluid", style: "width:90%" %></div>
         </div>
 
         <h2>Dodona-specific data</h2>
@@ -21,7 +21,7 @@
             <p>By using Dodona, you also generate additional Dodona-specific data which we store for the correct operation of the platform. For example, we need to keep track of all the <b>courses</b> you’re subscribed to and which submissions you made. For each submission, in addition to your <b>submitted code</b>, we also store the <b>result</b> and <b>time of submission</b>.</p>
             <p>An overview of all your submissions can be seen on <%= link_to "this overview page", current_user.present? ? user_submissions_path(current_user) : submissions_path %>. Teachers can also see all submissions for the exercises of their courses. For some exercises, part of the generated feedback is only visible to the teachers.</p>
           </div>
-          <div class="col-sm-4 col-lg-3 col-lg-offset-1 hidden-xs"><%= image_tag "outline-description.svg", class: "img-responsive", style: "width:90%" %></div>
+          <div class="col-sm-4 col-lg-3 col-lg-offset-1 hidden-xs"><%= image_tag "outline-description.svg", class: "img-fluid", style: "width:90%" %></div>
         </div>
 
         <h2>Data processing</h2>
@@ -31,7 +31,7 @@
             <p>To develop and eventually provide these functionalities, it is necessary to (automatically) process the available data, for example, using machine learning. When doing this, the data will always be pseudonymised and in many cases, aggregated. Your personal data will be decoupled from your submissions using this de-identification procedure and will not be processed. By doing this, the risk of unwanted identification of people within Dodona is minimised.</p>
             <p>Insights acquired from using and developing these innovative educational technologies can be published as scientific research. Within this context, we will never share or publish data that would allow the identification of individual users unless explicit permission is given.</p>
           </div>
-          <div class="col-sm-4 col-lg-3 col-lg-offset-1 hidden-xs"><%= image_tag "outline-pageview.svg", class: "img-responsive", style: "width:90%" %><%= image_tag "outline-school.svg", class: "img-responsive", style: "width:90%" %></div>
+          <div class="col-sm-4 col-lg-3 col-lg-offset-1 hidden-xs"><%= image_tag "outline-pageview.svg", class: "img-fluid", style: "width:90%" %><%= image_tag "outline-school.svg", class: "img-fluid", style: "width:90%" %></div>
         </div>
 
         <h2>Technical support</h2>
@@ -40,12 +40,9 @@
             <p>To safeguard the availability of Dodona, it is necessary to monitor the status of our servers. This means, for example, that we keep track of the load of individual machines, and that we use heavily aggregated data to keep an eye on the length of the submissions queue and the number of active users.</p>
             <p>Individual servers also keep log files of all activity on those machines. These files are kept for a maximum of 7 days and are only accessible to the platform administrators. Platform administrators can also request specific data on Dodona itself. As with the log files, these data are only accessed in the event of problems or to make technical adjustments.</p>
           </div>
-          <div class="col-sm-4 col-lg-3 col-lg-offset-1 hidden-xs"><%= image_tag "outline-memory.svg", class: "img-responsive", style: "width:90%" %></div>
+          <div class="col-sm-4 col-lg-3 col-lg-offset-1 hidden-xs"><%= image_tag "outline-memory.svg", class: "img-fluid", style: "width:90%" %></div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-

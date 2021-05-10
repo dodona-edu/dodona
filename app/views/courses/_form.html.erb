@@ -44,21 +44,21 @@
 
   <div class="<%= course.new_record? ? "stepper-part#{needs_border ? " stepper-border" : ""}" : "card-supporting-text" %>">
     <div class="field form-group">
-      <%= f.label :name, :class => "col-sm-3 control-label" %>
+      <%= f.label :name, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
     </div>
     <div class="field form-group">
-      <%= f.label :teacher, :class => "col-sm-3 control-label" %>
+      <%= f.label :teacher, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :teacher, class: "form-control" %></div>
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".teacher-help" %></span>
     </div>
     <div class="field form-group">
-      <%= f.label :year, :class => "col-sm-3 control-label" %>
+      <%= f.label :year, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :year, class: "form-control" %></div>
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".year-help" %></span>
     </div>
     <div class="field form-group">
-      <%= f.label :institution, :class => "col-sm-3 control-label" %>
+      <%= f.label :institution, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6">
         <%= f.select :institution_id,
                      options_for_select(Institution.all.sort_by(&:name).map {|i| [i.name, i.id]}, course.institution_id),
@@ -68,14 +68,14 @@
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".institution-help_html" %></span>
     </div>
     <div class="field form-group">
-      <%= f.label :description, :class => "col-sm-3 control-label" %>
+      <%= f.label :description, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>
     </div>
 
     <% if current_user.zeus? %>
       <div class="field form-group">
-        <%= f.label :color, class: 'col-sm-3 control-label' %>
+        <%= f.label :color, class: 'col-sm-3 col-form-label' %>
         <div class="col-sm-6">
           <%= f.select :color,
                        options_for_select(Course.colors.keys.map {|k| [t("activerecord.attributes.course.colors.#{k}"), k]},
@@ -87,7 +87,7 @@
     <% end %>
 
     <div class="field form-group">
-      <%= f.label :questions, t(".questions.title"), class: 'col-sm-3 control-label' %>
+      <%= f.label :questions, t(".questions.title"), class: 'col-sm-3 col-form-label' %>
       <div class="col-sm-6">
         <div class="checkbox">
           <%= label_tag do %>

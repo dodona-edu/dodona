@@ -27,21 +27,21 @@
         <%= f.hidden_field :evaluation_exercise_id, value: evaluation_exercise.id %>
       <% end %>
       <div class="field form-group">
-        <%= f.label :name, :class => "col-sm-4 control-label" %>
+        <%= f.label :name, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.text_field :name, required: true, class: "form-control" %></div>
       </div>
       <div class="field form-group">
-        <%= f.label :description, :class => "col-sm-4 control-label" %>
+        <%= f.label :description, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.text_area :description, class: "form-control", rows: "2" %></div>
         <span class="help-block col-sm-offset-4 col-sm-8"><%= t "score_items.form.description-help" %></span>
       </div>
       <div class="field form-group">
-        <%= f.label :maximum, :class => "col-sm-4 control-label" %>
+        <%= f.label :maximum, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.number_field :maximum, step: 0.25, min: 0.25, max: 999.75, required: true, class: "form-control" %></div>
         <span class="help-block col-sm-offset-4 col-sm-8"><%= t "score_items.form.score-help" %></span>
       </div>
       <div class="field form-group">
-        <%= f.label :visible, class: 'col-sm-4 control-label' %>
+        <%= f.label :visible, class: 'col-sm-4 col-form-label' %>
         <div class="col-sm-8">
           <div class="checkbox">
             <%= label_tag do %>

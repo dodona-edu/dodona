@@ -61,7 +61,7 @@
                 <li><%= link_to t("layout.menu.my_exports"), exports_path %></li>
               <% end %>
               <% if policy(:pages).toggle_demo_mode? || policy(:pages).toggle_dark_mode? %>
-                <li role="separator" class="divider"></li>
+                <li role="separator" class="dropdown-divider"></li>
               <% end %>
               <% if policy(:pages).toggle_demo_mode? %>
                 <% if Current.demo_mode %>
@@ -93,7 +93,7 @@
                   </li>
                 <% end %>
               <% end %>
-              <li role="separator" class="divider"></li>
+              <li role="separator" class="dropdown-divider"></li>
               <li>
                 <%= link_to t("layout.menu.log_out"), sign_out_path, :method => :delete %>
               </li>

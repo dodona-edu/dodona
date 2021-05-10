@@ -19,7 +19,7 @@
         <td><%= link_to label.activities.count, activities_path({"labels[]" => label.name}) %></td>
         <td>
           <% if policy(Label).edit? %>
-            <%= link_to edit_label_path(label), class: "btn btn-sm btn-default" do %>
+            <%= link_to edit_label_path(label), class: "btn btn-sm btn-secondary" do %>
               <i class="mdi mdi-pencil mdi-18"></i>
             <% end %>
           <% end %>

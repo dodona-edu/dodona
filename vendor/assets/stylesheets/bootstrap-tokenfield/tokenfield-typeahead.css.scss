@@ -32,11 +32,11 @@
   font-size: 14px;
   line-height: 1.428571429;
 }
-.twitter-typeahead .input-sm.tt-input,
+.twitter-typeahead .form-control-sm.tt-input,
 .twitter-typeahead .hint-sm.tt-hint {
   border-radius: 3px;
 }
-.twitter-typeahead .input-lg.tt-input,
+.twitter-typeahead .form-control-lg.tt-input,
 .twitter-typeahead .hint-lg.tt-hint {
   border-radius: 6px;
 }
@@ -56,7 +56,7 @@
 .input-group.input-group-sm .twitter-typeahead:last-child .tt-hint {
   border-radius: 0 3px 3px 0 !important;
 }
-.input-sm.tt-input,
+.form-control-sm.tt-input,
 .hint-sm.tt-hint,
 .input-group.input-group-sm .tt-input,
 .input-group.input-group-sm .tt-hint {
@@ -73,7 +73,7 @@
 .input-group.input-group-lg .twitter-typeahead:last-child .tt-hint {
   border-radius: 0 6px 6px 0 !important;
 }
-.input-lg.tt-input,
+.form-control-lg.tt-input,
 .hint-lg.tt-hint,
 .input-group.input-group-lg .tt-input,
 .input-group.input-group-lg .tt-hint {
@@ -124,14 +124,14 @@
   padding: 0;
   height: 20px;
 }
-.tokenfield.input-sm .twitter-typeahead .tt-input,
-.tokenfield.input-sm .twitter-typeahead .tt-hint {
+.tokenfield.form-control-sm .twitter-typeahead .tt-input,
+.tokenfield.form-control-sm .twitter-typeahead .tt-hint {
   height: 18px;
   font-size: 12px;
   line-height: 1.5;
 }
-.tokenfield.input-lg .twitter-typeahead .tt-input,
-.tokenfield.input-lg .twitter-typeahead .tt-hint {
+.tokenfield.form-control-lg .twitter-typeahead .tt-input,
+.tokenfield.form-control-lg .twitter-typeahead .tt-hint {
   height: 23px;
   font-size: 18px;
   line-height: 1.33;

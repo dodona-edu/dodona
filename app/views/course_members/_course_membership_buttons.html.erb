@@ -21,7 +21,7 @@
                   params: {user: user.id, status: 'course_admin'},
                   title: t('users.index.promote'),
                   data: {confirm: t('general.are_you_sure')},
-                  class: 'btn btn-sm btn-default' do %>
+                  class: 'btn btn-sm btn-secondary' do %>
       <i class="mdi mdi-school mdi-18" aria-hidden='true'></i>
     <% end %>
   <% end %>
@@ -30,7 +30,7 @@
                 params: {user: user.id, status: 'unsubscribed'},
                 title: t('users.index.unsubscribe'),
                 data: {confirm: t('general.are_you_sure')},
-                class: 'btn btn-sm btn-default' do %>
+                class: 'btn btn-sm btn-secondary' do %>
     <i class="mdi mdi-delete mdi-18" aria-hidden="true"></i>
   <% end %>
 <% when 'course_admin' %>
@@ -40,7 +40,7 @@
                   params: {user: user.id, status: 'student'},
                   title: t('users.index.demote'),
                   data: {confirm: t('general.are_you_sure')},
-                  class: 'btn btn-sm btn-default' do %>
+                  class: 'btn btn-sm btn-secondary' do %>
       <i class="mdi mdi-school mdi-icons-strikethrough mdi-18" aria-hidden='true'></i>
     <% end %>
     <%= button_to update_membership_course_path(course),
@@ -48,7 +48,7 @@
                   params: {user: user.id, status: 'unsubscribed'},
                   title: t('users.index.unsubscribe'),
                   data: {confirm: t('general.are_you_sure')},
-                  class: 'btn btn-sm btn-default' do %>
+                  class: 'btn btn-sm btn-secondary' do %>
       <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
     <% end %>
   <% end %>
@@ -58,7 +58,7 @@
                 params: {user: user.id, status: 'student'},
                 title: t('courses.show.subscribe'),
                 data: {confirm: t('general.are_you_sure')},
-                class: 'btn btn-sm btn-default' do %>
+                class: 'btn btn-sm btn-secondary' do %>
     <i class="mdi mdi-account-plus mdi-18" aria-hidden="true"></i>
   <% end %>
 <% end %>

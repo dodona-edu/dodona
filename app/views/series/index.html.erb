@@ -20,7 +20,7 @@
               <td><%= "#{series.course.name} (#{series.course.formatted_year})" %> </td>
               <td class="actions">
                 <% if policy(series).edit? %>
-                  <%= link_to edit_series_path(series), class: "btn btn-sm btn-default" do %>
+                  <%= link_to edit_series_path(series), class: "btn btn-sm btn-secondary" do %>
                     <i class="mdi mdi-pencil mdi-18"></i>
                   <% end %>
                 <% end %>

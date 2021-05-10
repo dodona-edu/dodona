@@ -32,12 +32,12 @@
         </td>
         <td class="actions">
           <% if policy(user).impersonate? %>
-            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
+            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-secondary", title: t("layout.impersonate.impersonate") do %>
               <i class="mdi mdi-account mdi-18"></i>
             <% end %>
           <% end %>
           <% if policy(user).edit? %>
-            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
+            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-secondary" do %>
               <i class="mdi mdi-pencil mdi-18"></i>
             <% end %>
           <% end %>
@@ -55,4 +55,3 @@
     <%= user_page_navigation_links users, local_assigns.fetch(:pagination_opts, {}) %>
   </center>
 <% end %>
-

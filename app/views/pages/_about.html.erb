@@ -13,23 +13,23 @@
         <% end %>
       </div>
       <div class="hidden-xs col-sm-4 col-md-5">
-        <%= image_tag("home.png", class: 'img-responsive') %>
+        <%= image_tag("home.png", class: 'img-fluid') %>
       </div>
     </div>
     <div class="row card home-card">
       <div class="card-supporting-text">
         <div class="col-sm-4 info-step">
-          <%= image_tag("code.png", class: 'img-responsive') %>
+          <%= image_tag("code.png", class: 'img-fluid') %>
           <h3><%= t ".write-code" %></h3>
           <p><%= t ".write-code-text" %></p>
         </div>
         <div class="col-sm-4 info-step">
-          <%= image_tag("plane.png", class: 'img-responsive') %>
+          <%= image_tag("plane.png", class: 'img-fluid') %>
           <h3><%= t ".hand-in" %></h3>
           <p><%= t ".hand-in-text" %></p>
         </div>
         <div class="col-sm-4 info-step">
-          <%= image_tag("feedback.png", class: 'img-responsive') %>
+          <%= image_tag("feedback.png", class: 'img-fluid') %>
           <h3><%= t ".get-feedback" %></h3>
           <p><%= t ".get-feedback-text" %></p>
         </div>
@@ -48,12 +48,12 @@
       <div class="card-supporting-text card-border supporters">
         <div class="col-xs-12 col-sm-4 center-vertical">
           <%= link_to "https://www.ugent.be/we/#{I18n.locale}", title: t(".we") do %>
-            <%= image_tag("we.#{I18n.locale}.png", class: 'img-responsive') %>
+            <%= image_tag("we.#{I18n.locale}.png", class: 'img-fluid') %>
           <% end %>
         </div>
         <div class="col-xs-12 col-sm-3 center-vertical">
           <%= link_to "https://www.elixir-belgium.org/", title: t(".elixir") do %>
-            <%= image_tag("elixir.png", class: 'img-responsive') %>
+            <%= image_tag("elixir.png", class: 'img-fluid') %>
           <% end %>
         </div>
       </div>

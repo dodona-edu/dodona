@@ -16,29 +16,29 @@
       </div>
     <% end %>
     <div class="field form-group">
-      <%= f.label :username, :class => "col-sm-4 control-label" %>
+      <%= f.label :username, :class => "col-sm-4 col-form-label" %>
       <div class="col-sm-8"><%= f.text_field :username, class: "form-control", disabled: !f.permission?(:username) %></div>
     </div>
     <div class="field form-group">
-      <%= f.label :first_name, :class => "col-sm-4 control-label" %>
+      <%= f.label :first_name, :class => "col-sm-4 col-form-label" %>
       <div class="col-sm-8"><%= f.text_field :first_name, class: "form-control", disabled: !f.permission?(:first_name) %></div>
     </div>
     <div class="field form-group">
-      <%= f.label :last_name, :class => "col-sm-4 control-label" %>
+      <%= f.label :last_name, :class => "col-sm-4 col-form-label" %>
       <div class="col-sm-8"><%= f.text_field :last_name, class: "form-control", disabled: !f.permission?(:last_name) %></div>
     </div>
     <div class="field form-group">
-      <%= f.label :email, :class => "col-sm-4 control-label" %>
+      <%= f.label :email, :class => "col-sm-4 col-form-label" %>
       <div class="col-sm-8"><%= f.email_field :email, class: "form-control", disabled: !f.permission?(:email) %></div>
     </div>
     <div class="field form-group">
-      <%= f.label :time_zone, :class => "col-sm-4 control-label" %>
+      <%= f.label :time_zone, :class => "col-sm-4 col-form-label" %>
       <div class="col-sm-8"><%= f.time_zone_select(:time_zone, [ActiveSupport::TimeZone['Brussels'], ActiveSupport::TimeZone['Seoul']], {}, {class: "form-control", disabled: !f.permission?(:time_zone)}) %></div>
     </div>
     <div class="field form-group">
       <% can_make_request = policy(RightsRequest).create? %>
       <% has_request = current_user.rights_request.present? %>
-      <%= f.label :permission, :class => "col-sm-4 control-label" %>
+      <%= f.label :permission, :class => "col-sm-4 col-form-label" %>
       <div class="<%= can_make_request || has_request ? "col-sm-4" : "col-sm-8" %>">
         <%= f.select :permission, User.permissions.map {|key, value| [key.humanize, key]}, {}, {:class => 'form-control', disabled: !f.permission?(:permission)} %>
       </div>

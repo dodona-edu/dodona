@@ -3,7 +3,7 @@
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <span class="user-icon pull-left">
+          <span class="user-icon float-left">
             <% if @user.permission == "student" %>
               <i class="mdi mdi-account mdi-36" title="<%= @user.permission %>">
             <% elsif @user.permission == "staff" %>
@@ -137,4 +137,3 @@
     </div>
   </div>
 </div>
-

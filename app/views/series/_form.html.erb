@@ -18,29 +18,29 @@
   <%= f.hidden_field :course_id, class: "form-control", value: (series.course_id || params[:course_id]) %>
   <div class="card-supporting-text">
     <div class="field form-group">
-      <%= f.label :name, :class => "col-sm-3 control-label" %>
+      <%= f.label :name, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
     </div>
     <div class="field form-group">
-      <%= f.label :deadline, :class => "col-sm-3 control-label" %>
+      <%= f.label :deadline, :class => "col-sm-3 col-form-label" %>
       <div class='col-sm-6'>
         <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>
           <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
           <span class="input-group-btn">
-            <button class="btn btn-default" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
-            <button class="btn btn-default" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
+            <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+            <button class="btn btn-secondary" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
           </span>
         </div>
       </div>
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t(".deadline-help", time_zone: current_user.time_zone) %></span>
     </div>
     <div class="field form-group">
-      <%= f.label :visibility, :class => "col-sm-3 control-label" %>
+      <%= f.label :visibility, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.select :visibility, Series.visibilities.map {|key, value| [Series.human_enum_name(:visibility, key), key]}, {}, {:class => 'form-control'} %></div>
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-help_html" %></span>
     </div>
     <div class="field form-group">
-      <%= f.label :description, :class => "col-sm-3 control-label" %>
+      <%= f.label :description, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
       <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>
     </div>

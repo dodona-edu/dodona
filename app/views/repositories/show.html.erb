@@ -34,7 +34,7 @@
             <strong><%= t(".content_pages") %>:</strong> <%= @repository.content_pages.count %>
           </p>
           <% if policy(@repository).reprocess? %>
-            <div class="pull-right">
+            <div class="float-right">
               <%= link_to t(".reprocess"), reprocess_repository_path(@repository), class: "btn-text" %>
             </div>
           <% end %>

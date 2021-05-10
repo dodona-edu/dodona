@@ -10,11 +10,11 @@
     </div>
   <% end %>
   <div class="field form-group">
-    <%= f.label :name, :class => "col-sm-3 control-label" %>
+    <%= f.label :name, :class => "col-sm-3 col-form-label" %>
     <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :remote, :class => "col-sm-3 control-label" %>
+    <%= f.label :remote, :class => "col-sm-3 col-form-label" %>
     <div class="col-sm-6">
       <%= f.text_field :remote,
                        class: "form-control",
@@ -30,7 +30,7 @@
     </span>
   </div>
   <div class="field form-group">
-    <%= f.label :judge, :class => "col-sm-3 control-label" %>
+    <%= f.label :judge, :class => "col-sm-3 col-form-label" %>
     <div class="col-sm-6"><%= f.select :judge_id, Judge.all.collect {|j| [j.name, j.id]}, {}, {class: "form-control"} %></div>
     <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".judge_help" %></span>
   </div>

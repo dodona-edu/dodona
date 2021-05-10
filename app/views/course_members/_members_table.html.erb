@@ -34,13 +34,13 @@
         <td><%= user.institution&.name %></td>
         <td class="hidden-xs">
           <%= render partial: 'application/progress_chart',
-              locals: { 
+              locals: {
                 total: @course.exercises_count,
                 tried: user.attempted_exercises(course: @course),
                 correct: user.correct_exercises(course: @course),
                 info_tried: 'course_members.members_table.member_progress_chart_info_tried',
                 info_correct: 'course_members.members_table.member_progress_chart_info_correct'
-              } 
+              }
             %>
         </td>
         <td class='course-membership-labels'>
@@ -52,12 +52,12 @@
           <%= render partial: 'course_membership_buttons',
                      locals: {course: @course, user: user, membership_status: course_membership.status} %>
           <% if policy(user).impersonate? %>
-            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
+            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-secondary", title: t("layout.impersonate.impersonate") do %>
               <i class="mdi mdi-account mdi-18"></i>
             <% end %>
           <% end %>
           <% if policy(user).edit? %>
-            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
+            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-secondary" do %>
               <i class="mdi mdi-pencil mdi-18"></i>
             <% end %>
           <% end %>

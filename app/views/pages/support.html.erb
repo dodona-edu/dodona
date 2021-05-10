@@ -7,7 +7,7 @@
         <p class='lead'><%= t ".title_l1" %><br><%= t ".title_l2" %></p>
       </div>
       <div class="hidden-xs col-sm-4 col-md-5">
-        <%= image_tag("home.png", class: 'img-responsive') %>
+        <%= image_tag("home.png", class: 'img-fluid') %>
       </div>
     </div>
     <div class="row card home-card">
@@ -38,19 +38,19 @@
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <%= link_to "https://www.ugent.be/", title: "Universiteit Gent", target: "_blank" do %>
-                <%= image_tag("ugent.png", class: 'img-responsive') %>
+                <%= image_tag("ugent.png", class: 'img-fluid') %>
               <% end %>
             </div>
             <div class="col-xs-12 col-sm-6">
               <%= link_to "https://www.ugent.be/we/#{I18n.locale}", title: "Faculteit Wetenschappen", target: "_blank" do %>
-                <%= image_tag("we.#{I18n.locale}.png", class: 'img-responsive') %>
+                <%= image_tag("we.#{I18n.locale}.png", class: 'img-fluid') %>
               <% end %>
             </div>
           </div>
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <%= link_to "https://www.elixir-belgium.org/", title: "Elixir", target: "_blank" do %>
-                <%= image_tag("elixir.png", class: 'img-responsive') %>
+                <%= image_tag("elixir.png", class: 'img-fluid') %>
               <% end %>
             </div>
             <div class="col-xs-12 col-sm-6">

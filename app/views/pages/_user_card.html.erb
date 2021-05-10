@@ -26,7 +26,7 @@
       <h5>Deadlines</h5>
       <% deadlines.first(5).each do |series| %>
         <p>
-          <span class='pull-right'>
+          <span class='float-right'>
             <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
           </span>
           <%= link_to series.name, course_path(series.course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
@@ -43,15 +43,15 @@
         <% submission = exercise.last_submission(current_user) %>
         <p>
           <% if submission.course.nil? %>
-            <%= link_to activity_submissions_path(exercise), class: 'btn-icon pull-right' do %>
+            <%= link_to activity_submissions_path(exercise), class: 'btn-icon float-right' do %>
               <i class="mdi mdi-chevron-right mdi-18"></i>
             <% end %>
           <% else %>
-            <%= link_to course_activity_submissions_path(submission.course, exercise), class: 'btn-icon pull-right' do %>
+            <%= link_to course_activity_submissions_path(submission.course, exercise), class: 'btn-icon float-right' do %>
               <i class="mdi mdi-chevron-right mdi-18"></i>
             <% end %>
           <% end %>
-          <span class='pull-left'><%= submission_status_icon(submission) %></span>
+          <span class='float-left'><%= submission_status_icon(submission) %></span>
           <% if exercise.accessible?(current_user, submission.course) %>
             <%= link_to exercise.name, activity_scoped_path(course: submission.course, activity: exercise), class: "course-link", title: exercise.name %>
           <% else %>

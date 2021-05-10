@@ -32,7 +32,7 @@
             <% end %>
           </td>
           <td class="actions">
-            <%= link_to "#edit-form-#{score_item.id}", title: t('.edit_title'), class: 'btn btn-sm btn-default edit-button',
+            <%= link_to "#edit-form-#{score_item.id}", title: t('.edit_title'), class: 'btn btn-sm btn-secondary edit-button',
                         data: { toggle: "modal" } do %>
               <i class="mdi mdi-pencil mdi-18" aria-hidden='true'></i>
             <% end %>
@@ -41,7 +41,7 @@
                           method: :delete,
                           remote: true,
                           data: { confirm: t('general.are_you_sure') },
-                          class: 'btn btn-sm btn-default btn-danger' do %>
+                          class: 'btn btn-sm btn-secondary btn-danger' do %>
               <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
             <% end %>
           </td>
@@ -62,7 +62,7 @@
       </td>
       <td class="actions">
         <%= link_to "#copy-form-#{evaluation_exercise.id}",
-                    class: 'btn btn-sm btn-default',
+                    class: 'btn btn-sm btn-secondary',
                     title: t('.copy_title', name: evaluation_exercise.exercise.name),
                     data: { toggle: 'modal' } do %>
           <i class="mdi mdi-content-copy mdi-18" aria-hidden='true'></i>

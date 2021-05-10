@@ -11,7 +11,7 @@
           </span>
           <%= link_to t('evaluations.edit_users.clear'), set_multi_user_evaluation_path(@evaluation, type: 'none', format: :js), remote: true, method: :post, data: { confirm: t('evaluations.members_table.remove_users_consequences') } %>.
         </p>
-        <%= link_to t('evaluations.edit_users.back_to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary pull-right" %>
+        <%= link_to t('evaluations.edit_users.back_to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary float-right" %>
         <%= render partial: 'edit_users', locals: { confirm: true } %>
       </div>
     </div>

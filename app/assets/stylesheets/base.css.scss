@@ -2,16 +2,16 @@
 @import "../../../node_modules/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
-@import "theme/colors.css.scss";
-@import "mixins.css.scss";
-@import "vendor.scss";
-@import "theme/theme-light.css.scss";
-@import "theme/production.css.scss";
-@import "theme/rouge-light.css.scss";
+@import "theme/colors";
+@import "mixins";
+@import "vendor";
+@import "theme/theme-light";
+@import "theme/production";
+@import "theme/rouge-light";
 // TODO
-// @import "theme/theme-#{theme}.css.scss";
-// @import "theme/#{mode}.css.scss";
-// @import "theme/rouge-#{theme}.css.scss";
+// @import "theme/theme-#{theme}";
+// @import "theme/#{mode}";
+// @import "theme/rouge-#{theme}";
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../../../node_modules/bootstrap/scss/variables";
@@ -53,14 +53,14 @@
 @import "../../../node_modules/bootstrap/scss/utilities/api";
 
 // 5. Add additional custom code here
-@import "bootstrap_overrides.css.scss";
-@import "libraries.css.scss";
-@import "material_icons.css.scss";
-@import "components.css.scss";
-@import "layout.css.scss";
-@import "pages.css.scss";
-@import "models.css.scss";
-@import "print.css.scss";
+@import "bootstrap_overrides";
+@import "libraries";
+@import "material_icons";
+@import "components";
+@import "layout";
+@import "pages";
+@import "models";
+@import "print";
 
 .field_with_errors input {
   border-color: $danger-fg;

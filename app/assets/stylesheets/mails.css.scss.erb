@@ -1,9 +1,9 @@
-@import "theme/colors.css.scss";
-@import "theme/theme-light.css.scss";
+@import "theme/colors";
+@import "theme/theme-light";
 <% if Rails.env.development? || Rails.env.staging? %>
-@import "theme/development.css.scss";
+@import "theme/development";
 <% end %>
-@import "theme/rouge-light.css.scss";
+@import "theme/rouge-light";
 
 body {
   font-size: 14px;

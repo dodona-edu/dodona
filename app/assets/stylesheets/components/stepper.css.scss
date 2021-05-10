@@ -39,7 +39,7 @@
       @include shadow-z2;
       background-color: $content-bg;
 
-      @media (min-width: $screen-sm-min) {
+      @include media-breakpoint-up(sm) {
         margin-left: 45px;
       }
       border: none;

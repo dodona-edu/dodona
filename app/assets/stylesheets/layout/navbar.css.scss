@@ -1,6 +1,4 @@
 $navbar-height: 50px;
-$navbar-collapse-width: $screen-xs-min;
-$navbar-title-collapse-width: $screen-lg-min;
 
 .dodona-navbar {
   @include shadow-z3;
@@ -46,16 +44,16 @@ $navbar-title-collapse-width: $screen-lg-min;
   .center {
     flex-shrink: 1;
     flex-grow: 100;
-    @media (min-width: $navbar-collapse-width) {
+    @include media-breakpoint-up(sm) {
       //max-width: ~"calc(100vw - 240px)";
     }
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up(md) {
       max-width: 640px;
     }
-    @media (min-width: $screen-md-min) {
+    @include media-breakpoint-up(lg) {
       max-width: 815px;
     }
-    @media (min-width: $screen-lg-min) {
+    @include media-breakpoint-up(xl) {
       max-width: 945px;
     }
   }
@@ -94,7 +92,7 @@ $navbar-title-collapse-width: $screen-lg-min;
 
       i {
         line-height: $navbar-height;
-        @media (min-width: $navbar-collapse-width) {
+        @include media-breakpoint-up(sm) {
           display: none;
         }
       }
@@ -106,21 +104,21 @@ $navbar-title-collapse-width: $screen-lg-min;
     flex-shrink: 1;
     flex-grow: 1;
 
-    @media (min-width: $navbar-collapse-width) {
+    @include media-breakpoint-up(sm) {
       //max-width: ~"calc(100vw - 240px)";
     }
-    @media (min-width: $screen-sm-min) {
+    @include media-breakpoint-up(md) {
       max-width: 640px;
     }
-    @media (min-width: $screen-md-min) {
+    @include media-breakpoint-up(lg) {
       max-width: 815px;
     }
-    @media (min-width: $screen-lg-min) {
+    @include media-breakpoint-up(xl) {
       max-width: 945px;
     }
 
     .actions {
-      @media (max-width: $navbar-collapse-width) {
+      @include media-breakpoint-down(sm) {
         display: none;
       }
       flex-shrink: 0;
@@ -134,7 +132,7 @@ $navbar-title-collapse-width: $screen-lg-min;
       li a {
         padding-left: 8px;
         padding-right: 8px;
-        @media (min-width: $navbar-collapse-width) {
+        @include media-breakpoint-up(sm) {
           padding-bottom: 11px;
           &.active {
             padding-bottom: 8px;
@@ -206,7 +204,7 @@ $navbar-title-collapse-width: $screen-lg-min;
       }
 
       .action {
-        @media (min-width: $navbar-collapse-width) {
+        @include media-breakpoint-up(sm) {
           display: none;
         }
       }
@@ -217,7 +215,7 @@ $navbar-title-collapse-width: $screen-lg-min;
         }
       }
 
-      @media (min-width: ($navbar-title-collapse-width + 1px)) {
+      @include media-breakpoint-up(lg) {
         .caret {
           vertical-align: text-top;
         }
@@ -227,16 +225,16 @@ $navbar-title-collapse-width: $screen-lg-min;
         }
       }
 
-      @media (max-width: ($navbar-collapse-width - 1px)) {
+      @include media-breakpoint-down(sm) {
         .dropdown-menu li.dropdown-header {
           display: none;
         }
       }
 
-      @media (max-width: $navbar-collapse-width) {
+      @include media-breakpoint-down(sm) {
         .dropdown-toggle {
           .caret {
-            @media (max-width: $navbar-title-collapse-width) {
+            @include media-breakpoint-down(lg) {
               vertical-align: text-top;
             }
           }
@@ -263,7 +261,7 @@ $navbar-title-collapse-width: $screen-lg-min;
   }
 
   .dodona-navbar-toggle {
-    @media (min-width: ($navbar-collapse-width + 1px)) {
+    @include media-breakpoint-up(sm) {
       display: none;
     }
     position: absolute;
@@ -285,10 +283,10 @@ $navbar-title-collapse-width: $screen-lg-min;
       transform: translateY(-6px);
     }
 
-    @media (min-width: ($navbar-collapse-width + 1px)) {
+    @include media-breakpoint-up(sm) {
       display: inline-block;
     }
-    @media (max-width: $navbar-collapse-width) {
+    @include media-breakpoint-down(sm) {
       @include shadow-z3;
       position: absolute;
       top: $navbar-height;
@@ -305,13 +303,13 @@ $navbar-title-collapse-width: $screen-lg-min;
     }
 
     .dropdown-title {
-      @media (min-width: $navbar-collapse-width) {
-        @media (max-width: $navbar-title-collapse-width) {
+      @include media-breakpoint-up(sm) {
+        @include media-breakpoint-down(lg) {
           display: none;
         }
       }
       display: inline-block;
-      @media (max-width: $navbar-collapse-width) {
+      @include media-breakpoint-down(sm) {
         padding-left: 25px;
       }
       transform: translateY(-.5em);

@@ -91,7 +91,7 @@ tr.gu-mirror {
 }
 
 
-@media (max-width: $screen-sm-max) {
+@include media-breakpoint-down(sm) {
   .sticky-wrapper {
     // max-height: ~"calc(100vh - #{footer-height-sm} - #{navbar-height} - #{card-margin-bottom} - #{card-supporting-text-padding})";
   }

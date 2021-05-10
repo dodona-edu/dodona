@@ -88,14 +88,14 @@ button.btn-icon {
 }
 
 .btn-danger.btn-text {
-  background-color: $btn-danger-bg;
-  color: $btn-danger-color;
+  background-color: $danger;
+  color: white;
   @include shadow-z1;
 }
 
 .btn-danger.btn-text:hover {
-  background-color: $btn-danger-bg;
-  color: $btn-danger-color;
+  background-color: $danger;
+  color: white;
   @include shadow-z3;
 }
 

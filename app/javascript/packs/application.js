@@ -19,6 +19,9 @@ window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
 
+// bootstrap
+import "bootstrap.js";
+
 import "polyfills.js";
 import { Drawer } from "drawer";
 import { Toast } from "toast";

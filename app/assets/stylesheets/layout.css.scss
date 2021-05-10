@@ -38,7 +38,7 @@ html.lti-frame > body {
 .container.main {
   padding-top: 20px;
   padding-bottom: 80px;
-  @media (max-width: $screen-sm-max) {
+  @include media-breakpoint-down(md) {
     padding-bottom: 180px;
   }
 }

@@ -50,7 +50,7 @@ $footer-height-sm: 180px;
   flex-grow: 1;
 }
 
-@media (max-width: $screen-sm-max) {
+@include media-breakpoint-down(md) {
   .footer {
     flex-direction: column;
     height: $footer-height-sm;

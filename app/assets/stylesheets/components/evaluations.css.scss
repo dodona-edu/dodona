@@ -1,4 +1,4 @@
-@media screen and (min-width: $screen-lg) {
+@include media-breakpoint-up(lg) {
   .feedback-metadata {
     position: sticky;
     top: 70px !important;

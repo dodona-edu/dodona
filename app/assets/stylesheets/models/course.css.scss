@@ -36,7 +36,7 @@
 .series-sidebar {
   padding: 0;
 
-  @media (min-width: $screen-md-min) {
+  @include media-breakpoint-up(md) {
     .nav {
       //width: ~"calc((100vw - (#{container-desktop}) / 12 * 10) / 2)";
       //height: ~"calc(100vh - (#{navbar-height} + 20px))";
@@ -50,7 +50,7 @@
     }
   }
 
-  @media (min-width: $screen-lg-min) {
+  @include media-breakpoint-up(lg) {
     .nav {
       //width: ~"calc((100% - (#{container-large-desktop}) / 12 * 10) / 2)";
     }

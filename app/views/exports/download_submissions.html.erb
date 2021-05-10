@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-sm-10 offset-sm-1 col-xs-12">
     <h2>
       <% if @user.present? %>
         <%= t '.title' %>
@@ -58,66 +58,66 @@
                 <input type="hidden" id="all_submissions" name="all" value="false">
                 <%= render partial: 'option', locals: { name: 'with_info', explanation: t('.with_info_label'), details: t('.with_info_label_help') } %>
                 <div class="form-group">
-                  <strong class="col-sm-6 col-sm-offset-3"><%= t '.only_last_submission_label' %></strong>
+                  <strong class="col-sm-6 offset-sm-3"><%= t '.only_last_submission_label' %></strong>
                 </div>
                 <div class="field form-group">
-                  <div class="col-sm-6 col-sm-offset-3">
+                  <div class="col-sm-6 offset-sm-3">
                       <input type="radio" id="only_last_submission" name="only_last_submission" checked value="1">
                       <label class="checkbox-label" for="only_last_submission"><%= t '.only_last_submission' %>
                   </div>
-                  <div class="col-sm-6 col-sm-offset-3">
+                  <div class="col-sm-6 offset-sm-3">
                       <input type="radio" id="not_only_last_submissions" name="only_last_submission" value="0">
                       <label class="checkbox-label" for="not_only_last_submissions"><%= t '.all_submissions' %>
                   </div>
                 </div>
                 <div class="form-group">
-                  <strong class="col-sm-6 col-sm-offset-3"><%= t '.consider_deadline' %></strong>
+                  <strong class="col-sm-6 offset-sm-3"><%= t '.consider_deadline' %></strong>
                 </div>
                 <div class="field form-group">
-                  <div class="col-sm-6 col-sm-offset-3">
+                  <div class="col-sm-6 offset-sm-3">
                       <input type="radio" id="with_deadline" name="deadline" checked value="1">
                       <label class="checkbox-label" for="with_deadline"><%= t '.with_deadline' %>
                   </div>
-                  <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.with_deadline_help' %></span>
-                  <div class="col-sm-6 col-sm-offset-3">
+                  <span class="help-block offset-sm-3 col-sm-6"><%= t '.with_deadline_help' %></span>
+                  <div class="col-sm-6 offset-sm-3">
                       <input type="radio"  id="no_deadline" name="deadline" value="0">
                       <label class="checkbox-label" for="no_deadline"><%= t '.no_deadline' %>
                   </div>
-                  <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.no_deadline_help' %></span>
+                  <span class="help-block offset-sm-3 col-sm-6"><%= t '.no_deadline_help' %></span>
                 </div>
                 <% if @user.present? %>
                   <input type="hidden" name="user_id" value="<%= @user.id %>">
                   <input type="hidden" name="group_by" value="personal">
                 <% else %>
                   <div class="form-group">
-                    <strong class="col-sm-6 col-sm-offset-3"><%= t '.group_submissions_label' %></strong>
+                    <strong class="col-sm-6 offset-sm-3"><%= t '.group_submissions_label' %></strong>
                   </div>
                   <div class="field form-group">
-                    <div class="col-sm-6 col-sm-offset-3">
+                    <div class="col-sm-6 offset-sm-3">
                         <input type="radio" id="group_by_student" name="group_by" checked value="user">
                         <label class="checkbox-label" for="group_by_student"><%= t '.group_by_student' %>
                     </div>
-                    <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.group_by_student_help' %></span>
-                    <div class="col-sm-6 col-sm-offset-3">
+                    <span class="help-block offset-sm-3 col-sm-6"><%= t '.group_by_student_help' %></span>
+                    <div class="col-sm-6 offset-sm-3">
                         <input type="radio"  id="group_by_exercise" name="group_by" value="exercise">
                         <label class="checkbox-label" for="group_by_exercise"><%= t '.group_by_exercise' %>
                     </div>
-                    <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.group_by_exercise_help' %></span>
+                    <span class="help-block offset-sm-3 col-sm-6"><%= t '.group_by_exercise_help' %></span>
                   </div>
                   <div class="form-group">
-                    <strong class="col-sm-6 col-sm-offset-3"><%= t '.which_students' %></strong>
+                    <strong class="col-sm-6 offset-sm-3"><%= t '.which_students' %></strong>
                   </div>
                   <div class="field form-group">
-                    <div class="col-sm-6 col-sm-offset-3">
+                    <div class="col-sm-6 offset-sm-3">
                       <input type="radio" id="all_students" name="all_students" checked value="1">
                       <label class="checkbox-label" for="all_students"><%= t '.all_students' %>
                     </div>
-                    <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.all_students_help' %></span>
-                    <div class="col-sm-6 col-sm-offset-3">
+                    <span class="help-block offset-sm-3 col-sm-6"><%= t '.all_students_help' %></span>
+                    <div class="col-sm-6 offset-sm-3">
                       <input type="radio"  id="only_submitted" name="all_students" value="0">
                       <label class="checkbox-label" for="only_submitted"><%= t '.only_submitted' %>
                     </div>
-                    <span class="help-block col-sm-offset-3 col-sm-6"><%= t '.only_submitted_help' %></span>
+                    <span class="help-block offset-sm-3 col-sm-6"><%= t '.only_submitted_help' %></span>
                   </div>
                 <% end %>
               <% end %>

@@ -21,7 +21,7 @@
                        placeholder: "git@github.ugent.be/...",
                        disabled: judge.new_record?.! %>
     </div>
-    <span class="help-block col-sm-offset-3 col-sm-6">
+    <span class="help-block offset-sm-3 col-sm-6">
       <% if judge.new_record? %>
         <%= t ".remote_help" %>
       <% else %>
@@ -32,11 +32,11 @@
   <div class="field form-group">
     <%= f.label :image, :class => "col-sm-3 col-form-label" %>
     <div class="col-sm-6"><%= f.text_field :image, class: "form-control" %></div>
-    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".image_help" %></span>
+    <span class="help-block offset-sm-3 col-sm-6"><%= t ".image_help" %></span>
   </div>
   <div class="field form-group">
     <%= f.label :renderer, :class => "col-sm-3 col-form-label" %>
     <div class="col-sm-6"><%= f.select :renderer, FeedbackTableRenderer.renderers.map {|r| r.to_s}, {}, {class: "form-control"} %></div>
-    <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".renderer_help" %></span>
+    <span class="help-block offset-sm-3 col-sm-6"><%= t ".renderer_help" %></span>
   </div>
 <% end %>

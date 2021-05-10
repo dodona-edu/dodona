@@ -28,7 +28,7 @@
   <div class="field form-group">
     <%= f.label :labels, :class => "col-sm-3 col-xs-12 col-form-label" %>
     <div class="col-sm-6 col-xs-12"><%= f.text_field :labels, class: 'form-control', disable: !f.permission?(:labels), value: activity.labels.map(&:name).join(','), placeholder: t(".labels") %></div>
-    <span class="help-block col-sm-offset-3 col-sm-6 col-xs-12"><%= t '.labels_delimiter' %></span>
+    <span class="help-block offset-sm-3 col-sm-6 col-xs-12"><%= t '.labels_delimiter' %></span>
   </div>
   <div class="field form-group">
     <label class="col-sm-3 col-xs-12 col-form-label"><%= t ".edit_activity" %></label>

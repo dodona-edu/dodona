@@ -44,13 +44,13 @@ $blockquote-font-size: $font-size-base;
   color: white !important;
 }
 
-.alert button.close {
+.alert button.btn-close {
   color: $alert-secondary;
   opacity: 1;
   text-shadow: initial;
 }
 
-.alert button.close:hover {
+.alert button.btn-close:hover {
   color: $alert-fg;
 }
 

@@ -21,7 +21,7 @@
   border-color: darken($color-deep-purple, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -31,7 +31,7 @@
   border-color: darken($color-indigo, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -41,7 +41,7 @@
   border-color: darken($color-teal, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -57,7 +57,7 @@
   border-color: darken($color-brown, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -67,7 +67,7 @@
   border-color: darken($color-blue-grey, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -95,7 +95,7 @@
   border-color: darken($color-deep-purple, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -105,7 +105,7 @@
   border-color: darken($color-indigo, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -115,7 +115,7 @@
   border-color: darken($color-teal, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -131,7 +131,7 @@
   border-color: darken($color-brown, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -141,7 +141,7 @@
   border-color: darken($color-blue-grey, 20%);
   color: $label-text;
 
-  a.close {
+  a.btn-close {
     color: $white-text;
   }
 }
@@ -186,7 +186,7 @@
     cursor: pointer;
   }
 
-  .tokenfield-undeletable .close {
+  .tokenfield-undeletable .btn-close {
     display: none;
   }
 

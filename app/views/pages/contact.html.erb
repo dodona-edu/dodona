@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-sm-10 offset-sm-1 col-xs-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title') %></h2>
@@ -40,7 +40,7 @@
 
           <% if Rails.env.production? || Rails.env.staging? %>
             <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-8">
+              <div class="offset-sm-2 col-sm-8">
                 <%= recaptcha_tags %>
               </div>
             </div>

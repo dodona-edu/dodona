@@ -1,6 +1,6 @@
-//= depend_on theme/theme-light.css.less
-//= depend_on theme/development.css.less
-//= depend_on theme/production.css.less
+//= depend_on theme/theme-light.css.scss
+//= depend_on theme/development.css.scss
+//= depend_on theme/production.css.scss
 
 <% if Rails.env.development? || Rails.env.test? || Rails.env.staging? %>
 @mode: "development";
@@ -9,4 +9,4 @@
 <% end %>
 
 @theme: "light";
-@import "base.css.less";
+@import "base.css.scss";

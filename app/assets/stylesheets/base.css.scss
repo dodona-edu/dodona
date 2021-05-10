@@ -1,0 +1,37 @@
+@import "theme/colors.css.scss";
+@import "mixins.css.scss";
+@import "vendor.scss";
+@import "theme/theme-@{theme}.css.scss";
+@import "theme/@{mode}.css.scss";
+@import "theme/rouge-@{theme}.css.scss";
+@import "bootstrap_overrides.css.scss";
+@import "libraries.css.scss";
+@import "material_icons.css.scss";
+@import "components.css.scss";
+@import "layout.css.scss";
+@import "pages.css.scss";
+@import "models.css.scss";
+@import "print.css.scss";
+
+.field_with_errors input {
+  border-color: @danger-fg;
+}
+
+.colored-info {
+  color: @brand-info;
+}
+
+figcaption {
+  margin: 0 10px;
+}
+
+.ellipsis-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wrap-overflow {
+  white-space: normal;
+  overflow-wrap: break-word;
+}

@@ -1,9 +1,9 @@
-@import "theme/colors.css.less";
-@import "theme/theme-light.css.less";
+@import "theme/colors.css.scss";
+@import "theme/theme-light.css.scss";
 <% if Rails.env.development? || Rails.env.staging? %>
-@import "theme/development.css.less";
+@import "theme/development.css.scss";
 <% end %>
-@import "theme/rouge-light.css.less";
+@import "theme/rouge-light.css.scss";
 
 body {
   font-size: 14px;

@@ -27,7 +27,8 @@
   <script>
     window.dodona = window.dodona || {};
     window.dodona.dotCount = <%= @dot_icon&.to_json&.html_safe || "[]" %>;
-    window.dodona.sandboxHost = "<%= Rails.configuration.sandbox_host %>";
+    window.dodona.sandboxUrl = "<%= sandbox_url %>";
+    window.dodona.tutorUrl = "<%= Rails.configuration.tutor_url.to_s %>";
   </script>
 
   <% if session[:dark].nil? && current_user.present? %>

@@ -269,9 +269,9 @@ a.card-title-link:hover {
   border: none;
   border-bottom: 5px solid $header-accent;
   font-size: 18px;
-  // .transition-duration(0.2s);
-  // .transition-property('height');
-  // .transition-timing-function(ease-out);
+  transition-duration: 0.2s;
+  transition-property: height;
+  transition-timing-function: ease-out;
 }
 
 .card-title-colored .nav-tabs li a,

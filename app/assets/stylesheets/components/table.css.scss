@@ -83,7 +83,7 @@ tr.gu-mirror {
 }
 
 .sticky-wrapper {
-  // max-height: ~"calc(100vh - #{footer-height} - #{navbar-height} - #{card-margin-bottom} - #{card-supporting-text-padding})";
+  max-height: calc(100vh - #{footer-height} - #{navbar-height} - #{card-margin-bottom} - #{card-supporting-text-padding});
   // If the height is less than this, it becomes impossible to use the table,
   // so forego the sticky headers a bit.
   min-height: 400px;
@@ -93,7 +93,7 @@ tr.gu-mirror {
 
 @include media-breakpoint-down(sm) {
   .sticky-wrapper {
-    // max-height: ~"calc(100vh - #{footer-height-sm} - #{navbar-height} - #{card-margin-bottom} - #{card-supporting-text-padding})";
+    max-height: calc(100vh - #{footer-height-sm} - #{navbar-height} - #{card-margin-bottom} - #{card-supporting-text-padding});
   }
 }
 

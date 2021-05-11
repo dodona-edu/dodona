@@ -233,16 +233,6 @@ $navbar-height: 50px;
         .caret {
           vertical-align: text-top;
         }
-
-        .dropdown-menu li.dropdown-header {
-          display: none;
-        }
-      }
-
-      @include media-breakpoint-down(sm) {
-        .dropdown-menu li.dropdown-header {
-          display: none;
-        }
       }
 
       @include media-breakpoint-down(sm) {

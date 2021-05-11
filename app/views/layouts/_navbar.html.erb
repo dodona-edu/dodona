@@ -53,7 +53,6 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li class="dropdown-header"><%= current_user.full_name %></li>
               <li><%= link_to t("layout.menu.profile"), current_user, class: "dropdown-item" %></li>
               <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user), class: "dropdown-item"  %></li>
               <li><%= link_to t("layout.menu.my_questions"), questions_path(user_id: current_user), class: "dropdown-item"  %></li>

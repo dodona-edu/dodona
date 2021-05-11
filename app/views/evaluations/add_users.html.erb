@@ -2,7 +2,7 @@
   <%= javascript_pack_tag 'evaluation' %>
 <% end %>
 <div class="row">
-  <div class="col-sm-10 offset-sm-1 col-xs-12">
+  <div class="col-sm-10 offset-sm-1 col-12">
     <div class="card evaluation-user-select">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title') %></h2>
@@ -21,7 +21,7 @@
               <h4><%= t('evaluations.edit_users.mass_edit') %></h4>
             </div>
             <div class="row">
-              <div class="col-xs-6">
+              <div class="col-6">
                 <div class="user-select-option">
                   <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'enrolled', format: :js) do %>
                     <%= t('evaluations.add_users.users_in_course_html', count: @user_count_course) %>
@@ -31,7 +31,7 @@
                   <% end %>
                 </div>
               </div>
-              <div class="col-xs-6">
+              <div class="col-6">
                 <div class="user-select-option">
                   <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'submitted', format: :js) do %>
                     <%= t('evaluations.add_users.users_submitted_html', count: @user_count_series) %>

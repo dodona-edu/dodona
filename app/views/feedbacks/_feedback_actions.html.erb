@@ -58,10 +58,10 @@
         </div>
       </div>
       <div class="row row-no-gutters form-row">
-        <div class="col-xs-8 total-score" data-total="<%= @feedback.score %>">
+        <div class="col-8 total-score" data-total="<%= @feedback.score %>">
           <span id="score-sum"><%= format_score @feedback.score %></span> / <%= format_score @feedback.maximum_score %>
         </div>
-        <div class="col-xs-4 score-buttons">
+        <div class="col-4 score-buttons">
           <div class="btn-group" role="group">
             <%= button_tag class: "btn btn-secondary btn-sm", id: 'zero-button', title: t(".give_zero_all") do %>
               <i class="mdi mdi-thumb-down mdi-12" aria-hidden='true'></i>

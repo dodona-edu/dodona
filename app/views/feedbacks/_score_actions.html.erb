@@ -2,7 +2,7 @@
 <div class="row row-no-gutters form-row" id="<%= "#{score_item.id}-score-form-wrapper" %>">
   <%= form_for score, url: '#',
                namespace: score_item.id,
-               html: { class: "form-inline score-form col-xs-12", data: { url: url, new: score.persisted? } } do |f| %>
+               html: { class: "form-inline score-form col-12", data: { url: url, new: score.persisted? } } do |f| %>
     <%= f.hidden_field :expected_score, value: score.score, class: "expected-score" %>
     <% e = if score&.out_of_bounds?
              'has-error'

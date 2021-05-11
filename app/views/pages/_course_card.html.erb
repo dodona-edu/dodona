@@ -34,36 +34,36 @@
   <% end %>
   <div class="card-supporting-text stats row">
     <% if local_assigns[:course_index] %>
-      <div class="col-xs-6">
+      <div class="col-6">
         <h1><%= number_with_delimiter course.subscribed_members_count, delimiter: " " %></h1>
         <%= t ".users" %>
       </div>
-      <div class="col-xs-6">
+      <div class="col-6">
         <h1><%= number_with_delimiter course.exercises_count, delimiter: " " %></h1>
         <%= t ".exercises" %>
       </div>
     <% else %>
       <% if current_user.course_admin?(course) %>
-        <div class="col-xs-6">
+        <div class="col-6">
           <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
             <%= t ".submissions" %>
           <% end %>
         </div>
-        <div class="col-xs-6">
+        <div class="col-6">
           <%= link_to course_members_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter course.subscribed_members_count, delimiter: " " %></h1>
             <%= t ".users" %>
           <% end %>
         </div>
       <% else %>
-        <div class="col-xs-6">
+        <div class="col-6">
           <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter current_user.submissions.in_course(course).count, delimiter: " " %></h1>
             <%= t ".submissions" %>
           <% end %>
         </div>
-        <div class="col-xs-6">
+        <div class="col-6">
           <%= link_to course_path(course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter current_user.correct_exercises(course: course), delimiter: " " %></h1>
             <%= t ".correct-exercises" %>

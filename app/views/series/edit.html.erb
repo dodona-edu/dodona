@@ -2,7 +2,7 @@
   <%= javascript_pack_tag 'series' %>
 <% end %>
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-12">
     <div class="card series-edit">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @series.name %></h2>
@@ -14,7 +14,7 @@
       <% if @series.indianio_token || !@series.open? %>
         <div class="card-supporting-text card-border">
           <h4><%= t '.confidential' %></h4>
-          <div class="col-xs-12 col-sm-10">
+          <div class="col-12 col-sm-10">
             <div class="form-horizontal">
               <% if @series.indianio_token %>
                 <div class="field form-group">
@@ -60,7 +60,7 @@
     <% if policy(@series).modify_activities? %>
       <div class="card">
         <div class="card-supporting-text">
-          <div class="col-xs-12">
+          <div class="col-12">
             <div class="page-subtitle">
               <h3><%= t ".manage_activities" %></h3>
               <div class="flex-spacer"></div>
@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="card-supporting-text card-border">
-          <div class="col-xs-12">
+          <div class="col-12">
             <h4 id="add-activities"><%= t ".add_activities" %></h4>
             <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"]} %>
             <div id="activities-table-wrapper">

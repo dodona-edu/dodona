@@ -5,7 +5,7 @@
   </div>
   <div class="row">
     <% courses.each do |course| %>
-      <div class="col-xs-12 col-sm-6 col-lg-4">
+      <div class="col-12 col-sm-6 col-lg-4">
         <%= render partial: "pages/course_card", locals: {course: course, show_membership: true, course_index: true} %>
       </div>
     <% end %>

@@ -70,7 +70,7 @@ class PythiaRenderer < FeedbackTableRenderer
           end
         end
         if g[:description]
-          @builder.div(class: 'col-xs-12 description') do
+          @builder.div(class: 'col-12 description') do
             message(g[:description])
           end
         end

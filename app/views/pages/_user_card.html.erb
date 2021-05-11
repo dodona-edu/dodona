@@ -7,13 +7,13 @@
 
   <div class="card-supporting-text stats">
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-6">
         <%= link_to user_submissions_path(current_user), class: 'card-title-link' do %>
           <h1><%= number_with_delimiter current_user.submissions.count, delimiter: " " %></h1>
           <%= t ".submissions" %>
         <% end %>
       </div>
-      <div class="col-xs-6">
+      <div class="col-6">
         <h1><%= number_with_delimiter current_user.correct_exercises, delimiter: " " %></h1>
         <%= t ".correct-exercises" %>
       </div>

@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-10 offset-sm-1 col-xs-12">
+  <div class="col-sm-10 offset-sm-1 col-12">
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
@@ -47,21 +47,21 @@
           <div class="col-sm-12 col-md-6">
             <h4><%= t ".stats" %></h4>
             <div class="row">
-              <div class="col-xs-6 stat">
+              <div class="col-6 stat">
                 <a class="card-title-link" href="<%= user_submissions_path(@user) %>">
                   <h1><%= @user.submissions.count %></h1>
                   <%= t ".submissions" %>
                 </a>
               </div>
-              <div class="col-xs-6 stat">
+              <div class="col-6 stat">
                 <h1><%= @user.subscribed_courses.count %></h1>
                 <%= t ".courses" %>
               </div>
-              <div class="col-xs-6 stat">
+              <div class="col-6 stat">
                 <h1><%= @user.correct_exercises %></h1>
                 <%= t ".correctly_solved" %>
               </div>
-              <div class="col-xs-6 stat">
+              <div class="col-6 stat">
                 <h1><%= @user.unfinished_exercises %></h1>
                 <%= t ".unfinished" %>
               </div>
@@ -111,7 +111,7 @@
     <% if policy(@user).edit? %>
       <div class="card">
         <div class="card-supporting-text card-border">
-          <div class="col-xs-12">
+          <div class="col-12">
             <h4><%= t '.api_tokens' %></h4>
             <p class="h4-info-text"><%= t ".token_help_html" %></p>
             <div id="fresh-token">

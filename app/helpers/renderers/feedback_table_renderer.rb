@@ -176,7 +176,7 @@ class FeedbackTableRenderer
   def group(g)
     @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}") do
       if g[:description]
-        @builder.div(class: 'col-xs-12 description') do
+        @builder.div(class: 'col-12 description') do
           message(g[:description])
         end
       end
@@ -192,20 +192,20 @@ class FeedbackTableRenderer
   end
 
   def testcase_content(tc)
-    @builder.div(class: 'col-xs-12 description') do
+    @builder.div(class: 'col-12 description') do
       @builder.div(class: 'indicator') do
         tc[:accepted] ? icon_correct : icon_wrong
       end
       message(tc[:description]) if tc[:description]
     end
     tc[:tests]&.each { |t| test(t) }
-    @builder.div(class: 'col-xs-12') do
+    @builder.div(class: 'col-12') do
       messages(tc[:messages])
     end
   end
 
   def test(t)
-    @builder.div(class: 'col-xs-12 test') do
+    @builder.div(class: 'col-12 test') do
       if t[:description]
         @builder.div(class: 'description') do
           message(t[:description])

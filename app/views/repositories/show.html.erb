@@ -3,13 +3,13 @@
   <%= javascript_pack_tag 'activities' %>
 <% end %>
 <div class="row">
-  <div class="col-sm-10 offset-sm-1 col-xs-12">
+  <div class="col-sm-10 offset-sm-1 col-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @repository.name %></h2>
       </div>
       <div class="card-supporting-text">
-        <div class="<%= current_user.repository_admin?(@repository) ? "col-sm-6" : "col-sm-12" %> col-xs-12">
+        <div class="<%= current_user.repository_admin?(@repository) ? "col-sm-6" : "col-sm-12" %> col-12">
           <p>
             <strong><%= t ".repository" %>:</strong> <%= @repository.name %>
           </p>
@@ -40,7 +40,7 @@
           <% end %>
         </div>
         <% if current_user.repository_admin?(@repository) %>
-          <div class="col-sm-6 col-xs-12">
+          <div class="col-sm-6 col-12">
             <div class="callout callout-info">
               <h4>Webhook</h4>
               <p><%= t ".webhook_html" %></p>

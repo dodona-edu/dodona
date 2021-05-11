@@ -102,7 +102,7 @@
   <div class="<%= course.new_record? ? "stepper-part stepper-border" : "card-supporting-text card-border" %>">
     <h4><%= t('.access') %></h4>
     <div class="form-group">
-      <strong class="col-xs-12"><%= t('.visibility-label') %></strong>
+      <strong class="col-12"><%= t('.visibility-label') %></strong>
     </div>
     <div class="field form-group">
       <% Course.visibilities.keys.each.with_index do |v, i| %>
@@ -126,7 +126,7 @@
       </div>
     </div>
     <div class="form-group">
-      <strong class="col-xs-12"><%= t('.registration-label') %></strong>
+      <strong class="col-12"><%= t('.registration-label') %></strong>
     </div>
     <div class="field form-group">
       <% Course.registrations.keys.each.with_index do |r, i| %>
@@ -138,7 +138,7 @@
       <% end %>
     </div>
     <div class="form-group">
-      <strong class="col-xs-12"><%= t('.moderated-label') %></strong>
+      <strong class="col-12"><%= t('.moderated-label') %></strong>
     </div>
     <div class="field form-group">
       <div class="offset-sm-3 col-sm-6">

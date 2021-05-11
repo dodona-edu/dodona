@@ -1,23 +1,23 @@
 <div class="row">
-  <div class="col-xs-6 col-sm-3 admin-card-stat">
+  <div class="col-6 col-sm-3 admin-card-stat">
     <%= link_to course_members_path(@course), class: 'card-title-link' do %>
       <h1><%= number_with_delimiter @course.subscribed_members_count, delimiter: " " %></h1>
       <%= t ".subscribed_users" %>
     <% end %>
   </div>
-  <div class="col-xs-6 col-sm-3 admin-card-stat">
+  <div class="col-6 col-sm-3 admin-card-stat">
     <%= link_to course_path(@course), class: 'card-title-link' do %>
       <h1><%= number_with_delimiter @course.exercises_count, delimiter: " " %></h1>
       <%= t ".exercise_count" %>
     <% end %>
   </div>
-  <div class="col-xs-6 col-sm-3 admin-card-stat">
+  <div class="col-6 col-sm-3 admin-card-stat">
     <%= link_to course_submissions_path(@course), class: 'card-title-link' do %>
       <h1><%= number_with_delimiter @course.submissions.count, delimiter: " " %></h1>
       <%= t ".submitted_solutions" %>
     <% end %>
   </div>
-  <div class="col-xs-6 col-sm-3 admin-card-stat">
+  <div class="col-6 col-sm-3 admin-card-stat">
     <%= link_to statistics_course_path(@course), class: 'card-title-link' do %>
       <h1>&nbsp;</h1>
       <span class="text-muted"><%= t ".more_statistics" %></span>

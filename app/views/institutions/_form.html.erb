@@ -10,11 +10,11 @@
     </div>
   <% end %>
   <div class="field form-group">
-    <%= f.label :name, :class => "col-sm-3 col-xs-12 col-form-label" %>
-    <div class="col-sm-6 col-xs-12"><%= f.text_field :name, class: "form-control", disabled: !f.permission?(:name) %></div>
+    <%= f.label :name, :class => "col-sm-3 col-12 col-form-label" %>
+    <div class="col-sm-6 col-12"><%= f.text_field :name, class: "form-control", disabled: !f.permission?(:name) %></div>
   </div>
   <div class="field form-group">
-    <%= f.label :short_name, :class => "col-sm-3 col-xs-12 col-form-label" %>
-    <div class="col-sm-6 col-xs-12"><%= f.text_field :short_name, class: "form-control", disabled: !f.permission?(:short_name) %></div>
+    <%= f.label :short_name, :class => "col-sm-3 col-12 col-form-label" %>
+    <div class="col-sm-6 col-12"><%= f.text_field :short_name, class: "form-control", disabled: !f.permission?(:short_name) %></div>
   </div>
 <% end %>

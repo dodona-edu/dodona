@@ -3,7 +3,7 @@
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
-  <div class="col-sm-10 col-xs-12 offset-sm-1">
+  <div class="col-sm-10 col-12 offset-sm-1">
     <div class="card">
       <div class="card-title card-title-colored">
         <% if !@course.open_for_all? || @course.moderated %>
@@ -31,7 +31,7 @@
 
       <% if @course.description.present? or current_user&.member_of?(@course).! %>
         <div class="card-supporting-text card-border row course-description">
-          <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
+          <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-12">
             <%= cache @course do %>
               <%= markdown(@course.description) %>
             <% end %>
@@ -48,7 +48,7 @@
       <% if current_user&.course_admin?(@course) %>
         <div class="card-supporting-text card-border">
           <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
               <%= render 'user_stats' %>
             </div>
           </div>

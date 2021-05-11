@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="row">
-  <div class="col-sm-10 offset-sm-1 col-xs-12">
+  <div class="col-sm-10 offset-sm-1 col-12">
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
@@ -35,20 +35,20 @@
           </span>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <h4><%= t "users.show.stats" %></h4>
             <div class="row">
-              <div class="col-xs-12 col-sm-4 stat">
+              <div class="col-12 col-sm-4 stat">
                 <a class="card-title-link" href="<%= user_submissions_path(@user, course_id: @course.id) %>">
                   <h1><%= @user.submissions.in_course(@course).count %></h1>
                   <%= t "users.show.submissions" %>
                 </a>
               </div>
-              <div class="col-xs-12 col-sm-4 stat">
+              <div class="col-12 col-sm-4 stat">
                 <h1><%= @user.correct_exercises(course: @course) %></h1>
                 <%= t "users.show.correctly_solved" %>
               </div>
-              <div class="col-xs-12 col-sm-4 stat">
+              <div class="col-12 col-sm-4 stat">
                 <h1><%= @user.unfinished_exercises(@course) %></h1>
                 <%= t "users.show.unfinished" %>
               </div>

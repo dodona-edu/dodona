@@ -26,21 +26,21 @@
       <% if score_item&.new_record? && local_assigns[:models] %>
         <%= f.hidden_field :evaluation_exercise_id, value: evaluation_exercise.id %>
       <% end %>
-      <div class="field form-group">
+      <div class="field form-group row">
         <%= f.label :name, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.text_field :name, required: true, class: "form-control" %></div>
       </div>
-      <div class="field form-group">
+      <div class="field form-group row">
         <%= f.label :description, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.text_area :description, class: "form-control", rows: "2" %></div>
         <span class="help-block offset-sm-4 col-sm-8"><%= t "score_items.form.description-help" %></span>
       </div>
-      <div class="field form-group">
+      <div class="field form-group row">
         <%= f.label :maximum, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.number_field :maximum, step: 0.25, min: 0.25, max: 999.75, required: true, class: "form-control" %></div>
         <span class="help-block offset-sm-4 col-sm-8"><%= t "score_items.form.score-help" %></span>
       </div>
-      <div class="field form-group">
+      <div class="field form-group row">
         <%= f.label :visible, class: 'col-sm-4 col-form-label' %>
         <div class="col-sm-8">
           <div class="checkbox">

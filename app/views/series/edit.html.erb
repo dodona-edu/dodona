@@ -17,7 +17,7 @@
           <div class="col-12 col-sm-10">
             <div class="form-horizontal">
               <% if @series.indianio_token %>
-                <div class="field form-group">
+                <div class="field form-group row">
                   <%= label_tag :indianio_token, 'Indianio token', class: 'col-sm-3 col-form-label' %>
                   <div class="col-sm-9">
                     <div class="input-group" id="indianio_token">
@@ -35,7 +35,7 @@
                 </div>
               <% end %>
               <% unless @series.open? %>
-                <div class="field form-group">
+                <div class="field form-group row">
                   <%= label_tag :access_token, t('.access-link'), class: 'col-sm-3 col-form-label' %>
                   <div class="col-sm-9">
                     <div class="input-group" id="access_token_field">

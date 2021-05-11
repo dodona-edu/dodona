@@ -8,7 +8,7 @@
   <%= form_for(:copy, url: copy_evaluation_score_items_path(@evaluation), html: { class: 'form-horizontal' }, namespace: evaluation_exercise.id, remote: true) do |f| %>
     <div class="modal-body">
       <%= f.hidden_field :to, value: evaluation_exercise.id %>
-      <div class="field form-group">
+      <div class="field form-group row">
         <%= f.label t("score_items.copy.exercise"), :class => "col-sm-3 col-form-label" %>
         <div class="col-sm-6">
           <%= f.collection_select :from,

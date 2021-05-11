@@ -22,7 +22,7 @@
       <div class="form-group">
         <strong class="offset-sm-3 col-sm-6"><%= t('.copy_options_details') %></strong>
       </div>
-      <div class="field form-group">
+      <div class="field form-group row">
         <div class="col-sm-6 offset-sm-3">
           <input id="copy_series" type="checkbox" checked disabled>
           <label for="copy_series" class="checkbox-label"><%= t('.copy_series') %></label>
@@ -43,21 +43,21 @@
   <% end %>
 
   <div class="<%= course.new_record? ? "stepper-part#{needs_border ? " stepper-border" : ""}" : "card-supporting-text" %>">
-    <div class="field form-group">
+    <div class="field form-group row">
       <%= f.label :name, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <%= f.label :teacher, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :teacher, class: "form-control" %></div>
       <span class="help-block offset-sm-3 col-sm-6"><%= t ".teacher-help" %></span>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <%= f.label :year, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :year, class: "form-control" %></div>
       <span class="help-block offset-sm-3 col-sm-6"><%= t ".year-help" %></span>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <%= f.label :institution, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6">
         <%= f.select :institution_id,
@@ -67,14 +67,14 @@
       </div>
       <span class="help-block offset-sm-3 col-sm-6"><%= t ".institution-help_html" %></span>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <%= f.label :description, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
       <span class="help-block offset-sm-3 col-sm-6"><%= t ".description-help" %></span>
     </div>
 
     <% if current_user.zeus? %>
-      <div class="field form-group">
+      <div class="field form-group row">
         <%= f.label :color, class: 'col-sm-3 col-form-label' %>
         <div class="col-sm-6">
           <%= f.select :color,
@@ -86,7 +86,7 @@
       </div>
     <% end %>
 
-    <div class="field form-group">
+    <div class="field form-group row">
       <%= f.label :questions, t(".questions.title"), class: 'col-sm-3 col-form-label' %>
       <div class="col-sm-6">
         <div class="checkbox">
@@ -104,7 +104,7 @@
     <div class="form-group">
       <strong class="col-12"><%= t('.visibility-label') %></strong>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <% Course.visibilities.keys.each.with_index do |v, i| %>
         <div class="col-sm-6 offset-sm-3">
           <%= f.radio_button :visibility, v %>
@@ -113,7 +113,7 @@
         <span class="help-block offset-sm-3 col-sm-6"><%= t ".visibility-#{v}-help_html" %></span>
       <% end %>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <div class="offset-sm-3 col-sm-6">
         <div class="input-group" id="hidden_show_link_field">
           <%= render partial: 'application/token_field', formats: [:html],
@@ -128,7 +128,7 @@
     <div class="form-group">
       <strong class="col-12"><%= t('.registration-label') %></strong>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <% Course.registrations.keys.each.with_index do |r, i| %>
         <div class="col-sm-6 offset-sm-3">
           <%= f.radio_button :registration, r %>
@@ -140,7 +140,7 @@
     <div class="form-group">
       <strong class="col-12"><%= t('.moderated-label') %></strong>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <div class="offset-sm-3 col-sm-6">
         <%= f.radio_button :moderated, false %>
         <%= f.label :moderated, t('.automatically'), value: false, class: 'checkbox-label' %>

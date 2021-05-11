@@ -64,6 +64,10 @@
   }
 }
 
+.form-group {
+  margin-bottom: 1rem;
+}
+
 .alert a {
   color: $alert-fg;
   font-weight: bold;
@@ -71,4 +75,9 @@
 
 .hidden {
   display: none !important;
+}
+
+.col-form-label {
+  text-align: right;
+  font-weight: bold;
 }

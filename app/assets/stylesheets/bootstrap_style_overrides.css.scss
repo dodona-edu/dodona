@@ -1,26 +1,4 @@
-// Your custom.scss stylesheets goes here
-//
-// Since bootstrap was imported above you have access to its mixins which
-// you may use and inherit here
-//
-// If you'd like to override bootstrap's own variables, you can do so here as well
-// See http://getbootstrap.com/customize/.scss-variables for their names and documentation
-//
-// Example:
-// $linkColor: #ff0000;
-//
-//
-// Color overrides are in theme/theme.css.scss
-
-// other values
-$border-radius-base: 6px;
-
-// font stuff
-$font-family-sans-serif: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-$font-size-base: 14px;
-$baseLineHeight: 24px;
-$line-height-base: 1.3846153846;
-$icon-font-path: "/assets/bootstrap/";
+// html elements
 h1, h2, h3, h4, h5 {
   font-weight: 300;
   letter-spacing: -0.01em;
@@ -28,7 +6,9 @@ h1, h2, h3, h4, h5 {
   margin: 0;
 }
 
-$blockquote-font-size: $font-size-base;
+a {
+  text-decoration: none;
+}
 
 // nav bar
 .navbar {
@@ -211,6 +191,3 @@ mark,
 .badge {
   padding-left: 6.5px;
 }
-
-// Take dark mode into account
-$list-group-bg: $content-bg;

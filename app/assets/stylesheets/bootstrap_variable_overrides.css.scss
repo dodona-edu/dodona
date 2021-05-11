@@ -1,0 +1,15 @@
+// Color overrides are in theme/theme.css.scss
+
+// disable rfs
+$enable-rfs: false;
+
+// other values
+$border-radius-base: 6px;
+
+// font stuff
+$font-family-sans-serif: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-size-base: 0.875rem;//14px;
+$baseLineHeight: 24px;
+$line-height-base: 1.3846153846;
+
+$blockquote-font-size: $font-size-base;

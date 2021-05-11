@@ -2,6 +2,7 @@
 @import "../../../node_modules/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
+@import "bootstrap_variable_overrides";
 @import "theme/colors";
 @import "mixins";
 @import "vendor";
@@ -53,7 +54,7 @@
 @import "../../../node_modules/bootstrap/scss/utilities/api";
 
 // 5. Add additional custom code here
-@import "bootstrap_overrides";
+@import "bootstrap_style_overrides";
 @import "libraries";
 @import "material_icons";
 @import "components";
@@ -84,3 +85,7 @@ figcaption {
   white-space: normal;
   overflow-wrap: break-word;
 }
+
+
+// Take dark mode into account
+$list-group-bg: $content-bg;

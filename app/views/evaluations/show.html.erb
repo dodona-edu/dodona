@@ -31,12 +31,13 @@
         <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
           <i class="mdi mdi-dots-vertical"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-end">
           <li>
             <%= link_to t('evaluations.destroy'),
                         evaluation_path(@evaluation),
                         method: :delete,
-                        data: { confirm: t('general.are_you_sure') } %>
+                        data: { confirm: t('general.are_you_sure'),
+                        class: "dropdown-item" } %>
           </li>
         </ul>
       </div>

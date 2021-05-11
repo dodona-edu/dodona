@@ -31,7 +31,7 @@
               <a href="#" class="dropdown-toggle<%= " notification" if @unread_notifications.any? %>" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="mdi mdi-24 mdi-bell"></i>
               </a>
-              <div class="dropdown-menu dropdown-menu-right notification-dropdown">
+              <div class="dropdown-menu dropdown-menu-end notification-dropdown">
                 <%= render partial: 'notifications/small_notifications_table', locals: { notifications: @last_notifications } %>
               </div>
               <script>
@@ -52,7 +52,7 @@
               <span class="dropdown-title"><%= current_user.first_name || current_user.last_name %></span>
               <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-right">
+            <ul class="dropdown-menu dropdown-menu-end">
               <li><%= link_to t("layout.menu.profile"), current_user, class: "dropdown-item" %></li>
               <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user), class: "dropdown-item"  %></li>
               <li><%= link_to t("layout.menu.my_questions"), questions_path(user_id: current_user), class: "dropdown-item"  %></li>
@@ -106,7 +106,7 @@
             <i class='mdi mdi-24 mdi-web'></i>
             <span class="dropdown-title"><%= I18n.locale.to_s %></span>
             <span class="caret"></span></a>
-          <ul class="dropdown-menu dropdown-menu-right">
+          <ul class="dropdown-menu dropdown-menu-end">
             <li><%= link_to 'English', params.to_unsafe_h.merge(locale: "en"), class: "dropdown-item"  %></li>
             <li><%= link_to 'Nederlands', params.to_unsafe_h.merge(locale: "nl"), class: "dropdown-item"  %></li>
           </ul>

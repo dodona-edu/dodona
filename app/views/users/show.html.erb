@@ -99,9 +99,9 @@
             <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
               <i class="mdi mdi-dots-vertical"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-right">
+            <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <%= link_to t('.download_my_submissions'), users_exports_path(@user) %>
+                <%= link_to t('.download_my_submissions'), users_exports_path(@user), class: "dropdown-item" %>
               </li>
             </ul>
           <% end %>

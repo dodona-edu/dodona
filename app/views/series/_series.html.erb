@@ -26,11 +26,11 @@
         <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
           <i class="mdi mdi-dots-vertical"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-end">
           <% if current_user&.course_admin?(series.course) %>
             <% if policy(series).edit? %>
               <li>
-                <%= link_to edit_series_path(series) do %>
+                <%= link_to edit_series_path(series), class: "dropdown-item" do %>
                   <i class='mdi mdi-pencil mdi-18'></i> <%= t("series.edit.title") %>
                 <% end %>
               </li>
@@ -43,7 +43,7 @@
                       confirm += " " + t('series.delete.confirm_evaluation')
                     end
                  %>
-                <%= link_to series_path(series), method: :delete, data: {confirm: confirm} do %>
+                <%= link_to series_path(series), method: :delete, data: {confirm: confirm}, class: "dropdown-item" do %>
                   <i class='mdi mdi-delete mdi-18'></i> <%= t("series.delete.title") %>
                 <% end %>
               </li>
@@ -51,11 +51,11 @@
             <% if policy(series).create_evaluation? %>
               <li>
                 <% if series.evaluation.present? %>
-                  <%= link_to evaluation_path(series.evaluation) do %>
+                  <%= link_to evaluation_path(series.evaluation), class: "dropdown-item" do %>
                     <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.show.view_evaluation") %>
                   <% end %>
                 <% else %>
-                  <%= link_to new_evaluation_path(series_id: series.id) do %>
+                  <%= link_to new_evaluation_path(series_id: series.id), class: "dropdown-item" do %>
                     <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.new.create_evaluation") %>
                   <% end %>
                 <% end %>
@@ -63,7 +63,7 @@
             <% end %>
             <% if policy(series).edit? && !series.open? %>
               <li>
-                <%= link_to series_path(series, token: series.access_token) do %>
+                <%= link_to series_path(series, token: series.access_token), class: "dropdown-item" do %>
                   <i class="mdi mdi-link mdi-18"></i>
                   <%= t 'series.show.token_link' %>
                 <% end %>
@@ -71,21 +71,21 @@
             <% end %>
             <% if policy(series).scoresheet? %>
               <li>
-                <%= link_to scoresheet_series_path(series) do %>
+                <%= link_to scoresheet_series_path(series), class: "dropdown-item" do %>
                   <i class='mdi mdi-view-list mdi-18'></i> <%= t("series.show.series_scoresheet") %>
                 <% end %>
               </li>
             <% end %>
             <% if policy(series).download_submissions? && current_user.course_admin?(series.course) %>
               <li>
-                <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?)) do %>
+                <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?)), class: "dropdown-item" do %>
                   <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_all_solutions") %>
                 <% end %>
               </li>
             <% end %>
             <% if policy(series).mass_rejudge? %>
               <li>
-                <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: {confirm: t("submissions.index.confirm_reevaluate_submissions")} do %>
+                <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: {confirm: t("submissions.index.confirm_reevaluate_submissions")}, class: "dropdown-item" do %>
                   <i class='mdi mdi-replay mdi-18'></i> <%= t("submissions.index.reevaluate_submissions") %>
                 <% end %>
               </li>
@@ -94,21 +94,21 @@
           <% end %>
           <% if policy(series).overview? %>
             <li>
-              <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
+              <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)), class: "dropdown-item" do %>
                 <i class='mdi mdi-eye mdi-18'></i> <%= t("series.show.show_overview") %>
               <% end %>
             </li>
           <% end %>
           <% if policy(series).download_submissions? %>
             <li>
-              <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)) do %>
+              <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)), class: "dropdown-item" do %>
                 <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_submissions") %>
               <% end %>
             </li>
           <% end %>
           <% if series.evaluation.present? && policy(series.evaluation).overview? %>
             <li>
-              <%= link_to overview_evaluation_path(series.evaluation) do %>
+              <%= link_to overview_evaluation_path(series.evaluation), class: "dropdown-item" do %>
                 <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.evaluation_overview") %>
               <% end %>
             </li>

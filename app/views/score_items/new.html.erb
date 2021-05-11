@@ -72,12 +72,12 @@
                     <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
                       <i class="mdi mdi-dots-vertical"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-right">
+                    <ul class="dropdown-menu dropdown-menu-end">
                       <li>
-                        <%= link_to t(".show_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post %>
+                        <%= link_to t(".show_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post, class: "dropdown-item" %>
                       </li>
                       <li>
-                        <%= link_to t(".hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post %>
+                        <%= link_to t(".hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post, class: "dropdown-item" %>
                       </li>
                       <li>
                         <a href="#add-score-item-to-all" data-bs-toggle="modal"><%= t '.add_all' %></a>

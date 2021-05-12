@@ -220,7 +220,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
   test 'errors outside of docker startup should be sent to slack' do
     Delayed::Backend::ActiveRecord::Job.delete_all
-    Rails.env.stubs(:"production?").returns(true)
+    Rails.env.stubs(:production?).returns(true)
     # create a stubbed judge with fails when used to evaluate a submission,
     # but which still has a name (for the ExceptionNotifier)
     studge = Object.new

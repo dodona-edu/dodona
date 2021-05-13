@@ -4,7 +4,7 @@ import { formatTitle } from "graph_helper.js";
 
 
 let selector = undefined;
-const margin = { top: 20, right: 60, bottom: 40, left: 105 };
+const margin = { top: 20, right: 60, bottom: 40, left: 125 };
 let width = 0;
 let height = 0;
 
@@ -109,7 +109,8 @@ function drawViolin(data: {
         .text("_") // dummy text to calculate height
         .attr("text-anchor", "start")
         .attr("fill", "currentColor")
-        .attr("font-size", "12px");
+        .attr("font-size", "12px")
+        .attr("class", "d3-tooltip-label");
     tooltipLabel
         .attr("y", innerHeight - 10);
     const tooltipDots = graph.selectAll("dots")
@@ -127,7 +128,8 @@ function drawViolin(data: {
         .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
         .attr("y", -5)
         .attr("opacity", 0)
-        .attr("font-size", "12px");
+        .attr("font-size", "12px")
+        .attr("class", "d3-tooltip-label");
 
     function onMouseOver(e): void {
         const pos = x.invert(d3.pointer(e, graph.node())[0]);

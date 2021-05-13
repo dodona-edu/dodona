@@ -138,12 +138,12 @@ function drawViolin(data: {
                 .attr("opacity", 1)
                 .attr("x1", x(i))
                 .attr("x2", x(i));
-            const switchSides = !(x(i) - tooltipLabel.node().getBBox().width - 5 > 0);
+            const switchSides = x(i) + tooltipLabel.node().getBBox().width + 5 > innerWidth;
             tooltipLabel
                 .attr("opacity", 1)
                 .text(`${i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`)
-                .attr("text-anchor", switchSides ? "start" : "end")
-                .attr("x", switchSides ? x(i) + 10 : x(i) - 10);
+                .attr("text-anchor", switchSides ? "end" : "start")
+                .attr("x", switchSides ? x(i) - 10 : x(i) + 10);
             tooltipDots
                 .attr("opacity", 1)
                 .attr("cx", x(i));
@@ -153,8 +153,8 @@ function drawViolin(data: {
                     const freq = d.freq[Math.max(0, i-1)].length;
                     return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
                 })
-                .attr("text-anchor", switchSides ? "start" : "end")
-                .attr("x", switchSides ? x(i)+5 : x(i) - 5);
+                .attr("text-anchor", switchSides ? "end" : "start")
+                .attr("x", switchSides ? x(i) - 5 : x(i)+5);
         }
     }
 

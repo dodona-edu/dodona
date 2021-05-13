@@ -180,7 +180,6 @@ function initStacked(url, containerId: string, containerHeight: number): void {
         d3.select(`${selector} *`).remove();
 
         const data = raw.data;
-
         if (data.length === 0) {
             container
                 .style("height", "50px")

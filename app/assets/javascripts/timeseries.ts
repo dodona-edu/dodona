@@ -181,7 +181,6 @@ function initTimeseries(url, containerId, containerHeight: number): void {
         .style("height", `${height}px`) // prevent shrinking after switching graphs
         .style("display", "flex")
         .style("align-items", "center")
-        .attr("class", "text-center")
         .append("div")
         .text(I18n.t("js.loading"))
         .style("margin", "auto");

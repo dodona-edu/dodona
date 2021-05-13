@@ -197,7 +197,6 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
         .style("height", `${height}px`)
         .style("display", "flex")
         .style("align-items", "center")
-        .attr("class", "text-center")
         .append("div")
         .text(I18n.t("js.loading"))
         .style("margin", "auto");

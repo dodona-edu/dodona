@@ -6,7 +6,7 @@
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th><%= User.human_attribute_name("institution") %></th>
-      <th class="hidden-xs"><%= t("users.index.progress") %></th>
+      <th class="d-none d-sm-table-cell"><%= t("users.index.progress") %></th>
       <th><%= t(".labels") %></th>
       <th></th>
     </tr>
@@ -32,7 +32,7 @@
         </td>
         <td><%= user.email %></td>
         <td><%= user.institution&.name %></td>
-        <td class="hidden-xs">
+        <td class="d-none d-sm-table-cell">
           <%= render partial: 'application/progress_chart',
               locals: {
                 total: @course.exercises_count,

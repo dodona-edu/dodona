@@ -18,7 +18,7 @@
       <th><%= t "activities.index.languages" %></th>
       <th></th>
       <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
-        <th class='count hidden-xs'>
+        <th class='count d-none d-sm-table-cell'>
           <% if @course %>
             <%= t "activities.index.class_progress" %>
             <% unless series.progress_enabled %>
@@ -88,7 +88,7 @@
         </td>
 
         <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
-          <td class="hidden-xs">
+          <td class="d-none d-sm-table-cell">
             <% if activity.exercise? %>
               <% if @course %>
                 <%= render partial: 'application/progress_chart',

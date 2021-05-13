@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-10 offset-sm-1 col-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">Dodona en jouw data</h2>
@@ -12,7 +12,7 @@
             <p>Om aan te melden bij Dodona gebruiken we uitsluitend het loginsysteem van jouw school, onderwijs- of onderzoeksinstelling. Voorbeelden hiervan zijn Smartschool en Office 365 voor het secundair onderwijs en SAML voor het hoger onderwijs. Dodona krijgt hierdoor op geen enkel moment jouw wachtwoord te zien. Wat we wel meekrijgen bij het inloggen zijn je <b>naam</b>, <b>gebruikersnaam</b> en <b>e-mailadres</b>. Deze gegevens hebben we nodig om je correct te identificeren en om je te contacteren in geval van problemen. Daarnaast houden we ook bij via <b>welke school</b> je bent ingelogd, wat je <b>voorkeurstaal</b> is en in welke <b>tijdzone</b> je je bevindt. Dit laatste is nodig om eventuele deadlines correct weer te geven.</p>
             <p>Deze gegevens kan je zelf bekijken op je profielpagina. Daarnaast kunnen ook alle lesgevers van de cursussen waarvoor je bent ingeschreven je profiel bekijken.</p>
           </div>
-          <div class="col-sm-4 col-lg-3 offset-lg-1 hidden-xs"><%= image_tag "outline-account_circle.svg", class: "img-fluid", style: "width:90%" %></div>
+          <div class="col-sm-4 col-lg-3 offset-lg-1 d-none d-sm-block"><%= image_tag "outline-account_circle.svg", class: "img-fluid", style: "width:90%" %></div>
         </div>
 
         <h2>Dodona-specifieke gegevens</h2>
@@ -21,7 +21,7 @@
             <p>Door Dodona te gebruiken genereer je extra Dodona-specifieke gegevens die we bijhouden voor de correcte werking van het platform. Zo moeten we bijvoorbeeld bijhouden voor <b>welke cursussen</b> je bent ingeschreven en welke oplossingen je hebt ingediend. Voor elke ingediende oplossing houden we naast je <b>ingediende code</b> ook het <b>resultaat</b> en het <b>tijdstip van indienen</b> bij.</p>
             <p>Een overzicht van al je ingediende oplossingen kan je terugvinden op <%= link_to "deze overzichtspagina", current_user.present? ? user_submissions_path(current_user) : submissions_path %>. De ingediende oplossingen van oefeningen binnen een bepaalde cursus kunnen ook bekeken worden door de (mede-)lesgevers van die cursus. Voor sommige oefeningen is een deel van de feedback enkel zichtbaar voor de lesgevers.</p>
           </div>
-          <div class="col-sm-4 col-lg-3 offset-lg-1 hidden-xs"><%= image_tag "outline-description.svg", class: "img-fluid", style: "width:90%" %></div>
+          <div class="col-sm-4 col-lg-3 offset-lg-1 d-none d-sm-block"><%= image_tag "outline-description.svg", class: "img-fluid", style: "width:90%" %></div>
         </div>
 
         <h2>Verwerking van gegevens</h2>
@@ -31,7 +31,7 @@
             <p>Om deze functionaliteiten te ontwikkelen en aan te bieden is het nodig om de beschikbare gegevens (automatisch) te analyseren, bijvoorbeeld met behulp van machine learning. Hierbij zullen we steeds de gegevens pseudonimiseren en in veel gevallen aggregeren. Dit wil zeggen dat je persoonlijke gegevens ontkoppeld worden van de ingediende oplossingen en niet mee verwerkt worden. Hierdoor wordt het risico op de ongewilde identificatie van personen binnen Dodona geminimaliseerd.</p>
             <p>De inzichten die verkregen worden door de ontwikkeling en het gebruik van deze innovatieve onderwijstechnologieën kunnen gepubliceerd worden als wetenschappelijk onderzoek. Er zullen binnen deze context nooit gegevens openbaar gemaakt worden die het toelaten om individuele personen te identificeren, tenzij we hiervoor je expliciete toestemming zouden krijgen.</p>
           </div>
-          <div class="col-sm-4 col-lg-3 offset-lg-1 hidden-xs"><%= image_tag "outline-pageview.svg", class: "img-fluid", style: "width:90%" %><%= image_tag "outline-school.svg", class: "img-fluid", style: "width:90%" %></div>
+          <div class="col-sm-4 col-lg-3 offset-lg-1 d-none d-sm-block"><%= image_tag "outline-pageview.svg", class: "img-fluid", style: "width:90%" %><%= image_tag "outline-school.svg", class: "img-fluid", style: "width:90%" %></div>
         </div>
 
         <h2>Technische ondersteuning</h2>
@@ -40,7 +40,7 @@
             <p>Om Dodona draaiende te houden is het noodzakelijk om de status van onze servers in het oog te houden. Hierbij kijken we bijvoorbeeld naar de belasting van individuele machines, maar gebruiken we ook sterk geaggregeerde data om de lengte van de wachtrij en het aantal actieve gebruikers in de gaten te houden.</p>
             <p>Op de individuele servers worden ook extra logbestanden bijgehouden die een technisch overzicht geven van alle activiteit op de server. Deze logbestanden worden maximaal 7 dagen bijgehouden en zijn enkel toegankelijk voor de beheerders van het platform. Ook op Dodona zelf hebben de platformbeheerders de mogelijkheid om individuele gegevens op te vragen. Net als de logbestanden worden deze gegevens enkel geraadpleegd in geval van problemen of om technische aanpassingen uit te voeren.</p>
           </div>
-          <div class="col-sm-4 col-lg-3 offset-lg-1 hidden-xs"><%= image_tag "outline-memory.svg", class: "img-fluid", style: "width:90%" %></div>
+          <div class="col-sm-4 col-lg-3 offset-lg-1 d-none d-sm-block"><%= image_tag "outline-memory.svg", class: "img-fluid", style: "width:90%" %></div>
         </div>
       </div>
     </div>

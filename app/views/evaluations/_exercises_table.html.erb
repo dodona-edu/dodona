@@ -4,7 +4,7 @@
     <tr>
       <th class='type-icon'></th>
       <th><%= t "activities.index.activity_title" %></th>
-      <th class='count hidden-xs'><%= t "activities.index.class_progress" %></th>
+      <th class='count d-none d-sm-table-cell'><%= t "activities.index.class_progress" %></th>
     </tr>
     </thead>
     <tbody>
@@ -18,7 +18,7 @@
           <%= link_to(exercise.name, course_series_activity_path(local_assigns[:series].course, local_assigns[:series], exercise), target: '_blank') %>
         </td>
 
-        <td class="hidden-xs">
+        <td class="d-none d-sm-table-cell">
           <%= render partial: 'application/progress_chart',
             locals: {
               total: local_assigns[:series].course.subscribed_members_count,

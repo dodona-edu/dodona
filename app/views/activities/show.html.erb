@@ -25,14 +25,14 @@ end %>
 
 <div class="row">
   <% if @activity.exercise? %>
-    <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>
-      <span class='hidden-sm'><%= t('.handin') %></span><br>
+    <%= link_to '#submission-card', class: "btn btn-lg btn-down col-md-1 d-none d-md-block hidden-print", title: t('.handin') do %>
+      <span class='d-none d-lg-inline'><%= t('.handin') %></span><br>
       <i class="mdi mdi-chevron-down"></i>
     <% end %>
   <% else %>
-    <div class="col-sm-1 hidden-xs hidden-print">&nbsp;</div>
+    <div class="col-md-1 d-none d-md-block hidden-print">&nbsp;</div>
   <% end %>
-  <div class="col-sm-10 col-12">
+  <div class="col-md-10 col-12">
     <div class="card activity-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
@@ -54,7 +54,7 @@ end %>
   </div>
 
   <% if @series.present? %>
-    <nav class="col-md-1 hidden-xs hidden-sm hidden-print activity-sidebar">
+    <nav class="col-md-1 d-none d-md-block hidden-print activity-sidebar">
       <ul class="nav affix">
         <li class="header ellipsis-overflow" title="<%= @series.name %>"><%= @series.name %></li>
         <% @series.activities.each do |activity| %>
@@ -68,7 +68,7 @@ end %>
 <% if @activity.exercise? %>
 <div class="row hidden-print">
   <a class="anchor" id="submission-card"></a>
-  <div class="col-sm-10 offset-sm-1 col-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card card-nav">
       <div class="card-title card-title-colored">
         <% if policy(@activity).submit? %>
@@ -132,7 +132,7 @@ end %>
 </div>
 <% elsif @activity.content_page? %>
 <div class="row hidden-print">
-  <div class="col-sm-10 offset-sm-1 col-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="content-page-actions">
       <% if @series.present? %>
         <%= link_to previous_link, class: 'content-page-action btn-fab-extended previous' do %>

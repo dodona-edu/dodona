@@ -129,7 +129,8 @@ function initCourseShow() {
     const series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
 
     function init() {
-        $("body").scrollspy({ target: ".series-sidebar" });
+        $("body").css("position", "relative");
+        $("body").scrollspy({ target: "#scrollspy-nav", method: "offset" });
         $(window).scroll(scroll);
         scroll(); // Load series visible on pageload
     }

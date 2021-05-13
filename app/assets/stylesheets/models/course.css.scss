@@ -42,6 +42,8 @@
       height: calc(100vh - (#{$navbar-height} + 20px));
       display: block;
       overflow-y: auto;
+      position: fixed;
+      top: calc(#{$navbar-height} + 20px);
 
       &.affix-bottom {
         height: calc(100vh - (#{$navbar-height} + 120px));
@@ -79,8 +81,8 @@
     color: $text-disabled;
   }
 
-  .nav > li.active > a,
-  .nav > li.active > a:hover {
+  .nav > li > a.active,
+  .nav > li > a.active:hover {
     border-left: 2px solid $primary-800;
     padding-left: 4px;
     color: $text-secondary;

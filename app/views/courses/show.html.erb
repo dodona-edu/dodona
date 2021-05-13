@@ -3,7 +3,7 @@
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
-  <div class="col-md-10 col-12 offset-md-1">
+  <div class="col-md-10 col-12 offset-md-1 page-content">
     <div class="card">
       <div class="card-title card-title-colored">
         <% if !@course.open_for_all? || @course.moderated %>
@@ -119,11 +119,11 @@
       <% end %>
     </div>
   </div>
-  <nav class="col-md-1 d-none d-md-block hidden-print series-sidebar">
-    <ul class="nav" data-spy="affix" data-offset-bottom="80">
+  <nav id="scrollspy-nav" class="col-md-1 d-none d-md-block hidden-print series-sidebar">
+    <ul class="nav" data-offset-bottom="80">
       <li class="header ellipsis-overflow"><%= t ".exercise_series" %></li>
       <% @series.each do |series| %>
-        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
+        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow nav-link', title: series.name %> </li>
       <% end %>
     </ul>
   </nav>

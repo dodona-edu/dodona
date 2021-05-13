@@ -8,21 +8,19 @@ const bisector = d3.bisector((d: Date) => d.getTime()).left;
 
 
 function insertFakeData(data, maxCount): void {
-    const end = new Date((data[Object.keys(data)[0]][0].date));
+    const end = new Date(d3.max(Object.values(data),
+        records => d3.max(records)));
     const start = new Date(end);
     start.setDate(start.getDate() - 14);
     for (const exName of Object.keys(data)) {
         let count = 0;
         data[exName] = [];
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
-            if (Math.random() > 0.8) {
-                const c = Math.round(Math.random()*5);
-                if (count + c <= maxCount) {
-                    count += c;
-                    data[exName].push({
-                        "date": new Date(d),
-                        "count": c
-                    });
+            const c = Math.round(Math.random()*5);
+            if (count + c <= maxCount) {
+                count += c;
+                for (let i = 0; i < c; i++) {
+                    data[exName].push(new Date(d));
                 }
             }
         }
@@ -30,22 +28,13 @@ function insertFakeData(data, maxCount): void {
 }
 
 function thresholdTime(n, min, max): () => Date[] {
+    const ticks = d3.timeDay;
     return () => {
-        return d3.scaleTime().domain([min, max]).ticks(n);
+        return d3.scaleTime().domain([min, max]).ticks(ticks);
     };
 }
 
 function drawCumulativeTimeSeries(data, metaData, exMap): void {
-    console.log({
-        "dateTime": I18n.t("time.formats.default"),
-        "date": I18n.t("date.formats.default"),
-        "time": I18n.t("time.formats.short"),
-        "periods": [I18n.t("time.am"), I18n.t("time.pm")],
-        "days": I18n.t("date.day_names"),
-        "shortDays": I18n.t("date.abbr_day_names"),
-        "months": I18n.t("date.month_names").slice(1),
-        "shortMonths": I18n.t("date.abbr_month_names").slice(1)
-    });
     d3.timeFormatDefaultLocale({
         "dateTime": I18n.t("time.formats.default"),
         "date": I18n.t("date.formats.default"),
@@ -97,6 +86,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .domain(exOrder);
 
     let ticks = d3.timeDay.filter(d=>d3.timeDay.count(metaData["minDate"], d) % 2 === 0);
+    console.log(ticks);
     let format = "%a %b-%d";
     if (metaData["dateRange"] > 20) {
         ticks = d3.timeMonth;
@@ -278,7 +268,7 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
 
         d3.select(`${selector} *`).remove();
 
-        const data: {string: {date; status; count}[]} = raw.data;
+        const data: {string: []} = raw.data;
         const metaData = {}; // used to store things needed to create scales
         if (Object.keys(data).length === 0) {
             container
@@ -292,10 +282,11 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
         // insertFakeData(data, raw.students);
-        metaData["minDate"] = d3.min(Object.values(data),
-            records => d3.min(records, d =>new Date(d.date)));
-        metaData["maxDate"] = d3.max(Object.values(data),
-            records => d3.max(records, d =>new Date(d.date)));
+        metaData["minDate"] = new Date(d3.min(Object.values(data),
+            records => d3.min(records)));
+        metaData["maxDate"] = new Date( // round maxDate to day
+            d3.timeFormat("%Y-%m-%d")(d3.max(Object.values(data), records => d3.max(records)))
+        );
         metaData["maxSum"] = raw.students ? raw.students : 0;
         metaData["dateRange"] = Math.round(
             (metaData["maxDate"].getTime() - metaData["minDate"].getTime()) /
@@ -305,18 +296,15 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
             const exId = entry[0];
             let records = entry[1];
             // parse datestring to date
-            records.forEach(r => {
-                r.date = new Date(r.date);
-            });
+            records = records.map(r => new Date(r));
 
             const binned = d3.bin()
-                .value(d => d.date.getTime())
+                .value(d => d.getTime())
                 .thresholds(
                     thresholdTime(metaData["dateRange"]+1, metaData["minDate"], metaData["maxDate"])
                 ).domain([metaData["minDate"], metaData["maxDate"]])(records);
-
             records = undefined; // records no longer needed
-            data[exId] = d3.zip(binned, d3.cumsum(binned, d => d.length ? d[0].count : 0));
+            data[exId] = d3.zip(binned, d3.cumsum(binned, d => d.length));
             metaData["maxSum"] = Math.max(data[exId][data[exId].length-1][1], metaData["maxSum"]);
         });
 

@@ -9,7 +9,6 @@ const statusOrder = [
     "correct", "wrong", "compilation error", "runtime error",
     "time limit exceeded", "memory limit exceeded", "output limit exceeded",
 ];
-const bisector = d3.bisector((d: Date) => d.getTime()).left;
 
 
 function insertFakeData(data): void {

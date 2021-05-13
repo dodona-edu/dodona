@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { json, svg } from "d3";
 import { formatTitle } from "graph_helper.js";
 
 
@@ -16,9 +15,7 @@ function drawViolin(data: {
 }[], exMap: [string, string][]): void {
     const min = d3.min(data, d => d3.min(d.counts));
     const max = d3.max(data, d => d3.max(d.counts));
-    const freqRange = d3.range(min, max+1);
     const xTicks = 10;
-    const elWidth = width / max;
     const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;

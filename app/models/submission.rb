@@ -403,7 +403,6 @@ class Submission < ApplicationRecord
     return base unless submissions.any?
 
     result = {}
-      .group_by(&:itself).transform_values(&:count)
     submissions.in_batches do |subs|
       result = result.merge(subs.pluck(:exercise_id, :status)
                               .group_by(&:itself)
@@ -457,14 +456,10 @@ class Submission < ApplicationRecord
 
     submissions.in_batches do |subs|
       value = value.merge(subs.pluck(:exercise_id, :created_at)
-                              .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] }
-                              .group_by(&:itself)
-                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+                              .group_by { |d| d[0] }) { |_k, v1, v2| v1 + v2 }
     end
-
-    value = value.group_by { |k, _| k[0] }
     value = value
-            .transform_values { |values| values.map { |v| { date: v[0][1], count: v[1] } } }
+            .transform_values { |values| values.map { |v| v[1] } }
     {
       until: submissions.first.id,
       value: value

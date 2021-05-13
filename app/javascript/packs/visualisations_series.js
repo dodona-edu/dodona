@@ -21,6 +21,7 @@ function toggleStats(button, seriesId) {
     const height = content.height();
     if (tabs.css("display") == "none") {
         tabs.css("display", "flex");
+        info.css("display", "inline")
         title.css("display", "flex");
         // info.css("display", "inline");
         container.css("display", "flex");
@@ -37,6 +38,7 @@ function toggleStats(button, seriesId) {
         tabs.css("display", "none");
         info.css("display", "none");
         title.css("display", "none");
+        console.log(container);
         container.html("");
         container.css("display", "none");
         content.css("display", "block");

@@ -234,3 +234,15 @@
   margin-right: 5px;
   align-items: center;
 }
+
+.svg-icon-btn {
+  fill: @text-secondary;
+
+  &:hover {
+    fill: @text-color;
+  }
+
+  &.rotate {
+    transform: rotate(90deg);
+  }
+}

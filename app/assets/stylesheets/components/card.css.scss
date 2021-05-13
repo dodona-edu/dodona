@@ -283,6 +283,12 @@ a.card-title-link:hover {
 .card-tab .nav-tabs li a {
   color: $text-muted;
 }
+.card-title .nav-tabs li a,
+.card-tab .nav-tabs li a {
+  display: block;
+  padding-top: 10px;
+  line-height: 25px;
+}
 
 .card-tab .nav-tabs li.active a,
 .card-tab .nav-tabs li a:hover,

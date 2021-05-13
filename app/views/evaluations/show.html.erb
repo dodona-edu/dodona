@@ -6,14 +6,14 @@
       </div>
       <div class="card-supporting-text">
         <div class="row">
-          <div class="col-lg-6 col-md-12 col-lg-push-6">
+          <div class="col-lg-6 col-md-12 order-lg-1">
             <div class="callout callout-info">
               <h4><%= t ".explanation_title" %></h4>
               <p><%= t ".explanation_part1_html" %></p>
               <p><%= t ".explanation_part2_html" %></p>
             </div>
           </div>
-          <div class="col-lg-6 col-md-12 col-lg-pull-6">
+          <div class="col-lg-6 col-md-12 order-lg-0">
             <p><%= t '.deadline_html', users: @evaluation.users.count, exercises: @evaluation.exercises.count, deadline: l(@evaluation.deadline, format: :submission) %></p>
             <%= render partial: 'exercises_progress_table', locals: { metadata: @evaluation.metadata, series: @evaluation.series } %>
           </div>

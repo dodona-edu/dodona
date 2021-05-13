@@ -35,7 +35,7 @@
       <%= render partial: 'copy_option', locals: {name: :deadlines, copy_options: copy_options, explanation: t(".copy_deadlines")} %>
       <%= render partial: 'copy_option', locals: {name: :admins, copy_options: copy_options, explanation: t(".copy_admins"), details: t(".copy_admins_details")} %>
       <div class="form-group">
-        <strong class="col-sm-push-3 col-sm-6"><%= t('.other_copy_options') %></strong>
+        <strong class="col-sm-6"><%= t('.other_copy_options') %></strong>
       </div>
       <%= render partial: 'copy_option', locals: {name: :hide_series, copy_options: copy_options, explanation: t(".hide_series"), details: t(".hide_series_details")} %>
     </div>

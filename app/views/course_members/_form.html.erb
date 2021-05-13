@@ -14,8 +14,8 @@
   <% end %>
   <div class="field form-group row">
     <div class="row">
-      <%= f.label :course_labels, :class => 'col-sm-2 col-10 col-push-1 col-form-label' %>
-      <div class="col-sm-8 col-10 col-push-1">
+      <%= f.label :course_labels, :class => 'col-sm-2 col-10 order-sm-1 col-form-label' %>
+      <div class="col-sm-8 order-sm-0 col-10">
         <%= f.text_field :course_labels, class: 'form-control', disable: !f.permission?(:course_labels), value: course_membership.course_labels.map(&:name).join(','), placeholder: t('.course_labels') %>
         <small><%= t '.labels_delimiter' %></small>
       </div>

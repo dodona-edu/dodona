@@ -8,7 +8,7 @@
                 end
 %>
 <div class="row">
-  <div class="col-md-10 offset-md-1 col-12">
+  <div class="col-lg-10 offset-lg-1 col-12">
     <div class="card activity-info">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @activity.name %></h2>
@@ -28,19 +28,19 @@
         </div>
         <% end %>
         <div class="row">
-          <div class="col-md-4 col-md-push-8 col-sm-6  col-sm-push-6 col-12">
+          <div class="col-md-4 col-12 order-md-1">
             <div class="row">
               <div class="col-12 repo-details">
                 <div class="row">
                   <% if (contact_info = @config['contact'] || @repository.first_admin&.pretty_email) %>
-                    <div class="col-sm-12 col-6">
+                    <div class="col-md-12 col-6">
                       <p title="<%= t '.contact' %>">
                         <i class="mdi mdi-account-box mdi-24"></i>
                         <%= mail_to(contact_info) %>
                     </div>
                   <% end %>
                   <% if @activity.exercise? %>
-                    <div class="col-sm-12 col-6">
+                    <div class="col-md-12 col-6">
                       <p title="<%= t '.judge' %>">
                       <i class="mdi mdi-gavel mdi-24"></i>
                       <% if policy(@activity.judge).show? %>
@@ -50,7 +50,7 @@
                       <% end %>
                     </div>
                   <% end %>
-                  <div class="col-sm-12 col-6">
+                  <div class="col-md-12 col-6">
                     <p title="<%= t '.repository' %>">
                     <i class="mdi mdi-server mdi-24"></i>
                     <% if policy(@repository).show? %>
@@ -59,21 +59,21 @@
                       <%= @repository.name %>
                     <% end %>
                   </div>
-                  <div class="col-sm-12 col-6">
+                  <div class="col-md-12 col-6">
                     <% if current_user&.repository_admin?(@repository) %>
                     <p title="<%= t '.repository_path' %>">
                     <i class="mdi mdi-file-search mdi-24"></i>
                     <%= github_link @repository, @activity.path %>
                     <% end %>
                   </div>
-                  <div class="col-sm-12 col-6">
+                  <div class="col-md-12 col-6">
                     <p title="<%= t '.created' %>">
                     <i class="mdi mdi-clock-outline mdi-24"></i>
                     <span title="<%= l @activity.created_at, format: :long %>">
                     <%= time_ago_in_words(@activity.created_at) %> <%= t '.ago' %>
                     </span>
                   </div>
-                  <div class="col-sm-12 col-6">
+                  <div class="col-md-12 col-6">
                     <p title="<%= t '.updated' %>">
                     <i class="mdi mdi-update mdi-24"></i>
                     <span title="<%= l @activity.updated_at, format: :long %>">
@@ -84,33 +84,30 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8 col-md-pull-4 col-sm-6 col-sm-pull-6 col-12">
+          <div class="col-md-8 col-12 order-md-0">
             <div class="row activity-details">
               <% if @activity.exercise? %>
-                <div title="<%= activity_config_explanation 'programming_language' %>" class="col-md-4 col-sm-6 col-6 activity-detail">
+                <div title="<%= activity_config_explanation 'programming_language' %>" class="col-lg-4 col-6 activity-detail">
                   <h1><%= @activity.programming_language ? @activity.programming_language.name.titlecase : "n/a" %></h1>
                   <%= t '.programming_language' %>
                 </div>
               <% end %>
-              <div title="<%= t '.description_files', path: './' + @activity.path + '/' + Activity::DESCRIPTION_DIR  + '/' %>" class="col-md-4 col-sm-6 col-6 activity-detail">
+              <div title="<%= t '.description_files', path: './' + @activity.path + '/' + Activity::DESCRIPTION_DIR  + '/' %>" class="col-lg-4 col-6 activity-detail">
                 <h1><%= @activity.description_languages.join(', ') %></h1>
                 <%= t '.natural_language' %>
               </div>
-              <div class="clearfix visible-sm-block"></div>
               <% if @activity.exercise? %>
-                <div class="col-md-4 col-sm-6 col-6 activity-detail" title="<%= activity_config_explanation 'evaluation', 'time_limit' %>">
+                <div class="col-lg-4 col-6 activity-detail" title="<%= activity_config_explanation 'evaluation', 'time_limit' %>">
                   <h1><%= @config.dig('evaluation', 'time_limit') || SubmissionRunner.default_config['time_limit']  %>s</h1>
                   <%= t '.time_limit' %>
                 </div>
-                <div class="clearfix visible-md-block"></div>
-                <div title="<%= activity_config_explanation 'evaluation', 'memory_limit' %>" class="col-md-4 col-sm-6 col-6 activity-detail">
+                <div title="<%= activity_config_explanation 'evaluation', 'memory_limit' %>" class="col-lg-4 col-6 activity-detail">
                   <h1>
                     <%= human_bytes (@config.dig('evaluation', 'memory_limit') || SubmissionRunner.default_config['memory_limit']).to_i %>
                   </h1>
                   <%= t '.memory_limit' %>
                 </div>
-                <div class="clearfix visible-sm-block"></div>
-                <div title="<%= activity_config_explanation 'network_enabled' %>" class="col-md-4 col-sm-6 col-6 activity-detail">
+                <div title="<%= activity_config_explanation 'network_enabled' %>" class="col-lg-4 col-6 activity-detail">
                   <%
                       if @config.dig('evaluation', 'network_enabled')
                         network_icon = 'mdi-wan'
@@ -125,14 +122,14 @@
               </h1>
               <%= network_config_name %>
                 </div>
-                <div title="<%= t '.submission_details', correct: @activity.submissions.correct.count, total: @activity.submissions.count, users: @activity.users_tried %>" class="col-md-4 col-sm-6 col-6 activity-detail">
+                <div title="<%= t '.submission_details', correct: @activity.submissions.correct.count, total: @activity.submissions.count, users: @activity.users_tried %>" class="col-lg-4 col-6 activity-detail">
                   <h1><%= number_with_delimiter @activity.submissions.count, delimiter: " " %></h1>
                   <%= t '.submission_count' %>
                 </div>
             <% end %>
             </div>
           </div>
-          <div class="col-12">
+          <div class="col-12 order-md-2">
             <span class="small text-muted"><%= raw t('.config_info', doc_site: link_to(t('.doc_site'), 'https://docs.dodona.be/references/exercise-config/')) %></span>
           </div>
         </div>
@@ -162,7 +159,7 @@
 
 <% if @activity.exercise? %>
   <div class="row">
-    <div class="col-md-10 offset-md-1 col-12">
+    <div class="col-lg-10 offset-lg-1 col-12">
       <div class="card sample-solutions">
         <div class="card-title">
           <h3><%= t ".sample_solutions" %></h3>

@@ -78,6 +78,9 @@
 }
 
 .col-form-label {
+  @include media-breakpoint-down(sm) {
+    text-align: left;
+  }
   text-align: right;
   font-weight: bold;
 }

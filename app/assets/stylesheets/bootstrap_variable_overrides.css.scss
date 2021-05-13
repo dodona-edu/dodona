@@ -14,5 +14,23 @@ $font-family-sans-serif: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-size-base: 0.875rem;//14px;
 $baseLineHeight: 24px;
 $line-height-base: 1.3846153846;
+$min-contrast-ratio: 3;
+
+$link-decoration: none;
+
+$paragraph-margin-bottom:   0.875rem;
 
 $blockquote-font-size: $font-size-base;
+
+$alert-bg-scale: 0%;
+
+$blue:    $blue-500;
+$indigo:  $indigo-500;
+$purple:  $purple-500;
+$pink:    $pink-500;
+$red:     $red-500;
+$orange:  $orange-500;
+$yellow:  $yellow-500;
+$green:   $green-500;
+$teal:    $teal-500;
+$cyan:    $cyan-500;

@@ -2,8 +2,8 @@
 @import "../../../node_modules/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
-@import "bootstrap_variable_overrides";
 @import "theme/colors";
+@import "bootstrap_variable_overrides";
 @import "mixins";
 @import "vendor";
 @import "theme/theme-light";

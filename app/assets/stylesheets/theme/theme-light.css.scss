@@ -43,16 +43,26 @@ $warning-500: $amber-500;
 $body-bg: $grey-50;
 $content-bg: white;
 $text-color: $black-text;
+$body-color: $text-color;
+$color-contrast-dark: $text-color;
 $text-disabled: $black-disabled;
 $text-secondary: $black-secondary;
 $link-color: $accent-800;
 $hairlinegray: $black-divider;
 
+// old vars
 $brand-info: $info-500;
 $brand-primary: $accent-800;
 $brand-success: $success-500;
 $brand-danger: $danger-500;
 $brand-warning: $warning-500;
+// new vars
+$primary: $brand-primary;
+$secondary: $primary-800;
+$success: $brand-success;
+$info: $brand-info;
+$warning: $brand-warning;
+$danger: $brand-danger;
 
 $code-bg: $grey-200;
 $code-light-bg: $grey-100;
@@ -98,6 +108,7 @@ $dropdown-bg: $content-bg;
 
 // Custom elements
 $divider-color: $hairlinegray;
+$border-color: $hairlinegray;
 
 $btn-accent: $accent-800;
 $btn-hover-background: $grey-300;

@@ -56,6 +56,7 @@ class Submission < ApplicationRecord
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
+  scope :only_students, ->(course) { where(user: CourseMembership.where(course_id: course.id).where.not(status: 'course_admin').map(&:user))}
 
   scope :judged, -> { where.not(status: %i[running queued]) }
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
@@ -373,6 +374,7 @@ class Submission < ApplicationRecord
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
+    submissions = submissions.only_students(options[:course])
     return base unless submissions.any?
 
     value = base[:value]
@@ -397,6 +399,7 @@ class Submission < ApplicationRecord
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
+    submissions = submissions.only_students(options[:course])
     return base unless submissions.any?
 
     value = base[:value]
@@ -421,6 +424,7 @@ class Submission < ApplicationRecord
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
     submissions = submissions.judged
+    submissions = submissions.only_students(options[:course])
     return base unless submissions.any?
 
     value = base[:value]
@@ -447,6 +451,7 @@ class Submission < ApplicationRecord
     submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline] + 1.day) if options[:deadline].present?
     submissions = submissions.judged
     submissions = submissions.first_correct_per_ex_per_user
+    submissions = submissions.only_students(options[:course])
     return base unless submissions.any?
 
     value = base[:value]

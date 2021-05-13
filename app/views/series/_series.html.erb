@@ -157,20 +157,20 @@
       <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle stats-tab">
         <button class="btn btn-secondary annotation-toggle violin" onclick="dodona.setActiveToggle(this, 'violin', <%= series.id %>) && 
           dodona.initViolin('/nl/stats/violin?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
-            <%= image_tag session[:dark] ? "violin-lite.svg" : "violin.svg", class: "img-responsive" %>
-          </button>
+          <%= embedded_svg("violin.svg", {class: "mdi svg-icon-btn"}) %>
+        </button>
         <button class="btn btn-secondary annotation-toggle stacked" onclick="dodona.setActiveToggle(this, 'stacked', <%= series.id %>) && 
           dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
-            <%= image_tag session[:dark] ? "stacked-bar-chart-lite.svg" : "stacked-bar-chart.svg", class: "img-responsive", style: "fill:white" %>
-          </button>
+          <%= embedded_svg("stacked-bar-chart.svg", {class: "mdi svg-icon-btn rotate"}) %>
+        </button>
         <% if true %>
         <button class="btn btn-secondary annotation-toggle timeseries" onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>) && 
           dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
         <% end %>
         <button class="btn btn-secondary annotation-toggle ctimeseries" onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>) && 
           dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
-            <%= image_tag session[:dark] ? "stacked-line-chart-lite.svg" : "stacked-line-chart.svg", class: "img-responsive", style: "fill:white" %>
-          </button>
+          <%= embedded_svg("stacked-line-chart.svg", {class: "mdi svg-icon-btn"}) %>
+        </button>
       </div>
     </div>
     <div class="stats-container" id="stats-container-<%= series.id %>" style="position: relative;"></div>

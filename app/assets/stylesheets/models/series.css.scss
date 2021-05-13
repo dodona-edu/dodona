@@ -186,8 +186,8 @@
     90px 12px,
     115px 12px;
     background-position: 58px 10px,
-    //~'calc(100% - 230px)' 10px,
-    //~'calc(100% - 75px)' 10px;
+    calc(100% - 230px) 10px,
+    calc(100% - 75px) 10px;
   }
 
   .skeleton-row {
@@ -202,10 +202,10 @@
     100px 12px,
     90px 12px,
     8px 12px;
-    //background-position: 58px 15px,
-    //~'calc(100% - 220px)' 15px,
-    //~'calc(100% - 100px)' 15px,
-    //~'calc(100% - 25px)' 15px;
+    background-position: 58px 15px,
+    calc(100% - 220px) 15px,
+    calc(100% - 100px) 15px,
+    calc(100% - 25px) 15px;
     padding-right: 8px;
   }
 }

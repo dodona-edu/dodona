@@ -38,12 +38,13 @@
 
   @include media-breakpoint-up(md) {
     .nav {
-      width: calc((100vw - (#{container-desktop}) / 12 * 10) / 2);
-      height: calc(100vh - (#{navbar-height} + 20px));
+      width: calc((100vw - (#{map-get($container-max-widths, "md")} / 12 * 10)) / 2);
+      height: calc(100vh - (#{$navbar-height} + 20px));
+      display: block;
       overflow-y: auto;
 
       &.affix-bottom {
-        height: calc(100vh - (#{navbar-height} + 120px));
+        height: calc(100vh - (#{$navbar-height} + 120px));
         position: fixed;
         top: 70px !important;
       }
@@ -52,7 +53,17 @@
 
   @include media-breakpoint-up(lg) {
     .nav {
-      width: calc((100% - (#{container-large-desktop}) / 12 * 10) / 2);
+      width: calc((100vw - (#{map-get($container-max-widths, "lg")} / 12 * 10)) / 2);
+    }
+  }
+  @include media-breakpoint-up(xl) {
+    .nav {
+      width: calc((100vw - (#{map-get($container-max-widths, "xl")} / 12 * 10)) / 2);
+    }
+  }
+  @include media-breakpoint-up(xxl) {
+    .nav {
+      width: calc((100vw - (#{map-get($container-max-widths, "xxl")} / 12 * 10)) / 2);
     }
   }
 

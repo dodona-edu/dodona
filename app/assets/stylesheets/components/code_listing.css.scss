@@ -232,13 +232,13 @@ $annotation-info: $info-500;
 
         max-width: 300px;
         @include media-breakpoint-up(md) {
-          max-width: calc($container-tablet * 0.6);
+          max-width: calc(#{map-get($container-max-widths, "md")} * 0.6);
         }
         @include media-breakpoint-up(lg) {
-          max-width: calc($container-desktop * 0.7);
+          max-width: calc(#{map-get($container-max-widths, "lg")} * 0.7);
         }
         @include media-breakpoint-up(xl) {
-          max-width: calc($container-large-desktop * 0.7);
+          max-width: calc(#{map-get($container-max-widths, "xl")} * 0.7);
         }
       }
     }

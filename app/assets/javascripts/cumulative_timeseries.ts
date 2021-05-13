@@ -36,25 +36,26 @@ function thresholdTime(n, min, max): () => Date[] {
 }
 
 function drawCumulativeTimeSeries(data, metaData, exMap): void {
-    if (I18n.locale === "nl") {
-        d3.timeFormatDefaultLocale({
-            "dateTime": "%a %b %e %X %Y",
-            "date": "%d%m/%Y",
-            "time": "%H:%M:%S",
-            "periods": ["", ""],
-            "days": [
-                "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"
-            ],
-            "shortDays": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
-            "months": [
-                "Januari", "Februari", "Maart", "April", "Mei",
-                "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"
-            ],
-            "shortMonths": [
-                "Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
-            ]
-        });
-    }
+    console.log({
+        "dateTime": I18n.t("time.formats.default"),
+        "date": I18n.t("date.formats.default"),
+        "time": I18n.t("time.formats.short"),
+        "periods": [I18n.t("time.am"), I18n.t("time.pm")],
+        "days": I18n.t("date.day_names"),
+        "shortDays": I18n.t("date.abbr_day_names"),
+        "months": I18n.t("date.month_names").slice(1),
+        "shortMonths": I18n.t("date.abbr_month_names").slice(1)
+    });
+    d3.timeFormatDefaultLocale({
+        "dateTime": I18n.t("time.formats.default"),
+        "date": I18n.t("date.formats.default"),
+        "time": I18n.t("time.formats.short"),
+        "periods": [I18n.t("time.am"), I18n.t("time.pm")],
+        "days": I18n.t("date.day_names"),
+        "shortDays": I18n.t("date.abbr_day_names"),
+        "months": I18n.t("date.month_names").slice(1),
+        "shortMonths": I18n.t("date.abbr_month_names").slice(1)
+    });
     const exOrder: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -70,7 +71,6 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .attr("width", width)
         .attr("height", height);
 
-    
     // position graph
     const graph = svg
         .append("g")

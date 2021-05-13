@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { formatTitle } from "graph_helper.js";
 
 let selector = "#stacked_status-container";
-const margin = { top: 20, right: 150, bottom: 60, left: 105 };
+const margin = { top: 20, right: 150, bottom: 40, left: 105 };
 let width = 0;
 let height = 0;
 const statusOrder = [
@@ -68,7 +68,7 @@ function drawStacked(data: {
         .style("z-index", 5);
 
     const legend = graph.append("g")
-        .attr("transform", `translate(${-margin.left/2}, ${innerHeight + 40})`);
+        .attr("transform", `translate(${-margin.left/2}, ${innerHeight + 20})`);
 
     let legendX = 0;
     for (const status of statusOrder) {

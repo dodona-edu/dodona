@@ -130,7 +130,9 @@ function drawTimeSeries(data, metaData, exMap): void {
                     .duration(200)
                     .style("opacity", .9);
                 let message = `${I18n.t("js.submissions")} :<br>Total: ${d["sum"]}`;
-                statusOrder.forEach(s => { message += `<br>${s}: ${d[s]}` })
+                statusOrder.forEach(s => {
+                    message += `<br>${s}: ${d[s]}`;
+                });
                 tooltip.html(message);
                 tooltipLine
                     .transition()
@@ -237,7 +239,7 @@ function initTimeseries(url, containerId, containerHeight: number): void {
             binned.forEach((bin, i) => {
                 const newDate = new Date(metaData["minDate"]);
                 newDate.setDate(newDate.getDate() + i);
-                let sum = d3.sum(bin, r => r["count"]);
+                const sum = d3.sum(bin, r => r["count"]);
                 metaData["maxStack"] = Math.max(metaData["maxStack"], sum);
                 binned[i] = bin.reduce((acc, r) => {
                     acc["date"] = r["date"];

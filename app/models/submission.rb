@@ -395,7 +395,7 @@ class Submission < ApplicationRecord
     }
   end
 
-  def self.stacked_status_matrix(options = {}, base = { until: 0, value: {} })
+  def self.stacked_status_matrix(options = {}, base = { until: 0, value: [] })
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
@@ -410,7 +410,6 @@ class Submission < ApplicationRecord
                               .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
     end
 
-    # could also be done in frontend, but this way is easier to keep things consisent with local test data
     value = value
             .map { |k, v| { exercise_id: k[0], status: k[1], count: v } }
     {

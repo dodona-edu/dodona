@@ -246,3 +246,9 @@
     transform: rotate(90deg);
   }
 }
+
+.d3-tooltip-label {
+  font-size: 14px;
+  stroke: @content-bg;
+  stroke-width: 0.5px;
+}

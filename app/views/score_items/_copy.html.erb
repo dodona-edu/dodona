@@ -1,8 +1,7 @@
 <div class="modal-content">
   <div class="modal-header">
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("score_items.form.close") %>">
-      <span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title"><%= t("score_items.exercise.copy_title", name: evaluation_exercise.exercise.name) %></h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("score_items.form.close") %>"></button>
   </div>
 
   <%= form_for(:copy, url: copy_evaluation_score_items_path(@evaluation), html: { class: 'form-horizontal' }, namespace: evaluation_exercise.id, remote: true) do |f| %>

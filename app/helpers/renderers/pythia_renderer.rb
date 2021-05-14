@@ -113,6 +113,7 @@ class PythiaRenderer < FeedbackTableRenderer
         @builder.div(class: 'modal-dialog tutor') do
           @builder.div(class: 'modal-content') do
             @builder.div(class: 'modal-header') do
+              @builder.h4(class: 'modal-title')
               @builder.div(class: 'icons') do
                 @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-sm') do
                   @builder.i('', class: 'mdi mdi-fullscreen mdi-18')
@@ -121,7 +122,6 @@ class PythiaRenderer < FeedbackTableRenderer
                   @builder.i('', class: 'mdi mdi-close mdi-18')
                 end
               end
-              @builder.h4(class: 'modal-title')
             end
             @builder.div(class: 'modal-body') {}
           end

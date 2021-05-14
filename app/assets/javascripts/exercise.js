@@ -292,9 +292,9 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 }, (lastTimeout || 0) + 1000);
             } else {
                 lastTimeout = 0;
-                if ($("#activity-submission-link").parent().hasClass("active")) {
+                if ($("#activity-submission-link").hasClass("active")) {
                     $submissionRow.find(".load-submission").get(0).click();
-                } else if ($("#activity-feedback-link").parent().hasClass("active") &&
+                } else if ($("#activity-feedback-link").hasClass("active") &&
                     $("#activity-feedback-link").data("submission_id") === lastSubmission) {
                     loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
                 }

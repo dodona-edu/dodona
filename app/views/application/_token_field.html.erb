@@ -1,14 +1,12 @@
 <%= text_field_tag name, value, readonly: true, class: 'form-control' %>
-<span class="input-group-btn">
-  <%= clipboard_button_for name %>
-  <% if reset_url.present? %>
-    <%= link_to reset_url,
-                title: t('general.generate_token'),
-                method: :post,
-                data: {confirm: t('general.confirm_reset_token')},
-                remote: true,
-                class: 'btn btn-secondary' do %>
-      <i class="mdi mdi-refresh mdi-18"></i>
-    <% end %>
+<%= clipboard_button_for name %>
+<% if reset_url.present? %>
+  <%= link_to reset_url,
+              title: t('general.generate_token'),
+              method: :post,
+              data: {confirm: t('general.confirm_reset_token')},
+              remote: true,
+              class: 'btn btn-secondary' do %>
+    <i class="mdi mdi-refresh mdi-18"></i>
   <% end %>
-</span>
+<% end %>

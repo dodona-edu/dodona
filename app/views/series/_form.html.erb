@@ -26,10 +26,8 @@
       <div class='col-sm-6'>
         <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>
           <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
-          <span class="input-group-btn">
-            <button class="btn btn-secondary" type="button" data-bs-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
-            <button class="btn btn-secondary" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
-          </span>
+          <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+          <button class="btn btn-secondary" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
         </div>
       </div>
       <span class="help-block offset-sm-3 col-sm-6"><%= t(".deadline-help", time_zone: current_user.time_zone) %></span>

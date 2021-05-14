@@ -46,9 +46,7 @@
               <p><%= t ".webhook_html" %></p>
               <div class="input-group intput-froup-sm">
                 <%= text_field_tag :webhook_link, webhook_repository_url(@repository), readonly: true, class: 'form-control' %>
-                <span class="input-group-btn">
                 <%= clipboard_button_for :webhook_link %>
-              </span>
               </div>
             </div>
           </div>

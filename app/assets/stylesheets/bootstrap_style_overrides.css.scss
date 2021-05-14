@@ -148,7 +148,7 @@ h1, h2, h3, h4, h5 {
       @include box-shadow($shadow);
     }
   }
-  .input-group-btn .btn {
+  .btn {
     border-color: $state-danger-border;
   }
 }
@@ -177,7 +177,7 @@ h1, h2, h3, h4, h5 {
       @include box-shadow($shadow);
     }
   }
-  .input-group-btn .btn {
+  .btn {
     border-color: $state-warning-border;
   }
 }
@@ -200,6 +200,11 @@ mark,
   line-height: 1.4;
 }
 
-.input-group .input-group-btn .btn {
-  box-shadow: none;
+.input-group{
+  .btn {
+    box-shadow: none;
+  }
+  .btn-secondary {
+    border-color: $border-color;
+  }
 }

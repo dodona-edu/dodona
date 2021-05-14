@@ -41,9 +41,7 @@
             <p><%= t ".webhook_html" %></p>
             <div class="input-group">
               <%= text_field_tag :webhook_link, webhook_judge_url(@judge), readonly: true, class: 'form-control' %>
-              <span class="input-group-btn">
-                <%= clipboard_button_for :webhook_link %>
-              </span>
+              <%= clipboard_button_for :webhook_link %>
             </div>
           </div>
         </div>

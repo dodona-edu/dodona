@@ -25,22 +25,14 @@
 .feedback-metadata .score-form.form-inline {
   .form-group.input {
     width: 100%;
+    margin-bottom: 0;
 
     .control-wrapper {
       display: inline-block;
       width: 100%;
 
-      .form-control {
-        width: 100%;
-      }
-
       .input-group {
         width: 100%;
-      }
-
-      .input-group .btn {
-        // Override bootstrap
-        width: 1%;
       }
 
       .max-text {

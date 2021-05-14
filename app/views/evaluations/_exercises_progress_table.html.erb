@@ -20,7 +20,7 @@
         </td>
 
         <td>
-          <span data-bs-toggle="tooltip" data-html="true" title="<%= t('evaluations.show.progress_html', feedback_count: meta[:done], feedback_total: meta[:total]) %>">
+          <span data-bs-toggle="tooltip" data-bs-html="true" title="<%= t('evaluations.show.progress_html', feedback_count: meta[:done], feedback_total: meta[:total]) %>">
                 <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
                   <line x1="0" y1="0.5" x2="<%= meta[:done].to_f / meta[:total] %>" y2="0.5" class="info"></line>
                   <line x1="<%= meta[:done].to_f / meta[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>

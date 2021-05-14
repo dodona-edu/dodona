@@ -20,8 +20,8 @@ window.jquery = jQuery;
 window.$ = jQuery;
 
 // bootstrap
-import { Alert, Button, Collapse, Dropdown, Modal, Popover, Scrollspy, Tab, Tooltip } from "bootstrap";
-const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Scrollspy, Tab, Tooltip };
+import { Alert, Button, Collapse, Dropdown, Modal, Popover, ScrollSpy, Tab, Tooltip } from "bootstrap";
+const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, ScrollSpy, Tab, Tooltip };
 window.bootstrap = bootstrap;
 
 import "polyfills.js";

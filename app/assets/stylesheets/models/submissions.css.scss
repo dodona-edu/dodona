@@ -5,21 +5,11 @@
 }
 
 .feedback-table {
-  .label {
+  .badge {
     display: block;
     text-align: left;
     border-left: 3px solid;
     border-radius: 0;
-  }
-  .label.label-danger {
-    color: $brand-danger;
-    border-color: $brand-danger;
-    background-color: $content-bg;
-  }
-  .label.label-success {
-    color: $brand-success;
-    border-color: $brand-success;
-    background-color: $content-bg;
   }
   .description {
     background-color: $code-bg;

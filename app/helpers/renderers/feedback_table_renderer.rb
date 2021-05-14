@@ -212,7 +212,7 @@ class FeedbackTableRenderer
         end
       elsif (channel = t[:data]&.fetch(:channel, nil) || t[:channel])
         @builder.div(class: 'description') do
-          @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
+          @builder.span(class: "badge bg-#{t[:accepted] ? 'success' : 'danger'}") do
             @builder.text! channel
           end
         end

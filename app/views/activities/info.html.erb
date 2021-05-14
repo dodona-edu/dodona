@@ -21,7 +21,7 @@
             <p>
             <% @activity.labels.each do |label| %>
               <%= link_to label_path(label) do %>
-                <span class="label label-default"><%= label.name %></span>
+                <span class="badge bg-primary"><%= label.name %></span>
               <% end %>
             <% end %>
           </div>

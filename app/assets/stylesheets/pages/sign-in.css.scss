@@ -5,19 +5,15 @@
 
 // sign in page
 .sign-in-dialog-wrapper {
-  margin: auto;
-  // 1 column
-  @media (max-width: 768px) {
-    width: 350px;
+
+  .card {
+    flex-grow: 1;
   }
-  // 2 columns
-  @media (min-width: 768px) and (max-width: 1200px) {
-    width: 750px;
-  }
-  // 3 columns
-  @media (min-width: 1200px) {
-    width: 1150px;
-  }
+  .login-button {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    height: 45px;
+}
 }
 
 .sign-in-dialog-wrapper h1 {
@@ -89,11 +85,4 @@ input:focus {
     border-radius: 6px 0 0 6px !important;
 
   }
-}
-
-.login-button {
-  display: table-cell;
-  width: 1%;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
 }

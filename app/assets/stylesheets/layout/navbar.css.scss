@@ -59,13 +59,16 @@ $navbar-height: 50px;
       max-width: calc(100vw - 240px);
     }
     @include media-breakpoint-up(md) {
-      max-width: 640px;
+      max-width: map-get($container-max-widths, "md") / 12 * 10;
     }
     @include media-breakpoint-up(lg) {
-      max-width: 815px;
+      max-width: map-get($container-max-widths, "lg") / 12 * 10;
     }
     @include media-breakpoint-up(xl) {
-      max-width: 945px;
+      max-width: map-get($container-max-widths, "xl") / 12 * 10;
+    }
+    @include media-breakpoint-up(xxl) {
+      max-width: map-get($container-max-widths, "xxl") / 12 * 10;
     }
   }
 
@@ -119,13 +122,16 @@ $navbar-height: 50px;
       max-width: calc(100vw - 240px);
     }
     @include media-breakpoint-up(md) {
-      max-width: 640px;
+      max-width: calc((#{map-get($container-max-widths, "md")} / 12 * 10) - #{$grid-gutter-width});
     }
     @include media-breakpoint-up(lg) {
-      max-width: 815px;
+      max-width: calc((#{map-get($container-max-widths, "lg")} / 12 * 10) - #{$grid-gutter-width});
     }
     @include media-breakpoint-up(xl) {
-      max-width: 945px;
+      max-width: calc((#{map-get($container-max-widths, "xl")} / 12 * 10) - #{$grid-gutter-width});
+    }
+    @include media-breakpoint-up(xxl) {
+      max-width: calc((#{map-get($container-max-widths, "xxl")} / 12 * 10) - #{$grid-gutter-width});
     }
 
     .actions {

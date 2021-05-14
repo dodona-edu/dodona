@@ -31,7 +31,7 @@ class FeedbackTableRenderer
     if @result.present?
       @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
         if @result[:messages].present?
-          @builder.div(class: 'row feedback-table-messages') do
+          @builder.div(class: 'feedback-table-messages') do
             messages(@result[:messages])
           end
         end
@@ -40,7 +40,7 @@ class FeedbackTableRenderer
       end.html_safe
     else
       @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
-        @builder.div(class: 'row feedback-table-messages') do
+        @builder.div(class: 'feedback-table-messages') do
           messages([{ description: I18n.t('submissions.show.reading_failed'), format: 'plain' }])
         end
       end.html_safe
@@ -186,7 +186,7 @@ class FeedbackTableRenderer
   end
 
   def testcase(tc)
-    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
+    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
       testcase_content(tc)
     end
   end

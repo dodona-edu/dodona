@@ -61,7 +61,7 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def group(g)
     if g.key?(:data)
-      @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}",
+      @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}",
                    "data-statements": (g[:data][:statements]).to_s,
                    "data-stdin": (g[:data][:stdin]).to_s) do
         @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
@@ -90,7 +90,7 @@ class PythiaRenderer < FeedbackTableRenderer
         if @exercise.access_private? && value&.dig(:location) == 'href'
       [key, value]
     end.to_h.to_json
-    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", "data-files": jsonfiles) do
+    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", "data-files": jsonfiles) do
       testcase_content(tc)
     end
   end

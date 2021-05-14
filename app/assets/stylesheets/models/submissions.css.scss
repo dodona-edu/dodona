@@ -5,6 +5,25 @@
 }
 
 .feedback-table {
+  .groups {
+    .badge {
+      display: block;
+      text-align: left;
+      border-left: 3px solid;
+      border-radius: 0;
+    }
+    .badge.bg-danger {
+      color: $brand-danger;
+      border-color: $brand-danger;
+      background-color: $content-bg !important;
+    }
+    .badge.bg-success {
+      color: $brand-success;
+      border-color: $brand-success;
+      background-color: $content-bg !important;
+    }
+  }
+
   .description {
     background-color: $code-bg;
     pre {
@@ -12,13 +31,15 @@
     }
   }
   .groups {
-    margin: 0px 15px;
+    margin: 0;
+    margin-right: 15px;
   }
   .group {
     background-color: $content-bg;
     margin-bottom: 12px;
     border-left: 4px solid gray;
     position: relative;
+    padding-left: 12px;
 
     &.correct {
       border-left-color: $brand-success;

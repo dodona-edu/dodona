@@ -171,7 +171,7 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
             },
             error: function (data) {
                 $(
-                    "<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-bs-dismiss=\"alert\"><span>&times;</span></button>" +
+                    "<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"btn-close btn-close-white\" data-bs-dismiss=\"alert\"></button>" +
                     I18n.t("js.tutor-failed") +
                     "</div>"
                 )

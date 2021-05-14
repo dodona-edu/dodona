@@ -120,6 +120,9 @@ h1, h2, h3, h4, h5 {
   line-height: 14px;
   color: $text-secondary;
 }
+.help-block:not(:last-child) {
+  margin-bottom: 1rem;
+}
 
 .has-error {
   .col-form-label,

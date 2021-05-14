@@ -8,11 +8,11 @@
 <% if total && feedback.score_items.present? %>
   <%= link_to t("feedbacks.score_link.score", score: format_score(feedback.score), max: format_score(feedback.maximum_score)),
               "#score-details-#{feedback.id}",
-              title: t("feedbacks.score_link.view_breakdown"), data: { toggle: "collapse" } %>
+              title: t("feedbacks.score_link.view_breakdown"), data: { 'bs-toggle': "collapse" } %>
 <% elsif scores.present? %>
   <%= link_to t("feedbacks.score_link.present", count: scores.length),
               "#score-details-#{feedback.id}",
-              title: t("feedbacks.score_link.view_breakdown"), data: { toggle: "collapse" } %>
+              title: t("feedbacks.score_link.view_breakdown"), data: { 'bs-toggle': "collapse" } %>
 <% end %>
 <%# Link to edit screen if needed %>
 <% if policy(feedback).show? && scores.present? %>

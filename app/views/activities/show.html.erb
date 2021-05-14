@@ -40,10 +40,10 @@ end %>
         </h2>
         <% if @series.present? %>
           <div class="card-title-navigation hidden-print">
-            <%= link_to previous_link, class: 'btn-icon-inverted', title: previous_tooltip, data: {toggle: 'tooltip', placement: 'top'} do %>
+            <%= link_to previous_link, class: 'btn-icon-inverted', title: previous_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
               <i class="mdi mdi-chevron-left"></i>
             <% end %>
-            <%= link_to next_link, class: 'btn-icon-inverted', title: next_tooltip, data: {toggle: 'tooltip', placement: 'top'} do %>
+            <%= link_to next_link, class: 'btn-icon-inverted', title: next_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
                 <i class="mdi mdi-chevron-right"></i>
             <% end %>
           </div>

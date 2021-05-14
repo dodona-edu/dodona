@@ -33,7 +33,7 @@
           </td>
           <td class="actions">
             <%= link_to "#edit-form-#{score_item.id}", title: t('.edit_title'), class: 'btn btn-sm btn-secondary edit-button',
-                        data: { toggle: "modal" } do %>
+                        data: { "bs-toggle": "modal" } do %>
               <i class="mdi mdi-pencil mdi-18" aria-hidden='true'></i>
             <% end %>
             <%= button_to evaluation_score_item_path(@evaluation, score_item),

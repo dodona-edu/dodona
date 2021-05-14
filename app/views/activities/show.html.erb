@@ -82,17 +82,17 @@ end %>
         <% end %>
         <ul class="nav nav-tabs">
           <% if policy(@activity).submit? || !user_signed_in? %>
-            <li class="active"><a href="#handin" id="activity-handin-link" data-bs-toggle="tab"><%= t ".handin" %></a></li>
+            <li><a href="#handin" id="activity-handin-link" data-bs-toggle="tab" class="active"><%= t ".handin" %></a></li>
           <% end %>
-          <li class="<%= 'active' if !(policy(@activity).submit? || !user_signed_in?) %>">
-            <a href="#submissions" data-bs-toggle="tab" id='activity-submission-link'><%= t ".solutions" %></a></li>
+          <li>
+            <a href="#submissions" data-bs-toggle="tab" id='activity-submission-link' class="<%= 'active' if !(policy(@activity).submit? || !user_signed_in?) %>"><%= t ".solutions" %></a></li>
           <li><a href="#feedback" data-bs-toggle="tab" id='activity-feedback-link' class='hidden'><%= t ".feedback" %></a>
           </li>
         </ul>
       </div>
       <div class="card-supporting-text">
         <div class="tab-content">
-          <div class="tab-pane fade in active" id="handin">
+          <div class="tab-pane fade show active" id="handin">
             <% if !user_signed_in? %>
               <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
             <% end %>
@@ -111,7 +111,7 @@ end %>
               <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
             <% end %>
           </div>
-          <div class="tab-pane fade <%= 'in active' if !(policy(@activity).submit? || !user_signed_in?) %>" id="submissions">
+          <div class="tab-pane fade <%= 'show active' if !(policy(@activity).submit? || !user_signed_in?) %>" id="submissions">
             <div id="submissions-table-wrapper">
               <% if !user_signed_in? %>
                 <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>

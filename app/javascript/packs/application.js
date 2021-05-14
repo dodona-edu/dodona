@@ -20,7 +20,9 @@ window.jquery = jQuery;
 window.$ = jQuery;
 
 // bootstrap
-import "bootstrap.js";
+import { Alert, Button, Collapse, Dropdown, Modal, Popover, Scrollspy, Tab, Tooltip } from "bootstrap";
+const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Scrollspy, Tab, Tooltip };
+window.bootstrap = bootstrap;
 
 import "polyfills.js";
 import { Drawer } from "drawer";

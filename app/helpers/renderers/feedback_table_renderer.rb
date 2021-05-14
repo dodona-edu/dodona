@@ -83,7 +83,7 @@ class FeedbackTableRenderer
               @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
               badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id
-              @builder.span(class: 'badge', id: "badge_#{badge_id}") do
+              @builder.span(class: 'badge rounded-pill', id: "badge_#{badge_id}") do
                 @builder.text! tab_count(t)
               end
             end
@@ -93,7 +93,7 @@ class FeedbackTableRenderer
           @builder.li(class: ('active' if submission[:groups].blank?)) do
             @builder.a(href: '#code-tab', 'data-bs-toggle': 'tab') do
               @builder.text!("#{I18n.t('submissions.show.code')} ")
-              @builder.span(class: 'badge', id: 'badge_code')
+              @builder.span(class: 'badge rounded-piil', id: 'badge_code')
             end
           end
         end

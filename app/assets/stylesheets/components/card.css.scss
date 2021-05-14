@@ -301,7 +301,9 @@ a.card-title-link:hover {
 .card-tab .nav-tabs li a:focus,
 .card-title .nav-tabs li.active a,
 .card-title .nav-tabs li a:hover,
-.card-title .nav-tabs li a:focus {
+.card-title .nav-tabs li a:focus,
+.card-tab .nav-tabs li a.active,
+.card-title .nav-tabs li a.active {
   border: none;
   background: inherit;
   border-bottom: 5px solid $header-accent;

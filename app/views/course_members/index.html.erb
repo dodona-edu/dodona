@@ -14,7 +14,7 @@
             <li role="presentation" class="active"><a href="#enrolled"><%= t 'courses.show.subscribed' %></a></li>
             <% if @course.moderated || !@course.pending_members.empty? %>
               <li role="presentation"><a href="#pending"><%= t 'courses.show.pending' %>
-                <span class="badge badge-pending" id="pending-count"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a>
+                <span class="badge rounded-pill badge-pending" id="pending-count"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a>
               </li>
             <% end %>
             <li role="presentation"><a href="#unsubscribed"><%= t 'courses.show.unsubscribed' %></a></li>

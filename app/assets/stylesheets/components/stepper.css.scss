@@ -1,12 +1,13 @@
 .stepper {
   .panel {
-  @include shadow-z0;
+    @include shadow-z0;
     border-radius: 0;
     background-color: transparent;
 
     .panel-heading {
       background: transparent;
       border: none;
+      padding: 10px 15px;
 
       .step-circle {
         display: inline-block;
@@ -27,6 +28,12 @@
 
       h4.panel-title {
         line-height: 24px;
+        font-size: 16px;
+        color: inherit;
+
+        a {
+          color: inherit;
+        }
 
         .answer {
           color: $text-muted;

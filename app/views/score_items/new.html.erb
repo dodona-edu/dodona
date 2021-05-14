@@ -16,7 +16,7 @@
             </a>
           </h4>
         </div>
-        <div id="choice-step" class="panel-collapse collapse <%= "in" unless @evaluation.score_items.any? %>" role="tabpanel">
+        <div id="choice-step" class="panel-collapse collapse <%= "show" unless @evaluation.score_items.any? %>" role="tabpanel">
           <div class="panel-body panel-body-transparent">
             <div class="row">
               <div class="col-sm-6">
@@ -57,7 +57,7 @@
             </a>
           </h4>
         </div>
-        <div id="choose-step" class="panel-collapse collapse<%= " in" if @evaluation.score_items.any? %>" role="tabpanel">
+        <div id="choose-step" class="panel-collapse collapse<%= " show" if @evaluation.score_items.any? %>" role="tabpanel">
           <div class="panel-body">
             <div class="stepper-part">
               <div class="score-item-toolbar">

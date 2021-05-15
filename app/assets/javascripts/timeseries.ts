@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { formatTitle } from "graph_helper.js";
 
 let selector = "";
-const margin = { top: 20, right: 20, bottom: 20, left: 120 };
+const margin = { top: 20, right: 40, bottom: 20, left: 140 };
 let width = 0;
 let height = 0;
 const statusOrder = [
@@ -41,11 +41,10 @@ function drawTimeSeries(data, metaData, exMap): void {
     const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
-    const yAxisPadding = 20; // padding between y axis (labels) and the actual graph
+    const yAxisPadding = 40; // padding between y axis (labels) and the actual graph
     const dateFormat = d3.timeFormat("%A %B %d");
     const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
     dateArray.unshift(metaData["minDate"]);
-    const rectSize = 25;
 
     const svg = d3.select(selector)
         .append("svg")
@@ -63,6 +62,9 @@ function drawTimeSeries(data, metaData, exMap): void {
         .range([innerHeight, 0])
         .domain(yDomain)
         .padding(.5);
+
+
+    const rectSize = Math.min(y.bandwidth()*1.5, innerWidth / metaData["dateRange"] - 5);
 
     const yAxis = graph.append("g")
         .call(d3.axisLeft(y).tickSize(0))
@@ -93,7 +95,7 @@ function drawTimeSeries(data, metaData, exMap): void {
 
     const tooltipLine = graph.append("line")
         .attr("y1", 0)
-        .attr("y2", innerHeight)
+        .attr("y2", innerHeight-y.bandwidth()/2)
         .attr("pointer-events", "none")
         .attr("stroke", "currentColor")
         .style("width", 40);
@@ -104,12 +106,12 @@ function drawTimeSeries(data, metaData, exMap): void {
         .attr("fill", "currentColor")
         .attr("font-size", "12px");
     tooltipLabel
-        .attr("y", innerHeight - tooltipLabel.node().getBBox().height);
+        .attr("y", innerHeight - y.bandwidth()/2 - tooltipLabel.node().getBBox().height/2);
 
 
     // add x-axis
     graph.append("g")
-        .attr("transform", `translate(0, ${innerHeight})`)
+        .attr("transform", `translate(0, ${innerHeight-y.bandwidth()/2})`)
         .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, "%a %b-%d"));
 
     Object.keys(data).forEach(exId => {

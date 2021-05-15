@@ -1,4 +1,5 @@
 @import "theme/development";
+@import "theme/theme-dark";
 
 // General defines
 $color-red: $red-500;
@@ -26,10 +27,6 @@ $accent-800: $amber-800;
 $accent-900: $amber-900;
 $accent-A100: $amber-A100;
 
-@if $development == true {
-    @include theme-development
-}
-
 $info-500: $blue-500;
 $success-100: $green-100;
 $success-200: $green-200;
@@ -45,7 +42,6 @@ $danger-A100: $red-A100;
 $danger-A200: $red-A200;
 $warning-500: $amber-500;
 
-// Boostrap overrides
 $body-bg: $grey-50;
 $content-bg: white;
 $text-color: $black-text;
@@ -53,8 +49,16 @@ $body-color: $text-color;
 $color-contrast-dark: $text-color;
 $text-disabled: $black-disabled;
 $text-secondary: $black-secondary;
-$link-color: $accent-800;
 $hairlinegray: $black-divider;
+
+@if $development == true {
+    @include theme-development;
+}
+@if $theme == dark {
+    @include theme-dark;
+}
+
+$link-color: $accent-800;
 
 // old vars
 $brand-info: $info-500;
@@ -195,4 +199,7 @@ $table-hover-bg: $grey-50;
     .light-only {
         display: unset;
     }
+}
+@if $theme == dark {
+    @include theme-dark-other;
 }

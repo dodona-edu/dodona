@@ -1,116 +1,119 @@
-@import "theme-light";
+// importing this file has no effect
+// you have to explicitly call @include theme-dark
+@mixin theme-dark {
+  $color-red: $red-800 !global;
+  $color-pink: $pink-800 !global;
+  $color-purple: $purple-800 !global;
+  $color-deep-purple: $deep-purple-800 !global;
+  $color-indigo: $indigo-800 !global;
+  $color-teal: $teal-800 !global;
+  $color-orange: $deep-orange-800 !global;
+  $color-brown: $brown-800 !global;
+  $color-blue-grey: $blue-grey-700 !global;
 
-$color-red: $red-800;
-$color-pink: $pink-800;
-$color-purple: $purple-800;
-$color-deep-purple: $deep-purple-800;
-$color-indigo: $indigo-800;
-$color-teal: $teal-800;
-$color-orange: $deep-orange-800;
-$color-brown: $brown-800;
-$color-blue-grey: $blue-grey-700;
+  $primary-700: $light-blue-800 !global;
+  $accent-300: $yellow-400 !global;
+  $accent-500: $yellow-800 !global;
+  $accent-800: lighten($accent-500, 10%) !global;
+  $brand-primary: $accent-500 !global;
 
-$primary-700: $light-blue-800;
-$accent-300: $yellow-400;
-$accent-500: $yellow-800;
-$accent-800: lighten($accent-500, 10%);
-$brand-primary: $accent-500;
+  $success-800: $green-200 !global;
+  $success-500: $green-300 !global;
+  $success-100: $green-800 !global;
+  $danger-800: $red-200 !global;
+  $danger-500: $red-300 !global;
+  $info-500: $light-blue-300 !global;
+  $warning-500: $amber-300 !global;
 
-$success-800: $green-200;
-$success-500: $green-300;
-$success-100: $green-800;
-$danger-800: $red-200;
-$danger-500: $red-300;
-$info-500: $light-blue-300;
-$warning-500: $amber-300;
+  $body-bg: $blue-grey-800 !global;
+  $content-bg: $blue-grey-900 !global;
+  $text-color: $white-text !global;
+  $body-color: $text-color !global;
+  $text-disabled: $white-disabled !global;
+  $text-secondary: $white-secondary !global;
+  $hairlinegray: $white-divider !global;
+}
 
+@mixin theme-dark-other {
+  $dropdown-link-color: $text-color !global;
+  $dropdown-border-color: $hairlinegray !global;
+  $dropdown-divider-bg: $hairlinegray !global;
+  $dropdown-link-hover-color: $text-color !global;
+  $dropdown-link-hover-bg: $body-bg !global;
 
-// Boostrap overrides
-$body-bg: $blue-grey-800;
-$content-bg: $blue-grey-900;
-$text-color: $white-text;
-$text-disabled: $white-disabled;
-$text-secondary: $white-secondary;
-$hairlinegray: $white-divider;
+  $input-bg: $content-bg !global;
+  $input-color: $text-color !global;
+  $input-bg-disabled: $body-bg !global;
+  $btn-secondary-bg: $content-bg !global;
+  $btn-secondary-color: $text-color !global;
 
-$dropdown-link-color: $text-color;
-$dropdown-border-color: $hairlinegray;
-$dropdown-divider-bg: $hairlinegray;
-$dropdown-link-hover-color: $text-color;
-$dropdown-link-hover-bg: $body-bg;
+  $pre-bg: $content-bg !global;
+  $pre-color: $text-color !global;
 
-$input-bg: $content-bg;
-$input-color: $text-color;
-$input-bg-disabled: $body-bg;
-$btn-secondary-bg: $content-bg;
-$btn-secondary-color: $text-color;
+  $code-bg: $body-bg !global;
+  $code-light-bg: $body-bg !global;
 
-$pre-bg: $content-bg;
-$pre-color: $text-color;
+  $alert-warning-bg: inherit !global;
+  $alert-info-bg: inherit !global;
+  $alert-danger-bg: inherit !global;
 
-$code-bg: $body-bg;
-$code-light-bg: $body-bg;
+  $table-border-color: $hairlinegray !global;
+  $table-bg-accent: $body-bg !global;
 
-$alert-warning-bg: inherit;
-$alert-info-bg: inherit;
-$alert-danger-bg: inherit;
+  $nav-link-hover-bg: darken($body-bg, 3%) !global;
+  $nav-tabs-border-color: $hairlinegray !global;
 
-$table-border-color: $hairlinegray;
-$table-bg-accent: $body-bg;
+  $modal-content-bg: $content-bg !global;
+  $modal-content-border-color: $hairlinegray !global;
+  $modal-header-border-color: $hairlinegray !global;
 
-$nav-link-hover-bg: darken($body-bg, 3%);
-$nav-tabs-border-color: $hairlinegray;
+  $pagination-bg: $content-bg !global;
+  $pagination-hover-bg: $content-bg !global;
+  $pagination-disabled-bg: $content-bg !global;
 
-$modal-content-bg: $content-bg;
-$modal-content-border-color: $hairlinegray;
-$modal-header-border-color: $hairlinegray;
+  $panel-bg: $body-bg !global;
+  $panel-default-heading-bg: $body-bg !global;
+  $panel-default-text: $text-color !global;
+  $panel-default-border: $content-bg !global;
 
-$pagination-bg: $content-bg;
-$pagination-hover-bg: $content-bg;
-$pagination-disabled-bg: $content-bg;
+  // other overrides
+  $text-muted: $white-secondary !global;
 
-$panel-bg: $body-bg;
-$panel-default-heading-bg: $body-bg;
-$panel-default-text: $text-color;
-$panel-default-border: $content-bg;
+  // custom elements
+  $btn-hover-background: $body-bg !global;
+  $btn-active-background: $body-bg !global;
+  $toggle-btn-active-bg: $body-bg !global;
+  $toggle-btn-bg: $content-bg !global;
 
-// other overrides
-$text-muted: $white-secondary;
+  $drawer-border: $hairlinegray !global;
+  $drawer-hover: $body-bg !global;
+  $drawer-active: $body-bg !global;
 
-// custom elements
-$btn-hover-background: $body-bg;
-$btn-active-background: $body-bg;
-$toggle-btn-active-bg: $body-bg;
-$toggle-btn-bg: $content-bg;
+  $feedback-diff-table-header-bg: $body-bg !global;
+  $feedback-diff-table-header-fg: $text-secondary !global;
+  $feedback-diff-table-ins: $green-900 !global;
+  $feedback-diff-table-ins-strong: $green-800 !global;
+  $feedback-diff-table-del: $red-900 !global;
+  $feedback-diff-table-del-strong: $red-800 !global;
 
-$drawer-border: $hairlinegray;
-$drawer-hover: $body-bg;
-$drawer-active: $body-bg;
+  $skeleton-color: $body-bg !global;
 
-$feedback-diff-table-header-bg: $body-bg;
-$feedback-diff-table-header-fg: $text-secondary;
-$feedback-diff-table-ins: $green-900;
-$feedback-diff-table-ins-strong: $green-800;
-$feedback-diff-table-del: $red-900;
-$feedback-diff-table-del-strong: $red-800;
+  $footer-bg: $blue-grey-900 !global;
 
-$skeleton-color: $body-bg;
+  $heatmap-empty-fg: $body-bg !global;
+  $punchcard-fg: $light-blue-900 !global;
 
-$footer-bg: $blue-grey-900;
+  $table-hover-bg: $body-bg !global;
 
-$heatmap-empty-fg: $body-bg;
-$punchcard-fg: $light-blue-900;
+  $input-group-addon-bg: $grey-800 !global;
 
-$table-hover-bg: $body-bg;
-
-$input-group-addon-bg: $grey-800;
-
-.activity-description {
+  .activity-description {
     .light-only {
-        display: none;
+      display: none;
     }
 
     .dark-only {
-        display: unset;
+      display: unset;
     }
+  }
 }

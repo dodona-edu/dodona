@@ -6,6 +6,8 @@
 @import "bootstrap_variable_overrides";
 @import "mixins";
 @import "vendor";
+
+// also loads dark mode stuff
 @import "theme/theme-light";
 
 @import "theme/rouge-light";
@@ -15,11 +17,6 @@
 } @else {
   @include rouge-light;
 }
-
-// TODO
-// @import "theme/theme-#{theme}";
-// @import "theme/#{mode}";
-// @import "theme/rouge-#{theme}";
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../../../node_modules/bootstrap/scss/variables";

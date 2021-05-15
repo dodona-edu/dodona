@@ -7,7 +7,15 @@
 @import "mixins";
 @import "vendor";
 @import "theme/theme-light";
+
 @import "theme/rouge-light";
+@import "theme/rouge-dark";
+@if $theme == "dark" {
+  @include rouge-dark;
+} @else {
+  @include rouge-light;
+}
+
 // TODO
 // @import "theme/theme-#{theme}";
 // @import "theme/#{mode}";

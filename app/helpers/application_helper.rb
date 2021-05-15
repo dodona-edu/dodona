@@ -200,15 +200,15 @@ module ApplicationHelper
     end
 
     def page_number(page)
-      tag :li, link(page, page, rel: rel_value(page)), class: ('active' if page == current_page)
+      tag :li, link(page, page, rel: rel_value(page), class: 'page-link'), class: (page == current_page ? 'active page-item' : 'page-item')
     end
 
     def gap
-      tag :li, link('&hellip;', '#'), class: 'disabled'
+      tag :li, link('&hellip;', '#', class: 'page-link'), class: 'page-item disabled'
     end
 
     def previous_or_next_page(page, text, classname)
-      tag :li, link(text, page || '#'), class: [classname[0..3], classname, ('disabled' unless page)].join(' ')
+      tag :li, link(text, page || '#', class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
 
@@ -220,15 +220,15 @@ module ApplicationHelper
     end
 
     def page_number(page)
-      tag :li, link(page, page, rel: rel_value(page), "data-remote": true), class: ('active' if page == current_page)
+      tag :li, link(page, page, rel: rel_value(page), "data-remote": true, class: 'page-link'), class: (page == current_page ? 'active page-item' : 'page-item')
     end
 
     def gap
-      tag :li, link('&hellip;', '#'), class: 'disabled'
+      tag :li, link('&hellip;', '#', class: 'page-link'), class: 'page-item disabled'
     end
 
     def previous_or_next_page(page, text, classname)
-      tag :li, link(text, page || '#', "data-remote": true), class: [classname[0..3], classname, ('disabled' unless page)].join(' ')
+      tag :li, link(text, page || '#', "data-remote": true, class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
 

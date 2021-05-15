@@ -200,11 +200,16 @@ mark,
   line-height: 1.4;
 }
 
-.input-group{
+.input-group {
   .btn {
     box-shadow: none;
   }
   .btn-secondary {
     border-color: $border-color;
   }
+}
+
+.pagination {
+  justify-content: center;
+  margin-top: 12px;
 }

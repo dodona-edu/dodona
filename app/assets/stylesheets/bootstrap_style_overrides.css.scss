@@ -85,6 +85,10 @@ h1, h2, h3, h4, h5 {
 // tables
 .table {
   margin-bottom: 0;
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
 }
 
 .table th {

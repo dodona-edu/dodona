@@ -57,7 +57,6 @@ module SeriesHelper
     doc = Nokogiri::HTML::DocumentFragment.parse file
     svg = doc.at_css 'svg'
     svg['class'] = options[:class] if options[:class].present?
-    end
     doc.to_html.html_safe
   end
 end

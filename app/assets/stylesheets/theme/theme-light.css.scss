@@ -1,3 +1,5 @@
+@import "theme/development";
+
 // General defines
 $color-red: $red-500;
 $color-pink: $pink-500;
@@ -23,6 +25,10 @@ $accent-700: $amber-700;
 $accent-800: $amber-800;
 $accent-900: $amber-900;
 $accent-A100: $amber-A100;
+
+@if $development == true {
+    @include theme-development
+}
 
 $info-500: $blue-500;
 $success-100: $green-100;

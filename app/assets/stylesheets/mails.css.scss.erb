@@ -1,8 +1,9 @@
 @import "theme/colors";
+
+$development: false;
+$theme: "light";
+
 @import "theme/theme-light";
-<% if Rails.env.development? || Rails.env.staging? %>
-@import "theme/development";
-<% end %>
 @import "theme/rouge-light";
 
 body {

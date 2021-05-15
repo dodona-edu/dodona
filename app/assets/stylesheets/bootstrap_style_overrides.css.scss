@@ -12,10 +12,18 @@ h1, h2, h3, h4, h5 {
 }
 
 // alerts
-.alert {
-  color: white !important;
-  border-width: 0 !important;
-  @include shadow-z2;
+@if $theme == dark {
+  .alert {
+    color: white !important;
+    background-color: inherit;
+  }
+
+} @else {
+  .alert {
+    color: white !important;
+    border-width: 0 !important;
+    @include shadow-z2;
+  }
 }
 
 .alert-link {

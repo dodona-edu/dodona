@@ -224,6 +224,10 @@ a.card-title-link:hover {
   font-size: 18px;
 }
 
+.card-subtitle-actions a.dropdown-item {
+  color: $text-color;
+}
+
 .card-subtitle-actions a:hover {
   color: $text-color;
   font-size: 18px;

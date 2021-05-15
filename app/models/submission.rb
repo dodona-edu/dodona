@@ -56,7 +56,7 @@ class Submission < ApplicationRecord
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
-  scope :only_students, ->(course) { where.not(user: CourseMembership.where(course_id: course.id).where(status: 'course_admin').map(&:user))}
+  scope :only_students, ->(course) { where.not(user: CourseMembership.where(course_id: course.id).where(status: 'course_admin').map(&:user)) }
 
   scope :judged, -> { where.not(status: %i[running queued]) }
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
@@ -408,7 +408,7 @@ class Submission < ApplicationRecord
                               .group_by(&:itself)
                               .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
     end
-    
+
     value = base[:value] + result
             .map { |k, v| { exercise_id: k[0], status: k[1], count: v } }
     {

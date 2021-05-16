@@ -166,8 +166,7 @@ function drawStacked(data: {
             .attr("x", (margin.right - 20) / 2)
             .attr("y", y(ex.exercise_id) + y.bandwidth())
             .text(
-                `${I18n.t("js.total")} ${I18n.t(t===1 ?
-                    "js.submission" : "js.submissions")}`
+                `${I18n.t("js.total")} ${I18n.t("js.submissions")}`
             )
             .attr("text-anchor", "middle")
             .attr("fill", "currentColor")

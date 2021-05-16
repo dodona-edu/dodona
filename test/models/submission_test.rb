@@ -287,6 +287,30 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal 3, Submission.old_heatmap_matrix(course: course)[:value].values.sum
   end
 
+  test 'violin does not crash' do
+    course = create :course
+    temp = {}
+    assert_equal temp, Submission.violin_matrix(course: course)[:value]
+  end
+
+  test 'stacked does not crash' do
+    course = create :course
+    temp = []
+    assert_equal temp, Submission.violin_matrix(course: course)[:value]
+  end
+
+  test 'timeseries does not crash' do
+    course = create :course
+    temp = {}
+    assert_equal temp, Submission.violin_matrix(course: course)[:value]
+  end
+
+  test 'ctimeseries does not crash' do
+    course = create :course
+    temp = {}
+    assert_equal temp, Submission.violin_matrix(course: course)[:value]
+  end
+
   test 'update to internal error should send exception notification' do
     submission = create :submission
     ExceptionNotifier.expects(:notify_exception).with { |_e, data| data[:data][:url].present? && data[:data][:judge].present? }

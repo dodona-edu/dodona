@@ -54,6 +54,7 @@ nl:
     submission: indiening
     submissions: indieningen
     total: totaal
+    mean: gemiddelde
     violin_title: Aantal indieningen per gebruiker
     stacked_title: Verdeling van indienigsstatussen
     timeseries_title: Indieningen over tijd

@@ -54,6 +54,7 @@ en:
     submission: submission
     submissions: submissions
     total: total
+    mean: mean
     violin_title: Amount of submissions per user
     stacked_title: Distribution of submission statuses
     timeseries_title: Submissions over time

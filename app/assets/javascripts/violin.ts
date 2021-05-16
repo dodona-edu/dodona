@@ -3,7 +3,7 @@ import { formatTitle } from "graph_helper.js";
 
 
 let selector = undefined;
-const margin = { top: 20, right: 60, bottom: 40, left: 125 };
+const margin = { top: 20, right: 160, bottom: 40, left: 125 };
 let width = 0;
 let height = 0;
 
@@ -12,6 +12,7 @@ function drawViolin(data: {
     "counts": number[];
     "freq": number[][];
     "median": number;
+    "average": number;
 }[], exMap: [string, string][]): void {
     const min = d3.min(data, d => d3.min(d.counts));
     const max = d3.max(data, d => d3.max(d.counts));
@@ -181,6 +182,40 @@ function drawViolin(data: {
         .attr("r", 4)
         .attr("fill", "currentColor")
         .attr("pointer-events", "none");
+
+    // Additional metrics
+    const metrics = graph.append("g")
+        .attr("transform", `translate(${innerWidth+15}, 0)`);
+
+    metrics.append("rect")
+        .attr("width", margin.right - 20)
+        .attr("height", innerHeight)
+        .attr("rx", 5)
+        .attr("ry", 5)
+        .style("fill", "none")
+        .style("stroke", "currentColor")
+        .style("stroke-width", 2);
+
+    for (const ex of data) {
+        const t = Math.round(ex.average*100)/100;
+        metrics.append("text")
+            .attr("x", (margin.right - 20) / 2)
+            .attr("y", y(ex.ex_id) + y.bandwidth()/2)
+            .text(`${t}`)
+            .attr("text-anchor", "middle")
+            .attr("fill", "currentColor")
+            .style("font-size", "14px");
+
+        metrics.append("text")
+            .attr("x", (margin.right - 20) / 2)
+            .attr("y", y(ex.ex_id) + y.bandwidth())
+            .text(
+                `${I18n.t("js.mean")} ${I18n.t("js.submissions")}`
+            )
+            .attr("text-anchor", "middle")
+            .attr("fill", "currentColor")
+            .style("font-size", "12px");
+    }
 }
 
 function initViolin(url: string, containerId: string, containerHeight: number): void {
@@ -225,12 +260,14 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
             // sort so median is calculated correctly
             "counts": raw.data[k].map(x => parseInt(x)).sort((a: number, b: number) => a-b),
             "freq": {},
-            "median": 0
+            "median": 0,
+            "average": 0
         })) as {
             "ex_id": string;
             "counts": number[];
             "freq": number[][];
             "median": number;
+            "average": number;
         }[];
 
         const maxCount: number = d3.max(data, d => d3.max(d.counts));
@@ -241,6 +278,7 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
                 .domain([1, maxCount])(ex.counts);
 
             ex.median = d3.quantile(ex.counts, .5);
+            ex.average = d3.mean(ex.counts);
         });
 
         drawViolin(data, raw.exercises);

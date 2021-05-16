@@ -3,21 +3,18 @@
  * under the MIT license
  **/
 export class ScrollSpy {
-    /**
-    * Initialises a new {@code ScrollSpy} instance.
-    * Supported options are:
-    * {
-    *  sectionSelector: string;
-    *  targetSelector: string;
-    *  offset: number;
-    *  hrefAttribute: string;
-    *  activeClass: string;
-    * }
-    *
-    * @param {string|HTMLElement} menu - Selector to nav menu.
-    * @param {Object} options - Options
-    */
-    constructor(menu = "#navMain", options = {}) {
+    menuList: HTMLElement;
+    options: {
+        sectionSelector: string;
+        targetSelector: string;
+        offset: number;
+        hrefAttribute: string;
+        activeClass: string;
+    };
+    sections: NodeListOf<HTMLElement>;
+    currentActive: HTMLElement | null;
+
+    constructor(menu: unknown = "#navMain", options = {}) {
         if (!menu) {
             throw new Error("First argument cannot be empty");
         }
@@ -49,7 +46,7 @@ export class ScrollSpy {
     /**
      * Activates the scroll listener
      */
-    activate() {
+    activate(): void {
         window.onload = () => this.onScroll();
         window.addEventListener("scroll", () => this.onScroll());
     }
@@ -57,16 +54,14 @@ export class ScrollSpy {
     /**
     * Handles scroll by finding the section
     * and setting the active class name.
-    *
-    * @return {void}
     */
-    onScroll() {
+    onScroll(): void {
         const section = this.getCurrentSection();
         const menuItem = this.getCurrentMenuItem(section);
 
         if (menuItem && menuItem !== this.currentActive) {
             this.currentActive = menuItem;
-            this.removeCurrentActive({ ignore: menuItem });
+            this.removeCurrentActive();
             this.setActive(menuItem);
         }
     }
@@ -75,9 +70,9 @@ export class ScrollSpy {
     * Returns the section where the current
     * scroll position is.
     *
-    * @return {HTMLElement}
+    * @return {HTMLElement | null}
     */
-    getCurrentSection() {
+    getCurrentSection(): HTMLElement | null {
         this.sections = document.querySelectorAll(this.options.sectionSelector);
         for (let i = 0; i < this.sections.length; i++) {
             /**
@@ -104,7 +99,7 @@ export class ScrollSpy {
     * @param {HTMLElement} section - The current section
     * @return {HTMLAnchorElement}
     */
-    getCurrentMenuItem(section) {
+    getCurrentMenuItem(section: HTMLElement | null): HTMLAnchorElement | null {
         if (!section) {
             return;
         }
@@ -119,9 +114,8 @@ export class ScrollSpy {
     * Adds active class to the passed element.
     *
     * @param {HTMLAnchorElement} menuItem - Menu item of current section.
-    * @return {void}
     */
-    setActive(menuItem) {
+    setActive(menuItem: HTMLAnchorElement): void {
         const isActive = menuItem.classList.contains(this.options.activeClass);
         if (!isActive) {
             const activeClasses = this.options.activeClass.trim().split(" ");
@@ -133,10 +127,8 @@ export class ScrollSpy {
 
     /**
     * Removes active class from all nav links
-    *
-    * @return {void}
     */
-    removeCurrentActive() {
+    removeCurrentActive(): void {
         const { targetSelector } = this.options;
         const menuItems = this.menuList.querySelectorAll(targetSelector);
 

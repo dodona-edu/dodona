@@ -1,7 +1,7 @@
 import { setBaseUrl } from "./index.js";
 import { initDragAndDrop } from "./drag_and_drop.js";
 import { getURLParameter } from "./util.js";
-import { ScrollSpy } from "./scrollspy.js";
+import { ScrollSpy } from "./scrollspy";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");

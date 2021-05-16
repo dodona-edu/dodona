@@ -1,6 +1,7 @@
 import { setBaseUrl } from "./index.js";
 import { initDragAndDrop } from "./drag_and_drop.js";
 import { getURLParameter } from "./util.js";
+import { ScrollSpy } from "./scrollspy.js";
 
 function loadUsers(_baseUrl, _status) {
     const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
@@ -129,8 +130,12 @@ function initCourseShow() {
     const series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
 
     function init() {
-        $("body").css("position", "relative");
-        $("body").scrollspy({ target: "#scrollspy-nav", method: "offset" });
+        const ss = new ScrollSpy(document.getElementById("scrollspy-nav"), {
+            sectionSelector: ".series .anchor",
+            offset: 90,
+        });
+        window.onload = () => ss.onScroll();
+        window.addEventListener("scroll", () => ss.onScroll());
         $(window).scroll(scroll);
         scroll(); // Load series visible on pageload
     }

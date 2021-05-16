@@ -66,18 +66,19 @@ export class ScrollSpy {
     * @returns {HTMLElement}
     */
     getCurrentSection() {
+        this.sections = document.querySelectorAll(this.options.sectionSelector);
         for (let i = 0; i < this.sections.length; i++) {
             /**
             * @type {HTMLElement}
             */
             const section = this.sections[i];
-            const startAt = section.offsetTop;
-            const endAt = startAt + section.offsetHeight;
+            // get the parent of the parent of the anchor
+            const startAt = section.parentElement.parentElement.offsetTop;
+            const endAt = startAt + section.parentElement.parentElement.offsetHeight;
             const currentPosition =
                 (document.documentElement.scrollTop ||
                     document.body.scrollTop) + this.options.offset;
-            const isInView =
-                currentPosition >= startAt && currentPosition < endAt;
+            const isInView = currentPosition >= startAt && currentPosition < endAt;
             if (isInView) {
                 return section;
             }

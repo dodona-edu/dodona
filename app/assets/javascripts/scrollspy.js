@@ -5,55 +5,67 @@
 export class ScrollSpy {
     /**
     * Initialises a new {@code ScrollSpy} instance.
-    *
-    * @param {string|HTMLElement} menu - Selector to nav menu.
-    * @param {{
+    * Supported options are:
+    * {
     *  sectionSelector: string;
     *  targetSelector: string;
     *  offset: number;
     *  hrefAttribute: string;
     *  activeClass: string;
-    * }} options - Options
+    * }
+    *
+    * @param {string|HTMLElement} menu - Selector to nav menu.
+    * @param {Object} options - Options
     */
-    constructor(menu = '#navMain', options = {}) {
+    constructor(menu = "#navMain", options = {}) {
         if (!menu) {
-            throw new Error('First argument cannot be empty');
+            throw new Error("First argument cannot be empty");
         }
-        if (!(typeof menu === 'string' || menu instanceof HTMLElement)) {
+        if (!(typeof menu === "string" || menu instanceof HTMLElement)) {
             throw new TypeError(
-                'menu can be either string or an instance of HTMLElement'
+                "menu can be either string or an instance of HTMLElement"
             );
         }
 
-        if (typeof options !== 'object') {
-            throw new TypeError('options can only be of type object');
+        if (typeof options !== "object") {
+            throw new TypeError("options can only be of type object");
         }
 
-        let defaultOptions = {
-            sectionSelector: 'section',
-            targetSelector: 'a',
+        const defaultOptions = {
+            sectionSelector: "section",
+            targetSelector: "a",
             offset: 0,
-            hrefAttribute: 'href',
-            activeClass: 'active',
+            hrefAttribute: "href",
+            activeClass: "active",
         };
 
         this.menuList =
             menu instanceof HTMLElement ? menu : document.querySelector(menu);
         this.options = Object.assign({}, defaultOptions, options);
         this.sections = document.querySelectorAll(this.options.sectionSelector);
+        this.currentActive = null;
+    }
+
+    /**
+     * Activates the scroll listener
+     */
+    activate() {
+        window.onload = () => this.onScroll();
+        window.addEventListener("scroll", () => this.onScroll());
     }
 
     /**
     * Handles scroll by finding the section
     * and setting the active class name.
     *
-    * @returns {void}
+    * @return {void}
     */
     onScroll() {
         const section = this.getCurrentSection();
         const menuItem = this.getCurrentMenuItem(section);
 
-        if (menuItem) {
+        if (menuItem && menuItem !== this.currentActive) {
+            this.currentActive = menuItem;
             this.removeCurrentActive({ ignore: menuItem });
             this.setActive(menuItem);
         }
@@ -63,7 +75,7 @@ export class ScrollSpy {
     * Returns the section where the current
     * scroll position is.
     *
-    * @returns {HTMLElement}
+    * @return {HTMLElement}
     */
     getCurrentSection() {
         this.sections = document.querySelectorAll(this.options.sectionSelector);
@@ -90,14 +102,14 @@ export class ScrollSpy {
     * current scroll position is pointing to.
     *
     * @param {HTMLElement} section - The current section
-    * @returns {HTMLAnchorElement}
+    * @return {HTMLAnchorElement}
     */
     getCurrentMenuItem(section) {
         if (!section) {
             return;
         }
 
-        const sectionId = section.getAttribute('id');
+        const sectionId = section.getAttribute("id");
         return this.menuList.querySelector(
             `[${this.options.hrefAttribute}="#${sectionId}"]`
         );
@@ -107,13 +119,13 @@ export class ScrollSpy {
     * Adds active class to the passed element.
     *
     * @param {HTMLAnchorElement} menuItem - Menu item of current section.
-    * @returns {void}
+    * @return {void}
     */
     setActive(menuItem) {
         const isActive = menuItem.classList.contains(this.options.activeClass);
         if (!isActive) {
-            const activeClasses = this.options.activeClass.trim().split(' ');
-            activeClasses.forEach((activeClass) =>
+            const activeClasses = this.options.activeClass.trim().split(" ");
+            activeClasses.forEach(activeClass =>
                 menuItem.classList.add(activeClass)
             );
         }
@@ -121,24 +133,16 @@ export class ScrollSpy {
 
     /**
     * Removes active class from all nav links
-    * except the specified ignore element.
     *
-    * @param {{
-    *  ignore: HTMLAnchorElement
-    * }} options
-    * @returns {void}
+    * @return {void}
     */
-    removeCurrentActive(options = { ignore: null }) {
-        const { hrefAttribute, targetSelector } = this.options;
-        const menuItems = this.menuList.querySelectorAll(
-            `${targetSelector}:not([${hrefAttribute}="${options.ignore.getAttribute(
-                hrefAttribute
-            )}"])`
-        );
+    removeCurrentActive() {
+        const { targetSelector } = this.options;
+        const menuItems = this.menuList.querySelectorAll(targetSelector);
 
-        menuItems.forEach((item) => {
-            const activeClasses = this.options.activeClass.trim().split(' ');
-            activeClasses.forEach((activeClass) =>
+        menuItems.forEach(item => {
+            const activeClasses = this.options.activeClass.trim().split(" ");
+            activeClasses.forEach(activeClass =>
                 item.classList.remove(activeClass)
             );
         });

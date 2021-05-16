@@ -13,6 +13,9 @@ import {
 } from "question_table.ts";
 import { setDocumentTitle } from "util.js";
 
+import { ScrollSpy } from "scrollspy.js";
+window.ScrollSpy = ScrollSpy;
+
 window.dodona.initSeriesReorder = initSeriesReorder;
 window.dodona.initCourseForm = initCourseForm;
 window.dodona.initCourseNew = initCourseNew;

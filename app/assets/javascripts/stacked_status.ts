@@ -140,15 +140,36 @@ function drawStacked(data: {
         .select(".domain").remove();
     gridlines.selectAll("line").style("stroke-dasharray", ("3, 3"));
 
+    const metrics = graph.append("g")
+        .attr("transform", `translate(${innerWidth+10}, 0)`);
+
+    metrics.append("rect")
+        .attr("width", margin.right - 20)
+        .attr("height", innerHeight)
+        .attr("rx", 5)
+        .attr("ry", 5)
+        .style("fill", "none")
+        .style("stroke", "currentColor")
+        .style("stroke-width", 2);
+
     for (const ex of data) {
         const t = maxSum[ex.exercise_id];
-        graph.append("text")
-            .attr("x", innerWidth + 10)
+        metrics.append("text")
+            .attr("x", (margin.right - 20) / 2)
+            .attr("y", y(ex.exercise_id) + y.bandwidth()/2)
+            .text(`${t}`)
+            .attr("text-anchor", "middle")
+            .attr("fill", "currentColor")
+            .style("font-size", "14px");
+
+        metrics.append("text")
+            .attr("x", (margin.right - 20) / 2)
             .attr("y", y(ex.exercise_id) + y.bandwidth())
             .text(
-                `${I18n.t("js.total")}: ${t} ${I18n.t(t===1 ?
+                `${I18n.t("js.total")} ${I18n.t(t===1 ?
                     "js.submission" : "js.submissions")}`
             )
+            .attr("text-anchor", "middle")
             .attr("fill", "currentColor")
             .style("font-size", "12px");
     }

@@ -22,6 +22,10 @@ pre {
   border-radius: $border-radius-base;
 }
 
+.img-responsive {
+  @extend .img-fluid;
+}
+
 // nav bar
 .navbar {
   border: none;
@@ -217,7 +221,25 @@ pre {
 // panels
 .panel {
   border: 0;
+  margin-bottom: 6px;
   @include shadow-z3;
+}
+#accordion.panel-group {
+  h4.panel-title {
+    line-height: 24px;
+    font-size: 16px;
+    color: inherit;
+    padding: 12px;
+    background-color: $body-bg;
+    border-bottom: 1px solid $hairlinegray;
+
+    a {
+      color: inherit;
+    }
+  }
+  .panel-body {
+    padding: 12px;
+  }
 }
 
 // mark

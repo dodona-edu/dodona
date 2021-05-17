@@ -46,8 +46,8 @@
       <div class="card-supporting-text">
         <div class="card-tab">
           <ul id="user-tabs" class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-              <a href="#evaluation-details" data-bs-toggle="tab"><%= t '.evaluation_details' %></a></li>
+            <li role="presentation">
+              <a href="#evaluation-details" data-bs-toggle="tab" class="active"><%= t '.evaluation_details' %></a></li>
             <% if @evaluation.graded? %>
               <li role="presentation"><a href="#grading-details" data-bs-toggle="tab"><%= t '.grading_details' %></a></li>
             <% end %>

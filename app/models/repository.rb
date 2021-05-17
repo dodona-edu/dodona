@@ -248,10 +248,19 @@ class Repository < ApplicationRecord
 
   def read_config_file(file)
     file = full_path + file if file.relative?
-    JSON.parse file.read.force_encoding('UTF-8').scrub if file.file?
-  rescue JSON::ParserError => e
     rel_path = file.relative_path_from(full_path)
-    raise ConfigParseError.new(self, rel_path, e.to_s)
+    if file.file?
+      result = JSON.parse file.read.force_encoding('UTF-8').scrub
+      raise ConfigParseError.new(self, rel_path, 'file contents are not a JSON object', result.to_json) unless result.is_a?(Hash)
+
+      result
+    end
+  rescue JSON::ParserError => e
+    # ew.
+    groups = /\d+:(?<error_type>.*) at '(?<json>.*)'/m.match(e.to_s)
+    error_type = groups[:error_type]
+    json = groups[:json]
+    raise ConfigParseError.new(self, rel_path, error_type, json)
   end
 
   private

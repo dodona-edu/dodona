@@ -25,12 +25,17 @@
     }
     .status, .status-header {
       text-align: center;
+      overflow: hidden;
     }
     .user-name {
       position: absolute;
       width: 200px;
-      left: 16px;
+      left: 18px;
+      height: 42px;
       top: auto;
+    }
+    thead .user-name {
+      height: auto;
     }
   }
 }

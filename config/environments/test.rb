@@ -11,7 +11,7 @@ Rails.application.configure do
   config.default_host = 'www.example.com'
   config.action_mailer.default_url_options = { host: 'www.example.com' }
   config.sandbox_host = 'sandbox.example.com'
-  config.tutor_host = URI::HTTPS.build(host: "tutor.example.com", path: "/cgi-bin/build_trace.py")
+  config.tutor_url = URI::HTTPS.build(host: "tutor.example.com", path: "/cgi-bin/build_trace.py")
   config.action_controller.asset_host = nil
 
   config.cache_classes = false

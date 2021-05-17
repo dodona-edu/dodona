@@ -24,6 +24,7 @@ module Dodona
 
     # The sandboxed host with user provided content, without authentication
     config.sandbox_host = 'sandbox.localhost'
+    config.tutor_url = URI::HTTP.build(host: 'tutor.localhost', port: 8080, path: "/cgi-bin/build_trace.py")
 
     # Where we host our assets (a single domain, for caching)
     # Port is needed somehow...

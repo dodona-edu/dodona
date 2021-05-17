@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit
   include SetCurrentRequestDetails
+  include ApplicationHelper
 
   MAX_STORED_URL_LENGTH = 1024
 
@@ -66,10 +67,6 @@ class ApplicationController < ActionController::Base
 
   def allow_iframe
     response.headers['X-Frame-Options'] = "allow-from #{default_url}"
-  end
-
-  def sandbox_url
-    "#{request.protocol}#{Rails.configuration.sandbox_host}:#{request.port}"
   end
 
   def default_url

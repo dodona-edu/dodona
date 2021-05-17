@@ -5,6 +5,10 @@ module ApplicationHelper
     end
   end
 
+  def sandbox_url
+    "#{request.protocol}#{Rails.configuration.sandbox_host}:#{request.port}"
+  end
+
   def activity_scoped_url(activity: nil, series: nil, course: nil, options: nil)
     raise 'Exercise should not be nil' if activity.nil?
 

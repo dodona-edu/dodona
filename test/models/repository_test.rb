@@ -280,4 +280,28 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @echo.reload
     assert_equal 'not_valid', @echo.status
   end
+
+  test 'should catch invalid config file' do
+    @remote.write_file("#{@echo.path}/config.json") do
+      '{"invalid json",,}'
+    end
+    @repository.reset
+    assert_raises(AggregatedConfigErrors) do
+      @repository.process_activities
+    end
+    @echo.reload
+    assert_equal 'not_valid', @echo.status
+  end
+
+  test 'should catch config file that does not contain object' do
+    @remote.write_file("#{@echo.path}/config.json") do
+      '"json string"'
+    end
+    @repository.reset
+    assert_raises(AggregatedConfigErrors) do
+      @repository.process_activities
+    end
+    @echo.reload
+    assert_equal 'not_valid', @echo.status
+  end
 end

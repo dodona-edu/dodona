@@ -63,7 +63,7 @@
         <%= f.select :institution_id,
                      options_for_select(Institution.all.sort_by(&:name).map {|i| [i.name, i.id]}, course.institution_id),
                      {include_blank: t('.no_institution')},
-                     {class: 'form-control'} %>
+                     {class: 'form-select'} %>
       </div>
       <span class="help-block offset-sm-3 col-sm-6"><%= t ".institution-help_html" %></span>
     </div>
@@ -81,7 +81,7 @@
                        options_for_select(Course.colors.keys.map {|k| [t("activerecord.attributes.course.colors.#{k}"), k]},
                                           course.color),
                        {},
-                       {class: 'form-control'} %>
+                       {class: 'form-select'} %>
         </div>
       </div>
     <% end %>

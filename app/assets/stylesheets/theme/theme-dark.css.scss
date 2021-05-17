@@ -35,6 +35,7 @@
 }
 
 @mixin theme-dark-other {
+  $secondary: $blue-grey-800 !global;
   $dropdown-link-color: $text-color !global;
   $dropdown-border-color: $hairlinegray !global;
   $dropdown-divider-bg: $hairlinegray !global;
@@ -43,7 +44,7 @@
 
   $input-bg: $content-bg !global;
   $input-color: $text-color !global;
-  $input-bg-disabled: $body-bg !global;
+  $input-disabled-bg: $body-bg !global;
   $btn-secondary-bg: $content-bg !global;
   $btn-secondary-color: $text-color !global;
 
@@ -106,6 +107,8 @@
   $table-hover-bg: $body-bg !global;
 
   $input-group-addon-bg: $grey-800 !global;
+
+  $form-select-indicator-color: $text-color !global;
 
   .activity-description {
     .light-only {

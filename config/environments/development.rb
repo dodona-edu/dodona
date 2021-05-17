@@ -17,7 +17,7 @@ Rails.application.configure do
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = ENV['RAILS_SANDBOX_HOST'] || 'sandbox.localhost'
-  config.tutor_host = URI::HTTP.build(host: 'tutor.localhost', port: 8080, path: '/cgi-bin/build_trace.py')
+  config.tutor_url = URI::HTTP.build(host: 'tutor.localhost', port: 8080, path: '/cgi-bin/build_trace.py')
 
   # Where we host our assets (a single domain, for caching)
   # Port is needed somehow...

@@ -10,6 +10,18 @@ figcaption {
   display: none;
 }
 
+pre {
+  padding: 9px;
+  margin: 0 0 9.5px;
+  font-size: 13px;
+  line-height: 1.38461538;
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: $code-bg;
+  border: 1px solid $hairlinegray;
+  border-radius: $border-radius-base;
+}
+
 // nav bar
 .navbar {
   border: none;

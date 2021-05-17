@@ -42,7 +42,7 @@
       height: calc(100vh - (#{$navbar-height} + 20px));
       display: block;
       overflow-y: auto;
-      position: fixed;
+      position: sticky;
       top: calc(#{$navbar-height} + 20px);
 
       &.affix-bottom {

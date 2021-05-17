@@ -34,14 +34,14 @@
       </div>
       <div class="field form-group row">
         <%= f.label :time_zone, :class => "col-sm-4 col-form-label" %>
-        <div class="col-sm-8"><%= f.time_zone_select(:time_zone, [ActiveSupport::TimeZone['Brussels'], ActiveSupport::TimeZone['Seoul']], {}, {class: "form-control", disabled: !f.permission?(:time_zone)}) %></div>
+        <div class="col-sm-8"><%= f.time_zone_select(:time_zone, [ActiveSupport::TimeZone['Brussels'], ActiveSupport::TimeZone['Seoul']], {}, {class: "form-select", disabled: !f.permission?(:time_zone)}) %></div>
       </div>
       <div class="field form-group row">
         <% can_make_request = policy(RightsRequest).create? %>
         <% has_request = current_user.rights_request.present? %>
         <%= f.label :permission, :class => "col-sm-4 col-form-label" %>
         <div class="<%= can_make_request || has_request ? "col-sm-4" : "col-sm-8" %>">
-          <%= f.select :permission, User.permissions.map {|key, value| [key.humanize, key]}, {}, {:class => 'form-control', disabled: !f.permission?(:permission)} %>
+          <%= f.select :permission, User.permissions.map {|key, value| [key.humanize, key]}, {}, {:class => 'form-select', disabled: !f.permission?(:permission)} %>
         </div>
         <% if can_make_request %>
           <div class="col-sm-4">

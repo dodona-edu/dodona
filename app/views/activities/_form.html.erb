@@ -23,7 +23,7 @@
   </div>
   <div class="field form-group row">
     <%= f.label :access, :class => "col-sm-3 col-12 col-form-label" %>
-    <div class="col-sm-6 col-12"><%= f.select :access, Activity.accesses.map {|key, value| [Activity.human_enum_name(:access, key), key]}, {}, {:class => 'form-control'} %></div>
+    <div class="col-sm-6 col-12"><%= f.select :access, Activity.accesses.map {|key, value| [Activity.human_enum_name(:access, key), key]}, {}, {:class => 'form-select'} %></div>
   </div>
   <div class="field form-group row">
     <%= f.label :labels, :class => "col-sm-3 col-12 col-form-label" %>

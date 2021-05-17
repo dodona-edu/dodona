@@ -34,7 +34,7 @@
     </div>
     <div class="field form-group row">
       <%= f.label :visibility, :class => "col-sm-3 col-form-label" %>
-      <div class="col-sm-6"><%= f.select :visibility, Series.visibilities.map {|key, value| [Series.human_enum_name(:visibility, key), key]}, {}, {:class => 'form-control'} %></div>
+      <div class="col-sm-6"><%= f.select :visibility, Series.visibilities.map {|key, value| [Series.human_enum_name(:visibility, key), key]}, {}, {:class => 'form-select'} %></div>
       <span class="help-block offset-sm-3 col-sm-6"><%= t ".visibility-help_html" %></span>
     </div>
     <div class="field form-group row">

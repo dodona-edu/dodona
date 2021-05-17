@@ -36,7 +36,7 @@
   </div>
   <div class="field form-group row">
     <%= f.label :renderer, :class => "col-sm-3 col-form-label" %>
-    <div class="col-sm-6"><%= f.select :renderer, FeedbackTableRenderer.renderers.map {|r| r.to_s}, {}, {class: "form-control"} %></div>
+    <div class="col-sm-6"><%= f.select :renderer, FeedbackTableRenderer.renderers.map {|r| r.to_s}, {}, {class: "form-select"} %></div>
     <span class="help-block offset-sm-3 col-sm-6"><%= t ".renderer_help" %></span>
   </div>
 <% end %>

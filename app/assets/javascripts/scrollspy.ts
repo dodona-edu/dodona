@@ -1,5 +1,5 @@
 /**
- * This file was adapted from https://github.com/sidsbrmnn/scrollspy
+ * This file was adapted from https://github.com/sidsbrmnn/scrollspy version 1.0.4
  * under the MIT license
  **/
 export class ScrollSpy {

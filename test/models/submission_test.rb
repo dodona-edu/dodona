@@ -296,19 +296,19 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'stacked does not crash' do
     course = create :course
     temp = []
-    assert_equal temp, Submission.violin_matrix(course: course)[:value]
+    assert_equal temp, Submission.stacked_status_matrix(course: course)[:value]
   end
 
   test 'timeseries does not crash' do
     course = create :course
     temp = {}
-    assert_equal temp, Submission.violin_matrix(course: course)[:value]
+    assert_equal temp, Submission.timeseries_matrix(course: course)[:value]
   end
 
   test 'ctimeseries does not crash' do
     course = create :course
     temp = {}
-    assert_equal temp, Submission.violin_matrix(course: course)[:value]
+    assert_equal temp, Submission.cumulative_timeseries_matrix(course: course)[:value]
   end
 
   test 'update to internal error should send exception notification' do

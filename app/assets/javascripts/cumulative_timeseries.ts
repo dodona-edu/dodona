@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
 let selector = "";
-const margin = { top: 20, right: 40, bottom: 80, left: 40 };
+const margin = { top: 20, right: 50, bottom: 80, left: 40 };
 let width = 0;
 let height = 0;
 const bisector = d3.bisector((d: Date) => d.getTime()).left;
@@ -51,6 +51,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
     const dateFormat = d3.timeFormat("%A %B %d");
     const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
     dateArray.unshift(metaData["minDate"]);
+    let tooltipI = -1;
 
     const mapEx = (target: string): string =>
         exMap.find(ex => target.toString() === ex[0].toString());
@@ -86,7 +87,6 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .domain(exOrder);
 
     let ticks = d3.timeDay.filter(d=>d3.timeDay.count(metaData["minDate"], d) % 2 === 0);
-    console.log(ticks);
     let format = "%a %b-%d";
     if (metaData["dateRange"] > 20) {
         ticks = d3.timeMonth;
@@ -105,7 +105,6 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .attr("stroke", "currentColor")
         .style("width", 40);
     const tooltipLabel = graph.append("text")
-        .attr("opacity", 0)
         .text("_") // dummy text to calculate height
         .attr("text-anchor", "start")
         .attr("fill", "currentColor")
@@ -116,17 +115,44 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .data(Object.entries(data), d => d[0])
         .join("circle")
         .attr("r", 4)
-        .attr("opacity", 0)
         .style("fill", d => color(d[0]));
     const tooltipDotLabels = graph.selectAll("dotlabels")
         .data(Object.entries(data), d => d[0])
         .join("text")
-        .attr("text-anchor", "start")
         .attr("fill", d => color(d[0]))
-        .attr("opacity", 0)
         .attr("font-size", "12px");
 
-    let tooltipI = -1;
+    function tooltipNotFocused(): void {
+        tooltipI = -1;
+        const date = metaData["maxDate"];
+        tooltip
+            .attr("opacity", 0.6)
+            .attr("x1", x(metaData["maxDate"]))
+            .attr("x2", x(metaData["maxDate"]));
+        tooltipLabel
+            .attr("opacity", 0.6)
+            .text(dateFormat(date))
+            .attr(
+                "x",
+                x(date) - tooltipLabel.node().getBBox().width - 5 > 0 ?
+                    x(date) - tooltipLabel.node().getBBox().width - 5 :
+                    x(date) + 10
+            );
+        const last = dateArray.length-1;
+        tooltipDots
+            .attr("opacity", 0.6)
+            .attr("cx", x(date))
+            .attr("cy", d => y(d[1][last][1]/metaData["maxSum"]));
+        tooltipDotLabels
+            .attr("opacity", 0.6)
+            .attr("text-anchor", "start")
+            .text(
+                d => `${Math.round(d[1][last][1]/metaData["maxSum"]*10000)/100}%`
+            )
+            .attr("x", x(date) + 5)
+            .attr("y", d => y(d[1][last][1]/metaData["maxSum"])-5);
+    }
+    tooltipNotFocused();
 
     const legend = svg.append("g");
 
@@ -215,6 +241,8 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
                         x(date) - tooltipLabel.node().getBBox().width - 5 :
                         x(date) + 10
                 );
+            // use line label width as reference for switch condition
+            const doSwitch = x(date) + tooltipLabel.node().getBBox().width + 5 > innerWidth;
             tooltipDots
                 .attr("opacity", 1)
                 .attr("cx", x(date))
@@ -225,21 +253,14 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
                     d => `${Math.round(d[1][i][1]/metaData["maxSum"]*10000)/100}% 
                     (${d[1][i][1]}/${metaData["maxSum"]})`
                 )
-                .attr("x", x(date) + 5)
+                .attr("x", doSwitch ? x(date) - 5 : x(date) + 5)
+                .attr("text-anchor", doSwitch ? "end" : "start")
                 .attr("y", d => y(d[1][i][1]/metaData["maxSum"])-5);
         }
     });
 
     svg.on("mouseleave", () => {
-        tooltipI = -1;
-        tooltip
-            .attr("opacity", 0);
-        tooltipLabel
-            .attr("opacity", 0);
-        tooltipDots
-            .attr("opacity", 0);
-        tooltipDotLabels
-            .attr("opacity", 0);
+        tooltipNotFocused();
     });
 }
 

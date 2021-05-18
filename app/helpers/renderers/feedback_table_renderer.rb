@@ -174,7 +174,7 @@ class FeedbackTableRenderer
   end
 
   def group(g)
-    @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}") do
+    @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}") do
       if g[:description]
         @builder.div(class: 'col-12 description') do
           message(g[:description])
